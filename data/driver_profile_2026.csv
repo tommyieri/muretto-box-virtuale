@@ -1,0 +1,23 @@
+team,drv,compagno,delta_vs_compagno,delta_std,n_confronti,confidence,significativo
+Alpine,GAS,COL,-0.331,0.783,22,0.51,True
+Alpine,COL,GAS,0.331,0.783,22,0.51,True
+Aston Martin,ALO,STR,-0.082,0.486,11,0.47,False
+Aston Martin,STR,ALO,0.082,0.486,11,0.47,False
+Audi,BOR,HUL,-0.093,1.089,18,0.45,False
+Audi,HUL,BOR,0.093,1.089,18,0.45,False
+Cadillac,PER,BOT,-0.609,0.829,18,0.45,True
+Cadillac,BOT,PER,0.609,0.829,18,0.45,True
+Ferrari,HAM,LEC,-0.133,0.808,27,0.5,False
+Ferrari,LEC,HAM,0.133,0.808,27,0.5,False
+Haas F1 Team,OCO,BEA,-0.207,0.734,22,0.54,True
+Haas F1 Team,BEA,OCO,0.207,0.734,22,0.54,True
+McLaren,NOR,PIA,-0.217,1.297,24,0.5,False
+McLaren,PIA,NOR,0.217,1.297,24,0.5,False
+Mercedes,ANT,RUS,-0.335,0.784,30,0.51,True
+Mercedes,RUS,ANT,0.335,0.784,30,0.51,True
+Racing Bulls,LIN,LAW,-0.587,1.369,11,0.28,True
+Racing Bulls,LAW,LIN,0.587,1.369,11,0.28,True
+Red Bull Racing,VER,HAD,-0.866,0.829,21,0.5,True
+Red Bull Racing,HAD,VER,0.866,0.829,21,0.5,True
+Williams,SAI,ALB,-0.567,1.054,16,0.4,True
+Williams,ALB,SAI,0.567,1.054,16,0.4,True

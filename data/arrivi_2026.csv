@@ -1,0 +1,154 @@
+gara,pilota,team,pos_finale,classificato,tipo_arrivo,giri,sesT_fin,partenza,soste,n_soste
+Australia,ALB,Williams,12.0,True,pieno_giro,57,8782.855,MEDIUM,12:HARD;33:SOFT,2
+Australia,ALO,Aston Martin,18.0,False,RIT,22,6747.116,SOFT,11:SOFT;13:SOFT,3
+Australia,ANT,Mercedes,2.0,True,pieno_giro,58,8729.754,MEDIUM,12:HARD,1
+Australia,BEA,Haas F1 Team,7.0,True,pieno_giro,57,8731.439,MEDIUM,18:HARD,1
+Australia,BOR,Audi,9.0,True,pieno_giro,57,8739.555,MEDIUM,18:HARD;33:HARD,2
+Australia,BOT,Cadillac,19.0,False,RIT,16,5361.898,HARD,12:HARD,1
+Australia,COL,Alpine,14.0,True,doppiato,56,8735.267,HARD,9:HARD;46:SOFT,2
+Australia,GAS,Alpine,10.0,True,pieno_giro,57,8755.807,MEDIUM,11:HARD,1
+Australia,HAD,Red Bull Racing,20.0,False,RIT,11,4755.504,MEDIUM,,0
+Australia,HAM,Ferrari,4.0,True,pieno_giro,58,8742.924,MEDIUM,28:HARD,1
+Australia,HUL,Audi,,False,NP,1,3831.908,HARD,,0
+Australia,LAW,Racing Bulls,13.0,True,pieno_giro,57,8783.953,MEDIUM,11:HARD;33:SOFT,2
+Australia,LEC,Ferrari,3.0,True,pieno_giro,58,8742.299,MEDIUM,25:HARD,1
+Australia,LIN,Racing Bulls,8.0,True,pieno_giro,57,8738.596,MEDIUM,18:HARD,1
+Australia,NOR,McLaren,5.0,True,pieno_giro,58,8778.521,MEDIUM,11:HARD;34:MEDIUM,2
+Australia,OCO,Haas F1 Team,11.0,True,pieno_giro,57,8756.63,MEDIUM,11:HARD,1
+Australia,PER,Cadillac,16.0,True,doppiato,55,8734.63,MEDIUM,18:HARD;43:SOFT,2
+Australia,RUS,Mercedes,1.0,True,pieno_giro,58,8726.78,MEDIUM,12:HARD,1
+Australia,SAI,Williams,15.0,True,doppiato,56,8763.666,SOFT,11:HARD;33:MEDIUM;45:SOFT,3
+Australia,STR,Aston Martin,17.0,False,RIT,43,8807.915,MEDIUM,11:HARD;26:SOFT;34:SOFT;39:SOFT,4
+Australia,VER,Red Bull Racing,6.0,True,pieno_giro,58,8781.397,HARD,18:MEDIUM;41:HARD,2
+Cina,ALB,Williams,,False,NP,1,3483.76,HARD,,0
+Cina,ALO,Aston Martin,17.0,False,RIT,32,6783.895,HARD,31:MEDIUM,2
+Cina,ANT,Mercedes,1.0,True,pieno_giro,56,8979.883,MEDIUM,10:HARD,1
+Cina,BEA,Haas F1 Team,5.0,True,pieno_giro,56,9037.176,MEDIUM,10:HARD,1
+Cina,BOR,Audi,,False,NP,1,3483.76,HARD,,0
+Cina,BOT,Cadillac,13.0,True,pieno_giro,55,9036.076,MEDIUM,10:HARD,1
+Cina,COL,Alpine,10.0,True,pieno_giro,55,8992.382,HARD,32:MEDIUM,1
+Cina,GAS,Alpine,6.0,True,pieno_giro,56,9039.589,MEDIUM,10:HARD,1
+Cina,HAD,Red Bull Racing,8.0,True,pieno_giro,56,9067.209,SOFT,1:HARD;10:HARD,2
+Cina,HAM,Ferrari,3.0,True,pieno_giro,56,9005.171,MEDIUM,10:HARD,1
+Cina,HUL,Audi,11.0,True,pieno_giro,55,9001.089,HARD,35:MEDIUM,1
+Cina,LAW,Racing Bulls,7.0,True,pieno_giro,56,9060.507,MEDIUM,9:HARD,1
+Cina,LEC,Ferrari,4.0,True,pieno_giro,56,9008.797,MEDIUM,10:HARD,1
+Cina,LIN,Racing Bulls,12.0,True,pieno_giro,55,9002.747,HARD,42:MEDIUM,1
+Cina,NOR,McLaren,,False,NP,1,3483.76,HARD,,0
+Cina,OCO,Haas F1 Team,14.0,True,pieno_giro,55,9046.175,HARD,29:MEDIUM;46:SOFT,2
+Cina,PER,Cadillac,15.0,True,pieno_giro,55,9054.56,MEDIUM,11:HARD,1
+Cina,PIA,McLaren,,False,NP,1,3483.76,MEDIUM,,0
+Cina,RUS,Mercedes,2.0,True,pieno_giro,56,8985.487,MEDIUM,10:HARD,1
+Cina,SAI,Williams,9.0,True,pieno_giro,55,8991.592,MEDIUM,9:HARD,1
+Cina,STR,Aston Martin,18.0,False,RIT,10,4454.241,HARD,,0
+Cina,VER,Red Bull Racing,16.0,False,RIT,45,8030.686,SOFT,9:HARD,2
+Giappone,ALB,Williams,20.0,True,doppiato,51,9113.434,MEDIUM,22:HARD;45:SOFT;46:SOFT;47:SOFT;48:SOFT;49:MEDIUM,6
+Giappone,ALO,Aston Martin,18.0,True,pieno_giro,52,9134.915,MEDIUM,21:HARD;23:MEDIUM,2
+Giappone,ANT,Mercedes,1.0,True,pieno_giro,53,9108.406,MEDIUM,22:HARD,1
+Giappone,BEA,Haas F1 Team,22.0,False,RIT,21,5939.334,MEDIUM,16:HARD,1
+Giappone,BOR,Audi,13.0,True,pieno_giro,53,9167.487,MEDIUM,22:HARD,1
+Giappone,BOT,Cadillac,19.0,True,pieno_giro,52,9151.031,HARD,19:MEDIUM,1
+Giappone,COL,Alpine,16.0,True,pieno_giro,53,9174.127,MEDIUM,17:HARD,1
+Giappone,GAS,Alpine,7.0,True,pieno_giro,53,9140.7,MEDIUM,22:HARD,1
+Giappone,HAD,Red Bull Racing,12.0,True,pieno_giro,53,9164.497,MEDIUM,19:HARD,1
+Giappone,HAM,Ferrari,6.0,True,pieno_giro,53,9133.436,MEDIUM,22:HARD,1
+Giappone,HUL,Audi,11.0,True,pieno_giro,53,9160.657,MEDIUM,23:HARD,1
+Giappone,LAW,Racing Bulls,9.0,True,pieno_giro,53,9158.522,MEDIUM,22:HARD,1
+Giappone,LEC,Ferrari,3.0,True,pieno_giro,53,9123.613,MEDIUM,17:HARD,1
+Giappone,LIN,Racing Bulls,14.0,True,pieno_giro,53,9168.208,MEDIUM,18:HARD,1
+Giappone,NOR,McLaren,5.0,True,pieno_giro,53,9131.842,MEDIUM,16:HARD,1
+Giappone,OCO,Haas F1 Team,10.0,True,pieno_giro,53,9159.601,MEDIUM,19:HARD,1
+Giappone,PER,Cadillac,17.0,True,pieno_giro,53,9200.82,MEDIUM,21:HARD,1
+Giappone,PIA,McLaren,2.0,True,pieno_giro,53,9122.086,MEDIUM,18:HARD,1
+Giappone,RUS,Mercedes,4.0,True,pieno_giro,53,9124.104,MEDIUM,21:HARD,1
+Giappone,SAI,Williams,15.0,True,pieno_giro,53,9173.37,MEDIUM,22:HARD,1
+Giappone,STR,Aston Martin,21.0,False,RIT,30,6994.394,MEDIUM,21:HARD;24:MEDIUM,3
+Giappone,VER,Red Bull Racing,8.0,True,pieno_giro,53,9141.04,MEDIUM,22:HARD,1
+Miami,ALB,Williams,10.0,True,pieno_giro,57,9132.238,MEDIUM,27:HARD,1
+Miami,ALO,Aston Martin,15.0,True,pieno_giro,56,9116.23,MEDIUM,41:SOFT,1
+Miami,ANT,Mercedes,1.0,True,pieno_giro,57,9041.262,MEDIUM,26:HARD,1
+Miami,BEA,Haas F1 Team,11.0,True,pieno_giro,56,9047.666,MEDIUM,26:HARD,1
+Miami,BOR,Audi,12.0,True,pieno_giro,56,9050.619,MEDIUM,32:HARD,1
+Miami,BOT,Cadillac,18.0,True,doppiato,55,9109.521,MEDIUM,6:SOFT;21:MEDIUM;30:MEDIUM,3
+Miami,COL,Alpine,8.0,True,pieno_giro,57,9103.137,MEDIUM,31:HARD,1
+Miami,GAS,Alpine,21.0,False,RIT,5,3982.714,MEDIUM,,0
+Miami,HAD,Red Bull Racing,22.0,False,RIT,5,3987.709,HARD,,0
+Miami,HAM,Ferrari,7.0,True,pieno_giro,57,9095.019,MEDIUM,27:HARD,1
+Miami,HUL,Audi,19.0,False,RIT,7,4282.019,MEDIUM,1:MEDIUM,2
+Miami,LAW,Racing Bulls,20.0,False,RIT,6,4117.851,MEDIUM,,1
+Miami,LEC,Ferrari,6.0,True,pieno_giro,57,9085.48,MEDIUM,21:HARD,1
+Miami,LIN,Racing Bulls,14.0,True,pieno_giro,56,9086.047,MEDIUM,28:HARD,1
+Miami,NOR,McLaren,2.0,True,pieno_giro,57,9044.499,MEDIUM,27:HARD,1
+Miami,OCO,Haas F1 Team,13.0,True,pieno_giro,56,9055.139,MEDIUM,31:HARD,1
+Miami,PER,Cadillac,16.0,True,pieno_giro,56,9118.779,MEDIUM,29:HARD,1
+Miami,PIA,McLaren,3.0,True,pieno_giro,57,9068.358,MEDIUM,28:HARD,1
+Miami,RUS,Mercedes,4.0,True,pieno_giro,57,9084.317,MEDIUM,20:HARD,1
+Miami,SAI,Williams,9.0,True,pieno_giro,57,9123.338,MEDIUM,28:HARD,1
+Miami,STR,Aston Martin,17.0,True,pieno_giro,56,9123.897,MEDIUM,21:SOFT;37:SOFT,2
+Miami,VER,Red Bull Racing,5.0,True,pieno_giro,57,9085.215,MEDIUM,6:HARD,1
+Canada,ALB,Williams,21.0,False,RIT,12,4799.197,SOFT,,0
+Canada,ALO,Aston Martin,20.0,False,RIT,24,5718.616,SOFT,20:SOFT,2
+Canada,ANT,Mercedes,1.0,True,pieno_giro,68,9048.302,SOFT,31:MEDIUM,1
+Canada,BEA,Haas F1 Team,10.0,True,pieno_giro,67,9107.351,SOFT,30:MEDIUM,1
+Canada,BOR,Audi,13.0,True,doppiato,66,9064.458,INTERMEDIATE,2:SOFT;18:MEDIUM,2
+Canada,BOT,Cadillac,16.0,True,doppiato,64,9101.692,INTERMEDIATE,3:SOFT;9:MEDIUM;29:SOFT;49:MEDIUM,4
+Canada,COL,Alpine,6.0,True,pieno_giro,67,9067.812,MEDIUM,30:HARD,1
+Canada,GAS,Alpine,8.0,True,pieno_giro,67,9082.874,MEDIUM,30:HARD,1
+Canada,HAD,Red Bull Racing,5.0,True,pieno_giro,67,9053.335,SOFT,31:MEDIUM;52:SOFT;62:SOFT,3
+Canada,HAM,Ferrari,2.0,True,pieno_giro,68,9059.07,SOFT,31:MEDIUM,1
+Canada,HUL,Audi,12.0,True,doppiato,66,9062.484,INTERMEDIATE,2:SOFT;20:MEDIUM,2
+Canada,LAW,Racing Bulls,7.0,True,pieno_giro,67,9082.537,MEDIUM,30:SOFT,1
+Canada,LEC,Ferrari,4.0,True,pieno_giro,68,9092.453,SOFT,31:MEDIUM,1
+Canada,LIN,Racing Bulls,,False,NP,1,3838.725,MEDIUM,,0
+Canada,NOR,McLaren,18.0,False,RIT,39,6955.765,INTERMEDIATE,2:MEDIUM;15:MEDIUM,2
+Canada,OCO,Haas F1 Team,14.0,True,doppiato,66,9116.937,SOFT,16:MEDIUM;30:SOFT,2
+Canada,PER,Cadillac,17.0,False,RIT,40,7042.618,INTERMEDIATE,2:SOFT;15:MEDIUM;29:SOFT,4
+Canada,PIA,McLaren,11.0,True,doppiato,66,9061.001,INTERMEDIATE,1:MEDIUM;12:MEDIUM;51:SOFT,3
+Canada,RUS,Mercedes,19.0,False,RIT,30,6133.598,SOFT,,0
+Canada,SAI,Williams,9.0,True,pieno_giro,67,9106.316,INTERMEDIATE,2:MEDIUM;30:MEDIUM,2
+Canada,STR,Aston Martin,15.0,True,doppiato,64,9066.699,SOFT,14:SOFT;49:MEDIUM,2
+Canada,VER,Red Bull Racing,3.0,True,pieno_giro,68,9059.578,SOFT,31:MEDIUM,1
+Monaco,ALB,Williams,8.0,True,pieno_giro,78,11964.576,MEDIUM,43:SOFT;59:SOFT;65:SOFT;67:SOFT;68:SOFT,5
+Monaco,ALO,Aston Martin,12.0,True,pieno_giro,78,11973.014,MEDIUM,3:SOFT;58:SOFT;59:SOFT;65:SOFT;67:SOFT;68:SOFT,6
+Monaco,ANT,Mercedes,1.0,True,pieno_giro,78,11931.182,MEDIUM,37:HARD;61:SOFT;66:SOFT;68:SOFT,4
+Monaco,BEA,Haas F1 Team,20.0,False,RIT,28,5615.421,MEDIUM,1:HARD,2
+Monaco,BOR,Audi,13.0,True,pieno_giro,78,11973.885,SOFT,1:HARD;43:MEDIUM;58:MEDIUM;59:SOFT;65:SOFT;67:SOFT;68:SOFT,7
+Monaco,BOT,Cadillac,21.0,False,RIT,16,4660.643,SOFT,1:MEDIUM,2
+Monaco,COL,Alpine,15.0,True,pieno_giro,78,11975.129,MEDIUM,35:HARD;59:HARD;65:HARD;67:SOFT;68:SOFT,5
+Monaco,GAS,Alpine,3.0,True,pieno_giro,78,11951.487,MEDIUM,45:HARD;60:HARD;66:HARD;68:SOFT,4
+Monaco,HAD,Red Bull Racing,4.0,True,pieno_giro,78,11954.604,MEDIUM,32:HARD;60:HARD;66:HARD;68:SOFT,4
+Monaco,HAM,Ferrari,2.0,True,pieno_giro,78,11937.47,MEDIUM,28:HARD;60:SOFT;61:SOFT;66:SOFT;68:SOFT,5
+Monaco,HUL,Audi,9.0,True,pieno_giro,78,11965.216,MEDIUM,12:HARD;58:HARD;59:HARD;65:HARD;67:SOFT;68:SOFT,6
+Monaco,LAW,Racing Bulls,6.0,True,pieno_giro,78,11957.705,MEDIUM,44:SOFT;60:SOFT;66:SOFT;68:SOFT,4
+Monaco,LEC,Ferrari,17.0,False,RIT,65,8834.713,MEDIUM,35:HARD;60:SOFT;61:SOFT,3
+Monaco,LIN,Racing Bulls,7.0,True,pieno_giro,78,11960.123,MEDIUM,59:MEDIUM;65:MEDIUM;67:SOFT;68:SOFT,4
+Monaco,NOR,McLaren,19.0,False,RIT,44,6794.519,MEDIUM,,1
+Monaco,OCO,Haas F1 Team,10.0,True,pieno_giro,78,11968.314,MEDIUM,9:HARD;59:HARD;65:HARD;67:SOFT;68:SOFT,5
+Monaco,PER,Cadillac,11.0,True,pieno_giro,78,11970.337,SOFT,4:MEDIUM;9:MEDIUM;59:SOFT;65:SOFT;67:SOFT;68:SOFT,6
+Monaco,PIA,McLaren,5.0,True,pieno_giro,78,11955.39,MEDIUM,48:HARD;59:SOFT;60:SOFT;66:SOFT;68:SOFT,5
+Monaco,RUS,Mercedes,14.0,True,pieno_giro,78,11974.51,MEDIUM,31:HARD;60:SOFT;66:SOFT;68:SOFT;72:SOFT,5
+Monaco,SAI,Williams,16.0,True,doppiato,71,11482.821,MEDIUM,52:SOFT;59:SOFT;65:SOFT;67:SOFT;68:SOFT,5
+Monaco,STR,Aston Martin,18.0,False,RIT,57,8834.713,MEDIUM,4:SOFT,1
+Monaco,VER,Red Bull Racing,,False,NP,1,3402.391,MEDIUM,,0
+Spagna,ALB,Williams,18.0,False,RIT,55,8810.457,MEDIUM,13:HARD;29:HARD;34:SOFT;50:SOFT,4
+Spagna,ALO,Aston Martin,19.0,False,RIT,38,6612.613,HARD,21:HARD,1
+Spagna,ANT,Mercedes,15.0,True,doppiato,62,8470.248,MEDIUM,14:HARD;37:HARD,2
+Spagna,BEA,Haas F1 Team,17.0,True,doppiato,60,8418.787,MEDIUM,18:HARD;39:SOFT,3
+Spagna,BOR,Audi,11.0,True,doppiato,64,8796.131,MEDIUM,15:HARD;33:HARD;53:SOFT,3
+Spagna,BOT,Cadillac,21.0,False,RIT,15,4576.409,MEDIUM,14:HARD,2
+Spagna,COL,Alpine,8.0,True,pieno_giro,65,8839.311,SOFT,12:HARD;34:HARD,2
+Spagna,GAS,Alpine,7.0,True,pieno_giro,65,8825.233,MEDIUM,14:HARD;40:HARD,2
+Spagna,HAD,Red Bull Racing,6.0,True,pieno_giro,65,8794.071,MEDIUM,15:HARD;32:HARD;58:SOFT,3
+Spagna,HAM,Ferrari,1.0,True,pieno_giro,66,8769.444,SOFT,11:HARD;27:MEDIUM;41:HARD,3
+Spagna,HUL,Audi,20.0,False,RIT,29,5718.934,SOFT,13:HARD,2
+Spagna,LAW,Racing Bulls,9.0,True,pieno_giro,65,8841.668,MEDIUM,11:HARD;35:HARD,2
+Spagna,LEC,Ferrari,16.0,True,doppiato,62,8473.036,MEDIUM,16:HARD;39:HARD,3
+Spagna,LIN,Racing Bulls,10.0,True,pieno_giro,65,8847.518,MEDIUM,22:HARD;37:HARD,2
+Spagna,NOR,McLaren,3.0,True,pieno_giro,66,8793.163,MEDIUM,13:HARD;35:HARD,2
+Spagna,OCO,Haas F1 Team,13.0,True,doppiato,64,8828.593,SOFT,13:HARD;34:MEDIUM;58:SOFT,3
+Spagna,PER,Cadillac,14.0,True,doppiato,63,8777.213,SOFT,12:HARD;31:HARD;39:MEDIUM,3
+Spagna,PIA,McLaren,5.0,True,pieno_giro,66,8828.105,MEDIUM,14:HARD;36:HARD,2
+Spagna,RUS,Mercedes,2.0,True,pieno_giro,66,8789.005,MEDIUM,12:HARD;36:HARD,2
+Spagna,SAI,Williams,12.0,True,doppiato,64,8797.31,SOFT,14:HARD;30:HARD;55:MEDIUM,3
+Spagna,STR,Aston Martin,22.0,False,RIT,5,3670.396,HARD,,1
+Spagna,VER,Red Bull Racing,4.0,True,pieno_giro,66,8809.941,SOFT,12:MEDIUM;29:HARD;40:MEDIUM,3

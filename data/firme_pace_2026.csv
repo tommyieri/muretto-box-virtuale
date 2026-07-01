@@ -1,0 +1,12 @@
+rank,team,passo_rel,gap_dal_top,passo_rel_flat,n_stint
+1,Mercedes,-1.522,0.0,-1.502,25
+2,Ferrari,-1.44,0.081,-1.31,27
+3,Red Bull Racing,-1.044,0.478,-0.846,24
+4,McLaren,-1.037,0.485,-1.051,22
+5,Alpine,0.047,1.569,-0.074,25
+6,Racing Bulls,0.312,1.833,0.196,23
+7,Audi,0.419,1.94,0.05,20
+8,Haas F1 Team,0.631,2.153,0.298,27
+9,Williams,0.756,2.277,0.471,26
+10,Cadillac,1.708,3.23,1.833,27
+11,Aston Martin,2.264,3.786,2.147,20
