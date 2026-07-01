@@ -58,7 +58,7 @@ class TrafficModel:
     def __init__(self, ZONE=1.5, STRENGTH=1.0, track=1.0):
         self.ZONE, self.STRENGTH, self.track = ZONE, STRENGTH, track
     def apply(self, st):
-        cand=sorted([(d,st.cars[d].cum_time) for d in st.pending if st.cars[d].cum_time is not None], key=lambda x:x[1])
+        cand=sorted([(d,st.cars[d].cum_time) for d in st.pending if st.cars[d].cum_time is not None], key=lambda x:(x[1], x[0]))
         eff=dict(st.pending)
         for i in range(1,len(cand)):
             d,ct=cand[i]; dfr,ctf=cand[i-1]; gap=ct-ctf
