@@ -1,0 +1,42 @@
+[
+  {
+    "gara": "Australia",
+    "n_laps": 58,
+    "n_drivers": 21
+  },
+  {
+    "gara": "Cina",
+    "n_laps": 56,
+    "n_drivers": 22
+  },
+  {
+    "gara": "Giappone",
+    "n_laps": 53,
+    "n_drivers": 22
+  },
+  {
+    "gara": "Miami",
+    "n_laps": 57,
+    "n_drivers": 22
+  },
+  {
+    "gara": "Canada",
+    "n_laps": 68,
+    "n_drivers": 22
+  },
+  {
+    "gara": "Monaco",
+    "n_laps": 78,
+    "n_drivers": 22
+  },
+  {
+    "gara": "Spagna",
+    "n_laps": 66,
+    "n_drivers": 22
+  },
+  {
+    "gara": "Austria",
+    "n_laps": 71,
+    "n_drivers": 22
+  }
+]
