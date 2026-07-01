@@ -34,6 +34,25 @@ ok1 = len(R1)==449 and d1.max()<1e-6
 print(f"[Pace, Advance]          : n={len(R1)} | max diff vs golden {d1.max():.2e} | {'GOLDEN OK' if ok1 else 'DEVIAZIONE'}")
 
 R2=run_testB(lambda h,N,L:[PaceModel(h,N,L), TrafficModel(), AdvanceModel()])
+import json as _json
+_ref = run_testB(lambda h,N,L:[PaceModel(h,N,L), TrafficModel(), AdvanceModel()])
+# nota: R2 gia' contiene questi err; qui li riesporto in forma per-caso per il golden JS
+_rows = []
+for _g in FILES:
+    _st,_N = ti_adapter(load(_g), _g)
+    _bl = {x.cars[next(iter(x.cars))].lap: x for x in _st}
+    _pos = {(d,x.cars[d].lap): x.cars[d].cum_time for x in _st for d in x.cars}
+    for _L,_grp in G[G.gara==_g].groupby("L"):
+        if _L not in _bl: continue
+        _fin = SimulationKernel().run(_bl[_L], [PaceModel(_st,_N,_L), TrafficModel(), AdvanceModel()], 5)
+        for _,_r in _grp.iterrows():
+            _A,_B = _r["A"],_r["B"]
+            if _A not in _fin.cars or _B not in _fin.cars: continue
+            _cA,_cB = _fin.cars[_A].cum_time, _fin.cars[_B].cum_time
+            _gE,_aE = _pos.get((_B,_L+5)), _pos.get((_A,_L+5))
+            if None in (_cA,_cB,_gE,_aE): continue
+            _rows.append(dict(gara=_g,L=int(_L),A=_A,B=_B,err=abs((_cB-_cA)-(_gE-_aE))))
+_json.dump(_rows, open("data/ref_traffic_py.json","w"))
 med=R2["err"].median()
 gain=100*(DRIFT-med)/DRIFT
 ok2 = med<2.10
