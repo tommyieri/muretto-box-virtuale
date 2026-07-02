@@ -1,0 +1,10 @@
+{
+"Australia":["RUS","ANT","HAD","LEC","PIA","NOR","HAM","LAW","LIN","BOR","HUL","BEA","OCO","GAS","ALB","COL","ALO","PER","BOT","VER","SAI","STR"],
+"Cina":["ANT","RUS","HAM","LEC","PIA","NOR","GAS","VER","HAD","BEA","HUL","COL","OCO","LAW","LIN","BOR","SAI","ALO","BOT","STR","PER","ALB"],
+"Giappone":["ANT","RUS","PIA","LEC","NOR","HAM","GAS","HAD","BOR","LIN","VER","OCO","HUL","LAW","COL","SAI","ALB","BEA","PER","BOT","ALO","STR"],
+"Miami":["ANT","VER","LEC","NOR","RUS","HAM","PIA","COL","GAS","HUL","LAW","BEA","SAI","OCO","ALB","LIN","ALO","STR","BOT","PER","BOR","HAD"],
+"Canada":["RUS","ANT","NOR","PIA","HAM","VER","HAD","LEC","LIN","COL","HUL","LAW","BOR","GAS","SAI","BEA","OCO","ALB","ALO","PER","BOT","STR"],
+"Monaco":["ANT","VER","HAM","LEC","HAD","RUS","PIA","NOR","GAS","LAW","ALB","SAI","HUL","COL","LIN","BOR","OCO","PER","BEA","BOT","ALO","STR"],
+"Spagna":["RUS","HAM","ANT","NOR","VER","HAD","PIA","LAW","HUL","LEC","LIN","BOR","COL","GAS","BEA","SAI","OCO","ALB","PER","BOT","STR","ALO"],
+"Austria":["RUS","LEC","HAM","ANT","VER","NOR","PIA","HAD","LAW","LIN","GAS","BOR","BEA","HUL","OCO","COL","SAI","ALB","PER","BOT","ALO","STR"]
+}

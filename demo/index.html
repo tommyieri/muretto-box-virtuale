@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Muretto Box Virtuale — demo storica</title>
+<style>
+  :root { --bg:#0f1115; --panel:#1a1d24; --line:#2a2f3a; --txt:#e6e8ec; --dim:#8b93a3; --accent:#4ea3ff; --lead:#ffd24e; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--bg); color:var(--txt); font:14px/1.4 -apple-system,Segoe UI,Roboto,sans-serif; }
+  header { padding:16px 20px; border-bottom:1px solid var(--line); }
+  h1 { font-size:16px; margin:0 0 2px; } .sub { color:var(--dim); font-size:12px; }
+  .wrap { padding:20px; max-width:640px; margin:0 auto; }
+  .controls { display:flex; gap:12px; align-items:center; margin-bottom:16px; flex-wrap:wrap; }
+  select { background:var(--panel); color:var(--txt); border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:14px; }
+  .lapbar { display:flex; gap:10px; align-items:center; margin:14px 0 18px; }
+  input[type=range] { flex:1; accent-color:var(--accent); }
+  .lapnum { font-variant-numeric:tabular-nums; min-width:96px; color:var(--dim); }
+  .lapnum b { color:var(--txt); font-size:16px; }
+  .grid { background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+  .row { display:grid; grid-template-columns:36px 1fr auto; align-items:center; padding:9px 14px; border-bottom:1px solid var(--line); }
+  .row:last-child { border-bottom:none; }
+  .row.leader { background:rgba(255,210,78,0.06); }
+  .pos { color:var(--dim); font-variant-numeric:tabular-nums; }
+  .drv { font-weight:600; letter-spacing:0.3px; }
+  .team { color:var(--dim); font-weight:400; font-size:12px; margin-left:8px; }
+  .gap { font-variant-numeric:tabular-nums; color:var(--dim); }
+  .gap.lead { color:var(--lead); font-weight:600; }
+  .gap.lapped { color:#c77; }
+  .row.done { opacity:0.72; }
+  .row.retired { opacity:0.42; }
+  .row.retired .gap.out { color:var(--dim); font-size:12px; }
+</style>
+</head>
+<body>
+<header><h1>Muretto Box Virtuale</h1><div class="sub">demo storica · stagione 2026 · vista gara</div></header>
+<div class="wrap">
+  <div class="controls">
+    <label>Gara: <select id="gara"></select></label>
+    <span class="sub" id="meta"></span>
+  </div>
+  <div class="lapbar">
+    <span class="lapnum">Giro <b id="lapLabel">1</b> / <span id="lapMax">–</span></span>
+    <input type="range" id="lap" min="1" max="1" value="1">
+  </div>
+  <div class="grid" id="grid"></div>
+</div>
+<script type="module">
+const el = id => document.getElementById(id);
+let race = null, lastLap = {}, esiti = {}, esitiGara = {}, grids = {}, gridGara = [], teams = {};
+
+async function loadManifest() {
+  const m = await (await fetch('data/manifest.json')).json();
+  try { esiti = await (await fetch('data/esiti.json')).json(); } catch(e) { esiti = {}; }
+  try { grids = await (await fetch('data/grids.json')).json(); } catch(e) { grids = {}; }
+  try { teams = await (await fetch('data/teams.json')).json(); } catch(e) { teams = {}; }
+  el('gara').innerHTML = m.map(r => `<option value="${r.gara}">${r.gara}</option>`).join('');
+  await loadGara(m[0].gara);
+}
+async function loadGara(gara) {
+  race = await (await fetch(`data/${gara}.json`)).json();
+  race.byLap = {};
+  for (const lp of race.laps) race.byLap[lp.lap] = lp.cars;
+  lastLap = {};
+  for (const lp of race.laps) for (const d in lp.cars) lastLap[d] = lp.lap;
+  esitiGara = esiti[gara] || {};
+  gridGara = grids[gara] || [];                 // {} se la gara non ha esiti (es. Austria)
+  const nonParten = new Set(Object.entries(esitiGara).filter(([d,t]) => t === 'NP').map(([d]) => d));
+  race.nonParten = nonParten;
+  el('lap').min = 1; el('lap').max = race.n_laps; el('lap').value = 1;
+  el('lapMax').textContent = race.n_laps;
+  const nNP = nonParten.size;
+  el('meta').textContent = `${race.n_laps} giri · ${race.drivers.length - nNP} partenti`
+     + (esiti[gara] ? '' : ' · esiti non disponibili');
+  render(1);
+}
+function classifica(L) {
+  const cars = race.byLap[L];
+  let ordine = Object.entries(cars)
+    .filter(([d,c]) => typeof c.cum_time === 'number' && !race.nonParten.has(d));
+  if (L === 1 && gridGara.length) {
+    const rank = {}; gridGara.forEach((d,i) => rank[d] = i);
+    ordine.sort((a,b) => (rank[a[0]] ?? 999) - (rank[b[0]] ?? 999));
+  } else {
+    ordine.sort((a,b) => (a[1].cum_time - b[1].cum_time) || (a[0] < b[0] ? -1 : 1));
+  }
+  const leader = ordine.length ? ordine[0][1].cum_time : 0;
+  const leaderAiGiri = {};
+  for (let k=L; k<=Math.min(L+3, race.n_laps); k++) {
+    if (race.byLap[k]) {
+      const o = Object.entries(race.byLap[k])
+        .filter(([d,c]) => typeof c.cum_time==='number' && !race.nonParten.has(d))
+        .sort((a,b)=>a[1].cum_time-b[1].cum_time);
+      if (o.length) leaderAiGiri[k] = o[0][1].cum_time;
+    }
+  }
+  const rows = ordine.map(([drv,c],i) => {
+    const gap = c.cum_time - leader;
+    let giriDietro = 0;
+    for (const k in leaderAiGiri) if (+k>L && c.cum_time>leaderAiGiri[k]) giriDietro = +k-L;
+    let et, cls;
+    if (giriDietro>=1) { et = `+${giriDietro} giro${giriDietro>1?'i':''}`; cls='lapped'; }
+    else if (i===0) { et = '—'; cls='lead'; }
+    else { et = `+${gap.toFixed(1)}s`; cls=''; }
+    return { pos:i+1, drv, team:c.team, et, cls, leader:i===0, state:'run' };
+  });
+  // in coda: chi NON e' in pista a questo giro. Tre stati distinti, nessuno sparisce.
+  const inGara = new Set(ordine.map(([d])=>d));
+  const teamOf = {}; for (const lp of race.laps) for (const [d,c] of Object.entries(lp.cars)) teamOf[d]=c.team;
+  const tutti = new Set([...race.drivers, ...gridGara]);  // griglia inclusa: chi era schierato non sparisce
+  const fuori = [...tutti].filter(d => !inGara.has(d));
+  const stateRank = { doppiato:0, RIT:1, NP:2, ghost:3 };
+  const coda = fuori.map(d => {
+    const t = esitiGara[d];
+    const np = race.nonParten.has(d);
+    const last = lastLap[d];
+    let label, st;
+    if (t === 'doppiato' && last !== undefined) { label = `arrivato · ${last} giri`; st='doppiato'; }
+    else if (t === 'RIT' && last !== undefined) { label = `ritirato (giro ${last})`; st='RIT'; }
+    else if (np || t === 'NP') { label = 'non partito'; st='NP'; }
+    else if (last !== undefined && last < race.n_laps) { label = `arrivato · ${last} giri`; st='doppiato'; }
+    else { label = 'non partito'; st='ghost'; }
+    return { pos:'', drv:d, team:teamOf[d]||teams[d]||'', et:label, cls:'out', leader:false, state:st, last:last??-1 };
+  }).sort((a,b) => (stateRank[a.state]-stateRank[b.state]) || (b.last-a.last));
+  return rows.concat(coda);
+}
+
+function render(L) {
+  el('lapLabel').textContent = L;
+  const rows = classifica(L);
+  el('grid').innerHTML = rows.map(r => `
+    <div class="row ${r.leader?'leader':''} ${r.state==='doppiato'?'done':''} ${(r.state==='RIT'||r.state==='NP'||r.state==='ghost')?'retired':''}">
+      <span class="pos">${r.pos}</span>
+      <span><span class="drv">${r.drv}</span><span class="team">${r.team||''}</span></span>
+      <span class="gap ${r.cls}">${r.et}</span>
+    </div>`).join('');
+}
+el('gara').addEventListener('change', e => loadGara(e.target.value));
+el('lap').addEventListener('input', e => render(+e.target.value));
+loadManifest();
+</script>
+</body>
+</html>
