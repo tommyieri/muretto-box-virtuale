@@ -168,18 +168,35 @@ function updatePit(){
   el('pitLapLabel').textContent=pitL;
   const present=Object.keys(race.byLap[L]).filter(d=>typeof race.byLap[L][d].cum_time==='number'&&!race.nonParten.has(d));
   const loss=pitloss[race.gara]??22.0;
-  const r=evaluatePit({byLap:race.byLap,nLaps:race.n_laps,pace:race.pace[String(L)],driver:selDrv,freezeLap:L,pitLap:pitL,pitLoss:loss,present});
+  const r=evaluatePit({byLap:race.byLap,nLaps:race.n_laps,pace:race.pace[String(L)],driver:selDrv,freezeLap:L,pitLap:pitL,pitLoss:loss,present,gara:race.gara,laps:race.laps});
   const box=el('pitKv');
   if(!r.ok){ box.innerHTML=`<div class="pitmsg">Non valutabile a questo giro (${r.reason}).</div>`; return; }
   const dav = r.davanti_ho ? `${r.davanti_ho} <span class="g">+${(r.gap_ahead??0).toFixed(1)}s</span>` : '<span class="g">aria pulita</span>';
   const die = r.dietro_esco ? `${r.dietro_esco} <span class="g">+${(r.gap_behind??0).toFixed(1)}s</span>` : '<span class="g">—</span>';
-  const warn = r.giro_neutralizzato ? `<div class="warn">⚠ Giro neutralizzato (SC/VSC): il pit-loss reale sarebbe inferiore. Non modellato.</div>` : '';
+  // --- warm-in reale al rientro (fatto grezzo, nascosto se compound non disponibile) ---
+  const w = r.warmin_rientro || {};
+  let warmRow = '';
+  if (w.compound) {
+    const g0 = (w.penalita_g0 ?? 0);
+    const nota = g0 >= 3 ? 'gomma fredda i primi giri' : 'gomma subito a regime';
+    warmRow = `<div class="kv sep"><span class="k">Warm-in rientro</span><span class="v">+${g0.toFixed(1)}s <span class="sub">(${w.compound}) — ${nota}</span></span></div>`;
+  } else {
+    warmRow = `<div class="kv sep"><span class="k">Warm-in rientro</span><span class="v dim">dato non disponibile</span></div>`;
+  }
+  // --- avviso neutralizzazione ricco (quale finestra, quanto dura) ---
+  const ng = r.neutralizzazione_gara || {};
+  const warnNeutro = ng.finestra_attiva
+    ? `<div class="warn">⚠ Pit in finestra ${ng.tipo} (giri ${ng.finestra[0]}–${ng.finestra[1]}, durata tipica ${ng.durata_tipica} giri): il pit-loss verde qui sovrastima la perdita reale.</div>`
+    : '';
+  const warn = warnNeutro;
+  const _oldwarn_unused = r.giro_neutralizzato ? `<div class="warn">⚠ Giro neutralizzato (SC/VSC): il pit-loss reale sarebbe inferiore. Non modellato.</div>` : '';
   box.innerHTML = warn + `
     <div class="kv"><span class="k">Pit-loss</span><span class="v">+${loss.toFixed(1)} s</span></div>
     <div class="kv"><span class="k">Rientro</span><span class="v">P${r.rientro_pos} <span class="sub">tra i ${r.su_totale} a pari giro</span></span></div>
     <div class="kv"><span class="k">Davanti</span><span class="v">${dav}</span></div>
     <div class="kv"><span class="k">Dietro</span><span class="v">${die}</span></div>
-    <div class="kv sep"><span class="k">Beneficio gomma</span><span class="v dim">non ancora modellato</span></div>`;
+    ${warmRow}
+    <div class="kv"><span class="k">Undercut/Overcut</span><span class="v dim">non ancora modellato (serve degrado)</span></div>`;
 }
 el('gara').addEventListener('change', e=>loadGara(e.target.value));
 el('lap').addEventListener('input', e=>render(+e.target.value));

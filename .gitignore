@@ -2,3 +2,9 @@
 __pycache__/
 *.pyc
 .DS_Store
+diag_*.py
+diag_*.mjs
+patch_*.py
+apply_patch.py
+fix_import.py
+*.bak
