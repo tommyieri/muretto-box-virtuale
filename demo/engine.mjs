@@ -1,11 +1,15 @@
-// Motore demo — funzione pura. Non sa nulla di file/JSON/React.
-// Pace(da tabella) -> Traffic(cap sul treno) -> Advance, per `steps` giri.
-export function simulate({ state, pace, track = 1.0, steps = 5, ZONE = 1.5, STRENGTH = 1.0 }) {
+// Motore demo — funzione pura. Pace(tabella) -> Traffic -> Advance, per `steps` giri.
+// Pit OPZIONALE: se pit=null, comportamento identico al golden (nessun caso senza pit cambia).
+// pit = { driver, lap, loss } -> al giro `lap`, all'Advance, il pilota paga `loss` secondi (rientro dietro).
+// Rivali sempre congelati (Mode A): il pit tocca solo l'auto scelta.
+export function simulate({ state, pace, track = 1.0, steps = 5, freezeLap = 0, pit = null,
+                           ZONE = 1.5, STRENGTH = 1.0 }) {
   const drivers = Object.keys(state);
   const cum = {};
   for (const d of drivers) cum[d] = state[d].cum_time;
 
   for (let s = 0; s < steps; s++) {
+    const curLap = freezeLap + s;
     const pending = {};
     for (const d of drivers) {
       const p = pace[d];
@@ -23,7 +27,10 @@ export function simulate({ state, pace, track = 1.0, steps = 5, ZONE = 1.5, STRE
       }
     }
     for (const d of drivers) {
-      if (d in eff && cum[d] !== null && cum[d] !== undefined) cum[d] = cum[d] + eff[d];
+      if (d in eff && cum[d] !== null && cum[d] !== undefined) {
+        cum[d] = cum[d] + eff[d];
+        if (pit && d === pit.driver && curLap === pit.lap) cum[d] += pit.loss; // iniezione pit
+      }
     }
   }
   return cum;
