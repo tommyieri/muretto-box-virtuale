@@ -1,0 +1,7 @@
+compound,giro_stint,warmin_s_pesato,n_stint_storici
+SOFT,0,0.091,224
+SOFT,1,0.177,233
+MEDIUM,0,0.333,870
+MEDIUM,1,0.153,883
+HARD,0,-0.162,846
+HARD,1,-0.055,913

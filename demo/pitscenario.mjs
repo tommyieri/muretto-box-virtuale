@@ -1,14 +1,6 @@
 import { simulate } from './engine.mjs';
-import WARMIN from './warmin.json' with { type: 'json' };
 import NEUTRAL from './neutralizzazione.json' with { type: 'json' };
 // --- helper additivi: leggono FATTI GREZZI, non modificano il calcolo del rientro ---
-function warminRientro(compound) {
-  const c = WARMIN[compound];
-  if (!c) return { compound: compound||null, penalita_g0:null, penalita_g1:null,
-    nota:'warm-in non disponibile per questo compound' };
-  return { compound, penalita_g0: c['0'].w, penalita_g1: c['1'].w,
-    nota:'media 2026, alta variabilità (disp≥media su gomma fredda), non condizionata a pista/temperatura' };
-}
 function neutralizzazioneGara(gara, pitLap) {
   const g = NEUTRAL[gara];
   if (!g) return { finestra_attiva:false, tipo:null, nota:'nessun dato neutralizzazione per questa gara' };
@@ -50,22 +42,11 @@ export function evaluatePit({ byLap, nLaps, pace, driver, freezeLap, pitLap, pit
   const me = ord[idx][1];
   const ahead = idx>0?ord[idx-1]:null, behind = idx<ord.length-1?ord[idx+1]:null;
   const gapA = ahead?(me-ahead[1]):null, gapB = behind?(behind[1]-me):null;
-  // compound al rientro: giro dopo il pit da 'laps' grezzo, se disponibile; mai inventato
-  let compoundRientro = null;
-  if (Array.isArray(laps)) {
-    const post = laps.find(x => x && x.lap === pitLap+1);
-    if (post && post.cars && post.cars[driver]) compoundRientro = post.cars[driver].compound || null;
-    if (compoundRientro == null) {
-      const atPit = laps.find(x => x && x.lap === pitLap);
-      if (atPit && atPit.cars && atPit.cars[driver]) compoundRientro = atPit.cars[driver].compound || null;
-    }
-  }
   return { ok:true, rientro_pos:idx+1, su_totale:ord.length,
     davanti_ho:ahead?ahead[0]:null, gap_ahead:gapA, dietro_esco:behind?behind[0]:null, gap_behind:gapB,
     // campi che richiedono DEGRADO / difficolta-sorpasso: dichiarati, non calcolati
     giro_neutralizzato:giroNeutralizzato,
     aria_libera:null, perdita_primi3:null, undercut:null, overcut:null, delta_strategia:null, pit_exit_offset:null,
     // --- FATTI GREZZI ADDITIVI (non toccano rientro_pos/davanti/dietro) ---
-    warmin_rientro: warminRientro(compoundRientro),
     neutralizzazione_gara: neutralizzazioneGara(gara, pitLap) };
 }

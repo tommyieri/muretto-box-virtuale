@@ -173,16 +173,7 @@ function updatePit(){
   if(!r.ok){ box.innerHTML=`<div class="pitmsg">Non valutabile a questo giro (${r.reason}).</div>`; return; }
   const dav = r.davanti_ho ? `${r.davanti_ho} <span class="g">+${(r.gap_ahead??0).toFixed(1)}s</span>` : '<span class="g">aria pulita</span>';
   const die = r.dietro_esco ? `${r.dietro_esco} <span class="g">+${(r.gap_behind??0).toFixed(1)}s</span>` : '<span class="g">—</span>';
-  // --- warm-in reale al rientro (fatto grezzo, nascosto se compound non disponibile) ---
-  const w = r.warmin_rientro || {};
-  let warmRow = '';
-  if (w.compound) {
-    const g0 = (w.penalita_g0 ?? 0);
-    const nota = g0 >= 3 ? 'gomma fredda i primi giri' : 'gomma subito a regime';
-    warmRow = `<div class="kv sep"><span class="k">Warm-in rientro</span><span class="v">+${g0.toFixed(1)}s <span class="sub">(${w.compound}) — ${nota}</span></span></div>`;
-  } else {
-    warmRow = `<div class="kv sep"><span class="k">Warm-in rientro</span><span class="v dim">dato non disponibile</span></div>`;
-  }
+  const warmRow='';
   // --- avviso neutralizzazione ricco (quale finestra, quanto dura) ---
   const ng = r.neutralizzazione_gara || {};
   const warnNeutro = ng.finestra_attiva
@@ -195,7 +186,6 @@ function updatePit(){
     <div class="kv"><span class="k">Rientro</span><span class="v">P${r.rientro_pos} <span class="sub">tra i ${r.su_totale} a pari giro</span></span></div>
     <div class="kv"><span class="k">Davanti</span><span class="v">${dav}</span></div>
     <div class="kv"><span class="k">Dietro</span><span class="v">${die}</span></div>
-    ${warmRow}
     <div class="kv"><span class="k">Undercut/Overcut</span><span class="v dim">non ancora modellato (serve degrado)</span></div>`;
 }
 el('gara').addEventListener('change', e=>loadGara(e.target.value));

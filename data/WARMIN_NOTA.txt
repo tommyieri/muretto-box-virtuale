@@ -1,0 +1,10 @@
+WARM-IN GOMMA — nota tecnica (misurato, NON usato nella UI)
+Misurato su 3 stagioni consecutive (2023-2025, TracingInsights-Archive) + 2026,
+~2000 stint di gara a secco, giri verdi, gomma fresh, out-lap escluso, fuel-corrected (0.03 s/kg).
+Metodo: delta del primo giro lanciato (life=2) vs baseline caldo dello stesso stint (life 4-6).
+RISULTATO: SOFT/MEDIUM +0.2/0.4s al primo giro; HARD ~0 (leggermente negativo). Coerente su tutte le stagioni.
+VERDETTO: trascurabile ai fini della decisione di pit (pit-loss e' 20+ s). Conservato come prior nel motore
+(data/warmin_prior.csv) per futuro degrado/undercut; NON mostrato nel pannello per la regola
+'la UI mostra solo cio' che cambia una decisione'.
+SMASCHERATO: il precedente warmin_model_2026.csv (+5.6s) era un artefatto: includeva l'out-lap (pit-lane)
+scambiato per primo giro lanciato. Archiviato.
