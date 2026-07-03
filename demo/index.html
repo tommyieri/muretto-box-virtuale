@@ -30,6 +30,26 @@
   .row.done { opacity:0.72; }
   .row.retired { opacity:0.42; }
   .row.retired .gap.out { color:var(--dim); font-size:12px; }
+
+  /* pit-panel */
+  .row.sel { background:rgba(78,163,255,0.16); outline:1px solid var(--accent); }
+  .row.selectable { cursor:pointer; }
+  .row.selectable:hover { background:rgba(255,255,255,0.04); }
+  .pit { margin-top:18px; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px; }
+  .pit.hidden { display:none; }
+  .pit h3 { margin:0 0 12px; font-size:14px; }
+  .pit .pitlap { display:flex; gap:10px; align-items:center; margin-bottom:14px; font-size:13px; color:var(--dim); }
+  .pit .pitlap input { flex:1; accent-color:var(--accent); }
+  .kv { display:flex; justify-content:space-between; align-items:baseline; padding:7px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
+  .kv.sep { border-bottom:none; margin-top:4px; }
+  .kv .k { color:var(--dim); font-size:13px; }
+  .kv .v { font-weight:600; font-variant-numeric:tabular-nums; }
+  .kv .v .g { color:var(--accent); font-weight:600; }
+  .kv .v .sub { color:var(--dim); font-weight:400; font-size:12px; }
+  .kv .v.dim { color:var(--dim); font-weight:400; font-style:italic; }
+  .pit .warn { background:rgba(255,180,80,0.12); border:1px solid rgba(255,180,80,0.4); color:#ffb450; border-radius:8px; padding:8px 10px; font-size:12.5px; margin-bottom:12px; }
+  .pit .pitmsg { color:var(--dim); font-size:13px; padding:6px 0; }
+  .pithint { color:var(--dim); font-size:12px; margin-top:10px; }
 </style>
 </head>
 <body>
@@ -44,99 +64,126 @@
     <input type="range" id="lap" min="1" max="1" value="1">
   </div>
   <div class="grid" id="grid"></div>
+  <div class="pit hidden" id="pit">
+    <h3 id="pitTitle">Pit</h3>
+    <div class="pitlap">Pit al giro <b id="pitLapLabel">–</b>
+      <input type="range" id="pitLap" min="2" max="2" value="2"></div>
+    <div id="pitKv"></div>
+    <div class="pithint">Rivali congelati al reale · il motore mostra dove rientri, non se conviene.</div>
+  </div>
 </div>
 <script type="module">
+import { simulate } from './engine.mjs';
+import { evaluatePit } from './pitscenario.mjs';
 const el = id => document.getElementById(id);
-let race = null, lastLap = {}, esiti = {}, esitiGara = {}, grids = {}, gridGara = [], teams = {};
+let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams={}, pitloss={};
+let curLap=1, selDrv=null;
 
 async function loadManifest() {
   const m = await (await fetch('data/manifest.json')).json();
-  try { esiti = await (await fetch('data/esiti.json')).json(); } catch(e) { esiti = {}; }
-  try { grids = await (await fetch('data/grids.json')).json(); } catch(e) { grids = {}; }
-  try { teams = await (await fetch('data/teams.json')).json(); } catch(e) { teams = {}; }
+  try { esiti = await (await fetch('data/esiti.json')).json(); } catch(e){ esiti={}; }
+  try { grids = await (await fetch('data/grids.json')).json(); } catch(e){ grids={}; }
+  try { teams = await (await fetch('data/teams.json')).json(); } catch(e){ teams={}; }
+  try { pitloss = await (await fetch('data/pitloss.json')).json(); } catch(e){ pitloss={}; }
   el('gara').innerHTML = m.map(r => `<option value="${r.gara}">${r.gara}</option>`).join('');
   await loadGara(m[0].gara);
 }
 async function loadGara(gara) {
   race = await (await fetch(`data/${gara}.json`)).json();
-  race.byLap = {};
+  race.gara = gara; race.byLap = {};
   for (const lp of race.laps) race.byLap[lp.lap] = lp.cars;
   lastLap = {};
   for (const lp of race.laps) for (const d in lp.cars) lastLap[d] = lp.lap;
-  esitiGara = esiti[gara] || {};
-  gridGara = grids[gara] || [];                 // {} se la gara non ha esiti (es. Austria)
-  const nonParten = new Set(Object.entries(esitiGara).filter(([d,t]) => t === 'NP').map(([d]) => d));
-  race.nonParten = nonParten;
-  el('lap').min = 1; el('lap').max = race.n_laps; el('lap').value = 1;
+  esitiGara = esiti[gara] || {}; gridGara = grids[gara] || [];
+  const nonP = new Set(Object.entries(esitiGara).filter(([d,t])=>t==='NP').map(([d])=>d));
+  race.nonParten = nonP;
+  el('lap').min=1; el('lap').max=race.n_laps; el('lap').value=1;
   el('lapMax').textContent = race.n_laps;
-  const nNP = nonParten.size;
-  el('meta').textContent = `${race.n_laps} giri · ${race.drivers.length - nNP} partenti`
-     + (esiti[gara] ? '' : ' · esiti non disponibili');
+  el('meta').textContent = `${race.n_laps} giri · ${race.drivers.length - nonP.size} partenti`;
+  selDrv=null; el('pit').classList.add('hidden');
   render(1);
 }
 function classifica(L) {
   const cars = race.byLap[L];
-  let ordine = Object.entries(cars)
-    .filter(([d,c]) => typeof c.cum_time === 'number' && !race.nonParten.has(d));
-  if (L === 1 && gridGara.length) {
-    const rank = {}; gridGara.forEach((d,i) => rank[d] = i);
-    ordine.sort((a,b) => (rank[a[0]] ?? 999) - (rank[b[0]] ?? 999));
-  } else {
-    ordine.sort((a,b) => (a[1].cum_time - b[1].cum_time) || (a[0] < b[0] ? -1 : 1));
+  let ordine = Object.entries(cars).filter(([d,c]) => typeof c.cum_time==='number' && !race.nonParten.has(d));
+  if (L===1 && gridGara.length) {
+    const rank={}; gridGara.forEach((d,i)=>rank[d]=i);
+    ordine.sort((a,b)=>(rank[a[0]]??999)-(rank[b[0]]??999));
+  } else ordine.sort((a,b)=>(a[1].cum_time-b[1].cum_time)||(a[0]<b[0]?-1:1));
+  const leader = ordine.length?ordine[0][1].cum_time:0;
+  const leaderAiGiri={};
+  for (let k=L;k<=Math.min(L+3,race.n_laps);k++) if (race.byLap[k]) {
+    const o=Object.entries(race.byLap[k]).filter(([d,c])=>typeof c.cum_time==='number'&&!race.nonParten.has(d)).sort((a,b)=>a[1].cum_time-b[1].cum_time);
+    if(o.length) leaderAiGiri[k]=o[0][1].cum_time;
   }
-  const leader = ordine.length ? ordine[0][1].cum_time : 0;
-  const leaderAiGiri = {};
-  for (let k=L; k<=Math.min(L+3, race.n_laps); k++) {
-    if (race.byLap[k]) {
-      const o = Object.entries(race.byLap[k])
-        .filter(([d,c]) => typeof c.cum_time==='number' && !race.nonParten.has(d))
-        .sort((a,b)=>a[1].cum_time-b[1].cum_time);
-      if (o.length) leaderAiGiri[k] = o[0][1].cum_time;
-    }
-  }
-  const rows = ordine.map(([drv,c],i) => {
-    const gap = c.cum_time - leader;
-    let giriDietro = 0;
-    for (const k in leaderAiGiri) if (+k>L && c.cum_time>leaderAiGiri[k]) giriDietro = +k-L;
-    let et, cls;
-    if (giriDietro>=1) { et = `+${giriDietro} giro${giriDietro>1?'i':''}`; cls='lapped'; }
-    else if (i===0) { et = '—'; cls='lead'; }
-    else { et = `+${gap.toFixed(1)}s`; cls=''; }
-    return { pos:i+1, drv, team:c.team, et, cls, leader:i===0, state:'run' };
+  const rows = ordine.map(([drv,c],i)=>{
+    const gap=c.cum_time-leader; let gd=0;
+    for(const k in leaderAiGiri) if(+k>L && c.cum_time>leaderAiGiri[k]) gd=+k-L;
+    let et,cls;
+    if(gd>=1){et=`+${gd} giro${gd>1?'i':''}`;cls='lapped';}
+    else if(i===0){et='—';cls='lead';}
+    else{et=`+${gap.toFixed(1)}s`;cls='';}
+    return {pos:i+1,drv,team:c.team,et,cls,leader:i===0,selectable:true};
   });
-  // in coda: chi NON e' in pista a questo giro. Tre stati distinti, nessuno sparisce.
-  const inGara = new Set(ordine.map(([d])=>d));
-  const teamOf = {}; for (const lp of race.laps) for (const [d,c] of Object.entries(lp.cars)) teamOf[d]=c.team;
-  const tutti = new Set([...race.drivers, ...gridGara]);  // griglia inclusa: chi era schierato non sparisce
-  const fuori = [...tutti].filter(d => !inGara.has(d));
-  const stateRank = { doppiato:0, RIT:1, NP:2, ghost:3 };
-  const coda = fuori.map(d => {
-    const t = esitiGara[d];
-    const np = race.nonParten.has(d);
-    const last = lastLap[d];
-    let label, st;
-    if (t === 'doppiato' && last !== undefined) { label = `arrivato · ${last} giri`; st='doppiato'; }
-    else if (t === 'RIT' && last !== undefined) { label = `ritirato (giro ${last})`; st='RIT'; }
-    else if (np || t === 'NP') { label = 'non partito'; st='NP'; }
-    else if (last !== undefined && last < race.n_laps) { label = `arrivato · ${last} giri`; st='doppiato'; }
-    else { label = 'non partito'; st='ghost'; }
-    return { pos:'', drv:d, team:teamOf[d]||teams[d]||'', et:label, cls:'out', leader:false, state:st, last:last??-1 };
-  }).sort((a,b) => (stateRank[a.state]-stateRank[b.state]) || (b.last-a.last));
+  const inGara=new Set(ordine.map(([d])=>d));
+  const teamOf={}; for(const lp of race.laps) for(const [d,c] of Object.entries(lp.cars)) teamOf[d]=c.team;
+  const tutti=new Set([...race.drivers,...gridGara]);
+  const fuori=[...tutti].filter(d=>!inGara.has(d));
+  const sr={doppiato:0,RIT:1,NP:2,ghost:3};
+  const coda=fuori.map(d=>{
+    const t=esitiGara[d], np=race.nonParten.has(d), last=lastLap[d]; let label,st;
+    if(t==='doppiato'&&last!==undefined){label=`arrivato · ${last} giri`;st='doppiato';}
+    else if(t==='RIT'&&last!==undefined){label=`ritirato (giro ${last})`;st='RIT';}
+    else if(np||t==='NP'){label='non partito';st='NP';}
+    else if(last!==undefined&&last<race.n_laps){label=`arrivato · ${last} giri`;st='doppiato';}
+    else{label='non partito';st='ghost';}
+    return {pos:'',drv:d,team:teamOf[d]||teams[d]||'',et:label,st,leader:false,selectable:false,last:last??-1};
+  }).sort((a,b)=>(sr[a.st]-sr[b.st])||(b.last-a.last));
   return rows.concat(coda);
 }
-
 function render(L) {
-  el('lapLabel').textContent = L;
-  const rows = classifica(L);
-  el('grid').innerHTML = rows.map(r => `
-    <div class="row ${r.leader?'leader':''} ${r.state==='doppiato'?'done':''} ${(r.state==='RIT'||r.state==='NP'||r.state==='ghost')?'retired':''}">
+  curLap=L; el('lapLabel').textContent=L;
+  const rows=classifica(L);
+  el('grid').innerHTML = rows.map(r=>`
+    <div class="row ${r.leader?'leader':''} ${(r.st==='RIT'||r.st==='NP'||r.st==='ghost')?'retired':''} ${r.st==='doppiato'?'done':''} ${r.selectable?'selectable':''} ${r.drv===selDrv?'sel':''}" data-drv="${r.selectable?r.drv:''}">
       <span class="pos">${r.pos}</span>
       <span><span class="drv">${r.drv}</span><span class="team">${r.team||''}</span></span>
-      <span class="gap ${r.cls}">${r.et}</span>
+      <span class="gap ${r.cls||''}">${r.et}</span>
     </div>`).join('');
+  el('grid').querySelectorAll('.row.selectable').forEach(row=>{
+    row.onclick=()=>{ selDrv = row.dataset.drv||null; openPit(); render(curLap); };
+  });
+  if (selDrv) updatePit();
 }
-el('gara').addEventListener('change', e => loadGara(e.target.value));
-el('lap').addEventListener('input', e => render(+e.target.value));
+function openPit(){
+  if(!selDrv){ el('pit').classList.add('hidden'); return; }
+  el('pit').classList.remove('hidden');
+  el('pitTitle').textContent = `Pit — ${selDrv}`;
+  const pl=el('pitLap'); pl.min=curLap+1; pl.max=race.n_laps;
+  if(+pl.value<curLap+1||+pl.value>race.n_laps) pl.value=Math.min(curLap+4,race.n_laps);
+  updatePit();
+}
+function updatePit(){
+  const L=curLap, pitL=+el('pitLap').value;
+  el('pitLapLabel').textContent=pitL;
+  const present=Object.keys(race.byLap[L]).filter(d=>typeof race.byLap[L][d].cum_time==='number'&&!race.nonParten.has(d));
+  const loss=pitloss[race.gara]??22.0;
+  const r=evaluatePit({byLap:race.byLap,nLaps:race.n_laps,pace:race.pace[String(L)],driver:selDrv,freezeLap:L,pitLap:pitL,pitLoss:loss,present});
+  const box=el('pitKv');
+  if(!r.ok){ box.innerHTML=`<div class="pitmsg">Non valutabile a questo giro (${r.reason}).</div>`; return; }
+  const dav = r.davanti_ho ? `${r.davanti_ho} <span class="g">+${(r.gap_ahead??0).toFixed(1)}s</span>` : '<span class="g">aria pulita</span>';
+  const die = r.dietro_esco ? `${r.dietro_esco} <span class="g">+${(r.gap_behind??0).toFixed(1)}s</span>` : '<span class="g">—</span>';
+  const warn = r.giro_neutralizzato ? `<div class="warn">⚠ Giro neutralizzato (SC/VSC): il pit-loss reale sarebbe inferiore. Non modellato.</div>` : '';
+  box.innerHTML = warn + `
+    <div class="kv"><span class="k">Pit-loss</span><span class="v">+${loss.toFixed(1)} s</span></div>
+    <div class="kv"><span class="k">Rientro</span><span class="v">P${r.rientro_pos} <span class="sub">tra i ${r.su_totale} a pari giro</span></span></div>
+    <div class="kv"><span class="k">Davanti</span><span class="v">${dav}</span></div>
+    <div class="kv"><span class="k">Dietro</span><span class="v">${die}</span></div>
+    <div class="kv sep"><span class="k">Beneficio gomma</span><span class="v dim">non ancora modellato</span></div>`;
+}
+el('gara').addEventListener('change', e=>loadGara(e.target.value));
+el('lap').addEventListener('input', e=>render(+e.target.value));
+el('pitLap').addEventListener('input', updatePit);
 loadManifest();
 </script>
 </body>
