@@ -8,3 +8,9 @@ patch_*.py
 apply_patch.py
 fix_import.py
 *.bak
+*.bak2
+*.pkl
+*.tmp
+*~
+demo/_backup_preSC/
+demo/data/ref_traffic_py.json
