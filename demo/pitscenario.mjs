@@ -49,8 +49,10 @@ export function evaluatePit({ byLap, nLaps, pace, driver, freezeLap, pitLap, pit
   // si ricompatta) di grandezza nota nel segno ma ignota nel valore. Coerente col precedente
   // aria_libera/traffico: null onesto, non numero-biased con cerotto testuale.
   // Restano: nomi davanti/dietro, posizione di rientro, ordine (meno biased dei secondi).
+  // Scatta su finestra di gara O flag per-auto del pilota al giro del pit:
+  // metodo e definizione della finestra in data/NEUTRALIZZAZIONE_NOTA.txt (fix C1).
   const ng = neutralizzazioneGara(gara, pitLap);
-  const sotto_neutralizzazione = ng.finestra_attiva === true;
+  const sotto_neutralizzazione = ng.finestra_attiva === true || giroNeutralizzato;
   const gap_ahead_out  = sotto_neutralizzazione ? null : gapA;
   const gap_behind_out = sotto_neutralizzazione ? null : gapB;
 
@@ -58,7 +60,7 @@ export function evaluatePit({ byLap, nLaps, pace, driver, freezeLap, pitLap, pit
     davanti_ho:ahead?ahead[0]:null, gap_ahead:gap_ahead_out, dietro_esco:behind?behind[0]:null, gap_behind:gap_behind_out,
     // gap soppressi sotto SC/VSC: flag esplicito perché la UI sappia distinguere "nessun rivale" da "non quantificabile"
     sotto_neutralizzazione,
-    nota_gap: sotto_neutralizzazione ? 'gap non quantificabile sotto '+ng.tipo+' — il pit-loss verde sovrastima la perdita reale' : null,
+    nota_gap: sotto_neutralizzazione ? 'gap non quantificabile sotto '+(ng.tipo ?? 'neutralizzazione')+' — il pit-loss verde sovrastima la perdita reale' : null,
     // campi che richiedono DEGRADO / difficolta-sorpasso: dichiarati, non calcolati
     giro_neutralizzato:giroNeutralizzato,
     aria_libera:null, perdita_primi3:null, undercut:null, overcut:null, delta_strategia:null, pit_exit_offset:null,

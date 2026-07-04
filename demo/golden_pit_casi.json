@@ -1,5 +1,13 @@
 [
   {"gara":"Monaco","driver":"LEC","freezeLap":57,"pitLap":60},
   {"gara":"Monaco","driver":"SAI","freezeLap":57,"pitLap":62},
-  {"gara":"Monaco","driver":"HAM","freezeLap":50,"pitLap":55}
+  {"gara":"Monaco","driver":"HAM","freezeLap":50,"pitLap":55},
+  {"gara":"Austria","driver":"VER","freezeLap":23,"pitLap":25},
+  {"gara":"Austria","driver":"VER","freezeLap":30,"pitLap":34},
+  {"gara":"Australia","driver":"VER","freezeLap":30,"pitLap":33},
+  {"gara":"Cina","driver":"HAM","freezeLap":30,"pitLap":34},
+  {"gara":"Giappone","driver":"VER","freezeLap":19,"pitLap":23},
+  {"gara":"Miami","driver":"PIA","freezeLap":8,"pitLap":10},
+  {"gara":"Canada","driver":"VER","freezeLap":41,"pitLap":43},
+  {"gara":"Spagna","driver":"HAM","freezeLap":58,"pitLap":62}
 ]

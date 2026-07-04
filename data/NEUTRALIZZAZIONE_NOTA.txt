@@ -1,0 +1,34 @@
+NEUTRALIZZAZIONE SC/VSC — nota di metodo (hotfix C1, 2026-07-05)
+
+FONTE: flag di status per-auto-per-giro nei raw data/ti_cache/*.json (TracingInsights),
+gli stessi da cui export_demo.py genera i JSON demo. Codici: '4' = SC, '6' = VSC
+(sottostringa dello status, come in engine._neut). Nessuna fonte esterna.
+
+DEFINIZIONE DICHIARATA ("giro neutralizzato per la gara"):
+  un giro L conta come neutralizzato se ALMENO 2 AUTO hanno flag SC/VSC a L.
+  Percheé' 2: i flag sono per-auto (sotto SC le auto tagliano il traguardo in momenti
+  diversi, quindi i confini differiscono di 1-2 giri tra auto); 1 sola auto flaggata
+  e' indistinguibile da un artefatto (es. Spagna g35, g51-53: sempre 1 auto),
+  mentre 2+ auto (>=10% della griglia) indicano una neutralizzazione reale che le
+  finestre a maggioranza (>=50%) perderebbero sulle VSC brevi (es. Canada g44-46,
+  max 8/16 auto). Scelta conservativa: meglio sopprimere un gap valido in un giro
+  di transizione che mostrare un gap biased.
+
+FINESTRE: run massimali di giri neutralizzati consecutivi.
+TIPO: SC o VSC secondo il codice prevalente tra i flag della finestra (pareggio -> SC).
+DURATA TIPICA: media delle durate delle finestre dello stesso tipo nella gara.
+
+SOPPRESSIONE (demo/pitscenario.mjs): i gap in secondi diventano null se il pit cade
+in una finestra di gara OPPURE se il pilota scelto ha il proprio flag neutralized
+al giro del pit (fatto grezzo per-decisione: copre chi attraversa la neutralizzazione
+fuori dalla finestra aggregata).
+
+GENERATORE: gen_neutralizzazione.py -> demo/neutralizzazione.json. Rigenerare a ogni
+nuova gara aggiunta a ti_cache. Regola post-warm-in: nessun parametro entra in
+produzione senza generatore committato e metodo dichiarato.
+
+STORIA: il precedente neutralizzazione.json (7 gare) derivava da
+neutralization_model_2026.csv, senza generatore nel repo e senza definizione
+dichiarata: mancava l'Austria (SC ai giri 24-26 e 51-53) e le finestre non seguivano
+un criterio unico. Bug C1 dell'analisi 2026-07-05: gap biased mostrati senza warning
+per pit Austria nei giri neutralizzati.
