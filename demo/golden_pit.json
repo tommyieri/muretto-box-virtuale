@@ -1,0 +1,47 @@
+[
+  {
+    "caso": "Monaco:LEC:fz57:pit60",
+    "ok": true,
+    "reason": null,
+    "rientro_pos": 3,
+    "su_totale": 3,
+    "davanti_ho": "HAM",
+    "gap_ahead": null,
+    "dietro_esco": null,
+    "gap_behind": null,
+    "sotto_neutralizzazione": true,
+    "giro_neutralizzato": true,
+    "finestra_attiva": true,
+    "tipo_neutro": "SC"
+  },
+  {
+    "caso": "Monaco:SAI:fz57:pit62",
+    "ok": true,
+    "reason": null,
+    "rientro_pos": 7,
+    "su_totale": 9,
+    "davanti_ho": "ALO",
+    "gap_ahead": null,
+    "dietro_esco": "PER",
+    "gap_behind": null,
+    "sotto_neutralizzazione": true,
+    "giro_neutralizzato": true,
+    "finestra_attiva": true,
+    "tipo_neutro": "SC"
+  },
+  {
+    "caso": "Monaco:HAM:fz50:pit55",
+    "ok": true,
+    "reason": null,
+    "rientro_pos": 3,
+    "su_totale": 4,
+    "davanti_ho": "LEC",
+    "gap_ahead": 23.967230769233538,
+    "dietro_esco": "RUS",
+    "gap_behind": 28.205076923077286,
+    "sotto_neutralizzazione": false,
+    "giro_neutralizzato": false,
+    "finestra_attiva": false,
+    "tipo_neutro": null
+  }
+]

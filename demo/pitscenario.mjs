@@ -42,11 +42,26 @@ export function evaluatePit({ byLap, nLaps, pace, driver, freezeLap, pitLap, pit
   const me = ord[idx][1];
   const ahead = idx>0?ord[idx-1]:null, behind = idx<ord.length-1?ord[idx+1]:null;
   const gapA = ahead?(me-ahead[1]):null, gapB = behind?(behind[1]-me):null;
+
+  // --- SOPPRESSIONE GAP SOTTO NEUTRALIZZAZIONE ---
+  // Se il pit cade in una finestra SC/VSC reale, i gap in secondi sono affetti da DUE bias
+  // che spingono nella stessa direzione (pit-loss verde sovrastima la perdita reale; il gruppo
+  // si ricompatta) di grandezza nota nel segno ma ignota nel valore. Coerente col precedente
+  // aria_libera/traffico: null onesto, non numero-biased con cerotto testuale.
+  // Restano: nomi davanti/dietro, posizione di rientro, ordine (meno biased dei secondi).
+  const ng = neutralizzazioneGara(gara, pitLap);
+  const sotto_neutralizzazione = ng.finestra_attiva === true;
+  const gap_ahead_out  = sotto_neutralizzazione ? null : gapA;
+  const gap_behind_out = sotto_neutralizzazione ? null : gapB;
+
   return { ok:true, rientro_pos:idx+1, su_totale:ord.length,
-    davanti_ho:ahead?ahead[0]:null, gap_ahead:gapA, dietro_esco:behind?behind[0]:null, gap_behind:gapB,
+    davanti_ho:ahead?ahead[0]:null, gap_ahead:gap_ahead_out, dietro_esco:behind?behind[0]:null, gap_behind:gap_behind_out,
+    // gap soppressi sotto SC/VSC: flag esplicito perché la UI sappia distinguere "nessun rivale" da "non quantificabile"
+    sotto_neutralizzazione,
+    nota_gap: sotto_neutralizzazione ? 'gap non quantificabile sotto '+ng.tipo+' — il pit-loss verde sovrastima la perdita reale' : null,
     // campi che richiedono DEGRADO / difficolta-sorpasso: dichiarati, non calcolati
     giro_neutralizzato:giroNeutralizzato,
     aria_libera:null, perdita_primi3:null, undercut:null, overcut:null, delta_strategia:null, pit_exit_offset:null,
     // --- FATTI GREZZI ADDITIVI (non toccano rientro_pos/davanti/dietro) ---
-    neutralizzazione_gara: neutralizzazioneGara(gara, pitLap) };
+    neutralizzazione_gara: ng };
 }
