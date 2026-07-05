@@ -1,0 +1,88 @@
+DEGRADO GOMMA — Fase 2.1: test di identificabilita' (2026-07-06)
+Script: test_identificabilita_degrado.py (principale), test_differenziale_parigiro.py
+(ripiego/controprova), drycheck_2026.py, ingest_ti2026.py, ingest_mirror_storico.py.
+
+== DATI USATI E SCARTATI ==
+Inventario TracingInsights/2026 (raw URL): 9 gare online (le 8 note + British), 4 Sprint
+(Cina, Miami, Canada, British) mai ingerite prima. Nessuna gara intermedia mancante.
+Dry-check MISURATO per sessione (compound INT/WET, flag pioggia wR per giro, completezza):
+  - 12/13 sessioni OK, tutte complete (>=18 piloti, maxlap plausibile);
+  - ESCLUSA Canada Race: partenza su pista umida — 7 piloti su INTERMEDIATE ai giri 1-3
+    (~14 s piu' lenti degli slick a pari giro), wR=0% in gara. L'asciugamento iniziale
+    contamina esattamente la separazione evoluzione/degrado. La Canada Sprint (asciutta) resta.
+GARE NEL TEST: 8 (Australia, Cina, Giappone, Miami, Monaco, Spagna, Austria, British).
+Sprint: solo verifica incrociata (pochi pit -> poca identificazione attesa, confermato).
+
+== DISEGNO ==
+Per gara: tempo_fc = alpha(pilota) + delta_compound + beta*giro + gamma_compound*life.
+Base per PILOTA-GARA, mai per stint (il FE per stint assorbirebbe l'offset life-giro e
+distruggerebbe l'identificazione). delta_compound (rif. MEDIUM) separa il livello di passo
+della mescola dalla pendenza. Fuel: 0.03 s/kg x 70 kg lineare nel giro -> incide su beta,
+non su gamma (nota: il kernel usa 3/70 s/kg ~ 0.043; discrepanza da armonizzare a parte,
+irrilevante per gamma). Filtri dichiarati F1-F7 (verdi, no in/out-lap, slick, giro>=2,
+life>=3, outlier 1.07x mediana stint — aggressivita' verificata a 1.05/1.07/1.10: scarta
+0-1 giri/gara, mai concentrati). Assunzione dichiarata: base pilota stabile tra stint della
+stessa gara (danni/mappature non modellati). Guardrail: compound dentro solo con >=3 stint
+e >=30 giri; controllo di rango esplicito (niente scarti silenziosi di colonne).
+Inferenza: OLS, SE cluster-robust per (pilota,stint), IC95. Robustezza: f(giro) quadratica.
+
+== CRITERI GO (dichiarati prima dei risultati) ==
+G1 gamma_MEDIUM e gamma_HARD con IC95>0 in >=5 gare ciascuno (SOFT informativo);
+G2 ordinamento SOFT>=MEDIUM>=HARD dove co-identificati (inversione con IC disgiunti = forte);
+G3 stabilita' di segno tra gare; G4 mediana cross-gara entro fattore 3 dello storico
+stint_gold 2023-25 (S .072-.091, M .047-.071, H .039-.059), attesa >= dello storico:
+lo storico e' un PAVIMENTO, non un tetto — l'evoluzione pista contamina le slope per-stint
+verso il basso (correzione motivata rispetto al brief della sessione).
+
+== RISULTATI (gamma s/giro, IC95; * = esclude 0) ==
+gara       SOFT                    MEDIUM                  HARD
+Australia  +.057 [+.034,+.079]*    -.012 [-.039,+.015]     +.042 [+.031,+.053]*
+Cina       n.id. (2 stint)         +.141 [+.107,+.175]*    +.024 [+.012,+.036]*
+Giappone   n.id. (0 stint)         +.051 [+.031,+.071]*    +.036 [+.017,+.056]*
+Miami      +.004 [-.048,+.056]     +.013 [-.012,+.037]     +.012 [-.010,+.035]
+Monaco     +.022 [+.003,+.042]*    +.036 [+.020,+.053]*    +.038 [-.016,+.092]
+Spagna     +.217 [+.177,+.257]*    +.178 [+.154,+.203]*    +.129 [+.113,+.145]*
+Austria    +.083 [+.052,+.114]*    +.084 [+.074,+.094]*    +.088 [+.076,+.101]*
+British    n.id. (3 stint,13 giri) +.052 [+.037,+.067]*    +.063 [+.048,+.079]*
+Variante quadratica: gamma stabili (max spostamento ~.02, mai cambio segno significativo).
+Sprint (controprova guardrail): Cina/British rank-deficienti come atteso (niente pit);
+Miami-SPR MEDIUM +.097*.
+
+G1: PASS (MEDIUM 6/8, HARD 6/8 significativi).
+G2: FAIL — 8/18 confronti rispettati. UNA inversione forte (Australia MEDIUM<HARD a IC
+    disgiunti; gamma_MEDIUM ~0, mescola usata quasi solo in avvio su pista verde: la
+    quadratica la sposta da -.012 a -.001, coerente con evoluzione front-loaded non
+    catturata dal beta lineare). Le altre violazioni sono entro il rumore (es. Austria
+    .083/.084/.088: statisticamente pari).
+G3: PASS (tutti i gamma significativi positivi, nessun segno opposto).
+G4: PASS su tutti (mediane S +.057, M +.051, H +.040 — ordine di grandezza dello storico).
+
+== RAMO DIFFERENZIALE A PARI GIRO (controprova indipendente) ==
+Identificabile quasi solo per HARD (coppie stesso-compound con Dlife variabile richiedono
+pit HARD->HARD con l'altro che allunga): 3 gare. Conteggio coppie utilizzabili/totali:
+Australia 11/102, Spagna 48/106, Austria 34/85; ZERO per SOFT/MEDIUM ovunque e per tutte
+le mescole a Cina/Giappone/Miami/Monaco/British. Dove misura, CONCORDA col modello FE:
+Australia +.029 vs +.042 | Spagna +.107 vs +.129 | Austria +.072 vs +.088
+(stesso segno, stessa gerarchia cross-gara Spagna>>Austria>Australia, ~15-25% sotto il FE:
+compatibile con residuo di evoluzione non-lineare nel FE o gestione gomma nelle coppie).
+Il differenziale NON puo' sostituire il modello FE (troppo povero), ma lo valida.
+
+== VERDETTO ==
+FORMALE: NO-GO secondo i criteri come dichiarati (G2 fallito). Non ammorbidito.
+DIAGNOSI: cio' che fallisce non e' l'identificabilita' (G1+G3+G4 netti, controprova
+indipendente concorde), ma l'ASSUNZIONE incorporata in G2: l'ordinamento globale
+S>=M>=H per nome-mescola non esiste nei dati, perche' le allocazioni Pirelli cambiano
+per circuito e il degrado reale e' una proprieta' della coppia (gara, mescola):
+a Spielberg le tre mescole degradano uguale (~.085), a Barcellona tutto degrada molto
+(.13-.22), a Miami quasi nulla e' distinguibile da zero.
+DECISIONE CONSEGUENTE (proposta al PO, da ratificare):
+ 1. i quattro null (undercut/overcut/delta_strategia/conviene) RESTANO null finche' il
+    PO non ridichiara i criteri: G2 andrebbe sostituito da "nessuna inversione forte
+    within-gara replicata" — e l'anomalia Australia-MEDIUM va spiegata prima (candidata:
+    forma di evoluzione front-loaded; test: f(giro) spline/log in sessione dedicata);
+ 2. se ratificato, il modello di Fase 2.2 e' per-(gara, compound) con IC, SENZA legge
+    di ordinamento globale, con il differenziale HARD come vincolo di validazione;
+ 3. il fitting del prior storico (mirror data/ti_archive/, 3 stagioni, ~28 MB) e' la
+    sessione successiva; nessun parametro di degrado entra nel prodotto da questa sessione.
+DIVIETI CONFERMATI: nessun numero del documento terzi (warm-up 0.8/1.2/1.8, pit-loss
+42%/65% SC/VSC, moltiplicatori termici/aero) e' entrato in alcuno script.
