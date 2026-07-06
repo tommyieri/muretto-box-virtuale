@@ -1,6 +1,8 @@
-"""gen_neutralizzazione.py — genera demo/neutralizzazione.json dai flag per-auto dei raw ti_cache.
+"""gen_neutralizzazione.py — genera demo/neutralizzazione.json dai flag per-auto dei raw.
 
-Fonte di verita': data/ti_cache/*.json (gli stessi raw da cui nascono i JSON demo).
+Fonte di verita': i raw TracingInsights per gara (percorsi in data/gare_registro.json —
+il registro e' il superset di engine.FILES: il kernel resta congelato, le gare nuove
+entrano dal registro via pipeline_gara.py).
 Definizione (vedi data/NEUTRALIZZAZIONE_NOTA.txt):
   - un giro L e' "neutralizzato per la gara" se >=2 auto hanno status SC ('4') o VSC ('6') a L;
   - finestra = run massimale di giri neutralizzati consecutivi;
@@ -8,10 +10,9 @@ Definizione (vedi data/NEUTRALIZZAZIONE_NOTA.txt):
   - durata_sc / durata_vsc = durata media delle finestre di quel tipo (giri).
 Schema di output identico al precedente: {gara: {sc, vsc, durata_sc, durata_vsc}}.
 """
-import os, sys, json
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "engine"))
-from engine import FILES  # mapping gara demo -> file ti_cache; nessun download: solo il dict
+import os, json
 
+REGISTRO = os.path.join('data', 'gare_registro.json')
 SOGLIA = 2  # auto flaggate perche' il giro conti per la gara (esclude artefatti mono-auto)
 
 def finestre(giri):
@@ -22,9 +23,8 @@ def finestre(giri):
         else: out.append([g, g])
     return out
 
-out = {}
-for gara, fname in FILES.items():
-    d = json.load(open(os.path.join("data", "ti_cache", fname + ".json")))
+def genera_gara(raw_path):
+    d = json.load(open(raw_path))
     n = len(d["lap"])
     sc_cnt, vsc_cnt = {}, {}  # lap -> n auto flaggate
     for i in range(n):
@@ -41,10 +41,20 @@ for gara, fname in FILES.items():
         n_vsc = sum(vsc_cnt.get(L, 0) for L in range(a, b + 1))
         (sc_fin if n_sc >= n_vsc else vsc_fin).append([a, b])
     dur = lambda fs: round(sum(b - a + 1 for a, b in fs) / len(fs), 1) if fs else 0.0
-    out[gara] = {"sc": sc_fin, "vsc": vsc_fin,
-                 "durata_sc": dur(sc_fin), "durata_vsc": dur(vsc_fin)}
-    print(f"{gara:10s} sc={sc_fin} vsc={vsc_fin}")
+    return {"sc": sc_fin, "vsc": vsc_fin, "durata_sc": dur(sc_fin), "durata_vsc": dur(vsc_fin)}
 
-with open(os.path.join("demo", "neutralizzazione.json"), "w") as f:
-    json.dump(out, f, indent=2)
-print(f"\ndemo/neutralizzazione.json scritto: {len(out)} gare (soglia >={SOGLIA} auto)")
+def genera(gare):
+    """gare: {nome_demo: percorso_raw} -> dict completo per neutralizzazione.json"""
+    return {gara: genera_gara(raw) for gara, raw in gare.items()}
+
+def gare_da_registro():
+    reg = json.load(open(REGISTRO))
+    return {g: v['raw'] for g, v in reg.items()}
+
+if __name__ == '__main__':
+    out = genera(gare_da_registro())
+    for gara, v in out.items():
+        print(f"{gara:14s} sc={v['sc']} vsc={v['vsc']}")
+    with open(os.path.join("demo", "neutralizzazione.json"), "w") as f:
+        json.dump(out, f, indent=2)
+    print(f"\ndemo/neutralizzazione.json scritto: {len(out)} gare (soglia >={SOGLIA} auto)")

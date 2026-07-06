@@ -38,5 +38,10 @@
     "gara": "Austria",
     "n_laps": 71,
     "n_drivers": 22
+  },
+  {
+    "gara": "Gran Bretagna",
+    "n_laps": 52,
+    "n_drivers": 22
   }
 ]
