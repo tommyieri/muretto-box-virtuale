@@ -86,3 +86,55 @@ DECISIONE CONSEGUENTE (proposta al PO, da ratificare):
     sessione successiva; nessun parametro di degrado entra nel prodotto da questa sessione.
 DIVIETI CONFERMATI: nessun numero del documento terzi (warm-up 0.8/1.2/1.8, pit-loss
 42%/65% SC/VSC, moltiplicatori termici/aero) e' entrato in alcuno script.
+
+== APPEND 2026-07-06 — SESSIONE-PONTE: LA FORMA DI f(giro) (test_forma_fgiro.py) ==
+DOMANDA UNICA: una f(giro) front-loaded chiude l'anomalia Australia-MEDIUM senza
+destabilizzare gli altri gamma?
+
+FORME CONFRONTATE: lineare (baseline 2.1) | lin+log (evoluzione saturante) | spline
+lineare a 2 nodi (terzili). CRITERIO DICHIARATO PRIMA: BIC per gara, adozione solo se
+la forma batte il lineare in >=5/8 gare; secondario RMSE leave-one-stint-out; guardia
+IC (allargamento mediano <=1.50x). Verdetto LOCALE se tutti i gamma delle altre 7 gare
+restano nel proprio IC95 lineare; GLOBALE altrimenti.
+
+ESITO CRITERIO: lin+log batte il lineare in 6/8 gare (spline 5/8) -> ADOTTATA lin+log.
+Larghezza IC mediana 1.05x (stabile). RMSE fuori-campione ~invariato (differenze <2%).
+
+ANOMALIA AUSTRALIA-MEDIUM: CHIUSA. gamma_M passa da -0.012 [-.039,+.015] a
++0.016 [-.015,+.048] (hi>=0.047); l'inversione forte M<H sparisce (IC ora sovrapposti,
+HARD +0.034 [+.023,+.046]). Conferma l'ipotesi: evoluzione front-loaded che il beta
+lineare scaricava sul MEDIUM usato in avvio.
+
+VERDETTO: GLOBALE — per un solo caso, British-MEDIUM: +0.052 [+.037,+.067] ->
++0.033 [+.012,+.053], fuori dal proprio IC originale (di poco: 0.0045 sotto il bordo).
+Tutti gli altri 18 gamma restano dentro il proprio IC. La regola dichiarata non ammette
+sconti: i gamma di riferimento della Fase 2.1 vanno ricalcolati con lin+log — e il
+ricalcolo E' la colonna lin+log della tabella prodotta da test_forma_fgiro.py, che
+diventa la tabella di riferimento per la 2.2.
+
+TABELLA DI RIFERIMENTO gamma (lin+log, s/giro, IC95; * = esclude 0):
+gara       SOFT                     MEDIUM                   HARD
+Australia  +.049 [+.029,+.070]*     +.016 [-.015,+.048]      +.034 [+.023,+.046]*
+Cina       n.id.                    +.141 [+.107,+.174]*     +.023 [+.009,+.037]*
+Giappone   n.id.                    +.051 [+.028,+.073]*     +.037 [+.013,+.060]*
+Miami      +.002 [-.053,+.056]      +.026 [-.009,+.061]      +.009 [-.014,+.032]
+Monaco     +.027 [+.005,+.048]*     +.050 [+.030,+.071]*     +.040 [-.011,+.092]
+Spagna     +.196 [+.162,+.230]*     +.169 [+.139,+.198]*     +.132 [+.117,+.147]*
+Austria    +.085 [+.053,+.118]*     +.092 [+.080,+.104]*     +.086 [+.074,+.099]*
+British    n.id.                    +.033 [+.012,+.053]*     +.070 [+.056,+.084]*
+
+CRITERI G SOTTO lin+log (verifica di tenuta, non ri-dichiarazione):
+G1 PASS (MEDIUM 6/8, HARD 6/8 significativi); G3 PASS (tutti positivi); G4 PASS
+(mediane invariate nell'ordine). Nota per il G2' ridichiarato ("nessuna inversione forte
+replicata"): sotto lin+log l'unica inversione forte e' British M<H (IC marginalmente
+disgiunti, .053 vs .056) — NON replicata su altre gare; fisicamente plausibile
+(allocazione: mescola dura in graining a Silverstone). Da tenere d'occhio alla gara 10.
+
+ANNOTAZIONE PER DOPO (fuori scope qui): a Monaco la spline domina il BIC di ~180 punti
+(evoluzione fortemente non-lineare o dinamiche di traffico non modellate); non cambia
+i gamma (dentro gli IC), ma la forma di f(giro) a Monaco merita uno sguardo in 2.2.
+
+CONSEGUENZA SUL GO ALLA 2.2: via libera CONDIZIONATA a (a) adozione di lin+log come
+forma di f(giro) nel modello 2.2, (b) tabella gamma lin+log come riferimento (questa
+nota), (c) ratifica del PO. Nessun parametro entra nel prodotto da questa sessione;
+i quattro null restano null.
