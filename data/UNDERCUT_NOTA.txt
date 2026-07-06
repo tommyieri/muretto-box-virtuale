@@ -1,0 +1,77 @@
+MODELLO UNDERCUT/OVERCUT — Fase 2.2: backtest sugli undercut reali (2026-07-06)
+Script: conta_undercut.py (censimento), modello_undercut.mjs (modello, NON collegato
+alla UI), backtest_undercut.mjs (KPI), data/degrado_gamma_linlog.csv (tabella gamma
+congelata 2.1-bis), data/warmin_prior.csv (warm-in misurato).
+
+== PERCHE' QUESTO MODELLO E' PERICOLOSO ==
+Fa previsioni controfattuali ("se avesse pittato, avrebbe guadagnato?") che nessun dato
+contraddice direttamente. L'unica difesa: KPI dichiarato PRIMA, misurato dove il
+controfattuale E' accaduto — gli undercut realmente tentati.
+
+== FASE A: CENSIMENTO (definizione operativa U1-U7 in conta_undercut.py) ==
+Undercut tentato: A pitta entro 5.0s dietro B; B resta fuori e pitta entro 4 giri;
+niente SC/VSC nella sequenza (finestre >=2 auto + flag individuali); esito misurato
+2 giri dopo il pit di B. Rivale = il piu' vicino davanti (indipendenza dei casi).
+  2026 (8 gare dry, Canada esclusa):  31 casi — 10 riusciti, 21 falliti
+  storico 2023-25 (mirror, Race dry): 375 casi — 125 riusciti, 250 falliti
+GATE (n>=30, minoranza >=8): PASSATO.
+CORREZIONE AL BRIEF (lealta' al dato): la maggioranza NON e' 'riuscito' ma FALLITO
+(67-68%, stabile tra 2026 e storico): 2 undercut su 3 falliscono. Il baseline da
+battere e' "predici sempre fallito".
+
+== KPI (dichiarato prima di scrivere il modello, ratificato dal PO) ==
+G-U1: accuracy totale (n=406) >= baseline 67.2% + 8 punti (>= 75%);
+G-U2: accuracy 2026 (n=31) >= baseline 68% (non-peggioramento; n troppo piccolo per margini);
+G-U3: sui DIFFICILI (gap0 in (1.0, 3.5], banda dichiarata dalla mescolanza di esiti)
+      accuracy >= maggioranza-difficili + 8 punti. Vincere solo sui facili = NO-GO travestito.
+Validazione: modello a ZERO parametri adattati sugli esiti (fisica pura) -> nessun
+training, fuori-campione per costruzione; breakdown per gara riportato.
+
+== IL MODELLO (modello_undercut.mjs) ==
+margine = SUM_{k=1..K}[gammaB*(lifeB_Q-K+k) - gammaA*k] - warmin(comp_A);
+riuscito previsto se margine > gap0. gamma per (gara,compound) dalla tabella lin+log
+2.1-bis; storico = mediane 2026 per compound (fallback dichiarato). Evoluzione pista
+elisa (stesso giro); pit-loss ELISO per costruzione (lo pagano entrambi) -> il debito
+P1 sul pit-loss NON tocca questo modello (toccherebbe delta_strategia).
+Guardrail di dominio: null fuori da gap0 in (0,5], K in [1,4], gamma mancante, SC/VSC.
+
+== RISULTATI ==
+                          accuracy   baseline   soglia    esito
+G-U1 totale (n=406)        72.9%      66.7%     74.7%     FAIL (-1.8 punti dalla soglia)
+G-U2 2026   (n=31)         67.7%      67.7%       --      PASS (ma e' un PAREGGIO ESATTO:
+                                                          sul 2026 il modello non aggiunge nulla)
+G-U3 difficili (n=246)     68.3%      67.1%     75.1%     FAIL (+1.2 punti: rumore)
+     facili    (n=160)     80.0%      66.3%       --      (+13.7: il modello vince SOLO qui)
+Per gara 2026: Monaco 3/3, Gran Bretagna 2/2, Austria 6/8, Spagna 7/11, Miami 2/4,
+Giappone 1/2, Australia 0/1. Fuori dominio: 0.
+
+== VERDETTO: NO-GO. Non ammorbidito. ==
+Il modello e' esattamente il "NO-GO travestito" che il KPI doveva smascherare: batte il
+baseline solo sui casi facili (gap molto piccolo o molto grande), e sui difficili — dove
+starebbe il valore del prodotto — fa +1.2 punti, indistinguibile dal rumore.
+I QUATTRO CAMPI RESTANO NULL: undercut, overcut, delta_strategia, aria_libera.
+
+== DIAGNOSI (per la v2, non per consolazione) ==
+La fisica gomma da sola spiega i casi scontati. Nei difficili dominano fattori NON nel
+modello: (a) il differenziale di passo-base tra A e B (una macchina piu' veloce undercutta
+piu' facile) — MISURABILE: la tabella pace del kernel ce l'ha gia'; (b) il traffico al
+rientro (A guadagna sul degrado ma rientra dietro doppiati/treno DRS) — e' esattamente
+la difficolta'-sorpasso/aria_libera mai misurata; (c) esecuzione in/out-lap. Nota
+d'ordine: lo storico con gamma GREZZE (mediane) fa +6.6 punti sul suo baseline mentre il
+2026 con gamma per-gara fa +0.0 su n=31 — con n cosi' piccolo l'intervallo e' +/-8 punti,
+non e' un paradosso ma un avviso: non sovrainterpretare il 2026.
+
+== DISCIPLINA ANTI AUTO-INGANNO (perche' NON ho iterato una v2 oggi) ==
+Aggiungere il differenziale di passo e rigirare il backtest sugli STESSI 406 esiti fino
+a passare = tarare sul test set: il KPI smetterebbe di proteggerci. La v2 legittima e':
+(1) spec dichiarata prima (margine + delta passo-base dalla tabella pace, coefficiente
+FISSATO dalla fisica o stimato SOLO sullo storico); (2) KPI valutato sui casi NUOVI
+(gare 10+ del 2026, che la pipeline gara porta dentro una alla volta) piu' il 2026
+attuale come secondario. Decisione al PO.
+
+== LIMITI DICHIARATI ==
+- pit-loss: irrilevante per undercut/overcut (si elide); resta P1 e blocca delta_strategia.
+- gamma n.id. (es. SOFT a Cina/Gran Bretagna) -> fallback mediana: piu' grezzo, dichiarato.
+- definizione U1-U7 cattura anche pit "di copertura" non mirati all'undercut: baseline
+  onesto ma rumoroso; una definizione piu' stretta ridurrebbe n sotto il gate.
+- overcut: valutato come lettura duale dell'undercut, non con casi propri.
