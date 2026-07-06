@@ -110,5 +110,25 @@
     ],
     "durata_sc": 0.0,
     "durata_vsc": 3.0
+  },
+  "Gran Bretagna": {
+    "sc": [
+      [
+        46,
+        52
+      ]
+    ],
+    "vsc": [
+      [
+        21,
+        22
+      ],
+      [
+        37,
+        39
+      ]
+    ],
+    "durata_sc": 7.0,
+    "durata_vsc": 2.5
   }
 }

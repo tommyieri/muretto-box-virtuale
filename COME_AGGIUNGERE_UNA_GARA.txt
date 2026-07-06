@@ -1,0 +1,44 @@
+COME AGGIUNGERE UNA GARA ALLA DEMO — istruzioni per il product owner
+(pipeline semi-automatica: lei fa la fatica, tu dai i due OK)
+
+Servono: il Terminale, dentro la cartella del progetto (cd ~/muretto).
+
+PASSO 1 — Scopri cosa c'e' di nuovo
+    python3 pipeline_gara.py scopri
+  Ti dice quali gare sono online su TracingInsights ma non ancora nella demo.
+
+PASSO 2 — Prepara la gara (tutto automatico, la demo NON viene toccata)
+    python3 pipeline_gara.py prepara "<NomeDemo>" "<Cartella TI>" <cid>
+  esempio reale:
+    python3 pipeline_gara.py prepara "Gran Bretagna" "British Grand Prix" silverstone
+  - <NomeDemo>: il nome che vedrai nel menu della demo (convenzione: paese in italiano);
+  - <Cartella TI>: il nome esatto stampato dal passo 1;
+  - <cid>: il codice circuito per il pit-loss — lo trovi nella prima colonna di
+    data/pit_loss_circuito_f1db.csv (es. silverstone, monza, zandvoort).
+  La pipeline scarica, converte e fa i TRE CONTROLLI da sola:
+    completezza (gara intera, non a meta' caricamento), asciutta (il controllo che
+    salvo' la Fase 2.1 dal Canada bagnato), sanita' (il modulo pit funziona sui dati
+    nuovi, soppressione SC/VSC inclusa).
+  Se un controllo fallisce, si FERMA e ti dice perche'. Una gara bagnata non entra
+  in automatico: decidi tu, a mente fredda.
+
+PASSO 3 — Il tuo primo OK: leggi il riepilogo
+  Alla fine del passo 2 compare il RIEPILOGO: gara, giri, asciutta o no, piloti,
+  finestre Safety Car, pit-loss, ritirati e doppiati (controllali a memoria: se la
+  lista non ti torna, fermati e chiedi). Se tutto torna:
+    python3 pipeline_gara.py pubblica "<NomeDemo>"
+  La gara entra nella demo LOCALE e il golden pit viene riverificato da solo.
+
+PASSO 4 — Il tuo secondo OK: metti online
+  La demo pubblica si aggiorna solo col push su GitHub (Vercel fa il resto):
+    git add -A && git commit -m "demo: aggiunta <NomeDemo> via pipeline" && git push
+  (oppure chiedi a Claude di preparare il commit e la PR, come sempre.)
+
+COSE DA SAPERE
+- La griglia di partenza NON viene generata (viene da f1db verificato a mano, regola
+  del TODO): senza griglia il giro 1 e' ordinato sui tempi reali. Si puo' aggiungere dopo.
+- Gli esiti (ritirati/doppiati) sono derivati dai dati con una regola dichiarata e
+  mostrati nel riepilogo proprio perche' TU li verifichi a occhio.
+- Il pit-loss viene da f1db (debito P1 aperto: metodo da riverificare, vedi analisi).
+- Tutto cio' che la pipeline prepara sta in staging_gara/ (fuori da git): finche' non
+  dici "pubblica", la demo non cambia di una virgola.

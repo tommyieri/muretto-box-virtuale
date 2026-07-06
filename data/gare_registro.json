@@ -1,0 +1,47 @@
+{
+  "Australia": {
+    "ti": "Australian Grand Prix",
+    "raw": "data/ti_cache/Australian.json",
+    "cid": "melbourne"
+  },
+  "Cina": {
+    "ti": "Chinese Grand Prix",
+    "raw": "data/ti_cache/Chinese.json",
+    "cid": "shanghai"
+  },
+  "Giappone": {
+    "ti": "Japanese Grand Prix",
+    "raw": "data/ti_cache/Japanese.json",
+    "cid": "suzuka"
+  },
+  "Miami": {
+    "ti": "Miami Grand Prix",
+    "raw": "data/ti_cache/Miami.json",
+    "cid": "miami"
+  },
+  "Canada": {
+    "ti": "Canadian Grand Prix",
+    "raw": "data/ti_cache/Canadian.json",
+    "cid": "montreal"
+  },
+  "Monaco": {
+    "ti": "Monaco Grand Prix",
+    "raw": "data/ti_cache/Monaco.json",
+    "cid": "monaco"
+  },
+  "Spagna": {
+    "ti": "Barcelona Grand Prix",
+    "raw": "data/ti_cache/Barcelona.json",
+    "cid": "catalunya"
+  },
+  "Austria": {
+    "ti": "Austrian Grand Prix",
+    "raw": "data/ti_cache/Austrian.json",
+    "cid": "spielberg"
+  },
+  "Gran Bretagna": {
+    "ti": "British Grand Prix",
+    "raw": "data/ti_archive/2026/British Grand Prix/Race.json",
+    "cid": "silverstone"
+  }
+}
