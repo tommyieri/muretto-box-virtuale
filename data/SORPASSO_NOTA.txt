@@ -1,0 +1,84 @@
+DIFFICOLTA' DI SORPASSO PER CIRCUITO — v1: metrica, gate, VERDETTO NO-GO (2026-07-06)
+Script: gen_difficolta_sorpasso.py (il CSV data/difficolta_sorpasso_v1.csv viene scritto
+SOLO se tutti i gate passano; con questo verdetto NON esiste nel repo).
+Il vecchio data/difficolta_sorpasso.csv (orfano, senza generatore) resta NON fidato e
+non e' stato usato in alcun modo.
+
+== LA METRICA (v2 ratificata dal PO) ==
+"Tasso di attacco convertito": P(sorpasso completato | attacco sostenuto), per circuito.
+Episodio: l'inseguitore arriva a gap<=1.0s avendo chiuso >=0.6s nei 3 giri precedenti
+(aggancio per merito: evidenza di passo SENZA stimare il passo in aria sporca, inquinato
+per definizione), resta in zona o passa al giro dopo, esito entro K=4 giri; sorpasso
+valido solo se persiste il giro successivo; partenza (giri 1-3) esclusa; SC/VSC e
+QUALSIASI pit censurano (indice puramente in-pista: nessun legame spurio con la
+frequenza pit del circuito); dedup 5 giri per coppia; "resa al pit" contata a parte.
+PERCHE' NON E' GAP+PACE MASCHERATO: gap e chiusura CONDIZIONANO (definiscono attacchi
+comparabili); l'output e' la probabilita' residua di conversione a parita' di attacco —
+il fattore-pista irriducibile. Il kernel modella il rallentamento in scia (TrafficModel),
+non la convertibilita' dell'attacco: nessuna collinearita'.
+DATI: 66 Race dry (dry-check per gara), 23 circuiti, 2023-2026.
+
+== GATE DICHIARATI PRIMA E RISULTATI ==
+G0 robustezza soglie (griglia 1.0/1.5 x 0.5/0.8 x K3/K5, Spearman medio >=0.80):
+   PASS — 0.940 (min 0.901): la classifica non dipende dalle soglie.
+G1 dispersione (range >=15pt; segnale>rumore): PASS — range 86.5pt; std tra circuiti
+   17.0 vs errore std mediano entro circuito 6.1.
+G2 stabilita' cross-stagione (spread mediano <=20pt; nessuna inversione >35pt):
+   FAIL — spread mediano 16.2pt OK, ma 3 inversioni radicali:
+   suzuka 86%(n21)->17%(n29), miami 64/23/75, baku 18->54.
+G3 ground truth (difficili attesi: monaco, hungaroring, catalunya, marina-bay,
+   zandvoort; facili: monza, baku, shanghai, spa*, las-vegas, jeddah; max 1 eccezione
+   per gruppo): FAIL — difficili ok (solo catalunya fuori, ammessa); facili: baku E
+   jeddah in meta' bassa (2 eccezioni). Monaco correttamente ultimo (4.4%).
+   *spa non ha superato la soglia n>=20 episodi.
+
+== TABELLA (setting primario; RECORD DELLA MISURA, non dato cablabile) ==
+circuito           indice%   ep  stagioni (tasso per stagione, n>=15)
+monaco                 4.4   68  2024:16.7 2025:0.0 2026:0.0
+silverstone           37.2   43  2023:23.3
+montreal              40.8   71  2023:27.3 2025:52.6
+baku                  44.0   75  2023:17.6 2024:53.8 2025:50.0
+suzuka                44.4   72  2023:43.8 2024:85.7 2026:17.2
+jeddah                47.1   68  2023:38.5 2025:64.3
+hungaroring           48.3   60  2024:40.0 2025:47.4
+lusail                49.3   71  2023:51.5 2024:58.6
+zandvoort             49.4   77  2024:55.3 2025:43.6
+marina-bay            50.7   67  2023:53.8 2025:40.7
+miami                 54.9  102  2023:64.1 2024:22.6 2026:75.0
+melbourne             57.5   40  2023:50.0 2026:58.8
+imola                 59.4   64  2024:57.9 2025:60.0
+mexico-city           60.9   92  2023:71.4 2024:48.6 2025:66.7
+bahrain               64.4   45  2025:59.3
+shanghai              64.9   57  2025:81.2 2026:55.6
+spielberg             65.5   84  2023:76.2 2024:72.2 2025:60.0
+las-vegas             66.0   97  2023:71.4 2024:63.6 2025:52.6
+catalunya             66.7   57  2023:65.0 2025:62.5
+austin                67.3   55  2024:61.5 2025:56.2
+interlagos            70.0   40  2025:63.3
+monza                 79.5   39  2024:100.0
+yas-marina            90.9   77  2023:95.5 2024:86.7 2025:90.0
+Rese al pit: 0-5% degli episodi, descrittiva, mai nell'indice.
+
+== VERDETTO: NO-GO COME INDICE USABILE (2 gate su 4) ==
+aria_libera RESTA NULL; la v2 undercut NON riceve questo input; nulla entra in
+produzione. Il distinguo onesto: la metrica non e' piatta ne' arbitraria (G0+G1 netti,
+Monaco inchiodato al 4.4%) — cio' che fallisce e' la VALIDAZIONE al livello promesso.
+
+== DIAGNOSI (misurata) ==
+1. Le inversioni G2 non sono rumore campionario: Suzuka 86% (n=21) vs 17% (n=29) e'
+   ~7 sigma. Con UNA gara per circuito-stagione l'indice osserva (pista + condizioni di
+   quella domenica: mescole, temperatura, treni); la risoluzione non basta a certificare
+   la proprieta' fisica della pista.
+2. Baku/Jeddah (G3): la loro fama di "facili" viene dai sorpassi in SCIA da oltre 1s
+   sui rettilinei; la zona d'attacco <=1.0-1.5s misura la conversione dell'attacco
+   RAVVICINATO. Misura vera, ma non coincide con tutta la nozione di ground truth.
+
+== STRADA v2 (da dichiarare in sessione futura, decisione PO) ==
+(a) stabilita' verificata DENTRO la gara (split prima/seconda meta' a condizioni fisse)
+    invece che tra stagioni; (b) episodi estesi alla fascia-scia 1-3s per la classe
+    Baku/Jeddah; (c) indice come (circuito + condizioni), non solo circuito.
+
+== LIMITI ==
+DRS dentro l'indice per scelta dichiarata; censura totale dei pit assottiglia il
+campione (Spa e altri sotto n=20 -> n.d.); una gara/stagione = risoluzione massima
+possibile coi dati esistenti; nessun numero del documento di terzi.
