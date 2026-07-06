@@ -79,6 +79,22 @@ const el = id => document.getElementById(id);
 let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams={}, pitloss={};
 let curLap=1, selDrv=null;
 
+// --- contatore anonimo aggregato (strumentazione, non simulatore) ---
+// Solo due eventi, solo interi lato server: niente cookie, niente ID, niente terzi in pagina.
+// Fire-and-forget: se il contatore non è configurato la demo non se ne accorge.
+const conta = e => { try { navigator.sendBeacon(`api/contatore?e=${e}`); } catch(_){} };
+
+// --- hook waitlist (DORMIENTE) ---
+// Punto di aggancio per la valutazione strategica a pagamento. Si attiva SOLO quando il
+// product owner sceglie dove salvare le email; a quel punto qui vanno anche input+submit
+// e la NOTA PRIVACY (cosa facciamo delle email, nessun terzo, come cancellarsi).
+const WAITLIST_ATTIVA = false;
+function hookWaitlist(){
+  if(!WAITLIST_ATTIVA)
+    return `<div class="kv"><span class="k">Undercut/Overcut</span><span class="v dim">valutazione strategica in sviluppo (serve il degrado gomma)</span></div>`;
+  return ''; // versione attiva: da implementare all'attivazione, con nota privacy
+}
+
 async function loadManifest() {
   const m = await (await fetch('data/manifest.json')).json();
   try { esiti = await (await fetch('data/esiti.json')).json(); } catch(e){ esiti={}; }
@@ -157,6 +173,7 @@ function render(L) {
 }
 function openPit(){
   if(!selDrv){ el('pit').classList.add('hidden'); return; }
+  conta('valutazione_pit');   // il gesto d'interesse reale: pilota scelto, pannello aperto
   el('pit').classList.remove('hidden');
   el('pitTitle').textContent = `Pit — ${selDrv}`;
   const pl=el('pitLap'); pl.min=curLap+1; pl.max=race.n_laps;
@@ -194,11 +211,12 @@ function updatePit(){
     <div class="kv"><span class="k">Rientro</span><span class="v">P${r.rientro_pos} <span class="sub">tra i ${r.su_totale} a pari giro</span></span></div>
     <div class="kv"><span class="k">Davanti</span><span class="v">${dav}</span></div>
     <div class="kv"><span class="k">Dietro</span><span class="v">${die}</span></div>
-    <div class="kv"><span class="k">Undercut/Overcut</span><span class="v dim">non ancora modellato (serve degrado)</span></div>`;
+    ${hookWaitlist()}`;
 }
 el('gara').addEventListener('change', e=>loadGara(e.target.value));
 el('lap').addEventListener('input', e=>render(+e.target.value));
 el('pitLap').addEventListener('input', updatePit);
+conta('apertura');
 loadManifest();
 </script>
 </body>
