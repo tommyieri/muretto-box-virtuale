@@ -1,0 +1,14 @@
+{
+  "_nota": "Colori livrea 2026 per la barretta broadcast a inizio riga. Ferrari/Mercedes/Red Bull/McLaren/Williams/Racing Bulls/Alpine/Aston Martin/Haas: colori noti. Audi e Cadillac: colori di MARCA provvisori — livrea 2026 non ancora confermata, ritoccabili a occhio. Team assente -> fallback grigio neutro nel codice.",
+  "Ferrari": "#E8002D",
+  "Mercedes": "#27F4D2",
+  "Red Bull Racing": "#2B478F",
+  "McLaren": "#FF8000",
+  "Alpine": "#FF87BC",
+  "Aston Martin": "#229971",
+  "Audi": "#A21D2B",
+  "Cadillac": "#D4A537",
+  "Haas F1 Team": "#B6BABD",
+  "Racing Bulls": "#6692FF",
+  "Williams": "#1868DB"
+}
