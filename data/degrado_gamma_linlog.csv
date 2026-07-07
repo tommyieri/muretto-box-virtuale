@@ -1,22 +1,22 @@
 gara,compound,gamma,ic_lo,ic_hi,significativo
-Australia,SOFT,0.049,0.029,0.070,True
-Australia,MEDIUM,0.016,-0.015,0.048,False
-Australia,HARD,0.034,0.023,0.046,True
-Cina,MEDIUM,0.141,0.107,0.174,True
-Cina,HARD,0.023,0.009,0.037,True
-Giappone,MEDIUM,0.051,0.028,0.073,True
-Giappone,HARD,0.037,0.013,0.060,True
-Miami,SOFT,0.002,-0.053,0.056,False
-Miami,MEDIUM,0.026,-0.009,0.061,False
-Miami,HARD,0.009,-0.014,0.032,False
-Monaco,SOFT,0.027,0.005,0.048,True
-Monaco,MEDIUM,0.050,0.030,0.071,True
-Monaco,HARD,0.040,-0.011,0.092,False
-Spagna,SOFT,0.196,0.162,0.230,True
-Spagna,MEDIUM,0.169,0.139,0.198,True
-Spagna,HARD,0.132,0.117,0.147,True
-Austria,SOFT,0.085,0.053,0.118,True
-Austria,MEDIUM,0.092,0.080,0.104,True
-Austria,HARD,0.086,0.074,0.099,True
-Gran Bretagna,MEDIUM,0.033,0.012,0.053,True
-Gran Bretagna,HARD,0.070,0.056,0.084,True
+Australia,SOFT,0.0494,0.0286,0.0702,True
+Australia,MEDIUM,0.0163,-0.0151,0.0477,False
+Australia,HARD,0.0342,0.0225,0.0459,True
+Cina,MEDIUM,0.1406,0.1068,0.1744,True
+Cina,HARD,0.0226,0.0086,0.0366,True
+Giappone,MEDIUM,0.0509,0.0284,0.0733,True
+Giappone,HARD,0.0365,0.0133,0.0597,True
+Miami,SOFT,0.0015,-0.0531,0.0560,False
+Miami,MEDIUM,0.0263,-0.0086,0.0612,False
+Miami,HARD,0.0090,-0.0139,0.0319,False
+Monaco,SOFT,0.0268,0.0053,0.0483,True
+Monaco,MEDIUM,0.0502,0.0298,0.0705,True
+Monaco,HARD,0.0402,-0.0113,0.0918,False
+Spagna,SOFT,0.1958,0.1616,0.2300,True
+Spagna,MEDIUM,0.1685,0.1390,0.1980,True
+Spagna,HARD,0.1320,0.1167,0.1472,True
+Austria,SOFT,0.0854,0.0532,0.1176,True
+Austria,MEDIUM,0.0917,0.0795,0.1040,True
+Austria,HARD,0.0861,0.0736,0.0985,True
+Gran Bretagna,MEDIUM,0.0325,0.0119,0.0531,True
+Gran Bretagna,HARD,0.0696,0.0556,0.0836,True

@@ -138,3 +138,41 @@ CONSEGUENZA SUL GO ALLA 2.2: via libera CONDIZIONATA a (a) adozione di lin+log c
 forma di f(giro) nel modello 2.2, (b) tabella gamma lin+log come riferimento (questa
 nota), (c) ratifica del PO. Nessun parametro entra nel prodotto da questa sessione;
 i quattro null restano null.
+
+== APPEND 2026-07-07 — CHIUSURA DEBITO: WRITER VERIFICATO PER degrado_gamma_linlog.csv ==
+PROBLEMA (audit): data/degrado_gamma_linlog.csv era "riferimento congelato" ma NON aveva
+script generatore — i valori erano TRASCRITTI A MANO dallo stdout di test_forma_fgiro.py
+(che fa solo print). Stessa classe dell'incidente warm-in: un parametro entrato senza
+metodo generatore verificato. Chiuso PRIMA di cablare la tabella in produzione.
+
+WRITER: gen_degrado_gamma.py. RIGENERA i gamma dal dato grezzo (non riproduce il CSV: lo
+ricalcola e lo verifica). Importa le funzioni gia' validate (carica/pulisci/filtro_outlier
+da test_identificabilita_degrado; prepara/costruisci/stima da test_forma_fgiro): una sola
+definizione dei filtri, stesso disegno Fase 2.1-bis (base pilota-gara, forma lin+log,
+stesse 8 gare 2026 dry + British archivio, rif. MEDIUM, SE cluster-robust, IC95).
+  python3 gen_degrado_gamma.py          -> CHECK: rigenera e confronta col CSV, NON scrive
+  python3 gen_degrado_gamma.py --write  -> scrive il CSV (writer verificato)
+
+ESITO VERIFICA TRASCRIZIONE (rigenerato vs CSV a mano, 21 celle x gamma/ic_lo/ic_hi):
+16/21 celle fedeli al millesimo; 5 celle sbagliate di ESATTAMENTE +0.001. Causa CERTA:
+DOPPIO ARROTONDAMENTO. Lo stdout stampa .4f -> il valore vero (es. 0.036463) appariva come
+0.0365; la trascrizione a mano ha poi arrotondato 0.0365 -> 0.037 (half-up), ma il valore
+vero sta SOTTO la mezzeria e l'arrotondamento singolo corretto da' 0.036. Non e' un errore
+di battitura ne' un difetto del calcolo (le altre 16 celle combaciano a 4dp esatti):
+e' l'informazione persa dal .4f. Nessuna delle 5 correzioni ribalta un flag significativo,
+un segno, la chiusura Australia-MEDIUM o il verdetto British-MEDIUM-fuori-IC (calcolati a
+piena precisione dentro il test): il quadro qualitativo 2.2 e' INVARIATO.
+
+DECISIONE (PO, 2026-07-07): sovrascritto il CSV col writer verificato, congelando 4 DECIMALI
+(invece di 3) per eliminare alla radice la fragilita' del bordo di arrotondamento. Le 5 celle
+corrette (vecchio a mano -> valore vero 4dp):
+  Giappone     HARD   gamma  0.037 -> 0.0365
+  Miami        SOFT   gamma  0.002 -> 0.0015
+  Monaco       MEDIUM ic_hi  0.071 -> 0.0705
+  Austria      MEDIUM ic_lo  0.080 -> 0.0795
+  Gran Bretagna MEDIUM gamma 0.033 -> 0.0325
+Il CSV a 4dp si auto-verifica pulito (0 discrepanze). FONTE DI VERITA' ORA: il CSV generato,
+non la tabella a 3 decimali dell'append 2026-07-06 (superata per queste 5 celle; il resto
+coincide). Disegno del test invariato: questa sessione ha reso RIPRODUCIBILE un calcolo gia'
+validato, non l'ha rifatto con criteri nuovi. Kernel/golden/demo intatti; i quattro null
+restano null.
