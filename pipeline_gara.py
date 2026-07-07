@@ -1,25 +1,34 @@
 """pipeline_gara.py — porta una gara nuova da TracingInsights alla demo, SEMI-automatica.
 
-Principio: automatizza la fatica, MAI il giudizio. I passi 1-3 (scoperta, conversione,
-guardrail) sono automatici; la pubblicazione richiede un OK umano dopo il riepilogo.
-Istruzioni per il product owner: COME_AGGIUNGERE_UNA_GARA.txt
+Principio: automatizza la fatica, MAI il giudizio. Tutta l'IDRAULICA (scoperta, download,
+conversione, guardrail, staging) e' automatica; la pubblicazione in demo/ richiede un OK
+umano dopo il riepilogo. Istruzioni per il product owner: COME_AGGIUNGERE_UNA_GARA.txt
 
 Comandi:
+  python3 pipeline_gara.py aggiorna "<NomeDemo>" "<Cartella TI>" <cid>
+      COMANDO UNICO: esegue tutta l'idraulica di fila e si ferma UNA volta sola, al
+      checkpoint finale (riepilogo + report), prima di pubblicare. Scrivi 'pubblica' al
+      prompt per pubblicare in demo/; qualsiasi altra cosa annulla (demo intatta).
+      es: python3 pipeline_gara.py aggiorna "Gran Bretagna" "British Grand Prix" silverstone
+
   python3 pipeline_gara.py scopri
       Sonda TracingInsights/2026 (raw URL, mai API contents) ed elenca le gare online
       che NON sono ancora nella demo (confronto con data/gare_registro.json).
 
   python3 pipeline_gara.py prepara "<NomeDemo>" "<Cartella TI>" <cid>
-      es: python3 pipeline_gara.py prepara "Gran Bretagna" "British Grand Prix" silverstone
-      Scarica (o riusa data/ti_archive/2026/), converte col formato di export_demo.py,
-      esegue i TRE GUARDRAIL, scrive tutto in staging_gara/ (MAI in demo/) e stampa il
-      riepilogo per il checkpoint umano. Il cid serve per il pit-loss
+      Solo l'idraulica + checkpoint, SENZA pubblicare (controllo stadio per stadio).
+      Scrive tutto in staging_gara/ (MAI in demo/). Il cid serve per il pit-loss
       (elenco cid: prima colonna di data/pit_loss_circuito_f1db.csv).
 
   python3 pipeline_gara.py pubblica "<NomeDemo>"
-      SOLO DOPO OK UMANO sul riepilogo: sposta la staging in demo/, aggiorna manifest,
-      pitloss, esiti, neutralizzazione e registro, e riesegue il golden pit (11/11).
-      Il git commit/push (= deploy Vercel) resta un passo umano separato.
+      SOLO DOPO OK UMANO: sposta la staging in demo/, aggiorna manifest, pitloss, esiti,
+      neutralizzazione e registro, e riesegue il golden pit (11/11). Il git commit/push
+      (= deploy Vercel) resta un passo umano separato.
+
+CONFINE NON NEGOZIABILE: questo comando fa SOLO l'idraulica sicura. NON ricalcola mai
+coefficienti motore (degrado, warm-in, profili), NON tocca la griglia (grids.json), NON
+cambia il metodo del pit-loss (ne inserisce solo il valore da f1db), NON tocca la
+telemetria. Tutto cio' e' "TOCCA IL MOTORE" e resta a mano (segnalato nel report).
 
 GUARDRAIL (soglie dichiarate):
   1. COMPLETEZZA : >=18 piloti, >=40 giri, >=10 piloti sull'ultimo giro,
@@ -75,17 +84,21 @@ def scopri():
         print("\nLa demo e' allineata: nessuna gara nuova online.")
     else:
         print(f"\nGare da portare in demo: {mancanti}")
-        print('Prossimo passo:  python3 pipeline_gara.py prepara "<NomeDemo>" "<Cartella TI>" <cid>')
+        print('Prossimo passo:  python3 pipeline_gara.py aggiorna "<NomeDemo>" "<Cartella TI>" <cid>')
+    return mancanti
 
-# ------------------------------------------------------- 2+3. PREPARA (staging)
-def prepara(nome, ti, cid):
+# --------------------------------------------- 2+3. IDRAULICA -> STAGING (core)
+def _prepara(nome, ti, cid):
+    """Tutta l'idraulica fino allo staging. BLOCCA (sys.exit) se un guardrail fallisce.
+    Ritorna un contesto (ctx) per checkpoint e report. NON stampa il checkpoint e NON
+    tocca demo/."""
     reg = registro()
     if nome in reg:
         sys.exit(f"BLOCCO: '{nome}' e' gia' nel registro (gia' in demo).")
     if any(v['ti'] == ti for v in reg.values()):
         sys.exit(f"BLOCCO: la cartella TI '{ti}' e' gia' associata a una gara in demo.")
 
-    # download (o riuso dell'archivio 2.1)
+    # download (o riuso dell'archivio)
     raw_path = os.path.join('data', 'ti_archive', '2026', ti, 'Race.json')
     if os.path.exists(raw_path) and os.path.getsize(raw_path) > 1000:
         print(f"[dati] riuso l'archivio esistente: {raw_path}")
@@ -120,7 +133,7 @@ def prepara(nome, ti, cid):
     if problemi:
         sys.exit(f"BLOCCO COMPLETEZZA (gara a meta' caricamento?): {'; '.join(problemi)}")
 
-    # conversione — STESSO formato di export_demo.py (adapter e pace del kernel)
+    # conversione — STESSO formato di export_demo.py (adapter e pace del kernel congelato)
     import pandas as pd
     from export_demo import export_gara
     obj = export_gara(nome, raw=pd.DataFrame(d))
@@ -147,7 +160,8 @@ def prepara(nome, ti, cid):
     diverse = [g for g in attuale if neu.get(g) != attuale[g]]
     if diverse:
         sys.exit(f"BLOCCO: la rigenerazione cambierebbe gare gia' validate: {diverse}")
-    fin = neu[nome]['sc'] + neu[nome]['vsc']
+    ng = neu[nome]
+    fin = ng.get('sc', []) + ng.get('vsc', []) + ng.get('rf', [])
 
     # esiti (euristica dichiarata in testa al file)
     last, last_ct = {}, {}
@@ -189,7 +203,25 @@ def prepara(nome, ti, cid):
     if r.returncode != 0:
         sys.exit("BLOCCO SANITA': lo smoke-test del modulo pit e' fallito.")
 
-    # ------------------------------------------------ 4. CHECKPOINT UMANO
+    # anomalie (NON bloccanti): guardrail vicino soglia + esiti sospetti — per il report
+    n_rit = sum(1 for e in esiti_gara.values() if e == 'RIT')
+    n_dop = sum(1 for e in esiti_gara.values() if e == 'doppiato')
+    anomalie = []
+    if dc['n_piloti'] == 18: anomalie.append("piloti al minimo consentito (18)")
+    if ultimo <= 42: anomalie.append(f"giri vicino alla soglia minima ({ultimo}, min 40)")
+    if sul_finale <= 11: anomalie.append(f"piloti sull'ultimo giro vicino alla soglia ({sul_finale}, min 10)")
+    if durata_min <= 66 or durata_min >= 144: anomalie.append(f"durata leader vicino al bordo ({durata_min:.0f} min, range 60-150)")
+    if n_rit >= 7: anomalie.append(f"molti ritirati ({n_rit}) — verifica l'euristica esiti a occhio")
+    if n_rit == 0 and n_dop == 0: anomalie.append("nessun ritirato/doppiato — verifica che l'euristica esiti abbia senso")
+
+    return dict(nome=nome, ti=ti, cid=cid, N=N, sul_finale=sul_finale, durata_min=durata_min,
+                dc=dc, fin=fin, ng=ng, esiti_gara=esiti_gara, pit_loss=pit_loss,
+                fonte_pl=fonte_pl, sdir=sdir, anomalie=anomalie)
+
+# ------------------------------------------------ 4. CHECKPOINT (riepilogo)
+def stampa_checkpoint(ctx):
+    nome, ti, N = ctx['nome'], ctx['ti'], ctx['N']
+    dc, esiti_gara = ctx['dc'], ctx['esiti_gara']
     rit = sorted(dd for dd, e in esiti_gara.items() if e == 'RIT')
     dop = sorted(dd for dd, e in esiti_gara.items() if e == 'doppiato')
     riep = f"""
@@ -197,29 +229,63 @@ def prepara(nome, ti, cid):
 CHECKPOINT UMANO — riepilogo di cosa verrebbe pubblicato
 {'='*72}
   Gara        : {nome}  (TracingInsights: {ti})
-  Giri        : {N} completi ({sul_finale} piloti sull'ultimo giro, durata {durata_min:.0f} min)
+  Giri        : {N} completi ({ctx['sul_finale']} piloti sull'ultimo giro, durata {ctx['durata_min']:.0f} min)
   Meteo       : {'ASCIUTTA' if dc['dry'] else 'NON ASCIUTTA'} (INT/WET={dc['intwet']}, pioggia={('%.1f%%' % (100*dc['frac_rain'])) if dc['frac_rain'] is not None else 'n/d'})
   Piloti      : {dc['n_piloti']} — tutti con team mappato
-  Finestre SC/VSC : {fin if fin else 'nessuna'}  (soppressione gap verificata dallo smoke-test)
-  Pit-loss    : {pit_loss} s  (fonte {fonte_pl}; debito P1 aperto: metodo non riverificato)
+  Finestre SC/VSC : {ctx['fin'] if ctx['fin'] else 'nessuna'}  (soppressione gap verificata dallo smoke-test)
+  Pit-loss    : {ctx['pit_loss']} s  (fonte {ctx['fonte_pl']}; debito P1 aperto: metodo non riverificato)
   Esiti (euristica, verifica a occhio):
     - a pieni giri : {len(esiti_gara) - len(rit) - len(dop)}
     - doppiati     : {dop if dop else '—'}
     - ritirati     : {rit if rit else '—'}
   Griglia     : ASSENTE (si aggiunge da f1db verificato; la UI ordina il giro 1 via sesT)
   Guardrail   : completezza OK · dry-check OK · sanita' OK (smoke pit incluso)
-{'='*72}
-La demo NON e' stata toccata. Per pubblicare, DOPO l'OK umano:
-    python3 pipeline_gara.py pubblica "{nome}"
-"""
+{'='*72}"""
     print(riep)
-    open(os.path.join(sdir, 'riepilogo.txt'), 'w').write(riep)
+    open(os.path.join(ctx['sdir'], 'riepilogo.txt'), 'w').write(riep)
+
+# ------------------------------------------------ 3b. REPORT AUTOMATICO
+def stampa_report(ctx):
+    nome, sdir = ctx['nome'], ctx['sdir']
+    kb = os.path.getsize(os.path.join(sdir, 'data', nome + '.json')) // 1024
+    man = json.load(open(os.path.join('demo', 'data', 'manifest.json')))
+    ng = ctx['ng']
+    r = []
+    r.append("REPORT AUTOMATICO")
+    r.append("-" * 72)
+    r.append("SCRITTURE PREVISTE IN demo/ (solo dopo l'OK):")
+    r.append(f"  demo/data/{nome}.json                 NUOVO ({kb} KB)")
+    r.append(f"  demo/data/manifest.json               +1 gara ({len(man)} -> {len(man)+1})")
+    r.append(f"  demo/data/pitloss.json                + {nome}: {ctx['pit_loss']} s")
+    r.append(f"  demo/data/esiti.json                  + {nome}: {len(ctx['esiti_gara'])} piloti")
+    r.append(f"  demo/neutralizzazione.json            + {nome} (sc={ng.get('sc',[])} vsc={ng.get('vsc',[])} rf={ng.get('rf',[])}); esistenti INVARIATE")
+    r.append(f"  data/gare_registro.json               + {nome}")
+    r.append("")
+    r.append("DA FARE A MANO (fuori dall'automatico — tocca il motore o serve verifica):")
+    r.append(f"  - griglia di partenza (grids.json): ASSENTE per {nome} -> da f1db, verificata a mano")
+    r.append("  - pit-loss: valore f1db inserito, ma DEBITO P1 (metodo non riverificato)")
+    r.append("  - ricalcoli motore (degrado_gamma_linlog, warm-in, profili pilota/team): NON automatici")
+    r.append("  - telemetria di posizione: fuori da questo comando (controllo-copertura separato)")
+    r.append("")
+    r.append("MOTORE NON TOCCATO (per costruzione — il comando non li scrive mai):")
+    r.append("  engine/, engine.mjs, pitscenario.mjs, golden, degrado_gamma_linlog.csv,")
+    r.append("  stint_gold, warmin_prior, profili, grids.json  (+ test_pit riverificato dopo publish)")
+    r.append("")
+    r.append("ANOMALIE / DA GUARDARE:")
+    if ctx['anomalie']:
+        for a in ctx['anomalie']: r.append(f"  - {a}")
+    else:
+        r.append("  - nessuna (guardrail lontani dalle soglie, esiti nella norma)")
+    r.append("-" * 72)
+    testo = "\n".join(r)
+    print("\n" + testo)
+    open(os.path.join(sdir, 'report.txt'), 'w').write(testo)
 
 # ------------------------------------------------------------ 5. PUBBLICA
 def pubblica(nome):
     sdir = os.path.join(STAGING, nome)
     if not os.path.exists(os.path.join(sdir, 'meta.json')):
-        sys.exit(f"BLOCCO: nessuna staging per '{nome}'. Esegui prima 'prepara'.")
+        sys.exit(f"BLOCCO: nessuna staging per '{nome}'. Esegui prima 'prepara' o 'aggiorna'.")
     meta = json.load(open(os.path.join(sdir, 'meta.json')))
 
     shutil.copy(os.path.join(sdir, 'data', nome + '.json'), os.path.join('demo', 'data', nome + '.json'))
@@ -248,9 +314,36 @@ def pubblica(nome):
         sys.exit("ATTENZIONE: golden pit FALLITO dopo la pubblicazione — NON committare, indagare.")
     print("\nFatto. Prossimo passo umano (OK separato): git add/commit/push -> deploy Vercel.")
 
+# ------------------------------------------------------ COMANDO UNICO
+def aggiorna(nome, ti, cid):
+    ctx = _prepara(nome, ti, cid)     # tutta l'idraulica -> staging (BLOCCA se un guardrail fallisce)
+    stampa_checkpoint(ctx)            # unico checkpoint: riepilogo
+    stampa_report(ctx)                # + report automatico
+    print(f"\nLa demo NON e' stata toccata. Staging pronta in {ctx['sdir']}.")
+    try:
+        risposta = input(">>> Scrivi 'pubblica' e premi Invio per PUBBLICARE in demo/, "
+                         "altro (o Invio) per ANNULLARE: ").strip()
+    except EOFError:
+        risposta = ''
+    if risposta == 'pubblica':
+        print()
+        pubblica(nome)
+    else:
+        print(f"Annullato. demo/ intatta; staging conservata in {ctx['sdir']} "
+              f"(puoi ripubblicare piu' tardi con: python3 pipeline_gara.py pubblica \"{nome}\").")
+
+# -------------------------------------------- 2+3 CLI: solo idraulica + checkpoint
+def prepara(nome, ti, cid):
+    ctx = _prepara(nome, ti, cid)
+    stampa_checkpoint(ctx)
+    stampa_report(ctx)
+    print(f"\nLa demo NON e' stata toccata. Per pubblicare, DOPO l'OK umano:")
+    print(f"    python3 pipeline_gara.py pubblica \"{nome}\"")
+
 if __name__ == '__main__':
     a = sys.argv[1:]
     if a[:1] == ['scopri']: scopri()
+    elif a[:1] == ['aggiorna'] and len(a) == 4: aggiorna(a[1], a[2], a[3])
     elif a[:1] == ['prepara'] and len(a) == 4: prepara(a[1], a[2], a[3])
     elif a[:1] == ['pubblica'] and len(a) == 2: pubblica(a[1])
     else: sys.exit(__doc__)

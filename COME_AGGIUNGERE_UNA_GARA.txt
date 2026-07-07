@@ -1,44 +1,60 @@
 COME AGGIUNGERE UNA GARA ALLA DEMO — istruzioni per il product owner
-(pipeline semi-automatica: lei fa la fatica, tu dai i due OK)
+(pipeline semi-automatica: lei fa la fatica, tu dai gli OK)
 
 Servono: il Terminale, dentro la cartella del progetto (cd ~/muretto).
 
+=========================================================================
+MODO VELOCE — un comando solo (consigliato)
+=========================================================================
 PASSO 1 — Scopri cosa c'e' di nuovo
     python3 pipeline_gara.py scopri
-  Ti dice quali gare sono online su TracingInsights ma non ancora nella demo.
+  Ti dice quali gare sono online su TracingInsights ma non ancora nella demo,
+  e ti stampa il nome esatto della cartella da usare al passo 2.
 
-PASSO 2 — Prepara la gara (tutto automatico, la demo NON viene toccata)
-    python3 pipeline_gara.py prepara "<NomeDemo>" "<Cartella TI>" <cid>
-  esempio reale:
-    python3 pipeline_gara.py prepara "Gran Bretagna" "British Grand Prix" silverstone
+PASSO 2 — Un comando fa TUTTO e si ferma una volta sola
+    python3 pipeline_gara.py aggiorna "<NomeDemo>" "<Cartella TI>" <cid>
+  esempio:
+    python3 pipeline_gara.py aggiorna "Gran Bretagna" "British Grand Prix" silverstone
   - <NomeDemo>: il nome che vedrai nel menu della demo (convenzione: paese in italiano);
   - <Cartella TI>: il nome esatto stampato dal passo 1;
-  - <cid>: il codice circuito per il pit-loss — lo trovi nella prima colonna di
+  - <cid>: il codice circuito per il pit-loss — prima colonna di
     data/pit_loss_circuito_f1db.csv (es. silverstone, monza, zandvoort).
-  La pipeline scarica, converte e fa i TRE CONTROLLI da sola:
-    completezza (gara intera, non a meta' caricamento), asciutta (il controllo che
-    salvo' la Fase 2.1 dal Canada bagnato), sanita' (il modulo pit funziona sui dati
-    nuovi, soppressione SC/VSC inclusa).
-  Se un controllo fallisce, si FERMA e ti dice perche'. Una gara bagnata non entra
-  in automatico: decidi tu, a mente fredda.
 
-PASSO 3 — Il tuo primo OK: leggi il riepilogo
-  Alla fine del passo 2 compare il RIEPILOGO: gara, giri, asciutta o no, piloti,
-  finestre Safety Car, pit-loss, ritirati e doppiati (controllali a memoria: se la
-  lista non ti torna, fermati e chiedi). Se tutto torna:
-    python3 pipeline_gara.py pubblica "<NomeDemo>"
+  Il comando scarica, converte e fa i TRE CONTROLLI da solo (completezza, asciutta,
+  sanita' col modulo pit). Se un controllo fallisce, si FERMA e ti dice perche' — una
+  gara bagnata o incompleta NON entra in automatico. Se tutto e' a posto, ti mostra:
+    - un RIEPILOGO (gara, giri, meteo, piloti, Safety Car, pit-loss, ritirati, doppiati);
+    - un REPORT (cosa verrebbe scritto, cosa resta da fare a mano, eventuali anomalie);
+    - e poi ASPETTA. La demo NON e' ancora cambiata.
+
+PASSO 3 — Il tuo OK: guarda riepilogo e report
+  Se la lista ti torna, al prompt scrivi:  pubblica   e premi Invio.
+  (Qualsiasi altra cosa, o Invio a vuoto, ANNULLA: la demo resta intatta.)
   La gara entra nella demo LOCALE e il golden pit viene riverificato da solo.
 
-PASSO 4 — Il tuo secondo OK: metti online
+PASSO 4 — Metti online (secondo OK, separato)
   La demo pubblica si aggiorna solo col push su GitHub (Vercel fa il resto):
     git add -A && git commit -m "demo: aggiunta <NomeDemo> via pipeline" && git push
   (oppure chiedi a Claude di preparare il commit e la PR, come sempre.)
 
+=========================================================================
+MODO CONTROLLATO — stadio per stadio (se vuoi fermarti in mezzo)
+=========================================================================
+  python3 pipeline_gara.py prepara "<NomeDemo>" "<Cartella TI>" <cid>
+      Fa solo l'idraulica + riepilogo + report, SENZA pubblicare.
+  python3 pipeline_gara.py pubblica "<NomeDemo>"
+      Pubblica in demo/ la gara gia' preparata (dopo che hai letto il riepilogo).
+  E' esattamente cio' che fa "aggiorna", ma in due comandi invece che uno.
+
 COSE DA SAPERE
-- La griglia di partenza NON viene generata (viene da f1db verificato a mano, regola
-  del TODO): senza griglia il giro 1 e' ordinato sui tempi reali. Si puo' aggiungere dopo.
+- CONFINE: il comando fa solo l'idraulica SICURA. NON ricalcola mai i coefficienti del
+  motore (degrado, warm-in, profili), NON tocca la griglia, NON cambia il metodo del
+  pit-loss, NON tocca la telemetria. Tutto questo resta a mano ed e' elencato nel report
+  sotto "DA FARE A MANO".
+- La griglia di partenza NON viene generata (viene da f1db verificato a mano): senza
+  griglia il giro 1 e' ordinato sui tempi reali. Si aggiunge dopo.
 - Gli esiti (ritirati/doppiati) sono derivati dai dati con una regola dichiarata e
   mostrati nel riepilogo proprio perche' TU li verifichi a occhio.
-- Il pit-loss viene da f1db (debito P1 aperto: metodo da riverificare, vedi analisi).
-- Tutto cio' che la pipeline prepara sta in staging_gara/ (fuori da git): finche' non
-  dici "pubblica", la demo non cambia di una virgola.
+- Il pit-loss viene da f1db (debito P1: metodo da riverificare).
+- Tutto cio' che il comando prepara sta in staging_gara/ (fuori da git): finche' non
+  scrivi "pubblica", la demo non cambia di una virgola.
