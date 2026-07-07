@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<!--
+  PROTOTIPO ISOLATO — Fase 3 telemetria di posizione.
+  NON fa parte della demo pubblica. NON importa engine/pitscenario/timeline/golden.
+  E' un REPLAY di dati storici registrati (OpenF1): il pallino mostra DOVE L'AUTO ERA,
+  non un controfattuale. NON risponde a "cosa succede se pitti" — quello e' il motore
+  box (per-giro), che resta separato.
+  Tracciato disegnato dalle STESSE coordinate GPS OpenF1 dei pallini (giro veloce) =>
+  allineamento per costruzione, nessuna trasformazione affine su forme diverse.
+  Fonte dati: OpenF1 (https://openf1.org), endpoint /location. Dato pubblico aperto.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototipo telemetria — Silverstone 2026 (replay OpenF1)</title>
+<style>
+  :root{
+    --bg:#0b0e13; --panel:#141922; --ink:#e8edf4; --muted:#8792a3;
+    --line:#2a3342; --track:#3a4557; --accent:#ffd23f;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+  header{padding:14px 18px 10px;border-bottom:1px solid var(--line)}
+  h1{margin:0;font-size:16px;font-weight:700;letter-spacing:.2px}
+  .sub{margin:4px 0 0;font-size:12px;color:var(--muted);line-height:1.45}
+  .sub b{color:#ffcf5a;font-weight:600}
+  .wrap{display:flex;gap:14px;padding:14px 18px;flex-wrap:wrap}
+  .stage{flex:1 1 560px;min-width:320px;background:var(--panel);
+    border:1px solid var(--line);border-radius:12px;padding:10px}
+  canvas{width:100%;height:auto;display:block;border-radius:8px}
+  .side{flex:0 0 260px;min-width:240px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:12px 14px;margin-bottom:12px}
+  .card h2{margin:0 0 8px;font-size:12px;text-transform:uppercase;
+    letter-spacing:.6px;color:var(--muted);font-weight:700}
+  .controls{display:flex;align-items:center;gap:10px;margin-top:10px}
+  button{background:#1e2733;color:var(--ink);border:1px solid var(--line);
+    border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;font-weight:600}
+  button:hover{border-color:#3a4759}
+  button.play{background:var(--accent);color:#1a1400;border-color:var(--accent);min-width:96px}
+  input[type=range]{width:100%;accent-color:var(--accent)}
+  .time{font-variant-numeric:tabular-nums;font-size:13px;color:var(--muted)}
+  .speeds{display:flex;gap:6px;flex-wrap:wrap}
+  .speeds button{padding:5px 10px;font-size:12px}
+  .speeds button.on{background:var(--accent);color:#1a1400;border-color:var(--accent)}
+  .lg{display:flex;flex-direction:column;gap:5px;max-height:340px;overflow:auto}
+  .row{display:flex;align-items:center;gap:8px;font-size:12px}
+  .dot{width:10px;height:10px;border-radius:50%;flex:0 0 auto;border:1px solid rgba(255,255,255,.4)}
+  .acr{font-weight:700;width:34px}
+  .tm{color:var(--muted)}
+  .foot{font-size:11px;color:var(--muted);padding:0 18px 20px;line-height:1.5}
+  .foot a{color:#7fb0ff}
+  .badge{display:inline-block;background:#2a1d00;color:#ffcf5a;border:1px solid #4a3600;
+    border-radius:6px;padding:2px 7px;font-size:11px;font-weight:600;margin-left:6px}
+  #status{font-size:12px;color:var(--muted);padding:12px 18px}
+</style>
+</head>
+<body>
+<header>
+  <h1>Prototipo telemetria di posizione — Silverstone 2026 <span class="badge">REPLAY · non simulazione</span></h1>
+  <p class="sub">
+    Replay di dati storici registrati: ogni pallino mostra <b>dove l'auto ERA</b> davvero, istante per istante.
+    Non e' un controfattuale &mdash; NON risponde a "cosa succede se pitti" (quello e' il motore box, per-giro, separato).
+    Tracciato e pallini vengono dalle <b>stesse coordinate GPS</b> OpenF1 &rArr; allineati per costruzione.
+    Prototipo isolato: non tocca la demo pubblica ne' il kernel.
+  </p>
+</header>
+
+<div id="status">Carico telemetria&hellip;</div>
+
+<div class="wrap" hidden id="app">
+  <div class="stage">
+    <canvas id="cv" width="900" height="900" aria-label="Mappa circuito con pallini piloti"></canvas>
+    <div class="controls">
+      <button class="play" id="play">&#9654; Play</button>
+      <div class="time" id="clock">00:00 / 00:00</div>
+    </div>
+    <input type="range" id="scrub" min="0" max="1000" value="0" step="1" style="margin-top:10px">
+    <div class="controls">
+      <span class="time">Velocita':</span>
+      <div class="speeds" id="speeds">
+        <button data-s="1">1&times;</button>
+        <button data-s="5">5&times;</button>
+        <button data-s="20" class="on">20&times;</button>
+        <button data-s="60">60&times;</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="side">
+    <div class="card">
+      <h2>Gara</h2>
+      <div id="meta" class="sub" style="color:var(--muted)"></div>
+    </div>
+    <div class="card">
+      <h2>Piloti in pista</h2>
+      <div class="lg" id="legend"></div>
+    </div>
+  </div>
+</div>
+
+<div class="foot">
+  Fonte: <a href="https://openf1.org" target="_blank" rel="noopener">OpenF1</a> &mdash; endpoint <code>/location</code>, dato pubblico aperto.
+  Colori: <code>demo/team_colori.json</code> (fallback <code>team_colour</code> OpenF1).
+  Dati downsamplati a ~2&nbsp;Hz da ~3.8&nbsp;Hz nativi. Il tracciato e' il giro veloce di gara del pilota 12 (ANT),
+  plottato dalle sue coordinate GPS &mdash; la stessa geometria in cui si muovono i pallini.
+</div>
+
+<script>
+const CV=document.getElementById('cv'), G=CV.getContext('2d');
+let DATA=null, T0=0, T1=0, playT=0, playing=false, speed=20, lastFrame=0;
+
+function fmt(ms){ms=Math.max(0,ms|0);const s=Math.floor(ms/1000);
+  return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');}
+
+// --- proiezione: bounds mondo -> canvas, scala uniforme, y flippata ---
+let proj=null;
+function buildProj(b){
+  const pad=28, W=CV.width, H=CV.height;
+  const spanx=b.maxx-b.minx, spany=b.maxy-b.miny;
+  const s=Math.min((W-2*pad)/spanx,(H-2*pad)/spany);
+  // centra
+  const ox=(W-spanx*s)/2, oy=(H-spany*s)/2;
+  return {
+    x:wx=>ox+(wx-b.minx)*s,
+    y:wy=>H-oy-(wy-b.miny)*s   // flip verticale
+  };
+}
+
+function drawTrack(){
+  const t=DATA.track;
+  G.lineJoin='round';G.lineCap='round';
+  // alone
+  G.strokeStyle='#222b38';G.lineWidth=16;
+  G.beginPath();t.forEach((p,i)=>{const X=proj.x(p[0]),Y=proj.y(p[1]);i?G.lineTo(X,Y):G.moveTo(X,Y);});G.closePath();G.stroke();
+  // nastro
+  G.strokeStyle=getCss('--track');G.lineWidth=9;
+  G.beginPath();t.forEach((p,i)=>{const X=proj.x(p[0]),Y=proj.y(p[1]);i?G.lineTo(X,Y):G.moveTo(X,Y);});G.closePath();G.stroke();
+  // mezzeria tratteggiata
+  G.strokeStyle='rgba(255,255,255,.10)';G.lineWidth=1.5;G.setLineDash([5,7]);
+  G.beginPath();t.forEach((p,i)=>{const X=proj.x(p[0]),Y=proj.y(p[1]);i?G.lineTo(X,Y):G.moveTo(X,Y);});G.closePath();G.stroke();
+  G.setLineDash([]);
+}
+function getCss(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+
+// binary search: indice i tale che t[i] <= T < t[i+1]
+function idxAt(T){
+  const t=DATA.t; let lo=0,hi=t.length-1;
+  if(T<=t[0])return 0; if(T>=t[hi])return hi;
+  while(lo<hi){const m=(lo+hi+1)>>1; if(t[m]<=T)lo=m; else hi=m-1;}
+  return lo;
+}
+function posAt(dr,T){
+  const t=DATA.t,i=idxAt(T);
+  if(i>=t.length-1)return [dr.x[i],dr.y[i]];
+  const t0=t[i],t1=t[i+1],f=(t1===t0)?0:(T-t0)/(t1-t0);
+  return [dr.x[i]+(dr.x[i+1]-dr.x[i])*f, dr.y[i]+(dr.y[i+1]-dr.y[i])*f];
+}
+
+function render(){
+  G.clearRect(0,0,CV.width,CV.height);
+  drawTrack();
+  for(const dr of DATA.drivers){
+    const [wx,wy]=posAt(dr,playT);
+    const X=proj.x(wx),Y=proj.y(wy);
+    G.beginPath();G.arc(X,Y,7,0,7);
+    G.fillStyle=dr.color;G.fill();
+    G.lineWidth=1.5;G.strokeStyle='rgba(255,255,255,.85)';G.stroke();
+    G.fillStyle='#fff';G.font='bold 10px -apple-system,Arial';
+    G.fillText(dr.acr,X+9,Y+3);
+  }
+  // clock + scrub
+  document.getElementById('clock').textContent=fmt(playT-T0)+' / '+fmt(T1-T0);
+  document.getElementById('scrub').value=Math.round((playT-T0)/(T1-T0)*1000);
+}
+
+function loop(ts){
+  if(playing){
+    if(lastFrame){
+      const dt=Math.min(ts-lastFrame,100); // clamp: un frame throttlato non fa saltare il tempo
+      playT+=dt*speed; if(playT>=T1){playT=T1;playing=false;syncPlayBtn();}
+    }
+    lastFrame=ts; render();
+  }
+  requestAnimationFrame(loop);
+}
+function syncPlayBtn(){document.getElementById('play').innerHTML=playing?'&#10073;&#10073; Pausa':'&#9654; Play';}
+
+function buildLegend(){
+  const L=document.getElementById('legend');L.innerHTML='';
+  DATA.drivers.forEach(dr=>{
+    const r=document.createElement('div');r.className='row';
+    r.innerHTML=`<span class="dot" style="background:${dr.color}"></span>
+      <span class="acr">${dr.acr}</span><span class="tm">${dr.team}</span>`;
+    L.appendChild(r);
+  });
+}
+
+fetch('telemetria_proto_data.json').then(r=>{
+  if(!r.ok)throw new Error('HTTP '+r.status);return r.json();
+}).then(d=>{
+  DATA=d; proj=buildProj(d.bounds);
+  T0=d.t[0]; T1=d.t[d.t.length-1]; playT=T0;
+  document.getElementById('status').hidden=true;
+  document.getElementById('app').hidden=false;
+  document.getElementById('meta').innerHTML=
+    `${d.meta.circuit} &mdash; ${d.meta.country} ${d.meta.year}<br>`+
+    `${d.drivers.length} piloti &middot; ~${d.meta.hz} Hz &middot; ${fmt(T1-T0)} di replay<br>`+
+    `<span style="color:#ffcf5a">${d.meta.nota}</span>`;
+  buildLegend(); render();
+  requestAnimationFrame(loop);
+}).catch(e=>{
+  document.getElementById('status').innerHTML=
+    'Errore nel caricamento dati: '+e.message+
+    '<br>Servire la pagina via HTTP (non file://). Es: <code>python3 -m http.server</code> dalla cartella <code>demo/</code>.';
+});
+
+// --- controlli ---
+document.getElementById('play').onclick=()=>{
+  if(playT>=T1)playT=T0;
+  playing=!playing;lastFrame=0;syncPlayBtn();
+};
+document.getElementById('scrub').oninput=e=>{
+  playT=T0+(e.target.value/1000)*(T1-T0);lastFrame=0;render();
+};
+document.getElementById('speeds').onclick=e=>{
+  const b=e.target.closest('button');if(!b)return;
+  speed=+b.dataset.s;
+  [...document.querySelectorAll('#speeds button')].forEach(x=>x.classList.toggle('on',x===b));
+};
+</script>
+</body>
+</html>
