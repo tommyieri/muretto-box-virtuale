@@ -26,13 +26,14 @@ def finestre(giri):
 def genera_gara(raw_path):
     d = json.load(open(raw_path))
     n = len(d["lap"])
-    sc_cnt, vsc_cnt = {}, {}  # lap -> n auto flaggate
+    sc_cnt, vsc_cnt, rf_cnt = {}, {}, {}  # lap -> n auto flaggate
     for i in range(n):
         lap, status = d["lap"][i], str(d["status"][i])
         if lap is None: continue
         L = int(lap)
         if "4" in status: sc_cnt[L] = sc_cnt.get(L, 0) + 1
         if "6" in status: vsc_cnt[L] = vsc_cnt.get(L, 0) + 1
+        if "5" in status: rf_cnt[L] = rf_cnt.get(L, 0) + 1  # '5' = bandiera rossa (gara sospesa)
     neut = [L for L in set(sc_cnt) | set(vsc_cnt)
             if sc_cnt.get(L, 0) + vsc_cnt.get(L, 0) >= SOGLIA]
     sc_fin, vsc_fin = [], []
@@ -41,7 +42,12 @@ def genera_gara(raw_path):
         n_vsc = sum(vsc_cnt.get(L, 0) for L in range(a, b + 1))
         (sc_fin if n_sc >= n_vsc else vsc_fin).append([a, b])
     dur = lambda fs: round(sum(b - a + 1 for a, b in fs) / len(fs), 1) if fs else 0.0
-    return {"sc": sc_fin, "vsc": vsc_fin, "durata_sc": dur(sc_fin), "durata_vsc": dur(vsc_fin)}
+    # rf = finestre bandiera rossa. ADDITIVO: i giri rossi restano dentro la finestra sc
+    # (la soppressione gap del pit, che legge sc/vsc, non cambia — C1 intatto). rf serve
+    # SOLO al banner/timeline dell'interfaccia.
+    rf_fin = finestre([L for L in rf_cnt if rf_cnt[L] >= SOGLIA])
+    return {"sc": sc_fin, "vsc": vsc_fin, "rf": rf_fin,
+            "durata_sc": dur(sc_fin), "durata_vsc": dur(vsc_fin)}
 
 def genera(gare):
     """gare: {nome_demo: percorso_raw} -> dict completo per neutralizzazione.json"""

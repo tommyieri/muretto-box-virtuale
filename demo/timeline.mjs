@@ -1,19 +1,20 @@
 // timeline.mjs — helper PURI per l'animazione dell'interfaccia.
 // NON importa engine.mjs né pitscenario.mjs: consuma i dati per-giro già calcolati
-// dal motore (cum_time, compound, finestre di neutralizzazione), non li modifica.
+// dal motore (cum_time, compound, tyre_age, finestre), non li modifica.
 // Il movimento tra un giro e l'altro nasce SOLO da interpolazione dei dati per-giro.
 
-export const BASE_LPS = 1.0; // giri al secondo a velocità 1× (l'orologio della riproduzione)
-
 // Orologio a requestAnimationFrame: la posizione di gara è un giro FRAZIONARIO.
-// onTick(p) è chiamato a ogni frame; onEnd() a fine gara. min = primo giro.
+// A 1× il giro L dura durFn(L) SECONDI REALI (durata vera della gara). onTick(p) a
+// ogni frame; onEnd() a fine gara. Senza durFn ricade su 1 giro/secondo (fallback).
 export function makeClock({ onTick, onEnd, min = 1 }) {
-  let p = min, speed = 1, playing = false, raf = null, last = null, max = min;
+  let p = min, speed = 1, playing = false, raf = null, last = null, max = min, durFn = () => 1;
   function step(t) {
     if (!playing) return;
     if (last == null) last = t;
     const dt = (t - last) / 1000; last = t;
-    p = Math.min(max, p + dt * BASE_LPS * speed);
+    const L = Math.max(1, Math.floor(p));
+    const ld = durFn(L) || 1;                 // secondi reali di quel giro a 1×
+    p = Math.min(max, p + dt * speed / ld);
     onTick(p);
     if (p >= max) { playing = false; last = null; onEnd && onEnd(); return; }
     raf = requestAnimationFrame(step);
@@ -24,11 +25,38 @@ export function makeClock({ onTick, onEnd, min = 1 }) {
     toggle() { playing ? api.pause() : api.play(); },
     seek(v) { p = Math.max(min, Math.min(max, v)); onTick(p); },
     setSpeed(s) { speed = s; },
+    setDur(fn) { durFn = fn || (() => 1); },
     reset(m) { api.pause(); max = m; p = min; onTick(p); },
     get position() { return p; },
     get playing() { return playing; },
   };
   return api;
+}
+
+// Durata reale di ogni giro = delta cum_time del LEADER tra L e L+1 (fonte telescopica:
+// la somma è la durata reale della gara). Clamp a 4× la mediana per non congelare
+// l'animazione su artefatti. I giri sotto SC restano lenti.
+// BANDIERA ROSSA: il giro rosso contiene la sospensione reale (~38 min a Monaco, cotta nel
+// cum_time). NON la animiamo in tempo reale: durata fissa breve REDFLAG_HOLD col banner
+// "gara sospesa" (scelta dichiarata dal PO). rfLaps = Set dei giri rossi.
+export const REDFLAG_HOLD = 5; // secondi a 1× per il giro-rosso (pausa breve, non 38 min)
+export function computeDurations(byLap, nLaps, rfLaps = new Set()) {
+  const raw = {}, all = [];
+  for (let L = 1; L < nLaps; L++) {
+    const A = byLap[L], B = byLap[L + 1];
+    if (!A || !B) continue;
+    let leadCum = Infinity, leadDrv = null;
+    for (const d in A) { const c = A[d].cum_time; if (typeof c === 'number' && c < leadCum) { leadCum = c; leadDrv = d; } }
+    if (leadDrv && typeof B[leadDrv]?.cum_time === 'number' && typeof A[leadDrv]?.cum_time === 'number') {
+      const dt = B[leadDrv].cum_time - A[leadDrv].cum_time;
+      if (dt > 0) { raw[L] = dt; all.push(dt); }
+    }
+  }
+  all.sort((a, b) => a - b);
+  const med = all.length ? all[all.length >> 1] : 90, cap = med * 4;
+  const dur = {};
+  for (let L = 1; L <= nLaps; L++) dur[L] = rfLaps.has(L) ? REDFLAG_HOLD : Math.min(raw[L] ?? med, cap);
+  return dur;
 }
 
 // Colori mescola Pirelli (dato reale, dove presente; null = nessun pallino, niente inventato).
@@ -45,13 +73,16 @@ export function bands(finestreGara, nLaps) {
     const left = (a - 1) / span * 100, right = (b - 1) / span * 100;
     return { type, a, b, left, width: Math.max(right - left, 1.2) };
   });
-  return [...mk(finestreGara.sc, 'sc'), ...mk(finestreGara.vsc, 'vsc')];
+  // rf disegnato per ultimo -> sta sopra la banda sc (i giri rossi sono dentro la sc)
+  return [...mk(finestreGara.sc, 'sc'), ...mk(finestreGara.vsc, 'vsc'), ...mk(finestreGara.rf, 'rf')];
 }
 
-// Fase corrente della gara al giro L (per l'indicatore testuale accanto al numero giro).
+// Fase corrente della gara al giro L (per pill + banner bandiera).
+// Priorità: RF (rossa, gara sospesa) > SC > VSC.
 export function fase(finestreGara, L) {
   const dentro = (arr) => (arr || []).some(([a, b]) => L >= a && L <= b);
   if (finestreGara) {
+    if (dentro(finestreGara.rf)) return 'RF';
     if (dentro(finestreGara.sc)) return 'SC';
     if (dentro(finestreGara.vsc)) return 'VSC';
   }
