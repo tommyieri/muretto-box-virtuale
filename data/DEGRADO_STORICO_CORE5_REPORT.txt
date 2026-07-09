@@ -1,0 +1,93 @@
+==============================================================================
+STUDIO DEGRADO STORICO CORE-5 — gamma lin+log su archivio 2023/2024/2025
+==============================================================================
+STEP 1 — MAPPATURA nome-core -> cartella archivio (dichiarata):
+   Abu Dhabi  -> data/ti_archive/<anno>/Abu Dhabi Grand Prix/Race.json
+   Austria    -> data/ti_archive/<anno>/Austrian Grand Prix/Race.json
+   Bahrain    -> data/ti_archive/<anno>/Bahrain Grand Prix/Race.json
+   Ungheria   -> data/ti_archive/<anno>/Hungarian Grand Prix/Race.json
+   Spagna     -> data/ti_archive/<anno>/Spanish Grand Prix/Race.json
+
+STEP 2 — MATRICE DI IDENTIFICABILITA' (5 circuiti x 3 anni x 3 compound)
+  OK (n_stint, n_giri)  |  NULL (motivo)
+------------------------------------------------------------------------------
+circuito   compound               2023               2024               2025
+Abu Dhabi  SOFT      NULL:stint<3 (0)   NULL:stint<3 (2)  NULL:giri<30 (14)
+Abu Dhabi  MEDIUM          OK(20,251)         OK(17,243)         OK(23,365)
+Abu Dhabi  HARD            OK(36,762)         OK(24,598)         OK(21,662)
+
+Austria    SOFT      NULL:stint<3 (1)   NULL:stint<3 (1)           OK(6,52)
+Austria    MEDIUM          OK(30,491)         OK(34,559)         OK(25,520)
+Austria    HARD            OK(29,641)         OK(27,635)         OK(16,395)
+
+Bahrain    SOFT            OK(34,366)         OK(25,263)         OK(21,240)
+Bahrain    MEDIUM    NULL:stint<3 (1)   NULL:stint<3 (0)         OK(26,433)
+Bahrain    HARD            OK(33,476)         OK(37,692)         OK(14,261)
+
+Ungheria   SOFT     NULL:giri<30 (24)           OK(6,30)           OK(4,39)
+Ungheria   MEDIUM          OK(23,393)         OK(23,376)         OK(21,503)
+Ungheria   HARD            OK(28,703)         OK(30,779)         OK(24,704)
+
+Spagna     SOFT            OK(23,315)         OK(30,442)         OK(50,507)
+Spagna     MEDIUM          OK(17,357)         OK(19,384)         OK(21,437)
+Spagna     HARD            OK(22,488)         OK(13,335)   NULL:stint<3 (1)
+
+STEP 3 / LIVELLO 1 — pre-check di sanita' (ordinamento gamma_soft > gamma_medium > gamma_hard)
+  ANOMALIE DA ISPEZIONARE A MANO (non fanno fallire lo studio):
+    Austria 2025: S=-0.0450 M=+0.0620 H=+0.0507  <-- ordinamento VIOLATO
+    Bahrain 2025: S=+0.1234 M=+0.1015 H=+0.1179  <-- ordinamento VIOLATO
+    Ungheria 2024: S=+0.0074 M=+0.0838 H=+0.0780  <-- ordinamento VIOLATO
+    Spagna 2024: S=+0.0934 M=+0.0815 H=+0.0833  <-- ordinamento VIOLATO
+
+STEP 3 / LIVELLO 2 — KPI di stabilita' (soglie congelate: Q p>=0.05, range_rel<=0.25)
+  Assunzioni dichiarate: SE(r) col metodo delta, covarianza ~0 tra compound.
+------------------------------------------------------------------------------
+
+### Abu Dhabi
+    2023: r1=n/d                 r2=+1.587±0.229       
+    2024: r1=n/d                 r2=+1.066±0.215       
+    2025: r1=n/d                 r2=+2.143±0.264       
+    r1: SOLO 0 anno identificabile -> omogeneita' non testabile (FAIL primario)
+    r2: Q=10.082 dof=2 p=0.006 (RIFIUTA) | range_rel=0.679 (FUORI)
+    => Abu Dhabi: INSTABILE
+
+### Austria
+    2023: r1=n/d                 r2=+1.055±0.117       
+    2024: r1=n/d                 r2=+1.201±0.098       
+    2025: r1=-0.725±0.706        r2=+1.222±0.214       
+    r1: SOLO 1 anno identificabile -> omogeneita' non testabile (FAIL primario)
+    r2: Q=1.040 dof=2 p=0.595 (OK) | range_rel=0.139 (OK)
+    => Austria: INSTABILE
+
+### Bahrain
+    2023: r1=n/d                 r2=n/d                
+    2024: r1=n/d                 r2=n/d                
+    2025: r1=+1.216±0.130        r2=+0.861±0.112       
+    r1: SOLO 1 anno identificabile -> omogeneita' non testabile (FAIL primario)
+    r2: SOLO 1 anno identificabile -> omogeneita' non testabile (FAIL primario)
+    => Bahrain: INSTABILE
+
+### Ungheria
+    2023: r1=n/d                 r2=+0.876±0.140       
+    2024: r1=+0.088±0.414        r2=+1.075±0.188       
+    2025: r1=+1.647±0.662        r2=+1.820±0.320       
+    r1: Q=3.988 dof=1 p=0.046 (RIFIUTA) | range_rel=1.797 (FUORI) [2-anni, potenza ridotta]
+    r2: Q=7.325 dof=2 p=0.026 (RIFIUTA) | range_rel=0.878 (FUORI)
+    => Ungheria: INSTABILE
+
+### Spagna
+    2023: r1=+1.011±0.270        r2=+1.230±0.366       
+    2024: r1=+1.145±0.192        r2=+0.979±0.131       
+    2025: r1=+1.478±0.261        r2=n/d                
+    r1: Q=1.708 dof=2 p=0.426 (OK) | range_rel=0.408 (FUORI)
+    r2: Q=0.416 dof=1 p=0.519 (OK) | range_rel=0.227 (OK) [2-anni, potenza ridotta]
+    => Spagna: INSTABILE
+
+==============================================================================
+ESITO METODO: 0/5 circuiti STABILI -> NON-VALIDATO (soglia >= 3/5)
+   Abu Dhabi : INSTABILE (anni con r1=0, r2=3)
+   Austria   : INSTABILE (anni con r1=1, r2=3)
+   Bahrain   : INSTABILE (anni con r1=1, r2=1)
+   Ungheria  : INSTABILE (anni con r1=2, r2=3)
+   Spagna    : INSTABILE (anni con r1=3, r2=2)
+==============================================================================
