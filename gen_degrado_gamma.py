@@ -41,16 +41,30 @@ DECIMALI = 4          # precisione congelata del CSV
 TOL = 5e-5            # trascrizione fedele => arrotonda a DECIMALI cifre
 
 
+def calcola_gamma(path):
+    """Catena di calcolo gamma lin+log per UNA gara (path del Race.json).
+    Riusa IDENTICI i filtri (carica->pulisci->filtro_outlier), il guardrail compound
+    (prepara), la forma f(giro)=[giro-media, ln(giro)] (costruisci) e gli SE cluster-robust
+    (stima) gia' validati — non reimplementa nulla. Ritorna la stima grezza + i conteggi.
+
+    Usata sia dal percorso 2026 (rigenera, invariante bit-identica) sia dallo studio
+    storico core-5 (gen_degrado_storico_core5.py): una sola definizione del calcolo."""
+    rows0 = carica(path)
+    keep, _, N = pulisci(rows0)
+    keep, _ = filtro_outlier(keep, SOGLIA_OUTLIER)
+    rows, ident, stint_per_c, giri_per_c = prepara(keep)
+    X, y, grp, gidx, drvs, di = costruisci(rows, ident, N, FORMA)
+    s = stima(X, y, grp, gidx)
+    return dict(s=s, ident=ident, stint_per_c=stint_per_c, giri_per_c=giri_per_c,
+                gidx=gidx, drvs=drvs, N=N)
+
+
 def rigenera():
-    """Ricalcola i gamma linlog dal dato grezzo. Ritorna lista di dict a PIENA precisione."""
+    """Ricalcola i gamma linlog 2026 dal dato grezzo. Ritorna lista di dict a PIENA precisione."""
     out = []
     for nome, path in RACES.items():
-        rows0 = carica(path)
-        keep, _, N = pulisci(rows0)
-        keep, _ = filtro_outlier(keep, SOGLIA_OUTLIER)
-        rows, ident, _, _ = prepara(keep)
-        X, y, grp, gidx, drvs, di = costruisci(rows, ident, N, FORMA)
-        s = stima(X, y, grp, gidx)
+        r = calcola_gamma(path)
+        s = r['s']
         if s is None:
             raise RuntimeError(f'{nome}: design matrix rank-deficiente — gamma non identificato')
         gara = NOME_CSV.get(nome, nome)
