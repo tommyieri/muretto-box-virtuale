@@ -1,0 +1,42 @@
+============================================================================
+REPLAY PERDITA STINT — misura descrittiva, archivio 2023-2025 (sola lettura)
+============================================================================
+Aria pulita: gap>2.0s all'auto davanti. Stint qualificato: >=8 giri
+usabili, coda=5 giri, centrale>=3. Isolamento carburante: metodo
+centrale (preferito) + prior 0.035s/kg x 100kg/N_giri (sensibilita').
+
+COPERTURA — stint qualificati
+  totale: 1781
+  per anno   : 2023=576  2024=637  2025=568
+  per compound: SOFT=205  MEDIUM=670  HARD=906
+
+PERDITA MARGINALE degrado-isolata (metodo centrale) (s/giro) — mediana [IQR 25-75] (min..max), n
+  COMPLESSIVA : +0.0443 [-0.0497,+0.1505] (-1.5112..+1.7697)  n=1781
+  SOFT       : +0.0667 [-0.0380,+0.2080] (-0.5817..+1.3017)  n=205
+  MEDIUM     : +0.0363 [-0.0525,+0.1454] (-1.5112..+1.7697)  n=670
+  HARD       : +0.0438 [-0.0497,+0.1429] (-1.1618..+1.5025)  n=906
+
+PERDITA CUMULATA allungamento 5 giri (degrado-isolata) (s totali) — mediana [IQR 25-75] (min..max), n
+  COMPLESSIVA : +0.6907 [-0.8471,+2.5735] (-48.2796..+48.5494)  n=1781
+  SOFT       : +0.8971 [-0.9612,+2.9874] (-17.6847..+29.9094)  n=205
+  MEDIUM     : +0.5023 [-1.0831,+2.3860] (-48.2796..+30.4339)  n=670
+  HARD       : +0.8391 [-0.7521,+2.5915] (-41.1168..+48.5494)  n=906
+
+RAW vs CORRETTO (mediana marginale, s/giro) — quanto sposta la correzione carburante
+  RAW (netto degrado-carburante)      : +0.0326
+  ISOLATO metodo centrale (preferito) : +0.0443   (sposta +0.0117 vs raw)
+  ISOLATO prior carburante            : +0.0911   (sensibilita' metodo: +0.0469 vs centrale)
+
+LETTURA ONESTA (limiti dichiarati):
+  - DISPERSIONE ALTA: l'IQR della marginale attraversa lo zero -> in molti stint la
+    coda NON mostra degrado distinguibile (coerente con Fase 2.1: il degrado spesso
+    non emerge dal rumore). La distribuzione, non un valore singolo, e' il risultato.
+  - CODE PESANTI della cumulata (min/max ~+-40-48s): sono ARTEFATTI di estrapolazione
+    della linea-base su finestre centrali corte/rumorose. La lettura robusta e'
+    mediana/IQR, NON i min-max. La marginale (differenza di pendenze) e' piu' robusta
+    della cumulata (che estrapola). Nessun filtro ritoccato a posteriori.
+
+RIMANDATO (esplicito, a numeri visti — NON in questa misura):
+  - scelta di una banda di degrado; nessun KPI di copertura ('la banda contiene il
+    reale nell'X%'); nessuna soglia/verdetto. Questa e' descrizione, non predizione.
+============================================================================
