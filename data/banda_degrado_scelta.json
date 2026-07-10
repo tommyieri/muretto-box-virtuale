@@ -1,0 +1,43 @@
+{
+  "metodo_colonna": "marg_iso_centrale",
+  "min": 0.0,
+  "centrale": 0.0449,
+  "max": 0.326,
+  "unita": "s/giro",
+  "compound_agnostica": true,
+  "provenienza_percentili": {
+    "in_sample_anni": [
+      2023,
+      2024
+    ],
+    "n_in_sample": 1213,
+    "metodo_percentile": "linear",
+    "frac_sotto_zero_in_sample": 0.3809,
+    "tetto_copertura_in_sample_[0,+inf]": 0.6191,
+    "p10_in_sample": -0.1556,
+    "min_da": "pavimento a 0 (degrado<0 privo di senso operativo; floor forzato=True)",
+    "centrale_da": "mediana in-sample (p50)",
+    "max_da": "percentile 90 in-sample (ancora spec)",
+    "max_pctl_level": 90.0,
+    "copertura_80_in_sample_raggiungibile": false,
+    "nota_copertura_80": "IRRAGGIUNGIBILE con floor a 0: 0.80+0.381=1.181>1; tetto assoluto 61.9%",
+    "assorbimento_fuel_prior": {
+      "soglia": 0.091,
+      "max_alzato_per_coprirla": false
+    },
+    "copertura_in_sample_finale_[0,max]": 0.5185
+  },
+  "soglie_congelate": {
+    "in_sample_cover": 0.8,
+    "oos_min_cover": 0.7,
+    "util_max_ratio": 0.25,
+    "stretch_laps": 5
+  },
+  "esito_meccanico": {
+    "copertura_2025": 0.5687,
+    "copertura_pass": false,
+    "utilita_ratio_peggiore": 0.0898,
+    "utilita_pass": true,
+    "esito": "NON-VALIDATO"
+  }
+}
