@@ -1,0 +1,55 @@
+==============================================================================
+OSSERVABILITA' ETA'-GOMMA — test di permutazione entro blocco (gara,giro)
+==============================================================================
+Statistica: Spearman rho(life, passo_norm) entro blocco, MEDIA PESATA per numerosita'.
+Nullo: permutazione etichette life entro blocco, P=10000, seed=20260711 (fissato).
+p_empirico one-sided (segno atteso rho>0) = (#perm>=oss + 1)/(P+1).
+Soglie CONGELATE: globale PASS se p<0.01; per-gara PASS se p<0.05 in >=50% gare.
+
+------------------------------------------------------------------------------
+COPERTURA
+------------------------------------------------------------------------------
+  gare (Race.json) 2023-25: 70  |  con >=1 blocco usabile: 69
+  blocchi (gara,giro) usabili: 2783  (righe totali 30754)
+    2023: 914 blocchi  |  stratificati 958
+    2024: 936 blocchi  |  stratificati 894
+    2025: 933 blocchi  |  stratificati 871
+  blocchi esclusi: 469 (<5 piloti) + 329 (eta'-gomma degenere, <3 life distinti)
+  stratificazione per compound: 2723 sotto-blocchi sopravvivono; 3077 persi (<5 piloti o <3 life nel compound).
+
+------------------------------------------------------------------------------
+VERDETTO PRIMARIO
+------------------------------------------------------------------------------
+  NON stratificato (gara,giro)  (2783 blocchi)
+    statistica osservata (rho aggregato) = +0.3746  segno +
+    GLOBALE: 0/10000 permutazioni >= osservata (nullo max +0.0212); p_empirico = 1.00e-04
+             -> PASS (soglia <0.01)
+    PER-GARA: 60/69 gare con p<0.05 e segno giusto = 87.0%  -> PASS (soglia >=50%)
+
+  STRATIFICATO (gara,giro,compound)  (2723 blocchi)
+    statistica osservata (rho aggregato) = +0.3415  segno +
+    GLOBALE: 0/10000 permutazioni >= osservata (nullo max +0.0270); p_empirico = 1.00e-04
+             -> PASS (soglia <0.01)
+    PER-GARA: 56/68 gare con p<0.05 e segno giusto = 82.4%  -> PASS (soglia >=50%)
+
+------------------------------------------------------------------------------
+LIMITI DICHIARATI
+------------------------------------------------------------------------------
+  - CONFOUND COMPOUND residuo: nel non-stratificato, a parita' di giro chi ha gomma
+    piu' vecchia puo' avere mescola diversa; eta' e compound si confondono in parte.
+    Lo stratificato lo controlla ma perde blocchi (vedi copertura): e' il confound
+    onesto del disegno, riportato non nascosto.
+  - Il disegno testa l'associazione TRA PILOTI allo stesso giro: e' la traccia
+    OSSERVABILE del degrado lungo lo stint, NON il fenomeno stesso. Un nullo non
+    battuto dice 'non c'e' traccia distinguibile dal caso', non 'il degrado non esiste'.
+  - Normalizzazione passo-base = centraggio sulla mediana pilota-gara (dichiarato),
+    non un modello: non separa evoluzione-pista da fuel (entrambi ~costanti nel blocco).
+
+------------------------------------------------------------------------------
+SECONDARIO — RIMANDATO E CONDIZIONATO
+------------------------------------------------------------------------------
+  multiverse/sensibilita' sulle specificazioni: ESEGUIBILE (primario passa)
+
+Nota: verdetti MECCANICI di osservabilita'. Il verdetto STRATEGICO (archiviare o no
+il degrado) NON e' scritto qui: e' del PO.
+==============================================================================
