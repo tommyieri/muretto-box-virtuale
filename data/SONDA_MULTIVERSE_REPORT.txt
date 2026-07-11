@@ -1,0 +1,52 @@
+================================================================================
+SONDA SELEZIONE STRATEGICA (GATE) + MULTIVERSE — osservabilita' eta'-gomma
+================================================================================
+Macchina di permutazione importata da gen_osservabilita_degrado (non modificato).
+Seed=20260711. Riferimento primario non-stratificato rho=+0.3746; soglia gate rho>=0.187.
+ANTI-TUNING: il multiverse misura la dispersione, non sceglie una specificazione.
+
+CONTROLLO riproduzione primario (default, P=10000): rho=+0.3746 (atteso ~+0.3746) | p_glob=1.00e-04 | per-gara 60/69
+
+--------------------------------------------------------------------------------
+PARTE 1 — SONDA (GATE)
+--------------------------------------------------------------------------------
+Lama A — esclusione giri pre-pit (K giri prima dell'in-lap, pin non nullo):
+  K=2: rho=+0.3421 (+) | p_glob=1.00e-04 (0 perm>=oss) | per-gara 59/68=87% PASS
+      GATE: segno>0 OK | p<0.01 OK | rho>=0.187 OK  -> PASS
+  K=3: rho=+0.3217 (+) | p_glob=1.00e-04 (0 perm>=oss) | per-gara 56/68=82% PASS
+      GATE: segno>0 OK | p<0.01 OK | rho>=0.187 OK  -> PASS
+Lama B — controllo posizione (stratifica per fascia pos 1-5/6-12/13-20):
+  fascia 1-5: rho=+0.3264 (+) | p_glob=1.00e-04 (0 perm>=oss) | per-gara 29/52=56% PASS
+  fascia 6-12: rho=+0.3717 (+) | p_glob=1.00e-04 (0 perm>=oss) | per-gara 37/61=61% PASS
+  fascia 13-20: rho=+0.3727 (+) | p_glob=1.00e-04 (0 perm>=oss) | per-gara 34/52=65% PASS
+  aggregato: rho=+0.3607 (+) | p_glob=1.00e-04 (0 perm>=oss) | per-gara 45/65=69% PASS
+      GATE: segno>0 OK | p<0.01 OK | rho>=0.187 OK  -> PASS
+
+ESITO GATE: REGGE (tutte le lame e i K devono soddisfare segno>0, p<0.01, rho>=0.187)
+
+--------------------------------------------------------------------------------
+PARTE 2 — MULTIVERSE (dispersione, NON selezione)
+--------------------------------------------------------------------------------
+  specificazioni testate: 216 (P=2000)
+  distribuzione rho: mediana +0.3470  IQR [+0.0090,+0.3868]  min-max [-0.0098,+0.4465]
+  concordi sul segno (rho>0): 87.5%  (soglia >=90%)
+  entro fattore 2 dalla mediana [+0.1735,+0.6941]: 66.7%  (soglia >=75%)
+  ESITO: NON ROBUSTO
+  dimensioni che muovono di piu' il rho (spread entro-dimensione, diagnostica):
+    norm            spread mediane=0.3960  (med_gara:+0.351, med_stint:+0.002, trim_gara:+0.398)
+    aria            spread mediane=0.0483  (1.5:+0.375, 2.0:+0.353, 3.0:+0.327)
+    compound_strat  spread mediane=0.0346  (0:+0.369, 1:+0.335)
+    life_min        spread mediane=0.0107  (3:+0.349, 4:+0.339)
+    min_block       spread mediane=0.0070  (5:+0.343, 8:+0.350)
+    outlier         spread mediane=0.0005  (1.05:+0.347, 1.07:+0.347, 1.1:+0.347)
+
+--------------------------------------------------------------------------------
+LIMITI DICHIARATI
+--------------------------------------------------------------------------------
+  - Il disegno resta CROSS-DRIVER (associazione tra piloti allo stesso giro): e' la
+    traccia OSSERVABILE del degrado, NON il degrado within-stint.
+  - La Lama A esclude SOLO il pre-pit (K giri prima dell'in-lap): unica 'gestione'
+    misurabile dal dato. Scelta esplicita del PO di non includerne altre.
+  - Il multiverse misura la dispersione, NON raccomanda una specificazione o un
+    estimatore. Nessun verdetto strategico: e' del PO.
+================================================================================
