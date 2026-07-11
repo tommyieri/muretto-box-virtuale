@@ -1,0 +1,66 @@
+============================================================================
+SCOPING v2 — PERSISTENZA intra-stint vs CLIMATOLOGIA storica (diagnostico)
+============================================================================
+Fuori campione: target = stint 2025; climatologia = prior statico 2023-24
+(mediana per compound di marg_iso_centrale, archiviato). Rappresentazione unica:
+perdita marginale degrado-isolata metodo centrale. Persistenza = misura la stessa
+cosa 5 giri prima della coda (solo U[:-5]) -> nessun leak. Igiene: archiviata.
+
+SELF-CHECK: coda_reale ricostruita == marg_iso_centrale archiviato:
+  max |diff| = 5.00e-05 su 1213 stint appaiati  (metodo/igiene riprodotti)
+
+CLIMATOLOGIA (prior statico 2023-24, mediana per compound, s/giro):
+  SOFT  : +0.0794  (n storico 132)
+  MEDIUM: +0.0328  (n storico 424)
+  HARD  : +0.0429  (n storico 657)
+
+----------------------------------------------------------------------------
+STEP 1 — COPERTURA (stint 2025 qualificati per il diagnostico, n_usable>=13)
+----------------------------------------------------------------------------
+  totale 2025 qualificati: 407
+    SOFT  : 42
+    MEDIUM: 162
+    HARD  : 203
+  AVVERTENZA: pendenza su 5 giri e' rumorosa; la persistenza eredita quel rumore.
+
+----------------------------------------------------------------------------
+STEP 2 — CONFRONTO E VERDETTO (errore assoluto di predizione della coda)
+----------------------------------------------------------------------------
+  COMPLESSIVO  n=407
+    errore mediano  persistenza=0.0988  climatologia=0.0831  s/giro
+    miglioramento mediano appaiato (clim-pers per stint) = -0.0157  <- effect-size del gate
+    differenza-delle-mediane (secondaria)                = -0.0157
+    Wilcoxon appaiato p = 7.39e-08
+    -> NULL  (serve p<0.05 AND miglioramento appaiato>0)
+
+  SOFT  n=42
+    errore mediano  persistenza=0.1179  climatologia=0.0963  s/giro
+    miglioramento mediano appaiato (clim-pers per stint) = -0.0196  <- effect-size del gate
+    differenza-delle-mediane (secondaria)                = -0.0217
+    Wilcoxon appaiato p = 0.02412
+    -> NULL  (serve p<0.05 AND miglioramento appaiato>0)
+  MEDIUM  n=162
+    errore mediano  persistenza=0.0801  climatologia=0.0805  s/giro
+    miglioramento mediano appaiato (clim-pers per stint) = -0.0106  <- effect-size del gate
+    differenza-delle-mediane (secondaria)                = +0.0004
+    Wilcoxon appaiato p = 0.01884
+    NB: le due misure DIVERGONO (rumore): l'appaiata (col test) e' <0,
+        la differenza-delle-mediane e' >0 -> prevale l'appaiata.
+    -> NULL  (serve p<0.05 AND miglioramento appaiato>0)
+  HARD  n=203
+    errore mediano  persistenza=0.1076  climatologia=0.0823  s/giro
+    miglioramento mediano appaiato (clim-pers per stint) = -0.0193  <- effect-size del gate
+    differenza-delle-mediane (secondaria)                = -0.0253
+    Wilcoxon appaiato p = 1.021e-05
+    -> NULL  (serve p<0.05 AND miglioramento appaiato>0)
+
+============================================================================
+VERDETTO DI SCOPING (meccanico)
+============================================================================
+  NULL: il segnale intra-stint NON batte la climatologia storica
+  (miglioramento mediano appaiato <= 0 (persistenza tipicamente PEGGIORE)). Esito forte e utile: a costo minimo si scopre che
+  nemmeno il segnale della gara stessa predice la gara stessa a livello di stint.
+
+Nota: verdetto MECCANICO di scoping. Il verdetto STRATEGICO (costruire v2, passare
+all'FP, o fermarsi) NON e' scritto qui: e' del PO.
+============================================================================
