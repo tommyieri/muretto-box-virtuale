@@ -1,0 +1,41 @@
+==============================================================================
+PRONTEZZA-DATO long-run FP come fonte di degrado — ESITO DI RIGETTO
+==============================================================================
+NON un modello: verdetto se l'FP 2026 puo' essere una fonte di degrado. NESSUN valore
+entra nel motore; non riabilita alcun NON-VALIDATO. Riferimento: SOLO replay
+marg_iso_centrale (misura nostra, generatore committato). stint_gold NON usato (orfano).
+
+(C0) FONTE: long_run_fp_2026.csv ha generatore committato verificato? NO -> e' DEBITO, non una fonte
+     (nessuno script tracciato scrive il file; regola n.1: senza generatore + nota di
+     metodo + auto-verifica i numeri non sono certificabili — classe warm-in / gamma_linlog).
+
+  compound  FP mediana                IQR  frac<0  replay(verif)       gap  C1>0  C3 x3
+  SOFT         -0.0174    [-0.121,+0.179]    0.52        +0.0667   -0.0841    NO     NO
+  MEDIUM       +0.0080    [-0.106,+0.129]    0.48        +0.0362   -0.0282    OK     NO
+  HARD         -0.0662    [-0.231,+0.016]    0.69        +0.0437   -0.1100    NO     NO
+  (C2) ordine FP SOFT>=MEDIUM>=HARD: INVERTITO (S-0.017 M+0.008 H-0.066)
+
+ESITO: NON UTILIZZABILE (rigetto)
+
+DIAGNOSTICA (perche' i numeri, a valore facciale, non reggono):
+  (a) gap FP - replay per compound (offset, s/giro):
+      SOFT  : -0.0841
+      MEDIUM: -0.0282
+      HARD  : -0.1100
+      -> tutti negativi (-0.110..-0.028): l'FP siede sotto la misura
+         verificata, la firma di un termine per-giro non rimosso (ordine di grandezza
+         compatibile col prior carburante gia' nel codice ~0.03 s/kg x qualche kg/giro).
+  (b) controllo lunghezza: Spearman(slope, giri run) = -0.018 (p=7.33e-01, n=343);
+      run di lunghezza simile (mediana giri S8/M9/H8). L'offset NON dipende dalla lunghezza -> e' per-giro, non un
+      artefatto di run lunghi. (Coerente col carburante; ma vedi C0: metodo ignoto.)
+
+COSA SERVIREBBE (dato mancante, NON inventato):
+  1. un generatore committato + nota di metodo per i degrado_slope FP (come fu
+     ricostruito per degrado_gamma_linlog): senza, il file resta debito;
+  2. il carico carburante per run (kg) o slope gia' fuel-corretti.
+  Solo con (1)+(2) si potrebbe discutere se l'FP valga qualcosa — come domanda NUOVA
+  con KPI pre-registrato e validazione fuori campione, non come scorciatoia.
+
+PERIMETRO: esito di rigetto/prontezza-dato. Nessun verdetto strategico (procurare i
+dati carburante / il generatore, o fermarsi): e' del PO.
+==============================================================================
