@@ -1,0 +1,4 @@
+compound,n_fp,fp_mediana,fp_iqr_lo,fp_iqr_hi,fp_frac_neg,replay_centrale_verificato,gap_fp_meno_replay,C1_segno_pos,C3_fattore3
+SOFT,88,-0.0174,-0.1212,0.1795,0.523,0.0667,-0.0841,0,0
+MEDIUM,165,0.0080,-0.1062,0.1290,0.485,0.0362,-0.0282,1,0
+HARD,90,-0.0662,-0.2312,0.0164,0.689,0.0437,-0.1100,0,0
