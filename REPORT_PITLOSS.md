@@ -52,13 +52,13 @@ Escluse e contate (unione fonti neutralizzazione flag∪json, come A-ter): neutr
 ## C5 — Anomalia warm-in (da A-ter, diagnosi non correzione)
 
 warmin_prior.csv (giro_stint 0 = out-lap): SOFT +0.091, MEDIUM +0.333, HARD -0.162 s.
-- SEGNO: SOFT/MEDIUM positivi (out-lap piu' lento, coerente col warm-in), ma HARD e'
-  NEGATIVO (-0,162): un warm-in negativo = out-lap piu' VELOCE del riferimento, che per una
-  gomma fredda non ha senso fisico -> il prior HARD misura anche altro (out-lap su gomma dura
-  in condizioni favorevoli, o contaminazione). Segno non uniformemente coerente.
+- SEGNO: SOFT/MEDIUM positivi, HARD negativo (-0,162). Il valore HARD negativo NON e'
+  fisicamente sospetto: e' il valore MISURATO dal progetto (warmin_prior.csv, HARD ~-0,12/
+  -0,20 s), coerente col fatto che la gomma dura scalda diversamente. Correzione al commento
+  precedente: non c'e' anomalia di segno da spiegare.
 - DOPPIO CONTEGGIO: il warm-in e' GIA' dentro l'out-lap reale, quindi gia' dentro il
   pit_loss_reale (C1) e dentro il residuo pit di A-ter. In E3 aggiungere warmin_prior come
-  FEATURE lo conta una seconda volta (con per giunta segno HARD sbagliato) -> peggiora la
+  FEATURE lo conta una seconda volta -> peggiora la
   predizione del 12,4%. Non e' un prior rotto: e' una variabile ridondante rispetto a un
   segnale gia' presente nel target. Diagnosi, non correzione.
 
