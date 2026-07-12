@@ -1,0 +1,10 @@
+gara,cid,n_gap,pit_loss_gap,calibrato_D,reale_C,nominale,diff_gap_D,verdetto
+Australia,melbourne,8,26.05,25.05,25.17,18.15,1.00,CONFERMATO
+Austria,spielberg,33,21.87,20.91,21.87,21.63,0.96,CONFERMATO
+Canada,montreal,16,27.66,24.99,27.33,24.37,2.67,AMBIGUO
+Cina,shanghai,6,34.87,34.27,32.62,22.97,0.60,CONFERMATO
+Giappone,suzuka,14,24.47,23.48,23.32,23.72,0.99,CONFERMATO
+Gran Bretagna,silverstone,18,20.93,19.71,20.90,29.12,1.22,CONFERMATO
+Miami,miami,19,20.85,19.65,19.51,22.63,1.20,CONFERMATO
+Monaco,monaco,19,22.08,22.02,22.00,24.8,0.06,CONFERMATO
+Spagna,catalunya,40,24.13,21.60,24.37,22.38,2.53,AMBIGUO

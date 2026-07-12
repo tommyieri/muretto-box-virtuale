@@ -1,0 +1,174 @@
+gara,cid,drv,L,n_ref,pit_loss_gap,iqr_ref
+Australia,melbourne,COL,9,19,31.628,1.666
+Australia,melbourne,LEC,25,14,18.465,2.299
+Australia,melbourne,STR,26,11,46.883,2.341
+Australia,melbourne,HAM,28,14,19.264,3.239
+Australia,melbourne,VER,41,12,18.736,3.787
+Australia,melbourne,PER,43,4,28.262,1.246
+Australia,melbourne,SAI,45,10,38.974,3.921
+Australia,melbourne,COL,46,10,23.834,3.843
+Austria,spielberg,HAM,12,17,18.93,3.37
+Austria,spielberg,GAS,13,16,21.488,3.363
+Austria,spielberg,LEC,13,16,19.241,3.363
+Austria,spielberg,SAI,14,17,22.115,3.754
+Austria,spielberg,BOR,17,14,21.562,3.872
+Austria,spielberg,ALB,18,11,23.019,4.076
+Austria,spielberg,HAD,18,11,18.373,4.076
+Austria,spielberg,LIN,18,11,19.708,4.076
+Austria,spielberg,OCO,18,11,23.782,4.076
+Austria,spielberg,VER,18,11,17.427,4.076
+Austria,spielberg,LAW,19,11,21.873,4.064
+Austria,spielberg,PIA,19,11,20.152,4.064
+Austria,spielberg,RUS,19,11,18.521,4.064
+Austria,spielberg,COL,20,14,25.205,4.101
+Austria,spielberg,HUL,21,17,22.506,4.132
+Austria,spielberg,NOR,21,17,22.361,4.132
+Austria,spielberg,OCO,33,18,27.534,3.227
+Austria,spielberg,ALB,37,13,22.878,3.742
+Austria,spielberg,LEC,37,13,21.807,2.818
+Austria,spielberg,GAS,38,16,21.23,3.236
+Austria,spielberg,HAD,40,14,18.915,2.297
+Austria,spielberg,HAM,42,11,19.443,3.639
+Austria,spielberg,PIA,42,11,19.52,3.639
+Austria,spielberg,RUS,43,8,19.537,3.108
+Austria,spielberg,BOR,44,12,22.828,3.693
+Austria,spielberg,BEA,45,10,23.975,4.063
+Austria,spielberg,HUL,45,12,22.516,3.152
+Austria,spielberg,LAW,45,11,24.001,2.569
+Austria,spielberg,COL,46,9,24.389,4.268
+Austria,spielberg,LIN,46,11,24.383,2.408
+Austria,spielberg,NOR,47,11,21.193,2.004
+Austria,spielberg,VER,49,7,21.992,1.174
+Austria,spielberg,LEC,59,11,25.092,1.24
+Canada,montreal,BOR,2,14,30.885,6.135
+Canada,montreal,HUL,2,14,24.707,6.135
+Canada,montreal,NOR,2,14,18.239,6.135
+Canada,montreal,PER,2,14,28.526,6.135
+Canada,montreal,SAI,2,14,25.235,6.135
+Canada,montreal,BOT,3,15,33.153,5.263
+Canada,montreal,BOT,9,20,29.769,2.682
+Canada,montreal,PIA,12,19,37.332,4.591
+Canada,montreal,STR,14,17,26.414,2.558
+Canada,montreal,NOR,15,15,26.786,3.236
+Canada,montreal,PER,15,16,24.982,3.366
+Canada,montreal,OCO,16,17,28.788,2.604
+Canada,montreal,BOR,18,19,24.874,3.336
+Canada,montreal,ALO,20,16,26.731,4.542
+Canada,montreal,HUL,20,18,28.959,4.066
+Canada,montreal,HAD,62,8,30.823,1.485
+Cina,shanghai,OCO,29,16,27.462,2.507
+Cina,shanghai,ALO,31,15,38.656,2.851
+Cina,shanghai,COL,32,15,31.079,3.105
+Cina,shanghai,HUL,35,15,41.431,2.246
+Cina,shanghai,LIN,42,15,25.739,2.355
+Cina,shanghai,OCO,46,12,49.782,2.194
+Giappone,suzuka,BEA,16,18,22.728,2.947
+Giappone,suzuka,NOR,16,18,19.196,2.947
+Giappone,suzuka,COL,17,16,22.768,3.053
+Giappone,suzuka,LEC,17,16,18.41,3.053
+Giappone,suzuka,LIN,18,15,25.987,2.905
+Giappone,suzuka,PIA,18,15,19.905,2.905
+Giappone,suzuka,BOT,19,17,30.723,3.01
+Giappone,suzuka,HAD,19,17,22.187,3.01
+Giappone,suzuka,OCO,19,17,24.309,3.01
+Giappone,suzuka,ALB,45,19,24.634,4.227
+Giappone,suzuka,ALB,46,19,44.643,2.765
+Giappone,suzuka,ALB,47,19,48.119,2.286
+Giappone,suzuka,ALB,48,18,57.487,1.91
+Giappone,suzuka,ALB,49,11,55.795,1.742
+Gran Bretagna,silverstone,PIA,2,20,55.511,4.768
+Gran Bretagna,silverstone,ALB,14,11,33.243,2.662
+Gran Bretagna,silverstone,HUL,17,18,20.795,3.554
+Gran Bretagna,silverstone,VER,17,18,16.298,3.554
+Gran Bretagna,silverstone,STR,18,18,24.441,3.744
+Gran Bretagna,silverstone,HAD,19,17,19.909,3.458
+Gran Bretagna,silverstone,LEC,25,15,17.829,3.121
+Gran Bretagna,silverstone,BOR,26,17,19.691,2.306
+Gran Bretagna,silverstone,LIN,27,15,20.547,4.047
+Gran Bretagna,silverstone,LAW,28,14,21.062,3.083
+Gran Bretagna,silverstone,NOR,28,14,20.182,3.083
+Gran Bretagna,silverstone,BEA,29,17,24.061,3.021
+Gran Bretagna,silverstone,BOT,29,15,28.2,3.896
+Gran Bretagna,silverstone,HUL,34,18,25.017,4.531
+Gran Bretagna,silverstone,RUS,34,15,18.47,3.322
+Gran Bretagna,silverstone,ANT,35,10,18.309,1.417
+Gran Bretagna,silverstone,ANT,41,11,48.14,2.581
+Gran Bretagna,silverstone,ANT,43,16,33.039,3.636
+Miami,miami,RUS,20,14,15.157,3.293
+Miami,miami,BOT,21,14,24.821,3.374
+Miami,miami,LEC,21,14,17.855,3.374
+Miami,miami,STR,21,14,22.348,3.374
+Miami,miami,ANT,26,13,13.005,3.884
+Miami,miami,BEA,26,13,17.742,3.884
+Miami,miami,ALB,27,10,16.981,4.378
+Miami,miami,HAM,27,10,16.684,4.378
+Miami,miami,NOR,27,10,15.076,4.378
+Miami,miami,LIN,28,11,21.236,4.52
+Miami,miami,PIA,28,11,17.771,4.52
+Miami,miami,SAI,28,11,19.68,4.52
+Miami,miami,PER,29,13,24.233,3.847
+Miami,miami,BOT,30,14,23.826,2.39
+Miami,miami,COL,31,14,20.854,2.51
+Miami,miami,OCO,31,14,22.486,2.51
+Miami,miami,BOR,32,15,22.017,3.834
+Miami,miami,STR,37,15,22.216,2.396
+Miami,miami,ALO,41,15,22.598,2.274
+Monaco,monaco,ALO,3,18,22.208,3.613
+Monaco,monaco,PER,4,18,22.835,4.148
+Monaco,monaco,STR,4,18,23.264,4.148
+Monaco,monaco,OCO,9,19,22.08,4.536
+Monaco,monaco,PER,9,19,16.573,4.536
+Monaco,monaco,HUL,12,20,17.93,2.33
+Monaco,monaco,HAM,28,14,17.503,1.258
+Monaco,monaco,RUS,31,16,18.26,2.149
+Monaco,monaco,HAD,32,16,23.004,2.652
+Monaco,monaco,COL,35,16,23.276,5.139
+Monaco,monaco,LEC,35,13,23.042,6.972
+Monaco,monaco,ANT,37,6,20.283,2.542
+Monaco,monaco,ALB,43,14,22.319,3.705
+Monaco,monaco,BOR,43,8,18.34,1.173
+Monaco,monaco,LAW,44,13,22.772,4.556
+Monaco,monaco,GAS,45,14,21.918,8.851
+Monaco,monaco,PIA,48,14,22.997,4.59
+Monaco,monaco,SAI,52,14,18.224,6.139
+Monaco,monaco,RUS,72,14,12.911,4.405
+Spagna,catalunya,HAM,11,15,16.868,4.279
+Spagna,catalunya,LAW,11,15,24.185,4.279
+Spagna,catalunya,COL,12,11,21.343,4.338
+Spagna,catalunya,PER,12,11,25.618,4.338
+Spagna,catalunya,RUS,12,11,16.229,4.338
+Spagna,catalunya,VER,12,11,17.392,4.338
+Spagna,catalunya,ALB,13,8,25.336,4.253
+Spagna,catalunya,HUL,13,8,23.432,4.253
+Spagna,catalunya,NOR,13,8,17.28,4.253
+Spagna,catalunya,OCO,13,8,24.34,4.253
+Spagna,catalunya,ANT,14,10,19.438,6.1
+Spagna,catalunya,BOT,14,10,44.522,6.1
+Spagna,catalunya,GAS,14,10,24.078,6.1
+Spagna,catalunya,PIA,14,10,22.817,6.1
+Spagna,catalunya,SAI,14,10,26.299,6.1
+Spagna,catalunya,BOR,15,13,25.722,5.379
+Spagna,catalunya,HAD,15,13,21.412,5.379
+Spagna,catalunya,LEC,16,17,21.296,5.993
+Spagna,catalunya,BEA,18,19,28.209,4.981
+Spagna,catalunya,ALO,21,18,31.238,2.732
+Spagna,catalunya,LIN,22,18,26.398,2.992
+Spagna,catalunya,HAM,27,15,18.683,3.534
+Spagna,catalunya,ALB,29,12,26.167,4.75
+Spagna,catalunya,VER,29,14,21.719,3.27
+Spagna,catalunya,SAI,30,15,25.058,3.2
+Spagna,catalunya,PER,31,10,27.121,1.867
+Spagna,catalunya,HAD,32,14,21.175,3.787
+Spagna,catalunya,BOR,33,11,24.966,4.122
+Spagna,catalunya,COL,34,13,24.802,4.803
+Spagna,catalunya,OCO,34,9,27.54,4.247
+Spagna,catalunya,LAW,35,12,25.379,4.173
+Spagna,catalunya,NOR,35,6,22.244,2.038
+Spagna,catalunya,PIA,36,7,23.492,3.893
+Spagna,catalunya,RUS,36,5,23.001,1.787
+Spagna,catalunya,ANT,37,6,21.767,3.258
+Spagna,catalunya,LIN,37,12,23.407,3.899
+Spagna,catalunya,BOR,53,9,24.747,1.989
+Spagna,catalunya,SAI,55,9,25.07,5.316
+Spagna,catalunya,HAD,58,10,22.761,2.635
+Spagna,catalunya,OCO,58,8,25.649,1.632
