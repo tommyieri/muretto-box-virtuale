@@ -32,6 +32,20 @@ realizzato (24,24) e P11 col tipico (18,96/19,71).
 Le misure non attivate restano agli atti in `data/pitloss_realizzato_2026.csv`: non sono
 sbagliate — sono giuste per una grandezza che il rango al rientro non premia in quelle gare.
 
+## REGOLA SOSTITUITA (14/07/2026)
+
+La vecchia regola "pitloss.json e pit_loss_circuito_f1db.csv sono due fonti dello stesso
+valore: cambiarle entrambe" **NON VALE PIÙ**. Nel protocollo per-gara sono **DUE GRANDEZZE
+DIVERSE**: il CSV è il **TIPICO di circuito**, il JSON è il **valore IN USO per quella gara**
+(realizzato dove misurato). **NON si allineano: allinearli distruggerebbe il realizzato.**
+
+Dove la vecchia regola è scritta (documenti storici, contenuto preservato, non riscritti):
+- `NOTA_SILVERSTONE.md` § "Le due fonti cambiate (coerentemente)" — era corretta ALLORA
+  (pre-architettura per-gara): banner di rimando in testa a quel paragrafo.
+- Messaggi di commit e PR delle attivazioni Silverstone/Montreal — immutabili per natura.
+Il guard in `pubblica()` (quando verrà implementato — vedi avvertenza sotto) la farà
+rispettare nel codice; fino ad allora la difesa è solo procedurale.
+
 ## Il protocollo ricorrente per le gare future
 
 1. **Allo staging** (`pipeline_gara.py`, invariato): la gara nuova riceve il **tipico** dal CSV.
