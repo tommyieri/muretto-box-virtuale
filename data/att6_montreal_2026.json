@@ -1,0 +1,600 @@
+{
+  "circuito": "montreal",
+  "anno": 2026,
+  "candidato": 18.96,
+  "produzione": 24.37,
+  "gara_demo": "Canada",
+  "tipicita": {
+    "loss_gara": 24.238,
+    "mediana_grappolo": 19.701,
+    "scarto": 4.537,
+    "soglia": 2,
+    "esito": "NON GIUDICABILE",
+    "blocchi_grappolo": {
+      "2018-r7": 18.4357,
+      "2019-r7": 19.7135,
+      "2022-r9": 19.65,
+      "2023-r8": 19.701,
+      "2025-r10": 19.8263
+    },
+    "transito_gara": 25.09,
+    "transito_grappolo": 23.859,
+    "delta_transito_informativo": 1.231
+  },
+  "drive_through_esclusi": [
+    "HAD L62"
+  ],
+  "casi": [
+    {
+      "caso": "PIA L1",
+      "saltato": "freeze L-1 o rientro L2 fuori gara"
+    },
+    {
+      "caso": "BOR L2",
+      "saltato": "freeze L0 o rientro L3 fuori gara"
+    },
+    {
+      "caso": "HUL L2",
+      "saltato": "freeze L0 o rientro L3 fuori gara"
+    },
+    {
+      "caso": "NOR L2",
+      "saltato": "freeze L0 o rientro L3 fuori gara"
+    },
+    {
+      "caso": "PER L2",
+      "saltato": "freeze L0 o rientro L3 fuori gara"
+    },
+    {
+      "caso": "SAI L2",
+      "saltato": "freeze L0 o rientro L3 fuori gara"
+    },
+    {
+      "caso": "BOT L3",
+      "saltato": "pilota non in pista al giro scelto"
+    },
+    {
+      "caso": "BOT L9",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 21,
+      "adesso": 21,
+      "reale": 21,
+      "n_field_motore": 21,
+      "n_field_reale": 21,
+      "err_prima": 0,
+      "err_adesso": 0,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "PIA L12",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 17,
+      "adesso": 17,
+      "reale": 19,
+      "n_field_motore": 20,
+      "n_field_reale": 20,
+      "err_prima": 2,
+      "err_adesso": 2,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "STR L14",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 19,
+      "adesso": 19,
+      "reale": 19,
+      "n_field_motore": 19,
+      "n_field_reale": 20,
+      "err_prima": 0,
+      "err_adesso": 0,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "NOR L15",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "HUL",
+          "gap": -1.34
+        },
+        {
+          "d": "BOR",
+          "gap": 3.49
+        },
+        {
+          "d": "ALO",
+          "gap": -3.72
+        }
+      ],
+      "prima": 14,
+      "adesso": 11,
+      "reale": 14,
+      "n_field_motore": 18,
+      "n_field_reale": 20,
+      "err_prima": 0,
+      "err_adesso": 3,
+      "esito": "PEGGIORATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "PER L15",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 18,
+      "adesso": 18,
+      "reale": 18,
+      "n_field_motore": 18,
+      "n_field_reale": 20,
+      "err_prima": 0,
+      "err_adesso": 0,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "PIA"
+      ]
+    },
+    {
+      "caso": "OCO L16",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 17,
+      "adesso": 17,
+      "reale": 17,
+      "n_field_motore": 17,
+      "n_field_reale": 20,
+      "err_prima": 0,
+      "err_adesso": 0,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "PIA"
+      ]
+    },
+    {
+      "caso": "BOR L18",
+      "sensibile": false,
+      "auto_vicine": [
+        {
+          "d": "OCO",
+          "gap": -2.23
+        }
+      ],
+      "prima": 14,
+      "adesso": 14,
+      "reale": 17,
+      "n_field_motore": 14,
+      "n_field_reale": 20,
+      "err_prima": 3,
+      "err_adesso": 3,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "NOR",
+        "PIA",
+        "OCO"
+      ]
+    },
+    {
+      "caso": "ALO L20",
+      "sensibile": false,
+      "auto_vicine": [
+        {
+          "d": "BOR",
+          "gap": -1.2
+        }
+      ],
+      "prima": 13,
+      "adesso": 13,
+      "reale": 17,
+      "n_field_motore": 13,
+      "n_field_reale": 20,
+      "err_prima": 4,
+      "err_adesso": 4,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "NOR",
+        "PIA",
+        "OCO",
+        "BOR"
+      ]
+    },
+    {
+      "caso": "HUL L20",
+      "sensibile": false,
+      "auto_vicine": [
+        {
+          "d": "OCO",
+          "gap": 1.72
+        }
+      ],
+      "prima": 13,
+      "adesso": 13,
+      "reale": 14,
+      "n_field_motore": 13,
+      "n_field_reale": 20,
+      "err_prima": 1,
+      "err_adesso": 1,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "NOR",
+        "PIA"
+      ]
+    },
+    {
+      "caso": "BOT L29",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 1,
+      "adesso": 1,
+      "reale": 19,
+      "n_field_motore": 1,
+      "n_field_reale": 19,
+      "err_prima": 18,
+      "err_adesso": 18,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "ANT",
+        "VER",
+        "HAM",
+        "LEC",
+        "HAD",
+        "RUS",
+        "COL",
+        "LAW",
+        "GAS",
+        "NOR",
+        "SAI",
+        "BEA",
+        "PIA",
+        "HUL",
+        "BOR",
+        "OCO",
+        "PER",
+        "STR"
+      ]
+    },
+    {
+      "caso": "PER L29",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 6,
+      "adesso": 6,
+      "reale": 17,
+      "n_field_motore": 7,
+      "n_field_reale": 19,
+      "err_prima": 11,
+      "err_adesso": 11,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "ANT",
+        "VER",
+        "HAM",
+        "LEC",
+        "HAD",
+        "RUS",
+        "COL",
+        "LAW",
+        "GAS",
+        "SAI",
+        "BEA"
+      ]
+    },
+    {
+      "caso": "BEA L30",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 11,
+      "adesso": 11,
+      "reale": 11,
+      "n_field_motore": 11,
+      "n_field_reale": 18,
+      "err_prima": 0,
+      "err_adesso": 0,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "NOR"
+      ]
+    },
+    {
+      "caso": "COL L30",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 10,
+      "adesso": 9,
+      "reale": 6,
+      "n_field_motore": 11,
+      "n_field_reale": 18,
+      "err_prima": 4,
+      "err_adesso": 3,
+      "esito": "MIGLIORATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "GAS L30",
+      "sensibile": false,
+      "auto_vicine": [
+        {
+          "d": "LAW",
+          "gap": -3.91
+        }
+      ],
+      "prima": 11,
+      "adesso": 11,
+      "reale": 8,
+      "n_field_motore": 11,
+      "n_field_reale": 18,
+      "err_prima": 3,
+      "err_adesso": 3,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "LAW L30",
+      "sensibile": false,
+      "auto_vicine": [
+        {
+          "d": "GAS",
+          "gap": 3.91
+        }
+      ],
+      "prima": 11,
+      "adesso": 11,
+      "reale": 7,
+      "n_field_motore": 11,
+      "n_field_reale": 18,
+      "err_prima": 4,
+      "err_adesso": 4,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "OCO L30",
+      "sensibile": false,
+      "auto_vicine": [
+        {
+          "d": "PER",
+          "gap": 0.71
+        }
+      ],
+      "prima": 6,
+      "adesso": 6,
+      "reale": 15,
+      "n_field_motore": 6,
+      "n_field_reale": 18,
+      "err_prima": 9,
+      "err_adesso": 9,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "ANT",
+        "VER",
+        "HAM",
+        "HAD",
+        "LEC",
+        "COL",
+        "LAW",
+        "GAS",
+        "SAI",
+        "BEA"
+      ]
+    },
+    {
+      "caso": "SAI L30",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 11,
+      "adesso": 11,
+      "reale": 10,
+      "n_field_motore": 11,
+      "n_field_reale": 18,
+      "err_prima": 1,
+      "err_adesso": 1,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "NOR"
+      ]
+    },
+    {
+      "caso": "ANT L31",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 6,
+      "adesso": 6,
+      "reale": 1,
+      "n_field_motore": 11,
+      "n_field_reale": 18,
+      "err_prima": 5,
+      "err_adesso": 5,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "HAD L31",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "LEC",
+          "gap": 1.85
+        },
+        {
+          "d": "HAM",
+          "gap": -3.09
+        }
+      ],
+      "prima": 6,
+      "adesso": 6,
+      "reale": 4,
+      "n_field_motore": 11,
+      "n_field_reale": 18,
+      "err_prima": 2,
+      "err_adesso": 2,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "HAM L31",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "HAD",
+          "gap": 3.09
+        },
+        {
+          "d": "LEC",
+          "gap": 4.94
+        }
+      ],
+      "prima": 6,
+      "adesso": 6,
+      "reale": 3,
+      "n_field_motore": 11,
+      "n_field_reale": 18,
+      "err_prima": 3,
+      "err_adesso": 3,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "LEC L31",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "HAD",
+          "gap": -1.85
+        },
+        {
+          "d": "HAM",
+          "gap": -4.94
+        }
+      ],
+      "prima": 6,
+      "adesso": 6,
+      "reale": 5,
+      "n_field_motore": 11,
+      "n_field_reale": 18,
+      "err_prima": 1,
+      "err_adesso": 1,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "VER L31",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 6,
+      "adesso": 6,
+      "reale": 2,
+      "n_field_motore": 11,
+      "n_field_reale": 18,
+      "err_prima": 4,
+      "err_adesso": 4,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "BOT L49",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 1,
+      "adesso": 1,
+      "reale": 16,
+      "n_field_motore": 1,
+      "n_field_reale": 16,
+      "err_prima": 15,
+      "err_adesso": 15,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "ANT",
+        "VER",
+        "HAM",
+        "LEC",
+        "HAD",
+        "COL",
+        "LAW",
+        "GAS",
+        "SAI",
+        "BEA",
+        "PIA",
+        "HUL",
+        "BOR",
+        "OCO",
+        "STR"
+      ]
+    },
+    {
+      "caso": "STR L49",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 2,
+      "adesso": 2,
+      "reale": 15,
+      "n_field_motore": 2,
+      "n_field_reale": 16,
+      "err_prima": 13,
+      "err_adesso": 13,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "ANT",
+        "VER",
+        "HAM",
+        "LEC",
+        "HAD",
+        "COL",
+        "LAW",
+        "GAS",
+        "SAI",
+        "BEA",
+        "PIA",
+        "HUL",
+        "BOR"
+      ]
+    },
+    {
+      "caso": "PIA L51",
+      "sensibile": false,
+      "auto_vicine": [
+        {
+          "d": "BOR",
+          "gap": -4.11
+        }
+      ],
+      "prima": 7,
+      "adesso": 7,
+      "reale": 13,
+      "n_field_motore": 7,
+      "n_field_reale": 16,
+      "err_prima": 6,
+      "err_adesso": 6,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "ANT",
+        "VER",
+        "HAM",
+        "LEC",
+        "HAD",
+        "COL"
+      ]
+    },
+    {
+      "caso": "HAD L52",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 5,
+      "adesso": 5,
+      "reale": 5,
+      "n_field_motore": 6,
+      "n_field_reale": 16,
+      "err_prima": 0,
+      "err_adesso": 0,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    }
+  ],
+  "sintesi": {
+    "tipicita": "Tipicita': NON GIUDICABILE (scarto 4.54 s)",
+    "casi": "Casi: 26 totali, 4 sensibili — migliorati/peggiorati/invariati: 1/1/24 (sensibili: 0/1/3)",
+    "esito": "Esito: NON GIUDICABILE"
+  }
+}
