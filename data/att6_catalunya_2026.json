@@ -1,0 +1,1196 @@
+{
+  "circuito": "catalunya",
+  "anno": 2026,
+  "candidato": 24.59,
+  "produzione": 22.38,
+  "gara_demo": "Spagna",
+  "tipicita": {
+    "loss_gara": 24.589,
+    "mediana_grappolo": 22.9305,
+    "scarto": 1.6585,
+    "soglia": 2,
+    "esito": "GIUDICABILE",
+    "blocchi_grappolo": {
+      "2019-r5": 23.5695,
+      "2020-r6": 22.4045,
+      "2021-r4": 23.266,
+      "2022-r6": 22.9305,
+      "2023-r7": 23.914,
+      "2024-r10": 22.9015,
+      "2025-r9": 22.5565
+    },
+    "transito_gara": 22.678,
+    "transito_grappolo": 22.293,
+    "delta_transito_informativo": 0.385
+  },
+  "drive_through_esclusi": [],
+  "casi": [
+    {
+      "caso": "HAM L11",
+      "sensibile": false,
+      "auto_vicine": [
+        {
+          "d": "HUL",
+          "gap": 4.77
+        }
+      ],
+      "prima": 7,
+      "adesso": 7,
+      "reale": 7,
+      "n_field_motore": 21,
+      "n_field_reale": 21,
+      "err_prima": 0,
+      "err_adesso": 0,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "LAW L11",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "PER",
+          "gap": 0.3
+        },
+        {
+          "d": "ALO",
+          "gap": 4.48
+        }
+      ],
+      "prima": 19,
+      "adesso": 19,
+      "reale": 18,
+      "n_field_motore": 21,
+      "n_field_reale": 21,
+      "err_prima": 1,
+      "err_adesso": 1,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "COL L12",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "ALO",
+          "gap": 1.79
+        },
+        {
+          "d": "BOT",
+          "gap": 4.22
+        }
+      ],
+      "prima": 21,
+      "adesso": 21,
+      "reale": 18,
+      "n_field_motore": 21,
+      "n_field_reale": 21,
+      "err_prima": 3,
+      "err_adesso": 3,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "PER L12",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 21,
+      "adesso": 21,
+      "reale": 21,
+      "n_field_motore": 21,
+      "n_field_reale": 21,
+      "err_prima": 0,
+      "err_adesso": 0,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "RUS L12",
+      "sensibile": false,
+      "auto_vicine": [
+        {
+          "d": "HAM",
+          "gap": 1.45
+        }
+      ],
+      "prima": 7,
+      "adesso": 7,
+      "reale": 5,
+      "n_field_motore": 21,
+      "n_field_reale": 21,
+      "err_prima": 2,
+      "err_adesso": 2,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "VER L12",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "HAD",
+          "gap": -1.65
+        },
+        {
+          "d": "HUL",
+          "gap": 2.05
+        },
+        {
+          "d": "LIN",
+          "gap": 3.39
+        }
+      ],
+      "prima": 10,
+      "adesso": 10,
+      "reale": 8,
+      "n_field_motore": 21,
+      "n_field_reale": 21,
+      "err_prima": 2,
+      "err_adesso": 2,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "ALB L13",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "PER",
+          "gap": 1.85
+        },
+        {
+          "d": "BOT",
+          "gap": -2.85
+        },
+        {
+          "d": "OCO",
+          "gap": -4.56
+        }
+      ],
+      "prima": 21,
+      "adesso": 21,
+      "reale": 20,
+      "n_field_motore": 21,
+      "n_field_reale": 21,
+      "err_prima": 1,
+      "err_adesso": 1,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "HUL L13",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "LAW",
+          "gap": -2.06
+        },
+        {
+          "d": "COL",
+          "gap": 3.04
+        }
+      ],
+      "prima": 19,
+      "adesso": 19,
+      "reale": 15,
+      "n_field_motore": 21,
+      "n_field_reale": 21,
+      "err_prima": 4,
+      "err_adesso": 4,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "NOR L13",
+      "sensibile": false,
+      "auto_vicine": [
+        {
+          "d": "VER",
+          "gap": 3.44
+        }
+      ],
+      "prima": 7,
+      "adesso": 7,
+      "reale": 6,
+      "n_field_motore": 21,
+      "n_field_reale": 21,
+      "err_prima": 1,
+      "err_adesso": 1,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "OCO L13",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "BOT",
+          "gap": 1.7
+        },
+        {
+          "d": "ALB",
+          "gap": 4.56
+        }
+      ],
+      "prima": 21,
+      "adesso": 21,
+      "reale": 18,
+      "n_field_motore": 21,
+      "n_field_reale": 21,
+      "err_prima": 3,
+      "err_adesso": 3,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "ANT L14",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "NOR",
+          "gap": 1.24
+        },
+        {
+          "d": "VER",
+          "gap": 4.53
+        }
+      ],
+      "prima": 6,
+      "adesso": 6,
+      "reale": 4,
+      "n_field_motore": 19,
+      "n_field_reale": 21,
+      "err_prima": 2,
+      "err_adesso": 2,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "HAM"
+      ]
+    },
+    {
+      "caso": "BOT L14",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 19,
+      "adesso": 19,
+      "reale": 21,
+      "n_field_motore": 19,
+      "n_field_reale": 21,
+      "err_prima": 2,
+      "err_adesso": 2,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "HAM",
+        "LAW"
+      ]
+    },
+    {
+      "caso": "GAS L14",
+      "sensibile": false,
+      "auto_vicine": [
+        {
+          "d": "COL",
+          "gap": -4
+        }
+      ],
+      "prima": 17,
+      "adesso": 18,
+      "reale": 15,
+      "n_field_motore": 19,
+      "n_field_reale": 21,
+      "err_prima": 2,
+      "err_adesso": 3,
+      "esito": "PEGGIORATO",
+      "esclusi_davanti": [
+        "HAM",
+        "LAW"
+      ]
+    },
+    {
+      "caso": "PIA L14",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "HAD",
+          "gap": -1.8
+        },
+        {
+          "d": "LIN",
+          "gap": 2.03
+        }
+      ],
+      "prima": 8,
+      "adesso": 9,
+      "reale": 8,
+      "n_field_motore": 19,
+      "n_field_reale": 21,
+      "err_prima": 0,
+      "err_adesso": 1,
+      "esito": "PEGGIORATO",
+      "esclusi_davanti": [
+        "HAM"
+      ]
+    },
+    {
+      "caso": "SAI L14",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "ALO",
+          "gap": -0.42
+        },
+        {
+          "d": "OCO",
+          "gap": 1.77
+        }
+      ],
+      "prima": 18,
+      "adesso": 19,
+      "reale": 17,
+      "n_field_motore": 19,
+      "n_field_reale": 21,
+      "err_prima": 1,
+      "err_adesso": 2,
+      "esito": "PEGGIORATO",
+      "esclusi_davanti": [
+        "HAM",
+        "LAW"
+      ]
+    },
+    {
+      "caso": "BOR L15",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "ALB",
+          "gap": -0.42
+        },
+        {
+          "d": "PER",
+          "gap": 1.62
+        },
+        {
+          "d": "ALO",
+          "gap": -4.65
+        }
+      ],
+      "prima": 15,
+      "adesso": 15,
+      "reale": 19,
+      "n_field_motore": 15,
+      "n_field_reale": 20,
+      "err_prima": 4,
+      "err_adesso": 4,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "RUS",
+        "HAM",
+        "VER",
+        "LAW",
+        "COL"
+      ]
+    },
+    {
+      "caso": "HAD L15",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "LAW",
+          "gap": -0.26
+        },
+        {
+          "d": "HUL",
+          "gap": 1.73
+        },
+        {
+          "d": "BEA",
+          "gap": -3.02
+        },
+        {
+          "d": "COL",
+          "gap": 3.97
+        }
+      ],
+      "prima": 12,
+      "adesso": 12,
+      "reale": 11,
+      "n_field_motore": 15,
+      "n_field_reale": 20,
+      "err_prima": 1,
+      "err_adesso": 1,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "RUS",
+        "HAM",
+        "VER",
+        "LAW"
+      ]
+    },
+    {
+      "caso": "LEC L16",
+      "sensibile": false,
+      "auto_vicine": [
+        {
+          "d": "PIA",
+          "gap": 1.59
+        }
+      ],
+      "prima": 3,
+      "adesso": 4,
+      "reale": 6,
+      "n_field_motore": 11,
+      "n_field_reale": 20,
+      "err_prima": 3,
+      "err_adesso": 2,
+      "esito": "MIGLIORATO",
+      "esclusi_davanti": [
+        "RUS",
+        "HAM",
+        "NOR",
+        "VER"
+      ]
+    },
+    {
+      "caso": "BEA L18",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "PER",
+          "gap": -0.09
+        },
+        {
+          "d": "ALO",
+          "gap": -0.55
+        },
+        {
+          "d": "ALB",
+          "gap": -2.98
+        }
+      ],
+      "prima": 8,
+      "adesso": 9,
+      "reale": 20,
+      "n_field_motore": 10,
+      "n_field_reale": 20,
+      "err_prima": 12,
+      "err_adesso": 11,
+      "esito": "MIGLIORATO",
+      "esclusi_davanti": [
+        "ANT",
+        "NOR",
+        "PIA",
+        "HAD",
+        "HUL",
+        "GAS",
+        "SAI",
+        "OCO",
+        "BOR",
+        "ALB"
+      ]
+    },
+    {
+      "caso": "ALO L21",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 18,
+      "adesso": 18,
+      "reale": 20,
+      "n_field_motore": 18,
+      "n_field_reale": 20,
+      "err_prima": 2,
+      "err_adesso": 2,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "LEC",
+        "BEA"
+      ]
+    },
+    {
+      "caso": "LIN L22",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "BOR",
+          "gap": -3.19
+        },
+        {
+          "d": "OCO",
+          "gap": -3.61
+        },
+        {
+          "d": "BEA",
+          "gap": 4.59
+        }
+      ],
+      "prima": 16,
+      "adesso": 16,
+      "reale": 16,
+      "n_field_motore": 19,
+      "n_field_reale": 20,
+      "err_prima": 0,
+      "err_adesso": 0,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "HAM L27",
+      "sensibile": false,
+      "auto_vicine": [
+        {
+          "d": "PIA",
+          "gap": -0.28
+        }
+      ],
+      "prima": 7,
+      "adesso": 7,
+      "reale": 7,
+      "n_field_motore": 15,
+      "n_field_reale": 20,
+      "err_prima": 0,
+      "err_adesso": 0,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "ALB L29",
+      "sensibile": false,
+      "auto_vicine": [
+        {
+          "d": "ALO",
+          "gap": 3.68
+        }
+      ],
+      "prima": 4,
+      "adesso": 4,
+      "reale": 18,
+      "n_field_motore": 5,
+      "n_field_reale": 19,
+      "err_prima": 14,
+      "err_adesso": 14,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "RUS",
+        "ANT",
+        "NOR",
+        "LEC",
+        "HAM",
+        "PIA",
+        "VER",
+        "HAD",
+        "LAW",
+        "GAS",
+        "COL",
+        "BOR",
+        "LIN",
+        "SAI"
+      ]
+    },
+    {
+      "caso": "VER L29",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 7,
+      "adesso": 7,
+      "reale": 7,
+      "n_field_motore": 15,
+      "n_field_reale": 19,
+      "err_prima": 0,
+      "err_adesso": 0,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "SAI L30",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 14,
+      "adesso": 14,
+      "reale": 16,
+      "n_field_motore": 14,
+      "n_field_reale": 19,
+      "err_prima": 2,
+      "err_adesso": 2,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "HAM",
+        "BEA",
+        "OCO"
+      ]
+    },
+    {
+      "caso": "PER L31",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 6,
+      "adesso": 6,
+      "reale": 19,
+      "n_field_motore": 6,
+      "n_field_reale": 19,
+      "err_prima": 13,
+      "err_adesso": 13,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "RUS",
+        "ANT",
+        "NOR",
+        "HAM",
+        "LEC",
+        "PIA",
+        "VER",
+        "HAD",
+        "LAW",
+        "GAS",
+        "COL",
+        "BOR",
+        "SAI"
+      ]
+    },
+    {
+      "caso": "HAD L32",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "LAW",
+          "gap": 3.87
+        },
+        {
+          "d": "GAS",
+          "gap": 4.89
+        }
+      ],
+      "prima": 6,
+      "adesso": 6,
+      "reale": 8,
+      "n_field_motore": 9,
+      "n_field_reale": 19,
+      "err_prima": 2,
+      "err_adesso": 2,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "HAM",
+        "VER"
+      ]
+    },
+    {
+      "caso": "BOR L33",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 4,
+      "adesso": 4,
+      "reale": 16,
+      "n_field_motore": 6,
+      "n_field_reale": 19,
+      "err_prima": 12,
+      "err_adesso": 12,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "RUS",
+        "ANT",
+        "NOR",
+        "HAM",
+        "LEC",
+        "PIA",
+        "VER",
+        "HAD",
+        "LAW",
+        "GAS",
+        "COL",
+        "SAI"
+      ]
+    },
+    {
+      "caso": "ALB L34",
+      "saltato": "pilota non in pista al giro scelto"
+    },
+    {
+      "caso": "COL L34",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "BEA",
+          "gap": 2.17
+        },
+        {
+          "d": "LIN",
+          "gap": -4.52
+        }
+      ],
+      "prima": 10,
+      "adesso": 10,
+      "reale": 12,
+      "n_field_motore": 10,
+      "n_field_reale": 19,
+      "err_prima": 2,
+      "err_adesso": 2,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "VER",
+        "LIN"
+      ]
+    },
+    {
+      "caso": "OCO L34",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 4,
+      "adesso": 4,
+      "reale": 16,
+      "n_field_motore": 5,
+      "n_field_reale": 19,
+      "err_prima": 12,
+      "err_adesso": 12,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "RUS",
+        "ANT",
+        "HAM",
+        "NOR",
+        "LEC",
+        "PIA",
+        "VER",
+        "HAD",
+        "GAS",
+        "LAW",
+        "COL",
+        "SAI"
+      ]
+    },
+    {
+      "caso": "LAW L35",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "COL",
+          "gap": -1.8
+        },
+        {
+          "d": "BEA",
+          "gap": 3.08
+        }
+      ],
+      "prima": 10,
+      "adesso": 10,
+      "reale": 12,
+      "n_field_motore": 10,
+      "n_field_reale": 19,
+      "err_prima": 2,
+      "err_adesso": 2,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "HAD",
+        "LIN"
+      ]
+    },
+    {
+      "caso": "NOR L35",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "PIA",
+          "gap": 2.43
+        },
+        {
+          "d": "VER",
+          "gap": 3.32
+        }
+      ],
+      "prima": 6,
+      "adesso": 6,
+      "reale": 5,
+      "n_field_motore": 10,
+      "n_field_reale": 19,
+      "err_prima": 1,
+      "err_adesso": 1,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "PIA L36",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 7,
+      "adesso": 7,
+      "reale": 7,
+      "n_field_motore": 10,
+      "n_field_reale": 19,
+      "err_prima": 0,
+      "err_adesso": 0,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "RUS L36",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "NOR",
+          "gap": 2.34
+        },
+        {
+          "d": "LEC",
+          "gap": -4.98
+        }
+      ],
+      "prima": 5,
+      "adesso": 6,
+      "reale": 4,
+      "n_field_motore": 10,
+      "n_field_reale": 19,
+      "err_prima": 1,
+      "err_adesso": 2,
+      "esito": "PEGGIORATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "ANT L37",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "NOR",
+          "gap": 1.03
+        },
+        {
+          "d": "RUS",
+          "gap": -1.72
+        },
+        {
+          "d": "LEC",
+          "gap": -3.89
+        }
+      ],
+      "prima": 5,
+      "adesso": 6,
+      "reale": 4,
+      "n_field_motore": 9,
+      "n_field_reale": 19,
+      "err_prima": 1,
+      "err_adesso": 2,
+      "esito": "PEGGIORATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "LIN L37",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "BOR",
+          "gap": 1.97
+        },
+        {
+          "d": "SAI",
+          "gap": -4.06
+        }
+      ],
+      "prima": 3,
+      "adesso": 3,
+      "reale": 14,
+      "n_field_motore": 5,
+      "n_field_reale": 19,
+      "err_prima": 11,
+      "err_adesso": 11,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "HAM",
+        "LEC",
+        "RUS",
+        "ANT",
+        "NOR",
+        "VER",
+        "PIA",
+        "HAD",
+        "GAS",
+        "COL",
+        "LAW"
+      ]
+    },
+    {
+      "caso": "BEA L39",
+      "sensibile": false,
+      "auto_vicine": [
+        {
+          "d": "BOR",
+          "gap": -3.9
+        }
+      ],
+      "prima": 4,
+      "adesso": 4,
+      "reale": 15,
+      "n_field_motore": 6,
+      "n_field_reale": 18,
+      "err_prima": 11,
+      "err_adesso": 11,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "HAM",
+        "RUS",
+        "ANT",
+        "NOR",
+        "VER",
+        "LEC",
+        "PIA",
+        "HAD",
+        "GAS",
+        "COL",
+        "LAW"
+      ]
+    },
+    {
+      "caso": "LEC L39",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 4,
+      "adesso": 4,
+      "reale": 6,
+      "n_field_motore": 6,
+      "n_field_reale": 18,
+      "err_prima": 2,
+      "err_adesso": 2,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "RUS",
+        "NOR"
+      ]
+    },
+    {
+      "caso": "PER L39",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 6,
+      "adesso": 6,
+      "reale": 17,
+      "n_field_motore": 6,
+      "n_field_reale": 18,
+      "err_prima": 11,
+      "err_adesso": 11,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "HAM",
+        "RUS",
+        "ANT",
+        "NOR",
+        "VER",
+        "LEC",
+        "PIA",
+        "HAD",
+        "GAS",
+        "COL",
+        "LAW",
+        "OCO"
+      ]
+    },
+    {
+      "caso": "GAS L40",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "COL",
+          "gap": 1.81
+        },
+        {
+          "d": "LAW",
+          "gap": 4.89
+        }
+      ],
+      "prima": 2,
+      "adesso": 2,
+      "reale": 9,
+      "n_field_motore": 7,
+      "n_field_reale": 18,
+      "err_prima": 7,
+      "err_adesso": 7,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "HAM",
+        "RUS",
+        "ANT",
+        "NOR",
+        "VER",
+        "LEC",
+        "PIA",
+        "HAD"
+      ]
+    },
+    {
+      "caso": "VER L40",
+      "sensibile": false,
+      "auto_vicine": [
+        {
+          "d": "LEC",
+          "gap": 1.05
+        }
+      ],
+      "prima": 3,
+      "adesso": 3,
+      "reale": 5,
+      "n_field_motore": 4,
+      "n_field_reale": 18,
+      "err_prima": 2,
+      "err_adesso": 2,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "RUS",
+        "ANT",
+        "NOR"
+      ]
+    },
+    {
+      "caso": "HAM L41",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "RUS",
+          "gap": 2.94
+        },
+        {
+          "d": "ANT",
+          "gap": 4.19
+        }
+      ],
+      "prima": 2,
+      "adesso": 2,
+      "reale": 1,
+      "n_field_motore": 5,
+      "n_field_reale": 18,
+      "err_prima": 1,
+      "err_adesso": 1,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "ALB L50",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 1,
+      "adesso": 1,
+      "reale": 18,
+      "n_field_motore": 1,
+      "n_field_reale": 18,
+      "err_prima": 17,
+      "err_adesso": 17,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "HAM",
+        "RUS",
+        "ANT",
+        "NOR",
+        "VER",
+        "LEC",
+        "PIA",
+        "HAD",
+        "GAS",
+        "COL",
+        "LAW",
+        "LIN",
+        "SAI",
+        "BEA",
+        "BOR",
+        "OCO",
+        "PER"
+      ]
+    },
+    {
+      "caso": "BOR L53",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 8,
+      "adesso": 8,
+      "reale": 16,
+      "n_field_motore": 8,
+      "n_field_reale": 18,
+      "err_prima": 8,
+      "err_adesso": 8,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "HAM",
+        "RUS",
+        "ANT",
+        "NOR",
+        "VER",
+        "LEC",
+        "PIA",
+        "HAD"
+      ]
+    },
+    {
+      "caso": "SAI L55",
+      "sensibile": true,
+      "auto_vicine": [
+        {
+          "d": "OCO",
+          "gap": -0.07
+        },
+        {
+          "d": "BOR",
+          "gap": -1.01
+        }
+      ],
+      "prima": 7,
+      "adesso": 7,
+      "reale": 16,
+      "n_field_motore": 7,
+      "n_field_reale": 17,
+      "err_prima": 9,
+      "err_adesso": 9,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "HAM",
+        "RUS",
+        "ANT",
+        "NOR",
+        "VER",
+        "LEC",
+        "PIA",
+        "HAD",
+        "OCO"
+      ]
+    },
+    {
+      "caso": "HAD L58",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 8,
+      "adesso": 8,
+      "reale": 8,
+      "n_field_motore": 8,
+      "n_field_reale": 17,
+      "err_prima": 0,
+      "err_adesso": 0,
+      "esito": "INVARIATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "OCO L58",
+      "sensibile": false,
+      "auto_vicine": [],
+      "prima": 2,
+      "adesso": 2,
+      "reale": 16,
+      "n_field_motore": 3,
+      "n_field_reale": 17,
+      "err_prima": 14,
+      "err_adesso": 14,
+      "esito": "INVARIATO",
+      "esclusi_davanti": [
+        "HAM",
+        "RUS",
+        "ANT",
+        "NOR",
+        "VER",
+        "LEC",
+        "PIA",
+        "HAD",
+        "GAS",
+        "COL",
+        "LAW",
+        "LIN",
+        "BOR",
+        "SAI"
+      ]
+    }
+  ],
+  "sintesi": {
+    "tipicita": "Tipicita': GIUDICABILE (scarto 1.66 s)",
+    "casi": "Casi: 47 totali, 23 sensibili — migliorati/peggiorati/invariati: 2/5/40 (sensibili: 1/4/18)",
+    "esito": "Esito: ATTENZIONE: caso sensibile peggiorato — richiede spiegazione prima di attivare"
+  }
+}
