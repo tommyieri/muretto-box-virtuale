@@ -14,8 +14,8 @@ codice,freq_arch_2023_25,freq_2026,freq_totale,sequenza,decodifica,neutralizzato
 26,124,23,147,GIALLO->VSC,parziale (contiene ipotesi 2/7),True,giro sotto VSC (deploy/chiusura)
 167,60,50,110,VERDE->VSC->VSC_END,parziale (contiene ipotesi 2/7),True,giro sotto VSC (deploy/chiusura)
 71,43,26,69,VSC_END->VERDE,parziale (contiene ipotesi 2/7),False,deploy poi chiusura di VSC entro il giro (VSC breve)
-45,56,0,56,SC->RED,committato,True,bandiera rossa in questo giro (gara sospesa / laptime non valido)
 2,46,10,56,GIALLO,parziale (contiene ipotesi 2/7),False,bandiera gialla (settore) senza SC/VSC: nessuna neutralizzazione formale
+45,56,0,56,SC->RED,committato,True,bandiera rossa in questo giro (gara sospesa / laptime non valido)
 67,34,18,52,VSC->VSC_END,parziale (contiene ipotesi 2/7),True,giro sotto VSC (deploy/chiusura)
 451,28,16,44,SC->RED->VERDE,committato,True,bandiera rossa in questo giro (gara sospesa / laptime non valido)
 412,19,17,36,SC->VERDE->GIALLO,parziale (contiene ipotesi 2/7),True,giro sotto SC (transizione con giallo)
@@ -26,15 +26,15 @@ codice,freq_arch_2023_25,freq_2026,freq_totale,sequenza,decodifica,neutralizzato
 1264,19,0,19,VERDE->GIALLO->VSC->SC,parziale (contiene ipotesi 2/7),True,"SC e VSC nello stesso giro-auto: transizione mista, non classificabile come regime"
 1267,11,4,15,VERDE->GIALLO->VSC->VSC_END,parziale (contiene ipotesi 2/7),True,giro sotto VSC (deploy/chiusura)
 216,14,0,14,GIALLO->VERDE->VSC,parziale (contiene ipotesi 2/7),True,giro sotto VSC (deploy/chiusura)
-6712,8,1,9,VSC->VSC_END->VERDE->GIALLO,parziale (contiene ipotesi 2/7),True,giro sotto VSC (deploy/chiusura)
 51,9,0,9,RED->VERDE,committato,False,bandiera rossa in questo giro (gara sospesa / laptime non valido)
+6712,8,1,9,VSC->VSC_END->VERDE->GIALLO,parziale (contiene ipotesi 2/7),True,giro sotto VSC (deploy/chiusura)
 1265,7,0,7,VERDE->GIALLO->VSC->RED,parziale (contiene ipotesi 2/7),True,bandiera rossa in questo giro (gara sospesa / laptime non valido)
 514,6,0,6,RED->VERDE->SC,committato,True,bandiera rossa in questo giro (gara sospesa / laptime non valido)
 265,5,0,5,GIALLO->VSC->RED,parziale (contiene ipotesi 2/7),True,bandiera rossa in questo giro (gara sospesa / laptime non valido)
 712,5,0,5,VSC_END->VERDE->GIALLO,parziale (contiene ipotesi 2/7),False,giro sotto VSC (deploy/chiusura)
 65,4,0,4,VSC->RED,committato,True,bandiera rossa in questo giro (gara sospesa / laptime non valido)
+1246,1,0,1,VERDE->GIALLO->SC->VSC,parziale (contiene ipotesi 2/7),True,"SC e VSC nello stesso giro-auto: transizione mista, non classificabile come regime"
+16724,1,0,1,VERDE->VSC->VSC_END->GIALLO->SC,parziale (contiene ipotesi 2/7),True,"SC e VSC nello stesso giro-auto: transizione mista, non classificabile come regime"
+214,1,0,1,GIALLO->VERDE->SC,parziale (contiene ipotesi 2/7),True,giro iniziato in verde/giallo e finito sotto SC = DEPLOY
 267,1,0,1,GIALLO->VSC->VSC_END,parziale (contiene ipotesi 2/7),True,giro sotto VSC (deploy/chiusura)
 651,1,0,1,VSC->RED->VERDE,committato,True,bandiera rossa in questo giro (gara sospesa / laptime non valido)
-1246,1,0,1,VERDE->GIALLO->SC->VSC,parziale (contiene ipotesi 2/7),True,"SC e VSC nello stesso giro-auto: transizione mista, non classificabile come regime"
-214,1,0,1,GIALLO->VERDE->SC,parziale (contiene ipotesi 2/7),True,giro iniziato in verde/giallo e finito sotto SC = DEPLOY
-16724,1,0,1,VERDE->VSC->VSC_END->GIALLO->SC,parziale (contiene ipotesi 2/7),True,"SC e VSC nello stesso giro-auto: transizione mista, non classificabile come regime"

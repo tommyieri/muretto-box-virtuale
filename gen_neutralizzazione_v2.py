@@ -112,7 +112,9 @@ def vocabolario():
         if 'status' not in d: continue
         c = arch if scope=='arch23-25' else fmt
         for s in d['status']: c[str(s)] += 1
-    codes = sorted(set(arch)|set(fmt), key=lambda x:-(arch[x]+fmt[x]))
+    # tie-break sul codice (stringa): ordine deterministico a pari frequenza, indipendente
+    # da PYTHONHASHSEED. Non cambia i codici né i dati, solo l'ordine stabile delle righe.
+    codes = sorted(set(arch)|set(fmt), key=lambda x:(-(arch[x]+fmt[x]), x))
     rows=[]
     for c in codes:
         rows.append({'codice':c,'freq_arch_2023_25':arch[c],'freq_2026':fmt[c],
