@@ -9,8 +9,25 @@ sono sessioni dedicate, una per circuito, con checkpoint e ATT6.
 
 ```
 GO: [montreal, austin, spa-francorchamps]  |  GIÀ CALIBRATI: 0  |  AMBIGUI: 0
-NON ESEGUIBILI: 3 (miami, lusail, madrid)  |  NO: 0  |  METODO N/A: 0  |  DATI ROTTI: 15
+NON ESEGUIBILI: 3 (miami, lusail, madrid)  |  NO: 0  |  METODO N/A: 0  |  DATI ROTTI: 0
+MISURA NON SEPARABILE: 15 (debito di bassa priorità — vedi sotto)
 ```
+
+> **Riclassificazione (decisione di dominio del PO, dopo la lettura del censimento):** i 15
+> circuiti usciti dal veto fisico NON sono "dati rotti" — i dati sono buoni — ma **misure non
+> separabili**: la componente pit non si isola dalle componenti che viaggiano con lei. La
+> sostanza non cambia (nessun verdetto, nessuna correzione); il nome ora dice la causa invece
+> di incolpare i dati. Due sotto-casi, distinti nei fatti:
+> - **14 circuiti — warm-in ≥ guadagno geometrico**: dove la pit lane non taglia tracciato
+>   (track_time ~0), il warm-in — dentro la misura per costruzione — raggiunge o supera il
+>   transito. Separabile **in principio** con un metodo che modelli il warm-in: prereg futuro.
+> - **Monaco — traffico al rientro, in aggiunta al warm-in**: track_time 4,11 (famiglia A), ma
+>   al rientro si esce nel traffico e il delta dell'out-lap ingloba la coda. **Non separabile
+>   nemmeno in linea di principio: è una proprietà permanente del tracciato**, non un difetto
+>   di metodo. Monaco non diventerà misurabile aspettando più dati.
+>
+> In tutta la famiglia la produzione (lane time) è **già vicina al vero** (errore ≲ 1–2 s,
+> contro i 3,7–8,3 della famiglia A): **debito di bassa priorità**, scritto, non urgente.
 
 **I tre GO (valore candidato, IC95, guadagno vs produzione, rapporto):**
 
@@ -35,23 +52,23 @@ che li alimenti). Nessun verdetto strategico: è del PO.
 | miami | 22,68 | 22,63 | 19,99 | — | — | **4** | — | — | 2,69 | NON ESEGUIBILE |
 | lusail | 28,57 | 28,82 | 27,32 | — | — | **3** | — | — | 1,26 | NON ESEGUIBILE |
 | madrid | — | assente | — | — | — | **0** | — | — | — | NON ESEGUIBILE |
-| monaco | 24,28 | 24,80 | 20,17 | — | — | 4* | — | — | 4,11 | DATO ROTTO (3/90) |
-| interlagos | 23,53 | 23,73 | 21,88 | — | — | 6 | — | — | 1,65 | DATO ROTTO (1/174) |
-| hungaroring | 21,88 | 21,80 | 21,08 | — | — | 6 | — | — | 0,80 | DATO ROTTO |
-| suzuka | 23,37 | 23,72 | 22,61 | — | — | 6 | — | — | 0,76 | DATO ROTTO |
-| spielberg | 21,71 | 21,63 | 20,98 | — | — | 10 | — | — | 0,74 | DATO ROTTO (22/249) |
-| marina-bay | 29,53 | 29,55 | 28,39 | — | — | 3 | — | — | 1,14 | DATO ROTTO |
-| mexico-city | 22,64 | 22,69 | 22,55 | — | — | 7 | — | — | 0,09 | DATO ROTTO |
-| las-vegas | 21,41 | 21,58 | 21,52 | — | — | 3 | — | — | −0,11 | DATO ROTTO |
-| monza | 24,48 | 24,66 | 24,79 | — | — | 6 | — | — | **−0,31** | DATO ROTTO (68/97) |
-| yas-marina | 21,93 | 22,01 | 22,40 | — | — | 8 | — | — | −0,47 | DATO ROTTO |
-| catalunya | 22,33 | 22,38 | 22,98 | — | — | 8 | — | — | −0,65 | DATO ROTTO |
-| baku | 20,58 | 20,72 | 21,50 | — | — | 7 | — | — | −0,92 | DATO ROTTO |
-| shanghai | 23,00 | 22,97 | 24,31 | — | — | 5 | — | — | **−1,31** | DATO ROTTO (75/77) |
-| zandvoort | 20,18 | 20,41 | 22,21 | — | — | 4 | — | — | −2,04 | DATO ROTTO |
-| melbourne | 18,78 | 18,15 | 22,51 | — | — | 1 | — | — | **−3,72** | DATO ROTTO (7/7) |
+| monaco | 24,28 | 24,80 | 20,17 | — | — | 4* | — | — | 4,11 | NON SEP. — **traffico** (3/90) |
+| interlagos | 23,53 | 23,73 | 21,88 | — | — | 6 | — | — | 1,65 | NON SEP. — warm-in (1/174) |
+| hungaroring | 21,88 | 21,80 | 21,08 | — | — | 6 | — | — | 0,80 | NON SEP. — warm-in |
+| suzuka | 23,37 | 23,72 | 22,61 | — | — | 6 | — | — | 0,76 | NON SEP. — warm-in |
+| spielberg | 21,71 | 21,63 | 20,98 | — | — | 10 | — | — | 0,74 | NON SEP. — warm-in (22/249) |
+| marina-bay | 29,53 | 29,55 | 28,39 | — | — | 3 | — | — | 1,14 | NON SEP. — warm-in |
+| mexico-city | 22,64 | 22,69 | 22,55 | — | — | 7 | — | — | 0,09 | NON SEP. — warm-in |
+| las-vegas | 21,41 | 21,58 | 21,52 | — | — | 3 | — | — | −0,11 | NON SEP. — warm-in |
+| monza | 24,48 | 24,66 | 24,79 | — | — | 6 | — | — | **−0,31** | NON SEP. — warm-in (68/97) |
+| yas-marina | 21,93 | 22,01 | 22,40 | — | — | 8 | — | — | −0,47 | NON SEP. — warm-in |
+| catalunya | 22,33 | 22,38 | 22,98 | — | — | 8 | — | — | −0,65 | NON SEP. — warm-in |
+| baku | 20,58 | 20,72 | 21,50 | — | — | 7 | — | — | −0,92 | NON SEP. — warm-in |
+| shanghai | 23,00 | 22,97 | 24,31 | — | — | 5 | — | — | **−1,31** | NON SEP. — warm-in (75/77) |
+| zandvoort | 20,18 | 20,41 | 22,21 | — | — | 4 | — | — | −2,04 | NON SEP. — warm-in |
+| melbourne | 18,78 | 18,15 | 22,51 | — | — | 1 | — | — | **−3,72** | NON SEP. — warm-in (7/7) |
 
-\* Monaco ha 4 blocchi ma è DATO ROTTO prima del conteggio: la precedenza dei verdetti è quella
+\* Monaco ha 4 blocchi ma il veto scatta prima del conteggio: la precedenza dei verdetti è quella
 pre-registrata. `pit_loss_dry` per i non-GO è la mediana descrittiva, senza IC: nessun uso.
 
 ---
@@ -83,9 +100,10 @@ warm-in").
   universale**. Era invisibile a Silverstone (8 s di margine); il censimento l'ha reso visibile.
 
 **Conseguenza onesta, in due direzioni:**
-1. I 15 DATO ROTTO **restano DATO ROTTO** (regola pre-registrata, nessuna eccezione a valle).
-   Misurarli richiede un metodo che **separi il warm-in** dal transito — sessione futura, con
-   prereg suo.
+1. I 15 casi da veto restano **senza verdetto e senza correzione** (regola pre-registrata,
+   nessuna eccezione a valle), riclassificati **MISURA NON SEPARABILE** (decisione PO, banner in
+   testa). Per 14 la separazione è possibile in principio (metodo che modelli il warm-in, prereg
+   futuro); per **Monaco no** — il traffico al rientro è una proprietà permanente del tracciato.
 2. Ma per la famiglia B c'è una notizia buona non cercata: siccome lì `loss+warm-in ≈ lane time`,
    **il valore in produzione (lane time) è numericamente vicino al pit-loss effettivo** — l'errore
    pratico è ≲ 1–2 s, non gli 8 di Silverstone. Il debito grande stava (quasi) tutto nella
@@ -107,7 +125,7 @@ Due metodi indipendenti (delta tempo-giro C–I vs settori FastF1) cadono negli 
 **Australia — la verifica attesa, con l'esito dichiarato:** l'incoerenza C–I
 (`pit_loss > pit_lane_time`) **NON si risolve** col taglio di layout: nel 2026 (unico blocco
 utilizzabile) loss 22,51 > lane 18,78, violazioni **7/7** ⇒ per il criterio pre-registrato
-**Australia resta DATO ROTTO**. Però ora l'incoerenza è **spiegata, non misteriosa**: Melbourne
+**Australia resta MISURA NON SEPARABILE** (era DATO ROTTO nel criterio pre-registrato; la riclassificazione PO ne cambia il nome, non l'esito). Però ora l'incoerenza è **spiegata, non misteriosa**: Melbourne
 ha la pit lane più corta e veloce del calendario (18,8 s) → guadagno geometrico minimo, e il
 warm-in lo supera di ~3,7 s. **Le due fonti C–I erano entrambe giuste; era il vincolo
 `pit_loss ≤ lane` a essere un modello sbagliato per quel circuito.** La domanda aperta dall'arco
@@ -151,7 +169,7 @@ attivazione dedicate**, una per circuito, ciascuna con: tag di rollback, ATT6 su
 più vicini alla realtà pena rollback), golden calcolati prima e verificati dopo — il protocollo
 di Silverstone. **Niente attivazione cumulativa**: tre valori = tre sessioni = tre ATT6.
 
-Tutto il resto resta com'è: i 15 DATO ROTTO tengono i valori di produzione (che nella famiglia B
+Tutto il resto resta com'è: i 15 MISURA NON SEPARABILE tengono i valori di produzione (che nella famiglia B
 sono numericamente vicini al vero, vedi sopra), i NON ESEGUIBILI hanno una data. Il debito
 pit-loss non è più un mistero da 24 circuiti: è **3 correzioni pronte, 3 attese con scadenza,
 15 note fisiche precise**.

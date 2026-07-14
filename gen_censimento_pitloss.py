@@ -369,9 +369,20 @@ def census_circuit(circ):
         track_time = plt_dry - dry['mediana']
         res.update(pit_loss_dry=round(dry['mediana'], 2), track_time=round(track_time, 2))
         if n_neg or n_over or track_time <= 0:
-            res['verdetto'] = 'DATO ROTTO'
-            note.append(f'veto fisico: pit_loss<0 su {n_neg}, >lane su {n_over}, '
-                        f'track_time {track_time:.2f}')
+            # Riclassificazione decisa dal PO dopo la lettura del censimento (decisione di
+            # dominio, stessa sostanza: nessun verdetto, nessuna correzione): il veto fisico
+            # non indica dati rotti ma una MISURA NON SEPARABILE. Causa data-driven:
+            # - guadagno geometrico ~0 (track_time piccolo): il warm-in, dentro la misura per
+            #   costruzione, raggiunge/supera il transito;
+            # - guadagno geometrico grande (Monaco): al warm-in si somma il TRAFFICO al
+            #   rientro — non separabile nemmeno in linea di principio, proprieta' permanente
+            #   del tracciato, non un difetto di metodo.
+            causa = ('traffico al rientro in aggiunta al warm-in: proprieta permanente del '
+                     'tracciato' if track_time >= 2.5 else 'warm-in >= guadagno geometrico')
+            res['verdetto'] = 'MISURA NON SEPARABILE'
+            note.append(f'{causa}; veto fisico: pit_loss<0 su {n_neg}, >lane su {n_over}, '
+                        f'track_time {track_time:.2f}; produzione (lane time) vicina al vero '
+                        f'(errore <~1-2 s): debito di bassa priorita')
             res['note'] = '; '.join(note)
             return res, valid, diags
     if dry['n_blocchi'] < MIN_DRY_BLOCKS:
