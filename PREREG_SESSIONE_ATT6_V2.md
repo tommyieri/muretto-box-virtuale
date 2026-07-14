@@ -56,3 +56,34 @@ Conseguenza: chi legge `main` trova la regola, ma non il caso Montreal che l'ha 
 ## Cosa questo commit NON fa
 
 Nessun numero nuovo calcolato. Nessun valore di produzione toccato. Nessuna attivazione. Spa sarà giudicata solo nell'ordine: `aggiorna` → Test 1 (con guardia) → Test 2 → verdetto.
+
+## ADDENDUM 1 — Metodo di misura del Test 1 (14/07/2026, prima di qualsiasi numero)
+
+Cosa cambia: il Test 1 NON usa il metodo per settori del censimento FF3. Usa il metodo engine-ready (giro intero), applicato sia alla gara demo sia al grappolo storico 2018–2025.
+
+Perché (due ragioni indipendenti):
+
+1. FF3 è cieco per costruzione in un test di tipicità. FF3 è un censimento: scarta le osservazioni rumorose (regola ">2 settori affetti") per stimare un valore tipico robusto. Il Test 1 deve misurare la gara com'è, rumore incluso — è il rumore il segnale di atipicità. FF3 ha escluso proprio Montreal 2026, la gara che il Test 1 doveva dichiarare non giudicabile. Un test di tipicità che scarta le gare atipiche non può funzionare.
+2. Gara e grappolo devono essere misurati con lo stesso metodo. I due metodi divergono di 0,58 s a Silverstone (20,80 settori / 20,22 engine-ready). Un loss engine-ready confrontato con una mediana per-settori introdurrebbe un bias sistematico di ~0,6 s dentro una soglia di 2,0 s.
+
+L'engine-ready misura inoltre la grandezza che il motore consuma (secondi di giro).
+
+Cosa NON cambia: soglie (tipicità 2,0 s; guardia transito 1,0 s), definizione di caso sensibile (≥2 auto entro ±5,0 s), minimo 5 casi, regola di verdetto (migliorati >= 3 E peggiorati == 0, oppure migliorati >= 3 × peggiorati), esclusione dei drive-through.
+
+Stato al momento dell'addendum: nessun numero nuovo calcolato. La riclassificazione di Montreal (24,24 vs 19,71, scarto 4,53 s) era già engine-ready e resta valida: l'addendum la rende riproducibile, non la modifica.
+
+## ADDENDUM 2 — Terzo esito possibile: banco insufficiente (14/07/2026, prima di qualsiasi numero)
+
+Una gara con <5 casi sensibili è `NON GIUDICABILE (banco insufficiente)`: né PASS né NO-GO.
+
+Se ciò accade su Silverstone in fase di validazione dello strumento, vale, dichiarato in anticipo:
+
+* la soglia dei 5 casi non si abbassa per far passare Silverstone;
+* Silverstone non si rollbacca: l'errore corretto (8,32 s) supera l'incertezza tra metodi (~0,6 s) di ~14×, ben oltre il criterio di grandezza 3×;
+* lo strumento resta non validato in positivo e serve una seconda gara di validazione. In assenza di questa, nessuna attivazione a Spa: si rimanda.
+
+## ADDENDUM 3 — Metrica di errore: diagnosi chiusa (14/07/2026)
+
+Verificato su 6 casi (3 Montreal + 3 Silverstone): motore e realtà usano campi di cardinalità diversa (il motore esclude i piloti senza `pace[L]`), ma i piloti esclusi erano in tutti e 6 i casi dietro al pilota che rientra. Cambia il denominatore, mai il rango: gli errori non cambiano. Nessuna correzione necessaria.
+
+Cautela residua: gli esclusi sono tipicamente piloti appena usciti dai box, quindi tipicamente dietro — non necessariamente. Lo strumento v2 stampa sempre entrambi i denominatori e segnala se un pilota escluso risulta davanti al pilota che rientra. Segnalazione, non blocco.
