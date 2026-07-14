@@ -45,6 +45,14 @@ Applicando il Test 1 ai numeri già misurati: |24,24 − 19,71| = 4,53 s > 2,0 s
 
 Il verdetto del rollback Montreal è riclassificato da "valore respinto" a "gara non giudicabile". La produzione NON cambia: Montreal resta 24,37. Il candidato 18,96 resta in attesa della prossima gara a Montreal. Report annotato: `NOTA_MONTREAL_NO_ATTIVAZIONE.md`.
 
+## Dove vivono i documenti (14/07/2026)
+
+Questo prereg è committato su `main`: governa ogni attivazione futura di pit-loss, a partire da Spa.
+
+Il report che registra il rollback Montreal — `NOTA_MONTREAL_NO_ATTIVAZIONE.md`, che porta in testa l'annotazione di riclassificazione — vive solo sul branch `attivazione-montreal`, non su `main`. Il merge di quel branch è una decisione aperta, separata da questa pre-registrazione.
+
+Conseguenza: chi legge `main` trova la regola, ma non il caso Montreal che l'ha generata. Debito registrato, non risolto qui.
+
 ## Cosa questo commit NON fa
 
 Nessun numero nuovo calcolato. Nessun valore di produzione toccato. Nessuna attivazione. Spa sarà giudicata solo nell'ordine: `aggiorna` → Test 1 (con guardia) → Test 2 → verdetto.

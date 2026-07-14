@@ -1,6 +1,6 @@
 # NOTA_MONTREAL — attivazione RESPINTA da ATT6 (Montreal resta 24,37)
 
-> **RICLASSIFICATO (14/07/2026)**: per pre-registrazione ATT6 v2 (`2026-07-14_prereg_att6_v2.md`), Montreal 2026 è gara NON GIUDICABILE (tipicità: loss gara 24,24 vs grappolo 19,71, scarto 4,53 s > soglia 2,0 s; transito stazionario). Il verdetto passa da "valore respinto" a "gara non giudicabile". Produzione invariata (24,37); candidato 18,96 in attesa della prossima gara a Montreal. Le misure numeriche sottostanti restano valide.
+> **RICLASSIFICATO (14/07/2026)**: per pre-registrazione ATT6 v2 (`PREREG_SESSIONE_ATT6_V2.md`), Montreal 2026 è gara NON GIUDICABILE (tipicità: loss gara 24,24 vs grappolo 19,71, scarto 4,53 s > soglia 2,0 s; transito stazionario). Il verdetto passa da "valore respinto" a "gara non giudicabile". Produzione invariata (24,37); candidato 18,96 in attesa della prossima gara a Montreal. Le misure numeriche sottostanti restano valide.
 
 > ⚠️ **ANNOTAZIONE 2026-07-14 — la CAUSA #2 di questa nota è FALSIFICATA** (contenuto originale
 > preservato integralmente sotto). La **Sessione FF4** (`REPORT_PITLOSS_ENGINE_READY.md`,
