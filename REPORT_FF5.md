@@ -14,7 +14,8 @@ F5.3 golden: cambiano 3 casi su 11 (Monaco-HAM solo gap ±2,19; Australia-VER P7
      Miami-PIA P14→P12); gli altri 8 devono restare identici
 F5.4 ATT6: Miami PULITA (6 migliorati sensibili, 0 peggiorati) | Australia, Monaco,
      Spagna: ATTESA SMENTITA — casi sensibili peggiorati, spiegati sotto, gare FERME
-CHECKPOINT PO: IN ATTESA — raccomandazione: attivare SOLO Miami
+CHECKPOINT PO (14/07/2026): APPROVATA SOLO MIAMI — F5.5 eseguita: 22,63 -> 20,11,
+     golden rigenerato (solo Miami-PIA cambiato, identico alla tabella F5.3), suite verde
 ```
 
 ## F5.1–F5.2 — La misura ufficiale
