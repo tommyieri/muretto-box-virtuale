@@ -1,0 +1,363 @@
+gara,round,circuitId,pilota,giro,stop,durata_s
+Australia,1,albert_park,colapinto,9,1,27.733
+Australia,1,albert_park,alonso,11,1,25.895
+Australia,1,albert_park,gasly,11,1,18.672
+Australia,1,albert_park,lawson,11,1,19.112
+Australia,1,albert_park,norris,11,1,18.266
+Australia,1,albert_park,ocon,11,1,18.570
+Australia,1,albert_park,sainz,11,1,19.859
+Australia,1,albert_park,stroll,11,1,36.686
+Australia,1,albert_park,albon,12,1,18.118
+Australia,1,albert_park,antonelli,12,1,20.985
+Australia,1,albert_park,bottas,12,1,30.387
+Australia,1,albert_park,russell,12,1,17.794
+Australia,1,albert_park,alonso,13,2,972.356
+Australia,1,albert_park,arvid_lindblad,18,1,18.506
+Australia,1,albert_park,bearman,18,1,18.774
+Australia,1,albert_park,bortoleto,18,1,18.916
+Australia,1,albert_park,max_verstappen,18,1,19.070
+Australia,1,albert_park,perez,18,1,21.371
+Australia,1,albert_park,leclerc,25,1,17.664
+Australia,1,albert_park,stroll,26,2,33.182
+Australia,1,albert_park,hamilton,28,1,17.741
+Australia,1,albert_park,albon,33,2,18.404
+Australia,1,albert_park,bortoleto,33,2,22.619
+Australia,1,albert_park,lawson,33,2,18.190
+Australia,1,albert_park,sainz,33,2,25.939
+Australia,1,albert_park,norris,34,2,17.649
+Australia,1,albert_park,stroll,34,3,1081.553
+Australia,1,albert_park,stroll,39,4,22.469
+Australia,1,albert_park,max_verstappen,41,2,18.078
+Australia,1,albert_park,perez,43,2,18.951
+Australia,1,albert_park,sainz,45,3,34.615
+Australia,1,albert_park,colapinto,46,2,18.561
+Austria,8,red_bull_ring,hamilton,12,1,21.369
+Austria,8,red_bull_ring,gasly,13,1,21.600
+Austria,8,red_bull_ring,leclerc,13,1,21.731
+Austria,8,red_bull_ring,sainz,14,1,21.371
+Austria,8,red_bull_ring,bortoleto,17,1,22.605
+Austria,8,red_bull_ring,albon,18,1,21.249
+Austria,8,red_bull_ring,arvid_lindblad,18,1,21.408
+Austria,8,red_bull_ring,hadjar,18,1,21.770
+Austria,8,red_bull_ring,max_verstappen,18,1,21.317
+Austria,8,red_bull_ring,ocon,18,1,21.878
+Austria,8,red_bull_ring,lawson,19,1,22.022
+Austria,8,red_bull_ring,piastri,19,1,22.077
+Austria,8,red_bull_ring,russell,19,1,21.204
+Austria,8,red_bull_ring,colapinto,20,1,21.561
+Austria,8,red_bull_ring,hulkenberg,21,1,21.585
+Austria,8,red_bull_ring,norris,21,1,21.578
+Austria,8,red_bull_ring,alonso,24,1,22.358
+Austria,8,red_bull_ring,antonelli,24,1,21.413
+Austria,8,red_bull_ring,bearman,24,1,21.593
+Austria,8,red_bull_ring,stroll,24,1,23.522
+Austria,8,red_bull_ring,hamilton,25,2,21.250
+Austria,8,red_bull_ring,ocon,33,2,25.455
+Austria,8,red_bull_ring,albon,37,2,21.270
+Austria,8,red_bull_ring,leclerc,37,2,21.020
+Austria,8,red_bull_ring,gasly,38,2,21.212
+Austria,8,red_bull_ring,hadjar,40,2,21.268
+Austria,8,red_bull_ring,hamilton,42,3,21.267
+Austria,8,red_bull_ring,piastri,42,2,21.209
+Austria,8,red_bull_ring,russell,43,2,21.221
+Austria,8,red_bull_ring,bortoleto,44,2,21.877
+Austria,8,red_bull_ring,bearman,45,2,22.044
+Austria,8,red_bull_ring,hulkenberg,45,2,22.591
+Austria,8,red_bull_ring,lawson,45,2,21.545
+Austria,8,red_bull_ring,arvid_lindblad,46,2,21.551
+Austria,8,red_bull_ring,colapinto,46,2,21.446
+Austria,8,red_bull_ring,norris,47,2,21.816
+Austria,8,red_bull_ring,alonso,49,2,28.713
+Austria,8,red_bull_ring,max_verstappen,49,2,21.252
+Austria,8,red_bull_ring,antonelli,51,2,21.502
+Austria,8,red_bull_ring,gasly,51,3,21.580
+Austria,8,red_bull_ring,leclerc,59,3,22.738
+Canada,5,villeneuve,piastri,1,1,24.121
+Canada,5,villeneuve,bortoleto,2,1,28.178
+Canada,5,villeneuve,hulkenberg,2,1,24.952
+Canada,5,villeneuve,norris,2,1,23.418
+Canada,5,villeneuve,perez,2,1,25.737
+Canada,5,villeneuve,sainz,2,1,24.751
+Canada,5,villeneuve,bottas,3,1,28.257
+Canada,5,villeneuve,bottas,9,2,24.847
+Canada,5,villeneuve,piastri,12,2,36.627
+Canada,5,villeneuve,stroll,14,1,24.249
+Canada,5,villeneuve,norris,15,2,28.859
+Canada,5,villeneuve,perez,15,2,25.153
+Canada,5,villeneuve,ocon,16,1,24.833
+Canada,5,villeneuve,bortoleto,18,2,24.766
+Canada,5,villeneuve,alonso,20,1,24.709
+Canada,5,villeneuve,hulkenberg,20,2,31.024
+Canada,5,villeneuve,bottas,29,3,24.413
+Canada,5,villeneuve,perez,29,3,24.984
+Canada,5,villeneuve,bearman,30,1,44.957
+Canada,5,villeneuve,colapinto,30,1,25.640
+Canada,5,villeneuve,gasly,30,1,25.644
+Canada,5,villeneuve,lawson,30,1,24.177
+Canada,5,villeneuve,ocon,30,2,35.351
+Canada,5,villeneuve,sainz,30,2,25.636
+Canada,5,villeneuve,antonelli,31,1,25.153
+Canada,5,villeneuve,hadjar,31,1,24.902
+Canada,5,villeneuve,hamilton,31,1,25.936
+Canada,5,villeneuve,leclerc,31,1,30.114
+Canada,5,villeneuve,max_verstappen,31,1,25.199
+Canada,5,villeneuve,bottas,49,4,31.102
+Canada,5,villeneuve,stroll,49,2,24.146
+Canada,5,villeneuve,piastri,51,3,36.103
+Canada,5,villeneuve,hadjar,52,2,34.713
+Canada,5,villeneuve,hadjar,62,3,34.809
+Cina,2,shanghai,hadjar,1,1,23.062
+Cina,2,shanghai,lawson,9,1,22.721
+Cina,2,shanghai,max_verstappen,9,1,23.678
+Cina,2,shanghai,sainz,9,1,23.106
+Cina,2,shanghai,antonelli,10,1,23.005
+Cina,2,shanghai,bearman,10,1,22.967
+Cina,2,shanghai,bottas,10,1,27.795
+Cina,2,shanghai,gasly,10,1,23.539
+Cina,2,shanghai,hadjar,10,2,25.748
+Cina,2,shanghai,hamilton,10,1,22.433
+Cina,2,shanghai,leclerc,10,1,25.633
+Cina,2,shanghai,russell,10,1,23.390
+Cina,2,shanghai,perez,11,1,26.213
+Cina,2,shanghai,ocon,29,1,25.997
+Cina,2,shanghai,alonso,31,1,23.291
+Cina,2,shanghai,colapinto,32,1,23.195
+Cina,2,shanghai,hulkenberg,35,1,37.358
+Cina,2,shanghai,arvid_lindblad,42,1,23.290
+Cina,2,shanghai,ocon,46,2,47.067
+Giappone,3,suzuka,bearman,16,1,25.081
+Giappone,3,suzuka,norris,16,1,23.316
+Giappone,3,suzuka,colapinto,17,1,23.649
+Giappone,3,suzuka,leclerc,17,1,22.992
+Giappone,3,suzuka,arvid_lindblad,18,1,26.335
+Giappone,3,suzuka,piastri,18,1,23.444
+Giappone,3,suzuka,bottas,19,1,25.129
+Giappone,3,suzuka,hadjar,19,1,23.698
+Giappone,3,suzuka,ocon,19,1,24.629
+Giappone,3,suzuka,alonso,21,1,26.458
+Giappone,3,suzuka,perez,21,1,27.307
+Giappone,3,suzuka,russell,21,1,22.937
+Giappone,3,suzuka,stroll,21,1,25.083
+Giappone,3,suzuka,albon,22,1,24.600
+Giappone,3,suzuka,antonelli,22,1,23.288
+Giappone,3,suzuka,bortoleto,22,1,24.630
+Giappone,3,suzuka,gasly,22,1,24.304
+Giappone,3,suzuka,hamilton,22,1,22.891
+Giappone,3,suzuka,lawson,22,1,24.165
+Giappone,3,suzuka,max_verstappen,22,1,24.490
+Giappone,3,suzuka,sainz,22,1,24.396
+Giappone,3,suzuka,alonso,23,2,24.014
+Giappone,3,suzuka,hulkenberg,23,1,23.999
+Giappone,3,suzuka,stroll,24,2,23.501
+Giappone,3,suzuka,albon,45,2,23.072
+Giappone,3,suzuka,albon,46,3,24.103
+Giappone,3,suzuka,albon,47,4,26.053
+Giappone,3,suzuka,albon,48,5,32.736
+Giappone,3,suzuka,albon,49,6,24.337
+Gran Bretagna,9,silverstone,albon,1,1,44.179
+Gran Bretagna,9,silverstone,piastri,2,1,40.553
+Gran Bretagna,9,silverstone,albon,14,2,41.291
+Gran Bretagna,9,silverstone,hulkenberg,17,1,28.979
+Gran Bretagna,9,silverstone,max_verstappen,17,1,28.738
+Gran Bretagna,9,silverstone,stroll,18,1,28.734
+Gran Bretagna,9,silverstone,hadjar,19,1,29.972
+Gran Bretagna,9,silverstone,alonso,20,1,28.732
+Gran Bretagna,9,silverstone,sainz,20,1,28.894
+Gran Bretagna,9,silverstone,ocon,21,1,43.253
+Gran Bretagna,9,silverstone,perez,21,1,29.374
+Gran Bretagna,9,silverstone,colapinto,22,1,29.360
+Gran Bretagna,9,silverstone,albon,23,3,39.601
+Gran Bretagna,9,silverstone,gasly,23,1,33.608
+Gran Bretagna,9,silverstone,hamilton,23,1,34.864
+Gran Bretagna,9,silverstone,russell,23,1,28.663
+Gran Bretagna,9,silverstone,leclerc,25,1,28.444
+Gran Bretagna,9,silverstone,bortoleto,26,1,28.662
+Gran Bretagna,9,silverstone,arvid_lindblad,27,1,28.974
+Gran Bretagna,9,silverstone,lawson,28,1,28.746
+Gran Bretagna,9,silverstone,norris,28,1,28.833
+Gran Bretagna,9,silverstone,bearman,29,1,29.971
+Gran Bretagna,9,silverstone,bottas,29,1,31.599
+Gran Bretagna,9,silverstone,hulkenberg,34,2,35.858
+Gran Bretagna,9,silverstone,russell,34,2,28.337
+Gran Bretagna,9,silverstone,albon,35,4,31.474
+Gran Bretagna,9,silverstone,antonelli,35,1,28.948
+Gran Bretagna,9,silverstone,piastri,36,2,29.515
+Gran Bretagna,9,silverstone,hadjar,38,2,36.408
+Gran Bretagna,9,silverstone,max_verstappen,38,2,28.950
+Gran Bretagna,9,silverstone,norris,38,2,29.818
+Gran Bretagna,9,silverstone,albon,40,5,32.582
+Gran Bretagna,9,silverstone,antonelli,41,2,41.215
+Gran Bretagna,9,silverstone,antonelli,43,3,33.650
+Gran Bretagna,9,silverstone,alonso,46,2,29.964
+Gran Bretagna,9,silverstone,bottas,46,2,29.584
+Gran Bretagna,9,silverstone,perez,46,2,29.866
+Gran Bretagna,9,silverstone,stroll,46,2,46.234
+Gran Bretagna,9,silverstone,arvid_lindblad,47,2,32.143
+Gran Bretagna,9,silverstone,bearman,47,2,30.274
+Gran Bretagna,9,silverstone,bortoleto,47,2,29.926
+Gran Bretagna,9,silverstone,colapinto,47,2,29.461
+Gran Bretagna,9,silverstone,hadjar,47,3,29.672
+Gran Bretagna,9,silverstone,lawson,47,2,28.577
+Gran Bretagna,9,silverstone,ocon,47,2,31.212
+Gran Bretagna,9,silverstone,piastri,47,3,29.081
+Gran Bretagna,9,silverstone,gasly,48,2,28.737
+Gran Bretagna,9,silverstone,hamilton,48,2,28.732
+Gran Bretagna,9,silverstone,leclerc,48,2,28.887
+Gran Bretagna,9,silverstone,norris,48,3,28.475
+Gran Bretagna,9,silverstone,sainz,48,2,29.219
+Miami,4,miami,hulkenberg,1,1,33.710
+Miami,4,miami,bottas,6,1,23.529
+Miami,4,miami,max_verstappen,6,1,22.547
+Miami,4,miami,russell,20,1,22.042
+Miami,4,miami,bottas,21,2,23.827
+Miami,4,miami,leclerc,21,1,23.386
+Miami,4,miami,stroll,21,1,22.630
+Miami,4,miami,antonelli,26,1,22.128
+Miami,4,miami,bearman,26,1,23.474
+Miami,4,miami,albon,27,1,23.016
+Miami,4,miami,hamilton,27,1,23.779
+Miami,4,miami,norris,27,1,22.565
+Miami,4,miami,arvid_lindblad,28,1,22.731
+Miami,4,miami,piastri,28,1,23.024
+Miami,4,miami,sainz,28,1,23.595
+Miami,4,miami,perez,29,1,23.228
+Miami,4,miami,bottas,30,3,17.173
+Miami,4,miami,colapinto,31,1,23.093
+Miami,4,miami,ocon,31,1,24.027
+Miami,4,miami,bortoleto,32,1,23.986
+Miami,4,miami,stroll,37,2,22.090
+Miami,4,miami,alonso,41,1,23.160
+Monaco,6,monaco,bearman,1,1,32.127
+Monaco,6,monaco,bortoleto,1,1,25.927
+Monaco,6,monaco,bottas,1,1,26.759
+Monaco,6,monaco,alonso,3,1,24.975
+Monaco,6,monaco,perez,4,1,27.138
+Monaco,6,monaco,stroll,4,1,24.803
+Monaco,6,monaco,ocon,9,1,25.482
+Monaco,6,monaco,perez,9,2,19.777
+Monaco,6,monaco,hulkenberg,12,1,24.810
+Monaco,6,monaco,hamilton,28,1,24.138
+Monaco,6,monaco,russell,31,1,24.029
+Monaco,6,monaco,hadjar,32,1,24.784
+Monaco,6,monaco,colapinto,35,1,25.797
+Monaco,6,monaco,leclerc,35,1,25.377
+Monaco,6,monaco,antonelli,37,1,24.136
+Monaco,6,monaco,albon,43,1,25.553
+Monaco,6,monaco,bortoleto,43,2,24.690
+Monaco,6,monaco,lawson,44,1,25.622
+Monaco,6,monaco,gasly,45,1,25.547
+Monaco,6,monaco,piastri,48,1,24.244
+Monaco,6,monaco,sainz,52,1,25.662
+Monaco,6,monaco,alonso,58,2,26.334
+Monaco,6,monaco,bortoleto,58,3,20.324
+Monaco,6,monaco,hulkenberg,58,2,20.508
+Monaco,6,monaco,albon,59,2,19.743
+Monaco,6,monaco,alonso,59,3,20.227
+Monaco,6,monaco,arvid_lindblad,59,1,20.211
+Monaco,6,monaco,bortoleto,59,4,24.824
+Monaco,6,monaco,colapinto,59,2,21.973
+Monaco,6,monaco,hulkenberg,59,3,19.988
+Monaco,6,monaco,ocon,59,2,19.905
+Monaco,6,monaco,perez,59,3,26.005
+Monaco,6,monaco,piastri,59,2,31.421
+Monaco,6,monaco,sainz,59,2,19.889
+Monaco,6,monaco,gasly,60,2,19.819
+Monaco,6,monaco,hadjar,60,2,19.675
+Monaco,6,monaco,hamilton,60,2,31.227
+Monaco,6,monaco,lawson,60,2,19.911
+Monaco,6,monaco,leclerc,60,2,34.907
+Monaco,6,monaco,piastri,60,3,20.139
+Monaco,6,monaco,russell,60,2,35.258
+Monaco,6,monaco,antonelli,61,2,26.878
+Monaco,6,monaco,hamilton,61,3,24.264
+Monaco,6,monaco,leclerc,61,3,20.019
+Monaco,6,monaco,albon,65,3,22.728
+Monaco,6,monaco,alonso,65,4,24.099
+Monaco,6,monaco,arvid_lindblad,65,2,22.798
+Monaco,6,monaco,bortoleto,65,5,22.785
+Monaco,6,monaco,colapinto,65,3,23.357
+Monaco,6,monaco,hulkenberg,65,4,22.389
+Monaco,6,monaco,ocon,65,3,21.488
+Monaco,6,monaco,perez,65,4,23.824
+Monaco,6,monaco,sainz,65,3,22.177
+Monaco,6,monaco,antonelli,66,3,20.717
+Monaco,6,monaco,gasly,66,3,23.375
+Monaco,6,monaco,hadjar,66,3,22.305
+Monaco,6,monaco,hamilton,66,4,22.540
+Monaco,6,monaco,lawson,66,3,20.392
+Monaco,6,monaco,piastri,66,4,23.486
+Monaco,6,monaco,russell,66,3,22.530
+Monaco,6,monaco,albon,67,4,2024.189
+Monaco,6,monaco,alonso,67,5,2024.741
+Monaco,6,monaco,arvid_lindblad,67,3,2023.036
+Monaco,6,monaco,bortoleto,67,6,2029.911
+Monaco,6,monaco,colapinto,67,4,2025.881
+Monaco,6,monaco,hulkenberg,67,5,2027.049
+Monaco,6,monaco,ocon,67,4,2025.991
+Monaco,6,monaco,perez,67,5,2026.890
+Monaco,6,monaco,sainz,67,4,2025.722
+Monaco,6,monaco,albon,68,5,62.226
+Monaco,6,monaco,alonso,68,6,64.941
+Monaco,6,monaco,antonelli,68,4,2154.149
+Monaco,6,monaco,arvid_lindblad,68,4,62.596
+Monaco,6,monaco,bortoleto,68,7,63.996
+Monaco,6,monaco,colapinto,68,5,64.453
+Monaco,6,monaco,gasly,68,4,2151.596
+Monaco,6,monaco,hadjar,68,4,2156.620
+Monaco,6,monaco,hamilton,68,5,2156.259
+Monaco,6,monaco,hulkenberg,68,6,61.930
+Monaco,6,monaco,lawson,68,4,2146.050
+Monaco,6,monaco,ocon,68,5,62.669
+Monaco,6,monaco,perez,68,6,65.820
+Monaco,6,monaco,piastri,68,5,2151.478
+Monaco,6,monaco,russell,68,4,2158.116
+Monaco,6,monaco,sainz,68,5,61.968
+Monaco,6,monaco,russell,72,5,19.776
+Spagna,7,catalunya,hamilton,11,1,22.480
+Spagna,7,catalunya,lawson,11,1,25.983
+Spagna,7,catalunya,colapinto,12,1,22.983
+Spagna,7,catalunya,max_verstappen,12,1,22.273
+Spagna,7,catalunya,perez,12,1,24.805
+Spagna,7,catalunya,russell,12,1,22.080
+Spagna,7,catalunya,albon,13,1,24.005
+Spagna,7,catalunya,hulkenberg,13,1,22.869
+Spagna,7,catalunya,norris,13,1,21.791
+Spagna,7,catalunya,ocon,13,1,23.256
+Spagna,7,catalunya,antonelli,14,1,22.038
+Spagna,7,catalunya,bottas,14,1,23.280
+Spagna,7,catalunya,gasly,14,1,22.682
+Spagna,7,catalunya,piastri,14,1,21.776
+Spagna,7,catalunya,sainz,14,1,22.977
+Spagna,7,catalunya,bortoleto,15,1,22.783
+Spagna,7,catalunya,hadjar,15,1,22.444
+Spagna,7,catalunya,leclerc,16,1,22.249
+Spagna,7,catalunya,bearman,18,1,23.118
+Spagna,7,catalunya,alonso,21,1,22.220
+Spagna,7,catalunya,arvid_lindblad,22,1,22.476
+Spagna,7,catalunya,hamilton,27,2,22.477
+Spagna,7,catalunya,albon,29,2,22.027
+Spagna,7,catalunya,max_verstappen,29,2,24.189
+Spagna,7,catalunya,sainz,30,2,22.595
+Spagna,7,catalunya,perez,31,2,24.432
+Spagna,7,catalunya,hadjar,32,2,22.528
+Spagna,7,catalunya,bortoleto,33,2,22.285
+Spagna,7,catalunya,albon,34,3,777.770
+Spagna,7,catalunya,colapinto,34,2,22.290
+Spagna,7,catalunya,ocon,34,2,26.449
+Spagna,7,catalunya,lawson,35,2,23.172
+Spagna,7,catalunya,norris,35,2,22.041
+Spagna,7,catalunya,piastri,36,2,22.661
+Spagna,7,catalunya,russell,36,2,21.677
+Spagna,7,catalunya,antonelli,37,2,22.210
+Spagna,7,catalunya,arvid_lindblad,37,2,24.010
+Spagna,7,catalunya,bearman,39,2,23.901
+Spagna,7,catalunya,leclerc,39,2,22.125
+Spagna,7,catalunya,perez,39,3,23.912
+Spagna,7,catalunya,gasly,40,2,23.310
+Spagna,7,catalunya,max_verstappen,40,3,22.786
+Spagna,7,catalunya,hamilton,41,3,22.837
+Spagna,7,catalunya,albon,50,4,22.703
+Spagna,7,catalunya,bortoleto,53,3,25.915
+Spagna,7,catalunya,sainz,55,3,22.772
+Spagna,7,catalunya,hadjar,58,3,21.949
+Spagna,7,catalunya,ocon,58,3,22.965
