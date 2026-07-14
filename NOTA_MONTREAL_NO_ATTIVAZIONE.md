@@ -1,5 +1,26 @@
 # NOTA_MONTREAL — attivazione RESPINTA da ATT6 (Montreal resta 24,37)
 
+> ⚠️ **ANNOTAZIONE 2026-07-14 — la CAUSA #2 di questa nota è FALSIFICATA** (contenuto originale
+> preservato integralmente sotto). La **Sessione FF4** (`REPORT_PITLOSS_ENGINE_READY.md`,
+> branch `fastf1-engine-ready`) ha misurato il pit-loss a **giro intero** e ha trovato che il
+> warm-in fuori dai settori affetti vale **+0,75 s** a Montreal (e ±0,8 s sui quattro circuiti
+> misurati), **non i ~4 s** che questa nota postula.
+>
+> **L'errore**: il calcolo "+8,9 / +8,7 / +6,0 s sul giro intero" usava come riferimento la
+> **mediana verde di TUTTA la gara** (77,10 s), mentre quei tre stop sono ai **giri 9–15, a
+> serbatoio pieno**. Il divario era gonfiato dal **carburante**, non dal warm-in — lo stesso
+> errore di riferimento non-locale che aveva già invalidato `REPORT_RESIDUO.md` nell'arco C→I.
+>
+> **Cosa resta vero**: il **verdetto (ATT6 respinta, Montreal resta 24,37) REGGE**, e la
+> **causa #1 regge ed è ora quantificata** — lo stop di NOR aveva un pit-loss reale di **27,02**
+> contro un tipico Montreal di **19,7** (atipico di +7,3). FF4 conferma che ATT6 fallirebbe
+> anche col valore engine-ready (19,71 → NOR P11 vs P14 reale).
+>
+> **Cosa cambia**: la vera causa è che **la gara demo 2026 è atipica** (+4,5 s sopra il grappolo
+> 2018–2025, che sta in 1,4 s), non che il metodo per settori sottostimi. Il **candidato
+> engine-ready per una misura futura** proposto in fondo a questa nota **è stato eseguito in FF4
+> e non ha risolto il problema**: non è più una via aperta.
+
 Sessione di attivazione per Montreal (candidato censimento FF3: **18,96**, IC95 [18,45–19,12],
 rapporto 16,3×). Branch `attivazione-montreal`, tag `pre-attivazione-montreal-2026-07-14`.
 **Esito: ATT6 FALLITA (0/3 migliorati, 1 peggiorato) ⇒ nessuna attivazione.** Nessun file
