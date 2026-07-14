@@ -1,0 +1,3 @@
+parametro,mediana,iqr_lo,iqr_hi,ic95_lo,ic95_hi,larghezza,pooled_lo,pooled_hi,n_stop,n_blocchi,blocchi
+dry,20.7965,20.0025,21.5644,20.0485,22.161,2.1125,20.085,21.4652,102,7,2018-BGP;2019-BGP;2020-70th;2020-BGP;2022-BGP;2023-BGP;2026-BGP
+wet,21.831,20.9416,23.92,,,,,,40,1,2024-BGP
