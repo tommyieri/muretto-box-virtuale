@@ -13,5 +13,6 @@ fix_import.py
 *.tmp
 *~
 demo/_backup_preSC/
+data/ff1_cache/
 demo/data/ref_traffic_py.json
 staging_gara/
