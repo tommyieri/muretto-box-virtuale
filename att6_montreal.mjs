@@ -1,3 +1,15 @@
+/*
+ * ATT6 v1 — SUPERATO. NON USARE PER NUOVE ATTIVAZIONI.
+ *
+ * Implementa il criterio ATT6 v1: 3 pit reali, soglia 2/3 migliorati e 0 peggiorati.
+ * Quel criterio ha due lacune dimostrate (nessun test di tipicità della gara demo;
+ * banco troppo piccolo e non selezionato per sensibilità) ed è stato sostituito da
+ * PREREG_SESSIONE_ATT6_V2.md (14/07/2026).
+ *
+ * Questo file resta committato come GENERATORE della tabella in
+ * NOTA_MONTREAL_NO_ATTIVAZIONE.md: serve a riprodurre quella diagnosi, non a
+ * produrne di nuove. Lo strumento in vigore e' quello parametrico di ATT6 v2.
+ */
 // att6_montreal.mjs — ATT6 dell'attivazione Montreal (24,37 -> 18,96).
 // Identico nel metodo a att6_silverstone.mjs (gara demo "Canada", 2026).
 // Selezione DICHIARATA A PRIORI: primi 3 stop verdi validi (cambio gomme, no drive-through,
