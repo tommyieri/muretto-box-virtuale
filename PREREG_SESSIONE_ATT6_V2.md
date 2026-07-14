@@ -87,3 +87,19 @@ Se ciò accade su Silverstone in fase di validazione dello strumento, vale, dich
 Verificato su 6 casi (3 Montreal + 3 Silverstone): motore e realtà usano campi di cardinalità diversa (il motore esclude i piloti senza `pace[L]`), ma i piloti esclusi erano in tutti e 6 i casi dietro al pilota che rientra. Cambia il denominatore, mai il rango: gli errori non cambiano. Nessuna correzione necessaria.
 
 Cautela residua: gli esclusi sono tipicamente piloti appena usciti dai box, quindi tipicamente dietro — non necessariamente. Lo strumento v2 stampa sempre entrambi i denominatori e segnala se un pilota escluso risulta davanti al pilota che rientra. Segnalazione, non blocco.
+
+## ADDENDUM 4 — Forma finale, semplificata (14/07/2026). Sostituisce l'apparato dei Test 1/2.
+
+Principio: la decisione di attivare una correzione la prende il criterio di grandezza (guadagno atteso > 3× incertezza della correzione), legge di progetto. ATT6 è uno smoke test con checkpoint umano al merge: serve ad accorgersi del catastrofico, non a ri-decidere il merito. Un KPI di precisione non blocca una decisione di grandezza.
+
+ATT6 v2 finale — un solo script, tre output, decisione umana al merge:
+
+1. Tipicità (unico gate automatico): |loss mediano engine-ready della gara demo − mediana engine-ready del grappolo 2018–2025 dello stesso circuito| ≤ 2,0 s → gara GIUDICABILE. Altrimenti NON GIUDICABILE: né attivazione né rollback, il candidato aspetta la prossima gara.
+2. Tabella completa: tutti i pit reali della gara (drive-through esclusi: tyre_age che non si azzera), colonne caso | sensibile? | PRIMA | ADESSO | REALE | esito. Sensibile = ≥2 auto entro ±5,0 s al rientro reale, calcolato dai soli dati reali. Nessun numero minimo di casi: quanti sono, sono.
+3. Una regola dura: se un caso SENSIBILE peggiora, l'attivazione non è automatica: quel caso va guardato e spiegato prima di attivare (principio: mai un consiglio peggiore di quello che l'utente avrebbe da solo). Tutto il resto è informativo.
+
+Cosa decade rispetto agli Addendum 1–3: la guardia strumentale sul transito come gate (il Δtransito si stampa come riga informativa); il minimo di 5 casi e l'esito "banco insufficiente"; il verdetto automatico PASS/NO-GO; l'obbligo di validazione positiva dello strumento; ogni piano di contingenza. Resta valido dall'Addendum 1 il metodo engine-ready per gara e grappolo; dall'Addendum 3 la diagnosi della metrica (chiusa) e la segnalazione se un pilota escluso dal field del motore risulta davanti.
+
+Riclassificazione Montreal: invariata (scarto ~4,5 s > 2,0 s → NON GIUDICABILE). Differenze al centesimo nella definizione del grappolo sono dichiarate irrilevanti: sotto il decimo di secondo non si discute.
+
+Questo addendum chiude la taratura. Il prereg non si tocca più prima di Spa.
