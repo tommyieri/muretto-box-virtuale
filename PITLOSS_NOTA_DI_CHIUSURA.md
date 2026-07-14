@@ -1,5 +1,13 @@
 # PITLOSS_NOTA_DI_CHIUSURA — chiusura del debito P1 (pit-loss)
 
+> **ANNOTAZIONE 2026-07-14 (contenuto originale preservato integralmente):** la chiusura a NO
+> dell'arco C→I resta storicamente valida — quei metodi non potevano calibrare il fix. Il debito
+> è stato poi riaperto e chiuso per **un'altra via**: Sessioni **FF** (metodo per settori via
+> FastF1, AMBIGUO) e **FF2** (esteso 2018–2026 dry/wet, **GO**) → **attivazione 2026-07-14**:
+> **Gran Bretagna NON resta 29,12 — è 20,80** (`NOTA_SILVERSTONE.md`, ATT6 2/3 migliorati,
+> golden invariati). Il ratio SC 0,42 resta orfano e non corretto. Gli altri circuiti restano
+> come descritti qui sotto.
+
 Chiusura definitiva del filone pit-loss dopo l'arco di sessioni C→D→E→F→G→H→I. Nessun verdetto
 strategico: quello è del PO. Questa nota mette in fila **cosa si è misurato, cosa era sbagliato
 nella misura, e cosa resta vero** — così il debito non viene ri-litigato da zero.
