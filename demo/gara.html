@@ -198,8 +198,8 @@ async function loadGara(gara) {
   const rfLaps = new Set();
   for (const [a,b] of (finestre?.rf || [])) for (let L=a; L<=b; L++) rfLaps.add(L);
   const durate = computeDurations(race.byLap, race.n_laps, rfLaps);
-  // tabelle per i pallini: tempo del leader per giro + cum_time per pilota (dati reali)
-  leadCum = {0:0}; cumPil = {}; teamOfR = {};
+  // tabelle per pallini e stati: tempo del leader per giro + cum_time per pilota (dati reali)
+  leadCum = {}; cumPil = {}; teamOfR = {};
   for (const lp of race.laps) for (const [d,c] of Object.entries(lp.cars)){
     teamOfR[d] = c.team;
     if (typeof c.cum_time === 'number' && !race.nonParten.has(d)){
@@ -208,10 +208,14 @@ async function loadGara(gara) {
     }
   }
   for (const d in cumPil) cumPil[d].sort((a,b)=>a.lap-b.lap);
+  // partenza: istante COMUNE a tutti per definizione, ma non nei dati (cum_time e' tempo-
+  // sessione, l'offset di partenza e' cotto in cum_time[1]). Stima = fine giro 1 del leader
+  // meno durate[1] (mediana): passo d'animazione dichiarato, mai usato come dato di gara.
+  leadCum[0] = (leadCum[1] !== undefined) ? leadCum[1] - durate[1] : 0;
   drawPista(gara);
   buildStrat(); mostraVista(false);
   clock.setDur(L => durate[L]);
-  clock.reset(race.n_laps);
+  clock.reset(race.n_laps + 1);   // il traguardo del giro n sta a p = n+1 (ancora dell'orologio)
   setPlayIcon(false);
   requestAnimationFrame(()=>requestAnimationFrame(()=>el('grid').classList.remove('notrans')));
 }
@@ -238,37 +242,53 @@ async function drawPista(gara){
     pistaFrame(clock.position);
   } catch(e){ console.warn('pista non disponibile:', e.message); pistaVuota(gara); }
 }
-// pallini = replay posizionale dai cum_time per-giro: al tempo reale T (interpolato sul
-// leader) ogni pilota e' nel giro k con frazione (T-fine giro k-1)/(durata giro k).
-// Giri mancanti nei dati => pallino nascosto, mai inventato. Arrivati/ritirati: spariscono.
+// --- orologio per-pilota: percorso UNICO per pallini, badge BOX e stati di riga ---
+// tempoReale(p): ancora dell'animazione. p in [L, L+1) = il leader percorre il giro L;
+// il traguardo del giro L del leader sta a p = L+1 (T = leadCum[L]). leadCum[0] = partenza.
+function tempoReale(p){
+  const L=Math.max(1,Math.min(race.n_laps,Math.floor(p))), f=Math.min(1,Math.max(0,p-L));
+  const t0=leadCum[L-1], t1=leadCum[L] ?? t0;
+  if (t0===undefined) return undefined;
+  return t0 + f*(t1-t0);
+}
+// giroDi(d, T): al tempo reale T il pilota d e' nel SUO giro lap con frazione fd, dai SUOI
+// cum_time (il traguardo del suo giro N sta a cum_time[N]). box/inPit usano gli stessi
+// campi (in_lap/out_lap) e le stesse soglie del transito pallino (pista.mjs): nessun
+// percorso parallelo. Giri mancanti => null, mai inventato. Oltre l'ultimo giro noto
+// (arrivato/ritirato) => null.
+function giroDi(d, T){
+  const arr=cumPil[d]; if (!arr || !arr.length || !(T >= leadCum[0])) return null;
+  let lo=0, hi=arr.length-1, idx=arr.length;        // primo indice con cum > T
+  if (arr[hi].cum > T){
+    while (lo<hi){ const m=(lo+hi)>>1; if (arr[m].cum > T) hi=m; else lo=m+1; }
+    idx=lo;
+  }
+  if (idx>=arr.length) return null;                  // oltre l'ultimo giro noto
+  const fine=arr[idx], inizio = idx>0 ? arr[idx-1] : {lap:0, cum:leadCum[0]};
+  if (fine.lap !== inizio.lap+1) return null;        // buco nei dati: non inventare
+  const fd=(T-inizio.cum)/(fine.cum-inizio.cum || 1);
+  const c=race.byLap[fine.lap]?.[d];
+  const box = c?.in_lap ? 'in' : (c?.out_lap ? 'out' : null);
+  const FE = pista?.pitFrazioni?.ingresso ?? 0.95, FX = pista?.pitFrazioni?.uscita ?? 0.05;
+  const inPit = (box==='in' && fd>=FE) || (box==='out' && fd<=FX);
+  return { lap: fine.lap, fd, box, inPit, stato: c };
+}
+// pallini = replay posizionale dai cum_time per-giro, via giroDi (stesso orologio della tabella)
 function pistaFrame(p){
   if (!pista || !leadCum) return;
-  const L=Math.max(1,Math.min(race.n_laps,Math.floor(p))), f=Math.min(1,Math.max(0,p-L));
-  const t0=leadCum[L] ?? leadCum[L-1], t1=leadCum[L+1] ?? t0;
-  if (t0===undefined) return;
-  const T = t0 + f*(t1-t0);
+  const T = tempoReale(p);
+  if (T===undefined) return;
   const dots=[];
   for (const d in cumPil){
-    const arr=cumPil[d];
-    let lo=0, hi=arr.length-1, idx=arr.length;      // primo indice con cum > T
-    if (arr[hi].cum > T){
-      while (lo<hi){ const m=(lo+hi)>>1; if (arr[m].cum > T) hi=m; else lo=m+1; }
-      idx=lo;
-    }
-    if (idx>=arr.length) continue;                   // oltre l'ultimo giro noto: niente pallino
-    const fine=arr[idx], inizio = idx>0 ? arr[idx-1] : {lap:0, cum:0};
-    if (fine.lap !== inizio.lap+1) continue;         // buco nei dati: non inventare
-    const fd=(T-inizio.cum)/(fine.cum-inizio.cum || 1);
-    // ai box: nel giro di in-lap (coda) e di out-lap (testa) il pallino passa in pit-lane
-    const c=race.byLap[fine.lap]?.[d];
-    const box = c?.in_lap ? 'in' : (c?.out_lap ? 'out' : null);
-    dots.push({f:fd, box, colore:coloreTeam(teamOfR[d]), sigla:d});
+    const g = giroDi(d, T);
+    if (g) dots.push({f:g.fd, box:g.box, colore:coloreTeam(teamOfR[d]), sigla:d});
   }
   pista.aggiorna(dots);
 }
 
 // --- timeline eventi: geometria da bands() (helper puro), tacche pit dai dati gara ---
-const lapPct = L => race.n_laps>1 ? (L-1)/(race.n_laps-1)*100 : 0;
+// tacca pit a FINE giro L (L/n): e' li' che la sosta avviene, sull'asse 0=partenza 100=traguardo
+const lapPct = L => L/race.n_laps*100;
 function drawEvtl(){
   const bs = bands(finestre, race.n_laps);
   el('evtlSegs').innerHTML = bs.map(b=>`<div class="seg ${b.type}" title="${b.type.toUpperCase()} giri ${b.a}&ndash;${b.b}" style="left:${b.left}%;width:${b.width}%"></div>`).join('');
@@ -282,7 +302,7 @@ function evtlSeek(clientX){
   const r = el('evtlRail').getBoundingClientRect();
   const f = Math.min(1, Math.max(0, (clientX - r.left) / r.width));
   clock.pause(); setPlayIcon(false);
-  clock.seek(1 + f*(race.n_laps-1));
+  clock.seek(1 + f*race.n_laps);   // stesso asse del cursore: fine barra = traguardo (p = n+1)
 }
 { // interazione: click/drag + tastiera
   const tl = el('evtl'); let giu=false;
@@ -293,7 +313,7 @@ function evtlSeek(clientX){
   tl.addEventListener('keydown', e=>{
     if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight') return;
     e.preventDefault(); clock.pause(); setPlayIcon(false);
-    clock.seek(Math.min(race.n_laps, Math.max(1, Math.round(clock.position)+(e.key==='ArrowRight'?1:-1))));
+    clock.seek(Math.min(race.n_laps+1, Math.max(1, Math.round(clock.position)+(e.key==='ArrowRight'?1:-1))));
   });
 }
 
@@ -311,7 +331,9 @@ function buildGrid(){
     row.querySelector('.drv a').addEventListener('click', e=>e.stopPropagation());
     row.addEventListener('click',()=>{ if(!row.classList.contains('selectable'))return;
       selDrv=d; clock.pause(); setPlayIcon(false);
-      curLap=Math.min(race.n_laps,Math.round(clock.position)); clock.seek(curLap);
+      // floor, NON round: si congela il giro che l'utente sta GUARDANDO; il seek porta al
+      // suo inizio, cioe' alla fine del giro curLap-1 — lo stesso stato che il motore riceve
+      curLap=Math.max(1,Math.min(race.n_laps,Math.floor(clock.position))); clock.seek(curLap);
       openPit(); frame(clock.position);
       if(matchMedia('(max-width:899px)').matches) el('pit').scrollIntoView({behavior:'smooth',block:'nearest'});
     });
@@ -335,18 +357,24 @@ function leaderAiGiri(L){
   return leaderMemo[L]=out;
 }
 
-// Classifica al giro frazionario: identica alla v1 + gap da chi precede + flag box (in/out lap)
+// Classifica al giro frazionario. ORDINAMENTO sincronizzato per giro, come il motore:
+// ogni pilota valutato alla frazione f del SUO giro L (icum interpola tra fine giro L-1
+// e fine giro L). STATI (BOX/OUT, gomma, eta') invece al tempo reale T via giroDi: gli
+// stessi campi e lo stesso orologio che muovono il pallino.
 function classificaAt(L, f){
-  const A=race.byLap[L], B=race.byLap[L+1];
-  const icum=(d,c)=> (f>0 && B && typeof B[d]?.cum_time==='number')
-      ? c.cum_time + f*(B[d].cum_time - c.cum_time) : c.cum_time;
+  const A=race.byLap[L], P=race.byLap[L-1];
+  const T=tempoReale(L+f);
+  const icum=(d,c)=>{
+    const prev = L===1 ? leadCum[0] : P?.[d]?.cum_time;
+    return (typeof prev==='number') ? prev + f*(c.cum_time - prev) : c.cum_time;
+  };
   let ordine = Object.entries(A).filter(([d,c]) => typeof c.cum_time==='number' && !race.nonParten.has(d))
       .map(([d,c])=>[d,c,icum(d,c)]);
   const faseGriglia = (L===1 && f===0 && gridGara.length>0);
   if (faseGriglia) {
     const rank={}; gridGara.forEach((d,i)=>rank[d]=i);
     ordine.sort((a,b)=>(rank[a[0]]??999)-(rank[b[0]]??999));
-  } else ordine.sort((a,b)=>(a[2]-b[2])||(a[0]<b[0]?-1:1));
+  } else ordine.sort((a,b)=>(a[2]-b[2])||(a[1].cum_time-b[1].cum_time)||(a[0]<b[0]?-1:1));
   const leader = ordine.length?ordine[0][2]:0;
   const lag = leaderAiGiri(L);
   const rows = ordine.map(([drv,c,cum],i)=>{
@@ -359,14 +387,21 @@ function classificaAt(L, f){
     else if(i===0){et='LEADER';cls='lead';}
     else{et=`+${gap.toFixed(1)}s`;cls='';
       prev=cum-ordine[i-1][2];}
-    // ai box: gomma che sta montando (compound del giro successivo) + durata f1db se c'e'
+    // stato al tempo reale T (lo stesso orologio del pallino); fuori dai dati (oltre
+    // l'ultimo giro noto, buchi): si ricade sullo stato di fine giro L, badge spenti
+    const g = giroDi(drv, T);
+    const st = g?.stato ?? c;
+    const boxNow = !!g?.inPit;                     // in pit-lane ADESSO (soglie del pallino)
+    const outNow = !boxNow && g?.box==='out';      // resto dell'out-lap
+    // in pit-lane: gomma che sta montando (compound del giro dopo l'in-lap) + durata f1db
     let monta=null, stopDur=null;
-    if (c.in_lap){
-      monta = B?.[drv]?.compound || null;
-      stopDur = (stopsGara[drv]||[]).find(s=>s.giro===L)?.durata_s ?? null;
+    if (boxNow){
+      const Lin = g.box==='in' ? g.lap : g.lap-1;  // giro di in-lap della sosta in corso
+      if (g.box==='in') monta = race.byLap[g.lap+1]?.[drv]?.compound || null;
+      stopDur = (stopsGara[drv]||[]).find(s=>s.giro===Lin)?.durata_s ?? null;
     }
-    return {pos:i+1,drv,team:c.team,compound:c.compound,age:c.tyre_age,et,cls,prev,
-            inlap:!!c.in_lap,outlap:!!c.out_lap,monta,stopDur,leader:i===0,selectable:true};
+    return {pos:i+1,drv,team:c.team,compound:st.compound,age:st.tyre_age,et,cls,prev,
+            inlap:boxNow,outlap:outNow,monta,stopDur,leader:i===0,selectable:true};
   });
   const inGara=new Set(ordine.map(([d])=>d));
   const teamOf={}; for(const lp of race.laps) for(const [d,c] of Object.entries(lp.cars)) teamOf[d]=c.team;
@@ -422,11 +457,11 @@ function paintRow(r, i){
 function frame(p){
   const L=Math.max(1,Math.min(race.n_laps,Math.floor(p)));
   const f=Math.min(1,Math.max(0,p-L));
-  curLap=Math.min(race.n_laps,Math.max(1,Math.round(p)));
+  curLap=L;   // giro in corso del leader: scatta al SUO traguardo (p intero), non a meta' giro
   classificaAt(L,f).forEach(paintRow);
   pistaFrame(p);
   el('lapLabel').textContent=curLap;
-  const pct = race.n_laps>1 ? (p-1)/(race.n_laps-1)*100 : 0;
+  const pct = (p-1)/race.n_laps*100;   // asse barra: 0 = partenza, 100 = traguardo (p = n+1)
   el('evtlCur').style.left = pct+'%';
   el('evtlFatto').style.width = pct+'%';
   el('evtl').setAttribute('aria-valuenow', curLap);
@@ -445,7 +480,7 @@ function setPlayIcon(playing){ const b=el('play'); b.textContent=playing?'❚❚
 // --- strip strategia: stint da (stint, compound) per-giro, pit dai flag in_lap ---
 // Dati gia' nei JSON gara: nessun calcolo nuovo, solo raggruppamento per la vista.
 function buildStrat(){
-  const ordine = classificaAt(race.n_laps, 0);          // ordine d'arrivo + coda
+  const ordine = classificaAt(race.n_laps, 1);          // ordine d'arrivo (fine ultimo giro) + coda
   const righe = [];
   for (const r of ordine){
     const d = r.drv, fine = lastLap[d];
@@ -519,15 +554,19 @@ function openPit(){
   if(pista){ pista.setSpento(true); el('pista').classList.add('pit-attivo'); }
   el('pit').classList.remove('hidden');
   el('pitTitle').innerHTML = `Se ${selDrv} pitta&hellip; <small>rivali congelati</small>`;
-  const pl=el('pitLap'); pl.min=curLap+1; pl.max=race.n_laps;
-  if(+pl.value<curLap+1||+pl.value>race.n_laps) pl.value=Math.min(curLap+4,race.n_laps);
+  // il freeze e' l'ultimo giro COMPLETATO visibile (curLap-1): si puo' quindi pittare gia'
+  // al giro IN CORSO (in-lap = curLap), come al muretto. Al giro 1 il freeze e' clampato a 1.
+  const pl=el('pitLap'); pl.min=Math.max(2,curLap); pl.max=race.n_laps;
+  if(+pl.value<+pl.min||+pl.value>race.n_laps) pl.value=Math.min(curLap+4,race.n_laps);
   updatePit();
 }
 function chiudiPit(){ selDrv=null; el('pit').classList.add('hidden');
   if(pista){ pista.setSpento(false); el('pista').classList.remove('pit-attivo'); }
   frame(clock.position); }
 function updatePit(){
-  const L=curLap, pitL=+el('pitLap').value;
+  // freeze = ultimo giro COMPLETATO visibile: a p=curLap lo schermo mostra la classifica
+  // di fine giro curLap-1, ed e' QUELLO lo stato che il motore congela (byLap[freeze]).
+  const L=Math.max(1,curLap-1), pitL=+el('pitLap').value;
   el('pitLapLabel').textContent=pitL;
   const present=Object.keys(race.byLap[L]).filter(d=>typeof race.byLap[L][d].cum_time==='number'&&!race.nonParten.has(d));
   const loss=pitloss[race.gara]??22.0;

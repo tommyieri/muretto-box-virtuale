@@ -4,6 +4,8 @@
 // Il movimento tra un giro e l'altro nasce SOLO da interpolazione dei dati per-giro.
 
 // Orologio a requestAnimationFrame: la posizione di gara è un giro FRAZIONARIO.
+// ANCORA: p ∈ [L, L+1) = il leader sta percorrendo il giro L; il traguardo del giro L
+// sta a p = L+1, quindi la gara di n giri finisce a p = n+1 (max = nLaps+1).
 // A 1× il giro L dura durFn(L) SECONDI REALI (durata vera della gara). onTick(p) a
 // ogni frame; onEnd() a fine gara. Senza durFn ricade su 1 giro/secondo (fallback).
 export function makeClock({ onTick, onEnd, min = 1 }) {
@@ -33,24 +35,31 @@ export function makeClock({ onTick, onEnd, min = 1 }) {
   return api;
 }
 
-// Durata reale di ogni giro = delta cum_time del LEADER tra L e L+1 (fonte telescopica:
-// la somma è la durata reale della gara). Clamp a 4× la mediana per non congelare
-// l'animazione su artefatti. I giri sotto SC restano lenti.
-// BANDIERA ROSSA: il giro rosso contiene la sospensione reale (~38 min a Monaco, cotta nel
-// cum_time). NON la animiamo in tempo reale: durata fissa breve REDFLAG_HOLD col banner
-// "gara sospesa" (scelta dichiarata dal PO). rfLaps = Set dei giri rossi.
+// Durata reale del giro L = delta del MINIMO cum_time tra fine giro L-1 e fine giro L
+// (il tempo del battistrada, chiunque sia: e' la STESSA ancora di tempoReale in
+// gara.html, cosi' l'orologio dell'animazione resta proporzionale al tempo reale su
+// ogni giro, anche ai cambi di leadership; fonte telescopica: la somma e' la durata
+// reale della gara). dur[L] e' la durata del giro FISICO L (p ∈ [L, L+1) = giro L).
+// Il giro 1 non è derivabile dai dati (cum_time è tempo-sessione: l'offset di partenza
+// è cotto dentro cum_time[1]): dur[1] = mediana — passo d'animazione dichiarato, non
+// un dato di gara. Clamp a 4× la mediana per non congelare l'animazione su artefatti.
+// I giri sotto SC restano lenti.
+// BANDIERA ROSSA: il giro rosso contiene la sospensione reale (~38 min a Monaco, cotta
+// nel suo cum_time). NON la animiamo in tempo reale: durata fissa breve REDFLAG_HOLD col
+// banner "gara sospesa" (scelta dichiarata dal PO). rfLaps = Set dei giri rossi.
 export const REDFLAG_HOLD = 5; // secondi a 1× per il giro-rosso (pausa breve, non 38 min)
 export function computeDurations(byLap, nLaps, rfLaps = new Set()) {
+  const minCum = {};
+  for (let L = 1; L <= nLaps; L++) {
+    let m = Infinity;
+    for (const d in (byLap[L] || {})) { const c = byLap[L][d].cum_time; if (typeof c === 'number' && c < m) m = c; }
+    if (m < Infinity) minCum[L] = m;
+  }
   const raw = {}, all = [];
-  for (let L = 1; L < nLaps; L++) {
-    const A = byLap[L], B = byLap[L + 1];
-    if (!A || !B) continue;
-    let leadCum = Infinity, leadDrv = null;
-    for (const d in A) { const c = A[d].cum_time; if (typeof c === 'number' && c < leadCum) { leadCum = c; leadDrv = d; } }
-    if (leadDrv && typeof B[leadDrv]?.cum_time === 'number' && typeof A[leadDrv]?.cum_time === 'number') {
-      const dt = B[leadDrv].cum_time - A[leadDrv].cum_time;
-      if (dt > 0) { raw[L] = dt; all.push(dt); }
-    }
+  for (let L = 2; L <= nLaps; L++) {
+    if (minCum[L] === undefined || minCum[L - 1] === undefined) continue;
+    const dt = minCum[L] - minCum[L - 1];
+    if (dt > 0) { raw[L] = dt; all.push(dt); }
   }
   all.sort((a, b) => a - b);
   const med = all.length ? all[all.length >> 1] : 90, cap = med * 4;
@@ -65,12 +74,15 @@ export function tyreColor(compound) {
             INTERMEDIATE: '#43c463', WET: '#3ba7ff' })[compound] || null;
 }
 
-// Geometria delle bande SC/VSC sulla timeline, in percentuale del range-giri.
+// Geometria delle bande SC/VSC sulla timeline, in percentuale della barra.
+// Asse della barra: 0% = partenza, 100% = bandiera a scacchi (p = nLaps+1); il giro L
+// occupa l'INTERVALLO [(L-1)/nLaps, L/nLaps] — stessa mappa del cursore (p-1)/nLaps.
+// La finestra a..b copre quindi da inizio giro a a fine giro b, e il cursore le sta
+// dentro esattamente nei giri in cui il banner di fase è acceso.
 export function bands(finestreGara, nLaps) {
-  if (!finestreGara || nLaps < 2) return [];
-  const span = nLaps - 1;
+  if (!finestreGara || nLaps < 1) return [];
   const mk = (arr, type) => (arr || []).map(([a, b]) => {
-    const left = (a - 1) / span * 100, right = (b - 1) / span * 100;
+    const left = (a - 1) / nLaps * 100, right = b / nLaps * 100;
     return { type, a, b, left, width: Math.max(right - left, 1.2) };
   });
   // rf disegnato per ultimo -> sta sopra la banda sc (i giri rossi sono dentro la sc)
