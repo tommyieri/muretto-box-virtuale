@@ -97,6 +97,20 @@ def main():
         registro = json.load(f)
     demo_per_cid = {v['cid']: nome for nome, v in registro.items()}
 
+    # sessioni del weekend: date/orari UTC come esposti da f1db (campi *Date/*Time);
+    # orario assente -> None, la UI mostra solo la data: MAI orari inventati
+    SESSIONI = [('fp1', 'freePractice1'), ('fp2', 'freePractice2'), ('fp3', 'freePractice3'),
+                ('fp4', 'freePractice4'), ('sprint_quali', 'sprintQualifying'),
+                ('sprint', 'sprintRace'), ('qualifiche', 'qualifying')]
+
+    def sessioni_di(r):
+        out = {}
+        for chiave, pref in SESSIONI:
+            if r.get(f'{pref}Date'):
+                out[chiave] = {'data': r[f'{pref}Date'], 'ora_utc': r[f'{pref}Time'] or None}
+        out['gara'] = {'data': r['date'], 'ora_utc': r['time'] or None}
+        return out
+
     gare = []
     for r in races:
         gp, cid = r['grandPrixId'], r['circuitId']
@@ -108,6 +122,7 @@ def main():
             'round': int(r['round']), 'data': r['date'], 'gp': gp, 'circuitId': cid,
             'nome': nome, 'titolo': titolo, 'circuito': circuiti.get(cid, cid),
             'giri': int(r['laps']) if r['laps'] else None,
+            'sessioni': sessioni_di(r),
             'gara_demo': gara_demo, 'vincitore': vincitore_da_demo(gara_demo) if gara_demo else None,
         })
 

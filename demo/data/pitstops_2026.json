@@ -1,0 +1,1848 @@
+{
+ "_nota": "GENERATO da gen_pitstops.py (f1db races-pit-stops, gare in demo). SEMANTICA VERIFICATA contro il censimento FastF1 a ogni esecuzione (vedi testa del generatore). giro == in_lap dei dati gara. Non modificare a mano.",
+ "semantica": "transito_pitlane",
+ "verifica": {
+  "n_confrontati": 98,
+  "mediana_scarto_s": 0.004,
+  "iqr_s": [
+   -0.049,
+   0.049
+  ],
+  "confronto": "data/censimento_stops.csv (pit_lane_time FastF1, 2026)"
+ },
+ "aggiornato_al": "GP di Gran Bretagna",
+ "gare": {
+  "Australia": {
+   "ALB": [
+    {
+     "giro": 12,
+     "n": 1,
+     "durata_s": 18.118
+    },
+    {
+     "giro": 33,
+     "n": 2,
+     "durata_s": 18.404
+    }
+   ],
+   "ALO": [
+    {
+     "giro": 11,
+     "n": 1,
+     "durata_s": 25.895
+    }
+   ],
+   "ANT": [
+    {
+     "giro": 12,
+     "n": 1,
+     "durata_s": 20.985
+    }
+   ],
+   "BEA": [
+    {
+     "giro": 18,
+     "n": 1,
+     "durata_s": 18.774
+    }
+   ],
+   "BOR": [
+    {
+     "giro": 18,
+     "n": 1,
+     "durata_s": 18.916
+    },
+    {
+     "giro": 33,
+     "n": 2,
+     "durata_s": 22.619
+    }
+   ],
+   "BOT": [
+    {
+     "giro": 12,
+     "n": 1,
+     "durata_s": 30.387
+    }
+   ],
+   "COL": [
+    {
+     "giro": 9,
+     "n": 1,
+     "durata_s": 27.733
+    },
+    {
+     "giro": 46,
+     "n": 2,
+     "durata_s": 18.561
+    }
+   ],
+   "GAS": [
+    {
+     "giro": 11,
+     "n": 1,
+     "durata_s": 18.672
+    }
+   ],
+   "HAM": [
+    {
+     "giro": 28,
+     "n": 1,
+     "durata_s": 17.741
+    }
+   ],
+   "LAW": [
+    {
+     "giro": 11,
+     "n": 1,
+     "durata_s": 19.112
+    },
+    {
+     "giro": 33,
+     "n": 2,
+     "durata_s": 18.19
+    }
+   ],
+   "LEC": [
+    {
+     "giro": 25,
+     "n": 1,
+     "durata_s": 17.664
+    }
+   ],
+   "LIN": [
+    {
+     "giro": 18,
+     "n": 1,
+     "durata_s": 18.506
+    }
+   ],
+   "NOR": [
+    {
+     "giro": 11,
+     "n": 1,
+     "durata_s": 18.266
+    },
+    {
+     "giro": 34,
+     "n": 2,
+     "durata_s": 17.649
+    }
+   ],
+   "OCO": [
+    {
+     "giro": 11,
+     "n": 1,
+     "durata_s": 18.57
+    }
+   ],
+   "PER": [
+    {
+     "giro": 18,
+     "n": 1,
+     "durata_s": 21.371
+    },
+    {
+     "giro": 43,
+     "n": 2,
+     "durata_s": 18.951
+    }
+   ],
+   "RUS": [
+    {
+     "giro": 12,
+     "n": 1,
+     "durata_s": 17.794
+    }
+   ],
+   "SAI": [
+    {
+     "giro": 11,
+     "n": 1,
+     "durata_s": 19.859
+    },
+    {
+     "giro": 33,
+     "n": 2,
+     "durata_s": 25.939
+    },
+    {
+     "giro": 45,
+     "n": 3,
+     "durata_s": 34.615
+    }
+   ],
+   "STR": [
+    {
+     "giro": 11,
+     "n": 1,
+     "durata_s": 36.686
+    },
+    {
+     "giro": 26,
+     "n": 2,
+     "durata_s": 33.182
+    },
+    {
+     "giro": 39,
+     "n": 4,
+     "durata_s": 22.469
+    }
+   ],
+   "VER": [
+    {
+     "giro": 18,
+     "n": 1,
+     "durata_s": 19.07
+    },
+    {
+     "giro": 41,
+     "n": 2,
+     "durata_s": 18.078
+    }
+   ]
+  },
+  "Austria": {
+   "ALB": [
+    {
+     "giro": 18,
+     "n": 1,
+     "durata_s": 21.249
+    },
+    {
+     "giro": 37,
+     "n": 2,
+     "durata_s": 21.27
+    }
+   ],
+   "ALO": [
+    {
+     "giro": 24,
+     "n": 1,
+     "durata_s": 22.358
+    },
+    {
+     "giro": 49,
+     "n": 2,
+     "durata_s": 28.713
+    }
+   ],
+   "ANT": [
+    {
+     "giro": 24,
+     "n": 1,
+     "durata_s": 21.413
+    },
+    {
+     "giro": 51,
+     "n": 2,
+     "durata_s": 21.502
+    }
+   ],
+   "BEA": [
+    {
+     "giro": 24,
+     "n": 1,
+     "durata_s": 21.593
+    },
+    {
+     "giro": 45,
+     "n": 2,
+     "durata_s": 22.044
+    }
+   ],
+   "BOR": [
+    {
+     "giro": 17,
+     "n": 1,
+     "durata_s": 22.605
+    },
+    {
+     "giro": 44,
+     "n": 2,
+     "durata_s": 21.877
+    }
+   ],
+   "COL": [
+    {
+     "giro": 20,
+     "n": 1,
+     "durata_s": 21.561
+    },
+    {
+     "giro": 46,
+     "n": 2,
+     "durata_s": 21.446
+    }
+   ],
+   "GAS": [
+    {
+     "giro": 13,
+     "n": 1,
+     "durata_s": 21.6
+    },
+    {
+     "giro": 38,
+     "n": 2,
+     "durata_s": 21.212
+    },
+    {
+     "giro": 51,
+     "n": 3,
+     "durata_s": 21.58
+    }
+   ],
+   "HAD": [
+    {
+     "giro": 18,
+     "n": 1,
+     "durata_s": 21.77
+    },
+    {
+     "giro": 40,
+     "n": 2,
+     "durata_s": 21.268
+    }
+   ],
+   "HAM": [
+    {
+     "giro": 12,
+     "n": 1,
+     "durata_s": 21.369
+    },
+    {
+     "giro": 25,
+     "n": 2,
+     "durata_s": 21.25
+    },
+    {
+     "giro": 42,
+     "n": 3,
+     "durata_s": 21.267
+    }
+   ],
+   "HUL": [
+    {
+     "giro": 21,
+     "n": 1,
+     "durata_s": 21.585
+    },
+    {
+     "giro": 45,
+     "n": 2,
+     "durata_s": 22.591
+    }
+   ],
+   "LAW": [
+    {
+     "giro": 19,
+     "n": 1,
+     "durata_s": 22.022
+    },
+    {
+     "giro": 45,
+     "n": 2,
+     "durata_s": 21.545
+    }
+   ],
+   "LEC": [
+    {
+     "giro": 13,
+     "n": 1,
+     "durata_s": 21.731
+    },
+    {
+     "giro": 37,
+     "n": 2,
+     "durata_s": 21.02
+    },
+    {
+     "giro": 59,
+     "n": 3,
+     "durata_s": 22.738
+    }
+   ],
+   "LIN": [
+    {
+     "giro": 18,
+     "n": 1,
+     "durata_s": 21.408
+    },
+    {
+     "giro": 46,
+     "n": 2,
+     "durata_s": 21.551
+    }
+   ],
+   "NOR": [
+    {
+     "giro": 21,
+     "n": 1,
+     "durata_s": 21.578
+    },
+    {
+     "giro": 47,
+     "n": 2,
+     "durata_s": 21.816
+    }
+   ],
+   "OCO": [
+    {
+     "giro": 18,
+     "n": 1,
+     "durata_s": 21.878
+    },
+    {
+     "giro": 33,
+     "n": 2,
+     "durata_s": 25.455
+    }
+   ],
+   "PIA": [
+    {
+     "giro": 19,
+     "n": 1,
+     "durata_s": 22.077
+    },
+    {
+     "giro": 42,
+     "n": 2,
+     "durata_s": 21.209
+    }
+   ],
+   "RUS": [
+    {
+     "giro": 19,
+     "n": 1,
+     "durata_s": 21.204
+    },
+    {
+     "giro": 43,
+     "n": 2,
+     "durata_s": 21.221
+    }
+   ],
+   "SAI": [
+    {
+     "giro": 14,
+     "n": 1,
+     "durata_s": 21.371
+    }
+   ],
+   "STR": [
+    {
+     "giro": 24,
+     "n": 1,
+     "durata_s": 23.522
+    }
+   ],
+   "VER": [
+    {
+     "giro": 18,
+     "n": 1,
+     "durata_s": 21.317
+    },
+    {
+     "giro": 49,
+     "n": 2,
+     "durata_s": 21.252
+    }
+   ]
+  },
+  "Canada": {
+   "ALO": [
+    {
+     "giro": 20,
+     "n": 1,
+     "durata_s": 24.709
+    }
+   ],
+   "ANT": [
+    {
+     "giro": 31,
+     "n": 1,
+     "durata_s": 25.153
+    }
+   ],
+   "BOR": [
+    {
+     "giro": 2,
+     "n": 1,
+     "durata_s": 28.178
+    },
+    {
+     "giro": 18,
+     "n": 2,
+     "durata_s": 24.766
+    }
+   ],
+   "BOT": [
+    {
+     "giro": 3,
+     "n": 1,
+     "durata_s": 28.257
+    },
+    {
+     "giro": 9,
+     "n": 2,
+     "durata_s": 24.847
+    },
+    {
+     "giro": 29,
+     "n": 3,
+     "durata_s": 24.413
+    },
+    {
+     "giro": 49,
+     "n": 4,
+     "durata_s": 31.102
+    }
+   ],
+   "COL": [
+    {
+     "giro": 30,
+     "n": 1,
+     "durata_s": 25.64
+    }
+   ],
+   "GAS": [
+    {
+     "giro": 30,
+     "n": 1,
+     "durata_s": 25.644
+    }
+   ],
+   "HAD": [
+    {
+     "giro": 31,
+     "n": 1,
+     "durata_s": 24.902
+    }
+   ],
+   "HAM": [
+    {
+     "giro": 31,
+     "n": 1,
+     "durata_s": 25.936
+    }
+   ],
+   "HUL": [
+    {
+     "giro": 2,
+     "n": 1,
+     "durata_s": 24.952
+    },
+    {
+     "giro": 20,
+     "n": 2,
+     "durata_s": 31.024
+    }
+   ],
+   "LAW": [
+    {
+     "giro": 30,
+     "n": 1,
+     "durata_s": 24.177
+    }
+   ],
+   "LEC": [
+    {
+     "giro": 31,
+     "n": 1,
+     "durata_s": 30.114
+    }
+   ],
+   "NOR": [
+    {
+     "giro": 2,
+     "n": 1,
+     "durata_s": 23.418
+    },
+    {
+     "giro": 15,
+     "n": 2,
+     "durata_s": 28.859
+    }
+   ],
+   "OCO": [
+    {
+     "giro": 16,
+     "n": 1,
+     "durata_s": 24.833
+    },
+    {
+     "giro": 30,
+     "n": 2,
+     "durata_s": 35.351
+    }
+   ],
+   "PER": [
+    {
+     "giro": 2,
+     "n": 1,
+     "durata_s": 25.737
+    },
+    {
+     "giro": 15,
+     "n": 2,
+     "durata_s": 25.153
+    },
+    {
+     "giro": 29,
+     "n": 3,
+     "durata_s": 24.984
+    }
+   ],
+   "PIA": [
+    {
+     "giro": 1,
+     "n": 1,
+     "durata_s": 24.121
+    },
+    {
+     "giro": 12,
+     "n": 2,
+     "durata_s": 36.627
+    },
+    {
+     "giro": 51,
+     "n": 3,
+     "durata_s": 36.103
+    }
+   ],
+   "SAI": [
+    {
+     "giro": 2,
+     "n": 1,
+     "durata_s": 24.751
+    }
+   ],
+   "STR": [
+    {
+     "giro": 14,
+     "n": 1,
+     "durata_s": 24.249
+    },
+    {
+     "giro": 49,
+     "n": 2,
+     "durata_s": 24.146
+    }
+   ],
+   "VER": [
+    {
+     "giro": 31,
+     "n": 1,
+     "durata_s": 25.199
+    }
+   ]
+  },
+  "Cina": {
+   "ALO": [
+    {
+     "giro": 31,
+     "n": 1,
+     "durata_s": 23.291
+    }
+   ],
+   "ANT": [
+    {
+     "giro": 10,
+     "n": 1,
+     "durata_s": 23.005
+    }
+   ],
+   "BEA": [
+    {
+     "giro": 10,
+     "n": 1,
+     "durata_s": 22.967
+    }
+   ],
+   "BOT": [
+    {
+     "giro": 10,
+     "n": 1,
+     "durata_s": 27.795
+    }
+   ],
+   "COL": [
+    {
+     "giro": 32,
+     "n": 1,
+     "durata_s": 23.195
+    }
+   ],
+   "GAS": [
+    {
+     "giro": 10,
+     "n": 1,
+     "durata_s": 23.539
+    }
+   ],
+   "HAD": [
+    {
+     "giro": 1,
+     "n": 1,
+     "durata_s": 23.062
+    },
+    {
+     "giro": 10,
+     "n": 2,
+     "durata_s": 25.748
+    }
+   ],
+   "HAM": [
+    {
+     "giro": 10,
+     "n": 1,
+     "durata_s": 22.433
+    }
+   ],
+   "HUL": [
+    {
+     "giro": 35,
+     "n": 1,
+     "durata_s": 37.358
+    }
+   ],
+   "LAW": [
+    {
+     "giro": 9,
+     "n": 1,
+     "durata_s": 22.721
+    }
+   ],
+   "LEC": [
+    {
+     "giro": 10,
+     "n": 1,
+     "durata_s": 25.633
+    }
+   ],
+   "LIN": [
+    {
+     "giro": 42,
+     "n": 1,
+     "durata_s": 23.29
+    }
+   ],
+   "OCO": [
+    {
+     "giro": 29,
+     "n": 1,
+     "durata_s": 25.997
+    },
+    {
+     "giro": 46,
+     "n": 2,
+     "durata_s": 47.067
+    }
+   ],
+   "PER": [
+    {
+     "giro": 11,
+     "n": 1,
+     "durata_s": 26.213
+    }
+   ],
+   "RUS": [
+    {
+     "giro": 10,
+     "n": 1,
+     "durata_s": 23.39
+    }
+   ],
+   "SAI": [
+    {
+     "giro": 9,
+     "n": 1,
+     "durata_s": 23.106
+    }
+   ],
+   "VER": [
+    {
+     "giro": 9,
+     "n": 1,
+     "durata_s": 23.678
+    }
+   ]
+  },
+  "Giappone": {
+   "ALB": [
+    {
+     "giro": 22,
+     "n": 1,
+     "durata_s": 24.6
+    },
+    {
+     "giro": 45,
+     "n": 2,
+     "durata_s": 23.072
+    },
+    {
+     "giro": 49,
+     "n": 3,
+     "durata_s": 24.337
+    }
+   ],
+   "ALO": [
+    {
+     "giro": 21,
+     "n": 1,
+     "durata_s": 26.458
+    },
+    {
+     "giro": 23,
+     "n": 2,
+     "durata_s": 24.014
+    }
+   ],
+   "ANT": [
+    {
+     "giro": 22,
+     "n": 1,
+     "durata_s": 23.288
+    }
+   ],
+   "BEA": [
+    {
+     "giro": 16,
+     "n": 1,
+     "durata_s": 25.081
+    }
+   ],
+   "BOR": [
+    {
+     "giro": 22,
+     "n": 1,
+     "durata_s": 24.63
+    }
+   ],
+   "BOT": [
+    {
+     "giro": 19,
+     "n": 1,
+     "durata_s": 25.129
+    }
+   ],
+   "COL": [
+    {
+     "giro": 17,
+     "n": 1,
+     "durata_s": 23.649
+    }
+   ],
+   "GAS": [
+    {
+     "giro": 22,
+     "n": 1,
+     "durata_s": 24.304
+    }
+   ],
+   "HAD": [
+    {
+     "giro": 19,
+     "n": 1,
+     "durata_s": 23.698
+    }
+   ],
+   "HAM": [
+    {
+     "giro": 22,
+     "n": 1,
+     "durata_s": 22.891
+    }
+   ],
+   "HUL": [
+    {
+     "giro": 23,
+     "n": 1,
+     "durata_s": 23.999
+    }
+   ],
+   "LAW": [
+    {
+     "giro": 22,
+     "n": 1,
+     "durata_s": 24.165
+    }
+   ],
+   "LEC": [
+    {
+     "giro": 17,
+     "n": 1,
+     "durata_s": 22.992
+    }
+   ],
+   "LIN": [
+    {
+     "giro": 18,
+     "n": 1,
+     "durata_s": 26.335
+    }
+   ],
+   "NOR": [
+    {
+     "giro": 16,
+     "n": 1,
+     "durata_s": 23.316
+    }
+   ],
+   "OCO": [
+    {
+     "giro": 19,
+     "n": 1,
+     "durata_s": 24.629
+    }
+   ],
+   "PER": [
+    {
+     "giro": 21,
+     "n": 1,
+     "durata_s": 27.307
+    }
+   ],
+   "PIA": [
+    {
+     "giro": 18,
+     "n": 1,
+     "durata_s": 23.444
+    }
+   ],
+   "RUS": [
+    {
+     "giro": 21,
+     "n": 1,
+     "durata_s": 22.937
+    }
+   ],
+   "SAI": [
+    {
+     "giro": 22,
+     "n": 1,
+     "durata_s": 24.396
+    }
+   ],
+   "STR": [
+    {
+     "giro": 21,
+     "n": 1,
+     "durata_s": 25.083
+    },
+    {
+     "giro": 24,
+     "n": 2,
+     "durata_s": 23.501
+    }
+   ],
+   "VER": [
+    {
+     "giro": 22,
+     "n": 1,
+     "durata_s": 24.49
+    }
+   ]
+  },
+  "Gran Bretagna": {
+   "ALB": [
+    {
+     "giro": 1,
+     "n": 1,
+     "durata_s": 44.179
+    },
+    {
+     "giro": 14,
+     "n": 2,
+     "durata_s": 41.291
+    },
+    {
+     "giro": 23,
+     "n": 3,
+     "durata_s": 39.601
+    },
+    {
+     "giro": 35,
+     "n": 4,
+     "durata_s": 31.474
+    },
+    {
+     "giro": 40,
+     "n": 5,
+     "durata_s": 32.582
+    }
+   ],
+   "ALO": [
+    {
+     "giro": 20,
+     "n": 1,
+     "durata_s": 28.732
+    },
+    {
+     "giro": 46,
+     "n": 2,
+     "durata_s": 29.964
+    }
+   ],
+   "ANT": [
+    {
+     "giro": 35,
+     "n": 1,
+     "durata_s": 28.948
+    },
+    {
+     "giro": 41,
+     "n": 2,
+     "durata_s": 41.215
+    },
+    {
+     "giro": 43,
+     "n": 3,
+     "durata_s": 33.65
+    }
+   ],
+   "BEA": [
+    {
+     "giro": 29,
+     "n": 1,
+     "durata_s": 29.971
+    },
+    {
+     "giro": 47,
+     "n": 2,
+     "durata_s": 30.274
+    }
+   ],
+   "BOR": [
+    {
+     "giro": 26,
+     "n": 1,
+     "durata_s": 28.662
+    },
+    {
+     "giro": 47,
+     "n": 2,
+     "durata_s": 29.926
+    }
+   ],
+   "BOT": [
+    {
+     "giro": 29,
+     "n": 1,
+     "durata_s": 31.599
+    },
+    {
+     "giro": 46,
+     "n": 2,
+     "durata_s": 29.584
+    }
+   ],
+   "COL": [
+    {
+     "giro": 22,
+     "n": 1,
+     "durata_s": 29.36
+    },
+    {
+     "giro": 47,
+     "n": 2,
+     "durata_s": 29.461
+    }
+   ],
+   "GAS": [
+    {
+     "giro": 23,
+     "n": 1,
+     "durata_s": 33.608
+    },
+    {
+     "giro": 48,
+     "n": 2,
+     "durata_s": 28.737
+    }
+   ],
+   "HAD": [
+    {
+     "giro": 19,
+     "n": 1,
+     "durata_s": 29.972
+    },
+    {
+     "giro": 47,
+     "n": 3,
+     "durata_s": 29.672
+    }
+   ],
+   "HAM": [
+    {
+     "giro": 23,
+     "n": 1,
+     "durata_s": 34.864
+    },
+    {
+     "giro": 48,
+     "n": 2,
+     "durata_s": 28.732
+    }
+   ],
+   "HUL": [
+    {
+     "giro": 17,
+     "n": 1,
+     "durata_s": 28.979
+    },
+    {
+     "giro": 34,
+     "n": 2,
+     "durata_s": 35.858
+    }
+   ],
+   "LAW": [
+    {
+     "giro": 28,
+     "n": 1,
+     "durata_s": 28.746
+    },
+    {
+     "giro": 47,
+     "n": 2,
+     "durata_s": 28.577
+    }
+   ],
+   "LEC": [
+    {
+     "giro": 25,
+     "n": 1,
+     "durata_s": 28.444
+    },
+    {
+     "giro": 48,
+     "n": 2,
+     "durata_s": 28.887
+    }
+   ],
+   "LIN": [
+    {
+     "giro": 27,
+     "n": 1,
+     "durata_s": 28.974
+    },
+    {
+     "giro": 47,
+     "n": 2,
+     "durata_s": 32.143
+    }
+   ],
+   "NOR": [
+    {
+     "giro": 28,
+     "n": 1,
+     "durata_s": 28.833
+    },
+    {
+     "giro": 38,
+     "n": 2,
+     "durata_s": 29.818
+    },
+    {
+     "giro": 48,
+     "n": 3,
+     "durata_s": 28.475
+    }
+   ],
+   "OCO": [
+    {
+     "giro": 21,
+     "n": 1,
+     "durata_s": 43.253
+    },
+    {
+     "giro": 47,
+     "n": 2,
+     "durata_s": 31.212
+    }
+   ],
+   "PER": [
+    {
+     "giro": 21,
+     "n": 1,
+     "durata_s": 29.374
+    },
+    {
+     "giro": 46,
+     "n": 2,
+     "durata_s": 29.866
+    }
+   ],
+   "PIA": [
+    {
+     "giro": 2,
+     "n": 1,
+     "durata_s": 40.553
+    },
+    {
+     "giro": 36,
+     "n": 2,
+     "durata_s": 29.515
+    },
+    {
+     "giro": 47,
+     "n": 3,
+     "durata_s": 29.081
+    }
+   ],
+   "RUS": [
+    {
+     "giro": 23,
+     "n": 1,
+     "durata_s": 28.663
+    },
+    {
+     "giro": 34,
+     "n": 2,
+     "durata_s": 28.337
+    }
+   ],
+   "SAI": [
+    {
+     "giro": 20,
+     "n": 1,
+     "durata_s": 28.894
+    },
+    {
+     "giro": 48,
+     "n": 2,
+     "durata_s": 29.219
+    }
+   ],
+   "STR": [
+    {
+     "giro": 18,
+     "n": 1,
+     "durata_s": 28.734
+    },
+    {
+     "giro": 46,
+     "n": 2,
+     "durata_s": 46.234
+    }
+   ],
+   "VER": [
+    {
+     "giro": 17,
+     "n": 1,
+     "durata_s": 28.738
+    },
+    {
+     "giro": 38,
+     "n": 2,
+     "durata_s": 28.95
+    }
+   ]
+  },
+  "Miami": {
+   "ALB": [
+    {
+     "giro": 27,
+     "n": 1,
+     "durata_s": 23.016
+    }
+   ],
+   "ALO": [
+    {
+     "giro": 41,
+     "n": 1,
+     "durata_s": 23.16
+    }
+   ],
+   "ANT": [
+    {
+     "giro": 26,
+     "n": 1,
+     "durata_s": 22.128
+    }
+   ],
+   "BEA": [
+    {
+     "giro": 26,
+     "n": 1,
+     "durata_s": 23.474
+    }
+   ],
+   "BOR": [
+    {
+     "giro": 32,
+     "n": 1,
+     "durata_s": 23.986
+    }
+   ],
+   "BOT": [
+    {
+     "giro": 6,
+     "n": 1,
+     "durata_s": 23.529
+    },
+    {
+     "giro": 21,
+     "n": 2,
+     "durata_s": 23.827
+    }
+   ],
+   "COL": [
+    {
+     "giro": 31,
+     "n": 1,
+     "durata_s": 23.093
+    }
+   ],
+   "HAM": [
+    {
+     "giro": 27,
+     "n": 1,
+     "durata_s": 23.779
+    }
+   ],
+   "HUL": [
+    {
+     "giro": 1,
+     "n": 1,
+     "durata_s": 33.71
+    }
+   ],
+   "LEC": [
+    {
+     "giro": 21,
+     "n": 1,
+     "durata_s": 23.386
+    }
+   ],
+   "LIN": [
+    {
+     "giro": 28,
+     "n": 1,
+     "durata_s": 22.731
+    }
+   ],
+   "NOR": [
+    {
+     "giro": 27,
+     "n": 1,
+     "durata_s": 22.565
+    }
+   ],
+   "OCO": [
+    {
+     "giro": 31,
+     "n": 1,
+     "durata_s": 24.027
+    }
+   ],
+   "PER": [
+    {
+     "giro": 29,
+     "n": 1,
+     "durata_s": 23.228
+    }
+   ],
+   "PIA": [
+    {
+     "giro": 28,
+     "n": 1,
+     "durata_s": 23.024
+    }
+   ],
+   "RUS": [
+    {
+     "giro": 20,
+     "n": 1,
+     "durata_s": 22.042
+    }
+   ],
+   "SAI": [
+    {
+     "giro": 28,
+     "n": 1,
+     "durata_s": 23.595
+    }
+   ],
+   "STR": [
+    {
+     "giro": 21,
+     "n": 1,
+     "durata_s": 22.63
+    },
+    {
+     "giro": 37,
+     "n": 2,
+     "durata_s": 22.09
+    }
+   ],
+   "VER": [
+    {
+     "giro": 6,
+     "n": 1,
+     "durata_s": 22.547
+    }
+   ]
+  },
+  "Monaco": {
+   "ALB": [
+    {
+     "giro": 43,
+     "n": 1,
+     "durata_s": 25.553
+    }
+   ],
+   "ALO": [
+    {
+     "giro": 3,
+     "n": 1,
+     "durata_s": 24.975
+    },
+    {
+     "giro": 58,
+     "n": 2,
+     "durata_s": 26.334
+    }
+   ],
+   "ANT": [
+    {
+     "giro": 37,
+     "n": 1,
+     "durata_s": 24.136
+    },
+    {
+     "giro": 61,
+     "n": 2,
+     "durata_s": 26.878
+    }
+   ],
+   "BEA": [
+    {
+     "giro": 1,
+     "n": 1,
+     "durata_s": 32.127
+    }
+   ],
+   "BOR": [
+    {
+     "giro": 1,
+     "n": 1,
+     "durata_s": 25.927
+    },
+    {
+     "giro": 43,
+     "n": 2,
+     "durata_s": 24.69
+    },
+    {
+     "giro": 59,
+     "n": 4,
+     "durata_s": 24.824
+    }
+   ],
+   "BOT": [
+    {
+     "giro": 1,
+     "n": 1,
+     "durata_s": 26.759
+    }
+   ],
+   "COL": [
+    {
+     "giro": 35,
+     "n": 1,
+     "durata_s": 25.797
+    }
+   ],
+   "GAS": [
+    {
+     "giro": 45,
+     "n": 1,
+     "durata_s": 25.547
+    }
+   ],
+   "HAD": [
+    {
+     "giro": 32,
+     "n": 1,
+     "durata_s": 24.784
+    }
+   ],
+   "HAM": [
+    {
+     "giro": 28,
+     "n": 1,
+     "durata_s": 24.138
+    },
+    {
+     "giro": 60,
+     "n": 2,
+     "durata_s": 31.227
+    }
+   ],
+   "HUL": [
+    {
+     "giro": 12,
+     "n": 1,
+     "durata_s": 24.81
+    }
+   ],
+   "LAW": [
+    {
+     "giro": 44,
+     "n": 1,
+     "durata_s": 25.622
+    }
+   ],
+   "LEC": [
+    {
+     "giro": 35,
+     "n": 1,
+     "durata_s": 25.377
+    },
+    {
+     "giro": 60,
+     "n": 2,
+     "durata_s": 34.907
+    }
+   ],
+   "OCO": [
+    {
+     "giro": 9,
+     "n": 1,
+     "durata_s": 25.482
+    }
+   ],
+   "PER": [
+    {
+     "giro": 4,
+     "n": 1,
+     "durata_s": 27.138
+    },
+    {
+     "giro": 59,
+     "n": 3,
+     "durata_s": 26.005
+    }
+   ],
+   "PIA": [
+    {
+     "giro": 48,
+     "n": 1,
+     "durata_s": 24.244
+    },
+    {
+     "giro": 59,
+     "n": 2,
+     "durata_s": 31.421
+    }
+   ],
+   "RUS": [
+    {
+     "giro": 31,
+     "n": 1,
+     "durata_s": 24.029
+    },
+    {
+     "giro": 60,
+     "n": 2,
+     "durata_s": 35.258
+    }
+   ],
+   "SAI": [
+    {
+     "giro": 52,
+     "n": 1,
+     "durata_s": 25.662
+    }
+   ],
+   "STR": [
+    {
+     "giro": 4,
+     "n": 1,
+     "durata_s": 24.803
+    }
+   ]
+  },
+  "Spagna": {
+   "ALB": [
+    {
+     "giro": 13,
+     "n": 1,
+     "durata_s": 24.005
+    },
+    {
+     "giro": 29,
+     "n": 2,
+     "durata_s": 22.027
+    },
+    {
+     "giro": 50,
+     "n": 4,
+     "durata_s": 22.703
+    }
+   ],
+   "ALO": [
+    {
+     "giro": 21,
+     "n": 1,
+     "durata_s": 22.22
+    }
+   ],
+   "ANT": [
+    {
+     "giro": 14,
+     "n": 1,
+     "durata_s": 22.038
+    },
+    {
+     "giro": 37,
+     "n": 2,
+     "durata_s": 22.21
+    }
+   ],
+   "BEA": [
+    {
+     "giro": 18,
+     "n": 1,
+     "durata_s": 23.118
+    },
+    {
+     "giro": 39,
+     "n": 2,
+     "durata_s": 23.901
+    }
+   ],
+   "BOR": [
+    {
+     "giro": 15,
+     "n": 1,
+     "durata_s": 22.783
+    },
+    {
+     "giro": 33,
+     "n": 2,
+     "durata_s": 22.285
+    },
+    {
+     "giro": 53,
+     "n": 3,
+     "durata_s": 25.915
+    }
+   ],
+   "BOT": [
+    {
+     "giro": 14,
+     "n": 1,
+     "durata_s": 23.28
+    }
+   ],
+   "COL": [
+    {
+     "giro": 12,
+     "n": 1,
+     "durata_s": 22.983
+    },
+    {
+     "giro": 34,
+     "n": 2,
+     "durata_s": 22.29
+    }
+   ],
+   "GAS": [
+    {
+     "giro": 14,
+     "n": 1,
+     "durata_s": 22.682
+    },
+    {
+     "giro": 40,
+     "n": 2,
+     "durata_s": 23.31
+    }
+   ],
+   "HAD": [
+    {
+     "giro": 15,
+     "n": 1,
+     "durata_s": 22.444
+    },
+    {
+     "giro": 32,
+     "n": 2,
+     "durata_s": 22.528
+    },
+    {
+     "giro": 58,
+     "n": 3,
+     "durata_s": 21.949
+    }
+   ],
+   "HAM": [
+    {
+     "giro": 11,
+     "n": 1,
+     "durata_s": 22.48
+    },
+    {
+     "giro": 27,
+     "n": 2,
+     "durata_s": 22.477
+    },
+    {
+     "giro": 41,
+     "n": 3,
+     "durata_s": 22.837
+    }
+   ],
+   "HUL": [
+    {
+     "giro": 13,
+     "n": 1,
+     "durata_s": 22.869
+    }
+   ],
+   "LAW": [
+    {
+     "giro": 11,
+     "n": 1,
+     "durata_s": 25.983
+    },
+    {
+     "giro": 35,
+     "n": 2,
+     "durata_s": 23.172
+    }
+   ],
+   "LEC": [
+    {
+     "giro": 16,
+     "n": 1,
+     "durata_s": 22.249
+    },
+    {
+     "giro": 39,
+     "n": 2,
+     "durata_s": 22.125
+    }
+   ],
+   "LIN": [
+    {
+     "giro": 22,
+     "n": 1,
+     "durata_s": 22.476
+    },
+    {
+     "giro": 37,
+     "n": 2,
+     "durata_s": 24.01
+    }
+   ],
+   "NOR": [
+    {
+     "giro": 13,
+     "n": 1,
+     "durata_s": 21.791
+    },
+    {
+     "giro": 35,
+     "n": 2,
+     "durata_s": 22.041
+    }
+   ],
+   "OCO": [
+    {
+     "giro": 13,
+     "n": 1,
+     "durata_s": 23.256
+    },
+    {
+     "giro": 34,
+     "n": 2,
+     "durata_s": 26.449
+    },
+    {
+     "giro": 58,
+     "n": 3,
+     "durata_s": 22.965
+    }
+   ],
+   "PER": [
+    {
+     "giro": 12,
+     "n": 1,
+     "durata_s": 24.805
+    },
+    {
+     "giro": 31,
+     "n": 2,
+     "durata_s": 24.432
+    },
+    {
+     "giro": 39,
+     "n": 3,
+     "durata_s": 23.912
+    }
+   ],
+   "PIA": [
+    {
+     "giro": 14,
+     "n": 1,
+     "durata_s": 21.776
+    },
+    {
+     "giro": 36,
+     "n": 2,
+     "durata_s": 22.661
+    }
+   ],
+   "RUS": [
+    {
+     "giro": 12,
+     "n": 1,
+     "durata_s": 22.08
+    },
+    {
+     "giro": 36,
+     "n": 2,
+     "durata_s": 21.677
+    }
+   ],
+   "SAI": [
+    {
+     "giro": 14,
+     "n": 1,
+     "durata_s": 22.977
+    },
+    {
+     "giro": 30,
+     "n": 2,
+     "durata_s": 22.595
+    },
+    {
+     "giro": 55,
+     "n": 3,
+     "durata_s": 22.772
+    }
+   ],
+   "VER": [
+    {
+     "giro": 12,
+     "n": 1,
+     "durata_s": 22.273
+    },
+    {
+     "giro": 29,
+     "n": 2,
+     "durata_s": 24.189
+    },
+    {
+     "giro": 40,
+     "n": 3,
+     "durata_s": 22.786
+    }
+   ]
+  }
+ }
+}
