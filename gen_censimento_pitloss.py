@@ -16,6 +16,7 @@ Uso:  python3 gen_censimento_pitloss.py
 """
 
 import logging
+import os
 import sys
 import datetime
 import numpy as np
@@ -23,7 +24,8 @@ import pandas as pd
 import fastf1
 
 logging.getLogger('fastf1').setLevel(logging.ERROR)
-fastf1.Cache.enable_cache('data/ff1_cache')
+# cache in sede stabile, fuori dal repo e da ogni worktree (vedi SETUP_AMBIENTE.md)
+fastf1.Cache.enable_cache(os.path.expanduser('~/muretto_shared/ff1_cache'))
 
 TODAY = datetime.date(2026, 7, 14)          # data di sessione (prereg)
 SEASONS = list(range(2018, 2027))

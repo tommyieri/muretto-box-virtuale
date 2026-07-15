@@ -1,0 +1,73 @@
+anno,gara,hard,medium,soft,terna,consecutiva,riasfaltatura,confidenza,fonte
+2023,Bahrain,C1,C2,C3,C1-C2-C3,TRUE,n/d,ALTA,F1.com/Pirelli feb-2023
+2023,Arabia Saudita,C2,C3,C4,C2-C3-C4,TRUE,n/d,ALTA,F1.com/Pirelli feb-2023
+2023,Australia,C2,C3,C4,C2-C3-C4,TRUE,n/d,ALTA,F1.com feb-2023 / GPFans apr-2023
+2023,Azerbaijan,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pitpass/Pirelli apr-2023
+2023,Miami,C2,C3,C4,C2-C3-C4,TRUE,n/d,MEDIA,inferita da Pirelli mar-2024 (unchanged from last year)
+2023,Emilia Romagna,,,,,,,n/d,ALTA,gara CANCELLATA (alluvione) - nessun dato
+2023,Monaco,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli apr-2023 (Monaco and Spain)
+2023,Spagna,C1,C2,C3,C1-C2-C3,TRUE,n/d,ALTA,Pirelli apr-2023 (Monaco and Spain)
+2023,Canada,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli giu-2023 (Canada Austria GB)
+2023,Austria,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli giu-2023 (Canada Austria GB)
+2023,Gran Bretagna,C1,C2,C3,C1-C2-C3,TRUE,n/d,ALTA,Pirelli giu-2023 (Canada Austria GB)
+2023,Ungheria,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli lug-2023 (Hungary Belgium)
+2023,Belgio,C2,C3,C4,C2-C3-C4,TRUE,n/d,MEDIA,inferita Pirelli lug-2023 (nomination remains) + 2024
+2023,Olanda,C1,C2,C3,C1-C2-C3,TRUE,n/d,ALTA,Pirelli/F1technical lug-2023 (Zandvoort Monza)
+2023,Italia,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli/F1technical lug-2023 (Zandvoort Monza)
+2023,Singapore,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli ago-2023 (Singapore Japan Qatar)
+2023,Giappone,C1,C2,C3,C1-C2-C3,TRUE,n/d,ALTA,Pirelli ago-2023 (Singapore Japan Qatar)
+2023,Qatar,C1,C2,C3,C1-C2-C3,TRUE,SI,MEDIA,Pirelli ago-2023 (new asphalt Losail) - terna inferita
+2023,Stati Uniti,C2,C3,C4,C2-C3-C4,TRUE,n/d,MEDIA,inferita Pirelli set-2024 (same as last year)
+2023,Messico,C3,C4,C5,C3-C4-C5,TRUE,n/d,MEDIA,inferita Pirelli set-2024 (identical to 2023)
+2023,San Paolo,C2,C3,C4,C2-C3-C4,TRUE,n/d,ALTA,Pirelli set-2024 (esplicita 2023 C2-C3-C4)
+2023,Las Vegas,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,F1.com nov-2023 (Abu Dhabi = same as Vegas)
+2023,Abu Dhabi,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,F1.com nov-2023
+2023,Cina,,,,,,,n/d,ALTA,gara ASSENTE dal calendario 2023 - nessun dato
+2024,Bahrain,C1,C2,C3,C1-C2-C3,TRUE,n/d,ALTA,RacingNews365/Pirelli dic-2023
+2024,Arabia Saudita,C2,C3,C4,C2-C3-C4,TRUE,n/d,ALTA,RacingNews365/Pirelli dic-2023
+2024,Australia,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,RacingNews365/Pirelli dic-2023
+2024,Giappone,C1,C2,C3,C1-C2-C3,TRUE,n/d,ALTA,Pirelli mar-2024 (Suzuka Shanghai Miami)
+2024,Cina,C2,C3,C4,C2-C3-C4,TRUE,n/d,ALTA,Pirelli mar-2024 (Suzuka Shanghai Miami)
+2024,Miami,C2,C3,C4,C2-C3-C4,TRUE,n/d,ALTA,Pirelli mar-2024 (Suzuka Shanghai Miami)
+2024,Emilia Romagna,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli apr-2024 (Imola Monaco Canada)
+2024,Monaco,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli apr-2024 (Imola Monaco Canada)
+2024,Canada,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli apr-2024 (Imola Monaco Canada)
+2024,Spagna,C1,C2,C3,C1-C2-C3,TRUE,n/d,ALTA,Pirelli giu-2024 (Spain Austria GB)
+2024,Austria,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli giu-2024 (Spain Austria GB)
+2024,Gran Bretagna,C1,C2,C3,C1-C2-C3,TRUE,n/d,ALTA,Pirelli giu-2024 (Spain Austria GB)
+2024,Ungheria,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli lug-2024 (all compounds next three)
+2024,Belgio,C2,C3,C4,C2-C3-C4,TRUE,n/d,ALTA,Pirelli lug-2024 (all compounds next three)
+2024,Olanda,C1,C2,C3,C1-C2-C3,TRUE,n/d,ALTA,Pirelli lug-2024 (all compounds next three)
+2024,Italia,C3,C4,C5,C3-C4-C5,TRUE,SI,ALTA,Pirelli lug-2024 terna + F1technical ago-2024 (resurfaced)
+2024,Azerbaijan,C3,C4,C5,C3-C4-C5,TRUE,SI,ALTA,Pirelli lug-2024 terna + gpkingdom (resurfaced 2024)
+2024,Singapore,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli lug-2024 (Monza Baku Singapore)
+2024,Stati Uniti,C2,C3,C4,C2-C3-C4,TRUE,n/d,ALTA,Pirelli set-2024 (Americas)
+2024,Messico,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli set-2024 (Americas)
+2024,San Paolo,C3,C4,C5,C3-C4-C5,TRUE,SI,ALTA,Pirelli set-2024 terna + F1technical ott-2024 (resurfacing work)
+2024,Las Vegas,C3,C4,C5,C3-C4-C5,TRUE,n/d,MEDIA,inferita Pirelli ago-2025 (same pattern as 2024)
+2024,Qatar,C1,C2,C3,C1-C2-C3,TRUE,n/d,ALTA,Pirelli ott-2024 (all compounds to end season)
+2024,Abu Dhabi,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,F1technical dic-2024
+2025,Australia,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli/F1.com mar-2025
+2025,Cina,C2,C3,C4,C2-C3-C4,TRUE,SI,ALTA,F1.com mar-2025 terna + Pirelli (resurfaced ago-2024)
+2025,Giappone,C1,C2,C3,C1-C2-C3,TRUE,SI,ALTA,Pirelli apr-2025 terna + scuderiafans (resurfaced inverno)
+2025,Bahrain,C1,C2,C3,C1-C2-C3,TRUE,n/d,ALTA,Pirelli apr-2025 (In Bahrain with prior knowledge)
+2025,Arabia Saudita,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli apr-2025 (same as Melbourne and Jeddah)
+2025,Miami,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli apr-2025 (Miami and Imola)
+2025,Emilia Romagna,C4,C5,C6,C4-C5-C6,TRUE,n/d,ALTA,Pirelli apr-2025 (C6 debut Imola)
+2025,Monaco,C4,C5,C6,C4-C5-C6,TRUE,n/d,ALTA,Pirelli mag-2025 (Monaco to Montreal)
+2025,Spagna,C1,C2,C3,C1-C2-C3,TRUE,n/d,ALTA,Pirelli mag-2025 (Monaco to Montreal)
+2025,Canada,C4,C5,C6,C4-C5-C6,TRUE,n/d,ALTA,Pirelli mag-2025 (Monaco to Montreal)
+2025,Austria,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,The Race mag-2025 (Austria Hungary C3-C4-C5)
+2025,Gran Bretagna,C2,C3,C4,C2-C3-C4,TRUE,n/d,ALTA,The Race mag-2025 (Silverstone one step softer)
+2025,Belgio,C1,C3,C4,C1-C3-C4,FALSE,n/d,ALTA,The Race mag-2025 (Spa skip: C1 al posto di C2)
+2025,Ungheria,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,The Race mag-2025 (Austria Hungary C3-C4-C5)
+2025,Olanda,C2,C3,C4,C2-C3-C4,TRUE,n/d,ALTA,Pirelli ago-2025 (rest of season)
+2025,Italia,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli ago-2025 (rest of season)
+2025,Azerbaijan,C4,C5,C6,C4-C5-C6,TRUE,n/d,ALTA,Pirelli ago-2025 (rest of season - C6 reappears Baku)
+2025,Singapore,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli ago-2025 (rest of season)
+2025,Stati Uniti,C1,C3,C4,C1-C3-C4,FALSE,n/d,ALTA,Pirelli ott-2025 (Texas rodeo - skip C1 hard)
+2025,Messico,C2,C4,C5,C2-C4-C5,FALSE,n/d,ALTA,Pirelli ott-2025 (Mexico skip - C2 hard)
+2025,San Paolo,C2,C3,C4,C2-C3-C4,TRUE,n/d,ALTA,Pirelli ago-2025 (rest of season - harder step)
+2025,Las Vegas,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli ago-2025 (rest of season)
+2025,Qatar,C1,C2,C3,C1-C2-C3,TRUE,n/d,ALTA,Pirelli ago-2025 (rest of season - hardest trio)
+2025,Abu Dhabi,C3,C4,C5,C3-C4-C5,TRUE,n/d,ALTA,Pirelli ago-2025 (rest of season)

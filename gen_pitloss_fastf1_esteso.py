@@ -15,13 +15,15 @@ Uso:  python3 gen_pitloss_fastf1_esteso.py
 """
 
 import logging
+import os
 import sys
 import numpy as np
 import pandas as pd
 import fastf1
 
 logging.getLogger('fastf1').setLevel(logging.ERROR)
-fastf1.Cache.enable_cache('data/ff1_cache')
+# cache in sede stabile, fuori dal repo e da ogni worktree (vedi SETUP_AMBIENTE.md)
+fastf1.Cache.enable_cache(os.path.expanduser('~/muretto_shared/ff1_cache'))
 
 SEASONS = list(range(2018, 2027))
 LOCATION = 'Silverstone'
