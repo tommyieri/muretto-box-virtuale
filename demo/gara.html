@@ -108,6 +108,7 @@ import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.
 const el = id => document.getElementById(id);
 const ROW_H = 44;
 let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams={}, pitloss={}, plMeta={}, neutral={}, teamCol={}, calendario=null;
+let pitstops=null, stopsGara={}, etichettaStop='pit lane';   // durate per-stop f1db (semantica verificata dal generatore)
 let curLap=1, selDrv=null, rowEls={}, leaderMemo={}, finestre=null, teamWarned=new Set(), pitLaps={};
 let pista=null, leadCum=null, cumPil=null, teamOfR=null;   // vista pallini (gare con pista_<gara>.json)
 
@@ -140,6 +141,9 @@ async function boot() {
   try { neutral = await (await fetch('neutralizzazione.json')).json(); } catch(e){ neutral={}; }
   try { teamCol = await (await fetch('team_colori.json')).json(); } catch(e){ teamCol={}; }
   try { calendario = await (await fetch('data/calendario_2026.json')).json(); } catch(e){ calendario=null; }
+  try { pitstops = await (await fetch('data/pitstops_2026.json')).json(); } catch(e){ pitstops=null; }
+  // etichetta della durata DERIVATA dalla semantica dichiarata nel file (mai "pit stop" generico)
+  etichettaStop = pitstops?.semantica === 'sosta_ferma' ? 'sosta' : 'pit lane';
   const nomi = m.map(r=>r.gara);
   const rich = new URLSearchParams(location.search).get('g');
   await loadGara(nomi.includes(rich) ? rich : nomi[0]);
@@ -184,6 +188,7 @@ async function loadGara(gara) {
   pitLaps = {};
   for (const lp of race.laps) for (const d in lp.cars)
     if (lp.cars[d].in_lap) (pitLaps[lp.lap] ||= []).push(d);
+  stopsGara = pitstops?.gare?.[gara] || {};
   el('lapMax').textContent = race.n_laps;
   header(gara);
   selDrv=null; el('pit').classList.add('hidden');
@@ -350,8 +355,14 @@ function classificaAt(L, f){
     else if(i===0){et='LEADER';cls='lead';}
     else{et=`+${gap.toFixed(1)}s`;cls='';
       prev=cum-ordine[i-1][2];}
+    // ai box: gomma che sta montando (compound del giro successivo) + durata f1db se c'e'
+    let monta=null, stopDur=null;
+    if (c.in_lap){
+      monta = B?.[drv]?.compound || null;
+      stopDur = (stopsGara[drv]||[]).find(s=>s.giro===L)?.durata_s ?? null;
+    }
     return {pos:i+1,drv,team:c.team,compound:c.compound,age:c.tyre_age,et,cls,prev,
-            inlap:!!c.in_lap,outlap:!!c.out_lap,leader:i===0,selectable:true};
+            inlap:!!c.in_lap,outlap:!!c.out_lap,monta,stopDur,leader:i===0,selectable:true};
   });
   const inGara=new Set(ordine.map(([d])=>d));
   const teamOf={}; for(const lp of race.laps) for(const [d,c] of Object.entries(lp.cars)) teamOf[d]=c.team;
@@ -383,7 +394,15 @@ function paintRow(r, i){
   if(e.pos.textContent!==String(r.pos)) e.pos.textContent=r.pos;
   if(e.team.textContent!==(r.team||'')) e.team.textContent=r.team||'';
   e.gap.textContent=r.et; e.gap.className='gap '+(r.cls|| (r.st?'stato':''));
-  e.gapprev.textContent = (typeof r.prev==='number') ? `+${r.prev.toFixed(1)} da chi precede` : '';
+  // ai box: la seconda riga racconta lo stop (durata etichettata per semantica + gomma
+  // che sta montando); ogni pezzo appare SOLO se il dato c'e' — mai valori stimati
+  if (r.inlap){
+    const pezzi=[];
+    if (typeof r.stopDur==='number') pezzi.push(`${etichettaStop}: ${r.stopDur.toFixed(1).replace('.',',')}s`);
+    if (r.monta) pezzi.push(`monta ${r.monta.toLowerCase()}`);
+    e.gapprev.textContent = pezzi.join(' · ');
+  } else
+    e.gapprev.textContent = (typeof r.prev==='number') ? `+${r.prev.toFixed(1)} da chi precede` : '';
   // ai box / out-lap: fatto grezzo dei dati gara (in_lap/out_lap), non un giudizio
   if (r.inlap || r.outlap){ e.box.style.display='inline-block'; e.box.textContent = r.inlap?'BOX':'OUT'; }
   else e.box.style.display='none';
@@ -436,18 +455,50 @@ function buildStrat(){
     }
     if (cur) seg.push(cur);
     if (!seg.length) continue;
+    // tacche pit arricchite: giro, durata (etichetta per semantica), gomme prima/dopo —
+    // ogni pezzo solo se il dato esiste, mai stime
     const pits = [];
-    for (let L=1; L<=fine; L++) if (race.byLap[L]?.[d]?.in_lap) pits.push(L);
+    for (let L=1; L<=fine; L++) if (race.byLap[L]?.[d]?.in_lap){
+      const dur = (stopsGara[d]||[]).find(s=>s.giro===L)?.durata_s ?? null;
+      const prima = race.byLap[L]?.[d]?.compound, dopo = race.byLap[L+1]?.[d]?.compound;
+      const info = [`giro ${L}`,
+                    (typeof dur==='number') ? `${etichettaStop} ${dur.toFixed(1).replace('.',',')}s` : null,
+                    (prima&&dopo) ? `${prima.toLowerCase()} → ${dopo.toLowerCase()}` : null]
+                   .filter(Boolean).join(' · ');
+      pits.push({L, info});
+    }
     const pct = L => (L-1)/(race.n_laps-1)*100;
     const bar = seg.map(s=>{
       const col = tyreColor(s.compound) || 'var(--dim)';
       const wet = (s.compound==='INTERMEDIATE'||s.compound==='WET') ? ' wetb' : '';
       const w = Math.max(pct(s.a)-pct(s.da) + 100/(race.n_laps-1), 0.8);
       return `<div class="stint${wet}" title="${s.compound||'?'} giri ${s.da}–${s.a}" style="left:${pct(s.da)}%;width:${w}%;background:${col}"></div>`;
-    }).join('') + pits.map(L=>`<div class="pitt" title="pit al giro ${L}" style="left:${pct(L)}%"></div>`).join('');
-    righe.push(`<div class="riga"><span class="sig"><i style="background:${coloreTeam(r.team)}"></i>${d}</span><span class="barra">${bar}</span></div>`);
+    }).join('') + pits.map(p=>`<div class="pitt" title="${p.info}" data-info="${p.info}" data-pct="${pct(p.L)}" style="left:${pct(p.L)}%"></div>`).join('');
+    righe.push(`<div class="riga" data-drv="${d}"><span class="sig"><i style="background:${coloreTeam(r.team)}"></i>${d}</span><span class="barra">${bar}</span></div>`);
   }
   el('stratRighe').innerHTML = righe.join('');
+}
+// tap/click sulla strip: mostra il dettaglio della tacca pit piu' vicina (mobile-friendly)
+{
+  const tip = document.createElement('div'); tip.className='strat-tip'; tip.style.display='none';
+  document.body.appendChild(tip);
+  el('vistaStrat').addEventListener('click', e=>{
+    const barra = e.target.closest('.barra');
+    if (!barra){ tip.style.display='none'; return; }
+    const marks = [...barra.querySelectorAll('.pitt')];
+    if (!marks.length){ tip.style.display='none'; return; }
+    const r = barra.getBoundingClientRect();
+    const vicino = marks.reduce((a,b)=>
+      Math.abs(r.left + (+a.dataset.pct)/100*r.width - e.clientX) <=
+      Math.abs(r.left + (+b.dataset.pct)/100*r.width - e.clientX) ? a : b);
+    const drv = barra.closest('.riga').dataset.drv;
+    tip.textContent = `${drv} — ${vicino.dataset.info}`;
+    tip.style.display='block';
+    const x = r.left + (+vicino.dataset.pct)/100*r.width;
+    tip.style.left = Math.max(8, Math.min(innerWidth - tip.offsetWidth - 8, x - tip.offsetWidth/2)) + 'px';
+    tip.style.top = (r.top + scrollY - tip.offsetHeight - 8) + 'px';
+  });
+  document.addEventListener('click', e=>{ if(!e.target.closest('#vistaStrat')) tip.style.display='none'; });
 }
 function mostraVista(strat){
   el('vistaClas').hidden = strat; el('vistaStrat').hidden = !strat;
