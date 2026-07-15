@@ -109,7 +109,7 @@ const el = id => document.getElementById(id);
 const ROW_H = 44;
 let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams={}, pitloss={}, plMeta={}, neutral={}, teamCol={}, calendario=null;
 let curLap=1, selDrv=null, rowEls={}, leaderMemo={}, finestre=null, teamWarned=new Set(), pitLaps={};
-let pista=null, pistaCum=null, pistaTot=0;   // vista pallini (solo dove esiste il replay)
+let pista=null, leadCum=null, cumPil=null, teamOfR=null;   // vista pallini (gare con pista_<gara>.json)
 
 // --- contatore anonimo aggregato (strumentazione, non simulatore) ---
 const conta = e => { try { navigator.sendBeacon(`api/contatore?e=${e}`); } catch(_){} };
@@ -192,11 +192,17 @@ async function loadGara(gara) {
   const rfLaps = new Set();
   for (const [a,b] of (finestre?.rf || [])) for (let L=a; L<=b; L++) rfLaps.add(L);
   const durate = computeDurations(race.byLap, race.n_laps, rfLaps);
-  // tempo cumulato per giro: aggancia la posizione di gara (frazionaria) al replay pallini
-  pistaCum = {1:0};
-  for (let L=2; L<=race.n_laps; L++) pistaCum[L] = pistaCum[L-1] + (durate[L-1]||0);
-  pistaTot = pistaCum[race.n_laps] || 1;
-  drawPista(gara, durate);
+  // tabelle per i pallini: tempo del leader per giro + cum_time per pilota (dati reali)
+  leadCum = {0:0}; cumPil = {}; teamOfR = {};
+  for (const lp of race.laps) for (const [d,c] of Object.entries(lp.cars)){
+    teamOfR[d] = c.team;
+    if (typeof c.cum_time === 'number' && !race.nonParten.has(d)){
+      (cumPil[d] ||= []).push({lap: lp.lap, cum: c.cum_time});
+      if (leadCum[lp.lap] === undefined || c.cum_time < leadCum[lp.lap]) leadCum[lp.lap] = c.cum_time;
+    }
+  }
+  for (const d in cumPil) cumPil[d].sort((a,b)=>a.lap-b.lap);
+  drawPista(gara);
   buildStrat(); mostraVista(false);
   clock.setDur(L => durate[L]);
   clock.reset(race.n_laps);
@@ -204,33 +210,52 @@ async function loadGara(gara) {
   requestAnimationFrame(()=>requestAnimationFrame(()=>el('grid').classList.remove('notrans')));
 }
 
-// --- area pista: Gran Bretagna ha il replay pallini reale (OpenF1); le altre un posto
-// apparecchiato ("pista in arrivo", UI-2 le riempira'). NIENTE piste disegnate a mano. ---
+// --- area pista: ogni gara con pista_<gara>.json (generata da gen_pista_svg.py) ha i
+// pallini; le altre restano al placeholder. NIENTE piste disegnate a mano. ---
 function pistaVuota(gara){
   el('pista').innerHTML = `<div class="pista-vuota">
       <b>${gara}</b>
-      <span>pista in arrivo &mdash; la vista pallini (replay posizioni reali) arriva con UI-2</span>
+      <span>pista in arrivo &mdash; telemetria non disponibile per questa gara (vedi NOTA_PISTE.md)</span>
     </div>`;
 }
 async function drawPista(gara){
   if (pista){ pista.destroy(); pista=null; }
   el('pista').classList.remove('pit-attivo');
-  if (gara !== 'Gran Bretagna'){ pistaVuota(gara); return; }
-  el('pista').innerHTML = `<canvas aria-label="Mappa circuito con pallini piloti (replay)"></canvas>
+  el('pista').innerHTML = `<canvas aria-label="Mappa circuito con pallini piloti (replay per-giro)"></canvas>
     <div class="spenta">Pallini spenti durante l&rsquo;esplorazione pit:<br>
-      il replay mostra dov&rsquo;erano davvero le auto, il motore risponde al controfattuale per-giro.</div>
-    <div class="fonte">Replay di posizioni registrate (OpenF1 /location) &mdash; non una simulazione. Sincronia col giro approssimata sul tempo reale di gara.</div>`;
+      il replay mostra la gara com&rsquo;e&rsquo; andata davvero, il motore risponde al controfattuale per-giro.</div>
+    <div class="fonte">Tracciato: giro GPS reale (FastF1, generatore committato). Pallini: replay dei tempi-giro reali &mdash; dentro il giro la posizione &egrave; interpolata (frazione di tempo &asymp; frazione di distanza), non una simulazione.</div>`;
   try {
     const { creaPista } = await import('./pista.mjs');
-    pista = await creaPista({ canvas: el('pista').querySelector('canvas'), url: 'telemetria_proto_data.json' });
+    pista = await creaPista({ canvas: el('pista').querySelector('canvas'), url: `data/pista_${encodeURIComponent(gara)}.json` });
     if (selDrv){ pista.setSpento(true); el('pista').classList.add('pit-attivo'); }
     pistaFrame(clock.position);
-  } catch(e){ console.warn('replay pallini non disponibile:', e); pistaVuota(gara); }
+  } catch(e){ console.warn('pista non disponibile:', e.message); pistaVuota(gara); }
 }
+// pallini = replay posizionale dai cum_time per-giro: al tempo reale T (interpolato sul
+// leader) ogni pilota e' nel giro k con frazione (T-fine giro k-1)/(durata giro k).
+// Giri mancanti nei dati => pallino nascosto, mai inventato. Arrivati/ritirati: spariscono.
 function pistaFrame(p){
-  if (!pista || !pistaCum) return;
+  if (!pista || !leadCum) return;
   const L=Math.max(1,Math.min(race.n_laps,Math.floor(p))), f=Math.min(1,Math.max(0,p-L));
-  pista.seek((pistaCum[L] + f*(pistaCum[L+1]!==undefined ? pistaCum[L+1]-pistaCum[L] : 0)) / pistaTot);
+  const t0=leadCum[L] ?? leadCum[L-1], t1=leadCum[L+1] ?? t0;
+  if (t0===undefined) return;
+  const T = t0 + f*(t1-t0);
+  const dots=[];
+  for (const d in cumPil){
+    const arr=cumPil[d];
+    let lo=0, hi=arr.length-1, idx=arr.length;      // primo indice con cum > T
+    if (arr[hi].cum > T){
+      while (lo<hi){ const m=(lo+hi)>>1; if (arr[m].cum > T) hi=m; else lo=m+1; }
+      idx=lo;
+    }
+    if (idx>=arr.length) continue;                   // oltre l'ultimo giro noto: niente pallino
+    const fine=arr[idx], inizio = idx>0 ? arr[idx-1] : {lap:0, cum:0};
+    if (fine.lap !== inizio.lap+1) continue;         // buco nei dati: non inventare
+    const fd=(T-inizio.cum)/(fine.cum-inizio.cum || 1);
+    dots.push({f:fd, colore:coloreTeam(teamOfR[d]), sigla:d});
+  }
+  pista.aggiorna(dots);
 }
 
 // --- timeline eventi: geometria da bands() (helper puro), tacche pit dai dati gara ---
