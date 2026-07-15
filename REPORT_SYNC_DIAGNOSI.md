@@ -285,3 +285,38 @@ Dati, formati, kernel, motore, generatori: **intatti**. Golden ✓ 11/11 prima e
 leader (`floor(p)`), non più `round(p)`: a parità di posizione del cursore il giro di
 congelamento può differire di 1 rispetto a prima. I golden non passano di lì (freezeLap
 esplicito nei casi) e restano verdi.
+
+---
+
+# BUG 2 — freeze dell'esplorazione pit (trovato dai tre scenari del PO, riparato)
+
+**La verifica richiesta dal PO ha confermato la divergenza**: dopo il fix di sincronia,
+l'esplorazione pit passava al motore un giro **nel futuro** dello schermo congelato.
+Causa: la semantica del motore è `freezeLap = L` ⇒ stato reale a FINE giro L
+(`pitscenario.mjs:32-33`); con la vecchia ancora, a p=`curLap` lo schermo mostrava
+proprio fine giro `curLap` → coerente. Con l'ancora nuova, a p=`curLap` lo schermo
+mostra fine giro `curLap−1`, ma `updatePit` passava ancora `L=curLap` (e il click faceva
+`round`, che può saltare anche al giro dopo quello guardato).
+
+## I tre scenari (stesso punto del cursore; motore chiamato davvero)
+| Scenario | PRIMA: L → risposta | DOPO (bug): L → risposta | Utente crede (fine giro) | FIX-2: L → risposta | Coincide? |
+|---|---|---|---|---|---|
+| S1 LEC, leader metà gara (48%) | 25 → **P2/12** | **26 → NON VALUTABILE** (LEC ha pittato al 25: niente pace-base al 26) | 24 | 24 → **P2/11**, davanti ANT, dietro NOR | **SÌ** |
+| S2 ALB, doppiato (70%) | 37 → non valutabile | 37 → non valutabile | 36 | 36 → non valutabile (limite dichiarato del motore: pit al 35, pace-base assente) | **SÌ** |
+| S2b ALB, doppiato tra i suoi pit (57,5%) | 30 → P1/1 aria pulita | 31 → P1/1 | 29 | 29 → **P1/1 aria pulita** (a pari giro è solo) | **SÌ** |
+| S3 VER, subito dopo il SUO pit (33,1%) | 18 → non valutabile | 18 → non valutabile | 17 | 17 → **P7/21**, davanti NOR, dietro LAW [gap n/d: neutralizzazione] | **SÌ** |
+
+Nota S3: la coerenza col visibile rende VALUTABILE un caso che era morto anche PRIMA del
+fix di sincronia (freeze sull'out-lap = pilota senza pace-base). Nota S2/S2b: per un
+doppiato "pit al giro P" resta sull'asse dei SUOI giri e il confronto è "tra i piloti a
+pari giro" — semantica per-giro del kernel, identica in tutte le versioni, non toccata.
+
+## Riparazione (solo `demo/gara.html`, tre punti)
+1. Click sulla riga: `curLap = floor(clock.position)` (non `round`) — si congela il giro
+   che l'utente sta GUARDANDO; il seek porta al suo inizio = fine giro `curLap−1`.
+2. `updatePit`: `freezeLap = max(1, curLap−1)` — lo STESSO stato della tabella congelata.
+3. Slider: `min = max(2, curLap)` — si può pittare già al giro in corso (in-lap =
+   `curLap`), come al muretto; al giro 1 il freeze è clampato a 1 (dichiarato).
+
+Verificato anche a schermo: cursore al 48%, "Giro 25", click su LEC → slider da 25,
+"Rientro P2 tra i 11 a pari giro". Motore e golden intatti: ✓ 11/11 prima e dopo.

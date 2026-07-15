@@ -331,7 +331,9 @@ function buildGrid(){
     row.querySelector('.drv a').addEventListener('click', e=>e.stopPropagation());
     row.addEventListener('click',()=>{ if(!row.classList.contains('selectable'))return;
       selDrv=d; clock.pause(); setPlayIcon(false);
-      curLap=Math.min(race.n_laps,Math.round(clock.position)); clock.seek(curLap);
+      // floor, NON round: si congela il giro che l'utente sta GUARDANDO; il seek porta al
+      // suo inizio, cioe' alla fine del giro curLap-1 — lo stesso stato che il motore riceve
+      curLap=Math.max(1,Math.min(race.n_laps,Math.floor(clock.position))); clock.seek(curLap);
       openPit(); frame(clock.position);
       if(matchMedia('(max-width:899px)').matches) el('pit').scrollIntoView({behavior:'smooth',block:'nearest'});
     });
@@ -552,15 +554,19 @@ function openPit(){
   if(pista){ pista.setSpento(true); el('pista').classList.add('pit-attivo'); }
   el('pit').classList.remove('hidden');
   el('pitTitle').innerHTML = `Se ${selDrv} pitta&hellip; <small>rivali congelati</small>`;
-  const pl=el('pitLap'); pl.min=curLap+1; pl.max=race.n_laps;
-  if(+pl.value<curLap+1||+pl.value>race.n_laps) pl.value=Math.min(curLap+4,race.n_laps);
+  // il freeze e' l'ultimo giro COMPLETATO visibile (curLap-1): si puo' quindi pittare gia'
+  // al giro IN CORSO (in-lap = curLap), come al muretto. Al giro 1 il freeze e' clampato a 1.
+  const pl=el('pitLap'); pl.min=Math.max(2,curLap); pl.max=race.n_laps;
+  if(+pl.value<+pl.min||+pl.value>race.n_laps) pl.value=Math.min(curLap+4,race.n_laps);
   updatePit();
 }
 function chiudiPit(){ selDrv=null; el('pit').classList.add('hidden');
   if(pista){ pista.setSpento(false); el('pista').classList.remove('pit-attivo'); }
   frame(clock.position); }
 function updatePit(){
-  const L=curLap, pitL=+el('pitLap').value;
+  // freeze = ultimo giro COMPLETATO visibile: a p=curLap lo schermo mostra la classifica
+  // di fine giro curLap-1, ed e' QUELLO lo stato che il motore congela (byLap[freeze]).
+  const L=Math.max(1,curLap-1), pitL=+el('pitLap').value;
   el('pitLapLabel').textContent=pitL;
   const present=Object.keys(race.byLap[L]).filter(d=>typeof race.byLap[L][d].cum_time==='number'&&!race.nonParten.has(d));
   const loss=pitloss[race.gara]??22.0;
