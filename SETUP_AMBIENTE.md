@@ -24,6 +24,8 @@ Fattuale, aggiornato al 15/07/2026 (consolidamento pre-Spa, Blocco A).
 3. `node test_pit.mjs` — **da dentro `demo/`** (golden pit 11/11).
 4. `node test_degrado_hook.mjs` — dalla root (gancio v1.5: banda-zero bit-identica).
 5. `node check_banda_gancio.mjs` — dalla root (banda scelta = input valido per il gancio).
+6. `node test_f1db_checksum.mjs` — dalla root (il CSV f1db, orfano ma consumato dallo staging,
+   è invariato; se cambia deliberatamente: aggiornare il checksum nel test e motivare nel commit).
 
 ## Avvertenza
 - `test_b.py` **riscrive `data/ref_traffic_py.json` a ogni run** (è il riferimento del golden JS):
