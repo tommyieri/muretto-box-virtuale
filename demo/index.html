@@ -1,393 +1,95 @@
 <!DOCTYPE html>
+<!--
+  HOME (ui-v2): la stagione 2026. Hero = prossima gara (countdown), sotto la griglia dei GP.
+  Consumatore puro: legge demo/data/calendario_2026.json (generato da gen_calendario.py,
+  fonte f1db) e demo/data/manifest.json. La pagina-gara e' gara.html?g=<nome>.
+-->
 <html lang="it">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Muretto Box Virtuale — demo storica</title>
-<style>
-  :root { --bg:#0f1115; --panel:#1a1d24; --line:#2a2f3a; --txt:#e6e8ec; --dim:#8b93a3;
-          --accent:#4ea3ff; --lead:#ffd24e; --sc:#ffa63c; --vsc:#ffe15a; --rf:#e10600; --row-h:40px;
-          --mono:"SF Mono",ui-monospace,"Roboto Mono",Menlo,Consolas,monospace; }
-  * { box-sizing:border-box; }
-  body { margin:0; background:var(--bg); color:var(--txt); font:14px/1.4 -apple-system,Segoe UI,Roboto,sans-serif; }
-  header { padding:16px 20px; border-bottom:1px solid var(--line); }
-  h1 { font-size:16px; margin:0 0 2px; letter-spacing:0.2px; } .sub { color:var(--dim); font-size:12px; }
-  .wrap { padding:20px; max-width:640px; margin:0 auto; }
-  .controls { display:flex; gap:12px; align-items:center; margin-bottom:16px; flex-wrap:wrap; }
-  select { background:var(--panel); color:var(--txt); border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-size:14px; }
-
-  /* --- barra di trasporto (play / velocità / giro / fase) --- */
-  .transport { display:flex; gap:12px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
-  .play { width:38px; height:38px; border-radius:9px; border:1px solid var(--line); background:var(--panel);
-          color:var(--txt); font-size:15px; cursor:pointer; line-height:1; transition:border-color .15s,background .15s; }
-  .play:hover { border-color:var(--accent); }
-  .play.playing { color:var(--accent); border-color:var(--accent); }
-  .speeds { display:flex; border:1px solid var(--line); border-radius:9px; overflow:hidden; }
-  .speeds button { background:var(--panel); color:var(--dim); border:none; border-left:1px solid var(--line);
-                   padding:8px 11px; font:600 12px/1 var(--mono); cursor:pointer; transition:color .15s,background .15s; }
-  .speeds button:first-child { border-left:none; }
-  .speeds button.on { color:#0f1115; background:var(--accent); }
-  .lapnum { font-variant-numeric:tabular-nums; font-family:var(--mono); color:var(--dim); font-size:13px; }
-  .lapnum b { color:var(--txt); font-size:15px; }
-  .phase { font:600 11px/1 var(--mono); letter-spacing:0.6px; padding:4px 7px; border-radius:6px; visibility:hidden; }
-  .phase.sc  { visibility:visible; color:#0f1115; background:var(--sc); }
-  .phase.vsc { visibility:visible; color:#0f1115; background:var(--vsc); }
-  .phase.rf  { visibility:visible; color:#fff; background:var(--rf); }
-  .phase.run { visibility:visible; color:var(--dim); background:transparent; border:1px solid var(--line); }
-
-  /* --- timeline con bande SC/VSC --- */
-  .track { position:relative; margin:0 0 16px; }
-  .bands { position:relative; height:7px; margin-bottom:5px; border-radius:4px;
-           background:rgba(255,255,255,0.05); overflow:hidden; }
-  .band { position:absolute; top:0; bottom:0; border-radius:3px; }
-  .band.sc  { background:var(--sc); opacity:0.85; }
-  .band.vsc { background:repeating-linear-gradient(90deg,var(--vsc) 0 4px,transparent 4px 8px); opacity:0.9; }
-  .band.rf  { background:var(--rf); opacity:1; }
-  input[type=range] { width:100%; accent-color:var(--accent); margin:0; display:block; }
-  .leg { display:flex; gap:14px; margin-top:6px; font:11px/1 var(--mono); color:var(--dim); }
-  .leg i { font-style:normal; display:inline-flex; align-items:center; gap:5px; }
-  .leg .sw { width:16px; height:7px; border-radius:2px; display:inline-block; }
-  .leg .sw.sc { background:var(--sc); }
-  .leg .sw.vsc { background:repeating-linear-gradient(90deg,var(--vsc) 0 4px,transparent 4px 8px); }
-  .leg .sw.rf { background:var(--rf); }
-
-  /* --- banner bandiera SC/VSC (prominente, stile broadcast) --- */
-  .flag { display:none; align-items:center; justify-content:center; gap:10px; height:46px;
-          margin-bottom:12px; border-radius:10px; font:800 16px/1 var(--mono); letter-spacing:2px;
-          color:#1a0f00; background-size:40px 40px; animation:flagmove 1s linear infinite; }
-  .flag.on { display:flex; }
-  .flag.sc  { background:repeating-linear-gradient(45deg,#ffb454 0 14px,#e8890f 14px 28px); }
-  .flag.vsc { background:repeating-linear-gradient(45deg,#ffe86a 0 14px,#e6c020 14px 28px); color:#2a2200; }
-  .flag.rf  { background:repeating-linear-gradient(45deg,#ff2b25 0 14px,#b00500 14px 28px); color:#fff;
-              animation:flagmove 1s linear infinite, flagpulse 1.1s ease-in-out infinite; }
-  @keyframes flagmove { from{background-position:0 0} to{background-position:40px 0} }
-  @keyframes flagpulse { 0%,100%{box-shadow:0 0 0 0 rgba(225,6,0,0)} 50%{box-shadow:0 0 18px 2px rgba(225,6,0,0.55)} }
-
-  /* --- classifica: righe keyed, posizionate per transform (riordino fluido) --- */
-  .grid { position:relative; background:var(--panel); border:1px solid var(--line); border-radius:12px; overflow:hidden; }
-  .row { position:absolute; left:0; right:0; height:var(--row-h); display:grid;
-         grid-template-columns:30px 1fr auto auto; column-gap:12px; align-items:center;
-         padding:0 14px 0 16px; border-bottom:1px solid var(--line);
-         transition:transform .34s cubic-bezier(.4,0,.2,1); will-change:transform; }
-  .grid.notrans .row { transition:none; }
-  .row.leader { background:rgba(255,210,78,0.06); }
-  .tbar { position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--dim); }
-  .pos { color:var(--dim); font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:13px; }
-  .idn { display:flex; align-items:baseline; gap:8px; min-width:0; overflow:hidden; }
-  .drv { font-weight:600; letter-spacing:0.4px; }
-  .team { color:var(--dim); font-weight:400; font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .gap { font-family:var(--mono); font-variant-numeric:tabular-nums; color:var(--dim); font-size:13px; }
-  .gap.lead { color:var(--lead); font-weight:600; }
-  .gap.lapped { color:#c77; }
-  .tyreb { display:flex; align-items:center; gap:6px; font-family:var(--mono); }
-  .tyreb .tname { font-size:10px; letter-spacing:0.5px; color:var(--dim); }
-  .tyreb .dot { width:9px; height:9px; border-radius:50%; box-shadow:0 0 0 1px rgba(0,0,0,0.4) inset; }
-  .tyreb .age { font-size:12px; font-variant-numeric:tabular-nums; color:var(--txt); min-width:15px; text-align:right; }
-  .row.done { opacity:0.72; }
-  .row.retired { opacity:0.42; }
-  .row.retired .gap { color:var(--dim); font-size:12px; font-family:inherit; }
-
-  /* pit-panel */
-  .row.sel { background:rgba(78,163,255,0.16); outline:1px solid var(--accent); outline-offset:-1px; z-index:2; }
-  .row.selectable { cursor:pointer; }
-  .row.selectable:hover { background:rgba(255,255,255,0.04); }
-  .pit { margin-top:18px; background:var(--panel); border:1px solid var(--line); border-radius:12px; padding:16px; }
-  .pit.hidden { display:none; }
-  .pit h3 { margin:0 0 12px; font-size:14px; }
-  .pit .pitlap { display:flex; gap:10px; align-items:center; margin-bottom:14px; font-size:13px; color:var(--dim); }
-  .pit .pitlap input { flex:1; accent-color:var(--accent); }
-  .kv { display:flex; justify-content:space-between; align-items:baseline; padding:7px 0; border-bottom:1px solid rgba(255,255,255,0.05); }
-  .kv.sep { border-bottom:none; margin-top:4px; }
-  .kv .k { color:var(--dim); font-size:13px; }
-  .kv .v { font-weight:600; font-variant-numeric:tabular-nums; }
-  .kv .v .g { color:var(--accent); font-weight:600; }
-  .kv .v .sub { color:var(--dim); font-weight:400; font-size:12px; }
-  .kv .v.dim { color:var(--dim); font-weight:400; font-style:italic; }
-  .pit .warn { background:rgba(255,180,80,0.12); border:1px solid rgba(255,180,80,0.4); color:#ffb450; border-radius:8px; padding:8px 10px; font-size:12.5px; margin-bottom:12px; }
-  .pit .pitmsg { color:var(--dim); font-size:13px; padding:6px 0; }
-  .pithint { color:var(--dim); font-size:12px; margin-top:10px; }
-</style>
+<title>Muretto Box Virtuale — stagione 2026</title>
+<link rel="stylesheet" href="stile.css">
 </head>
 <body>
-<header><h1>Muretto Box Virtuale</h1><div class="sub">demo storica · stagione 2026 · vista gara</div></header>
-<div class="wrap">
-  <div class="controls">
-    <label>Gara: <select id="gara"></select></label>
-    <span class="sub" id="meta"></span>
-  </div>
-  <div class="transport">
-    <button id="play" class="play" title="Play / Pausa">▶</button>
-    <div class="speeds" id="speeds">
-      <button data-s="1" class="on">1×</button><button data-s="2">2×</button><button data-s="4">4×</button><button data-s="8">8×</button>
+<div class="topbar">
+  <span class="brand">Muretto Box Virtuale <small>demo storica &middot; stagione 2026</small></span>
+</div>
+
+<div class="wrap-home">
+  <section class="hero" id="hero" hidden>
+    <div class="eyebrow" id="heroEyebrow">Prossima gara</div>
+    <h2 id="heroTitolo">…</h2>
+    <div class="circuito" id="heroCircuito"></div>
+    <div class="quando">
+      <span class="data" id="heroData"></span>
+      <span class="count" id="heroCount"></span>
     </div>
-    <span class="lapnum">Giro <b id="lapLabel">1</b>/<span id="lapMax">–</span></span>
-    <span class="phase" id="phase"></span>
-  </div>
-  <div class="track">
-    <div class="bands" id="bands"></div>
-    <input type="range" id="lap" min="1" max="1" value="1">
-    <div class="leg" id="leg" style="visibility:hidden">
-      <i><span class="sw sc"></span>Safety Car</i><i><span class="sw vsc"></span>Virtual SC</i><i id="legrf" style="display:none"><span class="sw rf"></span>Bandiera rossa</i>
-    </div>
-  </div>
-  <div class="flag" id="flag"></div>
-  <div class="grid" id="grid"></div>
-  <div class="pit hidden" id="pit">
-    <h3 id="pitTitle">Pit</h3>
-    <div class="pitlap">Pit al giro <b id="pitLapLabel">–</b>
-      <input type="range" id="pitLap" min="2" max="2" value="2"></div>
-    <div id="pitKv"></div>
-    <div class="pithint">Rivali congelati al reale · il motore mostra dove rientri, non se conviene.</div>
+  </section>
+
+  <div class="sez-tit">Stagione 2026</div>
+  <div class="stagione" id="stagione"></div>
+
+  <div class="footnote">
+    Gare corse in demo: replay per-giro + esplorazione pit (&ldquo;se pitto al giro L, dove rientro?&rdquo;).
+    Calendario da f1db (generatore <span class="num">gen_calendario.py</span>); vincitori dai dati gara pubblicati.
   </div>
 </div>
+
 <script type="module">
-import { simulate } from './engine.mjs';
-import { evaluatePit } from './pitscenario.mjs';
-import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs';
 const el = id => document.getElementById(id);
-const ROW_H = 40;
-let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams={}, pitloss={}, neutral={}, teamCol={};
-let curLap=1, selDrv=null, rowEls={}, leaderMemo={}, finestre=null, teamWarned=new Set();
+const MESE = d => d.toLocaleDateString('it-IT', { day:'numeric', month:'long' });
+let teamCol = {};
 
-// --- contatore anonimo aggregato (strumentazione, non simulatore) ---
-// Solo due eventi, solo interi lato server: niente cookie, niente ID, niente terzi in pagina.
-// Fire-and-forget: se il contatore non è configurato la demo non se ne accorge.
-const conta = e => { try { navigator.sendBeacon(`api/contatore?e=${e}`); } catch(_){} };
-
-// --- hook waitlist (DORMIENTE) ---
-// Punto di aggancio per la valutazione strategica a pagamento. Si attiva SOLO quando il
-// product owner sceglie dove salvare le email; a quel punto qui vanno anche input+submit
-// e la NOTA PRIVACY (cosa facciamo delle email, nessun terzo, come cancellarsi).
-const WAITLIST_ATTIVA = false;
-function hookWaitlist(){
-  if(!WAITLIST_ATTIVA)
-    return `<div class="kv"><span class="k">Undercut/Overcut</span><span class="v dim">valutazione strategica in sviluppo (serve il degrado gomma)</span></div>`;
-  return ''; // versione attiva: da implementare all'attivazione, con nota privacy
+function cardGara(g, inDemo, corsa){
+  const quando = MESE(new Date(g.data+'T12:00:00'));
+  const testa = `<div class="r">R${String(g.round).padStart(2,'0')}</div>
+    <div class="nome">${g.nome}</div><div class="data">${quando}${g.giri?` · ${g.giri} giri`:''}</div>`;
+  if (inDemo){
+    const w = g.vincitore;
+    const win = w ? `<div class="win"><span class="tdot" style="background:${teamCol[w.team]||'var(--dim)'}"></span><b>${w.sigla}</b><span class="lab">vincitore</span></div>` : '';
+    return `<a class="gpcard" href="gara.html?g=${encodeURIComponent(g.gara_demo)}">${testa}${win}</a>`;
+  }
+  if (corsa)   // corsa ma non (ancora) pubblicata in demo
+    return `<div class="gpcard arrivo">${testa}<div class="win"><span class="lab">dati in arrivo</span></div></div>`;
+  return `<div class="gpcard futura">${testa}<div class="stato">in calendario</div></div>`;
 }
 
-// --- orologio della riproduzione: 1× = tempo reale della gara ---
-const clock = makeClock({ onTick: p => frame(p), onEnd: () => setPlayIcon(false), min: 1 });
-
-function coloreTeam(t){
-  if (t && teamCol[t]) return teamCol[t];
-  if (t && !teamWarned.has(t)) { teamWarned.add(t); console.warn('team senza colore, fallback neutro:', t); }
-  return 'var(--dim)';
+function countdown(dataISO){
+  const target = new Date(dataISO+'T12:00:00');
+  const oggi = new Date();
+  const gg = Math.ceil((target - oggi) / 86400000);
+  if (gg <= 0) return 'oggi';
+  if (gg === 1) return 'domani';
+  return `fra ${gg} giorni`;
 }
 
-async function loadManifest() {
-  const m = await (await fetch('data/manifest.json')).json();
-  try { esiti = await (await fetch('data/esiti.json')).json(); } catch(e){ esiti={}; }
-  try { grids = await (await fetch('data/grids.json')).json(); } catch(e){ grids={}; }
-  try { teams = await (await fetch('data/teams.json')).json(); } catch(e){ teams={}; }
-  try { pitloss = await (await fetch('data/pitloss.json')).json(); } catch(e){ pitloss={}; }
-  try { neutral = await (await fetch('neutralizzazione.json')).json(); } catch(e){ neutral={}; }
+async function boot(){
+  const cal = await (await fetch('data/calendario_2026.json')).json();
+  const manifest = await (await fetch('data/manifest.json')).json();
   try { teamCol = await (await fetch('team_colori.json')).json(); } catch(e){ teamCol={}; }
-  el('gara').innerHTML = m.map(r => `<option value="${r.gara}">${r.gara}</option>`).join('');
-  await loadGara(m[0].gara);
-}
-async function loadGara(gara) {
-  race = await (await fetch(`data/${gara}.json`)).json();
-  race.gara = gara; race.byLap = {};
-  for (const lp of race.laps) race.byLap[lp.lap] = lp.cars;
-  lastLap = {};
-  for (const lp of race.laps) for (const d in lp.cars) lastLap[d] = lp.lap;
-  esitiGara = esiti[gara] || {}; gridGara = grids[gara] || [];
-  const nonP = new Set(Object.entries(esitiGara).filter(([d,t])=>t==='NP').map(([d])=>d));
-  race.nonParten = nonP;
-  finestre = neutral[gara] || null; leaderMemo = {};
-  el('lap').min=1; el('lap').max=race.n_laps; el('lap').value=1;
-  el('lapMax').textContent = race.n_laps;
-  el('meta').textContent = `${race.n_laps} giri · ${race.drivers.length - nonP.size} partenti`;
-  selDrv=null; el('pit').classList.add('hidden');
-  drawBands();
-  buildGrid();
-  // giri sotto bandiera rossa: pausa breve col banner invece dei ~38 min reali di sospensione
-  const rfLaps = new Set();
-  for (const [a,b] of (finestre?.rf || [])) for (let L=a; L<=b; L++) rfLaps.add(L);
-  const durate = computeDurations(race.byLap, race.n_laps, rfLaps);   // 1× = tempo reale
-  clock.setDur(L => durate[L]);
-  clock.reset(race.n_laps);          // richiama frame(1) con transizioni disattivate
-  setPlayIcon(false);
-  requestAnimationFrame(()=>requestAnimationFrame(()=>el('grid').classList.remove('notrans')));
-}
+  const inDemo = new Set(manifest.map(r=>r.gara));
+  const oggi = new Date(); oggi.setHours(0,0,0,0);
 
-// bande SC/VSC + leggenda (solo se la gara ha neutralizzazioni)
-function drawBands(){
-  const bs = bands(finestre, race.n_laps);
-  el('bands').innerHTML = bs.map(b=>`<div class="band ${b.type}" title="${b.type.toUpperCase()} giri ${b.a}–${b.b}" style="left:${b.left}%;width:${b.width}%"></div>`).join('');
-  el('leg').style.visibility = bs.length ? 'visible' : 'hidden';
-  el('legrf').style.display = (finestre?.rf?.length) ? 'inline-flex' : 'none';
-}
-
-// righe keyed create UNA volta per gara; poi aggiornate in place ogni frame
-function buildGrid(){
-  const tutti=[...new Set([...race.drivers, ...gridGara])];
-  const g=el('grid'); g.classList.add('notrans'); g.innerHTML=''; rowEls={};
-  for(const d of tutti){
-    const row=document.createElement('div'); row.className='row'; row.dataset.drv=d;
-    row.innerHTML=`<span class="tbar"></span><span class="pos"></span>`
-      +`<span class="idn"><span class="drv">${d}</span><span class="team"></span></span>`
-      +`<span class="gap"></span>`
-      +`<span class="tyreb"><span class="tname"></span><span class="dot"></span><span class="age"></span></span>`;
-    row.addEventListener('click',()=>{ if(!row.classList.contains('selectable'))return;
-      selDrv=d; clock.pause(); setPlayIcon(false);
-      curLap=Math.min(race.n_laps,Math.round(clock.position)); clock.seek(curLap);
-      openPit(); frame(clock.position); });
-    g.appendChild(row);
-    rowEls[d]={root:row, tbar:row.querySelector('.tbar'), pos:row.querySelector('.pos'),
-               team:row.querySelector('.team'), gap:row.querySelector('.gap'), tyreb:row.querySelector('.tyreb'),
-               tname:row.querySelector('.tname'), dot:row.querySelector('.dot'), age:row.querySelector('.age')};
+  // hero: la prossima gara in calendario (data >= oggi); a stagione finita, l'ultima corsa
+  const prossima = cal.gare.find(g => new Date(g.data+'T23:59:59') >= oggi);
+  const h = prossima || cal.gare[cal.gare.length-1];
+  if (h){
+    el('heroEyebrow').textContent = prossima ? 'Prossima gara' : 'Stagione conclusa';
+    el('heroTitolo').textContent = `${h.titolo} — ${MESE(new Date(h.data+'T12:00:00'))}`;
+    el('heroCircuito').textContent = `${h.circuito}${h.giri?` · ${h.giri} giri`:''} · round ${h.round} di ${cal.gare.length}`;
+    el('heroData').textContent = new Date(h.data+'T12:00:00').toLocaleDateString('it-IT',{weekday:'long', day:'numeric', month:'long', year:'numeric'});
+    el('heroCount').textContent = prossima ? countdown(h.data) : '';
+    el('hero').hidden = false;
   }
-  g.style.height = (tutti.length*ROW_H)+'px';
-}
 
-// leaderAiGiri (per il conteggio giri-doppiati): dipende solo dal giro intero -> memoizzato
-function leaderAiGiri(L){
-  if(leaderMemo[L]) return leaderMemo[L];
-  const out={};
-  for (let k=L;k<=Math.min(L+3,race.n_laps);k++) if (race.byLap[k]) {
-    const o=Object.entries(race.byLap[k]).filter(([d,c])=>typeof c.cum_time==='number'&&!race.nonParten.has(d)).sort((a,b)=>a[1].cum_time-b[1].cum_time);
-    if(o.length) out[k]=o[0][1].cum_time;
-  }
-  return leaderMemo[L]=out;
+  el('stagione').innerHTML = cal.gare.map(g => {
+    const demoOk = !!g.gara_demo && inDemo.has(g.gara_demo);
+    const corsa = new Date(g.data+'T23:59:59') < oggi;
+    return cardGara(g, demoOk, corsa);
+  }).join('');
 }
-
-// Classifica al giro FRAZIONARIO p=L+f: cum_time interpolato per il movimento fluido.
-// A f=0 coincide esattamente con la vista statica (nessuna regressione): l'ordinamento,
-// i gap e i doppiati sono quelli di prima quando il giro è intero.
-function classificaAt(L, f){
-  const A=race.byLap[L], B=race.byLap[L+1];
-  const icum=(d,c)=> (f>0 && B && typeof B[d]?.cum_time==='number')
-      ? c.cum_time + f*(B[d].cum_time - c.cum_time) : c.cum_time;
-  let ordine = Object.entries(A).filter(([d,c]) => typeof c.cum_time==='number' && !race.nonParten.has(d))
-      .map(([d,c])=>[d,c,icum(d,c)]);
-  if (L===1 && f===0 && gridGara.length) {
-    const rank={}; gridGara.forEach((d,i)=>rank[d]=i);
-    ordine.sort((a,b)=>(rank[a[0]]??999)-(rank[b[0]]??999));
-  } else ordine.sort((a,b)=>(a[2]-b[2])||(a[0]<b[0]?-1:1));
-  const leader = ordine.length?ordine[0][2]:0;
-  const lag = leaderAiGiri(L);
-  const rows = ordine.map(([drv,c,cum],i)=>{
-    const gap=cum-leader; let gd=0;
-    for(const k in lag) if(+k>L && c.cum_time>lag[k]) gd=+k-L;
-    let et,cls;
-    if(gd>=1){et=`+${gd} gir${gd>1?'i':'o'}`;cls='lapped';}
-    else if(i===0){et='—';cls='lead';}
-    else{et=`+${gap.toFixed(1)}s`;cls='';}
-    return {pos:i+1,drv,team:c.team,compound:c.compound,age:c.tyre_age,et,cls,leader:i===0,selectable:true};
-  });
-  const inGara=new Set(ordine.map(([d])=>d));
-  const teamOf={}; for(const lp of race.laps) for(const [d,c] of Object.entries(lp.cars)) teamOf[d]=c.team;
-  const tutti=new Set([...race.drivers,...gridGara]);
-  const fuori=[...tutti].filter(d=>!inGara.has(d));
-  const sr={doppiato:0,RIT:1,NP:2,ghost:3};
-  const coda=fuori.map(d=>{
-    const t=esitiGara[d], np=race.nonParten.has(d), last=lastLap[d]; let label,st;
-    if(t==='doppiato'&&last!==undefined){label=`arrivato · ${last} giri`;st='doppiato';}
-    else if(t==='RIT'&&last!==undefined){label=`ritirato (giro ${last})`;st='RIT';}
-    else if(np||t==='NP'){label='non partito';st='NP';}
-    else if(last!==undefined&&last<race.n_laps){label=`arrivato · ${last} giri`;st='doppiato';}
-    else{label='non partito';st='ghost';}
-    return {pos:'',drv:d,team:teamOf[d]||teams[d]||'',compound:null,age:null,et:label,st,leader:false,selectable:false,last:last??-1};
-  }).sort((a,b)=>(sr[a.st]-sr[b.st])||(b.last-a.last));
-  return rows.concat(coda);
-}
-
-// aggiornamento in place di una riga (nessun innerHTML per frame -> transizioni vive)
-function paintRow(r, i){
-  const e=rowEls[r.drv]; if(!e) return;
-  e.root.style.transform=`translateY(${i*ROW_H}px)`;
-  const retired = r.st==='RIT'||r.st==='NP'||r.st==='ghost';
-  e.root.className='row'
-    + (r.leader?' leader':'') + (retired?' retired':'') + (r.st==='doppiato'?' done':'')
-    + (r.selectable?' selectable':'') + (r.drv===selDrv?' sel':'');
-  e.tbar.style.background=coloreTeam(r.team);
-  if(e.pos.textContent!==String(r.pos)) e.pos.textContent=r.pos;
-  if(e.team.textContent!==(r.team||'')) e.team.textContent=r.team||'';
-  e.gap.textContent=r.et; e.gap.className='gap '+(r.cls||'');
-  // mescola a fondo riga: nome + pallino + età gomma (età mancante -> senza numero)
-  const col=tyreColor(r.compound);
-  if(r.compound){
-    e.tyreb.style.visibility='visible';
-    if(e.tname.textContent!==r.compound) e.tname.textContent=r.compound;
-    e.dot.style.background=col||'var(--dim)';
-    e.age.textContent = (typeof r.age==='number') ? r.age : '';
-  } else e.tyreb.style.visibility='hidden';
-}
-
-// un frame: posiziona tutte le righe, aggiorna giro/fase/slider; il pit si aggiorna solo da fermi
-function frame(p){
-  const L=Math.max(1,Math.min(race.n_laps,Math.floor(p)));
-  const f=Math.min(1,Math.max(0,p-L));
-  curLap=Math.min(race.n_laps,Math.max(1,Math.round(p)));
-  classificaAt(L,f).forEach(paintRow);
-  el('lapLabel').textContent=curLap;
-  if(document.activeElement!==el('lap')) el('lap').value=curLap;
-  const ph=fase(finestre,curLap);
-  el('phase').className='phase '+(ph?ph.toLowerCase():'run');
-  el('phase').textContent=ph||'in corso';
-  // banner bandiera prominente (grida durante SC/VSC/rossa, sparisce all'uscita)
-  const fl=el('flag');
-  const testoFlag={SC:'⚑ SAFETY CAR', VSC:'⚑ VIRTUAL SAFETY CAR', RF:'⚑ BANDIERA ROSSA · GARA SOSPESA'};
-  if(ph){ fl.className='flag on '+ph.toLowerCase(); fl.textContent=testoFlag[ph]; }
-  else if(fl.className!=='flag'){ fl.className='flag'; fl.textContent=''; }
-  if(selDrv && !clock.playing) updatePit();
-}
-
-function setPlayIcon(playing){ const b=el('play'); b.textContent=playing?'❚❚':'▶'; b.classList.toggle('playing',playing); }
-
-function openPit(){
-  if(!selDrv){ el('pit').classList.add('hidden'); return; }
-  conta('valutazione_pit');   // il gesto d'interesse reale: pilota scelto, pannello aperto
-  el('pit').classList.remove('hidden');
-  el('pitTitle').textContent = `Pit — ${selDrv}`;
-  const pl=el('pitLap'); pl.min=curLap+1; pl.max=race.n_laps;
-  if(+pl.value<curLap+1||+pl.value>race.n_laps) pl.value=Math.min(curLap+4,race.n_laps);
-  updatePit();
-}
-function updatePit(){
-  const L=curLap, pitL=+el('pitLap').value;
-  el('pitLapLabel').textContent=pitL;
-  const present=Object.keys(race.byLap[L]).filter(d=>typeof race.byLap[L][d].cum_time==='number'&&!race.nonParten.has(d));
-  const loss=pitloss[race.gara]??22.0;
-  const r=evaluatePit({byLap:race.byLap,nLaps:race.n_laps,pace:race.pace[String(L)],driver:selDrv,freezeLap:L,pitLap:pitL,pitLoss:loss,present,gara:race.gara,laps:race.laps});
-  const box=el('pitKv');
-  if(!r.ok){ box.innerHTML=`<div class="pitmsg">Non valutabile a questo giro (${r.reason}).</div>`; return; }
-  // Sotto neutralizzazione i gap in secondi sono soppressi (null): mostro il rivale SENZA secondi.
-  // Mai stampare +0.0s da un null — sarebbe un numero falso peggiore del vuoto.
-  const neutro = r.sotto_neutralizzazione === true;
-  const gapTxt = (nome, gap) => {
-    if (!nome) return '<span class="g">—</span>';
-    if (neutro || gap == null) return `${nome} <span class="sub">gap n/d sotto neutralizzazione</span>`;
-    return `${nome} <span class="g">+${gap.toFixed(1)}s</span>`;
-  };
-  const dav = r.davanti_ho ? gapTxt(r.davanti_ho, r.gap_ahead) : '<span class="g">aria pulita</span>';
-  const die = gapTxt(r.dietro_esco, r.gap_behind);
-  const warmRow='';
-  // --- avviso neutralizzazione ricco (quale finestra, quanto dura) ---
-  const ng = r.neutralizzazione_gara || {};
-  const warnNeutro = ng.finestra_attiva
-    ? `<div class="warn">⚠ Pit in finestra ${ng.tipo} (giri ${ng.finestra[0]}–${ng.finestra[1]}, durata tipica ${ng.durata_tipica} giri): il pit-loss verde qui sovrastima la perdita reale.</div>`
-    : '';
-  const warn = warnNeutro;
-  const _oldwarn_unused = r.giro_neutralizzato ? `<div class="warn">⚠ Giro neutralizzato (SC/VSC): il pit-loss reale sarebbe inferiore. Non modellato.</div>` : '';
-  box.innerHTML = warn + `
-    <div class="kv"><span class="k">Pit-loss</span><span class="v">+${loss.toFixed(1)} s</span></div>
-    <div class="kv"><span class="k">Rientro</span><span class="v">P${r.rientro_pos} <span class="sub">tra i ${r.su_totale} a pari giro</span></span></div>
-    <div class="kv"><span class="k">Davanti</span><span class="v">${dav}</span></div>
-    <div class="kv"><span class="k">Dietro</span><span class="v">${die}</span></div>
-    ${hookWaitlist()}`;
-}
-
-el('gara').addEventListener('change', e=>loadGara(e.target.value));
-el('play').addEventListener('click', ()=>{ clock.toggle(); setPlayIcon(clock.playing); });
-el('speeds').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b)return;
-  clock.setSpeed(+b.dataset.s);
-  [...el('speeds').children].forEach(x=>x.classList.toggle('on',x===b)); });
-el('lap').addEventListener('input', e=>{ clock.pause(); setPlayIcon(false); clock.seek(+e.target.value); });
-el('pitLap').addEventListener('input', updatePit);
-conta('apertura');
-loadManifest();
+boot();
 </script>
 </body>
 </html>
