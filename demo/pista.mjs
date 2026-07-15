@@ -118,6 +118,9 @@ export async function creaPista({ canvas, url }) {
 
   return {
     sorgente: data.sorgente,
+    // soglie del transito in pit-lane (dal JSON pista): le legge anche la tabella,
+    // così il badge BOX e il pallino in pit-lane condividono gli stessi bordi
+    pitFrazioni: { ingresso: FE, uscita: FX },
     // nuovi pallini: [{f: frazione di giro [0,1), colore, sigla}]
     aggiorna(nuovi) { dots = nuovi || []; render(); },
     setSpento(v) { spento = !!v; render(); },

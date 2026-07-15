@@ -220,3 +220,68 @@ usano `freezeLap` espliciti da `golden_pit_casi.json` e non attraversano l'orolo
   unico file nuovo: questo report).
 
 Nessun verdetto strategico: la decisione su se/quando riparare è del PO.
+
+---
+
+# RIPARAZIONE ESEGUITA (su decisione PO, sessione successiva alla diagnosi)
+
+Implementata la riparazione minimale di S3, con due scoperte in corso d'opera. File
+toccati: `demo/gara.html`, `demo/timeline.mjs`, `demo/pista.mjs` (solo rendering).
+Dati, formati, kernel, motore, generatori: **intatti**. Golden ✓ 11/11 prima e dopo.
+
+## Cosa è cambiato
+1. **`timeline.mjs` — `computeDurations`**: `dur[L]` = durata del giro FISICO L, come
+   delta del **minimo** `cum_time` tra fine giro L−1 e fine giro L (stessa ancora di
+   `tempoReale`: vedi scoperta A). `dur[1]` = mediana (il giro 1 non è nei dati:
+   `cum_time` è tempo-sessione), dichiarata passo d'animazione.
+2. **`timeline.mjs` — `bands`**: geometria a INTERVALLI sull'asse 0 = partenza,
+   100 = traguardo (`(p−1)/n`): il giro L occupa `[(L−1)/n, L/n]`; il cursore sta dentro
+   la banda esattamente nei giri in cui il banner di fase è acceso (verificato).
+3. **`gara.html` — ancora**: `tempoReale(p)` con `p ∈ [L, L+1)` = leader nel giro L
+   (`t0 = leadCum[L−1]`); fine gara a `p = n+1` (`clock.reset(n_laps+1)`); `leadCum[0]`
+   = partenza stimata (`leadCum[1] − dur[1]`), istante comune a tutti per definizione.
+4. **`gara.html` — helper unico `giroDi(d, T)`**: la ricerca binaria sui `cum_time` del
+   pilota, estratta da `pistaFrame`, ora alimenta **sia** i pallini **sia** gli stati di
+   riga della tabella (BOX/OUT, gomma, età, "monta …"). BOX = transito in pit-lane con le
+   STESSE soglie del pallino (esposte da `pista.mjs` come `pitFrazioni`); OUT = resto
+   dell'out-lap. Contatore: `curLap = floor(p)` — scatta al traguardo del leader.
+   Ordinamento: invariato nel principio (sincronizzato per giro, come il motore), finestra
+   spostata su [fine L−1 → fine L] per coerenza con l'ancora; `buildStrat` usa
+   `classificaAt(n_laps, 1)` (ordine d'arrivo = fine ultimo giro).
+
+## Scoperte in corso d'opera (oltre la proposta)
+- **A. `computeDurations` divergeva dall'ancora ai cambi di leadership**: usava il delta
+  dello STESSO pilota leader del giro prima; su Silverstone la somma delle durate sfora
+  di 23,3 s il tempo reale del battistrada. Corretto con il min-min: ora il telescopio è
+  esatto (5135,1 = 5135,1) e l'orologio dell'animazione è proporzionale al tempo reale su
+  ogni giro.
+- **B. Parità alla partenza**: `grids.json` non copre Gran Bretagna e, con l'ancora nuova,
+  a p=1 tutti i cumulati interpolati partono uguali → l'ordinamento cadeva sull'alfabetico.
+  Aggiunto tiebreak sul `cum_time` di fine giro corrente (al via = proxy dell'ordine reale).
+- **C. ALO parte dalla pit-lane** (`out_lap=true` al giro 1 nei dati): ora al via il suo
+  pallino esce dalla pit-lane e la riga mostra BOX — replay fedele che prima era invisibile
+  perché il giro 1 non veniva animato.
+
+## Verifica (casi pre-registrati, script di misura sulla NUOVA matematica + browser)
+1. **VER pit giro 17**: BOX tabella e ingresso pallino in pit-lane allo stesso p=18,068
+   (sfasamento 0,00 s; era 6,4 s); BOX si spegne all'uscita (p=18,178; prima restava
+   acceso ~0,82 giri). Confermato anche a schermo: badge BOX + "pit lane: 28,7s" +
+   pallino sul nastro pit nello stesso frame, gomma nuova (età 1) al giro dopo.
+2. **LEC 51→52**: contatore scatta a p=52,000 = frazione 0,000 del tracciato (era 0,500).
+   A schermo: label 51 a p=51,98, label 52 a p=52,02.
+3. **ALB doppiato, pit giro 35**: allineato (0,01 s; era 292,7 s = 2,43 giri); pallino
+   sparisce al suo ultimo giro noto (43).
+4. **LEC pit giro 48 sotto SC**: allineato (era −5,7 s); fase SC corretta; cursore dentro
+   la banda SC per tutti i giri della finestra.
+5. **ALO doppiato all'arrivo**: alla bandiera è al SUO giro 51 (fraz. 0,958), riga in coda
+   "arrivato · 51 giri". Convenzione dichiarata: esce dalla classifica a p=52 (non ha un
+   giro 52 in cui essere classificato), mentre il pallino continua fino al suo ultimo giro.
+   Regressione su TUTTI i 52 pit della gara: sfasamento massimo 0,0005 giri (= passo di
+   scansione del test).
+   Fine gara a schermo: LEC–RUS–HAM–NOR–HAD–LAW–LIN–BOR–ANT–COL = ordine d'arrivo dei dati.
+
+## Nota per il PO (semantica UI, non motore)
+`curLap` (che alimenta anche il freeze dell'esplorazione pit) ora è il giro IN CORSO del
+leader (`floor(p)`), non più `round(p)`: a parità di posizione del cursore il giro di
+congelamento può differire di 1 rispetto a prima. I golden non passano di lì (freezeLap
+esplicito nei casi) e restano verdi.
