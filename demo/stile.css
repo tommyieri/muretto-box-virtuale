@@ -397,3 +397,33 @@ a.gpcard:hover { border-color: var(--accent); text-decoration: none; transform: 
 .champ-p .pt { color: var(--dim); font-size: 12px; }
 .champ-tutta { margin-left: auto; font-size: 12.5px; white-space: nowrap; }
 .gpcard .nome .gflag { font-size: 14px; margin-right: 2px; }
+
+/* --- race control LIVELLO 1 (decisione PO, MOCKUP_RACE_CONTROL_UI.md): mostrare, non simulare --- */
+.evtl .rcmm { position: absolute; top: 2px; width: 2px; height: 9px; border-radius: 1px; }
+.evtl .rcmm.g { background: var(--sc); }
+.evtl .rcmm.i { background: var(--dim); opacity: .55; }
+.evtl .rcmm.p { width: 3px; background: var(--pen, #b07cff); height: 12px; }
+.evtl-leg .sw.rcg { background: var(--sc); height: 9px; width: 3px; }
+.evtl-leg .sw.rcp { background: #b07cff; height: 9px; width: 3px; }
+/* badge penalita' in riga: informativo, dal giro dell'annuncio */
+.penb { font: 700 9px/1 var(--mono); letter-spacing: .4px; color: #b07cff;
+  background: color-mix(in srgb, #b07cff 14%, transparent); border: 1px solid color-mix(in srgb, #b07cff 45%, transparent);
+  border-radius: 4px; padding: 2px 4px; margin-left: 6px; cursor: help; }
+/* doppia vista finale "in pista | ufficiale" */
+.uff { padding: 10px 12px; }
+.uff .uffr { display: grid; grid-template-columns: 64px 72px 1fr 64px 52px auto; align-items: center;
+  gap: 8px; padding: 6px 4px; border-bottom: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.uff .uffr.testa { font: 700 10px/1 var(--mono); text-transform: uppercase; letter-spacing: .8px;
+  color: var(--dim); border-bottom: 1px solid var(--line); }
+.uff .uffr .sig { font: 700 12px/1 var(--mono); display: flex; align-items: center; gap: 6px; }
+.uff .uffr .sig i { width: 3px; height: 14px; border-radius: 2px; display: inline-block; }
+.uff .uffr .pp { color: var(--dim); }
+.uff .uffr .pu { font-weight: 700; }
+.uff .uffr .fr .su { color: var(--ok); font: 700 11px/1 var(--mono); }
+.uff .uffr .fr .giu { color: var(--rf, #ff5a5a); font: 700 11px/1 var(--mono); }
+.uff .uffr .stat { color: var(--dim); font-size: 11px; }
+.uff .uffr.conpen { background: color-mix(in srgb, #b07cff 6%, transparent); }
+.uff .uffr .penb { margin-left: 0; }
+/* linea dei punti: sopra il primo escluso (P11 ufficiale) */
+.uff .uffr.primafuori { border-top: 2px dashed var(--sc); }
+.uff-nota { color: var(--dim); font-size: 11px; margin-top: 8px; }

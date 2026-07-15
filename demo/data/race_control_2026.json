@@ -1,0 +1,1422 @@
+{
+ "Australia": {
+  "feed": [
+   {
+    "giro": 1,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 6 · YELLOW IN TRACK SECTOR 7 · DOUBLE YELLOW IN TRACK SECTOR 6"
+   },
+   {
+    "giro": 1,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 27 (HUL) UNDER INVESTIGATION - STARTING PROCEDURE INFRINGEMENT · INCIDENT INVOLVING CAR 43 (COL) UNDER INVESTIGATION - STARTING PROCEDURE INFRINGEMENT"
+   },
+   {
+    "giro": 6,
+    "tipo": "info",
+    "testo": "CAR 10 (GAS) TIME 1:27.040 DELETED - TRACK LIMITS AT TURN 10 LAP 5 15:10:17"
+   },
+   {
+    "giro": 7,
+    "tipo": "info",
+    "testo": "CAR 5 (BOR) TIME 1:27.463 DELETED - TRACK LIMITS AT TURN 3 LAP 6 15:11:11"
+   },
+   {
+    "giro": 8,
+    "tipo": "penalita",
+    "testo": "STOP-AND-GO PENALTY FOR CAR 43 (COL) - STARTING PROCEDURE INFRINGEMENT"
+   },
+   {
+    "giro": 10,
+    "tipo": "info",
+    "testo": "TURN 11 INCIDENT INVOLVING CAR 16 (LEC) REVIEWED NO FURTHER INVESTIGATION"
+   },
+   {
+    "giro": 12,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 13 · DOUBLE YELLOW IN TRACK SECTOR 13"
+   },
+   {
+    "giro": 18,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 20"
+   },
+   {
+    "giro": 18,
+    "tipo": "info",
+    "testo": "CAR 23 (ALB) TIME 1:28.434 DELETED - TRACK LIMITS AT TURN 3 LAP 16 15:26:48"
+   },
+   {
+    "giro": 22,
+    "tipo": "info",
+    "testo": "CAR 30 (LAW) TIME 1:29.919 DELETED - TRACK LIMITS AT TURN 3 LAP 16 15:26:58"
+   },
+   {
+    "giro": 23,
+    "tipo": "info",
+    "testo": "TURN 11 INCIDENT INVOLVING CARS 11 (PER) AND 30 (LAW) UNDER INVESTIGATION - FORCING ANOTHER DRIVER OFF THE TRACK"
+   },
+   {
+    "giro": 24,
+    "tipo": "info",
+    "testo": "TURN 3 INCIDENT INVOLVING CARS 31 (OCO) AND 10 (GAS) UNDER INVESTIGATION"
+   },
+   {
+    "giro": 34,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 13 · DOUBLE YELLOW IN TRACK SECTOR 12"
+   },
+   {
+    "giro": 35,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 11 (PER) REVIEWED NO FURTHER INVESTIGATION - IGNORING BLUE FLAGS"
+   },
+   {
+    "giro": 56,
+    "tipo": "info",
+    "testo": "CAR 55 (SAI) TIME 1:27.961 DELETED - TRACK LIMITS AT TURN 3 LAP 53 16:21:48"
+   },
+   {
+    "giro": 58,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 19"
+   }
+  ],
+  "penalita": [],
+  "fonte": "race control FastF1 (gen_race_control.py)"
+ },
+ "Cina": {
+  "feed": [
+   {
+    "giro": 1,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 11 · DOUBLE YELLOW IN TRACK SECTOR 12 · DOUBLE YELLOW IN TRACK SECTOR 4"
+   },
+   {
+    "giro": 5,
+    "tipo": "info",
+    "testo": "TURN 3 INCIDENT INVOLVING CARS 11 (PER) AND 77 (BOT) REVIEWED NO FURTHER INVESTIGATION - CAUSING A COLLISION"
+   },
+   {
+    "giro": 7,
+    "tipo": "info",
+    "testo": "CAR 3 (VER) TIME 1:39.582 DELETED - TRACK LIMITS AT TURN 2 LAP 5 15:10:57"
+   },
+   {
+    "giro": 10,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 3 · YELLOW IN TRACK SECTOR 2"
+   },
+   {
+    "giro": 11,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 3"
+   },
+   {
+    "giro": 18,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 16"
+   },
+   {
+    "giro": 20,
+    "tipo": "info",
+    "testo": "CAR 87 (BEA) TIME 1:39.289 DELETED - TRACK LIMITS AT TURN 14 LAP 15 15:31:26"
+   },
+   {
+    "giro": 21,
+    "tipo": "info",
+    "testo": "TURN 15 INCIDENT INVOLVING CARS 87 (BEA) AND 41 (LIN) REVIEWED NO FURTHER INVESTIGATION "
+   },
+   {
+    "giro": 23,
+    "tipo": "info",
+    "testo": "TURN 6 INCIDENT INVOLVING CARS 10 (GAS) AND 3 (VER) REVIEWED NO FURTHER INVESTIGATION - MOVING UNDER BRAKING"
+   },
+   {
+    "giro": 24,
+    "tipo": "info",
+    "testo": "CAR 41 (LIN) TIME 1:39.780 DELETED - TRACK LIMITS AT TURN 14 LAP 21 15:41:22"
+   },
+   {
+    "giro": 26,
+    "tipo": "info",
+    "testo": "TURN 6 INCIDENT INVOLVING CARS 10 (GAS) AND 3 (VER) REVIEWED NO FURTHER INVESTIGATION - MOVING UNDER BRAKING"
+   },
+   {
+    "giro": 28,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 17"
+   },
+   {
+    "giro": 28,
+    "tipo": "info",
+    "testo": "CAR 41 (LIN) TIME 1:50.154 DELETED - TRACK LIMITS AT TURN 14 LAP 27 15:51:26"
+   },
+   {
+    "giro": 29,
+    "tipo": "info",
+    "testo": "TURN 15 INCIDENT INVOLVING CARS 30 (LAW) AND 41 (LIN) REVIEWED NO FURTHER INVESTIGATION - FORCING ANOTHER DRIVER OFF THE TRACK"
+   },
+   {
+    "giro": 33,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 3"
+   },
+   {
+    "giro": 34,
+    "tipo": "info",
+    "testo": "TURN 2 INCIDENT INVOLVING CARS 31 (OCO) AND 43 (COL) UNDER INVESTIGATION - CAUSING A COLLISION"
+   },
+   {
+    "giro": 37,
+    "tipo": "penalita",
+    "testo": "+10s OCO — CAUSING A COLLISION"
+   },
+   {
+    "giro": 53,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 17"
+   },
+   {
+    "giro": 54,
+    "tipo": "info",
+    "testo": "CAR 12 (ANT) TIME 1:37.530 DELETED - TRACK LIMITS AT TURN 14 LAP 53 16:32:14"
+   }
+  ],
+  "penalita": [
+   {
+    "pilota": "OCO",
+    "secondi": 10,
+    "giro": 37,
+    "motivo": "CAUSING A COLLISION"
+   }
+  ],
+  "fonte": "race control FastF1 (gen_race_control.py)"
+ },
+ "Giappone": {
+  "feed": [
+   {
+    "giro": 4,
+    "tipo": "info",
+    "testo": "CAR 18 (STR) LAP DELETED - TRACK LIMITS AT TURN 13 LAP 1 14:15:19"
+   },
+   {
+    "giro": 12,
+    "tipo": "info",
+    "testo": "CAR 87 (BEA) TIME 1:37.790 DELETED - TRACK LIMITS AT TURN 13 LAP 11 14:31:24"
+   },
+   {
+    "giro": 21,
+    "tipo": "info",
+    "testo": "CAR 11 (PER) TIME 1:38.735 DELETED - TRACK LIMITS AT TURN 13 LAP 20 14:46:19"
+   },
+   {
+    "giro": 22,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 21 · YELLOW IN TRACK SECTOR 20"
+   },
+   {
+    "giro": 23,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 21 · DOUBLE YELLOW IN TRACK SECTOR 20"
+   },
+   {
+    "giro": 31,
+    "tipo": "info",
+    "testo": "TURN 13 INCIDENT INVOLVING CARS 43 (COL) AND 87 (BEA) REVIEWED NO FURTHER INVESTIGATION · CAR 41 (LIN) TIME 1:35.724 DELETED - TRACK LIMITS AT TURN 17 LAP 30 15:06:35"
+   },
+   {
+    "giro": 32,
+    "tipo": "info",
+    "testo": "CAR 43 (COL) TIME 1:43.165 DELETED - TRACK LIMITS AT TURN 13 LAP 21 14:47:52"
+   },
+   {
+    "giro": 46,
+    "tipo": "info",
+    "testo": "CAR 44 (HAM) TIME 1:33.636 DELETED - TRACK LIMITS AT TURN 17 LAP 44 15:28:16"
+   },
+   {
+    "giro": 48,
+    "tipo": "info",
+    "testo": "TURN 16 INCIDENT INVOLVING CAR 44 (HAM) REVIEWED NO FURTHER INVESTIGATION - LEAVING THE TRACK AND GAINING AN ADVANTAGE"
+   },
+   {
+    "giro": 51,
+    "tipo": "info",
+    "testo": "CAR 14 (ALO) TIME 1:37.112 DELETED - TRACK LIMITS AT TURN 17 LAP 49 15:37:30"
+   }
+  ],
+  "penalita": [],
+  "fonte": "race control FastF1 (gen_race_control.py)"
+ },
+ "Miami": {
+  "feed": [
+   {
+    "giro": 1,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 18 · DOUBLE YELLOW IN TRACK SECTOR 18 · DOUBLE YELLOW IN TRACK SECTOR 18"
+   },
+   {
+    "giro": 4,
+    "tipo": "info",
+    "testo": "TURN 11 INCIDENT INVOLVING CARS 43 (COL) AND 44 (HAM) REVIEWED NO FURTHER INVESTIGATION - CAUSING A COLLISION"
+   },
+   {
+    "giro": 5,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 15"
+   },
+   {
+    "giro": 6,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 19 · YELLOW IN TRACK SECTOR 14 · YELLOW IN TRACK SECTOR 13"
+   },
+   {
+    "giro": 8,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 16 · DOUBLE YELLOW IN TRACK SECTOR 15"
+   },
+   {
+    "giro": 8,
+    "tipo": "info",
+    "testo": "TURN 17 INCIDENT INVOLVING CAR 10 (GAS) UNDER INVESTIGATION - CAUSING A COLLISION"
+   },
+   {
+    "giro": 9,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 16"
+   },
+   {
+    "giro": 9,
+    "tipo": "info",
+    "testo": "UPDATE: TURN 17 INCIDENT INVOLVING CARS 30 (LAW) AND 10 (GAS) UNDER INVESTIGATION - CAUSING A COLLISION · CAR 81 (PIA) TIME 2:11.907 DELETED - TRACK LIMITS AT TURN 15 LAP 6 13:13:19 · CAR 30 (LAW) LAP DELETED - TRACK LIMITS AT TURN 15 LAP 6 13:14:05 (PIT)"
+   },
+   {
+    "giro": 10,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 13 · DOUBLE YELLOW IN TRACK SECTOR 15 · DOUBLE YELLOW IN TRACK SECTOR 16"
+   },
+   {
+    "giro": 11,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 15 · DOUBLE YELLOW IN TRACK SECTOR 15"
+   },
+   {
+    "giro": 14,
+    "tipo": "info",
+    "testo": "CAR 11 (PER) TIME 1:36.951 DELETED - TRACK LIMITS AT TURN 11 LAP 12 13:27:01"
+   },
+   {
+    "giro": 16,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 19"
+   },
+   {
+    "giro": 16,
+    "tipo": "info",
+    "testo": "TURN 11 INCIDENT INVOLVING CARS 41 (LIN) AND 11 (PER) REVIEWED NO FURTHER INVESTIGATION - FORCING ANOTHER DRIVER OFF THE TRACK"
+   },
+   {
+    "giro": 17,
+    "tipo": "info",
+    "testo": "CAR 18 (STR) TIME 1:40.953 DELETED - TRACK LIMITS AT TURN 17 LAP 15 13:32:27"
+   },
+   {
+    "giro": 19,
+    "tipo": "info",
+    "testo": "CAR 18 (STR) TIME 1:36.371 DELETED - TRACK LIMITS AT TURN 5 LAP 17 13:34:39"
+   },
+   {
+    "giro": 21,
+    "tipo": "info",
+    "testo": "CAR 12 (ANT) TIME 1:33.345 DELETED - TRACK LIMITS AT TURN 5 LAP 19 13:37:17"
+   },
+   {
+    "giro": 22,
+    "tipo": "info",
+    "testo": "TURN 18 INCIDENT INVOLVING CARS 23 (ALB) AND 3 (VER) REVIEWED NO FURTHER INVESTIGATION"
+   },
+   {
+    "giro": 25,
+    "tipo": "info",
+    "testo": "CAR 14 (ALO) TIME 1:36.386 DELETED - TRACK LIMITS AT TURN 5 LAP 23 13:44:15"
+   },
+   {
+    "giro": 28,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 77 (BOT) UNDER INVESTIGATION - SPEEDING IN THE PIT LANE"
+   },
+   {
+    "giro": 30,
+    "tipo": "penalita",
+    "testo": "DRIVE THROUGH PENALTY FOR CAR 77 (BOT) - SPEEDING IN THE PIT LANE"
+   },
+   {
+    "giro": 33,
+    "tipo": "info",
+    "testo": "CAR 14 (ALO) TIME 1:36.080 DELETED - TRACK LIMITS AT TURN 5 LAP 29 13:53:53"
+   },
+   {
+    "giro": 43,
+    "tipo": "info",
+    "testo": "CAR 1 (NOR) TIME 1:32.662 DELETED - TRACK LIMITS AT TURN 5 LAP 42 14:13:06"
+   },
+   {
+    "giro": 46,
+    "tipo": "info",
+    "testo": "CAR 12 (ANT) TIME 1:32.399 DELETED - TRACK LIMITS AT TURN 11 LAP 45 14:18:11"
+   },
+   {
+    "giro": 47,
+    "tipo": "info",
+    "testo": "CAR 14 (ALO) TIME 1:33.512 DELETED - TRACK LIMITS AT TURN 5 LAP 44 14:18:17"
+   },
+   {
+    "giro": 48,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 19"
+   },
+   {
+    "giro": 48,
+    "tipo": "info",
+    "testo": "CAR 87 (BEA) TIME 1:37.535 DELETED - TRACK LIMITS AT TURN 7 LAP 47 14:22:07"
+   },
+   {
+    "giro": 49,
+    "tipo": "info",
+    "testo": "CAR 14 (ALO) TIME 1:36.389 DELETED - TRACK LIMITS AT TURN 17 LAP 46 14:22:30"
+   },
+   {
+    "giro": 57,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 4 · YELLOW IN TRACK SECTOR 4 · YELLOW IN TRACK SECTOR 15"
+   },
+   {
+    "giro": 57,
+    "tipo": "info",
+    "testo": "CAR 16 (LEC) TIME 1:49.834 DELETED - TRACK LIMITS AT TURN 8 LAP 57 14:36:53 · CAR 16 (LEC) TIME 1:49.834 DELETED - TRACK LIMITS AT TURN 6 LAP 57 14:36:46 · CAR 16 (LEC) TIME 1:49.834 DELETED - TRACK LIMITS AT TURN 15 LAP 57 14:37:31"
+   }
+  ],
+  "penalita": [],
+  "fonte": "race control FastF1 (gen_race_control.py)"
+ },
+ "Canada": {
+  "feed": [
+   {
+    "giro": 1,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 15 · DOUBLE YELLOW IN TRACK SECTOR 15"
+   },
+   {
+    "giro": 4,
+    "tipo": "info",
+    "testo": "CAR 23 (ALB) TIME 1:25.514 DELETED - TRACK LIMITS AT TURN 14 LAP 2 16:12:46"
+   },
+   {
+    "giro": 5,
+    "tipo": "info",
+    "testo": "CAR 1 (NOR) TIME 1:21.170 DELETED - TRACK LIMITS AT TURN 4 LAP 4 16:14:33"
+   },
+   {
+    "giro": 6,
+    "tipo": "info",
+    "testo": "CAR 6 (HAD) TIME 1:18.960 DELETED - TRACK LIMITS AT TURN 14 LAP 4 16:15:12"
+   },
+   {
+    "giro": 7,
+    "tipo": "info",
+    "testo": "CAR 10 (GAS) TIME 1:20.937 DELETED - TRACK LIMITS AT TURN 14 LAP 4 16:15:23 · CAR 27 (HUL) TIME 1:21.051 DELETED - TRACK LIMITS AT TURN 14 LAP 4 16:15:43"
+   },
+   {
+    "giro": 8,
+    "tipo": "info",
+    "testo": "CAR 12 (ANT) TIME 1:17.710 DELETED - TRACK LIMITS AT TURN 14 LAP 6 16:17:41"
+   },
+   {
+    "giro": 10,
+    "tipo": "info",
+    "testo": "CAR 27 (HUL) TIME 1:21.876 DELETED - TRACK LIMITS AT TURN 10 LAP 6 16:18:05 · CAR 31 (OCO) TIME 1:23.526 DELETED - TRACK LIMITS AT TURN 8 LAP 7 16:18:58 · CAR 5 (BOR) TIME 1:18.545 DELETED - TRACK LIMITS AT TURN 14 LAP 7 16:19:50"
+   },
+   {
+    "giro": 11,
+    "tipo": "info",
+    "testo": "CAR 18 (STR) TIME 1:23.593 DELETED - TRACK LIMITS AT TURN 8 LAP 8 16:20:29"
+   },
+   {
+    "giro": 12,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 27 (HUL) UNDER INVESTIGATION - SPEEDING IN THE PIT LANE"
+   },
+   {
+    "giro": 13,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 11 · YELLOW IN TRACK SECTOR 12 · DOUBLE YELLOW IN TRACK SECTOR 11"
+   },
+   {
+    "giro": 13,
+    "tipo": "info",
+    "testo": "CAR 55 (SAI) TIME 1:17.454 DELETED - TRACK LIMITS AT TURN 14 LAP 11 16:24:53"
+   },
+   {
+    "giro": 13,
+    "tipo": "penalita",
+    "testo": "+5s HUL — SPEEDING IN THE PIT LANE"
+   },
+   {
+    "giro": 15,
+    "tipo": "info",
+    "testo": "CAR 63 (RUS) TIME 1:16.804 DELETED - TRACK LIMITS AT TURN 10 LAP 12 16:24:58"
+   },
+   {
+    "giro": 17,
+    "tipo": "info",
+    "testo": "CAR 16 (LEC) TIME 1:20.202 DELETED - TRACK LIMITS AT TURN 8 LAP 14 16:27:29 · CAR 87 (BEA) TIME 1:17.509 DELETED - TRACK LIMITS AT TURN 14 LAP 15 16:29:52"
+   },
+   {
+    "giro": 19,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 11"
+   },
+   {
+    "giro": 19,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CARS 30 (LAW) AND 27 (HUL) UNDER INVESTIGATION - STARTING PROCEDURE INFRINGEMENT - OUT OF POSITION AT SAFETY CAR LINE · CAR 1 (NOR) TIME 1:23.114 DELETED - TRACK LIMITS AT TURN 10 LAP 16 16:31:10"
+   },
+   {
+    "giro": 20,
+    "tipo": "info",
+    "testo": "TURN 13 INCIDENT INVOLVING CAR 5 (BOR) REVIEWED NO FURTHER INVESTIGATION - LEAVING THE TRACK AND GAINING AN ADVANTAGE (16:19:44)"
+   },
+   {
+    "giro": 22,
+    "tipo": "info",
+    "testo": "CAR 77 (BOT) TIME 1:21.843 DELETED - TRACK LIMITS AT TURN 10 LAP 17 16:33:34 · TURN 10 INCIDENT INVOLVING CARS 81 (PIA) AND 23 (ALB) UNDER INVESTIGATION - CAUSING A COLLISION (16:25:37)"
+   },
+   {
+    "giro": 23,
+    "tipo": "info",
+    "testo": "CAR 1 (NOR) TIME 1:18.118 DELETED - TRACK LIMITS AT TURN 14 LAP 18 16:34:05 · CAR 3 (VER) TIME 1:16.180 DELETED - TRACK LIMITS AT TURN 14 LAP 20 16:35:33 · CAR 18 (STR) TIME 1:23.042 DELETED - TRACK LIMITS AT TURN 10 LAP 20 16:37:11"
+   },
+   {
+    "giro": 23,
+    "tipo": "penalita",
+    "testo": "+10s PIA — CAUSING A COLLISION"
+   },
+   {
+    "giro": 24,
+    "tipo": "info",
+    "testo": "CAR 44 (HAM) TIME 1:20.199 DELETED - TRACK LIMITS AT TURN 8 LAP 22 16:37:36"
+   },
+   {
+    "giro": 27,
+    "tipo": "info",
+    "testo": "CAR 12 (ANT) TIME 1:16.465 DELETED - TRACK LIMITS AT TURN 14 LAP 24 16:40:30 · CAR 12 (ANT) TIME 1:16.465 DELETED - TRACK LIMITS AT TURN 10 LAP 24 16:40:10"
+   },
+   {
+    "giro": 28,
+    "tipo": "info",
+    "testo": "CAR 81 (PIA) TIME 1:16.666 DELETED - TRACK LIMITS AT TURN 14 LAP 18 16:34:20"
+   },
+   {
+    "giro": 30,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 10 · YELLOW IN TRACK SECTOR 9"
+   },
+   {
+    "giro": 30,
+    "tipo": "info",
+    "testo": "TURN 13 INCIDENT INVOLVING CARS 12 (ANT) AND 63 (RUS) REVIEWED NO FURTHER INVESTIGATION (16:40:28) · CAR 63 (RUS) TIME 1:16.828 DELETED - TRACK LIMITS AT TURN 14 LAP 24 16:40:29"
+   },
+   {
+    "giro": 33,
+    "tipo": "info",
+    "testo": "CAR 5 (BOR) TIME 1:44.804 DELETED - TRACK LIMITS AT TURN 14 LAP 30 16:50:47"
+   },
+   {
+    "giro": 35,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 14 (ALO) REVIEWED NO FURTHER INVESTIGATION - YELLOW FLAG INFRINGEMENT (16:25:49)"
+   },
+   {
+    "giro": 40,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 11"
+   },
+   {
+    "giro": 40,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 87 (BEA) REVIEWED NO FURTHER INVESTIGATION - YELLOW FLAG INFRINGEMENT (16:26:52)"
+   },
+   {
+    "giro": 43,
+    "tipo": "info",
+    "testo": "TURN 13 INCIDENT INVOLVING CAR 6 (HAD) UNDER INVESTIGATION - MORE THAN ONE CHANGE OF DIRECTION (16:54:33)"
+   },
+   {
+    "giro": 44,
+    "tipo": "penalita",
+    "testo": "+10s HAD — MORE THAN ONE CHANGE OF DIRECTION"
+   },
+   {
+    "giro": 46,
+    "tipo": "info",
+    "testo": "CAR 18 (STR) TIME 1:21.728 DELETED - TRACK LIMITS AT TURN 2 LAP 42 17:06:40"
+   },
+   {
+    "giro": 47,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 77 (BOT) UNDER INVESTIGATION - SPEEDING IN THE PIT LANE"
+   },
+   {
+    "giro": 47,
+    "tipo": "penalita",
+    "testo": "+5s BOT — SPEEDING IN THE PIT LANE"
+   },
+   {
+    "giro": 52,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 6 (HAD) UNDER INVESTIGATION - YELLOW FLAG INFRINGEMENT (16:47:57)"
+   },
+   {
+    "giro": 53,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 12"
+   },
+   {
+    "giro": 57,
+    "tipo": "info",
+    "testo": "CAR 55 (SAI) TIME 1:16.764 DELETED - TRACK LIMITS AT TURN 14 LAP 54 17:22:18"
+   },
+   {
+    "giro": 61,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 1"
+   },
+   {
+    "giro": 61,
+    "tipo": "info",
+    "testo": "CAR 81 (PIA) TIME 1:16.439 DELETED - TRACK LIMITS AT TURN 2 LAP 58 17:26:53"
+   },
+   {
+    "giro": 62,
+    "tipo": "penalita",
+    "testo": "STOP-AND-GO PENALTY FOR CAR 6 (HAD) - YELLOW FLAG INFRINGEMENT (16:47:57)"
+   },
+   {
+    "giro": 63,
+    "tipo": "info",
+    "testo": "CAR 27 (HUL) TIME 1:25.706 DELETED - TRACK LIMITS AT TURN 2 LAP 60 17:29:15"
+   },
+   {
+    "giro": 64,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 10 (GAS) REVIEWED NO FURTHER INVESTIGATION - YELLOW FLAG INFRINGEMENT (17:01:36)"
+   },
+   {
+    "giro": 67,
+    "tipo": "info",
+    "testo": "CAR 81 (PIA) TIME 1:16.439 DELETED - TRACK LIMITS AT TURN 1 LAP 58 17:26:52 · INCIDENT INVOLVING CAR 5 (BOR) UNDER INVESTIGATION - VSC INFRINGEMENT · CAR 5 (BOR) TIME 1:20.499 DELETED - TRACK LIMITS AT TURN 8 LAP 64 17:35:06"
+   },
+   {
+    "giro": 68,
+    "tipo": "info",
+    "testo": "CAR 81 (PIA) TIME 1:16.575 DELETED - TRACK LIMITS AT TURN 14 LAP 65 17:36:50 · CAR 55 (SAI) TIME 1:19.410 DELETED - TRACK LIMITS AT TURN 8 LAP 66 17:37:05 · CAR 18 (STR) TIME 1:26.632 DELETED - TRACK LIMITS AT TURN 10 LAP 64 17:37:49"
+   },
+   {
+    "giro": 68,
+    "tipo": "penalita",
+    "testo": "+5s BOR — VSC INFRINGEMENT"
+   }
+  ],
+  "penalita": [
+   {
+    "pilota": "HUL",
+    "secondi": 5,
+    "giro": 13,
+    "motivo": "SPEEDING IN THE PIT LANE"
+   },
+   {
+    "pilota": "PIA",
+    "secondi": 10,
+    "giro": 23,
+    "motivo": "CAUSING A COLLISION"
+   },
+   {
+    "pilota": "HAD",
+    "secondi": 10,
+    "giro": 44,
+    "motivo": "MORE THAN ONE CHANGE OF DIRECTION"
+   },
+   {
+    "pilota": "BOT",
+    "secondi": 5,
+    "giro": 47,
+    "motivo": "SPEEDING IN THE PIT LANE"
+   },
+   {
+    "pilota": "BOR",
+    "secondi": 5,
+    "giro": 68,
+    "motivo": "VSC INFRINGEMENT"
+   }
+  ],
+  "fonte": "race control FastF1 (gen_race_control.py)"
+ },
+ "Monaco": {
+  "feed": [
+   {
+    "giro": 1,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 18 · DOUBLE YELLOW IN TRACK SECTOR 19"
+   },
+   {
+    "giro": 5,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 63 (RUS) REVIEWED NO FURTHER INVESTIGATION - FALSE START - OUT OF POSITION (15:03:11)"
+   },
+   {
+    "giro": 6,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 11 (PER) UNDER INVESTIGATION - FALSE START - OUT OF POSITION (15:03:08)"
+   },
+   {
+    "giro": 9,
+    "tipo": "penalita",
+    "testo": "DRIVE THROUGH PENALTY FOR CAR 11 (PER) - FALSE START - OUT OF POSITION (15:03:08)"
+   },
+   {
+    "giro": 14,
+    "tipo": "info",
+    "testo": "CAR 55 (SAI) TIME 1:18.858 DELETED - TRACK LIMITS AT TURN 16 LAP 12 15:19:04"
+   },
+   {
+    "giro": 15,
+    "tipo": "info",
+    "testo": "CAR 23 (ALB) TIME 1:18.836 DELETED - TRACK LIMITS AT TURN 10 LAP 14 15:21:23"
+   },
+   {
+    "giro": 20,
+    "tipo": "info",
+    "testo": "CAR 43 (COL) TIME 1:18.809 DELETED - TRACK LIMITS AT TURN 10 LAP 15 15:22:49 · CAR 41 (LIN) TIME 1:19.406 DELETED - TRACK LIMITS AT TURN 10 LAP 17 15:25:29 · CAR 18 (STR) TIME 1:19.611 DELETED - TRACK LIMITS AT TURN 10 LAP 17 15:26:06"
+   },
+   {
+    "giro": 24,
+    "tipo": "info",
+    "testo": "CAR 16 (LEC) TIME 1:17.884 DELETED - TRACK LIMITS AT TURN 10 LAP 23 15:32:30"
+   },
+   {
+    "giro": 26,
+    "tipo": "info",
+    "testo": "CAR 87 (BEA) TIME 1:19.137 DELETED - TRACK LIMITS AT TURN 10 LAP 24 15:35:43"
+   },
+   {
+    "giro": 27,
+    "tipo": "info",
+    "testo": "CAR 87 (BEA) TIME 1:18.683 DELETED - TRACK LIMITS AT TURN 10 LAP 25 15:37:02"
+   },
+   {
+    "giro": 31,
+    "tipo": "info",
+    "testo": "CAR 87 (BEA) LAP DELETED - TRACK LIMITS AT TURN 16 LAP 28 15:41:14 (PIT) · CAR 6 (HAD) TIME 1:19.074 DELETED - TRACK LIMITS AT TURN 10 LAP 27 15:38:06 · CAR 27 (HUL) TIME 1:19.870 DELETED - TRACK LIMITS AT TURN 10 LAP 29 15:41:18"
+   },
+   {
+    "giro": 33,
+    "tipo": "info",
+    "testo": "CAR 5 (BOR) TIME 1:18.765 DELETED - TRACK LIMITS AT TURN 10 LAP 30 15:43:26 · INCIDENT INVOLVING CAR 44 (HAM) UNDER INVESTIGATION - SPEEDING IN THE PIT LANE (15:39:17)"
+   },
+   {
+    "giro": 34,
+    "tipo": "info",
+    "testo": "CAR 12 (ANT) TIME 1:16.862 DELETED - TRACK LIMITS AT TURN 10 LAP 33 15:45:05"
+   },
+   {
+    "giro": 34,
+    "tipo": "penalita",
+    "testo": "+5s HAM — SPEEDING IN THE PIT LANE"
+   },
+   {
+    "giro": 36,
+    "tipo": "info",
+    "testo": "CAR 1 (NOR) TIME 1:20.230 DELETED - TRACK LIMITS AT TURN 10 LAP 33 15:46:09 · CAR 1 (NOR) TIME 1:20.230 DELETED - TRACK LIMITS AT TURN 16 LAP 33 15:46:22 · CAR 41 (LIN) TIME 1:20.074 DELETED - TRACK LIMITS AT TURN 10 LAP 33 15:46:33"
+   },
+   {
+    "giro": 37,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 63 (RUS) UNDER INVESTIGATION - SPEEDING IN THE PIT LANE (15:43:46)"
+   },
+   {
+    "giro": 38,
+    "tipo": "penalita",
+    "testo": "+5s RUS — SPEEDING IN THE PIT LANE"
+   },
+   {
+    "giro": 39,
+    "tipo": "info",
+    "testo": "CAR 11 (PER) TIME 1:21.476 DELETED - TRACK LIMITS AT TURN 10 LAP 35 15:49:58"
+   },
+   {
+    "giro": 41,
+    "tipo": "info",
+    "testo": "TURN 10 INCIDENT INVOLVING CAR 11 (PER) REVIEWED NO FURTHER INVESTIGATION - LEAVING THE TRACK AND GAINING AN ADVANTAGE (15:49:57)"
+   },
+   {
+    "giro": 42,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 43 (COL) UNDER INVESTIGATION - SPEEDING IN THE PIT LANE (15:49:40) · CAR 18 (STR) TIME 1:19.008 DELETED - TRACK LIMITS AT TURN 10 LAP 37 15:52:29 · CAR 18 (STR) TIME 1:19.192 DELETED - TRACK LIMITS AT TURN 10 LAP 38 15:53:49"
+   },
+   {
+    "giro": 43,
+    "tipo": "penalita",
+    "testo": "+5s COL — SPEEDING IN THE PIT LANE"
+   },
+   {
+    "giro": 45,
+    "tipo": "info",
+    "testo": "CAR 18 (STR) TIME 1:18.995 DELETED - TRACK LIMITS AT TURN 10 LAP 42 15:59:09"
+   },
+   {
+    "giro": 46,
+    "tipo": "info",
+    "testo": "CAR 1 (NOR) LAP DELETED - TRACK LIMITS AT TURN 16 LAP 44 16:00:56 (PIT)"
+   },
+   {
+    "giro": 49,
+    "tipo": "info",
+    "testo": "CAR 23 (ALB) TIME 1:22.221 DELETED - TRACK LIMITS AT TURN 10 LAP 46 16:04:13"
+   },
+   {
+    "giro": 51,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 10 (GAS) UNDER INVESTIGATION - SPEEDING IN THE PIT LANE (16:02:16)"
+   },
+   {
+    "giro": 52,
+    "tipo": "penalita",
+    "testo": "+5s GAS — SPEEDING IN THE PIT LANE"
+   },
+   {
+    "giro": 53,
+    "tipo": "info",
+    "testo": "TURN 10 INCIDENT INVOLVING CAR 18 (STR) REVIEWED NO FURTHER INVESTIGATION - LEAVING THE TRACK AND GAINING AN ADVANTAGE (15:52:29)"
+   },
+   {
+    "giro": 54,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 18 (STR) UNDER INVESTIGATION - TRACK LIMITS"
+   },
+   {
+    "giro": 54,
+    "tipo": "penalita",
+    "testo": "+5s STR — TRACK LIMITS"
+   },
+   {
+    "giro": 55,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 81 (PIA) UNDER INVESTIGATION - SPEEDING IN THE PIT LANE (16:06:07)"
+   },
+   {
+    "giro": 55,
+    "tipo": "penalita",
+    "testo": "+5s PIA — SPEEDING IN THE PIT LANE"
+   },
+   {
+    "giro": 56,
+    "tipo": "info",
+    "testo": "CAR 11 (PER) TIME 1:22.941 DELETED - TRACK LIMITS AT TURN 10 LAP 51 16:11:28"
+   },
+   {
+    "giro": 57,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 63 (RUS) REVIEWED NO FURTHER INVESTIGATION - CROSSING THE LINE AT PIT EXIT (15:44:14) · TURN 10 INCIDENT INVOLVING CAR 23 (ALB) REVIEWED NO FURTHER INVESTIGATION - LEAVING THE TRACK AND GAINING AN ADVANTAGE (16:04:12)"
+   },
+   {
+    "giro": 58,
+    "tipo": "info",
+    "testo": "CAR 55 (SAI) TIME 1:19.446 DELETED - TRACK LIMITS AT TURN 10 LAP 54 16:14:56 · CAR 14 (ALO) TIME 1:20.968 DELETED - TRACK LIMITS AT TURN 10 LAP 55 16:16:24"
+   },
+   {
+    "giro": 60,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 18 · DOUBLE YELLOW IN TRACK SECTOR 17 · DOUBLE YELLOW IN TRACK SECTOR 18"
+   },
+   {
+    "giro": 65,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 18"
+   },
+   {
+    "giro": 66,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 18"
+   },
+   {
+    "giro": 67,
+    "tipo": "penalita",
+    "testo": "INCIDENT INVOLVING CAR 63 (RUS) NOTED - FAILING TO SERVE TIME PENALTY CORRECTLY"
+   },
+   {
+    "giro": 68,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 10 (GAS) UNDER INVESTIGATION - SPEEDING IN THE PIT LANE (16:22:57) · INCIDENT INVOLVING CAR 6 (HAD) UNDER INVESTIGATION - SAFETY CAR INFRINGEMENT · CAR 5 (BOR) LAP DELETED - TRACK LIMITS AT TURN 16 LAP 59 16:23:31 (PIT)"
+   },
+   {
+    "giro": 68,
+    "tipo": "penalita",
+    "testo": "+5s GAS — SPEEDING IN THE PIT LANE"
+   },
+   {
+    "giro": 68,
+    "tipo": "penalita",
+    "testo": "INCIDENT INVOLVING CAR 63 (RUS) UNDER INVESTIGATION - FAILING TO SERVE TIME PENALTY CORRECTLY"
+   },
+   {
+    "giro": 68,
+    "tipo": "penalita",
+    "testo": "DRIVE THROUGH PENALTY FOR CAR 63 (RUS) - FAILING TO SERVE TIME PENALTY CORRECTLY"
+   },
+   {
+    "giro": 71,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 10 · DOUBLE YELLOW IN TRACK SECTOR 10 · YELLOW IN TRACK SECTOR 9"
+   },
+   {
+    "giro": 72,
+    "tipo": "info",
+    "testo": "CAR 43 (COL) LAP DELETED - TRACK LIMITS AT TURN 1 LAP 65 16:31:10 (PIT)"
+   },
+   {
+    "giro": 75,
+    "tipo": "info",
+    "testo": "TURN 8 INCIDENT INVOLVING CARS 43 (COL) AND 55 (SAI) UNDER INVESTIGATION - CAUSING A COLLISION (17:17:33)"
+   },
+   {
+    "giro": 76,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 11 (PER) UNDER INVESTIGATION - FALSE START - OUT OF POSITION (17:21:35) · CAR 27 (HUL) TIME 1:19.754 DELETED - TRACK LIMITS AT TURN 10 LAP 72 17:19:04 · CAR 41 (LIN) TIME 1:18.393 DELETED - TRACK LIMITS AT TURN 10 LAP 73 17:20:22"
+   },
+   {
+    "giro": 78,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 10 · YELLOW IN TRACK SECTOR 9"
+   },
+   {
+    "giro": 78,
+    "tipo": "info",
+    "testo": "TURN 8 INCIDENT INVOLVING CARS 27 (HUL) AND 55 (SAI) UNDER INVESTIGATION - CAUSING A COLLISION"
+   },
+   {
+    "giro": 78,
+    "tipo": "penalita",
+    "testo": "+10s HUL — CAUSING A COLLISION"
+   }
+  ],
+  "penalita": [
+   {
+    "pilota": "HAM",
+    "secondi": 5,
+    "giro": 34,
+    "motivo": "SPEEDING IN THE PIT LANE"
+   },
+   {
+    "pilota": "RUS",
+    "secondi": 5,
+    "giro": 38,
+    "motivo": "SPEEDING IN THE PIT LANE"
+   },
+   {
+    "pilota": "COL",
+    "secondi": 5,
+    "giro": 43,
+    "motivo": "SPEEDING IN THE PIT LANE"
+   },
+   {
+    "pilota": "GAS",
+    "secondi": 5,
+    "giro": 52,
+    "motivo": "SPEEDING IN THE PIT LANE"
+   },
+   {
+    "pilota": "STR",
+    "secondi": 5,
+    "giro": 54,
+    "motivo": "TRACK LIMITS"
+   },
+   {
+    "pilota": "PIA",
+    "secondi": 5,
+    "giro": 55,
+    "motivo": "SPEEDING IN THE PIT LANE"
+   },
+   {
+    "pilota": "GAS",
+    "secondi": 5,
+    "giro": 68,
+    "motivo": "SPEEDING IN THE PIT LANE"
+   },
+   {
+    "pilota": "HUL",
+    "secondi": 10,
+    "giro": 78,
+    "motivo": "CAUSING A COLLISION"
+   }
+  ],
+  "fonte": "race control FastF1 (gen_race_control.py)"
+ },
+ "Spagna": {
+  "feed": [
+   {
+    "giro": 1,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 12 · YELLOW IN TRACK SECTOR 10 · YELLOW IN TRACK SECTOR 2"
+   },
+   {
+    "giro": 5,
+    "tipo": "info",
+    "testo": "TURN 1 INCIDENT INVOLVING CAR 41 (LIN) UNDER INVESTIGATION - LEAVING THE TRACK AND GAINING AN ADVANTAGE (15:03:43) · TURN 1 INCIDENT INVOLVING CAR 27 (HUL) UNDER INVESTIGATION - LEAVING THE TRACK AND GAINING AN ADVANTAGE (15:03:43)"
+   },
+   {
+    "giro": 12,
+    "tipo": "info",
+    "testo": "CAR 10 (GAS) TIME 1:26.055 DELETED - TRACK LIMITS AT TURN 13 LAP 10 15:17:40"
+   },
+   {
+    "giro": 13,
+    "tipo": "info",
+    "testo": "TURN 12 INCIDENT INVOLVING CARS 87 (BEA) AND 6 (HAD) REVIEWED NO FURTHER INVESTIGATION - FORCING ANOTHER DRIVER OFF THE TRACK (15:04:44) · TURN 12 INCIDENT INVOLVING CARS 31 (OCO) AND 5 (BOR) REVIEWED NO FURTHER INVESTIGATION - FORCING ANOTHER DRIVER OFF THE TRACK (15:04:44)"
+   },
+   {
+    "giro": 23,
+    "tipo": "info",
+    "testo": "CAR 12 (ANT) TIME 1:22.049 DELETED - TRACK LIMITS AT TURN 10 LAP 20 15:31:08"
+   },
+   {
+    "giro": 26,
+    "tipo": "info",
+    "testo": "CAR 12 (ANT) TIME 1:22.677 DELETED - TRACK LIMITS AT TURN 10 LAP 25 15:38:00 · CAR 43 (COL) TIME 1:25.027 DELETED - TRACK LIMITS AT TURN 13 LAP 24 15:37:47"
+   },
+   {
+    "giro": 29,
+    "tipo": "info",
+    "testo": "CAR 12 (ANT) TIME 1:22.055 DELETED - TRACK LIMITS AT TURN 10 LAP 28 15:42:07"
+   },
+   {
+    "giro": 32,
+    "tipo": "info",
+    "testo": "CAR 23 (ALB) TIME 1:25.213 DELETED - TRACK LIMITS AT TURN 4 LAP 26 15:40:13 · CAR 30 (LAW) TIME 1:25.033 DELETED - TRACK LIMITS AT TURN 13 LAP 30 15:46:12"
+   },
+   {
+    "giro": 35,
+    "tipo": "info",
+    "testo": "CAR 43 (COL) TIME 1:25.632 DELETED - TRACK LIMITS AT TURN 2 LAP 33 15:49:24"
+   },
+   {
+    "giro": 40,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 10"
+   },
+   {
+    "giro": 41,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 10"
+   },
+   {
+    "giro": 41,
+    "tipo": "info",
+    "testo": "CAR 81 (PIA) TIME 1:22.113 DELETED - TRACK LIMITS AT TURN 14 LAP 38 15:57:01"
+   },
+   {
+    "giro": 45,
+    "tipo": "info",
+    "testo": "CAR 10 (GAS) TIME 1:21.708 DELETED - TRACK LIMITS AT TURN 13 LAP 42 16:03:58"
+   },
+   {
+    "giro": 48,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 44 (HAM) REVIEWED NO FURTHER INVESTIGATION - YELLOW FLAG INFRINGEMENT (15:58:31)"
+   },
+   {
+    "giro": 56,
+    "tipo": "info",
+    "testo": "CAR 23 (ALB) TIME 1:28.019 DELETED - TRACK LIMITS AT TURN 4 LAP 25 15:38:43"
+   },
+   {
+    "giro": 63,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 7 · DOUBLE YELLOW IN TRACK SECTOR 7"
+   },
+   {
+    "giro": 64,
+    "tipo": "info",
+    "testo": "CAR 16 (LEC) LAP DELETED - TRACK LIMITS AT TURN 2 LAP 62 16:29:09 (PIT)"
+   },
+   {
+    "giro": 65,
+    "tipo": "info",
+    "testo": "CAR 30 (LAW) TIME 1:23.625 DELETED - TRACK LIMITS AT TURN 13 LAP 60 16:29:09"
+   },
+   {
+    "giro": 66,
+    "tipo": "info",
+    "testo": "CAR 12 (ANT) TIME 1:23.882 DELETED - TRACK LIMITS AT TURN 10 LAP 10 15:16:59"
+   }
+  ],
+  "penalita": [],
+  "fonte": "race control FastF1 (gen_race_control.py)"
+ },
+ "Austria": {
+  "feed": [
+   {
+    "giro": 1,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 3 · DOUBLE YELLOW IN TRACK SECTOR 3 · YELLOW IN TRACK SECTOR 14"
+   },
+   {
+    "giro": 4,
+    "tipo": "info",
+    "testo": "TURN 1 INCIDENT INVOLVING CAR 12 (ANT) REVIEWED NO FURTHER INVESTIGATION - LEAVING THE TRACK AND GAINING AN ADVANTAGE (15:03:28)"
+   },
+   {
+    "giro": 5,
+    "tipo": "info",
+    "testo": "TURN 3 INCIDENT INVOLVING CAR 12 (ANT) REVIEWED NO FURTHER INVESTIGATION - LEAVING THE TRACK AND GAINING AN ADVANTAGE (15:03:42) · CAR 12 (ANT) TIME 1:14.216 DELETED - TRACK LIMITS AT TURN 1 LAP 2 15:04:42"
+   },
+   {
+    "giro": 6,
+    "tipo": "info",
+    "testo": "TURN 5 INCIDENT INVOLVING CARS 5 (BOR) AND 10 (GAS) REVIEWED NO FURTHER INVESTIGATION - FORCING ANOTHER DRIVER OFF THE TRACK (15:05:16) · CAR 44 (HAM) TIME 1:12.028 DELETED - TRACK LIMITS AT TURN 1 LAP 2 15:04:42"
+   },
+   {
+    "giro": 7,
+    "tipo": "info",
+    "testo": "CAR 16 (LEC) TIME 1:14.142 DELETED - TRACK LIMITS AT TURN 1 LAP 2 15:04:42"
+   },
+   {
+    "giro": 8,
+    "tipo": "info",
+    "testo": "CAR 18 (STR) TIME 1:15.590 DELETED - TRACK LIMITS AT TURN 1 LAP 7 15:11:08"
+   },
+   {
+    "giro": 9,
+    "tipo": "info",
+    "testo": "CAR 1 (NOR) TIME 1:13.459 DELETED - TRACK LIMITS AT TURN 9 LAP 7 15:11:45"
+   },
+   {
+    "giro": 14,
+    "tipo": "info",
+    "testo": "CAR 3 (VER) TIME 1:14.413 DELETED - TRACK LIMITS AT TURN 6 LAP 11 15:16:15"
+   },
+   {
+    "giro": 21,
+    "tipo": "info",
+    "testo": "TURN 6 INCIDENT INVOLVING CARS 44 (HAM) AND 3 (VER) REVIEWED NO FURTHER INVESTIGATION - FORCING ANOTHER DRIVER OFF THE TRACK (15:16:15)"
+   },
+   {
+    "giro": 22,
+    "tipo": "info",
+    "testo": "CAR 23 (ALB) TIME 1:31.904 DELETED - TRACK LIMITS AT TURN 3 LAP 19 15:26:37"
+   },
+   {
+    "giro": 24,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 1 · YELLOW IN TRACK SECTOR 16"
+   },
+   {
+    "giro": 24,
+    "tipo": "info",
+    "testo": "CAR 18 (STR) TIME 1:17.047 DELETED - TRACK LIMITS AT TURN 3 LAP 21 15:29:07 · CAR 12 (ANT) TIME 1:13.952 DELETED - TRACK LIMITS AT TURN 3 LAP 22 15:29:13 · CAR 1 (NOR) TIME 1:30.005 DELETED - TRACK LIMITS AT TURN 3 LAP 22 15:29:47"
+   },
+   {
+    "giro": 25,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 16"
+   },
+   {
+    "giro": 26,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 1"
+   },
+   {
+    "giro": 33,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 18 (STR) REVIEWED NO FURTHER INVESTIGATION - YELLOW FLAG INFRINGEMENT (15:32:28)"
+   },
+   {
+    "giro": 37,
+    "tipo": "info",
+    "testo": "CAR 81 (PIA) TIME 1:12.318 DELETED - TRACK LIMITS AT TURN 1 LAP 36 15:46:54"
+   },
+   {
+    "giro": 40,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 14 (ALO) UNDER INVESTIGATION - SPEEDING IN THE PIT LANE (15:34:00)"
+   },
+   {
+    "giro": 41,
+    "tipo": "penalita",
+    "testo": "+5s ALO — SPEEDING IN THE PIT LANE"
+   },
+   {
+    "giro": 43,
+    "tipo": "info",
+    "testo": "CAR 12 (ANT) TIME 1:12.599 DELETED - TRACK LIMITS AT TURN 3 LAP 40 15:51:50"
+   },
+   {
+    "giro": 49,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 31 (OCO) REVIEWED NO FURTHER INVESTIGATION - YELLOW FLAG INFRINGEMENT (15:32:25)"
+   },
+   {
+    "giro": 53,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 6 · YELLOW IN TRACK SECTOR 5"
+   },
+   {
+    "giro": 53,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CARS 6 (HAD) AND 31 (OCO) REVIEWED NO FURTHER INVESTIGATION (15:57:26)"
+   },
+   {
+    "giro": 57,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 1 (NOR) REVIEWED NO FURTHER INVESTIGATION - PIT LANE INFRINGEMENT (16:01:20)"
+   },
+   {
+    "giro": 59,
+    "tipo": "info",
+    "testo": "CAR 63 (RUS) TIME 1:11.503 DELETED - TRACK LIMITS AT TURN 1 LAP 57 16:12:12"
+   },
+   {
+    "giro": 66,
+    "tipo": "info",
+    "testo": "CAR 10 (GAS) TIME 1:13.001 DELETED - TRACK LIMITS AT TURN 3 LAP 64 16:22:29"
+   },
+   {
+    "giro": 71,
+    "tipo": "info",
+    "testo": "CAR 1 (NOR) TIME 1:12.490 DELETED - TRACK LIMITS AT TURN 3 LAP 67 16:24:48 · CAR 31 (OCO) TIME 1:17.875 DELETED - TRACK LIMITS AT TURN 10 LAP 64 16:23:58 · CAR 31 (OCO) TIME 1:16.050 DELETED - TRACK LIMITS AT TURN 10 (NEXT LAP)"
+   }
+  ],
+  "penalita": [
+   {
+    "pilota": "ALO",
+    "secondi": 5,
+    "giro": 41,
+    "motivo": "SPEEDING IN THE PIT LANE"
+   }
+  ],
+  "fonte": "race control FastF1 (gen_race_control.py)"
+ },
+ "Gran Bretagna": {
+  "feed": [
+   {
+    "giro": 1,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 11 · YELLOW IN TRACK SECTOR 10 · YELLOW IN TRACK SECTOR 15"
+   },
+   {
+    "giro": 2,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 8"
+   },
+   {
+    "giro": 3,
+    "tipo": "info",
+    "testo": "TURN 6 INCIDENT INVOLVING CARS 23 (ALB) AND 87 (BEA) UNDER INVESTIGATION (15:04:34)"
+   },
+   {
+    "giro": 5,
+    "tipo": "penalita",
+    "testo": "+10s ALB"
+   },
+   {
+    "giro": 7,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 44 (HAM) UNDER INVESTIGATION - FALSE START - MOVING BEFORE SIGNAL (15:03:53)"
+   },
+   {
+    "giro": 7,
+    "tipo": "penalita",
+    "testo": "+5s HAM — FALSE START - MOVING BEFORE SIGNAL"
+   },
+   {
+    "giro": 9,
+    "tipo": "info",
+    "testo": "CAR 81 (PIA) LAP DELETED - TRACK LIMITS AT TURN 1 LAP 2 15:05:47 (PIT)"
+   },
+   {
+    "giro": 10,
+    "tipo": "info",
+    "testo": "CAR 55 (SAI) TIME 1:37.155 DELETED - TRACK LIMITS AT TURN 5 LAP 7 15:14:08 · CAR 55 (SAI) TIME 1:37.177 DELETED - TRACK LIMITS AT TURN 15 LAP 8 15:16:43 · CAR 18 (STR) TIME 1:39.331 DELETED - TRACK LIMITS AT TURN 9 LAP 9 15:18:12"
+   },
+   {
+    "giro": 13,
+    "tipo": "info",
+    "testo": "CAR 27 (HUL) TIME 1:36.607 DELETED - TRACK LIMITS AT TURN 6 LAP 10 15:19:16 · CAR 18 (STR) TIME 1:39.256 DELETED - TRACK LIMITS AT TURN 9 LAP 10 15:19:52"
+   },
+   {
+    "giro": 19,
+    "tipo": "info",
+    "testo": "CAR 14 (ALO) TIME 1:39.342 DELETED - TRACK LIMITS AT TURN 3 LAP 17 15:30:46 · CAR 1 (NOR) TIME 1:35.278 DELETED - TRACK LIMITS AT TURN 18 LAP 16 15:29:22 · CAR 55 (SAI) TIME 1:36.586 DELETED - TRACK LIMITS AT TURN 18 LAP 17 15:31:28"
+   },
+   {
+    "giro": 22,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 11 · DOUBLE YELLOW IN TRACK SECTOR 11"
+   },
+   {
+    "giro": 25,
+    "tipo": "info",
+    "testo": "CAR 55 (SAI) TIME 1:36.537 DELETED - TRACK LIMITS AT TURN 9 LAP 24 15:42:28"
+   },
+   {
+    "giro": 30,
+    "tipo": "info",
+    "testo": "CAR 81 (PIA) TIME 1:35.894 DELETED - TRACK LIMITS AT TURN 15 LAP 28 15:49:21"
+   },
+   {
+    "giro": 31,
+    "tipo": "info",
+    "testo": "CAR 18 (STR) TIME 1:38.034 DELETED - TRACK LIMITS AT TURN 18 LAP 27 15:49:06"
+   },
+   {
+    "giro": 33,
+    "tipo": "info",
+    "testo": "CAR 43 (COL) TIME 1:36.267 DELETED - TRACK LIMITS AT TURN 1 LAP 32 15:54:14"
+   },
+   {
+    "giro": 36,
+    "tipo": "info",
+    "testo": "CAR 3 (VER) TIME 1:34.444 DELETED - TRACK LIMITS AT TURN 15 LAP 34 15:57:45"
+   },
+   {
+    "giro": 37,
+    "tipo": "info",
+    "testo": "CAR 18 (STR) TIME 1:38.557 DELETED - TRACK LIMITS AT TURN 18 LAP 33 15:58:56"
+   },
+   {
+    "giro": 38,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 10"
+   },
+   {
+    "giro": 38,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 18 (STR) UNDER INVESTIGATION - TRACK LIMITS"
+   },
+   {
+    "giro": 38,
+    "tipo": "penalita",
+    "testo": "+5s STR — TRACK LIMITS"
+   },
+   {
+    "giro": 39,
+    "tipo": "giallo",
+    "testo": "DOUBLE YELLOW IN TRACK SECTOR 10 · DOUBLE YELLOW IN TRACK SECTOR 10"
+   },
+   {
+    "giro": 39,
+    "tipo": "info",
+    "testo": "CAR 18 (STR) TIME 1:38.557 DELETED - TRACK LIMITS AT TURN 9 LAP 33 16:01:30"
+   },
+   {
+    "giro": 40,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 18 (STR) UNDER INVESTIGATION - TRACK LIMITS (5TH OFFENCE) · TURN 15 INCIDENT INVOLVING CARS 63 (RUS) AND 3 (VER) REVIEWED NO FURTHER INVESTIGATION (15:57:46)"
+   },
+   {
+    "giro": 40,
+    "tipo": "penalita",
+    "testo": "+5s STR — TRACK LIMITS (5TH OFFENCE)"
+   },
+   {
+    "giro": 41,
+    "tipo": "info",
+    "testo": "CAR 18 (STR) TIME 1:37.272 DELETED - TRACK LIMITS AT TURN 9 LAP 35 16:01:30"
+   },
+   {
+    "giro": 42,
+    "tipo": "info",
+    "testo": "INCIDENT INVOLVING CAR 18 (STR) UNDER INVESTIGATION - TRACK LIMITS (6TH OFFENCE)"
+   },
+   {
+    "giro": 42,
+    "tipo": "penalita",
+    "testo": "+5s STR — TRACK LIMITS (6TH OFFENCE)"
+   },
+   {
+    "giro": 43,
+    "tipo": "info",
+    "testo": "CAR 12 (ANT) TIME 2:17.782 DELETED - TRACK LIMITS AT TURN 9 LAP 42 16:10:38 · CAR 12 (ANT) TIME 2:17.782 DELETED - TRACK LIMITS AT TURN 15 LAP 42 16:11:09"
+   },
+   {
+    "giro": 44,
+    "tipo": "info",
+    "testo": "CAR 12 (ANT) LAP DELETED - TRACK LIMITS AT TURN 6 LAP 43 16:12:00 (PIT)"
+   },
+   {
+    "giro": 46,
+    "tipo": "info",
+    "testo": "CAR 12 (ANT) TIME 2:01.316 DELETED - TRACK LIMITS AT TURN 6 LAP 44 16:14:04 · INCIDENT INVOLVING CAR 12 (ANT) UNDER INVESTIGATION - TRACK LIMITS"
+   },
+   {
+    "giro": 47,
+    "tipo": "penalita",
+    "testo": "+5s ANT — TRACK LIMITS"
+   },
+   {
+    "giro": 48,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 15 · DOUBLE YELLOW IN TRACK SECTOR 15"
+   },
+   {
+    "giro": 50,
+    "tipo": "giallo",
+    "testo": "YELLOW IN TRACK SECTOR 15"
+   },
+   {
+    "giro": 52,
+    "tipo": "info",
+    "testo": "CAR 18 (STR) TIME 1:40.212 DELETED - TRACK LIMITS AT TURN 15 LAP 42 16:13:44"
+   }
+  ],
+  "penalita": [
+   {
+    "pilota": "ALB",
+    "secondi": 10,
+    "giro": 5,
+    "motivo": ""
+   },
+   {
+    "pilota": "HAM",
+    "secondi": 5,
+    "giro": 7,
+    "motivo": "FALSE START - MOVING BEFORE SIGNAL"
+   },
+   {
+    "pilota": "STR",
+    "secondi": 5,
+    "giro": 38,
+    "motivo": "TRACK LIMITS"
+   },
+   {
+    "pilota": "STR",
+    "secondi": 5,
+    "giro": 40,
+    "motivo": "TRACK LIMITS (5TH OFFENCE)"
+   },
+   {
+    "pilota": "STR",
+    "secondi": 5,
+    "giro": 42,
+    "motivo": "TRACK LIMITS (6TH OFFENCE)"
+   },
+   {
+    "pilota": "ANT",
+    "secondi": 5,
+    "giro": 47,
+    "motivo": "TRACK LIMITS"
+   }
+  ],
+  "fonte": "race control FastF1 (gen_race_control.py)"
+ }
+}

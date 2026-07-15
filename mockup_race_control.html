@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<!-- MOCKUP race control (RC3) — STATICO, dati Silverstone 2026 cablati a mano.
+     NON collegato alla demo: nessun import da demo/, nessun fetch. Solo per decisione PO. -->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MOCKUP — Race control livello 1</title>
+<style>
+  :root{--bg:#0a0c10;--panel:#12161d;--line:#3a4557;--txt:#e8ebf0;--dim:#8a93a3;--blu:#4da3ff;
+        --sc:#c9a227;--pen:#b07cff;--verde:#43c463;--rosso:#ff5a5a}
+  body{background:var(--bg);color:var(--txt);font:14px -apple-system,system-ui,Arial;margin:0;padding:24px}
+  h1{font-size:18px} h2{font-size:14px;color:var(--dim);margin:26px 0 8px;text-transform:uppercase;letter-spacing:.06em}
+  .panel{background:var(--panel);border:1px solid #1d2430;border-radius:10px;padding:14px;max-width:860px}
+  .avviso{color:var(--dim);font-size:12px;margin-bottom:18px}
+  /* 1. timeline con feed */
+  .rail{position:relative;height:26px;background:#0e1218;border-radius:6px;margin:18px 4px 6px}
+  .banda{position:absolute;top:0;height:100%;border-radius:6px;opacity:.35}
+  .banda.sc{background:var(--sc)} .banda.vsc{background:#7aa7d9}
+  .tacca{position:absolute;top:-7px;width:2px;height:40px;background:var(--sc)}
+  .tacca.pen{background:var(--pen);width:3px;cursor:pointer}
+  .tacca.pen::after{content:'§';position:absolute;top:-15px;left:-4px;color:var(--pen);font-weight:bold}
+  .tip{position:absolute;top:-64px;transform:translateX(-50%);background:#0e1218;border:1px solid var(--line);
+       border-radius:6px;padding:5px 9px;font-size:12px;white-space:nowrap}
+  .legenda{color:var(--dim);font-size:12px;display:flex;gap:16px;margin-top:10px}
+  .legenda i{display:inline-flex;align-items:center;gap:5px;font-style:normal}
+  .sw{width:10px;height:10px;border-radius:2px;display:inline-block}
+  /* 2. riga con badge */
+  .riga{display:flex;align-items:center;gap:10px;padding:8px 10px;border-bottom:1px solid #1d2430}
+  .pos{width:26px;color:var(--dim);font-weight:bold}.sig{font-weight:bold;width:52px}
+  .badge{background:rgba(176,124,255,.16);color:var(--pen);border:1px solid rgba(176,124,255,.4);
+         border-radius:5px;font-size:11px;font-weight:bold;padding:1px 6px;cursor:help}
+  .gap{margin-left:auto;font-variant-numeric:tabular-nums;color:var(--dim)}
+  /* 3. doppia vista */
+  table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+  td,th{padding:6px 10px;text-align:left;border-bottom:1px solid #1d2430}
+  th{color:var(--dim);font-size:12px;text-transform:uppercase}
+  .freccia{color:var(--rosso);font-weight:bold}.su{color:var(--verde);font-weight:bold}
+  .puntilinea td{border-bottom:2px dashed var(--sc);font-size:11px;color:var(--sc);padding:2px 10px}
+  .nota{color:var(--dim);font-size:12px;margin-top:10px}
+  .evid{background:rgba(176,124,255,.08)}
+</style>
+</head>
+<body>
+<h1>Mockup race control — livello 1 (Silverstone 2026)</h1>
+<div class="avviso">STATICO, non collegato alla demo. Le penalità si MOSTRANO, non entrano nella simulazione.
+Fonte feed/badge: race control (annunci); fonte colonna "ufficiale": classifica FIA (non rettifica — verdetto RC2: STOP).</div>
+
+<h2>1 — Feed race control nella timeline eventi</h2>
+<div class="panel">
+  <div class="rail">
+    <div class="banda vsc" style="left:38.5%;width:3.8%"></div>
+    <div class="banda vsc" style="left:69.2%;width:5.8%"></div>
+    <div class="banda sc" style="left:86.5%;width:13.5%"></div>
+    <div class="tacca" style="left:9%" title="giro 5: DOUBLE YELLOW curva 9"></div>
+    <div class="tacca pen" style="left:9.6%"></div>
+    <div class="tacca pen" style="left:13.4%" title="giro 7: 5s HAM — false start"></div>
+    <div class="tacca" style="left:31%" title="giro 16: YELLOW settore 2"></div>
+    <div class="tacca pen" style="left:73%" title="giro 38: 5s STR — track limits"></div>
+    <div class="tacca pen" style="left:90.4%"></div>
+    <div class="tip" style="left:90.4%">giro 47 · <b style="color:var(--pen)">§ +5s ANT</b> — TRACK LIMITS</div>
+  </div>
+  <div class="legenda">
+    <i><span class="sw" style="background:var(--sc)"></span>bandiera gialla</i>
+    <i><span class="sw" style="background:var(--pen)"></span>§ penalità annunciata</i>
+    <i><span class="sw" style="background:#7aa7d9;opacity:.5"></span>VSC</i>
+    <i><span class="sw" style="background:var(--sc);opacity:.5"></span>SC</i>
+  </div>
+</div>
+
+<h2>2 — Badge penalità in tabella (dal giro dell'annuncio)</h2>
+<div class="panel" style="max-width:520px">
+  <div class="riga"><span class="pos">8</span><span class="sig">BOR</span><span class="gap">+2.4s</span></div>
+  <div class="riga evid"><span class="pos">9</span><span class="sig">ANT</span>
+    <span class="badge" title="giro 47 · track limits · +5s a fine gara">+5s</span><span class="gap">+3.1s</span></div>
+  <div class="riga"><span class="pos">10</span><span class="sig">COL</span><span class="gap">+3.2s</span></div>
+  <div class="riga"><span class="pos">11</span><span class="sig">GAS</span><span class="gap">+3.5s</span></div>
+  <div class="nota">Il badge appare al giro dell'annuncio (qui: 47). Gap e ordine restano al reale:
+  la simulazione non cambia (livello 1).</div>
+</div>
+
+<h2>3 — Classifica finale: doppia vista</h2>
+<div class="panel" style="max-width:640px">
+  <table>
+    <tr><th>in pista</th><th>pilota</th><th>penalità</th><th>ufficiale (FIA)</th><th></th></tr>
+    <tr><td>P8</td><td>BOR</td><td></td><td>P8</td><td></td></tr>
+    <tr class="evid"><td>P9</td><td><b>ANT</b></td><td><span class="badge">+5s</span> track limits</td>
+        <td><b>P15</b></td><td class="freccia">▼ 6 — fuori dai punti</td></tr>
+    <tr><td>P10</td><td>COL</td><td></td><td>P9</td><td class="su">▲ 1</td></tr>
+    <tr class="puntilinea"><td colspan="5">— linea dei punti (P10) —</td></tr>
+    <tr><td>P11</td><td>GAS</td><td></td><td>P10</td><td class="su">▲ 1</td></tr>
+    <tr><td>P13</td><td>SAI</td><td></td><td>P17</td><td class="freccia">▼ 4 (doppiato per la FIA)</td></tr>
+  </table>
+  <div class="nota">La colonna "ufficiale" viene da una FONTE di classifica (FIA/f1db aggiornato), non
+  dalla rettifica automatica: include decisioni post-gara che non transitano dal race control
+  (es. Miami: VER +5s, LEC +20s da documenti stewards).</div>
+</div>
+</body>
+</html>
