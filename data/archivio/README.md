@@ -26,3 +26,16 @@ ripristinarli: `git mv data/archivio/<file> data/<file>` (o rollback al tag `pre
 - **Perché non usato**: superato da `demo/neutralizzazione.json` (generatore `gen_neutralizzazione.py`,
   soglia ≥2 auto). Nessun consumatore nel codice. La classificazione corrente e la sua evoluzione a
   due livelli vivono in `data/neutralizzazione_due_livelli.csv` (`gen_neutralizzazione_v2.py`).
+
+## `telemetria_proto.html` + `telemetria_proto_data.json` (ATT7, 2026-07-15, branch `ui-v2-pista`)
+- **Cos'erano**: il prototipo isolato Fase-3 della vista pallini (replay OpenF1 /location,
+  Silverstone 2026, ~2 Hz, 2,1 MB) e la sua pagina. Il JSON era **orfano** — committato senza
+  generatore (debito dichiarato dall'audit) — e la pagina era il suo unico consumatore.
+- **Perché archiviati**: superati da `gen_pista_svg.py` (generatore committato, FastF1) +
+  `demo/data/pista_<gara>.json` per TUTTE le 9 gare; la pagina-gara (`demo/gara.html` +
+  `demo/pista.mjs`) ora usa solo i file generati. Grep su `demo/`: zero riferimenti residui.
+- **Prova di equivalenza**: il generatore, con criterio indipendente (giro valido più veloce con
+  telemetria pulita) e fonte diversa (FastF1 vs OpenF1), converge sullo **stesso giro** del
+  prototipo (ANT, giro 37, 91.777 s). Vedi `NOTA_PISTE.md`.
+- Spostamento **inerte** per la demo pubblica (il prototipo non ne faceva parte). Storia
+  preservata via `git mv`; per riesumare: `git mv data/archivio/telemetria_proto* demo/`.
