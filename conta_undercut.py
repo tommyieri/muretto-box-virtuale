@@ -21,6 +21,9 @@ DEFINIZIONE OPERATIVA DICHIARATA di "undercut tentato" (A attacca B):
 GARE: le 8 dry 2026 (Canada Race esclusa: partenza umida, coerente con Fase 2.1).
 Con --storico estende al mirror 2023-2025 (solo Race che passano il dry-check di
 drycheck_2026.valuta — stessa unica definizione).
+Con --gara <nome> (gare 10+): processa UNA gara nuova dal registro
+(data/gare_registro.json, stessa definizione + dry-check) e scrive un file SEPARATO
+data/undercut_casi_gara_<nome>.json — undercut_casi_2026.json e storico NON toccati.
 
 GATE DICHIARATO (prima di contare): il KPI e' misurabile se n(2026) >= 30 con la
 classe minoritaria >= 8; altrimenti si estende allo storico o ci si ferma.
@@ -110,6 +113,27 @@ def conta(gare, etichetta):
     return out
 
 if __name__ == '__main__':
+    if '--gara' in sys.argv:
+        # gare 10+ (raccolta, NON backtest — il modello resta NO-GO, UNDERCUT_NOTA.txt):
+        # una gara alla volta dal registro, file per-gara separato, storico intatto.
+        try:
+            nome = sys.argv[sys.argv.index('--gara') + 1]
+        except IndexError:
+            sys.exit("uso: python3 conta_undercut.py --gara <nome>  (nome come nel registro)")
+        reg = json.load(open('data/gare_registro.json'))
+        if nome not in reg:
+            sys.exit(f"'{nome}' non e' nel registro (data/gare_registro.json): "
+                     f"va prima pubblicata con pipeline_gara.py.")
+        raw = reg[nome]['raw']
+        dc = valuta(json.load(open(raw)), 'Race')
+        if dc['esito'] != 'OK':
+            sys.exit(f"'{nome}' non passa il dry-check ({dc['esito']}): "
+                     f"fuori dalla definizione dichiarata (solo Race dry).")
+        casi_g = conta({nome: raw}, f"GARA NUOVA: {nome} (raccolta gare 10+)")
+        out_p = f"data/undercut_casi_gara_{nome}.json"
+        json.dump(casi_g, open(out_p, 'w'), indent=1)
+        print(f"\nscritto {out_p} (undercut_casi_2026.json e storico NON toccati)")
+        sys.exit(0)
     casi = conta(GARE_2026, "GARE 2026 (8 dry; Canada esclusa)")
     # distribuzione gap0 ed esito (serve a dichiarare i 'difficili' PRIMA del modello)
     print("\ndistribuzione gap0 x esito (2026):")

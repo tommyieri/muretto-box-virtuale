@@ -68,6 +68,9 @@ a passare = tarare sul test set: il KPI smetterebbe di proteggerci. La v2 legitt
 FISSATO dalla fisica o stimato SOLO sullo storico); (2) KPI valutato sui casi NUOVI
 (gare 10+ del 2026, che la pipeline gara porta dentro una alla volta) piu' il 2026
 attuale come secondario. Decisione al PO.
+Raccolta gare 10+: python3 conta_undercut.py --gara <nome> dopo ogni aggiorna. I file
+per-gara si accumulano; il conteggio dei casi difficili e la valutazione fuori campione
+restano da pre-registrare PRIMA di qualunque backtest.
 
 == LIMITI DICHIARATI ==
 - pit-loss: irrilevante per undercut/overcut (si elide); resta P1 e blocca delta_strategia.
