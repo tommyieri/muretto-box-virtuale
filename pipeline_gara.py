@@ -281,6 +281,20 @@ def stampa_report(ctx):
     print("\n" + testo)
     open(os.path.join(sdir, 'report.txt'), 'w').write(testo)
 
+# ------------------------------------------- guard anti-travaso (protocollo per-gara FF5)
+def guard_travaso(nome, valore_attuale, valore_csv, prov):
+    """Il CSV e' il TIPICO di circuito, pitloss.json il valore IN USO per la gara
+    (NOTA_PITLOSS_PERGARA.md): una gara marcata 'realizzato' in pitloss_meta.json non
+    deve tornare al tipico per una ri-pubblicazione. Pura e testabile
+    (test_guard_travaso.py). Ritorna (valore_da_scrivere, bloccato, avviso)."""
+    voce = prov.get(nome)
+    marcata = voce.get('provenienza') if isinstance(voce, dict) else None
+    if marcata == 'realizzato' and valore_attuale is not None and valore_attuale != valore_csv:
+        avviso = (f"GUARD: {nome} ha valore REALIZZATO {valore_attuale}; travaso dal CSV "
+                  f"({valore_csv}) BLOCCATO. Per forzare, aggiornare prima pitloss_meta.json.")
+        return valore_attuale, True, avviso
+    return valore_csv, False, None
+
 # ------------------------------------------------------------ 5. PUBBLICA
 def pubblica(nome):
     sdir = os.path.join(STAGING, nome)
@@ -297,7 +311,13 @@ def pubblica(nome):
     json.dump(man, open(man_p, 'w'), indent=2)
 
     pl_p = os.path.join('demo', 'data', 'pitloss.json')
-    pl = json.load(open(pl_p)); pl[nome] = meta['pit_loss']
+    pl = json.load(open(pl_p))
+    prov_p = os.path.join('demo', 'data', 'pitloss_meta.json')
+    prov = json.load(open(prov_p)) if os.path.exists(prov_p) else {}
+    valore, bloccato, avviso = guard_travaso(nome, pl.get(nome), meta['pit_loss'], prov)
+    if bloccato:
+        print('!' * 72 + f"\n{avviso}\n" + '!' * 72)
+    pl[nome] = valore
     json.dump(pl, open(pl_p, 'w'), separators=(',', ':'))
 
     es_p = os.path.join('demo', 'data', 'esiti.json')
