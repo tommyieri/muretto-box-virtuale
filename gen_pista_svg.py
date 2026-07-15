@@ -98,6 +98,36 @@ def scegli_giro(session):
     return None, None
 
 
+def pitlane_stilizzata(punti, fe=0.95, fx=0.05, W=22.0, n=60):
+    """Pit-lane STILIZZATA (non geometria reale, dichiarato): corre parallela al nastro
+    a cavallo della linea del traguardo (frazione 0 = inizio del lap time => li' ci sono
+    i box), spostata verso l'INTERNO del circuito, con rampe morbide d'ingresso/uscita.
+    I punti del nastro sono equidistanti in arco => frazione ~ indice/N.
+    Ritorna (punti_pitlane, dist_normalizzata, fe, fx)."""
+    N = len(punti)
+    C = punti.mean(axis=0)
+    # verso interno deciso UNA volta alla linea (coerenza lungo tutto il rettilineo)
+    t0 = punti[1 % N] - punti[-1]
+    n0 = np.array([t0[1], -t0[0]])
+    segno = 1.0 if np.dot(C - punti[0], n0) > 0 else -1.0
+    idx = np.linspace(fe * N, (1 + fx) * N, n)          # indici frazionari, anello
+    out = []
+    for j, fi in enumerate(idx):
+        i = int(fi) % N
+        p = punti[i]
+        t = punti[(i + 1) % N] - punti[(i - 1) % N]
+        t = t / (np.hypot(*t) or 1.0)
+        nrm = segno * np.array([t[1], -t[0]])
+        u = j / (n - 1)                                  # rampe smoothstep ai due capi
+        rampa = min(u, 1 - u) / 0.25
+        prof = 1.0 if rampa >= 1 else rampa * rampa * (3 - 2 * rampa)
+        out.append(p + nrm * W * prof)
+    out = np.array(out)
+    seg = np.hypot(*np.diff(out, axis=0).T)
+    dist = np.concatenate([[0.0], np.cumsum(seg)]) / seg.sum()
+    return out, dist, fe, fx
+
+
 def ricampiona_anello(xy, n):
     """Anello chiuso -> n punti equidistanti in arco + media mobile circolare k=3."""
     ring = np.vstack([xy, xy[:1]])                      # chiude l'anello
@@ -145,6 +175,8 @@ def genera(nome, reg, forza=False):
     seg = np.hypot(*np.diff(np.vstack([punti, punti[:1]]), axis=0).T)
     dist = np.concatenate([[0.0], np.cumsum(seg[:-1])]) / seg.sum()
 
+    pl_punti, pl_dist, fe, fx = pitlane_stilizzata(punti)
+
     out = {
         '_nota': ('GENERATO da gen_pista_svg.py (FastF1). Replay posizionale: la UI muove i '
                   'pallini come f(frazione di giro) sui tempi-giro reali. Non modificare a mano.'),
@@ -152,6 +184,14 @@ def genera(nome, reg, forza=False):
         'viewBox': [0, 0, 1000, round(H, 1)],
         'punti': [[round(float(x), 1), round(float(y), 1)] for x, y in punti],
         'dist': [round(float(d), 6) for d in dist],
+        'pitlane': {
+            'nota': ('STILIZZATA, non geometria reale: parallela interna al nastro a cavallo '
+                     'della linea (frazione 0 = inizio lap time = box). Serve al transito '
+                     'visivo dei pallini in in/out-lap.'),
+            'punti': [[round(float(x), 1), round(float(y), 1)] for x, y in pl_punti],
+            'dist': [round(float(d), 6) for d in pl_dist],
+            'frazione_ingresso': fe, 'frazione_uscita': fx,
+        },
         'lunghezza_m': round(tot_units / 10.0, 1),
         'sorgente': {
             'evento': f'{ANNO} {ti}', 'sessione': 'Race',

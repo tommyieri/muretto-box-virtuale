@@ -14,7 +14,10 @@ tempi-giro reali**: al tempo T (interpolato sui cum_time del leader) ogni pilota
 k con frazione (T − fine giro k−1)/(durata giro k), tradotta in un punto del nastro. NON è una
 simulazione; **dentro il giro** la posizione è interpolata assumendo velocità uniforme
 (frazione di tempo ≈ frazione di distanza) — approssimazione dichiarata anche in pagina.
-Pit-lane non modellata: durante l'in-lap il pallino resta sul nastro. **Legge del replay**:
+**Pit-lane STILIZZATA** (dal generatore, automatica per ogni pista): non e' la geometria
+reale — e' una parallela interna al nastro a cavallo della linea del traguardo (frazione 0 =
+inizio del lap time = box), con rampe morbide; i pallini in in-lap vi transitano nella coda
+del giro (frazione ≥ 0,95) ed escono nella testa dell'out-lap (≤ 0,05). **Legge del replay**:
 esplorazione pit attiva → pallini spenti (`setSpento`), riaccesi alla chiusura.
 
 ## Criterio del giro (dichiarato nel generatore)
