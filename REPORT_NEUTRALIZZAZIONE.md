@@ -132,6 +132,7 @@ neutra). Entrambe le fonti sbagliano ai bordi; serve il vocabolario per pulirle.
 > attuale e sul json committato corrente, trova **10 giri-di-gara (12,2% dei neutri)**. La cifra 13/2,3%
 > proveniva da un set di gare / json precedente e non è stata riprodotta: riporto il numero misurato,
 > non quello atteso.
+> [risolto 15/07/2026: la fonte del 13/559 e' PITLOSS_NOTA_DI_CHIUSURA_ARCO_AI_ORIGINALE.md, sez. A2 - documento ritrovato e committato]
 
 ## N4 — Test di validazione fisica (il giudice)
 
