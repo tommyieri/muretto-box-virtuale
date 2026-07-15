@@ -1,0 +1,1037 @@
+{
+ "Australia": {
+  "fonte": "FastF1 results (classifica FIA) — riportata, non ricostruita",
+  "classifica": [
+   {
+    "pos": 1,
+    "pilota": "RUS",
+    "status": "Finished"
+   },
+   {
+    "pos": 2,
+    "pilota": "ANT",
+    "status": "Finished"
+   },
+   {
+    "pos": 3,
+    "pilota": "LEC",
+    "status": "Finished"
+   },
+   {
+    "pos": 4,
+    "pilota": "HAM",
+    "status": "Finished"
+   },
+   {
+    "pos": 5,
+    "pilota": "NOR",
+    "status": "Finished"
+   },
+   {
+    "pos": 6,
+    "pilota": "VER",
+    "status": "Finished"
+   },
+   {
+    "pos": 7,
+    "pilota": "BEA",
+    "status": "Lapped"
+   },
+   {
+    "pos": 8,
+    "pilota": "LIN",
+    "status": "Lapped"
+   },
+   {
+    "pos": 9,
+    "pilota": "BOR",
+    "status": "Lapped"
+   },
+   {
+    "pos": 10,
+    "pilota": "GAS",
+    "status": "Lapped"
+   },
+   {
+    "pos": 11,
+    "pilota": "OCO",
+    "status": "Lapped"
+   },
+   {
+    "pos": 12,
+    "pilota": "ALB",
+    "status": "Lapped"
+   },
+   {
+    "pos": 13,
+    "pilota": "LAW",
+    "status": "Lapped"
+   },
+   {
+    "pos": 14,
+    "pilota": "COL",
+    "status": "Lapped"
+   },
+   {
+    "pos": 15,
+    "pilota": "SAI",
+    "status": "Lapped"
+   },
+   {
+    "pos": 16,
+    "pilota": "PER",
+    "status": "Lapped"
+   },
+   {
+    "pos": 17,
+    "pilota": "STR",
+    "status": "Lapped"
+   },
+   {
+    "pos": 18,
+    "pilota": "ALO",
+    "status": "Retired"
+   },
+   {
+    "pos": 19,
+    "pilota": "BOT",
+    "status": "Retired"
+   },
+   {
+    "pos": 20,
+    "pilota": "HAD",
+    "status": "Retired"
+   },
+   {
+    "pos": 21,
+    "pilota": "PIA",
+    "status": "Did not start"
+   },
+   {
+    "pos": 22,
+    "pilota": "HUL",
+    "status": "Did not start"
+   }
+  ]
+ },
+ "Cina": {
+  "fonte": "FastF1 results (classifica FIA) — riportata, non ricostruita",
+  "classifica": [
+   {
+    "pos": 1,
+    "pilota": "ANT",
+    "status": "Finished"
+   },
+   {
+    "pos": 2,
+    "pilota": "RUS",
+    "status": "Finished"
+   },
+   {
+    "pos": 3,
+    "pilota": "HAM",
+    "status": "Finished"
+   },
+   {
+    "pos": 4,
+    "pilota": "LEC",
+    "status": "Finished"
+   },
+   {
+    "pos": 5,
+    "pilota": "BEA",
+    "status": "Finished"
+   },
+   {
+    "pos": 6,
+    "pilota": "GAS",
+    "status": "Finished"
+   },
+   {
+    "pos": 7,
+    "pilota": "LAW",
+    "status": "Finished"
+   },
+   {
+    "pos": 8,
+    "pilota": "HAD",
+    "status": "Finished"
+   },
+   {
+    "pos": 9,
+    "pilota": "SAI",
+    "status": "Lapped"
+   },
+   {
+    "pos": 10,
+    "pilota": "COL",
+    "status": "Lapped"
+   },
+   {
+    "pos": 11,
+    "pilota": "HUL",
+    "status": "Lapped"
+   },
+   {
+    "pos": 12,
+    "pilota": "LIN",
+    "status": "Lapped"
+   },
+   {
+    "pos": 13,
+    "pilota": "BOT",
+    "status": "Lapped"
+   },
+   {
+    "pos": 14,
+    "pilota": "OCO",
+    "status": "Lapped"
+   },
+   {
+    "pos": 15,
+    "pilota": "PER",
+    "status": "Lapped"
+   },
+   {
+    "pos": 16,
+    "pilota": "VER",
+    "status": "Retired"
+   },
+   {
+    "pos": 17,
+    "pilota": "ALO",
+    "status": "Retired"
+   },
+   {
+    "pos": 18,
+    "pilota": "STR",
+    "status": "Retired"
+   },
+   {
+    "pos": 19,
+    "pilota": "PIA",
+    "status": "Did not start"
+   },
+   {
+    "pos": 20,
+    "pilota": "NOR",
+    "status": "Did not start"
+   },
+   {
+    "pos": 21,
+    "pilota": "BOR",
+    "status": "Did not start"
+   },
+   {
+    "pos": 22,
+    "pilota": "ALB",
+    "status": "Did not start"
+   }
+  ]
+ },
+ "Giappone": {
+  "fonte": "FastF1 results (classifica FIA) — riportata, non ricostruita",
+  "classifica": [
+   {
+    "pos": 1,
+    "pilota": "ANT",
+    "status": "Finished"
+   },
+   {
+    "pos": 2,
+    "pilota": "PIA",
+    "status": "Finished"
+   },
+   {
+    "pos": 3,
+    "pilota": "LEC",
+    "status": "Finished"
+   },
+   {
+    "pos": 4,
+    "pilota": "RUS",
+    "status": "Finished"
+   },
+   {
+    "pos": 5,
+    "pilota": "NOR",
+    "status": "Finished"
+   },
+   {
+    "pos": 6,
+    "pilota": "HAM",
+    "status": "Finished"
+   },
+   {
+    "pos": 7,
+    "pilota": "GAS",
+    "status": "Finished"
+   },
+   {
+    "pos": 8,
+    "pilota": "VER",
+    "status": "Finished"
+   },
+   {
+    "pos": 9,
+    "pilota": "LAW",
+    "status": "Finished"
+   },
+   {
+    "pos": 10,
+    "pilota": "OCO",
+    "status": "Finished"
+   },
+   {
+    "pos": 11,
+    "pilota": "HUL",
+    "status": "Finished"
+   },
+   {
+    "pos": 12,
+    "pilota": "HAD",
+    "status": "Finished"
+   },
+   {
+    "pos": 13,
+    "pilota": "BOR",
+    "status": "Finished"
+   },
+   {
+    "pos": 14,
+    "pilota": "LIN",
+    "status": "Finished"
+   },
+   {
+    "pos": 15,
+    "pilota": "SAI",
+    "status": "Finished"
+   },
+   {
+    "pos": 16,
+    "pilota": "COL",
+    "status": "Finished"
+   },
+   {
+    "pos": 17,
+    "pilota": "PER",
+    "status": "Finished"
+   },
+   {
+    "pos": 18,
+    "pilota": "ALO",
+    "status": "Lapped"
+   },
+   {
+    "pos": 19,
+    "pilota": "BOT",
+    "status": "Lapped"
+   },
+   {
+    "pos": 20,
+    "pilota": "ALB",
+    "status": "Lapped"
+   },
+   {
+    "pos": 21,
+    "pilota": "STR",
+    "status": "Retired"
+   },
+   {
+    "pos": 22,
+    "pilota": "BEA",
+    "status": "Retired"
+   }
+  ]
+ },
+ "Miami": {
+  "fonte": "FastF1 results (classifica FIA) — riportata, non ricostruita",
+  "classifica": [
+   {
+    "pos": 1,
+    "pilota": "ANT",
+    "status": "Finished"
+   },
+   {
+    "pos": 2,
+    "pilota": "NOR",
+    "status": "Finished"
+   },
+   {
+    "pos": 3,
+    "pilota": "PIA",
+    "status": "Finished"
+   },
+   {
+    "pos": 4,
+    "pilota": "RUS",
+    "status": "Finished"
+   },
+   {
+    "pos": 5,
+    "pilota": "VER",
+    "status": "Finished"
+   },
+   {
+    "pos": 6,
+    "pilota": "HAM",
+    "status": "Finished"
+   },
+   {
+    "pos": 7,
+    "pilota": "COL",
+    "status": "Finished"
+   },
+   {
+    "pos": 8,
+    "pilota": "LEC",
+    "status": "Finished"
+   },
+   {
+    "pos": 9,
+    "pilota": "SAI",
+    "status": "Finished"
+   },
+   {
+    "pos": 10,
+    "pilota": "ALB",
+    "status": "Finished"
+   },
+   {
+    "pos": 11,
+    "pilota": "BEA",
+    "status": "Lapped"
+   },
+   {
+    "pos": 12,
+    "pilota": "BOR",
+    "status": "Lapped"
+   },
+   {
+    "pos": 13,
+    "pilota": "OCO",
+    "status": "Lapped"
+   },
+   {
+    "pos": 14,
+    "pilota": "LIN",
+    "status": "Lapped"
+   },
+   {
+    "pos": 15,
+    "pilota": "ALO",
+    "status": "Lapped"
+   },
+   {
+    "pos": 16,
+    "pilota": "PER",
+    "status": "Lapped"
+   },
+   {
+    "pos": 17,
+    "pilota": "STR",
+    "status": "Lapped"
+   },
+   {
+    "pos": 18,
+    "pilota": "BOT",
+    "status": "Lapped"
+   },
+   {
+    "pos": 19,
+    "pilota": "HUL",
+    "status": "Retired"
+   },
+   {
+    "pos": 20,
+    "pilota": "LAW",
+    "status": "Retired"
+   },
+   {
+    "pos": 21,
+    "pilota": "GAS",
+    "status": "Retired"
+   },
+   {
+    "pos": 22,
+    "pilota": "HAD",
+    "status": "Retired"
+   }
+  ]
+ },
+ "Canada": {
+  "fonte": "FastF1 results (classifica FIA) — riportata, non ricostruita",
+  "classifica": [
+   {
+    "pos": 1,
+    "pilota": "ANT",
+    "status": "Finished"
+   },
+   {
+    "pos": 2,
+    "pilota": "HAM",
+    "status": "Finished"
+   },
+   {
+    "pos": 3,
+    "pilota": "VER",
+    "status": "Finished"
+   },
+   {
+    "pos": 4,
+    "pilota": "LEC",
+    "status": "Finished"
+   },
+   {
+    "pos": 5,
+    "pilota": "HAD",
+    "status": "Lapped"
+   },
+   {
+    "pos": 6,
+    "pilota": "COL",
+    "status": "Lapped"
+   },
+   {
+    "pos": 7,
+    "pilota": "LAW",
+    "status": "Lapped"
+   },
+   {
+    "pos": 8,
+    "pilota": "GAS",
+    "status": "Lapped"
+   },
+   {
+    "pos": 9,
+    "pilota": "SAI",
+    "status": "Lapped"
+   },
+   {
+    "pos": 10,
+    "pilota": "BEA",
+    "status": "Lapped"
+   },
+   {
+    "pos": 11,
+    "pilota": "PIA",
+    "status": "Lapped"
+   },
+   {
+    "pos": 12,
+    "pilota": "HUL",
+    "status": "Lapped"
+   },
+   {
+    "pos": 13,
+    "pilota": "BOR",
+    "status": "Lapped"
+   },
+   {
+    "pos": 14,
+    "pilota": "OCO",
+    "status": "Lapped"
+   },
+   {
+    "pos": 15,
+    "pilota": "STR",
+    "status": "Lapped"
+   },
+   {
+    "pos": 16,
+    "pilota": "BOT",
+    "status": "Lapped"
+   },
+   {
+    "pos": 17,
+    "pilota": "PER",
+    "status": "Retired"
+   },
+   {
+    "pos": 18,
+    "pilota": "NOR",
+    "status": "Retired"
+   },
+   {
+    "pos": 19,
+    "pilota": "RUS",
+    "status": "Retired"
+   },
+   {
+    "pos": 20,
+    "pilota": "ALO",
+    "status": "Retired"
+   },
+   {
+    "pos": 21,
+    "pilota": "ALB",
+    "status": "Retired"
+   },
+   {
+    "pos": 22,
+    "pilota": "LIN",
+    "status": "Did not start"
+   }
+  ]
+ },
+ "Monaco": {
+  "fonte": "FastF1 results (classifica FIA) — riportata, non ricostruita",
+  "classifica": [
+   {
+    "pos": 1,
+    "pilota": "ANT",
+    "status": "Finished"
+   },
+   {
+    "pos": 2,
+    "pilota": "HAM",
+    "status": "Finished"
+   },
+   {
+    "pos": 3,
+    "pilota": "GAS",
+    "status": "Finished"
+   },
+   {
+    "pos": 4,
+    "pilota": "HAD",
+    "status": "Finished"
+   },
+   {
+    "pos": 5,
+    "pilota": "PIA",
+    "status": "Finished"
+   },
+   {
+    "pos": 6,
+    "pilota": "LAW",
+    "status": "Finished"
+   },
+   {
+    "pos": 7,
+    "pilota": "LIN",
+    "status": "Finished"
+   },
+   {
+    "pos": 8,
+    "pilota": "ALB",
+    "status": "Finished"
+   },
+   {
+    "pos": 9,
+    "pilota": "OCO",
+    "status": "Finished"
+   },
+   {
+    "pos": 10,
+    "pilota": "ALO",
+    "status": "Finished"
+   },
+   {
+    "pos": 11,
+    "pilota": "BOR",
+    "status": "Finished"
+   },
+   {
+    "pos": 12,
+    "pilota": "RUS",
+    "status": "Finished"
+   },
+   {
+    "pos": 13,
+    "pilota": "HUL",
+    "status": "Finished"
+   },
+   {
+    "pos": 14,
+    "pilota": "COL",
+    "status": "Finished"
+   },
+   {
+    "pos": 15,
+    "pilota": "PER",
+    "status": "Finished"
+   },
+   {
+    "pos": 16,
+    "pilota": "SAI",
+    "status": "Retired"
+   },
+   {
+    "pos": 17,
+    "pilota": "LEC",
+    "status": "Retired"
+   },
+   {
+    "pos": 18,
+    "pilota": "STR",
+    "status": "Retired"
+   },
+   {
+    "pos": 19,
+    "pilota": "NOR",
+    "status": "Retired"
+   },
+   {
+    "pos": 20,
+    "pilota": "BEA",
+    "status": "Retired"
+   },
+   {
+    "pos": 21,
+    "pilota": "BOT",
+    "status": "Retired"
+   },
+   {
+    "pos": 22,
+    "pilota": "VER",
+    "status": "Retired"
+   }
+  ]
+ },
+ "Spagna": {
+  "fonte": "FastF1 results (classifica FIA) — riportata, non ricostruita",
+  "classifica": [
+   {
+    "pos": 1,
+    "pilota": "HAM",
+    "status": "Finished"
+   },
+   {
+    "pos": 2,
+    "pilota": "RUS",
+    "status": "Finished"
+   },
+   {
+    "pos": 3,
+    "pilota": "NOR",
+    "status": "Finished"
+   },
+   {
+    "pos": 4,
+    "pilota": "VER",
+    "status": "Finished"
+   },
+   {
+    "pos": 5,
+    "pilota": "PIA",
+    "status": "Finished"
+   },
+   {
+    "pos": 6,
+    "pilota": "HAD",
+    "status": "Lapped"
+   },
+   {
+    "pos": 7,
+    "pilota": "GAS",
+    "status": "Lapped"
+   },
+   {
+    "pos": 8,
+    "pilota": "LAW",
+    "status": "Lapped"
+   },
+   {
+    "pos": 9,
+    "pilota": "LIN",
+    "status": "Lapped"
+   },
+   {
+    "pos": 10,
+    "pilota": "COL",
+    "status": "Lapped"
+   },
+   {
+    "pos": 11,
+    "pilota": "BOR",
+    "status": "Lapped"
+   },
+   {
+    "pos": 12,
+    "pilota": "SAI",
+    "status": "Lapped"
+   },
+   {
+    "pos": 13,
+    "pilota": "OCO",
+    "status": "Lapped"
+   },
+   {
+    "pos": 14,
+    "pilota": "PER",
+    "status": "Lapped"
+   },
+   {
+    "pos": 15,
+    "pilota": "LEC",
+    "status": "Retired"
+   },
+   {
+    "pos": 16,
+    "pilota": "ANT",
+    "status": "Retired"
+   },
+   {
+    "pos": 17,
+    "pilota": "BEA",
+    "status": "Retired"
+   },
+   {
+    "pos": 18,
+    "pilota": "ALB",
+    "status": "Lapped"
+   },
+   {
+    "pos": 19,
+    "pilota": "ALO",
+    "status": "Retired"
+   },
+   {
+    "pos": 20,
+    "pilota": "HUL",
+    "status": "Retired"
+   },
+   {
+    "pos": 21,
+    "pilota": "BOT",
+    "status": "Retired"
+   },
+   {
+    "pos": 22,
+    "pilota": "STR",
+    "status": "Retired"
+   }
+  ]
+ },
+ "Austria": {
+  "fonte": "FastF1 results (classifica FIA) — riportata, non ricostruita",
+  "classifica": [
+   {
+    "pos": 1,
+    "pilota": "RUS",
+    "status": "Finished"
+   },
+   {
+    "pos": 2,
+    "pilota": "VER",
+    "status": "Finished"
+   },
+   {
+    "pos": 3,
+    "pilota": "ANT",
+    "status": "Finished"
+   },
+   {
+    "pos": 4,
+    "pilota": "PIA",
+    "status": "Finished"
+   },
+   {
+    "pos": 5,
+    "pilota": "HAM",
+    "status": "Finished"
+   },
+   {
+    "pos": 6,
+    "pilota": "HAD",
+    "status": "Finished"
+   },
+   {
+    "pos": 7,
+    "pilota": "NOR",
+    "status": "Finished"
+   },
+   {
+    "pos": 8,
+    "pilota": "LEC",
+    "status": "Finished"
+   },
+   {
+    "pos": 9,
+    "pilota": "LAW",
+    "status": "Lapped"
+   },
+   {
+    "pos": 10,
+    "pilota": "LIN",
+    "status": "Lapped"
+   },
+   {
+    "pos": 11,
+    "pilota": "BOR",
+    "status": "Lapped"
+   },
+   {
+    "pos": 12,
+    "pilota": "HUL",
+    "status": "Lapped"
+   },
+   {
+    "pos": 13,
+    "pilota": "GAS",
+    "status": "Lapped"
+   },
+   {
+    "pos": 14,
+    "pilota": "BEA",
+    "status": "Lapped"
+   },
+   {
+    "pos": 15,
+    "pilota": "COL",
+    "status": "Lapped"
+   },
+   {
+    "pos": 16,
+    "pilota": "OCO",
+    "status": "Lapped"
+   },
+   {
+    "pos": 17,
+    "pilota": "ALB",
+    "status": "Lapped"
+   },
+   {
+    "pos": 18,
+    "pilota": "ALO",
+    "status": "Lapped"
+   },
+   {
+    "pos": 19,
+    "pilota": "STR",
+    "status": "Retired"
+   },
+   {
+    "pos": 20,
+    "pilota": "SAI",
+    "status": "Retired"
+   },
+   {
+    "pos": 21,
+    "pilota": "PER",
+    "status": "Retired"
+   },
+   {
+    "pos": 22,
+    "pilota": "BOT",
+    "status": "Retired"
+   }
+  ]
+ },
+ "Gran Bretagna": {
+  "fonte": "FastF1 results (classifica FIA) — riportata, non ricostruita",
+  "classifica": [
+   {
+    "pos": 1,
+    "pilota": "LEC",
+    "status": "Finished"
+   },
+   {
+    "pos": 2,
+    "pilota": "RUS",
+    "status": "Finished"
+   },
+   {
+    "pos": 3,
+    "pilota": "HAM",
+    "status": "Finished"
+   },
+   {
+    "pos": 4,
+    "pilota": "NOR",
+    "status": "Finished"
+   },
+   {
+    "pos": 5,
+    "pilota": "HAD",
+    "status": "Finished"
+   },
+   {
+    "pos": 6,
+    "pilota": "LAW",
+    "status": "Finished"
+   },
+   {
+    "pos": 7,
+    "pilota": "LIN",
+    "status": "Finished"
+   },
+   {
+    "pos": 8,
+    "pilota": "BOR",
+    "status": "Finished"
+   },
+   {
+    "pos": 9,
+    "pilota": "COL",
+    "status": "Finished"
+   },
+   {
+    "pos": 10,
+    "pilota": "GAS",
+    "status": "Finished"
+   },
+   {
+    "pos": 11,
+    "pilota": "PIA",
+    "status": "Finished"
+   },
+   {
+    "pos": 12,
+    "pilota": "BEA",
+    "status": "Finished"
+   },
+   {
+    "pos": 13,
+    "pilota": "OCO",
+    "status": "Finished"
+   },
+   {
+    "pos": 14,
+    "pilota": "PER",
+    "status": "Finished"
+   },
+   {
+    "pos": 15,
+    "pilota": "ANT",
+    "status": "Finished"
+   },
+   {
+    "pos": 16,
+    "pilota": "BOT",
+    "status": "Finished"
+   },
+   {
+    "pos": 17,
+    "pilota": "SAI",
+    "status": "Lapped"
+   },
+   {
+    "pos": 18,
+    "pilota": "ALO",
+    "status": "Lapped"
+   },
+   {
+    "pos": 19,
+    "pilota": "STR",
+    "status": "Lapped"
+   },
+   {
+    "pos": 20,
+    "pilota": "VER",
+    "status": "Retired"
+   },
+   {
+    "pos": 21,
+    "pilota": "ALB",
+    "status": "Retired"
+   },
+   {
+    "pos": 22,
+    "pilota": "HUL",
+    "status": "Retired"
+   }
+  ]
+ }
+}

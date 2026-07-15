@@ -55,6 +55,7 @@
           <div class="fatto" id="evtlFatto"></div>
           <div id="evtlSegs"></div>
           <div id="evtlPits"></div>
+          <div id="evtlRcm"></div>
         </div>
         <div class="cursore" id="evtlCur" style="left:0%"></div>
       </div>
@@ -63,6 +64,8 @@
         <i><span class="sw vsc"></span>Virtual SC</i>
         <i id="legrf" style="display:none"><span class="sw rf"></span>Bandiera rossa</i>
         <i><span class="sw pitsw"></span>pit stop</i>
+        <i id="legrcg" style="display:none"><span class="sw rcg"></span>bandiera gialla</i>
+        <i id="legrcp" style="display:none"><span class="sw rcp"></span>&sect; penalit&agrave;</i>
       </div>
 
       <div class="flag" id="flag"></div>
@@ -72,6 +75,7 @@
       <div class="tabs" role="tablist">
         <button id="tabClas" class="on" role="tab" aria-selected="true">Classifica</button>
         <button id="tabStrat" role="tab" aria-selected="false">Strategia gomme</button>
+        <button id="tabUff" role="tab" aria-selected="false" style="display:none">Ufficiale</button>
       </div>
       <div class="gridscroll" id="vistaClas"><div class="grid panel notrans" id="grid"></div></div>
       <!-- strip strategia: una barra per pilota, lunga quanto la gara, segmentata per stint -->
@@ -84,6 +88,13 @@
           <i><span class="sw" style="background:#43c463;border:1px solid #3ba7ff"></span>inter/wet</i>
           <i><span class="sw" style="width:2px;background:var(--txt)"></span>pit</i>
         </div>
+      </section>
+      <!-- doppia vista finale "in pista | ufficiale" (race control livello 1, decisione PO):
+           l'ufficiale e' RIPORTATO da una fonte di classifica FIA, non ricostruito (RC2: STOP) -->
+      <section class="panel uff" id="vistaUff" hidden>
+        <div id="uffTab"></div>
+        <div class="uff-nota">Classifica ufficiale FIA (fonte di classifica, non ricalcolo):
+          include decisioni post-gara che non transitano dal race control.</div>
       </section>
       <div class="colhint">Tocca un pilota per l&rsquo;esplorazione pit: &ldquo;se pitto al giro L, dove rientro?&rdquo;</div>
 
@@ -112,6 +123,9 @@ let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams=
 let pitstops=null, stopsGara={}, etichettaStop='pit lane';   // durate per-stop f1db (semantica verificata dal generatore)
 let curLap=1, selDrv=null, rowEls={}, leaderMemo={}, finestre=null, teamWarned=new Set(), pitLaps={};
 let pista=null, leadCum=null, cumPil=null, teamOfR=null;   // vista pallini (gare con pista_<gara>.json)
+// race control LIVELLO 1 (decisione PO su MOCKUP_RACE_CONTROL_UI.md): le penalita' si
+// MOSTRANO (feed + badge + doppia vista), non entrano nella simulazione ne' nei gap
+let rcmAll=null, ufficAll=null, rcmGara=null, ufficGara=null, penPil={};
 
 // --- contatore anonimo aggregato (strumentazione, non simulatore) ---
 const conta = e => { try { navigator.sendBeacon(`api/contatore?e=${e}`); } catch(_){} };
@@ -143,6 +157,8 @@ async function boot() {
   try { teamCol = await (await fetch('team_colori.json')).json(); } catch(e){ teamCol={}; }
   try { calendario = await (await fetch('data/calendario_2026.json')).json(); } catch(e){ calendario=null; }
   try { pitstops = await (await fetch('data/pitstops_2026.json')).json(); } catch(e){ pitstops=null; }
+  try { rcmAll = await (await fetch('data/race_control_2026.json')).json(); } catch(e){ rcmAll=null; }
+  try { ufficAll = await (await fetch('data/ufficiali_2026.json')).json(); } catch(e){ ufficAll=null; }
   // etichetta della durata DERIVATA dalla semantica dichiarata nel file (mai "pit stop" generico)
   etichettaStop = pitstops?.semantica === 'sosta_ferma' ? 'sosta' : 'pit lane';
   const nomi = m.map(r=>r.gara);
@@ -190,6 +206,12 @@ async function loadGara(gara) {
   for (const lp of race.laps) for (const d in lp.cars)
     if (lp.cars[d].in_lap) (pitLaps[lp.lap] ||= []).push(d);
   stopsGara = pitstops?.gare?.[gara] || {};
+  // race control: feed per la timeline + penalita' di tempo per i badge (per pilota,
+  // ordinate per giro dell'annuncio); ufficiale per la doppia vista. Tutto opzionale.
+  rcmGara = rcmAll?.[gara] || null; ufficGara = ufficAll?.[gara] || null;
+  penPil = {};
+  for (const p of (rcmGara?.penalita || [])) (penPil[p.pilota] ||= []).push(p);
+  for (const d in penPil) penPil[d].sort((a,b)=>a.giro-b.giro);
   el('lapMax').textContent = race.n_laps;
   header(gara);
   selDrv=null; el('pit').classList.add('hidden');
@@ -209,6 +231,7 @@ async function loadGara(gara) {
   }
   for (const d in cumPil) cumPil[d].sort((a,b)=>a.lap-b.lap);
   drawPista(gara);
+  buildUfficiale();
   buildStrat(); mostraVista(false);
   clock.setDur(L => durate[L]);
   clock.reset(race.n_laps);
@@ -274,7 +297,14 @@ function drawEvtl(){
   el('evtlSegs').innerHTML = bs.map(b=>`<div class="seg ${b.type}" title="${b.type.toUpperCase()} giri ${b.a}&ndash;${b.b}" style="left:${b.left}%;width:${b.width}%"></div>`).join('');
   el('evtlPits').innerHTML = Object.entries(pitLaps).map(([L,ds])=>
     `<div class="pitm" title="pit al giro ${L}: ${ds.join(', ')}" style="left:${lapPct(+L)}%"></div>`).join('');
-  el('evtlLeg').style.visibility = (bs.length || Object.keys(pitLaps).length) ? 'visible' : 'hidden';
+  // feed race control (livello 1): tacche informative sulla stessa barra — giallo =
+  // bandiere, § = annuncio penalita', grigio = investigazioni/lap deleted. Tooltip = testo.
+  const feed = rcmGara?.feed || [];
+  el('evtlRcm').innerHTML = feed.map(e=>
+    `<div class="rcmm ${e.tipo==='penalita'?'p':(e.tipo==='giallo'?'g':'i')}" title="giro ${e.giro}: ${e.testo.replaceAll('"','&quot;')}" style="left:${lapPct(e.giro)}%"></div>`).join('');
+  el('legrcg').style.display = feed.some(e=>e.tipo==='giallo') ? 'inline-flex' : 'none';
+  el('legrcp').style.display = feed.some(e=>e.tipo==='penalita') ? 'inline-flex' : 'none';
+  el('evtlLeg').style.visibility = (bs.length || Object.keys(pitLaps).length || feed.length) ? 'visible' : 'hidden';
   el('legrf').style.display = (finestre?.rf?.length) ? 'inline-flex' : 'none';
   el('evtl').setAttribute('aria-valuemax', race.n_laps);
 }
@@ -305,7 +335,7 @@ function buildGrid(){
     const row=document.createElement('div'); row.className='row'; row.dataset.drv=d;
     // la sigla e' un link alla scheda pilota (stopPropagation: il resto della riga apre il pit)
     row.innerHTML=`<span class="tbar"></span><span class="pos"></span>`
-      +`<span class="idn"><span class="l1"><span class="drv"><a href="scheda.html?sigla=${d}" title="scheda pilota">${d}</a></span><span class="box" style="display:none"></span></span><span class="team"></span></span>`
+      +`<span class="idn"><span class="l1"><span class="drv"><a href="scheda.html?sigla=${d}" title="scheda pilota">${d}</a></span><span class="box" style="display:none"></span><span class="penb" style="display:none"></span></span><span class="team"></span></span>`
       +`<span class="gaps"><span class="gap"></span><span class="gapprev"></span></span>`
       +`<span class="tyreb"><span class="dot"></span><span class="age"></span></span>`;
     row.querySelector('.drv a').addEventListener('click', e=>e.stopPropagation());
@@ -318,6 +348,7 @@ function buildGrid(){
     g.appendChild(row);
     rowEls[d]={root:row, tbar:row.querySelector('.tbar'), pos:row.querySelector('.pos'),
                team:row.querySelector('.team'), box:row.querySelector('.box'),
+               pen:row.querySelector('.penb'),
                gap:row.querySelector('.gap'), gapprev:row.querySelector('.gapprev'),
                dot:row.querySelector('.dot'), age:row.querySelector('.age')};
   }
@@ -410,6 +441,18 @@ function paintRow(r, i){
   // ai box / out-lap: fatto grezzo dei dati gara (in_lap/out_lap), non un giudizio
   if (r.inlap || r.outlap){ e.box.style.display='inline-block'; e.box.textContent = r.inlap?'BOX':'OUT'; }
   else e.box.style.display='none';
+  // badge penalita' (livello 1): appare DAL giro dell'annuncio race control; somma le
+  // penalita' di tempo comminate fin qui, tooltip con giro e motivo. Solo informativo:
+  // gap, ordine e motore restano al reale.
+  const pens=(penPil[r.drv]||[]).filter(p=>p.giro<=curLap);
+  if (pens.length){
+    const tot=pens.reduce((s,p)=>s+p.secondi,0);
+    if (e.pen.textContent!==`+${tot}s`){
+      e.pen.textContent=`+${tot}s`;
+      e.pen.title=pens.map(p=>`giro ${p.giro}: +${p.secondi}s${p.motivo?' — '+p.motivo.toLowerCase():''}`).join('\n');
+    }
+    e.pen.style.display='inline-block';
+  } else e.pen.style.display='none';
   const col=tyreColor(r.compound);
   if(r.compound){
     e.dot.style.visibility='visible'; e.dot.title=r.compound;
@@ -504,11 +547,43 @@ function buildStrat(){
   });
   document.addEventListener('click', e=>{ if(!e.target.closest('#vistaStrat')) tip.style.display='none'; });
 }
-function mostraVista(strat){
-  el('vistaClas').hidden = strat; el('vistaStrat').hidden = !strat;
-  el('tabClas').classList.toggle('on', !strat); el('tabStrat').classList.toggle('on', strat);
-  el('tabClas').setAttribute('aria-selected', String(!strat));
-  el('tabStrat').setAttribute('aria-selected', String(strat));
+function mostraVista(quale){                 // 'clas' | 'strat' | 'uff'
+  if (quale === true) quale = 'strat'; if (!quale) quale = 'clas';
+  el('vistaClas').hidden = quale!=='clas';
+  el('vistaStrat').hidden = quale!=='strat';
+  el('vistaUff').hidden = quale!=='uff';
+  for (const [id,k] of [['tabClas','clas'],['tabStrat','strat'],['tabUff','uff']]){
+    el(id).classList.toggle('on', quale===k);
+    el(id).setAttribute('aria-selected', String(quale===k));
+  }
+}
+
+// --- doppia vista finale "in pista | ufficiale" (race control livello 1) ---
+// In pista = ordine dei dati demo (giri desc, cum finale asc: quello che il replay mostra).
+// Ufficiale = classifica FIA RIPORTATA da ufficiali_2026.json (fonte di classifica, non
+// rettifica: verdetto RC2 in REPORT_RACE_CONTROL.md). Frecce = scostamento tra le due.
+function buildUfficiale(){
+  const ha = !!(ufficGara?.classifica?.length);
+  el('tabUff').style.display = ha ? '' : 'none';
+  if (!ha){ if(!el('vistaUff').hidden) mostraVista('clas'); el('uffTab').innerHTML=''; return; }
+  const cum={}, laps={};
+  for (const lp of race.laps) for (const [d,c] of Object.entries(lp.cars))
+    if (typeof c.cum_time==='number' && !race.nonParten.has(d)){ cum[d]=c.cum_time; laps[d]=lp.lap; }
+  const pista = Object.keys(cum).sort((a,b)=>(laps[b]-laps[a])||(cum[a]-cum[b]));
+  const posPista = {}; pista.forEach((d,i)=>posPista[d]=i+1);
+  const righe = ufficGara.classifica.filter(r=>posPista[r.pilota]).map(r=>{
+    const pp = posPista[r.pilota], delta = pp - r.pos;
+    const pens = penPil[r.pilota] || [];
+    const badge = pens.length ? `<span class="penb on">+${pens.reduce((s,p)=>s+p.secondi,0)}s</span>` : '';
+    const fr = delta===0 ? '' : (delta>0 ? `<span class="su">&#9650; ${delta}</span>`
+                                          : `<span class="giu">&#9660; ${-delta}</span>`);
+    const st = /finish/i.test(r.status) ? '' : `<span class="stat">${r.status.toLowerCase()}</span>`;
+    return `<div class="uffr${r.pos===11?' primafuori':''}${pens.length?' conpen':''}">
+      <span class="pp">P${pp}</span><span class="sig"><i style="background:${coloreTeam(teamOfR?.[r.pilota] ?? teams[r.pilota])}"></i>${r.pilota}</span>
+      <span class="pb">${badge}</span><span class="pu">P${r.pos}</span><span class="fr">${fr}</span>${st}</div>`;
+  }).join('');
+  el('uffTab').innerHTML = `<div class="uffr testa"><span class="pp">in pista</span><span class="sig">pilota</span>
+    <span class="pb">penalit&agrave;</span><span class="pu">ufficiale</span><span class="fr"></span></div>` + righe;
 }
 
 // --- esplorazione pit: logica identica alla v1 (evaluatePit invariato), veste nuova ---
@@ -560,8 +635,9 @@ el('speeds').addEventListener('click', e=>{ const b=e.target.closest('button'); 
   [...el('speeds').children].forEach(x=>x.classList.toggle('on',x===b)); });
 el('pitLap').addEventListener('input', updatePit);
 el('pitChiudi').addEventListener('click', chiudiPit);
-el('tabClas').addEventListener('click', ()=>mostraVista(false));
-el('tabStrat').addEventListener('click', ()=>mostraVista(true));
+el('tabClas').addEventListener('click', ()=>mostraVista('clas'));
+el('tabStrat').addEventListener('click', ()=>mostraVista('strat'));
+el('tabUff').addEventListener('click', ()=>mostraVista('uff'));
 el('plBadge').addEventListener('click', ()=>el('plTip').classList.toggle('on'));
 el('plBadge').addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el('plTip').classList.toggle('on'); } });
 conta('apertura');

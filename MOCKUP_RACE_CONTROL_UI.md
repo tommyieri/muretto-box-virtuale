@@ -44,3 +44,13 @@ Nuovo pannello (o tab accanto a "Classifica"/"Strategia gomme") attivo a fine ga
 2. il CSV race control va servito alla demo così com'è (demo/data/race_control_2026.json
    ridotto alle categorie usate) o si tiene tutto in data/ finché non si decide?
 3. badge penalità anche durante il live futuro, o solo nel replay storico?
+
+## DECISIONI PO (2026-07-16): SÌ a tutte e tre — IMPLEMENTATO
+1. Tutte e tre le componenti in demo: `gen_classifiche_ufficiali.py` →
+   `demo/data/ufficiali_2026.json` (fonte di classifica FIA, riportata non ricostruita).
+2. `gen_rc_feed.py` → `demo/data/race_control_2026.json` (feed ridotto alle categorie
+   decise + penalità di tempo per i badge). Il CSV completo resta in `data/`.
+3. Sì anche nel live futuro: registrato nella nota del mock (`demo/live.html`); si
+   implementa quando il live esisterà.
+Implementazione in `demo/gara.html` + `demo/stile.css` (solo presentazione: gap, ordine e
+motore restano al reale; kernel/modulo pit/golden intatti).
