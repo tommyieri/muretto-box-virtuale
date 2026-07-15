@@ -53,6 +53,8 @@ Il report che registra il rollback Montreal — `NOTA_MONTREAL_NO_ATTIVAZIONE.md
 
 Conseguenza: chi legge `main` trova la regola, ma non il caso Montreal che l'ha generata. Debito registrato, non risolto qui.
 
+[aggiornamento 16/07/2026: superato — la nota Montreal e' su main dal merge 27021a5; il debito qui dichiarato e' chiuso]
+
 ## Cosa questo commit NON fa
 
 Nessun numero nuovo calcolato. Nessun valore di produzione toccato. Nessuna attivazione. Spa sarà giudicata solo nell'ordine: `aggiorna` → Test 1 (con guardia) → Test 2 → verdetto.
