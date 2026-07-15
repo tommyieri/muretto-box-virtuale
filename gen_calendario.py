@@ -93,6 +93,9 @@ def main():
     races = [r for r in csv_da_zip(zf, 'f1db-races.csv') if r['year'] == str(STAGIONE)]
     races.sort(key=lambda r: int(r['round']))
     circuiti = {r['id']: r['fullName'] for r in csv_da_zip(zf, 'f1db-circuits.csv')}
+    # paese del circuito (alpha2 per la bandiera in UI: dato f1db, non scritto a mano)
+    paese_circuito = {r['id']: r['countryId'] for r in csv_da_zip(zf, 'f1db-circuits.csv')}
+    alpha2 = {r['id']: r['alpha2Code'] for r in csv_da_zip(zf, 'f1db-countries.csv')}
     with open(os.path.join('data', 'gare_registro.json')) as f:
         registro = json.load(f)
     demo_per_cid = {v['cid']: nome for nome, v in registro.items()}
@@ -122,6 +125,7 @@ def main():
             'round': int(r['round']), 'data': r['date'], 'gp': gp, 'circuitId': cid,
             'nome': nome, 'titolo': titolo, 'circuito': circuiti.get(cid, cid),
             'giri': int(r['laps']) if r['laps'] else None,
+            'alpha2': alpha2.get(paese_circuito.get(cid)),
             'sessioni': sessioni_di(r),
             'gara_demo': gara_demo, 'vincitore': vincitore_da_demo(gara_demo) if gara_demo else None,
         })

@@ -259,7 +259,10 @@ function pistaFrame(p){
     const fine=arr[idx], inizio = idx>0 ? arr[idx-1] : {lap:0, cum:0};
     if (fine.lap !== inizio.lap+1) continue;         // buco nei dati: non inventare
     const fd=(T-inizio.cum)/(fine.cum-inizio.cum || 1);
-    dots.push({f:fd, colore:coloreTeam(teamOfR[d]), sigla:d});
+    // ai box: nel giro di in-lap (coda) e di out-lap (testa) il pallino passa in pit-lane
+    const c=race.byLap[fine.lap]?.[d];
+    const box = c?.in_lap ? 'in' : (c?.out_lap ? 'out' : null);
+    dots.push({f:fd, box, colore:coloreTeam(teamOfR[d]), sigla:d});
   }
   pista.aggiorna(dots);
 }

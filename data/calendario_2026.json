@@ -11,6 +11,7 @@
    "titolo": "GP d'Australia",
    "circuito": "Melbourne Grand Prix Circuit",
    "giri": 58,
+   "alpha2": "AU",
    "sessioni": {
     "fp1": {
      "data": "2026-03-06",
@@ -48,6 +49,7 @@
    "titolo": "GP di Cina",
    "circuito": "Shanghai International Circuit",
    "giri": 56,
+   "alpha2": "CN",
    "sessioni": {
     "fp1": {
      "data": "2026-03-13",
@@ -85,6 +87,7 @@
    "titolo": "GP del Giappone",
    "circuito": "Suzuka Circuit",
    "giri": 53,
+   "alpha2": "JP",
    "sessioni": {
     "fp1": {
      "data": "2026-03-27",
@@ -122,6 +125,7 @@
    "titolo": "GP di Miami",
    "circuito": "Miami International Autodrome",
    "giri": 57,
+   "alpha2": "US",
    "sessioni": {
     "fp1": {
      "data": "2026-05-01",
@@ -159,6 +163,7 @@
    "titolo": "GP del Canada",
    "circuito": "Circuit Gilles Villeneuve",
    "giri": 68,
+   "alpha2": "CA",
    "sessioni": {
     "fp1": {
      "data": "2026-05-22",
@@ -196,6 +201,7 @@
    "titolo": "GP di Monaco",
    "circuito": "Circuit de Monaco",
    "giri": 78,
+   "alpha2": "MC",
    "sessioni": {
     "fp1": {
      "data": "2026-06-05",
@@ -233,6 +239,7 @@
    "titolo": "GP di Spagna — Barcellona",
    "circuito": "Circuit de Barcelona-Catalunya",
    "giri": 66,
+   "alpha2": "ES",
    "sessioni": {
     "fp1": {
      "data": "2026-06-12",
@@ -270,6 +277,7 @@
    "titolo": "GP d'Austria",
    "circuito": "Red Bull Ring",
    "giri": 71,
+   "alpha2": "AT",
    "sessioni": {
     "fp1": {
      "data": "2026-06-26",
@@ -307,6 +315,7 @@
    "titolo": "GP di Gran Bretagna",
    "circuito": "Silverstone Circuit",
    "giri": 52,
+   "alpha2": "GB",
    "sessioni": {
     "fp1": {
      "data": "2026-07-03",
@@ -344,6 +353,7 @@
    "titolo": "GP del Belgio",
    "circuito": "Circuit de Spa-Francorchamps",
    "giri": 44,
+   "alpha2": "BE",
    "sessioni": {
     "fp1": {
      "data": "2026-07-17",
@@ -378,6 +388,7 @@
    "titolo": "GP d'Ungheria",
    "circuito": "Hungaroring",
    "giri": 70,
+   "alpha2": "HU",
    "sessioni": {
     "fp1": {
      "data": "2026-07-24",
@@ -412,6 +423,7 @@
    "titolo": "GP d'Olanda",
    "circuito": "Circuit Park Zandvoort",
    "giri": 72,
+   "alpha2": "NL",
    "sessioni": {
     "fp1": {
      "data": "2026-08-21",
@@ -446,6 +458,7 @@
    "titolo": "GP d'Italia",
    "circuito": "Autodromo Nazionale Monza",
    "giri": 53,
+   "alpha2": "IT",
    "sessioni": {
     "fp1": {
      "data": "2026-09-04",
@@ -480,6 +493,7 @@
    "titolo": "GP di Madrid",
    "circuito": "Circuito de Madring",
    "giri": 57,
+   "alpha2": "ES",
    "sessioni": {
     "fp1": {
      "data": "2026-09-11",
@@ -514,6 +528,7 @@
    "titolo": "GP dell'Azerbaigian",
    "circuito": "Baku City Circuit",
    "giri": 51,
+   "alpha2": "AZ",
    "sessioni": {
     "fp1": {
      "data": "2026-09-24",
@@ -548,6 +563,7 @@
    "titolo": "GP di Singapore",
    "circuito": "Marina Bay Street Circuit",
    "giri": 62,
+   "alpha2": "SG",
    "sessioni": {
     "fp1": {
      "data": "2026-10-09",
@@ -582,6 +598,7 @@
    "titolo": "GP degli Stati Uniti",
    "circuito": "Circuit of the Americas",
    "giri": 56,
+   "alpha2": "US",
    "sessioni": {
     "fp1": {
      "data": "2026-10-23",
@@ -616,6 +633,7 @@
    "titolo": "GP del Messico",
    "circuito": "Autódromo Hermanos Rodríguez",
    "giri": 71,
+   "alpha2": "MX",
    "sessioni": {
     "fp1": {
      "data": "2026-10-30",
@@ -650,6 +668,7 @@
    "titolo": "GP di San Paolo",
    "circuito": "Autódromo José Carlos Pace",
    "giri": 71,
+   "alpha2": "BR",
    "sessioni": {
     "fp1": {
      "data": "2026-11-06",
@@ -684,6 +703,7 @@
    "titolo": "GP di Las Vegas",
    "circuito": "Las Vegas Street Circuit",
    "giri": 50,
+   "alpha2": "US",
    "sessioni": {
     "fp1": {
      "data": "2026-11-20",
@@ -718,6 +738,7 @@
    "titolo": "GP del Qatar",
    "circuito": "Lusail International Circuit",
    "giri": 57,
+   "alpha2": "QA",
    "sessioni": {
     "fp1": {
      "data": "2026-11-27",
@@ -752,6 +773,7 @@
    "titolo": "GP di Abu Dhabi",
    "circuito": "Yas Marina Circuit",
    "giri": 58,
+   "alpha2": "AE",
    "sessioni": {
     "fp1": {
      "data": "2026-12-04",

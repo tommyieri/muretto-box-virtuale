@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <!--
-  HOME (ui-v2): la stagione 2026. Hero = prossima gara (countdown), sotto la griglia dei GP.
-  Consumatore puro: legge demo/data/calendario_2026.json (generato da gen_calendario.py,
-  fonte f1db) e demo/data/manifest.json. La pagina-gara e' gara.html?g=<nome>.
+  HOME (ui-v4): hero prossima gara (con sessioni del weekend), navigazione a bottoni
+  centrali (Live / Classifiche / Analisi), campionato in breve, griglia stagione con
+  bandiere. Consumatore puro: calendario_2026.json, classifiche_2026.json, manifest.
 -->
 <html lang="it">
 <head>
@@ -15,11 +15,6 @@
 <body>
 <div class="topbar">
   <span class="brand">Muretto Box Virtuale <small>demo storica &middot; stagione 2026</small></span>
-  <span style="margin-left:auto; display:flex; gap:14px">
-    <a class="back" href="live.html">Live</a>
-    <a class="back" href="classifiche.html">Classifiche</a>
-    <a class="back" href="analisi.html">Analisi</a>
-  </span>
 </div>
 
 <div class="wrap-home">
@@ -31,14 +26,24 @@
       <span class="data" id="heroData"></span>
       <span class="count" id="heroCount"></span>
     </div>
+    <div class="hero-sess num" id="heroSess"></div>
   </section>
+
+  <!-- navigazione principale: bottoni centrali -->
+  <nav class="navrow" aria-label="Sezioni">
+    <a class="navbtn" href="live.html"><b>Live</b><span>il weekend, in diretta<br>(in costruzione)</span></a>
+    <a class="navbtn" href="classifiche.html"><b>Classifiche</b><span>piloti e costruttori</span></a>
+    <a class="navbtn" href="analisi.html"><b>Analisi</b><span>i numeri della stagione</span></a>
+  </nav>
+
+  <section class="champ panel" id="champ" hidden></section>
 
   <div class="sez-tit">Stagione 2026</div>
   <div class="stagione" id="stagione"></div>
 
   <div class="footnote">
     Gare corse in demo: replay per-giro + esplorazione pit (&ldquo;se pitto al giro L, dove rientro?&rdquo;).
-    Calendario da f1db (generatore <span class="num">gen_calendario.py</span>); vincitori dai dati gara pubblicati.
+    Calendario e classifiche da f1db (generatori committati); vincitori dai dati gara pubblicati.
   </div>
 </div>
 
@@ -47,10 +52,14 @@ const el = id => document.getElementById(id);
 const MESE = d => d.toLocaleDateString('it-IT', { day:'numeric', month:'long' });
 let teamCol = {};
 
+// bandiera emoji dall'alpha2 f1db (dato, non mappa a mano)
+const bandiera = a2 => a2 ? String.fromCodePoint(...[...a2.toUpperCase()].map(c=>0x1F1A5+c.charCodeAt(0))) : '';
+
 function cardGara(g, inDemo, corsa){
   const quando = MESE(new Date(g.data+'T12:00:00'));
   const testa = `<div class="r">R${String(g.round).padStart(2,'0')}</div>
-    <div class="nome">${g.nome}</div><div class="data">${quando}${g.giri?` · ${g.giri} giri`:''}</div>`;
+    <div class="nome"><span class="gflag">${bandiera(g.alpha2)}</span> ${g.nome}</div>
+    <div class="data">${quando}${g.giri?` · ${g.giri} giri`:''}</div>`;
   if (inDemo){
     const w = g.vincitore;
     const win = w ? `<div class="win"><span class="tdot" style="background:${teamCol[w.team]||'var(--dim)'}"></span><b>${w.sigla}</b><span class="lab">vincitore</span></div>` : '';
@@ -62,12 +71,21 @@ function cardGara(g, inDemo, corsa){
 }
 
 function countdown(dataISO){
-  const target = new Date(dataISO+'T12:00:00');
-  const oggi = new Date();
-  const gg = Math.ceil((target - oggi) / 86400000);
+  const gg = Math.ceil((new Date(dataISO+'T12:00:00') - new Date()) / 86400000);
   if (gg <= 0) return 'oggi';
   if (gg === 1) return 'domani';
   return `fra ${gg} giorni`;
+}
+
+// riassunto sessioni del weekend (orari f1db UTC -> fuso del lettore; senza ora: solo giorno)
+function sessBreve(sess){
+  const NOMI = {fp1:'FP1', fp2:'FP2', fp3:'FP3', fp4:'FP4', sprint_quali:'SQ', sprint:'Sprint', qualifiche:'Quali', gara:'Gara'};
+  return Object.entries(sess||{}).map(([k,s])=>{
+    if (!s.data) return null;
+    if (!s.ora_utc) return `${NOMI[k]} ${new Date(s.data+'T12:00:00').toLocaleDateString('it-IT',{weekday:'short'})}`;
+    const d = new Date(`${s.data}T${s.ora_utc}:00Z`);
+    return `${NOMI[k]} ${d.toLocaleDateString('it-IT',{weekday:'short'})} ${d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}`;
+  }).filter(Boolean).join(' · ');
 }
 
 async function boot(){
@@ -82,12 +100,24 @@ async function boot(){
   const h = prossima || cal.gare[cal.gare.length-1];
   if (h){
     el('heroEyebrow').textContent = prossima ? 'Prossima gara' : 'Stagione conclusa';
-    el('heroTitolo').textContent = `${h.titolo} — ${MESE(new Date(h.data+'T12:00:00'))}`;
+    el('heroTitolo').textContent = `${bandiera(h.alpha2)} ${h.titolo} — ${MESE(new Date(h.data+'T12:00:00'))}`;
     el('heroCircuito').textContent = `${h.circuito}${h.giri?` · ${h.giri} giri`:''} · round ${h.round} di ${cal.gare.length}`;
     el('heroData').textContent = new Date(h.data+'T12:00:00').toLocaleDateString('it-IT',{weekday:'long', day:'numeric', month:'long', year:'numeric'});
     el('heroCount').textContent = prossima ? countdown(h.data) : '';
+    el('heroSess').textContent = prossima ? sessBreve(h.sessioni) : '';
     el('hero').hidden = false;
   }
+
+  // campionato in breve: primi 3 dagli standings f1db gia' generati
+  try {
+    const clas = await (await fetch('data/classifiche_2026.json')).json();
+    el('champ').innerHTML = `<div class="champ-tit">Campionato</div>` +
+      clas.piloti.slice(0,3).map(p=>`<a class="champ-p" href="scheda.html?tipo=pilota&id=${encodeURIComponent(p.id)}">
+        <i style="background:${teamCol[p.team_demo]||'var(--dim)'}"></i>
+        <span class="pp num">P${p.pos}</span><b>${p.sigla}</b><span class="pt num">${p.punti}</span></a>`).join('') +
+      `<a class="champ-tutta" href="classifiche.html">classifica completa &rarr;</a>`;
+    el('champ').hidden = false;
+  } catch(e){}
 
   el('stagione').innerHTML = cal.gare.map(g => {
     const demoOk = !!g.gara_demo && inDemo.has(g.gara_demo);

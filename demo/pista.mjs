@@ -12,10 +12,13 @@
 export async function creaPista({ canvas, url }) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`pista non disponibile (${res.status})`);
-  const data = await res.json();                      // {viewBox,punti,dist,sorgente,...}
+  const data = await res.json();                      // {viewBox,punti,dist,pitlane,sorgente,...}
   const G = canvas.getContext('2d');
   const [, , VW, VH] = data.viewBox;
   const P = data.punti, D = data.dist, N = P.length;
+  // pit-lane stilizzata (dal generatore): i pallini in in/out-lap transitano di qui
+  const PL = data.pitlane || null;
+  const FE = PL?.frazione_ingresso ?? 0.95, FX = PL?.frazione_uscita ?? 0.05;
   let dots = [], spento = false, proj = null;
 
   const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
@@ -47,6 +50,12 @@ export async function creaPista({ canvas, url }) {
     passa(css('--line') || '#3a4557', 8);                    // nastro
     passa('rgba(255,255,255,.08)', 1.2, [4 * dpr, 6 * dpr]); // mezzeria
     G.setLineDash([]);
+    if (PL) {                                                // pit-lane (nastro sottile)
+      G.strokeStyle = 'rgba(160,170,190,.28)'; G.lineWidth = 4 * dpr;
+      G.beginPath();
+      PL.punti.forEach((p, i) => { const X = proj.x(p[0]), Y = proj.y(p[1]); i ? G.lineTo(X, Y) : G.moveTo(X, Y); });
+      G.stroke();
+    }
     // start/finish: tacca al punto 0 (frazione di giro = 0, senso di marcia dei punti)
     const dpx = P[1][0] - P[0][0], dpy = P[1][1] - P[0][1], n = Math.hypot(dpx, dpy) || 1;
     const tx = -dpy / n, ty = dpx / n, L = 7 * dpr;
@@ -67,6 +76,24 @@ export async function creaPista({ canvas, url }) {
     const t = (d1 === d0) ? 0 : (f - d0) / (d1 - d0);
     return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
   }
+  // punto della PIT-LANE alla frazione g in [0,1] della sua lunghezza
+  function puntoPit(g) {
+    const Q = PL.punti, E = PL.dist, M = Q.length;
+    g = Math.min(1, Math.max(0, g));
+    let lo = 0, hi = M - 1;
+    while (lo < hi) { const m = (lo + hi + 1) >> 1; if (E[m] <= g) lo = m; else hi = m - 1; }
+    if (lo >= M - 1) return Q[M - 1];
+    const t = (E[lo + 1] === E[lo]) ? 0 : (g - E[lo]) / (E[lo + 1] - E[lo]);
+    return [Q[lo][0] + (Q[lo + 1][0] - Q[lo][0]) * t, Q[lo][1] + (Q[lo + 1][1] - Q[lo][1]) * t];
+  }
+  // posizione di un pallino: in in-lap (coda del giro) e out-lap (testa del giro)
+  // il pallino percorre la pit-lane; altrove il nastro. box: 'in' | 'out' | null.
+  function posizione(d) {
+    const f = ((d.f % 1) + 1) % 1;
+    if (PL && d.box === 'in' && f >= FE) return puntoPit((f - FE) / (1 - FE) * 0.5);
+    if (PL && d.box === 'out' && f <= FX) return puntoPit(0.5 + f / FX * 0.5);
+    return puntoA(f);
+  }
 
   function render() {
     if (!proj) return;
@@ -75,7 +102,7 @@ export async function creaPista({ canvas, url }) {
     tracciato();
     if (spento) return;              // legge del replay: pallini spenti, resta il nastro
     for (const d of dots) {
-      const [vx, vy] = puntoA(d.f);
+      const [vx, vy] = posizione(d);
       const X = proj.x(vx), Y = proj.y(vy);
       G.beginPath(); G.arc(X, Y, 5.5 * dpr, 0, 7);
       G.fillStyle = d.colore; G.fill();

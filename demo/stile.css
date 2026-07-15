@@ -374,3 +374,26 @@ a.gpcard:hover { border-color: var(--accent); text-decoration: none; transform: 
 .anl-riga .barra.su { background: var(--ok); }
 .anl-riga .barra.giu { background: color-mix(in srgb, var(--rf) 75%, var(--panel)); }
 .anl-riga .val { text-align: right; font-size: 12.5px; color: var(--dim); }
+
+/* ---------- home v4: bottoni centrali, campionato in breve, bandiere ---------- */
+.hero-sess { color: var(--dim); font-size: 12px; margin-top: 12px; letter-spacing: .2px; }
+.navrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 18px 0; }
+.navbtn { display: flex; flex-direction: column; align-items: center; gap: 3px; text-align: center;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 10px;
+  color: var(--txt); transition: border-color .15s, transform .15s; }
+.navbtn:hover { border-color: var(--accent); transform: translateY(-1px); text-decoration: none; }
+.navbtn b { font-size: 16px; letter-spacing: .3px; color: var(--accent); }
+.navbtn span { color: var(--dim); font-size: 11.5px; line-height: 1.35; }
+.champ { display: flex; align-items: center; gap: 8px; padding: 10px 14px; margin-bottom: 6px;
+  flex-wrap: wrap; }
+.champ-tit { color: var(--dim); font: 700 10px/1 var(--mono); letter-spacing: 1.2px;
+  text-transform: uppercase; margin-right: 4px; }
+.champ-p { display: inline-flex; align-items: center; gap: 6px; color: var(--txt);
+  background: var(--panel2); border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; }
+.champ-p:hover { border-color: var(--accent); text-decoration: none; }
+.champ-p i { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.champ-p .pp { color: var(--dim); font-size: 11px; }
+.champ-p b { font-family: var(--mono); letter-spacing: .5px; font-size: 13px; }
+.champ-p .pt { color: var(--dim); font-size: 12px; }
+.champ-tutta { margin-left: auto; font-size: 12.5px; white-space: nowrap; }
+.gpcard .nome .gflag { font-size: 14px; margin-right: 2px; }
