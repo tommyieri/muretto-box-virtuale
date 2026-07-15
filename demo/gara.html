@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<!--
+  PAGINA-GARA (ui-v2). Consumatore puro: legge demo/data/*, engine.mjs, pitscenario.mjs,
+  timeline.mjs — non li modifica. La logica di simulazione/valutazione e' IDENTICA alla
+  vista precedente (index v1): qui cambia solo la presentazione.
+  Gerarchia: la pista e' la protagonista; la timeline eventi sostituisce lo slider;
+  l'esplorazione pit ("se pitto al giro L") resta il prodotto.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gara — Muretto Box Virtuale</title>
+<link rel="stylesheet" href="stile.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="back" href="index.html">&larr; Stagione 2026</a>
+  <span class="brand">Muretto Box Virtuale <small>demo storica</small></span>
+</div>
+
+<div class="wrap-gara">
+  <div class="gheader">
+    <h1 id="hTitolo">…</h1>
+    <div class="sub">
+      <span id="hData"></span>
+      <span><b id="hGiri">–</b> giri</span>
+      <span id="hMeteo"></span>
+      <span id="hVincitore"></span>
+    </div>
+    <span class="plbadge" id="plBadge" role="button" tabindex="0" aria-describedby="plTip" style="display:none">
+      pit-loss <span class="v" id="plVal"></span> <span class="prov" id="plProv"></span>
+    </span>
+  </div>
+  <div class="pltip" id="plTip">Provenienza del pit-loss: <b>realizzato</b> = misurato su questa gara (protocollo FF5) · <b>tipico</b> = stima di circuito, gara non misurata · <b>non misurato</b> = durata ereditata f1db, non verificata.</div>
+
+  <div class="glayout">
+    <div class="col-pista">
+      <section class="panel pista" id="pista" aria-label="Area pista"></section>
+
+      <div class="transport">
+        <button id="play" class="play" title="Play / Pausa">&#9654;</button>
+        <div class="speeds" id="speeds">
+          <button data-s="1" class="on">1&times;</button><button data-s="2">2&times;</button><button data-s="4">4&times;</button><button data-s="8">8&times;</button>
+        </div>
+        <span class="lapnum">Giro <b id="lapLabel">1</b>/<span id="lapMax">–</span></span>
+        <span class="phase" id="phase"></span>
+      </div>
+
+      <!-- timeline eventi: barra-giri con SC/VSC/rossa e tacche pit; click/drag = vai al giro -->
+      <div class="evtl" id="evtl" tabindex="0" role="slider" aria-label="Giro di gara"
+           aria-valuemin="1" aria-valuemax="1" aria-valuenow="1">
+        <div class="rail" id="evtlRail">
+          <div class="fatto" id="evtlFatto"></div>
+          <div id="evtlSegs"></div>
+          <div id="evtlPits"></div>
+        </div>
+        <div class="cursore" id="evtlCur" style="left:0%"></div>
+      </div>
+      <div class="evtl-leg" id="evtlLeg" style="visibility:hidden">
+        <i><span class="sw sc"></span>Safety Car</i>
+        <i><span class="sw vsc"></span>Virtual SC</i>
+        <i id="legrf" style="display:none"><span class="sw rf"></span>Bandiera rossa</i>
+        <i><span class="sw pitsw"></span>pit stop</i>
+      </div>
+
+      <div class="flag" id="flag"></div>
+    </div>
+
+    <div class="col-piloti">
+      <div class="gridscroll"><div class="grid panel notrans" id="grid"></div></div>
+      <div class="colhint">Tocca un pilota per l&rsquo;esplorazione pit: &ldquo;se pitto al giro L, dove rientro?&rdquo;</div>
+
+      <section class="pit panel hidden" id="pit">
+        <div class="head">
+          <h3 id="pitTitle">Pit</h3>
+          <button class="chiudi" id="pitChiudi" title="Chiudi esplorazione pit">&#10005;</button>
+        </div>
+        <div class="pitlap">Pit al giro <b id="pitLapLabel">–</b>
+          <input type="range" id="pitLap" min="2" max="2" value="2"></div>
+        <div id="pitKv"></div>
+        <div class="pithint">Rivali congelati al reale &middot; il motore mostra dove rientri, non se conviene.</div>
+      </section>
+    </div>
+  </div>
+
+  <div class="footnote">Dati storici della gara (per giro) &middot; il pit-loss in uso e la sua provenienza sono nel badge in alto.</div>
+</div>
+
+<script type="module">
+import { evaluatePit } from './pitscenario.mjs';
+import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs';
+const el = id => document.getElementById(id);
+const ROW_H = 44;
+let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams={}, pitloss={}, plMeta={}, neutral={}, teamCol={}, calendario=null;
+let curLap=1, selDrv=null, rowEls={}, leaderMemo={}, finestre=null, teamWarned=new Set(), pitLaps={};
+
+// --- contatore anonimo aggregato (strumentazione, non simulatore) ---
+const conta = e => { try { navigator.sendBeacon(`api/contatore?e=${e}`); } catch(_){} };
+
+// --- hook waitlist (DORMIENTE) --- identico alla v1: si attiva solo su decisione PO.
+const WAITLIST_ATTIVA = false;
+function hookWaitlist(){
+  if(!WAITLIST_ATTIVA)
+    return `<div class="kv"><span class="k">Undercut/Overcut</span><span class="v dim">valutazione strategica in sviluppo (serve il degrado gomma)</span></div>`;
+  return '';
+}
+
+const clock = makeClock({ onTick: p => frame(p), onEnd: () => setPlayIcon(false), min: 1 });
+
+function coloreTeam(t){
+  if (t && teamCol[t]) return teamCol[t];
+  if (t && !teamWarned.has(t)) { teamWarned.add(t); console.warn('team senza colore, fallback neutro:', t); }
+  return 'var(--dim)';
+}
+
+async function boot() {
+  const m = await (await fetch('data/manifest.json')).json();
+  try { esiti = await (await fetch('data/esiti.json')).json(); } catch(e){ esiti={}; }
+  try { grids = await (await fetch('data/grids.json')).json(); } catch(e){ grids={}; }
+  try { teams = await (await fetch('data/teams.json')).json(); } catch(e){ teams={}; }
+  try { pitloss = await (await fetch('data/pitloss.json')).json(); } catch(e){ pitloss={}; }
+  try { plMeta = await (await fetch('data/pitloss_meta.json')).json(); } catch(e){ plMeta={}; }
+  try { neutral = await (await fetch('neutralizzazione.json')).json(); } catch(e){ neutral={}; }
+  try { teamCol = await (await fetch('team_colori.json')).json(); } catch(e){ teamCol={}; }
+  try { calendario = await (await fetch('data/calendario_2026.json')).json(); } catch(e){ calendario=null; }
+  const nomi = m.map(r=>r.gara);
+  const rich = new URLSearchParams(location.search).get('g');
+  await loadGara(nomi.includes(rich) ? rich : nomi[0]);
+}
+
+function header(gara){
+  const cal = calendario?.gare?.find(g => g.gara_demo === gara);
+  el('hTitolo').textContent = cal?.titolo || gara;
+  document.title = `${cal?.titolo || gara} — Muretto Box Virtuale`;
+  el('hData').textContent = cal ? new Date(cal.data+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'}) : '';
+  el('hGiri').textContent = race.n_laps;
+  // meteo: stesso criterio DRY di drycheck (zero giri su INTERMEDIATE/WET) sui dati gara
+  let intwet = false;
+  for (const lp of race.laps){ for (const d in lp.cars){ const c=lp.cars[d].compound;
+    if (c==='INTERMEDIATE'||c==='WET'){ intwet=true; break; } } if(intwet) break; }
+  el('hMeteo').textContent = intwet ? 'bagnata/mista' : 'asciutta';
+  const w = cal?.vincitore;
+  el('hVincitore').innerHTML = w ? `vince <b>${w.sigla}</b>` : '';
+  // badge pit-loss: valore da pitloss.json, provenienza da pitloss_meta.json
+  // (gara assente dal meta = appena pubblicata dallo staging => tipico, come da README del file)
+  const loss = pitloss[gara];
+  if (typeof loss === 'number'){
+    const prov = plMeta[gara]?.provenienza || 'tipico';
+    el('plVal').textContent = loss.toFixed(2).replace('.',',')+' s';
+    el('plProv').textContent = prov.replace('_',' ');
+    el('plProv').className = 'prov '+prov;
+    el('plBadge').style.display = 'inline-flex';
+  } else el('plBadge').style.display = 'none';
+}
+
+async function loadGara(gara) {
+  race = await (await fetch(`data/${encodeURIComponent(gara)}.json`)).json();
+  race.gara = gara; race.byLap = {};
+  for (const lp of race.laps) race.byLap[lp.lap] = lp.cars;
+  lastLap = {};
+  for (const lp of race.laps) for (const d in lp.cars) lastLap[d] = lp.lap;
+  esitiGara = esiti[gara] || {}; gridGara = grids[gara] || [];
+  const nonP = new Set(Object.entries(esitiGara).filter(([d,t])=>t==='NP').map(([d])=>d));
+  race.nonParten = nonP;
+  finestre = neutral[gara] || null; leaderMemo = {};
+  // tacche pit per la timeline eventi: giri con almeno un in_lap nei dati gara
+  pitLaps = {};
+  for (const lp of race.laps) for (const d in lp.cars)
+    if (lp.cars[d].in_lap) (pitLaps[lp.lap] ||= []).push(d);
+  el('lapMax').textContent = race.n_laps;
+  header(gara);
+  selDrv=null; el('pit').classList.add('hidden');
+  drawEvtl();
+  drawPista(gara);
+  buildGrid();
+  const rfLaps = new Set();
+  for (const [a,b] of (finestre?.rf || [])) for (let L=a; L<=b; L++) rfLaps.add(L);
+  const durate = computeDurations(race.byLap, race.n_laps, rfLaps);
+  clock.setDur(L => durate[L]);
+  clock.reset(race.n_laps);
+  setPlayIcon(false);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>el('grid').classList.remove('notrans')));
+}
+
+// --- area pista: Silverstone avra' i pallini (vista reale); le altre un posto apparecchiato ---
+function drawPista(gara){
+  el('pista').innerHTML = `<div class="pista-vuota">
+      <b>${gara}</b>
+      <span>pista in arrivo &mdash; la vista pallini (replay posizioni reali) arriva con UI-2</span>
+    </div>`;
+}
+
+// --- timeline eventi: geometria da bands() (helper puro), tacche pit dai dati gara ---
+const lapPct = L => race.n_laps>1 ? (L-1)/(race.n_laps-1)*100 : 0;
+function drawEvtl(){
+  const bs = bands(finestre, race.n_laps);
+  el('evtlSegs').innerHTML = bs.map(b=>`<div class="seg ${b.type}" title="${b.type.toUpperCase()} giri ${b.a}&ndash;${b.b}" style="left:${b.left}%;width:${b.width}%"></div>`).join('');
+  el('evtlPits').innerHTML = Object.entries(pitLaps).map(([L,ds])=>
+    `<div class="pitm" title="pit al giro ${L}: ${ds.join(', ')}" style="left:${lapPct(+L)}%"></div>`).join('');
+  el('evtlLeg').style.visibility = (bs.length || Object.keys(pitLaps).length) ? 'visible' : 'hidden';
+  el('legrf').style.display = (finestre?.rf?.length) ? 'inline-flex' : 'none';
+  el('evtl').setAttribute('aria-valuemax', race.n_laps);
+}
+function evtlSeek(clientX){
+  const r = el('evtlRail').getBoundingClientRect();
+  const f = Math.min(1, Math.max(0, (clientX - r.left) / r.width));
+  clock.pause(); setPlayIcon(false);
+  clock.seek(1 + f*(race.n_laps-1));
+}
+{ // interazione: click/drag + tastiera
+  const tl = el('evtl'); let giu=false;
+  tl.addEventListener('pointerdown', e=>{ giu=true; evtlSeek(e.clientX);
+    try{ tl.setPointerCapture(e.pointerId); }catch(_){} });
+  tl.addEventListener('pointermove', e=>{ if(giu) evtlSeek(e.clientX); });
+  tl.addEventListener('pointerup', ()=>{ giu=false; });
+  tl.addEventListener('keydown', e=>{
+    if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight') return;
+    e.preventDefault(); clock.pause(); setPlayIcon(false);
+    clock.seek(Math.min(race.n_laps, Math.max(1, Math.round(clock.position)+(e.key==='ArrowRight'?1:-1))));
+  });
+}
+
+// righe keyed create UNA volta per gara; poi aggiornate in place ogni frame
+function buildGrid(){
+  const tutti=[...new Set([...race.drivers, ...gridGara])];
+  const g=el('grid'); g.classList.add('notrans'); g.innerHTML=''; rowEls={};
+  for(const d of tutti){
+    const row=document.createElement('div'); row.className='row'; row.dataset.drv=d;
+    row.innerHTML=`<span class="tbar"></span><span class="pos"></span>`
+      +`<span class="idn"><span class="l1"><span class="drv">${d}</span><span class="box" style="display:none"></span></span><span class="team"></span></span>`
+      +`<span class="gaps"><span class="gap"></span><span class="gapprev"></span></span>`
+      +`<span class="tyreb"><span class="dot"></span><span class="age"></span></span>`;
+    row.addEventListener('click',()=>{ if(!row.classList.contains('selectable'))return;
+      selDrv=d; clock.pause(); setPlayIcon(false);
+      curLap=Math.min(race.n_laps,Math.round(clock.position)); clock.seek(curLap);
+      openPit(); frame(clock.position);
+      if(matchMedia('(max-width:899px)').matches) el('pit').scrollIntoView({behavior:'smooth',block:'nearest'});
+    });
+    g.appendChild(row);
+    rowEls[d]={root:row, tbar:row.querySelector('.tbar'), pos:row.querySelector('.pos'),
+               team:row.querySelector('.team'), box:row.querySelector('.box'),
+               gap:row.querySelector('.gap'), gapprev:row.querySelector('.gapprev'),
+               dot:row.querySelector('.dot'), age:row.querySelector('.age')};
+  }
+  g.style.height = (tutti.length*ROW_H)+'px';
+}
+
+// leaderAiGiri (conteggio doppiati): identico alla v1
+function leaderAiGiri(L){
+  if(leaderMemo[L]) return leaderMemo[L];
+  const out={};
+  for (let k=L;k<=Math.min(L+3,race.n_laps);k++) if (race.byLap[k]) {
+    const o=Object.entries(race.byLap[k]).filter(([d,c])=>typeof c.cum_time==='number'&&!race.nonParten.has(d)).sort((a,b)=>a[1].cum_time-b[1].cum_time);
+    if(o.length) out[k]=o[0][1].cum_time;
+  }
+  return leaderMemo[L]=out;
+}
+
+// Classifica al giro frazionario: identica alla v1 + gap da chi precede + flag box (in/out lap)
+function classificaAt(L, f){
+  const A=race.byLap[L], B=race.byLap[L+1];
+  const icum=(d,c)=> (f>0 && B && typeof B[d]?.cum_time==='number')
+      ? c.cum_time + f*(B[d].cum_time - c.cum_time) : c.cum_time;
+  let ordine = Object.entries(A).filter(([d,c]) => typeof c.cum_time==='number' && !race.nonParten.has(d))
+      .map(([d,c])=>[d,c,icum(d,c)]);
+  const faseGriglia = (L===1 && f===0 && gridGara.length>0);
+  if (faseGriglia) {
+    const rank={}; gridGara.forEach((d,i)=>rank[d]=i);
+    ordine.sort((a,b)=>(rank[a[0]]??999)-(rank[b[0]]??999));
+  } else ordine.sort((a,b)=>(a[2]-b[2])||(a[0]<b[0]?-1:1));
+  const leader = ordine.length?ordine[0][2]:0;
+  const lag = leaderAiGiri(L);
+  const rows = ordine.map(([drv,c,cum],i)=>{
+    const gap=cum-leader; let gd=0;
+    for(const k in lag) if(+k>L && c.cum_time>lag[k]) gd=+k-L;
+    let et,cls,prev=null;
+    // in ordine-griglia (giro 1, fermo) i delta di cum_time NON sono gap di gara: soppressi
+    if(faseGriglia){et=i===0?'POLE':'—';cls=i===0?'lead':'';}
+    else if(gd>=1){et=`+${gd} gir${gd>1?'i':'o'}`;cls='lapped';}
+    else if(i===0){et='LEADER';cls='lead';}
+    else{et=`+${gap.toFixed(1)}s`;cls='';
+      prev=cum-ordine[i-1][2];}
+    return {pos:i+1,drv,team:c.team,compound:c.compound,age:c.tyre_age,et,cls,prev,
+            inlap:!!c.in_lap,outlap:!!c.out_lap,leader:i===0,selectable:true};
+  });
+  const inGara=new Set(ordine.map(([d])=>d));
+  const teamOf={}; for(const lp of race.laps) for(const [d,c] of Object.entries(lp.cars)) teamOf[d]=c.team;
+  const tutti=new Set([...race.drivers,...gridGara]);
+  const fuori=[...tutti].filter(d=>!inGara.has(d));
+  const sr={doppiato:0,RIT:1,NP:2,ghost:3};
+  const coda=fuori.map(d=>{
+    const t=esitiGara[d], np=race.nonParten.has(d), last=lastLap[d]; let label,st;
+    if(t==='doppiato'&&last!==undefined){label=`arrivato · ${last} giri`;st='doppiato';}
+    else if(t==='RIT'&&last!==undefined){label=`ritirato (giro ${last})`;st='RIT';}
+    else if(np||t==='NP'){label='non partito';st='NP';}
+    else if(last!==undefined&&last<race.n_laps){label=`arrivato · ${last} giri`;st='doppiato';}
+    else{label='non partito';st='ghost';}
+    return {pos:'',drv:d,team:teamOf[d]||teams[d]||'',compound:null,age:null,et:label,st,prev:null,
+            inlap:false,outlap:false,leader:false,selectable:false,last:last??-1};
+  }).sort((a,b)=>(sr[a.st]-sr[b.st])||(b.last-a.last));
+  return rows.concat(coda);
+}
+
+// aggiornamento in place di una riga (nessun innerHTML per frame)
+function paintRow(r, i){
+  const e=rowEls[r.drv]; if(!e) return;
+  e.root.style.transform=`translateY(${i*ROW_H}px)`;
+  const retired = r.st==='RIT'||r.st==='NP'||r.st==='ghost';
+  e.root.className='row'
+    + (r.leader?' leader':'') + (retired?' retired':'') + (r.st==='doppiato'?' done':'')
+    + (r.selectable?' selectable':'') + (r.drv===selDrv?' sel':'');
+  e.tbar.style.background=coloreTeam(r.team);
+  if(e.pos.textContent!==String(r.pos)) e.pos.textContent=r.pos;
+  if(e.team.textContent!==(r.team||'')) e.team.textContent=r.team||'';
+  e.gap.textContent=r.et; e.gap.className='gap '+(r.cls|| (r.st?'stato':''));
+  e.gapprev.textContent = (typeof r.prev==='number') ? `+${r.prev.toFixed(1)} da chi precede` : '';
+  // ai box / out-lap: fatto grezzo dei dati gara (in_lap/out_lap), non un giudizio
+  if (r.inlap || r.outlap){ e.box.style.display='inline-block'; e.box.textContent = r.inlap?'BOX':'OUT'; }
+  else e.box.style.display='none';
+  const col=tyreColor(r.compound);
+  if(r.compound){
+    e.dot.style.visibility='visible'; e.dot.title=r.compound;
+    e.dot.style.background=col||'var(--dim)';
+    e.age.textContent = (typeof r.age==='number') ? r.age : '';
+  } else { e.dot.style.visibility='hidden'; e.age.textContent=''; }
+}
+
+// un frame: righe, giro/fase, cursore timeline; il pit si aggiorna solo da fermi
+function frame(p){
+  const L=Math.max(1,Math.min(race.n_laps,Math.floor(p)));
+  const f=Math.min(1,Math.max(0,p-L));
+  curLap=Math.min(race.n_laps,Math.max(1,Math.round(p)));
+  classificaAt(L,f).forEach(paintRow);
+  el('lapLabel').textContent=curLap;
+  const pct = race.n_laps>1 ? (p-1)/(race.n_laps-1)*100 : 0;
+  el('evtlCur').style.left = pct+'%';
+  el('evtlFatto').style.width = pct+'%';
+  el('evtl').setAttribute('aria-valuenow', curLap);
+  const ph=fase(finestre,curLap);
+  el('phase').className='phase '+(ph?ph.toLowerCase():'run');
+  el('phase').textContent=ph||'in corso';
+  const fl=el('flag');
+  const testoFlag={SC:'⚑ SAFETY CAR', VSC:'⚑ VIRTUAL SAFETY CAR', RF:'⚑ BANDIERA ROSSA · GARA SOSPESA'};
+  if(ph){ fl.className='flag on '+ph.toLowerCase(); fl.textContent=testoFlag[ph]; }
+  else if(fl.className!=='flag'){ fl.className='flag'; fl.textContent=''; }
+  if(selDrv && !clock.playing) updatePit();
+}
+
+function setPlayIcon(playing){ const b=el('play'); b.textContent=playing?'❚❚':'▶'; b.classList.toggle('playing',playing); }
+
+// --- esplorazione pit: logica identica alla v1 (evaluatePit invariato), veste nuova ---
+function openPit(){
+  if(!selDrv){ el('pit').classList.add('hidden'); return; }
+  conta('valutazione_pit');
+  el('pit').classList.remove('hidden');
+  el('pitTitle').innerHTML = `Se ${selDrv} pitta&hellip; <small>rivali congelati</small>`;
+  const pl=el('pitLap'); pl.min=curLap+1; pl.max=race.n_laps;
+  if(+pl.value<curLap+1||+pl.value>race.n_laps) pl.value=Math.min(curLap+4,race.n_laps);
+  updatePit();
+}
+function chiudiPit(){ selDrv=null; el('pit').classList.add('hidden'); frame(clock.position); }
+function updatePit(){
+  const L=curLap, pitL=+el('pitLap').value;
+  el('pitLapLabel').textContent=pitL;
+  const present=Object.keys(race.byLap[L]).filter(d=>typeof race.byLap[L][d].cum_time==='number'&&!race.nonParten.has(d));
+  const loss=pitloss[race.gara]??22.0;
+  const r=evaluatePit({byLap:race.byLap,nLaps:race.n_laps,pace:race.pace[String(L)],driver:selDrv,freezeLap:L,pitLap:pitL,pitLoss:loss,present,gara:race.gara,laps:race.laps});
+  const box=el('pitKv');
+  if(!r.ok){ box.innerHTML=`<div class="pitmsg">Non valutabile a questo giro (${r.reason}).</div>`; return; }
+  const neutro = r.sotto_neutralizzazione === true;
+  const gapTxt = (nome, gap) => {
+    if (!nome) return '<span class="g">—</span>';
+    if (neutro || gap == null) return `${nome} <span class="sub">gap n/d sotto neutralizzazione</span>`;
+    return `${nome} <span class="g">+${gap.toFixed(1)}s</span>`;
+  };
+  const dav = r.davanti_ho ? gapTxt(r.davanti_ho, r.gap_ahead) : '<span class="g">aria pulita</span>';
+  const die = gapTxt(r.dietro_esco, r.gap_behind);
+  const ng = r.neutralizzazione_gara || {};
+  const warn = ng.finestra_attiva
+    ? `<div class="warn">⚠ Pit in finestra ${ng.tipo} (giri ${ng.finestra[0]}–${ng.finestra[1]}, durata tipica ${ng.durata_tipica} giri): il pit-loss verde qui sovrastima la perdita reale.</div>`
+    : '';
+  box.innerHTML = warn + `
+    <div class="kv"><span class="k">Pit-loss</span><span class="v num">+${loss.toFixed(1)} s</span></div>
+    <div class="kv"><span class="k">Rientro</span><span class="v">P${r.rientro_pos} <span class="sub">tra i ${r.su_totale} a pari giro</span></span></div>
+    <div class="kv"><span class="k">Davanti</span><span class="v">${dav}</span></div>
+    <div class="kv"><span class="k">Dietro</span><span class="v">${die}</span></div>
+    ${hookWaitlist()}`;
+}
+
+el('play').addEventListener('click', ()=>{ clock.toggle(); setPlayIcon(clock.playing); });
+el('speeds').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b)return;
+  clock.setSpeed(+b.dataset.s);
+  [...el('speeds').children].forEach(x=>x.classList.toggle('on',x===b)); });
+el('pitLap').addEventListener('input', updatePit);
+el('pitChiudi').addEventListener('click', chiudiPit);
+el('plBadge').addEventListener('click', ()=>el('plTip').classList.toggle('on'));
+el('plBadge').addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el('plTip').classList.toggle('on'); } });
+conta('apertura');
+boot();
+</script>
+</body>
+</html>

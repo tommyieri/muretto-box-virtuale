@@ -183,7 +183,7 @@ a.gpcard:hover { border-color: var(--accent); text-decoration: none; transform: 
 .evtl-leg .sw.sc { background: var(--sc); }
 .evtl-leg .sw.vsc { background: repeating-linear-gradient(90deg, var(--vsc) 0 4px, transparent 4px 8px); }
 .evtl-leg .sw.rf { background: var(--rf); }
-.evtl-leg .sw.pit { width: 2px; height: 9px; background: var(--dim); }
+.evtl-leg .sw.pitsw { width: 2px; height: 9px; background: var(--dim); }
 
 /* banner bandiera (broadcast) */
 .flag { display: none; align-items: center; justify-content: center; gap: 10px; height: 44px;
