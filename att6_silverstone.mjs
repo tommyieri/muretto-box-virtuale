@@ -1,3 +1,13 @@
+/*
+ * ATT6 v1 — SUPERATO. NON USARE PER NUOVE ATTIVAZIONI.
+ *
+ * Implementa il criterio ATT6 v1 (3 pit reali, soglia 2/3 migliorati e 0 peggiorati),
+ * sostituito da PREREG_SESSIONE_ATT6_V2.md (14/07/2026) e dallo strumento parametrico
+ * demo/att6.mjs. Stesso trattamento di att6_montreal.mjs.
+ *
+ * Questo file resta committato come GENERATORE della tabella in NOTA_SILVERSTONE.md:
+ * serve a riprodurre quella attivazione, non a produrne di nuove.
+ */
 // att6_silverstone.mjs — ATT6 dell'attivazione Silverstone (29,12 -> 20,80).
 // Confronto a tre colonne su 3 pit REALI della gara demo "Gran Bretagna" (2026):
 //   PRIMA  = rientro_pos predetto dal motore con pit-loss 29,12
