@@ -68,7 +68,22 @@
     </div>
 
     <div class="col-piloti">
-      <div class="gridscroll"><div class="grid panel notrans" id="grid"></div></div>
+      <div class="tabs" role="tablist">
+        <button id="tabClas" class="on" role="tab" aria-selected="true">Classifica</button>
+        <button id="tabStrat" role="tab" aria-selected="false">Strategia gomme</button>
+      </div>
+      <div class="gridscroll" id="vistaClas"><div class="grid panel notrans" id="grid"></div></div>
+      <!-- strip strategia: una barra per pilota, lunga quanto la gara, segmentata per stint -->
+      <section class="panel strat" id="vistaStrat" hidden>
+        <div id="stratRighe"></div>
+        <div class="strat-leg">
+          <i><span class="sw" style="background:#ff3b3b"></span>soft</i>
+          <i><span class="sw" style="background:#ffd24e"></span>medium</i>
+          <i><span class="sw" style="background:#eef0f3"></span>hard</i>
+          <i><span class="sw" style="background:#43c463;border:1px solid #3ba7ff"></span>inter/wet</i>
+          <i><span class="sw" style="width:2px;background:var(--txt)"></span>pit</i>
+        </div>
+      </section>
       <div class="colhint">Tocca un pilota per l&rsquo;esplorazione pit: &ldquo;se pitto al giro L, dove rientro?&rdquo;</div>
 
       <section class="pit panel hidden" id="pit">
@@ -182,6 +197,7 @@ async function loadGara(gara) {
   for (let L=2; L<=race.n_laps; L++) pistaCum[L] = pistaCum[L-1] + (durate[L-1]||0);
   pistaTot = pistaCum[race.n_laps] || 1;
   drawPista(gara, durate);
+  buildStrat(); mostraVista(false);
   clock.setDur(L => durate[L]);
   clock.reset(race.n_laps);
   setPlayIcon(false);
@@ -376,6 +392,43 @@ function frame(p){
 
 function setPlayIcon(playing){ const b=el('play'); b.textContent=playing?'❚❚':'▶'; b.classList.toggle('playing',playing); }
 
+// --- strip strategia: stint da (stint, compound) per-giro, pit dai flag in_lap ---
+// Dati gia' nei JSON gara: nessun calcolo nuovo, solo raggruppamento per la vista.
+function buildStrat(){
+  const ordine = classificaAt(race.n_laps, 0);          // ordine d'arrivo + coda
+  const righe = [];
+  for (const r of ordine){
+    const d = r.drv, fine = lastLap[d];
+    if (fine === undefined) continue;                   // mai in pista (NP senza giri)
+    const seg = []; let cur = null;
+    for (let L=1; L<=fine; L++){
+      const c = race.byLap[L]?.[d]; if (!c) continue;
+      const k = `${c.stint}|${c.compound}`;
+      if (!cur || cur.k !== k){ if(cur) seg.push(cur); cur = {k, da:L, a:L, compound:c.compound}; }
+      else cur.a = L;
+    }
+    if (cur) seg.push(cur);
+    if (!seg.length) continue;
+    const pits = [];
+    for (let L=1; L<=fine; L++) if (race.byLap[L]?.[d]?.in_lap) pits.push(L);
+    const pct = L => (L-1)/(race.n_laps-1)*100;
+    const bar = seg.map(s=>{
+      const col = tyreColor(s.compound) || 'var(--dim)';
+      const wet = (s.compound==='INTERMEDIATE'||s.compound==='WET') ? ' wetb' : '';
+      const w = Math.max(pct(s.a)-pct(s.da) + 100/(race.n_laps-1), 0.8);
+      return `<div class="stint${wet}" title="${s.compound||'?'} giri ${s.da}–${s.a}" style="left:${pct(s.da)}%;width:${w}%;background:${col}"></div>`;
+    }).join('') + pits.map(L=>`<div class="pitt" title="pit al giro ${L}" style="left:${pct(L)}%"></div>`).join('');
+    righe.push(`<div class="riga"><span class="sig"><i style="background:${coloreTeam(r.team)}"></i>${d}</span><span class="barra">${bar}</span></div>`);
+  }
+  el('stratRighe').innerHTML = righe.join('');
+}
+function mostraVista(strat){
+  el('vistaClas').hidden = strat; el('vistaStrat').hidden = !strat;
+  el('tabClas').classList.toggle('on', !strat); el('tabStrat').classList.toggle('on', strat);
+  el('tabClas').setAttribute('aria-selected', String(!strat));
+  el('tabStrat').setAttribute('aria-selected', String(strat));
+}
+
 // --- esplorazione pit: logica identica alla v1 (evaluatePit invariato), veste nuova ---
 function openPit(){
   if(!selDrv){ el('pit').classList.add('hidden'); return; }
@@ -425,6 +478,8 @@ el('speeds').addEventListener('click', e=>{ const b=e.target.closest('button'); 
   [...el('speeds').children].forEach(x=>x.classList.toggle('on',x===b)); });
 el('pitLap').addEventListener('input', updatePit);
 el('pitChiudi').addEventListener('click', chiudiPit);
+el('tabClas').addEventListener('click', ()=>mostraVista(false));
+el('tabStrat').addEventListener('click', ()=>mostraVista(true));
 el('plBadge').addEventListener('click', ()=>el('plTip').classList.toggle('on'));
 el('plBadge').addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el('plTip').classList.toggle('on'); } });
 conta('apertura');
