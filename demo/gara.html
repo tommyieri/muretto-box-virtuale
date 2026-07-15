@@ -94,6 +94,7 @@ const el = id => document.getElementById(id);
 const ROW_H = 44;
 let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams={}, pitloss={}, plMeta={}, neutral={}, teamCol={}, calendario=null;
 let curLap=1, selDrv=null, rowEls={}, leaderMemo={}, finestre=null, teamWarned=new Set(), pitLaps={};
+let pista=null, pistaCum=null, pistaTot=0;   // vista pallini (solo dove esiste il replay)
 
 // --- contatore anonimo aggregato (strumentazione, non simulatore) ---
 const conta = e => { try { navigator.sendBeacon(`api/contatore?e=${e}`); } catch(_){} };
@@ -172,23 +173,48 @@ async function loadGara(gara) {
   header(gara);
   selDrv=null; el('pit').classList.add('hidden');
   drawEvtl();
-  drawPista(gara);
   buildGrid();
   const rfLaps = new Set();
   for (const [a,b] of (finestre?.rf || [])) for (let L=a; L<=b; L++) rfLaps.add(L);
   const durate = computeDurations(race.byLap, race.n_laps, rfLaps);
+  // tempo cumulato per giro: aggancia la posizione di gara (frazionaria) al replay pallini
+  pistaCum = {1:0};
+  for (let L=2; L<=race.n_laps; L++) pistaCum[L] = pistaCum[L-1] + (durate[L-1]||0);
+  pistaTot = pistaCum[race.n_laps] || 1;
+  drawPista(gara, durate);
   clock.setDur(L => durate[L]);
   clock.reset(race.n_laps);
   setPlayIcon(false);
   requestAnimationFrame(()=>requestAnimationFrame(()=>el('grid').classList.remove('notrans')));
 }
 
-// --- area pista: Silverstone avra' i pallini (vista reale); le altre un posto apparecchiato ---
-function drawPista(gara){
+// --- area pista: Gran Bretagna ha il replay pallini reale (OpenF1); le altre un posto
+// apparecchiato ("pista in arrivo", UI-2 le riempira'). NIENTE piste disegnate a mano. ---
+function pistaVuota(gara){
   el('pista').innerHTML = `<div class="pista-vuota">
       <b>${gara}</b>
       <span>pista in arrivo &mdash; la vista pallini (replay posizioni reali) arriva con UI-2</span>
     </div>`;
+}
+async function drawPista(gara){
+  if (pista){ pista.destroy(); pista=null; }
+  el('pista').classList.remove('pit-attivo');
+  if (gara !== 'Gran Bretagna'){ pistaVuota(gara); return; }
+  el('pista').innerHTML = `<canvas aria-label="Mappa circuito con pallini piloti (replay)"></canvas>
+    <div class="spenta">Pallini spenti durante l&rsquo;esplorazione pit:<br>
+      il replay mostra dov&rsquo;erano davvero le auto, il motore risponde al controfattuale per-giro.</div>
+    <div class="fonte">Replay di posizioni registrate (OpenF1 /location) &mdash; non una simulazione. Sincronia col giro approssimata sul tempo reale di gara.</div>`;
+  try {
+    const { creaPista } = await import('./pista.mjs');
+    pista = await creaPista({ canvas: el('pista').querySelector('canvas'), url: 'telemetria_proto_data.json' });
+    if (selDrv){ pista.setSpento(true); el('pista').classList.add('pit-attivo'); }
+    pistaFrame(clock.position);
+  } catch(e){ console.warn('replay pallini non disponibile:', e); pistaVuota(gara); }
+}
+function pistaFrame(p){
+  if (!pista || !pistaCum) return;
+  const L=Math.max(1,Math.min(race.n_laps,Math.floor(p))), f=Math.min(1,Math.max(0,p-L));
+  pista.seek((pistaCum[L] + f*(pistaCum[L+1]!==undefined ? pistaCum[L+1]-pistaCum[L] : 0)) / pistaTot);
 }
 
 // --- timeline eventi: geometria da bands() (helper puro), tacche pit dai dati gara ---
@@ -332,6 +358,7 @@ function frame(p){
   const f=Math.min(1,Math.max(0,p-L));
   curLap=Math.min(race.n_laps,Math.max(1,Math.round(p)));
   classificaAt(L,f).forEach(paintRow);
+  pistaFrame(p);
   el('lapLabel').textContent=curLap;
   const pct = race.n_laps>1 ? (p-1)/(race.n_laps-1)*100 : 0;
   el('evtlCur').style.left = pct+'%';
@@ -353,13 +380,17 @@ function setPlayIcon(playing){ const b=el('play'); b.textContent=playing?'❚❚
 function openPit(){
   if(!selDrv){ el('pit').classList.add('hidden'); return; }
   conta('valutazione_pit');
+  // LEGGE DEL REPLAY: esplorazione pit attiva => pallini spenti (replay ≠ controfattuale)
+  if(pista){ pista.setSpento(true); el('pista').classList.add('pit-attivo'); }
   el('pit').classList.remove('hidden');
   el('pitTitle').innerHTML = `Se ${selDrv} pitta&hellip; <small>rivali congelati</small>`;
   const pl=el('pitLap'); pl.min=curLap+1; pl.max=race.n_laps;
   if(+pl.value<curLap+1||+pl.value>race.n_laps) pl.value=Math.min(curLap+4,race.n_laps);
   updatePit();
 }
-function chiudiPit(){ selDrv=null; el('pit').classList.add('hidden'); frame(clock.position); }
+function chiudiPit(){ selDrv=null; el('pit').classList.add('hidden');
+  if(pista){ pista.setSpento(false); el('pista').classList.remove('pit-attivo'); }
+  frame(clock.position); }
 function updatePit(){
   const L=curLap, pitL=+el('pitLap').value;
   el('pitLapLabel').textContent=pitL;
