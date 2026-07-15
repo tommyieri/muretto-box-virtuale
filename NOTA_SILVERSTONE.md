@@ -22,6 +22,12 @@ era di **+8,32 s in ogni condizione**: il 29,12 non era un pit-loss ma il **pit-
 
 ## Le due fonti cambiate (coerentemente — sono collegate)
 
+> **REGOLA SOSTITUITA (14/07/2026, architettura per-gara — vedi `NOTA_PITLOSS_PERGARA.md`):**
+> la regola di questo paragrafo era corretta *allora* (i due file portavano la stessa
+> grandezza). Da FF5 in poi CSV = TIPICO di circuito e JSON = valore IN USO per la gara:
+> **non si allineano più** — allinearli distruggerebbe un valore realizzato. Il paragrafo
+> resta come record storico dell'attivazione Silverstone.
+
 | file | prima | dopo | chi lo legge |
 |---|---|---|---|
 | `demo/data/pitloss.json` → `"Gran Bretagna"` | 29.12 | **20.80** | motore demo (test_pit, degrado hook, banda gancio, golden gen) |
