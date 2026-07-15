@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!--
+  CLASSIFICHE (ui-v3). Consumatore puro: legge demo/data/classifiche_2026.json
+  (standings f1db canonici, generati da gen_classifiche.py) e team_colori.json.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Classifiche 2026 — Muretto Box Virtuale</title>
+<link rel="stylesheet" href="stile.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="back" href="index.html">&larr; Stagione 2026</a>
+  <span class="brand">Classifiche <small>campionato 2026</small></span>
+</div>
+
+<div class="wrap-clas">
+  <div class="aggiornato" id="agg"></div>
+  <div class="clas-tabs" role="tablist">
+    <button id="tabP" class="on" role="tab" aria-selected="true">Piloti</button>
+    <button id="tabC" role="tab" aria-selected="false">Costruttori</button>
+  </div>
+  <div class="clas panel" id="lista"></div>
+  <div class="footnote">Classifiche ufficiali dalla base dati f1db (standings, non ricalcolati) &middot; tap su una riga per la scheda.</div>
+</div>
+
+<script type="module">
+const el = id => document.getElementById(id);
+let clas=null, colori={};
+
+const colore = t => colori[t] || 'var(--dim)';
+
+function rigaPilota(p){
+  return `<a href="scheda.html?tipo=pilota&id=${encodeURIComponent(p.id)}">
+    <span class="cbar" style="background:${colore(p.team_demo)}"></span>
+    <span class="pos">${p.pos ?? '–'}</span>
+    <span class="chi"><span class="n">${p.sigla} <span style="font-weight:400">${p.nome}</span></span>
+      <span class="t">${p.team_demo || ''}</span></span>
+    <span class="vitt">${p.vittorie ? p.vittorie+'&nbsp;vitt.' : ''}</span>
+    <span class="pts"><b>${p.punti}</b><span class="d">${p.distacco ? '−'+p.distacco : 'leader'}</span></span>
+  </a>`;
+}
+function rigaTeam(c){
+  return `<a href="scheda.html?tipo=team&id=${encodeURIComponent(c.id)}">
+    <span class="cbar" style="background:${colore(c.team_demo)}"></span>
+    <span class="pos">${c.pos ?? '–'}</span>
+    <span class="chi"><span class="n">${c.team_demo || c.nome}</span></span>
+    <span class="vitt">${c.vittorie ? c.vittorie+'&nbsp;vitt.' : ''}</span>
+    <span class="pts"><b>${c.punti}</b><span class="d">${c.distacco ? '−'+c.distacco : 'leader'}</span></span>
+  </a>`;
+}
+function mostra(tipo){
+  el('tabP').classList.toggle('on', tipo==='p'); el('tabC').classList.toggle('on', tipo==='c');
+  el('tabP').setAttribute('aria-selected', tipo==='p'); el('tabC').setAttribute('aria-selected', tipo==='c');
+  el('lista').innerHTML = tipo==='p' ? clas.piloti.map(rigaPilota).join('') : clas.costruttori.map(rigaTeam).join('');
+}
+async function boot(){
+  clas = await (await fetch('data/classifiche_2026.json')).json();
+  try { colori = await (await fetch('team_colori.json')).json(); } catch(e){}
+  const a = clas.aggiornato_al;
+  el('agg').innerHTML = `aggiornato al <b>${a.titolo || a.nome || ('round '+a.round)}</b>` +
+    (a.data ? ` · ${new Date(a.data+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'long'})}` : '');
+  mostra('p');
+}
+el('tabP').addEventListener('click', ()=>mostra('p'));
+el('tabC').addEventListener('click', ()=>mostra('c'));
+boot();
+</script>
+</body>
+</html>

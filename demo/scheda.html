@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<!--
+  SCHEDA pilota/team (ui-v3). Consumatore puro: legge demo/data/schede_2026.json,
+  foto_credits.json (Commons, solo licenze libere CON autore — l'attribuzione e'
+  parte del prodotto), team_colori.json. Senza foto libera: avatar sui colori team
+  (SVG inline, niente file a mano).
+  URL: scheda.html?tipo=pilota&id=<driverId> | ?tipo=team&id=<constructorId> | ?sigla=VER
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scheda — Muretto Box Virtuale</title>
+<link rel="stylesheet" href="stile.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="back" href="classifiche.html">&larr; Classifiche</a>
+  <span class="brand">Scheda <small>stagione 2026</small></span>
+</div>
+
+<div class="wrap-scheda" id="chi"></div>
+
+<script type="module">
+const el = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+let schede=null, credits={}, colori={}, cal=null;
+
+const colore = t => colori[t] || 'var(--dim)';
+const dataIt = d => d ? new Date(d+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'}) : '';
+
+function avatar(sigla, team){
+  return `<div class="sk-avatar" style="background:${colore(team)}">${esc(sigla)}</div>`;
+}
+function foto(pid, s){
+  const c = credits[pid];
+  if (!c) return { img: avatar(s.sigla || (s.nome||'?').slice(0,3).toUpperCase(), s.team_demo), credit: '' };
+  const lic = c.licenza_url ? `<a href="${esc(c.licenza_url)}" target="_blank" rel="noopener">${esc(c.licenza)}</a>` : esc(c.licenza);
+  return {
+    img: `<img class="sk-foto" src="${esc(c.percorso)}" alt="${esc(s.nome)}">`,
+    credit: `<div class="sk-credit">Foto: ${esc(c.autore)}, ${lic} — <a href="${esc(c.pagina)}" target="_blank" rel="noopener">Wikimedia Commons</a></div>`,
+  };
+}
+const tile = (v,k) => `<div class="sk-tile"><div class="v">${v ?? '–'}</div><div class="k">${k}</div></div>`;
+const riga = (k,v) => `<div class="sk-riga"><span class="k">${k}</span><span class="v">${v ?? '–'}</span></div>`;
+
+function vittRiga(v){ return v ? `${esc(v.gp)} ${v.anno}` : '–'; }
+
+function schedaPilota(pid, s){
+  const f = foto(pid, s);
+  const ca = s.carriera, st = s.stagione;
+  const ultimaDemo = [...(cal?.gare||[])].reverse().find(g => g.gara_demo && g.vincitore);
+  const segno = n => n>0 ? '+'+n : String(n);
+  el('chi').innerHTML = `
+    <div class="sk-testa panel">${f.img}
+      <div><h1>${esc(s.nome)}</h1>
+        <div class="sub"><b>${esc(s.sigla)}</b>${s.numero?`<span>#${esc(s.numero)}</span>`:''}
+          <span>${esc(s.team_demo||'')}</span><span>${esc(s.nazionalita||'')}</span></div>
+        ${ultimaDemo ? `<a class="sk-vai" href="gara.html?g=${encodeURIComponent(ultimaDemo.gara_demo)}">vedi in gara — ${esc(ultimaDemo.titolo)} &rarr;</a>` : ''}
+      </div></div>
+    ${f.credit}
+    <section class="sk-sez panel"><h2>Carriera</h2>
+      <div class="sk-tiles">
+        ${tile(ca.gp_disputati,'GP disputati')}${tile(ca.vittorie,'vittorie')}${tile(ca.podi,'podi')}
+        ${tile(ca.pole,'pole')}${tile(ca.giri_veloci,'giri veloci')}${tile(ca.titoli,'titoli')}${tile(ca.punti,'punti')}
+      </div>
+      ${riga('Prima vittoria', vittRiga(ca.prima_vittoria))}
+      ${riga('Ultima vittoria', vittRiga(ca.ultima_vittoria))}
+    </section>
+    <section class="sk-sez panel"><h2>Stagione 2026</h2>
+      <div class="sk-tiles">
+        ${tile(st.pos ? 'P'+st.pos : '–','classifica')}${tile(st.punti,'punti')}${tile(st.vittorie,'vittorie')}
+        ${tile(st.migliore_risultato ? 'P'+st.migliore_risultato : '–','miglior arrivo')}
+      </div>
+      ${riga('Media griglia', st.media_griglia)}
+      ${riga('Media arrivo', st.media_arrivo)}
+      ${riga('Posizioni guadagnate in gara', segno(st.pos_guadagnate))}
+      ${riga('Gare (partite / classificate)', `${st.su_gare.partite} / ${st.su_gare.classificate}`)}
+    </section>`;
+  document.title = `${s.nome} — Muretto Box Virtuale`;
+}
+
+function schedaTeam(cid, s){
+  const ca = s.carriera, st = s.stagione;
+  el('chi').innerHTML = `
+    <div class="sk-testa panel">${avatar((s.nome||'?').slice(0,3).toUpperCase(), s.team_demo)}
+      <div><h1>${esc(s.team_demo || s.nome)}</h1>
+        <div class="sub"><span>${esc(s.nome_completo||'')}</span><span>${esc(s.paese||'')}</span></div>
+      </div></div>
+    <section class="sk-sez panel"><h2>Carriera (dal 1950, base dati f1db)</h2>
+      <div class="sk-tiles">
+        ${tile(ca.gp_disputati,'GP disputati')}${tile(ca.vittorie,'vittorie')}${tile(ca.podi,'podi')}
+        ${tile(ca.pole,'pole')}${tile(ca.giri_veloci,'giri veloci')}${tile(ca.titoli,'titoli costruttori')}${tile(ca.punti,'punti')}
+      </div>
+      ${riga('Prima vittoria', vittRiga(ca.prima_vittoria))}
+      ${riga('Ultima vittoria', vittRiga(ca.ultima_vittoria))}
+    </section>
+    <section class="sk-sez panel"><h2>Stagione 2026</h2>
+      <div class="sk-tiles">
+        ${tile(st.pos ? 'P'+st.pos : '–','classifica')}${tile(st.punti,'punti')}${tile(st.vittorie,'vittorie')}
+        ${tile(st.podi,'podi')}${tile(st.migliore_risultato ? 'P'+st.migliore_risultato : '–','miglior arrivo')}
+      </div>
+    </section>`;
+  document.title = `${s.team_demo || s.nome} — Muretto Box Virtuale`;
+}
+
+async function boot(){
+  schede = await (await fetch('data/schede_2026.json')).json();
+  try { credits = (await (await fetch('data/foto_credits.json')).json()).piloti || {}; } catch(e){}
+  try { colori = await (await fetch('team_colori.json')).json(); } catch(e){}
+  try { cal = await (await fetch('data/calendario_2026.json')).json(); } catch(e){}
+  const q = new URLSearchParams(location.search);
+  let tipo = q.get('tipo'), id = q.get('id');
+  if (q.get('sigla')){
+    const hit = Object.entries(schede.piloti).find(([,s]) => s.sigla === q.get('sigla').toUpperCase());
+    if (hit){ tipo='pilota'; id=hit[0]; }
+  }
+  if (tipo==='pilota' && schede.piloti[id]) schedaPilota(id, schede.piloti[id]);
+  else if (tipo==='team' && schede.team[id]) schedaTeam(id, schede.team[id]);
+  else el('chi').innerHTML = `<div class="aggiornato">Scheda non trovata — <a href="classifiche.html">torna alle classifiche</a>.</div>`;
+}
+boot();
+</script>
+</body>
+</html>

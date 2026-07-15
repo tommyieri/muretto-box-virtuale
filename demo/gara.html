@@ -294,10 +294,12 @@ function buildGrid(){
   const g=el('grid'); g.classList.add('notrans'); g.innerHTML=''; rowEls={};
   for(const d of tutti){
     const row=document.createElement('div'); row.className='row'; row.dataset.drv=d;
+    // la sigla e' un link alla scheda pilota (stopPropagation: il resto della riga apre il pit)
     row.innerHTML=`<span class="tbar"></span><span class="pos"></span>`
-      +`<span class="idn"><span class="l1"><span class="drv">${d}</span><span class="box" style="display:none"></span></span><span class="team"></span></span>`
+      +`<span class="idn"><span class="l1"><span class="drv"><a href="scheda.html?sigla=${d}" title="scheda pilota">${d}</a></span><span class="box" style="display:none"></span></span><span class="team"></span></span>`
       +`<span class="gaps"><span class="gap"></span><span class="gapprev"></span></span>`
       +`<span class="tyreb"><span class="dot"></span><span class="age"></span></span>`;
+    row.querySelector('.drv a').addEventListener('click', e=>e.stopPropagation());
     row.addEventListener('click',()=>{ if(!row.classList.contains('selectable'))return;
       selDrv=d; clock.pause(); setPlayIcon(false);
       curLap=Math.min(race.n_laps,Math.round(clock.position)); clock.seek(curLap);
