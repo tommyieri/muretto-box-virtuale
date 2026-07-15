@@ -1,0 +1,297 @@
+{
+ "_nota": "GENERATO da gen_calendario.py (f1db v2026.9.1, races 2026). Non modificare a mano: rilanciare il generatore.",
+ "stagione": 2026,
+ "gare": [
+  {
+   "round": 1,
+   "data": "2026-03-08",
+   "gp": "australia",
+   "circuitId": "melbourne",
+   "nome": "Australia",
+   "titolo": "GP d'Australia",
+   "circuito": "Melbourne Grand Prix Circuit",
+   "giri": 58,
+   "gara_demo": "Australia",
+   "vincitore": {
+    "sigla": "RUS",
+    "team": "Mercedes"
+   }
+  },
+  {
+   "round": 2,
+   "data": "2026-03-15",
+   "gp": "china",
+   "circuitId": "shanghai",
+   "nome": "Cina",
+   "titolo": "GP di Cina",
+   "circuito": "Shanghai International Circuit",
+   "giri": 56,
+   "gara_demo": "Cina",
+   "vincitore": {
+    "sigla": "ANT",
+    "team": "Mercedes"
+   }
+  },
+  {
+   "round": 3,
+   "data": "2026-03-29",
+   "gp": "japan",
+   "circuitId": "suzuka",
+   "nome": "Giappone",
+   "titolo": "GP del Giappone",
+   "circuito": "Suzuka Circuit",
+   "giri": 53,
+   "gara_demo": "Giappone",
+   "vincitore": {
+    "sigla": "ANT",
+    "team": "Mercedes"
+   }
+  },
+  {
+   "round": 4,
+   "data": "2026-05-03",
+   "gp": "miami",
+   "circuitId": "miami",
+   "nome": "Miami",
+   "titolo": "GP di Miami",
+   "circuito": "Miami International Autodrome",
+   "giri": 57,
+   "gara_demo": "Miami",
+   "vincitore": {
+    "sigla": "ANT",
+    "team": "Mercedes"
+   }
+  },
+  {
+   "round": 5,
+   "data": "2026-05-24",
+   "gp": "canada",
+   "circuitId": "montreal",
+   "nome": "Canada",
+   "titolo": "GP del Canada",
+   "circuito": "Circuit Gilles Villeneuve",
+   "giri": 68,
+   "gara_demo": "Canada",
+   "vincitore": {
+    "sigla": "ANT",
+    "team": "Mercedes"
+   }
+  },
+  {
+   "round": 6,
+   "data": "2026-06-07",
+   "gp": "monaco",
+   "circuitId": "monaco",
+   "nome": "Monaco",
+   "titolo": "GP di Monaco",
+   "circuito": "Circuit de Monaco",
+   "giri": 78,
+   "gara_demo": "Monaco",
+   "vincitore": {
+    "sigla": "ANT",
+    "team": "Mercedes"
+   }
+  },
+  {
+   "round": 7,
+   "data": "2026-06-14",
+   "gp": "barcelona-catalunya",
+   "circuitId": "catalunya",
+   "nome": "Spagna",
+   "titolo": "GP di Spagna — Barcellona",
+   "circuito": "Circuit de Barcelona-Catalunya",
+   "giri": 66,
+   "gara_demo": "Spagna",
+   "vincitore": {
+    "sigla": "HAM",
+    "team": "Ferrari"
+   }
+  },
+  {
+   "round": 8,
+   "data": "2026-06-28",
+   "gp": "austria",
+   "circuitId": "spielberg",
+   "nome": "Austria",
+   "titolo": "GP d'Austria",
+   "circuito": "Red Bull Ring",
+   "giri": 71,
+   "gara_demo": "Austria",
+   "vincitore": {
+    "sigla": "RUS",
+    "team": "Mercedes"
+   }
+  },
+  {
+   "round": 9,
+   "data": "2026-07-05",
+   "gp": "great-britain",
+   "circuitId": "silverstone",
+   "nome": "Gran Bretagna",
+   "titolo": "GP di Gran Bretagna",
+   "circuito": "Silverstone Circuit",
+   "giri": 52,
+   "gara_demo": "Gran Bretagna",
+   "vincitore": {
+    "sigla": "LEC",
+    "team": "Ferrari"
+   }
+  },
+  {
+   "round": 10,
+   "data": "2026-07-19",
+   "gp": "belgium",
+   "circuitId": "spa-francorchamps",
+   "nome": "Belgio",
+   "titolo": "GP del Belgio",
+   "circuito": "Circuit de Spa-Francorchamps",
+   "giri": 44,
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 11,
+   "data": "2026-07-26",
+   "gp": "hungary",
+   "circuitId": "hungaroring",
+   "nome": "Ungheria",
+   "titolo": "GP d'Ungheria",
+   "circuito": "Hungaroring",
+   "giri": 70,
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 12,
+   "data": "2026-08-23",
+   "gp": "netherlands",
+   "circuitId": "zandvoort",
+   "nome": "Olanda",
+   "titolo": "GP d'Olanda",
+   "circuito": "Circuit Park Zandvoort",
+   "giri": 72,
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 13,
+   "data": "2026-09-06",
+   "gp": "italy",
+   "circuitId": "monza",
+   "nome": "Italia",
+   "titolo": "GP d'Italia",
+   "circuito": "Autodromo Nazionale Monza",
+   "giri": 53,
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 14,
+   "data": "2026-09-13",
+   "gp": "spain",
+   "circuitId": "madring",
+   "nome": "Madrid",
+   "titolo": "GP di Madrid",
+   "circuito": "Circuito de Madring",
+   "giri": 57,
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 15,
+   "data": "2026-09-26",
+   "gp": "azerbaijan",
+   "circuitId": "baku",
+   "nome": "Azerbaigian",
+   "titolo": "GP dell'Azerbaigian",
+   "circuito": "Baku City Circuit",
+   "giri": 51,
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 16,
+   "data": "2026-10-11",
+   "gp": "singapore",
+   "circuitId": "marina-bay",
+   "nome": "Singapore",
+   "titolo": "GP di Singapore",
+   "circuito": "Marina Bay Street Circuit",
+   "giri": 62,
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 17,
+   "data": "2026-10-25",
+   "gp": "united-states",
+   "circuitId": "austin",
+   "nome": "Stati Uniti",
+   "titolo": "GP degli Stati Uniti",
+   "circuito": "Circuit of the Americas",
+   "giri": 56,
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 18,
+   "data": "2026-11-01",
+   "gp": "mexico",
+   "circuitId": "mexico-city",
+   "nome": "Messico",
+   "titolo": "GP del Messico",
+   "circuito": "Autódromo Hermanos Rodríguez",
+   "giri": 71,
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 19,
+   "data": "2026-11-08",
+   "gp": "sao-paulo",
+   "circuitId": "interlagos",
+   "nome": "San Paolo",
+   "titolo": "GP di San Paolo",
+   "circuito": "Autódromo José Carlos Pace",
+   "giri": 71,
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 20,
+   "data": "2026-11-22",
+   "gp": "las-vegas",
+   "circuitId": "las-vegas",
+   "nome": "Las Vegas",
+   "titolo": "GP di Las Vegas",
+   "circuito": "Las Vegas Street Circuit",
+   "giri": 50,
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 21,
+   "data": "2026-11-29",
+   "gp": "qatar",
+   "circuitId": "lusail",
+   "nome": "Qatar",
+   "titolo": "GP del Qatar",
+   "circuito": "Lusail International Circuit",
+   "giri": 57,
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 22,
+   "data": "2026-12-06",
+   "gp": "abu-dhabi",
+   "circuitId": "yas-marina",
+   "nome": "Abu Dhabi",
+   "titolo": "GP di Abu Dhabi",
+   "circuito": "Yas Marina Circuit",
+   "giri": 58,
+   "gara_demo": null,
+   "vincitore": null
+  }
+ ]
+}
