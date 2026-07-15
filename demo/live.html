@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<!--
+  LIVE (ui-v4) — WORK IN PROGRESS DICHIARATO. Questa pagina promette, non simula di
+  mantenere: date/orari veri dal calendario generato (f1db, orari UTC convertiti nel
+  fuso del lettore; se l'orario manca si mostra solo la data — MAI orari inventati),
+  e un mock statico ESPLICITAMENTE marcato "anteprima" senza numeri finti.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live — Muretto Box Virtuale</title>
+<link rel="stylesheet" href="stile.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="back" href="index.html">&larr; Stagione 2026</a>
+  <span class="brand">Live <small>weekend di gara</small></span>
+</div>
+
+<div class="wrap-clas">
+  <div class="wip panel">
+    <span class="wip-tag">IN COSTRUZIONE</span>
+    Qui seguirai FP, qualifiche e gara <b>in diretta</b>, con il simulatore attivo in gara:
+    la stessa domanda del muretto &mdash; &ldquo;se pitto al giro L, dove rientro?&rdquo; &mdash; mentre la gara succede.
+  </div>
+
+  <div class="sez-tit">Prossimo evento</div>
+  <section class="panel live-week" id="week"></section>
+
+  <div class="sez-tit">Come sar&agrave;</div>
+  <section class="panel live-mock" aria-label="Anteprima non funzionante">
+    <div class="mock-marca">ANTEPRIMA &mdash; NON &Egrave; UNA DIRETTA</div>
+    <div class="mock-riga testa"><span>P</span><span>pilota</span><span>gap</span><span>gomma</span><span>ai box?</span></div>
+    <div class="mock-riga"><span>1</span><span>&#9608;&#9608;&#9608;</span><span>&mdash;</span><span>&#9679;</span><span></span></div>
+    <div class="mock-riga"><span>2</span><span>&#9608;&#9608;&#9608;</span><span>+&mdash;,&mdash;</span><span>&#9679;</span><span>BOX</span></div>
+    <div class="mock-riga"><span>3</span><span>&#9608;&#9608;&#9608;</span><span>+&mdash;,&mdash;</span><span>&#9679;</span><span></span></div>
+    <div class="mock-riga"><span>4</span><span>&#9608;&#9608;&#9608;</span><span>+&mdash;,&mdash;</span><span>&#9679;</span><span></span></div>
+    <div class="mock-nota">Mock statico: nessun dato reale. Il layout &egrave; l&rsquo;ambizione, non lo stato.</div>
+  </section>
+</div>
+
+<script type="module">
+const el = id => document.getElementById(id);
+const NOMI = {fp1:'Prove libere 1', fp2:'Prove libere 2', fp3:'Prove libere 3', fp4:'Prove libere 4',
+              sprint_quali:'Sprint qualifying', sprint:'Sprint', qualifiche:'Qualifiche', gara:'GARA'};
+
+function quando(s){                       // orari f1db in UTC -> fuso del lettore; senza ora: solo data
+  if (!s.data) return null;
+  if (s.ora_utc){
+    const d = new Date(`${s.data}T${s.ora_utc}:00Z`);
+    return { d, testo: d.toLocaleDateString('it-IT',{weekday:'short', day:'numeric', month:'long'})
+             + ' · ' + d.toLocaleTimeString('it-IT',{hour:'2-digit', minute:'2-digit'}) };
+  }
+  return { d: new Date(`${s.data}T23:59:00Z`),
+           testo: new Date(s.data+'T12:00:00').toLocaleDateString('it-IT',{weekday:'short', day:'numeric', month:'long'}) + ' · orario da annunciare' };
+}
+
+async function boot(){
+  const cal = await (await fetch('data/calendario_2026.json')).json();
+  const ora = new Date();
+  // il weekend della prossima gara in calendario
+  const g = cal.gare.find(x => new Date(x.data+'T23:59:59') >= ora) || cal.gare[cal.gare.length-1];
+  const sess = Object.entries(g.sessioni || {}).map(([k,s]) => ({k, ...quando(s)}))
+    .filter(s=>s.d).sort((a,b)=>a.d-b.d);
+  const prossima = sess.find(s => s.d >= ora);
+  el('week').innerHTML = `
+    <div class="live-gp"><b>${g.titolo}</b><span>${g.circuito}</span></div>
+    ${sess.map(s=>`<div class="live-sess${s===prossima?' next':''}">
+       <span class="n">${NOMI[s.k]||s.k}</span><span class="q num">${s.testo}</span>
+       ${s===prossima?'<span class="tag">prossimo</span>':''}</div>`).join('')}
+    <div class="mock-nota">Orari f1db (UTC) mostrati nel tuo fuso.</div>`;
+}
+boot();
+</script>
+</body>
+</html>
