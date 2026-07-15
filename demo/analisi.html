@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+  ANALISI (ui-v4) — placeholder ONESTO della Fase 2, con UN assaggio gia' vero:
+  posizioni guadagnate/perse in gara per pilota (da schede_2026.json, fonte f1db,
+  divergenze-penalita' gia' gestite dal cross-check di gen_schede.py).
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analisi — Muretto Box Virtuale</title>
+<link rel="stylesheet" href="stile.css">
+</head>
+<body>
+<div class="topbar">
+  <a class="back" href="index.html">&larr; Stagione 2026</a>
+  <span class="brand">Analisi <small>Fase 2</small></span>
+</div>
+
+<div class="wrap-clas">
+  <div class="wip panel">
+    <span class="wip-tag">IN ARRIVO</span>
+    Telemetrie di gara, prestazioni dei team nel tempo, caratterizzazione dei circuiti
+    (degrado, sorpassabilit&agrave;, pit-loss) &mdash; tutto <b>da dati misurati</b>, come il resto del muretto.
+  </div>
+
+  <div class="sez-tit">Gi&agrave; oggi: posizioni guadagnate/perse in gara &mdash; stagione 2026</div>
+  <section class="panel anl" id="grafico"></section>
+  <div class="footnote">Somma di (griglia &minus; arrivo) sulle gare classificate, fonte f1db (classifica ufficiale,
+    penalit&agrave; incluse; il confronto coi nostri dati grezzi &egrave; nel cross-check delle schede).
+    Tap su un pilota per la scheda.</div>
+</div>
+
+<script type="module">
+const el = id => document.getElementById(id);
+async function boot(){
+  const schede = await (await fetch('data/schede_2026.json')).json();
+  let colori = {}; try { colori = await (await fetch('team_colori.json')).json(); } catch(e){}
+  const piloti = Object.entries(schede.piloti)
+    .map(([id,s]) => ({id, sigla:s.sigla, team:s.team_demo, v:s.stagione.pos_guadagnate}))
+    .sort((a,b)=>b.v-a.v);
+  const max = Math.max(...piloti.map(p=>Math.abs(p.v)), 1);
+  el('grafico').innerHTML = piloti.map(p=>{
+    const w = Math.abs(p.v)/max*50;                 // 50% = mezza larghezza per lato
+    const lato = p.v>=0 ? `left:50%;width:${w}%` : `left:${50-w}%;width:${w}%`;
+    return `<a class="anl-riga" href="scheda.html?tipo=pilota&id=${encodeURIComponent(p.id)}">
+      <span class="sig"><i style="background:${colori[p.team]||'var(--dim)'}"></i>${p.sigla}</span>
+      <span class="asse"><span class="zero"></span>
+        <span class="barra ${p.v>=0?'su':'giu'}" style="${lato}"></span></span>
+      <span class="val num">${p.v>0?'+':''}${p.v}</span></a>`;
+  }).join('');
+}
+boot();
+</script>
+</body>
+</html>
