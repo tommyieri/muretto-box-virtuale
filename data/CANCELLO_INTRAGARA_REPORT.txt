@@ -1,0 +1,44 @@
+==============================================================================
+CANCELLO INTRA-GARA (strato 1) — primi 15 giri vs prior climatologico
+==============================================================================
+Protocollo: PREREG_SESSIONE_INTRAGARA.md (KPI congelato prima dei numeri).
+
+--- ramo PRIMARIO 2026 (decide) ---
+  coppie perse: gara_bagnata=0, calib<3=11, target<3=7, prior_assente=10
+  coppie testabili: 7 | vittorie live: 2.0/7 = 28.6% (soglia >= 60%)
+  mediana(err_prior - err_live): -0.0752 s/giro | IC95 bootstrap blocchi-gara [-0.1683, +0.0176] (B=1000, seed=20260716)
+  errore mediano: live 0.0795 | prior 0.0280
+    2026 Australian        HARD   live -0.1468 (n= 3) | prior +0.0436 | bersaglio +0.0541 (n=12) | err 0.2008 vs 0.0105 -> prior
+    2026 Austrian          MEDIUM live +0.1480 (n=18) | prior +0.0818 | bersaglio +0.0732 (n= 5) | err 0.0748 vs 0.0086 -> prior
+    2026 Barcelona         MEDIUM live +0.2023 (n=13) | prior +0.0619 | bersaglio +0.1602 (n= 3) | err 0.0421 vs 0.0983 -> LIVE
+    2026 Canadian          MEDIUM live -0.2100 (n= 6) | prior +0.1001 | bersaglio +0.0181 (n=12) | err 0.2282 vs 0.0820 -> prior
+    2026 Chinese           MEDIUM live +0.0192 (n=10) | prior +0.1218 | bersaglio +0.1886 (n= 4) | err 0.1694 vs 0.0668 -> prior
+    2026 Monaco            HARD   live +0.0914 (n= 3) | prior +0.0077 | bersaglio +0.0120 (n=10) | err 0.0795 vs 0.0043 -> prior
+    2026 Monaco            MEDIUM live -0.0663 (n=17) | prior -0.0280 | bersaglio -0.0560 (n= 3) | err 0.0103 vs 0.0280 -> LIVE
+
+--- ramo SECONDARIO 2025 (prior 2023-24, stessa catena) (NON decide) ---
+  coppie perse: gara_bagnata=3, calib<3=13, target<3=11, prior_assente=24
+  coppie testabili: 16 | vittorie live: 6.0/16 = 37.5% (soglia >= 60%)
+  mediana(err_prior - err_live): -0.0221 s/giro | IC95 bootstrap blocchi-gara [-0.0646, +0.0075] (B=1000, seed=20260716)
+  errore mediano: live 0.0474 | prior 0.0269
+    2025 Abu Dhabi Grand Prix HARD   live +0.0982 (n= 7) | prior +0.0448 | bersaglio +0.0259 (n=12) | err 0.0723 vs 0.0189 -> prior
+    2025 Abu Dhabi Grand Prix MEDIUM live +0.0859 (n=13) | prior +0.1132 | bersaglio +0.1222 (n=10) | err 0.0363 vs 0.0090 -> prior
+    2025 Austrian Grand Prix MEDIUM live +0.0805 (n=13) | prior +0.0898 | bersaglio +0.0686 (n= 8) | err 0.0119 vs 0.0212 -> LIVE
+    2025 Azerbaijan Grand Prix HARD   live -0.2624 (n= 9) | prior +0.0149 | bersaglio +0.0075 (n=14) | err 0.2698 vs 0.0075 -> prior
+    2025 Hungarian Grand Prix MEDIUM live -0.0207 (n=16) | prior +0.0490 | bersaglio +0.0768 (n= 4) | err 0.0975 vs 0.0278 -> prior
+    2025 Italian Grand Prix HARD   live -0.0232 (n= 6) | prior +0.0616 | bersaglio +0.0163 (n=15) | err 0.0396 vs 0.0452 -> LIVE
+    2025 Japanese Grand Prix HARD   live -0.0238 (n= 4) | prior +0.1029 | bersaglio +0.0237 (n=14) | err 0.0475 vs 0.0792 -> LIVE
+    2025 Japanese Grand Prix MEDIUM live +0.0131 (n=15) | prior +0.1211 | bersaglio +0.0462 (n= 4) | err 0.0330 vs 0.0749 -> LIVE
+    2025 Las Vegas Grand Prix HARD   live -0.0827 (n= 8) | prior +0.0115 | bersaglio +0.0348 (n=13) | err 0.1175 vs 0.0234 -> prior
+    2025 Las Vegas Grand Prix MEDIUM live -0.0173 (n=10) | prior +0.1549 | bersaglio +0.0301 (n= 4) | err 0.0474 vs 0.1248 -> LIVE
+    2025 Mexico City Grand Prix MEDIUM live +0.0843 (n= 6) | prior +0.0673 | bersaglio +0.0430 (n= 3) | err 0.0413 vs 0.0243 -> prior
+    2025 Qatar Grand Prix  HARD   live -0.1340 (n= 3) | prior -0.0021 | bersaglio +0.0107 (n=12) | err 0.1447 vs 0.0128 -> prior
+    2025 Qatar Grand Prix  MEDIUM live -0.0997 (n=32) | prior -0.0351 | bersaglio +0.0513 (n= 7) | err 0.1510 vs 0.0863 -> prior
+    2025 Spanish Grand Prix MEDIUM live +0.0620 (n= 3) | prior +0.0616 | bersaglio +0.0888 (n=11) | err 0.0269 vs 0.0272 -> LIVE
+    2025 Spanish Grand Prix SOFT   live +0.1121 (n=21) | prior +0.0786 | bersaglio +0.0353 (n=23) | err 0.0767 vs 0.0433 -> prior
+    2025 United States Grand Prix MEDIUM live +0.0338 (n=14) | prior +0.0390 | bersaglio +0.0656 (n= 3) | err 0.0318 vs 0.0266 -> prior
+
+==============================================================================
+CANCELLO: NON TESTABILE — vittorie 2/7 (29% se n>0), IC95 mediana differenza [-0.1683, +0.0176]
+Verdetto MECCANICO contro soglie congelate. Il verdetto strategico e' del PO.
+==============================================================================
