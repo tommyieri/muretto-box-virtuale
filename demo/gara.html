@@ -96,7 +96,7 @@
         <div class="uff-nota">Classifica ufficiale FIA (fonte di classifica, non ricalcolo):
           include decisioni post-gara che non transitano dal race control.</div>
       </section>
-      <div class="colhint">Tocca un pilota per l&rsquo;esplorazione pit: &ldquo;se pitto al giro L, dove rientro?&rdquo;</div>
+      <div class="colhint">Tocca un pilota: &ldquo;se pitto <b>adesso</b>, dove rientro?&rdquo;</div>
 
       <section class="pit panel hidden" id="pit">
         <div class="head">
@@ -106,7 +106,8 @@
         <div class="pitlap">Pit al giro <b id="pitLapLabel">–</b>
           <input type="range" id="pitLap" min="2" max="2" value="2"></div>
         <div id="pitKv"></div>
-        <div class="pithint">Rivali congelati al reale &middot; il motore mostra dove rientri, non se conviene.</div>
+        <div class="pithint">Si apre sul pit <b>adesso</b>; sposta il cursore per pittare pi&ugrave; avanti.
+          Rivali congelati al reale &middot; il motore mostra dove rientri, non se conviene.</div>
       </section>
     </div>
   </div>
@@ -117,9 +118,9 @@
 <script type="module">
 // ?v= su TUTTI i moduli: senza, un deploy puo' servire HTML nuovo con moduli .mjs vecchi
 // dalla cache del browser (pagina mista = sintomi di sync fantasma). Bump a ogni release.
-import { evaluatePit } from './pitscenario.mjs?v=160726a';
-import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs?v=160726a';
-const BUILD = '160726a';
+import { evaluatePit } from './pitscenario.mjs?v=160726b';
+import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs?v=160726b';
+const BUILD = '160726b';
 const el = id => document.getElementById(id);
 const ROW_H = 44;
 let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams={}, pitloss={}, plMeta={}, neutral={}, teamCol={}, calendario=null;
@@ -263,7 +264,7 @@ async function drawPista(gara){
       il replay mostra la gara com&rsquo;e&rsquo; andata davvero, il motore risponde al controfattuale per-giro.</div>
     <div class="fonte">Tracciato: giro GPS reale (FastF1, generatore committato). Pallini: replay dei tempi-giro reali &mdash; dentro il giro la posizione &egrave; interpolata (frazione di tempo &asymp; frazione di distanza), non una simulazione.</div>`;
   try {
-    const { creaPista } = await import('./pista.mjs?v=160726a');
+    const { creaPista } = await import('./pista.mjs?v=160726b');
     pista = await creaPista({ canvas: el('pista').querySelector('canvas'), url: `data/pista_${encodeURIComponent(gara)}.json` });
     if (selDrv){ pista.setSpento(true); el('pista').classList.add('pit-attivo'); }
     pistaFrame(clock.position);
@@ -632,11 +633,13 @@ function openPit(){
   // LEGGE DEL REPLAY: esplorazione pit attiva => pallini spenti (replay ≠ controfattuale)
   if(pista){ pista.setSpento(true); el('pista').classList.add('pit-attivo'); }
   el('pit').classList.remove('hidden');
-  el('pitTitle').innerHTML = `Se ${selDrv} pitta&hellip; <small>rivali congelati</small>`;
-  // il freeze e' l'ultimo giro COMPLETATO visibile (curLap-1): si puo' quindi pittare gia'
-  // al giro IN CORSO (in-lap = curLap), come al muretto. Al giro 1 il freeze e' clampato a 1.
+  // RISPOSTA IMMEDIATA (decisione PO): il pannello si apre su "pit ADESSO" — il giro in
+  // corso, la domanda del muretto: dove rientro SE pitto ora. Lo slider resta sotto per
+  // l'esplorazione ("e se aspetto fino al giro N?"), ma non e' richiesto per avere la
+  // risposta. Il freeze e' l'ultimo giro COMPLETATO visibile (curLap-1): pittare al giro
+  // IN CORSO (in-lap = curLap) e' quindi sempre possibile. Al giro 1 freeze clampato a 1.
   const pl=el('pitLap'); pl.min=Math.max(2,curLap); pl.max=race.n_laps;
-  if(+pl.value<+pl.min||+pl.value>race.n_laps) pl.value=Math.min(curLap+4,race.n_laps);
+  pl.value=pl.min;
   updatePit();
 }
 function chiudiPit(){ selDrv=null; el('pit').classList.add('hidden');
@@ -646,12 +649,23 @@ function updatePit(){
   // freeze = ultimo giro COMPLETATO visibile: a p=curLap lo schermo mostra la classifica
   // di fine giro curLap-1, ed e' QUELLO lo stato che il motore congela (byLap[freeze]).
   const L=Math.max(1,curLap-1), pitL=+el('pitLap').value;
-  el('pitLapLabel').textContent=pitL;
+  // titolo e label raccontano ADESSO vs esplorazione: "pitta adesso" quando lo slider e'
+  // sul giro in corso, "pitta al giro N" quando l'utente esplora piu' avanti
+  const adesso = pitL === Math.max(2,curLap);
+  el('pitTitle').innerHTML = `Se ${selDrv} pitta ${adesso?'adesso':`al giro ${pitL}`}&hellip; <small>rivali congelati</small>`;
+  el('pitLapLabel').textContent = adesso ? `${pitL} (adesso)` : pitL;
   const present=Object.keys(race.byLap[L]).filter(d=>typeof race.byLap[L][d].cum_time==='number'&&!race.nonParten.has(d));
   const loss=pitloss[race.gara]??22.0;
   const r=evaluatePit({byLap:race.byLap,nLaps:race.n_laps,pace:race.pace[String(L)],driver:selDrv,freezeLap:L,pitLap:pitL,pitLoss:loss,present,gara:race.gara,laps:race.laps});
   const box=el('pitKv');
-  if(!r.ok){ box.innerHTML=`<div class="pitmsg">Non valutabile a questo giro (${r.reason}).</div>`; return; }
+  if(!r.ok){
+    // traduzione UI del limite dichiarato del motore: chi e' appena passato dai box non
+    // ha pace-base al freeze (pitscenario.mjs) — spiegarlo, non citare solo il codice
+    const c=race.byLap[L]?.[selDrv];
+    box.innerHTML = (c && (c.in_lap || c.out_lap))
+      ? `<div class="pitmsg">${selDrv} &egrave; appena passato dai box: il motore non ha ancora un passo-base per valutarlo. Fai scorrere la gara di un giro o due, o sposta il cursore pi&ugrave; avanti.</div>`
+      : `<div class="pitmsg">Non valutabile a questo giro (${r.reason}).</div>`;
+    return; }
   const neutro = r.sotto_neutralizzazione === true;
   const gapTxt = (nome, gap) => {
     if (!nome) return '<span class="g">—</span>';
