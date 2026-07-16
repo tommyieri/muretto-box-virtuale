@@ -1,0 +1,14 @@
+# Dipendenze del modulo live/ — installate nella .venv del repo.
+#
+# ATTENZIONE: fastf1 dichiara pandas<3, ma la .venv del kernel usa
+# pandas 3.0.3 (congelato). Per NON retrocedere pandas, fastf1 va
+# installato senza dipendenze e le dipendenze runtime a mano:
+#
+#   .venv/bin/pip install --no-deps fastf1==3.8.3
+#   .venv/bin/pip install signalrcore requests requests-cache platformdirs \
+#       pydantic pyjwt rapidfuzz cryptography "websockets>=10.3"
+#
+# (matplotlib e timple servono solo a fastf1.plotting, mai importato qui.)
+# NON usare `pip install -r requirements.txt` alla cieca: risolverebbe
+# pandas<3 e retrocederebbe il kernel.
+fastf1==3.8.3
