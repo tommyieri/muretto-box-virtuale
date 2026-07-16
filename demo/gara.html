@@ -111,12 +111,15 @@
     </div>
   </div>
 
-  <div class="footnote">Dati storici della gara (per giro) &middot; il pit-loss in uso e la sua provenienza sono nel badge in alto.</div>
+  <div class="footnote">Dati storici della gara (per giro) &middot; il pit-loss in uso e la sua provenienza sono nel badge in alto. <span id="buildTag"></span></div>
 </div>
 
 <script type="module">
-import { evaluatePit } from './pitscenario.mjs';
-import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs';
+// ?v= su TUTTI i moduli: senza, un deploy puo' servire HTML nuovo con moduli .mjs vecchi
+// dalla cache del browser (pagina mista = sintomi di sync fantasma). Bump a ogni release.
+import { evaluatePit } from './pitscenario.mjs?v=160726a';
+import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs?v=160726a';
+const BUILD = '160726a';
 const el = id => document.getElementById(id);
 const ROW_H = 44;
 let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams={}, pitloss={}, plMeta={}, neutral={}, teamCol={}, calendario=null;
@@ -147,6 +150,7 @@ function coloreTeam(t){
 }
 
 async function boot() {
+  el('buildTag').textContent = '· build ' + BUILD;   // verita' su COSA si sta guardando
   const m = await (await fetch('data/manifest.json')).json();
   try { esiti = await (await fetch('data/esiti.json')).json(); } catch(e){ esiti={}; }
   try { grids = await (await fetch('data/grids.json')).json(); } catch(e){ grids={}; }
@@ -259,7 +263,7 @@ async function drawPista(gara){
       il replay mostra la gara com&rsquo;e&rsquo; andata davvero, il motore risponde al controfattuale per-giro.</div>
     <div class="fonte">Tracciato: giro GPS reale (FastF1, generatore committato). Pallini: replay dei tempi-giro reali &mdash; dentro il giro la posizione &egrave; interpolata (frazione di tempo &asymp; frazione di distanza), non una simulazione.</div>`;
   try {
-    const { creaPista } = await import('./pista.mjs');
+    const { creaPista } = await import('./pista.mjs?v=160726a');
     pista = await creaPista({ canvas: el('pista').querySelector('canvas'), url: `data/pista_${encodeURIComponent(gara)}.json` });
     if (selDrv){ pista.setSpento(true); el('pista').classList.add('pit-attivo'); }
     pistaFrame(clock.position);
