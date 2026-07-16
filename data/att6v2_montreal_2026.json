@@ -1,0 +1,23 @@
+{
+  "circuito": "montreal",
+  "anno": 2026,
+  "vecchio": 24.37,
+  "nuovo": 18.96,
+  "protocollo": "ATT6 v2 (PREREG_ATT6_V2.md)",
+  "tipicita": {
+    "loss_gara": 24.238,
+    "mediana_grappolo": 19.701,
+    "scarto": 4.537,
+    "soglia": 2,
+    "esito": "ATIPICA",
+    "blocchi_grappolo": {
+      "2018-r7": 18.4357,
+      "2019-r7": 19.7135,
+      "2022-r9": 19.65,
+      "2023-r8": 19.701,
+      "2025-r10": 19.8263
+    }
+  },
+  "verdetto": "NON GIUDICABILE",
+  "motivo": "gara atipica (scarto 4.54 s > 2.0 s)"
+}
