@@ -1,0 +1,146 @@
+{
+  "circuito": "silverstone",
+  "anno": 2026,
+  "vecchio": 29.12,
+  "nuovo": 20.8,
+  "protocollo": "ATT6 v2 (PREREG_ATT6_V2.md)",
+  "tipicita": {
+    "loss_gara": 20.435,
+    "mediana_grappolo": 20.002,
+    "scarto": 0.433,
+    "soglia": 2,
+    "esito": "TIPICA",
+    "blocchi_grappolo": {
+      "2018-r10": 19.1412,
+      "2019-r10": 20.002,
+      "2020-r4": 27.8558,
+      "2020-r5": 19.0478,
+      "2021-r10": 18.9375,
+      "2022-r10": 22.482,
+      "2023-r10": 20.995
+    }
+  },
+  "sensibilita": {
+    "stop_validi": 19,
+    "esclusi_pre_verdetto": [
+      "ALO L20 (SC/VSC)",
+      "SAI L20 (SC/VSC)",
+      "OCO L21 (SC/VSC)",
+      "PER L21 (SC/VSC)",
+      "COL L22 (SC/VSC)",
+      "ALB L35 (SC/VSC)",
+      "PIA L36 (SC/VSC)",
+      "HAD L38 (SC/VSC)",
+      "NOR L38 (SC/VSC)",
+      "VER L38 (SC/VSC)",
+      "ANT L43 (drive-through)",
+      "ALO L46 (SC/VSC)",
+      "BOT L46 (SC/VSC)",
+      "PER L46 (SC/VSC)",
+      "STR L46 (SC/VSC)",
+      "BEA L47 (SC/VSC)",
+      "BOR L47 (SC/VSC)",
+      "COL L47 (SC/VSC)",
+      "HAD L47 (SC/VSC)",
+      "LAW L47 (SC/VSC)",
+      "LIN L47 (SC/VSC)",
+      "OCO L47 (SC/VSC)",
+      "PIA L47 (SC/VSC)",
+      "GAS L48 (SC/VSC)",
+      "HAM L48 (SC/VSC)",
+      "LEC L48 (SC/VSC)",
+      "NOR L48 (SC/VSC)",
+      "SAI L48 (SC/VSC)"
+    ],
+    "saltati": [
+      "ALB L1: freeze L-1 o rientro L2 fuori gara",
+      "PIA L2: freeze L0 o rientro L3 fuori gara",
+      "ALB L40: pilota non in pista al giro scelto",
+      "ANT L41: pilota non in pista al giro scelto"
+    ],
+    "stop_sensibili": 7,
+    "minimo": 3
+  },
+  "casi": [
+    {
+      "caso": "VER L17",
+      "sensibilita": 3,
+      "prima": 10,
+      "adesso": 7,
+      "reale": 7,
+      "n_field_motore": 21,
+      "n_field_reale": 22,
+      "err_prima": 3,
+      "err_adesso": 0,
+      "esito": "MIGLIORATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "GAS L23",
+      "sensibilita": 2,
+      "prima": 14,
+      "adesso": 12,
+      "reale": 14,
+      "n_field_motore": 16,
+      "n_field_reale": 22,
+      "err_prima": 0,
+      "err_adesso": 2,
+      "esito": "PEGGIORATO",
+      "esclusi_davanti": [
+        "HAD",
+        "SAI"
+      ]
+    },
+    {
+      "caso": "NOR L28",
+      "sensibilita": 2,
+      "prima": 6,
+      "adesso": 4,
+      "reale": 7,
+      "n_field_motore": 12,
+      "n_field_reale": 22,
+      "err_prima": 1,
+      "err_adesso": 3,
+      "esito": "PEGGIORATO",
+      "esclusi_davanti": [
+        "LEC",
+        "RUS",
+        "HAM"
+      ]
+    },
+    {
+      "caso": "HUL L17",
+      "sensibilita": 1,
+      "prima": 19,
+      "adesso": 18,
+      "reale": 18,
+      "n_field_motore": 21,
+      "n_field_reale": 22,
+      "err_prima": 1,
+      "err_adesso": 0,
+      "esito": "MIGLIORATO",
+      "esclusi_davanti": []
+    },
+    {
+      "caso": "HAD L19",
+      "sensibilita": 1,
+      "prima": 10,
+      "adesso": 9,
+      "reale": 9,
+      "n_field_motore": 21,
+      "n_field_reale": 22,
+      "err_prima": 1,
+      "err_adesso": 0,
+      "esito": "MIGLIORATO",
+      "esclusi_davanti": []
+    }
+  ],
+  "conteggio": {
+    "migliorati": 3,
+    "peggiorati": 2,
+    "invariati": 0,
+    "casi": 5
+  },
+  "verdetto": "RESPINTO",
+  "motivo": "2 caso/i peggiorato/i"
+}
