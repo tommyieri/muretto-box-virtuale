@@ -17,6 +17,16 @@ Regola: i dati vengono da f1db/TI, MAI trascritti a mano. Ogni griglia/pole va v
 6. [in corso] Vista: nessuno sparisce mai dalla griglia.
    - in pista = riga normale; doppiato arrivato = "arrivato · N giri"; RIT = "ritirato (giro X)"; NP = "non partito".
 
+7. [aperto] Riesecuzione dei 5 cancelli degrado dopo Spa (gara 19/07, post-ingest TI).
+   - Con la 10a gara 2026 nel dato: rilanciare COSI' COME SONO (KPI committati nelle
+     prereg, nessun ridisegno) `gen_climatologia_degrado.py` (K2), poi
+     `gen_cancello_intragara.py`, `gen_cancello_deconfuso.py`,
+     `gen_cancello_adattamento.py`, `gen_cancello_combinazione.py`.
+   - Nota: intragara era NON TESTABILE per 7 coppie < 8 — Spa puo' renderlo testabile.
+   - Vincolo inciso (arco chiuso, PR #44-#48): nessun SESTO stimatore senza dati/fonte
+     nuovi; questa e' la via legittima — stessi cancelli, campione cresciuto.
+   - Il gancio resta a banda-zero salvo esito diverso + ratifica PO.
+
 ## Principi
 - La griglia non deve mai svuotarsi: all'ultimo giro si vedono tutti e 22.
 - Il motore non fa sparire nessuno: porta tutti fino in fondo.
