@@ -1,0 +1,41 @@
+==============================================================================
+CANCELLO COMBINAZIONE — prior base + live de-confuso su scatto IC-esclusione
+==============================================================================
+Protocollo: PREREG_SESSIONE_COMBINAZIONE.md (quinto sguardo dichiarato,
+una regola senza parametri, KPI a tre condizioni congiunte).
+
+--- PRIMARIO POOLED 2026+2025 (decide) ---
+  coppie: 27 | vittorie combo: 14/27 = 51.9% (soglia >= 60%)
+  scatti: 11/27 | scattando ha ragione: 6/11 = 55%
+  err mediano: combo 0.0309 vs prior 0.0278 (combo NON meglio)
+  mediana(err_prior - err_combo): +0.0000 | IC95 blocchi-gara [+0.0000, +0.0000] (B=1000, seed=20260716)
+
+--- ripartizione 2026 (riportata, non decide) ---
+  coppie: 9 | vittorie combo: 5/9 = 55.6% (soglia >= 60%)
+  scatti: 5/9 | scattando ha ragione: 3/5 = 60%
+  err mediano: combo 0.0224 vs prior 0.0280 (combo meglio)
+  mediana(err_prior - err_combo): +0.0000 | IC95 blocchi-gara [-0.0422, +0.0613] (B=1000, seed=20260716)
+
+--- ripartizione 2025 (riportata, non decide) ---
+  coppie: 18 | vittorie combo: 9/18 = 50.0% (soglia >= 60%)
+  scatti: 6/18 | scattando ha ragione: 3/6 = 50%
+  err mediano: combo 0.0378 vs prior 0.0275 (combo NON meglio)
+  mediana(err_prior - err_combo): +0.0000 | IC95 blocchi-gara [+0.0000, +0.0000] (B=1000, seed=20260716)
+
+--- dettaglio scatti (dove la regola agisce) ---
+  2026 Barcelona             HARD   prior +0.0601 fuori da IC[+0.125,+0.182] -> live +0.1535 | bersaglio +0.1374 | err 0.0161 vs 0.0773 -> GIUSTO
+  2026 Barcelona             MEDIUM prior +0.0619 fuori da IC[+0.084,+0.175] -> live +0.1293 | bersaglio +0.1602 | err 0.0309 vs 0.0983 -> GIUSTO
+  2026 Canadian              MEDIUM prior +0.1001 fuori da IC[-0.040,-0.002] -> live -0.0208 | bersaglio +0.0181 | err 0.0389 vs 0.0820 -> GIUSTO
+  2026 Chinese               MEDIUM prior +0.1218 fuori da IC[-0.211,-0.054] -> live -0.1325 | bersaglio +0.1886 | err 0.3211 vs 0.0668 -> SBAGLIATO
+  2026 Monaco                MEDIUM prior -0.0280 fuori da IC[-0.010,+0.123] -> live +0.0564 | bersaglio -0.0560 | err 0.1123 vs 0.0280 -> SBAGLIATO
+  2025 Azerbaijan Grand Prix HARD   prior +0.0149 fuori da IC[-0.184,-0.055] -> live -0.1195 | bersaglio +0.0075 | err 0.1270 vs 0.0075 -> SBAGLIATO
+  2025 Las Vegas Grand Prix  HARD   prior +0.0115 fuori da IC[+0.043,+0.113] -> live +0.0778 | bersaglio +0.0348 | err 0.0430 vs 0.0234 -> SBAGLIATO
+  2025 Las Vegas Grand Prix  MEDIUM prior +0.1549 fuori da IC[+0.083,+0.129] -> live +0.1058 | bersaglio +0.0301 | err 0.0757 vs 0.1248 -> GIUSTO
+  2025 Qatar Grand Prix      MEDIUM prior -0.0351 fuori da IC[-0.017,+0.027] -> live +0.0049 | bersaglio +0.0513 | err 0.0464 vs 0.0863 -> GIUSTO
+  2025 Spanish Grand Prix    SOFT   prior +0.0786 fuori da IC[+0.098,+0.141] -> live +0.1194 | bersaglio +0.0353 | err 0.0841 vs 0.0433 -> SBAGLIATO
+  2025 United States Grand Prix MEDIUM prior +0.0390 fuori da IC[+0.048,+0.101] -> live +0.0743 | bersaglio +0.0656 | err 0.0087 vs 0.0266 -> GIUSTO
+
+==============================================================================
+CANCELLO: NULL — vittorie 14/27 (52%), IC95 [+0.0000, +0.0000], err mediano combo 0.0309 vs prior 0.0278
+Verdetto MECCANICO contro soglie congelate. Il verdetto strategico e' del PO.
+==============================================================================
