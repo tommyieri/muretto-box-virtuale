@@ -600,6 +600,101 @@ a.gpcard:hover::after { right: 0; }
 .anl-riga .barra.giu { background: color-mix(in srgb, var(--rf) 75%, var(--panel)); }
 .anl-riga .val { text-align: right; font-size: 12.5px; color: var(--dim); }
 
+/* ------------------------------------------------------------- LANDING */
+.land-hero {
+  position: relative; overflow: hidden; text-align: left;
+  background:
+    repeating-linear-gradient(-55deg, transparent 0 26px, rgba(255,255,255,.014) 26px 27px),
+    linear-gradient(120deg, var(--panel2), var(--panel) 55%);
+  border: 1px solid var(--line); border-radius: 16px;
+  padding: 52px 34px 46px; margin: 4px 0 26px;
+}
+.land-hero::before {                    /* scacchi, angolo alto-destro */
+  content: ""; position: absolute; top: 0; right: 0; width: 340px; height: 96px;
+  background:
+    conic-gradient(rgba(255,255,255,.055) 90deg, transparent 90deg 180deg,
+                   rgba(255,255,255,.055) 180deg 270deg, transparent 270deg);
+  background-size: 24px 24px;
+  -webkit-mask-image: linear-gradient(215deg, #000 20%, transparent 75%);
+          mask-image: linear-gradient(215deg, #000 20%, transparent 75%);
+  pointer-events: none;
+}
+.land-hero::after {
+  content: ""; position: absolute; inset: auto 0 0 0; height: 4px;
+  background: linear-gradient(90deg, var(--brand), var(--accent) 55%, transparent 88%);
+}
+.land-hero .eyebrow {
+  display: inline-flex; align-items: center; gap: 10px;
+  color: var(--brand); font: 700 11.5px/1 var(--mono); letter-spacing: 2.8px; text-transform: uppercase;
+}
+.land-hero .eyebrow::before { content: ""; width: 26px; height: 2px; background: var(--brand); }
+.land-hero h1 {
+  margin: 16px 0 14px; font: 800 clamp(38px, 7vw, 64px)/1.0 var(--disp);
+  letter-spacing: .5px; text-transform: uppercase; max-width: 14em;
+}
+.land-hero h1 em { font-style: normal; color: var(--accent); }
+.land-sub { color: var(--dim); font-size: 16px; line-height: 1.65; max-width: 62ch; margin: 0 0 26px; }
+.land-sub b { color: var(--txt); }
+.cta-row { display: flex; gap: 12px; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; cursor: pointer;
+  border-radius: 10px; padding: 13px 22px;
+  font: 700 15px/1 var(--disp); letter-spacing: 1.8px; text-transform: uppercase;
+  transition: transform .15s, filter .15s, border-color .15s;
+}
+.btn:hover { text-decoration: none; transform: translateY(-1px); }
+.btn-pri { background: var(--brand); color: #fff; box-shadow: 0 0 22px rgba(232,13,46,.32); }
+.btn-pri:hover { filter: brightness(1.12); }
+.btn-ghost { background: transparent; color: var(--txt); border: 1px solid var(--line2); }
+.btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+.land-cose { padding: 22px 24px; font-size: 15px; line-height: 1.7; }
+.land-cose p { margin: 0 0 14px; max-width: 78ch; }
+.land-cose p:last-child { margin-bottom: 0; }
+.land-cose b { color: var(--txt); }
+.land-cose .q { color: var(--accent); font-family: var(--mono); font-size: 14px; }
+
+.feat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 860px) { .feat-grid { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 560px) { .feat-grid { grid-template-columns: 1fr; } }
+.feat {
+  position: relative; overflow: hidden;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 16px 16px;
+  transition: border-color .18s, transform .18s, background .18s;
+}
+.feat:hover { border-color: var(--line2); transform: translateY(-2px); background: var(--panel2); }
+.feat .fn {
+  color: var(--brand); font: 800 11px/1 var(--mono); letter-spacing: 1.6px;
+}
+.feat h3 { margin: 8px 0 6px; font: 700 19px/1.15 var(--disp); letter-spacing: 1.2px; text-transform: uppercase; }
+.feat p { margin: 0; color: var(--dim); font-size: 13px; line-height: 1.55; }
+.feat p b { color: var(--txt); font-weight: 600; }
+
+.road { display: flex; flex-direction: column; gap: 10px; }
+.road-r {
+  display: grid; grid-template-columns: 130px 1fr; gap: 14px; align-items: start;
+  background: var(--panel); border: 1px solid var(--line); border-left: 3px solid var(--line2);
+  border-radius: 10px; padding: 15px 16px;
+}
+.road-r.oggi { border-left-color: var(--ok); }
+.road-r.wip { border-left-color: var(--brand); }
+.road-r.next { border-left-color: var(--accent); }
+.road-r .tag {
+  font: 700 9.5px/1 var(--mono); letter-spacing: 1.4px; text-transform: uppercase;
+  border-radius: 5px; padding: 4px 8px; justify-self: start; margin-top: 2px; white-space: nowrap;
+}
+.road-r.oggi .tag { color: var(--accent-ink); background: var(--ok); }
+.road-r.wip .tag { color: #fff; background: var(--brand); }
+.road-r.next .tag { color: var(--accent-ink); background: var(--accent); }
+.road-r h3 { margin: 0 0 4px; font: 700 17px/1.15 var(--disp); letter-spacing: 1.2px; text-transform: uppercase; }
+.road-r p { margin: 0; color: var(--dim); font-size: 13px; line-height: 1.55; }
+@media (max-width: 560px) { .road-r { grid-template-columns: 1fr; gap: 8px; } }
+
+.navrow4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 4px 0 6px; }
+@media (max-width: 860px) { .navrow4 { grid-template-columns: 1fr 1fr; } }
+@media (max-width: 480px) { .navrow4 { grid-template-columns: 1fr; } }
+
 /* -------------------------------------------- NUMERI DI GARA & MOTORI */
 /* il numero e' identita' del pilota: sempre nel colore del team (inline dal dato) */
 .rnum { font: 800 15px/1 var(--disp); font-style: italic; letter-spacing: .3px;

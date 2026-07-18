@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <!--
-  HOME (ui-v4): hero prossima gara (con sessioni del weekend), navigazione a bottoni
-  centrali (Live / Classifiche / Analisi), campionato in breve, griglia stagione con
-  bandiere. Consumatore puro: calendario_2026.json, classifiche_2026.json, manifest.
+  LANDING (ui-v5): racconta il prodotto — cos'è, cosa fa oggi, cosa farà — e porta
+  alle sezioni (Stagione 2026 / Live / Classifiche / Analisi). Statica: nessun dato,
+  nessun fetch. Il contenuto di stagione vive in stagione.html.
 -->
 <html lang="it">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Muretto Box Virtuale — stagione 2026</title>
+<title>Muretto Box Virtuale — la strategia di gara, vista dal muretto</title>
+<meta name="description" content="Replay per-giro delle gare di Formula 1 2026 e un simulatore di pit stop: se pitto al giro L, dove rientro? Tutto da dati misurati.">
 <link rel="stylesheet" href="stile.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
@@ -19,7 +20,7 @@
     <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
   </a>
   <nav class="nav" aria-label="Sezioni">
-    <a href="index.html" class="on">Stagione</a>
+    <a href="stagione.html">Stagione</a>
     <a href="live.html"><span class="dot-live"></span>Live</a>
     <a href="classifiche.html">Classifiche</a>
     <a href="analisi.html">Analisi</a>
@@ -27,28 +28,127 @@
 </header>
 
 <div class="wrap-home">
-  <section class="hero" id="hero" hidden>
-    <div class="eyebrow" id="heroEyebrow">Prossima gara</div>
-    <h2 id="heroTitolo">…</h2>
-    <div class="circuito" id="heroCircuito"></div>
-    <div class="quando">
-      <span class="data" id="heroData"></span>
-      <span class="count" id="heroCount"></span>
+
+  <!-- ======================================================= HERO -->
+  <section class="land-hero">
+    <div class="eyebrow">Muretto Box Virtuale &middot; Stagione 2026</div>
+    <h1>La strategia di gara,<br>vista <em>dal muretto</em>.</h1>
+    <p class="land-sub">
+      Ogni gara di Formula 1 2026, ricostruita <b>giro per giro</b>. E un simulatore che
+      risponde alla domanda che il muretto box si fa per tutta la gara:
+      <b>&laquo;se pitto al giro L, dove rientro?&raquo;</b>
+      Niente numeri inventati: tutto viene da dati misurati.
+    </p>
+    <div class="cta-row">
+      <a class="btn btn-pri" href="stagione.html">Entra nella stagione 2026 &rarr;</a>
+      <a class="btn btn-ghost" href="live.html">Segui il live</a>
     </div>
-    <div class="hero-sess num" id="heroSess"></div>
   </section>
 
-  <!-- accessi rapidi alle sezioni -->
-  <nav class="navrow" aria-label="Accessi rapidi">
-    <a class="navbtn" href="live.html"><b>Live</b><span>Il weekend di gara in diretta, con il simulatore pit attivo.</span><span class="freccia">&rarr;</span></a>
-    <a class="navbtn" href="classifiche.html"><b>Classifiche</b><span>Campionato piloti e costruttori, aggiornato gara per gara.</span><span class="freccia">&rarr;</span></a>
+  <!-- ======================================================= COS'È -->
+  <div class="sez-tit">Cos'&egrave;</div>
+  <section class="panel land-cose">
+    <p>
+      Il <b>Muretto Box Virtuale</b> &egrave; una piattaforma di analisi e strategia di gara.
+      Prende le gare della stagione 2026 e le rimette in moto nel browser: la pista disegnata
+      dal <b>giro GPS reale</b>, i piloti che girano, la classifica che si aggiorna giro dopo
+      giro con gap, pit stop, safety car e bandiere &mdash; come la vedrebbe chi sta al muretto.
+    </p>
+    <p>
+      Al centro c'&egrave; il <b>motore di esplorazione pit</b>: scegli un pilota, scegli un giro,
+      e il motore ti dice dove rientreresti dopo la sosta &mdash; coi rivali congelati al loro
+      passo reale e il costo della sosta (<b>pit-loss</b>) misurato su quella gara, con la sua
+      provenienza sempre dichiarata. <span class="q">Il motore mostra dove rientri, non se conviene:
+      la decisione resta a te.</span>
+    </p>
+    <p>
+      La regola della casa &egrave; una sola: <b>i dati sono la verit&agrave;</b>. Calendario, orari,
+      griglie, risultati, numeri di gara, motorizzazioni: tutto arriva dalla fonte tramite
+      generatori automatici, niente &egrave; trascritto a mano. E se un dato non c'&egrave;,
+      semplicemente non lo mostriamo.
+    </p>
+  </section>
+
+  <!-- ======================================================= COSA FA -->
+  <div class="sez-tit">Cosa fa oggi</div>
+  <div class="feat-grid">
+    <div class="feat"><div class="fn">01</div>
+      <h3>Replay per-giro</h3>
+      <p>Ogni gara pubblicata si rivede dall'inizio alla fine: play, velocit&agrave; 1&times;&ndash;8&times;,
+      timeline degli eventi cliccabile. La griglia non si svuota mai: <b>all'ultimo giro vedi
+      tutti e 22</b> &mdash; in pista, doppiati, ritirati o non partiti, ognuno col suo stato.</p>
+    </div>
+    <div class="feat"><div class="fn">02</div>
+      <h3>Esplorazione pit</h3>
+      <p>Tocca un pilota e chiedi: <b>&laquo;se pitto adesso?&raquo;</b> Poi sposta il cursore
+      e prova ogni giro successivo. Rientro calcolato coi rivali al passo reale e il pit-loss
+      della gara: <b>misurato</b>, <b>tipico</b> di circuito o <b>non misurato</b> &mdash;
+      la provenienza &egrave; sempre nel badge.</p>
+    </div>
+    <div class="feat"><div class="fn">03</div>
+      <h3>Strategia gomme</h3>
+      <p>Una barra per pilota, lunga quanto la gara: <b>stint e mescole</b> segmento per
+      segmento, tacche dei pit stop con durata e cambio gomma, evidenza di intermedie e wet.</p>
+    </div>
+    <div class="feat"><div class="fn">04</div>
+      <h3>Race control</h3>
+      <p>Safety car, virtual safety car, bandiere rosse e gialle sulla timeline. Le
+      <b>penalit&agrave;</b> compaiono col badge dal giro dell'annuncio, e a fine gara la doppia
+      classifica <b>&laquo;in pista | ufficiale&raquo;</b> mostra cosa hanno cambiato.</p>
+    </div>
+    <div class="feat"><div class="fn">05</div>
+      <h3>Classifiche &amp; schede</h3>
+      <p>Campionato <b>piloti e costruttori</b> aggiornato gara per gara, coi numeri di gara
+      nel colore del team e le <b>motorizzazioni</b> reali. Ogni pilota e ogni team ha la sua
+      scheda: carriera completa e stagione in corso.</p>
+    </div>
+    <div class="feat"><div class="fn">06</div>
+      <h3>Numeri, non opinioni</h3>
+      <p>Pista da giro GPS, tempi reali, standing ufficiali. I colori team identificano i
+      piloti, i colori semantici (SC, bandiere, mescole) non sono mai decorazione. Ogni numero
+      sullo schermo <b>&egrave; un dato, non una stima nascosta</b>.</p>
+    </div>
+  </div>
+
+  <!-- ======================================================= COSA FARÀ -->
+  <div class="sez-tit">Cosa far&agrave;</div>
+  <div class="road">
+    <div class="road-r oggi">
+      <span class="tag">Gi&agrave; oggi</span>
+      <div>
+        <h3>Stagione 2026 in replay</h3>
+        <p>Le gare corse sono in demo col replay completo e l'esplorazione pit. Le prossime
+        arrivano appena i dati di gara sono pubblicati e verificati.</p>
+      </div>
+    </div>
+    <div class="road-r wip">
+      <span class="tag">In costruzione</span>
+      <div>
+        <h3>Live: il weekend in diretta</h3>
+        <p>Prove libere, qualifiche e gara seguite in tempo reale &mdash; e in gara il simulatore
+        pit <b>attivo mentre la gara succede</b>: la stessa domanda del muretto, sul momento.
+        La fase 1 (registrazione e replay delle sessioni) &egrave; gi&agrave; in cantiere.</p>
+      </div>
+    </div>
+    <div class="road-r next">
+      <span class="tag">In arrivo</span>
+      <div>
+        <h3>Analisi profonda</h3>
+        <p>Telemetrie di gara, prestazioni dei team nel tempo e caratterizzazione dei circuiti:
+        <b>degrado gomme</b>, <b>sorpassabilit&agrave;</b>, <b>pit-loss per pista</b>. Come tutto
+        il resto: solo da dati misurati, col protocollo di misura esteso a ogni gara.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================= ENTRA -->
+  <div class="sez-tit">Entra</div>
+  <nav class="navrow4" aria-label="Sezioni del sito">
+    <a class="navbtn" href="stagione.html"><b>Stagione 2026</b><span>Calendario, prossima gara e replay di ogni GP corso.</span><span class="freccia">&rarr;</span></a>
+    <a class="navbtn" href="live.html"><b>Live</b><span>Il weekend di gara in diretta, col simulatore pit attivo.</span><span class="freccia">&rarr;</span></a>
+    <a class="navbtn" href="classifiche.html"><b>Classifiche</b><span>Campionato piloti e costruttori, gara per gara.</span><span class="freccia">&rarr;</span></a>
     <a class="navbtn" href="analisi.html"><b>Analisi</b><span>I numeri della stagione: posizioni, degrado, pit-loss.</span><span class="freccia">&rarr;</span></a>
   </nav>
-
-  <section class="champ panel" id="champ" hidden></section>
-
-  <div class="sez-tit">Stagione 2026</div>
-  <div class="stagione" id="stagione"></div>
 
 </div>
 
@@ -56,95 +156,12 @@
   <div class="footer-in">
     <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
     <nav>
+      <a href="stagione.html">Stagione</a>
       <a href="live.html">Live</a>
       <a href="classifiche.html">Classifiche</a>
       <a href="analisi.html">Analisi</a>
     </nav>
   </div>
 </footer>
-
-<script type="module">
-const el = id => document.getElementById(id);
-const MESE = d => d.toLocaleDateString('it-IT', { day:'numeric', month:'long' });
-let teamCol = {};
-
-// bandiera emoji dall'alpha2 f1db (dato, non mappa a mano)
-const bandiera = a2 => a2 ? String.fromCodePoint(...[...a2.toUpperCase()].map(c=>0x1F1A5+c.charCodeAt(0))) : '';
-
-function cardGara(g, inDemo, corsa){
-  const quando = MESE(new Date(g.data+'T12:00:00'));
-  const testa = `<div class="r">R${String(g.round).padStart(2,'0')}</div>
-    <div class="nome"><span class="gflag">${bandiera(g.alpha2)}</span> ${g.nome}</div>
-    <div class="data">${quando}${g.giri?` · ${g.giri} giri`:''}</div>`;
-  if (inDemo){
-    const w = g.vincitore;
-    const win = w ? `<div class="win"><span class="tdot" style="background:${teamCol[w.team]||'var(--dim)'}"></span><b>${w.sigla}</b><span class="lab">vincitore</span></div>` : '';
-    return `<a class="gpcard" href="gara.html?g=${encodeURIComponent(g.gara_demo)}">${testa}${win}</a>`;
-  }
-  if (corsa)   // corsa ma non (ancora) pubblicata in demo
-    return `<div class="gpcard arrivo">${testa}<div class="win"><span class="lab">dati in arrivo</span></div></div>`;
-  return `<div class="gpcard futura">${testa}<div class="stato">in calendario</div></div>`;
-}
-
-function countdown(dataISO){
-  const gg = Math.ceil((new Date(dataISO+'T12:00:00') - new Date()) / 86400000);
-  if (gg <= 0) return 'oggi';
-  if (gg === 1) return 'domani';
-  return `fra ${gg} giorni`;
-}
-
-// riassunto sessioni del weekend (orari f1db UTC -> fuso del lettore; senza ora: solo giorno)
-function sessBreve(sess){
-  const NOMI = {fp1:'FP1', fp2:'FP2', fp3:'FP3', fp4:'FP4', sprint_quali:'SQ', sprint:'Sprint', qualifiche:'Quali', gara:'Gara'};
-  return Object.entries(sess||{}).map(([k,s])=>{
-    if (!s.data) return null;
-    if (!s.ora_utc) return `${NOMI[k]} ${new Date(s.data+'T12:00:00').toLocaleDateString('it-IT',{weekday:'short'})}`;
-    const d = new Date(`${s.data}T${s.ora_utc}:00Z`);
-    return `${NOMI[k]} ${d.toLocaleDateString('it-IT',{weekday:'short'})} ${d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}`;
-  }).filter(Boolean).join(' · ');
-}
-
-async function boot(){
-  const cal = await (await fetch('data/calendario_2026.json')).json();
-  const manifest = await (await fetch('data/manifest.json')).json();
-  try { teamCol = await (await fetch('team_colori.json')).json(); } catch(e){ teamCol={}; }
-  const inDemo = new Set(manifest.map(r=>r.gara));
-  const oggi = new Date(); oggi.setHours(0,0,0,0);
-
-  // hero: la prossima gara in calendario (data >= oggi); a stagione finita, l'ultima corsa
-  const prossima = cal.gare.find(g => new Date(g.data+'T23:59:59') >= oggi);
-  const h = prossima || cal.gare[cal.gare.length-1];
-  if (h){
-    el('heroEyebrow').textContent = prossima ? 'Prossima gara' : 'Stagione conclusa';
-    el('heroTitolo').textContent = `${bandiera(h.alpha2)} ${h.titolo} — ${MESE(new Date(h.data+'T12:00:00'))}`;
-    el('heroCircuito').textContent = `${h.circuito}${h.giri?` · ${h.giri} giri`:''} · round ${h.round} di ${cal.gare.length}`;
-    el('heroData').textContent = new Date(h.data+'T12:00:00').toLocaleDateString('it-IT',{weekday:'long', day:'numeric', month:'long', year:'numeric'});
-    el('heroCount').textContent = prossima ? countdown(h.data) : '';
-    el('heroSess').textContent = prossima ? sessBreve(h.sessioni) : '';
-    el('hero').hidden = false;
-  }
-
-  // campionato in breve: primi 3 dagli standings f1db gia' generati
-  try {
-    const clas = await (await fetch('data/classifiche_2026.json')).json();
-    let numeri = {};
-    try { const sk = await (await fetch('data/schede_2026.json')).json();
-          numeri = Object.fromEntries(Object.entries(sk.piloti).map(([id,s])=>[id, s.numero])); } catch(e){}
-    el('champ').innerHTML = `<div class="champ-tit">Campionato</div>` +
-      clas.piloti.slice(0,3).map(p=>`<a class="champ-p" href="scheda.html?tipo=pilota&id=${encodeURIComponent(p.id)}">
-        <i style="background:${teamCol[p.team_demo]||'var(--dim)'}"></i>
-        <span class="pp num">P${p.pos}</span><span class="rnum" style="color:${teamCol[p.team_demo]||'var(--dim)'}">${numeri[p.id] ?? ''}</span><b>${p.sigla}</b><span class="pt num">${p.punti}</span></a>`).join('') +
-      `<a class="champ-tutta" href="classifiche.html">classifica completa &rarr;</a>`;
-    el('champ').hidden = false;
-  } catch(e){}
-
-  el('stagione').innerHTML = cal.gare.map(g => {
-    const demoOk = !!g.gara_demo && inDemo.has(g.gara_demo);
-    const corsa = new Date(g.data+'T23:59:59') < oggi;
-    return cardGara(g, demoOk, corsa);
-  }).join('');
-}
-boot();
-</script>
 </body>
 </html>
