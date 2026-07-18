@@ -10,12 +10,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Muretto Box Virtuale — stagione 2026</title>
 <link rel="stylesheet" href="stile.css">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%230a0c10%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%234da3ff%27/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>
-<div class="topbar">
-  <span class="brand">Muretto Box Virtuale <small>demo storica &middot; stagione 2026</small></span>
-</div>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
+    <span class="brand-mark"><span>M</span></span>
+    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+  </a>
+  <nav class="nav" aria-label="Sezioni">
+    <a href="index.html" class="on">Stagione</a>
+    <a href="live.html"><span class="dot-live"></span>Live</a>
+    <a href="classifiche.html">Classifiche</a>
+    <a href="analisi.html">Analisi</a>
+  </nav>
+</header>
 
 <div class="wrap-home">
   <section class="hero" id="hero" hidden>
@@ -29,11 +38,11 @@
     <div class="hero-sess num" id="heroSess"></div>
   </section>
 
-  <!-- navigazione principale: bottoni centrali -->
-  <nav class="navrow" aria-label="Sezioni">
-    <a class="navbtn" href="live.html"><b>Live</b><span>il weekend, in diretta<br>(in costruzione)</span></a>
-    <a class="navbtn" href="classifiche.html"><b>Classifiche</b><span>piloti e costruttori</span></a>
-    <a class="navbtn" href="analisi.html"><b>Analisi</b><span>i numeri della stagione</span></a>
+  <!-- accessi rapidi alle sezioni -->
+  <nav class="navrow" aria-label="Accessi rapidi">
+    <a class="navbtn" href="live.html"><b>Live</b><span>Il weekend di gara in diretta, con il simulatore pit attivo.</span><span class="freccia">&rarr;</span></a>
+    <a class="navbtn" href="classifiche.html"><b>Classifiche</b><span>Campionato piloti e costruttori, aggiornato gara per gara.</span><span class="freccia">&rarr;</span></a>
+    <a class="navbtn" href="analisi.html"><b>Analisi</b><span>I numeri della stagione: posizioni, degrado, pit-loss.</span><span class="freccia">&rarr;</span></a>
   </nav>
 
   <section class="champ panel" id="champ" hidden></section>
@@ -41,11 +50,18 @@
   <div class="sez-tit">Stagione 2026</div>
   <div class="stagione" id="stagione"></div>
 
-  <div class="footnote">
-    Gare corse in demo: replay per-giro + esplorazione pit (&ldquo;se pitto al giro L, dove rientro?&rdquo;).
-    Calendario e classifiche da f1db (generatori committati); vincitori dai dati gara pubblicati.
-  </div>
 </div>
+
+<footer class="footer">
+  <div class="footer-in">
+    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
+    <nav>
+      <a href="live.html">Live</a>
+      <a href="classifiche.html">Classifiche</a>
+      <a href="analisi.html">Analisi</a>
+    </nav>
+  </div>
+</footer>
 
 <script type="module">
 const el = id => document.getElementById(id);

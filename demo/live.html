@@ -11,19 +11,31 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Live — Muretto Box Virtuale</title>
 <link rel="stylesheet" href="stile.css">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%230a0c10%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%234da3ff%27/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>
-<div class="topbar">
-  <a class="back" href="index.html">&larr; Stagione 2026</a>
-  <span class="brand">Live <small>weekend di gara</small></span>
-</div>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
+    <span class="brand-mark"><span>M</span></span>
+    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+  </a>
+  <nav class="nav" aria-label="Sezioni">
+    <a href="index.html">Stagione</a>
+    <a href="live.html" class="on"><span class="dot-live"></span>Live</a>
+    <a href="classifiche.html">Classifiche</a>
+    <a href="analisi.html">Analisi</a>
+  </nav>
+</header>
 
 <div class="wrap-clas">
+  <div class="page-testa">
+    <h1>Live <em>//</em> weekend di gara</h1>
+    <div class="sotto">FP, qualifiche e gara in diretta, con il simulatore pit attivo mentre la gara succede.</div>
+  </div>
+
   <div class="wip panel">
     <span class="wip-tag">IN COSTRUZIONE</span>
-    Qui seguirai FP, qualifiche e gara <b>in diretta</b>, con il simulatore attivo in gara:
-    la stessa domanda del muretto &mdash; &ldquo;se pitto al giro L, dove rientro?&rdquo; &mdash; mentre la gara succede.
+    La stessa domanda del muretto &mdash; &ldquo;se pitto al giro L, dove rientro?&rdquo; &mdash; in tempo reale.
   </div>
 
   <div class="sez-tit">Prossimo evento</div>
@@ -37,11 +49,19 @@
     <div class="mock-riga"><span>2</span><span>&#9608;&#9608;&#9608;</span><span>+&mdash;,&mdash;</span><span>&#9679;</span><span>BOX</span></div>
     <div class="mock-riga"><span>3</span><span>&#9608;&#9608;&#9608;</span><span>+&mdash;,&mdash;</span><span>&#9679;</span><span></span></div>
     <div class="mock-riga"><span>4</span><span>&#9608;&#9608;&#9608;</span><span>+&mdash;,&mdash;</span><span>&#9679;</span><span></span></div>
-    <div class="mock-nota">Mock statico: nessun dato reale. Il layout &egrave; l&rsquo;ambizione, non lo stato.
-      Nel live ci saranno anche i badge penalit&agrave; (&sect; +5s) accanto al pilota, come nel replay
-      storico (decisione PO 2026-07-16, race control livello 1).</div>
   </section>
 </div>
+
+<footer class="footer">
+  <div class="footer-in">
+    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
+    <nav>
+      <a href="index.html">Stagione</a>
+      <a href="classifiche.html">Classifiche</a>
+      <a href="analisi.html">Analisi</a>
+    </nav>
+  </div>
+</footer>
 
 <script type="module">
 const el = id => document.getElementById(id);
@@ -71,8 +91,7 @@ async function boot(){
     <div class="live-gp"><b>${g.titolo}</b><span>${g.circuito}</span></div>
     ${sess.map(s=>`<div class="live-sess${s===prossima?' next':''}">
        <span class="n">${NOMI[s.k]||s.k}</span><span class="q num">${s.testo}</span>
-       ${s===prossima?'<span class="tag">prossimo</span>':''}</div>`).join('')}
-    <div class="mock-nota">Orari f1db (UTC) mostrati nel tuo fuso.</div>`;
+       ${s===prossima?'<span class="tag">prossimo</span>':''}</div>`).join('')}`;
 }
 boot();
 </script>

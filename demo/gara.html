@@ -12,15 +12,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gara — Muretto Box Virtuale</title>
 <link rel="stylesheet" href="stile.css">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%230a0c10%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%234da3ff%27/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>
-<div class="topbar">
-  <a class="back" href="index.html">&larr; Stagione 2026</a>
-  <span class="brand">Muretto Box Virtuale <small>demo storica</small></span>
-</div>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
+    <span class="brand-mark"><span>M</span></span>
+    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+  </a>
+  <nav class="nav" aria-label="Sezioni">
+    <a href="index.html">Stagione</a>
+    <a href="live.html"><span class="dot-live"></span>Live</a>
+    <a href="classifiche.html">Classifiche</a>
+    <a href="analisi.html">Analisi</a>
+  </nav>
+</header>
 
 <div class="wrap-gara">
+  <a class="crumb" href="index.html">&larr; Stagione 2026</a>
   <div class="gheader">
     <h1 id="hTitolo">…</h1>
     <div class="sub">
@@ -33,7 +42,7 @@
       pit-loss <span class="v" id="plVal"></span> <span class="prov" id="plProv"></span>
     </span>
   </div>
-  <div class="pltip" id="plTip">Provenienza del pit-loss: <b>realizzato</b> = misurato su questa gara (protocollo FF5) · <b>tipico</b> = stima di circuito, gara non misurata · <b>non misurato</b> = durata ereditata f1db, non verificata.</div>
+  <div class="pltip" id="plTip">Provenienza del pit-loss: <b>realizzato</b> = misurato su questa gara · <b>tipico</b> = stima di circuito · <b>non misurato</b> = valore ereditato, non verificato.</div>
 
   <div class="glayout">
     <div class="col-pista">
@@ -93,8 +102,6 @@
            l'ufficiale e' RIPORTATO da una fonte di classifica FIA, non ricostruito (RC2: STOP) -->
       <section class="panel uff" id="vistaUff" hidden>
         <div id="uffTab"></div>
-        <div class="uff-nota">Classifica ufficiale FIA (fonte di classifica, non ricalcolo):
-          include decisioni post-gara che non transitano dal race control.</div>
       </section>
       <div class="colhint">Tocca un pilota: &ldquo;se pitto <b>adesso</b>, dove rientro?&rdquo;</div>
 
@@ -112,7 +119,7 @@
     </div>
   </div>
 
-  <div class="footnote">Dati storici della gara (per giro) &middot; il pit-loss in uso e la sua provenienza sono nel badge in alto. <span id="buildTag"></span></div>
+  <span id="buildTag" hidden></span>
 </div>
 
 <script type="module">
@@ -253,7 +260,7 @@ async function loadGara(gara) {
 function pistaVuota(gara){
   el('pista').innerHTML = `<div class="pista-vuota">
       <b>${gara}</b>
-      <span>pista in arrivo &mdash; telemetria non disponibile per questa gara (vedi NOTA_PISTE.md)</span>
+      <span>pista in arrivo &mdash; telemetria non disponibile per questa gara</span>
     </div>`;
 }
 async function drawPista(gara){
@@ -261,8 +268,7 @@ async function drawPista(gara){
   el('pista').classList.remove('pit-attivo');
   el('pista').innerHTML = `<canvas aria-label="Mappa circuito con pallini piloti (replay per-giro)"></canvas>
     <div class="spenta">Pallini spenti durante l&rsquo;esplorazione pit:<br>
-      il replay mostra la gara com&rsquo;e&rsquo; andata davvero, il motore risponde al controfattuale per-giro.</div>
-    <div class="fonte">Tracciato: giro GPS reale (FastF1, generatore committato). Pallini: replay dei tempi-giro reali &mdash; dentro il giro la posizione &egrave; interpolata (frazione di tempo &asymp; frazione di distanza), non una simulazione.</div>`;
+      il replay mostra la gara com&rsquo;e&rsquo; andata davvero, il motore risponde al controfattuale per-giro.</div>`;
   try {
     const { creaPista } = await import('./pista.mjs?v=160726b');
     pista = await creaPista({ canvas: el('pista').querySelector('canvas'), url: `data/pista_${encodeURIComponent(gara)}.json` });

@@ -12,12 +12,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Scheda — Muretto Box Virtuale</title>
 <link rel="stylesheet" href="stile.css">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%230a0c10%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%234da3ff%27/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>
-<div class="topbar">
-  <a class="back" href="classifiche.html" id="back">&larr; Classifiche</a>
-  <span class="brand">Scheda <small>stagione 2026</small></span>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
+    <span class="brand-mark"><span>M</span></span>
+    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+  </a>
+  <nav class="nav" aria-label="Sezioni">
+    <a href="index.html">Stagione</a>
+    <a href="live.html"><span class="dot-live"></span>Live</a>
+    <a href="classifiche.html" class="on">Classifiche</a>
+    <a href="analisi.html">Analisi</a>
+  </nav>
+</header>
+<div class="wrap-scheda" style="padding-bottom:0">
+  <a class="crumb" href="classifiche.html" id="back">&larr; Classifiche</a>
 </div>
 <script>
 // back-link contestuale: arrivando dalla pagina-gara o dall'analisi si torna LI',
@@ -100,7 +111,7 @@ function schedaTeam(cid, s){
       <div><h1>${esc(s.team_demo || s.nome)}</h1>
         <div class="sub"><span>${esc(s.nome_completo||'')}</span><span>${esc(s.paese||'')}</span></div>
       </div></div>
-    <section class="sk-sez panel"><h2>Carriera (dal 1950, base dati f1db)</h2>
+    <section class="sk-sez panel"><h2>Carriera</h2>
       <div class="sk-tiles">
         ${tile(ca.gp_disputati,'GP disputati')}${tile(ca.vittorie,'vittorie')}${tile(ca.podi,'podi')}
         ${tile(ca.pole,'pole')}${tile(ca.giri_veloci,'giri veloci')}${tile(ca.titoli,'titoli costruttori')}${tile(ca.punti,'punti')}
@@ -134,5 +145,16 @@ async function boot(){
 }
 boot();
 </script>
+<footer class="footer">
+  <div class="footer-in">
+    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
+    <nav>
+      <a href="index.html">Stagione</a>
+      <a href="live.html">Live</a>
+      <a href="classifiche.html">Classifiche</a>
+      <a href="analisi.html">Analisi</a>
+    </nav>
+  </div>
+</footer>
 </body>
 </html>
