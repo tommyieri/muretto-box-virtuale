@@ -1,0 +1,228 @@
+{
+ "kpi1": {
+  "righe_fp2_totali": 24476,
+  "righe_fp2_ok": 24476,
+  "frazione_ok": 1.0,
+  "crash_fp1": 0,
+  "auto_nei_position_frame": 22,
+  "gate": true
+ },
+ "kpi3": {
+  "frequenza_mediana_hz": 3.825,
+  "frequenza_min_hz": 3.821,
+  "frequenza_max_hz": 3.826,
+  "gate": null
+ },
+ "kpi2": {
+  "auto_ufficiali": 22,
+  "auto_con_tempo_confrontabile": 22,
+  "best_coincidenti_al_millesimo": 20,
+  "fonte_ordine_ufficiale": "derivato dai best ufficiali",
+  "ordine_replay": [
+   "12",
+   "1",
+   "3",
+   "44",
+   "6",
+   "81",
+   "43",
+   "63",
+   "41",
+   "30",
+   "16",
+   "87",
+   "5",
+   "31",
+   "23",
+   "55",
+   "27",
+   "10",
+   "77",
+   "11",
+   "18",
+   "14"
+  ],
+  "ordine_ufficiale": [
+   "12",
+   "1",
+   "3",
+   "44",
+   "6",
+   "81",
+   "16",
+   "43",
+   "63",
+   "41",
+   "10",
+   "30",
+   "87",
+   "5",
+   "31",
+   "23",
+   "55",
+   "27",
+   "77",
+   "11",
+   "18",
+   "14"
+  ],
+  "ordine_coincide": false,
+  "gate": false,
+  "confronto": {
+   "1": {
+    "sigla": "NOR",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 106.134,
+    "best_replay_s": 106.134,
+    "delta_ms": 0.0
+   },
+   "3": {
+    "sigla": "VER",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 106.416,
+    "best_replay_s": 106.416,
+    "delta_ms": 0.0
+   },
+   "5": {
+    "sigla": "BOR",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 107.952,
+    "best_replay_s": 107.952,
+    "delta_ms": 0.0
+   },
+   "6": {
+    "sigla": "HAD",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 106.714,
+    "best_replay_s": 106.714,
+    "delta_ms": 0.0
+   },
+   "10": {
+    "sigla": "GAS",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 107.36,
+    "best_replay_s": 108.955,
+    "delta_ms": 1595.0
+   },
+   "11": {
+    "sigla": "PER",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 109.596,
+    "best_replay_s": 109.596,
+    "delta_ms": 0.0
+   },
+   "12": {
+    "sigla": "ANT",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 105.944,
+    "best_replay_s": 105.944,
+    "delta_ms": 0.0
+   },
+   "14": {
+    "sigla": "ALO",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 111.418,
+    "best_replay_s": 111.418,
+    "delta_ms": 0.0
+   },
+   "16": {
+    "sigla": "LEC",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 107.035,
+    "best_replay_s": 107.468,
+    "delta_ms": 433.0
+   },
+   "18": {
+    "sigla": "STR",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 111.131,
+    "best_replay_s": 111.131,
+    "delta_ms": 0.0
+   },
+   "23": {
+    "sigla": "ALB",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 108.019,
+    "best_replay_s": 108.019,
+    "delta_ms": 0.0
+   },
+   "27": {
+    "sigla": "HUL",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 108.333,
+    "best_replay_s": 108.333,
+    "delta_ms": 0.0
+   },
+   "30": {
+    "sigla": "LAW",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 107.434,
+    "best_replay_s": 107.434,
+    "delta_ms": 0.0
+   },
+   "31": {
+    "sigla": "OCO",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 107.958,
+    "best_replay_s": 107.958,
+    "delta_ms": 0.0
+   },
+   "41": {
+    "sigla": "LIN",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 107.294,
+    "best_replay_s": 107.294,
+    "delta_ms": 0.0
+   },
+   "43": {
+    "sigla": "COL",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 107.147,
+    "best_replay_s": 107.14699999999999,
+    "delta_ms": -0.0
+   },
+   "44": {
+    "sigla": "HAM",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 106.691,
+    "best_replay_s": 106.691,
+    "delta_ms": 0.0
+   },
+   "55": {
+    "sigla": "SAI",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 108.256,
+    "best_replay_s": 108.256,
+    "delta_ms": 0.0
+   },
+   "63": {
+    "sigla": "RUS",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 107.229,
+    "best_replay_s": 107.229,
+    "delta_ms": 0.0
+   },
+   "77": {
+    "sigla": "BOT",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 109.199,
+    "best_replay_s": 109.199,
+    "delta_ms": 0.0
+   },
+   "81": {
+    "sigla": "PIA",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 106.926,
+    "best_replay_s": 106.926,
+    "delta_ms": 0.0
+   },
+   "87": {
+    "sigla": "BEA",
+    "pos_ufficiale": null,
+    "best_ufficiale_s": 107.792,
+    "best_replay_s": 107.792,
+    "delta_ms": 0.0
+   }
+  }
+ }
+}

@@ -74,3 +74,54 @@ Con registrazioni in piu' parti, ispezionare ogni file separatamente.
 
 Costruisce una fixture sintetica di 4 righe (inclusa una `Position.z`
 compressa da JSON noto) e verifica conteggi, decodifica, timestamp e gap.
+
+---
+
+# Fase 1 — decoder, replay, verifica allineamento
+
+KPI pre-registrati in [FASE1_PREREG.md](FASE1_PREREG.md), verdetti in
+[REPORT_FASE1.md](REPORT_FASE1.md). Tutto stdlib-only tranne
+`estrai_riferimenti.py` (una tantum, `python3` utente con FastF1).
+
+## Decoder (`decoder.py`)
+
+Dal file grezzo ai messaggi tipizzati: `.z` decodificati (base64+deflate raw),
+`(0,0,0)` mai emesso come posizione valida, canali CarData mappati e
+controllati (fuori range → warning), `TimingData` fusi in uno stato
+per-pilota persistente (merge ricorsivo dei delta), righe illeggibili
+contate mai fatali.
+
+## Replay (`replay.py`)
+
+```bash
+.venv/bin/python live/replay.py data/live_raw/FILE.txt [FILE_part2.txt ...] \
+    --speed max --out eventi.jsonl     # oppure --stdout, --speed 1, 10, ...
+```
+
+Riemette lo stato come eventi JSON in ordine di tempo (`position_frame`,
+`timing_update` con soli campi cambiati, `track_status`, `session_status`).
+Parti multiple ordinate e deduplicate sull'overlap. L'API Python
+(`eventi_replay(paths)`) e' il generatore che in Fase 2 alimentera' il
+WebSocket: il consumatore non distingue replay da live.
+
+## Verifica allineamento (`verify_alignment.py`)
+
+```bash
+python3 live/estrai_riferimenti.py          # una tantum (FastF1, python3)
+.venv/bin/python live/verify_alignment.py   # KPI 4-5, SVG e JSON derivati
+.venv/bin/python live/kpi_fase1.py          # KPI 1-3
+```
+
+Output in `data/live_derived/`: `spa_2026_fp2_xy.svg` (nuvola FP2 vs
+riferimento 2025 vs punti pit), `transform_spa.json`, `pitlane_spa.json`,
+`verifica_allineamento.json`, `kpi_fase1.json`.
+
+## Test Fase 1
+
+```bash
+.venv/bin/python live/test_fase1.py
+```
+
+Fixture sintetiche (merge delta, filtro zero, `.z` bit-identica, multi-file
+con overlap) + end-to-end su FP2 completa e FP1 troncata (skip espliciti se
+le registrazioni non sono su disco).
