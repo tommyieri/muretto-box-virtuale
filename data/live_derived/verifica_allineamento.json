@@ -1,0 +1,41 @@
+{
+ "campioni_totali_validi": 343067,
+ "punti_on_track": 211073,
+ "punti_pit": 131994,
+ "kpi4": {
+  "trasformazione": {
+   "rotazione_deg": 0.0,
+   "scala": 1.0,
+   "traslazione": [
+    0.0,
+    0.0
+   ],
+   "stimata": false
+  },
+  "frazione_entro_15m": 0.977,
+  "gate": true
+ },
+ "kpi5": {
+  "cluster_inpit_scartati_dal_corridoio": [
+   {
+    "lungo_asse_m": 5.0,
+    "punti": 453
+   }
+  ],
+  "periodi_pit_totali": 120,
+  "periodi_senza_dati_gps": 23,
+  "periodi_verificabili": 97,
+  "periodi_coerenti": 96,
+  "coerenza": 0.9897,
+  "gate": true,
+  "divergenti": [
+   {
+    "auto": "10",
+    "da": "2026-07-17 15:53:37.046000",
+    "a": "2026-07-17 15:55:35.627000",
+    "campioni": 453,
+    "quota_in_corridoio": 0.0
+   }
+  ]
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "_nota": "trasformazione fissa circuito Spa: coordinate live 2026 -> riferimento sito (giro 2025). Stimata solo se l'identita' fallisce il KPI 4.",
+ "stimata": false,
+ "rotazione_deg": 0.0,
+ "scala": 1.0,
+ "traslazione": [
+  0.0,
+  0.0
+ ]
+}

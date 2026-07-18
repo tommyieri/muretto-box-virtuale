@@ -1,0 +1,137 @@
+{
+ "_nota": "classifica ufficiale FP2 Spa 2026 (FastF1 results; best_lap_giri_s = min LapTime dai giri caricati)",
+ "auto": {
+  "1": {
+   "pos": null,
+   "sigla": "NOR",
+   "best_lap_s": null,
+   "best_lap_giri_s": 106.134
+  },
+  "3": {
+   "pos": null,
+   "sigla": "VER",
+   "best_lap_s": null,
+   "best_lap_giri_s": 106.416
+  },
+  "5": {
+   "pos": null,
+   "sigla": "BOR",
+   "best_lap_s": null,
+   "best_lap_giri_s": 107.952
+  },
+  "6": {
+   "pos": null,
+   "sigla": "HAD",
+   "best_lap_s": null,
+   "best_lap_giri_s": 106.714
+  },
+  "10": {
+   "pos": null,
+   "sigla": "GAS",
+   "best_lap_s": null,
+   "best_lap_giri_s": 107.36
+  },
+  "11": {
+   "pos": null,
+   "sigla": "PER",
+   "best_lap_s": null,
+   "best_lap_giri_s": 109.596
+  },
+  "12": {
+   "pos": null,
+   "sigla": "ANT",
+   "best_lap_s": null,
+   "best_lap_giri_s": 105.944
+  },
+  "14": {
+   "pos": null,
+   "sigla": "ALO",
+   "best_lap_s": null,
+   "best_lap_giri_s": 111.418
+  },
+  "16": {
+   "pos": null,
+   "sigla": "LEC",
+   "best_lap_s": null,
+   "best_lap_giri_s": 107.035
+  },
+  "18": {
+   "pos": null,
+   "sigla": "STR",
+   "best_lap_s": null,
+   "best_lap_giri_s": 111.131
+  },
+  "23": {
+   "pos": null,
+   "sigla": "ALB",
+   "best_lap_s": null,
+   "best_lap_giri_s": 108.019
+  },
+  "27": {
+   "pos": null,
+   "sigla": "HUL",
+   "best_lap_s": null,
+   "best_lap_giri_s": 108.333
+  },
+  "30": {
+   "pos": null,
+   "sigla": "LAW",
+   "best_lap_s": null,
+   "best_lap_giri_s": 107.434
+  },
+  "31": {
+   "pos": null,
+   "sigla": "OCO",
+   "best_lap_s": null,
+   "best_lap_giri_s": 107.958
+  },
+  "41": {
+   "pos": null,
+   "sigla": "LIN",
+   "best_lap_s": null,
+   "best_lap_giri_s": 107.294
+  },
+  "43": {
+   "pos": null,
+   "sigla": "COL",
+   "best_lap_s": null,
+   "best_lap_giri_s": 107.147
+  },
+  "44": {
+   "pos": null,
+   "sigla": "HAM",
+   "best_lap_s": null,
+   "best_lap_giri_s": 106.691
+  },
+  "55": {
+   "pos": null,
+   "sigla": "SAI",
+   "best_lap_s": null,
+   "best_lap_giri_s": 108.256
+  },
+  "63": {
+   "pos": null,
+   "sigla": "RUS",
+   "best_lap_s": null,
+   "best_lap_giri_s": 107.229
+  },
+  "77": {
+   "pos": null,
+   "sigla": "BOT",
+   "best_lap_s": null,
+   "best_lap_giri_s": 109.199
+  },
+  "81": {
+   "pos": null,
+   "sigla": "PIA",
+   "best_lap_s": null,
+   "best_lap_giri_s": 106.926
+  },
+  "87": {
+   "pos": null,
+   "sigla": "BEA",
+   "best_lap_s": null,
+   "best_lap_giri_s": 107.792
+  }
+ }
+}
