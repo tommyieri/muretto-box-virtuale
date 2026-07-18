@@ -102,12 +102,32 @@ campiona a blocchi sincroni). Dentro l'atteso 2–5 Hz.
 Test: `live/test_fase1.py` **11/11** (fixture sintetiche + end-to-end FP2 +
 robustezza FP1 troncata).
 
+## Addendum 2026-07-18 — diagnostico one-off sul NO-GO del KPI 2
+
+Verifica richiesta prima del merge: la spiegazione "arbitro miscalibrato"
+andava dimostrata, non dichiarata. Diagnostico one-off (KPI 2 NON toccato):
+confronto dell'ordine e dei tempi ricostruiti dal replay con la classifica
+FP2 **pubblicata** (formula1.com per P1–P5 con gap esatti e ordine nel
+testo; tabella completa P1–P22 da total-motorsport.com; fonti e data di
+recupero congelate in
+[fp2_spa_2026_pubblicata.json](../data/live_derived/fp2_spa_2026_pubblicata.json)).
+
+Esito ([verifica_kpi2_pubblicata.py](verifica_kpi2_pubblicata.py),
+[diag_kpi2_pubblicata.json](../data/live_derived/diag_kpi2_pubblicata.json)):
+**22/22 posizioni e 22/22 best al millesimo coincidono**, incluse proprio
+le due auto della divergenza (LEC P11 a 107,468 e GAS P18 a 108,955: la
+classifica pubblicata esclude i loro giri cancellati, come il feed).
+
+**A verbale: NO-GO formale confermato, causa = arbitro miscalibrato
+(FastF1 results include i giri cancellati nelle FP), motore corretto.**
+
 ## Conseguenze per la Fase 2
 
-1. Il fronte replay e' NO-GO **sull'arbitro**, non sul motore: prima di
-   costruire la UI live sui best lap serve decidere come trattare i giri
-   cancellati (il feed li revoca, FastF1 results FP li tiene). Da risolvere
-   con dati alla mano, non aggiustando il KPI a posteriori.
+1. Il fronte replay e' NO-GO formale sull'arbitro, non sul motore (vedi
+   addendum: replay ≡ classifica pubblicata 22/22). La Fase 2 deve
+   **pre-registrare sia l'arbitro giusto** (classifica pubblicata / results
+   al netto dei giri cancellati) **sia la politica sui giri cancellati**
+   (il feed li revoca via `BestLapTime`; lo stato replay li esclude gia').
 2. Decoder, allineamento (identita', zero taratura) e pit lane sono GO:
    l'interfaccia eventi di `replay.py` e' pronta per il collettore live.
 3. La polilinea pit di Spa e' il primo elemento della serie per-circuito.

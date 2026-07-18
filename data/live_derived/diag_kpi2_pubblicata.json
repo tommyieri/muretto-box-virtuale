@@ -1,0 +1,229 @@
+{
+ "_nota": "diagnostico one-off, KPI 2 non modificato",
+ "auto_totali": 22,
+ "posizioni_coincidenti": 22,
+ "tempi_coincidenti_al_millesimo": 22,
+ "verdetto": "motore corretto: replay identico alla classifica pubblicata — NO-GO formale confermato, causa = arbitro (FastF1 results include i giri cancellati nelle FP)",
+ "confronto": [
+  {
+   "pos_pubblicata": 1,
+   "auto": "12",
+   "sigla": "ANT",
+   "best_pubblicato_s": 105.944,
+   "best_replay_s": 105.944,
+   "pos_replay": 1,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 2,
+   "auto": "1",
+   "sigla": "NOR",
+   "best_pubblicato_s": 106.134,
+   "best_replay_s": 106.134,
+   "pos_replay": 2,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 3,
+   "auto": "3",
+   "sigla": "VER",
+   "best_pubblicato_s": 106.416,
+   "best_replay_s": 106.416,
+   "pos_replay": 3,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 4,
+   "auto": "44",
+   "sigla": "HAM",
+   "best_pubblicato_s": 106.691,
+   "best_replay_s": 106.691,
+   "pos_replay": 4,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 5,
+   "auto": "6",
+   "sigla": "HAD",
+   "best_pubblicato_s": 106.714,
+   "best_replay_s": 106.714,
+   "pos_replay": 5,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 6,
+   "auto": "81",
+   "sigla": "PIA",
+   "best_pubblicato_s": 106.926,
+   "best_replay_s": 106.926,
+   "pos_replay": 6,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 7,
+   "auto": "43",
+   "sigla": "COL",
+   "best_pubblicato_s": 107.147,
+   "best_replay_s": 107.14699999999999,
+   "pos_replay": 7,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 8,
+   "auto": "63",
+   "sigla": "RUS",
+   "best_pubblicato_s": 107.229,
+   "best_replay_s": 107.229,
+   "pos_replay": 8,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 9,
+   "auto": "41",
+   "sigla": "LIN",
+   "best_pubblicato_s": 107.294,
+   "best_replay_s": 107.294,
+   "pos_replay": 9,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 10,
+   "auto": "30",
+   "sigla": "LAW",
+   "best_pubblicato_s": 107.434,
+   "best_replay_s": 107.434,
+   "pos_replay": 10,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 11,
+   "auto": "16",
+   "sigla": "LEC",
+   "best_pubblicato_s": 107.468,
+   "best_replay_s": 107.468,
+   "pos_replay": 11,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 12,
+   "auto": "87",
+   "sigla": "BEA",
+   "best_pubblicato_s": 107.792,
+   "best_replay_s": 107.792,
+   "pos_replay": 12,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 13,
+   "auto": "5",
+   "sigla": "BOR",
+   "best_pubblicato_s": 107.952,
+   "best_replay_s": 107.952,
+   "pos_replay": 13,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 14,
+   "auto": "31",
+   "sigla": "OCO",
+   "best_pubblicato_s": 107.958,
+   "best_replay_s": 107.958,
+   "pos_replay": 14,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 15,
+   "auto": "23",
+   "sigla": "ALB",
+   "best_pubblicato_s": 108.019,
+   "best_replay_s": 108.019,
+   "pos_replay": 15,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 16,
+   "auto": "55",
+   "sigla": "SAI",
+   "best_pubblicato_s": 108.256,
+   "best_replay_s": 108.256,
+   "pos_replay": 16,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 17,
+   "auto": "27",
+   "sigla": "HUL",
+   "best_pubblicato_s": 108.333,
+   "best_replay_s": 108.333,
+   "pos_replay": 17,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 18,
+   "auto": "10",
+   "sigla": "GAS",
+   "best_pubblicato_s": 108.955,
+   "best_replay_s": 108.955,
+   "pos_replay": 18,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 19,
+   "auto": "77",
+   "sigla": "BOT",
+   "best_pubblicato_s": 109.199,
+   "best_replay_s": 109.199,
+   "pos_replay": 19,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 20,
+   "auto": "11",
+   "sigla": "PER",
+   "best_pubblicato_s": 109.596,
+   "best_replay_s": 109.596,
+   "pos_replay": 20,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 21,
+   "auto": "18",
+   "sigla": "STR",
+   "best_pubblicato_s": 111.131,
+   "best_replay_s": 111.131,
+   "pos_replay": 21,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  },
+  {
+   "pos_pubblicata": 22,
+   "auto": "14",
+   "sigla": "ALO",
+   "best_pubblicato_s": 111.418,
+   "best_replay_s": 111.418,
+   "pos_replay": 22,
+   "pos_coincide": true,
+   "tempo_coincide_al_millesimo": true
+  }
+ ]
+}
