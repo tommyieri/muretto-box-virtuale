@@ -48,7 +48,7 @@
 <script type="module">
 const el = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-let schede=null, credits={}, colori={}, cal=null;
+let schede=null, credits={}, colori={}, cal=null, motori={};
 
 const colore = t => colori[t] || 'var(--dim)';
 const dataIt = d => d ? new Date(d+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'}) : '';
@@ -75,11 +75,13 @@ function schedaPilota(pid, s){
   const ca = s.carriera, st = s.stagione;
   const ultimaDemo = [...(cal?.gare||[])].reverse().find(g => g.gara_demo && g.vincitore);
   const segno = n => n>0 ? '+'+n : String(n);
+  const mot = motori[s.constructorId]?.motore;
   el('chi').innerHTML = `
     <div class="sk-testa panel">${f.img}
+      ${s.numero!=null?`<div class="sk-num" style="color:${colore(s.team_demo)}">${esc(s.numero)}</div>`:''}
       <div><h1>${esc(s.nome)}</h1>
-        <div class="sub"><b>${esc(s.sigla)}</b>${s.numero?`<span>#${esc(s.numero)}</span>`:''}
-          <span>${esc(s.team_demo||'')}</span><span>${esc(s.nazionalita||'')}</span></div>
+        <div class="sub"><b>${esc(s.sigla)}</b>
+          <span>${esc(s.team_demo||'')}</span>${mot?`<span class="motore-tag"><span class="mk">motore</span><span class="mv">${esc(mot)}</span></span>`:''}<span>${esc(s.nazionalita||'')}</span></div>
         ${ultimaDemo ? `<a class="sk-vai" href="gara.html?g=${encodeURIComponent(ultimaDemo.gara_demo)}">vedi in gara — ${esc(ultimaDemo.titolo)} &rarr;</a>` : ''}
       </div></div>
     ${f.credit}
@@ -106,10 +108,11 @@ function schedaPilota(pid, s){
 
 function schedaTeam(cid, s){
   const ca = s.carriera, st = s.stagione;
+  const mot = motori[cid]?.motore;
   el('chi').innerHTML = `
     <div class="sk-testa panel">${avatar((s.nome||'?').slice(0,3).toUpperCase(), s.team_demo)}
       <div><h1>${esc(s.team_demo || s.nome)}</h1>
-        <div class="sub"><span>${esc(s.nome_completo||'')}</span><span>${esc(s.paese||'')}</span></div>
+        <div class="sub"><span>${esc(s.nome_completo||'')}</span>${mot?`<span class="motore-tag"><span class="mk">motore</span><span class="mv">${esc(mot)}</span></span>`:''}<span>${esc(s.paese||'')}</span></div>
       </div></div>
     <section class="sk-sez panel"><h2>Carriera</h2>
       <div class="sk-tiles">
@@ -133,6 +136,7 @@ async function boot(){
   try { credits = (await (await fetch('data/foto_credits.json')).json()).piloti || {}; } catch(e){}
   try { colori = await (await fetch('team_colori.json')).json(); } catch(e){}
   try { cal = await (await fetch('data/calendario_2026.json')).json(); } catch(e){}
+  try { motori = await (await fetch('data/motori_2026.json')).json(); } catch(e){}
   const q = new URLSearchParams(location.search);
   let tipo = q.get('tipo'), id = q.get('id');
   if (q.get('sigla')){

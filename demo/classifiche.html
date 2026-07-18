@@ -51,25 +51,28 @@
 
 <script type="module">
 const el = id => document.getElementById(id);
-let clas=null, colori={};
+let clas=null, colori={}, numeri={}, motori={};
 
 const colore = t => colori[t] || 'var(--dim)';
 
 function rigaPilota(p){
+  const n = numeri[p.id];
   return `<a href="scheda.html?tipo=pilota&id=${encodeURIComponent(p.id)}">
     <span class="cbar" style="background:${colore(p.team_demo)}"></span>
     <span class="pos">${p.pos ?? '–'}</span>
-    <span class="chi"><span class="n">${p.sigla} <span style="font-weight:400">${p.nome}</span></span>
+    <span class="chi"><span class="n"><span class="rnum" style="color:${colore(p.team_demo)}">${n ?? ''}</span> ${p.sigla} <span style="font-weight:400">${p.nome}</span></span>
       <span class="t">${p.team_demo || ''}</span></span>
     <span class="vitt">${p.vittorie ? p.vittorie+'&nbsp;vitt.' : ''}</span>
     <span class="pts"><b>${p.punti}</b><span class="d">${p.distacco ? '−'+p.distacco : 'leader'}</span></span>
   </a>`;
 }
 function rigaTeam(c){
+  const m = motori[c.id]?.motore;
   return `<a href="scheda.html?tipo=team&id=${encodeURIComponent(c.id)}">
     <span class="cbar" style="background:${colore(c.team_demo)}"></span>
     <span class="pos">${c.pos ?? '–'}</span>
-    <span class="chi"><span class="n">${c.team_demo || c.nome}</span></span>
+    <span class="chi"><span class="n">${c.team_demo || c.nome}</span>
+      ${m ? `<span class="t"><span class="motore-tag"><span class="mk">motore</span><span class="mv">${m}</span></span></span>` : ''}</span>
     <span class="vitt">${c.vittorie ? c.vittorie+'&nbsp;vitt.' : ''}</span>
     <span class="pts"><b>${c.punti}</b><span class="d">${c.distacco ? '−'+c.distacco : 'leader'}</span></span>
   </a>`;
@@ -82,6 +85,9 @@ function mostra(tipo){
 async function boot(){
   clas = await (await fetch('data/classifiche_2026.json')).json();
   try { colori = await (await fetch('team_colori.json')).json(); } catch(e){}
+  try { const sk = await (await fetch('data/schede_2026.json')).json();
+        numeri = Object.fromEntries(Object.entries(sk.piloti).map(([id,s])=>[id, s.numero])); } catch(e){}
+  try { motori = await (await fetch('data/motori_2026.json')).json(); } catch(e){}
   const a = clas.aggiornato_al;
   el('agg').innerHTML = `aggiornato al <b>${a.titolo || a.nome || ('round '+a.round)}</b>` +
     (a.data ? ` · ${new Date(a.data+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'long'})}` : '');

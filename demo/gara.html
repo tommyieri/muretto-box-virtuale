@@ -137,6 +137,7 @@ let pista=null, leadCum=null, cumPil=null, teamOfR=null;   // vista pallini (gar
 // race control LIVELLO 1 (decisione PO su MOCKUP_RACE_CONTROL_UI.md): le penalita' si
 // MOSTRANO (feed + badge + doppia vista), non entrano nella simulazione ne' nei gap
 let rcmAll=null, ufficAll=null, rcmGara=null, ufficGara=null, penPil={};
+let numDi={};   // sigla -> numero di gara (da schede_2026.json, fonte f1db)
 
 // --- contatore anonimo aggregato (strumentazione, non simulatore) ---
 const conta = e => { try { navigator.sendBeacon(`api/contatore?e=${e}`); } catch(_){} };
@@ -171,6 +172,8 @@ async function boot() {
   try { pitstops = await (await fetch('data/pitstops_2026.json')).json(); } catch(e){ pitstops=null; }
   try { rcmAll = await (await fetch('data/race_control_2026.json')).json(); } catch(e){ rcmAll=null; }
   try { ufficAll = await (await fetch('data/ufficiali_2026.json')).json(); } catch(e){ ufficAll=null; }
+  try { const sk = await (await fetch('data/schede_2026.json')).json();
+        numDi = Object.fromEntries(Object.values(sk.piloti).filter(s=>s.numero!=null).map(s=>[s.sigla, s.numero])); } catch(e){ numDi={}; }
   // etichetta della durata DERIVATA dalla semantica dichiarata nel file (mai "pit stop" generico)
   etichettaStop = pitstops?.semantica === 'sosta_ferma' ? 'sosta' : 'pit lane';
   const nomi = m.map(r=>r.gara);
@@ -366,7 +369,7 @@ function buildGrid(){
     const row=document.createElement('div'); row.className='row'; row.dataset.drv=d;
     // la sigla e' un link alla scheda pilota (stopPropagation: il resto della riga apre il pit)
     row.innerHTML=`<span class="tbar"></span><span class="pos"></span>`
-      +`<span class="idn"><span class="l1"><span class="drv"><a href="scheda.html?sigla=${d}" title="scheda pilota">${d}</a></span><span class="box" style="display:none"></span><span class="penb" style="display:none"></span></span><span class="team"></span></span>`
+      +`<span class="idn"><span class="l1"><span class="rnum"></span><span class="drv"><a href="scheda.html?sigla=${d}" title="scheda pilota">${d}</a></span><span class="box" style="display:none"></span><span class="penb" style="display:none"></span></span><span class="team"></span></span>`
       +`<span class="gaps"><span class="gap"></span><span class="gapprev"></span></span>`
       +`<span class="tyreb"><span class="dot"></span><span class="age"></span></span>`;
     row.querySelector('.drv a').addEventListener('click', e=>e.stopPropagation());
@@ -380,6 +383,7 @@ function buildGrid(){
     });
     g.appendChild(row);
     rowEls[d]={root:row, tbar:row.querySelector('.tbar'), pos:row.querySelector('.pos'),
+               num:row.querySelector('.rnum'),
                team:row.querySelector('.team'), box:row.querySelector('.box'),
                pen:row.querySelector('.penb'),
                gap:row.querySelector('.gap'), gapprev:row.querySelector('.gapprev'),
@@ -472,6 +476,9 @@ function paintRow(r, i){
     + (r.leader?' leader':'') + (retired?' retired':'') + (r.st==='doppiato'?' done':'')
     + (r.selectable?' selectable':'') + (r.drv===selDrv?' sel':'');
   e.tbar.style.background=coloreTeam(r.team);
+  const nd = numDi[r.drv] != null ? String(numDi[r.drv]) : '';
+  if(e.num.textContent!==nd) e.num.textContent=nd;
+  e.num.style.color=coloreTeam(r.team);
   if(e.pos.textContent!==String(r.pos)) e.pos.textContent=r.pos;
   if(e.team.textContent!==(r.team||'')) e.team.textContent=r.team||'';
   e.gap.textContent=r.et; e.gap.className='gap '+(r.cls|| (r.st?'stato':''));
@@ -567,7 +574,7 @@ function buildStrat(){
       const w = Math.max(pct(s.a)-pct(s.da) + 100/(race.n_laps-1), 0.8);
       return `<div class="stint${wet}" title="${s.compound||'?'} giri ${s.da}–${s.a}" style="left:${pct(s.da)}%;width:${w}%;background:${col}"></div>`;
     }).join('') + pits.map(p=>`<div class="pitt" title="${p.info}" data-info="${p.info}" data-pct="${pct(p.L)}" style="left:${pct(p.L)}%"></div>`).join('');
-    righe.push(`<div class="riga" data-drv="${d}"><span class="sig"><i style="background:${coloreTeam(r.team)}"></i>${d}</span><span class="barra">${bar}</span></div>`);
+    righe.push(`<div class="riga" data-drv="${d}"><span class="sig"><i style="background:${coloreTeam(r.team)}"></i><span class="rnum" style="color:${coloreTeam(r.team)}">${numDi[d] ?? ''}</span>${d}</span><span class="barra">${bar}</span></div>`);
   }
   el('stratRighe').innerHTML = righe.join('');
 }
@@ -625,7 +632,7 @@ function buildUfficiale(){
                                           : `<span class="giu">&#9660; ${-delta}</span>`);
     const st = /finish/i.test(r.status) ? '' : `<span class="stat">${r.status.toLowerCase()}</span>`;
     return `<div class="uffr${r.pos===11?' primafuori':''}${pens.length?' conpen':''}">
-      <span class="pp">P${pp}</span><span class="sig"><i style="background:${coloreTeam(teamOfR?.[r.pilota] ?? teams[r.pilota])}"></i>${r.pilota}</span>
+      <span class="pp">P${pp}</span><span class="sig"><i style="background:${coloreTeam(teamOfR?.[r.pilota] ?? teams[r.pilota])}"></i><span class="rnum" style="color:${coloreTeam(teamOfR?.[r.pilota] ?? teams[r.pilota])}">${numDi[r.pilota] ?? ''}</span>${r.pilota}</span>
       <span class="pb">${badge}</span><span class="pu">P${r.pos}</span><span class="fr">${fr}</span>${st}</div>`;
   }).join('');
   el('uffTab').innerHTML = `<div class="uffr testa"><span class="pp">in pista</span><span class="sig">pilota</span>

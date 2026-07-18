@@ -429,7 +429,7 @@ a.gpcard:hover::after { right: 0; }
 
 /* strip strategia */
 .strat { padding: 10px 12px; }
-.strat .riga { display: grid; grid-template-columns: 40px 1fr; align-items: center; gap: 8px; height: 26px; }
+.strat .riga { display: grid; grid-template-columns: 64px 1fr; align-items: center; gap: 8px; height: 26px; }
 .strat .sig { font: 700 11px/1 var(--mono); letter-spacing: .5px; display: flex; align-items: center; gap: 6px; }
 .strat .sig i { width: 3px; height: 14px; border-radius: 2px; display: inline-block; }
 .strat .barra { position: relative; height: 12px; border-radius: 3px; background: var(--panel2); overflow: hidden; cursor: pointer; }
@@ -588,7 +588,7 @@ a.gpcard:hover::after { right: 0; }
 .live-mock .mock-riga.testa { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
 .mock-nota { display: none; }
 .anl { padding: 12px 14px; }
-.anl-riga { display: grid; grid-template-columns: 44px 1fr 44px; gap: 10px; align-items: center;
+.anl-riga { display: grid; grid-template-columns: 68px 1fr 44px; gap: 10px; align-items: center;
   height: 27px; color: var(--txt); transition: background .12s; }
 .anl-riga:hover { text-decoration: none; background: rgba(255,255,255,.03); }
 .anl-riga .sig { font: 700 11px/1 var(--mono); letter-spacing: .5px; display: flex; align-items: center; gap: 6px; }
@@ -599,3 +599,21 @@ a.gpcard:hover::after { right: 0; }
 .anl-riga .barra.su { background: var(--ok); }
 .anl-riga .barra.giu { background: color-mix(in srgb, var(--rf) 75%, var(--panel)); }
 .anl-riga .val { text-align: right; font-size: 12.5px; color: var(--dim); }
+
+/* -------------------------------------------- NUMERI DI GARA & MOTORI */
+/* il numero e' identita' del pilota: sempre nel colore del team (inline dal dato) */
+.rnum { font: 800 15px/1 var(--disp); font-style: italic; letter-spacing: .3px;
+  display: inline-block; font-variant-numeric: tabular-nums; }
+.row .rnum { min-width: 24px; text-align: right; }
+.clas .rnum { font-size: 18px; min-width: 28px; text-align: right; margin-right: 2px; }
+.champ-p .rnum { font-size: 14px; }
+.uff .rnum { font-size: 13px; min-width: 22px; text-align: right; }
+.strat .rnum, .anl-riga .rnum { font-size: 12px; min-width: 18px; text-align: right; }
+.sk-num { position: absolute; right: 20px; top: 10px;
+  font: 800 64px/1 var(--disp); font-style: italic; letter-spacing: 1px;
+  text-shadow: 0 2px 24px rgba(0,0,0,.55); pointer-events: none; }
+@media (max-width: 640px) { .sk-num { font-size: 44px; right: 14px; } }
+/* motorizzazione: etichetta tecnica accanto al team */
+.motore-tag { display: inline-flex; align-items: baseline; gap: 6px; white-space: nowrap; }
+.motore-tag .mk { color: var(--dim); font: 600 9px/1 var(--mono); letter-spacing: 1.4px; text-transform: uppercase; }
+.motore-tag .mv { font-weight: 600; font-size: 12px; }

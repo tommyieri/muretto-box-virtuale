@@ -127,10 +127,13 @@ async function boot(){
   // campionato in breve: primi 3 dagli standings f1db gia' generati
   try {
     const clas = await (await fetch('data/classifiche_2026.json')).json();
+    let numeri = {};
+    try { const sk = await (await fetch('data/schede_2026.json')).json();
+          numeri = Object.fromEntries(Object.entries(sk.piloti).map(([id,s])=>[id, s.numero])); } catch(e){}
     el('champ').innerHTML = `<div class="champ-tit">Campionato</div>` +
       clas.piloti.slice(0,3).map(p=>`<a class="champ-p" href="scheda.html?tipo=pilota&id=${encodeURIComponent(p.id)}">
         <i style="background:${teamCol[p.team_demo]||'var(--dim)'}"></i>
-        <span class="pp num">P${p.pos}</span><b>${p.sigla}</b><span class="pt num">${p.punti}</span></a>`).join('') +
+        <span class="pp num">P${p.pos}</span><span class="rnum" style="color:${teamCol[p.team_demo]||'var(--dim)'}">${numeri[p.id] ?? ''}</span><b>${p.sigla}</b><span class="pt num">${p.punti}</span></a>`).join('') +
       `<a class="champ-tutta" href="classifiche.html">classifica completa &rarr;</a>`;
     el('champ').hidden = false;
   } catch(e){}
