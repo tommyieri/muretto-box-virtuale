@@ -3,7 +3,9 @@ e completa. Usato dalla Fase 2.1 (test degrado) e da pipeline_gara.py (guardrail
 
 Criteri dichiarati, per sessione:
   DRY:      zero giri su INTERMEDIATE/WET  E  frazione giri con wR (rainfall) < 1%
-  COMPLETA: max(lap) plausibile (>= 50 per Race, >= 15 per Sprint) e >= 18 piloti
+  COMPLETA: max(lap) plausibile (>= 40 per Race, >= 15 per Sprint) e >= 18 piloti
+            (era >= 50; portata a 40 il 19/07/2026 con ok PO: Spa ha 44 giri di
+            distanza PIENA — stessa soglia del guardrail completezza della pipeline)
 Le sessioni non DRY o non complete NON entrano in analisi/demo senza decisione umana
 (il caso Canada Race: partenza umida — vedi data/DEGRADO_NOTA.txt).
 """
@@ -21,7 +23,7 @@ def valuta(d, sess='Race'):
     frac_rain = (sum(1 for x in wr if x not in (None, 0, False, '0', 'False')) / len(wr)) if wr else None
     times = [t for t in d['time'] if isinstance(t, (int, float))]
     dry      = intwet == 0 and (frac_rain is None or frac_rain < 0.01)
-    completa = max(laps) >= (50 if sess == 'Race' else 15) and len(drvs) >= 18
+    completa = max(laps) >= (40 if sess == 'Race' else 15) and len(drvs) >= 18
     return dict(
         n_righe=len(d['time']), max_lap=max(laps), n_piloti=len(drvs),
         compound=sorted(comps), intwet=intwet, frac_rain=frac_rain,
