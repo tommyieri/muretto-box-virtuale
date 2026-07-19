@@ -290,8 +290,21 @@ def pipeline_live(coda_righe, coda_eventi, loop, stato, cond):
             coda_eventi.put_nowait, (time.monotonic(), evento))
 
 
+def _con_inpit_geometrico(eventi, pitlane):
+    """Avvolge il flusso eventi col classificatore geometrico (Fase 3)
+    se un corridoio pit e' configurato; altrimenti in_pit resta assente
+    (mai inventato). Solo per l'ingresso OpenF1: il SignalR ha l'InPit
+    del timing vero."""
+    if not pitlane:
+        return eventi
+    from inpit_geometrico import ClassificatoreInPit, arricchisci_in_pit
+    log.info("in_pit geometrico attivo (corridoio: %s)", pitlane)
+    return arricchisci_in_pit(eventi,
+                              ClassificatoreInPit.da_file(pitlane))
+
+
 def pipeline_replay(files, speed, coda_eventi, loop, stato, cond,
-                    al_termine, primo_client=None):
+                    al_termine, primo_client=None, pitlane=None):
     """Thread: eventi dal replay (stesso codice del live, pacing --speed).
 
     File .jsonl = registrazioni OpenF1 (adapter mappa_openf1), altrimenti
@@ -303,6 +316,7 @@ def pipeline_replay(files, speed, coda_eventi, loop, stato, cond,
     if all(p.suffix == ".jsonl" for p in percorsi):
         from mappa_openf1 import eventi_replay_openf1
         eventi = eventi_replay_openf1(percorsi, stato=stato)
+        eventi = _con_inpit_geometrico(eventi, pitlane)
     elif any(p.suffix == ".jsonl" for p in percorsi):
         raise SystemExit("replay misto SignalR/JSONL non supportato")
     else:
@@ -317,7 +331,8 @@ def pipeline_replay(files, speed, coda_eventi, loop, stato, cond,
     loop.call_soon_threadsafe(al_termine.set)
 
 
-def pipeline_live_openf1(coda_messaggi, coda_eventi, loop, stato, cond):
+def pipeline_live_openf1(coda_messaggi, coda_eventi, loop, stato, cond,
+                         pitlane=None):
     """Thread: messaggi MQTT OpenF1 -> eventi (mappa_openf1)."""
     from mappa_openf1 import eventi_da_openf1
 
@@ -325,7 +340,9 @@ def pipeline_live_openf1(coda_messaggi, coda_eventi, loop, stato, cond):
         while True:
             yield coda_messaggi.get()
 
-    for evento in eventi_da_openf1(flusso(), stato=stato):
+    eventi = _con_inpit_geometrico(
+        eventi_da_openf1(flusso(), stato=stato), pitlane)
+    for evento in eventi:
         cond["sessione"] = _nome_sessione(stato)
         loop.call_soon_threadsafe(
             coda_eventi.put_nowait, (time.monotonic(), evento))
@@ -520,7 +537,7 @@ async def _main_async(args):
             target=pipeline_replay,
             args=(args.replay, args.speed, coda_eventi, loop, stato, cond,
                   al_termine if al_termine is not None else asyncio.Event(),
-                  primo_client),
+                  primo_client, args.pitlane),
             daemon=True).start()
     elif ingress_openf1:
         from ingress_openf1 import (
@@ -535,7 +552,8 @@ async def _main_async(args):
         threading.Thread(target=ingresso.per_sempre, daemon=True).start()
         threading.Thread(
             target=pipeline_live_openf1,
-            args=(coda_messaggi, coda_eventi, loop, stato, cond),
+            args=(coda_messaggi, coda_eventi, loop, stato, cond,
+                  args.pitlane),
             daemon=True).start()
     else:
         coda_righe = queue.Queue()
@@ -577,6 +595,10 @@ def main() -> int:
                              "(bloccato dai datacenter)")
     parser.add_argument("--env-file", default="~/.openf1.env",
                         help="file credenziali OpenF1 (KEY=VALUE, 600)")
+    parser.add_argument("--pitlane",
+                        help="corridoio pit del circuito (formato "
+                             "pitlane_spa.json): attiva l'in_pit "
+                             "geometrico sull'ingresso OpenF1")
     parser.add_argument("--replay", nargs="+", metavar="FILE",
                         help="alimenta il daemon da registrazioni")
     parser.add_argument("--speed", default="1",

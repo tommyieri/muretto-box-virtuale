@@ -139,18 +139,46 @@ def test_mappa_timing():
     assert eventi[2]["cars"] == {"4": {"last_lap": "1:43.123"}}, eventi[2]
 
 
-@caso("mappa: in_pit derivato da v1/pit (true a date, false a +durata)")
+@caso("mappa: v1/pit non emette eventi (in_pit e' del geometrico, Fase 3)")
 def test_mappa_pit():
     eventi = _eventi([
         ("v1/pit", {"driver_number": 81, "pit_duration": 22.5,
                     "lap_number": 20,
                     "date": "2026-07-25T13:10:00+00:00"}, None),
     ])
-    assert len(eventi) == 2, eventi
-    assert eventi[0]["cars"] == {"81": {"in_pit": True}}
-    assert eventi[0]["t"] == "2026-07-25T13:10:00.000Z"
-    assert eventi[1]["cars"] == {"81": {"in_pit": False}}
-    assert eventi[1]["t"] == "2026-07-25T13:10:22.500Z"
+    assert eventi == [], eventi
+
+
+@caso("in_pit geometrico: K=3 consecutivi + isteresi, eventi intercalati")
+def test_inpit_geometrico():
+    from inpit_geometrico import ClassificatoreInPit, arricchisci_in_pit
+    # corridoio sintetico: segmento orizzontale y=0, x in [0, 2000] dm
+    corridoio = [[0, 0], [1000, 0], [2000, 0]]
+    c = ClassificatoreInPit(corridoio, soglia_dm=50, k=3)
+    # 2 campioni dentro non bastano, il terzo scatta
+    assert c.aggiorna("4", 100, 10) is None
+    assert c.aggiorna("4", 200, 10) is None
+    assert c.aggiorna("4", 300, 10) is True
+    # un campione fuori isolato non fa sfarfallare
+    assert c.aggiorna("4", 400, 500) is None
+    assert c.aggiorna("4", 500, 10) is None
+    assert c.stato("4") is True
+    # tre fuori consecutivi -> esce
+    assert c.aggiorna("4", 600, 500) is None
+    assert c.aggiorna("4", 700, 500) is None
+    assert c.aggiorna("4", 800, 500) is False
+
+    def frame(t, x, y):
+        return {"type": "position_frame", "t": t,
+                "cars": {"4": {"x": x, "y": y}}}
+    c2 = ClassificatoreInPit(corridoio, soglia_dm=50, k=3)
+    eventi = list(arricchisci_in_pit(iter([
+        frame("T1", 100, 10), frame("T2", 200, 10),
+        frame("T3", 300, 10)]), c2))
+    assert [e["type"] for e in eventi] == [
+        "position_frame"] * 3 + ["timing_update"], eventi
+    assert eventi[-1] == {"type": "timing_update", "t": "T3",
+                          "cars": {"4": {"in_pit": True}}}, eventi[-1]
 
 
 @caso("mappa: race_control track-wide -> track_status, settore ignorato")
