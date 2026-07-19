@@ -6,5 +6,6 @@
 "Canada":["RUS","ANT","NOR","PIA","HAM","VER","HAD","LEC","LIN","COL","HUL","LAW","BOR","GAS","SAI","BEA","OCO","ALB","ALO","PER","BOT","STR"],
 "Monaco":["ANT","VER","HAM","LEC","HAD","RUS","PIA","NOR","GAS","LAW","ALB","SAI","HUL","COL","LIN","BOR","OCO","PER","BEA","BOT","ALO","STR"],
 "Spagna":["RUS","HAM","ANT","NOR","VER","HAD","PIA","LAW","HUL","LEC","LIN","BOR","COL","GAS","BEA","SAI","OCO","ALB","PER","BOT","STR","ALO"],
-"Austria":["RUS","LEC","HAM","ANT","VER","NOR","PIA","HAD","LAW","LIN","GAS","BOR","BEA","HUL","OCO","COL","SAI","ALB","PER","BOT","ALO","STR"]
+"Austria":["RUS","LEC","HAM","ANT","VER","NOR","PIA","HAD","LAW","LIN","GAS","BOR","BEA","HUL","OCO","COL","SAI","ALB","PER","BOT","ALO","STR"],
+"Gran Bretagna":["ANT","LEC","HAM","RUS","HAD","NOR","VER","PIA","LIN","LAW","BOR","HUL","BEA","SAI","GAS","ALB","OCO","BOT","COL","PER","ALO","STR"]
 }

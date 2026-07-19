@@ -1033,5 +1033,120 @@
     "status": "Retired"
    }
   ]
+ },
+ "Belgio": {
+  "fonte": "FastF1 results (classifica FIA) — riportata, non ricostruita",
+  "classifica": [
+   {
+    "pos": 1,
+    "pilota": "ANT",
+    "status": "Finished"
+   },
+   {
+    "pos": 2,
+    "pilota": "LEC",
+    "status": "Finished"
+   },
+   {
+    "pos": 3,
+    "pilota": "VER",
+    "status": "Finished"
+   },
+   {
+    "pos": 4,
+    "pilota": "HAM",
+    "status": "Finished"
+   },
+   {
+    "pos": 5,
+    "pilota": "PIA",
+    "status": "Finished"
+   },
+   {
+    "pos": 6,
+    "pilota": "HAD",
+    "status": "Finished"
+   },
+   {
+    "pos": 7,
+    "pilota": "NOR",
+    "status": "Finished"
+   },
+   {
+    "pos": 8,
+    "pilota": "BOR",
+    "status": "Finished"
+   },
+   {
+    "pos": 9,
+    "pilota": "LIN",
+    "status": "Finished"
+   },
+   {
+    "pos": 10,
+    "pilota": "COL",
+    "status": "Finished"
+   },
+   {
+    "pos": 11,
+    "pilota": "GAS",
+    "status": "Finished"
+   },
+   {
+    "pos": 12,
+    "pilota": "LAW",
+    "status": "Finished"
+   },
+   {
+    "pos": 13,
+    "pilota": "HUL",
+    "status": "Finished"
+   },
+   {
+    "pos": 14,
+    "pilota": "BEA",
+    "status": "Finished"
+   },
+   {
+    "pos": 15,
+    "pilota": "ALB",
+    "status": "Finished"
+   },
+   {
+    "pos": 16,
+    "pilota": "SAI",
+    "status": "Finished"
+   },
+   {
+    "pos": 17,
+    "pilota": "OCO",
+    "status": "Finished"
+   },
+   {
+    "pos": 18,
+    "pilota": "BOT",
+    "status": "Lapped"
+   },
+   {
+    "pos": 19,
+    "pilota": "ALO",
+    "status": "Lapped"
+   },
+   {
+    "pos": 20,
+    "pilota": "STR",
+    "status": "Retired"
+   },
+   {
+    "pos": 21,
+    "pilota": "PER",
+    "status": "Retired"
+   },
+   {
+    "pos": 22,
+    "pilota": "RUS",
+    "status": "Retired"
+   }
+  ]
  }
 }

@@ -24,7 +24,7 @@ GARE = [('Australia', 'Australian Grand Prix'), ('Cina', 'Chinese Grand Prix'),
         ('Giappone', 'Japanese Grand Prix'), ('Miami', 'Miami Grand Prix'),
         ('Canada', 'Canadian Grand Prix'), ('Monaco', 'Monaco Grand Prix'),
         ('Spagna', 'Barcelona Grand Prix'), ('Austria', 'Austrian Grand Prix'),
-        ('Gran Bretagna', 'British Grand Prix')]
+        ('Gran Bretagna', 'British Grand Prix'), ('Belgio', 'Belgian Grand Prix')]
 
 PEN_RE = re.compile(r'(\d+)\s*SECOND(?:S)?\s*TIME\s*PENALTY.*?CAR\s*(\d+)\s*\((\w+)\)', re.I)
 CAR_RE = re.compile(r'CAR\s*\d+\s*\((\w+)\)', re.I)

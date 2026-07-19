@@ -74,6 +74,26 @@ decidere a parte.
     VER +11,7**, nessun "pit lane: X s" (gap atteso);
   - `classifiche.html`: nota visibile "**aggiornato al GP di Gran Bretagna · 5 luglio**".
 
+## Secondo giro — checklist runbook completata (richiesta PO: "aggiorna tutto")
+
+Ricontrollata la checklist di progetto (`runbook_spa.md` FASE A + `COME_AGGIUNGERE_UNA_GARA.txt`):
+al primo giro mancavano i passi fuori da `aggiorna_ui.py`. Eseguiti ora:
+
+| voce | esito |
+|---|---|
+| race control (FastF1) | ✓ Belgio aggiunto a `GARE` in gen_race_control.py → CSV rigenerato → `gen_rc_feed.py`: **feed 20 tacche, badge HAM +5s** (giro 9, causing a collision); verificato in pagina (tacche + badge + tooltip) |
+| classifiche ufficiali (FastF1) | ✓ Belgio aggiunto a `EVENTI` in gen_classifiche_ufficiali.py → `ufficiali_2026.json`: 22 classificati, vince ANT; **doppia vista attiva** con badge penalità nella riga HAM |
+| griglia (runbook passo 4) | ✓ **Gran Bretagna** (coda arretrata dal 5/07): estratta da f1db v2026.9.1 e **verificata incrociata con FastF1 (22/22 match)** → grids.json 8→9 gare; giro 1 GB ora in ordine griglia. **Belgio: NON possibile** — la release f1db più recente è v2026.9.1 (6/07, pre-Belgio); si aggiunge con la prossima release |
+| undercut (runbook passo 6) | ✗ **BLOCCATO, non eseguito**: `conta_undercut.py --gara Belgio` esce con "non passa il dry-check (INCOMPLETA)" — il criterio COMPLETA di `drycheck_2026.py` chiede `max_lap >= 50` per una Race e **Spa ha 44 giri di distanza piena**. Falso positivo di soglia fissa, stessa famiglia del guardrail N//2: **la soglia non l'ho toccata** (criterio dichiarato usato anche da Fase 2.1) — decisione PO (es. 50→40 come il guardrail completezza della pipeline, o soglia per-gara dal calendario) |
+| idempotenza | ✓ gen_race_control + gen_rc_feed + gen_classifiche_ufficiali rieseguiti: output bit-identici |
+| classifiche/statistiche f1db | invariate per costruzione: release f1db più recente = v2026.9.1 pre-Belgio (verificato su GitHub releases); standings restano a GB con nota a layout |
+
+Nota cache locale emersa (utile anche per capire la produzione): i JSON dati sono fetchati
+senza `?v=` (il bump `BUILD` copre solo i moduli .mjs) → il browser può servire dalla cache
+euristica un JSON vecchio dopo un aggiornamento. In locale risolto con revalidation; su
+Vercel gli header fanno rivalidare, ma è un punto da tenere d'occhio (eventuale `?v=` anche
+sui dati = decisione UI del PO).
+
 ## Code che restano (invariate)
 
 - **Nuovo giro di `aggiorna_ui.py` quando esce la release f1db post-Belgio**: durate pit
