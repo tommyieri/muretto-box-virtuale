@@ -121,6 +121,10 @@ export async function creaPista({ canvas, url }) {
     // soglie del transito in pit-lane (dal JSON pista): le legge anche la tabella,
     // così il badge BOX e il pallino in pit-lane condividono gli stessi bordi
     pitFrazioni: { ingresso: FE, uscita: FX },
+    // vista corrente per layer esterni (mappa LIVE, Fase 3): proiezione
+    // viewBox->pixel device del canvas e dpr. Si legge a ogni frame: dopo
+    // un resize il riferimento e' gia' aggiornato.
+    vista() { return proj ? { proj, dpr: window.devicePixelRatio || 1 } : null; },
     // nuovi pallini: [{f: frazione di giro [0,1), colore, sigla}]
     aggiorna(nuovi) { dots = nuovi || []; render(); },
     setSpento(v) { spento = !!v; render(); },

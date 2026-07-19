@@ -41,16 +41,38 @@
   <div class="sez-tit">Prossimo evento</div>
   <section class="panel live-week" id="week"></section>
 
-  <div class="sez-tit">Come sar&agrave;</div>
-  <section class="panel live-mock" aria-label="Anteprima non funzionante">
-    <div class="mock-marca">ANTEPRIMA &mdash; NON &Egrave; UNA DIRETTA</div>
-    <div class="mock-riga testa"><span>P</span><span>pilota</span><span>gap</span><span>gomma</span><span>ai box?</span></div>
-    <div class="mock-riga"><span>1</span><span>&#9608;&#9608;&#9608;</span><span>&mdash;</span><span>&#9679;</span><span></span></div>
-    <div class="mock-riga"><span>2</span><span>&#9608;&#9608;&#9608;</span><span>+&mdash;,&mdash;</span><span>&#9679;</span><span>BOX</span></div>
-    <div class="mock-riga"><span>3</span><span>&#9608;&#9608;&#9608;</span><span>+&mdash;,&mdash;</span><span>&#9679;</span><span></span></div>
-    <div class="mock-riga"><span>4</span><span>&#9608;&#9608;&#9608;</span><span>+&mdash;,&mdash;</span><span>&#9679;</span><span></span></div>
+  <div class="sez-tit">Mappa live</div>
+  <section class="panel" id="live-panel">
+    <div id="live-testa">
+      <span id="live-badge" class="lv-badge lv-off">NESSUNA SESSIONE IN CORSO</span>
+      <span id="live-pista-stato" class="lv-flag" hidden></span>
+      <span id="live-conn" class="lv-conn" title="connessione al collettore"></span>
+    </div>
+    <div id="live-mappa" style="position:relative">
+      <canvas style="width:100%;display:block"></canvas>
+      <canvas id="live-overlay" style="position:absolute;left:0;top:0;pointer-events:none"></canvas>
+    </div>
+    <div id="live-nota" class="lv-nota">Quando una sessione &egrave; in corso, qui compaiono le auto in tempo reale
+      (posizioni dal feed, ritardo di distribuzione ~4&nbsp;s). Fuori sessione la mappa resta vuota:
+      niente numeri finti, mai.</div>
   </section>
 </div>
+
+<style>
+  #live-testa{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.5rem}
+  .lv-badge{font:700 .72rem/1.9 -apple-system,Arial;letter-spacing:.08em;padding:0 .55em;border-radius:4px}
+  .lv-badge.lv-on{background:#e80d2e;color:#fff}
+  .lv-badge.lv-on::before{content:'';display:inline-block;width:.5em;height:.5em;border-radius:50%;
+    background:#fff;margin-right:.4em;animation:lvpulse 1.2s infinite}
+  .lv-badge.lv-off{background:#242b38;color:#8b93a5}
+  @keyframes lvpulse{50%{opacity:.35}}
+  .lv-flag{font:700 .72rem/1.9 -apple-system,Arial;letter-spacing:.06em;padding:0 .55em;border-radius:4px;color:#111}
+  .lv-flag.verde{background:#3fbf6f}.lv-flag.gialla{background:#f5d43c}
+  .lv-flag.sc{background:#f5a03c}.lv-flag.rossa{background:#e8452e;color:#fff}
+  .lv-conn{width:.55rem;height:.55rem;border-radius:50%;background:#5a6272;margin-left:auto}
+  .lv-conn.ok{background:#3fbf6f}.lv-conn.retry{background:#f5a03c}
+  .lv-nota{color:#8b93a5;font-size:.8rem;margin-top:.5rem}
+</style>
 
 <footer class="footer">
   <div class="footer-in">
@@ -92,6 +114,59 @@ async function boot(){
     ${sess.map(s=>`<div class="live-sess${s===prossima?' next':''}">
        <span class="n">${NOMI[s.k]||s.k}</span><span class="q num">${s.testo}</span>
        ${s===prossima?'<span class="tag">prossimo</span>':''}</div>`).join('')}`;
+  bootMappa(g).catch(err => {
+    console.error('mappa live:', err);
+    el('live-nota').textContent = 'Mappa live non disponibile per questo circuito: ' + err.message;
+  });
+}
+
+// ---- mappa live (Fase 3): pista del sito + layer posizioni dal collettore
+const FLAG = {AllClear:['verde','PISTA VERDE'], Yellow:['gialla','BANDIERA GIALLA'],
+              SCDeployed:['sc','SAFETY CAR'], SCEnding:['sc','SAFETY CAR — RIENTRA'],
+              VSCDeployed:['sc','VIRTUAL SAFETY CAR'], VSCEnding:['sc','VSC — FINE'],
+              Red:['rossa','BANDIERA ROSSA']};
+
+async function bootMappa(g){
+  const [{ creaPista }, { creaLiveMappa }, { creaLiveClient }, cfg] = await Promise.all([
+    import('./pista.mjs?v=fase3'), import('./live_mappa.mjs'),
+    import('./live_client.mjs'), import('./live_config.mjs')]);
+  const geoRes = await fetch(`data/live_geo_${encodeURIComponent(g.nome)}.json`);
+  if (!geoRes.ok) throw new Error(`live_geo_${g.nome}.json assente (runbook: gen_live_geo)`);
+  const geo = await geoRes.json();
+
+  const cont = el('live-mappa');
+  const pista = await creaPista({ canvas: cont.querySelector('canvas'),
+                                  url: `data/pista_${encodeURIComponent(g.nome)}.json` });
+  const mappa = creaLiveMappa({ canvasPista: cont.querySelector('canvas'),
+                                canvasLive: el('live-overlay'), pista, geo });
+
+  const client = creaLiveClient({
+    url: cfg.WS_URL,
+    onEvento(e){
+      mappa.applica(e);
+      const stato = e.type === 'track_status' ? e.status
+        : (e.type === 'snapshot' ? e.track_status : null);
+      if (stato){
+        const [cls, testo] = FLAG[stato] || [null, null];
+        const f = el('live-pista-stato');
+        if (cls){ f.hidden = false; f.className = 'lv-flag ' + cls; f.textContent = testo; }
+      }
+    },
+    onStato(s){ el('live-conn').className = 'lv-conn ' + (s === 'connesso' ? 'ok' : 'retry'); },
+  });
+
+  // LIVE / fuori sessione: derivato dal FLUSSO (heartbeat eventi <30 s),
+  // non da un calendario — verbale: session_status assente dall'ingresso OpenF1.
+  setInterval(() => {
+    const vivo = client.etaUltimoEvento() < cfg.HEARTBEAT_LIVE_S;
+    mappa.setAcceso(vivo);
+    const b = el('live-badge');
+    if (vivo){ b.className = 'lv-badge lv-on'; b.textContent = 'LIVE'; el('live-nota').hidden = true; }
+    else {
+      b.className = 'lv-badge lv-off'; b.textContent = 'NESSUNA SESSIONE IN CORSO';
+      el('live-nota').hidden = false; el('live-pista-stato').hidden = true;
+    }
+  }, 1000);
 }
 boot();
 </script>

@@ -14,6 +14,8 @@ consumatore non deve poter distinguere replay da live):
       "gap": str, "in_pit": bool, "last_lap": str|null}}}  # solo campi cambiati
   {"type": "track_status",    "t": <utc>, "status": str}
   {"type": "session_status",  "t": <utc>, "status": str}
+  {"type": "driver_list",     "t": <utc>, "cars": {"<num>": {"sigla": str,
+      "colore": "#RRGGBB"|null}}}        # solo voci nuove/cambiate (Fase 3)
 
 API Python: eventi_replay(paths) e' un generatore che yielda gli eventi
 (sara' consumato dal WebSocket in Fase 2). CLI: scrive JSONL su --out o
@@ -41,6 +43,13 @@ from inspect_recording import parse_timestamp  # noqa: E402
 log = logging.getLogger("replay")
 
 CAMPI_TIMING = ("pos", "gap", "in_pit", "last_lap")
+
+
+def _vista_driver(stato, auto):
+    d = stato.driver_list.get(str(auto), {})
+    colore = d.get("TeamColour")
+    return {"sigla": d.get("Tla"),
+            "colore": ("#" + colore) if colore else None}
 
 
 def _fmt(ts):
@@ -158,6 +167,21 @@ def eventi_da_messaggi(flusso, stato=None):
                     cambi[str(a)] = diff
             if cambi:
                 for e in spingi({"type": "timing_update",
+                                 "cars": cambi}, ts):
+                    yield e
+
+        elif topic == "DriverList":
+            toccate = [a for a in payload
+                       if isinstance(payload.get(a), dict)]
+            prima = {a: _vista_driver(stato, a) for a in toccate}
+            stato.aggiorna(topic, payload, ts)
+            cambi = {}
+            for a in toccate:
+                dopo = _vista_driver(stato, a)
+                if dopo != prima[a] and (dopo["sigla"] or dopo["colore"]):
+                    cambi[str(a)] = dopo
+            if cambi:
+                for e in spingi({"type": "driver_list",
                                  "cars": cambi}, ts):
                     yield e
 

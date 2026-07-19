@@ -10,13 +10,14 @@ inventato; le derivazioni esplicite sono dichiarate qui e nel README:
   - position_frame  <- v1/location (raggruppati per `date`; regola dura
                        (0,0,0) invariata; `status` NON disponibile);
   - timing_update   <- v1/position (pos), v1/intervals (gap),
-                       v1/laps (last_lap), v1/pit (in_pit DERIVATO:
-                       il messaggio arriva a stop concluso, si emettono
-                       in_pit=true a `date` e in_pit=false a
-                       `date`+`pit_duration` — ricostruzione a posteriori,
-                       non tempo reale);
+                       v1/laps (last_lap); in_pit dal classificatore
+                       GEOMETRICO (inpit_geometrico.py, Fase 3) quando il
+                       corridoio del circuito esiste, altrimenti assente;
+                       v1/pit resta nel grezzo come arbitro a posteriori;
   - track_status    <- v1/race_control (solo eventi track-wide:
                        categoria SafetyCar o flag con scope Track);
+  - driver_list     <- v1/drivers (sigla=name_acronym,
+                       colore=team_colour) — Fase 3;
   - session_status  <- NON DISPONIBILE da OpenF1 (v1/sessions non ha
                        transizioni di stato): mai emesso, documentato.
                        v1/sessions alimenta solo /status.
@@ -37,7 +38,7 @@ Solo stdlib.
 
 import logging
 import sys
-from datetime import datetime, timedelta
+from datetime import datetime
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -188,11 +189,24 @@ def eventi_da_openf1(flusso, stato=None):
                 yield evento
 
         elif topic == "v1/drivers":
+            cambi = {}
+            t_drv = None
             for o in oggetti:
                 num = o.get("driver_number")
-                if num is not None:
-                    stato.driver_list[str(num)] = {
-                        "Tla": o.get("name_acronym")}
+                if num is None:
+                    continue
+                colore = o.get("team_colour")
+                voce = {"sigla": o.get("name_acronym"),
+                        "colore": ("#" + colore) if colore else None}
+                if stato.driver_list.get(str(num)) != voce \
+                        and (voce["sigla"] or voce["colore"]):
+                    stato.driver_list[str(num)] = voce
+                    cambi[str(num)] = voce
+                    t_drv = parse_data(o.get("date")) or t_drv
+            if cambi:
+                yield {"type": "driver_list",
+                       "t": _fmt(t_drv) if t_drv else None,
+                       "cars": cambi}
 
         elif topic == "v1/position":
             for o in oggetti:
@@ -226,18 +240,13 @@ def eventi_da_openf1(flusso, stato=None):
                                    {"last_lap": giro}, t)
 
         elif topic == "v1/pit":
-            # DERIVAZIONE dichiarata: v1/pit arriva a stop concluso;
-            # in_pit=true a date, in_pit=false a date+pit_duration.
-            for o in oggetti:
-                t = parse_data(o.get("date"))
-                if o.get("driver_number") is None or t is None:
-                    continue
-                auto = o["driver_number"]
-                yield from applica(auto, {"in_pit": True}, t)
-                durata = o.get("pit_duration")
-                t_fuori = t + timedelta(seconds=float(durata)) \
-                    if isinstance(durata, (int, float)) else t
-                yield from applica(auto, {"in_pit": False}, t_fuori)
+            # FASE 3: nessun evento da v1/pit. Il campo in_pit e' popolato
+            # dal classificatore GEOMETRICO (inpit_geometrico, quando il
+            # corridoio del circuito esiste); v1/pit resta nel grezzo come
+            # arbitro a posteriori. La vecchia derivazione (true a date,
+            # false a date+pit_duration) e' stata rimossa: arrivava a stop
+            # concluso, mai tempo reale.
+            pass
 
         elif topic == "v1/race_control":
             for o in oggetti:
