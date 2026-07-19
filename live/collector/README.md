@@ -50,6 +50,32 @@ eventi WebSocket. KPI e decisioni congelate in
    sola lettura; `/status` non espone segreti (solo scadenza token, mai il
    token). Accettato per la Fase 2.
 
+## ⚠️ BLOCCO CloudFront sul feed dal VPS (2026-07-19, da risolvere)
+
+Verificato empiricamente durante il primo deploy:
+`livetiming.formula1.com` risponde **403 "Error from cloudfront"** a OGNI
+richiesta dall'IP del VPS Hetzner (negotiate, JSON statici, qualunque
+User-Agent, IPv6 senza rotta), mentre `api.formula1.com` e
+`www.formula1.com` rispondono 200 dallo stesso IP. Dal Mac (IP
+residenziale) il negotiate risponde regolarmente col cookie AWSALBCORS.
+Conclusione: la distribuzione CloudFront del live timing **blocca gli IP
+datacenter**; non e' aggirabile con header, e' un blocco a livello IP/ASN.
+
+Stato: tutto il resto dello stack e' operativo sul VPS (daemon systemd
+attivo, backoff a vuoto come da progetto, `/status` raggiungibile,
+modalita' `--replay` testata 3/3 sul server). Opzioni sul tavolo, da
+decidere con Tommi:
+
+1. **Relay dal Mac**: il Mac (che il feed lo riceve) inoltra le righe
+   grezze al VPS; il VPS resta distributore/registratore. Contro: il Mac
+   deve essere acceso durante le sessioni (il KPI 1 "senza intervento"
+   cambia natura).
+2. **Tunnel via rete di casa** (WireGuard/SSH verso un dispositivo sempre
+   acceso a casa): il VPS esce con IP residenziale solo per livetiming.
+3. **Altro provider/IP** (ASN non bloccato): da verificare empiricamente,
+   nessuna garanzia.
+4. **Proxy residenziale commerciale**: costo e fragilita'.
+
 ## Setup server (fatto una volta, documentato per ripetibilita')
 
 Da root sul VPS (Ubuntu):
