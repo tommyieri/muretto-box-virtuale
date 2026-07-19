@@ -92,6 +92,12 @@ Ordinamento: eventi in ordine d'arrivo, `t` = timestamp origine (`date`);
 deduplica `_id` monotona per topic. La registrazione preserva l'ordine
 d'arrivo: replay del grezzo ≡ flusso live (KPI 4).
 
+**Smoke test sul VPS (2026-07-19 20:13 UTC, fuori sessione)**: token
+OAuth2 rinnovato (scadenza +3600 s), connessione MQTT stabilita, 10 topic
+sottoscritti, `/status` → `connesso: true`, `openf1_token.valido: true`.
+Messaggi attesi solo a sessione attiva; la validazione completa e' al
+prossimo weekend di GP (KPI in FASE2_PREREG, addendum).
+
 ## ⚠️ BLOCCO CloudFront sul feed dal VPS (2026-07-19, risolto con OpenF1)
 
 Verificato empiricamente durante il primo deploy:
