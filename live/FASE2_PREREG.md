@@ -59,3 +59,52 @@ dal Mac come backup (doppia registrazione = confronto indipendente).
 - Scelte architettoniche non ovvie documentate in
   `live/collector/README.md`; verdetti in `live/REPORT_FASE2.md` dopo il
   weekend di validazione.
+
+---
+
+## ADDENDUM 2026-07-19 sera — ingresso OpenF1 MQTT (commit prima di ogni misura)
+
+**Decisione a verbale**: la distribuzione CloudFront di
+livetiming.formula1.com blocca gli IP datacenter (verificato al primo
+deploy, commit `79d283e`: 403 su ogni richiesta dal VPS, 200 su
+api/www.formula1.com dallo stesso IP). L'ingresso primario del collettore
+diventa **OpenF1 realtime via MQTT** (`mqtt.openf1.org:8883`, TLS, OAuth2
+con rinnovo automatico). Il client SignalR resta nel codice, inutilizzato
+dal VPS, per la registrazione residenziale dal Mac e per futuri fallback.
+
+Regole invariate: grezzo conservato (JSONL rotanti in
+`data/live_raw/openf1/`), replay costruibile dal grezzo, interfaccia
+eventi identica (il client WS non distingue l'ingresso), campi che OpenF1
+non fornisce = ASSENTI e documentati nel README (tabella di copertura),
+mai inventati; derivazioni esplicite (es. `in_pit` da `v1/pit`)
+dichiarate come tali.
+
+## KPI aggiornati (weekend di validazione, ingresso OpenF1)
+
+1. **Uptime** — invariato: tutte le sessioni del weekend senza intervento
+   manuale, riconnessioni automatiche ammesse e loggate, zero buchi >30 s
+   durante le sessioni — GO/NO-GO.
+2. **Completezza vs feed diretto** (sostituisce "parita' registrazione"):
+   il Mac registra il SignalR in parallelo (backup di sempre). Per ogni
+   sessione coperta da entrambi: copertura temporale OpenF1 ≥98% della
+   copertura SignalR; buchi OpenF1 >30 s conteggiati e documentati (il
+   precedente di Monaco e' il rischio noto che stiamo misurando) —
+   GO/NO-GO.
+3. **Latenza assoluta** (sostituisce la latenza relativa al buffer):
+   differenza mediana tra timestamp origine del dato e ricezione sul VPS,
+   piu' confronto coi timestamp della registrazione Mac dove
+   sovrapponibili. Report con mediana e p95; gate: **mediana < 10 s** —
+   GO/NO-GO.
+4. **Coerenza eventi** — invariato: eventi WebSocket salvati dal client di
+   test = eventi replay della registrazione OpenF1 del server nello stesso
+   intervallo — GO/NO-GO.
+5. **Allineamento coordinate OpenF1**: ≥95% dei punti on-track entro 15 m
+   dalla polilinea gia' validata (metodo di Fase 1, riuso di
+   `pitlane_spa.json`/polilinea per Spa; per il prossimo GP: polilinea del
+   circuito costruita con il metodo di Fase 1 dalla registrazione Mac e
+   confrontata) — GO/NO-GO.
+
+Il KPI token F1TV resta per il registratore Mac ma **esce dai gate del
+collettore**: il VPS usa il rinnovo OAuth2 OpenF1, riportato in `/status`.
+Credenziali OpenF1 in file env sul server (permessi 600, utente muretto),
+MAI in git.
