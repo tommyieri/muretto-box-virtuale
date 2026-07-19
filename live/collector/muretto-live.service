@@ -11,7 +11,11 @@ Wants=network-online.target
 Type=simple
 User=muretto
 WorkingDirectory=/home/muretto/muretto
-ExecStart=/home/muretto/muretto/.venv-live/bin/python live/collector/collector.py --out-dir /home/muretto/muretto/data/live_raw
+# PITLANE_ARGS (es. "--pitlane data/live_derived/pitlane_spa.json") viene
+# dal file env sotto: si cambia per weekend/circuito senza toccare l'unit
+# (vedi live/RUNBOOK_WEEKEND.md). File assente = niente in_pit geometrico.
+EnvironmentFile=-/home/muretto/.muretto-live.env
+ExecStart=/home/muretto/muretto/.venv-live/bin/python live/collector/collector.py --out-dir /home/muretto/muretto/data/live_raw $PITLANE_ARGS
 # Il daemon non esce mai per progetto; il restart e' solo cintura di
 # sicurezza (crash imprevisti). Mai piu' aggressivo di cosi'.
 Restart=always
