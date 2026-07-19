@@ -144,5 +144,22 @@
     "rf": [],
     "durata_sc": 7.0,
     "durata_vsc": 2.5
+  },
+  "Belgio": {
+    "sc": [
+      [
+        1,
+        4
+      ]
+    ],
+    "vsc": [
+      [
+        17,
+        21
+      ]
+    ],
+    "rf": [],
+    "durata_sc": 4.0,
+    "durata_vsc": 5.0
   }
 }

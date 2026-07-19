@@ -43,5 +43,10 @@
     "ti": "British Grand Prix",
     "raw": "data/ti_archive/2026/British Grand Prix/Race.json",
     "cid": "silverstone"
+  },
+  "Belgio": {
+    "ti": "Belgian Grand Prix",
+    "raw": "data/ti_archive/2026/Belgian Grand Prix/Race.json",
+    "cid": "spa-francorchamps"
   }
 }
