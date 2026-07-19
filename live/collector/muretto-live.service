@@ -1,0 +1,21 @@
+# Unit systemd del collettore live — installazione:
+#   sudo cp live/collector/muretto-live.service /etc/systemd/system/
+#   sudo systemctl daemon-reload && sudo systemctl enable --now muretto-live
+# Log:  journalctl -u muretto-live -f
+[Unit]
+Description=Muretto — collettore live timing F1 (Fase 2)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=muretto
+WorkingDirectory=/home/muretto/muretto
+ExecStart=/home/muretto/muretto/.venv-live/bin/python live/collector/collector.py --out-dir /home/muretto/muretto/data/live_raw
+# Il daemon non esce mai per progetto; il restart e' solo cintura di
+# sicurezza (crash imprevisti). Mai piu' aggressivo di cosi'.
+Restart=always
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
