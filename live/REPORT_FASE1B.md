@@ -87,14 +87,36 @@ giro, come dichiarato nell'arbitro congelato):
   SC della partenza richiede il fallback "dopo il via e prima del primo
   `LapCount` live il giro corrente e' 1".
 
+## Addendum 2026-07-19 sera — riserva KPI 3 CHIUSA: GO
+
+f1db ha rilasciato **v2026.10.0** (18:47 UTC, con Spa 2026): l'arbitro
+primario dichiarato nel prereg e' disponibile e il verdetto rinviato va
+emesso. Arbitro congelato con provenienza in
+[gara_spa_2026_f1db_pitstops.json](../data/live_derived/gara_spa_2026_f1db_pitstops.json)
+(raceId 1159, 28 stop); verifica tracciata in
+[verifica_kpi3_f1db.py](verifica_kpi3_f1db.py), numeri in
+[kpi3_f1db.json](../data/live_derived/kpi3_f1db.json).
+
+- **Conteggio stop esatto: 22/22 piloti (100%)**, soglia ≥95% — incluso
+  RUS con zero stop in entrambi.
+- **Giro d'ingresso entro ±1: 28/28 stop.** I 5 ingressi sotto la SC dei
+  giri 1–2 (il limite noto: `NumberOfLaps` assente a inizio gara) sono
+  stati attribuiti col fallback dichiarato (LapCount del leader
+  all'ingresso): cadono tutti a +1 dall'arbitro — l'off-by-one
+  leader/pilota sotto SC, dentro la tolleranza del prereg. Gli altri 23
+  coincidono esattamente.
+
+**KPI 3: GO.** Con questo la Fase 1 e' chiusa su tutti e cinque i
+fronti (5 GO), senza riserve.
+
 ## Chiusura Fase 1
 
 - **Decoder, replay, allineamento, pit lane, neutralizzazioni: validati
   su FP2 e su una gara completa con SC e 2 VSC.** L'interfaccia eventi di
   `replay.py` e' pronta per il collettore live (Fase 2).
-- **Aperto un solo punto**: KPI 3 in attesa dell'arbitro f1db (rilascio
+- ~~**Aperto un solo punto**: KPI 3 in attesa dell'arbitro f1db (rilascio
   con Spa 2026). Non e' un NO-GO: e' un verdetto rinviato, con spot-check
-  3/3 favorevoli.
+  3/3 favorevoli.~~ **Chiuso: GO** (addendum sopra, f1db v2026.10.0).
 - Restano a verbale dalla Fase 1: il NO-GO formale del KPI 2 FP2
   (arbitro miscalibrato, motore corretto — vedi
   [REPORT_FASE1.md](REPORT_FASE1.md)) e la conseguenza per la Fase 2:

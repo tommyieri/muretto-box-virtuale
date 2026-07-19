@@ -1,0 +1,209 @@
+{
+ "_nota": "Pit stop per-stop GARA GP Belgio 2026 dall'arbitro primario dichiarato in FASE1B_PREREG (f1db). Chiude la riserva del KPI 3 (verdetto RINVIATO in REPORT_FASE1B).",
+ "fonte": {
+  "repo": "f1db/f1db",
+  "release": "v2026.10.0",
+  "pubblicata": "2026-07-19T18:47:25Z",
+  "file": "f1db-races-pit-stops.csv",
+  "raceId": 1159
+ },
+ "recuperata_il": "2026-07-19",
+ "stop": [
+  {
+   "auto": "87",
+   "pilota": "oliver-bearman",
+   "stop": 1,
+   "giro": 1,
+   "durata_s": 26.554
+  },
+  {
+   "auto": "6",
+   "pilota": "isack-hadjar",
+   "stop": 1,
+   "giro": 1,
+   "durata_s": 24.156
+  },
+  {
+   "auto": "11",
+   "pilota": "sergio-perez",
+   "stop": 1,
+   "giro": 1,
+   "durata_s": 25.372
+  },
+  {
+   "auto": "77",
+   "pilota": "valtteri-bottas",
+   "stop": 1,
+   "giro": 1,
+   "durata_s": 30.594
+  },
+  {
+   "auto": "31",
+   "pilota": "esteban-ocon",
+   "stop": 1,
+   "giro": 1,
+   "durata_s": 33.74
+  },
+  {
+   "auto": "6",
+   "pilota": "isack-hadjar",
+   "stop": 2,
+   "giro": 2,
+   "durata_s": 22.997
+  },
+  {
+   "auto": "11",
+   "pilota": "sergio-perez",
+   "stop": 2,
+   "giro": 12,
+   "durata_s": 27.617
+  },
+  {
+   "auto": "10",
+   "pilota": "pierre-gasly",
+   "stop": 1,
+   "giro": 14,
+   "durata_s": 24.177
+  },
+  {
+   "auto": "55",
+   "pilota": "carlos-sainz-jr",
+   "stop": 1,
+   "giro": 14,
+   "durata_s": 34.841
+  },
+  {
+   "auto": "30",
+   "pilota": "liam-lawson",
+   "stop": 1,
+   "giro": 15,
+   "durata_s": 23.722
+  },
+  {
+   "auto": "43",
+   "pilota": "franco-colapinto",
+   "stop": 1,
+   "giro": 15,
+   "durata_s": 24.146
+  },
+  {
+   "auto": "41",
+   "pilota": "arvid-lindblad",
+   "stop": 1,
+   "giro": 16,
+   "durata_s": 24.81
+  },
+  {
+   "auto": "31",
+   "pilota": "esteban-ocon",
+   "stop": 2,
+   "giro": 16,
+   "durata_s": 24.124
+  },
+  {
+   "auto": "3",
+   "pilota": "max-verstappen",
+   "stop": 1,
+   "giro": 17,
+   "durata_s": 23.128
+  },
+  {
+   "auto": "18",
+   "pilota": "lance-stroll",
+   "stop": 1,
+   "giro": 17,
+   "durata_s": 31.649
+  },
+  {
+   "auto": "12",
+   "pilota": "kimi-antonelli",
+   "stop": 1,
+   "giro": 18,
+   "durata_s": 23.093
+  },
+  {
+   "auto": "23",
+   "pilota": "alexander-albon",
+   "stop": 1,
+   "giro": 18,
+   "durata_s": 22.638
+  },
+  {
+   "auto": "14",
+   "pilota": "fernando-alonso",
+   "stop": 1,
+   "giro": 19,
+   "durata_s": 23.19
+  },
+  {
+   "auto": "16",
+   "pilota": "charles-leclerc",
+   "stop": 1,
+   "giro": 20,
+   "durata_s": 23.164
+  },
+  {
+   "auto": "44",
+   "pilota": "lewis-hamilton",
+   "stop": 1,
+   "giro": 20,
+   "durata_s": 32.201
+  },
+  {
+   "auto": "81",
+   "pilota": "oscar-piastri",
+   "stop": 1,
+   "giro": 20,
+   "durata_s": 23.292
+  },
+  {
+   "auto": "6",
+   "pilota": "isack-hadjar",
+   "stop": 3,
+   "giro": 20,
+   "durata_s": 24.727
+  },
+  {
+   "auto": "5",
+   "pilota": "gabriel-bortoleto",
+   "stop": 1,
+   "giro": 20,
+   "durata_s": 23.127
+  },
+  {
+   "auto": "27",
+   "pilota": "nico-hulkenberg",
+   "stop": 1,
+   "giro": 20,
+   "durata_s": 26.098
+  },
+  {
+   "auto": "87",
+   "pilota": "oliver-bearman",
+   "stop": 2,
+   "giro": 20,
+   "durata_s": 28.982
+  },
+  {
+   "auto": "1",
+   "pilota": "lando-norris",
+   "stop": 1,
+   "giro": 30,
+   "durata_s": 28.314
+  },
+  {
+   "auto": "14",
+   "pilota": "fernando-alonso",
+   "stop": 2,
+   "giro": 31,
+   "durata_s": 24.746
+  },
+  {
+   "auto": "77",
+   "pilota": "valtteri-bottas",
+   "stop": 2,
+   "giro": 32,
+   "durata_s": 25.91
+  }
+ ]
+}

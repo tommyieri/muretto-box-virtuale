@@ -1,0 +1,350 @@
+{
+ "_nota": "chiusura riserva KPI 3 FASE1B (arbitro f1db v2026.10.0)",
+ "piloti_totali": 22,
+ "piloti_conteggio_esatto": 22,
+ "quota_conteggio": 1.0,
+ "senza_stop_in_entrambi": [
+  "63"
+ ],
+ "stop_confrontati": 28,
+ "stop_giro_entro_1": 28,
+ "gate": true,
+ "confronto": [
+  {
+   "auto": "1",
+   "stop_f1db": 1,
+   "stop_replay": 1,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 30,
+     "giro": 30,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "3",
+   "stop_f1db": 1,
+   "stop_replay": 1,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 17,
+     "giro": 17,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "5",
+   "stop_f1db": 1,
+   "stop_replay": 1,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 20,
+     "giro": 20,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "6",
+   "stop_f1db": 3,
+   "stop_replay": 3,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 1,
+     "giro": 2,
+     "origine": "fallback LapCount leader",
+     "entro_1": true
+    },
+    {
+     "giro_f1db": 2,
+     "giro": 2,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    },
+    {
+     "giro_f1db": 20,
+     "giro": 20,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "10",
+   "stop_f1db": 1,
+   "stop_replay": 1,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 14,
+     "giro": 14,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "11",
+   "stop_f1db": 2,
+   "stop_replay": 2,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 1,
+     "giro": 2,
+     "origine": "fallback LapCount leader",
+     "entro_1": true
+    },
+    {
+     "giro_f1db": 12,
+     "giro": 12,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "12",
+   "stop_f1db": 1,
+   "stop_replay": 1,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 18,
+     "giro": 18,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "14",
+   "stop_f1db": 2,
+   "stop_replay": 2,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 19,
+     "giro": 19,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    },
+    {
+     "giro_f1db": 31,
+     "giro": 31,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "16",
+   "stop_f1db": 1,
+   "stop_replay": 1,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 20,
+     "giro": 20,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "18",
+   "stop_f1db": 1,
+   "stop_replay": 1,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 17,
+     "giro": 17,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "23",
+   "stop_f1db": 1,
+   "stop_replay": 1,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 18,
+     "giro": 18,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "27",
+   "stop_f1db": 1,
+   "stop_replay": 1,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 20,
+     "giro": 20,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "30",
+   "stop_f1db": 1,
+   "stop_replay": 1,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 15,
+     "giro": 15,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "31",
+   "stop_f1db": 2,
+   "stop_replay": 2,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 1,
+     "giro": 2,
+     "origine": "fallback LapCount leader",
+     "entro_1": true
+    },
+    {
+     "giro_f1db": 16,
+     "giro": 16,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "41",
+   "stop_f1db": 1,
+   "stop_replay": 1,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 16,
+     "giro": 16,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "43",
+   "stop_f1db": 1,
+   "stop_replay": 1,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 15,
+     "giro": 15,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "44",
+   "stop_f1db": 1,
+   "stop_replay": 1,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 20,
+     "giro": 20,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "55",
+   "stop_f1db": 1,
+   "stop_replay": 1,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 14,
+     "giro": 14,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "77",
+   "stop_f1db": 2,
+   "stop_replay": 2,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 1,
+     "giro": 2,
+     "origine": "fallback LapCount leader",
+     "entro_1": true
+    },
+    {
+     "giro_f1db": 32,
+     "giro": 32,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "81",
+   "stop_f1db": 1,
+   "stop_replay": 1,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 20,
+     "giro": 20,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  },
+  {
+   "auto": "87",
+   "stop_f1db": 2,
+   "stop_replay": 2,
+   "conteggio_esatto": true,
+   "stop": [
+    {
+     "giro_f1db": 1,
+     "giro": 2,
+     "origine": "fallback LapCount leader",
+     "entro_1": true
+    },
+    {
+     "giro_f1db": 20,
+     "giro": 20,
+     "origine": "NumberOfLaps+1",
+     "entro_1": true
+    }
+   ]
+  }
+ ]
+}
