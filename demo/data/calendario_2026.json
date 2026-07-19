@@ -376,8 +376,11 @@
      "ora_utc": "13:00"
     }
    },
-   "gara_demo": null,
-   "vincitore": null
+   "gara_demo": "Belgio",
+   "vincitore": {
+    "sigla": "ANT",
+    "team": "Mercedes"
+   }
   },
   {
    "round": 11,
