@@ -16,6 +16,8 @@ inventato; le derivazioni esplicite sono dichiarate qui e nel README:
                        v1/pit resta nel grezzo come arbitro a posteriori;
   - track_status    <- v1/race_control (solo eventi track-wide:
                        categoria SafetyCar o flag con scope Track);
+  - driver_list     <- v1/drivers (sigla=name_acronym,
+                       colore=team_colour) — Fase 3;
   - session_status  <- NON DISPONIBILE da OpenF1 (v1/sessions non ha
                        transizioni di stato): mai emesso, documentato.
                        v1/sessions alimenta solo /status.
@@ -187,11 +189,24 @@ def eventi_da_openf1(flusso, stato=None):
                 yield evento
 
         elif topic == "v1/drivers":
+            cambi = {}
+            t_drv = None
             for o in oggetti:
                 num = o.get("driver_number")
-                if num is not None:
-                    stato.driver_list[str(num)] = {
-                        "Tla": o.get("name_acronym")}
+                if num is None:
+                    continue
+                colore = o.get("team_colour")
+                voce = {"sigla": o.get("name_acronym"),
+                        "colore": ("#" + colore) if colore else None}
+                if stato.driver_list.get(str(num)) != voce \
+                        and (voce["sigla"] or voce["colore"]):
+                    stato.driver_list[str(num)] = voce
+                    cambi[str(num)] = voce
+                    t_drv = parse_data(o.get("date")) or t_drv
+            if cambi:
+                yield {"type": "driver_list",
+                       "t": _fmt(t_drv) if t_drv else None,
+                       "cars": cambi}
 
         elif topic == "v1/position":
             for o in oggetti:

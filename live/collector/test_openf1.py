@@ -110,8 +110,10 @@ def test_mappa_location():
              "date": "2026-07-25T13:00:01.250000+00:00"},
         ], None),
     ])
-    assert len(eventi) == 2, eventi
-    f1, f2 = eventi
+    assert len(eventi) == 3, eventi
+    dl, f1, f2 = eventi
+    assert dl["type"] == "driver_list" and \
+        dl["cars"]["1"]["sigla"] == "NOR", dl
     assert f1["type"] == "position_frame"
     assert f1["cars"] == {"1": {"x": 100, "y": 200}}, f1   # 44=(0,0,0) fuori
     assert f1["extra_cars"] == {"242": {"x": 300, "y": 300}}, f1

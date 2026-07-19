@@ -372,6 +372,7 @@ class Replica:
     def __init__(self):
         self.cars = {}
         self.extra = {}
+        self.drivers = {}
         self.track_status = None
         self.session_status = None
         self.t = None
@@ -386,6 +387,9 @@ class Replica:
         elif e["type"] == "timing_update":
             for auto, diff in e["cars"].items():
                 self.cars.setdefault(auto, {}).update(diff)
+        elif e["type"] == "driver_list":
+            for auto, voce in e["cars"].items():
+                self.drivers.setdefault(auto, {}).update(voce)
         elif e["type"] == "track_status":
             self.track_status = e["status"]
         elif e["type"] == "session_status":
@@ -393,7 +397,8 @@ class Replica:
 
     def snapshot(self):
         return {"type": "snapshot", "t": self.t, "cars": self.cars,
-                "extra_cars": self.extra, "track_status": self.track_status,
+                "extra_cars": self.extra, "driver_list": self.drivers,
+                "track_status": self.track_status,
                 "session_status": self.session_status}
 
 
