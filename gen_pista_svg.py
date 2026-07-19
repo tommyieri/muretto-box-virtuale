@@ -142,11 +142,11 @@ def ricampiona_anello(xy, n):
     return p, tot
 
 
-def genera(nome, reg, forza=False):
+def genera(nome, reg, forza=False, sessione='R'):
     dest = os.path.join('demo', 'data', f'pista_{nome}.json')
     ti = reg['ti']
     print(f'== {nome} ({ti}) ==')
-    session = fastf1.get_session(ANNO, ti, 'R')
+    session = fastf1.get_session(ANNO, ti, sessione)
     session.load(laps=True, telemetry=True, weather=False, messages=False)
     lap, xy = scegli_giro(session)
     if lap is None:
@@ -194,7 +194,7 @@ def genera(nome, reg, forza=False):
         },
         'lunghezza_m': round(tot_units / 10.0, 1),
         'sorgente': {
-            'evento': f'{ANNO} {ti}', 'sessione': 'Race',
+            'evento': f'{ANNO} {ti}', 'sessione': sessione,
             'pilota': str(lap['Driver']), 'giro': int(lap['LapNumber']),
             'lap_time_s': round(lap['LapTime'].total_seconds(), 3),
             'criterio': 'giro valido piu veloce con telemetria GPS pulita (vedi testa del generatore)',
@@ -214,6 +214,10 @@ def genera(nome, reg, forza=False):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--gara', help='solo questa gara (nome demo, es. Miami); default: tutte')
+    ap.add_argument('--sessione', default='R',
+                    help="sessione FastF1 per la telemetria (default R; es. FP1 per "
+                         "avere la pista del circuito nuovo gia' al venerdi' — "
+                         "runbook live, Fase 3)")
     args = ap.parse_args()
     registro = carica_registro()
     nomi = [args.gara] if args.gara else list(registro)
@@ -222,7 +226,7 @@ def main():
     esiti = {}
     for nome in nomi:
         try:
-            esiti[nome] = genera(nome, registro[nome])
+            esiti[nome] = genera(nome, registro[nome], sessione=args.sessione)
         except Exception as e:
             print(f'   ERRORE {nome}: {e}')
             esiti[nome] = False

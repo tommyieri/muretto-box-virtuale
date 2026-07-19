@@ -83,8 +83,9 @@ riga per messaggio MQTT `{"t": <ricezione UTC>, "topic": ..., "payload":
 | `timing_update.pos` | si' | si' (`v1/position`) | |
 | `timing_update.gap` | si' (stringa feed) | derivato: numero → `"+X.XXX"`, 0/None → `""` | conversione di formato, stessa semantica |
 | `timing_update.last_lap` | si' (stringa feed) | derivato: `lap_duration` → `"M:SS.mmm"` | conversione di formato |
-| `timing_update.in_pit` | si' (live, ingresso/uscita) | **DERIVATO a posteriori** da `v1/pit` (true a `date`, false a `date+pit_duration`) | il messaggio arriva a stop concluso: utile per replay/analisi, NON tempo reale |
+| `timing_update.in_pit` | si' (live, ingresso/uscita) | **GEOMETRICO** (Fase 3: `inpit_geometrico.py`, attivo con `--pitlane CORRIDOIO`; K=3 campioni, D=5 m, isteresi; concordanza 30/30 col timing SignalR sulla gara di Spa) | senza corridoio il campo resta ASSENTE; `v1/pit` resta nel grezzo come arbitro a posteriori |
 | `track_status` | si' (TrackStatus) | derivato da `v1/race_control` track-wide (categoria SafetyCar, flag con scope Track) | gialli di settore ignorati (TrackStatus SignalR era track-wide) |
+| `driver_list` (sigla+colore team) | si' (DriverList: Tla, TeamColour) | si' (`v1/drivers`: name_acronym, team_colour) | evento additivo Fase 3, solo voci nuove/cambiate |
 | `session_status` | si' (SessionStatus) | **MAI EMESSO** | `v1/sessions` non ha transizioni di stato; alimenta solo `/status` |
 | snapshot alla connessione | si' | si' | identico (replica eventi serviti) |
 
@@ -221,3 +222,17 @@ sessione (`client_test.py` salva `ricevuto_utc` per la latenza KPI 4),
 poi confronto server/Mac (`inspect_recording.py`) e coerenza eventi
 (`replay.py` sul file server vs eventi salvati dal client). Verdetti in
 `live/REPORT_FASE2.md`.
+
+## Fase 3 — in_pit geometrico, TLS, mappa live
+
+- `--pitlane data/live_derived/pitlane_<circ>.json` attiva il
+  classificatore geometrico sull'ingresso OpenF1 (live e replay .jsonl);
+  sul server si imposta per weekend via `~/.muretto-live.env`
+  (`PITLANE_ARGS=...`, vedi unit systemd e RUNBOOK_WEEKEND.md).
+- TLS: Caddy (`Caddyfile` in questa cartella) su `ws.murettobox.com`
+  (`/ws` -> WebSocket, `/status` -> stato; allowlist Origin; 8765/8766
+  chiuse all'esterno). Serve il record DNS A verso il VPS.
+- La mappa live del sito (demo/live.html + live_mappa.mjs) consuma questa
+  interfaccia; il fit coordinate raw->viewBox e' in
+  `demo/data/live_geo_<gara>.json` (generato da live/gen_live_geo.py).
+- Runbook operativo del weekend: `live/RUNBOOK_WEEKEND.md`.
