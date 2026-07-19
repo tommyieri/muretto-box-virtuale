@@ -1,0 +1,448 @@
+{
+ "kpi1": {
+  "eccezione": null,
+  "eventi": {
+   "session_status": 4,
+   "track_status": 12,
+   "position_frame": 22513,
+   "timing_update": 23423
+  },
+  "auto_nei_position_frame": 23,
+  "righe_totali": 70223,
+  "righe_ok": 70223,
+  "frazione_ok": 1.0,
+  "gate": true
+ },
+ "kpi2": {
+  "ordine_replay": [
+   "12",
+   "16",
+   "3",
+   "44",
+   "81",
+   "6",
+   "1",
+   "5",
+   "41",
+   "43",
+   "10",
+   "30",
+   "27",
+   "87",
+   "23",
+   "55",
+   "31",
+   "77",
+   "14",
+   "18",
+   "11",
+   "63"
+  ],
+  "ordine_arbitro": [
+   "12",
+   "16",
+   "3",
+   "44",
+   "81",
+   "6",
+   "1",
+   "5",
+   "41",
+   "43",
+   "10",
+   "30",
+   "27",
+   "87",
+   "23",
+   "55",
+   "31",
+   "77",
+   "14",
+   "18",
+   "11",
+   "63"
+  ],
+  "posizioni_finali_replay": {
+   "12": 1,
+   "16": 2,
+   "3": 3,
+   "44": 4,
+   "81": 5,
+   "6": 6,
+   "1": 7,
+   "5": 8,
+   "41": 9,
+   "43": 10,
+   "10": 11,
+   "30": 12,
+   "27": 13,
+   "87": 14,
+   "23": 15,
+   "55": 16,
+   "31": 17,
+   "77": 18,
+   "14": 19,
+   "18": 20,
+   "11": 21,
+   "63": 22
+  },
+  "ordine_coincide": true,
+  "giri_vincitore": 44,
+  "lapcount_finale": 44,
+  "griglia": {
+   "t": "2026-07-19 13:03:51.679741",
+   "auto_nel_frame": 22,
+   "entro_500m_da_sf": 22,
+   "ok": true
+  },
+  "gate": true
+ },
+ "kpi3": {
+  "convenzione": "giro stop = NumberOfLaps a ingresso pit + 1; ingresso senza uscita = non conteggiato",
+  "stop_per_auto": {
+   "1": [
+    {
+     "giro": 30,
+     "da": "2026-07-19 14:03:06.267000",
+     "a": "2026-07-19 14:03:34.556000"
+    }
+   ],
+   "3": [
+    {
+     "giro": 17,
+     "da": "2026-07-19 13:38:12.978000",
+     "a": "2026-07-19 13:38:36.146000"
+    }
+   ],
+   "5": [
+    {
+     "giro": 20,
+     "da": "2026-07-19 13:44:42.744000",
+     "a": "2026-07-19 13:45:05.805000"
+    }
+   ],
+   "6": [
+    {
+     "giro": null,
+     "da": "2026-07-19 13:06:22.696000",
+     "a": "2026-07-19 13:06:46.922000"
+    },
+    {
+     "giro": 2,
+     "da": "2026-07-19 13:09:03.361000",
+     "a": "2026-07-19 13:09:26.286000"
+    },
+    {
+     "giro": 20,
+     "da": "2026-07-19 13:44:37.724000",
+     "a": "2026-07-19 13:45:02.415000"
+    }
+   ],
+   "10": [
+    {
+     "giro": 14,
+     "da": "2026-07-19 13:32:55.599000",
+     "a": "2026-07-19 13:33:19.642000"
+    }
+   ],
+   "11": [
+    {
+     "giro": null,
+     "da": "2026-07-19 13:06:24.167000",
+     "a": "2026-07-19 13:06:49.762000"
+    },
+    {
+     "giro": 12,
+     "da": "2026-07-19 13:29:41.911000",
+     "a": "2026-07-19 13:30:09.441000"
+    }
+   ],
+   "12": [
+    {
+     "giro": 18,
+     "da": "2026-07-19 13:40:12.638000",
+     "a": "2026-07-19 13:40:35.693000"
+    }
+   ],
+   "14": [
+    {
+     "giro": 19,
+     "da": "2026-07-19 13:43:29.638000",
+     "a": "2026-07-19 13:43:52.730000"
+    },
+    {
+     "giro": 31,
+     "da": "2026-07-19 14:07:18.541000",
+     "a": "2026-07-19 14:07:43.277000"
+    }
+   ],
+   "16": [
+    {
+     "giro": 20,
+     "da": "2026-07-19 13:44:12.942000",
+     "a": "2026-07-19 13:44:35.975000"
+    }
+   ],
+   "18": [
+    {
+     "giro": 17,
+     "da": "2026-07-19 13:39:28.735000",
+     "a": "2026-07-19 13:40:00.329000"
+    }
+   ],
+   "23": [
+    {
+     "giro": 18,
+     "da": "2026-07-19 13:40:50.022000",
+     "a": "2026-07-19 13:41:12.667000"
+    }
+   ],
+   "27": [
+    {
+     "giro": 20,
+     "da": "2026-07-19 13:44:46.334000",
+     "a": "2026-07-19 13:45:12.447000"
+    }
+   ],
+   "30": [
+    {
+     "giro": 15,
+     "da": "2026-07-19 13:34:46.601000",
+     "a": "2026-07-19 13:35:10.455000"
+    }
+   ],
+   "31": [
+    {
+     "giro": null,
+     "da": "2026-07-19 13:06:32.815000",
+     "a": "2026-07-19 13:07:06.600000"
+    },
+    {
+     "giro": 16,
+     "da": "2026-07-19 13:37:02.119000",
+     "a": "2026-07-19 13:37:26.225000"
+    }
+   ],
+   "41": [
+    {
+     "giro": 16,
+     "da": "2026-07-19 13:36:37.602000",
+     "a": "2026-07-19 13:37:02.454000"
+    }
+   ],
+   "43": [
+    {
+     "giro": 15,
+     "da": "2026-07-19 13:34:50.190000",
+     "a": "2026-07-19 13:35:14.260000"
+    }
+   ],
+   "44": [
+    {
+     "giro": 20,
+     "da": "2026-07-19 13:44:18.330000",
+     "a": "2026-07-19 13:44:50.735000"
+    }
+   ],
+   "55": [
+    {
+     "giro": 14,
+     "da": "2026-07-19 13:33:07.470000",
+     "a": "2026-07-19 13:33:42.370000"
+    }
+   ],
+   "77": [
+    {
+     "giro": null,
+     "da": "2026-07-19 13:06:27.527000",
+     "a": "2026-07-19 13:06:57.929000"
+    },
+    {
+     "giro": 32,
+     "da": "2026-07-19 14:08:30.628000",
+     "a": "2026-07-19 14:08:56.536000"
+    }
+   ],
+   "81": [
+    {
+     "giro": 20,
+     "da": "2026-07-19 13:44:22.631000",
+     "a": "2026-07-19 13:44:45.858000"
+    }
+   ],
+   "87": [
+    {
+     "giro": null,
+     "da": "2026-07-19 13:06:22.269000",
+     "a": "2026-07-19 13:06:48.788000"
+    },
+    {
+     "giro": 20,
+     "da": "2026-07-19 13:44:59.642000",
+     "a": "2026-07-19 13:45:28.693000"
+    }
+   ]
+  },
+  "spot_check_cronaca": [
+   {
+    "auto": "1",
+    "sigla": "NOR",
+    "giro": 30,
+    "nota": "cambio lento posteriore sinistra, rientra P8 dietro Bortoleto (motorsport.com live; yahoo dice giro 31: ambiguita' di convenzione gia' nella cronaca)",
+    "giri_replay": [
+     30
+    ],
+    "match_entro_1": true
+   },
+   {
+    "auto": "16",
+    "sigla": "LEC",
+    "giro": 20,
+    "nota": "pit sotto VSC, prende la testa",
+    "giri_replay": [
+     20
+    ],
+    "match_entro_1": true
+   },
+   {
+    "auto": "6",
+    "sigla": "HAD",
+    "giro": 20,
+    "nota": "pit 'cheap' sotto VSC (Red Bull cambia strategia)",
+    "giri_replay": [
+     2,
+     20
+    ],
+    "match_entro_1": true
+   }
+  ],
+  "gate": null,
+  "nota": "arbitro per-pilota NON pubblicato la sera stessa (pit-stop-summary formula1.com vuoto): verdetto RINVIATO al rilascio f1db; spot-check di cronaca sopra"
+ },
+ "kpi4": {
+  "totali": 30,
+  "senza_dati_gps": 0,
+  "coerenti": 30,
+  "divergenti": [],
+  "periodi_verificabili": 30,
+  "coerenza": 1.0,
+  "gate": true
+ },
+ "kpi5": {
+  "granularita": "la cronaca pubblica e' a granularita' di GIRO, senza orari: la clausola ±30s del KPI 5 si applica come copertura del giro indicato dalla timeline replay (documentato, non aggiustato)",
+  "timeline_replay": [
+   {
+    "t": "None",
+    "status": "AllClear",
+    "giro": null
+   },
+   {
+    "t": "2026-07-19 13:04:35.041000",
+    "status": "Yellow",
+    "giro": 1
+   },
+   {
+    "t": "2026-07-19 13:05:25.031000",
+    "status": "SCDeployed",
+    "giro": 1
+   },
+   {
+    "t": "2026-07-19 13:13:49.957000",
+    "status": "AllClear",
+    "giro": 4
+   },
+   {
+    "t": "2026-07-19 13:20:54.613000",
+    "status": "Yellow",
+    "giro": 8
+   },
+   {
+    "t": "2026-07-19 13:21:16.657000",
+    "status": "AllClear",
+    "giro": 8
+   },
+   {
+    "t": "2026-07-19 13:39:13.353000",
+    "status": "VSCDeployed",
+    "giro": 18
+   },
+   {
+    "t": "2026-07-19 13:39:46.393000",
+    "status": "VSCEnding",
+    "giro": 18
+   },
+   {
+    "t": "2026-07-19 13:39:58.756000",
+    "status": "AllClear",
+    "giro": 18
+   },
+   {
+    "t": "2026-07-19 13:43:18.094000",
+    "status": "VSCDeployed",
+    "giro": 20
+   },
+   {
+    "t": "2026-07-19 13:44:51.705000",
+    "status": "VSCEnding",
+    "giro": 21
+   },
+   {
+    "t": "2026-07-19 13:45:06.281000",
+    "status": "AllClear",
+    "giro": 21
+   }
+  ],
+  "periodi_neutralizzazione": [
+   {
+    "tipo": "SC",
+    "da": "2026-07-19 13:05:25.031000",
+    "giro_da": 1,
+    "a": "2026-07-19 13:13:49.957000",
+    "giro_a": 4
+   },
+   {
+    "tipo": "VSC",
+    "da": "2026-07-19 13:39:13.353000",
+    "giro_da": 18,
+    "a": "2026-07-19 13:39:58.756000",
+    "giro_a": 18
+   },
+   {
+    "tipo": "VSC",
+    "da": "2026-07-19 13:43:18.094000",
+    "giro_da": 20,
+    "a": "2026-07-19 13:45:06.281000",
+    "giro_a": 21
+   }
+  ],
+  "cronaca_coperta": [
+   {
+    "tipo": "SC",
+    "giro_inizio": 1,
+    "causa": "incidente Russell (contatto Hamilton), auto nella ghiaia",
+    "giro_fine": null,
+    "nota": "fine non riportata dalla cronaca",
+    "coperto_dal_replay": true
+   },
+   {
+    "tipo": "VSC",
+    "giro_inizio": 18,
+    "causa": "detriti in curva 17",
+    "giro_fine": null,
+    "nota": "cronaca: nessuno riusci' a pittare sotto questa VSC",
+    "coperto_dal_replay": true
+   },
+   {
+    "tipo": "VSC",
+    "giro_inizio": 20,
+    "causa": "non specificata dalla cronaca",
+    "giro_fine": null,
+    "nota": "Leclerc e Hadjar pittano sotto questa VSC; Leclerc prende la testa",
+    "coperto_dal_replay": true
+   }
+  ],
+  "periodi_pre_gara": [],
+  "periodi_replay_non_in_cronaca": [],
+  "gate": true
+ }
+}

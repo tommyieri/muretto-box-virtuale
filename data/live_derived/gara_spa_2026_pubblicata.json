@@ -1,0 +1,48 @@
+{
+ "_nota": "Classifica di GARA GP Belgio 2026 come PUBBLICATA la sera stessa. Input statico di live/verifica_gara.py (arbitro dichiarato in FASE1B_PREREG.md: f1db non disponibile, ultimo rilascio v2026.9.1 del 2026-07-06). Il cross-check f1db (classifica + pit stop per-stop con giro e durata) VA RIFATTO al rilascio. La tabella pit per-pilota NON era pubblicata la sera stessa (formula1.com pit-stop-summary vuoto): congelati solo gli spot-check dalla cronaca.",
+ "recuperata_il": "2026-07-19",
+ "fonti": [
+  "https://www.total-motorsport.com/belgian-gp-2026-race-results/ (classifica completa P1-P22)",
+  "https://www.formula1.com/en/video/2026-belgian-grand-prix-multiple-leader-changes-and-russell-out-in-lap-1.1871149334662430086 (Russell out giro 1)",
+  "https://www.motorsport.com/f1/news/george-russell-out-of-f1-belgian-gp-after-lewis-hamilton-contact/10840165/ (incidente giro 1, safety car, penalita' 5s Hamilton)",
+  "https://sports.yahoo.com/f1/breaking-news/live/f1-belgian-grand-prix-live-updates-news-and-results-from-spa-121744008.html (VSC giro 18 detriti curva 17; VSC giro 20 con pit di Leclerc; sorpasso decisivo giro 34; pit lento Norris giro 31->P8)",
+  "https://www.motorsport.com/f1/live-text/f1-belgian-gp-live-commentary-and-updates-race-1127360/1127361/ (pit Norris giro 30 con cambio lento posteriore sinistra; 'earlier VSC shenanigans')",
+  "https://en.wikipedia.org/wiki/2026_Belgian_Grand_Prix (44 giri, partenza 15:00 locali)"
+ ],
+ "giri_totali": 44,
+ "classifica": [
+  {"pos": 1,  "auto": "12", "sigla": "ANT", "stato": "classificato", "gap": "vincitore"},
+  {"pos": 2,  "auto": "16", "sigla": "LEC", "stato": "classificato", "gap": "+1.952"},
+  {"pos": 3,  "auto": "3",  "sigla": "VER", "stato": "classificato", "gap": "+11.586"},
+  {"pos": 4,  "auto": "44", "sigla": "HAM", "stato": "classificato", "gap": "+17.245"},
+  {"pos": 5,  "auto": "81", "sigla": "PIA", "stato": "classificato", "gap": "+18.988"},
+  {"pos": 6,  "auto": "6",  "sigla": "HAD", "stato": "classificato", "gap": "+23.307"},
+  {"pos": 7,  "auto": "1",  "sigla": "NOR", "stato": "classificato", "gap": "+24.014"},
+  {"pos": 8,  "auto": "5",  "sigla": "BOR", "stato": "classificato", "gap": "+49.140"},
+  {"pos": 9,  "auto": "41", "sigla": "LIN", "stato": "classificato", "gap": "+50.406"},
+  {"pos": 10, "auto": "43", "sigla": "COL", "stato": "classificato", "gap": "+76.037"},
+  {"pos": 11, "auto": "10", "sigla": "GAS", "stato": "classificato", "gap": "+76.991"},
+  {"pos": 12, "auto": "30", "sigla": "LAW", "stato": "classificato", "gap": "+77.523"},
+  {"pos": 13, "auto": "27", "sigla": "HUL", "stato": "classificato", "gap": "+78.348"},
+  {"pos": 14, "auto": "87", "sigla": "BEA", "stato": "classificato", "gap": "+94.465"},
+  {"pos": 15, "auto": "23", "sigla": "ALB", "stato": "classificato", "gap": "+104.684"},
+  {"pos": 16, "auto": "55", "sigla": "SAI", "stato": "classificato", "gap": "+105.856"},
+  {"pos": 17, "auto": "31", "sigla": "OCO", "stato": "classificato", "gap": "+110.925"},
+  {"pos": 18, "auto": "77", "sigla": "BOT", "stato": "classificato", "gap": "+1 giro"},
+  {"pos": 19, "auto": "14", "sigla": "ALO", "stato": "classificato", "gap": "+2 giri"},
+  {"pos": 20, "auto": "18", "sigla": "STR", "stato": "ritirato", "gap": "DNF"},
+  {"pos": 21, "auto": "11", "sigla": "PER", "stato": "ritirato", "gap": "DNF"},
+  {"pos": 22, "auto": "63", "sigla": "RUS", "stato": "ritirato", "gap": "DNF (giro 1)"}
+ ],
+ "neutralizzazioni_cronaca": [
+  {"tipo": "SC", "giro_inizio": 1, "causa": "incidente Russell (contatto Hamilton), auto nella ghiaia", "giro_fine": null, "nota": "fine non riportata dalla cronaca"},
+  {"tipo": "VSC", "giro_inizio": 18, "causa": "detriti in curva 17", "giro_fine": null, "nota": "cronaca: nessuno riusci' a pittare sotto questa VSC"},
+  {"tipo": "VSC", "giro_inizio": 20, "causa": "non specificata dalla cronaca", "giro_fine": null, "nota": "Leclerc e Hadjar pittano sotto questa VSC; Leclerc prende la testa"}
+ ],
+ "pit_spot_check": [
+  {"auto": "1", "sigla": "NOR", "giro": 30, "nota": "cambio lento posteriore sinistra, rientra P8 dietro Bortoleto (motorsport.com live; yahoo dice giro 31: ambiguita' di convenzione gia' nella cronaca)"},
+  {"auto": "16", "sigla": "LEC", "giro": 20, "nota": "pit sotto VSC, prende la testa"},
+  {"auto": "6",  "sigla": "HAD", "giro": 20, "nota": "pit 'cheap' sotto VSC (Red Bull cambia strategia)"}
+ ],
+ "granularita": "la cronaca pubblica e' a granularita' di GIRO, senza orari: la clausola ±30s del KPI 5 si applica come copertura del giro indicato dalla timeline replay (documentato, non aggiustato)"
+}
