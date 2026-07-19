@@ -87,6 +87,160 @@ def test_apertura_pigra():
         reg.chiudi()
 
 
+# ---------------------------------------------------------- mappatura
+
+def _eventi(messaggi_):
+    from mappa_openf1 import eventi_da_openf1
+    return list(eventi_da_openf1(iter(messaggi_)))
+
+
+@caso("mappa: location raggruppate per date, (0,0,0) filtrato, extra_cars")
+def test_mappa_location():
+    eventi = _eventi([
+        ("v1/drivers", [{"driver_number": 1, "name_acronym": "NOR"},
+                        {"driver_number": 44, "name_acronym": "HAM"}], None),
+        ("v1/location", [
+            {"driver_number": 1, "x": 100, "y": 200, "z": 1,
+             "date": "2026-07-25T13:00:01+00:00"},
+            {"driver_number": 44, "x": 0, "y": 0, "z": 0,
+             "date": "2026-07-25T13:00:01+00:00"},
+            {"driver_number": 242, "x": 300, "y": 300, "z": 1,
+             "date": "2026-07-25T13:00:01+00:00"},
+            {"driver_number": 1, "x": 110, "y": 210, "z": 1,
+             "date": "2026-07-25T13:00:01.250000+00:00"},
+        ], None),
+    ])
+    assert len(eventi) == 2, eventi
+    f1, f2 = eventi
+    assert f1["type"] == "position_frame"
+    assert f1["cars"] == {"1": {"x": 100, "y": 200}}, f1   # 44=(0,0,0) fuori
+    assert f1["extra_cars"] == {"242": {"x": 300, "y": 300}}, f1
+    assert f1["t"] == "2026-07-25T13:00:01.000Z", f1
+    assert f2["cars"]["1"]["x"] == 110 and "extra_cars" not in f2, f2
+
+
+@caso("mappa: timing_update solo campi cambiati; formati gap/last_lap")
+def test_mappa_timing():
+    eventi = _eventi([
+        ("v1/position", {"driver_number": 4, "position": 3,
+                         "date": "2026-07-25T13:00:01+00:00"}, None),
+        ("v1/position", {"driver_number": 4, "position": 3,
+                         "date": "2026-07-25T13:00:02+00:00"}, None),
+        ("v1/intervals", {"driver_number": 4, "gap_to_leader": 1.5,
+                          "date": "2026-07-25T13:00:03+00:00"}, None),
+        ("v1/intervals", {"driver_number": 16, "gap_to_leader": None,
+                          "date": "2026-07-25T13:00:03.500000+00:00"}, None),
+        ("v1/laps", {"driver_number": 4, "lap_duration": 103.123,
+                     "date_start": "2026-07-25T13:00:04+00:00"}, None),
+    ])
+    assert [e["type"] for e in eventi] == ["timing_update"] * 3, eventi
+    assert eventi[0]["cars"] == {"4": {"pos": 3}}, eventi[0]
+    assert eventi[1]["cars"] == {"4": {"gap": "+1.500"}}, eventi[1]
+    assert eventi[2]["cars"] == {"4": {"last_lap": "1:43.123"}}, eventi[2]
+
+
+@caso("mappa: in_pit derivato da v1/pit (true a date, false a +durata)")
+def test_mappa_pit():
+    eventi = _eventi([
+        ("v1/pit", {"driver_number": 81, "pit_duration": 22.5,
+                    "lap_number": 20,
+                    "date": "2026-07-25T13:10:00+00:00"}, None),
+    ])
+    assert len(eventi) == 2, eventi
+    assert eventi[0]["cars"] == {"81": {"in_pit": True}}
+    assert eventi[0]["t"] == "2026-07-25T13:10:00.000Z"
+    assert eventi[1]["cars"] == {"81": {"in_pit": False}}
+    assert eventi[1]["t"] == "2026-07-25T13:10:22.500Z"
+
+
+@caso("mappa: race_control track-wide -> track_status, settore ignorato")
+def test_mappa_race_control():
+    eventi = _eventi([
+        ("v1/race_control", {"category": "Flag", "flag": "GREEN",
+                             "scope": "Track",
+                             "date": "2026-07-25T13:00:00+00:00"}, None),
+        ("v1/race_control", {"category": "Flag", "flag": "YELLOW",
+                             "scope": "Sector", "sector": 7,
+                             "date": "2026-07-25T13:01:00+00:00"}, None),
+        ("v1/race_control", {"category": "SafetyCar", "flag": None,
+                             "message": "SAFETY CAR DEPLOYED",
+                             "date": "2026-07-25T13:02:00+00:00"}, None),
+        ("v1/race_control", {"category": "Flag", "flag": "CLEAR",
+                             "scope": "Track",
+                             "date": "2026-07-25T13:05:00+00:00"}, None),
+    ])
+    assert [(e["type"], e["status"]) for e in eventi] == [
+        ("track_status", "AllClear"),
+        ("track_status", "SCDeployed"),
+        ("track_status", "AllClear")], eventi
+
+
+@caso("mappa: deduplica per _id monotono per topic")
+def test_mappa_dedup_id():
+    eventi = _eventi([
+        ("v1/position", {"_id": 10, "driver_number": 4, "position": 3,
+                         "date": "2026-07-25T13:00:01+00:00"}, None),
+        ("v1/position", {"_id": 10, "driver_number": 4, "position": 5,
+                         "date": "2026-07-25T13:00:01+00:00"}, None),
+        ("v1/position", {"_id": 11, "driver_number": 4, "position": 2,
+                         "date": "2026-07-25T13:00:02+00:00"}, None),
+    ])
+    assert [e["cars"]["4"]["pos"] for e in eventi] == [3, 2], eventi
+
+
+# ------------------------------------------------------------------ e2e
+
+def _fixture_jsonl(tmp):
+    from ingress_openf1 import RegistratoreJSONL
+    reg = RegistratoreJSONL(tmp)
+    reg.scrivi("v1/drivers",
+               [{"driver_number": 1, "name_acronym": "NOR"}],
+               "2026-07-25T12:59:59.000")
+    reg.scrivi("v1/location",
+               [{"driver_number": 1, "x": 100, "y": 200, "z": 1,
+                 "date": "2026-07-25T13:00:01+00:00"},
+                {"driver_number": 242, "x": 5, "y": 5, "z": 1,
+                 "date": "2026-07-25T13:00:01+00:00"}],
+               "2026-07-25T13:00:01.900")
+    reg.scrivi("v1/position", {"driver_number": 1, "position": 1,
+                               "date": "2026-07-25T13:00:02+00:00"},
+               "2026-07-25T13:00:02.500")
+    reg.scrivi("v1/race_control", {"category": "Flag", "flag": "RED",
+                                   "date": "2026-07-25T13:00:10+00:00"},
+               "2026-07-25T13:00:10.800")
+    percorso = reg.percorso
+    reg.chiudi()
+    return percorso
+
+
+@caso("e2e: collettore --replay JSONL = eventi dell'adapter, via WS")
+def test_e2e_jsonl():
+    import asyncio
+    from mappa_openf1 import eventi_replay_openf1
+    from test_collector import avvia_collettore, porte_libere, \
+        raccogli_eventi
+    with tempfile.TemporaryDirectory() as tmp:
+        f = _fixture_jsonl(tmp)
+        attesi = list(eventi_replay_openf1([f]))
+        ws_port, status_port = porte_libere()
+        proc = avvia_collettore([f], ws_port, status_port)
+        try:
+            import urllib.request
+            stato = json.loads(urllib.request.urlopen(
+                f"http://127.0.0.1:{status_port}/status", timeout=5).read())
+            snapshot, eventi = asyncio.run(raccogli_eventi(ws_port))
+        finally:
+            proc.wait(timeout=30)
+    assert stato["ingress"] == "openf1", stato
+    assert eventi == attesi, (eventi, attesi)
+    assert snapshot["type"] == "snapshot"
+    frame = next(e for e in eventi if e["type"] == "position_frame")
+    assert frame["extra_cars"] == {"242": {"x": 5, "y": 5}}, frame
+    assert eventi[-1] == {"type": "track_status",
+                          "t": "2026-07-25T13:00:10.000Z",
+                          "status": "Red"}, eventi[-1]
+
+
 def main() -> int:
     falliti = 0
     for nome, fn in _esiti:

@@ -6,3 +6,4 @@ websockets>=12
 signalrcore==1.0.2
 requests>=2.30
 platformdirs
+paho-mqtt>=2

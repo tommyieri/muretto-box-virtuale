@@ -50,7 +50,49 @@ eventi WebSocket. KPI e decisioni congelate in
    sola lettura; `/status` non espone segreti (solo scadenza token, mai il
    token). Accettato per la Fase 2.
 
-## ⚠️ BLOCCO CloudFront sul feed dal VPS (2026-07-19, da risolvere)
+## Ingresso primario: OpenF1 MQTT (addendum FASE2_PREREG)
+
+Per via del blocco CloudFront (sezione sotto) l'ingresso del VPS e'
+**OpenF1 realtime**: MQTT su TLS `mqtt.openf1.org:8883`, OAuth2 su
+`api.openf1.org/token` (token 3600 s, rinnovo automatico con margine
+300 s; paho non cambia password a caldo → riconnessione proattiva col
+token fresco prima della scadenza). Il client SignalR resta nel codice
+(`--ingress signalr`) per la registrazione residenziale dal Mac e futuri
+fallback. Stato OAuth2 in `/status` → campo `openf1_token`.
+
+**Credenziali** (mai in git): file `~/.openf1.env` dell'utente `muretto`
+sul server, permessi **600**:
+
+```
+OPENF1_USERNAME=...
+OPENF1_PASSWORD=...
+```
+
+**Registrazione grezza**: JSONL rotanti in `data/live_raw/openf1/`, una
+riga per messaggio MQTT `{"t": <ricezione UTC>, "topic": ..., "payload":
+...}`; replay con `collector.py --replay FILE.jsonl` (adapter
+`mappa_openf1.eventi_replay_openf1`, rilevato dall'estensione).
+
+### Copertura campo per campo (OpenF1 vs SignalR) — mai inventato
+
+| Evento / campo | SignalR | OpenF1 | Nota |
+|---|---|---|---|
+| `position_frame.cars[].x,y` | si' | si' (`v1/location`) | stesso sistema di coordinate atteso: KPI 5 lo MISURA, non lo assume |
+| `position_frame.cars[].status` | si' (`OnTrack`/...) | **ASSENTE** | OpenF1 non lo fornisce |
+| `position_frame.extra_cars` | si' (DriverList) | si' (`v1/drivers`) | stessa politica 242 |
+| `timing_update.pos` | si' | si' (`v1/position`) | |
+| `timing_update.gap` | si' (stringa feed) | derivato: numero → `"+X.XXX"`, 0/None → `""` | conversione di formato, stessa semantica |
+| `timing_update.last_lap` | si' (stringa feed) | derivato: `lap_duration` → `"M:SS.mmm"` | conversione di formato |
+| `timing_update.in_pit` | si' (live, ingresso/uscita) | **DERIVATO a posteriori** da `v1/pit` (true a `date`, false a `date+pit_duration`) | il messaggio arriva a stop concluso: utile per replay/analisi, NON tempo reale |
+| `track_status` | si' (TrackStatus) | derivato da `v1/race_control` track-wide (categoria SafetyCar, flag con scope Track) | gialli di settore ignorati (TrackStatus SignalR era track-wide) |
+| `session_status` | si' (SessionStatus) | **MAI EMESSO** | `v1/sessions` non ha transizioni di stato; alimenta solo `/status` |
+| snapshot alla connessione | si' | si' | identico (replica eventi serviti) |
+
+Ordinamento: eventi in ordine d'arrivo, `t` = timestamp origine (`date`);
+deduplica `_id` monotona per topic. La registrazione preserva l'ordine
+d'arrivo: replay del grezzo ≡ flusso live (KPI 4).
+
+## ⚠️ BLOCCO CloudFront sul feed dal VPS (2026-07-19, risolto con OpenF1)
 
 Verificato empiricamente durante il primo deploy:
 `livetiming.formula1.com` risponde **403 "Error from cloudfront"** a OGNI

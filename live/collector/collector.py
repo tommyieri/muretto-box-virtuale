@@ -292,11 +292,21 @@ def pipeline_live(coda_righe, coda_eventi, loop, stato, cond):
 
 def pipeline_replay(files, speed, coda_eventi, loop, stato, cond,
                     al_termine, primo_client=None):
-    """Thread: eventi dal replay (stesso codice, pacing --speed)."""
+    """Thread: eventi dal replay (stesso codice del live, pacing --speed).
+
+    File .jsonl = registrazioni OpenF1 (adapter mappa_openf1), altrimenti
+    formato SignalR di Fase 1. Nessuna differenza lato client."""
     if primo_client is not None:
         log.info("replay in attesa del primo client WS")
         primo_client.wait()
-    eventi = eventi_replay([Path(f) for f in files], stato=stato)
+    percorsi = [Path(f) for f in files]
+    if all(p.suffix == ".jsonl" for p in percorsi):
+        from mappa_openf1 import eventi_replay_openf1
+        eventi = eventi_replay_openf1(percorsi, stato=stato)
+    elif any(p.suffix == ".jsonl" for p in percorsi):
+        raise SystemExit("replay misto SignalR/JSONL non supportato")
+    else:
+        eventi = eventi_replay(percorsi, stato=stato)
     if speed != "max":
         eventi = _scorri_a_velocita(eventi, float(speed))
     for evento in eventi:
@@ -307,11 +317,32 @@ def pipeline_replay(files, speed, coda_eventi, loop, stato, cond,
     loop.call_soon_threadsafe(al_termine.set)
 
 
+def pipeline_live_openf1(coda_messaggi, coda_eventi, loop, stato, cond):
+    """Thread: messaggi MQTT OpenF1 -> eventi (mappa_openf1)."""
+    from mappa_openf1 import eventi_da_openf1
+
+    def flusso():
+        while True:
+            yield coda_messaggi.get()
+
+    for evento in eventi_da_openf1(flusso(), stato=stato):
+        cond["sessione"] = _nome_sessione(stato)
+        loop.call_soon_threadsafe(
+            coda_eventi.put_nowait, (time.monotonic(), evento))
+
+
 def _nome_sessione(stato):
-    info = stato.session_info or {}
-    meeting = (info.get("Meeting") or {}).get("Name")
-    nome = info.get("Name")
-    return " — ".join(p for p in (meeting, nome) if p) or None
+    info = getattr(stato, "session_info", None)
+    if info is not None:                      # StatoSessione (SignalR)
+        meeting = (info.get("Meeting") or {}).get("Name")
+        nome = info.get("Name")
+        return " — ".join(p for p in (meeting, nome) if p) or None
+    sess = getattr(stato, "sessione", None)   # StatoOpenF1
+    if isinstance(sess, dict):
+        return " — ".join(p for p in (sess.get("circuit_short_name"),
+                                      sess.get("session_name")) if p) \
+            or None
+    return None
 
 
 # ----------------------------------------------------- replica per snapshot
@@ -415,9 +446,12 @@ def avvia_status_http(porta, cond, out_dir):
                 disco = shutil.disk_usage(out_dir)
             except OSError:
                 disco = None
+            token_of1 = cond.get("_token_openf1")
             corpo = json.dumps({
                 "modalita": cond.get("modalita"),
+                "ingress": cond.get("ingress"),
                 "connesso": cond.get("connesso", False),
+                "openf1_token": token_of1.stato() if token_of1 else None,
                 "ultimo_messaggio_utc": ultimo,
                 "eta_ultimo_messaggio_s":
                     round(eta) if eta is not None else None,
@@ -456,9 +490,18 @@ def avvia_status_http(porta, cond, out_dir):
 async def _main_async(args):
     import websockets
 
+    replay_jsonl = bool(args.replay) and all(
+        str(f).endswith(".jsonl") for f in args.replay)
+    ingress_openf1 = (args.ingress == "openf1" and not args.replay) \
+        or replay_jsonl
     cond = {"modalita": "replay" if args.replay else "live",
+            "ingress": "openf1" if ingress_openf1 else "signalr",
             "buffer_s": args.buffer, "client_ws": 0}
-    stato = StatoSessione()
+    if ingress_openf1:
+        from mappa_openf1 import StatoOpenF1
+        stato = StatoOpenF1()
+    else:
+        stato = StatoSessione()
     replica = Replica()
     clients = set()
     coda_eventi = asyncio.Queue()
@@ -478,6 +521,21 @@ async def _main_async(args):
             args=(args.replay, args.speed, coda_eventi, loop, stato, cond,
                   al_termine if al_termine is not None else asyncio.Event(),
                   primo_client),
+            daemon=True).start()
+    elif ingress_openf1:
+        from ingress_openf1 import (
+            IngressoOpenF1,
+            RegistratoreJSONL,
+        )
+        coda_messaggi = queue.Queue()
+        registratore = RegistratoreJSONL(Path(args.out_dir) / "openf1")
+        ingresso = IngressoOpenF1(coda_messaggi, registratore, cond,
+                                  args.env_file)
+        cond["_token_openf1"] = ingresso.token
+        threading.Thread(target=ingresso.per_sempre, daemon=True).start()
+        threading.Thread(
+            target=pipeline_live_openf1,
+            args=(coda_messaggi, coda_eventi, loop, stato, cond),
             daemon=True).start()
     else:
         coda_righe = queue.Queue()
@@ -512,6 +570,13 @@ def main() -> int:
     parser.add_argument("--timeout", type=int, default=600,
                         help="stallo feed: riconnetti dopo N secondi "
                              "senza messaggi (default 600)")
+    parser.add_argument("--ingress", choices=("openf1", "signalr"),
+                        default="openf1",
+                        help="ingresso live: OpenF1 MQTT (default, "
+                             "FASE2_PREREG addendum) o SignalR diretto "
+                             "(bloccato dai datacenter)")
+    parser.add_argument("--env-file", default="~/.openf1.env",
+                        help="file credenziali OpenF1 (KEY=VALUE, 600)")
     parser.add_argument("--replay", nargs="+", metavar="FILE",
                         help="alimenta il daemon da registrazioni")
     parser.add_argument("--speed", default="1",
