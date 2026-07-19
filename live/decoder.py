@@ -99,42 +99,50 @@ class StatisticheDecoder:
         return self.righe_ok / utili if utili else 1.0
 
 
-def messaggi(path, stats=None):
-    """Genera (topic, payload, ts) dalle righe di un file registrato.
+def messaggi_da_righe(righe, stats=None):
+    """Genera (topic, payload, ts) da un iterabile di righe grezze.
 
-    payload e' gia' decodificato: JSON-stringa -> oggetto, topic .z ->
-    base64+deflate raw -> oggetto. ts e' il timestamp della busta (None per
-    le righe di snapshot). Righe illeggibili: contate, mai eccezioni.
+    E' il decoder per-riga condiviso: usato da messaggi() sui file
+    registrati e dal collettore live (Fase 2) sulle righe appena ricevute —
+    stesso codice, stessa semantica. payload e' gia' decodificato
+    (JSON-stringa -> oggetto, topic .z -> base64+deflate raw -> oggetto);
+    ts e' il timestamp della busta (None per le righe di snapshot).
+    Righe illeggibili: contate, mai eccezioni.
     """
     if stats is None:
         stats = StatisticheDecoder()
+    for riga in righe:
+        stats.righe_totali += 1
+        if not riga.strip():
+            stats.righe_vuote += 1
+            continue
+        parsato = parse_riga(riga)
+        if parsato is None:
+            stats.righe_errore += 1
+            log.warning("riga %d illeggibile (troncata?): %.80s",
+                        stats.righe_totali, riga.strip())
+            continue
+        topic, payload, ts = parsato
+        try:
+            if topic.endswith(".z"):
+                if isinstance(payload, str):
+                    payload = decodifica_z(payload)
+            elif isinstance(payload, str):
+                payload = json.loads(payload)
+        except Exception as e:
+            stats.righe_errore += 1
+            log.warning("riga %d: payload %s non decodificabile (%r)",
+                        stats.righe_totali, topic, e)
+            continue
+        stats.righe_ok += 1
+        stats.per_topic[topic] = stats.per_topic.get(topic, 0) + 1
+        yield topic, payload, ts
+
+
+def messaggi(path, stats=None):
+    """Genera (topic, payload, ts) dalle righe di un file registrato."""
     with open(path, encoding="utf-8") as f:
-        for riga in f:
-            stats.righe_totali += 1
-            if not riga.strip():
-                stats.righe_vuote += 1
-                continue
-            parsato = parse_riga(riga)
-            if parsato is None:
-                stats.righe_errore += 1
-                log.warning("riga %d illeggibile (troncata?): %.80s",
-                            stats.righe_totali, riga.strip())
-                continue
-            topic, payload, ts = parsato
-            try:
-                if topic.endswith(".z"):
-                    if isinstance(payload, str):
-                        payload = decodifica_z(payload)
-                elif isinstance(payload, str):
-                    payload = json.loads(payload)
-            except Exception as e:
-                stats.righe_errore += 1
-                log.warning("riga %d: payload %s non decodificabile (%r)",
-                            stats.righe_totali, topic, e)
-                continue
-            stats.righe_ok += 1
-            stats.per_topic[topic] = stats.per_topic.get(topic, 0) + 1
-            yield topic, payload, ts
+        yield from messaggi_da_righe(f, stats)
 
 
 def campioni_posizione(payload):

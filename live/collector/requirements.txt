@@ -1,0 +1,9 @@
+# venv DEDICATA del collettore sul server (~/muretto/.venv-live).
+# Dipendenze minime dichiarate (FASE2_PREREG); il resto e' stdlib.
+# NIENTE fastf1 a runtime (vedi README, sezione architettura): il client
+# SignalR e' ricostruito su signalrcore rispecchiando fastf1 3.8.3.
+websockets>=12
+signalrcore==1.0.2
+requests>=2.30
+platformdirs
+paho-mqtt>=2

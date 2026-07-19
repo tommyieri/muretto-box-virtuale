@@ -65,26 +65,31 @@ def ordina_parti(paths):
 MARGINE_RIORDINO_S = 5.0  # jitter massimo atteso fra timestamp busta/interni
 
 
-def eventi_replay(paths, stato=None, stats=None):
-    """Generatore degli eventi di replay, in ordine di tempo.
+def eventi_da_messaggi(flusso, stato=None):
+    """Generatore degli eventi dal flusso (topic, payload, ts), in ordine
+    di tempo. E' il cuore condiviso di replay e collettore live (Fase 2):
+    stessa trasformazione, stessi eventi.
 
     Ordine di tempo garantito con un buffer di riordino (min-heap): i
     timestamp interni dei Position.z restano leggermente indietro rispetto
     alle buste degli altri topic, quindi un evento esce solo quando il flusso
     ha superato il suo timestamp di MARGINE_RIORDINO_S.
 
-    Parti multiple: ordinate cronologicamente; i frame posizione di una parte
-    con timestamp non successivo all'ultimo frame gia' accodato (overlap alla
-    riconnessione) vengono scartati; i delta TimingData dell'overlap sono
-    innocui (il diff sopprime i campi invariati). Gli eventi generati dallo
-    snapshot iniziale (senza timestamp) escono al primo timestamp utile.
+    Parti multiple: i frame posizione con timestamp non successivo
+    all'ultimo frame gia' accodato (overlap alla riconnessione) vengono
+    scartati; i delta TimingData dell'overlap sono innocui (il diff
+    sopprime i campi invariati). Gli eventi generati dallo snapshot
+    iniziale (senza timestamp) escono al primo timestamp utile.
+
+    Politica trasponder extra (FASE2_PREREG): a DriverList nota, le auto
+    non in DriverList (es. 242 = safety car) escono dal campo `cars` dei
+    position_frame e finiscono in `extra_cars`; senza DriverList nessun
+    filtro. Mai nella classifica (i timing_update restano per-pilota).
     """
     import heapq
 
     if stato is None:
         stato = StatoSessione()
-    if stats is None:
-        stats = StatisticheDecoder()
 
     heap = []             # (ts, seq, evento) in attesa di maturare
     seq = 0               # spareggio per timestamp uguali (ordine d'arrivo)
@@ -113,63 +118,86 @@ def eventi_replay(paths, stato=None, stats=None):
             maturi.append(heapq.heappop(heap)[2])
         return maturi
 
-    for path in ordina_parti(paths):
-        log.info("replay parte: %s", path)
-        for topic, payload, ts in messaggi(path, stats):
-            if topic == "Position.z":
-                frames = {}
-                for c in campioni_posizione(payload):
-                    frames.setdefault(c.t, {})[c.auto] = {
-                        "x": c.x, "y": c.y, "status": c.status}
-                for t_frame in sorted(frames, key=lambda t: (t is None, t)):
-                    if t_frame is not None:
-                        if ts_frame_max is not None \
-                                and t_frame <= ts_frame_max:
-                            continue  # overlap fra parti: frame gia' coperto
-                        ts_frame_max = t_frame
-                    for e in spingi({"type": "position_frame",
-                                     "cars": frames[t_frame]}, t_frame):
-                        yield e
+    def evento_frame(auto_xy):
+        if stato.driver_list:
+            noti = {a: c for a, c in auto_xy.items()
+                    if a in stato.driver_list}
+            extra = {a: c for a, c in auto_xy.items()
+                     if a not in stato.driver_list}
+            evento = {"type": "position_frame", "cars": noti}
+            if extra:
+                evento["extra_cars"] = extra
+            return evento
+        return {"type": "position_frame", "cars": auto_xy}
 
-            elif topic == "TimingData":
-                auto_toccate = list(payload.get("Lines", {}).keys())
-                prima = {a: stato.vista_pilota(a) for a in auto_toccate}
-                stato.aggiorna(topic, payload, ts)
-                cambi = {}
-                for a in auto_toccate:
-                    dopo = stato.vista_pilota(a)
-                    diff = {k: dopo[k] for k in CAMPI_TIMING
-                            if dopo[k] != prima[a][k]}
-                    if diff:
-                        cambi[str(a)] = diff
-                if cambi:
-                    for e in spingi({"type": "timing_update",
-                                     "cars": cambi}, ts):
-                        yield e
+    for topic, payload, ts in flusso:
+        if topic == "Position.z":
+            frames = {}
+            for c in campioni_posizione(payload):
+                frames.setdefault(c.t, {})[c.auto] = {
+                    "x": c.x, "y": c.y, "status": c.status}
+            for t_frame in sorted(frames, key=lambda t: (t is None, t)):
+                if t_frame is not None:
+                    if ts_frame_max is not None \
+                            and t_frame <= ts_frame_max:
+                        continue  # overlap fra parti: frame gia' coperto
+                    ts_frame_max = t_frame
+                for e in spingi(evento_frame(frames[t_frame]), t_frame):
+                    yield e
 
-            elif topic == "TrackStatus":
-                precedente = stato.track_status
-                stato.aggiorna(topic, payload, ts)
-                if stato.track_status != precedente:
-                    for e in spingi({"type": "track_status",
-                                     "status": stato.track_status}, ts):
-                        yield e
+        elif topic == "TimingData":
+            auto_toccate = list(payload.get("Lines", {}).keys())
+            prima = {a: stato.vista_pilota(a) for a in auto_toccate}
+            stato.aggiorna(topic, payload, ts)
+            cambi = {}
+            for a in auto_toccate:
+                dopo = stato.vista_pilota(a)
+                diff = {k: dopo[k] for k in CAMPI_TIMING
+                        if dopo[k] != prima[a][k]}
+                if diff:
+                    cambi[str(a)] = diff
+            if cambi:
+                for e in spingi({"type": "timing_update",
+                                 "cars": cambi}, ts):
+                    yield e
 
-            elif topic == "SessionStatus":
-                precedente = stato.session_status
-                stato.aggiorna(topic, payload, ts)
-                if stato.session_status != precedente:
-                    for e in spingi({"type": "session_status",
-                                     "status": stato.session_status}, ts):
-                        yield e
+        elif topic == "TrackStatus":
+            precedente = stato.track_status
+            stato.aggiorna(topic, payload, ts)
+            if stato.track_status != precedente:
+                for e in spingi({"type": "track_status",
+                                 "status": stato.track_status}, ts):
+                    yield e
 
-            else:
-                stato.aggiorna(topic, payload, ts)
+        elif topic == "SessionStatus":
+            precedente = stato.session_status
+            stato.aggiorna(topic, payload, ts)
+            if stato.session_status != precedente:
+                for e in spingi({"type": "session_status",
+                                 "status": stato.session_status}, ts):
+                    yield e
+
+        else:
+            stato.aggiorna(topic, payload, ts)
 
     # fine flusso: svuota il buffer di riordino in ordine di tempo
     import heapq as _hq
     while heap:
         yield _hq.heappop(heap)[2]
+
+
+def eventi_replay(paths, stato=None, stats=None):
+    """Eventi di replay da uno o piu' file registrati (interfaccia Fase 1:
+    parti multiple ordinate cronologicamente, dedup sull'overlap)."""
+    if stats is None:
+        stats = StatisticheDecoder()
+
+    def flusso():
+        for path in ordina_parti(paths):
+            log.info("replay parte: %s", path)
+            yield from messaggi(path, stats)
+
+    yield from eventi_da_messaggi(flusso(), stato=stato)
 
 
 def _scorri_a_velocita(eventi, speed):
