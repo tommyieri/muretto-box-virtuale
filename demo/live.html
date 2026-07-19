@@ -49,7 +49,7 @@
       <span id="live-conn" class="lv-conn" title="connessione al collettore"></span>
     </div>
     <div id="live-mappa" style="position:relative">
-      <canvas></canvas>
+      <canvas style="width:100%;display:block"></canvas>
       <canvas id="live-overlay" style="position:absolute;left:0;top:0;pointer-events:none"></canvas>
     </div>
     <div id="live-nota" class="lv-nota">Quando una sessione &egrave; in corso, qui compaiono le auto in tempo reale
@@ -144,8 +144,10 @@ async function bootMappa(g){
     url: cfg.WS_URL,
     onEvento(e){
       mappa.applica(e);
-      if (e.type === 'track_status'){
-        const [cls, testo] = FLAG[e.status] || [null, null];
+      const stato = e.type === 'track_status' ? e.status
+        : (e.type === 'snapshot' ? e.track_status : null);
+      if (stato){
+        const [cls, testo] = FLAG[stato] || [null, null];
         const f = el('live-pista-stato');
         if (cls){ f.hidden = false; f.className = 'lv-flag ' + cls; f.textContent = testo; }
       }
