@@ -111,15 +111,23 @@ def _prepara(nome, ti, cid):
         print(f"[dati] scaricato: {raw_path} ({len(raw)//1024} KB)")
     d = json.load(open(raw_path))
 
-    # GUARDRAIL 2 — dry-check (prima di tutto: e' il piu' economico e il piu' importante)
+    # BANDIERE (decisione PO 20/07/2026): i guardrail NON bloccano piu' — pubblica sempre,
+    # gli errori si correggono a valle (nessun traffico). Ogni check che prima fermava ora
+    # REGISTRA una bandiera: finisce nel meta, nel checkpoint e nel report, cosi' l'errore
+    # e' visibile e correggibile. Restano bloccanti solo i casi "gia' fatto" / "niente da
+    # pubblicare" (registro dup, download assente): non sono giudizi, sono impossibilita'.
+    bandiere = []
+
+    # GUARDRAIL 2 — dry-check (misurato, non piu' bloccante: una gara bagnata entra e si
+    # lavora quando capitera'; il tipico pit-loss resta un valore DRY, da rivedere se wet)
     from drycheck_2026 import valuta
     dc = valuta(d, 'Race')
     if not dc['dry']:
-        sys.exit(f"NON PUBBLICABILE IN AUTOMATICO: sessione non asciutta "
-                 f"(INT/WET={dc['intwet']}, pioggia={dc['frac_rain']}). "
-                 f"Richiede decisione umana esplicita — vedi il caso Canada Race in data/DEGRADO_NOTA.txt.")
+        bandiere.append(f"NON ASCIUTTA (INT/WET={dc['intwet']}, pioggia={dc['frac_rain']}): "
+                        f"pit-loss tipico e' un valore DRY, da rivedere per il bagnato")
 
-    # GUARDRAIL 1 — completezza
+    # GUARDRAIL 1 — completezza (flag: se la gara e' a meta' caricamento, ripassera' e si
+    # ri-pubblichera' completa; il flag dice dove guardare)
     ses = [t for t in d['sesT'] if isinstance(t, (int, float))]
     durata_min = (max(ses) - min(ses)) / 60 if ses else 0
     ultimo = dc['max_lap']
@@ -131,7 +139,7 @@ def _prepara(nome, ti, cid):
     if sul_finale < 10: problemi.append(f"solo {sul_finale} piloti sull'ultimo giro")
     if not (60 <= durata_min <= 150): problemi.append(f"durata {durata_min:.0f} min fuori da [60,150]")
     if problemi:
-        sys.exit(f"BLOCCO COMPLETEZZA (gara a meta' caricamento?): {'; '.join(problemi)}")
+        bandiere.append(f"COMPLETEZZA (gara a meta' caricamento?): {'; '.join(problemi)}")
 
     # conversione — STESSO formato di export_demo.py (adapter e pace del kernel congelato)
     import pandas as pd
@@ -150,17 +158,20 @@ def _prepara(nome, ti, cid):
     if len(obj['pace'][str(N // 2)]) < 10:
         problemi.append(f"tabella pace scarsa a meta' gara ({len(obj['pace'][str(N//2)])} piloti)")
     if problemi:
-        sys.exit(f"BLOCCO SANITA': {'; '.join(problemi)}")
+        bandiere.append(f"SANITA': {'; '.join(problemi)}")
 
-    # neutralizzazione: rigenera con la gara nuova; le esistenti NON devono cambiare
+    # neutralizzazione: rigenera con la gara nuova. Le esistenti si CONGELANO per
+    # costruzione (mai riscritte): pubblico {esistenti_congelate, nuova}. Se la rigenerazione
+    # differirebbe su una gia' validata, lo segnalo (bandiera) ma non tocco quella gara.
     from gen_neutralizzazione import genera, gare_da_registro
     gare = gare_da_registro(); gare[nome] = raw_path
-    neu = genera(gare)
+    neu_full = genera(gare)
     attuale = json.load(open(os.path.join('demo', 'neutralizzazione.json')))
-    diverse = [g for g in attuale if neu.get(g) != attuale[g]]
+    diverse = [g for g in attuale if neu_full.get(g) != attuale[g]]
     if diverse:
-        sys.exit(f"BLOCCO: la rigenerazione cambierebbe gare gia' validate: {diverse}")
-    ng = neu[nome]
+        bandiere.append(f"neutralizzazione rigenerata diversa su {diverse} — le CONGELO (non tocco le validate)")
+    neu = {**attuale, nome: neu_full[nome]}   # esistenti congelate + solo la nuova
+    ng = neu_full[nome]
     fin = ng.get('sc', []) + ng.get('vsc', []) + ng.get('rf', [])
 
     # esiti (euristica dichiarata in testa al file)
@@ -189,7 +200,8 @@ def _prepara(nome, ti, cid):
     json.dump(neu, open(os.path.join(sdir, 'neutralizzazione.json'), 'w'), indent=2)
     meta = dict(nome=nome, ti=ti, cid=cid, raw=raw_path, n_laps=N,
                 n_drivers=len(obj['drivers']), pit_loss=pit_loss, fonte_pit_loss=fonte_pl,
-                esiti=esiti_gara, finestre=fin, drycheck=dc['esito'], durata_min=round(durata_min, 1))
+                esiti=esiti_gara, finestre=fin, drycheck=dc['esito'], durata_min=round(durata_min, 1),
+                bandiere=bandiere)
     json.dump(meta, open(os.path.join(sdir, 'meta.json'), 'w'), indent=2)
 
     # smoke-test del modulo pit CONGELATO su copie in staging
@@ -201,7 +213,8 @@ def _prepara(nome, ti, cid):
     print("[guardrail 3] smoke-test modulo pit (congelato) sui dati in staging:")
     r = subprocess.run(['node', 'pipeline_smoke_pit.mjs', smoke, nome, str(pit_loss)])
     if r.returncode != 0:
-        sys.exit("BLOCCO SANITA': lo smoke-test del modulo pit e' fallito.")
+        bandiere.append("smoke-test modulo pit FALLITO: l'esplorazione pit di questa gara "
+                        "potrebbe essere rotta — da verificare")
 
     # anomalie (NON bloccanti): guardrail vicino soglia + esiti sospetti — per il report
     n_rit = sum(1 for e in esiti_gara.values() if e == 'RIT')
@@ -216,7 +229,7 @@ def _prepara(nome, ti, cid):
 
     return dict(nome=nome, ti=ti, cid=cid, N=N, sul_finale=sul_finale, durata_min=durata_min,
                 dc=dc, fin=fin, ng=ng, esiti_gara=esiti_gara, pit_loss=pit_loss,
-                fonte_pl=fonte_pl, sdir=sdir, anomalie=anomalie)
+                fonte_pl=fonte_pl, sdir=sdir, anomalie=anomalie, bandiere=bandiere)
 
 # ------------------------------------------------ 4. CHECKPOINT (riepilogo)
 def stampa_checkpoint(ctx):
@@ -239,7 +252,7 @@ CHECKPOINT UMANO — riepilogo di cosa verrebbe pubblicato
     - doppiati     : {dop if dop else '—'}
     - ritirati     : {rit if rit else '—'}
   Griglia     : ASSENTE (si aggiunge da f1db verificato; la UI ordina il giro 1 via sesT)
-  Guardrail   : completezza OK · dry-check OK · sanita' OK (smoke pit incluso)
+  Bandiere    : {('⚑ ' + ' | '.join(ctx['bandiere'])) if ctx['bandiere'] else 'nessuna (tutti i check passati)'}
 {'='*72}"""
     print(riep)
     open(os.path.join(ctx['sdir'], 'riepilogo.txt'), 'w').write(riep)
@@ -324,9 +337,25 @@ def pubblica(nome):
     es = json.load(open(es_p)); es[nome] = meta['esiti']
     json.dump(es, open(es_p, 'w'))
 
+    # bandiere.json — registro durevole di cosa c'e' da verificare/correggere a valle
+    # (pubblica sempre, ma non nasconde mai i possibili errori). Chiave = gara; assente
+    # quando i check sono puliti.
+    ba_p = os.path.join('demo', 'data', 'bandiere.json')
+    ba = json.load(open(ba_p)) if os.path.exists(ba_p) else {}
+    if meta.get('bandiere'):
+        ba[nome] = meta['bandiere']
+    else:
+        ba.pop(nome, None)
+    json.dump(ba, open(ba_p, 'w'), ensure_ascii=False, indent=1)
+
     reg = registro(); reg[nome] = dict(ti=meta['ti'], raw=meta['raw'], cid=meta['cid'])
     json.dump(reg, open(REGISTRO, 'w'), indent=2)
 
+    if meta.get('bandiere'):
+        print('⚑' * 36 + f"\nBANDIERE su {nome} (pubblicata lo stesso, da correggere a valle):")
+        for b in meta['bandiere']:
+            print(f"  ⚑ {b}")
+        print('⚑' * 36)
     print(f"[pubblica] {nome} aggiunta a demo/ (manifest, pitloss, esiti, neutralizzazione, registro).")
     print("[verifica] golden pit sul modulo congelato:")
     r = subprocess.run(['node', 'test_pit.mjs'], cwd='demo')
@@ -334,9 +363,20 @@ def pubblica(nome):
         sys.exit("ATTENZIONE: golden pit FALLITO dopo la pubblicazione — NON committare, indagare.")
     print("\nFatto. Prossimo passo umano (OK separato): git add/commit/push -> deploy Vercel.")
 
+# ------------------------------------------------------ AUTO (senza prompt)
+def auto(nome, ti, cid):
+    """Idraulica + pubblicazione SENZA conferma (per l'orchestratore automatico). I
+    guardrail non bloccano piu' (bandiere): l'unico stop resta il golden-pit dopo la
+    pubblicazione (regressione del modulo congelato), che deve fermare la messa online."""
+    ctx = _prepara(nome, ti, cid)
+    stampa_checkpoint(ctx)
+    stampa_report(ctx)
+    print(f"\n[auto] pubblico senza conferma (modalita' automatica).")
+    pubblica(nome)
+
 # ------------------------------------------------------ COMANDO UNICO
 def aggiorna(nome, ti, cid):
-    ctx = _prepara(nome, ti, cid)     # tutta l'idraulica -> staging (BLOCCA se un guardrail fallisce)
+    ctx = _prepara(nome, ti, cid)     # tutta l'idraulica -> staging (guardrail = bandiere, non bloccano)
     stampa_checkpoint(ctx)            # unico checkpoint: riepilogo
     stampa_report(ctx)                # + report automatico
     print(f"\nLa demo NON e' stata toccata. Staging pronta in {ctx['sdir']}.")
@@ -364,6 +404,7 @@ if __name__ == '__main__':
     a = sys.argv[1:]
     if a[:1] == ['scopri']: scopri()
     elif a[:1] == ['aggiorna'] and len(a) == 4: aggiorna(a[1], a[2], a[3])
+    elif a[:1] == ['auto'] and len(a) == 4: auto(a[1], a[2], a[3])
     elif a[:1] == ['prepara'] and len(a) == 4: prepara(a[1], a[2], a[3])
     elif a[:1] == ['pubblica'] and len(a) == 2: pubblica(a[1])
     else: sys.exit(__doc__)
