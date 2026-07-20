@@ -132,6 +132,27 @@ percorso a sé (prereg FF5 + protocollo Silverstone), con verdetto e merge del P
 ## Se qualcosa non torna
 
 Fermarsi e scrivere la sorpresa è sempre un esito accettabile. Non attivare = il circuito
-resta al tipico, il candidato non scade. Rollback = reset al tag. Le soglie fisse non si
-toccano a gara in corso: se una dà un falso positivo su una gara-limite (Spa: guardrail
-N//2, `>= TODAY` dei generatori FF, drycheck ≥ giri), serve deroga PO motivata nel commit.
+resta al tipico, il candidato non scade. Rollback = reset al tag. **Il guard
+(`test_guard_travaso`) protegge i valori realizzati già in produzione — es. Miami e
+Silverstone**: un travaso dal CSV non li sovrascrive senza aggiornare prima `pitloss_meta`.
+Le soglie fisse non si toccano a gara in corso: se una dà un falso positivo su una
+gara-limite (Spa: guardrail N//2, `>= TODAY` dei generatori FF, drycheck ≥ giri), serve
+deroga PO motivata nel commit. Nessuna fretta la sera della gara: la demo non scade.
+
+---
+
+## Cronometro (baseline dell'automazione)
+
+Cronometra ogni fase e annota gli attriti (ambiguità, passi cercati a memoria, comandi che
+si fermano): sono la lista della spesa per automatizzare. Una riga per fase, ogni gara.
+
+| fase | inizio | fine | note (attriti, ambiguità, passi a memoria) |
+|---|---|---|---|
+| P1-A · la gara entra (scopri → aggiorna → pubblica) | | | |
+| P1-B · UI (`aggiorna_ui.py`) | | | |
+| P1-C · race control + ufficiali (lista gare a mano) | | | |
+| P1-D · golden + push + verifica in produzione | | | |
+| P2 · release f1db (re-pin → aggiorna_ui → griglia → undercut) | | | |
+| FASE B misura (7–8) *(opz.)* | | | |
+| FASE B giudizio (9) *(opz.)* | | | |
+| FASE B attivazione (10) *(opz.)* | | | |
