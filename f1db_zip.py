@@ -10,7 +10,7 @@ ATTENZIONE SCHEMI: f1db usa i SUOI id (es. Austria 2026 = raceId 1157, driverId
 """
 import csv, io, os, urllib.request, zipfile
 
-RELEASE = 'v2026.9.1'
+RELEASE = 'v2026.10.0'
 CACHE_DIR = os.path.expanduser('~/muretto_shared/f1db_csv')
 
 

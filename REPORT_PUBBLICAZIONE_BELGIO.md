@@ -94,11 +94,29 @@ euristica un JSON vecchio dopo un aggiornamento. In locale risolto con revalidat
 Vercel gli header fanno rivalidare, ma è un punto da tenere d'occhio (eventuale `?v=` anche
 sui dati = decisione UI del PO).
 
-## Code che restano (invariate)
+## Terzo giro — release f1db post-Belgio (v2026.10.0, uscita 19/07 ore 18:47Z)
 
-- **Nuovo giro di `aggiorna_ui.py` quando esce la release f1db post-Belgio**: durate pit
-  lane Belgio, griglia (grids.json, a mano da f1db), ufficiali/race-control, standings
-  aggiornate al round 10 (la nota "aggiornato al" si sposta da sola).
-- **Golden a fine sessione: verdi** (test_b.mjs 449/449, test_pit 11/11, hook PASS,
-  checksum f1db invariato; test_b.py già verde a inizio sessione, motore mai toccato).
+Chiuse tutte le code che aspettavano la release f1db con dentro il Belgio. Pin aggiornato
+in `f1db_zip.py` (v2026.9.1 → **v2026.10.0**, raceId Belgio 1159 round 10; verificato PRIMA
+del pin che contenesse griglia/pit-stop/risultati/standings del Belgio).
+
+| voce | esito |
+|---|---|
+| standings campionato | ✓ `aggiorna_ui.py --gara Belgio` → classifiche al **round 10**: ANT 204 (era 179, +25 dalla vittoria), HAM sale P2 159, RUS P3 154, LEC 126, NOR 103. Nota UI "aggiornato al" ora punta a **GP del Belgio** |
+| durate pit lane | ✓ `pitstops_2026.json` ora include Belgio (28 stop, transito pit-lane ~22–25 s, coerente col tipico 23,36; es. ANT 23,09 g.18) → in pagina compare "pit lane: X s" |
+| schede pilota | ✓ statistiche al round 10 (ANT: 10 gare, 6 vittorie, ultima "Belgium 2026-07-19") |
+| **griglia Belgio** (runbook passo 4) | ✓ estratta da f1db v2026.10.0 e **verificata incrociata con FastF1 (22/22 match, nessuna partenza dai box)** → grids.json 9→10 gare; giro 1 Belgio ora in ordine griglia (ANT, VER, RUS, LEC, HAM…) |
+| pista_Belgio.json | cambia SOLO il metadato `sorgente.sessione: 'Race'→'R'`; geometria (500 punti, dist, viewBox, lunghezza, corridoio pit) **bit-identica** — innocuo |
+| idempotenza | ✓ `aggiorna_ui.py` rieseguito: classifiche/pitstops/schede/calendario bit-identici |
+| golden | ✓ test_b.py 449/449 (4.26e-12), test_b.mjs 449/449, test_pit 11/11, hook PASS, checksum f1db invariato |
+
+Restano da rigenerare al passaggio di release **solo** se f1db aggiornerà i documenti FIA
+post-gara del Belgio in una release successiva (penalità post-gara oltre l'annuncio RC): al
+momento race control e ufficiali sono già completi dalla fonte FastF1.
+
+## Chiusura
+
+- **Golden verdi** a ogni passaggio; motore mai toccato.
 - Nessun verdetto strategico: Spa 23,36, candidato 18,58 in attesa della prossima Spa.
+- Il Belgio è ora **completo** in demo: dati gara, pista, griglia, pit-lane durate,
+  race control, doppia vista ufficiale, standings al round 10.

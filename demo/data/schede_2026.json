@@ -1,12 +1,12 @@
 {
- "_nota": "GENERATO da gen_schede.py (f1db v2026.9.1; carriera = aggregati canonici f1db, stagione = standings + conteggi risultati; cross_check strutturato, mai correzioni a mano). Non modificare a mano.",
+ "_nota": "GENERATO da gen_schede.py (f1db v2026.10.0; carriera = aggregati canonici f1db, stagione = standings + conteggi risultati; cross_check strutturato, mai correzioni a mano). Non modificare a mano.",
  "aggiornato_al": {
-  "round": 9,
-  "raceId_f1db": 1158,
-  "nome": "Gran Bretagna",
-  "titolo": "GP di Gran Bretagna",
-  "data": "2026-07-05",
-  "gara_demo": "Gran Bretagna"
+  "round": 10,
+  "raceId_f1db": 1159,
+  "nome": "Belgio",
+  "titolo": "GP del Belgio",
+  "data": "2026-07-19",
+  "gara_demo": "Belgio"
  },
  "piloti": {
   "kimi-antonelli": {
@@ -17,13 +17,13 @@
    "constructorId": "mercedes",
    "team_demo": "Mercedes",
    "carriera": {
-    "gp_disputati": 33,
-    "vittorie": 5,
-    "podi": 10,
-    "pole": 5,
+    "gp_disputati": 34,
+    "vittorie": 6,
+    "podi": 11,
+    "pole": 6,
     "giri_veloci": 9,
     "titoli": 0,
-    "punti": 329.0,
+    "punti": 354.0,
     "prima_vittoria": {
      "anno": 2026,
      "gp": "China",
@@ -31,21 +31,21 @@
     },
     "ultima_vittoria": {
      "anno": 2026,
-     "gp": "Monaco",
-     "data": "2026-06-07"
+     "gp": "Belgium",
+     "data": "2026-07-19"
     }
    },
    "stagione": {
     "pos": 1,
-    "punti": 179.0,
-    "vittorie": 5,
+    "punti": 204.0,
+    "vittorie": 6,
     "migliore_risultato": 1,
-    "media_griglia": 1.78,
-    "media_arrivo": 4.56,
+    "media_griglia": 1.7,
+    "media_arrivo": 4.2,
     "pos_guadagnate": -25,
     "su_gare": {
-     "partite": 9,
-     "classificate": 9
+     "partite": 10,
+     "classificate": 10
     }
    },
    "cross_check": [
@@ -62,10 +62,60 @@
      "campo": "gara_demo",
      "gara": "Gran Bretagna",
      "griglia_f1db": 1,
-     "griglia_demo": null,
+     "griglia_demo": 1,
      "arrivo_f1db": 15,
      "arrivo_demo": 9,
      "penalita_f1db_s": 5.0
+    }
+   ]
+  },
+  "lewis-hamilton": {
+   "sigla": "HAM",
+   "nome": "Lewis Hamilton",
+   "numero": "44",
+   "nazionalita": "United Kingdom",
+   "constructorId": "ferrari",
+   "team_demo": "Ferrari",
+   "carriera": {
+    "gp_disputati": 390,
+    "vittorie": 106,
+    "podi": 207,
+    "pole": 104,
+    "giri_veloci": 69,
+    "titoli": 7,
+    "punti": 5177.5,
+    "prima_vittoria": {
+     "anno": 2007,
+     "gp": "Canada",
+     "data": "2007-06-10"
+    },
+    "ultima_vittoria": {
+     "anno": 2026,
+     "gp": "Barcelona-Catalunya",
+     "data": "2026-06-14"
+    }
+   },
+   "stagione": {
+    "pos": 2,
+    "punti": 159.0,
+    "vittorie": 1,
+    "migliore_risultato": 1,
+    "media_griglia": 4.3,
+    "media_arrivo": 3.6,
+    "pos_guadagnate": 7,
+    "su_gare": {
+     "partite": 10,
+     "classificate": 10
+    }
+   },
+   "cross_check": [
+    {
+     "campo": "gara_demo",
+     "gara": "Miami",
+     "griglia_f1db": 6,
+     "griglia_demo": 6,
+     "arrivo_f1db": 6,
+     "arrivo_demo": 7
     }
    ]
   },
@@ -77,7 +127,7 @@
    "constructorId": "mercedes",
    "team_demo": "Mercedes",
    "carriera": {
-    "gp_disputati": 161,
+    "gp_disputati": 162,
     "vittorie": 7,
     "podi": 29,
     "pole": 11,
@@ -96,15 +146,15 @@
     }
    },
    "stagione": {
-    "pos": 2,
+    "pos": 3,
     "punti": 154.0,
     "vittorie": 2,
     "migliore_risultato": 1,
-    "media_griglia": 2.56,
+    "media_griglia": 2.6,
     "media_arrivo": 3.5,
     "pos_guadagnate": -6,
     "su_gare": {
-     "partite": 9,
+     "partite": 10,
      "classificate": 8
     }
    },
@@ -119,56 +169,6 @@
     }
    ]
   },
-  "lewis-hamilton": {
-   "sigla": "HAM",
-   "nome": "Lewis Hamilton",
-   "numero": "44",
-   "nazionalita": "United Kingdom",
-   "constructorId": "ferrari",
-   "team_demo": "Ferrari",
-   "carriera": {
-    "gp_disputati": 389,
-    "vittorie": 106,
-    "podi": 207,
-    "pole": 104,
-    "giri_veloci": 69,
-    "titoli": 7,
-    "punti": 5165.5,
-    "prima_vittoria": {
-     "anno": 2007,
-     "gp": "Canada",
-     "data": "2007-06-10"
-    },
-    "ultima_vittoria": {
-     "anno": 2026,
-     "gp": "Barcelona-Catalunya",
-     "data": "2026-06-14"
-    }
-   },
-   "stagione": {
-    "pos": 3,
-    "punti": 147.0,
-    "vittorie": 1,
-    "migliore_risultato": 1,
-    "media_griglia": 4.22,
-    "media_arrivo": 3.56,
-    "pos_guadagnate": 6,
-    "su_gare": {
-     "partite": 9,
-     "classificate": 9
-    }
-   },
-   "cross_check": [
-    {
-     "campo": "gara_demo",
-     "gara": "Miami",
-     "griglia_f1db": 6,
-     "griglia_demo": 6,
-     "arrivo_f1db": 6,
-     "arrivo_demo": 7
-    }
-   ]
-  },
   "charles-leclerc": {
    "sigla": "LEC",
    "nome": "Charles Leclerc",
@@ -177,13 +177,13 @@
    "constructorId": "ferrari",
    "team_demo": "Ferrari",
    "carriera": {
-    "gp_disputati": 180,
+    "gp_disputati": 181,
     "vittorie": 9,
-    "podi": 53,
+    "podi": 54,
     "pole": 27,
     "giri_veloci": 11,
     "titoli": 0,
-    "punti": 1780.0,
+    "punti": 1798.0,
     "prima_vittoria": {
      "anno": 2019,
      "gp": "Belgium",
@@ -197,15 +197,15 @@
    },
    "stagione": {
     "pos": 4,
-    "punti": 108.0,
+    "punti": 126.0,
     "vittorie": 1,
     "migliore_risultato": 1,
-    "media_griglia": 4.56,
-    "media_arrivo": 5.75,
-    "pos_guadagnate": -9,
+    "media_griglia": 4.5,
+    "media_arrivo": 5.33,
+    "pos_guadagnate": -7,
     "su_gare": {
-     "partite": 9,
-     "classificate": 8
+     "partite": 10,
+     "classificate": 9
     }
    },
    "cross_check": [
@@ -236,13 +236,13 @@
    "constructorId": "mclaren",
    "team_demo": "McLaren",
    "carriera": {
-    "gp_disputati": 160,
+    "gp_disputati": 161,
     "vittorie": 11,
     "podi": 46,
     "pole": 16,
-    "giri_veloci": 19,
+    "giri_veloci": 20,
     "titoli": 1,
-    "punti": 1527.0,
+    "punti": 1533.0,
     "prima_vittoria": {
      "anno": 2024,
      "gp": "Miami",
@@ -256,15 +256,15 @@
    },
    "stagione": {
     "pos": 5,
-    "punti": 97.0,
+    "punti": 103.0,
     "vittorie": 0,
     "migliore_risultato": 2,
-    "media_griglia": 5.33,
-    "media_arrivo": 4.33,
-    "pos_guadagnate": 5,
+    "media_griglia": 6.1,
+    "media_arrivo": 4.71,
+    "pos_guadagnate": 11,
     "su_gare": {
-     "partite": 9,
-     "classificate": 6
+     "partite": 10,
+     "classificate": 7
     }
    },
    "cross_check": []
@@ -277,13 +277,13 @@
    "constructorId": "mclaren",
    "team_demo": "McLaren",
    "carriera": {
-    "gp_disputati": 77,
+    "gp_disputati": 78,
     "vittorie": 9,
     "podi": 28,
     "pole": 6,
     "giri_veloci": 9,
     "titoli": 0,
-    "punti": 881.0,
+    "punti": 891.0,
     "prima_vittoria": {
      "anno": 2024,
      "gp": "Hungary",
@@ -297,15 +297,15 @@
    },
    "stagione": {
     "pos": 6,
-    "punti": 82.0,
+    "punti": 92.0,
     "vittorie": 0,
     "migliore_risultato": 2,
-    "media_griglia": 5.89,
-    "media_arrivo": 5.86,
-    "pos_guadagnate": 2,
+    "media_griglia": 5.9,
+    "media_arrivo": 5.75,
+    "pos_guadagnate": 3,
     "su_gare": {
-     "partite": 9,
-     "classificate": 7
+     "partite": 10,
+     "classificate": 8
     }
    },
    "cross_check": [
@@ -313,7 +313,7 @@
      "campo": "gara_demo",
      "gara": "Gran Bretagna",
      "griglia_f1db": 8,
-     "griglia_demo": null,
+     "griglia_demo": 8,
      "arrivo_f1db": 11,
      "arrivo_demo": 12
     }
@@ -327,13 +327,13 @@
    "constructorId": "red-bull",
    "team_demo": "Red Bull Racing",
    "carriera": {
-    "gp_disputati": 242,
+    "gp_disputati": 243,
     "vittorie": 71,
-    "podi": 129,
+    "podi": 130,
     "pole": 48,
     "giri_veloci": 37,
     "titoli": 4,
-    "punti": 3520.5,
+    "punti": 3535.5,
     "prima_vittoria": {
      "anno": 2016,
      "gp": "Spain",
@@ -347,15 +347,15 @@
    },
    "stagione": {
     "pos": 7,
-    "punti": 76.0,
+    "punti": 91.0,
     "vittorie": 0,
     "migliore_risultato": 2,
-    "media_griglia": 7.33,
-    "media_arrivo": 6.86,
-    "pos_guadagnate": 8,
+    "media_griglia": 6.8,
+    "media_arrivo": 6.38,
+    "pos_guadagnate": 7,
     "su_gare": {
-     "partite": 9,
-     "classificate": 7
+     "partite": 10,
+     "classificate": 8
     }
    },
    "cross_check": []
@@ -368,27 +368,27 @@
    "constructorId": "red-bull",
    "team_demo": "Red Bull Racing",
    "carriera": {
-    "gp_disputati": 33,
+    "gp_disputati": 34,
     "vittorie": 0,
     "podi": 1,
     "pole": 0,
     "giri_veloci": 0,
     "titoli": 0,
-    "punti": 103.0,
+    "punti": 111.0,
     "prima_vittoria": null,
     "ultima_vittoria": null
    },
    "stagione": {
     "pos": 8,
-    "punti": 52.0,
+    "punti": 60.0,
     "vittorie": 0,
     "migliore_risultato": 4,
-    "media_griglia": 6.38,
-    "media_arrivo": 6.57,
-    "pos_guadagnate": 2,
+    "media_griglia": 8.0,
+    "media_arrivo": 6.5,
+    "pos_guadagnate": 17,
     "su_gare": {
-     "partite": 9,
-     "classificate": 7
+     "partite": 10,
+     "classificate": 8
     }
    },
    "cross_check": []
@@ -401,7 +401,7 @@
    "constructorId": "alpine",
    "team_demo": "Alpine",
    "carriera": {
-    "gp_disputati": 186,
+    "gp_disputati": 187,
     "vittorie": 1,
     "podi": 6,
     "pole": 0,
@@ -424,12 +424,12 @@
     "punti": 42.0,
     "vittorie": 0,
     "migliore_risultato": 3,
-    "media_griglia": 11.11,
-    "media_arrivo": 8.0,
-    "pos_guadagnate": 27,
+    "media_griglia": 11.0,
+    "media_arrivo": 8.33,
+    "pos_guadagnate": 26,
     "su_gare": {
-     "partite": 9,
-     "classificate": 8
+     "partite": 10,
+     "classificate": 9
     }
    },
    "cross_check": [
@@ -437,7 +437,7 @@
      "campo": "gara_demo",
      "gara": "Gran Bretagna",
      "griglia_f1db": 15,
-     "griglia_demo": null,
+     "griglia_demo": 15,
      "arrivo_f1db": 10,
      "arrivo_demo": 11
     }
@@ -451,7 +451,7 @@
    "constructorId": "racing-bulls",
    "team_demo": "Racing Bulls",
    "carriera": {
-    "gp_disputati": 44,
+    "gp_disputati": 45,
     "vittorie": 0,
     "podi": 0,
     "pole": 0,
@@ -466,12 +466,12 @@
     "punti": 39.0,
     "vittorie": 0,
     "migliore_risultato": 6,
-    "media_griglia": 10.67,
-    "media_arrivo": 8.12,
-    "pos_guadagnate": 20,
+    "media_griglia": 10.5,
+    "media_arrivo": 8.56,
+    "pos_guadagnate": 17,
     "su_gare": {
-     "partite": 9,
-     "classificate": 8
+     "partite": 10,
+     "classificate": 9
     }
    },
    "cross_check": [
@@ -493,27 +493,27 @@
    "constructorId": "racing-bulls",
    "team_demo": "Racing Bulls",
    "carriera": {
-    "gp_disputati": 8,
+    "gp_disputati": 9,
     "vittorie": 0,
     "podi": 0,
     "pole": 0,
     "giri_veloci": 0,
     "titoli": 0,
-    "punti": 20.0,
+    "punti": 22.0,
     "prima_vittoria": null,
     "ultima_vittoria": null
    },
    "stagione": {
     "pos": 11,
-    "punti": 20.0,
+    "punti": 22.0,
     "vittorie": 0,
     "migliore_risultato": 7,
-    "media_griglia": 11.56,
-    "media_arrivo": 10.12,
-    "pos_guadagnate": 14,
+    "media_griglia": 11.1,
+    "media_arrivo": 10.0,
+    "pos_guadagnate": 12,
     "su_gare": {
-     "partite": 9,
-     "classificate": 8
+     "partite": 10,
+     "classificate": 9
     }
    },
    "cross_check": [
@@ -527,48 +527,6 @@
     }
    ]
   },
-  "oliver-bearman": {
-   "sigla": "BEA",
-   "nome": "Oliver Bearman",
-   "numero": "87",
-   "nazionalita": "United Kingdom",
-   "constructorId": "haas",
-   "team_demo": "Haas F1 Team",
-   "carriera": {
-    "gp_disputati": 36,
-    "vittorie": 0,
-    "podi": 0,
-    "pole": 0,
-    "giri_veloci": 0,
-    "titoli": 0,
-    "punti": 66.0,
-    "prima_vittoria": null,
-    "ultima_vittoria": null
-   },
-   "stagione": {
-    "pos": 12,
-    "punti": 18.0,
-    "vittorie": 0,
-    "migliore_risultato": 5,
-    "media_griglia": 14.22,
-    "media_arrivo": 10.86,
-    "pos_guadagnate": 15,
-    "su_gare": {
-     "partite": 9,
-     "classificate": 7
-    }
-   },
-   "cross_check": [
-    {
-     "campo": "gara_demo",
-     "gara": "Gran Bretagna",
-     "griglia_f1db": 13,
-     "griglia_demo": null,
-     "arrivo_f1db": 12,
-     "arrivo_demo": 14
-    }
-   ]
-  },
   "franco-colapinto": {
    "sigla": "COL",
    "nome": "Franco Colapinto",
@@ -577,27 +535,27 @@
    "constructorId": "alpine",
    "team_demo": "Alpine",
    "carriera": {
-    "gp_disputati": 35,
+    "gp_disputati": 36,
     "vittorie": 0,
     "podi": 0,
     "pole": 0,
     "giri_veloci": 0,
     "titoli": 0,
-    "punti": 23.0,
+    "punti": 24.0,
     "prima_vittoria": null,
     "ultima_vittoria": null
    },
    "stagione": {
-    "pos": 13,
-    "punti": 18.0,
+    "pos": 12,
+    "punti": 19.0,
     "vittorie": 0,
     "migliore_risultato": 6,
-    "media_griglia": 13.67,
-    "media_arrivo": 11.22,
-    "pos_guadagnate": 22,
+    "media_griglia": 13.4,
+    "media_arrivo": 11.1,
+    "pos_guadagnate": 23,
     "su_gare": {
-     "partite": 9,
-     "classificate": 9
+     "partite": 10,
+     "classificate": 10
     }
    },
    "cross_check": [
@@ -631,9 +589,51 @@
      "campo": "gara_demo",
      "gara": "Gran Bretagna",
      "griglia_f1db": 19,
-     "griglia_demo": null,
+     "griglia_demo": 19,
      "arrivo_f1db": 9,
      "arrivo_demo": 10
+    }
+   ]
+  },
+  "oliver-bearman": {
+   "sigla": "BEA",
+   "nome": "Oliver Bearman",
+   "numero": "87",
+   "nazionalita": "United Kingdom",
+   "constructorId": "haas",
+   "team_demo": "Haas F1 Team",
+   "carriera": {
+    "gp_disputati": 37,
+    "vittorie": 0,
+    "podi": 0,
+    "pole": 0,
+    "giri_veloci": 0,
+    "titoli": 0,
+    "punti": 66.0,
+    "prima_vittoria": null,
+    "ultima_vittoria": null
+   },
+   "stagione": {
+    "pos": 13,
+    "punti": 18.0,
+    "vittorie": 0,
+    "migliore_risultato": 5,
+    "media_griglia": 14.2,
+    "media_arrivo": 11.25,
+    "pos_guadagnate": 15,
+    "su_gare": {
+     "partite": 10,
+     "classificate": 8
+    }
+   },
+   "cross_check": [
+    {
+     "campo": "gara_demo",
+     "gara": "Gran Bretagna",
+     "griglia_f1db": 13,
+     "griglia_demo": 13,
+     "arrivo_f1db": 12,
+     "arrivo_demo": 14
     }
    ]
   },
@@ -645,27 +645,27 @@
    "constructorId": "audi",
    "team_demo": "Audi",
    "carriera": {
-    "gp_disputati": 32,
+    "gp_disputati": 33,
     "vittorie": 0,
     "podi": 0,
     "pole": 0,
     "giri_veloci": 0,
     "titoli": 0,
-    "punti": 25.0,
+    "punti": 29.0,
     "prima_vittoria": null,
     "ultima_vittoria": null
    },
    "stagione": {
     "pos": 14,
-    "punti": 6.0,
+    "punti": 10.0,
     "vittorie": 0,
     "migliore_risultato": 8,
-    "media_griglia": 13.0,
-    "media_arrivo": 11.0,
+    "media_griglia": 12.44,
+    "media_arrivo": 10.67,
     "pos_guadagnate": 11,
     "su_gare": {
-     "partite": 9,
-     "classificate": 8
+     "partite": 10,
+     "classificate": 9
     }
    },
    "cross_check": [
@@ -687,7 +687,7 @@
    "constructorId": "williams",
    "team_demo": "Williams",
    "carriera": {
-    "gp_disputati": 238,
+    "gp_disputati": 239,
     "vittorie": 4,
     "podi": 29,
     "pole": 6,
@@ -710,12 +710,12 @@
     "punti": 6.0,
     "vittorie": 0,
     "migliore_risultato": 9,
-    "media_griglia": 15.67,
-    "media_arrivo": 12.75,
-    "pos_guadagnate": 22,
+    "media_griglia": 16.0,
+    "media_arrivo": 13.11,
+    "pos_guadagnate": 25,
     "su_gare": {
-     "partite": 9,
-     "classificate": 8
+     "partite": 10,
+     "classificate": 9
     }
    },
    "cross_check": [
@@ -723,7 +723,7 @@
      "campo": "gara_demo",
      "gara": "Gran Bretagna",
      "griglia_f1db": 14,
-     "griglia_demo": null,
+     "griglia_demo": 14,
      "arrivo_f1db": 17,
      "arrivo_demo": 13
     }
@@ -737,7 +737,7 @@
    "constructorId": "williams",
    "team_demo": "Williams",
    "carriera": {
-    "gp_disputati": 136,
+    "gp_disputati": 137,
     "vittorie": 0,
     "podi": 2,
     "pole": 0,
@@ -752,12 +752,12 @@
     "punti": 5.0,
     "vittorie": 0,
     "migliore_risultato": 8,
-    "media_griglia": 16.0,
-    "media_arrivo": 13.4,
+    "media_griglia": 15.89,
+    "media_arrivo": 13.67,
     "pos_guadagnate": 9,
     "su_gare": {
-     "partite": 9,
-     "classificate": 5
+     "partite": 10,
+     "classificate": 6
     }
    },
    "cross_check": []
@@ -770,7 +770,7 @@
    "constructorId": "haas",
    "team_demo": "Haas F1 Team",
    "carriera": {
-    "gp_disputati": 189,
+    "gp_disputati": 190,
     "vittorie": 1,
     "podi": 4,
     "pole": 0,
@@ -793,12 +793,12 @@
     "punti": 3.0,
     "vittorie": 0,
     "migliore_risultato": 9,
-    "media_griglia": 15.0,
-    "media_arrivo": 12.56,
-    "pos_guadagnate": 22,
+    "media_griglia": 15.1,
+    "media_arrivo": 13.0,
+    "pos_guadagnate": 21,
     "su_gare": {
-     "partite": 9,
-     "classificate": 9
+     "partite": 10,
+     "classificate": 10
     }
    },
    "cross_check": [
@@ -814,7 +814,7 @@
      "campo": "gara_demo",
      "gara": "Gran Bretagna",
      "griglia_f1db": 17,
-     "griglia_demo": null,
+     "griglia_demo": 17,
      "arrivo_f1db": 13,
      "arrivo_demo": 15
     }
@@ -828,7 +828,7 @@
    "constructorId": "aston-martin",
    "team_demo": "Aston Martin",
    "carriera": {
-    "gp_disputati": 435,
+    "gp_disputati": 436,
     "vittorie": 32,
     "podi": 106,
     "pole": 22,
@@ -851,12 +851,12 @@
     "punti": 1.0,
     "vittorie": 0,
     "migliore_risultato": 10,
-    "media_griglia": 19.14,
-    "media_arrivo": 15.8,
-    "pos_guadagnate": 19,
+    "media_griglia": 19.5,
+    "media_arrivo": 16.33,
+    "pos_guadagnate": 22,
     "su_gare": {
-     "partite": 9,
-     "classificate": 5
+     "partite": 10,
+     "classificate": 6
     }
    },
    "cross_check": [
@@ -878,7 +878,7 @@
    "constructorId": "audi",
    "team_demo": "Audi",
    "carriera": {
-    "gp_disputati": 258,
+    "gp_disputati": 259,
     "vittorie": 0,
     "podi": 1,
     "pole": 1,
@@ -893,12 +893,12 @@
     "punti": 0.0,
     "vittorie": 0,
     "migliore_risultato": 11,
-    "media_griglia": 11.56,
-    "media_arrivo": 11.8,
-    "pos_guadagnate": 3,
+    "media_griglia": 11.6,
+    "media_arrivo": 12.0,
+    "pos_guadagnate": 2,
     "su_gare": {
-     "partite": 9,
-     "classificate": 5
+     "partite": 10,
+     "classificate": 6
     }
    },
    "cross_check": [
@@ -921,7 +921,7 @@
    "constructorId": "cadillac",
    "team_demo": "Cadillac",
    "carriera": {
-    "gp_disputati": 255,
+    "gp_disputati": 256,
     "vittorie": 10,
     "podi": 67,
     "pole": 20,
@@ -944,12 +944,12 @@
     "punti": 0.0,
     "vittorie": 0,
     "migliore_risultato": 13,
-    "media_griglia": 19.56,
-    "media_arrivo": 16.4,
-    "pos_guadagnate": 15,
+    "media_griglia": 19.3,
+    "media_arrivo": 16.67,
+    "pos_guadagnate": 14,
     "su_gare": {
-     "partite": 9,
-     "classificate": 5
+     "partite": 10,
+     "classificate": 6
     }
    },
    "cross_check": [
@@ -957,7 +957,7 @@
      "campo": "gara_demo",
      "gara": "Gran Bretagna",
      "griglia_f1db": 18,
-     "griglia_demo": null,
+     "griglia_demo": 18,
      "arrivo_f1db": 16,
      "arrivo_demo": 17
     }
@@ -971,7 +971,7 @@
    "constructorId": "cadillac",
    "team_demo": "Cadillac",
    "carriera": {
-    "gp_disputati": 290,
+    "gp_disputati": 291,
     "vittorie": 6,
     "podi": 39,
     "pole": 3,
@@ -994,11 +994,11 @@
     "punti": 0.0,
     "vittorie": 0,
     "migliore_risultato": 14,
-    "media_griglia": 19.33,
+    "media_griglia": 19.2,
     "media_arrivo": 15.29,
     "pos_guadagnate": 28,
     "su_gare": {
-     "partite": 9,
+     "partite": 10,
      "classificate": 7
     }
    },
@@ -1016,7 +1016,7 @@
      "campo": "gara_demo",
      "gara": "Gran Bretagna",
      "griglia_f1db": 20,
-     "griglia_demo": null,
+     "griglia_demo": 20,
      "arrivo_f1db": 14,
      "arrivo_demo": 16
     }
@@ -1030,7 +1030,7 @@
    "constructorId": "aston-martin",
    "team_demo": "Aston Martin",
    "carriera": {
-    "gp_disputati": 198,
+    "gp_disputati": 199,
     "vittorie": 0,
     "podi": 3,
     "pole": 1,
@@ -1045,11 +1045,11 @@
     "punti": 0.0,
     "vittorie": 0,
     "migliore_risultato": 15,
-    "media_griglia": 21.12,
+    "media_griglia": 21.0,
     "media_arrivo": 17.0,
     "pos_guadagnate": 4,
     "su_gare": {
-     "partite": 9,
+     "partite": 10,
      "classificate": 3
     }
    },
@@ -1063,13 +1063,13 @@
    "team_demo": "Mercedes",
    "paese": "Germany",
    "carriera": {
-    "gp_disputati": 350,
-    "vittorie": 138,
-    "podi": 322,
-    "pole": 152,
+    "gp_disputati": 351,
+    "vittorie": 139,
+    "podi": 323,
+    "pole": 153,
     "giri_veloci": 121,
     "titoli": 8,
-    "punti": 8492.5,
+    "punti": 8517.5,
     "prima_vittoria": {
      "anno": 1954,
      "gp": "France",
@@ -1077,16 +1077,16 @@
     },
     "ultima_vittoria": {
      "anno": 2026,
-     "gp": "Austria",
-     "data": "2026-06-28"
+     "gp": "Belgium",
+     "data": "2026-07-19"
     }
    },
    "stagione": {
     "pos": 1,
     "punti": 333.0,
-    "vittorie": 7,
+    "vittorie": 8,
     "migliore_risultato": 1,
-    "podi": 12
+    "podi": 13
    },
    "cross_check": []
   },
@@ -1096,13 +1096,13 @@
    "team_demo": "Ferrari",
    "paese": "Italy",
    "carriera": {
-    "gp_disputati": 1131,
+    "gp_disputati": 1132,
     "vittorie": 250,
-    "podi": 844,
+    "podi": 845,
     "pole": 254,
     "giri_veloci": 268,
     "titoli": 16,
-    "punti": 11286.0,
+    "punti": 11316.0,
     "prima_vittoria": {
      "anno": 1951,
      "gp": "Great Britain",
@@ -1119,7 +1119,7 @@
     "punti": 255.0,
     "vittorie": 2,
     "migliore_risultato": 1,
-    "podi": 8
+    "podi": 9
    },
    "cross_check": []
   },
@@ -1129,13 +1129,13 @@
    "team_demo": "McLaren",
    "paese": "United Kingdom",
    "carriera": {
-    "gp_disputati": 1002,
+    "gp_disputati": 1003,
     "vittorie": 203,
     "podi": 562,
     "pole": 177,
-    "giri_veloci": 185,
+    "giri_veloci": 186,
     "titoli": 10,
-    "punti": 8287.5,
+    "punti": 8303.5,
     "prima_vittoria": {
      "anno": 1968,
      "gp": "Belgium",
@@ -1162,13 +1162,13 @@
    "team_demo": "Red Bull Racing",
    "paese": "Austria",
    "carriera": {
-    "gp_disputati": 426,
+    "gp_disputati": 427,
     "vittorie": 130,
-    "podi": 299,
+    "podi": 300,
     "pole": 111,
     "giri_veloci": 103,
     "titoli": 6,
-    "punti": 8416.0,
+    "punti": 8439.0,
     "prima_vittoria": {
      "anno": 2009,
      "gp": "China",
@@ -1185,7 +1185,7 @@
     "punti": 128.0,
     "vittorie": 0,
     "migliore_risultato": 2,
-    "podi": 2
+    "podi": 3
    },
    "cross_check": []
   },
@@ -1195,13 +1195,13 @@
    "team_demo": "Alpine",
    "paese": "France",
    "carriera": {
-    "gp_disputati": 123,
+    "gp_disputati": 124,
     "vittorie": 1,
     "podi": 7,
     "pole": 0,
     "giri_veloci": 1,
     "titoli": 0,
-    "punti": 595.0,
+    "punti": 596.0,
     "prima_vittoria": {
      "anno": 2021,
      "gp": "Hungary",
@@ -1228,13 +1228,13 @@
    "team_demo": "Racing Bulls",
    "paese": "Italy",
    "carriera": {
-    "gp_disputati": 33,
+    "gp_disputati": 34,
     "vittorie": 0,
     "podi": 1,
     "pole": 0,
     "giri_veloci": 0,
     "titoli": 0,
-    "punti": 151.0,
+    "punti": 153.0,
     "prima_vittoria": null,
     "ultima_vittoria": null
    },
@@ -1253,7 +1253,7 @@
    "team_demo": "Haas F1 Team",
    "paese": "United States of America",
    "carriera": {
-    "gp_disputati": 223,
+    "gp_disputati": 224,
     "vittorie": 0,
     "podi": 0,
     "pole": 1,
@@ -1278,7 +1278,7 @@
    "team_demo": "Williams",
    "paese": "United Kingdom",
    "carriera": {
-    "gp_disputati": 859,
+    "gp_disputati": 860,
     "vittorie": 114,
     "podi": 314,
     "pole": 128,
@@ -1311,13 +1311,13 @@
    "team_demo": "Audi",
    "paese": "Germany",
    "carriera": {
-    "gp_disputati": 9,
+    "gp_disputati": 10,
     "vittorie": 0,
     "podi": 0,
     "pole": 0,
     "giri_veloci": 0,
     "titoli": 0,
-    "punti": 6.0,
+    "punti": 10.0,
     "prima_vittoria": null,
     "ultima_vittoria": null
    },
@@ -1336,7 +1336,7 @@
    "team_demo": "Aston Martin",
    "paese": "United Kingdom",
    "carriera": {
-    "gp_disputati": 128,
+    "gp_disputati": 129,
     "vittorie": 0,
     "podi": 9,
     "pole": 0,
@@ -1361,7 +1361,7 @@
    "team_demo": "Cadillac",
    "paese": "United States of America",
    "carriera": {
-    "gp_disputati": 9,
+    "gp_disputati": 10,
     "vittorie": 0,
     "podi": 0,
     "pole": 0,
