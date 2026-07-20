@@ -228,6 +228,43 @@ def _valore_tempo(nodo):
     return valore if valore else None
 
 
+def _vista_settori(sectors):
+    """Da Sectors (lista di settori del feed) a [{t, best}] per S1/S2/S3.
+    `best` = 'o' (OverallFastest, viola) / 'p' (PersonalFastest, verde) /
+    None. `t` = tempo del settore ('' -> None). Additivo Fase 3/R2."""
+    out = []
+    if not isinstance(sectors, list):
+        return out
+    for s in sectors:
+        if not isinstance(s, dict):
+            out.append({"t": None, "best": None})
+            continue
+        best = "o" if s.get("OverallFastest") else (
+            "p" if s.get("PersonalFastest") else None)
+        out.append({"t": (s.get("Value") or None), "best": best})
+    return out
+
+
+def _vista_micro(sectors):
+    """Da Sectors ai codici Status dei micro-settori: [[status...], ...]
+    per S1/S2/S3. Codici misurati sul feed reale (registrazione Spa
+    2026-07-19): 0=non percorso, 2048=giallo, 2049=verde, 2051=viola,
+    2064=pit; altri (2052/2068/...)=neutro. La mappa colore vive nel
+    frontend (live_timing.mjs). Mai inventato: qui si passano i codici
+    grezzi, la semantica e' dichiarata li'."""
+    out = []
+    if not isinstance(sectors, list):
+        return out
+    for s in sectors:
+        segs = s.get("Segments") if isinstance(s, dict) else None
+        arr = []
+        if isinstance(segs, list):
+            arr = [seg.get("Status") for seg in segs
+                   if isinstance(seg, dict)]
+        out.append(arr)
+    return out
+
+
 class StatoSessione:
     """Session state manager: stato per-pilota + stati semplici di sessione."""
 
@@ -284,11 +321,17 @@ class StatoSessione:
             pos = None
         gap = (stato.get("GapToLeader")
                or stato.get("TimeDiffToFastest") or "")
+        interval = _valore_tempo(stato.get("IntervalToPositionAhead"))
+        sectors = stato.get("Sectors")
         return {
             "pos": pos,
             "gap": gap if isinstance(gap, str) else "",
             "in_pit": bool(stato.get("InPit", False)),
             "last_lap": _valore_tempo(stato.get("LastLapTime")),
+            "best_lap": _valore_tempo(stato.get("BestLapTime")),
+            "interval": interval if isinstance(interval, str) else None,
+            "sectors": _vista_settori(sectors),
+            "micro": _vista_micro(sectors),
         }
 
     def best_lap(self, auto):

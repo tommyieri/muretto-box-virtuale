@@ -91,4 +91,32 @@ caso('snapshot successivo riallinea tutto', () => {
   assert.deepEqual(r.map(x => x.sigla), ['HAM']);   // nessun residuo di VER/LEC
 });
 
-console.log('\nTUTTI I TEST OK (torre timing R1)');
+// 6) R2: settori, micro-settori, best lap, interval passano nel riduttore
+caso('R2: sectors/micro/best_lap/interval', () => {
+  const s = creaStatoTiming();
+  s.applica({ type: 'snapshot',
+    driver_list: { '1': { sigla: 'VER', colore: '#3671C6' } },
+    cars: { '1': { pos: 1, gap: '' } } });
+  s.applica({ type: 'timing_update', cars: { '1': {
+    best_lap: '1:41.234', interval: null,
+    sectors: [{ t: '29.512', best: 'o' }, { t: '38.104', best: 'p' }, { t: null, best: null }],
+    micro: [[2049, 2051, 2048], [2049, 2049], [0, 0, 0]] } } });
+  const r = s.righe()[0];
+  assert.equal(r.best_lap, '1:41.234');
+  assert.equal(r.sectors.length, 3);
+  assert.equal(r.sectors[0].best, 'o');
+  assert.deepEqual(r.micro[0], [2049, 2051, 2048]);
+});
+
+// 7) i diff di settore aggiornano solo cio' che cambia
+caso('R2: diff parziale su un solo settore', () => {
+  const s = creaStatoTiming();
+  s.applica({ type: 'snapshot', driver_list: { '1': { sigla: 'VER' } },
+    cars: { '1': { pos: 1, gap: '', sectors: [{ t: '29.5', best: null }] } } });
+  s.applica({ type: 'timing_update', cars: { '1': { last_lap: '1:41.9' } } });
+  const r = s.righe()[0];
+  assert.equal(r.last_lap, '1:41.9');
+  assert.equal(r.sectors[0].t, '29.5');   // il settore precedente persiste
+});
+
+console.log('\nTUTTI I TEST OK (torre timing R2)');

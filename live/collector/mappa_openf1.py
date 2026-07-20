@@ -46,7 +46,8 @@ from replay import _fmt  # noqa: E402
 
 log = logging.getLogger("mappa_openf1")
 
-CAMPI_TIMING = ("pos", "gap", "in_pit", "last_lap")
+CAMPI_TIMING = ("pos", "gap", "in_pit", "last_lap",
+                "best_lap", "interval", "sectors", "micro")
 
 
 def parse_data(testo):
@@ -82,20 +83,53 @@ def formatta_giro(secondi):
     return f"{minuti}:{resto:06.3f}"
 
 
+def formatta_settore(secondi):
+    """Tempo di settore in secondi -> '49.689' (come il feed SignalR)."""
+    if not isinstance(secondi, (int, float)) or secondi <= 0:
+        return None
+    return f"{float(secondi):.3f}"
+
+
+def _settori_openf1(o):
+    """duration_sector_1/2/3 (v1/laps, a giro finito) -> [{t, best}].
+    OpenF1 non fornisce OverallFastest/PersonalFastest per settore:
+    best resta None (nessun colore sul TEMPO; i micro-settori si colorano
+    dai codici Status)."""
+    vals = [o.get("duration_sector_1"), o.get("duration_sector_2"),
+            o.get("duration_sector_3")]
+    if all(v is None for v in vals):
+        return None
+    return [{"t": formatta_settore(v), "best": None} for v in vals]
+
+
+def _micro_openf1(o):
+    """segments_sector_1/2/3 (v1/laps) -> [[status...], ...]. Stessi codici
+    del feed SignalR (0/2048/2049/2051/2064/...). ASSENTE se OpenF1 non li
+    manda nel messaggio realtime (mai inventato): da MISURARE sul feed di
+    Ungheria; se assenti, micro resta vuoto e le barrette non compaiono."""
+    arrs = [o.get("segments_sector_1"), o.get("segments_sector_2"),
+            o.get("segments_sector_3")]
+    if all(a is None for a in arrs):
+        return None
+    return [a if isinstance(a, list) else [] for a in arrs]
+
+
 class StatoOpenF1:
     """Stato della mappatura: piloti noti, vista timing, track status."""
 
     def __init__(self):
         self.driver_list = {}      # str(num) -> {"Tla": ...}
-        self.timing = {}           # str(num) -> {pos,gap,in_pit,last_lap}
+        self.timing = {}           # str(num) -> {pos,gap,in_pit,last_lap,...}
         self.track_status = None
         self.sessione = None       # info v1/sessions per /status
         self._ultimo_id = {}       # topic -> _id massimo visto
+        self._best_secs = {}       # str(num) -> miglior giro [s] (per best_lap)
 
     def vista(self, auto):
         return self.timing.setdefault(
             str(auto), {"pos": None, "gap": "", "in_pit": False,
-                        "last_lap": None})
+                        "last_lap": None, "best_lap": None,
+                        "interval": None, "sectors": [], "micro": []})
 
 
 def _mappa_race_control(obj):
@@ -224,20 +258,36 @@ def eventi_da_openf1(flusso, stato=None):
                 t = parse_data(o.get("date"))
                 if o.get("driver_number") is None or t is None:
                     continue
-                yield from applica(
-                    o["driver_number"],
-                    {"gap": formatta_gap(o.get("gap_to_leader"))}, t)
+                campi = {"gap": formatta_gap(o.get("gap_to_leader"))}
+                iv = formatta_gap(o.get("interval"))
+                campi["interval"] = iv or None   # to car ahead; None per il leader
+                yield from applica(o["driver_number"], campi, t)
 
         elif topic == "v1/laps":
             for o in oggetti:
                 t = parse_data(o.get("date_start")) \
                     or parse_data(o.get("date"))
-                giro = formatta_giro(o.get("lap_duration"))
-                if o.get("driver_number") is None or t is None \
-                        or giro is None:
+                if o.get("driver_number") is None or t is None:
                     continue
-                yield from applica(o["driver_number"],
-                                   {"last_lap": giro}, t)
+                num = str(o["driver_number"])
+                campi = {}
+                giro = formatta_giro(o.get("lap_duration"))
+                if giro is not None:
+                    campi["last_lap"] = giro
+                    dur = o.get("lap_duration")
+                    best = stato._best_secs.get(num)
+                    if isinstance(dur, (int, float)) and (best is None
+                                                          or dur < best):
+                        stato._best_secs[num] = dur
+                        campi["best_lap"] = formatta_giro(dur)
+                sett = _settori_openf1(o)
+                if sett is not None:
+                    campi["sectors"] = sett
+                micro = _micro_openf1(o)
+                if micro is not None:
+                    campi["micro"] = micro
+                if campi:
+                    yield from applica(o["driver_number"], campi, t)
 
         elif topic == "v1/pit":
             # FASE 3: nessun evento da v1/pit. Il campo in_pit e' popolato

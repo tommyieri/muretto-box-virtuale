@@ -42,7 +42,8 @@ from inspect_recording import parse_timestamp  # noqa: E402
 
 log = logging.getLogger("replay")
 
-CAMPI_TIMING = ("pos", "gap", "in_pit", "last_lap")
+CAMPI_TIMING = ("pos", "gap", "in_pit", "last_lap",
+                "best_lap", "interval", "sectors", "micro")
 
 
 def _vista_driver(stato, auto):
