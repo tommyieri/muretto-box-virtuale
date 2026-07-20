@@ -21,8 +21,14 @@ Regola: i dati vengono da f1db/TI, MAI trascritti a mano. Ogni griglia/pole va v
    qui chiusa direttamente — vedi REPORT_RIESECUZIONE_SPA.md).
    - K2 climatologia: 39.9% -> 42.3% = TRASFERIBILE (soglia congelata onorata nei due versi).
    - I 4 cancelli live/adattamento: invariati (NULL / NON TESTABILE).
-   - APERTO per il PO: violazione K3 SOFT@monaco (coda-traffico, -0.38) da sciogliere
-     PRIMA di qualunque attivazione del gancio con le bande; attivazione = verdetto PO.
+   - RISOLTO in Passo 0: violazione K3 SOFT@monaco sciolta escludendo Monaco.
+
+8. [in corso] Degrado nel simulatore live — vedi PIANO_DEGRADO_LIVE.md.
+   - [fatto] Passo 0: Monaco fuori (CID_NO_DEGRADO). K2 42.3->43.7%, K3 -> PASSA.
+   - [prossimo] Fase A: scenari dal prior nel pannello pit della demo (Ungheria),
+     etichettati come scenari; gate = K4 su HUN + verifica UI.
+   - [poi] Fase B: cancello copertura-rolling prossimi-5-giri in replay (prereg nuova).
+   - [poi] Fase C: innesto live + shadow-run HUN (dip.: MQTT OpenF1 rotto dal 19/07).
 
 ## Principi
 - La griglia non deve mai svuotarsi: all'ultimo giro si vedono tutti e 22.

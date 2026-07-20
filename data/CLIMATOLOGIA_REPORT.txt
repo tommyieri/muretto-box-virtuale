@@ -4,10 +4,9 @@ CLIMATOLOGIA DEGRADO — descrittivo per (mescola, circuito 2026), pesato al 202
 Protocollo: PREREG_SESSIONE_CLIM.md. Scenari etichettati come scenari; nessuna
 parola sul futuro. Pesi 2026/25/24/23 = 1/.5/.25/.125; quantili pesati (Hazen).
 
-STINT QUALIFICATI: 2950  (2023-25: 2483, 2026: 467)
-GARE ESCLUSE dalla guardia bagnato (quota INT/WET > 5%): 8
+STINT QUALIFICATI: 2834  (2023-25: 2415, 2026: 419)
+GARE ESCLUSE dalla guardia bagnato (quota INT/WET > 5%): 7
   - 2023 Dutch Grand Prix  (quota bagnato 24.4%)
-  - 2023 Monaco Grand Prix  (quota bagnato 29.3%)
   - 2024 British Grand Prix  (quota bagnato 24.3%)
   - 2024 Canadian Grand Prix  (quota bagnato 66.5%)
   - 2024 São Paulo Grand Prix  (quota bagnato 100.0%)
@@ -15,10 +14,10 @@ GARE ESCLUSE dalla guardia bagnato (quota INT/WET > 5%): 8
   - 2025 Belgian Grand Prix  (quota bagnato 27.2%)
   - 2025 British Grand Prix  (quota bagnato 73.6%)
 
-DISTRIBUZIONE GLOBALE pesata (con 2026): med +0.0516, IQR [+0.0103,+0.0922] (larghezza 0.0819), n=2950
+DISTRIBUZIONE GLOBALE pesata (con 2026): med +0.0535, IQR [+0.0134,+0.0944] (larghezza 0.0810), n=2834
 
 ------------------------------------------------------------------------------
-K1 — INFORMATIVITA': combinazioni informative 48/61
+K1 — INFORMATIVITA': combinazioni informative 46/58
   criterio: n_stint>=10 & n_gare>=2 & (IQR_cond < IQR_glob | |med_cond-med_glob| > IQR_glob/4)
   HARD   @ austin             banda [-0.0042, +0.0364, +0.0626]  n_stint= 41 n_gare=3 quota26=0.00
   MEDIUM @ austin             banda [+0.0302, +0.0494, +0.0683]  n_stint= 71 n_gare=3 quota26=0.00
@@ -46,8 +45,6 @@ K1 — INFORMATIVITA': combinazioni informative 48/61
   SOFT   @ mexico-city        banda [+0.0549, +0.0616, +0.0908]  n_stint= 28 n_gare=2 quota26=0.00
   HARD   @ miami              banda [+0.0228, +0.0507, +0.0667]  n_stint= 71 n_gare=4 quota26=0.49
   MEDIUM @ miami              banda [+0.0257, +0.0526, +0.0632]  n_stint= 67 n_gare=4 quota26=0.60
-  HARD   @ monaco             banda [-0.0286, +0.0077, +0.0596]  n_stint= 48 n_gare=3 quota26=0.44
-  SOFT   @ monaco             banda [-0.6974, -0.3827, -0.0159]  n_stint= 23 n_gare=3 quota26=0.90
   HARD   @ montreal           banda [+0.0042, +0.0203, +0.0394]  n_stint= 59 n_gare=3 quota26=0.10
   MEDIUM @ montreal           banda [-0.0242, +0.0099, +0.0869]  n_stint= 63 n_gare=3 quota26=0.64
   SOFT   @ montreal           banda [-0.1139, -0.0277, +0.0018]  n_stint= 22 n_gare=2 quota26=0.99
@@ -71,10 +68,10 @@ K1 — INFORMATIVITA': combinazioni informative 48/61
 
 ------------------------------------------------------------------------------
 K2 — COERENZA 2026 (bande leave-2026-out, soglia >= 40%)
-  stint 2026 testati: 357 (su 47 bande valide leave-2026-out)
-  copertura pooled in [q25,q75]: 42.3%  IC95 bootstrap blocchi-gara [30.8%, 52.9%]  (B=1000, seed=20260716)
-    HARD  : 48.8% (n=170)
-    MEDIUM: 38.2% (n=173)
+  stint 2026 testati: 327 (su 45 bande valide leave-2026-out)
+  copertura pooled in [q25,q75]: 43.7%  IC95 bootstrap blocchi-gara [32.2%, 55.6%]  (B=1000, seed=20260716)
+    HARD  : 49.4% (n=158)
+    MEDIUM: 40.6% (n=155)
     SOFT  : 14.3% (n=14)
     2026 Australian       : 43.6% (n=39)
     2026 Austrian         : 49.1% (n=53)
@@ -84,13 +81,11 @@ K2 — COERENZA 2026 (bande leave-2026-out, soglia >= 40%)
     2026 Chinese          : 48.5% (n=33)
     2026 Japanese         : 69.0% (n=42)
     2026 Miami            : 39.4% (n=33)
-    2026 Monaco           : 26.7% (n=30)
   => K2: TRASFERIBILE
 
 ------------------------------------------------------------------------------
-K3 — SANITA' FISICA (sulle 48 righe informative)
-  VIOLAZIONI (1):
-   - SOFT@monaco: centrale -0.3827 fuori da [-0.1,0.35]
+K3 — SANITA' FISICA (sulle 46 righe informative)
+  PASSA: zero violazioni (ordine, magnitudini, utilita' vs pit-loss, conteggi).
 
 NOTE DI FORMA (esplorazione, incise per il lettore del CSV):
   - plateau ~lineare in life; L_PLATEAU_MIN=3 (pendenza insensibile 3->5)

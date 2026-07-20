@@ -56,6 +56,29 @@ all'adattamento aggiunge due coppie che lo indeboliscono.
   rigenerabile filtrando `include_2026`). I 4 CSV dei cancelli committati qui sono
   stati scritti PRIMA della rigenerazione del CSV climatologia, come da loro prereg.
 
+## ADDENDUM — Passo 0: Monaco fuori (ratifica PO 2026-07-20)
+
+Decisione PO, motivazione dichiarata: **a Monaco il passo NON è governato dal degrado
+ma dalla track-position** — chi sta davanti detta il ritmo (spesso frenando apposta),
+quindi la pendenza-life misura traffico, non gomma. Regola incisa nel generatore
+(`CID_NO_DEGRADO = ('monaco',)`): Monaco escluso da climatologia, K2, K3 e bande; lì il
+gancio resta banda-zero **per sempre** e la strategia è dominio del modulo
+pit/track-position. Tre segnali indipendenti già la indicavano: K2 Monaco 26.7% (la
+peggiore), K3 `SOFT@monaco` −0.38 (coda-traffico), arco pit-loss (Monaco già inciso
+"coda-traffico").
+
+Effetto sulla climatologia (CSV rigenerato, prodotto, `include_2026=True`):
+- stint qualificati 2950 → **2834** (75 stint Monaco rimossi); CSV 61 → **58 righe**.
+- **K2: 42.3% → 43.7% TRASFERIBILE** (IC95 [32.2%, 55.6%]); rimuovere la gara peggiore
+  rafforza il pooled, come atteso.
+- **K3: 1 violazione → PASSA** (zero): la violazione era proprio `SOFT@monaco`.
+- **K1: 46/58 informative**; **K4 meccanico: PASS** (Austria, banda-zero bit-identica).
+
+Nota di scopo: i 4 CSV dei cancelli (chiusi, NULL) NON sono ri-eseguiti qui — leggerebbero
+il CSV ora 2026-inclusivo e diventerebbero circolari. Restano archiviati col baseline
+leave-2026-out. La regola Monaco vive comunque nei loro generatori (via import) per
+qualunque rieseczione futura legittima, che dovrà ricostruire il baseline leave-2026-out.
+
 ## Golden (prima e dopo)
 
 `test_b.py` 449/449 · `test_b.mjs` 449/449 · `demo/test_pit.mjs` 11/11 ·

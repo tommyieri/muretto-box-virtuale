@@ -48,6 +48,14 @@ SOGLIA_OUTLIER = 1.07
 QUOTA_WET_MAX = 0.05        # guardia gara-bagnata (dichiarata)
 PESI = {2023: 0.125, 2024: 0.25, 2025: 0.5, 2026: 1.0}
 
+# GUARDIA DEGRADO-NON-MISURABILE (ratifica PO 2026-07-20). Circuiti dove il passo NON e'
+# governato dal degrado ma dalla track-position: chi sta davanti detta il ritmo (spesso
+# frenando apposta), quindi la pendenza-life misura traffico, non gomma. Esclusi da
+# climatologia, K2, K3 e bande. Li' il gancio resta banda-zero PER SEMPRE e la strategia
+# e' dominio del modulo pit/track-position. Coerente con: K2 Monaco 26.7% (peggiore),
+# K3 SOFT@monaco -0.38 (coda-traffico), arco pit-loss (Monaco gia' inciso "coda-traffico").
+CID_NO_DEGRADO = ('monaco',)
+
 # K1 (prereg): informativa <=> n_stint>=10 & n_gare>=2 & (IQR_cond<IQR_glob o
 #              |med_cond-med_glob|>IQR_glob/4)
 K1_MIN_STINT, K1_MIN_GARE = 10, 2
@@ -114,7 +122,7 @@ def gare():
     p_spa = os.path.join(ROOT, 'data', 'ti_archive', '2026', 'Belgian Grand Prix', 'Race.json')
     if os.path.exists(p_spa):
         out.append((2026, 'spa-francorchamps', '2026 Belgian', p_spa))
-    return out
+    return [g for g in out if g[1] not in CID_NO_DEGRADO]   # guardia degrado-non-misurabile
 
 
 def carica(path):

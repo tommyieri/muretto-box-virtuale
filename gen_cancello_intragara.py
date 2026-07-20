@@ -19,7 +19,7 @@ import sys, os, csv, statistics as st
 import numpy as np
 from gen_climatologia_degrado import (carica, quota_wet, stint_di_gara, righe_csv,
                                       raccogli, QUOTA_WET_MAX, TICACHE2CID, FOLDER2CID,
-                                      L_PLATEAU_MIN)
+                                      L_PLATEAU_MIN, CID_NO_DEGRADO)
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 CSV_CLIM = os.path.join(ROOT, 'data', 'climatologia_degrado.csv')
@@ -111,7 +111,7 @@ def gare_ramo(ramo):
             p = os.path.join(base, folder, 'Race.json')
             if cid and os.path.exists(p):
                 out.append((2025, cid, f'2025 {folder}', p))
-    return out
+    return [g for g in out if g[1] not in CID_NO_DEGRADO]   # guardia degrado-non-misurabile
 
 
 def valuta_ramo(ramo, prior):
