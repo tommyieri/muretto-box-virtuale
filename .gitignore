@@ -1,4 +1,6 @@
 .venv/
+.venv-auto/
+.venv-live/
 __pycache__/
 *.pyc
 .DS_Store
@@ -16,3 +18,6 @@ demo/_backup_preSC/
 data/ff1_cache/
 demo/data/ref_traffic_py.json
 staging_gara/
+data/auto_gara.log
+data/auto_gara.launchd.log
+data/.auto_gara.lock
