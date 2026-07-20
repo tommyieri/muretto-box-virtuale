@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.muretto.autogara</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>/bin/zsh</string>
+    <string>/Users/tommi/muretto/scheduling/auto_run.sh</string>
+  </array>
+  <!-- ogni 30 minuti: cattura una gara finita entro mezz'ora e la release f1db post-gara -->
+  <key>StartInterval</key>
+  <integer>1800</integer>
+  <!-- gira anche al load e recupera un giro perso se il Mac era spento all'orario -->
+  <key>RunAtLoad</key>
+  <true/>
+  <key>StandardOutPath</key>
+  <string>/Users/tommi/muretto/data/auto_gara.launchd.log</string>
+  <key>StandardErrorPath</key>
+  <string>/Users/tommi/muretto/data/auto_gara.launchd.log</string>
+</dict>
+</plist>
