@@ -18,15 +18,22 @@ launchctl unload ~/Library/LaunchAgents/com.muretto.autogara.plist  # ferma
 Prerequisito: `git push` senza password (già così in questa sessione) e la cache FastF1 in
 `~/muretto_shared/ff1_cache/`.
 
-## B) VPS (cron) — sempre acceso
-Il VPS (167.233.236.186) ospita gia' il collettore live: e' sempre online, quindi cattura
-la gara anche a Mac spento. Richiede: clonare il repo, un venv con `fastf1 pandas numpy`
-allineati al Mac, Node per i golden, la cache FastF1, e credenziali git push.
+## B) VPS (cron) — **ATTIVO dal 20/07/2026** (scelta PO)
+Il VPS (167.233.236.186) ospita gia' il collettore live: sempre online, cattura la gara
+anche a Mac spento. Configurato e verificato:
+- Node v22 (apt), venv dedicato `.venv-auto` con fastf1 3.8.3 / pandas 2.3.3 / numpy 2.5.1
+  (separato dal `.venv-live` del collettore);
+- allineamento verificato: `test_b.py` sul VPS da `max diff 4.26e-12 GOLDEN OK` (identico al
+  Mac), golden JS 449/449 e 11/11, `gen_classifiche_ufficiali` byte-identico -> pace e
+  FastF1 bit-riproducibili;
+- git push via **deploy key SSH** (write), identita' `muretto-vps`;
+- cron ogni 30 min con `flock` anti-overlap:
 ```cron
-*/30 * * * *  cd /home/muretto/muretto && /home/muretto/.venv/bin/python auto_gara.py --push >> data/auto_gara.log 2>&1
+PATH=/usr/local/bin:/usr/bin:/bin
+*/30 * * * * flock -n /home/muretto/muretto/data/.auto_gara.lock /home/muretto/muretto/.venv-auto/bin/python /home/muretto/muretto/auto_gara.py --push >> /home/muretto/muretto/data/auto_gara.log 2>&1
 ```
-Da valutare: allineare le versioni al Mac perche' il passo-base (pace) resti bit-compatibile
-coi golden.
+Gestione: `ssh muretto@167.233.236.186` poi `crontab -l` (vedi) · `crontab -r` (ferma) ·
+`tail -f ~/muretto/data/auto_gara.log` (guarda). Prima gara che lo esercita: Ungheria.
 
 ## C) GitHub Actions (cron) — sempre acceso, zero macchine tue
 Gira sui runner GitHub, push col token integrato. Nessun Mac/VPS da tenere su.
