@@ -24,6 +24,12 @@ from decoder import (  # noqa: E402
     messaggi,
 )
 
+def _t(n):
+    """timestamp datetime per i test di eventi_da_messaggi (spaziatura arbitraria)."""
+    from datetime import datetime, timedelta
+    return datetime(2026, 1, 1) + timedelta(seconds=n)
+
+
 def _dato_grezzo(nome):
     """Le registrazioni sono input non tracciati: nel worktree possono non
     esserci, si ripiega sul checkout principale ~/muretto."""
@@ -88,6 +94,41 @@ def test_merge_lista_per_indice():
     merge_delta(base, {"Sectors": {"1": {"Value": "28.6"}}})
     assert base["Sectors"][1]["Value"] == "28.6", base
     assert base["Sectors"][0]["Value"] == "30.1", base
+
+
+@caso("Fase C: TimingAppData -> compound + tyre_age dello stint corrente")
+def test_stint_da_timingappdata():
+    stato = StatoSessione()
+    # snapshot (Stints come lista): stint corrente = l'ultimo
+    stato.aggiorna("TimingAppData", {"Lines": {"4": {"Stints": [
+        {"Compound": "MEDIUM", "TotalLaps": 17},
+        {"Compound": "HARD", "TotalLaps": 3}]}}})
+    v = stato.vista_pilota("4")
+    assert v["compound"] == "HARD" and v["tyre_age"] == 3, v
+    # diff incrementale per-indice: la vita dello stint corrente cresce
+    stato.aggiorna("TimingAppData", {"Lines": {"4": {"Stints": {"1": {"TotalLaps": 4}}}}})
+    v = stato.vista_pilota("4")
+    assert v["compound"] == "HARD" and v["tyre_age"] == 4, v
+    # compound non-slick/wet ignoto -> None (mai inventato)
+    stato.aggiorna("TimingAppData", {"Lines": {"9": {"Stints": [{"Compound": "TEST", "TotalLaps": 2}]}}})
+    assert stato.vista_pilota("9")["compound"] is None, stato.vista_pilota("9")
+    # pilota senza stint: campi None, nessun crash
+    assert stato.vista_pilota("99")["compound"] is None
+
+
+@caso("Fase C: timing_update emette compound/tyre_age SOLO quando cambiano")
+def test_stint_diff_emesso():
+    from replay import eventi_da_messaggi
+    flusso = [
+        ("TimingData", {"Lines": {"4": {"Position": "1"}}}, _t(0)),
+        ("TimingAppData", {"Lines": {"4": {"Stints": [{"Compound": "SOFT", "TotalLaps": 5}]}}}, _t(1)),
+        ("TimingData", {"Lines": {"4": {"Position": "1"}}}, _t(2)),   # nulla cambia -> nessun campo gomma
+    ]
+    ev = [e for e in eventi_da_messaggi(iter(flusso)) if e["type"] == "timing_update"]
+    # 1o update (pos): niente compound; 2o (stint): compound+tyre_age; 3o: niente (pos invariata)
+    c4 = [e["cars"].get("4", {}) for e in ev]
+    assert any(d.get("compound") == "SOFT" and d.get("tyre_age") == 5 for d in c4), c4
+    assert not any("compound" in d and d["compound"] is None for d in c4), c4  # mai None nei delta
 
 
 @caso("filtro (0,0,0): mai emesso come posizione valida")

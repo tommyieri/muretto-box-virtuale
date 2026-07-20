@@ -245,6 +245,33 @@ def _vista_settori(sectors):
     return out
 
 
+SLICK_WET = ("SOFT", "MEDIUM", "HARD", "INTERMEDIATE", "WET")
+
+
+def _vista_stint(stints):
+    """Compound + eta'-gomma (TotalLaps) dello stint CORRENTE (l'ultimo).
+    Stints puo' essere lista (snapshot) o dict idx->stint (diff). Additivo
+    Fase C: alimenta gli scenari di degrado live. ('', None) -> None."""
+    if isinstance(stints, list):
+        seq = stints
+    elif isinstance(stints, dict):
+        seq = [stints[k] for k in sorted(stints, key=lambda x: int(x)
+                                         if str(x).lstrip("-").isdigit() else -1)]
+    else:
+        return None, None
+    seq = [s for s in seq if isinstance(s, dict)]
+    if not seq:
+        return None, None
+    cur = seq[-1]
+    comp = cur.get("Compound")
+    comp = comp if comp in SLICK_WET else None
+    try:
+        eta = int(cur.get("TotalLaps")) if cur.get("TotalLaps") is not None else None
+    except (TypeError, ValueError):
+        eta = None
+    return comp, eta
+
+
 def _vista_micro(sectors):
     """Da Sectors ai codici Status dei micro-settori: [[status...], ...]
     per S1/S2/S3. Codici misurati sul feed reale (registrazione Spa
@@ -281,6 +308,15 @@ class StatoSessione:
         """Applica un messaggio decodificato allo stato. Ritorna True se il
         topic e' gestito dallo stato, False altrimenti."""
         if topic == "TimingData":
+            for auto, delta in payload.get("Lines", {}).items():
+                stato = self.piloti.setdefault(str(auto), {})
+                merge_delta(stato, delta if isinstance(delta, dict) else {})
+            return True
+        if topic == "TimingAppData":
+            # stint gomma (Stints[].Compound / .TotalLaps): fusi nello stesso
+            # stato per-pilota di TimingData. merge_delta gestisce sia la lista
+            # (snapshot) sia il diff per-indice. Fase C: alimenta compound +
+            # tyre_age nel live (fonte SignalR, non OpenF1 MQTT).
             for auto, delta in payload.get("Lines", {}).items():
                 stato = self.piloti.setdefault(str(auto), {})
                 merge_delta(stato, delta if isinstance(delta, dict) else {})
@@ -323,6 +359,7 @@ class StatoSessione:
                or stato.get("TimeDiffToFastest") or "")
         interval = _valore_tempo(stato.get("IntervalToPositionAhead"))
         sectors = stato.get("Sectors")
+        compound, tyre_age = _vista_stint(stato.get("Stints"))
         return {
             "pos": pos,
             "gap": gap if isinstance(gap, str) else "",
@@ -332,6 +369,8 @@ class StatoSessione:
             "interval": interval if isinstance(interval, str) else None,
             "sectors": _vista_settori(sectors),
             "micro": _vista_micro(sectors),
+            "compound": compound,     # Fase C: stint gomma dal SignalR
+            "tyre_age": tyre_age,
         }
 
     def best_lap(self, auto):
