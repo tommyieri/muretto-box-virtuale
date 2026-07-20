@@ -24,6 +24,7 @@ nuove, non fa nulla.
 import json, os, subprocess, sys, urllib.request, urllib.parse
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
+PY = sys.executable   # stesso interprete per i sotto-processi (propaga il venv attivo)
 DRY = '--dry-run' in sys.argv
 PUSH = '--push' in sys.argv
 MAPPA = os.path.join('data', 'mappa_gare.json')
@@ -104,11 +105,11 @@ def wave_nuove():
     log(f'ondata 1: gare nuove -> {[n for _, n, _ in nuove]}')
     for ti, nome, cid in nuove:
         log(f'== {nome} ({ti}) ==')
-        sh(['python3', 'pipeline_gara.py', 'auto', nome, ti, cid])   # guardrail=bandiere
-        sh(['python3', 'aggiorna_ui.py', '--gara', nome])            # UI + griglie (se f1db le ha)
-        sh(['python3', 'gen_race_control.py'])                       # lista gare dal registro
-        sh(['python3', 'gen_rc_feed.py'])
-        sh(['python3', 'gen_classifiche_ufficiali.py'])
+        sh([PY, 'pipeline_gara.py', 'auto', nome, ti, cid])   # guardrail=bandiere
+        sh([PY, 'aggiorna_ui.py', '--gara', nome])            # UI + griglie (se f1db le ha)
+        sh([PY, 'gen_race_control.py'])                       # lista gare dal registro
+        sh([PY, 'gen_rc_feed.py'])
+        sh([PY, 'gen_classifiche_ufficiali.py'])
     if not golden():
         sys.exit('[auto] FERMO: golden falliti dopo l\'ondata 1 — niente commit, indagare.')
     ba = _bandiere_testo()
@@ -150,7 +151,7 @@ def wave_f1db():
         log(f'DRY  scrivo {REL_FILE} = {latest}')
     else:
         open(os.path.join(ROOT, REL_FILE), 'w').write(latest + '\n')
-    sh(['python3', 'aggiorna_ui.py'])   # standings, pit-lane, griglie dalla release nuova
+    sh([PY, 'aggiorna_ui.py'])   # standings, pit-lane, griglie dalla release nuova
     if not golden():
         sys.exit('[auto] FERMO: golden falliti dopo l\'ondata 2 — niente commit, indagare.')
     commit_push(f'auto: release f1db {latest} — standings, pit-lane, griglie aggiornate (ondata 2)')
