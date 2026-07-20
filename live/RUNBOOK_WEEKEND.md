@@ -149,6 +149,15 @@ git push
 ssh muretto@167.233.236.186 'sh muretto/live/collector/deploy.sh'
 ```
 
+## Deploy del collettore sul VPS — checkout su `main` OBBLIGATORIO
+
+Prima di ogni deploy sul VPS: verificare che il checkout sia su `main`
+(`git branch --show-current`). Dopo il merge di un branch di lavoro (es.
+`live-fase3`), il VPS resta sul branch vecchio: `deploy.sh` ora si blocca
+con messaggio esplicito, ma il passo va fatto comunque a mano. Fatto reale
+(20/07/2026): il VPS era su `live-fase3` dal deploy di sabato; il deploy P0
+del fix MQTT si e' fermato li'.
+
 ## Attivazione dell'in_pit geometrico sul server (prima di FP2)
 
 Col corridoio del weekend in repo e deployato sul VPS:
