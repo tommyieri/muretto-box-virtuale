@@ -133,6 +133,7 @@ def test_fixture_242():
                 f"http://127.0.0.1:{status_port}/status", timeout=5).read())
             assert stato["modalita"] == "replay", stato
             assert "token" in stato and "disco" in stato, stato
+            assert stato["sanita"]["verdetto"].startswith("replay"), stato
             snapshot, eventi = asyncio.run(raccogli_eventi(ws_port))
         finally:
             proc.wait(timeout=30)
@@ -202,6 +203,28 @@ def test_e2e_fp2():
     diversi = sum(1 for a, b in zip(eventi, attesi) if a != b)
     assert diversi == 0, f"{diversi} eventi diversi"
     print(f"[{len(eventi)} eventi identici]", end=" ")
+
+
+@caso("sanita_ingresso: OK / riconnessione / MORTO (incidente 20/07)")
+def test_sanita_ingresso():
+    from collector import sanita_ingresso
+    ok = sanita_ingresso({"modalita": "live", "connesso": True}, 12.4)
+    assert ok["verdetto"] == ("OK: connesso, ultimo messaggio ricevuto "
+                              "12 secondi fa"), ok
+    silente = sanita_ingresso({"modalita": "live", "connesso": True}, None)
+    assert "normale fuori sessione" in silente["verdetto"], silente
+    breve = sanita_ingresso({"modalita": "live", "connesso": False,
+                             "ingresso_fallimenti_consecutivi": 1}, None)
+    assert breve["verdetto"] == "non connesso (riconnessione in corso)", breve
+    morto = sanita_ingresso(
+        {"modalita": "live", "connesso": False,
+         "ingresso_fallimenti_consecutivi": 213,
+         "ingresso_ultimo_errore": {
+             "errore": "RifiutoBroker('CONNACK: Client identifier not "
+                       "valid')", "utc": "2026-07-20T09:55:37+00:00"}}, None)
+    assert morto["verdetto"].startswith("INGRESSO MORTO: 213"), morto
+    assert "Client identifier not valid" in morto["verdetto"], morto
+    assert morto["fallimenti_consecutivi"] == 213, morto
 
 
 def main() -> int:
