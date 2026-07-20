@@ -4,6 +4,11 @@
   mantenere: date/orari veri dal calendario generato (f1db, orari UTC convertiti nel
   fuso del lettore; se l'orario manca si mostra solo la data — MAI orari inventati),
   e un mock statico ESPLICITAMENTE marcato "anteprima" senza numeri finti.
+
+  R1 (torre di cronometraggio live, additivo): classifica per posizione con gap dal
+  leader, ultimo giro e stato pit. Alimentata dagli STESSI eventi della mappa
+  (timing_update/driver_list/snapshot); nessun dato nuovo dal collettore. Fuori
+  sessione la torre si svuota (come la mappa): mai numeri finti.
 -->
 <html lang="it">
 <head>
@@ -56,6 +61,18 @@
       (posizioni dal feed, ritardo di distribuzione ~4&nbsp;s). Fuori sessione la mappa resta vuota:
       niente numeri finti, mai.</div>
   </section>
+
+  <div class="sez-tit">Classifica live</div>
+  <section class="panel" id="tw-panel">
+    <table id="tw-tab" class="tw-tab">
+      <thead><tr><th class="tw-pos">#</th><th class="tw-drv">Pilota</th>
+        <th class="tw-gap">Gap</th><th class="tw-lap">Ultimo giro</th><th class="tw-tag"></th></tr></thead>
+      <tbody></tbody>
+    </table>
+    <div id="tw-nota" class="lv-nota">Durante una sessione qui compare la classifica in tempo reale:
+      posizione, gap dal leader e ultimo giro dal feed. Fuori sessione resta vuota &mdash;
+      nessun numero finto, mai.</div>
+  </section>
 </div>
 
 <style>
@@ -72,6 +89,21 @@
   .lv-conn{width:.55rem;height:.55rem;border-radius:50%;background:#5a6272;margin-left:auto}
   .lv-conn.ok{background:#3fbf6f}.lv-conn.retry{background:#f5a03c}
   .lv-nota{color:#8b93a5;font-size:.8rem;margin-top:.5rem}
+
+  /* R1 — torre di cronometraggio live */
+  .tw-tab{width:100%;border-collapse:collapse;font:600 .84rem/1.5 -apple-system,Arial}
+  .tw-tab thead th{font:700 .68rem/1.5 -apple-system,Arial;letter-spacing:.06em;text-transform:uppercase;
+    color:#6c7486;text-align:left;padding:.2rem .5rem;border-bottom:1px solid #2a333f}
+  .tw-tab td{padding:.32rem .5rem;border-bottom:1px solid #1c2430}
+  .tw-tab tbody:empty::after{content:'';display:block}
+  .tw-pos{width:2rem;color:#8b93a5;text-align:right;font-variant-numeric:tabular-nums}
+  .tw-drv{font-weight:700;white-space:nowrap}
+  .tw-col{display:inline-block;width:.5rem;height:.95rem;border-radius:2px;margin-right:.5rem;vertical-align:-.1rem}
+  .tw-gap{font-variant-numeric:tabular-nums;color:#cfd6e2;white-space:nowrap}
+  .tw-gap.tw-lead{color:#3fbf6f;font-weight:700;letter-spacing:.04em}
+  .tw-lap{font-variant-numeric:tabular-nums;color:#8b93a5;text-align:right;white-space:nowrap}
+  .tw-tag{width:2.6rem;color:#f5a03c;font-weight:700;font-size:.7rem;letter-spacing:.06em}
+  tr.tw-pit{opacity:.68}
 </style>
 
 <footer class="footer">
@@ -127,8 +159,8 @@ const FLAG = {AllClear:['verde','PISTA VERDE'], Yellow:['gialla','BANDIERA GIALL
               Red:['rossa','BANDIERA ROSSA']};
 
 async function bootMappa(g){
-  const [{ creaPista }, { creaLiveMappa }, { creaLiveClient }, cfg] = await Promise.all([
-    import('./pista.mjs?v=fase3'), import('./live_mappa.mjs'),
+  const [{ creaPista }, { creaLiveMappa }, { creaTorreTiming }, { creaLiveClient }, cfg] = await Promise.all([
+    import('./pista.mjs?v=fase3'), import('./live_mappa.mjs'), import('./live_timing.mjs'),
     import('./live_client.mjs'), import('./live_config.mjs')]);
   const geoRes = await fetch(`data/live_geo_${encodeURIComponent(g.nome)}.json`);
   if (!geoRes.ok) throw new Error(`live_geo_${g.nome}.json assente (runbook: gen_live_geo)`);
@@ -140,10 +172,14 @@ async function bootMappa(g){
   const mappa = creaLiveMappa({ canvasPista: cont.querySelector('canvas'),
                                 canvasLive: el('live-overlay'), pista, geo });
 
+  // R1: torre timing, stessi eventi della mappa (nessun secondo WebSocket)
+  const torre = creaTorreTiming({ tbody: el('tw-tab').querySelector('tbody'), nota: el('tw-nota') });
+
   const client = creaLiveClient({
     url: cfg.WS_URL,
     onEvento(e){
       mappa.applica(e);
+      torre.applica(e);
       const stato = e.type === 'track_status' ? e.status
         : (e.type === 'snapshot' ? e.track_status : null);
       if (stato){
@@ -160,6 +196,7 @@ async function bootMappa(g){
   setInterval(() => {
     const vivo = client.etaUltimoEvento() < cfg.HEARTBEAT_LIVE_S;
     mappa.setAcceso(vivo);
+    torre.setAcceso(vivo);
     const b = el('live-badge');
     if (vivo){ b.className = 'lv-badge lv-on'; b.textContent = 'LIVE'; el('live-nota').hidden = true; }
     else {
