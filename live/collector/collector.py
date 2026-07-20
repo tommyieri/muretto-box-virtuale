@@ -233,6 +233,9 @@ class FeedLive:
             raise ConnectionError("connessione non aperta entro 30s")
         conn.send("Subscribe", [TOPICS], on_invocation=self._su_messaggio)
         self.cond["connesso"] = True
+        self.cond["ingresso_ultima_connessione_ok_utc"] = datetime.now(
+            timezone.utc).isoformat(timespec="seconds")
+        self.cond["ingresso_fallimenti_consecutivi"] = 0
         log.info("connesso al feed (%s)",
                  "autenticato" if autenticato else "NON autenticato")
 
@@ -261,6 +264,12 @@ class FeedLive:
                             datetime.now(timezone.utc).isoformat(
                                 timespec="seconds"))
             except Exception as e:
+                self.cond["ingresso_fallimenti_consecutivi"] = \
+                    self.cond.get("ingresso_fallimenti_consecutivi", 0) + 1
+                self.cond["ingresso_ultimo_errore"] = {
+                    "errore": repr(e)[:200],
+                    "utc": datetime.now(timezone.utc).isoformat(
+                        timespec="seconds")}
                 log.warning("connessione fallita: %r (%s UTC)", e,
                             datetime.now(timezone.utc).isoformat(
                                 timespec="seconds"))
@@ -450,6 +459,39 @@ def gestore_ws(replica, clients, cond, primo_client=None):
 
 # ---------------------------------------------------------- /status HTTP
 
+def sanita_ingresso(cond, eta_ultimo_messaggio_s):
+    """Verdetto esplicito sull'ingresso per /status (versione minima del
+    punto 14, incidente 20/07: un ingresso morto non deve restare
+    invisibile). Tre stati, mai ambigui:
+      OK / IN RICONNESSIONE / MORTO (>=3 fallimenti consecutivi)."""
+    fallimenti = cond.get("ingresso_fallimenti_consecutivi", 0)
+    if cond.get("modalita") == "replay":
+        verdetto = "replay (nessun ingresso esterno)"
+    elif cond.get("connesso"):
+        if eta_ultimo_messaggio_s is None:
+            verdetto = ("OK: connesso, nessun messaggio ricevuto "
+                        "(normale fuori sessione)")
+        else:
+            verdetto = ("OK: connesso, ultimo messaggio ricevuto "
+                        f"{round(eta_ultimo_messaggio_s)} secondi fa")
+    elif fallimenti >= 3:
+        ultimo = (cond.get("ingresso_ultimo_errore") or {})
+        verdetto = (f"INGRESSO MORTO: {fallimenti} connessioni consecutive "
+                    f"fallite (ultimo errore: {ultimo.get('errore')})")
+    else:
+        verdetto = "non connesso (riconnessione in corso)"
+    return {
+        "verdetto": verdetto,
+        "ultimo_messaggio_s_fa": (round(eta_ultimo_messaggio_s)
+                                  if eta_ultimo_messaggio_s is not None
+                                  else None),
+        "ultima_connessione_ok_utc":
+            cond.get("ingresso_ultima_connessione_ok_utc"),
+        "fallimenti_consecutivi": fallimenti,
+        "ultimo_errore": cond.get("ingresso_ultimo_errore"),
+    }
+
+
 def avvia_status_http(porta, cond, out_dir):
     from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
@@ -473,6 +515,7 @@ def avvia_status_http(porta, cond, out_dir):
                 "modalita": cond.get("modalita"),
                 "ingress": cond.get("ingress"),
                 "connesso": cond.get("connesso", False),
+                "sanita": sanita_ingresso(cond, eta),
                 "openf1_token": token_of1.stato() if token_of1 else None,
                 "ultimo_messaggio_utc": ultimo,
                 "eta_ultimo_messaggio_s":

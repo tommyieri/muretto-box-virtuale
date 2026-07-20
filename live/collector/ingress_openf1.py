@@ -42,6 +42,11 @@ TOPICS_OPENF1 = ["v1/location", "v1/intervals", "v1/laps", "v1/position",
 
 BACKOFF_MIN_S = 1.0
 BACKOFF_MAX_S = 60.0
+# CONNACK di rifiuto dal broker (auth/ACL): NON e' un problema di rete,
+# ritentare a raffica non aiuta e puo' peggiorare lo stato lato server
+# (rate-limit). Cadenza dedicata, piu' lenta (incidente 20/07: ore di
+# rifiuti 'Client identifier not valid'/'Not authorized' con OAuth sano).
+BACKOFF_RIFIUTO_S = 300.0
 CONNESSIONE_SANA_S = 120.0
 # rinnovo proattivo: riconnessione con token fresco prima della scadenza
 MARGINE_RINNOVO_S = 300.0
@@ -49,6 +54,11 @@ ROTAZIONE_MAX_BYTE = 512 * 1024 * 1024
 ROTAZIONE_MAX_S = 6 * 3600
 
 PERCORSO_ENV_DEFAULT = "~/.openf1.env"
+
+
+class RifiutoBroker(ConnectionError):
+    """CONNACK di errore dal broker MQTT (credenziali OAuth valide):
+    autorizzazione negata lato server, non un guasto di rete."""
 
 
 # ------------------------------------------------------------ credenziali
@@ -238,7 +248,8 @@ class IngressoOpenF1:
 
         def su_connect(_c, _u, _flags, reason, _props=None):
             rc_conn["reason"] = str(reason)
-            if getattr(reason, "is_failure", False):
+            rc_conn["rifiutata"] = bool(getattr(reason, "is_failure", False))
+            if rc_conn["rifiutata"]:
                 self._chiusa.set()
             else:
                 connesso.set()
@@ -257,12 +268,24 @@ class IngressoOpenF1:
         client.connect(HOST_MQTT, PORTA_MQTT, keepalive=60)
         client.loop_start()
         try:
-            if not connesso.wait(timeout=30):
+            # attesa della CONNACK: un rifiuto esplicito interrompe SUBITO
+            # (prima si aspettava l'intero timeout mentre paho ritentava in
+            # automatico: ~6 CONNECT extra per tentativo, raffica inutile)
+            scadenza = time.monotonic() + 30.0
+            while not connesso.is_set() and not self._chiusa.is_set() \
+                    and time.monotonic() < scadenza:
+                connesso.wait(timeout=0.5)
+            if not connesso.is_set():
+                if rc_conn.get("rifiutata"):
+                    raise RifiutoBroker(f"CONNACK: {rc_conn.get('reason')}")
                 raise ConnectionError(
                     f"MQTT non connesso entro 30s ({rc_conn.get('reason')})")
             for topic in TOPICS_OPENF1:
                 client.subscribe(topic)
             self.cond["connesso"] = True
+            self.cond["ingresso_ultima_connessione_ok_utc"] = \
+                datetime.now(timezone.utc).isoformat(timespec="seconds")
+            self.cond["ingresso_fallimenti_consecutivi"] = 0
             log.info("connesso a OpenF1 MQTT, %d topic sottoscritti",
                      len(TOPICS_OPENF1))
             self._t_ultimo = time.monotonic()
@@ -282,16 +305,36 @@ class IngressoOpenF1:
             except Exception:
                 log.exception("errore in disconnessione MQTT")
 
+    def _registra_fallimento(self, e):
+        """Contatori di sanita' per /status: un ingresso morto deve essere
+        VISIBILE (incidente 20/07: ore di rifiuti senza segnale esplicito)."""
+        self.cond["ingresso_fallimenti_consecutivi"] = \
+            self.cond.get("ingresso_fallimenti_consecutivi", 0) + 1
+        self.cond["ingresso_ultimo_errore"] = {
+            "errore": repr(e)[:200],
+            "utc": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+
     def per_sempre(self):
         backoff = BACKOFF_MIN_S
         while True:
             inizio = time.monotonic()
+            rifiuto = False
             try:
                 self._connetti()
                 log.warning("connessione OpenF1 chiusa (%s UTC)",
                             datetime.now(timezone.utc).isoformat(
                                 timespec="seconds"))
+            except RifiutoBroker as e:
+                rifiuto = True
+                self._registra_fallimento(e)
+                log.critical(
+                    "broker OpenF1 RIFIUTA la connessione: %s — token OAuth "
+                    "ottenuto regolarmente: probabile stato account/"
+                    "abbonamento o incidente lato OpenF1 (bozza ticket in "
+                    "live/collector/TICKET_OPENF1.md). Riprovo tra %.0fs.",
+                    e, BACKOFF_RIFIUTO_S)
             except Exception as e:
+                self._registra_fallimento(e)
                 log.warning("connessione OpenF1 fallita: %r (%s UTC)", e,
                             datetime.now(timezone.utc).isoformat(
                                 timespec="seconds"))
@@ -299,6 +342,10 @@ class IngressoOpenF1:
             durata = time.monotonic() - inizio
             if durata >= CONNESSIONE_SANA_S:
                 backoff = BACKOFF_MIN_S
-            log.info("riconnessione OpenF1 tra %.0fs", backoff)
-            time.sleep(backoff)
-            backoff = min(backoff * 2, BACKOFF_MAX_S)
+            if rifiuto:
+                attesa = BACKOFF_RIFIUTO_S
+            else:
+                attesa = backoff
+                backoff = min(backoff * 2, BACKOFF_MAX_S)
+            log.info("riconnessione OpenF1 tra %.0fs", attesa)
+            time.sleep(attesa)
