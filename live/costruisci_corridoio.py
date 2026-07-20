@@ -14,7 +14,11 @@ Periodi pit noti:
     v1/pit — APPROSSIMAZIONE dichiarata: [date-25s, date+durata+25s]
     (v1/pit arriva a stop concluso e la semantica esatta di `date` va
     verificata alla prima sessione reale). Il corridoio prodotto va
-    SEMPRE controllato visivamente prima dell'uso (runbook).
+    SEMPRE controllato visivamente prima dell'uso (runbook);
+  - campioni pre-estratti (.json, es. da live/estrai_precostruzione.py):
+    {"punti": [[x, y], ...]} in decimi di metro, gia' filtrati sui
+    periodi pit (pre-costruzione da FastF1 anno precedente,
+    PREREG_HUN_PREP). La costruzione del corridoio resta identica.
 
 Uso:
   .venv/bin/python live/costruisci_corridoio.py REGISTRAZIONE... \
@@ -114,21 +118,61 @@ def campioni_pit_openf1(paths):
     return punti
 
 
+def scrivi_svg(dest, punti, corridoio, ref=None):
+    """SVG per la verifica visiva obbligatoria: campioni pit (punti),
+    corridoio costruito (linea), eventuale tracciato di riferimento."""
+    serie = list(punti) + list(corridoio) + \
+        ([tuple(p) for p in ref] if ref else [])
+    xs = [p[0] for p in serie]
+    ys = [p[1] for p in serie]
+    x0, y0, x1, y1 = min(xs), min(ys), max(xs), max(ys)
+    m = 0.03 * max(x1 - x0, y1 - y0)
+
+    def path(pp):
+        return " ".join(f"{'M' if i == 0 else 'L'}{x:.0f},{-y:.0f}"
+                        for i, (x, y) in enumerate(pp))
+
+    righe = [f'<svg xmlns="http://www.w3.org/2000/svg" '
+             f'viewBox="{x0 - m:.0f} {-(y1 + m):.0f} '
+             f'{x1 - x0 + 2 * m:.0f} {y1 - y0 + 2 * m:.0f}">',
+             '<rect x="-999999" y="-999999" width="9999999" '
+             'height="9999999" fill="#10151d"/>']
+    if ref:
+        righe.append(f'<path d="{path([tuple(p) for p in ref])}" '
+                     'fill="none" stroke="#3a4557" stroke-width="30"/>')
+    righe += [f'<circle cx="{x:.0f}" cy="{-y:.0f}" r="8" fill="#f5d43c" '
+              'fill-opacity="0.35"/>' for x, y in punti]
+    righe.append(f'<path d="{path(corridoio)}" fill="none" '
+                 'stroke="#3fbf6f" stroke-width="18"/>')
+    righe.append('</svg>')
+    Path(dest).write_text("\n".join(righe), encoding="utf-8")
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(
         description="Corridoio pit di un circuito da una registrazione.")
     ap.add_argument("file", nargs="+", help="registrazioni (.txt o .jsonl)")
     ap.add_argument("--circuito", required=True)
     ap.add_argument("--out", required=True)
+    ap.add_argument("--svg", help="SVG di verifica visiva (campioni + "
+                                  "corridoio + eventuale --ref)")
+    ap.add_argument("--ref", help="polilinea tracciato per lo sfondo "
+                                  "dell'SVG (<circuito>_ref_track.json)")
     args = ap.parse_args()
 
     percorsi = [Path(f) for f in args.file]
-    if all(p.suffix == ".jsonl" for p in percorsi):
+    suffissi = {p.suffix for p in percorsi}
+    if len(suffissi) > 1:
+        print("mix di formati non supportato", file=sys.stderr)
+        return 1
+    if suffissi == {".jsonl"}:
         punti, fonte = campioni_pit_openf1(percorsi), \
             "OpenF1 v1/pit (finestre approssimate: verifica visiva!)"
-    elif any(p.suffix == ".jsonl" for p in percorsi):
-        print("mix .txt/.jsonl non supportato", file=sys.stderr)
-        return 1
+    elif suffissi == {".json"}:
+        punti = [tuple(p) for percorso in percorsi
+                 for p in json.loads(percorso.read_text())["punti"]]
+        fonte = ("campioni pre-estratti (FastF1 PitInTime/PitOutTime, "
+                 "pre-costruzione: verifica visiva!)")
     else:
         punti, fonte = campioni_pit_signalr(percorsi), \
             "SignalR InPit del timing (metodo Fase 1)"
@@ -161,6 +205,11 @@ def main() -> int:
                               encoding="utf-8")
     print(f"corridoio: {len(corridoio)} punti, {lung:.0f} m, "
           f"{len(scarti)} cluster scartati -> {args.out}")
+    if args.svg:
+        ref = json.loads(Path(args.ref).read_text())["punti"] \
+            if args.ref else None
+        scrivi_svg(args.svg, punti, corridoio, ref)
+        print(f"verifica visiva -> {args.svg}")
     return 0
 
 

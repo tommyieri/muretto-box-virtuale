@@ -41,55 +41,121 @@ cd ~/muretto && .venv/bin/python live/record_session.py
 A fine sessione: Ctrl-C al registratore Mac; i file restano in
 `data/live_raw/`.
 
-## Tra FP1 e FP2 — asset del circuito nuovo (es. Ungheria)
+## REGOLA STANDARD: il live pubblico parte da FP2, MAI da FP1
 
-Tutti i passi sul Mac, poi commit + deploy.
+FP1 serve a VERIFICARE la pre-costruzione (o, se la verifica fallisce, a
+rigenerare gli asset). La mappa live si mostra al pubblico solo con asset
+verificati: **da FP2 in poi**. Nessuna eccezione.
+
+## Prima del weekend — PRE-costruzione del circuito nuovo (Mac)
+
+Gli asset si costruiscono DALL'ANNO PRECEDENTE, prima che il weekend
+inizi (metodo e soglie in PREREG_HUN_PREP.md). Per l'**Ungheria e' GIA'
+in repo**: `pista_Ungheria.json`, `live_geo_Ungheria.json`,
+`pitlane_ungheria.json`, `ungheria_ref_track.json` +
+`ungheria_precostruzione_xy.svg` (verifica visiva). Per un circuito
+futuro:
 
 ```bash
 cd ~/muretto
 
-# 1. pista del sito dalla telemetria FP1 (python3 utente, FastF1):
-python3 gen_pista_svg.py --gara Ungheria --sessione FP1
+# 1. pista del sito dalla gara dell'anno precedente (python3 utente):
+python3 gen_pista_svg.py --gara <NomeDemo> --ti "<Evento FastF1>" \
+    --cid <cid> --anno <anno-1> --sessione R
+#    (il registro NON si tocca: --ti/--cid servono proprio a questo)
 
-# 2. polilinea di riferimento raw del circuito (per il fit del viewBox):
-#    adattare live/estrai_riferimenti.py al circuito (anno 2025, gara, R)
-#    oppure usare la FP1 stessa come riferimento — output atteso:
-#    data/live_derived/ungheria_ref_track.json
-python3 live/estrai_riferimenti.py   # (adattato: vedi nota in coda)
+# 2. riferimento raw + campioni pit dell'anno precedente:
+python3 live/estrai_precostruzione.py --anno <anno-1> \
+    --gara "<Evento FastF1>" --circuito <slug>
 
-# 3. corridoio pit dalla registrazione Mac di FP1 (metodo Fase 1):
-.venv/bin/python live/costruisci_corridoio.py data/live_raw/<FP1>.txt \
-    --circuito Ungheria --out data/live_derived/pitlane_ungheria.json
-#    VERIFICA VISIVA OBBLIGATORIA (lunghezza plausibile, cluster scartati)
+# 3. corridoio pit (parametri Fase 1) + VERIFICA VISIVA OBBLIGATORIA:
+.venv/bin/python live/costruisci_corridoio.py \
+    data/live_derived/<slug>_pit_samples.json --circuito <NomeDemo> \
+    --out data/live_derived/pitlane_<slug>.json \
+    --svg data/live_derived/<slug>_precostruzione_xy.svg \
+    --ref data/live_derived/<slug>_ref_track.json
+#    guardare l'SVG: lunghezza plausibile, corridoio parallelo interno,
+#    cluster scartati = 0 (o spiegati)
 
-# 4. fit raw -> viewBox per la mappa live:
+# 4. fit raw -> viewBox; GIUDIZIO: residuo p95 <= 3 m (PREREG):
+.venv/bin/python live/gen_live_geo.py --gara <NomeDemo> \
+    --ref data/live_derived/<slug>_ref_track.json \
+    --pitlane data/live_derived/pitlane_<slug>.json
+
+# 5. commit + push. Il deploy pubblico (Vercel) avviene col merge su main.
+```
+
+## Venerdi', dopo FP1 — SOLO verifica di allineamento (p95 <= 3 m)
+
+Appena FastF1 espone i dati FP1 (di norma poco dopo la sessione):
+
+```bash
+python3 live/verifica_precostruzione.py --anno 2026 \
+    --gara "Hungarian Grand Prix" --sessione FP1 \
+    --ref data/live_derived/ungheria_ref_track.json
+```
+
+- **GO** (p95 ≤ 3 m): gli asset pre-costruiti restano cosi' come sono;
+  committare il JSON di verifica e basta.
+- **NO-GO**: rigenerazione da FP1 (sezione sotto), da chiudere PRIMA
+  di FP2.
+
+## Se la verifica FP1 fallisce — rigenerazione da FP1 (obiettivo: 30 min)
+
+Stessi strumenti della pre-costruzione, sessione FP1 2026 al posto della
+gara dell'anno prima. La cache FastF1 e' gia' calda dopo la verifica.
+
+```bash
+cd ~/muretto
+
+# 1. (~5 min) pista dalla FP1:
+python3 gen_pista_svg.py --gara Ungheria --ti "Hungarian Grand Prix" \
+    --cid hungaroring --sessione FP1
+
+# 2. (~5 min) riferimento + campioni pit dalla FP1:
+python3 live/estrai_precostruzione.py --anno 2026 \
+    --gara "Hungarian Grand Prix" --circuito ungheria --sessione FP1
+
+# 3. (~3 min) corridoio: dai campioni FP1 se >= 200, ALTRIMENTI dalla
+#    registrazione Mac di FP1 (metodo Fase 1, InPit del timing);
+#    se entrambi scarsi, resta il corridoio dell'anno prima (DICHIARARLO):
+.venv/bin/python live/costruisci_corridoio.py \
+    data/live_derived/ungheria_pit_samples.json --circuito Ungheria \
+    --out data/live_derived/pitlane_ungheria.json \
+    --svg data/live_derived/ungheria_precostruzione_xy.svg \
+    --ref data/live_derived/ungheria_ref_track.json
+#    (fallback registrazione Mac: stesso comando con data/live_raw/<FP1>.txt)
+#    VERIFICA VISIVA OBBLIGATORIA sull'SVG
+
+# 4. (~2 min) fit raw -> viewBox; giudizio p95 <= 3 m:
 .venv/bin/python live/gen_live_geo.py --gara Ungheria \
     --ref data/live_derived/ungheria_ref_track.json \
     --pitlane data/live_derived/pitlane_ungheria.json
-#    controllare residuo_medio_vb (~1-2 = ok)
 
-# 5. collaudo locale contro il replay della FP1 registrata:
+# 5. (~5 min) collaudo locale contro il replay della FP1 registrata:
 .venv/bin/python live/collector/collector.py --replay data/live_raw/<FP1>.txt \
     --speed 10 --buffer 0 &
 ( cd demo && python3 -m http.server 8901 & )
 open "http://localhost:8901/live.html?ws=ws://127.0.0.1:8765"
 
-# 6. commit + push + deploy:
+# 6. (~5 min) commit + push + merge (PO) + deploy collettore:
 git add demo/data/pista_Ungheria.json demo/data/live_geo_Ungheria.json \
-    data/live_derived/pitlane_ungheria.json data/live_derived/ungheria_ref_track.json
-git commit -m "live/: asset circuito Ungheria (pista FP1, corridoio, viewBox)"
+    data/live_derived/pitlane_ungheria.json \
+    data/live_derived/ungheria_ref_track.json \
+    data/live_derived/ungheria_pit_samples.json \
+    data/live_derived/ungheria_precostruzione_xy.svg
+git commit -m "live/: asset Ungheria rigenerati da FP1 (verifica p95 fallita)"
 git push
 ssh muretto@167.233.236.186 'sh muretto/live/collector/deploy.sh'
-
-# 7. attivare l'in_pit geometrico sul server:
-ssh muretto@167.233.236.186 'echo "PITLANE_ARGS=--pitlane data/live_derived/pitlane_ungheria.json" > ~/.muretto-live.env && sudo systemctl restart muretto-live'
 ```
 
-Nota al passo 2: `estrai_riferimenti.py` e' nato per Spa (Belgio 2025);
-per un altro circuito va copiato/parametrizzato (anno/gara). In
-alternativa rapida il fit puo' usare come riferimento il giro pulito
-della FP1 2026 appena estratto da `gen_pista_svg` (stessa fonte del
-viewBox: fit quasi perfetto per costruzione, ma va DICHIARATO nel commit).
+## Attivazione dell'in_pit geometrico sul server (prima di FP2)
+
+Col corridoio del weekend in repo e deployato sul VPS:
+
+```bash
+ssh muretto@167.233.236.186 'echo "PITLANE_ARGS=--pitlane data/live_derived/pitlane_ungheria.json" > ~/.muretto-live.env && sudo systemctl restart muretto-live'
+```
 
 ## Dopo il weekend — validazione Fase 2 (KPI in FASE2_PREREG addendum)
 
