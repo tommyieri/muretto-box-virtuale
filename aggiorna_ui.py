@@ -58,6 +58,8 @@ def main():
          os.path.join('demo', 'data', 'schede_2026.json')),
         ('pitstops', [sys.executable, 'gen_pitstops.py'] + con_zip,
          os.path.join('demo', 'data', 'pitstops_2026.json')),
+        ('griglie', [sys.executable, 'gen_grids.py'],
+         os.path.join('demo', 'data', 'grids.json')),
         ('foto', [sys.executable, 'gen_foto.py'], os.path.join('demo', 'data', 'foto_credits.json')),
     ]
     if args.gara:
