@@ -43,7 +43,8 @@ from inspect_recording import parse_timestamp  # noqa: E402
 log = logging.getLogger("replay")
 
 CAMPI_TIMING = ("pos", "gap", "in_pit", "last_lap",
-                "best_lap", "interval", "sectors", "micro")
+                "best_lap", "interval", "sectors", "micro",
+                "compound", "tyre_age")   # Fase C: stint gomma (SignalR)
 
 
 def _vista_driver(stato, auto):
@@ -155,7 +156,9 @@ def eventi_da_messaggi(flusso, stato=None):
                 for e in spingi(evento_frame(frames[t_frame]), t_frame):
                     yield e
 
-        elif topic == "TimingData":
+        elif topic in ("TimingData", "TimingAppData"):
+            # TimingAppData porta gli stint gomma (Fase C): stesso percorso di
+            # diff di TimingData -> timing_update coi campi compound/tyre_age.
             auto_toccate = list(payload.get("Lines", {}).keys())
             prima = {a: stato.vista_pilota(a) for a in auto_toccate}
             stato.aggiorna(topic, payload, ts)
