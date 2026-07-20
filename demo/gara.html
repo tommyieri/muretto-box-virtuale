@@ -125,10 +125,10 @@
 <script type="module">
 // ?v= su TUTTI i moduli: senza, un deploy puo' servire HTML nuovo con moduli .mjs vecchi
 // dalla cache del browser (pagina mista = sintomi di sync fantasma). Bump a ogni release.
-import { evaluatePit } from './pitscenario.mjs?v=200726a';
-import { treScenariPit, bandaCircuito } from './pitbande.mjs?v=200726a';
-import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs?v=200726a';
-const BUILD = '200726a';
+import { evaluatePit } from './pitscenario.mjs?v=200726b';
+import { treScenariPit, bandaCircuito } from './pitbande.mjs?v=200726b';
+import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs?v=200726b';
+const BUILD = '200726b';
 const el = id => document.getElementById(id);
 const ROW_H = 44;
 let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams={}, pitloss={}, plMeta={}, neutral={}, teamCol={}, calendario=null;
@@ -157,15 +157,16 @@ function hookWaitlist(){
 // niente bande (Monaco/circuito non informativo) o sotto neutralizzazione -> ritorna ''
 // e il pannello resta sulla risposta base a pace piatta.
 //
-// FLAG DORMIENTE (default OFF, come WAITLIST_ATTIVA e il gancio banda-zero in produzione).
-// Il MECCANISMO e' completo e verificato (banda-zero bit-identica, interruttori di
-// sicurezza). La MAGNITUDINE e' stata VALIDATA in Fase B (replay 2026): il doppio
-// conteggio del gancio (M0, BIAS +0.42 s/giro) e' corretto dall'adapter M1 in
-// pitbande.mjs (rate*(A-A0), BIAS +0.05, MAE 0.57->0.35). Resta OFF solo perche'
-// l'accensione e' decisione del PO (non piu' un blocco tecnico). Accensione = questa riga.
-const SCENARI_ATTIVI = false;
+// FLAG SCENARI (ACCESO su decisione PO, 2026-07-20). Entrambi i cancelli tecnici di
+// Fase B sono passati: MAGNITUDINE (adapter M1 in pitbande.mjs, doppio conteggio del
+// gancio corretto: BIAS +0.42 -> +0.05, MAE 0.57->0.35) e CALIBRAZIONE (la banda M1
+// contiene il degrado cumulato osservato sui prossimi giri al 43.1% >= 40%). Il gancio
+// resta congelato a banda-zero in produzione; qui, nel pannello pit della demo, gli
+// scenari sono ETICHETTATI 'SCENARI · banda storica, non una previsione'. Interruttori
+// di sicurezza attivi (niente bande/Monaco/sotto SC-VSC -> risposta base a pace piatta).
+const SCENARI_ATTIVI = true;
 function scenariDegrado(L, pitL, loss, present, neutro){
-  if(!SCENARI_ATTIVI) return '';                         // dormiente finche' Fase B non valida la magnitudine
+  if(!SCENARI_ATTIVI) return '';                         // spegnibile (torna alla risposta base)
   if(neutro) return '';                                  // sotto SC/VSC il degrado e' sospeso
   const bc = bandaCircuito(bandeClim, race.gara);
   if(!bc) return '';                                     // nessuna banda informativa qui
@@ -313,7 +314,7 @@ async function drawPista(gara){
     <div class="spenta">Pallini spenti durante l&rsquo;esplorazione pit:<br>
       il replay mostra la gara com&rsquo;e&rsquo; andata davvero, il motore risponde al controfattuale per-giro.</div>`;
   try {
-    const { creaPista } = await import('./pista.mjs?v=200726a');
+    const { creaPista } = await import('./pista.mjs?v=200726b');
     pista = await creaPista({ canvas: el('pista').querySelector('canvas'), url: `data/pista_${encodeURIComponent(gara)}.json` });
     if (selDrv){ pista.setSpento(true); el('pista').classList.add('pit-attivo'); }
     pistaFrame(clock.position);
