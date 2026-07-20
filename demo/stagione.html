@@ -63,10 +63,17 @@
   </div>
 </footer>
 
+<style>
+  .gpcard-links{display:flex;gap:.5rem;margin-top:.55rem}
+  .gpcard-links a{font:700 .72rem/1 -apple-system,Arial;color:#e80d2e;text-decoration:none;
+    padding:.32rem .6rem;border:1px solid #2a333f;border-radius:6px}
+  .gpcard-links a:hover{background:#1c2430}
+</style>
 <script type="module">
 const el = id => document.getElementById(id);
 const MESE = d => d.toLocaleDateString('it-IT', { day:'numeric', month:'long' });
 let teamCol = {};
+let qualiSet = new Set();   // gare con qualifica pubblicata (R2b-auto)
 
 // bandiera emoji dall'alpha2 f1db (dato, non mappa a mano)
 const bandiera = a2 => a2 ? String.fromCodePoint(...[...a2.toUpperCase()].map(c=>0x1F1A5+c.charCodeAt(0))) : '';
@@ -79,7 +86,15 @@ function cardGara(g, inDemo, corsa){
   if (inDemo){
     const w = g.vincitore;
     const win = w ? `<div class="win"><span class="tdot" style="background:${teamCol[w.team]||'var(--dim)'}"></span><b>${w.sigla}</b><span class="lab">vincitore</span></div>` : '';
-    return `<a class="gpcard" href="gara.html?g=${encodeURIComponent(g.gara_demo)}">${testa}${win}</a>`;
+    const gd = encodeURIComponent(g.gara_demo);
+    if (qualiSet.has(g.gara_demo)){   // gara + qualifica: due destinazioni
+      return `<div class="gpcard gpcard-multi">${testa}${win}
+        <div class="gpcard-links">
+          <a href="gara.html?g=${gd}">Gara &rarr;</a>
+          <a href="quali.html?g=${gd}">Qualifiche &rarr;</a>
+        </div></div>`;
+    }
+    return `<a class="gpcard" href="gara.html?g=${gd}">${testa}${win}</a>`;
   }
   if (corsa)   // corsa ma non (ancora) pubblicata in demo
     return `<div class="gpcard arrivo">${testa}<div class="win"><span class="lab">dati in arrivo</span></div></div>`;
@@ -108,6 +123,8 @@ async function boot(){
   const cal = await (await fetch('data/calendario_2026.json')).json();
   const manifest = await (await fetch('data/manifest.json')).json();
   try { teamCol = await (await fetch('team_colori.json')).json(); } catch(e){ teamCol={}; }
+  try { const qm = await (await fetch('data/quali_manifest.json')).json();
+        qualiSet = new Set((qm.disponibili||[]).map(v=>v.gara)); } catch(e){ qualiSet = new Set(); }
   const inDemo = new Set(manifest.map(r=>r.gara));
   const oggi = new Date(); oggi.setHours(0,0,0,0);
 

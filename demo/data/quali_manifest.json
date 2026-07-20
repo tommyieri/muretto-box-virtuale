@@ -1,0 +1,16 @@
+{
+ "disponibili": [
+  {
+   "gara": "Belgio",
+   "evento": "GP del Belgio",
+   "data": "2026-07-19",
+   "file": "quali_Belgio.json"
+  }
+ ],
+ "ultima": {
+  "gara": "Belgio",
+  "evento": "GP del Belgio",
+  "data": "2026-07-19",
+  "file": "quali_Belgio.json"
+ }
+}

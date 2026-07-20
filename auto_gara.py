@@ -46,14 +46,18 @@ def sh(cmd, check=True):
     return r.returncode
 
 
-def raw_head(ti):
+def raw_head_sess(ti, sess):
     url = (f'https://raw.githubusercontent.com/TracingInsights/2026/main/'
-           f'{urllib.parse.quote(ti)}/Race/session_laptimes.json')
+           f'{urllib.parse.quote(ti)}/{sess}/session_laptimes.json')
     req = urllib.request.Request(url, method='HEAD', headers={'User-Agent': 'muretto'})
     try:
         urllib.request.urlopen(req, timeout=30); return True
     except Exception:
         return False
+
+
+def raw_head(ti):
+    return raw_head_sess(ti, 'Race')
 
 
 def golden():
@@ -118,6 +122,48 @@ def wave_nuove():
     return True
 
 
+# --------------------------------------------- ONDATA QUALI: qualifica nuova
+# Stessa logica delle gare, stessa fonte (TracingInsights raw su GitHub, VPS-ok):
+# quando la sessione Qualifying di un GP e' online e non l'abbiamo ancora
+# pubblicata, gen_quali_ti.py la trasforma in demo/data/quali_<gara>.json e
+# aggiorna il manifest. NON tocca il motore: nessun golden qui (sono dati di
+# classifica, non simulazione). Idempotente: gia' pubblicate -> salta.
+def _quali_gia_pubblicate():
+    p = os.path.join(ROOT, 'demo', 'data', 'quali_manifest.json')
+    try:
+        man = json.load(open(p))
+    except OSError:
+        return set()
+    return {v.get('gara') for v in man.get('disponibili', [])}
+
+
+def wave_quali():
+    mappa = json.load(open(os.path.join(ROOT, MAPPA)))
+    gia = _quali_gia_pubblicate()
+    nuove = []
+    for ti, m in mappa.items():
+        if m['nome'] in gia:
+            continue
+        if raw_head_sess(ti, 'Qualifying'):
+            nuove.append((ti, m['nome'], m.get('titolo', m['nome'])))
+    if not nuove:
+        log('ondata quali: nessuna qualifica nuova online.'); return False
+    log(f'ondata quali: qualifiche nuove -> {[n for _, n, _ in nuove]}')
+    prodotte = []
+    for ti, nome, titolo in nuove:
+        # check=False: una sessione ancora parziale esce non-zero senza scrivere,
+        # e riproveremo al prossimo giro (mai una quali a meta').
+        rc = sh([PY, 'gen_quali_ti.py', '--gara', nome, '--ti', ti,
+                 '--evento', titolo], check=False)
+        if rc == 0:
+            prodotte.append(nome)
+    if not prodotte:
+        log('ondata quali: sessioni ancora parziali, riprovo al prossimo giro.'); return False
+    commit_push('auto: qualifiche pubblicate ' + ', '.join(prodotte)
+                + ' (fonte TracingInsights)')
+    return True
+
+
 # ------------------------------------------------------ ONDATA 2: release f1db
 def _github_latest():
     req = urllib.request.Request('https://api.github.com/repos/f1db/f1db/releases/latest',
@@ -172,7 +218,16 @@ def _bandiere_testo():
 
 if __name__ == '__main__':
     log(f'avvio {"[DRY-RUN] " if DRY else ""}{"[PUSH] " if PUSH else ""}')
+    # Gare PRIME (automazione provata, prioritaria). Le qualifiche DOPO e
+    # isolate: un errore sulle quali non deve mai fermare le gare.
     fatto1 = wave_nuove()
     fatto2 = wave_f1db()
-    if not (fatto1 or fatto2):
+    try:
+        fattoq = wave_quali()
+    except SystemExit:
+        raise
+    except Exception as e:
+        log(f"ondata quali: errore ({e!r}) — le gare sono gia state gestite, proseguo.")
+        fattoq = False
+    if not (fatto1 or fatto2 or fattoq):
         log('niente da fare: demo allineata.')

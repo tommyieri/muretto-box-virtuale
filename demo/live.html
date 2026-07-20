@@ -175,6 +175,12 @@ async function bootMappa(g){
   // R2: torre timing, stessi eventi della mappa (nessun secondo WebSocket)
   const torre = creaTorreTiming({ lista: el('tw-list'), nota: el('tw-nota') });
 
+  // R2b: dataset PERSISTENTE dell'ultima qualifica (dati veri da FastF1,
+  // gen_quali.py). Serve a NON mostrare una pagina vuota fuori sessione:
+  // quando il feed e' muto, la torre mostra l'ultima quali salvata; il
+  // live la sostituisce appena una sessione parte. Se manca, torre vuota.
+  const ultimaQuali = await caricaUltimaQuali();
+
   const client = creaLiveClient({
     url: cfg.WS_URL,
     onEvento(e){
@@ -193,17 +199,62 @@ async function bootMappa(g){
 
   // LIVE / fuori sessione: derivato dal FLUSSO (heartbeat eventi <30 s),
   // non da un calendario — verbale: session_status assente dall'ingresso OpenF1.
+  // Fuori sessione: se c'e' una qualifica salvata, la torre la mostra (R2b);
+  // altrimenti resta vuota. La mappa resta sempre vuota fuori sessione.
+  let statoTorre = null;
   setInterval(() => {
     const vivo = client.etaUltimoEvento() < cfg.HEARTBEAT_LIVE_S;
     mappa.setAcceso(vivo);
-    torre.setAcceso(vivo);
     const b = el('live-badge');
-    if (vivo){ b.className = 'lv-badge lv-on'; b.textContent = 'LIVE'; el('live-nota').hidden = true; }
-    else {
+    if (vivo){
+      if (statoTorre !== 'live'){       // passaggio a live: pulisci il persistente
+        statoTorre = 'live';
+        torre.setAcceso(false); torre.setAcceso(true);
+      }
+      b.className = 'lv-badge lv-on'; b.textContent = 'LIVE';
+      el('live-nota').hidden = true;
+    } else if (ultimaQuali){
+      if (statoTorre !== 'quali'){       // passaggio a persistente: mostra l'ultima quali
+        statoTorre = 'quali';
+        torre.setAcceso(false);          // svuota lo stato live
+        torre.setAcceso(true);
+        torre.applica(qualiToSnapshot(ultimaQuali));
+      }
+      b.className = 'lv-badge lv-off';
+      b.textContent = 'ULTIMA QUALIFICA — ' + (ultimaQuali.evento || ultimaQuali.gara || '');
+      el('live-nota').hidden = false; el('live-pista-stato').hidden = true;
+    } else {
+      if (statoTorre !== 'vuota'){ statoTorre = 'vuota'; torre.setAcceso(false); }
       b.className = 'lv-badge lv-off'; b.textContent = 'NESSUNA SESSIONE IN CORSO';
       el('live-nota').hidden = false; el('live-pista-stato').hidden = true;
     }
   }, 1000);
+}
+
+// R2b: carica l'ultima qualifica salvata (manifest -> file). null se assente.
+async function caricaUltimaQuali(){
+  try {
+    const man = await (await fetch('data/quali_manifest.json')).json();
+    const u = man && man.ultima;
+    if (!u || !u.file) return null;
+    const q = await (await fetch('data/' + u.file)).json();
+    return (q && Array.isArray(q.piloti) && q.piloti.length) ? q : null;
+  } catch (_) { return null; }
+}
+
+// R2b: converte la quali salvata in uno snapshot per la torre (stesso
+// vocabolario del live). Micro-settori assenti nel persistente (sono un
+// artefatto del feed live): qui ci sono i TEMPI di settore.
+function qualiToSnapshot(q){
+  const driver_list = {}, cars = {};
+  for (const p of (q.piloti || [])){
+    driver_list[p.num] = { sigla: p.sigla, colore: p.colore };
+    cars[p.num] = { pos: p.pos, gap: p.gap || '', last_lap: null,
+                    best_lap: p.best || null, in_pit: false,
+                    sectors: Array.isArray(p.sectors) ? p.sectors : [], micro: [] };
+  }
+  return { type: 'snapshot', driver_list, cars,
+           track_status: null, session_status: null };
 }
 boot();
 </script>
