@@ -38,7 +38,13 @@ Regola: i dati vengono da f1db/TI, MAI trascritti a mano. Ogni griglia/pole va v
      (-21pt) -> banda statica meglio della live-aggiornata (conferma arco chiuso). Vedi
      REPORT_FASEB2.md. Blocco tecnico alla visibilita' SCIOLTO su tutti i fronti;
      accensione SCENARI_ATTIVI = solo decisione PO.
-   - [poi] Fase C: innesto live + shadow-run HUN (dip.: MQTT OpenF1 rotto dal 19/07).
+   - [in corso 20/07] Fase C: shadow-run live. CORREZIONE PIANO: l'MQTT rotto NON e' il
+     blocco del degrado — compound+eta-gomma arrivano dal SignalR (TimingAppData.Stints),
+     che gia' registriamo. FATTIBILITA' PROVATA: prototipo decodifica gli stint dalla
+     registrazione British, 21/21 piloti combaciano con l'archivio. Vedi REPORT_FASEC.md.
+     RESTA: (a) decodifica stint nel collettore = produzione, PO; (b) shadow-run durante
+     HUN (calcola+registra, non pubblica; KPI in PREREG_SESSIONE_FASEC.md); (c) pubblicaz. = PO.
+   - [accensione demo fatta 20/07: SCENARI_ATTIVI=true, PR #64 mergiata]
 
 ## Principi
 - La griglia non deve mai svuotarsi: all'ultimo giro si vedono tutti e 22.
