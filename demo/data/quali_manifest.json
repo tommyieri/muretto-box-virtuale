@@ -5,12 +5,66 @@
    "evento": "GP del Belgio",
    "data": "2026-07-19",
    "file": "quali_Belgio.json"
+  },
+  {
+   "gara": "Australia",
+   "evento": "GP d'Australia",
+   "data": null,
+   "file": "quali_Australia.json"
+  },
+  {
+   "gara": "Cina",
+   "evento": "GP di Cina",
+   "data": null,
+   "file": "quali_Cina.json"
+  },
+  {
+   "gara": "Giappone",
+   "evento": "GP del Giappone",
+   "data": null,
+   "file": "quali_Giappone.json"
+  },
+  {
+   "gara": "Miami",
+   "evento": "GP di Miami",
+   "data": null,
+   "file": "quali_Miami.json"
+  },
+  {
+   "gara": "Canada",
+   "evento": "GP del Canada",
+   "data": null,
+   "file": "quali_Canada.json"
+  },
+  {
+   "gara": "Monaco",
+   "evento": "GP di Monaco",
+   "data": null,
+   "file": "quali_Monaco.json"
+  },
+  {
+   "gara": "Spagna",
+   "evento": "GP di Spagna — Barcellona",
+   "data": null,
+   "file": "quali_Spagna.json"
+  },
+  {
+   "gara": "Austria",
+   "evento": "GP d'Austria",
+   "data": null,
+   "file": "quali_Austria.json"
+  },
+  {
+   "gara": "Gran Bretagna",
+   "evento": "GP di Gran Bretagna",
+   "data": null,
+   "file": "quali_Gran Bretagna.json"
   }
  ],
  "ultima": {
-  "gara": "Belgio",
-  "evento": "GP del Belgio",
-  "data": "2026-07-19",
-  "file": "quali_Belgio.json"
+  "gara": "Gran Bretagna",
+  "evento": "GP di Gran Bretagna",
+  "data": null,
+  "file": "quali_Gran Bretagna.json"
  }
 }
