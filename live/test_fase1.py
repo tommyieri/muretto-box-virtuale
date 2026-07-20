@@ -116,6 +116,28 @@ def test_stint_da_timingappdata():
     assert stato.vista_pilota("99")["compound"] is None
 
 
+@caso("Fase C: pace_base live — semantica kernel (stint, verdi, soglia 3)")
+def test_pace_base_live():
+    from pace_base_live import PaceBaseLive, fuel_corr
+    N = 52
+    pb = PaceBaseLive(N)
+    # 2 giri verdi -> ancora None (soglia 3)
+    pb.osserva("4", 3, 90.0, 1)
+    pb.osserva("4", 4, 90.5, 1)
+    assert pb.pace("4") is None, pb.pace("4")
+    # 3o giro verde -> mediana dei 3 fuel-corretti
+    pb.osserva("4", 5, 91.0, 1)
+    atteso = sorted(fuel_corr(t, l, N) for t, l in [(90.0, 3), (90.5, 4), (91.0, 5)])[1]
+    assert abs(pb.pace("4") - atteso) < 1e-9, (pb.pace("4"), atteso)
+    # giro neutralizzato: escluso dalla mediana (verde-only, come il kernel)
+    prima = pb.pace("4")
+    pb.osserva("4", 6, 200.0, 1, neutralized=True)
+    assert pb.pace("4") == prima, "il giro neutralizzato non deve entrare"
+    # nuovo stint -> segmento azzerato -> di nuovo None finche' <3
+    pb.osserva("4", 7, 89.0, 2)
+    assert pb.pace("4") is None, "nuovo stint deve azzerare il segmento"
+
+
 @caso("Fase C: timing_update emette compound/tyre_age SOLO quando cambiano")
 def test_stint_diff_emesso():
     from replay import eventi_da_messaggi
