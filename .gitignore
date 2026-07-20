@@ -21,3 +21,4 @@ staging_gara/
 data/auto_gara.log
 data/auto_gara.launchd.log
 data/.auto_gara.lock
+data/live_raw/
