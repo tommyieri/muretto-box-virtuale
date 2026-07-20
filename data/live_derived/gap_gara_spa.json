@@ -1,0 +1,15 @@
+{
+ "_nota": "buchi di feed da live/estrai_gap.py (definizioni in PREREG_HUN_PREP.md)",
+ "esiti": [
+  {
+   "file": "/Users/tommi/muretto/data/live_raw/2026-07-19_14-53-28.txt",
+   "sessione_attiva_utc": [
+    "2026-07-19 12:53:27",
+    "2026-07-19 14:32:20"
+   ],
+   "messaggi": 70205,
+   "soglia_s": 10.0,
+   "buchi": []
+  }
+ ]
+}
