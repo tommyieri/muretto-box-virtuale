@@ -10,7 +10,7 @@
 // v1.5 = SOLO MECCANISMO. La banda e' un INPUT (per i test, sintetica e arbitraria). Da
 // dove vengano i valori veri e' v2/v3. Nessun degrado stimato qui; i 4 campi strategici
 // (undercut/overcut/delta_strategia/aria_libera) NON vengono toccati.
-import { simulate } from './demo/engine.mjs';
+import { simulate } from './engine.mjs';
 
 // --- FORMA DI ACCUMULO (isolata e sostituibile: domani lineare+log senza cambiare l'API) ---
 // v1.5: LINEARE. penalita(giro-di-stint) = rate * max(0, tyre_age - L_RIF).

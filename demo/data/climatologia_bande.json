@@ -1,0 +1,292 @@
+{
+  "_meta": {
+    "fonte": "data/climatologia_degrado.csv (righe INFORMATIVA)",
+    "generatore": "gen_bande_demo.py",
+    "nota": "bande = [min q25, centrale mediana, max q75] del degrado marginale storico pesato al 2026 (s/giro). SCENARI, non previsioni. Compound assente => il browser usa [0,0,0] (nessun degrado). Monaco assente: degrado non misurabile (track-position), gancio banda-zero.",
+    "unita": "s/giro"
+  },
+  "gara2cid": {
+    "Australia": "melbourne",
+    "Cina": "shanghai",
+    "Giappone": "suzuka",
+    "Miami": "miami",
+    "Canada": "montreal",
+    "Monaco": "monaco",
+    "Spagna": "catalunya",
+    "Austria": "spielberg",
+    "Gran Bretagna": "silverstone",
+    "Belgio": "spa-francorchamps"
+  },
+  "per_cid": {
+    "austin": {
+      "HARD": [
+        -0.0042,
+        0.0364,
+        0.0626
+      ],
+      "MEDIUM": [
+        0.0302,
+        0.0494,
+        0.0683
+      ],
+      "SOFT": [
+        0.0262,
+        0.0398,
+        0.068
+      ]
+    },
+    "baku": {
+      "HARD": [
+        -0.0181,
+        0.0056,
+        0.0264
+      ],
+      "MEDIUM": [
+        -0.0919,
+        0.0227,
+        0.0827
+      ]
+    },
+    "catalunya": {
+      "HARD": [
+        0.0891,
+        0.1189,
+        0.1543
+      ],
+      "MEDIUM": [
+        0.062,
+        0.1317,
+        0.181
+      ],
+      "SOFT": [
+        0.037,
+        0.106,
+        0.2069
+      ]
+    },
+    "hungaroring": {
+      "HARD": [
+        0.0373,
+        0.0638,
+        0.0973
+      ],
+      "MEDIUM": [
+        0.0098,
+        0.0378,
+        0.0675
+      ]
+    },
+    "interlagos": {
+      "MEDIUM": [
+        0.0583,
+        0.0743,
+        0.0896
+      ],
+      "SOFT": [
+        0.0624,
+        0.1065,
+        0.1651
+      ]
+    },
+    "las-vegas": {
+      "HARD": [
+        -0.0136,
+        0.0124,
+        0.0504
+      ],
+      "MEDIUM": [
+        -0.0264,
+        0.0227,
+        0.1394
+      ]
+    },
+    "lusail": {
+      "HARD": [
+        -0.0394,
+        0.0118,
+        0.069
+      ],
+      "MEDIUM": [
+        -0.0672,
+        -0.0194,
+        0.0084
+      ]
+    },
+    "marina-bay": {
+      "HARD": [
+        0.0429,
+        0.0631,
+        0.0753
+      ],
+      "MEDIUM": [
+        -0.0063,
+        0.0214,
+        0.059
+      ],
+      "SOFT": [
+        -0.0385,
+        0.0041,
+        0.0987
+      ]
+    },
+    "melbourne": {
+      "HARD": [
+        0.0125,
+        0.0522,
+        0.0793
+      ],
+      "MEDIUM": [
+        -0.0746,
+        -0.0307,
+        0.0312
+      ]
+    },
+    "mexico-city": {
+      "HARD": [
+        0.0229,
+        0.034,
+        0.0553
+      ],
+      "MEDIUM": [
+        0.0433,
+        0.0627,
+        0.0812
+      ],
+      "SOFT": [
+        0.0549,
+        0.0616,
+        0.0908
+      ]
+    },
+    "miami": {
+      "HARD": [
+        0.0228,
+        0.0507,
+        0.0667
+      ],
+      "MEDIUM": [
+        0.0257,
+        0.0526,
+        0.0632
+      ]
+    },
+    "montreal": {
+      "HARD": [
+        0.0042,
+        0.0203,
+        0.0394
+      ],
+      "MEDIUM": [
+        -0.0242,
+        0.0099,
+        0.0869
+      ],
+      "SOFT": [
+        -0.1139,
+        -0.0277,
+        0.0018
+      ]
+    },
+    "monza": {
+      "HARD": [
+        0.0102,
+        0.0254,
+        0.0696
+      ],
+      "MEDIUM": [
+        0.0057,
+        0.0259,
+        0.0608
+      ]
+    },
+    "shanghai": {
+      "HARD": [
+        -0.0056,
+        0.0173,
+        0.0397
+      ],
+      "MEDIUM": [
+        0.0406,
+        0.1156,
+        0.1517
+      ]
+    },
+    "silverstone": {
+      "HARD": [
+        0.0411,
+        0.0592,
+        0.0888
+      ],
+      "MEDIUM": [
+        0.0285,
+        0.0491,
+        0.0746
+      ]
+    },
+    "spa-francorchamps": {
+      "HARD": [
+        0.0172,
+        0.064,
+        0.0783
+      ],
+      "MEDIUM": [
+        0.0362,
+        0.0946,
+        0.1421
+      ],
+      "SOFT": [
+        0.0402,
+        0.0817,
+        0.1467
+      ]
+    },
+    "spielberg": {
+      "HARD": [
+        0.0626,
+        0.0833,
+        0.1027
+      ],
+      "MEDIUM": [
+        0.0739,
+        0.0961,
+        0.1124
+      ]
+    },
+    "suzuka": {
+      "HARD": [
+        0.0131,
+        0.0305,
+        0.0603
+      ],
+      "MEDIUM": [
+        0.0263,
+        0.0478,
+        0.0703
+      ]
+    },
+    "yas-marina": {
+      "HARD": [
+        0.0297,
+        0.0475,
+        0.0693
+      ],
+      "MEDIUM": [
+        0.0677,
+        0.1004,
+        0.1317
+      ]
+    },
+    "zandvoort": {
+      "HARD": [
+        0.0178,
+        0.0291,
+        0.0512
+      ],
+      "MEDIUM": [
+        0.0314,
+        0.0492,
+        0.0571
+      ]
+    }
+  }
+}

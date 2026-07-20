@@ -25,9 +25,12 @@ Regola: i dati vengono da f1db/TI, MAI trascritti a mano. Ogni griglia/pole va v
 
 8. [in corso] Degrado nel simulatore live — vedi PIANO_DEGRADO_LIVE.md.
    - [fatto] Passo 0: Monaco fuori (CID_NO_DEGRADO). K2 42.3->43.7%, K3 -> PASSA.
-   - [prossimo] Fase A: scenari dal prior nel pannello pit della demo (Ungheria),
-     etichettati come scenari; gate = K4 su HUN + verifica UI.
-   - [poi] Fase B: cancello copertura-rolling prossimi-5-giri in replay (prereg nuova).
+   - [fatto 20/07] Fase A: MECCANISMO scenari nel pannello pit (gancio in demo/, pitbande.mjs,
+     bande JSON). Gate PASS sul meccanismo. VISIBILITA' DORMIENTE (SCENARI_ATTIVI=false):
+     la riesecuzione ha trovato un DOPPIO CONTEGGIO del degrado nel gancio (rate*(eta-1)
+     sopra pace_base gia' degradata, ~0.5-0.7s). Vedi REPORT_FASE_A.md.
+   - [poi] Fase B (AFFILATA): prima la MAGNITUDINE corretta della proiezione da pace_base
+     (rate*(A-A0)?), poi copertura-rolling prossimi-5-giri in replay (prereg nuova).
    - [poi] Fase C: innesto live + shadow-run HUN (dip.: MQTT OpenF1 rotto dal 19/07).
 
 ## Principi

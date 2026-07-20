@@ -23,6 +23,8 @@ Fattuale, aggiornato al 15/07/2026 (consolidamento pre-Spa, Blocco A).
 2. `node test_b.mjs` — dalla root (golden JS 449/449, sotto 1e-9).
 3. `node test_pit.mjs` — **da dentro `demo/`** (golden pit 11/11).
 4. `node test_degrado_hook.mjs` — dalla root (gancio v1.5: banda-zero bit-identica).
+   NB: dalla Fase A il gancio vive in `demo/degrado_hook.mjs` (servibile dal browser); i
+   test root lo importano da `./demo/degrado_hook.mjs`. Logica invariata (golden lo prova).
 5. `node check_banda_gancio.mjs` — dalla root (banda scelta = input valido per il gancio).
 6. `node test_f1db_checksum.mjs` — dalla root (il CSV f1db, orfano ma consumato dallo staging,
    è invariato; se cambia deliberatamente: aggiornare il checksum nel test e motivare nel commit).
