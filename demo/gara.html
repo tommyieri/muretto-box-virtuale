@@ -159,11 +159,10 @@ function hookWaitlist(){
 //
 // FLAG DORMIENTE (default OFF, come WAITLIST_ATTIVA e il gancio banda-zero in produzione).
 // Il MECCANISMO e' completo e verificato (banda-zero bit-identica, interruttori di
-// sicurezza). Resta spento perche' la MAGNITUDINE del gancio congelato e' sospetta:
-// penalitaDegrado = rate*(eta_gomma-1) somma il degrado ASSOLUTO-DA-NUOVO alla pace_base,
-// che e' gia' la MEDIANA di stint (degrado in parte incorporato) -> DOPPIO CONTEGGIO
-// (~0.5-0.7s al freeze su gomme vecchie; es. Austria VER giro 36 scivola P7->P8).
-// Da validare in Fase B (replay) PRIMA di accendere. Accensione = una riga, decisione PO.
+// sicurezza). La MAGNITUDINE e' stata VALIDATA in Fase B (replay 2026): il doppio
+// conteggio del gancio (M0, BIAS +0.42 s/giro) e' corretto dall'adapter M1 in
+// pitbande.mjs (rate*(A-A0), BIAS +0.05, MAE 0.57->0.35). Resta OFF solo perche'
+// l'accensione e' decisione del PO (non piu' un blocco tecnico). Accensione = questa riga.
 const SCENARI_ATTIVI = false;
 function scenariDegrado(L, pitL, loss, present, neutro){
   if(!SCENARI_ATTIVI) return '';                         // dormiente finche' Fase B non valida la magnitudine

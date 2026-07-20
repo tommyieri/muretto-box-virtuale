@@ -29,8 +29,11 @@ Regola: i dati vengono da f1db/TI, MAI trascritti a mano. Ogni griglia/pole va v
      bande JSON). Gate PASS sul meccanismo. VISIBILITA' DORMIENTE (SCENARI_ATTIVI=false):
      la riesecuzione ha trovato un DOPPIO CONTEGGIO del degrado nel gancio (rate*(eta-1)
      sopra pace_base gia' degradata, ~0.5-0.7s). Vedi REPORT_FASE_A.md.
-   - [poi] Fase B (AFFILATA): prima la MAGNITUDINE corretta della proiezione da pace_base
-     (rate*(A-A0)?), poi copertura-rolling prossimi-5-giri in replay (prereg nuova).
+   - [fatto 20/07] Fase B magnitudine: M1 VINCE (BIAS gancio +0.42 -> +0.05, MAE 0.57->0.35,
+     34.7k coppie/9 gare). Doppio conteggio confermato e CORRETTO via adapter M1 in
+     pitbande.mjs (rate*(A-A0), gancio non toccato, banda-zero bit-identica). Vedi REPORT_FASEB.md.
+     Scenari ancora OFF: blocco tecnico rimosso, accensione SCENARI_ATTIVI = decisione PO.
+   - [poi] Fase B seconda meta': copertura-rolling banda aggiornata coi giri gia' corsi (prereg nuova).
    - [poi] Fase C: innesto live + shadow-run HUN (dip.: MQTT OpenF1 rotto dal 19/07).
 
 ## Principi

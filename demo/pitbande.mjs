@@ -17,6 +17,29 @@ import { stessoGiroReale } from './pitscenario.mjs';
 
 const COMPOUNDS = ['SOFT', 'MEDIUM', 'HARD'];
 
+// FASE B — correzione della magnitudine (M1, validata in replay: BIAS +0.42 -> +0.05).
+// pace_base e' la MEDIANA di stint, non la pace a gomma nuova: sommare rate*(eta-1)
+// (gancio M0) raddoppia il degrado gia' dentro pace_base. Fix = proiettare l'incremento
+// dal riferimento di pace_base A0 = mediana(life) del suo window. Si realizza come ADAPTER
+// dell'eta' passata al gancio (gancio NON toccato): tyreAge0' = tyreAge0 - A0 + 1, cosi'
+// la penalita' del gancio rate*(tyreAge0'+s-1) diventa rate*((tyreAge0+s) - A0) = rate*(A-A0).
+// A0 si ricostruisce dal replay in-pagina (stesso window della pace_base del kernel).
+function eta0PaceBase(byLap, L, drv, stint) {
+  const eta = [];
+  for (let k = 1; k <= L; k++) {
+    const c = byLap[k] && byLap[k][drv];
+    if (!c || c.stint !== stint) continue;
+    if (c.lap_time == null || c.tyre_age == null) continue;
+    if (c.neutralized || c.in_lap || c.out_lap) continue;
+    if (!COMPOUNDS.includes(c.compound)) continue;
+    eta.push(c.tyre_age);
+  }
+  if (!eta.length) return null;
+  eta.sort((a, b) => a - b);
+  const m = eta.length >> 1;
+  return eta.length % 2 ? eta[m] : (eta[m - 1] + eta[m]) / 2;   // mediana
+}
+
 // banda completa per il circuito: compound assente -> [0,0,0] (nessun degrado).
 export function bandaCircuito(bandeJson, gara) {
   const cid = bandeJson?.gara2cid?.[gara];
@@ -38,8 +61,12 @@ export function treScenariPit({ byLap, nLaps, pace, driver, freezeLap, pitLap, p
   const state = {}, tyreAge0 = {}, compound = {};
   for (const d of present) {
     state[d] = { cum_time: byLap[L][d].cum_time };
-    tyreAge0[d] = byLap[L][d].tyre_age;
     compound[d] = byLap[L][d].compound;
+    // FASE B: eta' ADATTATA (M1) — proietta l'incremento da A0=mediana(life) del window
+    // pace_base, non dal fresh. tyreAge0' = tyreAge0 - A0 + 1 (gancio invariato).
+    const rawAge = byLap[L][d].tyre_age;
+    const a0 = eta0PaceBase(byLap, L, d, byLap[L][d].stint);
+    tyreAge0[d] = (rawAge != null && a0 != null) ? (rawAge - a0 + 1) : rawAge;
   }
   const steps = (pitLap - L) + 1;
   const pit = { driver, lap: pitLap, loss: pitLoss };
