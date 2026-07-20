@@ -100,6 +100,10 @@ def gare_ramo(ramo):
             out.append((2026, cid, f'2026 {f}', os.path.join(ROOT, 'data', 'ti_cache', f + '.json')))
         out.append((2026, 'silverstone', '2026 British',
                     os.path.join(ROOT, 'data', 'ti_archive', '2026', 'British Grand Prix', 'Race.json')))
+        # riesecuzione post-Spa (TODO voce 7): 10a gara 2026, KPI intatti.
+        p_spa = os.path.join(ROOT, 'data', 'ti_archive', '2026', 'Belgian Grand Prix', 'Race.json')
+        if os.path.exists(p_spa):
+            out.append((2026, 'spa-francorchamps', '2026 Belgian', p_spa))
     else:
         base = os.path.join(ROOT, 'data', 'ti_archive', '2025')
         for folder in sorted(os.listdir(base)):

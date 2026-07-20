@@ -3,35 +3,37 @@ CANCELLO ADATTAMENTO — struttura dalla storia, taratura LORO sulle 9 gare 2026
 ==============================================================================
 Protocollo: PREREG_SESSIONE_ADATTAMENTO.md (primario M1; M2/M3 non riscattano).
 
-coppie perse: target<3=3, prior_assente=9, taratura<6=0
-coppie testabili (LORO): 14 su 8 gare
+coppie perse: target<3=3, prior_assente=10, taratura<6=0
+coppie testabili (LORO): 16 su 9 gare
 
 --- PRIMARIO: M1 (prior + offset globale) vs M0 (prior grezzo) ---
-  M1 vs M0: vittorie 8/14 = 57.1% | mediana(diff) +0.0087 | IC95 [-0.0201, +0.0125] | err mediano 0.0409 vs 0.0335
+  M1 vs M0: vittorie 8/16 = 50.0% | mediana(diff) +0.0008 | IC95 [-0.0147, +0.0058] | err mediano 0.0506 vs 0.0360
 
 --- SECONDARI (non decidono, non riscattano) ---
-  M2 vs M0: vittorie 8/14 = 57.1% | mediana(diff) +0.0028 | IC95 [-0.0229, +0.0028] | err mediano 0.0426 vs 0.0335
-  M2 vs M1: vittorie 4.5/14 = 32.1% | mediana(diff) -0.0010 | IC95 [-0.0064, +0.0000] | err mediano 0.0426 vs 0.0409
-  M3 vs M0: vittorie 4/14 = 28.6% | mediana(diff) -0.0062 | IC95 [-0.0101, +0.0217] | err mediano 0.0333 vs 0.0335
-  M3 vs M1: vittorie 6/14 = 42.9% | mediana(diff) -0.0043 | IC95 [-0.0164, +0.0109] | err mediano 0.0333 vs 0.0409
+  M2 vs M0: vittorie 3/16 = 18.8% | mediana(diff) -0.0129 | IC95 [-0.0142, -0.0129] | err mediano 0.0467 vs 0.0360
+  M2 vs M1: vittorie 8/16 = 50.0% | mediana(diff) -0.0025 | IC95 [-0.0170, +0.0019] | err mediano 0.0467 vs 0.0506
+  M3 vs M0: vittorie 8/16 = 50.0% | mediana(diff) +0.0005 | IC95 [-0.0065, +0.0177] | err mediano 0.0301 vs 0.0360
+  M3 vs M1: vittorie 8/16 = 50.0% | mediana(diff) +0.0051 | IC95 [-0.0051, +0.0241] | err mediano 0.0301 vs 0.0506
 
 --- dettaglio coppie (LORO) ---
-  2026 Australian    HARD   bersaglio +0.0523 (n=21) | M0 +0.0436 e=0.0087 | M1 +0.0668 e=0.0144 | M2 e=0.0165 | M3 e=0.0188 -> M0
-  2026 Australian    MEDIUM bersaglio -0.0432 (n=18) | M0 +0.0687 e=0.1119 | M1 +0.0919 e=0.1351 | M2 e=0.1348 | M3 e=0.1310 -> M0
-  2026 Austrian      HARD   bersaglio +0.0891 (n=24) | M0 +0.0744 e=0.0147 | M1 +0.0905 e=0.0014 | M2 e=0.0075 | M3 e=0.0178 -> M1
-  2026 Austrian      MEDIUM bersaglio +0.1047 (n=29) | M0 +0.0818 e=0.0229 | M1 +0.0979 e=0.0068 | M2 e=0.0201 | M3 e=0.0307 -> M1
-  2026 Barcelona     HARD   bersaglio +0.1222 (n=35) | M0 +0.0601 e=0.0621 | M1 +0.0688 e=0.0533 | M2 e=0.0504 | M3 e=0.0618 -> M1
-  2026 Barcelona     MEDIUM bersaglio +0.1713 (n=18) | M0 +0.0619 e=0.1094 | M1 +0.0706 e=0.1007 | M2 e=0.1066 | M3 e=0.1105 -> M1
-  2026 Barcelona     SOFT   bersaglio +0.2375 (n= 9) | M0 +0.0884 e=0.1491 | M1 +0.0971 e=0.1403 | M2 e=0.1403 | M3 e=0.1703 -> M1
-  2026 Canadian      MEDIUM bersaglio -0.0018 (n=22) | M0 +0.1001 e=0.1019 | M1 +0.1230 e=0.1248 | M2 e=0.1248 | M3 e=0.1118 -> M0
-  2026 Chinese       MEDIUM bersaglio +0.0905 (n=14) | M0 +0.1218 e=0.0313 | M1 +0.1447 e=0.0542 | M2 e=0.0542 | M3 e=0.0358 -> M0
-  2026 Japanese      MEDIUM bersaglio +0.0478 (n=23) | M0 +0.0450 e=0.0028 | M1 +0.0679 e=0.0201 | M2 e=0.0201 | M3 e=0.0242 -> M0
-  2026 Miami         HARD   bersaglio +0.0625 (n=15) | M0 +0.0268 e=0.0357 | M1 +0.0385 e=0.0240 | M2 e=0.0240 | M3 e=0.0130 -> M1
-  2026 Miami         MEDIUM bersaglio +0.0531 (n=18) | M0 +0.0297 e=0.0234 | M1 +0.0414 e=0.0117 | M2 e=0.0206 | M3 e=0.0018 -> M1
-  2026 Monaco        HARD   bersaglio -0.0019 (n=12) | M0 +0.0077 e=0.0096 | M1 +0.0265 e=0.0284 | M2 e=0.0348 | M3 e=0.0490 -> M0
-  2026 Monaco        MEDIUM bersaglio +0.0548 (n=18) | M0 -0.0280 e=0.0828 | M1 -0.0092 e=0.0640 | M2 e=0.0800 | M3 e=0.0264 -> M1
+  2026 Australian    HARD   bersaglio +0.0523 (n=21) | M0 +0.0436 e=0.0087 | M1 +0.0624 e=0.0101 | M2 e=0.0165 | M3 e=0.0139 -> M0
+  2026 Australian    MEDIUM bersaglio -0.0432 (n=18) | M0 +0.0687 e=0.1119 | M1 +0.0875 e=0.1307 | M2 e=0.1248 | M3 e=0.1179 -> M0
+  2026 Austrian      HARD   bersaglio +0.0891 (n=24) | M0 +0.0744 e=0.0147 | M1 +0.0802 e=0.0089 | M2 e=0.0075 | M3 e=0.0212 -> M1
+  2026 Austrian      MEDIUM bersaglio +0.1047 (n=29) | M0 +0.0818 e=0.0229 | M1 +0.0876 e=0.0171 | M2 e=0.0371 | M3 e=0.0346 -> M1
+  2026 Barcelona     HARD   bersaglio +0.1222 (n=35) | M0 +0.0601 e=0.0621 | M1 +0.0629 e=0.0593 | M2 e=0.0504 | M3 e=0.0609 -> M1
+  2026 Barcelona     MEDIUM bersaglio +0.1713 (n=18) | M0 +0.0619 e=0.1094 | M1 +0.0647 e=0.1066 | M2 e=0.1237 | M3 e=0.1096 -> M1
+  2026 Barcelona     SOFT   bersaglio +0.2375 (n= 9) | M0 +0.0884 e=0.1491 | M1 +0.0912 e=0.1462 | M2 e=0.1995 | M3 e=0.1687 -> M1
+  2026 Belgian       MEDIUM bersaglio +0.0827 (n=13) | M0 +0.1191 e=0.0364 | M1 +0.1379 e=0.0552 | M2 e=0.0492 | M3 e=0.0256 -> M0
+  2026 Belgian       SOFT   bersaglio +0.0561 (n= 5) | M0 +0.1066 e=0.0505 | M1 +0.1254 e=0.0693 | M2 e=0.1995 | M3 e=0.0452 -> M0
+  2026 Canadian      MEDIUM bersaglio -0.0018 (n=22) | M0 +0.1001 e=0.1019 | M1 +0.1148 e=0.1166 | M2 e=0.1148 | M3 e=0.0881 -> M0
+  2026 Chinese       MEDIUM bersaglio +0.0905 (n=14) | M0 +0.1218 e=0.0313 | M1 +0.1365 e=0.0460 | M2 e=0.0441 | M3 e=0.0065 -> M0
+  2026 Japanese      MEDIUM bersaglio +0.0478 (n=23) | M0 +0.0450 e=0.0028 | M1 +0.0597 e=0.0119 | M2 e=0.0070 | M3 e=0.0170 -> M0
+  2026 Miami         HARD   bersaglio +0.0625 (n=15) | M0 +0.0268 e=0.0357 | M1 +0.0326 e=0.0299 | M2 e=0.0240 | M3 e=0.0164 -> M1
+  2026 Miami         MEDIUM bersaglio +0.0531 (n=18) | M0 +0.0297 e=0.0234 | M1 +0.0355 e=0.0177 | M2 e=0.0377 | M3 e=0.0058 -> M1
+  2026 Monaco        HARD   bersaglio -0.0019 (n=12) | M0 +0.0077 e=0.0096 | M1 +0.0194 e=0.0213 | M2 e=0.0348 | M3 e=0.0553 -> M0
+  2026 Monaco        MEDIUM bersaglio +0.0548 (n=18) | M0 -0.0280 e=0.0828 | M1 -0.0163 e=0.0711 | M2 e=0.0970 | M3 e=0.0120 -> M1
 
 ==============================================================================
-CANCELLO: NULL — M1 vittorie 8/14 (57%), IC95 [-0.0201, +0.0125]
+CANCELLO: NULL — M1 vittorie 8/16 (50%), IC95 [-0.0147, +0.0058]
 Verdetto MECCANICO contro soglie congelate. Il verdetto strategico e' del PO.
 ==============================================================================

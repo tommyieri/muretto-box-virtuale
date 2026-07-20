@@ -4,7 +4,7 @@ CANCELLO INTRA-GARA (strato 1) — primi 15 giri vs prior climatologico
 Protocollo: PREREG_SESSIONE_INTRAGARA.md (KPI congelato prima dei numeri).
 
 --- ramo PRIMARIO 2026 (decide) ---
-  coppie perse: gara_bagnata=0, calib<3=11, target<3=7, prior_assente=10
+  coppie perse: gara_bagnata=0, calib<3=12, target<3=9, prior_assente=11
   coppie testabili: 7 | vittorie live: 2.0/7 = 28.6% (soglia >= 60%)
   mediana(err_prior - err_live): -0.0752 s/giro | IC95 bootstrap blocchi-gara [-0.1683, +0.0176] (B=1000, seed=20260716)
   errore mediano: live 0.0795 | prior 0.0280
