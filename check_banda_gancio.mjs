@@ -5,7 +5,7 @@
 // INPUT valido per il meccanismo (tre scenari ordinati pess>=centrale>=ott, nessun
 // incrocio) e che la banda-zero resti bit-identica. Nessun file motore/gancio toccato.
 import { simulate } from './demo/engine.mjs';
-import { simulaScenario, treScenari } from './degrado_hook.mjs';
+import { simulaScenario, treScenari } from './demo/degrado_hook.mjs';
 import fs from 'fs';
 
 const BANDA = JSON.parse(fs.readFileSync('./data/banda_degrado_scelta.json', 'utf8'));

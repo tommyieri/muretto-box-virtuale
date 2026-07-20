@@ -125,9 +125,10 @@
 <script type="module">
 // ?v= su TUTTI i moduli: senza, un deploy puo' servire HTML nuovo con moduli .mjs vecchi
 // dalla cache del browser (pagina mista = sintomi di sync fantasma). Bump a ogni release.
-import { evaluatePit } from './pitscenario.mjs?v=160726b';
-import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs?v=160726b';
-const BUILD = '160726b';
+import { evaluatePit } from './pitscenario.mjs?v=200726a';
+import { treScenariPit, bandaCircuito } from './pitbande.mjs?v=200726a';
+import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs?v=200726a';
+const BUILD = '200726a';
 const el = id => document.getElementById(id);
 const ROW_H = 44;
 let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams={}, pitloss={}, plMeta={}, neutral={}, teamCol={}, calendario=null;
@@ -138,6 +139,7 @@ let pista=null, leadCum=null, cumPil=null, teamOfR=null;   // vista pallini (gar
 // MOSTRANO (feed + badge + doppia vista), non entrano nella simulazione ne' nei gap
 let rcmAll=null, ufficAll=null, rcmGara=null, ufficGara=null, penPil={};
 let numDi={};   // sigla -> numero di gara (da schede_2026.json, fonte f1db)
+let bandeClim=null;   // FASE A: bande climatologiche per circuito (demo/data/climatologia_bande.json)
 
 // --- contatore anonimo aggregato (strumentazione, non simulatore) ---
 const conta = e => { try { navigator.sendBeacon(`api/contatore?e=${e}`); } catch(_){} };
@@ -148,6 +150,44 @@ function hookWaitlist(){
   if(!WAITLIST_ATTIVA)
     return `<div class="kv"><span class="k">Undercut/Overcut</span><span class="v dim">valutazione strategica in sviluppo (serve il degrado gomma)</span></div>`;
   return '';
+}
+
+// FASE A — i tre scenari di degrado (CHIAMA il gancio via pitbande.mjs). SCENARI, non
+// previsioni: banda storica del circuito pesata al 2026. Interruttore di sicurezza:
+// niente bande (Monaco/circuito non informativo) o sotto neutralizzazione -> ritorna ''
+// e il pannello resta sulla risposta base a pace piatta.
+//
+// FLAG DORMIENTE (default OFF, come WAITLIST_ATTIVA e il gancio banda-zero in produzione).
+// Il MECCANISMO e' completo e verificato (banda-zero bit-identica, interruttori di
+// sicurezza). Resta spento perche' la MAGNITUDINE del gancio congelato e' sospetta:
+// penalitaDegrado = rate*(eta_gomma-1) somma il degrado ASSOLUTO-DA-NUOVO alla pace_base,
+// che e' gia' la MEDIANA di stint (degrado in parte incorporato) -> DOPPIO CONTEGGIO
+// (~0.5-0.7s al freeze su gomme vecchie; es. Austria VER giro 36 scivola P7->P8).
+// Da validare in Fase B (replay) PRIMA di accendere. Accensione = una riga, decisione PO.
+const SCENARI_ATTIVI = false;
+function scenariDegrado(L, pitL, loss, present, neutro){
+  if(!SCENARI_ATTIVI) return '';                         // dormiente finche' Fase B non valida la magnitudine
+  if(neutro) return '';                                  // sotto SC/VSC il degrado e' sospeso
+  const bc = bandaCircuito(bandeClim, race.gara);
+  if(!bc) return '';                                     // nessuna banda informativa qui
+  const sc = treScenariPit({ byLap:race.byLap, nLaps:race.n_laps, pace:race.pace[String(L)],
+    driver:selDrv, freezeLap:L, pitLap:pitL, pitLoss:loss, present, banda:bc.banda });
+  if(!sc.ok || !sc.degrada) return '';                   // mescola del pilota senza banda -> onesto: niente scenario
+  const nGiri = pitL - L;
+  const cella = e => {
+    const dav = e.davanti_ho ? `+${e.gap_ahead.toFixed(1)}s` : 'aria pulita';
+    const die = e.dietro_esco ? `+${e.gap_behind.toFixed(1)}s` : '—';
+    return `<td>P${e.rientro_pos}</td><td>${dav}</td><td>${die}</td>`;
+  };
+  return `<div class="scenari">
+    <div class="sc-h">Con degrado gomma sui prossimi ${nGiri} giri
+      <span class="sc-tag">SCENARI · banda storica ${sc.compound}, non una previsione</span></div>
+    <table class="sc-t"><thead><tr><th>scenario</th><th>rientro</th><th>davanti</th><th>dietro</th></tr></thead>
+    <tbody>
+      <tr><td class="sc-o">ottimistico</td>${cella(sc.ottimistico)}</tr>
+      <tr><td class="sc-c">centrale</td>${cella(sc.centrale)}</tr>
+      <tr><td class="sc-p">pessimistico</td>${cella(sc.pessimistico)}</tr>
+    </tbody></table></div>`;
 }
 
 const clock = makeClock({ onTick: p => frame(p), onEnd: () => setPlayIcon(false), min: 1 });
@@ -169,6 +209,7 @@ async function boot() {
   try { neutral = await (await fetch('neutralizzazione.json')).json(); } catch(e){ neutral={}; }
   try { teamCol = await (await fetch('team_colori.json')).json(); } catch(e){ teamCol={}; }
   try { calendario = await (await fetch('data/calendario_2026.json')).json(); } catch(e){ calendario=null; }
+  try { bandeClim = await (await fetch('data/climatologia_bande.json')).json(); } catch(e){ bandeClim=null; }
   try { pitstops = await (await fetch('data/pitstops_2026.json')).json(); } catch(e){ pitstops=null; }
   try { rcmAll = await (await fetch('data/race_control_2026.json')).json(); } catch(e){ rcmAll=null; }
   try { ufficAll = await (await fetch('data/ufficiali_2026.json')).json(); } catch(e){ ufficAll=null; }
@@ -273,7 +314,7 @@ async function drawPista(gara){
     <div class="spenta">Pallini spenti durante l&rsquo;esplorazione pit:<br>
       il replay mostra la gara com&rsquo;e&rsquo; andata davvero, il motore risponde al controfattuale per-giro.</div>`;
   try {
-    const { creaPista } = await import('./pista.mjs?v=160726b');
+    const { creaPista } = await import('./pista.mjs?v=200726a');
     pista = await creaPista({ canvas: el('pista').querySelector('canvas'), url: `data/pista_${encodeURIComponent(gara)}.json` });
     if (selDrv){ pista.setSpento(true); el('pista').classList.add('pit-attivo'); }
     pistaFrame(clock.position);
@@ -696,7 +737,7 @@ function updatePit(){
     <div class="kv"><span class="k">Rientro</span><span class="v">P${r.rientro_pos} <span class="sub">tra i ${r.su_totale} a pari giro</span></span></div>
     <div class="kv"><span class="k">Davanti</span><span class="v">${dav}</span></div>
     <div class="kv"><span class="k">Dietro</span><span class="v">${die}</span></div>
-    ${hookWaitlist()}`;
+    ${scenariDegrado(L, pitL, loss, present, neutro) || hookWaitlist()}`;
 }
 
 el('play').addEventListener('click', ()=>{ clock.toggle(); setPlayIcon(clock.playing); });

@@ -17,6 +17,22 @@ Regola: i dati vengono da f1db/TI, MAI trascritti a mano. Ogni griglia/pole va v
 6. [in corso] Vista: nessuno sparisce mai dalla griglia.
    - in pista = riga normale; doppiato arrivato = "arrivato · N giri"; RIT = "ritirato (giro X)"; NP = "non partito".
 
+7. [fatto 20/07] Riesecuzione dei 5 cancelli degrado dopo Spa (voce introdotta da PR #50,
+   qui chiusa direttamente — vedi REPORT_RIESECUZIONE_SPA.md).
+   - K2 climatologia: 39.9% -> 42.3% = TRASFERIBILE (soglia congelata onorata nei due versi).
+   - I 4 cancelli live/adattamento: invariati (NULL / NON TESTABILE).
+   - RISOLTO in Passo 0: violazione K3 SOFT@monaco sciolta escludendo Monaco.
+
+8. [in corso] Degrado nel simulatore live — vedi PIANO_DEGRADO_LIVE.md.
+   - [fatto] Passo 0: Monaco fuori (CID_NO_DEGRADO). K2 42.3->43.7%, K3 -> PASSA.
+   - [fatto 20/07] Fase A: MECCANISMO scenari nel pannello pit (gancio in demo/, pitbande.mjs,
+     bande JSON). Gate PASS sul meccanismo. VISIBILITA' DORMIENTE (SCENARI_ATTIVI=false):
+     la riesecuzione ha trovato un DOPPIO CONTEGGIO del degrado nel gancio (rate*(eta-1)
+     sopra pace_base gia' degradata, ~0.5-0.7s). Vedi REPORT_FASE_A.md.
+   - [poi] Fase B (AFFILATA): prima la MAGNITUDINE corretta della proiezione da pace_base
+     (rate*(A-A0)?), poi copertura-rolling prossimi-5-giri in replay (prereg nuova).
+   - [poi] Fase C: innesto live + shadow-run HUN (dip.: MQTT OpenF1 rotto dal 19/07).
+
 ## Principi
 - La griglia non deve mai svuotarsi: all'ultimo giro si vedono tutti e 22.
 - Il motore non fa sparire nessuno: porta tutti fino in fondo.

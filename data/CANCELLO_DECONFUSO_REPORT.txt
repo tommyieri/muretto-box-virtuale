@@ -4,7 +4,7 @@ CANCELLO DE-CONFUSO — gamma a pari giro (FE lin+log, prima meta') vs prior
 Protocollo: PREREG_SESSIONE_DECONFUSO.md (KPI congelato prima dei numeri).
 
 --- ramo PRIMARIO 2026 (decide) ---
-  coppie perse: gara_bagnata=0, live_non_id=7, target<3=7, prior_assente=10
+  coppie perse: gara_bagnata=0, live_non_id=8, target<3=9, prior_assente=11
   coppie testabili: 9 | vittorie live: 3/9 = 33.3% (soglia >= 60%)
   mediana(err_prior - err_live): -0.0036 s/giro | IC95 bootstrap blocchi-gara [-0.0494, +0.0613] (B=1000, seed=20260716)
   errore mediano: live 0.0260 | prior 0.0280

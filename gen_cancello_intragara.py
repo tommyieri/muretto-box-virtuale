@@ -19,7 +19,7 @@ import sys, os, csv, statistics as st
 import numpy as np
 from gen_climatologia_degrado import (carica, quota_wet, stint_di_gara, righe_csv,
                                       raccogli, QUOTA_WET_MAX, TICACHE2CID, FOLDER2CID,
-                                      L_PLATEAU_MIN)
+                                      L_PLATEAU_MIN, CID_NO_DEGRADO)
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 CSV_CLIM = os.path.join(ROOT, 'data', 'climatologia_degrado.csv')
@@ -100,6 +100,10 @@ def gare_ramo(ramo):
             out.append((2026, cid, f'2026 {f}', os.path.join(ROOT, 'data', 'ti_cache', f + '.json')))
         out.append((2026, 'silverstone', '2026 British',
                     os.path.join(ROOT, 'data', 'ti_archive', '2026', 'British Grand Prix', 'Race.json')))
+        # riesecuzione post-Spa (TODO voce 7): 10a gara 2026, KPI intatti.
+        p_spa = os.path.join(ROOT, 'data', 'ti_archive', '2026', 'Belgian Grand Prix', 'Race.json')
+        if os.path.exists(p_spa):
+            out.append((2026, 'spa-francorchamps', '2026 Belgian', p_spa))
     else:
         base = os.path.join(ROOT, 'data', 'ti_archive', '2025')
         for folder in sorted(os.listdir(base)):
@@ -107,7 +111,7 @@ def gare_ramo(ramo):
             p = os.path.join(base, folder, 'Race.json')
             if cid and os.path.exists(p):
                 out.append((2025, cid, f'2025 {folder}', p))
-    return out
+    return [g for g in out if g[1] not in CID_NO_DEGRADO]   # guardia degrado-non-misurabile
 
 
 def valuta_ramo(ramo, prior):

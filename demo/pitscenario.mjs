@@ -14,7 +14,7 @@ function neutralizzazioneGara(gara, pitLap) {
 }
 // PitScenarioEvaluator v1 — kernel congelato, letto SOLO per-giro.
 // davanti/dietro = solo tra piloti sullo STESSO GIRO REALE (determinato al freeze, ancora giri+cum).
-function stessoGiroReale(byLap, L, nLaps, drv, present) {
+export function stessoGiroReale(byLap, L, nLaps, drv, present) {
   const leaderCumAt = {};
   for (let k=L; k<=Math.min(L+3,nLaps); k++) if (byLap[k]) {
     const o = present.filter(d=>byLap[k][d] && typeof byLap[k][d].cum_time==='number')

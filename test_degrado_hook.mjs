@@ -2,7 +2,7 @@
 // Non richiede numeri di dominio: le bande sono SINTETICHE e arbitrarie (marcate tali).
 // Kernel/golden/pit non toccati: importa simulate (congelato) e il gancio additivo.
 import { simulate } from './demo/engine.mjs';
-import { simulaScenario, treScenari, penalitaDegrado } from './degrado_hook.mjs';
+import { simulaScenario, treScenari, penalitaDegrado } from './demo/degrado_hook.mjs';
 import fs from 'fs';
 
 const CASI   = JSON.parse(fs.readFileSync('./demo/golden_pit_casi.json', 'utf8'));

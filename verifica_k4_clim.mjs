@@ -7,7 +7,7 @@
 // Regola dichiarata: compound con riga INFORMATIVA -> banda [q25, mediana, q75];
 // compound NON-INFORMATIVA o assente -> [0,0,0] (nessun numero non informativo al gancio).
 import { simulate } from './demo/engine.mjs';
-import { treScenari } from './degrado_hook.mjs';
+import { treScenari } from './demo/degrado_hook.mjs';
 import fs from 'fs';
 
 const GARA = 'Austria', DRIVER = 'VER', FREEZE = 30, PIT = 34, CID = 'spielberg';
