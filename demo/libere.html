@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<!--
+  LIBERE (R2b-auto): riepilogo delle PROVE LIBERE di un GP (FP1/FP2/FP3),
+  raggiungibile dalla stagione. Consumatore puro di demo/data/libere_<gara>.json
+  (generato da gen_libere_ti.py dalla stessa fonte TracingInsights). Riusa la
+  torre del live. Micro-settori assenti (artefatto del feed live): tempi di
+  settore colorati + gap dal piu' veloce.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prove libere — Muretto Box Virtuale</title>
+<link rel="stylesheet" href="stile.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
+    <span class="brand-mark"><span>M</span></span>
+    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+  </a>
+  <nav class="nav" aria-label="Sezioni">
+    <a href="stagione.html">Stagione</a>
+    <a href="live.html"><span class="dot-live"></span>Live</a>
+    <a href="classifiche.html">Classifiche</a>
+    <a href="analisi.html">Analisi</a>
+  </nav>
+</header>
+
+<div class="wrap-clas">
+  <div class="page-testa">
+    <h1 id="l-tit">Prove libere</h1>
+    <div class="sotto" id="l-sotto">Timesheet sul giro veloce, con distacco dal più veloce e tempi di settore.</div>
+  </div>
+
+  <div id="l-tabs" class="l-tabs"></div>
+  <section class="panel" id="l-panel">
+    <div id="tw-list" class="tw-list"></div>
+    <div id="tw-nota" class="lv-nota" hidden></div>
+  </section>
+  <div style="margin-top:1rem"><a class="navbtn" href="stagione.html" style="display:inline-block"><b>&larr; Stagione 2026</b></a></div>
+</div>
+
+<style>
+  .lv-nota{color:#8b93a5;font-size:.8rem;margin-top:.5rem}
+  .l-tabs{display:flex;gap:.4rem;margin:.2rem 0 .8rem}
+  .l-tab{font:700 .78rem/1 -apple-system,Arial;color:#aab2c0;background:#161c26;border:1px solid #2a333f;
+    border-radius:7px;padding:.45rem .8rem;cursor:pointer}
+  .l-tab.on{background:#e80d2e;color:#fff;border-color:#e80d2e}
+  /* torre di cronometraggio (condivisa col live) */
+  .tw-list{display:flex;flex-direction:column;gap:.15rem}
+  .tw-row{padding:.35rem .1rem;border-bottom:1px solid #1c2430}
+  .tw-main{display:flex;align-items:center;gap:.55rem;font:600 .86rem/1.4 -apple-system,Arial}
+  .tw-pos{width:1.5rem;color:#8b93a5;text-align:right;font-variant-numeric:tabular-nums}
+  .tw-col{display:inline-block;width:.28rem;height:1.05rem;border-radius:2px;flex:0 0 auto}
+  .tw-sig{font-weight:800;letter-spacing:.02em;width:2.7rem}
+  .tw-time{font-variant-numeric:tabular-nums;color:#e8edf5;font-weight:700}
+  .tw-gap{font-variant-numeric:tabular-nums;color:#aab2c0;margin-left:auto;white-space:nowrap}
+  .tw-gap.tw-lead{color:#3fbf6f;font-weight:800;letter-spacing:.04em}
+  .tw-tag{color:#f5a03c;font-weight:800;font-size:.66rem;letter-spacing:.06em;width:2rem;text-align:right}
+  .tw-sectors{display:flex;gap:.5rem;margin:.3rem 0 .05rem 2.05rem}
+  .tw-sec{flex:1 1 0;min-width:0}
+  .tw-sec-t{display:block;font:700 .68rem/1.3 -apple-system,Arial;font-variant-numeric:tabular-nums;margin-bottom:.15rem}
+  .tw-bar{display:flex;gap:1px;height:.32rem;border-radius:2px;overflow:hidden}
+  .tw-seg{flex:1 1 0;min-width:1px;display:block}
+</style>
+
+<footer class="footer">
+  <div class="footer-in">
+    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
+    <nav>
+      <a href="stagione.html">Stagione</a>
+      <a href="classifiche.html">Classifiche</a>
+      <a href="analisi.html">Analisi</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="module">
+const el = id => document.getElementById(id);
+const params = new URLSearchParams(location.search);
+
+function sessToSnapshot(sess){
+  const driver_list = {}, cars = {};
+  for (const p of (sess.piloti || [])){
+    driver_list[p.num] = { sigla: p.sigla, colore: p.colore };
+    cars[p.num] = { pos: p.pos, gap: p.gap || '', last_lap: null,
+                    best_lap: p.best || null, in_pit: false,
+                    sectors: Array.isArray(p.sectors) ? p.sectors : [], micro: [] };
+  }
+  return { type: 'snapshot', driver_list, cars, track_status: null, session_status: null };
+}
+
+async function boot(){
+  const { creaTorreTiming } = await import('./live_timing.mjs');
+  let gara = params.get('g');
+  let file = gara ? `libere_${encodeURIComponent(gara)}.json` : null;
+  if (!file){
+    try { const man = await (await fetch('data/libere_manifest.json')).json();
+          file = man && man.ultima && man.ultima.file; gara = man && man.ultima && man.ultima.gara; } catch(e){}
+  }
+  if (!file){ el('l-sotto').textContent = 'Nessuna prova libera ancora disponibile.'; return; }
+  let doc;
+  try { doc = await (await fetch('data/' + file)).json(); }
+  catch(e){ el('l-sotto').textContent = 'Prove libere non trovate: ' + file; return; }
+  el('l-tit').textContent = 'Prove libere — ' + (doc.evento || doc.gara || '');
+  el('l-sotto').textContent = (doc.data ? new Date(doc.data + 'T12:00:00').toLocaleDateString('it-IT',{weekday:'long',day:'numeric',month:'long',year:'numeric'}) + ' · ' : '')
+    + 'timesheet sul giro veloce, distacco dal più veloce e tempi di settore.';
+
+  const torre = creaTorreTiming({ lista: el('tw-list'), nota: el('tw-nota') });
+  torre.setAcceso(true);
+  const sess = doc.sessioni || {};
+  const slugs = Object.keys(sess);
+  if (!slugs.length){ el('l-sotto').textContent = 'Nessuna sessione disponibile per questo GP.'; return; }
+
+  function mostra(slug){
+    for (const b of el('l-tabs').children) b.classList.toggle('on', b.dataset.s === slug);
+    torre.applica(sessToSnapshot(sess[slug]));
+  }
+  el('l-tabs').innerHTML = slugs.map(s =>
+    `<button class="l-tab" data-s="${s}">${(sess[s].sessione || s.toUpperCase()).replace('Prove libere','FP')}</button>`).join('');
+  for (const b of el('l-tabs').children) b.addEventListener('click', () => mostra(b.dataset.s));
+  mostra(slugs[slugs.length - 1]);   // di default l'ultima sessione disponibile
+}
+boot();
+</script>
+</body>
+</html>

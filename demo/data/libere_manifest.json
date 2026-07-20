@@ -1,0 +1,26 @@
+{
+ "disponibili": [
+  {
+   "gara": "Belgio",
+   "evento": "GP del Belgio",
+   "data": "2026-07-18",
+   "file": "libere_Belgio.json",
+   "sessioni": [
+    "fp1",
+    "fp2",
+    "fp3"
+   ]
+  }
+ ],
+ "ultima": {
+  "gara": "Belgio",
+  "evento": "GP del Belgio",
+  "data": "2026-07-18",
+  "file": "libere_Belgio.json",
+  "sessioni": [
+   "fp1",
+   "fp2",
+   "fp3"
+  ]
+ }
+}

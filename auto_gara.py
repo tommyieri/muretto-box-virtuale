@@ -21,7 +21,7 @@ Uso:
 Pensato per girare a intervalli (cron/launchd). Idempotente: senza gare nuove ne' release
 nuove, non fa nulla.
 """
-import json, os, subprocess, sys, urllib.request, urllib.parse
+import datetime, json, os, subprocess, sys, urllib.request, urllib.parse
 
 ROOT = os.path.dirname(os.path.abspath(__file__))
 PY = sys.executable   # stesso interprete per i sotto-processi (propaga il venv attivo)
@@ -30,6 +30,7 @@ PUSH = '--push' in sys.argv
 MAPPA = os.path.join('data', 'mappa_gare.json')
 REGISTRO = os.path.join('data', 'gare_registro.json')
 REL_FILE = os.path.join('data', 'f1db_release.txt')
+CALENDARIO = os.path.join('demo', 'data', 'calendario_2026.json')
 
 
 def log(msg): print(f'[auto] {msg}', flush=True)
@@ -164,6 +165,56 @@ def wave_quali():
     return True
 
 
+# --------------------------------------------- ONDATA LIBERE: prove libere
+# Stessa fonte delle gare/quali (TracingInsights). Le libere sono tre sessioni
+# (FP1/FP2/FP3) che compaiono in momenti diversi: il file cresce nel weekend.
+# BOUNDED: si processa solo il GP del weekend in corso (finestra di date dal
+# calendario), non tutti i 22 -> poche richieste. Isolata: non tocca gare/quali.
+# Idempotente: rigenera dallo stato attuale di TI, commit solo se cambia.
+def _gp_weekend_corrente():
+    try:
+        cal = json.load(open(os.path.join(ROOT, CALENDARIO)))
+        mappa = json.load(open(os.path.join(ROOT, MAPPA)))
+    except OSError:
+        return []
+    nome2ti = {m['nome']: (ti, m.get('titolo', m['nome']))
+               for ti, m in mappa.items()}
+    oggi = datetime.date.today()
+    out = []
+    for g in cal.get('gare', []):
+        nome = g.get('nome') or g.get('gara_demo')
+        d = g.get('data')
+        if not d or nome not in nome2ti:
+            continue
+        try:
+            gd = datetime.date.fromisoformat(d)
+        except ValueError:
+            continue
+        if -3 <= (oggi - gd).days <= 2:      # dal giovedi al lunedi del weekend
+            ti, titolo = nome2ti[nome]
+            out.append((ti, nome, titolo))
+    return out
+
+
+def wave_libere():
+    correnti = _gp_weekend_corrente()
+    if not correnti:
+        log('ondata libere: nessun weekend in corso.'); return False
+    prodotte = []
+    for ti, nome, titolo in correnti:
+        if not raw_head_sess(ti, 'Practice 1'):   # nessuna libera ancora online
+            continue
+        rc = sh([PY, 'gen_libere_ti.py', '--gara', nome, '--ti', ti,
+                 '--evento', titolo], check=False)
+        if rc == 0:
+            prodotte.append(nome)
+    if not prodotte:
+        log('ondata libere: nessuna sessione utile online.'); return False
+    commit_push('auto: prove libere aggiornate ' + ', '.join(prodotte)
+                + ' (fonte TracingInsights)')
+    return True
+
+
 # ------------------------------------------------------ ONDATA 2: release f1db
 def _github_latest():
     req = urllib.request.Request('https://api.github.com/repos/f1db/f1db/releases/latest',
@@ -229,5 +280,12 @@ if __name__ == '__main__':
     except Exception as e:
         log(f"ondata quali: errore ({e!r}) — le gare sono gia state gestite, proseguo.")
         fattoq = False
-    if not (fatto1 or fatto2 or fattoq):
+    try:
+        fattol = wave_libere()
+    except SystemExit:
+        raise
+    except Exception as e:
+        log(f"ondata libere: errore ({e!r}) — gare e quali gia gestite, proseguo.")
+        fattol = False
+    if not (fatto1 or fatto2 or fattoq or fattol):
         log('niente da fare: demo allineata.')

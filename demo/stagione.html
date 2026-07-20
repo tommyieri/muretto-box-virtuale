@@ -74,6 +74,7 @@ const el = id => document.getElementById(id);
 const MESE = d => d.toLocaleDateString('it-IT', { day:'numeric', month:'long' });
 let teamCol = {};
 let qualiSet = new Set();   // gare con qualifica pubblicata (R2b-auto)
+let libereSet = new Set();  // gare con prove libere pubblicate (R2b-auto)
 
 // bandiera emoji dall'alpha2 f1db (dato, non mappa a mano)
 const bandiera = a2 => a2 ? String.fromCodePoint(...[...a2.toUpperCase()].map(c=>0x1F1A5+c.charCodeAt(0))) : '';
@@ -87,12 +88,13 @@ function cardGara(g, inDemo, corsa){
     const w = g.vincitore;
     const win = w ? `<div class="win"><span class="tdot" style="background:${teamCol[w.team]||'var(--dim)'}"></span><b>${w.sigla}</b><span class="lab">vincitore</span></div>` : '';
     const gd = encodeURIComponent(g.gara_demo);
-    if (qualiSet.has(g.gara_demo)){   // gara + qualifica: due destinazioni
+    const hasQ = qualiSet.has(g.gara_demo), hasL = libereSet.has(g.gara_demo);
+    if (hasQ || hasL){   // gara + sessioni del weekend: piu' destinazioni
+      const links = [`<a href="gara.html?g=${gd}">Gara &rarr;</a>`];
+      if (hasQ) links.push(`<a href="quali.html?g=${gd}">Qualifiche &rarr;</a>`);
+      if (hasL) links.push(`<a href="libere.html?g=${gd}">Libere &rarr;</a>`);
       return `<div class="gpcard gpcard-multi">${testa}${win}
-        <div class="gpcard-links">
-          <a href="gara.html?g=${gd}">Gara &rarr;</a>
-          <a href="quali.html?g=${gd}">Qualifiche &rarr;</a>
-        </div></div>`;
+        <div class="gpcard-links">${links.join('')}</div></div>`;
     }
     return `<a class="gpcard" href="gara.html?g=${gd}">${testa}${win}</a>`;
   }
@@ -125,6 +127,8 @@ async function boot(){
   try { teamCol = await (await fetch('team_colori.json')).json(); } catch(e){ teamCol={}; }
   try { const qm = await (await fetch('data/quali_manifest.json')).json();
         qualiSet = new Set((qm.disponibili||[]).map(v=>v.gara)); } catch(e){ qualiSet = new Set(); }
+  try { const lm = await (await fetch('data/libere_manifest.json')).json();
+        libereSet = new Set((lm.disponibili||[]).map(v=>v.gara)); } catch(e){ libereSet = new Set(); }
   const inDemo = new Set(manifest.map(r=>r.gara));
   const oggi = new Date(); oggi.setHours(0,0,0,0);
 
