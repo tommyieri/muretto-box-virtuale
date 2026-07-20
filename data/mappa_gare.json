@@ -1,0 +1,112 @@
+{
+ "Australian Grand Prix": {
+  "nome": "Australia",
+  "cid": "melbourne",
+  "titolo": "GP d'Australia"
+ },
+ "Chinese Grand Prix": {
+  "nome": "Cina",
+  "cid": "shanghai",
+  "titolo": "GP di Cina"
+ },
+ "Japanese Grand Prix": {
+  "nome": "Giappone",
+  "cid": "suzuka",
+  "titolo": "GP del Giappone"
+ },
+ "Miami Grand Prix": {
+  "nome": "Miami",
+  "cid": "miami",
+  "titolo": "GP di Miami"
+ },
+ "Canadian Grand Prix": {
+  "nome": "Canada",
+  "cid": "montreal",
+  "titolo": "GP del Canada"
+ },
+ "Monaco Grand Prix": {
+  "nome": "Monaco",
+  "cid": "monaco",
+  "titolo": "GP di Monaco"
+ },
+ "Barcelona Grand Prix": {
+  "nome": "Spagna",
+  "cid": "catalunya",
+  "titolo": "GP di Spagna — Barcellona"
+ },
+ "Austrian Grand Prix": {
+  "nome": "Austria",
+  "cid": "spielberg",
+  "titolo": "GP d'Austria"
+ },
+ "British Grand Prix": {
+  "nome": "Gran Bretagna",
+  "cid": "silverstone",
+  "titolo": "GP di Gran Bretagna"
+ },
+ "Belgian Grand Prix": {
+  "nome": "Belgio",
+  "cid": "spa-francorchamps",
+  "titolo": "GP del Belgio"
+ },
+ "Hungarian Grand Prix": {
+  "nome": "Ungheria",
+  "cid": "hungaroring",
+  "titolo": "GP d'Ungheria"
+ },
+ "Dutch Grand Prix": {
+  "nome": "Olanda",
+  "cid": "zandvoort",
+  "titolo": "GP d'Olanda"
+ },
+ "Italian Grand Prix": {
+  "nome": "Italia",
+  "cid": "monza",
+  "titolo": "GP d'Italia"
+ },
+ "Spanish Grand Prix": {
+  "nome": "Madrid",
+  "cid": "madring",
+  "titolo": "GP di Madrid"
+ },
+ "Azerbaijan Grand Prix": {
+  "nome": "Azerbaigian",
+  "cid": "baku",
+  "titolo": "GP dell'Azerbaigian"
+ },
+ "Singapore Grand Prix": {
+  "nome": "Singapore",
+  "cid": "marina-bay",
+  "titolo": "GP di Singapore"
+ },
+ "United States Grand Prix": {
+  "nome": "Stati Uniti",
+  "cid": "austin",
+  "titolo": "GP degli Stati Uniti"
+ },
+ "Mexico City Grand Prix": {
+  "nome": "Messico",
+  "cid": "mexico-city",
+  "titolo": "GP del Messico"
+ },
+ "São Paulo Grand Prix": {
+  "nome": "San Paolo",
+  "cid": "interlagos",
+  "titolo": "GP di San Paolo"
+ },
+ "Las Vegas Grand Prix": {
+  "nome": "Las Vegas",
+  "cid": "las-vegas",
+  "titolo": "GP di Las Vegas"
+ },
+ "Qatar Grand Prix": {
+  "nome": "Qatar",
+  "cid": "lusail",
+  "titolo": "GP del Qatar"
+ },
+ "Abu Dhabi Grand Prix": {
+  "nome": "Abu Dhabi",
+  "cid": "yas-marina",
+  "titolo": "GP di Abu Dhabi"
+ }
+}

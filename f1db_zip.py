@@ -10,7 +10,25 @@ ATTENZIONE SCHEMI: f1db usa i SUOI id (es. Austria 2026 = raceId 1157, driverId
 """
 import csv, io, os, urllib.request, zipfile
 
-RELEASE = 'v2026.10.0'
+# Release pinnata. Un file opzionale data/f1db_release.txt la SOVRASCRIVE (una riga, es.
+# 'v2026.10.0'): cosi' il watcher automatico avanza la release senza toccare codice. Se il
+# file manca, vale il default qui sotto. Cambiare la release cambia standings/pit-lane/
+# griglia: e' voluto solo quando esce la release col round nuovo.
+_DEFAULT_RELEASE = 'v2026.10.0'
+
+
+def _release_pinnata():
+    p = os.path.join(os.path.dirname(__file__), 'data', 'f1db_release.txt')
+    try:
+        v = open(p).read().strip()
+        if v:
+            return v
+    except OSError:
+        pass
+    return _DEFAULT_RELEASE
+
+
+RELEASE = _release_pinnata()
 CACHE_DIR = os.path.expanduser('~/muretto_shared/f1db_csv')
 
 
