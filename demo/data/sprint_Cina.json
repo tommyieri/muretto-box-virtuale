@@ -1,0 +1,716 @@
+{
+ "gara": "Cina",
+ "evento": "GP di Cina",
+ "data": null,
+ "sprint_quali": {
+  "sessione": "Sprint Qualifying",
+  "piloti": [
+   {
+    "pos": 1,
+    "num": "63",
+    "sigla": "RUS",
+    "colore": "#27F4D2",
+    "best": "1:31.520",
+    "gap": "",
+    "q1": null,
+    "q2": null,
+    "q3": "1:31.520",
+    "sectors": [
+     {
+      "t": "23.962",
+      "best": null
+     },
+     {
+      "t": "27.569",
+      "best": "o"
+     },
+     {
+      "t": "39.989",
+      "best": "o"
+     }
+    ]
+   },
+   {
+    "pos": 2,
+    "num": "12",
+    "sigla": "ANT",
+    "colore": "#27F4D2",
+    "best": "1:31.809",
+    "gap": "+0.289",
+    "q1": null,
+    "q2": null,
+    "q3": "1:31.809",
+    "sectors": [
+     {
+      "t": "23.998",
+      "best": null
+     },
+     {
+      "t": "27.598",
+      "best": null
+     },
+     {
+      "t": "40.213",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 3,
+    "num": "1",
+    "sigla": "NOR",
+    "colore": "#FF8000",
+    "best": "1:32.141",
+    "gap": "+0.621",
+    "q1": null,
+    "q2": null,
+    "q3": "1:32.141",
+    "sectors": [
+     {
+      "t": "23.961",
+      "best": null
+     },
+     {
+      "t": "27.616",
+      "best": null
+     },
+     {
+      "t": "40.564",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 4,
+    "num": "44",
+    "sigla": "HAM",
+    "colore": "#E8002D",
+    "best": "1:32.161",
+    "gap": "+0.641",
+    "q1": null,
+    "q2": null,
+    "q3": "1:32.161",
+    "sectors": [
+     {
+      "t": "24.110",
+      "best": null
+     },
+     {
+      "t": "27.694",
+      "best": null
+     },
+     {
+      "t": "40.357",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 5,
+    "num": "81",
+    "sigla": "PIA",
+    "colore": "#FF8000",
+    "best": "1:32.224",
+    "gap": "+0.704",
+    "q1": null,
+    "q2": null,
+    "q3": "1:32.224",
+    "sectors": [
+     {
+      "t": "23.913",
+      "best": "o"
+     },
+     {
+      "t": "27.793",
+      "best": null
+     },
+     {
+      "t": "40.518",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 6,
+    "num": "16",
+    "sigla": "LEC",
+    "colore": "#E8002D",
+    "best": "1:32.528",
+    "gap": "+1.008",
+    "q1": null,
+    "q2": null,
+    "q3": "1:32.528",
+    "sectors": [
+     {
+      "t": "24.105",
+      "best": null
+     },
+     {
+      "t": "27.770",
+      "best": null
+     },
+     {
+      "t": "40.653",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 7,
+    "num": "10",
+    "sigla": "GAS",
+    "colore": "#FF87BC",
+    "best": "1:32.888",
+    "gap": "+1.368",
+    "q1": null,
+    "q2": null,
+    "q3": "1:32.888",
+    "sectors": [
+     {
+      "t": "24.293",
+      "best": null
+     },
+     {
+      "t": "27.840",
+      "best": null
+     },
+     {
+      "t": "40.755",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 8,
+    "num": "3",
+    "sigla": "VER",
+    "colore": "#2B478F",
+    "best": "1:33.254",
+    "gap": "+1.734",
+    "q1": null,
+    "q2": null,
+    "q3": "1:33.254",
+    "sectors": [
+     {
+      "t": "24.404",
+      "best": null
+     },
+     {
+      "t": "28.258",
+      "best": null
+     },
+     {
+      "t": "40.592",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 9,
+    "num": "87",
+    "sigla": "BEA",
+    "colore": "#B6BABD",
+    "best": "1:33.409",
+    "gap": "+1.889",
+    "q1": null,
+    "q2": null,
+    "q3": "1:33.409",
+    "sectors": [
+     {
+      "t": "24.401",
+      "best": null
+     },
+     {
+      "t": "28.079",
+      "best": null
+     },
+     {
+      "t": "40.929",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 10,
+    "num": "6",
+    "sigla": "HAD",
+    "colore": "#2B478F",
+    "best": "1:33.620",
+    "gap": "+2.100",
+    "q1": null,
+    "q2": null,
+    "q3": "1:33.620",
+    "sectors": [
+     {
+      "t": "24.650",
+      "best": null
+     },
+     {
+      "t": "28.477",
+      "best": null
+     },
+     {
+      "t": "40.493",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 11,
+    "num": "27",
+    "sigla": "HUL",
+    "colore": "#A21D2B",
+    "best": "1:33.635",
+    "gap": "+2.115",
+    "q1": null,
+    "q2": null,
+    "q3": "1:33.635",
+    "sectors": [
+     {
+      "t": "24.701",
+      "best": null
+     },
+     {
+      "t": "28.261",
+      "best": null
+     },
+     {
+      "t": "40.673",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 12,
+    "num": "31",
+    "sigla": "OCO",
+    "colore": "#B6BABD",
+    "best": "1:33.639",
+    "gap": "+2.119",
+    "q1": null,
+    "q2": null,
+    "q3": "1:33.639",
+    "sectors": [
+     {
+      "t": "24.553",
+      "best": null
+     },
+     {
+      "t": "28.184",
+      "best": null
+     },
+     {
+      "t": "40.902",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 13,
+    "num": "30",
+    "sigla": "LAW",
+    "colore": "#6692FF",
+    "best": "1:33.714",
+    "gap": "+2.194",
+    "q1": null,
+    "q2": null,
+    "q3": "1:33.714",
+    "sectors": [
+     {
+      "t": "24.645",
+      "best": null
+     },
+     {
+      "t": "28.293",
+      "best": null
+     },
+     {
+      "t": "40.776",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 14,
+    "num": "5",
+    "sigla": "BOR",
+    "colore": "#A21D2B",
+    "best": "1:33.774",
+    "gap": "+2.254",
+    "q1": null,
+    "q2": null,
+    "q3": "1:33.774",
+    "sectors": [
+     {
+      "t": "24.568",
+      "best": null
+     },
+     {
+      "t": "28.445",
+      "best": null
+     },
+     {
+      "t": "40.761",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 15,
+    "num": "41",
+    "sigla": "LIN",
+    "colore": "#6692FF",
+    "best": "1:34.048",
+    "gap": "+2.528",
+    "q1": null,
+    "q2": null,
+    "q3": "1:34.048",
+    "sectors": [
+     {
+      "t": "24.740",
+      "best": null
+     },
+     {
+      "t": "28.531",
+      "best": null
+     },
+     {
+      "t": "40.777",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 16,
+    "num": "43",
+    "sigla": "COL",
+    "colore": "#FF87BC",
+    "best": "1:34.327",
+    "gap": "+2.807",
+    "q1": null,
+    "q2": null,
+    "q3": "1:34.327",
+    "sectors": [
+     {
+      "t": "24.681",
+      "best": null
+     },
+     {
+      "t": "28.700",
+      "best": null
+     },
+     {
+      "t": "40.946",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 17,
+    "num": "55",
+    "sigla": "SAI",
+    "colore": "#1868DB",
+    "best": "1:34.761",
+    "gap": "+3.241",
+    "q1": null,
+    "q2": null,
+    "q3": "1:34.761",
+    "sectors": [
+     {
+      "t": "24.801",
+      "best": null
+     },
+     {
+      "t": "28.792",
+      "best": null
+     },
+     {
+      "t": "41.168",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 18,
+    "num": "23",
+    "sigla": "ALB",
+    "colore": "#1868DB",
+    "best": "1:35.305",
+    "gap": "+3.785",
+    "q1": null,
+    "q2": null,
+    "q3": "1:35.305",
+    "sectors": [
+     {
+      "t": "24.828",
+      "best": null
+     },
+     {
+      "t": "29.030",
+      "best": null
+     },
+     {
+      "t": "41.447",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 19,
+    "num": "14",
+    "sigla": "ALO",
+    "colore": "#229971",
+    "best": "1:35.581",
+    "gap": "+4.061",
+    "q1": null,
+    "q2": null,
+    "q3": "1:35.581",
+    "sectors": [
+     {
+      "t": "25.123",
+      "best": null
+     },
+     {
+      "t": "28.884",
+      "best": null
+     },
+     {
+      "t": "41.574",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 20,
+    "num": "18",
+    "sigla": "STR",
+    "colore": "#229971",
+    "best": "1:36.151",
+    "gap": "+4.631",
+    "q1": null,
+    "q2": null,
+    "q3": "1:36.151",
+    "sectors": [
+     {
+      "t": "25.256",
+      "best": null
+     },
+     {
+      "t": "29.040",
+      "best": null
+     },
+     {
+      "t": "41.855",
+      "best": null
+     }
+    ]
+   },
+   {
+    "pos": 21,
+    "num": "77",
+    "sigla": "BOT",
+    "colore": "#D4A537",
+    "best": "1:37.378",
+    "gap": "+5.858",
+    "q1": null,
+    "q2": null,
+    "q3": "1:37.378",
+    "sectors": [
+     {
+      "t": "25.110",
+      "best": null
+     },
+     {
+      "t": "29.157",
+      "best": null
+     },
+     {
+      "t": "43.111",
+      "best": null
+     }
+    ]
+   }
+  ]
+ },
+ "sprint": {
+  "sessione": "Sprint",
+  "piloti": [
+   {
+    "pos": 1,
+    "num": "63",
+    "sigla": "RUS",
+    "colore": "#27F4D2",
+    "giri": 19,
+    "best": "1:35.101"
+   },
+   {
+    "pos": 2,
+    "num": "16",
+    "sigla": "LEC",
+    "colore": "#E8002D",
+    "giri": 19,
+    "best": "1:34.753"
+   },
+   {
+    "pos": 3,
+    "num": "44",
+    "sigla": "HAM",
+    "colore": "#E8002D",
+    "giri": 19,
+    "best": "1:34.926"
+   },
+   {
+    "pos": 4,
+    "num": "1",
+    "sigla": "NOR",
+    "colore": "#FF8000",
+    "giri": 19,
+    "best": "1:35.708"
+   },
+   {
+    "pos": 5,
+    "num": "12",
+    "sigla": "ANT",
+    "colore": "#27F4D2",
+    "giri": 19,
+    "best": "1:34.760"
+   },
+   {
+    "pos": 6,
+    "num": "81",
+    "sigla": "PIA",
+    "colore": "#FF8000",
+    "giri": 19,
+    "best": "1:35.635"
+   },
+   {
+    "pos": 7,
+    "num": "30",
+    "sigla": "LAW",
+    "colore": "#6692FF",
+    "giri": 19,
+    "best": "1:37.882"
+   },
+   {
+    "pos": 8,
+    "num": "87",
+    "sigla": "BEA",
+    "colore": "#B6BABD",
+    "giri": 19,
+    "best": "1:37.374"
+   },
+   {
+    "pos": 9,
+    "num": "3",
+    "sigla": "VER",
+    "colore": "#2B478F",
+    "giri": 19,
+    "best": "1:35.774"
+   },
+   {
+    "pos": 10,
+    "num": "31",
+    "sigla": "OCO",
+    "colore": "#B6BABD",
+    "giri": 19,
+    "best": "1:37.363"
+   },
+   {
+    "pos": 11,
+    "num": "10",
+    "sigla": "GAS",
+    "colore": "#FF87BC",
+    "giri": 19,
+    "best": "1:38.349"
+   },
+   {
+    "pos": 12,
+    "num": "55",
+    "sigla": "SAI",
+    "colore": "#1868DB",
+    "giri": 19,
+    "best": "1:37.913"
+   },
+   {
+    "pos": 13,
+    "num": "5",
+    "sigla": "BOR",
+    "colore": "#A21D2B",
+    "giri": 19,
+    "best": "1:37.800"
+   },
+   {
+    "pos": 14,
+    "num": "43",
+    "sigla": "COL",
+    "colore": "#FF87BC",
+    "giri": 19,
+    "best": "1:37.278"
+   },
+   {
+    "pos": 15,
+    "num": "6",
+    "sigla": "HAD",
+    "colore": "#2B478F",
+    "giri": 19,
+    "best": "1:36.912"
+   },
+   {
+    "pos": 16,
+    "num": "23",
+    "sigla": "ALB",
+    "colore": "#1868DB",
+    "giri": 19,
+    "best": "1:38.158"
+   },
+   {
+    "pos": 17,
+    "num": "14",
+    "sigla": "ALO",
+    "colore": "#229971",
+    "giri": 19,
+    "best": "1:38.487"
+   },
+   {
+    "pos": 18,
+    "num": "18",
+    "sigla": "STR",
+    "colore": "#229971",
+    "giri": 19,
+    "best": "1:38.532"
+   },
+   {
+    "pos": 19,
+    "num": "11",
+    "sigla": "PER",
+    "colore": "#D4A537",
+    "giri": 19,
+    "best": "1:38.862"
+   },
+   {
+    "pos": 20,
+    "num": "27",
+    "sigla": "HUL",
+    "colore": "#A21D2B",
+    "giri": 13,
+    "best": "1:38.027"
+   },
+   {
+    "pos": 21,
+    "num": "77",
+    "sigla": "BOT",
+    "colore": "#D4A537",
+    "giri": 12,
+    "best": "1:39.262"
+   },
+   {
+    "pos": 22,
+    "num": "41",
+    "sigla": "LIN",
+    "colore": "#6692FF",
+    "giri": 11,
+    "best": "1:38.475"
+   }
+  ]
+ }
+}

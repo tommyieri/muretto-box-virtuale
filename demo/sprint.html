@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<!--
+  SPRINT (R2b-auto): riepilogo del weekend sprint di un GP. Consumatore puro di
+  demo/data/sprint_<gara>.json (gen_sprint_ti.py, fonte TracingInsights).
+  Due tab: "Sprint Qualifying" = timesheet sul giro veloce (riusa la torre del
+  live); "Sprint" = ORDINE D'ARRIVO (posizione all'ultimo giro, giri, giro veloce).
+  Micro-settori assenti (artefatto del feed live).
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sprint — Muretto Box Virtuale</title>
+<link rel="stylesheet" href="stile.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
+    <span class="brand-mark"><span>M</span></span>
+    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+  </a>
+  <nav class="nav" aria-label="Sezioni">
+    <a href="stagione.html">Stagione</a>
+    <a href="live.html"><span class="dot-live"></span>Live</a>
+    <a href="classifiche.html">Classifiche</a>
+    <a href="analisi.html">Analisi</a>
+  </nav>
+</header>
+
+<div class="wrap-clas">
+  <div class="page-testa">
+    <h1 id="s-tit">Sprint</h1>
+    <div class="sotto" id="s-sotto"></div>
+  </div>
+
+  <div id="s-tabs" class="l-tabs"></div>
+  <section class="panel" id="s-panel">
+    <div id="tw-list" class="tw-list"></div>
+    <div id="ar-list" class="ar-list" hidden></div>
+    <div id="tw-nota" class="lv-nota" hidden></div>
+  </section>
+  <div style="margin-top:1rem"><a class="navbtn" href="stagione.html" style="display:inline-block"><b>&larr; Stagione 2026</b></a></div>
+</div>
+
+<style>
+  .lv-nota{color:#8b93a5;font-size:.8rem;margin-top:.5rem}
+  .l-tabs{display:flex;gap:.4rem;margin:.2rem 0 .8rem}
+  .l-tab{font:700 .78rem/1 -apple-system,Arial;color:#aab2c0;background:#161c26;border:1px solid #2a333f;
+    border-radius:7px;padding:.45rem .8rem;cursor:pointer}
+  .l-tab.on{background:#e80d2e;color:#fff;border-color:#e80d2e}
+  /* torre (condivisa col live) — per lo Sprint Qualifying */
+  .tw-list{display:flex;flex-direction:column;gap:.15rem}
+  .tw-row{padding:.35rem .1rem;border-bottom:1px solid #1c2430}
+  .tw-main{display:flex;align-items:center;gap:.55rem;font:600 .86rem/1.4 -apple-system,Arial}
+  .tw-pos{width:1.5rem;color:#8b93a5;text-align:right;font-variant-numeric:tabular-nums}
+  .tw-col{display:inline-block;width:.28rem;height:1.05rem;border-radius:2px;flex:0 0 auto}
+  .tw-sig{font-weight:800;letter-spacing:.02em;width:2.7rem}
+  .tw-time{font-variant-numeric:tabular-nums;color:#e8edf5;font-weight:700}
+  .tw-gap{font-variant-numeric:tabular-nums;color:#aab2c0;margin-left:auto;white-space:nowrap}
+  .tw-gap.tw-lead{color:#3fbf6f;font-weight:800;letter-spacing:.04em}
+  .tw-tag{color:#f5a03c;font-weight:800;font-size:.66rem;letter-spacing:.06em;width:2rem;text-align:right}
+  .tw-sectors{display:flex;gap:.5rem;margin:.3rem 0 .05rem 2.05rem}
+  .tw-sec{flex:1 1 0;min-width:0}
+  .tw-sec-t{display:block;font:700 .68rem/1.3 -apple-system,Arial;font-variant-numeric:tabular-nums;margin-bottom:.15rem}
+  .tw-bar{display:flex;gap:1px;height:.32rem;border-radius:2px;overflow:hidden}
+  .tw-seg{flex:1 1 0;min-width:1px;display:block}
+  /* ordine d'arrivo — per lo Sprint */
+  .ar-list{display:flex;flex-direction:column}
+  .ar-row{display:flex;align-items:center;gap:.55rem;padding:.4rem .1rem;border-bottom:1px solid #1c2430;
+    font:600 .88rem/1.4 -apple-system,Arial}
+  .ar-pos{width:1.6rem;text-align:right;font-weight:800;font-variant-numeric:tabular-nums;color:#8b93a5}
+  .ar-sig{font-weight:800;letter-spacing:.02em;width:3rem}
+  .ar-giri{color:#8b93a5;font-size:.78rem}
+  .ar-best{margin-left:auto;font-variant-numeric:tabular-nums;color:#cfd6e2}
+  .ar-best small{color:#6c7486;font-weight:600;margin-right:.3rem}
+</style>
+
+<footer class="footer">
+  <div class="footer-in">
+    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
+    <nav>
+      <a href="stagione.html">Stagione</a>
+      <a href="classifiche.html">Classifiche</a>
+      <a href="analisi.html">Analisi</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="module">
+const el = id => document.getElementById(id);
+const params = new URLSearchParams(location.search);
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+function qualiToSnapshot(sez){
+  const driver_list = {}, cars = {};
+  for (const p of (sez.piloti || [])){
+    driver_list[p.num] = { sigla: p.sigla, colore: p.colore };
+    cars[p.num] = { pos: p.pos, gap: p.gap || '', last_lap: null,
+                    best_lap: p.best || null, in_pit: false,
+                    sectors: Array.isArray(p.sectors) ? p.sectors : [], micro: [] };
+  }
+  return { type: 'snapshot', driver_list, cars, track_status: null, session_status: null };
+}
+
+function renderArrivo(sez){
+  el('ar-list').innerHTML = (sez.piloti || []).map(p =>
+    `<div class="ar-row">
+      <span class="ar-pos">${p.pos ?? '–'}</span>
+      <span class="tw-col" style="background:${esc(p.colore || '#9aa4b5')}"></span>
+      <span class="ar-sig">${esc(p.sigla || p.num)}</span>
+      <span class="ar-giri">${p.giri != null ? p.giri + ' giri' : ''}</span>
+      <span class="ar-best">${p.best ? '<small>giro veloce</small>' + esc(p.best) : ''}</span>
+    </div>`).join('');
+}
+
+async function boot(){
+  const { creaTorreTiming } = await import('./live_timing.mjs');
+  let gara = params.get('g');
+  let file = gara ? `sprint_${encodeURIComponent(gara)}.json` : null;
+  if (!file){
+    try { const man = await (await fetch('data/sprint_manifest.json')).json();
+          file = man && man.ultima && man.ultima.file; gara = man && man.ultima && man.ultima.gara; } catch(e){}
+  }
+  if (!file){ el('s-sotto').textContent = 'Nessuno sprint ancora disponibile.'; return; }
+  let doc;
+  try { doc = await (await fetch('data/' + file)).json(); }
+  catch(e){ el('s-sotto').textContent = 'Sprint non trovato: ' + file; return; }
+  el('s-tit').textContent = 'Sprint — ' + (doc.evento || doc.gara || '');
+
+  const torre = creaTorreTiming({ lista: el('tw-list'), nota: el('tw-nota') });
+  const tabs = [];
+  if (doc.sprint_quali) tabs.push(['sprint_quali', 'Sprint Qualifying']);
+  if (doc.sprint) tabs.push(['sprint', 'Sprint']);
+  if (!tabs.length){ el('s-sotto').textContent = 'Nessuna sessione sprint per questo GP.'; return; }
+
+  function mostra(key){
+    for (const b of el('s-tabs').children) b.classList.toggle('on', b.dataset.s === key);
+    if (key === 'sprint_quali'){
+      el('ar-list').hidden = true; el('tw-list').hidden = false;
+      torre.setAcceso(true); torre.applica(qualiToSnapshot(doc.sprint_quali));
+      el('s-sotto').textContent = 'Sprint Qualifying — timesheet sul giro veloce, gap dalla pole.';
+    } else {
+      torre.setAcceso(false); el('tw-list').hidden = true; el('ar-list').hidden = false;
+      renderArrivo(doc.sprint);
+      el('s-sotto').textContent = 'Sprint — ordine d’arrivo (posizione all’ultimo giro); il tempo è il giro più veloce del pilota.';
+    }
+  }
+  el('s-tabs').innerHTML = tabs.map(([k,l]) => `<button class="l-tab" data-s="${k}">${l}</button>`).join('');
+  for (const b of el('s-tabs').children) b.addEventListener('click', () => mostra(b.dataset.s));
+  mostra(tabs[tabs.length-1][0]);   // default: la sessione piu' recente (Sprint se c'e')
+}
+boot();
+</script>
+</body>
+</html>

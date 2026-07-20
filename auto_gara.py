@@ -215,6 +215,30 @@ def wave_libere():
     return True
 
 
+# --------------------------------------------- ONDATA SPRINT: weekend sprint
+# Come le libere ma per le sessioni "Sprint Qualifying" e "Sprint": esiste solo
+# nei weekend sprint (le cartelle mancano negli altri -> raw_head salta).
+# Bounded al weekend in corso, isolata dopo gare/quali/libere.
+def wave_sprint():
+    correnti = _gp_weekend_corrente()
+    if not correnti:
+        log('ondata sprint: nessun weekend in corso.'); return False
+    prodotte = []
+    for ti, nome, titolo in correnti:
+        if not raw_head_sess(ti, 'Sprint Qualifying'):   # non e' un weekend sprint
+            continue
+        rc = sh([PY, 'gen_sprint_ti.py', '--gara', nome, '--ti', ti,
+                 '--evento', titolo], check=False)
+        if rc == 0:
+            prodotte.append(nome)
+    if not prodotte:
+        log('ondata sprint: nessuna sessione sprint online (weekend non-sprint).')
+        return False
+    commit_push('auto: sprint aggiornato ' + ', '.join(prodotte)
+                + ' (fonte TracingInsights)')
+    return True
+
+
 # ------------------------------------------------------ ONDATA 2: release f1db
 def _github_latest():
     req = urllib.request.Request('https://api.github.com/repos/f1db/f1db/releases/latest',
@@ -287,5 +311,12 @@ if __name__ == '__main__':
     except Exception as e:
         log(f"ondata libere: errore ({e!r}) — gare e quali gia gestite, proseguo.")
         fattol = False
-    if not (fatto1 or fatto2 or fattoq or fattol):
+    try:
+        fattos = wave_sprint()
+    except SystemExit:
+        raise
+    except Exception as e:
+        log(f"ondata sprint: errore ({e!r}) — resto gia gestito, proseguo.")
+        fattos = False
+    if not (fatto1 or fatto2 or fattoq or fattol or fattos):
         log('niente da fare: demo allineata.')
