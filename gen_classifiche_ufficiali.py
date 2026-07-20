@@ -13,11 +13,10 @@ import fastf1
 fastf1.Cache.enable_cache(os.path.expanduser('~/muretto_shared/ff1_cache'))
 fastf1.set_log_level('ERROR')
 
-EVENTI = {'Australia': 'Australian Grand Prix', 'Cina': 'Chinese Grand Prix',
-          'Giappone': 'Japanese Grand Prix', 'Miami': 'Miami Grand Prix',
-          'Canada': 'Canadian Grand Prix', 'Monaco': 'Monaco Grand Prix',
-          'Spagna': 'Barcelona Grand Prix', 'Austria': 'Austrian Grand Prix',
-          'Gran Bretagna': 'British Grand Prix', 'Belgio': 'Belgian Grand Prix'}
+# Lista gare DAL REGISTRO (data/gare_registro.json): una gara nuova pubblicata dalla
+# pipeline entra qui da sola. 'ti' = nome evento FastF1 (coincidente per tutte le gare demo).
+EVENTI = {nome: v['ti'] for nome, v in
+          json.load(open(os.path.join('data', 'gare_registro.json'))).items()}
 
 def main():
     out = {}

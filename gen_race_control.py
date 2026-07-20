@@ -14,17 +14,17 @@ Schema CSV (una riga per messaggio):
 - messaggi con "PENALTY" non parsabili come penalita' di tempo (griglia, drive-through,
   deleted lap...) restano nel CSV con penalita_secondi vuoto e sono conteggiati a video.
 """
-import os, re, csv
+import os, re, csv, json
 import fastf1
 
 fastf1.Cache.enable_cache(os.path.expanduser('~/muretto_shared/ff1_cache'))
 fastf1.set_log_level('ERROR')
 
-GARE = [('Australia', 'Australian Grand Prix'), ('Cina', 'Chinese Grand Prix'),
-        ('Giappone', 'Japanese Grand Prix'), ('Miami', 'Miami Grand Prix'),
-        ('Canada', 'Canadian Grand Prix'), ('Monaco', 'Monaco Grand Prix'),
-        ('Spagna', 'Barcelona Grand Prix'), ('Austria', 'Austrian Grand Prix'),
-        ('Gran Bretagna', 'British Grand Prix'), ('Belgio', 'Belgian Grand Prix')]
+# Lista gare DAL REGISTRO (data/gare_registro.json): una gara nuova pubblicata dalla
+# pipeline entra qui da sola, senza modifica a mano. 'ti' = nome evento FastF1 (verificato
+# coincidente per tutte le gare in demo). Ordine = ordine del registro (cronologico).
+_REG = json.load(open(os.path.join('data', 'gare_registro.json')))
+GARE = [(nome, v['ti']) for nome, v in _REG.items()]
 
 PEN_RE = re.compile(r'(\d+)\s*SECOND(?:S)?\s*TIME\s*PENALTY.*?CAR\s*(\d+)\s*\((\w+)\)', re.I)
 CAR_RE = re.compile(r'CAR\s*\d+\s*\((\w+)\)', re.I)
