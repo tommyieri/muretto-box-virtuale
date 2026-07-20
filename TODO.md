@@ -33,7 +33,11 @@ Regola: i dati vengono da f1db/TI, MAI trascritti a mano. Ogni griglia/pole va v
      34.7k coppie/9 gare). Doppio conteggio confermato e CORRETTO via adapter M1 in
      pitbande.mjs (rate*(A-A0), gancio non toccato, banda-zero bit-identica). Vedi REPORT_FASEB.md.
      Scenari ancora OFF: blocco tecnico rimosso, accensione SCENARI_ATTIVI = decisione PO.
-   - [poi] Fase B seconda meta': copertura-rolling banda aggiornata coi giri gia' corsi (prereg nuova).
+   - [fatto 20/07] Fase B 2a meta' (calibrazione): CALIBRATA, copertura 43.1% (>=40%, IC
+     38.5-47.0). Miss simmetrico. Secondario: ricentrare sulla rate LIVE crolla al 22%
+     (-21pt) -> banda statica meglio della live-aggiornata (conferma arco chiuso). Vedi
+     REPORT_FASEB2.md. Blocco tecnico alla visibilita' SCIOLTO su tutti i fronti;
+     accensione SCENARI_ATTIVI = solo decisione PO.
    - [poi] Fase C: innesto live + shadow-run HUN (dip.: MQTT OpenF1 rotto dal 19/07).
 
 ## Principi

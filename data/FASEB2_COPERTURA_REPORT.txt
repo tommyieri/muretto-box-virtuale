@@ -1,0 +1,32 @@
+==============================================================================
+FASE B 2a metà — CALIBRAZIONE degli scenari (la banda M1 contiene la realtà?)
+==============================================================================
+Protocollo: PREREG_SESSIONE_FASEB2.md. Copertura = obs_cum in [ottimistico,
+pessimistico] sui prossimi giri; soglia congelata 40%.
+
+gare escluse: nessuna
+finestre testabili: 6163 | gare: 9
+
+COPERTURA (statica, banda climatologica M1): 43.1%  IC95 blocchi-gara [38.5%, 47.0%]  (soglia >= 40%)
+  miss sotto ottimistico (realtà meglio del best): 26.2% | sopra pessimistico (peggio del worst): 30.7%
+  per compound:
+    SOFT  : 38.4% (n=438)
+    MEDIUM: 45.2% (n=2338)
+    HARD  : 42.3% (n=3387)
+  per circuito:
+    catalunya         : 44.1% (n=719)
+    melbourne         : 47.3% (n=609)
+    miami             : 44.4% (n=647)
+    montreal          : 47.6% (n=885)
+    shanghai          : 50.1% (n=649)
+    silverstone       : 35.4% (n=635)
+    spa-francorchamps : 47.1% (n=488)
+    spielberg         : 29.9% (n=813)
+    suzuka            : 45.0% (n=718)
+
+  [secondario, NON decide] banda RICENTRATA su rate live: 22.0% (delta -21.1%)
+
+==============================================================================
+CALIBRAZIONE: CALIBRATA — copertura 43.1% >= 40%. Gli scenari sono onesti sull'orizzonte pit; accensione SCENARI_ATTIVI = PO.
+Verdetto MECCANICO contro soglia congelata. Il verdetto strategico è del PO.
+==============================================================================
