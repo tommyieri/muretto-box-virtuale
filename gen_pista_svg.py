@@ -142,11 +142,11 @@ def ricampiona_anello(xy, n):
     return p, tot
 
 
-def genera(nome, reg, forza=False, sessione='R'):
+def genera(nome, reg, forza=False, sessione='R', anno=ANNO):
     dest = os.path.join('demo', 'data', f'pista_{nome}.json')
     ti = reg['ti']
     print(f'== {nome} ({ti}) ==')
-    session = fastf1.get_session(ANNO, ti, sessione)
+    session = fastf1.get_session(anno, ti, sessione)
     session.load(laps=True, telemetry=True, weather=False, messages=False)
     lap, xy = scegli_giro(session)
     if lap is None:
@@ -194,7 +194,7 @@ def genera(nome, reg, forza=False, sessione='R'):
         },
         'lunghezza_m': round(tot_units / 10.0, 1),
         'sorgente': {
-            'evento': f'{ANNO} {ti}', 'sessione': sessione,
+            'evento': f'{anno} {ti}', 'sessione': sessione,
             'pilota': str(lap['Driver']), 'giro': int(lap['LapNumber']),
             'lap_time_s': round(lap['LapTime'].total_seconds(), 3),
             'criterio': 'giro valido piu veloce con telemetria GPS pulita (vedi testa del generatore)',
@@ -218,15 +218,28 @@ def main():
                     help="sessione FastF1 per la telemetria (default R; es. FP1 per "
                          "avere la pista del circuito nuovo gia' al venerdi' — "
                          "runbook live, Fase 3)")
+    ap.add_argument('--anno', type=int, default=ANNO,
+                    help=f"anno FastF1 della telemetria (default {ANNO}; es. l'anno "
+                         "precedente per la PRE-costruzione di un circuito che non ha "
+                         "ancora girato — runbook live)")
+    ap.add_argument('--ti', help="nome evento FastF1 per una gara NON ancora a registro "
+                                 "(pre-costruzione; es. 'Hungarian Grand Prix'). "
+                                 "Il registro NON viene toccato.")
+    ap.add_argument('--cid', help="codice circuito f1db per una gara NON a registro "
+                                  "(es. hungaroring)")
     args = ap.parse_args()
     registro = carica_registro()
     nomi = [args.gara] if args.gara else list(registro)
     if args.gara and args.gara not in registro:
-        sys.exit(f'gara sconosciuta: {args.gara} (registro: {", ".join(registro)})')
+        if not args.ti:
+            sys.exit(f'gara sconosciuta: {args.gara} (registro: {", ".join(registro)}); '
+                     'per una pre-costruzione passare --ti (e --cid)')
+        registro = dict(registro, **{args.gara: {'ti': args.ti, 'cid': args.cid}})
     esiti = {}
     for nome in nomi:
         try:
-            esiti[nome] = genera(nome, registro[nome], sessione=args.sessione)
+            esiti[nome] = genera(nome, registro[nome], sessione=args.sessione,
+                                 anno=args.anno)
         except Exception as e:
             print(f'   ERRORE {nome}: {e}')
             esiti[nome] = False

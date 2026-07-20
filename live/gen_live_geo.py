@@ -96,6 +96,16 @@ def main() -> int:
                     scala, tx, ty = scala + ds, tx + dx, ty + dy
                     migliorato = True
 
+    # residui al minimo trovato, su TUTTI i punti ruotati (non solo il
+    # campione 1-su-3 della discesa): medio e p95 (PREREG_HUN_PREP: il
+    # giudizio del fit e' sul p95 in metri, soglia 3 m)
+    residui = sorted(indice.distanza(px * scala + tx, py * scala + ty,
+                                     massimo=300.0)
+                     for px, py in ruotati)
+    res_medio = statistics.fmean(residui)
+    res_p95 = residui[min(len(residui) - 1,
+                          round(0.95 * (len(residui) - 1)))]
+
     corridoio_vb = [
         [round(px * scala + tx, 1), round(py * scala + ty, 1)]
         for px, py in ruota_flip([tuple(p) for p in pit["punti"]], rot)]
@@ -111,7 +121,10 @@ def main() -> int:
         "scala": round(scala, 8),
         "tx": round(tx, 3),
         "ty": round(ty, 3),
-        "residuo_medio_vb": round(migliore, 2),
+        "residuo_medio_vb": round(res_medio, 2),
+        "residuo_p95_vb": round(res_p95, 2),
+        "residuo_medio_m": round(res_medio / scala / 10, 2),
+        "residuo_p95_m": round(res_p95 / scala / 10, 2),
         "corridoio_pit_vb": corridoio_vb,
         "provenienza": {"ref": str(args.ref), "pitlane": str(args.pitlane),
                         "pista": f"pista_{args.gara}.json"},
@@ -120,8 +133,9 @@ def main() -> int:
     dest.write_text(json.dumps(out, ensure_ascii=False, indent=1),
                     encoding="utf-8")
     print(f"{dest.name}: scala {scala:.6f}, t=({tx:.1f},{ty:.1f}), "
-          f"residuo medio {migliore:.2f} vb "
-          f"({migliore / scala / 10:.1f} m), corridoio {len(corridoio_vb)} punti")
+          f"residuo medio {res_medio:.2f} vb ({res_medio / scala / 10:.2f} m), "
+          f"p95 {res_p95:.2f} vb ({res_p95 / scala / 10:.2f} m), "
+          f"corridoio {len(corridoio_vb)} punti")
     return 0
 
 
