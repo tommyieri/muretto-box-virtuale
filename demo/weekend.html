@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<!--
+  WEEKEND (ui-v6) — pagina del weekend di gara, guidata da OpenF1 (live, CORS aperto).
+  Aggancio: gara interna (calendario_2026.json) -> meeting OpenF1 via DATA della gara
+  (Race == g.data). Nessuna mappa a mano. Selettore sessioni (FP/SQ/Sprint/Quali/Gara),
+  timing con settori e micro-settori colorati (verde=personal, viola=record sessione,
+  giallo=più lento), e telemetria per giro (velocità/gas/freno/marcia/DRS).
+  URL: weekend.html?gp=<gara>   (es. ?gp=Belgio)
+  FONTE = VERITÀ: nessun numero inventato. Se un dato manca, non si mostra.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Weekend — Muretto Box Virtuale</title>
+<link rel="stylesheet" href="stile.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
+    <span class="brand-mark"><span>M</span></span>
+    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+  </a>
+  <nav class="nav" aria-label="Sezioni">
+    <a href="stagione.html">Stagione</a>
+    <a href="live.html"><span class="dot-live"></span>Live</a>
+    <a href="classifiche.html">Classifiche</a>
+    <a href="analisi.html">Analisi</a>
+  </nav>
+</header>
+
+<div class="wrap-wknd">
+  <a class="crumb" href="stagione.html">&larr; Stagione 2026</a>
+
+  <div class="wknd-testa">
+    <h1 id="wTitolo">Weekend <em>//</em> &hellip;</h1>
+    <div class="sotto" id="wSotto"></div>
+  </div>
+
+  <div class="sess-tabs" id="sessTabs"></div>
+  <div class="wknd-switch" id="switch" hidden></div>
+  <div id="corpo"><div class="wknd-msg"><span class="spin"></span>Carico il weekend&hellip;</div></div>
+</div>
+
+<footer class="footer">
+  <div class="footer-in">
+    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
+    <nav>
+      <a href="stagione.html">Stagione</a>
+      <a href="classifiche.html">Classifiche</a>
+      <a href="analisi.html">Analisi</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="module">
+const OF1 = 'https://api.openf1.org/v1';
+const el = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const cache = new Map();
+async function api(path, tent=0){
+  if (cache.has(path)) return cache.get(path);
+  let r;
+  try { r = await fetch(`${OF1}/${path}`); }
+  catch(e){ if (tent<2){ await new Promise(x=>setTimeout(x,700)); return api(path,tent+1); } throw e; }
+  if (r.status===429 || r.status>=500){                 // rate-limit / errore transitorio: riprova
+    if (tent<2){ await new Promise(x=>setTimeout(x,900*(tent+1))); return api(path,tent+1); }
+    throw new Error(`OpenF1 ${r.status}`);
+  }
+  if (!r.ok) throw new Error(`OpenF1 ${r.status}`);
+  const j = await r.json();
+  if (!Array.isArray(j)){                                 // OpenF1 restituisce sempre liste
+    if (tent<2){ await new Promise(x=>setTimeout(x,900)); return api(path,tent+1); }
+    throw new Error('risposta inattesa da OpenF1');
+  }
+  cache.set(path, j);
+  return j;
+}
+const col = c => c ? (c.startsWith('#') ? c : '#'+c) : 'var(--dim)';
+const fmtLap = s => { if (s==null) return '—'; const m=Math.floor(s/60), r=(s-m*60); return m>0 ? `${m}:${r.toFixed(3).padStart(6,'0')}` : r.toFixed(3); };
+const fmtSec = s => s==null ? '—' : s.toFixed(3);
+
+// etichette sessione: nome OpenF1 -> sigla breve + descrizione
+function label(name){
+  const n = (name||'').toLowerCase();
+  if (n==='practice 1') return {k:'FP1', d:'Libere 1', ord:1};
+  if (n==='practice 2') return {k:'FP2', d:'Libere 2', ord:2};
+  if (n==='practice 3') return {k:'FP3', d:'Libere 3', ord:3};
+  if (n.includes('sprint') && (n.includes('qual')||n.includes('shootout'))) return {k:'SQ', d:'Sprint quali', ord:4};
+  if (n==='sprint') return {k:'SPR', d:'Sprint', ord:5};
+  if (n.includes('qualifying')) return {k:'QUALI', d:'Qualifica', ord:6};
+  if (n==='race') return {k:'GARA', d:'Gara', ord:7};
+  return {k:(name||'?').slice(0,4).toUpperCase(), d:name||'', ord:9};
+}
+const isRace = s => /race|sprint$/i.test(s.session_name||'') && !/qual|shootout/i.test(s.session_name||'');
+
+let calGara=null, sessioni=[], sessSel=null, drivers={}, vista='timing';
+
+async function boot(){
+  const gp = new URLSearchParams(location.search).get('gp');
+  let cal=null;
+  try { cal = await (await fetch('data/calendario_2026.json')).json(); } catch(e){}
+  calGara = cal?.gare.find(g => g.gara===gp || g.nome===gp) || null;
+  if (!calGara){ corpoErr('Weekend non trovato. Torna alla stagione.'); return; }
+
+  el('wTitolo').innerHTML = `Weekend <em>//</em> ${esc(calGara.nome)}`;
+
+  // meeting OpenF1: la sessione "Race" del 2026 la cui data == data gara interna
+  let meetingKey=null, tutteSess=[];
+  try {
+    tutteSess = await api(`sessions?year=2026`);
+    const race = tutteSess.find(s => (s.session_name==='Race') && s.date_start && s.date_start.slice(0,10)===calGara.data);
+    meetingKey = race?.meeting_key ?? null;
+  } catch(e){ corpoErr('OpenF1 non raggiungibile in questo momento. Riprova tra poco.'); return; }
+  if (!meetingKey){ corpoErr('Dati OpenF1 non ancora disponibili per questo weekend.'); return; }
+
+  sessioni = tutteSess.filter(s => s.meeting_key===meetingKey)
+    .map(s => ({...s, lab: label(s.session_name)}))
+    .sort((a,b)=> a.lab.ord - b.lab.ord);
+
+  const primo = sessioni.find(s=>s.date_start);
+  const circuito = primo?.circuit_short_name || calGara.circuito || '';
+  const d0 = sessioni[0]?.date_start, d1 = sessioni[sessioni.length-1]?.date_start;
+  const gg = (a,b)=>{ const A=new Date(a), B=new Date(b);
+    const f=x=>x.toLocaleDateString('it-IT',{day:'numeric',month:'long'});
+    return A.toDateString()===B.toDateString()? f(A) : `${A.toLocaleDateString('it-IT',{day:'numeric'})}–${f(B)}`; };
+  el('wSotto').innerHTML = `<span>${esc(circuito)}</span>`
+    + (calGara.giri?`<span><b>${calGara.giri}</b> giri</span>`:'')
+    + (d0&&d1?`<span>${gg(d0,d1)} 2026</span>`:'')
+    + `<span>round <b>${calGara.round}</b> di 22</span>`;
+
+  // chip: seleziona di default Qualifica (o l'ultima sessione con dati)
+  const def = sessioni.find(s=>s.lab.k==='QUALI') || sessioni[sessioni.length-1];
+  disegnaTabs();
+  seleziona(def);
+}
+
+function disegnaTabs(){
+  el('sessTabs').innerHTML = sessioni.map((s,i)=>
+    `<button class="sess-tab" data-i="${i}"><span class="k">${s.lab.k}</span><span class="d">${s.lab.d}</span></button>`).join('');
+  el('sessTabs').querySelectorAll('.sess-tab').forEach(b=>
+    b.addEventListener('click', ()=> seleziona(sessioni[+b.dataset.i])));
+}
+
+async function seleziona(s){
+  sessSel = s;
+  el('sessTabs').querySelectorAll('.sess-tab').forEach(b=>
+    b.classList.toggle('on', sessioni[+b.dataset.i]===s));
+  // switch vista: gara/sprint hanno anche il link al replay se esiste
+  const replay = isRace(s) && calGara.gara_demo ? calGara.gara_demo : null;
+  el('switch').hidden = false;
+  el('switch').innerHTML =
+    `<button data-v="timing" class="${vista==='timing'?'on':''}">Classifica &amp; settori</button>`
+   +`<button data-v="telem" class="${vista==='telem'?'on':''}">Telemetria</button>`
+   +(replay?`<a class="btn btn-pri" style="margin-left:auto;padding:9px 16px;font-size:13px" href="gara.html?g=${encodeURIComponent(replay)}">Replay per-giro &rarr;</a>`:'');
+  el('switch').querySelectorAll('button').forEach(b=>
+    b.addEventListener('click', ()=>{ vista=b.dataset.v; seleziona(s); }));
+
+  el('corpo').innerHTML = `<div class="wknd-msg"><span class="spin"></span>Carico ${s.lab.d}&hellip;</div>`;
+  try {
+    const dl = await api(`drivers?session_key=${s.session_key}`);
+    drivers = Object.fromEntries(dl.map(d=>[d.driver_number, d]));
+    if (vista==='timing') await vistaTiming(s);
+    else await vistaTelem(s);
+  } catch(e){ corpoErr('Dati sessione non disponibili: '+e.message); }
+}
+
+// ---------- classifica sessione + settori + micro-settori ----------
+async function vistaTiming(s){
+  const laps = await api(`laps?session_key=${s.session_key}`);
+  // giro migliore per pilota (lap_duration valido)
+  const best = {};
+  for (const l of laps){
+    if (l.lap_duration==null) continue;
+    const b = best[l.driver_number];
+    if (!b || l.lap_duration < b.lap_duration) best[l.driver_number] = l;
+  }
+  const righe = Object.values(best).sort((a,b)=>a.lap_duration-b.lap_duration);
+  if (!righe.length){ corpoErr('Nessun tempo registrato in questa sessione.'); return; }
+  const top = righe[0].lap_duration;
+  // record di settore (session best) e migliore personale per settore
+  const sbest = [Infinity,Infinity,Infinity];
+  for (const l of Object.values(best)) [1,2,3].forEach(i=>{
+    const v=l['duration_sector_'+i]; if (v!=null && v<sbest[i-1]) sbest[i-1]=v; });
+
+  // viola = record di settore della sessione; altrimenti neutro (il verde/giallo
+  // sta nei micro-settori, dove il dato è per-segmento e non dedotto)
+  const secCls = (v,i)=> (v!=null && v<=sbest[i-1]+1e-6) ? 'sb' : '';
+  const trap = l => Math.max(l.i1_speed||0, l.i2_speed||0, l.st_speed||0) || null;
+
+  const testa = `<div class="tm-row testa"><span class="pos">P</span><span></span><span>pilota</span>
+    <span class="best">giro</span><span class="gap">gap</span>
+    <span class="sec sc">S1</span><span class="sec sc">S2</span><span class="sec sc">S3</span><span class="trap">km/h</span></div>`;
+  const body = righe.map((l,i)=>{
+    const d = drivers[l.driver_number]||{};
+    const c = col(d.team_colour);
+    const gap = i===0? 'best' : '+'+(l.lap_duration-top).toFixed(3);
+    const tr = trap(l);
+    return `<div class="tm-row"><span class="cbar" style="background:${c}"></span>
+      <span class="pos">${i+1}</span>
+      <span class="rnum" style="color:${c}">${l.driver_number}</span>
+      <span class="who"><b>${esc(d.name_acronym||l.driver_number)}</b><span>${esc(d.team_name||'')}</span></span>
+      <span class="best">${fmtLap(l.lap_duration)}</span>
+      <span class="gap">${gap}</span>
+      <span class="sec ${secCls(l.duration_sector_1,1)}">${fmtSec(l.duration_sector_1)}</span>
+      <span class="sec ${secCls(l.duration_sector_2,2)}">${fmtSec(l.duration_sector_2)}</span>
+      <span class="sec ${secCls(l.duration_sector_3,3)}">${fmtSec(l.duration_sector_3)}</span>
+      <span class="trap">${tr?tr:'—'}</span></div>`;
+  }).join('');
+
+  // micro-settori: strip del giro migliore di ognuno (primi 12 per leggibilità)
+  const microRighe = righe.slice(0,12).map(l=>{
+    const d = drivers[l.driver_number]||{};
+    const cells = [1,2,3].map(si=>{
+      const segs = l['segments_sector_'+si]||[];
+      const inner = segs.map(v=>`<span class="seg ${cellClass(v)}"></span>`).join('');
+      return inner + (si<3?'<span class="sep"></span>':'');
+    }).join('');
+    return `<div class="ms-row">
+      <span class="who"><i style="background:${col(d.team_colour)}"></i>${esc(d.name_acronym||l.driver_number)}</span>
+      <span class="ms-strip">${cells}</span>
+      <span class="lt">${fmtLap(l.lap_duration)}</span></div>`;
+  }).join('');
+
+  const legenda = `<div class="ms-legend">
+    <i><span class="sw ms-cell-viola"></span>record sessione</i>
+    <i><span class="sw ms-cell-verde"></span>miglior personale</i>
+    <i><span class="sw ms-cell-giallo"></span>più lento</i>
+    <i><span class="sw ms-cell-box"></span>box / n.d.</i></div>`;
+
+  el('corpo').innerHTML = `
+    <section class="panel tm">${testa}${body}</section>
+    <div class="sez-tit">Micro-settori &mdash; giro migliore</div>
+    <section class="panel ms-wrap">${legenda}${microRighe}</section>`;
+}
+// codici segmento OpenF1 -> classe colore
+function cellClass(v){
+  if (v===2051) return 'ms-cell-viola';       // record sessione (viola)
+  if (v===2049 || v===2050) return 'ms-cell-verde'; // miglior personale (verde)
+  if (v===2048) return 'ms-cell-giallo';      // più lento (giallo)
+  return 'ms-cell-box';                        // 2064 / 0 / null: box o non cronometrato
+}
+
+// ---------- telemetria per giro ----------
+async function vistaTelem(s){
+  const laps = await api(`laps?session_key=${s.session_key}`);
+  const perDrv = {};
+  for (const l of laps) if (l.lap_duration!=null){ (perDrv[l.driver_number] ||= []).push(l); }
+  const nums = Object.keys(perDrv).map(Number)
+    .sort((a,b)=> Math.min(...perDrv[a].map(x=>x.lap_duration)) - Math.min(...perDrv[b].map(x=>x.lap_duration)));
+  if (!nums.length){ corpoErr('Nessun giro con telemetria in questa sessione.'); return; }
+
+  const optDrv = nums.map(n=>{ const d=drivers[n]||{};
+    return `<option value="${n}">${esc(d.name_acronym||n)} — ${esc(d.team_name||'')}</option>`; }).join('');
+  el('corpo').innerHTML = `
+    <div class="tel-ctl">
+      <span><label>Pilota</label><select id="telDrv">${optDrv}</select></span>
+      <span><label>Giro</label><select id="telLap"></select></span>
+      <span class="tel-chip" id="telInfo">seleziona un giro</span>
+    </div>
+    <section class="panel tel-graf" id="telGraf"><div class="wknd-msg">Scegli pilota e giro.</div></section>`;
+
+  const riempiLap = () => {
+    const n = +el('telDrv').value;
+    const ls = perDrv[n].slice().sort((a,b)=>a.lap_number-b.lap_number);
+    const fast = ls.reduce((m,x)=> x.lap_duration<m.lap_duration?x:m, ls[0]);
+    el('telLap').innerHTML = ls.map(l=>`<option value="${l.lap_number}" ${l===fast?'selected':''}>Giro ${l.lap_number} — ${fmtLap(l.lap_duration)}${l===fast?' ⚡':''}</option>`).join('');
+  };
+  el('telDrv').addEventListener('change', ()=>{ riempiLap(); disegnaTel(perDrv); });
+  el('telLap').addEventListener('change', ()=> disegnaTel(perDrv));
+  riempiLap();
+  disegnaTel(perDrv);
+}
+
+async function disegnaTel(perDrv){
+  const n = +el('telDrv').value, lapN = +el('telLap').value;
+  const l = perDrv[n].find(x=>x.lap_number===lapN);
+  const d = drivers[n]||{};
+  el('telInfo').innerHTML = `<i style="background:${col(d.team_colour)}"></i><b>${esc(d.name_acronym||n)}</b> · giro ${lapN} · ${fmtLap(l.lap_duration)}`;
+  el('telGraf').innerHTML = `<div class="wknd-msg"><span class="spin"></span>Carico la telemetria&hellip;</div>`;
+  const t0 = new Date(l.date_start).getTime();
+  const t1 = t0 + l.lap_duration*1000 + 400;
+  const from = new Date(t0-200).toISOString(), to = new Date(t1).toISOString();
+  let cd;
+  try {
+    cd = await api(`car_data?session_key=${sessSel.session_key}&driver_number=${n}&date>=${from}&date<=${to}`);
+  } catch(e){ el('telGraf').innerHTML = `<div class="wknd-msg err">Telemetria non disponibile: ${e.message}</div>`; return; }
+  cd = cd.filter(x=>x.speed!=null).sort((a,b)=> new Date(a.date)-new Date(b.date));
+  if (cd.length<5){ el('telGraf').innerHTML = `<div class="wknd-msg">Telemetria non disponibile per questo giro.</div>`; return; }
+  const N = cd.length, W = 1000;
+  const x = i => i/(N-1)*W;
+  const speeds = cd.map(p=>p.speed);
+  const vmax = Math.max(...speeds, 1);
+  const path = (vals, max, h) => {
+    let dd='';
+    vals.forEach((v,i)=>{ const px=x(i).toFixed(1), py=(h-(v/max)*h).toFixed(1); dd += (i?'L':'M')+px+' '+py+' '; });
+    return dd.trim();
+  };
+  const areaPath = (vals, max, h) => `M0 ${h} ` + path(vals,max,h).replace(/^M/,'L') + ` L${W} ${h} Z`;
+  const gears = cd.map(p=>p.n_gear||0);
+  const gmax = Math.max(...gears, 1);
+  const gearBars = gears.map((g,i)=>`<span class="gg" style="height:${(g/gmax*100).toFixed(0)}%"></span>`).join('');
+
+  el('telGraf').innerHTML = `
+    <div class="tel-blk"><div class="lab"><span>Velocità</span><b>max ${vmax} km/h</b></div>
+      <svg viewBox="0 0 ${W} 150" preserveAspectRatio="none"><line class="axis" x1="0" y1="149" x2="${W}" y2="149"/>
+        <path class="tel-line vel" d="${path(speeds, vmax, 145)}"/></svg></div>
+    <div class="tel-blk"><div class="lab"><span>Acceleratore</span><b>%</b></div>
+      <svg viewBox="0 0 ${W} 70" preserveAspectRatio="none">
+        <path class="tel-area gas" d="${areaPath(cd.map(p=>p.throttle||0),100,68)}"/>
+        <path class="tel-line gas" d="${path(cd.map(p=>p.throttle||0),100,68)}"/></svg></div>
+    <div class="tel-blk"><div class="lab"><span>Freno</span><b>%</b></div>
+      <svg viewBox="0 0 ${W} 50" preserveAspectRatio="none">
+        <path class="tel-area fre" d="${areaPath(cd.map(p=>(p.brake||0)),100,48)}"/>
+        <path class="tel-line fre" d="${path(cd.map(p=>(p.brake||0)),100,48)}"/></svg></div>
+    <div class="tel-blk"><div class="lab"><span>Marcia</span><b>1–${gmax}</b></div>
+      <div class="tel-gear">${gearBars}</div></div>`;
+}
+
+function corpoErr(msg){ el('corpo').innerHTML = `<div class="wknd-msg err">${esc(msg)}</div>`; el('switch').hidden = true; }
+
+boot();
+</script>
+</body>
+</html>

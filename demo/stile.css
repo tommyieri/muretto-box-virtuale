@@ -173,6 +173,7 @@ h1, h2, h3 { font-family: var(--disp); letter-spacing: .5px; }
 }
 .hero .count small { color: var(--dim); font: 400 12px/1 var(--sans); margin-left: 6px; }
 .hero-sess { color: var(--dim); font: 12.5px/1.9 var(--mono); margin-top: 16px; letter-spacing: .2px; }
+.hero-cta { margin-top: 20px; }
 
 /* bottoniera sezioni (home) */
 .navrow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0 6px; }
@@ -709,6 +710,117 @@ a.gpcard:hover::after { right: 0; }
 .navrow4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 4px 0 6px; }
 @media (max-width: 860px) { .navrow4 { grid-template-columns: 1fr 1fr; } }
 @media (max-width: 480px) { .navrow4 { grid-template-columns: 1fr; } }
+
+/* =============================================================== WEEKEND */
+.wrap-wknd { max-width: 1200px; margin: 0 auto; padding: 6px 16px 40px; }
+.wknd-testa { margin: 8px 2px 16px; }
+.wknd-testa h1 { margin: 0; font: 800 clamp(28px, 5vw, 42px)/1.02 var(--disp);
+  letter-spacing: .8px; text-transform: uppercase; }
+.wknd-testa h1 em { font-style: normal; color: var(--brand); }
+.wknd-testa .sotto { color: var(--dim); font-size: 13.5px; margin-top: 5px;
+  display: flex; gap: 14px; flex-wrap: wrap; align-items: baseline; }
+.wknd-testa .sotto b { color: var(--txt); font-weight: 600; }
+
+/* selettore sessioni: chip da pit-wall */
+.sess-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin: 0 0 18px; }
+.sess-tab {
+  display: inline-flex; flex-direction: column; gap: 3px; cursor: pointer;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px;
+  padding: 10px 15px; color: var(--dim); min-width: 74px;
+  transition: border-color .15s, color .15s, background .15s, transform .15s;
+}
+.sess-tab:hover { color: var(--txt); border-color: var(--line2); transform: translateY(-1px); }
+.sess-tab .k { font: 800 15px/1 var(--disp); letter-spacing: 1.6px; text-transform: uppercase; }
+.sess-tab .d { font: 500 10px/1 var(--mono); letter-spacing: .3px; }
+.sess-tab.on { color: var(--txt); border-color: var(--brand);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--brand) 18%, var(--panel)), var(--panel)); }
+.sess-tab.on .k { color: #fff; }
+.sess-tab.vuota { opacity: .4; cursor: not-allowed; }
+.sess-tab.vuota:hover { transform: none; border-color: var(--line); color: var(--dim); }
+
+/* interruttore vista dentro la sessione */
+.wknd-switch { display: flex; gap: 6px; margin-bottom: 14px; }
+.wknd-switch button { background: var(--panel); color: var(--dim); border: 1px solid var(--line);
+  border-radius: 9px; padding: 9px 16px; font: 700 12px/1 var(--disp); letter-spacing: 1.4px;
+  text-transform: uppercase; cursor: pointer; transition: color .12s, border-color .12s; }
+.wknd-switch button:hover { color: var(--txt); }
+.wknd-switch button.on { color: var(--txt); border-color: var(--accent);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--accent) 14%, var(--panel)), var(--panel)); }
+
+.wknd-msg { color: var(--dim); font-size: 13.5px; padding: 30px 16px; text-align: center; }
+.wknd-msg.err { color: var(--sc); }
+.spin { display: inline-block; width: 15px; height: 15px; border: 2px solid var(--line2);
+  border-top-color: var(--accent); border-radius: 50%; animation: spin .7s linear infinite; vertical-align: -2px; margin-right: 8px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ---- timing sessione (classifica per giro migliore) ---- */
+.tm { overflow: hidden; }
+.tm-row { display: grid; grid-template-columns: 30px 30px minmax(0,1fr) 74px 66px 56px 56px 56px 52px;
+  align-items: center; gap: 8px; padding: 9px 12px; border-bottom: 1px solid var(--line);
+  font-variant-numeric: tabular-nums; position: relative; }
+.tm-row:last-child { border-bottom: none; }
+.tm-row.testa { font: 700 9.5px/1 var(--mono); text-transform: uppercase; letter-spacing: .9px; color: var(--dim); }
+.tm-row .cbar { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; }
+.tm-row .pos { color: var(--dim); font: 700 14px/1 var(--disp); text-align: center; }
+.tm-row .rnum { font: 800 14px/1 var(--disp); font-style: italic; text-align: right; }
+.tm-row .who { min-width: 0; display: flex; flex-direction: column; gap: 1px; }
+.tm-row .who b { font-size: 14px; letter-spacing: .3px; }
+.tm-row .who span { color: var(--dim); font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.tm-row .best { font: 700 14px/1 var(--mono); }
+.tm-row .gap { color: var(--dim); font: 12px/1 var(--mono); }
+.tm-row .sec { font: 12px/1 var(--mono); }
+.tm-row .sec.pb { color: var(--ok); }
+.tm-row .sec.sb { color: #d17cff; font-weight: 700; }
+.tm-row .trap { color: var(--dim); font: 12px/1 var(--mono); }
+@media (max-width: 720px) {
+  .tm-row { grid-template-columns: 26px 26px minmax(0,1fr) 66px 52px; }
+  .tm-row .sec, .tm-row .trap, .tm-row.testa .sc { display: none; }
+}
+
+/* ---- strip micro-settori (verde / viola / giallo) ---- */
+.ms-wrap { padding: 12px 14px; }
+.ms-legend { display: flex; gap: 16px; flex-wrap: wrap; margin: 2px 2px 14px; font: 11px/1 var(--mono); color: var(--dim); }
+.ms-legend i { font-style: normal; display: inline-flex; align-items: center; gap: 6px; }
+.ms-legend .sw { width: 16px; height: 8px; border-radius: 2px; display: inline-block; }
+.ms-row { display: grid; grid-template-columns: 88px 1fr 66px; align-items: center; gap: 10px; padding: 6px 0; }
+.ms-row .who { display: flex; align-items: center; gap: 7px; font: 700 12px/1 var(--mono); }
+.ms-row .who i { width: 3px; height: 15px; border-radius: 2px; }
+.ms-strip { display: flex; gap: 2px; height: 15px; }
+.ms-strip .seg { flex: 1 1 auto; border-radius: 2px; min-width: 3px; }
+.ms-strip .g1 { background: var(--line); }        /* S1 group tint via border only */
+.ms-strip .sep { flex: 0 0 3px; background: transparent; position: relative; }
+.ms-strip .sep::after { content:""; position:absolute; inset:0; margin:auto; width:1px; background: var(--line2); }
+.ms-cell-verde { background: var(--ok); }
+.ms-cell-viola { background: #c56bff; }
+.ms-cell-giallo { background: #d7c34a; }
+.ms-cell-box { background: var(--line2); }
+.ms-row .lt { text-align: right; font: 700 12px/1 var(--mono); }
+
+/* ---- telemetria ---- */
+.tel-ctl { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+.tel-ctl label { color: var(--dim); font: 600 10px/1 var(--mono); letter-spacing: 1px; text-transform: uppercase; margin-right: 4px; }
+.tel-ctl select { background: var(--panel2); color: var(--txt); border: 1px solid var(--line2);
+  border-radius: 8px; padding: 9px 11px; font: 600 13px var(--sans); cursor: pointer; }
+.tel-ctl select:focus { outline: none; border-color: var(--accent); }
+.tel-chip { display: inline-flex; align-items: center; gap: 7px; color: var(--dim);
+  font: 12px/1 var(--mono); padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px; }
+.tel-chip b { color: var(--txt); font-family: var(--mono); }
+.tel-chip i { width: 9px; height: 9px; border-radius: 50%; }
+.tel-graf { padding: 12px 8px 8px; }
+.tel-blk { margin-bottom: 6px; }
+.tel-blk .lab { display: flex; justify-content: space-between; color: var(--dim);
+  font: 700 10px/1 var(--mono); letter-spacing: 1.2px; text-transform: uppercase; margin: 0 8px 3px; }
+.tel-blk .lab b { color: var(--txt); }
+.tel-blk svg { display: block; width: 100%; height: auto; }
+.tel-blk .axis { stroke: var(--line); stroke-width: 1; }
+.tel-line { fill: none; stroke-width: 2; vector-effect: non-scaling-stroke; }
+.tel-line.vel { stroke: var(--accent); }
+.tel-line.gas { stroke: var(--ok); }
+.tel-line.fre { stroke: var(--brand); }
+.tel-area.gas { fill: color-mix(in srgb, var(--ok) 16%, transparent); stroke: none; }
+.tel-area.fre { fill: color-mix(in srgb, var(--brand) 16%, transparent); stroke: none; }
+.tel-gear { display: flex; gap: 1px; height: 26px; padding: 0 8px; }
+.tel-gear .gg { flex: 1; border-radius: 1px; align-self: end; background: var(--accent); opacity: .85; }
 
 /* -------------------------------------------- NUMERI DI GARA & MOTORI */
 /* il numero e' identita' del pilota: sempre nel colore del team (inline dal dato) */

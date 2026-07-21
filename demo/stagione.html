@@ -35,7 +35,7 @@
       <span class="data" id="heroData"></span>
       <span class="count" id="heroCount"></span>
     </div>
-    <div class="hero-sess num" id="heroSess"></div>
+    <div class="hero-cta" id="heroCta"></div>
   </section>
 
   <!-- accessi rapidi alle sezioni -->
@@ -63,48 +63,29 @@
   </div>
 </footer>
 
-<style>
-  .gpcard-links{display:flex;gap:.5rem;margin-top:.55rem}
-  .gpcard-links a{font:700 .72rem/1 -apple-system,Arial;color:#e80d2e;text-decoration:none;
-    padding:.32rem .6rem;border:1px solid #2a333f;border-radius:6px}
-  .gpcard-links a:hover{background:#1c2430}
-</style>
 <script type="module">
 const el = id => document.getElementById(id);
 const MESE = d => d.toLocaleDateString('it-IT', { day:'numeric', month:'long' });
 let teamCol = {};
-let qualiSet = new Set();   // gare con qualifica pubblicata (R2b-auto)
-let libereSet = new Set();  // gare con prove libere pubblicate (R2b-auto)
-let sprintSet = new Set();  // gare con sessioni sprint pubblicate (R2b-auto)
-let teleMap = {};           // gara -> sessione con telemetria (R3)
 
 // bandiera emoji dall'alpha2 f1db (dato, non mappa a mano)
 const bandiera = a2 => a2 ? String.fromCodePoint(...[...a2.toUpperCase()].map(c=>0x1F1A5+c.charCodeAt(0))) : '';
 
+// una card per weekend: click -> pagina weekend (selettore sessioni, timing,
+// micro-settori, telemetria). Il replay per-giro vive DENTRO il weekend (sessione Gara).
 function cardGara(g, inDemo, corsa){
   const quando = MESE(new Date(g.data+'T12:00:00'));
+  const wk = `weekend.html?gp=${encodeURIComponent(g.nome)}`;
   const testa = `<div class="r">R${String(g.round).padStart(2,'0')}</div>
-    <div class="nome"><span class="gflag">${bandiera(g.alpha2)}</span> ${g.nome}</div>
+    <div class="nome"><span class="gflag">${bandiera(g.alpha2)}</span> Weekend del ${g.nome}</div>
     <div class="data">${quando}${g.giri?` · ${g.giri} giri`:''}</div>`;
   if (inDemo){
     const w = g.vincitore;
     const win = w ? `<div class="win"><span class="tdot" style="background:${teamCol[w.team]||'var(--dim)'}"></span><b>${w.sigla}</b><span class="lab">vincitore</span></div>` : '';
-    const gd = encodeURIComponent(g.gara_demo);
-    const hasQ = qualiSet.has(g.gara_demo), hasL = libereSet.has(g.gara_demo),
-          hasS = sprintSet.has(g.gara_demo), hasT = !!teleMap[g.gara_demo];
-    if (hasQ || hasL || hasS || hasT){   // gara + sessioni del weekend: piu' destinazioni
-      const links = [`<a href="gara.html?g=${gd}">Gara &rarr;</a>`];
-      if (hasQ) links.push(`<a href="quali.html?g=${gd}">Qualifiche &rarr;</a>`);
-      if (hasS) links.push(`<a href="sprint.html?g=${gd}">Sprint &rarr;</a>`);
-      if (hasL) links.push(`<a href="libere.html?g=${gd}">Libere &rarr;</a>`);
-      if (hasT) links.push(`<a href="tele.html?g=${gd}&s=${encodeURIComponent(teleMap[g.gara_demo])}">Telemetria &rarr;</a>`);
-      return `<div class="gpcard gpcard-multi">${testa}${win}
-        <div class="gpcard-links">${links.join('')}</div></div>`;
-    }
-    return `<a class="gpcard" href="gara.html?g=${gd}">${testa}${win}</a>`;
+    return `<a class="gpcard" href="${wk}">${testa}${win}</a>`;
   }
   if (corsa)   // corsa ma non (ancora) pubblicata in demo
-    return `<div class="gpcard arrivo">${testa}<div class="win"><span class="lab">dati in arrivo</span></div></div>`;
+    return `<a class="gpcard arrivo" href="${wk}">${testa}<div class="win"><span class="lab">apri il weekend &rarr;</span></div></a>`;
   return `<div class="gpcard futura">${testa}<div class="stato">in calendario</div></div>`;
 }
 
@@ -115,29 +96,10 @@ function countdown(dataISO){
   return `fra ${gg} giorni`;
 }
 
-// riassunto sessioni del weekend (orari f1db UTC -> fuso del lettore; senza ora: solo giorno)
-function sessBreve(sess){
-  const NOMI = {fp1:'FP1', fp2:'FP2', fp3:'FP3', fp4:'FP4', sprint_quali:'SQ', sprint:'Sprint', qualifiche:'Quali', gara:'Gara'};
-  return Object.entries(sess||{}).map(([k,s])=>{
-    if (!s.data) return null;
-    if (!s.ora_utc) return `${NOMI[k]} ${new Date(s.data+'T12:00:00').toLocaleDateString('it-IT',{weekday:'short'})}`;
-    const d = new Date(`${s.data}T${s.ora_utc}:00Z`);
-    return `${NOMI[k]} ${d.toLocaleDateString('it-IT',{weekday:'short'})} ${d.toLocaleTimeString('it-IT',{hour:'2-digit',minute:'2-digit'})}`;
-  }).filter(Boolean).join(' · ');
-}
-
 async function boot(){
   const cal = await (await fetch('data/calendario_2026.json')).json();
   const manifest = await (await fetch('data/manifest.json')).json();
   try { teamCol = await (await fetch('team_colori.json')).json(); } catch(e){ teamCol={}; }
-  try { const qm = await (await fetch('data/quali_manifest.json')).json();
-        qualiSet = new Set((qm.disponibili||[]).map(v=>v.gara)); } catch(e){ qualiSet = new Set(); }
-  try { const lm = await (await fetch('data/libere_manifest.json')).json();
-        libereSet = new Set((lm.disponibili||[]).map(v=>v.gara)); } catch(e){ libereSet = new Set(); }
-  try { const sm = await (await fetch('data/sprint_manifest.json')).json();
-        sprintSet = new Set((sm.disponibili||[]).map(v=>v.gara)); } catch(e){ sprintSet = new Set(); }
-  try { const tm = await (await fetch('data/tele_manifest.json')).json();
-        for (const v of (tm.disponibili||[])){ if (!teleMap[v.gara] || v.sessione==='gara') teleMap[v.gara]=v.sessione; } } catch(e){ teleMap = {}; }
   const inDemo = new Set(manifest.map(r=>r.gara));
   const oggi = new Date(); oggi.setHours(0,0,0,0);
 
@@ -150,7 +112,7 @@ async function boot(){
     el('heroCircuito').textContent = `${h.circuito}${h.giri?` · ${h.giri} giri`:''} · round ${h.round} di ${cal.gare.length}`;
     el('heroData').textContent = new Date(h.data+'T12:00:00').toLocaleDateString('it-IT',{weekday:'long', day:'numeric', month:'long', year:'numeric'});
     el('heroCount').textContent = prossima ? countdown(h.data) : '';
-    el('heroSess').textContent = prossima ? sessBreve(h.sessioni) : '';
+    el('heroCta').innerHTML = `<a class="btn btn-pri" href="weekend.html?gp=${encodeURIComponent(h.nome)}">Apri il weekend del ${h.nome} &rarr;</a>`;
     el('hero').hidden = false;
   }
 
