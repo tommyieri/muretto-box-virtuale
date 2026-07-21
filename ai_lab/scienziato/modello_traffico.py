@@ -17,6 +17,7 @@ import composizione as CP
 import scheletro
 import degrado as DG
 import fondo
+import partizione as PZ
 import traffico as TR
 
 K_RESTART = 3          # finestra post-ripartenza derivata dai dati (2 notti fa)
@@ -111,29 +112,40 @@ class ModelloTraffico:
                 'CIECO su pioggia (gare escluse) e sui primi 3 giri dopo ogni ripartenza.',
                 'CONSERVATIVO sul delta-passo grande: ordina giusto ma sottostima la '
                 'magnitudine di chi e molto piu veloce ed e bloccato.',
-                'IL CANCELLO PENDE DA UN SOLO GRAN PREMIO. Misurato leave-one-race-out sul '
-                '2026: 5 gare su 10, tolte DA SOLE, ribaltano ACCENDIBILE da false a true '
-                '(Canada, Cina, Giappone, Miami, Monaco). Con tutte e 10 le gare il '
-                'confronto appaiato contro il traffico-zero e NEGATIVO (-0,057 s: il '
-                'modello e peggio del non-fare-niente), ma togliendo una qualunque delle '
-                'dieci diventa POSITIVO: la mediana sta in bilico su 5 blocchi. Finche il '
-                'regime non si arricchisce, acceso/spento non e una proprieta del modello '
-                'ma dell insieme di gare che si e avuto.',
-                'LA PARTIZIONE CALIBRAZIONE/VERIFICA NON E STABILE. Il fuori campione usa '
-                'gli indici pari/dispari sulle gare ordinate: aggiungere o togliere UN Gran '
-                'Premio ROVESCIA la partizione (misurato: togliendo la prima gara, '
-                'sovrapposizione fra il vecchio e il nuovo insieme di verifica = ZERO). '
-                'Quindi a ogni gara nuova il cancello si rimisura su un insieme diverso, e '
-                'puo cambiare risposta per ragioni che NON sono evidenza nuova. Da tenere a '
-                'mente prima di leggere un cambio di ACCENDIBILE come un progresso.'],
+                'IL MODELLO E PEGGIO DEL NON-FARE-NIENTE, e col taglio temporale lo e di '
+                'piu: il confronto appaiato contro il traffico-zero vale -0,196 s su 10 '
+                'gare (era -0,057 col vecchio taglio pari/dispari). Resta SPENTO, e non per '
+                'un pelo.',
+                'LA PARTIZIONE E CAMBIATA il 21/07/2026, da pari/dispari a TEMPORALE con '
+                'soglia congelata (partizione.py v2, T* = 2026-05-24; prereg in '
+                'PREREG_partizione_temporale.md). La vecchia regola ribaltava ACCENDIBILE '
+                'in 5 gare su 10 nel leave-one-race-out, perche togliere un Gran Premio le '
+                'rovesciava il taglio (sovrapposizione fra vecchio e nuovo insieme di '
+                'verifica = ZERO) e perche ordinava le gare per NOME invece che per data. '
+                'Col taglio temporale: 0 ribaltamenti su 10 e escursione dimezzata (0,106 '
+                'contro 0,207 s). ATTENZIONE A CONFRONTARE: ogni verdetto nato PRIMA di '
+                'quella data e stato prodotto sotto la regola vecchia; la targhetta '
+                '`partizione` dentro cancello_accensione dice quale regola l ha prodotto, e '
+                'i verdetti senza targhetta sono tutti v1.',
+                'ANCHE COL TAGLIO STABILE, IL REGIME RESTA POVERO: 4 gare in calibrazione e '
+                '6 in verifica. Nessuna singola gara ribalta piu il verdetto, ma togliendone '
+                'una la statistica si muove ancora fino a 0,106 s. La stabilita del taglio '
+                'non e ricchezza di dati: e solo la garanzia che il verdetto non cambia per '
+                'come si taglia.'],
             '_n_gare': len(gids), '_n_blocchi': len(gids),
         }
 
     # ---------------------------------------------------------------- verifiche
     def verifica(self, per_gara, dati, coef, seed=20260721):
-        """Fuori campione + test McLaren + placebo. Ritorna il verdetto."""
+        """Fuori campione + test McLaren + placebo. Ritorna il verdetto.
+
+        La partizione calibrazione/verifica NON e' piu' scritta qui: la chiede a
+        `partizione.py` (PREREG_partizione_temporale.md). Era pari/dispari sugli indici
+        ordinati, e bastava una gara in piu' o in meno a rovesciarla.
+        """
         gids = sorted(per_gara)
-        cal, ver = gids[0::2], gids[1::2]
+        date = PZ.date_dal_fondo({g: dati[g][0]['righe'] for g in gids})
+        cal, ver, targhetta_partizione = PZ.taglio(gids, date, self.regime)
         enc_cal = CP.incontri_costo([x for g in cal for x in per_gara[g]])
         enc_ver = CP.incontri_costo([x for g in ver for x in per_gara[g]])
         glob = TR.fit_M0([x for g in cal for x in per_gara[g]])
@@ -161,6 +173,7 @@ class ModelloTraffico:
                        'n_gare_calibrazione': len(cal), 'n_gare_verifica': len(ver),
                        'appaiato_mediano': round(st.median(app), 4) if app else None},
                'mclaren': None, 'placebo': None,
+               'partizione': targhetta_partizione,
                'kappa_calibrazione': round(kappa, 5)}
         # IL CANCELLO DI ACCENSIONE, dichiarato: il modello si propone per il live SOLO
         # quando batte il traffico-zero con l'IC95 appaiato che esclude lo zero.
@@ -172,6 +185,7 @@ class ModelloTraffico:
             'ci95_appaiato': bo['ci95'] if bo else None,
             'esclude_lo_zero': esclude,
             'ACCENDIBILE': esclude,
+            'partizione': targhetta_partizione,
             'criterio': 'si propone per il live solo se l IC95 appaiato contro il '
                         'traffico-zero esclude lo zero. Finche no, resta spento.'}
         if mc and pp:

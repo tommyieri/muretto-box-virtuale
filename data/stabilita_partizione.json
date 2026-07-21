@@ -1,0 +1,294 @@
+{
+ "traffico_2026": {
+  "v1_pari_dispari": {
+   "versione": "v1_pari_dispari",
+   "campione_pieno": {
+    "appaiato": -0.0567,
+    "ci95": [
+     -0.2826,
+     0.1568
+    ],
+    "ampiezza_ci95": 0.4394,
+    "ACCENDIBILE": false,
+    "partizione": {
+     "versione": "v1_pari_dispari",
+     "T_stella": null,
+     "K_min": 4,
+     "n_calibrazione": 5,
+     "n_verifica": 5,
+     "gare_calibrazione": [
+      "2026 Australia",
+      "2026 Belgian",
+      "2026 Canada",
+      "2026 Giappone",
+      "2026 Monaco"
+     ],
+     "gare_verifica": [
+      "2026 Austria",
+      "2026 British",
+      "2026 Cina",
+      "2026 Miami",
+      "2026 Spagna"
+     ],
+     "ordinamento": "alfabetico (difetto della regola pensionata)"
+    }
+   },
+   "leave_one_out": [
+    {
+     "gara_tolta": "2026 Australia",
+     "appaiato": 0.0665,
+     "ci95": [
+      -0.0714,
+      0.3799
+     ],
+     "ACCENDIBILE": false,
+     "ribalta": false
+    },
+    {
+     "gara_tolta": "2026 Austria",
+     "appaiato": 0.089,
+     "ci95": [
+      -0.1186,
+      0.4277
+     ],
+     "ACCENDIBILE": false,
+     "ribalta": false
+    },
+    {
+     "gara_tolta": "2026 Belgian",
+     "appaiato": 0.1504,
+     "ci95": [
+      -0.0662,
+      0.4277
+     ],
+     "ACCENDIBILE": false,
+     "ribalta": false
+    },
+    {
+     "gara_tolta": "2026 British",
+     "appaiato": 0.1357,
+     "ci95": [
+      -0.032,
+      0.3737
+     ],
+     "ACCENDIBILE": false,
+     "ribalta": false
+    },
+    {
+     "gara_tolta": "2026 Canada",
+     "appaiato": 0.1357,
+     "ci95": [
+      0.0898,
+      0.3737
+     ],
+     "ACCENDIBILE": true,
+     "ribalta": true
+    },
+    {
+     "gara_tolta": "2026 Cina",
+     "appaiato": 0.1351,
+     "ci95": [
+      0.092,
+      0.3799
+     ],
+     "ACCENDIBILE": true,
+     "ribalta": true
+    },
+    {
+     "gara_tolta": "2026 Giappone",
+     "appaiato": 0.0993,
+     "ci95": [
+      0.0211,
+      0.3799
+     ],
+     "ACCENDIBILE": true,
+     "ribalta": true
+    },
+    {
+     "gara_tolta": "2026 Miami",
+     "appaiato": 0.0973,
+     "ci95": [
+      0.0389,
+      0.3933
+     ],
+     "ACCENDIBILE": true,
+     "ribalta": true
+    },
+    {
+     "gara_tolta": "2026 Monaco",
+     "appaiato": 0.0973,
+     "ci95": [
+      0.0389,
+      0.1057
+     ],
+     "ACCENDIBILE": true,
+     "ribalta": true
+    },
+    {
+     "gara_tolta": "2026 Spagna",
+     "appaiato": 0.0306,
+     "ci95": [
+      -0.112,
+      0.1568
+     ],
+     "ACCENDIBILE": false,
+     "ribalta": false
+    }
+   ],
+   "S1_n_ribaltamenti": 5,
+   "S1_gare_che_ribaltano": [
+    "2026 Canada",
+    "2026 Cina",
+    "2026 Giappone",
+    "2026 Miami",
+    "2026 Monaco"
+   ],
+   "S1_SUPERATA": false,
+   "S2_escursione_max": 0.2071,
+   "S2_soglia": 0.2197,
+   "S2_SUPERATA": true
+  },
+  "v2_temporale": {
+   "versione": "v2_temporale",
+   "campione_pieno": {
+    "appaiato": -0.1962,
+    "ci95": [
+     -0.3452,
+     0.3983
+    ],
+    "ampiezza_ci95": 0.7435,
+    "ACCENDIBILE": false,
+    "partizione": {
+     "versione": "v2_temporale",
+     "T_stella": "2026-05-24",
+     "K_min": 4,
+     "n_calibrazione": 4,
+     "n_verifica": 6,
+     "gare_calibrazione": [
+      "2026 Australia",
+      "2026 Cina",
+      "2026 Giappone",
+      "2026 Miami"
+     ],
+     "gare_verifica": [
+      "2026 Canada",
+      "2026 Monaco",
+      "2026 Spagna",
+      "2026 Austria",
+      "2026 British",
+      "2026 Belgian"
+     ],
+     "ordinamento": "cronologico dal fondo"
+    }
+   },
+   "leave_one_out": [
+    {
+     "gara_tolta": "2026 Australia",
+     "appaiato": -0.1221,
+     "ci95": [
+      -0.297,
+      0.2627
+     ],
+     "ACCENDIBILE": false,
+     "ribalta": false
+    },
+    {
+     "gara_tolta": "2026 Austria",
+     "appaiato": -0.2782,
+     "ci95": [
+      -0.3512,
+      0.7579
+     ],
+     "ACCENDIBILE": false,
+     "ribalta": false
+    },
+    {
+     "gara_tolta": "2026 Belgian",
+     "appaiato": -0.1142,
+     "ci95": [
+      -0.3392,
+      0.7579
+     ],
+     "ACCENDIBILE": false,
+     "ribalta": false
+    },
+    {
+     "gara_tolta": "2026 British",
+     "appaiato": -0.2782,
+     "ci95": [
+      -0.3512,
+      0.7579
+     ],
+     "ACCENDIBILE": false,
+     "ribalta": false
+    },
+    {
+     "gara_tolta": "2026 Canada",
+     "appaiato": -0.1142,
+     "ci95": [
+      -0.3512,
+      0.7579
+     ],
+     "ACCENDIBILE": false,
+     "ribalta": false
+    },
+    {
+     "gara_tolta": "2026 Cina",
+     "appaiato": -0.1835,
+     "ci95": [
+      -0.3474,
+      0.4908
+     ],
+     "ACCENDIBILE": false,
+     "ribalta": false
+    },
+    {
+     "gara_tolta": "2026 Giappone",
+     "appaiato": -0.0898,
+     "ci95": [
+      -0.2394,
+      0.2556
+     ],
+     "ACCENDIBILE": false,
+     "ribalta": false
+    },
+    {
+     "gara_tolta": "2026 Miami",
+     "appaiato": -0.1903,
+     "ci95": [
+      -0.3387,
+      0.4295
+     ],
+     "ACCENDIBILE": false,
+     "ribalta": false
+    },
+    {
+     "gara_tolta": "2026 Monaco",
+     "appaiato": -0.2782,
+     "ci95": [
+      -0.3512,
+      0.0387
+     ],
+     "ACCENDIBILE": false,
+     "ribalta": false
+    },
+    {
+     "gara_tolta": "2026 Spagna",
+     "appaiato": -0.1142,
+     "ci95": [
+      -0.3512,
+      0.7579
+     ],
+     "ACCENDIBILE": false,
+     "ribalta": false
+    }
+   ],
+   "S1_n_ribaltamenti": 0,
+   "S1_gare_che_ribaltano": [],
+   "S1_SUPERATA": true,
+   "S2_escursione_max": 0.1064,
+   "S2_soglia": 0.3718,
+   "S2_SUPERATA": true
+  }
+ }
+}
