@@ -186,14 +186,48 @@ def soglia_aria_libera(per_gara_fasce, repliche=2000, seed=20260721):
 
 
 # ---------------------------------------------------------------- §2: pit-loss dal fondo
-def pit_loss(dati, mod):
-    """(in-lap + out-lap) - attesa pulita ai due giri, mediana sulle soste della gara."""
+def _verde(status):
+    """Bandiera verde pura. STESSA FORMA di `gen_censimento_pitloss.is_green`, che la
+    produzione usa per il proprio pit-loss: lo status e' verde se e' fatto di soli '1'.
+
+    Sul fondo TI e' provatamente identica a `status == '1'` (misurato su tutte le stagioni:
+    nessun valore dello status distingue i due criteri — gli status sono concatenazioni di
+    codici come '12', '41', '124', e '1' e' l'unico tutto-verde). La forma insiemistica e'
+    tenuta lo stesso, cosi' se un giorno la fonte cambiasse codifica le due funzioni
+    resterebbero d'accordo invece di divergere in silenzio.
+    """
+    return set(str(status)) <= {'1'}
+
+
+def pit_loss(dati, mod, solo_verdi=True):
+    """(in-lap + out-lap) - attesa pulita ai due giri, mediana sulle soste VERDI della gara.
+
+    LA GUARDIA VERDE — allineamento alla produzione (21/07/2026).
+    Una sosta fatta sotto SC/VSC costa, in cronometro, i secondi del regime neutralizzato:
+    ricostruita come "perdita al pit" vale 32-96 s invece di ~20-25. E sotto safety car ci si
+    ferma TUTTI INSIEME, quindi in meta' delle gare 2026 le soste neutralizzate sono la
+    MAGGIORANZA e la mediana — che avrebbe dovuto proteggere — risulta contaminata (Australia
+    dava 51,84 s invece di 24,95).
+
+    Il criterio NON e' nuovo: e' lo stesso che la PRODUZIONE usa da sempre in
+    `gen_pitloss_engine_ready.collect_whole_lap`, dove una sosta e' scartata con
+    `if not (row['green'] and nxt['green'])`. Qui e' espresso nel vocabolario del fondo TI
+    (`status == '1'` su entrambi i giri della sosta) perche' le due funzioni leggono FONTI
+    DIVERSE — quella di produzione una sessione FastF1, questa le righe del fondo — e non
+    sono quindi riusabili l'una per l'altra. Stessa regola, due vocabolari.
+
+    QUESTA E' L'UNICA IMPLEMENTAZIONE: `degrado_verde.pit_loss_verde` delega qui, cosi' non
+    esistono due copie della guardia che possano divergere.
+
+    solo_verdi=False -> comportamento storico (tutte le soste). Serve solo a dimostrare
+    l'equivalenza col passato, non va usato per produrre numeri.
+    """
     per_drv = {}
     for r in dati['righe']:
         if isinstance(r['lap'], (int, float)):
             per_drv.setdefault(r['drv'], {})[int(r['lap'])] = r
     eta = fondo.stint_ed_eta(dati['righe'])
-    perdite = []
+    perdite, scartate = [], 0
     for drv, giri in per_drv.items():
         for L, r in giri.items():
             if fondo.nullo(r['pin']) or L + 1 not in giri:
@@ -207,6 +241,12 @@ def pit_loss(dati, mod):
             a2 = eta.get((drv, L + 1), (None, None))[1]
             if a1 is None or a2 is None or drv not in mod['alpha']:
                 continue
+            # LA GUARDIA VERDE: in-lap e out-lap devono essere entrambi in bandiera verde.
+            # `_verde` e' scritta nella STESSA FORMA della produzione, non in una equivalente,
+            # cosi' le due non possono divergere se un giorno la fonte cambiasse codifica.
+            if solo_verdi and not (_verde(r['status']) and _verde(r2['status'])):
+                scartate += 1
+                continue
             p1 = previsione(mod, dati, drv, L, r['compound'], a1)
             p2 = previsione(mod, dati, drv, L + 1, r2['compound'], a2)
             if p1 is None or p2 is None:
@@ -215,6 +255,7 @@ def pit_loss(dati, mod):
     if len(perdite) < 3:
         return None
     return {'pit_loss': round(st.median(perdite), 3), 'n_soste': len(perdite),
+            'n_soste_verdi': len(perdite), 'n_soste_scartate_non_verdi': scartate,
             'iqr': [round(sorted(perdite)[len(perdite) // 4], 2),
                     round(sorted(perdite)[3 * len(perdite) // 4], 2)]}
 

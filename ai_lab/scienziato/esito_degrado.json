@@ -159,8 +159,8 @@
    "G_stella": 1.5,
    "esclusi": {
     "giri mancanti (ritiro o buchi)": 62,
-    "cancello di calibrazione": 45,
-    "rientro in traffico": 9,
+    "cancello di calibrazione": 46,
+    "rientro in traffico": 8,
     "mescola SOFT senza rho": 10
    },
    "gare_calibrazione": [
@@ -213,8 +213,8 @@
    "G_stella": 1.5,
    "esclusi": {
     "giri mancanti (ritiro o buchi)": 62,
-    "cancello di calibrazione": 45,
-    "rientro in traffico": 9,
+    "cancello di calibrazione": 46,
+    "rientro in traffico": 8,
     "mescola SOFT senza rho": 10
    },
    "gare_calibrazione": [
@@ -246,7 +246,7 @@
    "n_gare": 8,
    "n_vinti": 9,
    "quota": 0.3,
-   "margine_mediano_vittorie": 13.78,
+   "margine_mediano_vittorie": 13.83,
    "tol": 10.92,
    "G_stella": 1.5,
    "esclusi": {
