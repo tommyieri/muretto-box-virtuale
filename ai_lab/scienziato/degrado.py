@@ -67,7 +67,7 @@ def _compound_ok(righe):
 
 
 # ---------------------------------------------------------------- C1: il modello
-def stima(dati, eta_quadratica=False, per_pilota_rho=False):
+def stima(dati, eta_quadratica=False, beta_per_pilota=False):
     """Ritorna rho per mescola, delta, alpha per pilota, beta. None se non identificabile."""
     righe = [r for r in dati['stima'] if r['compound'] in _compound_ok(dati['stima'])]
     if len(righe) < MIN_GIRI:
@@ -81,9 +81,22 @@ def stima(dati, eta_quadratica=False, per_pilota_rho=False):
     nd, nc = len(piloti), len(comp)
     altri = [c for c in comp if c != rif]
     i_delta = {c: nd + j for j, c in enumerate(altri)}
-    i_beta = nd + len(altri)
-    i_rho = {c: i_beta + 1 + j for j, c in enumerate(comp)}
-    cols = i_beta + 1 + nc + (1 if eta_quadratica else 0)
+    k = nd + len(altri)
+    # H1 (PREREG_passobase): la DERIVA del livello e' per PILOTA. Quando si accende, il
+    # beta COMUNE non si alloca affatto: la sua colonna sarebbe la somma esatta di quelle
+    # per pilota, e il rango cadrebbe.
+    i_beta = None
+    if not beta_per_pilota:
+        i_beta = k
+        k += 1
+    i_rho = {c: k + j for j, c in enumerate(comp)}
+    k += nc
+    i_bd = {}
+    if beta_per_pilota:
+        i_bd = {d: k + j for j, d in enumerate(piloti)}
+        k += nd
+    i_eta2 = k if eta_quadratica else None
+    cols = k + (1 if eta_quadratica else 0)
     lap_m = st.mean(r['lap'] for r in righe)
     X = np.zeros((len(righe), cols))
     y = np.array([r['tfc'] for r in righe], float)
@@ -91,10 +104,13 @@ def stima(dati, eta_quadratica=False, per_pilota_rho=False):
         X[i, di[r['drv']]] = 1.0
         if r['compound'] != rif:
             X[i, i_delta[r['compound']]] = 1.0
-        X[i, i_beta] = r['lap'] - lap_m
+        if i_beta is not None:
+            X[i, i_beta] = r['lap'] - lap_m
         X[i, i_rho[r['compound']]] = r['eta']
+        if beta_per_pilota:
+            X[i, i_bd[r['drv']]] = r['lap'] - lap_m
         if eta_quadratica:
-            X[i, -1] = r['eta'] ** 2
+            X[i, i_eta2] = r['eta'] ** 2
     fit = scheletro.ols_cluster(X, y, [(r['drv'], r['stint']) for r in righe])
     if fit is None:
         return {'escluso': 'rango non pieno'}
@@ -103,8 +119,10 @@ def stima(dati, eta_quadratica=False, per_pilota_rho=False):
             'se_rho': {c: float(se[i_rho[c]]) for c in comp},
             'delta': {c: (0.0 if c == rif else float(b[i_delta[c]])) for c in comp},
             'alpha': {d: float(b[di[d]]) for d in piloti},
-            'beta': float(b[i_beta]), 'lap_medio': lap_m, 'rif': rif,
-            'eta2': float(b[-1]) if eta_quadratica else None,
+            'beta': 0.0 if i_beta is None else float(b[i_beta]),
+            'lap_medio': lap_m, 'rif': rif,
+            'beta_drv': {d: float(b[i_bd[d]]) for d in i_bd},
+            'eta2': float(b[i_eta2]) if eta_quadratica else None,
             'n_giri': len(righe), 'n_stint': fit['n_cluster'], 'sigma': fit['sigma'],
             'compound': comp}
 
@@ -114,7 +132,7 @@ def previsione(mod, dati, drv, L, compound, eta):
     if compound not in mod['rho'] or drv not in mod['alpha']:
         return None
     return (mod['alpha'][drv] + mod['delta'][compound]
-            + mod['beta'] * (L - mod['lap_medio'])
+            + (mod['beta'] + mod.get('beta_drv', {}).get(drv, 0.0)) * (L - mod['lap_medio'])
             + mod['rho'][compound] * eta
             + (mod['eta2'] * eta ** 2 if mod.get('eta2') else 0.0)
             + CF.aggiungi(L, dati['N'], dati['delta_fuel']))

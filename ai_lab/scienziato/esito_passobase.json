@@ -1,0 +1,175 @@
+{
+ "data_calcolo": "2026-07-21",
+ "regime": "2022-25",
+ "diagnosi": {
+  "traffico <5s": {
+   "mediana": 8.172,
+   "p16": -0.035,
+   "p84": 21.719,
+   "mediana_assoluta": 9.56,
+   "n_casi": 177
+  },
+  "in/out-lap": {
+   "mediana": -0.105,
+   "p16": -1.263,
+   "p84": 2.018,
+   "mediana_assoluta": 1.008,
+   "n_casi": 181
+  },
+  "aria libera >5s": {
+   "mediana": 0.0,
+   "p16": -0.224,
+   "p84": 0.501,
+   "mediana_assoluta": 0.094,
+   "n_casi": 181
+  },
+  "non-verde": {
+   "mediana": 0.279,
+   "p16": -0.26,
+   "p84": 1.128,
+   "mediana_assoluta": 0.37,
+   "n_casi": 57
+  },
+  "targhetta": {
+   "gare_sotto": 18,
+   "calcolato_il": "2026-07-21"
+  }
+ },
+ "ipotesi": {
+  "H1_deriva": {
+   "esito": "VIVA",
+   "mediana": -0.053,
+   "mediana_assoluta": 0.182,
+   "n": 86,
+   "targhetta": {
+    "gare_sotto": 18,
+    "calcolato_il": "2026-07-21"
+   }
+  },
+  "H2_per_stint": {
+   "esito": "MORTA",
+   "rapporto_fra_dentro": 0.837,
+   "n_dentro": 286,
+   "n_fra": 136,
+   "targhetta": {
+    "gare_sotto": 18,
+    "calcolato_il": "2026-07-21"
+   }
+  },
+  "H3_pochi_giri": {
+   "esito": "MORTA",
+   "corr": -0.127,
+   "n": 286,
+   "targhetta": {
+    "gare_sotto": 18,
+    "calcolato_il": "2026-07-21"
+   }
+  }
+ },
+ "rimedio_H1": {
+  "stimabile_vecchio": 18,
+  "stimabile_nuovo": 7,
+  "n_gare_confronto": 7,
+  "risultati": {
+   "calibrazione": {
+    "vecchio": {
+     "etichetta": "vecchio",
+     "p68_casi": 10.135,
+     "mediana_per_gara": 7.4057,
+     "ci95_blocchi": [
+      4.8451,
+      8.8243
+     ],
+     "n_casi": 44,
+     "n_gare": 4,
+     "targhetta": {
+      "gare_sotto": 4,
+      "calcolato_il": "2026-07-21"
+     }
+    },
+    "nuovo": {
+     "etichetta": "nuovo",
+     "p68_casi": 20.238,
+     "mediana_per_gara": 11.6174,
+     "ci95_blocchi": [
+      6.0945,
+      15.0838
+     ],
+     "n_casi": 44,
+     "n_gare": 4,
+     "targhetta": {
+      "gare_sotto": 4,
+      "calcolato_il": "2026-07-21"
+     }
+    },
+    "M": 1.99,
+    "miglioramento": -4.212,
+    "supera_M": false,
+    "appaiato": {
+     "mediana": -1.7857,
+     "media": -2.7872,
+     "ci95": [
+      -7.4955,
+      -0.0821
+     ],
+     "n_blocchi": 4,
+     "repliche": 5000,
+     "seed": 20260721
+    },
+    "esclude_zero": true
+   },
+   "verifica (fuori campione)": {
+    "vecchio": {
+     "etichetta": "vecchio",
+     "p68_casi": 26.116,
+     "mediana_per_gara": 16.8266,
+     "ci95_blocchi": [
+      7.6008,
+      29.5251
+     ],
+     "n_casi": 24,
+     "n_gare": 3,
+     "targhetta": {
+      "gare_sotto": 3,
+      "calcolato_il": "2026-07-21"
+     }
+    },
+    "nuovo": {
+     "etichetta": "nuovo",
+     "p68_casi": 24.719,
+     "mediana_per_gara": 11.0789,
+     "ci95_blocchi": [
+      9.581,
+      28.3334
+     ],
+     "n_casi": 24,
+     "n_gare": 3,
+     "targhetta": {
+      "gare_sotto": 3,
+      "calcolato_il": "2026-07-21"
+     }
+    },
+    "M": 10.962,
+    "miglioramento": 5.748,
+    "supera_M": false,
+    "appaiato": {
+     "mediana": -0.1985,
+     "media": -0.797,
+     "ci95": [
+      -3.3842,
+      1.1917
+     ],
+     "n_blocchi": 3,
+     "repliche": 5000,
+     "seed": 20260721
+    },
+    "esclude_zero": false
+   }
+  },
+  "targhetta": {
+   "gare_sotto": 18,
+   "calcolato_il": "2026-07-21"
+  }
+ },
+ "verdetto": "RUMORE"
+}
