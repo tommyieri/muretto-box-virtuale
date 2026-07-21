@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<!--
+  TELEMETRIA (R3): traccia del giro veloce di ogni pilota (velocita', gas,
+  freno, marcia) da demo/data/tele_<gara>_<sess>.json (gen_tele.py, dalla
+  REGISTRAZIONE del collettore — dato reale del feed, non FastF1). Confronto
+  multi-pilota. Grafici canvas, zero dipendenze esterne.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Telemetria — Muretto Box Virtuale</title>
+<link rel="stylesheet" href="stile.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
+    <span class="brand-mark"><span>M</span></span>
+    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+  </a>
+  <nav class="nav" aria-label="Sezioni">
+    <a href="stagione.html">Stagione</a>
+    <a href="live.html"><span class="dot-live"></span>Live</a>
+    <a href="classifiche.html">Classifiche</a>
+    <a href="analisi.html">Analisi</a>
+  </nav>
+</header>
+
+<div class="wrap-clas">
+  <div class="page-testa">
+    <h1 id="t-tit">Telemetria</h1>
+    <div class="sotto" id="t-sotto">Traccia del giro più veloce: velocità, gas, freno e marcia. Scegli i piloti da confrontare.</div>
+  </div>
+
+  <div id="t-chips" class="t-chips"></div>
+  <section class="panel" id="t-panel">
+    <canvas id="t-canvas" style="width:100%;display:block"></canvas>
+    <div id="t-leg" class="t-leg"></div>
+  </section>
+  <div style="margin-top:1rem"><a class="navbtn" href="stagione.html" style="display:inline-block"><b>&larr; Stagione 2026</b></a></div>
+</div>
+
+<style>
+  .t-chips{display:flex;flex-wrap:wrap;gap:.35rem;margin:.2rem 0 .8rem}
+  .t-chip{display:flex;align-items:center;gap:.35rem;font:700 .74rem/1 -apple-system,Arial;
+    color:#aab2c0;background:#161c26;border:1px solid #2a333f;border-radius:20px;padding:.32rem .6rem;cursor:pointer}
+  .t-chip .d{width:.55rem;height:.55rem;border-radius:50%}
+  .t-chip.on{color:#fff;border-color:#4a5464;background:#212a37}
+  .t-leg{display:flex;flex-wrap:wrap;gap:1rem;margin-top:.5rem;font:600 .78rem/1.4 -apple-system,Arial;color:#cfd6e2}
+  .t-leg span{display:flex;align-items:center;gap:.4rem}
+  .t-leg i{width:.9rem;height:.28rem;border-radius:2px;display:inline-block}
+  .t-leg small{color:#8b93a5;font-variant-numeric:tabular-nums}
+</style>
+
+<footer class="footer">
+  <div class="footer-in">
+    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
+    <nav>
+      <a href="stagione.html">Stagione</a>
+      <a href="classifiche.html">Classifiche</a>
+      <a href="analisi.html">Analisi</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="module">
+const el = id => document.getElementById(id);
+const params = new URLSearchParams(location.search);
+const NOMI_SESS = {gara:'Gara', qualifiche:'Qualifiche', sprint:'Sprint', sprint_quali:'Sprint Qualifying',
+                   fp1:'Prove libere 1', fp2:'Prove libere 2', fp3:'Prove libere 3'};
+let doc = null;
+const sel = new Set();      // sigle selezionate
+
+// indici colonne punti: [t, velocita, throttle, freno(0/1), marcia]
+const T=0, V=1, THR=2, BRK=3, GEAR=4;
+
+function colore(sig){ return (doc.piloti[sig] && doc.piloti[sig].colore) || '#9aa4b5'; }
+
+function disegna(){
+  const cv = el('t-canvas'), dpr = window.devicePixelRatio || 1;
+  const W = cv.clientWidth || 800, H = 460;
+  cv.width = Math.round(W*dpr); cv.height = Math.round(H*dpr);
+  cv.style.height = H + 'px';
+  const g = cv.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0);
+  g.clearRect(0,0,W,H);
+
+  const scelti = [...sel].filter(s => doc.piloti[s]);
+  const padL=44, padR=12, padT=10, padB=22;
+  // pannelli: velocita' (alto), gas (medio), freno (striscia bassa per pilota)
+  const hV = 250, hThr = 90, gapP = 14;
+  const yV0 = padT, yV1 = yV0 + hV;
+  const yT0 = yV1 + gapP, yT1 = yT0 + hThr;
+  const xMax = Math.max(...scelti.map(s => doc.piloti[s].giro_s), 1);
+  const x = t => padL + (t/xMax)*(W-padL-padR);
+  const Vmax = 350;
+  const yv = v => yV1 - (Math.max(0,Math.min(Vmax,v))/Vmax)*hV;
+  const yt = p => yT1 - (Math.max(0,Math.min(100,p))/100)*hThr;
+
+  // griglia + etichette velocita'
+  g.strokeStyle='#1c2430'; g.fillStyle='#6c7486'; g.font='10px -apple-system,Arial'; g.lineWidth=1;
+  for (let v=0; v<=Vmax; v+=50){ const y=yv(v); g.beginPath(); g.moveTo(padL,y); g.lineTo(W-padR,y); g.stroke();
+    g.fillText(v+'', 6, y+3); }
+  g.fillText('km/h', 6, yV0+3);
+  for (let p=0; p<=100; p+=50){ const y=yt(p); g.beginPath(); g.moveTo(padL,y); g.lineTo(W-padR,y); g.stroke();
+    g.fillText(p+'', 20, y+3); }
+  g.fillText('gas %', 6, yT0+9);
+
+  function traccia(punti, col, i, canale, yf){
+    g.strokeStyle=col; g.lineWidth=1.8; g.globalAlpha=0.95; g.beginPath();
+    let primo=true;
+    for (const p of punti){ const val=p[canale]; if (val==null) continue;
+      const X=x(p[T]), Y=yf(val); if (primo){ g.moveTo(X,Y); primo=false; } else g.lineTo(X,Y); }
+    g.stroke(); g.globalAlpha=1;
+  }
+  // freno: striscia rossa per pilota, in fondo
+  const yBrk0 = yT1 + 10;
+  scelti.forEach((s, i) => {
+    const punti = doc.piloti[s].punti;
+    traccia(punti, colore(s), i, V, yv);
+    traccia(punti, colore(s), i, THR, yt);
+    const yb = yBrk0 + i*7;
+    g.strokeStyle=colore(s); g.lineWidth=4; g.globalAlpha=0.9;
+    for (const p of punti){ if (p[BRK]===1){ const X=x(p[T]);
+      g.beginPath(); g.moveTo(X,yb); g.lineTo(X+1,yb); g.stroke(); } }
+    g.globalAlpha=1;
+  });
+  g.fillStyle='#6c7486'; g.fillText('freno', 6, yBrk0+4);
+
+  // legenda
+  el('t-leg').innerHTML = scelti.map(s =>
+    `<span><i style="background:${colore(s)}"></i><b>${s}</b><small>${doc.piloti[s].best_lap||''}</small></span>`).join('');
+}
+
+function toggle(sig){
+  if (sel.has(sig)) sel.delete(sig); else sel.add(sig);
+  for (const c of el('t-chips').children) c.classList.toggle('on', sel.has(c.dataset.s));
+  disegna();
+}
+
+async function boot(){
+  const gara = params.get('g'); const sess = params.get('s') || 'gara';
+  let file = gara ? `tele_${encodeURIComponent(gara)}_${encodeURIComponent(sess)}.json` : null;
+  if (!file){ el('t-sotto').textContent = 'Specifica un GP (?g=...).'; return; }
+  try { doc = await (await fetch('data/' + file)).json(); }
+  catch(e){ el('t-sotto').textContent = 'Telemetria non trovata: ' + file; return; }
+  el('t-tit').textContent = 'Telemetria — ' + (doc.evento || doc.gara || '');
+  el('t-sotto').textContent = (NOMI_SESS[doc.sessione]||doc.sessione) + ' · giro veloce di ogni pilota · scegli i piloti da confrontare.';
+
+  // ordina i piloti per giro veloce
+  const sigle = Object.keys(doc.piloti).sort((a,b)=>(doc.piloti[a].giro_s||1e9)-(doc.piloti[b].giro_s||1e9));
+  el('t-chips').innerHTML = sigle.map(s =>
+    `<button class="t-chip" data-s="${s}"><span class="d" style="background:${colore(s)}"></span>${s}</button>`).join('');
+  for (const c of el('t-chips').children) c.addEventListener('click', ()=>toggle(c.dataset.s));
+  // default: i due piu' veloci a confronto
+  sigle.slice(0,2).forEach(s=>sel.add(s));
+  for (const c of el('t-chips').children) c.classList.toggle('on', sel.has(c.dataset.s));
+  disegna();
+  window.addEventListener('resize', disegna);
+}
+boot();
+</script>
+</body>
+</html>
