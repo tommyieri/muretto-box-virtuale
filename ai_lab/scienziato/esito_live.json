@@ -1,0 +1,115 @@
+{
+ "data_calcolo": "2026-07-21",
+ "placebo": {
+  "miglioramento_placebo": 0.0001,
+  "miglioramento_vero": -0.0154,
+  "regge": true,
+  "null_gia_sigillato": true
+ },
+ "confronto": {
+  "aggregati": {
+   "C0 solo-gap": {
+    "errore": 0.83,
+    "ci95": [
+     0.752300135102796,
+     0.9716841224266644
+    ]
+   },
+   "C1 composizione": {
+    "errore": 0.8454,
+    "ci95": [
+     0.7747244764204473,
+     0.9643823782228962
+    ]
+   },
+   "C2 composizione scalata": {
+    "errore": 0.9844,
+    "ci95": [
+     0.8316561328298817,
+     1.1006854061896543
+    ]
+   },
+   "traffico-zero": {
+    "errore": 1.0234,
+    "ci95": [
+     0.8427182994502758,
+     1.13865775774822
+    ]
+   }
+  },
+  "M_dichiarato": 0.1097,
+  "forme": {
+   "C1 composizione": {
+    "errore": 0.8454,
+    "miglioramento": -0.0154,
+    "supera_M": false,
+    "esclude_zero": false,
+    "esito": "RUMORE"
+   },
+   "C2 composizione scalata": {
+    "errore": 0.9844,
+    "miglioramento": -0.1544,
+    "supera_M": false,
+    "esclude_zero": false,
+    "esito": "RUMORE"
+   }
+  },
+  "vincitrice": null,
+  "forma_live": "C0 solo-gap",
+  "targhetta": {
+   "gare_sotto": 46,
+   "incontri_calibrazione": 1623,
+   "incontri_verifica": 1671,
+   "calcolato_il": "2026-07-21"
+  }
+ },
+ "validazione_live": {
+  "batte_traffico_zero": true,
+  "guadagno_vs_zero": 0.1934,
+  "appaiato_vs_zero": {
+   "mediana": 0.1057,
+   "media": 0.1219,
+   "ci95": [
+    0.0047,
+    0.2087
+   ],
+   "n_blocchi": 23,
+   "repliche": 5000,
+   "seed": 20260721
+  },
+  "test_mclaren_superato": false,
+  "mclaren": {
+   "n": 471,
+   "costo_reale_mediano": 0.842,
+   "costo_previsto_mediano": 0.551
+  },
+  "pari_passo": {
+   "n": 204,
+   "costo_reale_mediano": 0.463,
+   "costo_previsto_mediano": 0.445
+  }
+ },
+ "modello_live": {
+  "forma": "C0 solo-gap",
+  "intensita": {
+   "a": 0.50716,
+   "lam": 0.8,
+   "formula": "i(g) = a * exp(-g/lam)"
+  },
+  "durata": {
+   "globale": 2.887
+  },
+  "kappa": null,
+  "soglia_incontro_s": 1.5,
+  "finestra_post_restart": 3,
+  "regime": "2022-25 (a effetto suolo)",
+  "targhetta": {
+   "gare_sotto": 46,
+   "incontri_calibrazione": 1623,
+   "incontri_verifica": 1671,
+   "calcolato_il": "2026-07-21"
+  },
+  "limite_onesto": "si calcola SOLO contro il campo reale: le altre auto non rallentano perche sei li, non si difendono, non cambiano strategia. Dice \"Leclerc diverso dentro la gara che E' successa\", non \"la gara che SAREBBE successa\".",
+  "cieco_2026": "Spearman(theta storico, theta 2026) = -0,024: il 2026 sul sorpasso e scorrelato dal passato. Il modello nasce sul regime storico; il 2026 si rafforza con l uso."
+ }
+}
