@@ -47,6 +47,7 @@ sys.path.insert(0, LAB)
 
 import autocalibra
 import sigillo_null
+from modello_degrado import ModelloDegrado
 from modello_traffico import ModelloTraffico
 
 # ---------------------------------------------------------------- IL REGISTRO
@@ -54,6 +55,7 @@ from modello_traffico import ModelloTraffico
 # Il regime fa parte dell'identita': i regimi non si mescolano mai.
 REGISTRO = [
     ModelloTraffico('2026', uscita='data/modello_traffico_2026.json'),
+    ModelloDegrado('2026', uscita='data/modello_degrado_2026.json'),
 ]
 
 
@@ -119,6 +121,18 @@ def main():
             if a.verifica:
                 coef = mod.calibra(per_gara, dati) if not prova else None
                 v = mod.verifica(per_gara, dati, coef)
+                # il cancello di accensione e' l'unica cosa che OGNI modello deve saper dire:
+                # sta dentro il modello, e qui si stampa e basta (nessuna decisione).
+                ca = v.get('cancello_accensione')
+                if ca:
+                    print(f"    cancello di accensione: ACCENDIBILE = {ca.get('ACCENDIBILE')}"
+                          + (f"   [partizione {ca['partizione']['versione']}]"
+                             if ca.get('partizione') else ''))
+                    for nome in ('A_predittivo', 'B_prodotto'):
+                        if ca.get(nome):
+                            print(f"      {nome:14s} {ca[nome]}")
+                if 'oos' not in v:
+                    continue
                 print(f"    fuori campione: modello {v['oos']['errore_modello']} "
                       f"IC95 {v['oos']['ci95']}  contro traffico-zero "
                       f"{v['oos']['errore_traffico_zero']} -> guadagno {v['oos']['guadagno']:+.4f} s")
