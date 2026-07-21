@@ -158,45 +158,46 @@ con messaggio esplicito, ma il passo va fatto comunque a mano. Fatto reale
 (20/07/2026): il VPS era su `live-fase3` dal deploy di sabato; il deploy P0
 del fix MQTT si e' fermato li'.
 
-## Ingress del collettore: SignalR (deciso dal PO il 21/07/2026)
+## Ingress del VPS: OpenF1, e NON si tocca — gli stint gomma NON arrivano al live
 
-`collector.py` ha `--ingress` con **default `openf1`**, ma la unit systemd non passa
-il flag: quindi senza intervento il VPS gira su OpenF1 MQTT, che (a) e' ROTTO dal
-20/07 (`CONNACK: Not authorized`, rifiuto lato-server, ticket aperto) e (b) **non porta
-gli stint gomma**. `TimingAppData` (compound + eta'-gomma, base degli scenari di
-degrado) esiste **solo sul SignalR**. Stato attuale sul VPS:
+**Errore commesso e corretto il 21/07/2026** — inciso qui perche' non si ripeta.
+Provando ad abilitare gli scenari di degrado live si e' passato il VPS a
+`--ingress signalr` (dove vivono gli stint gomma). **Sbagliato**: CloudFront **blocca
+gli IP datacenter** sul feed `livetiming.formula1.com` — 403 su OGNI richiesta dal VPS,
+blocco a livello IP/ASN, non aggirabile con header (verificato al primo deploy, commit
+`79d283e`; vedi FASE2_PREREG "decisione a verbale" e collector/README sezione BLOCCO
+CloudFront). Il 403 **non** e' un artefatto del "fuori sessione": e' permanente da li'.
+Ripristinato subito `PITLANE_ARGS=` (ingress OpenF1, il default).
 
-```bash
-ssh muretto@167.233.236.186 'echo "PITLANE_ARGS=--ingress signalr" > ~/.muretto-live.env && sudo systemctl restart muretto-live'
-```
+Conseguenza da tenere presente per gli scenari di degrado live:
 
-> ⚠ **TRAPPOLA — non sovrascrivere il file env.** Il comando dell'in_pit geometrico qui
-> sotto RISCRIVE `~/.muretto-live.env`: lanciato cosi' com'era, cancella
-> `--ingress signalr` e il collettore torna **silenziosamente** su OpenF1 (rotto, senza
-> stint). Passare SEMPRE entrambi gli argomenti insieme (vedi sotto).
+| | SignalR | OpenF1 (MQTT) |
+|---|---|---|
+| raggiungibile dal VPS | **NO** (403 CloudFront, IP datacenter) | si' |
+| porta gli stint gomma (compound + eta') | **SI'** (`TimingAppData`) | **NO** (topic non sottoscritto/assente) |
 
-**Verifica obbligatoria alla prima sessione (FP1)** — il negotiate di F1 risponde 403
-fuori sessione, quindi l'ingress SignalR NON e' verificabile a feed spento (fuori
-sessione `/status` mostra legittimamente `connesso: false`). A sessione aperta:
+Quindi **oggi compound + eta'-gomma NON possono arrivare al collettore di produzione**:
+l'unico ingress utilizzabile dal VPS e' quello che non li porta. La decodifica stint nel
+collettore (funzionante e testata) resta **inerte in produzione** finche' non si apre una
+di queste strade — **decisione PO**:
 
-```bash
-ssh muretto@167.233.236.186 'curl -s http://127.0.0.1:8766/status' | python3 -m json.tool | head -20
-# atteso: "ingress": "signalr", "connesso": true, ultimo_messaggio_utc recente
-```
+1. **stint via OpenF1**: verificare se openf1.org espone gli stint in realtime (hanno
+   `/v1/stints` nella REST; sul MQTT il collettore sottoscrive 10 topic senza stint) e,
+   se si', aggiungere topic + mappatura in `mappa_openf1.py`. NB: l'MQTT OpenF1 e'
+   comunque **rotto dal 20/07** (`CONNACK: Not authorized`, lato-server, ticket aperto).
+2. **ingresso da IP non-datacenter** (il Mac registra SignalR proprio per questo), con
+   tutto quello che comporta come architettura.
 
-Se a FP1 il SignalR non connette, il feed live e' giu' (OpenF1 non e' un ripiego: e'
-rotto anche lui) -> decisione PO.
+Finche' nessuna delle due e' fatta: gli scenari di degrado vivono **solo nella demo
+(replay)**, dove il dato c'e'. Lo shadow-run di Fase C non e' eseguibile in live.
 
 ## Attivazione dell'in_pit geometrico sul server (prima di FP2)
 
-Col corridoio del weekend in repo e deployato sul VPS — **con l'ingress incluso**:
+Col corridoio del weekend in repo e deployato sul VPS:
 
 ```bash
-ssh muretto@167.233.236.186 'echo "PITLANE_ARGS=--ingress signalr --pitlane data/live_derived/pitlane_ungheria.json" > ~/.muretto-live.env && sudo systemctl restart muretto-live'
+ssh muretto@167.233.236.186 'echo "PITLANE_ARGS=--pitlane data/live_derived/pitlane_ungheria.json" > ~/.muretto-live.env && sudo systemctl restart muretto-live'
 ```
-
-(Nota: l'in_pit geometrico serve solo all'ingress OpenF1 — il SignalR ha `InPit`
-nativo. Con SignalR il `--pitlane` e' inerte ma innocuo.)
 
 ## Dopo il weekend — validazione Fase 2 (KPI in FASE2_PREREG addendum)
 
