@@ -1,0 +1,159 @@
+{
+  "noto_falso": {
+    "rivendicazione": "PATOGENO-FALSO-traffico",
+    "modulo": "traffico",
+    "verdetto": "KILLED",
+    "veti_falliti": [
+      "b_replica_oos",
+      "c_nessun_peggioramento",
+      "e_non_pareggio"
+    ],
+    "veti": {
+      "a_golden": {
+        "passa": true,
+        "max_diff_dove_traffico_non_morde": 0.0,
+        "n_casi_invarianti": 823,
+        "nota": "riferimento = simulazione senza traffico (ZONE=0); dove il cap non morde nemmeno con la zona piu' ampia, l'overlay deve essere no-op"
+      },
+      "b_replica_oos": {
+        "passa": false,
+        "media_miglioramento": -0.02337,
+        "p": 0.54688,
+        "p_min_raggiungibile": 0.01562,
+        "esaustivo": true,
+        "piu_estremo_possibile": false,
+        "ci95_bootstrap": [
+          -0.37129,
+          0.1715
+        ],
+        "n_blocchi": 6,
+        "regola": "p=0.5469 vs alpha=0.05"
+      },
+      "c_nessun_peggioramento": {
+        "passa": false,
+        "peggiorati": [
+          "Monaco",
+          "Giappone"
+        ],
+        "per_caso": {
+          "Monaco": -0.68021,
+          "Giappone": -0.04014,
+          "Belgio": 0.1677,
+          "Miami": 0.23569,
+          "Australia": 0.02891,
+          "Spagna": 0.14782
+        },
+        "nota": "legge del progetto: un solo caso sensibile peggiorato uccide"
+      },
+      "d_regime": {
+        "passa": true,
+        "regime": "2026",
+        "cross_regime": false,
+        "nota": "evidenza interamente dal regime 2026; nessun offset globale assunto"
+      },
+      "e_non_pareggio": {
+        "passa": false,
+        "media": -0.07483,
+        "eps_tie": 0.001,
+        "nota": "un tie non e' vittoria"
+      }
+    },
+    "dettaglio": {
+      "n_coppie": 1412,
+      "n_coppie_sensibili": 893,
+      "media_su_sensibili": -0.10439,
+      "blocchi": "gare del panel"
+    },
+    "regime_evidenza": "2026",
+    "margine": null
+  },
+  "noto_vero": {
+    "rivendicazione": "PATOGENO-VERO-pitloss-silverstone",
+    "modulo": "pitloss",
+    "verdetto": "SURVIVES",
+    "veti_falliti": [],
+    "veti": {
+      "a_golden": {
+        "passa": true,
+        "golden_kernel": "449/449",
+        "golden_pit": "11/11",
+        "nota": "overlay pit-loss: Pace/Advance non toccati, i golden restano validi",
+        "circuito_fuori_panel": true
+      },
+      "b_replica_oos": {
+        "passa": true,
+        "media_miglioramento": 1.33333,
+        "p": 0.25,
+        "p_min_raggiungibile": 0.25,
+        "esaustivo": true,
+        "piu_estremo_possibile": true,
+        "ci95_bootstrap": [
+          0,
+          3
+        ],
+        "n_blocchi": 3,
+        "regola": "potenza minima: p_min=0.2500 > alpha=0.05. Serve il risultato piu' estremo possibile E >=2/3 migliorati con 0 peggiorati. Osservato: p=0.2500 (= p_min), piu_estremo=True, migliorati 2/3, peggiorati 0"
+      },
+      "c_nessun_peggioramento": {
+        "passa": true,
+        "peggiorati": [],
+        "per_caso": {
+          "HUL pit 17": 1,
+          "VER pit 17": 3,
+          "STR pit 18": 0
+        },
+        "nota": "legge del progetto: un solo caso sensibile peggiorato uccide"
+      },
+      "d_regime": {
+        "passa": true,
+        "regime": "2026",
+        "cross_regime": false,
+        "nota": "evidenza interamente dal regime 2026; nessun offset globale assunto"
+      },
+      "e_non_pareggio": {
+        "passa": true,
+        "media": 1.33333,
+        "eps_tie": 0.001,
+        "nota": "un tie non e' vittoria"
+      }
+    },
+    "dettaglio": {
+      "n_casi": 3,
+      "att6_rc": 0,
+      "blocchi": "casi dichiarati a priori",
+      "circuito": "Gran Bretagna",
+      "fuori_dal_panel": true
+    },
+    "regime_evidenza": "2026",
+    "margine": {
+      "media_miglioramento": 1.33333,
+      "p_permutazione": 0.25,
+      "ci95_bootstrap_blocchi": [
+        0,
+        3
+      ]
+    }
+  },
+  "sensibilita": true,
+  "specificita": true,
+  "kernel": {
+    "content_hash": "d2bee2dca871",
+    "atteso_hash": "d2bee2dca871",
+    "hash_ok": true,
+    "ultimo_commit": "c6e7482b",
+    "atteso_commit": "c6e7482b",
+    "commit_ok": true,
+    "pulito": true
+  },
+  "golden_kernel": {
+    "passa": true,
+    "esito": "449/449",
+    "rc": 0
+  },
+  "golden_pit": {
+    "passa": true,
+    "esito": "11/11",
+    "rc": 0
+  },
+  "sigillo_prereg": "sha256:ad53873416fede55"
+}

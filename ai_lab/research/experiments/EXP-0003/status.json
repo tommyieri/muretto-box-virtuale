@@ -1,0 +1,12 @@
+{
+  "id": "EXP-0003",
+  "stato": "CREATO",
+  "da": "Experiment Designer",
+  "quando": "2026-07-21 08:30:35",
+  "sigillo_prereg": "sha256:a5af4c2178f30568",
+  "prossimi_stati_ammessi": [
+    "APPROVATO",
+    "RESPINTO"
+  ],
+  "nota": "l'approvazione e' un atto umano: il Designer non si auto-approva"
+}

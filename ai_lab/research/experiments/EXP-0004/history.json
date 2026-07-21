@@ -1,0 +1,17 @@
+[
+  {
+    "quando": "2026-07-21 08:30:35",
+    "da": null,
+    "a": "CREATO",
+    "attore": "Experiment Designer",
+    "nota": "nato dal fenomeno FEN-non_classificabile-MEDIUM",
+    "sigillo_prereg": "sha256:3ef634d8ef89d334"
+  },
+  {
+    "quando": "2026-07-21 08:31:24",
+    "da": "CREATO",
+    "a": "RESPINTO",
+    "attore": "Tommi",
+    "nota": "prima serve capire il non_classificabile-HARD"
+  }
+]

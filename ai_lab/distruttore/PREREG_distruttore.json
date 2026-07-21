@@ -1,0 +1,182 @@
+{
+  "documento": "PREREG del Distruttore — criteri di accettazione, congelati PRIMA dei numeri",
+  "versione": "1.0",
+  "natura": "La macchina che impone il prereg nasce sotto il prereg. Questo file e' committato come PRIMO commit del branch, prima di eseguire qualunque test.",
+  "kernel_atteso": {
+    "content_hash": "d2bee2dca871",
+    "ultimo_commit": "c6e7482b",
+    "golden_kernel": "449/449",
+    "golden_pit": "11/11",
+    "vincolo": "il Distruttore non modifica engine/engine.py: i candidati sono overlay, cioe' parametrizzazioni del motore congelato"
+  },
+  "contratto_ingresso": {
+    "campi": [
+      "modulo",
+      "overlay",
+      "explore_set",
+      "kpi_rivendicato",
+      "regime",
+      "ambito_out_of_sample",
+      "invarianza"
+    ],
+    "risoluzione_dal_codice_esistente": {
+      "traffico": "TrafficModel(ZONE, STRENGTH, track) — gia' parametri del costruttore in engine/engine.py",
+      "pitloss": "pitLoss — gia' parametro di evaluatePit in demo/pitscenario.mjs:29"
+    },
+    "spazio_di_misura": "fuel-corretto o fuel-neutro. MAI cum_time grezzi: il kernel lavora a serbatoio vuoto e non re-inflaziona il carburante."
+  },
+  "panel_ostile": {
+    "circuiti": [
+      "Monaco",
+      "Giappone",
+      "Belgio",
+      "Miami",
+      "Australia",
+      "Spagna"
+    ],
+    "alias": {
+      "Giappone": "Suzuka",
+      "Belgio": "Spa"
+    },
+    "ruolo": {
+      "Monaco": "cuscino 24.80s che assorbe traffico pit-exit non modellato — anomalia nota",
+      "Giappone": "energia gomma alta",
+      "Belgio": "traffico + pit, pit-loss appena calibrata",
+      "Miami": "pit-loss appena calibrata",
+      "Australia": "prima gara di un nuovo regolamento, SC-dominata: da prendere con le pinze",
+      "Spagna": "circuito null — controllo negativo, non deve migliorare"
+    },
+    "esclusione_dichiarata": "Gran Bretagna (Silverstone) NON entra nel panel, cosi' il NOTO-VERO resta out-of-sample",
+    "regola": "out-of-sample per costruzione: nessun explore-set puo' toccare il panel"
+  },
+  "regimi": {
+    "pre_2026": [
+      "2023",
+      "2024",
+      "2025"
+    ],
+    "2026": "rottura regolamentare: e' un'altra macchina, regime a se'",
+    "obbligo": "ogni verdetto dichiara da quale lato del confine viene l'evidenza",
+    "transfer": "per-circuito, mai globale (coperture banda climatologia documentate: Canada ~12.5%, Monaco ~26.7%, Suzuka ~69%, Spa ~61%)"
+  },
+  "veto_congiuntivo": {
+    "regola": "KILLED se ANCHE UNO fallisce; SURVIVES solo se TUTTI passano",
+    "a_golden": "dove l'overlay non deve cambiare nulla, la differenza e' ESATTAMENTE 0 (bit-identica). Per un overlay traffico: i casi in aria libera. Per un overlay pit-loss: il golden kernel Pace/Advance resta 449/449.",
+    "b_replica_oos": "il KPI rivendicato si ripresenta sull'ambito out-of-sample dichiarato, non solo sull'explore",
+    "c_nessun_peggioramento": "nessun caso sensibile peggiora. UN SOLO peggioramento -> KILLED. Casi sensibili = i 6 circuiti del panel (aggregato per circuito) per claim globali; i casi dichiarati a priori per claim circuito-specifici.",
+    "d_regime": "regge DENTRO il regime da cui e' estratto; se rivendica cross-regime, il transfer dichiarato deve essere per-circuito e non globale",
+    "e_non_pareggio": "un tie non e' vittoria. |miglioramento| <= EPS_TIE -> KILLED"
+  },
+  "statistica": {
+    "principio": "confidenza = statistica MISURATA, mai introspezione",
+    "permutation_null": "test di permutazione appaiato per inversione di segno sulle differenze per blocco",
+    "bootstrap": "bootstrap a blocchi INDIPENDENTI (gare per claim globali, casi dichiarati per claim circuito-specifici), MAI sulle singole osservazioni",
+    "alpha": 0.05,
+    "n_perm": 10000,
+    "n_boot": 10000,
+    "seed": 20260721,
+    "potenza_minima_attainable": {
+      "problema": "con n blocchi piccoli la p minima raggiungibile e' 2^-n: con 3 blocchi vale 0.125 > alpha. Chiedere p<=alpha sarebbe un difetto di POTENZA, non evidenza di falsita'.",
+      "regola": "se la p minima raggiungibile dal disegno supera alpha, il veto b passa SOLO SE (i) la p osservata coincide con la minima raggiungibile (risultato piu' estremo possibile) E (ii) vale la legge congelata del progetto: >=2/3 dei casi migliorati E 0 peggiorati",
+      "natura": "regola generale sul disegno, non sul singolo claim: una rivendicazione falsa su pochi casi non e' il risultato piu' estremo possibile, oppure ha un caso peggiorato"
+    }
+  },
+  "misura": {
+    "traffico": {
+      "unita": "coppia (inseguitore, battistrada) adiacenti al giro di freeze",
+      "kpi": "errore assoluto sul GAP previsto dopo H giri: |gap_simulato - gap_osservato|. Il gap fra due auto sullo stesso giro e' fuel-neutro (il termine carburante si elide).",
+      "orizzonte_H": 5,
+      "gap_max_inclusione_s": 3.0,
+      "gap_sensibile_s": 1.5,
+      "min_coppie_per_circuito": 20,
+      "esclusioni": [
+        "in-lap",
+        "out-lap",
+        "giri neutralizzati",
+        "cum_time o pace mancanti"
+      ]
+    },
+    "pitloss": {
+      "unita": "caso di pit dichiarato a priori",
+      "kpi": "errore assoluto di posizione di rientro: |rientro_pos_predetto - posizione_reale_fine_outlap|",
+      "fonte": "att6_silverstone.mjs — riprodotto, non riscritto"
+    }
+  },
+  "EPS_TIE": 0.001,
+  "test_di_accettazione": {
+    "obbligatori_entrambi": "sensibilita' (uccide il falso) E specificita' (lascia vivere il vero)",
+    "noto_falso": {
+      "id": "PATOGENO-FALSO-traffico",
+      "descrizione": "overlay che ammorbidisce il cap del traffico agendo sulle manopole REALI del TrafficModel, calibrato su un explore-set 2026 ristretto perche' 'migliori' li'",
+      "falso_per_costruzione": "overfit sull'explore; indebolisce il cap dove il traffico conta",
+      "esito_atteso": "KILLED",
+      "se_non_ucciso": "il Distruttore e' troppo debole -> exit 1"
+    },
+    "noto_vero": {
+      "id": "PATOGENO-VERO-pitloss-silverstone",
+      "descrizione": "correzione pit-loss Silverstone 29.12 -> 20.80, tre casi HUL/VER/STR dichiarati a priori, freezeLap = pitLap-2",
+      "provenienza": "att6_silverstone.mjs + NOTA_SILVERSTONE.md; usato come RIPRODUTTORE di un'attivazione gia' validata, non per attivare",
+      "esito_atteso": "SURVIVES",
+      "se_ucciso": "il Distruttore e' troppo aggressivo -> exit 1"
+    },
+    "exit_code": "0 solo se noto_falso = KILLED E noto_vero = SURVIVES; 1 altrimenti"
+  },
+  "confini": [
+    "nessun LLM, nessuna autovalutazione: solo codice deterministico",
+    "non tocca engine/engine.py: gli overlay sono parametrizzazioni",
+    "non duplica logica: riusa auditor/tools per parlare col kernel e att6_silverstone.mjs per il pit-loss",
+    "scrive unicamente dentro ai_lab/distruttore/"
+  ],
+  "sigillo_v1_file_intero": "sha256:1b2458120422c4b0",
+  "_nota_sigillo_v1": "Si riferisce alla definizione FILE INTERO con cui nacque il commit d3fceb0. Non e' ricalcolabile dal file di oggi, e non deve esserlo: si verifica contro la versione che ha firmato (git show d3fceb0:...). La storia non si riscrive, si controlla. Sostituito come sigillo operativo da sigillo_criteri, perche' copriva troppo: rompeva anche le aggiunte puramente additive.",
+  "sigillo_criteri": "sha256:ad53873416fede55",
+  "_nota_sigillo_criteri": "Sigillo OPERATIVO da qui in avanti. Copre esclusivamente: veto_congiuntivo, statistica, misura, EPS_TIE, test_di_accettazione, panel_ostile, regimi, contratto_ingresso, kernel_atteso. I campi additivi a monte (tolleranza_partizione) NON sono coperti: possono essere aggiunti, i criteri di veto no.",
+  "tolleranza_partizione": {
+    "scopo": "rifiutare una partizione explore/confirm TRUCCATA: un confirm scelto dove l'overlay traffico morde poco (malattia di ATT6 v2). Test di taglia-effetto.",
+    "statistico": "|media(morso su explore) - media(morso su confirm)|",
+    "regola_operativa": {
+      "tipo": "ricalcolo esatto alle taglie effettive (NON forma chiusa, NON k fisso)",
+      "procedura": "alla ricezione di una partizione n1/n2 si costruisce la distribuzione nulla di |media(A) - media(B)| per riassegnazioni casuali dei circuiti storici a quelle taglie, e se ne prende il quantile dichiarato",
+      "seed": 20260721,
+      "riassegnazioni": 10000,
+      "quantile": 0.95,
+      "perche_i_parametri_sono_criterio": "senza seed, numero di riassegnazioni e quantile committati, la soglia 'esatta' sarebbe riproducibile solo in media: inaccettabile per un criterio di rifiuto. Sono parte della regola, non dettagli.",
+      "input_fisso": "ai_lab/distruttore/morsi_storici_2023_2025.json",
+      "generatore_input": "ai_lab/distruttore/calibrazione.py",
+      "implementazione": "distruttore.tolleranza_partizione(n1, n2)"
+    },
+    "insieme_di_calibrazione": {
+      "regime": "storico 2023-2025",
+      "circuiti": 24,
+      "gare": 70,
+      "sd_fra_circuiti_s": 0.26434,
+      "anticircolarita": "nessun file 2026 e' entrato: il panel che poi giudichera' non ha contribuito alla soglia. Verificato sui percorsi, non dichiarato."
+    },
+    "nota_informativa_NON_operativa": {
+      "k_bilanciato": 1.8796,
+      "q95_bilanciato_s": 0.20284,
+      "se_bilanciata": 0.10792,
+      "controlli_sbilanciati": [
+        {
+          "n1": 6,
+          "n2": 18,
+          "q95_empirico": 0.2402,
+          "regola_prevede": 0.23422
+        },
+        {
+          "n1": 8,
+          "n2": 16,
+          "q95_empirico": 0.21801,
+          "regola_prevede": 0.21515
+        },
+        {
+          "n1": 12,
+          "n2": 12,
+          "q95_empirico": 0.20298,
+          "regola_prevede": 0.20284
+        }
+      ],
+      "perche_non_forma_chiusa": "la forma chiusa tolleranza = k*sd*sqrt(1/n1+1/n2) sotto-stima fino al -2.5% sulle partizioni sbilanciate, cioe' sarebbe troppo severa e respingerebbe partizioni oneste. Documentare il perdente spiega la scelta: si e' preferito il ricalcolo esatto alle taglie effettive."
+    }
+  }
+}

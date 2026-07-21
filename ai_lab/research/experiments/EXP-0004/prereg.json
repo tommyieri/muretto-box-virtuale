@@ -1,0 +1,220 @@
+{
+  "id": "EXP-0004",
+  "tipo": "disambiguazione",
+  "fenomeno": "FEN-non_classificabile-MEDIUM",
+  "componente": "non_classificabile",
+  "creato": "2026-07-21 08:30:35",
+  "versione_motore": "sha256:d2bee2dca871",
+  "osservazioni_di_origine": [
+    "OSS-Australia-non_classificabile-MEDIUM",
+    "OSS-Belgio-non_classificabile-MEDIUM",
+    "OSS-GranBretagna-non_classificabile-MEDIUM",
+    "OSS-Miami-non_classificabile-MEDIUM",
+    "OSS-Monaco-non_classificabile-MEDIUM",
+    "OSS-Spagna-non_classificabile-MEDIUM"
+  ],
+  "dossier_di_origine": [
+    "AUD-AUSTRA-20260721-01",
+    "AUD-BELGIO-20260721-01",
+    "AUD-GRANBR-20260721-01",
+    "AUD-MIAMI-20260721-01",
+    "AUD-MONACO-20260721-01",
+    "AUD-SPAGNA-20260721-01"
+  ],
+  "motivazione": {
+    "nasce_perche": "lo stesso fenomeno mostra segno OPPOSTO fra circuiti (Australia, Belgio, Gran Bretagna, Miami, Monaco, Spagna): il conflitto e' una domanda aperta, non un dettaglio da mediare",
+    "non_sarebbe_nato_con": "osservazioni tutte concordi, che non pongono domande",
+    "regola": "confidenza = contesa (segni discordi sopra il rumore)"
+  },
+  "obiettivo": "Spiegare perche' il fenomeno su mescola MEDIUM cambia SEGNO fra circuiti.",
+  "ipotesi_nulla": {
+    "testo": "Il segno opposto e' rumore campionario: i circuiti non differiscono davvero.",
+    "forma": {
+      "parametro": "differenza_fra_circuiti",
+      "valore_atteso": 0.0
+    }
+  },
+  "ipotesi_alternativa": {
+    "testo": "Il segno dipende da una caratteristica del circuito (difficolta' di sorpasso, lunghezza, neutralizzazioni) e non e' rumore.",
+    "forma": {
+      "parametro": "differenza_fra_circuiti",
+      "segno_atteso": "non nullo"
+    }
+  },
+  "dataset": {
+    "anni": [
+      2026
+    ],
+    "sessione": "Race",
+    "condizioni": "asciutto (dry)",
+    "mescola": "MEDIUM",
+    "min_giri_stint": 8,
+    "circuiti_nel_campione": [
+      "Australia",
+      "Belgio",
+      "Gran Bretagna",
+      "Miami",
+      "Monaco",
+      "Spagna"
+    ],
+    "circuiti_disponibili_non_usati": [
+      "Austria",
+      "Canada",
+      "Cina",
+      "Giappone"
+    ],
+    "fonti": {
+      "Australia": "data/ti_cache/Australian.json",
+      "Belgio": "data/ti_archive/2026/Belgian Grand Prix/Race.json",
+      "Gran Bretagna": "data/ti_archive/2026/British Grand Prix/Race.json",
+      "Miami": "data/ti_cache/Miami.json",
+      "Monaco": "data/ti_cache/Monaco.json",
+      "Spagna": "data/ti_cache/Barcelona.json"
+    },
+    "filtri_igiene": "F1-F6 pulisci() + F7 filtro_outlier(1.07), importati da test_identificabilita_degrado — gli stessi dell'Auditor",
+    "esclusioni": [
+      "giri neutralizzati (status SC/VSC)",
+      "in-lap e out-lap",
+      "mescole non slick",
+      "giri con eta' gomma < 3"
+    ],
+    "spazio_di_confronto": "fuel-corretto secondo engine.FUEL_COEFF: il kernel lavora a serbatoio vuoto e non re-inflaziona il carburante"
+  },
+  "variabili": [
+    {
+      "nome": "compound",
+      "ruolo": "condizione",
+      "fonte": "TI: campo compound"
+    },
+    {
+      "nome": "tyre_age",
+      "ruolo": "regressore",
+      "fonte": "TI: campo life"
+    },
+    {
+      "nome": "fuel_corrected_pace",
+      "ruolo": "risposta",
+      "fonte": "calcolata con engine.FUEL_COEFF, come in engine.pace_base"
+    },
+    {
+      "nome": "aria_pulita",
+      "ruolo": "stratificazione",
+      "fonte": "gap all'auto davanti > 2.0 s (stessa soglia di gen_replay_perdita_stint)"
+    },
+    {
+      "nome": "traffico",
+      "ruolo": "confondente",
+      "fonte": "gap all'auto davanti < 2.0 s"
+    },
+    {
+      "nome": "circuito",
+      "ruolo": "blocco per LOCO",
+      "fonte": "gara"
+    },
+    {
+      "nome": "pilota",
+      "ruolo": "controllo",
+      "fonte": "TI: campo drv"
+    },
+    {
+      "nome": "fase_gara",
+      "ruolo": "controllo",
+      "fonte": "numero giro / n_giri"
+    },
+    {
+      "nome": "neutralizzazioni",
+      "ruolo": "controllo",
+      "fonte": "contesto gara: giri neutralizzati"
+    }
+  ],
+  "campione_minimo": {
+    "stint": 46,
+    "circuiti": 3,
+    "giustificazione": "soglia dichiarata (20 stint, 3 circuiti) e comunque non inferiore al supporto gia' osservato (46). Non e' un calcolo di potenza: e' una soglia dichiarata prima.",
+    "nota_potenza": "rapporto effetto/rumore osservato: Australia=2.74, Belgio=1.32, Gran Bretagna=1.93, Miami=2.58, Monaco=0.44, Spagna=7.55"
+  },
+  "kpi": [
+    {
+      "nome": "SEPARAZIONE_CIRCUITI",
+      "definizione": "differenza fra gruppi di circuiti, con intervallo di confidenza: attraversa lo zero oppure no",
+      "unita": "s/giro",
+      "obiettivo": "stabilire se la differenza e' reale"
+    },
+    {
+      "nome": "BIAS",
+      "definizione": "media del residuo fuel-corretto sul campione",
+      "unita": "s/giro",
+      "obiettivo": "tendere a 0"
+    },
+    {
+      "nome": "RMSE",
+      "definizione": "radice dell'errore quadratico medio del residuo",
+      "unita": "s/giro",
+      "obiettivo": "diminuire"
+    },
+    {
+      "nome": "LOCO",
+      "definizione": "leave-one-circuit-out: si riadatta escludendo un circuito e si valuta su quello escluso, a rotazione",
+      "unita": "quota di circuiti in cui il guadagno regge",
+      "obiettivo": "reggere fuori campione"
+    },
+    {
+      "nome": "NON_REGRESSIONE",
+      "definizione": "RMSE sulle altre mescole, che non deve peggiorare",
+      "unita": "s/giro",
+      "obiettivo": "invariato o migliore"
+    }
+  ],
+  "decisione": {
+    "go": [
+      {
+        "kpi": "SEPARAZIONE_CIRCUITI",
+        "operatore": "IC_non_attraversa_zero",
+        "soglia": 0.95,
+        "nota": "la differenza fra circuiti e' reale al 95%"
+      }
+    ],
+    "no_go": [
+      {
+        "kpi": "SEPARAZIONE_CIRCUITI",
+        "operatore": "IC_attraversa_zero",
+        "soglia": 0.95,
+        "nota": "il segno opposto e' compatibile col rumore: il conflitto si chiude come artefatto"
+      }
+    ],
+    "nullo": [
+      {
+        "condizione": "campione sotto il minimo dichiarato"
+      }
+    ]
+  },
+  "rischi": [
+    {
+      "rischio": "confondente traffico",
+      "dettaglio": "frazione di giri in traffico fino a 80% (Belgio): parte del residuo puo' essere aria sporca",
+      "mitigazione": "stratificare per aria pulita/traffico e riportare i due gruppi"
+    },
+    {
+      "rischio": "neutralizzazioni in gara",
+      "dettaglio": "tutte le gare del campione contengono giri neutralizzati",
+      "mitigazione": "i giri neutralizzati sono gia' esclusi dal filtro F1: verificare che l'esclusione regga anche nel Runner"
+    },
+    {
+      "rischio": "overfitting",
+      "dettaglio": "qualunque parametro aggiunto migliora il fit in campione",
+      "mitigazione": "il KPI decisivo e' leave-one-circuit-out, non l'RMSE in campione"
+    },
+    {
+      "rischio": "circolarita' in-sample",
+      "dettaglio": "le gare del campione sono le stesse che alimentano i coefficienti del progetto",
+      "mitigazione": "nessuna conclusione senza il passaggio LOCO"
+    }
+  ],
+  "vincoli": [
+    "l'esperimento NON modifica il kernel: qualunque adattamento e' fuori dal motore",
+    "nessun coefficiente in produzione cambia senza ratifica umana",
+    "esito NULLO ammesso: campione insufficiente non e' NO-GO",
+    "il prereg e' sigillato: ipotesi e soglie non si toccano dopo i numeri"
+  ],
+  "sigillo": "sha256:3ef634d8ef89d334"
+}
