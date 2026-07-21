@@ -158,6 +158,56 @@ con messaggio esplicito, ma il passo va fatto comunque a mano. Fatto reale
 (20/07/2026): il VPS era su `live-fase3` dal deploy di sabato; il deploy P0
 del fix MQTT si e' fermato li'.
 
+## Ingress del VPS: OpenF1, e NON si tocca — gli stint gomma NON arrivano al live
+
+**Errore commesso e corretto il 21/07/2026** — inciso qui perche' non si ripeta.
+Provando ad abilitare gli scenari di degrado live si e' passato il VPS a
+`--ingress signalr` (dove vivono gli stint gomma). **Sbagliato**: CloudFront **blocca
+gli IP datacenter** sul feed `livetiming.formula1.com` — 403 su OGNI richiesta dal VPS,
+blocco a livello IP/ASN, non aggirabile con header (verificato al primo deploy, commit
+`79d283e`; vedi FASE2_PREREG "decisione a verbale" e collector/README sezione BLOCCO
+CloudFront). Il 403 **non** e' un artefatto del "fuori sessione": e' permanente da li'.
+Ripristinato subito `PITLANE_ARGS=` (ingress OpenF1, il default).
+
+Conseguenza da tenere presente per gli scenari di degrado live:
+
+| | SignalR | OpenF1 (MQTT) |
+|---|---|---|
+| raggiungibile dal VPS | **NO** (403 CloudFront, IP datacenter) | si' |
+| porta gli stint gomma (compound + eta') | **SI'** (`TimingAppData`) | **NO** (topic non sottoscritto/assente) |
+
+Quindi **oggi compound + eta'-gomma NON possono arrivare al collettore di produzione**:
+l'unico ingress utilizzabile dal VPS e' quello che non li porta. La decodifica stint nel
+collettore (funzionante e testata) resta **inerte in produzione** finche' non si apre una
+di queste strade — **decisione PO**:
+
+1. **stint via OpenF1 REST — la via piu' promettente (verificata il 21/07)**:
+   `GET https://api.openf1.org/v1/stints?session_key=latest` risponde **200 dal VPS in
+   ~25 ms** (nessun blocco CloudFront: quello vale solo su `livetiming.formula1.com`) e
+   restituisce ESATTAMENTE cio' che serve:
+   `{"driver_number":16,"stint_number":2,"lap_start":21,"lap_end":44,"compound":"HARD","tyre_age_at_start":0}`
+   → compound diretto, e eta'-gomma = `tyre_age_at_start + (giro_corrente - lap_start)`.
+   **Gli stint sono dati a BASSA frequenza** (cambiano solo ai pit stop): non serve uno
+   stream, basta un **polling ogni 30-60 s** durante la sessione. Questa via evita
+   ENTRAMBI i guasti: niente CloudFront (host diverso) e niente MQTT (protocollo diverso).
+   - MQTT `v1/stints`: **non elencato** nella doc; la regola documentata e' "Topics for
+     MQTT/Websockets directly correspond to the REST API endpoint paths (v1/sessions,
+     v1/laps, v1/location, ...)", quindi e' *implicito* ma non confermato — e **non
+     verificabile ora**, perche' il broker rifiuta ogni CONNECT (`Not authorized`).
+   - **DA VERIFICARE a FP1** (1 riga): la doc dice "Historical data (2023+) is free...
+     Real-time data requires a paid subscription" → serve capire se la sessione IN CORSO
+     e' leggibile con le nostre credenziali:
+     ```bash
+     # a sessione aperta, dal VPS:
+     curl -s "https://api.openf1.org/v1/stints?session_key=latest" | head -c 300
+     # e la stessa con Authorization: Bearer <token> se la versione libera e' vuota/ferma
+     ```
+2. **ingresso da IP non-datacenter** (il Mac registra SignalR proprio per questo), con
+   tutto quello che comporta come architettura.
+
+Finche' nessuna delle due e' fatta: gli scenari di degrado vivono **solo nella demo
+(replay)**, dove il dato c'e'. Lo shadow-run di Fase C non e' eseguibile in live.
+
 ## Attivazione dell'in_pit geometrico sul server (prima di FP2)
 
 Col corridoio del weekend in repo e deployato sul VPS:
