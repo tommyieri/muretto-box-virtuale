@@ -178,5 +178,47 @@
       ],
       "perche_non_forma_chiusa": "la forma chiusa tolleranza = k*sd*sqrt(1/n1+1/n2) sotto-stima fino al -2.5% sulle partizioni sbilanciate, cioe' sarebbe troppo severa e respingerebbe partizioni oneste. Documentare il perdente spiega la scelta: si e' preferito il ricalcolo esatto alle taglie effettive."
     }
+  },
+  "difetto_cancello_partizione_v1": {
+    "_natura": "DICHIARAZIONE DEL DIFETTO, scritta e committata PRIMA di calcolare la nuova soglia.",
+    "scoperto_da": "Traffic Investigator, CONTROLLO-B (commit edd372f del branch ai-lab/traffic-investigator)",
+    "difetto": "il criterio di partizione v1 usa la media CON SEGNO del morso: |media(explore) - media(confirm)|. Morsi grandi di segno opposto dentro lo stesso lato si ELIDONO nella media, quindi una partizione che mescola un circuito a morso molto positivo con circuiti a morso negativo supera il cancello pur essendo truccata.",
+    "caso_misurato": {
+      "id": "CONTROLLO-B-trucco-per-magnitudine",
+      "explore": [
+        "Belgio-2026",
+        "Canada-2026",
+        "Miami-2026",
+        "Monaco-2026"
+      ],
+      "confirm": [
+        "Austria-2026",
+        "Spagna-2026",
+        "Cina-2026"
+      ],
+      "delta_media_con_segno": 0.09566,
+      "tolleranza_v1": 0.40127,
+      "esito_v1": "PASSA il cancello (poi ucciso dai veti a valle, ma per merito dei veti)",
+      "perche": "Monaco +1.385 nell explore compensa Belgio/Canada/Miami ~-0.31: la media si appiattisce e il trucco diventa invisibile allo statistico"
+    },
+    "principio_della_riparazione": "il cancello deve rifiutare quando explore e confirm differiscono per la DISTRIBUZIONE del morso oltre cio' che la riassegnazione casuale produce, non solo per la media con segno.",
+    "criterio_di_scelta_DICHIARATO_PRIMA_DEI_MARGINI": {
+      "candidati": [
+        "delta_media (v1, conservato)",
+        "delta_media_assoluta",
+        "delta_dispersione",
+        "kolmogorov_smirnov_due_campioni"
+      ],
+      "soglia": "per OGNI candidato, q95 dalla STESSA distribuzione nulla per riassegnazioni casuali dei circuiti storici (seed 20260721, 10000 riassegnazioni, quantile 0.95). Nessuna soglia scelta a mano.",
+      "regola_di_scelta": "si sceglie il candidato che rifiuta il CONTROLLO-B col margine relativo piu' ampio (statistico/soglia), CONDIZIONATAMENTE a: (i) il CONTROLLO-A resta rifiutato, (ii) una partizione onesta bilanciata resta accettata. Se nessun candidato soddisfa (i) e (ii), nessuno e' ammissibile e la riparazione NON e' pronta.",
+      "forma_del_cancello": "CONGIUNTIVA: il cancello v2 rifiuta se lo statistico v1 O quello nuovo supera la propria soglia. Aggiungere un criterio di rifiuto puo' solo rendere il cancello piu' severo, mai piu' permissivo, e garantisce che CONTROLLO-A resti rifiutato dallo statistico che gia' lo vedeva.",
+      "nota": "scegliere lo statistico che uccide meglio un patogeno noto e' una forma di adattamento al caso di test: e' mitigata dai vincoli (i) e (ii) e dal fatto che il criterio e' committato PRIMA di vedere i margini. Resta un limite dichiarato."
+    },
+    "atteso_dopo_la_riparazione": {
+      "CONTROLLO-B": "RIFIUTATO (oggi passa)",
+      "CONTROLLO-A": "RIFIUTATO (come gia oggi)",
+      "partizione_onesta": "ACCETTATA",
+      "patogeni_del_Distruttore": "invariati: NOTO-FALSO KILLED, NOTO-VERO SURVIVES"
+    }
   }
 }

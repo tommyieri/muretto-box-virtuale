@@ -96,6 +96,59 @@ def verifica_sigillo_v1_storico():
 
 
 # ---------------------------------------------------------------- tolleranza-partizione
+def valida_partizione(riv, morsi_partizione):
+    """CANCELLO DI PARTIZIONE — si applica PRIMA di entrare nel merito del KPI.
+
+    Un investigatore potrebbe proporre un confirm scelto dove l'overlay morde poco: il KPI
+    ci sembrerebbe stabile per pura selezione (malattia di ATT6 v2). Il test e' di
+    taglia-effetto: |media(morso su explore) - media(morso su confirm)| non deve superare
+    la tolleranza ricalcolata alle taglie effettive dalla nulla storica.
+
+    AGGIUNTA STRETTAMENTE ADDITIVA e a senso unico: un cancello di RIFIUTO puo' solo rendere
+    il Distruttore piu' severo, mai piu' permissivo. Non puo' favorire chi lo attraversa.
+    `giudica()` non e' toccata: resta la funzione committata in 62049bf/964472b.
+    """
+    part = riv.get('partizione')
+    if not part or not part.get('explore') or not part.get('confirm'):
+        return {'passa': False, 'motivo': 'rivendicazione senza partizione explore/confirm'}
+    ex, co = part['explore'], part['confirm']
+    comuni = sorted(set(ex) & set(co))
+    if comuni:
+        return {'passa': False, 'motivo': f'explore e confirm si sovrappongono: {comuni}',
+                'explore': ex, 'confirm': co}
+    mancanti = [g for g in ex + co if g not in morsi_partizione]
+    if mancanti:
+        return {'passa': False, 'motivo': f'morso non misurato per: {mancanti}'}
+
+    me = st.mean([morsi_partizione[g] for g in ex])
+    mc = st.mean([morsi_partizione[g] for g in co])
+    delta = abs(me - mc)
+    tol = tolleranza_partizione(len(ex), len(co))
+    return {'passa': delta <= tol['tolleranza_s'],
+            'delta_taglia_effetto_s': round(delta, 5),
+            'morso_medio_explore_s': round(me, 5), 'morso_medio_confirm_s': round(mc, 5),
+            'tolleranza_s': tol['tolleranza_s'], 'taglie': f"{len(ex)}/{len(co)}",
+            'seed': tol['seed'], 'riassegnazioni': tol['riassegnazioni'],
+            'quantile': tol['quantile'],
+            'explore': ex, 'confirm': co,
+            'nota': ('tolleranza ricalcolata alle taglie effettive dalla nulla storica '
+                     '2023-2025; se il delta la supera, il confirm e\' stato scelto dove il '
+                     'fenomeno e\' ridotto e non si entra nel merito del KPI')}
+
+
+def giudica_rivendicazione(riv, morsi_partizione):
+    """Percorso completo: prima il cancello di partizione, poi — solo se passa — i cinque
+    veti di giudica(), che resta invariata."""
+    vp = valida_partizione(riv, morsi_partizione)
+    if not vp['passa']:
+        return {'rivendicazione': riv['id'], 'modulo': riv['modulo'],
+                'verdetto': 'PARTIZIONE RIFIUTATA', 'validazione_partizione': vp,
+                'veti': None, 'nota': 'non si entra nel merito del KPI'}
+    v = giudica(riv)
+    v['validazione_partizione'] = vp
+    return v
+
+
 def morsi_storici():
     with open(os.path.join(QUI, 'morsi_storici_2023_2025.json')) as f:
         return json.load(f)
