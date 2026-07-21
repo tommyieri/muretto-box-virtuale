@@ -115,6 +115,9 @@ def wave_nuove():
         sh([PY, 'gen_race_control.py'])                       # lista gare dal registro
         sh([PY, 'gen_rc_feed.py'])
         sh([PY, 'gen_classifiche_ufficiali.py'])
+        # modelli del laboratorio: si ricalibrano da soli sul fondo aggiornato.
+        # Idempotente; scrive i coefficienti, NON accende niente in produzione.
+        sh([PY, 'gen_modelli_lab.py', '--data', _oggi()])
     if not golden():
         sys.exit('[auto] FERMO: golden falliti dopo l\'ondata 1 — niente commit, indagare.')
     ba = _bandiere_testo()
@@ -277,6 +280,12 @@ def wave_f1db():
         sys.exit('[auto] FERMO: golden falliti dopo l\'ondata 2 — niente commit, indagare.')
     commit_push(f'auto: release f1db {latest} — standings, pit-lane, griglie aggiornate (ondata 2)')
     return True
+
+
+def _oggi():
+    """Data della ricalibrazione per la targhetta dei modelli del laboratorio."""
+    import datetime
+    return datetime.date.today().isoformat()
 
 
 def _bandiere_testo():

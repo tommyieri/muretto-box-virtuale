@@ -1,5 +1,10 @@
 """ai_lab/designer/designer.py — Experiment Designer V1.
 
+!! DA RIVERIFICARE (rifondazione 21/07/2026) — ai_lab/scienziato/RETROCESSIONE.md
+   I protocolli generati prescrivono 'fuel_corrected_pace' (engine.FUEL_COEFF) come
+   variabile risposta: ogni esperimento cosi' generato e' CONDIZIONATO a un coefficiente
+   non verificato dal fondo.
+
 NON scrive relazioni: genera PROTOCOLLI SCIENTIFICI eseguibili.
 
 COSA PRODUCE, PER OGNI ESPERIMENTO

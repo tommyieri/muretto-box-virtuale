@@ -1,0 +1,284 @@
+{
+ "carburante_congelato": {
+  "per_circuito_veri": {
+   "Austrian": 2.0184,
+   "Bahrain": 4.1216
+  },
+  "globali_per_regime": {
+   "2022-25": 3.151,
+   "2026": 2.1939
+  },
+  "fonte": [
+   "predizioni_congelate.json",
+   "esito_fuel.json"
+  ],
+  "nota_2026": "numero unico: con una gara per circuito il per-circuito non e' calcolabile (nessuna ripetizione = nessuna stabilita')"
+ },
+ "G_stella": 1.5,
+ "soglia_aria": [
+  {
+   "fascia": [
+    0,
+    0.5
+   ],
+   "n_gare": 56,
+   "mediana": 0.5802,
+   "ci95": [
+    0.4628,
+    0.6971
+   ],
+   "contiene_zero": false
+  },
+  {
+   "fascia": [
+    0.5,
+    1.0
+   ],
+   "n_gare": 56,
+   "mediana": 0.2658,
+   "ci95": [
+    0.1563,
+    0.3847
+   ],
+   "contiene_zero": false
+  },
+  {
+   "fascia": [
+    1.0,
+    1.5
+   ],
+   "n_gare": 56,
+   "mediana": 0.14,
+   "ci95": [
+    0.0704,
+    0.2364
+   ],
+   "contiene_zero": false
+  },
+  {
+   "fascia": [
+    1.5,
+    2.0
+   ],
+   "n_gare": 56,
+   "mediana": 0.0774,
+   "ci95": [
+    -0.0266,
+    0.158
+   ],
+   "contiene_zero": true
+  },
+  {
+   "fascia": [
+    2.0,
+    2.5
+   ],
+   "n_gare": 56,
+   "mediana": 0.0257,
+   "ci95": [
+    -0.0426,
+    0.1057
+   ],
+   "contiene_zero": true
+  },
+  {
+   "fascia": [
+    2.5,
+    3.0
+   ],
+   "n_gare": 56,
+   "mediana": -0.0139,
+   "ci95": [
+    -0.084,
+    0.0355
+   ],
+   "contiene_zero": true
+  },
+  {
+   "fascia": [
+    3.0,
+    4.0
+   ],
+   "n_gare": 56,
+   "mediana": -0.0534,
+   "ci95": [
+    -0.1035,
+    0.0072
+   ],
+   "contiene_zero": true
+  },
+  {
+   "fascia": [
+    4.0,
+    5.0
+   ],
+   "n_gare": 56,
+   "mediana": -0.0851,
+   "ci95": [
+    -0.1077,
+    -0.0546
+   ],
+   "contiene_zero": false
+  },
+  {
+   "fascia": [
+    5.0,
+    8.0
+   ],
+   "n_gare": 56,
+   "mediana": -0.0503,
+   "ci95": [
+    -0.0689,
+    -0.0326
+   ],
+   "contiene_zero": false
+  },
+  {
+   "fascia": [
+    8.0,
+    1000000000.0
+   ],
+   "n_gare": 56,
+   "mediana": -0.0665,
+   "ci95": [
+    -0.0783,
+    -0.0487
+   ],
+   "contiene_zero": false
+  }
+ ],
+ "C1": {
+  "2022-25": {
+   "etichetta": "2022-25",
+   "n_casi": 33,
+   "n_gare": 8,
+   "n_vinti": 11,
+   "quota": 0.3333,
+   "margine_mediano_vittorie": 13.81,
+   "tol": 11.73,
+   "G_stella": 1.5,
+   "esclusi": {
+    "giri mancanti (ritiro o buchi)": 62,
+    "cancello di calibrazione": 45,
+    "rientro in traffico": 9,
+    "mescola SOFT senza rho": 10
+   },
+   "gare_calibrazione": [
+    "2023 Abu Dhabi",
+    "2023 Italian",
+    "2023 Spanish",
+    "2024 Bahrain",
+    "2024 Emilia Romagna",
+    "2024 Italian",
+    "2024 Singapore",
+    "2025 Hungarian",
+    "2025 Japanese"
+   ],
+   "gare_verifica": [
+    "2023 Hungarian",
+    "2023 Miami",
+    "2023 United States",
+    "2024 Dutch",
+    "2024 Hungarian",
+    "2024 Japanese",
+    "2025 Abu Dhabi",
+    "2025 Italian",
+    "2025 Singapore"
+   ],
+   "stop_raggiunto": false
+  },
+  "2026": {
+   "n_gare_utili": 0,
+   "misurabile": false
+  }
+ },
+ "C2_cluster": {
+  "n_persi": 22,
+  "n_vinti": 11
+ },
+ "C2_percircuito": {
+  "soglia_degrado": 0.0293,
+  "veri": [],
+  "n_circuiti_giudicabili": 8
+ },
+ "C3": {
+  "X_vecchia": {
+   "etichetta": "2022-25",
+   "n_casi": 33,
+   "n_gare": 8,
+   "n_vinti": 11,
+   "quota": 0.3333,
+   "margine_mediano_vittorie": 13.81,
+   "tol": 11.73,
+   "G_stella": 1.5,
+   "esclusi": {
+    "giri mancanti (ritiro o buchi)": 62,
+    "cancello di calibrazione": 45,
+    "rientro in traffico": 9,
+    "mescola SOFT senza rho": 10
+   },
+   "gare_calibrazione": [
+    "2023 Abu Dhabi",
+    "2023 Italian",
+    "2023 Spanish",
+    "2024 Bahrain",
+    "2024 Emilia Romagna",
+    "2024 Italian",
+    "2024 Singapore",
+    "2025 Hungarian",
+    "2025 Japanese"
+   ],
+   "gare_verifica": [
+    "2023 Hungarian",
+    "2023 Miami",
+    "2023 United States",
+    "2024 Dutch",
+    "2024 Hungarian",
+    "2024 Japanese",
+    "2025 Abu Dhabi",
+    "2025 Italian",
+    "2025 Singapore"
+   ]
+  },
+  "X_nuova": {
+   "etichetta": "2022-25 (eta^2)",
+   "n_casi": 30,
+   "n_gare": 8,
+   "n_vinti": 9,
+   "quota": 0.3,
+   "margine_mediano_vittorie": 13.78,
+   "tol": 10.92,
+   "G_stella": 1.5,
+   "esclusi": {
+    "giri mancanti (ritiro o buchi)": 62,
+    "cancello di calibrazione": 47,
+    "rientro in traffico": 10,
+    "mescola SOFT senza rho": 10
+   },
+   "gare_calibrazione": [
+    "2023 Abu Dhabi",
+    "2023 Italian",
+    "2023 Spanish",
+    "2024 Bahrain",
+    "2024 Emilia Romagna",
+    "2024 Italian",
+    "2024 Singapore",
+    "2025 Hungarian",
+    "2025 Japanese"
+   ],
+   "gare_verifica": [
+    "2023 Hungarian",
+    "2023 Miami",
+    "2023 United States",
+    "2024 Dutch",
+    "2024 Hungarian",
+    "2024 Japanese",
+    "2025 Abu Dhabi",
+    "2025 Italian",
+    "2025 Singapore"
+   ]
+  },
+  "eta2_mediano": 0.00010103346705125915,
+  "migliora": false
+ }
+}

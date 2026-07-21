@@ -1,5 +1,10 @@
 """test_identificabilita_degrado.py — Fase 2.1: il degrado gomma e' identificabile dai dati 2026?
 
+!! DA RIVERIFICARE (rifondazione 21/07/2026) — ai_lab/scienziato/RETROCESSIONE.md
+   FUEL_SKG*FUEL_KG = 2,1 s e' una SECONDA costante carburante, diversa da quella del
+   motore (3,0 s). La pre-correzione qui applicata e' un'IPOTESI: i gamma stimati sono
+   condizionati. Il metodo (filtri contati, rango, cluster-robust) si conserva.
+
 MODELLO (per gara, mai pooled tra gare):
     tempo_fc = alpha(pilota) + delta_compound + beta*giro + gamma_compound*life + eps
   - alpha per PILOTA-GARA (mai per stint: l'effetto fisso per stint assorbirebbe l'offset

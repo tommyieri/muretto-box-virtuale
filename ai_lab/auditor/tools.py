@@ -1,5 +1,11 @@
 """ai_lab/auditor/tools.py — STRATO NUMERICO dell'Auditor. Solo Python, mai LLM.
 
+!! DA RIVERIFICARE (rifondazione 21/07/2026) — ai_lab/scienziato/RETROCESSIONE.md
+   Ogni misura di questo modulo vive nello spazio FUEL-CORRETTO del kernel
+   (engine.FUEL_COEFF, engine.pace_base). Quel coefficiente e' un'IPOTESI non ancora
+   ricostruita dal fondo: residui, classificazioni e dossier che ne discendono sono
+   CONDIZIONATI, non fatti. La soglia di aria pulita (gap da sesT) resta invece fondo.
+
 CONFINE NON NEGOZIABILE
   Questo modulo LEGGE il motore congelato e i dati reali. Non scrive nulla in
   engine/, demo/, data/. Non reimplementa la fisica: la importa.

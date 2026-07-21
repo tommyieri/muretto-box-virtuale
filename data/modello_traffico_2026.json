@@ -1,0 +1,116 @@
+{
+ "coefficienti": {
+  "a": 1.68908,
+  "lam": 0.5,
+  "kappa": 0.44273,
+  "durata_per_fascia_delta": {
+   "-99.0..-0.8": 2.299,
+   "-0.8..-0.4": 2.982,
+   "-0.4..-0.15": 3.218,
+   "-0.15..0.15": 3.246,
+   "0.15..99.0": 2.624
+  },
+  "durata_media": 2.706
+ },
+ "intervalli": {
+  "a_ci95_blocchi": [
+   0.8624,
+   3.17603
+  ],
+  "lam_ci95_blocchi": [
+   0.3,
+   0.5
+  ],
+  "nota": "bootstrap sui BLOCCHI (gare), non sulle osservazioni"
+ },
+ "forma": {
+  "intensita": "i(gap) = kappa * a * exp(-gap/lam)  [s al giro]",
+  "durata": "governata dal delta-passo, per fasce",
+  "soglia_incontro_s": 1.5,
+  "finestra_post_restart_giri": 3
+ },
+ "diagnostica": {
+  "n_incontri": 586,
+  "n_giri_in_traffico": 3291,
+  "gare": [
+   "2026 Australia",
+   "2026 Austria",
+   "2026 Belgian",
+   "2026 British",
+   "2026 Canada",
+   "2026 Cina",
+   "2026 Giappone",
+   "2026 Miami",
+   "2026 Monaco",
+   "2026 Spagna"
+  ],
+  "costo_incontro_mediano_reale_s": 0.429,
+  "costo_per_giro_mediano_reale_s": 0.261
+ },
+ "verifica": {
+  "oos": {
+   "errore_modello": 0.7355,
+   "ci95": [
+    0.6522,
+    0.9651
+   ],
+   "errore_traffico_zero": 0.743,
+   "ci95_zero": [
+    0.6373,
+    0.8924
+   ],
+   "guadagno": 0.0075,
+   "n_gare_calibrazione": 5,
+   "n_gare_verifica": 5,
+   "appaiato_mediano": -0.0567
+  },
+  "mclaren": {
+   "n_delta_grande": 78,
+   "n_pari_passo": 40,
+   "costo_reale_delta_grande": 0.452,
+   "costo_reale_pari_passo": 0.298,
+   "previsto_delta_grande": 0.81,
+   "previsto_pari_passo": 0.344,
+   "ordina_giusto": true,
+   "criterio": "chi ha delta-passo grande ed e bloccato deve pagare di piu"
+  },
+  "placebo": {
+   "costo_delta_grande_finto": 0.277,
+   "costo_pari_passo_finto": 0.122,
+   "separazione_finta": 0.155,
+   "nota": "con leader a caso la separazione deve COLLASSARE"
+  },
+  "kappa_calibrazione": 0.4214,
+  "cancello_accensione": {
+   "batte_traffico_zero": true,
+   "appaiato_vs_zero": -0.0567,
+   "ci95_appaiato": [
+    -0.2826,
+    0.1568
+   ],
+   "esclude_lo_zero": false,
+   "ACCENDIBILE": false,
+   "criterio": "si propone per il live solo se l IC95 appaiato contro il traffico-zero esclude lo zero. Finche no, resta spento."
+  }
+ },
+ "limite_onesto": [
+  "CAMPO REALE: si calcola solo contro il campo com era. Le altre auto non rallentano perche sei li, non si difendono, non cambiano strategia. Dice \"Leclerc diverso dentro la gara che E successa\", non \"quella che SAREBBE successa\".",
+  "REGIME 2026 SOLTANTO: nessun coefficiente ereditato da altri regimi. Si rinforza a ogni Gran Premio nuovo (vedi storico).",
+  "CIECO su pioggia (gare escluse) e sui primi 3 giri dopo ogni ripartenza.",
+  "CONSERVATIVO sul delta-passo grande: ordina giusto ma sottostima la magnitudine di chi e molto piu veloce ed e bloccato."
+ ],
+ "nome": "traffico_2026",
+ "regime": "2026",
+ "targhetta": {
+  "gare_sotto": 10,
+  "blocchi_sotto": 10,
+  "calcolato_il": "2026-07-21"
+ },
+ "storico": [
+  {
+   "calcolato_il": "2026-07-21",
+   "gare_sotto": 10,
+   "delta_coefficienti": {}
+  }
+ ]
+}
