@@ -23,6 +23,14 @@
   "metro2.soglia_da_nulla": {
    "sha256": "ff0bdcea5a97ed4a",
    "perche": "deriva la soglia del metro dalla nulla"
+  },
+  "traffico.placebo_leader": {
+   "sha256": "7d4b1da9658b7b15",
+   "perche": "placebo col leader a caso: smonta il confondimento del passo di chi segue"
+  },
+  "pista.permuta_piste": {
+   "sha256": "bfe62d01c9735244",
+   "perche": "null per permutazione delle etichette-pista"
   }
  },
  "storia": [
@@ -37,6 +45,21 @@
     "percircuito.null_etichette": "7e57220e934ffcaa",
     "percircuito.leave_one_year_out": "6ee2112cefaf4f22",
     "metro2.soglia_da_nulla": "ff0bdcea5a97ed4a"
+   }
+  },
+  {
+   "attore": "Tommi (autorizzazione in chat, pre-merge PR #74)",
+   "nota": "portati sotto sigillo i due null nati nell'arco traffico: placebo_leader (leader a caso) e permuta_piste (etichette-pista)",
+   "data": "2026-07-21",
+   "zone": {
+    "fenomeno_fuel.FenomenoFuel.null": "aef09fded5059d86",
+    "scheletro.cosa_so_fare": "fcc82408c6308919",
+    "scheletro.bootstrap_a_blocchi": "2d8f31f76783abaa",
+    "percircuito.null_etichette": "7e57220e934ffcaa",
+    "percircuito.leave_one_year_out": "6ee2112cefaf4f22",
+    "metro2.soglia_da_nulla": "ff0bdcea5a97ed4a",
+    "traffico.placebo_leader": "7d4b1da9658b7b15",
+    "pista.permuta_piste": "bfe62d01c9735244"
    }
   }
  ]

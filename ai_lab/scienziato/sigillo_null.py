@@ -55,6 +55,10 @@ ZONE = [
      'chiamata DENTRO il null: modificarla cambia il null'),
     ('metro2', 'soglia_da_nulla',
      'deriva la soglia del metro dalla nulla'),
+    ('traffico', 'placebo_leader',
+     'placebo col leader a caso: smonta il confondimento del passo di chi segue'),
+    ('pista', 'permuta_piste',
+     'null per permutazione delle etichette-pista'),
 ]
 
 
