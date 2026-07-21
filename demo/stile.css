@@ -822,6 +822,41 @@ a.gpcard:hover::after { right: 0; }
 .tel-gear { display: flex; gap: 1px; height: 26px; padding: 0 8px; }
 .tel-gear .gg { flex: 1; border-radius: 1px; align-self: end; background: var(--accent); opacity: .85; }
 
+/* ---- gara incorporata nel weekend ---- */
+body.embed .topbar, body.embed .footer, body.embed .crumb { display: none !important; }
+body.embed .wrap-gara { padding-top: 4px; }
+.wknd-embed { width: 100%; border: 1px solid var(--line); border-radius: var(--r);
+  background: var(--panel); overflow: hidden; }
+.wknd-embed iframe { display: block; width: 100%; height: 1180px; border: 0; }
+@media (max-width: 900px){ .wknd-embed iframe { height: 1480px; } }
+
+/* ---- confronto giri (tempi & telemetria, senza mappa) ---- */
+.cmp-ctl { display: grid; gap: 8px; margin-bottom: 14px; }
+.cmp-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap;
+  background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+.cmp-row .side { font: 800 15px/1 var(--disp); letter-spacing: 1px; width: 22px; text-align: center; flex: 0 0 auto; }
+.cmp-row.a .side { color: var(--accent); }
+.cmp-row.b .side { color: var(--brand); }
+.cmp-row select { background: var(--panel2); color: var(--txt); border: 1px solid var(--line2);
+  border-radius: 8px; padding: 8px 10px; font: 600 12.5px var(--sans); cursor: pointer; }
+.cmp-row select:focus { outline: none; border-color: var(--accent); }
+.cmp-row .btoggle { margin-left: auto; }
+.cmp-sum { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin: 2px 2px 14px; }
+.cmp-lap { display: inline-flex; align-items: center; gap: 8px; padding: 8px 13px;
+  border: 1px solid var(--line); border-radius: 999px; font: 13px/1 var(--mono); }
+.cmp-lap i { width: 10px; height: 10px; border-radius: 50%; }
+.cmp-lap b { font-family: var(--mono); }
+.cmp-delta { font: 800 15px/1 var(--mono); padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line2); }
+.cmp-secs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0 2px 14px; }
+.cmp-sec { background: var(--panel2); border: 1px solid var(--line); border-radius: 8px; padding: 10px; text-align: center; }
+.cmp-sec .k { color: var(--dim); font: 700 9.5px/1 var(--mono); letter-spacing: 1px; text-transform: uppercase; }
+.cmp-sec .v { font: 700 15px/1 var(--mono); margin-top: 5px; }
+.cmp-sec .dl { font: 700 11px/1 var(--mono); margin-top: 3px; }
+.tel-line.velB { stroke: var(--brand); }
+.tel-line.gasB { stroke: var(--brand); }
+.tel-line.freB { stroke: #ff8f6b; }
+.tel-line.dash { stroke-dasharray: 7 6; }
+
 /* ---- mappa pista (qualifica live) ---- */
 .map-ctl { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
 .map-ctl label { color: var(--dim); font: 600 10px/1 var(--mono); letter-spacing: 1px; text-transform: uppercase; margin-right: 4px; }

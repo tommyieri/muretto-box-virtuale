@@ -95,7 +95,20 @@ function label(name){
 }
 const isRace = s => /race|sprint$/i.test(s.session_name||'') && !/qual|shootout/i.test(s.session_name||'');
 
-let calGara=null, sessioni=[], sessSel=null, drivers={}, vista='mappa', mapMode='single';
+let calGara=null, sessioni=[], sessSel=null, drivers={}, vista='replay', datiSub='timing', demoSet=new Set();
+const cacheLaps={}, driversBySession={};
+async function lapsOf(sk){
+  if (cacheLaps[sk]) return cacheLaps[sk];
+  const laps = await api(`laps?session_key=${sk}`);
+  const per = {}; for (const l of laps) if (l.lap_duration!=null && l.date_start){ (per[l.driver_number] ||= []).push(l); }
+  cacheLaps[sk] = per; return per;
+}
+async function drvOf(sk){
+  if (driversBySession[sk]) return driversBySession[sk];
+  const dl = await api(`drivers?session_key=${sk}`);
+  const m = Object.fromEntries(dl.map(d=>[d.driver_number, d]));
+  driversBySession[sk] = m; return m;
+}
 
 async function boot(){
   const gp = new URLSearchParams(location.search).get('gp');
@@ -103,6 +116,8 @@ async function boot(){
   try { cal = await (await fetch('data/calendario_2026.json')).json(); } catch(e){}
   calGara = cal?.gare.find(g => g.gara===gp || g.nome===gp) || null;
   if (!calGara){ corpoErr('Weekend non trovato. Torna alla stagione.'); return; }
+  // il replay per-giro esiste solo per le gare pubblicate in demo (manifest)
+  try { const mf = await (await fetch('data/manifest.json')).json(); demoSet = new Set(mf.map(r=>r.gara)); } catch(e){ demoSet = new Set(); }
 
   el('wTitolo').innerHTML = `Weekend <em>//</em> ${esc(calGara.nome)}`;
 
@@ -145,32 +160,57 @@ function disegnaTabs(){
 }
 
 async function seleziona(s){
+  stopAnim();
   sessSel = s;
   el('sessTabs').querySelectorAll('.sess-tab').forEach(b=>
     b.classList.toggle('on', sessioni[+b.dataset.i]===s));
-  // switch vista: gara/sprint hanno anche il link al replay se esiste
-  const replay = isRace(s) && calGara.gara_demo ? calGara.gara_demo : null;
+  const replay = (isRace(s) && calGara.gara_demo && demoSet.has(calGara.gara_demo)) ? calGara.gara_demo : null;
   el('switch').hidden = false;
   el('switch').innerHTML =
-    `<button data-v="timing" class="${vista==='timing'?'on':''}">Classifica &amp; settori</button>`
-   +`<button data-v="mappa" class="${vista==='mappa'?'on':''}">Mappa pista</button>`
-   +`<button data-v="telem" class="${vista==='telem'?'on':''}">Telemetria</button>`
-   +(replay?`<a class="btn btn-pri" style="margin-left:auto;padding:9px 16px;font-size:13px" href="gara.html?g=${encodeURIComponent(replay)}">Replay &amp; simulatore pit &rarr;</a>`:'');
+    `<button data-v="replay" class="${vista==='replay'?'on':''}">Replay &amp; simulatore pit</button>`
+   +`<button data-v="dati" class="${vista==='dati'?'on':''}">Tempi &amp; telemetria</button>`;
   el('switch').querySelectorAll('button').forEach(b=>
     b.addEventListener('click', ()=>{ stopAnim(); vista=b.dataset.v; seleziona(s); }));
 
   el('corpo').innerHTML = `<div class="wknd-msg"><span class="spin"></span>Carico ${s.lab.d}&hellip;</div>`;
   try {
-    const dl = await api(`drivers?session_key=${s.session_key}`);
-    drivers = Object.fromEntries(dl.map(d=>[d.driver_number, d]));
-    if (vista==='timing') await vistaTiming(s);
-    else if (vista==='mappa') await vistaMappa(s);
-    else await vistaTelem(s);
+    drivers = await drvOf(s.session_key);
+    if (vista==='replay') await vistaReplay(s, replay);
+    else await vistaDati(s);
   } catch(e){ corpoErr('Dati sessione non disponibili: '+e.message); }
 }
 
+// ================= REPLAY & SIMULATORE PIT (vista principale) =================
+async function vistaReplay(s, replay){
+  if (replay){   // la gara ha il replay per-giro + simulatore pit + mappa: incorporalo
+    el('corpo').innerHTML = `<div class="wknd-embed">
+      <iframe title="Replay & simulatore pit" src="gara.html?g=${encodeURIComponent(replay)}&embed=1" loading="lazy"></iframe></div>`;
+    return;
+  }
+  // sessione senza replay per-giro (libere/quali/sprint): mappa dell'intera sessione
+  const laps = await api(`laps?session_key=${s.session_key}`);
+  const conGiro = laps.filter(l=>l.lap_duration!=null && l.date_start);
+  if (!conGiro.length){ el('corpo').innerHTML = `<div class="wknd-msg">Mappa non disponibile: nessun giro tracciato in questa sessione.</div>`; return; }
+  el('corpo').innerHTML = `<div class="sez-tit" style="margin-top:4px">Mappa della sessione &mdash; tutti i piloti</div><div id="mapBody"></div>`;
+  await mapAll(s, conGiro);
+}
+
+// ================= TEMPI & TELEMETRIA (semplice, senza mappa) =================
+async function vistaDati(s){
+  el('corpo').innerHTML =
+    `<div class="wknd-switch" style="margin-bottom:14px">
+       <button data-d="timing" class="${datiSub==='timing'?'on':''}">Classifica &amp; settori</button>
+       <button data-d="telem" class="${datiSub==='telem'?'on':''}">Confronto telemetria</button>
+     </div><div id="datiBody"></div>`;
+  el('corpo').querySelectorAll('.wknd-switch button').forEach(b=>
+    b.addEventListener('click', ()=>{ datiSub=b.dataset.d; vistaDati(s); }));
+  const box = el('datiBody');
+  if (datiSub==='timing') await vistaTiming(s, box);
+  else await vistaTelemCompare(s, box);
+}
+
 // ---------- classifica sessione + settori + micro-settori ----------
-async function vistaTiming(s){
+async function vistaTiming(s, box){
   const laps = await api(`laps?session_key=${s.session_key}`);
   // giro migliore per pilota (lap_duration valido)
   const best = {};
@@ -180,7 +220,7 @@ async function vistaTiming(s){
     if (!b || l.lap_duration < b.lap_duration) best[l.driver_number] = l;
   }
   const righe = Object.values(best).sort((a,b)=>a.lap_duration-b.lap_duration);
-  if (!righe.length){ corpoErr('Nessun tempo registrato in questa sessione.'); return; }
+  if (!righe.length){ box.innerHTML = `<div class="wknd-msg">Nessun tempo registrato in questa sessione.</div>`; return; }
   const top = righe[0].lap_duration;
   // record di settore (session best) e migliore personale per settore
   const sbest = [Infinity,Infinity,Infinity];
@@ -232,7 +272,7 @@ async function vistaTiming(s){
     <i><span class="sw ms-cell-giallo"></span>più lento</i>
     <i><span class="sw ms-cell-box"></span>box / n.d.</i></div>`;
 
-  el('corpo').innerHTML = `
+  box.innerHTML = `
     <section class="panel tm">${testa}${body}</section>
     <div class="sez-tit">Micro-settori &mdash; giro migliore</div>
     <section class="panel ms-wrap">${legenda}${microRighe}</section>`;
@@ -245,80 +285,119 @@ function cellClass(v){
   return 'ms-cell-box';                        // 2064 / 0 / null: box o non cronometrato
 }
 
-// ---------- telemetria per giro ----------
-async function vistaTelem(s){
-  const laps = await api(`laps?session_key=${s.session_key}`);
-  const perDrv = {};
-  for (const l of laps) if (l.lap_duration!=null){ (perDrv[l.driver_number] ||= []).push(l); }
-  const nums = Object.keys(perDrv).map(Number)
-    .sort((a,b)=> Math.min(...perDrv[a].map(x=>x.lap_duration)) - Math.min(...perDrv[b].map(x=>x.lap_duration)));
-  if (!nums.length){ corpoErr('Nessun giro con telemetria in questa sessione.'); return; }
-
-  const optDrv = nums.map(n=>{ const d=drivers[n]||{};
-    return `<option value="${n}">${esc(d.name_acronym||n)} — ${esc(d.team_name||'')}</option>`; }).join('');
-  el('corpo').innerHTML = `
-    <div class="tel-ctl">
-      <span><label>Pilota</label><select id="telDrv">${optDrv}</select></span>
-      <span><label>Giro</label><select id="telLap"></select></span>
-      <span class="tel-chip" id="telInfo">seleziona un giro</span>
+// ---------- confronto telemetria: giro A vs giro B (anche di altre sessioni) ----------
+async function vistaTelemCompare(s, box){
+  const optS = cur => sessioni.map(x=>`<option value="${x.session_key}" ${x.session_key===cur?'selected':''}>${esc(x.lab.d)}</option>`).join('');
+  box.innerHTML = `
+    <div class="cmp-ctl">
+      <div class="cmp-row a"><span class="side">A</span>
+        <select id="aSess">${optS(s.session_key)}</select><select id="aDrv"></select><select id="aLap"></select></div>
+      <div class="cmp-row b"><span class="side">B</span>
+        <select id="bSess">${optS(s.session_key)}</select><select id="bDrv"></select><select id="bLap"></select>
+        <label class="btoggle"><input type="checkbox" id="bOn" checked> confronta</label></div>
     </div>
-    <section class="panel tel-graf" id="telGraf"><div class="wknd-msg">Scegli pilota e giro.</div></section>`;
+    <div id="cmpOut"><div class="wknd-msg"><span class="spin"></span>Preparo i giri&hellip;</div></div>`;
 
-  const riempiLap = () => {
-    const n = +el('telDrv').value;
-    const ls = perDrv[n].slice().sort((a,b)=>a.lap_number-b.lap_number);
-    const fast = ls.reduce((m,x)=> x.lap_duration<m.lap_duration?x:m, ls[0]);
-    el('telLap').innerHTML = ls.map(l=>`<option value="${l.lap_number}" ${l===fast?'selected':''}>Giro ${l.lap_number} — ${fmtLap(l.lap_duration)}${l===fast?' ⚡':''}</option>`).join('');
+  const fillDrv = async side => {
+    const sk=+el(side+'Sess').value, per=await lapsOf(sk), dm=await drvOf(sk);
+    const nums=Object.keys(per).map(Number).sort((a,b)=> Math.min(...per[a].map(x=>x.lap_duration)) - Math.min(...per[b].map(x=>x.lap_duration)));
+    el(side+'Drv').innerHTML = nums.map(n=>`<option value="${n}">${esc(dm[n]?.name_acronym||n)} — ${esc(dm[n]?.team_name||'')}</option>`).join('');
   };
-  el('telDrv').addEventListener('change', ()=>{ riempiLap(); disegnaTel(perDrv); });
-  el('telLap').addEventListener('change', ()=> disegnaTel(perDrv));
-  riempiLap();
-  disegnaTel(perDrv);
+  const fillLap = async side => {
+    const sk=+el(side+'Sess').value, n=+el(side+'Drv').value, per=await lapsOf(sk);
+    const ls=(per[n]||[]).slice().sort((a,b)=>a.lap_number-b.lap_number);
+    if (!ls.length){ el(side+'Lap').innerHTML=''; return; }
+    const fast=ls.reduce((m,x)=>x.lap_duration<m.lap_duration?x:m, ls[0]);
+    el(side+'Lap').innerHTML = ls.map(l=>`<option value="${l.lap_number}" ${l===fast?'selected':''}>Giro ${l.lap_number} — ${fmtLap(l.lap_duration)}${l===fast?' ⚡':''}</option>`).join('');
+  };
+  el('aSess').addEventListener('change', async()=>{ await fillDrv('a'); await fillLap('a'); render(); });
+  el('aDrv').addEventListener('change', async()=>{ await fillLap('a'); render(); });
+  el('aLap').addEventListener('change', render);
+  el('bSess').addEventListener('change', async()=>{ await fillDrv('b'); await fillLap('b'); render(); });
+  el('bDrv').addEventListener('change', async()=>{ await fillLap('b'); render(); });
+  el('bLap').addEventListener('change', render);
+  el('bOn').addEventListener('change', render);
+
+  await fillDrv('a'); await fillLap('a');
+  await fillDrv('b'); if (el('bDrv').options.length>1) el('bDrv').selectedIndex=1; await fillLap('b');
+  render();
+
+  async function loadLap(sk,n,lapN){
+    const per=await lapsOf(sk); const l=(per[n]||[]).find(x=>x.lap_number===lapN); if(!l) return null;
+    const t0=new Date(l.date_start).getTime(), tEnd=t0+l.lap_duration*1000;
+    let cd=await api(`car_data?session_key=${sk}&driver_number=${n}&date>=${new Date(t0-200).toISOString()}&date<=${new Date(tEnd+400).toISOString()}`);
+    cd=cd.filter(x=>x.speed!=null).map(x=>({...x, _t:new Date(x.date).getTime()}))
+        .filter(x=>x._t>=t0 && x._t<=tEnd).sort((a,b)=>a._t-b._t);
+    const dm=await drvOf(sk);
+    return {l, cd, d:dm[n]||{}, t0, dur:l.lap_duration*1000, n, sk};
+  }
+
+  async function render(){
+    const out=el('cmpOut'); out.innerHTML=`<div class="wknd-msg"><span class="spin"></span>Carico i giri&hellip;</div>`;
+    let A,B;
+    try {
+      A=await loadLap(+el('aSess').value, +el('aDrv').value, +el('aLap').value);
+      B=el('bOn').checked ? await loadLap(+el('bSess').value, +el('bDrv').value, +el('bLap').value) : null;
+    } catch(e){ out.innerHTML=`<div class="wknd-msg err">Telemetria non disponibile: ${e.message}</div>`; return; }
+    if (!A || A.cd.length<5){ out.innerHTML=`<div class="wknd-msg">Telemetria non disponibile per il giro A.</div>`; return; }
+    if (B && B.cd.length<5) B=null;
+    out.innerHTML = renderCompare(A,B);
+  }
 }
 
-async function disegnaTel(perDrv){
-  const n = +el('telDrv').value, lapN = +el('telLap').value;
-  const l = perDrv[n].find(x=>x.lap_number===lapN);
-  const d = drivers[n]||{};
-  el('telInfo').innerHTML = `<i style="background:${col(d.team_colour)}"></i><b>${esc(d.name_acronym||n)}</b> · giro ${lapN} · ${fmtLap(l.lap_duration)}`;
-  el('telGraf').innerHTML = `<div class="wknd-msg"><span class="spin"></span>Carico la telemetria&hellip;</div>`;
-  const t0 = new Date(l.date_start).getTime();
-  const t1 = t0 + l.lap_duration*1000 + 400;
-  const from = new Date(t0-200).toISOString(), to = new Date(t1).toISOString();
-  let cd;
-  try {
-    cd = await api(`car_data?session_key=${sessSel.session_key}&driver_number=${n}&date>=${from}&date<=${to}`);
-  } catch(e){ el('telGraf').innerHTML = `<div class="wknd-msg err">Telemetria non disponibile: ${e.message}</div>`; return; }
-  cd = cd.filter(x=>x.speed!=null).sort((a,b)=> new Date(a.date)-new Date(b.date));
-  if (cd.length<5){ el('telGraf').innerHTML = `<div class="wknd-msg">Telemetria non disponibile per questo giro.</div>`; return; }
-  const N = cd.length, W = 1000;
-  const x = i => i/(N-1)*W;
-  const speeds = cd.map(p=>p.speed);
-  const vmax = Math.max(...speeds, 1);
-  const path = (vals, max, h) => {
-    let dd='';
-    vals.forEach((v,i)=>{ const px=x(i).toFixed(1), py=(h-(v/max)*h).toFixed(1); dd += (i?'L':'M')+px+' '+py+' '; });
-    return dd.trim();
-  };
-  const areaPath = (vals, max, h) => `M0 ${h} ` + path(vals,max,h).replace(/^M/,'L') + ` L${W} ${h} Z`;
-  const gears = cd.map(p=>p.n_gear||0);
-  const gmax = Math.max(...gears, 1);
-  const gearBars = gears.map((g,i)=>`<span class="gg" style="height:${(g/gmax*100).toFixed(0)}%"></span>`).join('');
+function renderCompare(A,B){
+  const W=1000;
+  const sessLab = sk => (sessioni.find(x=>x.session_key===sk)?.lab.d)||'';
+  const line = (g,key,max,h) => g.cd.map((p,i)=>{
+    const x=Math.max(0,Math.min(1,(p._t-g.t0)/g.dur))*W, y=h-((p[key]||0)/max)*h;
+    return (i?'L':'M')+x.toFixed(1)+' '+y.toFixed(1); }).join(' ');
+  const chip = (g,cls) => `<span class="cmp-lap"><i style="background:${col(g.d.team_colour)}"></i>
+    <b style="color:${cls}">${esc(g.d.name_acronym||g.n)}</b> · ${esc(sessLab(g.sk))} · giro ${g.l.lap_number} · <b>${fmtLap(g.l.lap_duration)}</b></span>`;
+  const CA='var(--accent)', CB='var(--brand)';
+  const vmax = Math.max(...A.cd.map(p=>p.speed), ...(B?B.cd.map(p=>p.speed):[0]), 1);
 
-  el('telGraf').innerHTML = `
-    <div class="tel-blk"><div class="lab"><span>Velocità</span><b>max ${vmax} km/h</b></div>
-      <svg viewBox="0 0 ${W} 150" preserveAspectRatio="none"><line class="axis" x1="0" y1="149" x2="${W}" y2="149"/>
-        <path class="tel-line vel" d="${path(speeds, vmax, 145)}"/></svg></div>
-    <div class="tel-blk"><div class="lab"><span>Acceleratore</span><b>%</b></div>
-      <svg viewBox="0 0 ${W} 70" preserveAspectRatio="none">
-        <path class="tel-area gas" d="${areaPath(cd.map(p=>p.throttle||0),100,68)}"/>
-        <path class="tel-line gas" d="${path(cd.map(p=>p.throttle||0),100,68)}"/></svg></div>
-    <div class="tel-blk"><div class="lab"><span>Freno</span><b>%</b></div>
-      <svg viewBox="0 0 ${W} 50" preserveAspectRatio="none">
-        <path class="tel-area fre" d="${areaPath(cd.map(p=>(p.brake||0)),100,48)}"/>
-        <path class="tel-line fre" d="${path(cd.map(p=>(p.brake||0)),100,48)}"/></svg></div>
-    <div class="tel-blk"><div class="lab"><span>Marcia</span><b>1–${gmax}</b></div>
-      <div class="tel-gear">${gearBars}</div></div>`;
+  // riepilogo + delta giro
+  let sum = chip(A,CA);
+  if (B){ const dl=A.l.lap_duration-B.l.lap_duration;
+    sum += chip(B,CB) + `<span class="cmp-delta" style="color:${dl<0?CA:CB}">${dl>0?'+':''}${dl.toFixed(3)}s</span>`; }
+
+  // delta per settore (A vs B)
+  let secs='';
+  if (B){ secs = `<div class="cmp-secs">` + [1,2,3].map(i=>{
+    const a=A.l['duration_sector_'+i], b=B.l['duration_sector_'+i];
+    const dl = (a!=null&&b!=null)? a-b : null;
+    return `<div class="cmp-sec"><div class="k">Settore ${i}</div>
+      <div class="v">${fmtSec(a)} <span style="color:var(--dim)">/ ${fmtSec(b)}</span></div>
+      <div class="dl" style="color:${dl==null?'var(--dim)':dl<0?CA:CB}">${dl==null?'—':(dl>0?'+':'')+dl.toFixed(3)}</div></div>`;
+  }).join('') + `</div>`; }
+
+  // grafici sovrapposti (asse X = % del giro; A pieno, B tratteggiato)
+  const graf = (titolo, key, max, h, unit) => `
+    <div class="tel-blk"><div class="lab"><span>${titolo}</span><b>${unit}</b></div>
+      <svg viewBox="0 0 ${W} ${h}" preserveAspectRatio="none">
+        <line class="axis" x1="0" y1="${h-1}" x2="${W}" y2="${h-1}"/>
+        <path fill="none" stroke="${CA}" stroke-width="2" vector-effect="non-scaling-stroke" d="${line(A,key,max,h-4)}"/>
+        ${B?`<path fill="none" stroke="${CB}" stroke-width="2" stroke-dasharray="7 6" vector-effect="non-scaling-stroke" d="${line(B,key,max,h-4)}"/>`:''}
+      </svg></div>`;
+
+  // micro-settori dei giri scelti
+  const strip = g => [1,2,3].map(si=>{
+    const segs=g.l['segments_sector_'+si]||[];
+    return segs.map(v=>`<span class="seg ${cellClass(v)}"></span>`).join('') + (si<3?'<span class="sep"></span>':'');
+  }).join('');
+  const micro = `<div class="sez-tit">Micro-settori</div><section class="panel ms-wrap">
+    <div class="ms-legend"><i><span class="sw ms-cell-viola"></span>record</i><i><span class="sw ms-cell-verde"></span>personale</i><i><span class="sw ms-cell-giallo"></span>più lento</i><i><span class="sw ms-cell-box"></span>box</i></div>
+    <div class="ms-row"><span class="who"><i style="background:${CA}"></i>${esc(A.d.name_acronym||A.n)}</span><span class="ms-strip">${strip(A)}</span><span class="lt">${fmtLap(A.l.lap_duration)}</span></div>
+    ${B?`<div class="ms-row"><span class="who"><i style="background:${CB}"></i>${esc(B.d.name_acronym||B.n)}</span><span class="ms-strip">${strip(B)}</span><span class="lt">${fmtLap(B.l.lap_duration)}</span></div>`:''}
+  </section>`;
+
+  return `<div class="cmp-sum">${sum}</div>${secs}
+    <section class="panel tel-graf">
+      ${graf('Velocità','speed',vmax,160,'max '+vmax+' km/h')}
+      ${graf('Acceleratore','throttle',100,70,'%')}
+      ${graf('Freno','brake',100,54,'%')}
+      <div class="lab" style="color:var(--dim);margin:2px 8px 0"><span>asse orizzontale = percentuale del giro</span><span>${B?'A pieno · B tratteggiato':''}</span></div>
+    </section>${micro}`;
 }
 
 // ---------- mappa pista: giro singolo (trail micro-settori) o tutti i piloti ----------
@@ -337,235 +416,6 @@ function normalizza(loc){
   const offX = (W - spanX*sc)/2, offY = (H - spanY*sc)/2;
   const tf = (x,y) => ({ x: offX+(x-minX)*sc, y: H-(offY+(y-minY)*sc) });
   return { tf, W, H };
-}
-
-async function vistaMappa(s){
-  const laps = await api(`laps?session_key=${s.session_key}`);
-  const conGiro = laps.filter(l=>l.lap_duration!=null && l.date_start);
-  if (!conGiro.length){ corpoErr('Nessun giro tracciabile in questa sessione.'); return; }
-  el('corpo').innerHTML = `
-    <div class="wknd-switch" style="margin-bottom:12px">
-      <button data-m="single" class="${mapMode==='single'?'on':''}">Giro singolo</button>
-      <button data-m="due" class="${mapMode==='due'?'on':''}">Confronto 2 piloti</button>
-      <button data-m="all" class="${mapMode==='all'?'on':''}">Tutti i piloti</button>
-    </div>
-    <div id="mapBody"></div>`;
-  el('corpo').querySelectorAll('.wknd-switch button').forEach(b=>
-    b.addEventListener('click', ()=>{ stopAnim(); mapMode=b.dataset.m; vistaMappa(s); }));
-  if (mapMode==='single') await mapSingle(conGiro);
-  else if (mapMode==='due') await mapDue(conGiro);
-  else await mapAll(s, conGiro);
-}
-
-// ---- modalità GIRO SINGOLO: un pilota, un giro, trail micro-settori + velocità ----
-async function mapSingle(conGiro){
-  const perDrv = {};
-  for (const l of conGiro){ (perDrv[l.driver_number] ||= []).push(l); }
-  const nums = Object.keys(perDrv).map(Number)
-    .sort((a,b)=> Math.min(...perDrv[a].map(x=>x.lap_duration)) - Math.min(...perDrv[b].map(x=>x.lap_duration)));
-  const optDrv = nums.map(n=>{ const d=drivers[n]||{};
-    return `<option value="${n}">${esc(d.name_acronym||n)} — ${esc(d.team_name||'')}</option>`; }).join('');
-  el('mapBody').innerHTML = `
-    <div class="map-ctl">
-      <span><label>Pilota</label><select id="mapDrv">${optDrv}</select></span>
-      <span><label>Giro</label><select id="mapLap"></select></span>
-    </div>
-    <section class="panel map-stage" id="mapStage"><div class="wknd-msg">Scegli pilota e giro.</div></section>
-    <div class="ms-legend" style="margin:12px 6px 0">
-      <i><span class="sw ms-cell-viola"></span>record sessione</i>
-      <i><span class="sw ms-cell-verde"></span>miglior personale</i>
-      <i><span class="sw ms-cell-giallo"></span>più lento</i>
-      <i><span class="sw ms-cell-box"></span>box / n.d.</i>
-      <span style="opacity:.7">· colore per micro-settore lungo la distanza del giro</span>
-    </div>`;
-  const riempiLap = () => {
-    const n = +el('mapDrv').value;
-    const ls = perDrv[n].slice().sort((a,b)=>a.lap_number-b.lap_number);
-    const fast = ls.reduce((m,x)=> x.lap_duration<m.lap_duration?x:m, ls[0]);
-    el('mapLap').innerHTML = ls.map(l=>`<option value="${l.lap_number}" ${l===fast?'selected':''}>Giro ${l.lap_number} — ${fmtLap(l.lap_duration)}${l===fast?' ⚡':''}</option>`).join('');
-  };
-  el('mapDrv').addEventListener('change', ()=>{ riempiLap(); disegnaGiro(perDrv); });
-  el('mapLap').addEventListener('change', ()=> disegnaGiro(perDrv));
-  riempiLap();
-  disegnaGiro(perDrv);
-}
-
-async function disegnaGiro(perDrv){
-  stopAnim();
-  const n = +el('mapDrv').value, lapN = +el('mapLap').value;
-  const l = perDrv[n].find(x=>x.lap_number===lapN);
-  const d = drivers[n]||{};
-  const stage = el('mapStage');
-  stage.innerHTML = `<div class="wknd-msg"><span class="spin"></span>Carico il giro sulla mappa&hellip;</div>`;
-  const t0 = new Date(l.date_start).getTime(), t1 = t0 + l.lap_duration*1000 + 500;
-  const from = new Date(t0-500).toISOString(), to = new Date(t1).toISOString();
-  let loc, cd;
-  try {
-    [loc, cd] = await Promise.all([
-      api(`location?session_key=${sessSel.session_key}&driver_number=${n}&date>=${from}&date<=${to}`),
-      api(`car_data?session_key=${sessSel.session_key}&driver_number=${n}&date>=${from}&date<=${to}`)
-    ]);
-  } catch(e){ stage.innerHTML = `<div class="wknd-msg err">Dati posizione non disponibili: ${e.message}</div>`; return; }
-  loc = loc.filter(p=>p.x!=null && p.y!=null && (p.x||p.y)).sort((a,b)=> new Date(a.date)-new Date(b.date));
-  if (loc.length<20){ stage.innerHTML = `<div class="wknd-msg">Traccia non disponibile per questo giro.</div>`; return; }
-  cd = (cd||[]).filter(x=>x.speed!=null).sort((a,b)=> new Date(a.date)-new Date(b.date));
-
-  const {tf,W,H} = normalizza(loc);
-  const pts = loc.map(p=>({ ...tf(p.x,p.y), t:new Date(p.date).getTime() }));
-  const cum=[0]; for (let i=1;i<pts.length;i++){ cum.push(cum[i-1]+Math.hypot(pts[i].x-pts[i-1].x, pts[i].y-pts[i-1].y)); }
-  const L = cum[cum.length-1];
-  const segCodes = [...(l.segments_sector_1||[]), ...(l.segments_sector_2||[]), ...(l.segments_sector_3||[])];
-  const NS = segCodes.length || 1;
-  let msPaths='';
-  for (let k=0;k<NS;k++){
-    const a=k*L/NS, b=(k+1)*L/NS;
-    let i0=0; while (i0<cum.length-1 && cum[i0+1]<a) i0++;
-    let i1=i0; while (i1<cum.length-1 && cum[i1]<b) i1++;
-    const seg = pts.slice(i0, i1+1);
-    if (seg.length>=2) msPaths += `<path class="map-ms ${clsMs(segCodes[k])}" d="${linea(seg)}"/>`;
-  }
-  const sf = pts[0];
-  stage.innerHTML = `
-    <svg viewBox="0 0 ${W} ${H}" aria-label="Mappa del giro">
-      <path class="map-base" d="${linea(pts)} Z"/>${msPaths}
-      <circle class="map-sf" cx="${sf.x.toFixed(1)}" cy="${sf.y.toFixed(1)}" r="9"/>
-      <circle class="map-dot-halo" id="mapHalo" cx="${sf.x.toFixed(1)}" cy="${sf.y.toFixed(1)}" r="13" fill="${col(d.team_colour)}" opacity="0.35"/>
-      <circle class="map-dot" id="mapDot" cx="${sf.x.toFixed(1)}" cy="${sf.y.toFixed(1)}" r="8"/>
-    </svg>
-    <div class="map-hud"><div class="v" id="mapSpd">—<small>km/h</small></div><div class="g">${esc(d.name_acronym||n)} · giro ${lapN}</div></div>
-    <div class="map-transport" style="position:relative">
-      <button id="mapPlay" class="play" title="Play / Pausa">&#9654;</button>
-      <input id="mapScrub" class="map-scrub" type="range" min="0" max="${pts.length-1}" value="0">
-      <span class="map-time" id="mapTime">0.0s</span>
-      <span class="tel-chip" style="border:none;color:var(--dim)">${fmtLap(l.lap_duration)} totale</span>
-    </div>`;
-  const spdAt = t => { if (!cd.length) return null; let lo=0, hi=cd.length-1;
-    while (lo<hi){ const m=(lo+hi)>>1; if (new Date(cd[m].date).getTime()<t) lo=m+1; else hi=m; }
-    return cd[lo]?.speed ?? null; };
-  const dot=el('mapDot'), halo=el('mapHalo'), spd=el('mapSpd'), tlab=el('mapTime'), scrub=el('mapScrub'), play=el('mapPlay');
-  const t_start = pts[0].t, dur = pts[pts.length-1].t - pts[0].t;
-  const poni = i => { const p=pts[i]; dot.setAttribute('cx',p.x.toFixed(1)); dot.setAttribute('cy',p.y.toFixed(1));
-    halo.setAttribute('cx',p.x.toFixed(1)); halo.setAttribute('cy',p.y.toFixed(1));
-    const v=spdAt(p.t); spd.innerHTML = (v!=null?v:'—')+'<small>km/h</small>';
-    tlab.textContent = ((p.t-t_start)/1000).toFixed(1)+'s'; scrub.value=i; };
-  poni(0);
-  let playing=false, rafT0=0, baseElapsed=0;
-  const idxAt = ms => { const target=t_start+ms; let lo=0,hi=pts.length-1;
-    while (lo<hi){ const m=(lo+hi)>>1; if (pts[m].t<target) lo=m+1; else hi=m; } return lo; };
-  const tick = ts => { if (!rafT0) rafT0=ts; const elapsed = baseElapsed + (ts-rafT0);
-    if (elapsed>=dur){ poni(pts.length-1); playing=false; play.classList.remove('playing'); play.innerHTML='&#9654;'; animId=null; return; }
-    poni(idxAt(elapsed)); animId=requestAnimationFrame(tick); };
-  const avvia = () => { playing=true; play.classList.add('playing'); play.innerHTML='&#10073;&#10073;';
-    rafT0=0; baseElapsed = (+scrub.value/(pts.length-1))*dur; animId=requestAnimationFrame(tick); };
-  play.addEventListener('click', ()=>{ if (playing){ stopAnim(); playing=false; play.classList.remove('playing'); play.innerHTML='&#9654;'; } else avvia(); });
-  scrub.addEventListener('input', ()=>{ stopAnim(); playing=false; play.classList.remove('playing'); play.innerHTML='&#9654;'; poni(+scrub.value); });
-}
-
-// ---- modalità CONFRONTO: due piloti sovrapposti (ghost) sulla stessa mappa ----
-async function caricaGiro(n, l){
-  const t0 = new Date(l.date_start).getTime(), t1 = t0 + l.lap_duration*1000 + 500;
-  const from = new Date(t0-500).toISOString(), to = new Date(t1).toISOString();
-  const [loc, cd] = await Promise.all([
-    api(`location?session_key=${sessSel.session_key}&driver_number=${n}&date>=${from}&date<=${to}`),
-    api(`car_data?session_key=${sessSel.session_key}&driver_number=${n}&date>=${from}&date<=${to}`)
-  ]);
-  return {
-    loc: loc.filter(p=>p.x!=null && (p.x||p.y)).sort((a,b)=> new Date(a.date)-new Date(b.date)),
-    cd: (cd||[]).filter(x=>x.speed!=null).sort((a,b)=> new Date(a.date)-new Date(b.date)),
-    t0
-  };
-}
-
-async function mapDue(conGiro){
-  const perDrv = {};
-  for (const l of conGiro){ (perDrv[l.driver_number] ||= []).push(l); }
-  const nums = Object.keys(perDrv).map(Number)
-    .sort((a,b)=> Math.min(...perDrv[a].map(x=>x.lap_duration)) - Math.min(...perDrv[b].map(x=>x.lap_duration)));
-  const opt = sel => nums.map(n=>{ const d=drivers[n]||{};
-    return `<option value="${n}" ${n===sel?'selected':''}>${esc(d.name_acronym||n)} — ${esc(d.team_name||'')}</option>`; }).join('');
-  const defA = nums[0], defB = nums[1] ?? nums[0];
-  el('mapBody').innerHTML = `
-    <div class="map-ctl">
-      <span><label>Pilota A</label><select id="dueDrvA">${opt(defA)}</select><select id="dueLapA"></select></span>
-      <span><label>Pilota B</label><select id="dueDrvB">${opt(defB)}</select><select id="dueLapB"></select></span>
-    </div>
-    <section class="panel map-stage" id="mapStage"><div class="wknd-msg">Scegli due piloti.</div></section>
-    <div class="ms-legend" style="margin:12px 6px 0"><span style="opacity:.75">Ghost allineati al via del giro: il distacco sulla mappa è chi è avanti a parità di tempo.</span></div>`;
-  const riempi = (selDrv, selLap) => {
-    const n = +el(selDrv).value;
-    const ls = perDrv[n].slice().sort((a,b)=>a.lap_number-b.lap_number);
-    const fast = ls.reduce((m,x)=> x.lap_duration<m.lap_duration?x:m, ls[0]);
-    el(selLap).innerHTML = ls.map(l=>`<option value="${l.lap_number}" ${l===fast?'selected':''}>Giro ${l.lap_number} — ${fmtLap(l.lap_duration)}${l===fast?' ⚡':''}</option>`).join('');
-  };
-  ['dueDrvA','dueDrvB'].forEach((d,i)=> el(d).addEventListener('change', ()=>{ riempi(d, i?'dueLapB':'dueLapA'); disegnaDue(perDrv); }));
-  ['dueLapA','dueLapB'].forEach(x=> el(x).addEventListener('change', ()=> disegnaDue(perDrv)));
-  riempi('dueDrvA','dueLapA'); riempi('dueDrvB','dueLapB');
-  disegnaDue(perDrv);
-}
-
-async function disegnaDue(perDrv){
-  stopAnim();
-  const nA=+el('dueDrvA').value, nB=+el('dueDrvB').value;
-  const lA=perDrv[nA].find(x=>x.lap_number===+el('dueLapA').value);
-  const lB=perDrv[nB].find(x=>x.lap_number===+el('dueLapB').value);
-  const dA=drivers[nA]||{}, dB=drivers[nB]||{};
-  const cA=col(dA.team_colour), cB=col(dB.team_colour);
-  const stage=el('mapStage');
-  stage.innerHTML = `<div class="wknd-msg"><span class="spin"></span>Carico i due giri&hellip;</div>`;
-  let A,B;
-  try { [A,B] = await Promise.all([caricaGiro(nA,lA), caricaGiro(nB,lB)]); }
-  catch(e){ stage.innerHTML = `<div class="wknd-msg err">Dati non disponibili: ${e.message}</div>`; return; }
-  if (A.loc.length<20 || B.loc.length<20){ stage.innerHTML = `<div class="wknd-msg">Traccia non disponibile per uno dei due giri.</div>`; return; }
-
-  const {tf,W,H} = normalizza(A.loc.concat(B.loc));   // riquadro che contiene entrambi
-  const mk = (g) => g.loc.map(p=>({ ...tf(p.x,p.y), tRel:new Date(p.date).getTime()-g.t0 }));
-  const ptsA=mk(A), ptsB=mk(B);
-  const durA=lA.lap_duration*1000, durB=lB.lap_duration*1000, durMax=Math.max(durA,durB);
-  const dash = cA.toLowerCase()===cB.toLowerCase();   // stessa scuderia: B tratteggiato
-
-  stage.innerHTML = `
-    <svg viewBox="0 0 ${W} ${H}" aria-label="Confronto due giri">
-      <path class="map-base" d="${linea(ptsA)} Z"/>
-      <path fill="none" stroke="${cA}" stroke-width="2.5" opacity="0.55" d="${linea(ptsA)}"/>
-      <path fill="none" stroke="${cB}" stroke-width="2.5" opacity="0.55" ${dash?'stroke-dasharray="6 6"':''} d="${linea(ptsB)}"/>
-      <circle id="dotA" r="8.5" fill="${cA}" stroke="#fff" stroke-width="1.5"/>
-      <circle id="dotB" r="8.5" fill="${cB}" stroke="#05070b" stroke-width="1.5" ${dash?'stroke-dasharray="3 3"':''}/>
-    </svg>
-    <div class="map-hud">
-      <div class="v" id="spdA" style="color:${cA}">—<small>km/h</small></div>
-      <div class="g" style="color:${cA}">A · ${esc(dA.name_acronym||nA)} <span style="color:var(--dim)">${fmtLap(lA.lap_duration)}</span></div>
-      <div class="v" id="spdB" style="color:${cB};margin-top:8px">—<small>km/h</small></div>
-      <div class="g" style="color:${cB}">B · ${esc(dB.name_acronym||nB)} <span style="color:var(--dim)">${fmtLap(lB.lap_duration)}</span></div>
-    </div>
-    <div class="map-transport" style="position:relative">
-      <button id="mapPlay" class="play" title="Play / Pausa">&#9654;</button>
-      <input id="mapScrub" class="map-scrub" type="range" min="0" max="1000" value="0">
-      <span class="map-time" id="mapTime">0.0s</span>
-      <span class="tel-chip" style="border:none">Δ giro <b style="color:${durA<durB?cA:cB}">${(Math.abs(lA.lap_duration-lB.lap_duration)).toFixed(3)}s</b></span>
-    </div>`;
-
-  const spdAt = (cd,t)=>{ if(!cd.length) return null; let lo=0,hi=cd.length-1;
-    while(lo<hi){ const m=(lo+hi)>>1; if(new Date(cd[m].date).getTime()<t) lo=m+1; else hi=m; } return cd[lo]?.speed ?? null; };
-  const posRel = (pts,ms)=>{ const t=Math.min(ms, pts[pts.length-1].tRel);
-    let lo=0,hi=pts.length-1; while(lo<hi){ const m=(lo+hi)>>1; if(pts[m].tRel<t) lo=m+1; else hi=m; } return pts[lo]; };
-  const dotA=el('dotA'), dotB=el('dotB'), spdA=el('spdA'), spdB=el('spdB'), tlab=el('mapTime'), scrub=el('mapScrub'), play=el('mapPlay');
-  const poni = ms => {
-    const pa=posRel(ptsA,ms), pb=posRel(ptsB,ms);
-    dotA.setAttribute('cx',pa.x.toFixed(1)); dotA.setAttribute('cy',pa.y.toFixed(1));
-    dotB.setAttribute('cx',pb.x.toFixed(1)); dotB.setAttribute('cy',pb.y.toFixed(1));
-    const va=spdAt(A.cd, A.t0+Math.min(ms,durA)), vb=spdAt(B.cd, B.t0+Math.min(ms,durB));
-    spdA.innerHTML=(va!=null?va:'—')+'<small>km/h</small>'; spdB.innerHTML=(vb!=null?vb:'—')+'<small>km/h</small>';
-    tlab.textContent=(ms/1000).toFixed(1)+'s'; scrub.value=Math.round(ms/durMax*1000);
-  };
-  poni(0);
-  let playing=false, rafT0=0, baseElapsed=0;
-  const tick = ts => { if(!rafT0) rafT0=ts; const e=baseElapsed+(ts-rafT0);
-    if(e>=durMax){ poni(durMax); playing=false; play.classList.remove('playing'); play.innerHTML='&#9654;'; animId=null; return; }
-    poni(e); animId=requestAnimationFrame(tick); };
-  const avvia = () => { playing=true; play.classList.add('playing'); play.innerHTML='&#10073;&#10073;';
-    rafT0=0; baseElapsed=(+scrub.value/1000)*durMax; animId=requestAnimationFrame(tick); };
-  play.addEventListener('click', ()=>{ if(playing){ stopAnim(); playing=false; play.classList.remove('playing'); play.innerHTML='&#9654;'; } else avvia(); });
-  scrub.addEventListener('input', ()=>{ stopAnim(); playing=false; play.classList.remove('playing'); play.innerHTML='&#9654;'; poni((+scrub.value/1000)*durMax); });
 }
 
 // ---- modalità TUTTI I PILOTI: pallini in movimento su una finestra temporale ----
