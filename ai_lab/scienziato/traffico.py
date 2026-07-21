@@ -174,12 +174,24 @@ def placebo_leader(inc, dati, mod_pace, seed=20260721):
     Sostituisce l'auto davanti con un'altra auto A CASO dello stesso giro, tenendo fermo
     il passo del pilota che segue. Se l'effetto del delta-passo sopravvive a questo,
     l'effetto e' errore di misura del passo di chi segue, non fisica del traffico.
+
+    RIPARAZIONE DEL DETERMINISMO — autorizzata dal tavolo (Tommi, in chat, 21/07/2026).
+    La funzione era gia' seminata (`random.Random(seed)`), ma pescava i candidati da un
+    SET: l'ordine di iterazione di un insieme di stringhe cambia da processo a processo,
+    quindi `rng` sceglieva su una lista diversa e il seme non proteggeva niente. Misurato
+    prima della riparazione: `separazione_finta` oscillava fra -0,216 e +0,183 — CAMBIAVA
+    SEGNO, e con essa si ribaltava la lettura del test McLaren.
+    Il set resta (serve a deduplicare i piloti del giro), ma viene CONGELATO in una tupla
+    ORDINATA subito dopo la costruzione. La LOGICA NON CAMBIA: si pesca sempre un'auto a
+    caso fra le altre presenti a quel giro, con lo stesso seme e lo stesso numero di
+    candidati. Cambia solo che l'ordine in cui sono elencati e' fisso.
     """
     eta, comp = stato_gomma(dati['righe'])
     per_giro = {}
     for r in dati['righe']:
         if isinstance(r['lap'], (int, float)):
             per_giro.setdefault(int(r['lap']), set()).add(r['drv'])
+    per_giro = {L: tuple(sorted(v)) for L, v in per_giro.items()}
     rng = random.Random(seed)
     fuori = []
     for x in inc:

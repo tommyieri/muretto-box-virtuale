@@ -75,10 +75,14 @@
    "criterio": "chi ha delta-passo grande ed e bloccato deve pagare di piu"
   },
   "placebo": {
-   "costo_delta_grande_finto": 0.277,
-   "costo_pari_passo_finto": 0.122,
-   "separazione_finta": 0.155,
-   "nota": "con leader a caso la separazione deve COLLASSARE"
+   "popolazione": "gare di VERIFICA (la stessa del test McLaren)",
+   "n_incontri_finti": 822,
+   "costo_delta_grande_finto": 0.475,
+   "costo_pari_passo_finto": 0.067,
+   "separazione_finta": 0.408,
+   "separazione_reale": 0.354,
+   "quota_finta_su_reale": 1.153,
+   "nota": "con leader a caso la separazione deve COLLASSARE. Se la finta vale quanto la reale, la separazione del delta-passo e un ARTEFATTO del passo di chi segue, non fisica del traffico."
   },
   "partizione": {
    "versione": "v2_temporale",
@@ -144,6 +148,7 @@
   "CONSERVATIVO sul delta-passo grande: ordina giusto ma sottostima la magnitudine di chi e molto piu veloce ed e bloccato.",
   "IL MODELLO E PEGGIO DEL NON-FARE-NIENTE, e col taglio temporale lo e di piu: il confronto appaiato contro il traffico-zero vale -0,196 s su 10 gare (era -0,057 col vecchio taglio pari/dispari). Resta SPENTO, e non per un pelo.",
   "LA PARTIZIONE E CAMBIATA il 21/07/2026, da pari/dispari a TEMPORALE con soglia congelata (partizione.py v2, T* = 2026-05-24; prereg in PREREG_partizione_temporale.md). La vecchia regola ribaltava ACCENDIBILE in 5 gare su 10 nel leave-one-race-out, perche togliere un Gran Premio le rovesciava il taglio (sovrapposizione fra vecchio e nuovo insieme di verifica = ZERO) e perche ordinava le gare per NOME invece che per data. Col taglio temporale: 0 ribaltamenti su 10 e escursione dimezzata (0,106 contro 0,207 s). ATTENZIONE A CONFRONTARE: ogni verdetto nato PRIMA di quella data e stato prodotto sotto la regola vecchia; la targhetta `partizione` dentro cancello_accensione dice quale regola l ha prodotto, e i verdetti senza targhetta sono tutti v1.",
+  "IL TEST McLAREN NON SOPRAVVIVE AL PLACEBO. Con il placebo riparato (deterministico dal 21/07/2026, e finalmente sulla STESSA popolazione del McLaren — le gare di verifica) la separazione FINTA, ottenuta mettendo davanti un auto A CASO, vale 0,408 s contro una separazione REALE di 0,354 s: il 115 %. Non collassa: la SUPERA. Chi ha un delta-passo grande ed e bloccato sembra pagare di piu anche quando l auto davanti non c entra niente. La lettura e che quella separazione sia ARTEFATTO del passo di chi segue, non fisica del traffico — cioe esattamente cio che il placebo era stato costruito per smascherare. Il numero e pulito e seed-indipendente; la DECISIONE su cosa farne (il veto McLaren) resta del tavolo.",
   "ANCHE COL TAGLIO STABILE, IL REGIME RESTA POVERO: 4 gare in calibrazione e 6 in verifica. Nessuna singola gara ribalta piu il verdetto, ma togliendone una la statistica si muove ancora fino a 0,106 s. La stabilita del taglio non e ricchezza di dati: e solo la garanzia che il verdetto non cambia per come si taglia."
  ],
  "nome": "traffico_2026",
@@ -151,13 +156,43 @@
  "targhetta": {
   "gare_sotto": 10,
   "blocchi_sotto": 10,
-  "calcolato_il": "2026-07-21"
+  "calcolato_il": "2026-07-22"
  },
  "storico": [
   {
    "calcolato_il": "2026-07-21",
    "gare_sotto": 10,
    "delta_coefficienti": {}
+  },
+  {
+   "calcolato_il": "2026-07-22",
+   "gare_sotto": 10,
+   "delta_coefficienti": {
+    "a": 0.0,
+    "lam": 0.0,
+    "kappa": 0.0,
+    "durata_per_fascia_delta.-99.0..-0.8": 0.0,
+    "durata_per_fascia_delta.-0.8..-0.4": 0.0,
+    "durata_per_fascia_delta.-0.4..-0.15": 0.0,
+    "durata_per_fascia_delta.-0.15..0.15": 0.0,
+    "durata_per_fascia_delta.0.15..99.0": 0.0,
+    "durata_media": 0.0
+   }
+  },
+  {
+   "calcolato_il": "2026-07-22",
+   "gare_sotto": 10,
+   "delta_coefficienti": {
+    "a": 0.0,
+    "lam": 0.0,
+    "kappa": 0.0,
+    "durata_per_fascia_delta.-99.0..-0.8": 0.0,
+    "durata_per_fascia_delta.-0.8..-0.4": 0.0,
+    "durata_per_fascia_delta.-0.4..-0.15": 0.0,
+    "durata_per_fascia_delta.-0.15..0.15": 0.0,
+    "durata_per_fascia_delta.0.15..99.0": 0.0,
+    "durata_media": 0.0
+   }
   }
  ]
 }

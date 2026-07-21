@@ -25,7 +25,7 @@
    "perche": "deriva la soglia del metro dalla nulla"
   },
   "traffico.placebo_leader": {
-   "sha256": "7d4b1da9658b7b15",
+   "sha256": "890013f120fc19c5",
    "perche": "placebo col leader a caso: smonta il confondimento del passo di chi segue"
   },
   "pista.permuta_piste": {
@@ -59,6 +59,21 @@
     "percircuito.leave_one_year_out": "6ee2112cefaf4f22",
     "metro2.soglia_da_nulla": "ff0bdcea5a97ed4a",
     "traffico.placebo_leader": "7d4b1da9658b7b15",
+    "pista.permuta_piste": "bfe62d01c9735244"
+   }
+  },
+  {
+   "attore": "Tommi",
+   "nota": "AUTORIZZAZIONE IN CHAT. Riparazione del DETERMINISMO di traffico.placebo_leader: i candidati venivano pescati da un SET, la cui iterazione cambia da processo a processo, quindi il seme non proteggeva nulla (separazione_finta oscillava da -0,216 a +0,183, CAMBIANDO SEGNO, e con essa si ribaltava la lettura del test McLaren). Il set resta per deduplicare ma viene congelato in tupla ORDINATA. LA LOGICA DEL PLACEBO NON CAMBIA: stessa pesca a caso, stesso seme, stesso numero di candidati; cambia solo che l'ordine e' fisso. Insieme, FUORI dalla zona sigillata, e' stato allineato il confronto delle popolazioni: il placebo girava su tutte le gare mentre il McLaren reale sulle sole gare di verifica, ora entrambi su verifica. Verificato dopo: separazione identica su 6 PYTHONHASHSEED.",
+   "data": "2026-07-21",
+   "zone": {
+    "fenomeno_fuel.FenomenoFuel.null": "aef09fded5059d86",
+    "scheletro.cosa_so_fare": "fcc82408c6308919",
+    "scheletro.bootstrap_a_blocchi": "2d8f31f76783abaa",
+    "percircuito.null_etichette": "7e57220e934ffcaa",
+    "percircuito.leave_one_year_out": "6ee2112cefaf4f22",
+    "metro2.soglia_da_nulla": "ff0bdcea5a97ed4a",
+    "traffico.placebo_leader": "890013f120fc19c5",
     "pista.permuta_piste": "bfe62d01c9735244"
    }
   }

@@ -67,17 +67,22 @@ def aggiorna(modello, data_calcolo, verbose=True):
     # esempio la partizione calibrazione/verifica — lasciava i coefficienti identici, quindi
     # il file risultava "invariato" e la modifica NON arrivava mai all'artefatto. Il modello
     # avrebbe continuato a esibire un verdetto prodotto da una regola che non esisteva piu'.
-    # COSA ENTRA NELLA FIRMA: tutto cio' che il generatore produce di DETERMINISTICO e
-    # rilevante per chi legge — il verdetto, il metodo che l'ha prodotto, e il limite onesto
-    # che gli sta accanto. COSA NE RESTA FUORI, e perche': il blocco `placebo` del modello
-    # traffico NON e' riproducibile (zona-null sotto indagine: pesca da un set, cambia da
-    # processo a processo). Se entrasse nella firma, il file si riscriverebbe a OGNI
-    # esecuzione e quel numero continuerebbe a ballare da solo.
+    # LA FIRMA E' TUTTO CIO' CHE IL GENERATORE PRODUCE, meno la contabilita' volatile
+    # (`targhetta` porta la data, `storico` cresce di suo). Niente piu' elenchi di campi.
+    #
+    # Perche' cosi': l'elenco a mano e' stato sbagliato TRE volte di fila — prima conteneva
+    # solo i coefficienti (e un cambio di partizione non arrivava all'artefatto), poi gli
+    # mancava `limite_onesto` (e un limite scritto apposta per chi legge non arrivava). Ogni
+    # volta la stessa forma: qualcosa di importante cambiava e il file diceva "invariato".
+    # Un confronto sull'intero payload non puo' sbagliare per omissione.
+    #
+    # Il blocco `placebo` del traffico ne era escluso APPOSTA finche' non era riproducibile;
+    # dal 21/07/2026 lo e' (riparazione autorizzata di traffico.placebo_leader), e l'intero
+    # payload e' stato verificato IDENTICO su 4 PYTHONHASHSEED diversi. Se un giorno un
+    # modello reintroducesse del non determinismo, questo file si riscriverebbe a ogni
+    # esecuzione: e' il sintomo giusto da vedere, non un guasto da nascondere.
     def _firma(d):
-        v = (d or {}).get('verifica') or {}
-        ca = v.get('cancello_accensione') or {}
-        return (ca.get('ACCENDIBILE'), (ca.get('partizione') or {}).get('versione'),
-                (d or {}).get('limite_onesto'))
+        return {k: v for k, v in (d or {}).items() if k not in ('targhetta', 'storico')}
 
     invariato = bool(prec and coef_v == coef_n
                      and prec['targhetta']['gare_sotto'] == nuovo['targhetta']['gare_sotto']
