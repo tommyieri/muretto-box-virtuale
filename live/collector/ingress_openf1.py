@@ -27,6 +27,7 @@ import logging
 import ssl
 import threading
 import time
+from collections import deque
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -40,13 +41,29 @@ TOPICS_OPENF1 = ["v1/location", "v1/intervals", "v1/laps", "v1/position",
                  "v1/race_control", "v1/pit", "v1/sessions", "v1/drivers",
                  "v1/car_data", "v1/weather"]
 
-BACKOFF_MIN_S = 1.0
+# ---------------------------------------------------------------------
+# LIMITI UFFICIALI OPENF1 (mail di Bruno, OpenF1, 21/07/2026 — incidente
+# del 20/07, vedi REPORT_MQTT_INGRESS.md):
+#   1. massimo 10 connessioni MQTT/WebSocket CONCORRENTI per abbonamento;
+#   2. piu' di 10 DISCONNESSIONI in un minuto -> account bloccato per 10
+#      minuti (e' l'origine dei CONNACK 0x85 'Client identifier not
+#      valid' visti durante i tentativi ripetuti).
+# Conseguenza vincolante per questo modulo: ogni tentativo fallito vale
+# una disconnessione, quindi il tetto di sicurezza e' <=5 CONNECT al
+# minuto (margine 2x sulla soglia). Misurato il 21/07 sul VPS: con i
+# retry interni di paho ATTIVI (default) una singola caduta produceva
+# 15 CONNECT/minuto — da soli oltre la soglia, cioe' 10 minuti di buio
+# auto-inflitti. Non alzare questi valori senza rifare la misura.
+# ---------------------------------------------------------------------
+BACKOFF_MIN_S = 5.0
 BACKOFF_MAX_S = 60.0
 # CONNACK di rifiuto dal broker (auth/ACL): NON e' un problema di rete,
 # ritentare a raffica non aiuta e puo' peggiorare lo stato lato server
 # (rate-limit). Cadenza dedicata, piu' lenta (incidente 20/07: ore di
 # rifiuti 'Client identifier not valid'/'Not authorized' con OAuth sano).
 BACKOFF_RIFIUTO_S = 300.0
+MAX_CONNECT_FINESTRA = 5       # tetto duro: 5 CONNECT ogni...
+FINESTRA_CONNECT_S = 60.0      # ...60 secondi (meta' della soglia OpenF1)
 CONNESSIONE_SANA_S = 120.0
 # rinnovo proattivo: riconnessione con token fresco prima della scadenza
 MARGINE_RINNOVO_S = 300.0
@@ -59,6 +76,49 @@ PERCORSO_ENV_DEFAULT = "~/.openf1.env"
 class RifiutoBroker(ConnectionError):
     """CONNACK di errore dal broker MQTT (credenziali OAuth valide):
     autorizzazione negata lato server, non un guasto di rete."""
+
+
+class GuardiaConnessioni:
+    """Tetto DURO ai CONNECT verso il broker, valido per OGNI percorso
+    (riconnessione proattiva per il token, retry su errore, primo avvio).
+
+    Finestra scorrevole: al massimo `massimo` CONNECT ogni `finestra_s`
+    secondi; oltre il tetto si ATTENDE, non si rinuncia — il recupero
+    automatico resta garantito, solo piu' lento della soglia OpenF1
+    (limiti in testa al modulo, mail OpenF1 del 21/07/2026).
+
+    `orologio` e `dormi` sono iniettabili per i test (nessuna attesa
+    reale nei test)."""
+
+    def __init__(self, massimo=MAX_CONNECT_FINESTRA,
+                 finestra_s=FINESTRA_CONNECT_S,
+                 orologio=time.monotonic, dormi=time.sleep):
+        self.massimo = massimo
+        self.finestra_s = finestra_s
+        self._orologio = orologio
+        self._dormi = dormi
+        self._istanti = deque()
+        self._lock = threading.Lock()
+
+    def attendi_slot(self):
+        """Blocca finche' un CONNECT e' consentito; registra il consumo.
+        Ritorna i secondi attesi (0.0 se nessuna attesa)."""
+        atteso = 0.0
+        while True:
+            with self._lock:
+                adesso = self._orologio()
+                while self._istanti and \
+                        adesso - self._istanti[0] >= self.finestra_s:
+                    self._istanti.popleft()
+                if len(self._istanti) < self.massimo:
+                    self._istanti.append(adesso)
+                    return atteso
+                attesa = self.finestra_s - (adesso - self._istanti[0])
+            log.warning("tetto CONNECT raggiunto (%d in %.0fs, limiti "
+                        "OpenF1): attendo %.1fs prima di riprovare",
+                        self.massimo, self.finestra_s, attesa)
+            self._dormi(max(attesa, 0.05))
+            atteso += max(attesa, 0.05)
 
 
 # ------------------------------------------------------------ credenziali
@@ -207,11 +267,13 @@ class IngressoOpenF1:
     (topic, payload decodificato, ts ricezione) per la mappatura."""
 
     def __init__(self, coda_messaggi, registratore, stato_condiviso,
-                 percorso_env=PERCORSO_ENV_DEFAULT):
+                 percorso_env=PERCORSO_ENV_DEFAULT, guardia=None):
         self.coda = coda_messaggi
         self.reg = registratore
         self.cond = stato_condiviso
         self.token = TokenOpenF1(percorso_env)
+        # UNICA porta verso il broker: ogni CONNECT passa di qui
+        self.guardia = guardia or GuardiaConnessioni()
         self._t_ultimo = time.monotonic()
         self._chiusa = threading.Event()
 
@@ -239,8 +301,16 @@ class IngressoOpenF1:
             raise ConnectionError("nessun token OpenF1 (vedi log CRITICAL)")
 
         utente, _pw = leggi_env(self.token.percorso_env)
+        # reconnect_on_failure=False: DISATTIVA i retry interni di paho.
+        # loop_start() esegue loop_forever in un thread, che di suo
+        # ritenta da solo a ogni caduta: misurato sul VPS il 21/07,
+        # 15 CONNECT/minuto da una sola caduta — sopra la soglia OpenF1
+        # (10 disconnessioni/minuto = blocco di 10 minuti). L'UNICA
+        # sorgente di CONNECT dev'essere il nostro backoff, sotto
+        # GuardiaConnessioni.
         client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2,
-                             protocol=mqtt.MQTTv5)
+                             protocol=mqtt.MQTTv5,
+                             reconnect_on_failure=False)
         client.username_pw_set(utente, token)
         client.tls_set(cert_reqs=ssl.CERT_REQUIRED)
         connesso = threading.Event()
@@ -265,6 +335,7 @@ class IngressoOpenF1:
         client.on_message = self._su_messaggio
 
         self._chiusa.clear()
+        self.guardia.attendi_slot()      # tetto 5 CONNECT/minuto
         client.connect(HOST_MQTT, PORTA_MQTT, keepalive=60)
         client.loop_start()
         try:

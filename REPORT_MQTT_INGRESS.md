@@ -91,3 +91,60 @@ Test: `test_collector.py` 4/4 (incluso il nuovo caso sanita'),
   extra e ~12 CONNECT dal VPS tra le 09:48 e le 09:57 UTC; nessun
   impatto sul servizio (gia' in loop di rifiuto). File probe rimasti in
   `/tmp` sul VPS (`probe_mqtt*.py`, `probe_claims.py`), innocui.
+
+---
+
+# CHIUSURA — risposta OpenF1 del 21/07/2026: causa accertata
+
+**Incidente CHIUSO.** Risposta di Bruno (OpenF1) al ticket: modifiche
+recenti al broker MQTT/WebSocket con **un problema di configurazione
+lato loro**, ora risolto. Confermato dai fatti: il collettore si e'
+riconnesso da solo alle **09:08:36 UTC del 21/07**, 10 topic
+sottoscritti, senza alcun nostro intervento.
+
+## Causa: due fattori, uno loro e uno nostro
+
+1. **Innesco (OpenF1)**: la configurazione errata del broker ha iniziato
+   a rifiutare le connessioni alle 03:43:38 del 20/07 — spiega il
+   `Not authorized` (0x87) sui tentativi puliti.
+2. **Amplificazione (nostra)**: OpenF1 documenta un limite finora
+   ignoto — **piu' di 10 disconnessioni in un minuto = account bloccato
+   per 10 minuti**. `loop_start()` di paho esegue `loop_forever` in un
+   thread che **ritenta da solo** a ogni caduta: misurato sul VPS il
+   21/07 con un broker fittizio locale, **15 CONNECT/minuto da una sola
+   caduta**. Il nostro loop di riconnessione, da solo, superava la
+   soglia e si auto-infliggeva blocchi di 10 minuti: e' l'origine dei
+   CONNACK `Client identifier not valid` (0x85) della notte, che
+   infatti convivevano con gli 0x87 dei probe isolati e con la
+   connessione riuscita alle 09:30 — l'incoerenza che avevamo
+   registrato senza saperla spiegare.
+
+## Limiti ufficiali OpenF1 (ora documentati nel codice)
+
+| limite | valore | dove e' onorato |
+|---|---|---|
+| connessioni MQTT/WS concorrenti | 10 per abbonamento | una sola connessione per processo, un solo processo (verificato); il poller stint (PR #69) e' REST, non consuma slot |
+| disconnessioni prima del blocco | >10 in 1 minuto → 10 min di blocco | tetto nostro **5 CONNECT/minuto** (margine 2x) |
+
+## Misure applicate (branch `mqtt-limiti-openf1`)
+
+1. **`reconnect_on_failure=False`** sul client paho: i retry interni
+   sono spenti, l'unica sorgente di CONNECT e' il nostro backoff.
+   Misurato: da 15 CONNECT/minuto a **1 per tentativo**.
+2. **`GuardiaConnessioni`**: tetto duro a finestra scorrevole, **5
+   CONNECT ogni 60 s**, attraversato da OGNI percorso (primo avvio,
+   riconnessione proattiva per il token, retry su errore). Oltre il
+   tetto attende: il recupero automatico resta garantito.
+3. **`BACKOFF_MIN_S` 1 s → 5 s**: la sola scala di backoff resta sotto
+   il tetto anche senza guardia (difesa in profondita').
+4. **`RestartSec` 5 s → 30 s** nell'unit systemd: la guardia vive nel
+   processo, quindi un crash-loop la aggirerebbe (a 5 s farebbe 12
+   CONNECT/minuto; a 30 s ne fa 2).
+5. Vincolo **documentato nel codice** con riferimento esplicito alla
+   mail OpenF1 del 21/07 e alla misura, in testa a `ingress_openf1.py`.
+6. **Runbook**: se l'ingresso risulta bloccato, NON insistere —
+   attendere 10 minuti e' la cura, martellare e' la causa.
+
+Test: `test_openf1.py` — due nuovi casi (`guardia = max 5
+CONNECT/minuto`, `il backoff da solo resta sotto 5 CONNECT/minuto`)
+verdi; `test_collector.py` 4/4.

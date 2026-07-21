@@ -19,7 +19,11 @@ ExecStart=/home/muretto/muretto/.venv-live/bin/python live/collector/collector.p
 # Il daemon non esce mai per progetto; il restart e' solo cintura di
 # sicurezza (crash imprevisti). Mai piu' aggressivo di cosi'.
 Restart=always
-RestartSec=5
+# 30s (era 5s): la guardia sui CONNECT vive NEL processo, quindi un
+# crash-loop la aggirerebbe — a 5s farebbe 12 CONNECT/minuto, sopra la
+# soglia OpenF1 di 10 disconnessioni/minuto (blocco 10 min; mail OpenF1
+# del 21/07/2026, vedi REPORT_MQTT_INGRESS.md). A 30s: 2/minuto.
+RestartSec=30
 
 [Install]
 WantedBy=multi-user.target

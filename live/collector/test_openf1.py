@@ -15,6 +15,11 @@ sys.path.insert(0, str(QUI.parent))
 sys.path.insert(0, str(QUI))
 
 from ingress_openf1 import (  # noqa: E402
+    BACKOFF_MIN_S,
+    BACKOFF_MAX_S,
+    FINESTRA_CONNECT_S,
+    MAX_CONNECT_FINESTRA,
+    GuardiaConnessioni,
     RegistratoreJSONL,
     leggi_env,
     leggi_jsonl,
@@ -28,6 +33,51 @@ def caso(nome):
         _esiti.append((nome, fn))
         return fn
     return decoratore
+
+
+@caso("limiti OpenF1: guardia = max 5 CONNECT/minuto, mai di piu'")
+def test_guardia_connessioni():
+    """Il vincolo della mail OpenF1 del 21/07: >10 disconnessioni in un
+    minuto = blocco di 10 minuti. Tetto nostro: 5/minuto (margine 2x)."""
+    finto = {"t": 0.0}
+    dormite = []
+
+    def orologio():
+        return finto["t"]
+
+    def dormi(s):                      # niente attese reali nel test
+        dormite.append(s)
+        finto["t"] += s
+
+    g = GuardiaConnessioni(orologio=orologio, dormi=dormi)
+    # 20 tentativi a raffica, come farebbe un incidente
+    istanti = []
+    for _ in range(20):
+        g.attendi_slot()
+        istanti.append(finto["t"])
+        finto["t"] += 0.01             # il CONNECT stesso e' istantaneo
+    assert len(dormite) > 0, "la guardia non ha mai frenato"
+    # nessuna finestra di 60s contiene piu' di 5 CONNECT
+    for i, t0 in enumerate(istanti):
+        dentro = [t for t in istanti if t0 <= t < t0 + FINESTRA_CONNECT_S]
+        assert len(dentro) <= MAX_CONNECT_FINESTRA, \
+            f"{len(dentro)} CONNECT in 60s da t={t0}"
+    assert MAX_CONNECT_FINESTRA * 2 <= 10, "margine 2x sulla soglia OpenF1"
+
+
+@caso("limiti OpenF1: il backoff da solo resta sotto 5 CONNECT/minuto")
+def test_backoff_sotto_soglia():
+    """Anche senza guardia, la sola scala di backoff non deve superare
+    il tetto: difesa in profondita' (la guardia e' la seconda rete)."""
+    t, istanti, attesa = 0.0, [], BACKOFF_MIN_S
+    for _ in range(30):
+        istanti.append(t)
+        t += attesa
+        attesa = min(attesa * 2, BACKOFF_MAX_S)
+    for t0 in istanti:
+        dentro = [x for x in istanti if t0 <= x < t0 + 60.0]
+        assert len(dentro) <= MAX_CONNECT_FINESTRA, \
+            f"backoff: {len(dentro)} CONNECT in 60s da t={t0}"
 
 
 @caso("env: parsing KEY=VALUE, commenti e righe vuote ignorati")
