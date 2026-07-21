@@ -229,6 +229,13 @@ scp muretto@167.233.236.186:muretto/data/live_raw/openf1/\*.jsonl data/live_raw/
 
 ## Guasti noti e reazioni
 
+- **Ingresso MQTT bloccato / rifiutato (`sanita.verdetto` = INGRESSO MORTO,
+  CONNACK `Not authorized` o `Client identifier not valid`) → NON INSISTERE:
+  attendere 10 minuti è la cura, martellare è la causa.** OpenF1 blocca
+  l'account per 10 minuti dopo più di 10 disconnessioni in un minuto (mail
+  OpenF1 del 21/07/2026); il collettore riprova da solo ogni 5 minuti. Mai
+  riavviare il servizio in sequenza per "sbloccarlo": ogni riavvio è una
+  disconnessione in più e allunga il blocco.
 - `openf1_token.valido: false` → controllare `~/.openf1.env` sul server
   (600, utente muretto) e i log: `journalctl -u muretto-live | grep -i openf1`.
 - Banner "NESSUNA SESSIONE IN CORSO" durante una sessione → guardare
