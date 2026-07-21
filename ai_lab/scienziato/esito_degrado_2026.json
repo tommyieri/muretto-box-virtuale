@@ -1,0 +1,163 @@
+{
+ "censimento_2026": [
+  {
+   "gara": "2026 Australia",
+   "bagnata": false,
+   "N": 58,
+   "giri_totali": 1007,
+   "giri_neutralizzati": 120,
+   "quota_neutralizzata": 0.1192,
+   "indici_giro_neutralizzati": 13,
+   "giri_puliti": 787,
+   "giri_aria_libera": 388,
+   "mescole": {
+    "MEDIUM": 203,
+    "HARD": 484,
+    "SOFT": 100
+   }
+  },
+  {
+   "gara": "2026 Austria",
+   "bagnata": false,
+   "N": 71,
+   "giri_totali": 1339,
+   "giri_neutralizzati": 76,
+   "quota_neutralizzata": 0.0568,
+   "indici_giro_neutralizzati": 7,
+   "giri_puliti": 1085,
+   "giri_aria_libera": 449,
+   "mescole": {
+    "MEDIUM": 461,
+    "HARD": 502,
+    "SOFT": 122
+   }
+  },
+  {
+   "gara": "2026 Belgian",
+   "bagnata": false,
+   "N": 44,
+   "giri_totali": 872,
+   "giri_neutralizzati": 139,
+   "quota_neutralizzata": 0.1594,
+   "indici_giro_neutralizzati": 9,
+   "giri_puliti": 661,
+   "giri_aria_libera": 240,
+   "mescole": {
+    "MEDIUM": 147,
+    "HARD": 458,
+    "SOFT": 56
+   }
+  },
+  {
+   "gara": "2026 British",
+   "bagnata": false,
+   "N": 52,
+   "giri_totali": 1113,
+   "giri_neutralizzati": 177,
+   "quota_neutralizzata": 0.159,
+   "indici_giro_neutralizzati": 15,
+   "giri_puliti": 777,
+   "giri_aria_libera": 331,
+   "mescole": {
+    "HARD": 339,
+    "MEDIUM": 427,
+    "SOFT": 11
+   }
+  },
+  {
+   "gara": "2026 Canada",
+   "bagnata": false,
+   "N": 68,
+   "giri_totali": 1212,
+   "giri_neutralizzati": 100,
+   "quota_neutralizzata": 0.0825,
+   "indici_giro_neutralizzati": 15,
+   "giri_puliti": 868,
+   "giri_aria_libera": 528,
+   "mescole": {
+    "SOFT": 348,
+    "MEDIUM": 463,
+    "HARD": 57
+   }
+  },
+  {
+   "gara": "2026 Cina",
+   "bagnata": false,
+   "N": 56,
+   "giri_totali": 924,
+   "giri_neutralizzati": 69,
+   "quota_neutralizzata": 0.0747,
+   "indici_giro_neutralizzati": 4,
+   "giri_puliti": 711,
+   "giri_aria_libera": 272,
+   "mescole": {
+    "HARD": 572,
+    "MEDIUM": 128,
+    "SOFT": 11
+   }
+  },
+  {
+   "gara": "2026 Giappone",
+   "bagnata": false,
+   "N": 53,
+   "giri_totali": 1107,
+   "giri_neutralizzati": 135,
+   "quota_neutralizzata": 0.122,
+   "indici_giro_neutralizzati": 7,
+   "giri_puliti": 884,
+   "giri_aria_libera": 202,
+   "mescole": {
+    "MEDIUM": 402,
+    "HARD": 482
+   }
+  },
+  {
+   "gara": "2026 Miami",
+   "bagnata": false,
+   "N": 57,
+   "giri_totali": 1040,
+   "giri_neutralizzati": 121,
+   "quota_neutralizzata": 0.1163,
+   "indici_giro_neutralizzati": 7,
+   "giri_puliti": 742,
+   "giri_aria_libera": 330,
+   "mescole": {
+    "MEDIUM": 297,
+    "HARD": 399,
+    "SOFT": 46
+   }
+  },
+  {
+   "gara": "2026 Monaco",
+   "bagnata": false,
+   "N": 78,
+   "giri_totali": 1452,
+   "giri_neutralizzati": 208,
+   "quota_neutralizzata": 0.1433,
+   "indici_giro_neutralizzati": 14,
+   "giri_puliti": 1097,
+   "giri_aria_libera": 489,
+   "mescole": {
+    "MEDIUM": 568,
+    "SOFT": 223,
+    "HARD": 306
+   }
+  },
+  {
+   "gara": "2026 Spagna",
+   "bagnata": false,
+   "N": 66,
+   "giri_totali": 1236,
+   "giri_neutralizzati": 91,
+   "quota_neutralizzata": 0.0736,
+   "indici_giro_neutralizzati": 15,
+   "giri_puliti": 953,
+   "giri_aria_libera": 432,
+   "mescole": {
+    "MEDIUM": 234,
+    "HARD": 612,
+    "SOFT": 107
+   }
+  }
+ ]
+}
