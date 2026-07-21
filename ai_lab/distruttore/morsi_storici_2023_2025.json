@@ -1,0 +1,814 @@
+{
+  "_documento": "Morsi storici del traffico per circuito — INPUT FISSO della distribuzione nulla della tolleranza-partizione.",
+  "_generatore": "ai_lab/distruttore/calibrazione.py (committato accanto: un valore senza generatore e' debito, non fonte)",
+  "_riproduci": "python3 -c \"import sys;sys.path.insert(0,'ai_lab/distruttore');import calibrazione as C;print(C.misura_storico())\"",
+  "definizione_morso": "KPI(senza cap, ZONE=0) - KPI(cap attivo, ZONE=1.5, STRENGTH=1.0); >0 = il cap avvicina la simulazione al reale",
+  "spazio_di_misura": "fuel-neutro: gap fra due auto sullo stesso giro, mai cum_time grezzi",
+  "regime": "storico 2023-2025 (NON il panel 2026 che poi giudichera')",
+  "parametri_misura": {
+    "orizzonte_H": 5,
+    "gap_max_inclusione_s": 3.0,
+    "min_coppie_per_circuito": 20,
+    "cap_attivo": {
+      "ZONE": 1.5,
+      "STRENGTH": 1.0
+    },
+    "senza_cap": {
+      "ZONE": 0.0,
+      "STRENGTH": 1.0
+    }
+  },
+  "copertura": {
+    "gare_lette": 70,
+    "circuiti_qualificati": 24,
+    "scartati": []
+  },
+  "anticircolarita": {
+    "anni_usati": [
+      "2023",
+      "2024",
+      "2025"
+    ],
+    "nessun_2026": true,
+    "percorsi_2026_trovati": [],
+    "panel_2026": [
+      "Monaco",
+      "Giappone",
+      "Belgio",
+      "Miami",
+      "Australia",
+      "Spagna"
+    ],
+    "nota": "i circuiti del panel possono comparire QUI nella loro versione storica 2023-2025: e' un altro regime (altra macchina), non contaminazione del confirm 2026. Cio' che conta e' che nessun file 2026 sia entrato.",
+    "circuiti_storici_omonimi_del_panel": [
+      "Miami",
+      "Monaco"
+    ]
+  },
+  "circuiti": [
+    {
+      "circuito": "Abu Dhabi",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 982,
+      "morso": -0.52535
+    },
+    {
+      "circuito": "Australian",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 607,
+      "morso": 0.06095
+    },
+    {
+      "circuito": "Austrian",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 961,
+      "morso": -0.15001
+    },
+    {
+      "circuito": "Azerbaijan",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 1015,
+      "morso": 0.11634
+    },
+    {
+      "circuito": "Bahrain",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 744,
+      "morso": -0.06158
+    },
+    {
+      "circuito": "Belgian",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 551,
+      "morso": 0.09154
+    },
+    {
+      "circuito": "British",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 734,
+      "morso": 0.1698
+    },
+    {
+      "circuito": "Canadian",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 1271,
+      "morso": 0.45784
+    },
+    {
+      "circuito": "Chinese",
+      "anni": [
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 532,
+      "morso": -0.13437
+    },
+    {
+      "circuito": "Dutch",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 1150,
+      "morso": 0.06778
+    },
+    {
+      "circuito": "Emilia Romagna",
+      "anni": [
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 695,
+      "morso": -0.1055
+    },
+    {
+      "circuito": "Hungarian",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 1150,
+      "morso": 0.1104
+    },
+    {
+      "circuito": "Italian",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 876,
+      "morso": -0.12024
+    },
+    {
+      "circuito": "Japanese",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 677,
+      "morso": -0.26233
+    },
+    {
+      "circuito": "Las Vegas",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 710,
+      "morso": -0.10275
+    },
+    {
+      "circuito": "Mexico City",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 1231,
+      "morso": -0.14743
+    },
+    {
+      "circuito": "Miami",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 1122,
+      "morso": 0.07481
+    },
+    {
+      "circuito": "Monaco",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 1703,
+      "morso": 0.88682
+    },
+    {
+      "circuito": "Qatar",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 788,
+      "morso": 0.02491
+    },
+    {
+      "circuito": "Saudi Arabian",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 937,
+      "morso": 0.04109
+    },
+    {
+      "circuito": "Singapore",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 1232,
+      "morso": 0.18767
+    },
+    {
+      "circuito": "Spanish",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 782,
+      "morso": 0.00088
+    },
+    {
+      "circuito": "São Paulo",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 1004,
+      "morso": 0.11441
+    },
+    {
+      "circuito": "United States",
+      "anni": [
+        "2023",
+        "2024",
+        "2025"
+      ],
+      "n_coppie": 759,
+      "morso": -0.22411
+    }
+  ],
+  "per_gara": [
+    {
+      "anno": "2023",
+      "circuito": "Abu Dhabi",
+      "percorso": "data/ti_archive/2023/Abu Dhabi Grand Prix/Race.json",
+      "n_coppie": 316,
+      "morso": -0.77103
+    },
+    {
+      "anno": "2023",
+      "circuito": "Australian",
+      "percorso": "data/ti_archive/2023/Australian Grand Prix/Race.json",
+      "n_coppie": 289,
+      "morso": 0.00484
+    },
+    {
+      "anno": "2023",
+      "circuito": "Austrian",
+      "percorso": "data/ti_archive/2023/Austrian Grand Prix/Race.json",
+      "n_coppie": 309,
+      "morso": -0.17741
+    },
+    {
+      "anno": "2023",
+      "circuito": "Azerbaijan",
+      "percorso": "data/ti_archive/2023/Azerbaijan Grand Prix/Race.json",
+      "n_coppie": 383,
+      "morso": 0.11683
+    },
+    {
+      "anno": "2023",
+      "circuito": "Bahrain",
+      "percorso": "data/ti_archive/2023/Bahrain Grand Prix/Race.json",
+      "n_coppie": 156,
+      "morso": -0.26046
+    },
+    {
+      "anno": "2023",
+      "circuito": "Belgian",
+      "percorso": "data/ti_archive/2023/Belgian Grand Prix/Race.json",
+      "n_coppie": 181,
+      "morso": 0.09489
+    },
+    {
+      "anno": "2023",
+      "circuito": "British",
+      "percorso": "data/ti_archive/2023/British Grand Prix/Race.json",
+      "n_coppie": 351,
+      "morso": -0.04994
+    },
+    {
+      "anno": "2023",
+      "circuito": "Canadian",
+      "percorso": "data/ti_archive/2023/Canadian Grand Prix/Race.json",
+      "n_coppie": 384,
+      "morso": 0.35439
+    },
+    {
+      "anno": "2023",
+      "circuito": "Dutch",
+      "percorso": "data/ti_archive/2023/Dutch Grand Prix/Race.json",
+      "n_coppie": 291,
+      "morso": 0.10123
+    },
+    {
+      "anno": "2023",
+      "circuito": "Hungarian",
+      "percorso": "data/ti_archive/2023/Hungarian Grand Prix/Race.json",
+      "n_coppie": 254,
+      "morso": 0.0418
+    },
+    {
+      "anno": "2023",
+      "circuito": "Italian",
+      "percorso": "data/ti_archive/2023/Italian Grand Prix/Race.json",
+      "n_coppie": 300,
+      "morso": 0.00233
+    },
+    {
+      "anno": "2023",
+      "circuito": "Japanese",
+      "percorso": "data/ti_archive/2023/Japanese Grand Prix/Race.json",
+      "n_coppie": 79,
+      "morso": -0.67219
+    },
+    {
+      "anno": "2023",
+      "circuito": "Las Vegas",
+      "percorso": "data/ti_archive/2023/Las Vegas Grand Prix/Race.json",
+      "n_coppie": 294,
+      "morso": -0.19554
+    },
+    {
+      "anno": "2023",
+      "circuito": "Mexico City",
+      "percorso": "data/ti_archive/2023/Mexico City Grand Prix/Race.json",
+      "n_coppie": 499,
+      "morso": -0.0846
+    },
+    {
+      "anno": "2023",
+      "circuito": "Miami",
+      "percorso": "data/ti_archive/2023/Miami Grand Prix/Race.json",
+      "n_coppie": 424,
+      "morso": -0.20315
+    },
+    {
+      "anno": "2023",
+      "circuito": "Monaco",
+      "percorso": "data/ti_archive/2023/Monaco Grand Prix/Race.json",
+      "n_coppie": 509,
+      "morso": 0.68747
+    },
+    {
+      "anno": "2023",
+      "circuito": "Qatar",
+      "percorso": "data/ti_archive/2023/Qatar Grand Prix/Race.json",
+      "n_coppie": 137,
+      "morso": -0.10541
+    },
+    {
+      "anno": "2023",
+      "circuito": "Saudi Arabian",
+      "percorso": "data/ti_archive/2023/Saudi Arabian Grand Prix/Race.json",
+      "n_coppie": 321,
+      "morso": 0.43048
+    },
+    {
+      "anno": "2023",
+      "circuito": "Singapore",
+      "percorso": "data/ti_archive/2023/Singapore Grand Prix/Race.json",
+      "n_coppie": 413,
+      "morso": -0.01595
+    },
+    {
+      "anno": "2023",
+      "circuito": "Spanish",
+      "percorso": "data/ti_archive/2023/Spanish Grand Prix/Race.json",
+      "n_coppie": 312,
+      "morso": 0.04469
+    },
+    {
+      "anno": "2023",
+      "circuito": "São Paulo",
+      "percorso": "data/ti_archive/2023/São Paulo Grand Prix/Race.json",
+      "n_coppie": 250,
+      "morso": -0.13149
+    },
+    {
+      "anno": "2023",
+      "circuito": "United States",
+      "percorso": "data/ti_archive/2023/United States Grand Prix/Race.json",
+      "n_coppie": 182,
+      "morso": -0.49776
+    },
+    {
+      "anno": "2024",
+      "circuito": "Abu Dhabi",
+      "percorso": "data/ti_archive/2024/Abu Dhabi Grand Prix/Race.json",
+      "n_coppie": 208,
+      "morso": -0.62076
+    },
+    {
+      "anno": "2024",
+      "circuito": "Australian",
+      "percorso": "data/ti_archive/2024/Australian Grand Prix/Race.json",
+      "n_coppie": 152,
+      "morso": 0.04401
+    },
+    {
+      "anno": "2024",
+      "circuito": "Austrian",
+      "percorso": "data/ti_archive/2024/Austrian Grand Prix/Race.json",
+      "n_coppie": 378,
+      "morso": -0.13911
+    },
+    {
+      "anno": "2024",
+      "circuito": "Azerbaijan",
+      "percorso": "data/ti_archive/2024/Azerbaijan Grand Prix/Race.json",
+      "n_coppie": 319,
+      "morso": 0.10775
+    },
+    {
+      "anno": "2024",
+      "circuito": "Bahrain",
+      "percorso": "data/ti_archive/2024/Bahrain Grand Prix/Race.json",
+      "n_coppie": 211,
+      "morso": -0.06965
+    },
+    {
+      "anno": "2024",
+      "circuito": "Belgian",
+      "percorso": "data/ti_archive/2024/Belgian Grand Prix/Race.json",
+      "n_coppie": 174,
+      "morso": -0.13458
+    },
+    {
+      "anno": "2024",
+      "circuito": "British",
+      "percorso": "data/ti_archive/2024/British Grand Prix/Race.json",
+      "n_coppie": 250,
+      "morso": 0.04334
+    },
+    {
+      "anno": "2024",
+      "circuito": "Canadian",
+      "percorso": "data/ti_archive/2024/Canadian Grand Prix/Race.json",
+      "n_coppie": 368,
+      "morso": 1.15683
+    },
+    {
+      "anno": "2024",
+      "circuito": "Chinese",
+      "percorso": "data/ti_archive/2024/Chinese Grand Prix/Race.json",
+      "n_coppie": 198,
+      "morso": -0.30599
+    },
+    {
+      "anno": "2024",
+      "circuito": "Dutch",
+      "percorso": "data/ti_archive/2024/Dutch Grand Prix/Race.json",
+      "n_coppie": 465,
+      "morso": -0.07892
+    },
+    {
+      "anno": "2024",
+      "circuito": "Emilia Romagna",
+      "percorso": "data/ti_archive/2024/Emilia Romagna Grand Prix/Race.json",
+      "n_coppie": 364,
+      "morso": -0.13743
+    },
+    {
+      "anno": "2024",
+      "circuito": "Hungarian",
+      "percorso": "data/ti_archive/2024/Hungarian Grand Prix/Race.json",
+      "n_coppie": 361,
+      "morso": 0.02589
+    },
+    {
+      "anno": "2024",
+      "circuito": "Italian",
+      "percorso": "data/ti_archive/2024/Italian Grand Prix/Race.json",
+      "n_coppie": 213,
+      "morso": -0.58334
+    },
+    {
+      "anno": "2024",
+      "circuito": "Japanese",
+      "percorso": "data/ti_archive/2024/Japanese Grand Prix/Race.json",
+      "n_coppie": 185,
+      "morso": -0.69351
+    },
+    {
+      "anno": "2024",
+      "circuito": "Las Vegas",
+      "percorso": "data/ti_archive/2024/Las Vegas Grand Prix/Race.json",
+      "n_coppie": 213,
+      "morso": -0.16494
+    },
+    {
+      "anno": "2024",
+      "circuito": "Mexico City",
+      "percorso": "data/ti_archive/2024/Mexico City Grand Prix/Race.json",
+      "n_coppie": 355,
+      "morso": -0.22545
+    },
+    {
+      "anno": "2024",
+      "circuito": "Miami",
+      "percorso": "data/ti_archive/2024/Miami Grand Prix/Race.json",
+      "n_coppie": 401,
+      "morso": 0.37021
+    },
+    {
+      "anno": "2024",
+      "circuito": "Monaco",
+      "percorso": "data/ti_archive/2024/Monaco Grand Prix/Race.json",
+      "n_coppie": 657,
+      "morso": 0.66281
+    },
+    {
+      "anno": "2024",
+      "circuito": "Qatar",
+      "percorso": "data/ti_archive/2024/Qatar Grand Prix/Race.json",
+      "n_coppie": 305,
+      "morso": -0.15034
+    },
+    {
+      "anno": "2024",
+      "circuito": "Saudi Arabian",
+      "percorso": "data/ti_archive/2024/Saudi Arabian Grand Prix/Race.json",
+      "n_coppie": 310,
+      "morso": 0.03454
+    },
+    {
+      "anno": "2024",
+      "circuito": "Singapore",
+      "percorso": "data/ti_archive/2024/Singapore Grand Prix/Race.json",
+      "n_coppie": 353,
+      "morso": -0.01012
+    },
+    {
+      "anno": "2024",
+      "circuito": "Spanish",
+      "percorso": "data/ti_archive/2024/Spanish Grand Prix/Race.json",
+      "n_coppie": 275,
+      "morso": -0.04695
+    },
+    {
+      "anno": "2024",
+      "circuito": "São Paulo",
+      "percorso": "data/ti_archive/2024/São Paulo Grand Prix/Race.json",
+      "n_coppie": 416,
+      "morso": 0.5005
+    },
+    {
+      "anno": "2024",
+      "circuito": "United States",
+      "percorso": "data/ti_archive/2024/United States Grand Prix/Race.json",
+      "n_coppie": 270,
+      "morso": -0.2932
+    },
+    {
+      "anno": "2025",
+      "circuito": "Abu Dhabi",
+      "percorso": "data/ti_archive/2025/Abu Dhabi Grand Prix/Race.json",
+      "n_coppie": 458,
+      "morso": -0.31252
+    },
+    {
+      "anno": "2025",
+      "circuito": "Australian",
+      "percorso": "data/ti_archive/2025/Australian Grand Prix/Race.json",
+      "n_coppie": 166,
+      "morso": 0.17415
+    },
+    {
+      "anno": "2025",
+      "circuito": "Austrian",
+      "percorso": "data/ti_archive/2025/Austrian Grand Prix/Race.json",
+      "n_coppie": 274,
+      "morso": -0.13415
+    },
+    {
+      "anno": "2025",
+      "circuito": "Azerbaijan",
+      "percorso": "data/ti_archive/2025/Azerbaijan Grand Prix/Race.json",
+      "n_coppie": 313,
+      "morso": 0.12447
+    },
+    {
+      "anno": "2025",
+      "circuito": "Bahrain",
+      "percorso": "data/ti_archive/2025/Bahrain Grand Prix/Race.json",
+      "n_coppie": 377,
+      "morso": 0.02524
+    },
+    {
+      "anno": "2025",
+      "circuito": "Belgian",
+      "percorso": "data/ti_archive/2025/Belgian Grand Prix/Race.json",
+      "n_coppie": 196,
+      "morso": 0.2892
+    },
+    {
+      "anno": "2025",
+      "circuito": "British",
+      "percorso": "data/ti_archive/2025/British Grand Prix/Race.json",
+      "n_coppie": 133,
+      "morso": 0.98741
+    },
+    {
+      "anno": "2025",
+      "circuito": "Canadian",
+      "percorso": "data/ti_archive/2025/Canadian Grand Prix/Race.json",
+      "n_coppie": 519,
+      "morso": 0.03875
+    },
+    {
+      "anno": "2025",
+      "circuito": "Chinese",
+      "percorso": "data/ti_archive/2025/Chinese Grand Prix/Race.json",
+      "n_coppie": 334,
+      "morso": -0.03263
+    },
+    {
+      "anno": "2025",
+      "circuito": "Dutch",
+      "percorso": "data/ti_archive/2025/Dutch Grand Prix/Race.json",
+      "n_coppie": 394,
+      "morso": 0.21621
+    },
+    {
+      "anno": "2025",
+      "circuito": "Emilia Romagna",
+      "percorso": "data/ti_archive/2025/Emilia Romagna Grand Prix/Race.json",
+      "n_coppie": 331,
+      "morso": -0.07039
+    },
+    {
+      "anno": "2025",
+      "circuito": "Hungarian",
+      "percorso": "data/ti_archive/2025/Hungarian Grand Prix/Race.json",
+      "n_coppie": 535,
+      "morso": 0.19998
+    },
+    {
+      "anno": "2025",
+      "circuito": "Italian",
+      "percorso": "data/ti_archive/2025/Italian Grand Prix/Race.json",
+      "n_coppie": 363,
+      "morso": 0.05021
+    },
+    {
+      "anno": "2025",
+      "circuito": "Japanese",
+      "percorso": "data/ti_archive/2025/Japanese Grand Prix/Race.json",
+      "n_coppie": 413,
+      "morso": 0.00922
+    },
+    {
+      "anno": "2025",
+      "circuito": "Las Vegas",
+      "percorso": "data/ti_archive/2025/Las Vegas Grand Prix/Race.json",
+      "n_coppie": 203,
+      "morso": 0.09689
+    },
+    {
+      "anno": "2025",
+      "circuito": "Mexico City",
+      "percorso": "data/ti_archive/2025/Mexico City Grand Prix/Race.json",
+      "n_coppie": 377,
+      "morso": -0.15711
+    },
+    {
+      "anno": "2025",
+      "circuito": "Miami",
+      "percorso": "data/ti_archive/2025/Miami Grand Prix/Race.json",
+      "n_coppie": 297,
+      "morso": 0.07279
+    },
+    {
+      "anno": "2025",
+      "circuito": "Monaco",
+      "percorso": "data/ti_archive/2025/Monaco Grand Prix/Race.json",
+      "n_coppie": 537,
+      "morso": 1.34984
+    },
+    {
+      "anno": "2025",
+      "circuito": "Qatar",
+      "percorso": "data/ti_archive/2025/Qatar Grand Prix/Race.json",
+      "n_coppie": 346,
+      "morso": 0.23099
+    },
+    {
+      "anno": "2025",
+      "circuito": "Saudi Arabian",
+      "percorso": "data/ti_archive/2025/Saudi Arabian Grand Prix/Race.json",
+      "n_coppie": 306,
+      "morso": -0.36076
+    },
+    {
+      "anno": "2025",
+      "circuito": "Singapore",
+      "percorso": "data/ti_archive/2025/Singapore Grand Prix/Race.json",
+      "n_coppie": 466,
+      "morso": 0.51795
+    },
+    {
+      "anno": "2025",
+      "circuito": "Spanish",
+      "percorso": "data/ti_archive/2025/Spanish Grand Prix/Race.json",
+      "n_coppie": 195,
+      "morso": -0.00177
+    },
+    {
+      "anno": "2025",
+      "circuito": "São Paulo",
+      "percorso": "data/ti_archive/2025/São Paulo Grand Prix/Race.json",
+      "n_coppie": 338,
+      "morso": -0.17891
+    },
+    {
+      "anno": "2025",
+      "circuito": "United States",
+      "percorso": "data/ti_archive/2025/United States Grand Prix/Race.json",
+      "n_coppie": 307,
+      "morso": -0.00111
+    }
+  ],
+  "statistiche_descrittive": {
+    "n_circuiti": 24,
+    "media_morso": 0.02382,
+    "mediana_morso": 0.033,
+    "sd_fra_circuiti": 0.26434,
+    "min": -0.52535,
+    "max": 0.88682
+  },
+  "nota_informativa_non_operativa": {
+    "k_bilanciato": 1.8796,
+    "q95_bilanciato_s": 0.20284,
+    "se_bilanciata": 0.10792,
+    "controlli_sbilanciati": [
+      {
+        "n1": 6,
+        "n2": 18,
+        "q95_empirico": 0.2402,
+        "regola_prevede": 0.23422
+      },
+      {
+        "n1": 8,
+        "n2": 16,
+        "q95_empirico": 0.21801,
+        "regola_prevede": 0.21515
+      },
+      {
+        "n1": 12,
+        "n2": 12,
+        "q95_empirico": 0.20298,
+        "regola_prevede": 0.20284
+      }
+    ],
+    "perche_non_forma_chiusa": "la forma chiusa tolleranza = k*sd*sqrt(1/n1+1/n2) sotto-stima fino al -2.5% sulle partizioni sbilanciate, cioe' sarebbe troppo severa e respingerebbe partizioni oneste. Documentare il perdente spiega la scelta: si e' preferito il ricalcolo esatto alle taglie effettive."
+  }
+}

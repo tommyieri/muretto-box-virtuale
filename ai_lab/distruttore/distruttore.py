@@ -48,6 +48,16 @@ def carica_prereg():
         return json.load(f)
 
 
+# Ambito del sigillo operativo: SOLO i criteri di veto. Non il file intero.
+# Il sigillo v1 copriva tutto, quindi qualunque aggiunta — anche puramente additiva, come
+# la tolleranza-partizione — lo rompeva: un anti-HARKing che vieta di aggiungere e' un
+# anti-HARKing rotto. Qui si firma cio' che deve restare immobile, non il contenitore.
+CHIAVI_CRITERI = ('veto_congiuntivo', 'statistica', 'misura', 'EPS_TIE',
+                  'test_di_accettazione', 'panel_ostile', 'regimi',
+                  'contratto_ingresso', 'kernel_atteso')
+COMMIT_SIGILLO_V1 = 'd3fceb0'
+
+
 def _sigilla(nucleo):
     """Stesso meccanismo del designer: sha256 del nucleo scientifico, json ordinato.
     Convenzione condivisa deliberatamente, cosi' i due sigilli sono confrontabili."""
@@ -56,11 +66,64 @@ def _sigilla(nucleo):
 
 
 def verifica_sigillo():
+    """Sigillo OPERATIVO: copre i soli criteri di veto."""
     p = carica_prereg()
+    mancanti = [k for k in CHIAVI_CRITERI if k not in p]
+    nucleo = {k: p[k] for k in CHIAVI_CRITERI if k in p}
+    depositato = p.get('sigillo_criteri')
+    ricalcolato = _sigilla(nucleo)
+    return {'integro': depositato == ricalcolato and not mancanti,
+            'depositato': depositato, 'ricalcolato': ricalcolato,
+            'ambito': list(CHIAVI_CRITERI), 'chiavi_mancanti': mancanti}
+
+
+def verifica_sigillo_v1_storico():
+    """Il sigillo v1 si riferisce alla definizione FILE INTERO con cui nacque il commit
+    d3fceb0. Non e' ricalcolabile dal file di oggi — e non deve esserlo: si verifica
+    contro la versione che ha firmato. La storia non si riscrive, si controlla."""
+    dichiarato = carica_prereg().get('sigillo_v1_file_intero')
+    r = subprocess.run(['git', 'show', f'{COMMIT_SIGILLO_V1}:ai_lab/distruttore/'
+                                       'PREREG_distruttore.json'],
+                       cwd=RADICE, capture_output=True, text=True)
+    if r.returncode != 0:
+        return {'verificabile': False, 'motivo': 'commit d3fceb0 non raggiungibile',
+                'dichiarato': dichiarato}
+    p = json.loads(r.stdout)
     depositato = p.pop('sigillo', None)
-    ricalcolato = _sigilla(p)
-    return {'integro': depositato == ricalcolato,
-            'depositato': depositato, 'ricalcolato': ricalcolato}
+    return {'verificabile': True, 'commit': COMMIT_SIGILLO_V1, 'dichiarato': dichiarato,
+            'depositato_allora': depositato, 'ricalcolato_allora': _sigilla(p),
+            'integro': depositato == _sigilla(p) == dichiarato}
+
+
+# ---------------------------------------------------------------- tolleranza-partizione
+def morsi_storici():
+    with open(os.path.join(QUI, 'morsi_storici_2023_2025.json')) as f:
+        return json.load(f)
+
+
+def tolleranza_partizione(n1, n2, morsi=None, regola=None):
+    """Tolleranza ESATTA per le taglie effettive di una partizione explore/confirm.
+
+    Non una forma chiusa con k fisso: si costruisce la distribuzione NULLA del vero
+    statistico del test — |media(morso su A) - media(morso su B)| per riassegnazioni
+    casuali dei circuiti storici a quelle taglie — e se ne prende il quantile dichiarato.
+    Seed, numero di riassegnazioni e quantile sono committati nel prereg: senza quelli la
+    soglia "esatta" sarebbe riproducibile solo in media, che non basta."""
+    R = regola or carica_prereg()['tolleranza_partizione']['regola_operativa']
+    M = morsi or morsi_storici()
+    valori = [c['morso'] for c in M['circuiti']]
+    if n1 < 1 or n2 < 1 or n1 + n2 > len(valori):
+        raise ValueError(f'taglie non ammissibili: {n1}+{n2} su {len(valori)} circuiti storici')
+    rng = random.Random(R['seed'])
+    nulla = []
+    for _ in range(R['riassegnazioni']):
+        v = valori[:]
+        rng.shuffle(v)
+        nulla.append(abs(st.mean(v[:n1]) - st.mean(v[n1:n1 + n2])))
+    nulla.sort()
+    return {'n1': n1, 'n2': n2, 'tolleranza_s': round(nulla[int(R['quantile'] * len(nulla))], 5),
+            'seed': R['seed'], 'riassegnazioni': R['riassegnazioni'], 'quantile': R['quantile'],
+            'n_circuiti_storici': len(valori), 'deterministica': True}
 
 
 # ---------------------------------------------------------------- verifiche kernel
@@ -151,16 +214,21 @@ def _byLap(stati):
     return b
 
 
-def misura_traffico(gara, ZONE, STRENGTH, H, gap_max, cache={}):
+def misura_traffico(gara, ZONE, STRENGTH, H, gap_max, cache={}, percorso=None):
     """Errore assoluto sul GAP previsto dopo H giri, per ogni coppia adiacente al freeze.
-    Il gap fra due auto sullo stesso giro e' fuel-neutro: il carburante si elide."""
-    if gara not in cache:
-        _, rel = tools.risolvi_gara(gara)
+    Il gap fra due auto sullo stesso giro e' fuel-neutro: il carburante si elide.
+
+    `percorso` (additivo, default None) permette di puntare a un Race.json qualunque —
+    serve al regime storico 2023-2025, che non passa da tools.risolvi_gara (che conosce
+    solo le gare 2026 pubblicate). Con percorso=None il comportamento e' identico a prima."""
+    chiave = percorso or gara
+    if chiave not in cache:
+        rel = percorso if percorso else tools.risolvi_gara(gara)[1]
         import pandas as pd
         raw = pd.DataFrame(json.load(open(os.path.join(RADICE, rel))))
         stati, N = engine.ti_adapter(raw, gara)
-        cache[gara] = (stati, N, _byLap(stati))
-    stati, N, byLap = cache[gara]
+        cache[chiave] = (stati, N, _byLap(stati))
+    stati, N, byLap = cache[chiave]
 
     kern = engine.SimulationKernel()
     fuori = []
