@@ -96,6 +96,92 @@ def verifica_sigillo_v1_storico():
 
 
 # ---------------------------------------------------------------- tolleranza-partizione
+def _sd(v):
+    return st.stdev(v) if len(v) > 1 else 0.0
+
+
+def _ks(x, y):
+    """Kolmogorov-Smirnov a due campioni: massima distanza fra le due cumulate empiriche.
+    Sensibile alla FORMA della distribuzione, non solo alla sua posizione."""
+    d = 0.0
+    for t in sorted(set(x) | set(y)):
+        d = max(d, abs(sum(1 for v in x if v <= t) / len(x)
+                       - sum(1 for v in y if v <= t) / len(y)))
+    return d
+
+
+def statistiche_partizione(a, b):
+    """I quattro candidati dichiarati nel prereg (difetto_cancello_partizione_v1).
+
+    delta_media e' il criterio v1: usa la media CON SEGNO, quindi morsi opposti dentro lo
+    stesso lato si elidono — e' il difetto misurato dal CONTROLLO-B. Gli altri tre non si
+    lasciano elidere: il modulo ignora il segno, la dispersione e il KS guardano la forma.
+    """
+    return {'delta_media': abs(st.mean(a) - st.mean(b)),
+            'delta_media_assoluta': abs(st.mean([abs(v) for v in a])
+                                        - st.mean([abs(v) for v in b])),
+            'delta_dispersione': abs(_sd(a) - _sd(b)),
+            'kolmogorov_smirnov': _ks(a, b)}
+
+
+def soglie_partizione(n1, n2, morsi=None, regola=None):
+    """q95 di OGNI candidato dalla STESSA distribuzione nulla per riassegnazioni casuali
+    dei circuiti storici. Nessuna soglia scelta a mano; parametri dal prereg."""
+    R = regola or carica_prereg()['tolleranza_partizione']['regola_operativa']
+    M = morsi or morsi_storici()
+    valori = [c['morso'] for c in M['circuiti']]
+    if n1 < 1 or n2 < 1 or n1 + n2 > len(valori):
+        raise ValueError(f'taglie non ammissibili: {n1}+{n2} su {len(valori)} circuiti storici')
+    rng = random.Random(R['seed'])
+    nulla = {k: [] for k in ('delta_media', 'delta_media_assoluta', 'delta_dispersione',
+                             'kolmogorov_smirnov')}
+    for _ in range(R['riassegnazioni']):
+        v = valori[:]
+        rng.shuffle(v)
+        for k, x in statistiche_partizione(v[:n1], v[n1:n1 + n2]).items():
+            nulla[k].append(x)
+    fuori = {}
+    for k, vals in nulla.items():
+        vals.sort()
+        fuori[k] = round(vals[int(R['quantile'] * len(vals))], 5)
+    return {'taglie': f'{n1}/{n2}', 'q95': fuori, 'seed': R['seed'],
+            'riassegnazioni': R['riassegnazioni'], 'quantile': R['quantile']}
+
+
+def valida_partizione_v2(riv, morsi_partizione, statistico_nuovo):
+    """Cancello v2 — CONGIUNTIVO: rifiuta se lo statistico v1 (delta_media) O quello nuovo
+    supera la propria soglia. Aggiungere un criterio di rifiuto puo' solo rendere il
+    cancello piu' severo, mai piu' permissivo: cio' che v1 rifiutava resta rifiutato."""
+    part = riv.get('partizione')
+    if not part or not part.get('explore') or not part.get('confirm'):
+        return {'passa': False, 'motivo': 'rivendicazione senza partizione explore/confirm'}
+    ex, co = part['explore'], part['confirm']
+    comuni = sorted(set(ex) & set(co))
+    if comuni:
+        return {'passa': False, 'motivo': f'explore e confirm si sovrappongono: {comuni}'}
+    mancanti = [g for g in ex + co if g not in morsi_partizione]
+    if mancanti:
+        return {'passa': False, 'motivo': f'morso non misurato per: {mancanti}'}
+
+    a = [morsi_partizione[g] for g in ex]
+    b = [morsi_partizione[g] for g in co]
+    oss = statistiche_partizione(a, b)
+    sog = soglie_partizione(len(ex), len(co))
+    criteri = {}
+    for k in ('delta_media', statistico_nuovo):
+        criteri[k] = {'osservato': round(oss[k], 5), 'soglia_q95': sog['q95'][k],
+                      'supera': oss[k] > sog['q95'][k],
+                      'margine_relativo': round(oss[k] / sog['q95'][k], 3) if sog['q95'][k] else None}
+    sfondati = [k for k, v in criteri.items() if v['supera']]
+    return {'passa': not sfondati, 'criteri': criteri, 'sfondati': sfondati,
+            'statistico_nuovo': statistico_nuovo, 'taglie': f'{len(ex)}/{len(co)}',
+            'seed': sog['seed'], 'riassegnazioni': sog['riassegnazioni'],
+            'quantile': sog['quantile'], 'explore': ex, 'confirm': co,
+            'tutte_le_statistiche': {k: round(v, 5) for k, v in oss.items()},
+            'tutte_le_soglie': sog['q95'],
+            'nota': 'cancello congiuntivo: basta un criterio sfondato per rifiutare'}
+
+
 def valida_partizione(riv, morsi_partizione):
     """CANCELLO DI PARTIZIONE — si applica PRIMA di entrare nel merito del KPI.
 
@@ -139,7 +225,9 @@ def valida_partizione(riv, morsi_partizione):
 def giudica_rivendicazione(riv, morsi_partizione):
     """Percorso completo: prima il cancello di partizione, poi — solo se passa — i cinque
     veti di giudica(), che resta invariata."""
-    vp = valida_partizione(riv, morsi_partizione)
+    vp = valida_partizione_v2(riv, morsi_partizione,
+                              carica_prereg()['difetto_cancello_partizione_v1']
+                              ['riparazione']['statistico_scelto'])
     if not vp['passa']:
         return {'rivendicazione': riv['id'], 'modulo': riv['modulo'],
                 'verdetto': 'PARTIZIONE RIFIUTATA', 'validazione_partizione': vp,

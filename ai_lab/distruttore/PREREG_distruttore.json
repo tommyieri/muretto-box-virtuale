@@ -219,6 +219,21 @@
       "CONTROLLO-A": "RIFIUTATO (come gia oggi)",
       "partizione_onesta": "ACCETTATA",
       "patogeni_del_Distruttore": "invariati: NOTO-FALSO KILLED, NOTO-VERO SURVIVES"
+    },
+    "riparazione": {
+      "_natura": "ESITO, calcolato DOPO la dichiarazione (commit cb070e6e). I margini non hanno scelto il criterio: il criterio ha scelto lo statistico.",
+      "statistico_scelto": "delta_media_assoluta",
+      "definizione": "|media(|morso| su explore) - media(|morso| su confirm)| — il modulo ignora il segno, quindi i morsi opposti non si elidono",
+      "q95_dalla_nulla": "ricalcolato alle taglie effettive, seed 20260721, 10000 riassegnazioni, quantile 0.95",
+      "forma_cancello": "CONGIUNTIVA: rifiuta se delta_media (v1) O delta_media_assoluta sfonda la propria soglia",
+      "esito_dei_candidati": {
+        "delta_media": "e' il difetto: su CONTROLLO-B rapporto 0.238, non lo vede",
+        "delta_media_assoluta": "CONTROLLO-B 1.876 RIFIUTA · onesta 0.897 passa -> AMMISSIBILE",
+        "delta_dispersione": "CONTROLLO-B 1.871 RIFIUTA ma onesta 1.146 RIFIUTA -> INAMMISSIBILE, viola il vincolo (ii)",
+        "kolmogorov_smirnov": "CONTROLLO-B 0.750 non rifiuta -> INAMMISSIBILE, non ripara il difetto"
+      },
+      "scelta_forzata": "un solo candidato soddisfa (i) e (ii): la regola di scelta per margine non e' stata neppure necessaria",
+      "conseguenza_dichiarata": "la partizione della proposta reale RIV-traffico-001 (explore fuori panel / confirm = panel) ora viene RIFIUTATA al cancello (delta_media_assoluta 1.179): il confirm contiene Monaco +1.385, un valore estremo assente dall'explore. Era gia' KILLED dai veti, ma ora muore prima, al cancello. Va detto: il cancello v2 e' piu' severo anche su proposte non truccate ma distribuzionalmente sbilanciate."
     }
   }
 }
