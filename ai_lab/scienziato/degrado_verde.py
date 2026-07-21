@@ -342,52 +342,14 @@ def stima_senza_degrado(dati):
 
 # ---------------------------------------------------------------- il pit-loss, dal fondo
 def pit_loss_verde(dati, mod, solo_verdi=True):
-    """(in-lap + out-lap) - attesa pulita ai due giri, mediana sulle sole soste VERDI.
+    """DELEGA a degrado.pit_loss: la guardia verde vive LI', in un punto solo.
 
-    PREREG_degrado_2026.md §7-ter. `degrado.pit_loss()` mediava su TUTTE le soste: ma una
-    sosta fatta sotto safety car costa, in cronometro, i secondi del regime neutralizzato, e
-    ricostruita come "perdita al pit" vale 32-96 s invece di ~20-25. Sotto SC ci si ferma
-    tutti insieme: in meta' delle gare 2026 le soste neutralizzate sono la MAGGIORANZA, e
-    cosi' la mediana - che avrebbe dovuto proteggere - risulta contaminata.
-
-    Non e' una regola nuova: e' la stessa di §0 (il tempo si conta solo sui giri verdi)
-    applicata a una grandezza che e' essa stessa un tempo misurato dal fondo.
-
-    solo_verdi=False -> ritrova esattamente degrado.pit_loss() (serve all'equivalenza).
+    Fino al 21/07/2026 questa funzione conteneva la propria copia della guardia, perche'
+    `degrado.pit_loss` non ce l'aveva. Ora ce l'ha (allineata alla produzione), e due copie
+    della stessa regola sono due copie che possono divergere. Il nome resta perche' e' quello
+    che l'arco degrado usa, ma il corpo e' uno solo.
     """
-    per_drv = {}
-    for r in dati['righe']:
-        if isinstance(r['lap'], (int, float)):
-            per_drv.setdefault(r['drv'], {})[int(r['lap'])] = r
-    eta = fondo.stint_ed_eta(dati['righe'])
-    perdite, scartate = [], 0
-    for drv, giri in per_drv.items():
-        for L, r in giri.items():
-            if fondo.nullo(r['pin']) or L + 1 not in giri:
-                continue
-            r2 = giri[L + 1]
-            if not all(isinstance(x['time'], (int, float)) for x in (r, r2)):
-                continue
-            if not (isinstance(r.get('compound'), str) and isinstance(r2.get('compound'), str)):
-                continue
-            a1 = eta.get((drv, L), (None, None))[1]
-            a2 = eta.get((drv, L + 1), (None, None))[1]
-            if a1 is None or a2 is None or drv not in mod['alpha']:
-                continue
-            if solo_verdi and not (str(r['status']) == '1' and str(r2['status']) == '1'):
-                scartate += 1
-                continue
-            p1 = DG.previsione(mod, dati, drv, L, r['compound'], a1)
-            p2 = DG.previsione(mod, dati, drv, L + 1, r2['compound'], a2)
-            if p1 is None or p2 is None:
-                continue
-            perdite.append((r['time'] + r2['time']) - (p1 + p2))
-    if len(perdite) < 3:
-        return None
-    return {'pit_loss': round(st.median(perdite), 3), 'n_soste_verdi': len(perdite),
-            'n_soste_neutralizzate_scartate': scartate,
-            'iqr': [round(sorted(perdite)[len(perdite) // 4], 2),
-                    round(sorted(perdite)[3 * len(perdite) // 4], 2)]}
+    return DG.pit_loss(dati, mod, solo_verdi)
 
 
 # ---------------------------------------------------------------- C3: soglia + rampa
