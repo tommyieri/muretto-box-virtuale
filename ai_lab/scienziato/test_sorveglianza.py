@@ -22,6 +22,7 @@ from contextlib import redirect_stdout
 QUI = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, QUI)
 
+import fondo
 import sorveglianza as S
 
 
@@ -54,7 +55,7 @@ def main():
 
         # ---- 2 scatta: si finge che un circuito avesse solo 2 stagioni
         cavia = next(k for k, v in base['celle'].items()
-                     if v['stato'] == 'giudicabile' and k.endswith('|2023-25'))
+                     if v['stato'] == 'giudicabile' and k.endswith('|' + fondo.REGIME_SUOLO))
         finto = json.loads(json.dumps(base))
         finto['celle'][cavia] = {'anni': base['celle'][cavia]['anni'][:2],
                                  'stato': 'indecidibile'}

@@ -19,6 +19,7 @@ sys.path.insert(0, QUI)
 
 import fondo
 import scheletro
+import sigillo_null
 from fenomeno_fuel import FenomenoFuel
 
 
@@ -57,6 +58,11 @@ def main():
     p.add_argument('--controllo-fondo', action='store_true')
     p.add_argument('--n-perm', type=int, default=200)
     a = p.parse_args()
+
+    # ZONA A CONTATTO UMANO OBBLIGATO: se il permutation-null e' stato toccato,
+    # non si producono numeri finche' il tavolo non autorizza.
+    if not sigillo_null.pretendi_integro('run_scienziato.py'):
+        return 0
 
     if a.controllo_fondo:
         controllo_fondo()

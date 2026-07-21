@@ -1,0 +1,43 @@
+{
+ "zone": {
+  "fenomeno_fuel.FenomenoFuel.null": {
+   "sha256": "aef09fded5059d86",
+   "perche": "il null di permutazione degli offset di stint"
+  },
+  "scheletro.cosa_so_fare": {
+   "sha256": "fcc82408c6308919",
+   "perche": "aggrega il null sulla stessa statistica dell osservato"
+  },
+  "scheletro.bootstrap_a_blocchi": {
+   "sha256": "2d8f31f76783abaa",
+   "perche": "ricampionamento a blocchi: stesso genere di strumento"
+  },
+  "percircuito.null_etichette": {
+   "sha256": "7e57220e934ffcaa",
+   "perche": "null con le etichette di circuito rimescolate"
+  },
+  "percircuito.leave_one_year_out": {
+   "sha256": "6ee2112cefaf4f22",
+   "perche": "chiamata DENTRO il null: modificarla cambia il null"
+  },
+  "metro2.soglia_da_nulla": {
+   "sha256": "ff0bdcea5a97ed4a",
+   "perche": "deriva la soglia del metro dalla nulla"
+  }
+ },
+ "storia": [
+  {
+   "attore": "Tommi (decisione del tavolo 21/07/2026)",
+   "nota": "cablatura iniziale: il permutation-null diventa zona a contatto umano obbligato",
+   "data": "2026-07-21",
+   "zone": {
+    "fenomeno_fuel.FenomenoFuel.null": "aef09fded5059d86",
+    "scheletro.cosa_so_fare": "fcc82408c6308919",
+    "scheletro.bootstrap_a_blocchi": "2d8f31f76783abaa",
+    "percircuito.null_etichette": "7e57220e934ffcaa",
+    "percircuito.leave_one_year_out": "6ee2112cefaf4f22",
+    "metro2.soglia_da_nulla": "ff0bdcea5a97ed4a"
+   }
+  }
+ ]
+}

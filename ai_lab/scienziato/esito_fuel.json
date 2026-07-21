@@ -33,7 +33,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.075,
     "blocco": "2023 Abu Dhabi",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9483
    },
    {
@@ -66,7 +66,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0321,
     "blocco": "2023 Australian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9483
    },
    {
@@ -99,7 +99,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0573,
     "blocco": "2023 Austrian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9577
    },
    {
@@ -132,7 +132,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0437,
     "blocco": "2023 Azerbaijan",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9412
    },
    {
@@ -165,7 +165,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.1198,
     "blocco": "2023 Bahrain",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9474
    },
    {
@@ -198,7 +198,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0284,
     "blocco": "2023 British",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9423
    },
    {
@@ -231,7 +231,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0376,
     "blocco": "2023 Canadian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9571
    },
    {
@@ -264,7 +264,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0642,
     "blocco": "2023 Hungarian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9571
    },
    {
@@ -297,7 +297,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0623,
     "blocco": "2023 Italian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9412
    },
    {
@@ -330,7 +330,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.1138,
     "blocco": "2023 Japanese",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9434
    },
    {
@@ -363,7 +363,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0257,
     "blocco": "2023 Las Vegas",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.94
    },
    {
@@ -396,7 +396,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0417,
     "blocco": "2023 Mexico City",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9577
    },
    {
@@ -429,7 +429,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0175,
     "blocco": "2023 Miami",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9474
    },
    {
@@ -462,7 +462,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0447,
     "blocco": "2023 Qatar",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9474
    },
    {
@@ -495,7 +495,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0133,
     "blocco": "2023 Saudi Arabian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.94
    },
    {
@@ -528,7 +528,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0749,
     "blocco": "2023 Singapore",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9516
    },
    {
@@ -561,7 +561,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.065,
     "blocco": "2023 Spanish",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9545
    },
    {
@@ -594,7 +594,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0575,
     "blocco": "2023 São Paulo",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9577
    },
    {
@@ -627,7 +627,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.087,
     "blocco": "2023 United States",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9464
    },
    {
@@ -660,7 +660,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0623,
     "blocco": "2024 Abu Dhabi",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9483
    },
    {
@@ -693,7 +693,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0652,
     "blocco": "2024 Australian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9483
    },
    {
@@ -726,7 +726,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0691,
     "blocco": "2024 Austrian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9577
    },
    {
@@ -759,7 +759,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0614,
     "blocco": "2024 Azerbaijan",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9412
    },
    {
@@ -792,7 +792,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.1199,
     "blocco": "2024 Bahrain",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9474
    },
    {
@@ -825,7 +825,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0548,
     "blocco": "2024 Belgian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9318
    },
    {
@@ -858,7 +858,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.1222,
     "blocco": "2024 Chinese",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9464
    },
    {
@@ -891,7 +891,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0539,
     "blocco": "2024 Dutch",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9583
    },
    {
@@ -924,7 +924,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0544,
     "blocco": "2024 Emilia Romagna",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9524
    },
    {
@@ -957,7 +957,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0852,
     "blocco": "2024 Hungarian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9571
    },
    {
@@ -990,7 +990,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0525,
     "blocco": "2024 Italian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9434
    },
    {
@@ -1023,7 +1023,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.1378,
     "blocco": "2024 Japanese",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9434
    },
    {
@@ -1056,7 +1056,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.133,
     "blocco": "2024 Las Vegas",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.94
    },
    {
@@ -1089,7 +1089,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0555,
     "blocco": "2024 Mexico City",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9577
    },
    {
@@ -1122,7 +1122,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0316,
     "blocco": "2024 Miami",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9474
    },
    {
@@ -1155,7 +1155,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0488,
     "blocco": "2024 Monaco",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9615
    },
    {
@@ -1188,7 +1188,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": -0.0022,
     "blocco": "2024 Qatar",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9474
    },
    {
@@ -1221,7 +1221,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0494,
     "blocco": "2024 Saudi Arabian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.94
    },
    {
@@ -1254,7 +1254,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0436,
     "blocco": "2024 Singapore",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9516
    },
    {
@@ -1287,7 +1287,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0396,
     "blocco": "2024 United States",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9464
    },
    {
@@ -1320,7 +1320,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0756,
     "blocco": "2025 Abu Dhabi",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9483
    },
    {
@@ -1353,7 +1353,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0567,
     "blocco": "2025 Austrian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9571
    },
    {
@@ -1386,7 +1386,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0178,
     "blocco": "2025 Azerbaijan",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9412
    },
    {
@@ -1419,7 +1419,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.145,
     "blocco": "2025 Bahrain",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9474
    },
    {
@@ -1452,7 +1452,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0405,
     "blocco": "2025 Canadian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9571
    },
    {
@@ -1485,7 +1485,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0385,
     "blocco": "2025 Chinese",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9464
    },
    {
@@ -1518,7 +1518,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0794,
     "blocco": "2025 Dutch",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9583
    },
    {
@@ -1551,7 +1551,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0507,
     "blocco": "2025 Emilia Romagna",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9524
    },
    {
@@ -1584,7 +1584,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0524,
     "blocco": "2025 Hungarian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9571
    },
    {
@@ -1617,7 +1617,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0145,
     "blocco": "2025 Italian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9434
    },
    {
@@ -1650,7 +1650,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0369,
     "blocco": "2025 Japanese",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9434
    },
    {
@@ -1683,7 +1683,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.034,
     "blocco": "2025 Las Vegas",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.94
    },
    {
@@ -1716,7 +1716,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0538,
     "blocco": "2025 Mexico City",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9577
    },
    {
@@ -1749,7 +1749,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0312,
     "blocco": "2025 Monaco",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9615
    },
    {
@@ -1782,7 +1782,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0243,
     "blocco": "2025 Qatar",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9474
    },
    {
@@ -1815,7 +1815,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0502,
     "blocco": "2025 Saudi Arabian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.94
    },
    {
@@ -1848,7 +1848,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0533,
     "blocco": "2025 Singapore",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9516
    },
    {
@@ -1881,7 +1881,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0765,
     "blocco": "2025 Spanish",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9545
    },
    {
@@ -1914,7 +1914,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0655,
     "blocco": "2025 São Paulo",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9577
    },
    {
@@ -1947,7 +1947,7 @@
     "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0475,
     "blocco": "2025 United States",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "kernel": 2.9464
    },
    {
@@ -2284,62 +2284,62 @@
   "esclusi": [
    {
     "blocco": "2023 Belgian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    },
    {
     "blocco": "2023 Dutch",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    },
    {
     "blocco": "2023 Monaco",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    },
    {
     "blocco": "2024 British",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    },
    {
     "blocco": "2024 Canadian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    },
    {
     "blocco": "2024 Spanish",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    },
    {
     "blocco": "2024 São Paulo",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    },
    {
     "blocco": "2025 Australian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    },
    {
     "blocco": "2025 Belgian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G3 rango non pieno"
    },
    {
     "blocco": "2025 British",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    },
    {
     "blocco": "2025 Miami",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    }
   ],
   "regimi": {
-   "2023-25": {
+   "2022-25": {
     "mediana": 3.151,
     "media": 3.2807,
     "ci95": [
@@ -2365,7 +2365,7 @@
    }
   },
   "null": {
-   "2023-25": {
+   "2022-25": {
     "n_permutazioni": 400,
     "n_gare": 56,
     "mediana_null_aggregato": 0.005,
@@ -2384,7 +2384,7 @@
   },
   "confronto_regimi": {
    "regimi": [
-    "2023-25",
+    "2022-25",
     "2026"
    ],
    "differenza": 0.9571,
@@ -2401,7 +2401,7 @@
  },
  "B2": {
   "per_regime": {
-   "2023-25": {
+   "2022-25": {
     "esito": "UGUALE",
     "kernel": 2.9474,
     "ricostruito": 3.151,
@@ -2847,7 +2847,7 @@
   "se_diverso": "FERMO: non si monta nulla, non si sostituisce il numero"
  },
  "fuori_campione": {
-  "2023-25": {
+  "2022-25": {
    "possibile": true,
    "n_calibrazione": 30,
    "n_verifica": 29,
@@ -2945,7 +2945,7 @@
  },
  "robustezze": {
   "aria_1.0s": {
-   "2023-25": {
+   "2022-25": {
     "mediana": 3.1342,
     "ci95": [
      2.9314,
@@ -2963,7 +2963,7 @@
    }
   },
   "aria_3.0s": {
-   "2023-25": {
+   "2022-25": {
     "mediana": 3.1268,
     "ci95": [
      2.8328,
@@ -2981,7 +2981,7 @@
    }
   },
   "nessun_filtro_traffico": {
-   "2023-25": {
+   "2022-25": {
     "mediana": 3.1841,
     "ci95": [
      2.9821,
@@ -2999,7 +2999,7 @@
    }
   },
   "eta_dal_campo_life": {
-   "2023-25": {
+   "2022-25": {
     "mediana": 3.1635,
     "ci95": [
      2.926,
@@ -3017,7 +3017,7 @@
    }
   },
   "senza_livelli_compound": {
-   "2023-25": {
+   "2022-25": {
     "mediana": 3.2012,
     "ci95": [
      2.9804,
@@ -3035,7 +3035,7 @@
    }
   },
   "con_eta_quadratica": {
-   "2023-25": {
+   "2022-25": {
     "mediana": 3.1459,
     "ci95": [
      2.9131,
@@ -3056,13 +3056,13 @@
  "B3": {
   "fronti": [
    {
-    "fronte": "ampiezza IC95 regime 2023-25",
+    "fronte": "ampiezza IC95 regime 2022-25",
     "misura": 0.477,
     "relativa": 0.151,
     "n_blocchi": 59
    },
    {
-    "fronte": "gare con intervallo piu largo, regime 2023-25",
+    "fronte": "gare con intervallo piu largo, regime 2022-25",
     "gare": [
      {
       "blocco": "2024 Saudi Arabian",
@@ -3097,7 +3097,7 @@
     ]
    },
    {
-    "fronte": "dispersione FRA circuiti, regime 2023-25 (il kernel assume un valore unico)",
+    "fronte": "dispersione FRA circuiti, regime 2022-25 (il kernel assume un valore unico)",
     "n": 59,
     "min": 1.7916,
     "q25": 2.7184,
@@ -3108,7 +3108,7 @@
     "sd": 1.0136
    },
    {
-    "fronte": "desincronizzazione debole (|corr|>0.75), regime 2023-25",
+    "fronte": "desincronizzazione debole (|corr|>0.75), regime 2022-25",
     "n_gare": 8,
     "gare": [
      "2023 Australian",
@@ -3185,63 +3185,63 @@
   "esclusi": [
    {
     "blocco": "2023 Belgian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    },
    {
     "blocco": "2023 Dutch",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    },
    {
     "blocco": "2023 Monaco",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    },
    {
     "blocco": "2024 British",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    },
    {
     "blocco": "2024 Canadian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    },
    {
     "blocco": "2024 Spanish",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    },
    {
     "blocco": "2024 São Paulo",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    },
    {
     "blocco": "2025 Australian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    },
    {
     "blocco": "2025 Belgian",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G3 rango non pieno"
    },
    {
     "blocco": "2025 British",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    },
    {
     "blocco": "2025 Miami",
-    "regime": "2023-25",
+    "regime": "2022-25",
     "motivo": "G1 pioggia (wR)"
    }
   ],
   "robustezze": {
    "aria_1.0s": {
-    "2023-25": {
+    "2022-25": {
      "mediana": 3.1342,
      "ci95": [
       2.9314,
@@ -3259,7 +3259,7 @@
     }
    },
    "aria_3.0s": {
-    "2023-25": {
+    "2022-25": {
      "mediana": 3.1268,
      "ci95": [
       2.8328,
@@ -3277,7 +3277,7 @@
     }
    },
    "nessun_filtro_traffico": {
-    "2023-25": {
+    "2022-25": {
      "mediana": 3.1841,
      "ci95": [
       2.9821,
@@ -3295,7 +3295,7 @@
     }
    },
    "eta_dal_campo_life": {
-    "2023-25": {
+    "2022-25": {
      "mediana": 3.1635,
      "ci95": [
       2.926,
@@ -3313,7 +3313,7 @@
     }
    },
    "senza_livelli_compound": {
-    "2023-25": {
+    "2022-25": {
      "mediana": 3.2012,
      "ci95": [
       2.9804,
@@ -3331,7 +3331,7 @@
     }
    },
    "con_eta_quadratica": {
-    "2023-25": {
+    "2022-25": {
      "mediana": 3.1459,
      "ci95": [
       2.9131,
@@ -3350,7 +3350,7 @@
    }
   },
   "fuori_campione": {
-   "2023-25": {
+   "2022-25": {
     "possibile": true,
     "n_calibrazione": 30,
     "n_verifica": 29,

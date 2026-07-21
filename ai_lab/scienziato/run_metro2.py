@@ -17,9 +17,11 @@ import sys
 QUI = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, QUI)
 
+import fondo
 import metro2
 import percircuito as PC
 import scheletro
+import sigillo_null
 from fenomeno_fuel import FenomenoFuel, KERNEL_SWING
 
 MIN_ANNI = PC.MIN_ANNI
@@ -42,7 +44,7 @@ def costruisci(cache=None):
 def anni_regime(tab_c, regime, circuito, reg):
     """Anni di quel circuito appartenenti a quel regime."""
     return sorted(a for a in tab_c if regime.get(f'{a} {_nome_grezzo(circuito, a, tab_c)}',
-                                                 '2026' if a == '2026' else '2023-25') == reg)
+                                                 fondo.regime(a)) == reg)
 
 
 def _nome_grezzo(c, a, tab_c):
@@ -50,9 +52,25 @@ def _nome_grezzo(c, a, tab_c):
 
 
 def main():
+    # ZONA A CONTATTO UMANO OBBLIGATO: se il permutation-null e' stato toccato,
+    # non si producono numeri finche' il tavolo non autorizza.
+    if not sigillo_null.pretendi_integro('run_metro2.py'):
+        return 0
+
+    import argparse
+    ap = argparse.ArgumentParser(description='Metro a due condizioni.')
+    ap.add_argument('--rigenera', action='store_true',
+                    help='riscrive predizioni_congelate.json (serve --attore)')
+    ap.add_argument('--attore', default=None)
+    arg = ap.parse_args()
+    if arg.rigenera and not arg.attore:
+        print('Rigenerare le predizioni congelate senza un umano che lo firma non vale: '
+              'serve --attore.')
+        return 0
+
     cache = {}
     tab, regime, ric = costruisci(cache)
-    REG = '2023-25'
+    REG = fondo.REGIME_SUOLO
 
     riga('SOGLIA della condizione (ii) — DERIVATA dai dati, non fissata a mano')
     celle_per_anno = {}
@@ -188,32 +206,48 @@ def main():
                      'celle che non hanno ispirato il metro',
         'cross_regime_indizio': incroci}
 
-    with open(os.path.join(QUI, 'predizioni_congelate.json'), 'w') as f:
-        json.dump(predizioni, f, ensure_ascii=False, indent=1, default=str)
-        f.write('\n')
-    print('\n  scritto (SOLA LETTURA d ora in poi): ai_lab/scienziato/predizioni_congelate.json')
+    dest_cong = os.path.join(QUI, 'predizioni_congelate.json')
+    if os.path.exists(dest_cong) and not arg.rigenera:
+        print('\n  predizioni_congelate.json ESISTE GIA: NON lo riscrivo.')
+        print('  Una predizione che si riscrive non e congelata, e il test cieco non vale')
+        print('  piu niente. Per rigenerarlo davvero (decisione del tavolo):')
+        print('    python3 ai_lab/scienziato/run_metro2.py --rigenera --attore "Tommi"')
+    else:
+        with open(dest_cong, 'w') as f:
+            json.dump(predizioni, f, ensure_ascii=False, indent=1, default=str)
+            f.write('\n')
+        print('\n  scritto (SOLA LETTURA d ora in poi): '
+              'ai_lab/scienziato/predizioni_congelate.json')
 
     # stato iniziale della sorveglianza: le celle GIA' giudicabili stanotte sono la
     # linea di base (hanno ispirato il metro) e vengono marcate come gia' emesse, cosi'
-    # la sorveglianza non le spaccia mai per verdetti freschi.
-    foto = {}
-    for x in ric['per_blocco']:
-        cc, aa = PC.circuito(x['blocco'])
-        foto.setdefault(f'{cc}|{x["regime"]}', []).append(aa)
-    celle = {k: {'anni': sorted(v),
-                 'stato': 'giudicabile' if len(v) >= MIN_ANNI else 'indecidibile'}
-             for k, v in foto.items()}
-    stato = {'celle': celle,
-             'verdetti_emessi': sorted(k for k, v in celle.items()
-                                       if v['stato'] == 'giudicabile'),
-             'nota_linea_di_base': 'le celle gia giudicabili al commit delle predizioni '
-                                   'sono quelle che hanno ISPIRATO il metro: marcate come '
-                                   'gia emesse, non produrranno mai un verdetto "fresco"',
-             'soglia_congelata': SOGLIA}
-    with open(os.path.join(QUI, 'sorveglianza_stato.json'), 'w') as f:
-        json.dump(stato, f, ensure_ascii=False, indent=1)
-        f.write('\n')
-    print('  scritto: ai_lab/scienziato/sorveglianza_stato.json (linea di base)')
+    # la sorveglianza non le spaccia mai per verdetti freschi. Anche questo file non si
+    # riscrive: perderebbe la memoria di CHI era linea di base.
+    import hashlib
+    dest_st = os.path.join(QUI, 'sorveglianza_stato.json')
+    if os.path.exists(dest_st) and not arg.rigenera:
+        print('  sorveglianza_stato.json ESISTE GIA: NON lo riscrivo (linea di base intatta).')
+    else:
+        foto = {}
+        for x in ric['per_blocco']:
+            cc, aa = PC.circuito(x['blocco'])
+            foto.setdefault(f'{cc}|{x["regime"]}', []).append(aa)
+        celle = {k: {'anni': sorted(v),
+                     'stato': 'giudicabile' if len(v) >= MIN_ANNI else 'indecidibile'}
+                 for k, v in foto.items()}
+        stato = {'celle': celle,
+                 'verdetti_emessi': sorted(k for k, v in celle.items()
+                                           if v['stato'] == 'giudicabile'),
+                 'nota_linea_di_base': 'le celle gia giudicabili al commit delle predizioni '
+                                       'sono quelle che hanno ISPIRATO il metro: marcate come '
+                                       'gia emesse, non produrranno mai un verdetto "fresco"',
+                 'soglia_congelata': SOGLIA,
+                 'sha256_predizioni_congelate': hashlib.sha256(
+                     open(dest_cong, 'rb').read()).hexdigest()[:16]}
+        with open(dest_st, 'w') as f:
+            json.dump(stato, f, ensure_ascii=False, indent=1)
+            f.write('\n')
+        print('  scritto: ai_lab/scienziato/sorveglianza_stato.json (linea di base)')
     return 0
 
 

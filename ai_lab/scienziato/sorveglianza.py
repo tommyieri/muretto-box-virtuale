@@ -34,6 +34,7 @@ sys.path.insert(0, QUI)
 import metro2
 import percircuito as PC
 import scheletro
+import sigillo_null
 from fenomeno_fuel import FenomenoFuel
 
 CONGELATE = os.path.join(QUI, 'predizioni_congelate.json')
@@ -67,6 +68,11 @@ def main():
     p = argparse.ArgumentParser(description='Sorveglianza per-circuito.')
     p.add_argument('--stato', action='store_true', help='stampa lo stato senza cambiarlo')
     a = p.parse_args()
+
+    # ZONA A CONTATTO UMANO OBBLIGATO: se il permutation-null e' stato toccato,
+    # non si producono numeri finche' il tavolo non autorizza.
+    if not sigillo_null.pretendi_integro('sorveglianza.py'):
+        return 0
 
     if not os.path.exists(CONGELATE):
         print('Nessuna predizione congelata: eseguire prima run_metro2.py. Niente da sorvegliare.')

@@ -14,8 +14,10 @@ import sys
 QUI = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, QUI)
 
+import fondo
 import percircuito as PC
 import scheletro
+import sigillo_null
 from fenomeno_fuel import FenomenoFuel, KERNEL_SWING
 
 
@@ -26,6 +28,11 @@ def riga(t):
 
 
 def main():
+    # ZONA A CONTATTO UMANO OBBLIGATO: se il permutation-null e' stato toccato,
+    # non si producono numeri finche' il tavolo non autorizza.
+    if not sigillo_null.pretendi_integro('run_percircuito.py'):
+        return 0
+
     cache = {}
     riga('FASE 1 — ricostruzione dal fondo, per CIRCUITO x ANNO')
     ric = scheletro.cosa_so_fare(FenomenoFuel(cache=cache), n_perm=0, verbose=False)
@@ -48,7 +55,7 @@ def main():
         print(f"  {c:18s} " + ' '.join(f'{s:>16s}' for s in celle)
               + (f"   {st.mean(cs):+.2e}" if cs else '        --'))
 
-    riga('FASE 2 — il test di stabilita (>=3 anni 2023-25)')
+    riga(f'FASE 2 — il test di stabilita (>=3 anni del regime {fondo.REGIME_SUOLO})')
     print(f"  porta di potenza: INDECIDIBILE se <3 anni o semiampiezza IC95 media >= "
           f"{PC.MAX_SEMIAMPIEZZA} s")
     print('  Q di Cochran contro chi2_95(k-1); tau = oscillazione anno-su-anno in secondi\n')
@@ -82,7 +89,7 @@ def main():
     bucket_di = {s['circuito']: b for b, v in bucket.items() for s in v}
     riga('FASE 2b — LA PROVA: predizione fuori campione (leave-one-year-out)')
     celle = [{'circuito': PC.circuito(x['blocco'])[0], 'anno': PC.circuito(x['blocco'])[1],
-              'valore': x['valore']} for x in ric['per_blocco'] if x['regime'] == '2023-25']
+              'valore': x['valore']} for x in ric['per_blocco'] if x['regime'] == fondo.REGIME_SUOLO]
     loyo = PC.leave_one_year_out(celle)
     print(f"  {loyo['n_celle']} celle tenute fuori, {loyo['n_circuiti']} circuiti con >=3 anni")
     print(f"  errore mediano PER-CIRCUITO : {loyo['errore_mediano_percircuito']:.3f} s")
@@ -108,7 +115,7 @@ def main():
               f"{d['err_globale']:6.3f}   [{bucket_di.get(c, '?')}]")
 
     riga('FASE 3 — quanto costa la costante (informazione, NON azione)')
-    glob_ric = ric['regimi']['2023-25']['mediana']
+    glob_ric = ric['regimi'][fondo.REGIME_SUOLO]['mediana']
     print(f"  numero unico del kernel      : {KERNEL_SWING:.3f} s (x(N-1)/N ~ 2,95 s)")
     print(f"  globale ricostruito dal fondo: {glob_ric:+.3f} s\n")
     print(f"  {'circuito':18s} {'per-circuito':>22s} {'vs kernel':>10s} {'vs globale ric.':>16s}")

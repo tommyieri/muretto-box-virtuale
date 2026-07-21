@@ -33,6 +33,20 @@ CACHE_2026 = {'Australian': 'Australia', 'Austrian': 'Austria', 'Barcelona': 'Sp
               'Miami': 'Miami', 'Monaco': 'Monaco'}
 
 
+# CHIAMATA DI DOMINIO (Tommi, 21/07/2026): il 2022 e' la STESSA era regolamentare a
+# effetto suolo del 2023-25, utilizzabile ai fini carburante/passo. Il regime tecnico si
+# chiama "2022-25". Cablato qui, in un punto solo: quando data/ti_archive/2022/ comparira',
+# le sue gare entreranno nel regime da sole, senza toccare altro codice.
+REGIME_SUOLO = '2022-25'
+REGIME_2026 = '2026'
+ANNI_SUOLO = (2022, 2023, 2024, 2025)
+
+
+def regime(anno):
+    """Il regime tecnico di una stagione. I due regimi non si mescolano mai."""
+    return REGIME_SUOLO if int(anno) in ANNI_SUOLO else REGIME_2026
+
+
 def nullo(x):
     return x is None or str(x) == 'None'
 
@@ -40,7 +54,7 @@ def nullo(x):
 # ---------------------------------------------------------------- blocchi
 def elenco_blocchi():
     """Un blocco = una GARA. Blocchi indipendenti, mai osservazioni.
-    Regime dichiarato: '2023-25' e '2026' non si mescolano mai."""
+    Regime dichiarato: '2022-25' (era a effetto suolo) e '2026' non si mescolano mai."""
     b = []
     for anno in sorted(os.listdir(ARCHIVIO)):
         d = os.path.join(ARCHIVIO, anno)
@@ -50,12 +64,13 @@ def elenco_blocchi():
             p = os.path.join(d, gp, 'Race.json')
             if os.path.exists(p):
                 b.append({'id': f'{anno} {gp.replace(" Grand Prix", "")}', 'anno': int(anno),
-                          'regime': '2026' if anno == '2026' else '2023-25', 'percorso': p})
+                          'regime': regime(anno), 'percorso': p})
     presenti = {x['id'].split(' ', 1)[1] for x in b if x['anno'] == 2026}
     for f, nome in sorted(CACHE_2026.items()):
         p = os.path.join(CACHE, f + '.json')
         if os.path.exists(p) and os.path.getsize(p) > 1000 and nome not in presenti:
-            b.append({'id': f'2026 {nome}', 'anno': 2026, 'regime': '2026', 'percorso': p})
+            b.append({'id': f'2026 {nome}', 'anno': 2026, 'regime': REGIME_2026,
+                      'percorso': p})
     return sorted(b, key=lambda x: x['id'])
 
 
