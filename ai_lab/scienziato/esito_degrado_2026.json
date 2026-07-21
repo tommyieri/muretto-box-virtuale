@@ -1560,5 +1560,182 @@
    "cancello di calibrazione": 5,
    "mescola SOFT senza rho": 2
   }
+ },
+ "C3": {
+  "informativo": true,
+  "motivo_declassamento": "C2 ha falsificato il cliff",
+  "griglia_k": [
+   {
+    "k": 8,
+    "errore_calibrazione": 43.36,
+    "gamma": {
+     "HARD": 0.05348,
+     "MEDIUM": 0.08521,
+     "SOFT": 0.05161
+    }
+   },
+   {
+    "k": 10,
+    "errore_calibrazione": 40.572,
+    "gamma": {
+     "HARD": 0.04218,
+     "MEDIUM": 0.08101,
+     "SOFT": 0.02722
+    }
+   },
+   {
+    "k": 12,
+    "errore_calibrazione": 36.758,
+    "gamma": {
+     "HARD": 0.03085,
+     "MEDIUM": 0.07228,
+     "SOFT": 0.0038
+    }
+   },
+   {
+    "k": 14,
+    "errore_calibrazione": 40.934,
+    "gamma": {
+     "HARD": 0.0174,
+     "MEDIUM": 0.07035,
+     "SOFT": 0.01771
+    }
+   },
+   {
+    "k": 16,
+    "errore_calibrazione": 41.59,
+    "gamma": {
+     "HARD": 0.00649,
+     "MEDIUM": 0.07243,
+     "SOFT": 0.01253
+    }
+   },
+   {
+    "k": 18,
+    "errore_calibrazione": 38.642,
+    "gamma": {
+     "HARD": -0.00876,
+     "MEDIUM": 0.07752,
+     "SOFT": 0.01362
+    }
+   },
+   {
+    "k": 20,
+    "errore_calibrazione": 39.116,
+    "gamma": {
+     "HARD": -0.0125,
+     "MEDIUM": 0.08207,
+     "SOFT": 0.01699
+    }
+   },
+   {
+    "k": 22,
+    "errore_calibrazione": 39.403,
+    "gamma": {
+     "HARD": -0.01582,
+     "MEDIUM": 0.09067,
+     "SOFT": 0.02114
+    }
+   },
+   {
+    "k": 24,
+    "errore_calibrazione": 39.791,
+    "gamma": {
+     "HARD": -0.02274,
+     "SOFT": 0.00394,
+     "MEDIUM": 0.07117
+    }
+   },
+   {
+    "k": 26,
+    "errore_calibrazione": 39.036,
+    "gamma": {
+     "MEDIUM": 0.07557,
+     "SOFT": 0.03477,
+     "HARD": 0.0751
+    }
+   }
+  ],
+  "k_scelto": 12,
+  "rho": {
+   "HARD": 0.03332,
+   "MEDIUM": -0.0149,
+   "SOFT": 0.00797
+  },
+  "gamma": {
+   "HARD": 0.03085,
+   "MEDIUM": 0.07228,
+   "SOFT": 0.0038
+  },
+  "guadagno_ricostruzione_oos": {
+   "mediana": -2.125,
+   "ci95": [
+    -10.2909,
+    0.7115
+   ],
+   "n_gare": 5
+  },
+  "placebo": {
+   "n_estrazioni": 40,
+   "guadagno_vero": -2.125,
+   "guadagno_finto_mediano": -2.6053,
+   "quota_finti_almeno_quanto_il_vero": 0.35,
+   "UCCIDE": true,
+   "SIGILLO": "NULL NUOVO, NON auto-sigillato: lo sigilla Tommi al merge con --attore, se il tavolo lo vuole permanente"
+  },
+  "X_c3": {
+   "etichetta": "C3 soglia+rampa — fuori campione",
+   "n_casi": 26,
+   "n_gare": 4,
+   "n_vinti": 1,
+   "quota": 0.0385,
+   "margine_mediano_vittorie": 91.77,
+   "tol": 78.46,
+   "G_stella": 1.5,
+   "esclusi": {
+    "giri mancanti (ritiro o buchi)": 62,
+    "cancello di calibrazione": 1,
+    "mescola SOFT senza rho": 2,
+    "rientro in traffico": 2
+   },
+   "per_gara": {
+    "2026 Austria": {
+     "n": 7,
+     "vinti": 1,
+     "quota": 0.1429
+    },
+    "2026 British": {
+     "n": 4,
+     "vinti": 0,
+     "quota": 0.0
+    },
+    "2026 Cina": {
+     "n": 8,
+     "vinti": 0,
+     "quota": 0.0
+    },
+    "2026 Miami": {
+     "n": 7,
+     "vinti": 0,
+     "quota": 0.0
+    }
+   },
+   "gare_verifica": [
+    "2026 Austria",
+    "2026 British",
+    "2026 Cina",
+    "2026 Miami",
+    "2026 Spagna"
+   ]
+  },
+  "differenza_appaiata": {
+   "mediana": 0.0,
+   "ci95": [
+    -0.125,
+    0.0
+   ]
+  },
+  "SUPERA": false,
+  "esito": "DICHIARATO E SCARTATO"
  }
 }

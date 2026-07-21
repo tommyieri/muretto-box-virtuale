@@ -237,6 +237,29 @@ età, con la stessa procedura e lo stesso numero di gradi di libertà, ripetuto 
 Se C3 non supera margine **e** placebo: **dichiarato e scartato.** Nessun secondo tentativo
 mascherato da «variante», nessuna riapertura in questa sessione.
 
+### Due precisazioni, scritte prima di eseguire C3 (e dopo che C2 ha detto NO)
+
+C2 ha **falsificato** la predizione del cliff: il residuo per fascia di età gomma è piatto, non
+cresce nella coda. Per il prereg, C3 andava eseguito «**se e solo se** C2 indica il cliff».
+Lo eseguo lo stesso, ma **declassato a INFORMATIVO** e con il freno intatto: serve a mostrare
+che cosa fa il termine in più quando il fenomeno che dovrebbe catturare **non c'è**. Un C3 che
+vincesse qui sarebbe un allarme sul metro, non una scoperta.
+
+1. **Un solo ginocchio, comune alle mescole** (non `k_c` per mescola come in §6). Con 5 gare di
+   calibrazione, tre ginocchi sono tre parametri in più su un fondo che non regge già una
+   pendenza stabile. È una semplificazione nella direzione **conservativa** (meno gradi di
+   libertà, meno flessibilità da regalare al modello nuovo).
+2. **Il placebo gira sul guadagno di RICOSTRUZIONE**, `|sim(reale) − reale|` fuori campione,
+   non sulla X. Motivo pratico dichiarato: la X richiede l'enumerazione completa delle
+   strategie per ogni pilota, e ripeterla per molte decine di ginocchi finti non è
+   eseguibile. Il guadagno di ricostruzione è la grandezza **a monte** della X: se il
+   ginocchio finto guadagna quanto quello vero **lì**, la flessibilità è l'unica cosa che sta
+   lavorando, e la X non può che ereditarlo.
+
+**Il placebo del ginocchio finto è un NULL NUOVO: NON lo auto-sigillo.** Resta fuori dal
+sigillo, dichiarato tale; se il tavolo lo vuole permanente, lo sigilla Tommi al merge con
+`--attore`.
+
 ---
 
 ## 7. Confondimenti, dichiarati prima di misurare

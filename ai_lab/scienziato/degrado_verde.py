@@ -388,3 +388,53 @@ def pit_loss_verde(dati, mod, solo_verdi=True):
             'n_soste_neutralizzate_scartate': scartate,
             'iqr': [round(sorted(perdite)[len(perdite) // 4], 2),
                     round(sorted(perdite)[3 * len(perdite) // 4], 2)]}
+
+
+# ---------------------------------------------------------------- C3: soglia + rampa
+def stima_cliff(dati, k):
+    """C3: degrado(c, eta) = rho_c*eta + gamma_c*max(0, eta - k). UN SOLO ginocchio comune
+    alle mescole (PREREG §6, precisazione 1): con 5 gare di calibrazione tre ginocchi sono
+    tre parametri in piu' su un fondo che non regge gia' una pendenza stabile."""
+    import numpy as np
+    righe = [r for r in dati['stima'] if r['compound'] in DG._compound_ok(dati['stima'])]
+    if len(righe) < DG.MIN_GIRI:
+        return {'escluso': f'{len(righe)} giri in aria libera'}
+    piloti = sorted({r['drv'] for r in righe})
+    comp = sorted({r['compound'] for r in righe})
+    if len(comp) < 2:
+        return {'escluso': 'una sola mescola identificabile'}
+    if not any(r['eta'] > k for r in righe):
+        return {'escluso': f'nessun giro oltre il ginocchio k={k}'}
+    rif = 'MEDIUM' if 'MEDIUM' in comp else comp[0]
+    di = {d: i for i, d in enumerate(piloti)}
+    nd, nc = len(piloti), len(comp)
+    altri = [c for c in comp if c != rif]
+    i_delta = {c: nd + j for j, c in enumerate(altri)}
+    i_beta = nd + len(altri)
+    i_rho = {c: i_beta + 1 + j for j, c in enumerate(comp)}
+    i_gam = {c: i_beta + 1 + nc + j for j, c in enumerate(comp)}
+    cols = i_beta + 1 + 2 * nc
+    lap_m = st.mean(r['lap'] for r in righe)
+    X = np.zeros((len(righe), cols))
+    y = np.array([r['tfc'] for r in righe], float)
+    for i, r in enumerate(righe):
+        X[i, di[r['drv']]] = 1.0
+        if r['compound'] != rif:
+            X[i, i_delta[r['compound']]] = 1.0
+        X[i, i_beta] = r['lap'] - lap_m
+        X[i, i_rho[r['compound']]] = r['eta']
+        X[i, i_gam[r['compound']]] = max(0, r['eta'] - k)
+    fit = scheletro.ols_cluster(X, y, [(r['drv'], r['stint']) for r in righe])
+    if fit is None:
+        return {'escluso': 'rango non pieno'}
+    b = fit['beta']
+    return {'rho': {c: float(b[i_rho[c]]) for c in comp},
+            'se_rho': {c: float(fit['se'][i_rho[c]]) for c in comp},
+            'gamma': {c: float(b[i_gam[c]]) for c in comp},
+            'se_gamma': {c: float(fit['se'][i_gam[c]]) for c in comp},
+            'k': k,
+            'delta': {c: (0.0 if c == rif else float(b[i_delta[c]])) for c in comp},
+            'alpha': {d: float(b[di[d]]) for d in piloti},
+            'beta': float(b[i_beta]), 'lap_medio': lap_m, 'rif': rif, 'beta_drv': {},
+            'eta2': None, 'n_giri': len(righe), 'n_stint': fit['n_cluster'],
+            'sigma': fit['sigma'], 'compound': comp}

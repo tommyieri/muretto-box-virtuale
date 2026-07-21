@@ -1,0 +1,292 @@
+{
+ "coefficienti": {
+  "rho_SOFT": 0.0541,
+  "rho_MEDIUM": 0.0441,
+  "rho_HARD": 0.0398
+ },
+ "intervalli": {
+  "rho_SOFT_ci95_blocchi": [
+   -0.0233,
+   0.2393
+  ],
+  "rho_MEDIUM_ci95_blocchi": [
+   -0.0093,
+   0.122
+  ],
+  "rho_HARD_ci95_blocchi": [
+   0.0096,
+   0.0877
+  ]
+ },
+ "forma": {
+  "degrado": "passo(eta) = passo_base + rho_mescola * (eta - eta0)  [s al giro]",
+  "incrementale": "eta0 e l eta a cui il passo base e stato misurato: il degrado gia dentro il passo base NON viene ri-contato",
+  "aggancio_motore": "demo/engine.mjs, parametro `degrado` { [pilota]: { rate, age0 } } — assente = bit-identico",
+  "contabilita": "giri verdi: l eta avanza su tutti i giri, il TEMPO si conta solo sui verdi (PREREG_degrado_2026.md §0)"
+ },
+ "diagnostica": {
+  "gare": [
+   "2026 Australia",
+   "2026 Austria",
+   "2026 Belgian",
+   "2026 British",
+   "2026 Canada",
+   "2026 Cina",
+   "2026 Giappone",
+   "2026 Miami",
+   "2026 Monaco",
+   "2026 Spagna"
+  ],
+  "ordine_SOFT_MEDIUM_HARD_esce_da_solo": true,
+  "stabilita_segno_fra_gare": {
+   "SOFT": {
+    "n_gare": 5,
+    "n_negative": 2,
+    "escursione": 0.2626
+   },
+   "MEDIUM": {
+    "n_gare": 9,
+    "n_negative": 2,
+    "escursione": 0.1864
+   },
+   "HARD": {
+    "n_gare": 9,
+    "n_negative": 1,
+    "escursione": 0.1215
+   }
+  },
+  "rho_per_gara": {
+   "SOFT": {
+    "2026 Australia": 0.05407,
+    "2026 Austria": 0.07764,
+    "2026 Belgian": 0.2393,
+    "2026 Canada": -0.01233,
+    "2026 Monaco": -0.02327
+   },
+   "MEDIUM": {
+    "2026 Australia": -0.01408,
+    "2026 Austria": 0.08062,
+    "2026 British": 0.04408,
+    "2026 Canada": -0.00926,
+    "2026 Cina": 0.12203,
+    "2026 Giappone": 0.09484,
+    "2026 Miami": 0.00499,
+    "2026 Monaco": 0.01146,
+    "2026 Spagna": 0.17236
+   },
+   "HARD": {
+    "2026 Australia": 0.0398,
+    "2026 Austria": 0.08218,
+    "2026 Belgian": 0.03912,
+    "2026 British": 0.06266,
+    "2026 Cina": 0.03799,
+    "2026 Giappone": 0.08768,
+    "2026 Miami": -0.00201,
+    "2026 Monaco": 0.00961,
+    "2026 Spagna": 0.11953
+   }
+  }
+ },
+ "verifica": {
+  "gare_calibrazione": [
+   "2026 Australia",
+   "2026 Belgian",
+   "2026 Canada",
+   "2026 Giappone",
+   "2026 Monaco"
+  ],
+  "gare_verifica": [
+   "2026 Austria",
+   "2026 British",
+   "2026 Cina",
+   "2026 Miami",
+   "2026 Spagna"
+  ],
+  "rho_calibrazione": {
+   "HARD": 0.0395,
+   "MEDIUM": 0.0011,
+   "SOFT": 0.0209
+  },
+  "tol": 55.304,
+  "n_scarti_calibrazione": 36,
+  "A": {
+   "giudicabile": true,
+   "coppie": [
+    {
+     "gara": "2026 Austria",
+     "n_piloti": 8,
+     "errore_modello": 44.519,
+     "errore_zero": 21.077,
+     "guadagno": -23.442
+    },
+    {
+     "gara": "2026 British",
+     "n_piloti": 4,
+     "errore_modello": 4.352,
+     "errore_zero": 26.961,
+     "guadagno": 22.609
+    },
+    {
+     "gara": "2026 Cina",
+     "n_piloti": 8,
+     "errore_modello": 12.731,
+     "errore_zero": 16.211,
+     "guadagno": 3.479
+    },
+    {
+     "gara": "2026 Miami",
+     "n_piloti": 7,
+     "errore_modello": 19.393,
+     "errore_zero": 4.286,
+     "guadagno": -15.107
+    },
+    {
+     "gara": "2026 Spagna",
+     "n_piloti": 2,
+     "errore_modello": 65.132,
+     "errore_zero": 7.576,
+     "guadagno": -57.556
+    }
+   ],
+   "guadagno_mediano": -15.107,
+   "ci95": [
+    -57.556,
+    22.609
+   ],
+   "n_gare": 5,
+   "esclude_lo_zero": false,
+   "SUPERATO": false,
+   "criterio": "errore di ricostruzione minore del degrado-zero RISTIMATO, con IC95 appaiato sui blocchi che esclude lo zero"
+  },
+  "X": {
+   "etichetta": "cancello degrado_2026",
+   "n_casi": 16,
+   "n_gare": 3,
+   "n_vinti": 1,
+   "quota": 0.0625,
+   "margine_mediano_vittorie": 65.31,
+   "tol": 55.304,
+   "G_stella": 1.5,
+   "esclusi": {
+    "giri mancanti (ritiro o buchi)": 62,
+    "rientro in traffico": 8,
+    "cancello di calibrazione": 5,
+    "mescola SOFT senza rho": 2
+   },
+   "per_gara": {
+    "2026 British": {
+     "n": 2,
+     "vinti": 0,
+     "quota": 0.0
+    },
+    "2026 Cina": {
+     "n": 8,
+     "vinti": 1,
+     "quota": 0.125
+    },
+    "2026 Miami": {
+     "n": 6,
+     "vinti": 0,
+     "quota": 0.0
+    }
+   },
+   "gare_verifica": [
+    "2026 Austria",
+    "2026 British",
+    "2026 Cina",
+    "2026 Miami",
+    "2026 Spagna"
+   ]
+  },
+  "cancello_accensione": {
+   "A_predittivo": {
+    "SUPERATO": false,
+    "guadagno_mediano_s": -15.107,
+    "ci95": [
+     -57.556,
+     22.609
+    ],
+    "criterio": "errore di ricostruzione minore del degrado-zero RISTIMATO, con IC95 appaiato sui blocchi che esclude lo zero"
+   },
+   "B_prodotto": {
+    "SUPERATO": false,
+    "numerosita_sufficiente": false,
+    "n_casi": 16,
+    "n_gare": 3,
+    "X": 0.0625,
+    "X_richiesta": 0.6,
+    "margine_mediano_s": 65.31,
+    "margine_richiesto_s": 110.608,
+    "criterio": "X >= 0.6 e margine >= 2.0*tol su >= 30 casi e >= 4 gare"
+   },
+   "ACCENDIBILE": false,
+   "regola": "servono ENTRAMBE. Finche no, il modello resta SPENTO da solo. L accensione e un gesto umano: il modello dice solo quando se l e guadagnata."
+  }
+ },
+ "cancello_accensione": {
+  "A_predittivo": {
+   "SUPERATO": false,
+   "guadagno_mediano_s": -15.107,
+   "ci95": [
+    -57.556,
+    22.609
+   ],
+   "criterio": "errore di ricostruzione minore del degrado-zero RISTIMATO, con IC95 appaiato sui blocchi che esclude lo zero"
+  },
+  "B_prodotto": {
+   "SUPERATO": false,
+   "numerosita_sufficiente": false,
+   "n_casi": 16,
+   "n_gare": 3,
+   "X": 0.0625,
+   "X_richiesta": 0.6,
+   "margine_mediano_s": 65.31,
+   "margine_richiesto_s": 110.608,
+   "criterio": "X >= 0.6 e margine >= 2.0*tol su >= 30 casi e >= 4 gare"
+  },
+  "ACCENDIBILE": false,
+  "regola": "servono ENTRAMBE. Finche no, il modello resta SPENTO da solo. L accensione e un gesto umano: il modello dice solo quando se l e guadagnata."
+ },
+ "ACCENDIBILE": false,
+ "limite_onesto": [
+  "REGIME 2026 SOLTANTO: nessun coefficiente ereditato da altri regimi. Il 2026 e una rottura regolamentare (altra macchina, push-to-pass a batteria al posto del DRS) e il transfer storico->2026 e misurato NULLO.",
+  "10 GARE SOTTO: gli intervalli sono larghi e sono riportati larghi. Nessuna cifra decimale va difesa oltre quello che l IC95 sostiene.",
+  "CIECO su pioggia (gare escluse) e sui giri neutralizzati (SC/VSC): l eta gomma avanza ma il tempo non si conta.",
+  "IL DEGRADO NON E PER-CIRCUITO: gia falsificato (0 circuiti veri su 8). Questo modello NON ha, e non deve avere, un coefficiente per pista.",
+  "NIENTE CLIFF: il termine non-lineare (soglia+rampa) e stato montato e SCARTATO — il residuo per fascia di eta gomma e piatto, e il placebo del ginocchio finto ha ucciso il guadagno. Questo modello NON rappresenta il crollo di fine vita.",
+  "SEGNO INSTABILE FRA GARE per HARD, MEDIUM, SOFT: in alcune gare la pendenza stimata e NEGATIVA (gomme che migliorerebbero invecchiando). Dentro la gara la stima e precisa, fra le gare balla: ogni gara sta misurando con cura una cosa diversa. Finche dura, non esiste una pendenza comune 2026 da far viaggiare.",
+  "SPENTO DA SOLO: non ha superato il proprio cancello di accensione. NON va agganciato al motore. Si riprovera da solo alla prossima gara."
+ ],
+ "nome": "degrado_2026",
+ "regime": "2026",
+ "targhetta": {
+  "gare_sotto": 10,
+  "blocchi_sotto": 10,
+  "calcolato_il": "2026-08-02"
+ },
+ "storico": [
+  {
+   "calcolato_il": "2026-07-21",
+   "gare_sotto": 10,
+   "delta_coefficienti": {}
+  },
+  {
+   "calcolato_il": "2026-07-28",
+   "gare_sotto": 9,
+   "delta_coefficienti": {
+    "rho_SOFT": 0.0,
+    "rho_MEDIUM": 0.0183,
+    "rho_HARD": 0.0114
+   }
+  },
+  {
+   "calcolato_il": "2026-08-02",
+   "gare_sotto": 10,
+   "delta_coefficienti": {
+    "rho_SOFT": 0.0,
+    "rho_MEDIUM": -0.0183,
+    "rho_HARD": -0.0114
+   }
+  }
+ ]
+}
