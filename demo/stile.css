@@ -822,6 +822,32 @@ a.gpcard:hover::after { right: 0; }
 .tel-gear { display: flex; gap: 1px; height: 26px; padding: 0 8px; }
 .tel-gear .gg { flex: 1; border-radius: 1px; align-self: end; background: var(--accent); opacity: .85; }
 
+/* ---- mappa pista (qualifica live) ---- */
+.map-ctl { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 12px; }
+.map-ctl label { color: var(--dim); font: 600 10px/1 var(--mono); letter-spacing: 1px; text-transform: uppercase; margin-right: 4px; }
+.map-ctl select { background: var(--panel2); color: var(--txt); border: 1px solid var(--line2);
+  border-radius: 8px; padding: 9px 11px; font: 600 13px var(--sans); cursor: pointer; }
+.map-ctl select:focus { outline: none; border-color: var(--accent); }
+.map-stage { position: relative; padding: 6px; }
+.map-stage svg { display: block; width: 100%; height: auto; }
+.map-base { fill: none; stroke: var(--line2); stroke-width: 7; stroke-linecap: round; stroke-linejoin: round; }
+.map-ms { fill: none; stroke-width: 7; stroke-linecap: butt; stroke-linejoin: round; }
+.map-ms.verde { stroke: var(--ok); }
+.map-ms.viola { stroke: #c56bff; }
+.map-ms.giallo { stroke: #d7c34a; }
+.map-ms.box { stroke: var(--line2); }
+.map-dot { fill: #fff; stroke: #000; stroke-width: 1.5; }
+.map-dot-halo { fill: none; }
+.map-sf { stroke: var(--txt); stroke-width: 2; opacity: .5; }
+.map-hud { position: absolute; right: 14px; top: 12px; text-align: right; pointer-events: none; }
+.map-hud .v { font: 800 34px/1 var(--mono); font-variant-numeric: tabular-nums; color: var(--accent);
+  text-shadow: 0 2px 16px rgba(0,0,0,.6); }
+.map-hud .v small { font: 600 12px/1 var(--mono); color: var(--dim); margin-left: 4px; }
+.map-hud .g { font: 700 13px/1 var(--mono); color: var(--txt); margin-top: 4px; }
+.map-transport { display: flex; gap: 10px; align-items: center; margin: 12px 6px 2px; flex-wrap: wrap; }
+.map-scrub { flex: 1 1 180px; accent-color: var(--accent); }
+.map-time { font: 700 13px/1 var(--mono); color: var(--txt); min-width: 62px; }
+
 /* -------------------------------------------- NUMERI DI GARA & MOTORI */
 /* il numero e' identita' del pilota: sempre nel colore del team (inline dal dato) */
 .rnum { font: 800 15px/1 var(--disp); font-style: italic; letter-spacing: .3px;

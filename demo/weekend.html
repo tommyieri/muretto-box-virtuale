@@ -152,16 +152,18 @@ async function seleziona(s){
   el('switch').hidden = false;
   el('switch').innerHTML =
     `<button data-v="timing" class="${vista==='timing'?'on':''}">Classifica &amp; settori</button>`
+   +`<button data-v="mappa" class="${vista==='mappa'?'on':''}">Mappa pista</button>`
    +`<button data-v="telem" class="${vista==='telem'?'on':''}">Telemetria</button>`
    +(replay?`<a class="btn btn-pri" style="margin-left:auto;padding:9px 16px;font-size:13px" href="gara.html?g=${encodeURIComponent(replay)}">Replay per-giro &rarr;</a>`:'');
   el('switch').querySelectorAll('button').forEach(b=>
-    b.addEventListener('click', ()=>{ vista=b.dataset.v; seleziona(s); }));
+    b.addEventListener('click', ()=>{ stopAnim(); vista=b.dataset.v; seleziona(s); }));
 
   el('corpo').innerHTML = `<div class="wknd-msg"><span class="spin"></span>Carico ${s.lab.d}&hellip;</div>`;
   try {
     const dl = await api(`drivers?session_key=${s.session_key}`);
     drivers = Object.fromEntries(dl.map(d=>[d.driver_number, d]));
     if (vista==='timing') await vistaTiming(s);
+    else if (vista==='mappa') await vistaMappa(s);
     else await vistaTelem(s);
   } catch(e){ corpoErr('Dati sessione non disponibili: '+e.message); }
 }
@@ -318,7 +320,146 @@ async function disegnaTel(perDrv){
       <div class="tel-gear">${gearBars}</div></div>`;
 }
 
-function corpoErr(msg){ el('corpo').innerHTML = `<div class="wknd-msg err">${esc(msg)}</div>`; el('switch').hidden = true; }
+// ---------- mappa pista: giro animato + trail micro-settori ----------
+let animId=null;
+function stopAnim(){ if (animId){ cancelAnimationFrame(animId); animId=null; } }
+
+async function vistaMappa(s){
+  const laps = await api(`laps?session_key=${s.session_key}`);
+  const perDrv = {};
+  for (const l of laps) if (l.lap_duration!=null && l.date_start){ (perDrv[l.driver_number] ||= []).push(l); }
+  const nums = Object.keys(perDrv).map(Number)
+    .sort((a,b)=> Math.min(...perDrv[a].map(x=>x.lap_duration)) - Math.min(...perDrv[b].map(x=>x.lap_duration)));
+  if (!nums.length){ corpoErr('Nessun giro tracciabile in questa sessione.'); return; }
+
+  const optDrv = nums.map(n=>{ const d=drivers[n]||{};
+    return `<option value="${n}">${esc(d.name_acronym||n)} — ${esc(d.team_name||'')}</option>`; }).join('');
+  el('corpo').innerHTML = `
+    <div class="map-ctl">
+      <span><label>Pilota</label><select id="mapDrv">${optDrv}</select></span>
+      <span><label>Giro</label><select id="mapLap"></select></span>
+    </div>
+    <section class="panel map-stage" id="mapStage">
+      <div class="wknd-msg">Scegli pilota e giro.</div>
+    </section>
+    <div class="ms-legend" style="margin:12px 6px 0">
+      <i><span class="sw ms-cell-viola"></span>record sessione</i>
+      <i><span class="sw ms-cell-verde"></span>miglior personale</i>
+      <i><span class="sw ms-cell-giallo"></span>più lento</i>
+      <i><span class="sw ms-cell-box"></span>box / n.d.</i>
+      <span style="opacity:.7">· colore per micro-settore lungo la distanza del giro</span>
+    </div>`;
+
+  const riempiLap = () => {
+    const n = +el('mapDrv').value;
+    const ls = perDrv[n].slice().sort((a,b)=>a.lap_number-b.lap_number);
+    const fast = ls.reduce((m,x)=> x.lap_duration<m.lap_duration?x:m, ls[0]);
+    el('mapLap').innerHTML = ls.map(l=>`<option value="${l.lap_number}" ${l===fast?'selected':''}>Giro ${l.lap_number} — ${fmtLap(l.lap_duration)}${l===fast?' ⚡':''}</option>`).join('');
+  };
+  el('mapDrv').addEventListener('change', ()=>{ riempiLap(); disegnaMappa(perDrv); });
+  el('mapLap').addEventListener('change', ()=> disegnaMappa(perDrv));
+  riempiLap();
+  disegnaMappa(perDrv);
+}
+
+async function disegnaMappa(perDrv){
+  stopAnim();
+  const n = +el('mapDrv').value, lapN = +el('mapLap').value;
+  const l = perDrv[n].find(x=>x.lap_number===lapN);
+  const d = drivers[n]||{};
+  const stage = el('mapStage');
+  stage.innerHTML = `<div class="wknd-msg"><span class="spin"></span>Carico il giro sulla mappa&hellip;</div>`;
+  const t0 = new Date(l.date_start).getTime();
+  const t1 = t0 + l.lap_duration*1000 + 500;
+  const from = new Date(t0-500).toISOString(), to = new Date(t1).toISOString();
+  let loc, cd;
+  try {
+    [loc, cd] = await Promise.all([
+      api(`location?session_key=${sessSel.session_key}&driver_number=${n}&date>=${from}&date<=${to}`),
+      api(`car_data?session_key=${sessSel.session_key}&driver_number=${n}&date>=${from}&date<=${to}`)
+    ]);
+  } catch(e){ stage.innerHTML = `<div class="wknd-msg err">Dati posizione non disponibili: ${e.message}</div>`; return; }
+  loc = loc.filter(p=>p.x!=null && p.y!=null && (p.x||p.y)).sort((a,b)=> new Date(a.date)-new Date(b.date));
+  if (loc.length<20){ stage.innerHTML = `<div class="wknd-msg">Traccia non disponibile per questo giro.</div>`; return; }
+  cd = (cd||[]).filter(x=>x.speed!=null).sort((a,b)=> new Date(a.date)-new Date(b.date));
+
+  // normalizzazione nel viewBox (y invertita per lo schermo), pista centrata
+  const xs=loc.map(p=>p.x), ys=loc.map(p=>p.y);
+  const minX=Math.min(...xs), maxX=Math.max(...xs), minY=Math.min(...ys), maxY=Math.max(...ys);
+  const spanX=maxX-minX, spanY=maxY-minY, W=1000, pad=46;
+  const sc = (W-2*pad)/Math.max(spanX, spanY, 1);
+  const H = Math.round(Math.max(spanY,1)*sc + 2*pad);
+  const offX = (W - spanX*sc)/2, offY = (H - spanY*sc)/2;
+  const PX = p => offX + (p.x-minX)*sc;
+  const PY = p => H - (offY + (p.y-minY)*sc);
+  const pts = loc.map(p=>({x:PX(p), y:PY(p), t:new Date(p.date).getTime()}));
+
+  // distanza cumulata (per dividere in micro-settori a pari distanza)
+  const cum=[0]; for (let i=1;i<pts.length;i++){ const dx=pts[i].x-pts[i-1].x, dy=pts[i].y-pts[i-1].y;
+    cum.push(cum[i-1]+Math.hypot(dx,dy)); }
+  const L = cum[cum.length-1];
+  const segCodes = [...(l.segments_sector_1||[]), ...(l.segments_sector_2||[]), ...(l.segments_sector_3||[])];
+  const NS = segCodes.length || 1;
+  const clsMs = v => v===2051?'viola':(v===2049||v===2050)?'verde':v===2048?'giallo':'box';
+  const linea = ps => ps.map((p,i)=>(i?'L':'M')+p.x.toFixed(1)+' '+p.y.toFixed(1)).join(' ');
+
+  // path base (tutto il giro) + un path per micro-settore (colore)
+  let msPaths='';
+  for (let k=0;k<NS;k++){
+    const a=k*L/NS, b=(k+1)*L/NS;
+    let i0=0; while (i0<cum.length-1 && cum[i0+1]<a) i0++;
+    let i1=i0; while (i1<cum.length-1 && cum[i1]<b) i1++;
+    const seg = pts.slice(i0, i1+1);
+    if (seg.length>=2) msPaths += `<path class="map-ms ${clsMs(segCodes[k])}" d="${linea(seg)}"/>`;
+  }
+  const sf = pts[0]; // start/finish ~ inizio traccia
+
+  stage.innerHTML = `
+    <svg viewBox="0 0 ${W} ${H}" aria-label="Mappa del giro">
+      <path class="map-base" d="${linea(pts)} Z"/>
+      ${msPaths}
+      <circle class="map-sf" cx="${sf.x.toFixed(1)}" cy="${sf.y.toFixed(1)}" r="9"/>
+      <circle class="map-dot-halo" id="mapHalo" cx="${sf.x.toFixed(1)}" cy="${sf.y.toFixed(1)}" r="13"
+        fill="${col(d.team_colour)}" opacity="0.35"/>
+      <circle class="map-dot" id="mapDot" cx="${sf.x.toFixed(1)}" cy="${sf.y.toFixed(1)}" r="8"/>
+    </svg>
+    <div class="map-hud"><div class="v" id="mapSpd">—<small>km/h</small></div><div class="g" id="mapDrvLab">${esc(d.name_acronym||n)} · giro ${lapN}</div></div>
+    <div class="map-transport" style="position:relative">
+      <button id="mapPlay" class="play" title="Play / Pausa">&#9654;</button>
+      <input id="mapScrub" class="map-scrub" type="range" min="0" max="${pts.length-1}" value="0">
+      <span class="map-time" id="mapTime">0.0s</span>
+      <span class="tel-chip" style="border:none;color:var(--dim)">${fmtLap(l.lap_duration)} totale</span>
+    </div>`;
+
+  // velocità per timestamp (nearest)
+  const spdAt = t => { if (!cd.length) return null;
+    let lo=0, hi=cd.length-1; const tt=t;
+    while (lo<hi){ const m=(lo+hi)>>1; if (new Date(cd[m].date).getTime()<tt) lo=m+1; else hi=m; }
+    return cd[lo]?.speed ?? cd[cd.length-1]?.speed ?? null; };
+
+  const dot=el('mapDot'), halo=el('mapHalo'), spd=el('mapSpd'), tlab=el('mapTime'), scrub=el('mapScrub'), play=el('mapPlay');
+  const t_start = pts[0].t, dur = pts[pts.length-1].t - pts[0].t;
+  const poni = i => { const p=pts[i]; dot.setAttribute('cx',p.x.toFixed(1)); dot.setAttribute('cy',p.y.toFixed(1));
+    halo.setAttribute('cx',p.x.toFixed(1)); halo.setAttribute('cy',p.y.toFixed(1));
+    const v=spdAt(p.t); spd.innerHTML = (v!=null?v:'—')+'<small>km/h</small>';
+    tlab.textContent = ((p.t-t_start)/1000).toFixed(1)+'s'; scrub.value=i; };
+  poni(0);
+
+  let playing=false, rafT0=0, baseElapsed=0;
+  const idxAt = ms => { const target=t_start+ms; let lo=0,hi=pts.length-1;
+    while (lo<hi){ const m=(lo+hi)>>1; if (pts[m].t<target) lo=m+1; else hi=m; } return lo; };
+  const tick = ts => { if (!rafT0) rafT0=ts;
+    const elapsed = baseElapsed + (ts-rafT0);
+    if (elapsed>=dur){ poni(pts.length-1); playing=false; play.classList.remove('playing'); play.innerHTML='&#9654;'; animId=null; return; }
+    poni(idxAt(elapsed)); animId=requestAnimationFrame(tick); };
+  const avvia = () => { playing=true; play.classList.add('playing'); play.innerHTML='&#10073;&#10073;';
+    rafT0=0; baseElapsed = (+scrub.value/(pts.length-1))*dur; animId=requestAnimationFrame(tick); };
+  play.addEventListener('click', ()=>{ if (playing){ stopAnim(); playing=false; play.classList.remove('playing'); play.innerHTML='&#9654;'; }
+    else avvia(); });
+  scrub.addEventListener('input', ()=>{ stopAnim(); playing=false; play.classList.remove('playing'); play.innerHTML='&#9654;'; poni(+scrub.value); });
+}
+
+function corpoErr(msg){ stopAnim(); el('corpo').innerHTML = `<div class="wknd-msg err">${esc(msg)}</div>`; el('switch').hidden = true; }
 
 boot();
 </script>
