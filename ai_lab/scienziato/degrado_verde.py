@@ -32,21 +32,29 @@ import statistics as st
 import carburante_fermo as CF
 import degrado as DG
 import fondo
+import scheletro
 
 MIN_STINT = DG.MIN_STINT
 
 
 # ---------------------------------------------------------------- i giri verdi
-def giri_verdi(righe, drv, N):
+def giri_verdi(righe, drv, N, solo_verdi=True):
     """I giri 2..N in cui il pilota e' in bandiera verde pura (status '1').
 
     Lap 1 e' SEMPRE fuori (la partenza non e' un giro di passo): cosi' esce da solo da tutte
     le somme, senza la sottrazione a mano del primo giro che serviva prima.
+
+    solo_verdi=False -> MASCHERA PIENA: tutti i giri 2..N. Serve a ritrovare la contabilita'
+    VECCHIA (veto di gara + somma su tutti i giri) come CASO PARTICOLARE di questa, cosi' la
+    macchina nuova si dimostra equivalente alla vecchia invece di dichiararsi tale
+    (`run_degrado_2026.py --equivalenza`).
     """
     per_lap = {}
     for r in righe:
         if r['drv'] == drv and isinstance(r['lap'], (int, float)):
             per_lap[int(r['lap'])] = r
+    if not solo_verdi:
+        return {L for L in range(2, N + 1) if L in per_lap}, per_lap
     return {L for L in range(2, N + 1)
             if L in per_lap and str(per_lap[L]['status']) == '1'}, per_lap
 
@@ -140,13 +148,14 @@ def strategie_verdi(mod, N, pl, G0, G1, n_soste=(1, 2), cliff=None):
 
 
 # ---------------------------------------------------------------- il controfattuale
-def valuta_pilota_verde(dati, mod, drv, pl, G, tol, cand=None, cliff=None, eta_mappa=None):
+def valuta_pilota_verde(dati, mod, drv, pl, G, tol, cand=None, cliff=None, eta_mappa=None,
+                        solo_verdi=True):
     """Un caso = (gara, pilota), con contabilita' a giri verdi.
 
     Ritorna il verdetto con i due cancelli (calibrazione, margine) e l'aria libera al rientro.
     """
     N = dati['N']
-    verdi, per_lap = giri_verdi(dati['righe'], drv, N)
+    verdi, per_lap = giri_verdi(dati['righe'], drv, N, solo_verdi)
     if any(L not in per_lap or not isinstance(per_lap[L]['time'], (int, float))
            for L in range(2, N + 1)):
         return {'escluso': 'giri mancanti (ritiro o buchi)'}
@@ -227,7 +236,7 @@ def valuta_pilota_verde(dati, mod, drv, pl, G, tol, cand=None, cliff=None, eta_m
 
 
 # ---------------------------------------------------------------- il metro, per un insieme
-def scarti_calibrazione(dati, mod, pl, cliff=None):
+def scarti_calibrazione(dati, mod, pl, cliff=None, solo_verdi=True):
     """|sim(strategia reale) - reale| per ogni pilota valutabile. Da qui esce `tol` (68o
     percentile sulle sole gare di CALIBRAZIONE) e da qui esce il confronto col degrado-zero."""
     N = dati['N']
@@ -235,7 +244,7 @@ def scarti_calibrazione(dati, mod, pl, cliff=None):
     piloti = sorted({r['drv'] for r in dati['righe']})
     fuori = {}
     for drv in piloti:
-        verdi, per_lap = giri_verdi(dati['righe'], drv, N)
+        verdi, per_lap = giri_verdi(dati['righe'], drv, N, solo_verdi)
         if drv not in mod['alpha'] or len(verdi) < 20:
             continue
         if any(L not in per_lap or not isinstance(per_lap[L]['time'], (int, float))
@@ -283,3 +292,99 @@ def degrado_zero(mod):
 
 def mediana(v):
     return st.median(v) if v else None
+
+
+# ---------------------------------------------------------------- il NON-FARE-NIENTE
+def stima_senza_degrado(dati):
+    """IL VERO degrado-zero: lo stesso modello RISTIMATO senza le colonne dell'eta.
+
+    PREREG_degrado_2026.md §7-bis. Azzerare le `rho` DOPO averle stimate costruirebbe un
+    fantoccio: alpha, beta e delta resterebbero tarati sapendo che il degrado c'era, e non
+    potrebbero assorbirne il livello medio. Chi non modella il degrado non lascia un buco:
+    ci mette dentro una costante. Ristimare alza l'asticella del cancello di accensione —
+    va CONTRO il modello sotto esame, ed e' per questo che e' l'unica versione onesta.
+    """
+    import numpy as np
+    righe = [r for r in dati['stima'] if r['compound'] in DG._compound_ok(dati['stima'])]
+    if len(righe) < DG.MIN_GIRI:
+        return {'escluso': f'{len(righe)} giri in aria libera (<{DG.MIN_GIRI})'}
+    piloti = sorted({r['drv'] for r in righe})
+    comp = sorted({r['compound'] for r in righe})
+    if len(comp) < 2:
+        return {'escluso': 'una sola mescola identificabile'}
+    rif = 'MEDIUM' if 'MEDIUM' in comp else comp[0]
+    di = {d: i for i, d in enumerate(piloti)}
+    nd = len(piloti)
+    altri = [c for c in comp if c != rif]
+    i_delta = {c: nd + j for j, c in enumerate(altri)}
+    i_beta = nd + len(altri)
+    cols = i_beta + 1
+    lap_m = st.mean(r['lap'] for r in righe)
+    X = np.zeros((len(righe), cols))
+    y = np.array([r['tfc'] for r in righe], float)
+    for i, r in enumerate(righe):
+        X[i, di[r['drv']]] = 1.0
+        if r['compound'] != rif:
+            X[i, i_delta[r['compound']]] = 1.0
+        X[i, i_beta] = r['lap'] - lap_m
+    fit = scheletro.ols_cluster(X, y, [(r['drv'], r['stint']) for r in righe])
+    if fit is None:
+        return {'escluso': 'rango non pieno'}
+    b = fit['beta']
+    return {'rho': {c: 0.0 for c in comp},
+            'se_rho': {c: 0.0 for c in comp},
+            'delta': {c: (0.0 if c == rif else float(b[i_delta[c]])) for c in comp},
+            'alpha': {d: float(b[di[d]]) for d in piloti},
+            'beta': float(b[i_beta]), 'lap_medio': lap_m, 'rif': rif, 'beta_drv': {},
+            'eta2': None, 'n_giri': len(righe), 'n_stint': fit['n_cluster'],
+            'sigma': fit['sigma'], 'compound': comp}
+
+
+# ---------------------------------------------------------------- il pit-loss, dal fondo
+def pit_loss_verde(dati, mod, solo_verdi=True):
+    """(in-lap + out-lap) - attesa pulita ai due giri, mediana sulle sole soste VERDI.
+
+    PREREG_degrado_2026.md §7-ter. `degrado.pit_loss()` mediava su TUTTE le soste: ma una
+    sosta fatta sotto safety car costa, in cronometro, i secondi del regime neutralizzato, e
+    ricostruita come "perdita al pit" vale 32-96 s invece di ~20-25. Sotto SC ci si ferma
+    tutti insieme: in meta' delle gare 2026 le soste neutralizzate sono la MAGGIORANZA, e
+    cosi' la mediana - che avrebbe dovuto proteggere - risulta contaminata.
+
+    Non e' una regola nuova: e' la stessa di §0 (il tempo si conta solo sui giri verdi)
+    applicata a una grandezza che e' essa stessa un tempo misurato dal fondo.
+
+    solo_verdi=False -> ritrova esattamente degrado.pit_loss() (serve all'equivalenza).
+    """
+    per_drv = {}
+    for r in dati['righe']:
+        if isinstance(r['lap'], (int, float)):
+            per_drv.setdefault(r['drv'], {})[int(r['lap'])] = r
+    eta = fondo.stint_ed_eta(dati['righe'])
+    perdite, scartate = [], 0
+    for drv, giri in per_drv.items():
+        for L, r in giri.items():
+            if fondo.nullo(r['pin']) or L + 1 not in giri:
+                continue
+            r2 = giri[L + 1]
+            if not all(isinstance(x['time'], (int, float)) for x in (r, r2)):
+                continue
+            if not (isinstance(r.get('compound'), str) and isinstance(r2.get('compound'), str)):
+                continue
+            a1 = eta.get((drv, L), (None, None))[1]
+            a2 = eta.get((drv, L + 1), (None, None))[1]
+            if a1 is None or a2 is None or drv not in mod['alpha']:
+                continue
+            if solo_verdi and not (str(r['status']) == '1' and str(r2['status']) == '1'):
+                scartate += 1
+                continue
+            p1 = DG.previsione(mod, dati, drv, L, r['compound'], a1)
+            p2 = DG.previsione(mod, dati, drv, L + 1, r2['compound'], a2)
+            if p1 is None or p2 is None:
+                continue
+            perdite.append((r['time'] + r2['time']) - (p1 + p2))
+    if len(perdite) < 3:
+        return None
+    return {'pit_loss': round(st.median(perdite), 3), 'n_soste_verdi': len(perdite),
+            'n_soste_neutralizzate_scartate': scartate,
+            'iqr': [round(sorted(perdite)[len(perdite) // 4], 2),
+                    round(sorted(perdite)[3 * len(perdite) // 4], 2)]}

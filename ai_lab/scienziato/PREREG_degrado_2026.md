@@ -250,6 +250,83 @@ mascherato da «variante», nessuna riapertura in questa sessione.
 
 ---
 
+## 7-bis. EMENDAMENTO — il degrado-zero si RISTIMA (dichiarato prima dei numeri)
+
+Aggiunto dopo il commit del prereg (dbc08b4) e **prima di eseguire qualunque misura**, perché
+scrivendo il codice mi sono accorto che la versione di §4A costruiva un **fantoccio**.
+
+§4A diceva: degrado-zero = «`ρ_c = 0`, tutto il resto identico», cioè lo stesso fit con le `ρ`
+azzerate a mano. Ma un modello a cui si spegne un termine **dopo** averlo stimato è più debole
+di un modello che non l'ha mai avuto: `α`, `β` e `δ` sono rimasti tarati *sapendo* che c'era il
+degrado, e non possono assorbirne il livello medio. Batterlo sarebbe stato facile e non
+avrebbe voluto dire niente.
+
+**Correzione**: il degrado-zero si **ristima da capo** sugli stessi giri, con la stessa
+procedura, **senza le colonne dell'età** — così `α`, `β` e `δ` assorbono tutto quello che
+possono. È il vero «non fare niente»: chi non modella il degrado non lascia un buco, ci mette
+dentro una costante.
+
+Il cambiamento va **contro** il modello sotto esame: alza l'asticella del cancello (A). Lo
+dichiaro qui, con la sua data e la sua ragione, invece di scoprirlo comodo a valle.
+
+---
+
+## 7-ter. EMENDAMENTO — il pit-loss si ricostruisce dalle SOLE soste verdi
+
+Aggiunto **dopo** aver visto il primo giro di numeri di C1. Lo dichiaro come tale, con la sua
+data, la sua ragione e la sua prova: è esattamente il momento in cui si bara, e voglio che sia
+ispezionabile.
+
+**Il sintomo.** Il primo C1 ha prodotto `tol = 223,9 s` su una gara da ~50 giri verdi: **~4,5 s
+al giro**. Un metro così largo non giudica niente. Lo scarto era **positivo** (+0,79 s/giro):
+il modello prevedeva i piloti **più lenti** di com'erano andati.
+
+**La diagnosi, dal fondo.** I residui per giro sono sani — mediana `reale − previsto` fra
+−0,16 e +0,10 s, **in aria libera come in traffico**. Il traffico non c'entra. Il buco è tutto
+nel **pit-loss**, che `degrado.pit_loss()` ricostruisce come mediana su **tutte** le soste:
+
+| gara 2026 | soste verdi | soste sotto SC/VSC | pit-loss da TUTTE | da sole VERDI | da sole NEUTRALIZZATE |
+|---|---|---|---|---|---|
+| Australia | 10 | 22 | **51,84** | 24,95 | 54,55 |
+| Canada | 8 | 17 | **57,28** | 25,14 | 62,26 |
+| Cina | 3 | 12 | **73,70** | 26,84 | 75,68 |
+| Giappone | 4 | 12 | **61,82** | 23,39 | 71,68 |
+| Monaco | 19 | 67 | **64,29** | 21,78 | 70,11 |
+| Miami | 16 | 1 | 19,53 | 19,53 | 96,45 |
+| British | 18 | 10 | 25,97 | 20,97 | 32,45 |
+
+Una sosta fatta **sotto safety car** costa, in cronometro, i secondi del regime neutralizzato:
+ricostruita come «perdita al pit» vale 32-96 s invece di ~20-25. E sotto SC ci si ferma
+**tutti insieme**: in metà delle gare 2026 le soste neutralizzate sono la **maggioranza**, così
+la *mediana* — che avrebbe dovuto proteggere — è contaminata. Il pit-loss gonfiato entrava in
+`sim` come `k · pit_loss` e produceva da solo i 4,5 s/giro.
+
+**La correzione.** Il pit-loss si ricostruisce dalle **sole soste con in-lap e out-lap
+entrambi verdi**. Non è una regola nuova: è la **stessa** di §0 — *il tempo si conta solo sui
+giri verdi* — applicata a una grandezza che è essa stessa un tempo misurato dal fondo. Non
+averla applicata lì era una svista, non una scelta.
+
+**Perché non è un ammorbidimento di comodo:**
+
+1. **Non è un criterio, è una misura.** Non ho toccato nessuna soglia di giudizio: `X ≥ 60 %`,
+   `margine ≥ 2·tol`, IC95 che esclude lo zero restano **identici**. Ho riparato lo strumento,
+   non spostato il traguardo.
+2. **La prova è interna al fondo e indipendente dal risultato.** La separazione verdi/
+   neutralizzate (19,5-26,8 s contro 32-96 s) si vede **senza guardare la X**.
+3. **Corroborazione esterna, come CONTROLLO e non come input** (il prereg madre §2 vieta di
+   ereditare numeri di pit-loss): la mia ricostruzione da sole soste verdi dà **Miami 19,53** e
+   **Silverstone 20,97**; i valori che il progetto ha in produzione, derivati da **FastF1** —
+   fonte completamente diversa — sono **20,11** e **20,80**. Due strade indipendenti, stessa
+   risposta a mezzo secondo. Nessuno di questi numeri entra nel calcolo.
+4. **Colpisce entrambi i lati.** Il pit-loss è lo stesso per il modello e per il degrado-zero,
+   e lo stesso per C1 e per C3: non inclina nessun confronto appaiato.
+
+**Conseguenza procedurale**: tutto ciò che era stato calcolato prima (F, F2, C1) si **rifà da
+capo** col pit-loss corretto, e il rapporto riporta **prima e dopo**. Il primo giro di numeri
+non si cancella: si mostra.
+
+---
+
 ## 8. Vincoli
 
 Solo il fondo senza riverifica · blocchi = gare, mai osservazioni · ogni valore col suo
