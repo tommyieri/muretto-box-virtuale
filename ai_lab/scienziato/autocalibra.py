@@ -67,10 +67,17 @@ def aggiorna(modello, data_calcolo, verbose=True):
     # esempio la partizione calibrazione/verifica — lasciava i coefficienti identici, quindi
     # il file risultava "invariato" e la modifica NON arrivava mai all'artefatto. Il modello
     # avrebbe continuato a esibire un verdetto prodotto da una regola che non esisteva piu'.
+    # COSA ENTRA NELLA FIRMA: tutto cio' che il generatore produce di DETERMINISTICO e
+    # rilevante per chi legge — il verdetto, il metodo che l'ha prodotto, e il limite onesto
+    # che gli sta accanto. COSA NE RESTA FUORI, e perche': il blocco `placebo` del modello
+    # traffico NON e' riproducibile (zona-null sotto indagine: pesca da un set, cambia da
+    # processo a processo). Se entrasse nella firma, il file si riscriverebbe a OGNI
+    # esecuzione e quel numero continuerebbe a ballare da solo.
     def _firma(d):
         v = (d or {}).get('verifica') or {}
         ca = v.get('cancello_accensione') or {}
-        return (ca.get('ACCENDIBILE'), (ca.get('partizione') or {}).get('versione'))
+        return (ca.get('ACCENDIBILE'), (ca.get('partizione') or {}).get('versione'),
+                (d or {}).get('limite_onesto'))
 
     invariato = bool(prec and coef_v == coef_n
                      and prec['targhetta']['gare_sotto'] == nuovo['targhetta']['gare_sotto']
