@@ -110,7 +110,22 @@ class ModelloTraffico:
                 'regimi. Si rinforza a ogni Gran Premio nuovo (vedi storico).',
                 'CIECO su pioggia (gare escluse) e sui primi 3 giri dopo ogni ripartenza.',
                 'CONSERVATIVO sul delta-passo grande: ordina giusto ma sottostima la '
-                'magnitudine di chi e molto piu veloce ed e bloccato.'],
+                'magnitudine di chi e molto piu veloce ed e bloccato.',
+                'IL CANCELLO PENDE DA UN SOLO GRAN PREMIO. Misurato leave-one-race-out sul '
+                '2026: 5 gare su 10, tolte DA SOLE, ribaltano ACCENDIBILE da false a true '
+                '(Canada, Cina, Giappone, Miami, Monaco). Con tutte e 10 le gare il '
+                'confronto appaiato contro il traffico-zero e NEGATIVO (-0,057 s: il '
+                'modello e peggio del non-fare-niente), ma togliendo una qualunque delle '
+                'dieci diventa POSITIVO: la mediana sta in bilico su 5 blocchi. Finche il '
+                'regime non si arricchisce, acceso/spento non e una proprieta del modello '
+                'ma dell insieme di gare che si e avuto.',
+                'LA PARTIZIONE CALIBRAZIONE/VERIFICA NON E STABILE. Il fuori campione usa '
+                'gli indici pari/dispari sulle gare ordinate: aggiungere o togliere UN Gran '
+                'Premio ROVESCIA la partizione (misurato: togliendo la prima gara, '
+                'sovrapposizione fra il vecchio e il nuovo insieme di verifica = ZERO). '
+                'Quindi a ogni gara nuova il cancello si rimisura su un insieme diverso, e '
+                'puo cambiare risposta per ragioni che NON sono evidenza nuova. Da tenere a '
+                'mente prima di leggere un cambio di ACCENDIBILE come un progresso.'],
             '_n_gare': len(gids), '_n_blocchi': len(gids),
         }
 
