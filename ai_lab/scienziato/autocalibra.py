@@ -61,8 +61,20 @@ def aggiorna(modello, data_calcolo, verbose=True):
 
     coef_v = (prec or {}).get('coefficienti')
     coef_n = nuovo.get('coefficienti')
+
+    # La chiave di invarianza include anche IL METODO e IL VERDETTO, non solo i coefficienti.
+    # Prima guardava (coefficienti, gare_sotto): un cambio METODOLOGICO del cancello — per
+    # esempio la partizione calibrazione/verifica — lasciava i coefficienti identici, quindi
+    # il file risultava "invariato" e la modifica NON arrivava mai all'artefatto. Il modello
+    # avrebbe continuato a esibire un verdetto prodotto da una regola che non esisteva piu'.
+    def _firma(d):
+        v = (d or {}).get('verifica') or {}
+        ca = v.get('cancello_accensione') or {}
+        return (ca.get('ACCENDIBILE'), (ca.get('partizione') or {}).get('versione'))
+
     invariato = bool(prec and coef_v == coef_n
-                     and prec['targhetta']['gare_sotto'] == nuovo['targhetta']['gare_sotto'])
+                     and prec['targhetta']['gare_sotto'] == nuovo['targhetta']['gare_sotto']
+                     and _firma(prec) == _firma(nuovo))
 
     if invariato:
         # IDEMPOTENZA: nessun dato nuovo -> il file non si tocca, lo storico non cresce.
