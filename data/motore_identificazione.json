@@ -1,0 +1,38 @@
+{
+ "n_casi": 395,
+ "n_gare": 10,
+ "correlazione_regressori": -0.30445311185067153,
+ "carburante_totale_s": 2.467616301121135,
+ "carburante_ci95": [
+  1.6933710525432089,
+  2.908220466016521
+ ],
+ "rho": 0.03203202411022516,
+ "rho_ci95": [
+  -0.024534666548246806,
+  0.0781086808487242
+ ],
+ "intercetta": -0.3420683465321544,
+ "intercetta_ci95": [
+  -1.042135733315484,
+  0.2427264105025333
+ ],
+ "placebo": {
+  "rho_vero": 0.03203202411022516,
+  "rho_finto_mediano": -0.00017421156263330249,
+  "rho_finto_ci95": [
+   -0.013396283659062485,
+   0.013049176135809934
+  ],
+  "quota_finti_oltre_il_vero": 0.0,
+  "NULL NUOVO": "non auto-sigillato: lo sigilla Tommi se il tavolo lo vuole"
+ },
+ "riferimenti_indipendenti": {
+  "kernel_engine_py": 3.0,
+  "fondo_2022_25": 3.151,
+  "fondo_2026": 2.1939,
+  "rho_fondo_2026_MEDIUM": 0.0441,
+  "rho_fondo_2026_SOFT": 0.0541,
+  "rho_fondo_2026_HARD": 0.0398
+ }
+}

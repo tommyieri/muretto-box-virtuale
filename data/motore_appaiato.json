@@ -1,0 +1,288 @@
+{
+ "S5|appaiato|traffico SPENTO": {
+  "delta": 0,
+  "ci95": [
+   -0.012386363636778697,
+   0.0725226358127884
+  ],
+  "esito": "indistinguibile dal kernel"
+ },
+ "S5|appaiato|traffico del FONDO": {
+  "delta": 0.010248220863672941,
+  "ci95": [
+   -0.0107216910129182,
+   0.07206919557006586
+  ],
+  "esito": "indistinguibile dal kernel"
+ },
+ "S5|appaiato|degrado del FONDO": {
+  "delta": 4.547473508864641e-13,
+  "ci95": [
+   -1.0231815394945443e-12,
+   0.008315789473272162
+  ],
+  "esito": "indistinguibile dal kernel"
+ },
+ "S5|appaiato|carburante ri-aggiunto (3,0)": {
+  "delta": -3.410605131648481e-13,
+  "ci95": [
+   -2.2737367544323206e-12,
+   9.094947017729282e-13
+  ],
+  "esito": "indistinguibile dal kernel"
+ },
+ "S5|appaiato|tutto il fondo insieme": {
+  "delta": 0.012013032081540587,
+  "ci95": [
+   -0.027652766003257057,
+   0.07444685311440935
+  ],
+  "esito": "indistinguibile dal kernel"
+ },
+ "S5|sweep": [
+  {
+   "ZONE": 3,
+   "STRENGTH": 0.5,
+   "rel": 1.1398625107209455,
+   "delta": -0.028317239977013742
+  },
+  {
+   "ZONE": 1.5,
+   "STRENGTH": 0.5,
+   "rel": 1.1428945662621572,
+   "delta": -0.006193181818389348
+  },
+  {
+   "ZONE": 2,
+   "STRENGTH": 0.5,
+   "rel": 1.1428945662621572,
+   "delta": -0.006193181818389348
+  },
+  {
+   "ZONE": 3,
+   "STRENGTH": 0.25,
+   "rel": 1.1431646927005659,
+   "delta": -0.022447898800805888
+  },
+  {
+   "ZONE": 3,
+   "STRENGTH": 1,
+   "rel": 1.1522346698106958,
+   "delta": -0.006681818182414645
+  },
+  {
+   "ZONE": 1.5,
+   "STRENGTH": 0.25,
+   "rel": 1.1560056017913212,
+   "delta": -0.022454540924400135
+  },
+  {
+   "ZONE": 1.5,
+   "STRENGTH": 1,
+   "rel": 1.1589164879931104,
+   "delta": 0
+  },
+  {
+   "ZONE": 1,
+   "STRENGTH": 1,
+   "rel": 1.1611105500918484,
+   "delta": 0
+  },
+  {
+   "ZONE": 2,
+   "STRENGTH": 1,
+   "rel": 1.1709335334477373,
+   "delta": 0
+  },
+  {
+   "ZONE": 1,
+   "STRENGTH": 0.5,
+   "rel": 1.1720283290650286,
+   "delta": 0
+  },
+  {
+   "ZONE": 0.5,
+   "STRENGTH": 1,
+   "rel": 1.1758376623388358,
+   "delta": 0
+  },
+  {
+   "ZONE": 1,
+   "STRENGTH": 0.25,
+   "rel": 1.186490276888776,
+   "delta": -0.0027698863639216142
+  },
+  {
+   "ZONE": 2,
+   "STRENGTH": 0.25,
+   "rel": 1.1918711987825645,
+   "delta": 0.0019278846157249063
+  },
+  {
+   "ZONE": 0,
+   "STRENGTH": 1,
+   "rel": 1.2182378018094369,
+   "delta": 0
+  },
+  {
+   "ZONE": 0.5,
+   "STRENGTH": 0.25,
+   "rel": 1.2245592303813737,
+   "delta": 0
+  },
+  {
+   "ZONE": 0.5,
+   "STRENGTH": 0.5,
+   "rel": 1.2245592303813737,
+   "delta": 0
+  }
+ ],
+ "S10|appaiato|traffico SPENTO": {
+  "delta": 0.09570665634873876,
+  "ci95": [
+   0.019307692307620528,
+   0.25339964788804537
+  ],
+  "esito": "PEGGIORA (IC esclude 0)"
+ },
+ "S10|appaiato|traffico del FONDO": {
+  "delta": 0.1759649112967736,
+  "ci95": [
+   -0.011164855086008174,
+   0.3972102694415298
+  ],
+  "esito": "indistinguibile dal kernel"
+ },
+ "S10|appaiato|degrado del FONDO": {
+  "delta": 4.547473508864641e-13,
+  "ci95": [
+   -2.9558577807620168e-12,
+   0.0476136363643036
+  ],
+  "esito": "indistinguibile dal kernel"
+ },
+ "S10|appaiato|carburante ri-aggiunto (3,0)": {
+  "delta": 0,
+  "ci95": [
+   -4.547473508864641e-12,
+   5.002220859751105e-12
+  ],
+  "esito": "indistinguibile dal kernel"
+ },
+ "S10|appaiato|tutto il fondo insieme": {
+  "delta": 0.18222671980197447,
+  "ci95": [
+   0.022578426884592773,
+   0.39721026944198456
+  ],
+  "esito": "PEGGIORA (IC esclude 0)"
+ },
+ "S10|sweep": [
+  {
+   "ZONE": 2,
+   "STRENGTH": 1,
+   "rel": 2.17926814223415,
+   "delta": 0
+  },
+  {
+   "ZONE": 3,
+   "STRENGTH": 1,
+   "rel": 2.17926814223415,
+   "delta": 0.05842307692387294
+  },
+  {
+   "ZONE": 1,
+   "STRENGTH": 1,
+   "rel": 2.1845906946837204,
+   "delta": 0
+  },
+  {
+   "ZONE": 1.5,
+   "STRENGTH": 1,
+   "rel": 2.1845906946837204,
+   "delta": 0
+  },
+  {
+   "ZONE": 2,
+   "STRENGTH": 0.5,
+   "rel": 2.235440856310902,
+   "delta": 0.058137288973057366
+  },
+  {
+   "ZONE": 3,
+   "STRENGTH": 0.5,
+   "rel": 2.235440856310902,
+   "delta": 0.035746140649735025
+  },
+  {
+   "ZONE": 2,
+   "STRENGTH": 0.25,
+   "rel": 2.24398149491833,
+   "delta": 0.09570665634873876
+  },
+  {
+   "ZONE": 3,
+   "STRENGTH": 0.25,
+   "rel": 2.24398149491833,
+   "delta": 0.09570665634873876
+  },
+  {
+   "ZONE": 0.5,
+   "STRENGTH": 0.5,
+   "rel": 2.247748548620052,
+   "delta": 0.09570665634873876
+  },
+  {
+   "ZONE": 1,
+   "STRENGTH": 0.5,
+   "rel": 2.247748548620052,
+   "delta": 0.09570665634873876
+  },
+  {
+   "ZONE": 1.5,
+   "STRENGTH": 0.5,
+   "rel": 2.247748548620052,
+   "delta": 0.09570665634873876
+  },
+  {
+   "ZONE": 0.5,
+   "STRENGTH": 0.25,
+   "rel": 2.2501353410729052,
+   "delta": 0.09570665634873876
+  },
+  {
+   "ZONE": 1,
+   "STRENGTH": 0.25,
+   "rel": 2.2501353410729052,
+   "delta": 0.09570665634873876
+  },
+  {
+   "ZONE": 1.5,
+   "STRENGTH": 0.25,
+   "rel": 2.2501353410729052,
+   "delta": 0.09570665634873876
+  },
+  {
+   "ZONE": 0,
+   "STRENGTH": 1,
+   "rel": 2.2742699564574878,
+   "delta": 0.09570665634873876
+  },
+  {
+   "ZONE": 0.5,
+   "STRENGTH": 1,
+   "rel": 2.3783417832145233,
+   "delta": 0.09558823529891924
+  }
+ ],
+ "decomposizione": {
+  "bias_osservato": -9.318120067335448,
+  "carburante": -7.398769787127094,
+  "eta_extra_giri": 9.147826086956522,
+  "degrado": -2.017095652173913,
+  "spiegato": -9.415865439301006,
+  "residuo": 0.09774537196555855,
+  "n": 115,
+  "S": 5
+ }
+}
