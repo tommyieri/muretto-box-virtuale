@@ -2368,18 +2368,18 @@
    "2023-25": {
     "n_permutazioni": 400,
     "n_gare": 56,
-    "mediana_null_aggregato": -0.005,
-    "q95_|null_aggregato|": 0.288,
+    "mediana_null_aggregato": 0.005,
+    "q95_|null_aggregato|": 0.3123,
     "p": 0.00249,
-    "q95_|null_singola_gara|": 2.1435
+    "q95_|null_singola_gara|": 2.1485
    },
    "2026": {
     "n_permutazioni": 400,
     "n_gare": 10,
-    "mediana_null_aggregato": -0.0273,
-    "q95_|null_aggregato|": 0.4465,
+    "mediana_null_aggregato": 0.0154,
+    "q95_|null_aggregato|": 0.4352,
     "p": 0.00249,
-    "q95_|null_singola_gara|": 1.9184
+    "q95_|null_singola_gara|": 1.9908
    }
   },
   "confronto_regimi": {

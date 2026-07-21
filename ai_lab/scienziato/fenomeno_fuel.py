@@ -179,6 +179,7 @@ class FenomenoFuel:
         fra gli stint, tenendo ferme le eta. La desincronizzazione diventa finta:
         sotto il null il coefficiente sul giro deve essere ~0."""
         import random
+        import zlib
         d = self._dati(blocco)
         if d is None:
             return []
@@ -192,7 +193,12 @@ class FenomenoFuel:
         chiavi = list(stint)
         offset = {k: st.median([keep[i]['lap'] - keep[i]['eta'] for i in stint[k]])
                   for k in chiavi}
-        rng = random.Random(seed + hash(blocco['id']) % 10000)
+        # zlib.crc32, NON hash(): l'hash delle stringhe in Python e' salato per processo
+        # (PYTHONHASHSEED), quindi il null non era riproducibile fra esecuzioni. Correzione
+        # di DETERMINISMO, non di metodo: la procedura di permutazione e' identica, cambia
+        # solo come si deriva il seme. Trovata dal controllo "il file committato coincide
+        # con l'output corrente del generatore?".
+        rng = random.Random(seed + zlib.crc32(blocco['id'].encode()) % 10000)
         fuori, span = [], N - 1
         for _ in range(n):
             perm = list(offset.values())

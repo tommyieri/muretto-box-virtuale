@@ -1,0 +1,260 @@
+{
+ "celle": {
+  "Abu Dhabi|2023-25": {
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "stato": "giudicabile"
+  },
+  "Australian|2023-25": {
+   "anni": [
+    "2023",
+    "2024"
+   ],
+   "stato": "indecidibile"
+  },
+  "Australian|2026": {
+   "anni": [
+    "2026"
+   ],
+   "stato": "indecidibile"
+  },
+  "Austrian|2023-25": {
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "stato": "giudicabile"
+  },
+  "Austrian|2026": {
+   "anni": [
+    "2026"
+   ],
+   "stato": "indecidibile"
+  },
+  "Azerbaijan|2023-25": {
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "stato": "giudicabile"
+  },
+  "Bahrain|2023-25": {
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "stato": "giudicabile"
+  },
+  "British|2023-25": {
+   "anni": [
+    "2023"
+   ],
+   "stato": "indecidibile"
+  },
+  "British|2026": {
+   "anni": [
+    "2026"
+   ],
+   "stato": "indecidibile"
+  },
+  "Canadian|2023-25": {
+   "anni": [
+    "2023",
+    "2025"
+   ],
+   "stato": "indecidibile"
+  },
+  "Canadian|2026": {
+   "anni": [
+    "2026"
+   ],
+   "stato": "indecidibile"
+  },
+  "Hungarian|2023-25": {
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "stato": "giudicabile"
+  },
+  "Italian|2023-25": {
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "stato": "giudicabile"
+  },
+  "Japanese|2023-25": {
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "stato": "giudicabile"
+  },
+  "Japanese|2026": {
+   "anni": [
+    "2026"
+   ],
+   "stato": "indecidibile"
+  },
+  "Las Vegas|2023-25": {
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "stato": "giudicabile"
+  },
+  "Mexico City|2023-25": {
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "stato": "giudicabile"
+  },
+  "Miami|2023-25": {
+   "anni": [
+    "2023",
+    "2024"
+   ],
+   "stato": "indecidibile"
+  },
+  "Miami|2026": {
+   "anni": [
+    "2026"
+   ],
+   "stato": "indecidibile"
+  },
+  "Qatar|2023-25": {
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "stato": "giudicabile"
+  },
+  "Saudi Arabian|2023-25": {
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "stato": "giudicabile"
+  },
+  "Singapore|2023-25": {
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "stato": "giudicabile"
+  },
+  "Spanish|2023-25": {
+   "anni": [
+    "2023",
+    "2025"
+   ],
+   "stato": "indecidibile"
+  },
+  "Spanish|2026": {
+   "anni": [
+    "2026"
+   ],
+   "stato": "indecidibile"
+  },
+  "São Paulo|2023-25": {
+   "anni": [
+    "2023",
+    "2025"
+   ],
+   "stato": "indecidibile"
+  },
+  "United States|2023-25": {
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "stato": "giudicabile"
+  },
+  "Belgian|2023-25": {
+   "anni": [
+    "2024"
+   ],
+   "stato": "indecidibile"
+  },
+  "Belgian|2026": {
+   "anni": [
+    "2026"
+   ],
+   "stato": "indecidibile"
+  },
+  "Chinese|2023-25": {
+   "anni": [
+    "2024",
+    "2025"
+   ],
+   "stato": "indecidibile"
+  },
+  "Chinese|2026": {
+   "anni": [
+    "2026"
+   ],
+   "stato": "indecidibile"
+  },
+  "Dutch|2023-25": {
+   "anni": [
+    "2024",
+    "2025"
+   ],
+   "stato": "indecidibile"
+  },
+  "Emilia Romagna|2023-25": {
+   "anni": [
+    "2024",
+    "2025"
+   ],
+   "stato": "indecidibile"
+  },
+  "Monaco|2023-25": {
+   "anni": [
+    "2024",
+    "2025"
+   ],
+   "stato": "indecidibile"
+  },
+  "Monaco|2026": {
+   "anni": [
+    "2026"
+   ],
+   "stato": "indecidibile"
+  }
+ },
+ "verdetti_emessi": [
+  "Abu Dhabi|2023-25",
+  "Austrian|2023-25",
+  "Azerbaijan|2023-25",
+  "Bahrain|2023-25",
+  "Hungarian|2023-25",
+  "Italian|2023-25",
+  "Japanese|2023-25",
+  "Las Vegas|2023-25",
+  "Mexico City|2023-25",
+  "Qatar|2023-25",
+  "Saudi Arabian|2023-25",
+  "Singapore|2023-25",
+  "United States|2023-25"
+ ],
+ "nota_linea_di_base": "le celle gia giudicabili al commit delle predizioni sono quelle che hanno ISPIRATO il metro: marcate come gia emesse, non produrranno mai un verdetto \"fresco\"",
+ "soglia_congelata": 0.8686
+}
