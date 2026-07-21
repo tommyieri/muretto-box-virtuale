@@ -5,10 +5,27 @@
 //
 // DEGRADO OPZIONALE (aggancio del laboratorio, ai_lab/scienziato/PREREG_degrado.md §3).
 // degrado = null -> comportamento BIT-IDENTICO a prima: il golden non si muove di un ulp.
-// degrado = { [driver]: { rate, age0 } } -> il passo diventa  p + rate*(eta - age0),
-// forma INCREMENTALE: eta0 e' l'eta gomma a cui `pace` e' stato misurato, quindi il degrado
-// gia' dentro il passo base NON viene ri-contato (era il difetto del gancio v1: rate*(eta-1)
-// su un pace_base gia' degradato). L'eta avanza con i giri simulati.
+//
+// degrado = { [pilota]: { rate, eta, eta0 } }   ->   passo(s) = p + rate * ((eta + s) - eta0)
+//     rate  s/giro per ogni giro di vita gomma
+//     eta   eta della gomma AL GIRO DI CONGELAMENTO
+//     eta0  eta della gomma A CUI `pace` E' STATO MISURATO
+//
+// PERCHE' SERVONO DUE ETA' E NON UNA. `pace` non e' il passo a gomma nuova: e' la MEDIANA
+// dei giri puliti dello stint fino a qui, quindi porta gia' dentro il degrado accumulato
+// fino all'eta MEDIANA di quel window. Il termine giusto e' l'incremento DA QUEL
+// RIFERIMENTO, non da zero e non da gomma nuova. E' la stessa forma M1 gia' validata in
+// replay per il pannello scenari (demo/pitbande.mjs, BIAS +0,42 -> +0,05).
+//
+// FINO AL 21/07/2026 QUI C'ERA UNA TRAPPOLA: il commento prometteva `rate*(eta - eta0)` ma
+// il codice faceva `rate * s`, cioe' dava per scontato eta0 == eta (passo misurato all'eta
+// attuale). Non e' vero: misurato sul fondo 2026, la gomma dei giri simulati e' in mediana
+// 9,15 giri PIU VECCHIA del window che ha prodotto `pace`. Chi avesse acceso il gancio
+// avrebbe applicato una frazione della correzione senza accorgersene, e il termine costante
+// mai. Il campo c'era, il codice non lo leggeva.
+//
+// SICURO PER ASSENZA: se mancano `eta` o `eta0`, il degrado NON si applica affatto. Meglio
+// un effetto visibilmente assente che una forma sbagliata applicata di nascosto.
 // TRAFFICO OPZIONALE (modello live del laboratorio, ai_lab/scienziato/PREREG_traffico_live.md).
 // traffico = null -> comportamento BIT-IDENTICO: resta il cap ZONE/STRENGTH di oggi.
 // traffico = { a, lam } -> al posto del cap, la penalita' misurata dal fondo:
@@ -26,8 +43,11 @@ export function simulate({ state, pace, track = 1.0, steps = 5, freezeLap = 0, p
     for (const d of drivers) {
       const p = pace[d];
       if (p !== undefined && p !== null) {
-        // eta corrente = age0 + s  =>  (eta - age0) = s. Incrementale per costruzione.
-        pending[d] = (degrado && degrado[d]) ? p + degrado[d].rate * s : p;
+        const g = degrado && degrado[d];
+        // l'eta avanza coi giri simulati; il riferimento e' l'eta a cui `pace` fu misurato
+        pending[d] = (g && g.rate && g.eta != null && g.eta0 != null)
+          ? p + g.rate * ((g.eta + s) - g.eta0)
+          : p;
       }
     }
     const cand = drivers
