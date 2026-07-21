@@ -90,68 +90,90 @@
  "verifica": {
   "gare_calibrazione": [
    "2026 Australia",
-   "2026 Belgian",
-   "2026 Canada",
+   "2026 Cina",
    "2026 Giappone",
-   "2026 Monaco"
+   "2026 Miami"
   ],
   "gare_verifica": [
+   "2026 Canada",
+   "2026 Monaco",
+   "2026 Spagna",
    "2026 Austria",
    "2026 British",
-   "2026 Cina",
-   "2026 Miami",
-   "2026 Spagna"
+   "2026 Belgian"
   ],
-  "rho_calibrazione": {
-   "HARD": 0.0395,
-   "MEDIUM": 0.0011,
-   "SOFT": 0.0209
+  "partizione": {
+   "versione": "v2_temporale",
+   "T_stella": "2026-05-24",
+   "K_min": 4,
+   "n_calibrazione": 4,
+   "n_verifica": 6,
+   "gare_calibrazione": [
+    "2026 Australia",
+    "2026 Cina",
+    "2026 Giappone",
+    "2026 Miami"
+   ],
+   "gare_verifica": [
+    "2026 Canada",
+    "2026 Monaco",
+    "2026 Spagna",
+    "2026 Austria",
+    "2026 British",
+    "2026 Belgian"
+   ],
+   "ordinamento": "cronologico dal fondo"
   },
-  "tol": 55.304,
-  "n_scarti_calibrazione": 36,
+  "rho_calibrazione": {
+   "HARD": 0.0389,
+   "MEDIUM": 0.0499,
+   "SOFT": 0.05407
+  },
+  "tol": 27.483,
+  "n_scarti_calibrazione": 32,
   "A": {
    "giudicabile": true,
    "coppie": [
     {
-     "gara": "2026 Austria",
-     "n_piloti": 8,
-     "errore_modello": 44.519,
-     "errore_zero": 21.077,
-     "guadagno": -23.442
-    },
-    {
-     "gara": "2026 British",
+     "gara": "2026 Canada",
      "n_piloti": 4,
-     "errore_modello": 4.352,
-     "errore_zero": 26.961,
-     "guadagno": 22.609
+     "errore_modello": 79.682,
+     "errore_zero": 19.336,
+     "guadagno": -60.346
     },
     {
-     "gara": "2026 Cina",
-     "n_piloti": 8,
-     "errore_modello": 12.731,
-     "errore_zero": 16.211,
-     "guadagno": 3.479
-    },
-    {
-     "gara": "2026 Miami",
-     "n_piloti": 7,
-     "errore_modello": 19.393,
-     "errore_zero": 4.286,
-     "guadagno": -15.107
+     "gara": "2026 Monaco",
+     "n_piloti": 15,
+     "errore_modello": 104.003,
+     "errore_zero": 73.639,
+     "guadagno": -30.364
     },
     {
      "gara": "2026 Spagna",
      "n_piloti": 2,
-     "errore_modello": 65.132,
-     "errore_zero": 7.576,
-     "guadagno": -57.556
+     "errore_modello": 61.718,
+     "errore_zero": 7.325,
+     "guadagno": -54.392
+    },
+    {
+     "gara": "2026 Austria",
+     "n_piloti": 8,
+     "errore_modello": 36.786,
+     "errore_zero": 21.3,
+     "guadagno": -15.486
+    },
+    {
+     "gara": "2026 British",
+     "n_piloti": 4,
+     "errore_modello": 17.044,
+     "errore_zero": 24.469,
+     "guadagno": 7.425
     }
    ],
-   "guadagno_mediano": -15.107,
+   "guadagno_mediano": -30.364,
    "ci95": [
-    -57.556,
-    22.609
+    -60.346,
+    7.425
    ],
    "n_gare": 5,
    "esclude_lo_zero": false,
@@ -160,91 +182,131 @@
   },
   "X": {
    "etichetta": "cancello degrado_2026",
-   "n_casi": 16,
-   "n_gare": 3,
+   "n_casi": 3,
+   "n_gare": 2,
    "n_vinti": 1,
-   "quota": 0.0625,
-   "margine_mediano_vittorie": 65.31,
-   "tol": 55.304,
+   "quota": 0.3333,
+   "margine_mediano_vittorie": 36.17,
+   "tol": 27.483,
    "G_stella": 1.5,
    "esclusi": {
-    "giri mancanti (ritiro o buchi)": 62,
-    "rientro in traffico": 8,
-    "cancello di calibrazione": 5,
-    "mescola SOFT senza rho": 2
+    "giri mancanti (ritiro o buchi)": 81,
+    "cancello di calibrazione": 28,
+    "mescola SOFT senza rho": 2,
+    "rientro in traffico": 2
    },
    "per_gara": {
-    "2026 British": {
+    "2026 Austria": {
      "n": 2,
-     "vinti": 0,
-     "quota": 0.0
-    },
-    "2026 Cina": {
-     "n": 8,
      "vinti": 1,
-     "quota": 0.125
+     "quota": 0.5
     },
-    "2026 Miami": {
-     "n": 6,
+    "2026 British": {
+     "n": 1,
      "vinti": 0,
      "quota": 0.0
     }
    },
    "gare_verifica": [
     "2026 Austria",
+    "2026 Belgian",
     "2026 British",
-    "2026 Cina",
-    "2026 Miami",
+    "2026 Canada",
+    "2026 Monaco",
     "2026 Spagna"
    ]
   },
   "cancello_accensione": {
    "A_predittivo": {
     "SUPERATO": false,
-    "guadagno_mediano_s": -15.107,
+    "guadagno_mediano_s": -30.364,
     "ci95": [
-     -57.556,
-     22.609
+     -60.346,
+     7.425
     ],
     "criterio": "errore di ricostruzione minore del degrado-zero RISTIMATO, con IC95 appaiato sui blocchi che esclude lo zero"
    },
    "B_prodotto": {
     "SUPERATO": false,
     "numerosita_sufficiente": false,
-    "n_casi": 16,
-    "n_gare": 3,
-    "X": 0.0625,
+    "n_casi": 3,
+    "n_gare": 2,
+    "X": 0.3333,
     "X_richiesta": 0.6,
-    "margine_mediano_s": 65.31,
-    "margine_richiesto_s": 110.608,
+    "margine_mediano_s": 36.17,
+    "margine_richiesto_s": 54.967,
     "criterio": "X >= 0.6 e margine >= 2.0*tol su >= 30 casi e >= 4 gare"
    },
    "ACCENDIBILE": false,
+   "partizione": {
+    "versione": "v2_temporale",
+    "T_stella": "2026-05-24",
+    "K_min": 4,
+    "n_calibrazione": 4,
+    "n_verifica": 6,
+    "gare_calibrazione": [
+     "2026 Australia",
+     "2026 Cina",
+     "2026 Giappone",
+     "2026 Miami"
+    ],
+    "gare_verifica": [
+     "2026 Canada",
+     "2026 Monaco",
+     "2026 Spagna",
+     "2026 Austria",
+     "2026 British",
+     "2026 Belgian"
+    ],
+    "ordinamento": "cronologico dal fondo"
+   },
    "regola": "servono ENTRAMBE. Finche no, il modello resta SPENTO da solo. L accensione e un gesto umano: il modello dice solo quando se l e guadagnata."
   }
  },
  "cancello_accensione": {
   "A_predittivo": {
    "SUPERATO": false,
-   "guadagno_mediano_s": -15.107,
+   "guadagno_mediano_s": -30.364,
    "ci95": [
-    -57.556,
-    22.609
+    -60.346,
+    7.425
    ],
    "criterio": "errore di ricostruzione minore del degrado-zero RISTIMATO, con IC95 appaiato sui blocchi che esclude lo zero"
   },
   "B_prodotto": {
    "SUPERATO": false,
    "numerosita_sufficiente": false,
-   "n_casi": 16,
-   "n_gare": 3,
-   "X": 0.0625,
+   "n_casi": 3,
+   "n_gare": 2,
+   "X": 0.3333,
    "X_richiesta": 0.6,
-   "margine_mediano_s": 65.31,
-   "margine_richiesto_s": 110.608,
+   "margine_mediano_s": 36.17,
+   "margine_richiesto_s": 54.967,
    "criterio": "X >= 0.6 e margine >= 2.0*tol su >= 30 casi e >= 4 gare"
   },
   "ACCENDIBILE": false,
+  "partizione": {
+   "versione": "v2_temporale",
+   "T_stella": "2026-05-24",
+   "K_min": 4,
+   "n_calibrazione": 4,
+   "n_verifica": 6,
+   "gare_calibrazione": [
+    "2026 Australia",
+    "2026 Cina",
+    "2026 Giappone",
+    "2026 Miami"
+   ],
+   "gare_verifica": [
+    "2026 Canada",
+    "2026 Monaco",
+    "2026 Spagna",
+    "2026 Austria",
+    "2026 British",
+    "2026 Belgian"
+   ],
+   "ordinamento": "cronologico dal fondo"
+  },
   "regola": "servono ENTRAMBE. Finche no, il modello resta SPENTO da solo. L accensione e un gesto umano: il modello dice solo quando se l e guadagnata."
  },
  "ACCENDIBILE": false,
@@ -255,6 +317,8 @@
   "IL DEGRADO NON E PER-CIRCUITO: gia falsificato (0 circuiti veri su 8). Questo modello NON ha, e non deve avere, un coefficiente per pista.",
   "NIENTE CLIFF: il termine non-lineare (soglia+rampa) e stato montato e SCARTATO — il residuo per fascia di eta gomma e piatto, e il placebo del ginocchio finto ha ucciso il guadagno. Questo modello NON rappresenta il crollo di fine vita.",
   "SEGNO INSTABILE FRA GARE per HARD, MEDIUM, SOFT: in alcune gare la pendenza stimata e NEGATIVA (gomme che migliorerebbero invecchiando). Dentro la gara la stima e precisa, fra le gare balla: ogni gara sta misurando con cura una cosa diversa. Finche dura, non esiste una pendenza comune 2026 da far viaggiare.",
+  "PARTIZIONE v2_temporale (T* = 2026-05-24, 4 gare in calibrazione / 6 in verifica): lo STESSO modulo e la STESSA soglia del modello traffico — verificato, non assunto, perche i due modelli hanno le stesse 10 gare utili del 2026. Fino al 21/07/2026 il cancello usava pari/dispari su un ordinamento per NOME, che una gara in piu o in meno rovesciava. OGNI VERDETTO SENZA LA TARGHETTA `partizione` E NATO SOTTO LA REGOLA VECCHIA: non si confronta con questo.",
+  "IL CANCELLO (B) NON E GIUDICABILE: 3 casi valutabili su 2 gare, contro i 30 su 4 richiesti. Col taglio temporale la calibrazione si stringe a 4 gare e i casi che passano il cancello di calibrazione crollano: il modello non e spento perche ha perso, e spento perche su (B) non ha ancora abbastanza materiale per giocare. E una differenza che conta, quando si rileggera questo numero.",
   "SPENTO DA SOLO: non ha superato il proprio cancello di accensione. NON va agganciato al motore. Si riprovera da solo alla prossima gara."
  ],
  "nome": "degrado_2026",
@@ -262,7 +326,7 @@
  "targhetta": {
   "gare_sotto": 10,
   "blocchi_sotto": 10,
-  "calcolato_il": "2026-08-02"
+  "calcolato_il": "2026-07-22"
  },
  "storico": [
   {
@@ -286,6 +350,24 @@
     "rho_SOFT": 0.0,
     "rho_MEDIUM": -0.0183,
     "rho_HARD": -0.0114
+   }
+  },
+  {
+   "calcolato_il": "2026-07-22",
+   "gare_sotto": 10,
+   "delta_coefficienti": {
+    "rho_SOFT": 0.0,
+    "rho_MEDIUM": 0.0,
+    "rho_HARD": 0.0
+   }
+  },
+  {
+   "calcolato_il": "2026-07-22",
+   "gare_sotto": 10,
+   "delta_coefficienti": {
+    "rho_SOFT": 0.0,
+    "rho_MEDIUM": 0.0,
+    "rho_HARD": 0.0
    }
   }
  ]

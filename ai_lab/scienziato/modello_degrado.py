@@ -26,6 +26,7 @@ import degrado as DG
 import degrado_metro as MT
 import degrado_verde as DV
 import fondo
+import partizione as PZ
 import scheletro
 
 
@@ -61,8 +62,8 @@ class ModelloDegrado:
             per_gara, dati = self.raccogli()
         gids = sorted(per_gara)
         # I COEFFICIENTI LIVE usano tutte le gare disponibili del regime; il CANCELLO invece
-        # gira fuori campione (pari/dispari). Sono due domande diverse: "qual e' la stima
-        # migliore che ho" e "me la sono guadagnata".
+        # gira fuori campione, sul taglio TEMPORALE di partizione.py. Sono due domande
+        # diverse: "qual e' la stima migliore che ho" e "me la sono guadagnata".
         rho, dett = MT.rho_viaggiante(dati, gids)
 
         ordinati = [c for c in ('SOFT', 'MEDIUM', 'HARD') if c in rho]
@@ -101,14 +102,27 @@ class ModelloDegrado:
 
     # ---------------------------------------------------------------- il cancello
     def verifica(self, per_gara, dati, coef):
-        """Fuori campione: gare per data, indici pari = calibrazione, dispari = verifica.
-        Mai la stessa gara nei due ruoli."""
+        """Fuori campione. Mai la stessa gara nei due ruoli.
+
+        LA PARTIZIONE NON E' SCRITTA QUI: la chiede a `partizione.py`, lo STESSO modulo che
+        usa il cancello del traffico, con la STESSA T* (PREREG_partizione_temporale.md).
+        Prima era `gids[0::2], gids[1::2]` — pari/dispari su un ordinamento per NOME — e
+        bastava una gara in piu' o in meno a rovesciare il taglio.
+
+        T* E' LA STESSA DEL TRAFFICO PERCHE' E' STATO VERIFICATO, NON ASSUNTO: i due modelli
+        hanno le stesse identiche 10 gare utili del 2026 (il filtro aria-libera del degrado
+        opera DENTRO le gare, non ne elimina nessuna), quindi la 5a gara cronologica e' la
+        stessa — Canada, 2026-05-24 — e T* esce dalla stessa derivazione, non da un travaso.
+        """
         gids = sorted(per_gara)
-        cal, ver = gids[0::2], gids[1::2]
-        out = {'gare_calibrazione': cal, 'gare_verifica': ver}
+        date = PZ.date_dal_fondo({g: dati[g]['dati']['righe'] for g in gids})
+        cal, ver, targhetta_partizione = PZ.taglio(gids, date, self.regime)
+        out = {'gare_calibrazione': cal, 'gare_verifica': ver,
+               'partizione': targhetta_partizione}
         if len(cal) < 2 or len(ver) < 2:
             out['cancello_accensione'] = {
                 'ACCENDIBILE': False, 'A_predittivo': None, 'B_prodotto': None,
+                'partizione': targhetta_partizione,
                 'motivo': f'{len(cal)}/{len(ver)} gare: troppo poche per giudicare',
                 'criterio': 'A: batte il degrado-zero ristimato con IC95 appaiato che '
                             'esclude lo zero. B: X>=60% e margine>=2*tol su >=30 casi.'}
@@ -144,6 +158,7 @@ class ModelloDegrado:
                 'criterio': f'X >= {MT.QUOTA_NETTA} e margine >= {MT.FATTORE_MARGINE}*tol '
                             f'su >= {MT.MIN_CASI} casi e >= {MT.MIN_GARE} gare'},
             'ACCENDIBILE': bool(A.get('SUPERATO') and B),
+            'partizione': targhetta_partizione,
             'regola': 'servono ENTRAMBE. Finche no, il modello resta SPENTO da solo. '
                       'L accensione e un gesto umano: il modello dice solo quando se l e '
                       'guadagnata.'}
@@ -177,6 +192,26 @@ class ModelloDegrado:
                      'migliorerebbero invecchiando). Dentro la gara la stima e precisa, fra '
                      'le gare balla: ogni gara sta misurando con cura una cosa diversa. '
                      'Finche dura, non esiste una pendenza comune 2026 da far viaggiare.')
+        pz = ((ver or {}).get('cancello_accensione') or {}).get('partizione') or {}
+        if pz.get('versione'):
+            L.append(
+                f"PARTIZIONE {pz['versione']} (T* = {pz.get('T_stella')}, "
+                f"{pz.get('n_calibrazione')} gare in calibrazione / {pz.get('n_verifica')} in "
+                'verifica): lo STESSO modulo e la STESSA soglia del modello traffico — '
+                'verificato, non assunto, perche i due modelli hanno le stesse 10 gare utili '
+                'del 2026. Fino al 21/07/2026 il cancello usava pari/dispari su un '
+                'ordinamento per NOME, che una gara in piu o in meno rovesciava. OGNI '
+                'VERDETTO SENZA LA TARGHETTA `partizione` E NATO SOTTO LA REGOLA VECCHIA: '
+                'non si confronta con questo.')
+        b = (ca_b := ((ver or {}).get('cancello_accensione') or {}).get('B_prodotto')) or {}
+        if b and not b.get('numerosita_sufficiente'):
+            L.append(
+                f"IL CANCELLO (B) NON E GIUDICABILE: {b.get('n_casi')} casi valutabili su "
+                f"{b.get('n_gare')} gare, contro i 30 su 4 richiesti. Col taglio temporale la "
+                'calibrazione si stringe a 4 gare e i casi che passano il cancello di '
+                'calibrazione crollano: il modello non e spento perche ha perso, e spento '
+                'perche su (B) non ha ancora abbastanza materiale per giocare. E una '
+                'differenza che conta, quando si rileggera questo numero.')
         ca = (ver or {}).get('cancello_accensione', {})
         if not ca.get('ACCENDIBILE'):
             L.append('SPENTO DA SOLO: non ha superato il proprio cancello di accensione. '
