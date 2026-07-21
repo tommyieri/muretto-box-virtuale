@@ -171,8 +171,11 @@ def test_mappa_location():
     assert f2["cars"]["1"]["x"] == 110 and "extra_cars" not in f2, f2
 
 
-@caso("mappa: timing_update solo campi cambiati; formati gap/last_lap")
+@caso("mappa: timing_update solo campi cambiati; gap/last_lap/best_lap")
 def test_mappa_timing():
+    """best_lap (torre live R2, commit d4273a3) e' emesso SOLO quando il
+    giro migliora il precedente: e' un miglior-giro, non una copia
+    dell'ultimo. Il primo giro e' anche il migliore."""
     eventi = _eventi([
         ("v1/position", {"driver_number": 4, "position": 3,
                          "date": "2026-07-25T13:00:01+00:00"}, None),
@@ -184,11 +187,21 @@ def test_mappa_timing():
                           "date": "2026-07-25T13:00:03.500000+00:00"}, None),
         ("v1/laps", {"driver_number": 4, "lap_duration": 103.123,
                      "date_start": "2026-07-25T13:00:04+00:00"}, None),
+        # giro piu' lento: last_lap cambia, best_lap NO
+        ("v1/laps", {"driver_number": 4, "lap_duration": 104.5,
+                     "date_start": "2026-07-25T13:00:05+00:00"}, None),
+        # giro piu' veloce: entrambi
+        ("v1/laps", {"driver_number": 4, "lap_duration": 102.0,
+                     "date_start": "2026-07-25T13:00:06+00:00"}, None),
     ])
-    assert [e["type"] for e in eventi] == ["timing_update"] * 3, eventi
+    assert [e["type"] for e in eventi] == ["timing_update"] * 5, eventi
     assert eventi[0]["cars"] == {"4": {"pos": 3}}, eventi[0]
     assert eventi[1]["cars"] == {"4": {"gap": "+1.500"}}, eventi[1]
-    assert eventi[2]["cars"] == {"4": {"last_lap": "1:43.123"}}, eventi[2]
+    assert eventi[2]["cars"] == {"4": {"last_lap": "1:43.123",
+                                       "best_lap": "1:43.123"}}, eventi[2]
+    assert eventi[3]["cars"] == {"4": {"last_lap": "1:44.500"}}, eventi[3]
+    assert eventi[4]["cars"] == {"4": {"last_lap": "1:42.000",
+                                       "best_lap": "1:42.000"}}, eventi[4]
 
 
 @caso("mappa: v1/pit non emette eventi (in_pit e' del geometrico, Fase 3)")
