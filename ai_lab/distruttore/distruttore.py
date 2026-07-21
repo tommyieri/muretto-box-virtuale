@@ -18,7 +18,19 @@ SPAZIO DI MISURA
   elide nella differenza). Per il pit-loss si misura la posizione di rientro, che e'
   un rango e non un tempo.
 
-I CINQUE VETI SONO CONGIUNTIVI: KILLED se anche uno fallisce.
+I CINQUE VETI SONO CONGIUNTIVI: la rivendicazione e' PROPOSTA-FALSIFICATA se anche uno
+fallisce.
+
+AUTORITA' (rifondazione 21/07/2026 — REPORT_FASE_A_RIFONDAZIONE.md)
+  Questo modulo NON emette piu' sentenze. I veti sono MISURE; l'esito e' una PROPOSTA
+  che va portata al tavolo umano (Tommi + Claude). Nessun exit-code decide se
+  un'ipotesi vive o muore: il giudice sono le persone, non la macchina.
+
+STATUTO DEI NUMERI CHE USA (retrocessi a ipotesi — ai_lab/scienziato/RETROCESSIONE.md)
+  ZONE/STRENGTH del cap, pit-loss 20,80 del "noto-vero", e ogni misura che passa dal
+  passo fuel-corretto del kernel sono IPOTESI DA RIVERIFICARE, non fondazioni.
+  Resta valido come metodo lo spazio di misura fuel-NEUTRO (differenze fra due auto
+  sullo stesso giro, ranghi): li' il termine carburante si elide per costruzione.
 """
 import hashlib
 import json
@@ -505,7 +517,7 @@ def _veto_b(blocchi, P):
 
 
 def _veto_c(per_caso):
-    """NESSUN CASO SENSIBILE PEGGIORA. Un solo peggioramento -> KILLED."""
+    """NESSUN CASO SENSIBILE PEGGIORA. Un solo peggioramento -> veto fallito."""
     peggiorati = [k for k, v in per_caso.items() if v < 0]
     return {'passa': not peggiorati, 'peggiorati': peggiorati,
             'per_caso': {k: round(v, 5) for k, v in per_caso.items()},
@@ -534,7 +546,8 @@ def _veto_e(media, P):
 
 # ---------------------------------------------------------------- giudizio
 def giudica(riv):
-    """Applica i cinque veti congiuntivi. Ritorna il verdetto con l'evidenza."""
+    """Applica i cinque veti congiuntivi. Ritorna una PROPOSTA con l'evidenza:
+    la decisione resta al tavolo umano."""
     P = carica_prereg()
     panel = P['panel_ostile']['circuiti']
     Mt = P['misura']['traffico']
@@ -577,7 +590,9 @@ def giudica(riv):
 
     falliti = [k for k, v in veti.items() if not v['passa']]
     return {'rivendicazione': riv['id'], 'modulo': riv['modulo'],
-            'verdetto': 'KILLED' if falliti else 'SURVIVES',
+            'proposta': 'FALSIFICA_PROPOSTA' if falliti else 'NON_FALSIFICATA',
+            'decisione': 'RINVIATA AL TAVOLO UMANO (Tommi + Claude)',
+            'autorita': 'i veti sono misure, non sentenze: nessun exit-code decide',
             'veti_falliti': falliti, 'veti': veti, 'dettaglio': dettaglio,
             'regime_evidenza': riv.get('regime'),
             'margine': None if falliti else {

@@ -1,5 +1,10 @@
 """ai_lab/distruttore/patogeni.py — i due patogeni piantati (test di accettazione).
 
+!! DA RIVERIFICARE (rifondazione 21/07/2026) — ai_lab/scienziato/RETROCESSIONE.md
+   Il 'noto-vero' e' il pit-loss 29,12 -> 20,80 e il 'noto-falso' parte dal cap
+   ZONE=1.5/STRENGTH=1.0: entrambi numeri NON-FONDO. La taratura del giudice
+   (sensibilita' e specificita') e' quindi condizionata a ipotesi da riverificare.
+
 Non sono esempi didattici: sono il collaudo del Distruttore stesso.
   NOTO-FALSO  -> deve essere UCCISO   (sensibilita': se sopravvive, lo strumento e' debole)
   NOTO-VERO   -> deve SOPRAVVIVERE   (specificita': se muore, lo strumento e' aggressivo)

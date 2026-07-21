@@ -4,8 +4,13 @@
     python3 ai_lab/distruttore/run_distruttore.py            # test di accettazione completo
     python3 ai_lab/distruttore/run_distruttore.py --sigillo   # solo verifica prereg
 
-Exit 0 SOLO SE: noto-falso = KILLED  E  noto-vero = SURVIVES.
-Sensibilita' e specificita' sono entrambe obbligatorie.
+Sensibilita' (uccide il noto-falso) e specificita' (lascia il noto-vero) sono entrambe
+necessarie perche' il Distruttore sia utile.
+
+AUTORITA' (rifondazione 21/07/2026 — REPORT_FASE_A_RIFONDAZIONE.md)
+  Questo collaudo NON decide piu' niente con l'exit-code: esce sempre 0 e stampa una
+  PROPOSTA. Se sensibilita' o specificita' mancano, il fatto va portato al tavolo umano
+  (Tommi + Claude), che decide. Il giudice sono le persone, non la macchina.
 """
 import argparse
 import json
@@ -23,8 +28,8 @@ def _riga(t):
     print('=' * 78); print(t); print('=' * 78)
 
 
-def _stampa_verdetto(v):
-    print(f"\n  VERDETTO: {v['verdetto']}   [{v['rivendicazione']}, modulo {v['modulo']}, "
+def _stampa_proposta(v):
+    print(f"\n  PROPOSTA: {v['proposta']}   [{v['rivendicazione']}, modulo {v['modulo']}, "
           f"evidenza dal regime {v['regime_evidenza']}]")
     for k, ve in v['veti'].items():
         segno = 'PASS' if ve['passa'] else 'FALLITO'
@@ -38,7 +43,8 @@ def _stampa_verdetto(v):
             for c, val in ve['per_caso'].items():
                 print(f"             {c:34s} {val:+.5f}  {'PEGGIORA' if val < 0 else ''}")
     print(f"    dettaglio: {json.dumps(v['dettaglio'], ensure_ascii=False)}")
-    if v['verdetto'] == 'KILLED':
+    print(f"    autorita: {v['decisione']}")
+    if v['proposta'] == 'FALSIFICA_PROPOSTA':
         print(f"    -> ucciso dai veti: {', '.join(v['veti_falliti'])}")
     else:
         print(f"    -> margine misurato: {json.dumps(v['margine'], ensure_ascii=False)}")
@@ -54,8 +60,8 @@ def main():
     print(f"  {'INTEGRO' if s['integro'] else 'ALTERATO'}  {s['depositato']}"
           + ('' if s['integro'] else f"  != ricalcolato {s['ricalcolato']}"))
     if not s['integro']:
-        print('\n  Un criterio e\' stato ammorbidito dopo la creazione. exit 1.')
-        return 1
+        print('\n  Un criterio e\' stato ammorbidito dopo la creazione. AL TAVOLO UMANO.')
+        return 0
     if a.sigillo:
         return 0
 
@@ -70,10 +76,10 @@ def main():
     print(f"  golden kernel          : {gk['esito']} {'OK' if gk['passa'] else 'FALLITO'}")
     print(f"  golden pit             : {gp['esito']} {'OK' if gp['passa'] else 'FALLITO'}")
     if not (k['hash_ok'] and k['commit_ok'] and k['pulito'] and gk['passa'] and gp['passa']):
-        print('\n  Verifica preliminare fallita. exit 1.')
-        return 1
+        print('\n  Verifica preliminare fallita. AL TAVOLO UMANO: non proseguo il collaudo.')
+        return 0
 
-    _riga('PATOGENO 1/2 — NOTO-FALSO (atteso: KILLED)')
+    _riga('PATOGENO 1/2 — NOTO-FALSO (atteso: FALSIFICA_PROPOSTA)')
     print('  calibrazione sull\'explore-set ' + str(patogeni.EXPLORE)
           + ' (nessun circuito del panel):')
     falso = patogeni.costruisci_noto_falso(verbose=True)
@@ -82,26 +88,26 @@ def main():
     print(f"  KPI rivendicato sull'explore: "
           f"{falso['kpi_rivendicato']['miglioramento_su_explore_s']:+.5f} s")
     v_falso = D.giudica(falso)
-    _stampa_verdetto(v_falso)
+    _stampa_proposta(v_falso)
 
-    _riga('PATOGENO 2/2 — NOTO-VERO (atteso: SURVIVES)')
+    _riga('PATOGENO 2/2 — NOTO-VERO (atteso: NON_FALSIFICATA)')
     vero = patogeni.costruisci_noto_vero()
     print(f"  pit-loss {vero['baseline']['pitLoss']} -> {vero['overlay']['pitLoss']} "
           f"su {vero['circuito']} (fuori dal panel: resta out-of-sample)")
     v_vero = D.giudica(vero)
-    _stampa_verdetto(v_vero)
+    _stampa_proposta(v_vero)
 
     _riga('ESITO DEL COLLAUDO')
-    sens = v_falso['verdetto'] == 'KILLED'
-    spec = v_vero['verdetto'] == 'SURVIVES'
+    sens = v_falso['proposta'] == 'FALSIFICA_PROPOSTA'
+    spec = v_vero['proposta'] == 'NON_FALSIFICATA'
     print(f"  sensibilita' (uccide il falso) : {'OK' if sens else 'FALLITA'} "
-          f"-> noto-falso = {v_falso['verdetto']}")
+          f"-> noto-falso = {v_falso['proposta']}")
     print(f"  specificita' (lascia il vero)  : {'OK' if spec else 'FALLITA'} "
-          f"-> noto-vero  = {v_vero['verdetto']}")
+          f"-> noto-vero  = {v_vero['proposta']}")
     if not sens:
-        print('\n  Il Distruttore e\' TROPPO DEBOLE: non uccide un falso noto. exit 1.')
+        print('\n  Il Distruttore e\' TROPPO DEBOLE: non uccide un falso noto. AL TAVOLO UMANO.')
     if not spec:
-        print('\n  Il Distruttore e\' TROPPO AGGRESSIVO: uccide un vero noto. exit 1.')
+        print('\n  Il Distruttore e\' TROPPO AGGRESSIVO: uccide un vero noto. AL TAVOLO UMANO.')
     if sens and spec:
         print('\n  COLLAUDO SUPERATO: sensibile e specifico.')
 
@@ -111,7 +117,8 @@ def main():
                    'kernel': k, 'golden_kernel': gk, 'golden_pit': gp,
                    'sigillo_prereg': s['depositato']}, f, ensure_ascii=False, indent=2)
         f.write('\n')
-    return 0 if (sens and spec) else 1
+    print('\n  Nessun exit-code decide: questo collaudo e\' una PROPOSTA per il tavolo umano.')
+    return 0
 
 
 if __name__ == '__main__':
