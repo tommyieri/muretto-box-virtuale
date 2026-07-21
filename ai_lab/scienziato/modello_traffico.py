@@ -127,6 +127,16 @@ class ModelloTraffico:
                 'quella data e stato prodotto sotto la regola vecchia; la targhetta '
                 '`partizione` dentro cancello_accensione dice quale regola l ha prodotto, e '
                 'i verdetti senza targhetta sono tutti v1.',
+                'IL TEST McLAREN NON SOPRAVVIVE AL PLACEBO. Con il placebo riparato '
+                '(deterministico dal 21/07/2026, e finalmente sulla STESSA popolazione del '
+                'McLaren — le gare di verifica) la separazione FINTA, ottenuta mettendo '
+                'davanti un auto A CASO, vale 0,408 s contro una separazione REALE di 0,354 '
+                's: il 115 %. Non collassa: la SUPERA. Chi ha un delta-passo grande ed e '
+                'bloccato sembra pagare di piu anche quando l auto davanti non c entra '
+                'niente. La lettura e che quella separazione sia ARTEFATTO del passo di chi '
+                'segue, non fisica del traffico — cioe esattamente cio che il placebo era '
+                'stato costruito per smascherare. Il numero e pulito e seed-indipendente; '
+                'la DECISIONE su cosa farne (il veto McLaren) resta del tavolo.',
                 'ANCHE COL TAGLIO STABILE, IL REGIME RESTA POVERO: 4 gare in calibrazione e '
                 '6 in verifica. Nessuna singola gara ribalta piu il verdetto, ma togliendone '
                 'una la statistica si muove ancora fino a 0,106 s. La stabilita del taglio '
@@ -199,9 +209,16 @@ class ModelloTraffico:
                 'previsto_pari_passo': round(float(np.median(pa)), 3),
                 'ordina_giusto': bool(float(np.median(pm)) > float(np.median(pa))),
                 'criterio': 'chi ha delta-passo grande ed e bloccato deve pagare di piu'}
-        # placebo: leader a caso (traffico.placebo_leader, GIA SOTTO SIGILLO)
+        # placebo: leader a caso (traffico.placebo_leader, SOTTO SIGILLO)
+        #
+        # STESSA POPOLAZIONE DEL TEST McLAREN — riparato il 21/07/2026. Prima il placebo
+        # girava su TUTTE le gare (`for g in gids`) mentre i numeri reali del McLaren
+        # venivano dalle sole gare di VERIFICA (`enc_ver`): confrontare la separazione finta
+        # con quella reale era mele con pere, a prescindere dall'hash seed. Ora entrambi
+        # vivono su `ver`, e il confronto finta-contro-reale e' finalmente appaiato
+        # sull'insieme.
         pl = []
-        for g in gids:
+        for g in ver:
             d, m = dati[g]
             pl.extend(TR.placebo_leader(per_gara[g], d, m))
         if pl:
@@ -209,10 +226,20 @@ class ModelloTraffico:
             mc_pl = [e for e in e_pl if e['delta'] < -0.8]
             pp_pl = [e for e in e_pl if -0.15 <= e['delta'] < 0.15]
             if mc_pl and pp_pl:
+                finta = (st.median([e['costo'] for e in mc_pl])
+                         - st.median([e['costo'] for e in pp_pl]))
+                reale = (st.median([e['costo'] for e in mc]) - st.median([e['costo'] for e in pp])
+                         ) if (mc and pp) else None
                 out['placebo'] = {
+                    'popolazione': 'gare di VERIFICA (la stessa del test McLaren)',
+                    'n_incontri_finti': len(e_pl),
                     'costo_delta_grande_finto': round(st.median([e['costo'] for e in mc_pl]), 3),
                     'costo_pari_passo_finto': round(st.median([e['costo'] for e in pp_pl]), 3),
-                    'separazione_finta': round(st.median([e['costo'] for e in mc_pl])
-                                               - st.median([e['costo'] for e in pp_pl]), 3),
-                    'nota': 'con leader a caso la separazione deve COLLASSARE'}
+                    'separazione_finta': round(finta, 3),
+                    'separazione_reale': round(reale, 3) if reale is not None else None,
+                    'quota_finta_su_reale': (round(finta / reale, 3)
+                                             if reale not in (None, 0) else None),
+                    'nota': 'con leader a caso la separazione deve COLLASSARE. Se la finta '
+                            'vale quanto la reale, la separazione del delta-passo e un '
+                            'ARTEFATTO del passo di chi segue, non fisica del traffico.'}
         return out
