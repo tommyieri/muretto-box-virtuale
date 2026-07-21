@@ -30,6 +30,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.075,
     "blocco": "2023 Abu Dhabi",
     "regime": "2023-25",
@@ -62,6 +63,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 4
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0321,
     "blocco": "2023 Australian",
     "regime": "2023-25",
@@ -94,6 +96,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0573,
     "blocco": "2023 Austrian",
     "regime": "2023-25",
@@ -126,6 +129,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0437,
     "blocco": "2023 Azerbaijan",
     "regime": "2023-25",
@@ -158,6 +162,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 7
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.1198,
     "blocco": "2023 Bahrain",
     "regime": "2023-25",
@@ -190,6 +195,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0284,
     "blocco": "2023 British",
     "regime": "2023-25",
@@ -222,6 +228,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0376,
     "blocco": "2023 Canadian",
     "regime": "2023-25",
@@ -254,6 +261,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 7
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0642,
     "blocco": "2023 Hungarian",
     "regime": "2023-25",
@@ -286,6 +294,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0623,
     "blocco": "2023 Italian",
     "regime": "2023-25",
@@ -318,6 +327,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 26
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.1138,
     "blocco": "2023 Japanese",
     "regime": "2023-25",
@@ -350,6 +360,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 1
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0257,
     "blocco": "2023 Las Vegas",
     "regime": "2023-25",
@@ -382,6 +393,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 1
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0417,
     "blocco": "2023 Mexico City",
     "regime": "2023-25",
@@ -414,6 +426,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0175,
     "blocco": "2023 Miami",
     "regime": "2023-25",
@@ -446,6 +459,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 4
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0447,
     "blocco": "2023 Qatar",
     "regime": "2023-25",
@@ -478,6 +492,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 15
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0133,
     "blocco": "2023 Saudi Arabian",
     "regime": "2023-25",
@@ -510,6 +525,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 24
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0749,
     "blocco": "2023 Singapore",
     "regime": "2023-25",
@@ -542,6 +558,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.065,
     "blocco": "2023 Spanish",
     "regime": "2023-25",
@@ -574,6 +591,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0575,
     "blocco": "2023 São Paulo",
     "regime": "2023-25",
@@ -606,6 +624,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 5
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.087,
     "blocco": "2023 United States",
     "regime": "2023-25",
@@ -638,6 +657,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 21
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0623,
     "blocco": "2024 Abu Dhabi",
     "regime": "2023-25",
@@ -670,6 +690,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0652,
     "blocco": "2024 Australian",
     "regime": "2023-25",
@@ -702,6 +723,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 5
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0691,
     "blocco": "2024 Austrian",
     "regime": "2023-25",
@@ -734,6 +756,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0614,
     "blocco": "2024 Azerbaijan",
     "regime": "2023-25",
@@ -766,6 +789,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.1199,
     "blocco": "2024 Bahrain",
     "regime": "2023-25",
@@ -798,6 +822,7 @@
      "F8_outlier": 1,
      "G5_compound_non_identificabile": 37
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0548,
     "blocco": "2024 Belgian",
     "regime": "2023-25",
@@ -830,6 +855,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 21
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.1222,
     "blocco": "2024 Chinese",
     "regime": "2023-25",
@@ -862,6 +888,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0539,
     "blocco": "2024 Dutch",
     "regime": "2023-25",
@@ -894,6 +921,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 1
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0544,
     "blocco": "2024 Emilia Romagna",
     "regime": "2023-25",
@@ -926,6 +954,7 @@
      "F8_outlier": 1,
      "G5_compound_non_identificabile": 14
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0852,
     "blocco": "2024 Hungarian",
     "regime": "2023-25",
@@ -958,6 +987,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0525,
     "blocco": "2024 Italian",
     "regime": "2023-25",
@@ -990,6 +1020,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.1378,
     "blocco": "2024 Japanese",
     "regime": "2023-25",
@@ -1022,6 +1053,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 2
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.133,
     "blocco": "2024 Las Vegas",
     "regime": "2023-25",
@@ -1054,6 +1086,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 2
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0555,
     "blocco": "2024 Mexico City",
     "regime": "2023-25",
@@ -1086,6 +1119,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 6
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0316,
     "blocco": "2024 Miami",
     "regime": "2023-25",
@@ -1118,6 +1152,7 @@
      "F8_outlier": 1,
      "G5_compound_non_identificabile": 8
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0488,
     "blocco": "2024 Monaco",
     "regime": "2023-25",
@@ -1150,6 +1185,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 21
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": -0.0022,
     "blocco": "2024 Qatar",
     "regime": "2023-25",
@@ -1182,6 +1218,7 @@
      "F8_outlier": 1,
      "G5_compound_non_identificabile": 29
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0494,
     "blocco": "2024 Saudi Arabian",
     "regime": "2023-25",
@@ -1214,6 +1251,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0436,
     "blocco": "2024 Singapore",
     "regime": "2023-25",
@@ -1246,6 +1284,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 2
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0396,
     "blocco": "2024 United States",
     "regime": "2023-25",
@@ -1278,6 +1317,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0756,
     "blocco": "2025 Abu Dhabi",
     "regime": "2023-25",
@@ -1310,6 +1350,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 16
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0567,
     "blocco": "2025 Austrian",
     "regime": "2023-25",
@@ -1342,6 +1383,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0178,
     "blocco": "2025 Azerbaijan",
     "regime": "2023-25",
@@ -1374,6 +1416,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.145,
     "blocco": "2025 Bahrain",
     "regime": "2023-25",
@@ -1406,6 +1449,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0405,
     "blocco": "2025 Canadian",
     "regime": "2023-25",
@@ -1438,6 +1482,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0385,
     "blocco": "2025 Chinese",
     "regime": "2023-25",
@@ -1470,6 +1515,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0794,
     "blocco": "2025 Dutch",
     "regime": "2023-25",
@@ -1502,6 +1548,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0507,
     "blocco": "2025 Emilia Romagna",
     "regime": "2023-25",
@@ -1534,6 +1581,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 9
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0524,
     "blocco": "2025 Hungarian",
     "regime": "2023-25",
@@ -1566,6 +1614,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 8
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0145,
     "blocco": "2025 Italian",
     "regime": "2023-25",
@@ -1598,6 +1647,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 17
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0369,
     "blocco": "2025 Japanese",
     "regime": "2023-25",
@@ -1630,6 +1680,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.034,
     "blocco": "2025 Las Vegas",
     "regime": "2023-25",
@@ -1662,6 +1713,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 67
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0538,
     "blocco": "2025 Mexico City",
     "regime": "2023-25",
@@ -1694,6 +1746,7 @@
      "F8_outlier": 1,
      "G5_compound_non_identificabile": 14
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0312,
     "blocco": "2025 Monaco",
     "regime": "2023-25",
@@ -1726,6 +1779,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 26
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0243,
     "blocco": "2025 Qatar",
     "regime": "2023-25",
@@ -1758,6 +1812,7 @@
      "F8_outlier": 1,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0502,
     "blocco": "2025 Saudi Arabian",
     "regime": "2023-25",
@@ -1790,6 +1845,7 @@
      "F8_outlier": 1,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0533,
     "blocco": "2025 Singapore",
     "regime": "2023-25",
@@ -1822,6 +1878,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0765,
     "blocco": "2025 Spanish",
     "regime": "2023-25",
@@ -1854,6 +1911,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 15
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0655,
     "blocco": "2025 São Paulo",
     "regime": "2023-25",
@@ -1886,6 +1944,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 14
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0475,
     "blocco": "2025 United States",
     "regime": "2023-25",
@@ -1918,6 +1977,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0389,
     "blocco": "2026 Australia",
     "regime": "2026",
@@ -1950,6 +2010,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0796,
     "blocco": "2026 Austria",
     "regime": "2026",
@@ -1982,6 +2043,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0671,
     "blocco": "2026 Belgian",
     "regime": "2026",
@@ -2014,6 +2076,7 @@
      "F8_outlier": 1,
      "G5_compound_non_identificabile": 11
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0517,
     "blocco": "2026 British",
     "regime": "2026",
@@ -2046,6 +2109,7 @@
      "F8_outlier": 1,
      "G5_compound_non_identificabile": 39
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": -0.0122,
     "blocco": "2026 Canada",
     "regime": "2026",
@@ -2078,6 +2142,7 @@
      "F8_outlier": 1,
      "G5_compound_non_identificabile": 5
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0882,
     "blocco": "2026 Cina",
     "regime": "2026",
@@ -2110,6 +2175,7 @@
      "F8_outlier": 1,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0749,
     "blocco": "2026 Giappone",
     "regime": "2026",
@@ -2142,6 +2208,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": -0.0049,
     "blocco": "2026 Miami",
     "regime": "2026",
@@ -2174,6 +2241,7 @@
      "F8_outlier": 2,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.0355,
     "blocco": "2026 Monaco",
     "regime": "2026",
@@ -2206,6 +2274,7 @@
      "F8_outlier": 0,
      "G5_compound_non_identificabile": 0
     },
+    "curvatura_giro2": null,
     "degrado_medio_s_giro": 0.1631,
     "blocco": "2026 Spagna",
     "regime": "2026",
@@ -2299,18 +2368,18 @@
    "2023-25": {
     "n_permutazioni": 400,
     "n_gare": 56,
-    "mediana_null_aggregato": 0.0057,
-    "q95_|null_aggregato|": 0.2878,
+    "mediana_null_aggregato": -0.005,
+    "q95_|null_aggregato|": 0.288,
     "p": 0.00249,
-    "q95_|null_singola_gara|": 2.1399
+    "q95_|null_singola_gara|": 2.1435
    },
    "2026": {
     "n_permutazioni": 400,
     "n_gare": 10,
-    "mediana_null_aggregato": -0.004,
-    "q95_|null_aggregato|": 0.4591,
+    "mediana_null_aggregato": -0.0273,
+    "q95_|null_aggregato|": 0.4465,
     "p": 0.00249,
-    "q95_|null_singola_gara|": 1.9421
+    "q95_|null_singola_gara|": 1.9184
    }
   },
   "confronto_regimi": {
