@@ -1,4 +1,12 @@
-#!/bin/zsh
+#!/usr/bin/env bash
+# SHEBANG: bash, non zsh. Sul VPS (Linux) zsh NON E' INSTALLATO, e uno script con
+# `#!/bin/zsh` lanciato dalla crontab fallisce con exit 127 e il messaggio "No such file
+# or directory" — che parla dell'INTERPRETE, non dello script, ed e' facilissimo leggerlo
+# come "manca il file". Preso il 22/07/2026 provando lo script in un ambiente minimo
+# (env -i) prima di puntarci la crontab: invocarlo come `sh auto_run.sh` funzionava e
+# nascondeva il guasto, perche' bypassa lo shebang.
+# bash c'e' su entrambe le macchine (/usr/bin/bash sul VPS, /bin/bash sul Mac) e regge
+# i costrutti [[ ]] usati qui sotto.
 # Wrapper per lo scheduler (launchd/cron): lancia l'orchestratore che pubblica le gare
 # nuove DA SOLO. launchd parte con un PATH minimo -> qui lo fissiamo esplicitamente.
 #
