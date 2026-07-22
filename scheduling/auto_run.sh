@@ -26,8 +26,15 @@ else
   PY="python3"
 fi
 
-# Un solo giro alla volta (evita sovrapposizioni se un run e' lungo):
-LOCK="$REPO/data/.auto_gara.lock"
+# Un solo giro alla volta (evita sovrapposizioni se un run e' lungo).
+#
+# IL LOCK HA UN NOME SUO, e non e' pignoleria: la crontab del VPS usava
+# `flock -n .../.auto_gara.lock`, che crea quel percorso come FILE. Questo script fa
+# `mkdir` sullo stesso percorso, e mkdir su un file esistente fallisce SEMPRE — quindi
+# auto_run.sh, puntato a quella crontab, avrebbe risposto "gia' in esecuzione, salto" a
+# ogni giro, per sempre, senza che nessun log gridasse. Preso in prova il 22/07/2026
+# prima di cambiare la crontab; il file di flock e' del 20/07 ed era li' da allora.
+LOCK="$REPO/data/.auto_run.lockdir"
 if ! mkdir "$LOCK" 2>/dev/null; then
   echo "$(date '+%F %T') gia' in esecuzione, salto." >> "$REPO/data/auto_gara.log"
   exit 0
