@@ -291,3 +291,41 @@ awk '/^<!-- NUCLEO-INIZIO -->$/{f=1;next} /^<!-- NUCLEO-FINE -->$/{f=0} f' PRERE
 
 Se l'impronta non corrisponde, il nucleo è stato toccato dopo la ratifica: il documento non
 protegge più niente e il verdetto che ne discende va considerato non valido.
+
+## 11. PROPOSTA DI EMENDAMENTO 1 — NON RATIFICATA, in attesa di `--attore`
+
+**Il nucleo §1–§6 non è toccato: l'impronta di §10 verifica ancora.** Questa sezione è
+fuori dal nucleo e non ammorbidisce niente — **stringe**. È proposta il 22/07/2026, dopo la
+sola misura di fattibilità (§9.3) e **prima che qualunque esito sia stato guardato**:
+l'ordine dei commit lo dimostra. Se il PO non la ratifica, il prereg resta valido com'è, con
+il rischio qui sotto scritto e non coperto.
+
+**Il fatto che la fa nascere** (generatore: `copertura_alpha_undercut.py`, misure in
+`data/copertura_alpha_undercut.json`): sulle coppie A–B reali dei 31 casi 2026, chi attacca è
+il **più lento** dei due in **22 casi su 30** (73%). Meccanicamente ovvio a posteriori —
+l'auto bloccata dietro è quella che ha motivo di fermarsi prima — ma **ribalta la premessa
+narrativa di §0** (la macchina più veloce che undercutta la più lenta). §0 non è nel nucleo:
+la storia cade, la formula di §2 resta in piedi.
+
+**Il rischio che apre.** Con `Δpasso` quasi sempre negativo, il termine `K·Δpasso` abbassa
+quasi sempre il margine, cioè **sposta la previsione verso "fallito"** — che è già la classe
+maggioritaria al 67–68%. Un termine che spinge verso la maggioranza **alza l'accuratezza per
+pura aritmetica**, senza aggiungere fisica.
+
+**Perché il placebo di §5 non basta contro questo.** Il placebo permuta le etichette-pilota:
+distrugge l'asimmetria sistematica del segno, e la distribuzione nulla di `Δpasso` torna
+quasi simmetrica attorno a zero. Il termine vero batterebbe quel placebo **anche se il suo
+unico contributo fosse cavalcare il tasso di base**. §5 difende dal segno *fabbricato*, non
+dallo spostamento *sistematico*.
+
+**GO-5 proposta (condizione decisiva, si aggiunge alle 1–5 di §6):**
+
+> **Controllo a spostamento costante.** Si costruisce `v2_costante`, identica alla v2 ma con
+> `Δpasso` sostituito dalla **mediana di `Δpasso` sui casi** — stesso segno, stessa
+> magnitudine tipica, **zero informazione sulla coppia specifica**. La v2 deve superare
+> `v2_costante` sui difficili fuori campione. Se non la supera, il guadagno è tasso di base
+> travestito e il termine è **NO-GO**, anche se GO-1…GO-4 passassero.
+
+La mediana usata dal controllo si calcola **sui casi fuori campione stessi**, non su quelli
+in campione: il controllo deve avere lo stesso vantaggio informativo del modello, altrimenti
+è un avversario storpiato.
