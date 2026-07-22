@@ -67,6 +67,21 @@ Regola: i dati vengono da f1db/TI, MAI trascritti a mano. Ogni griglia/pole va v
    - Per riavere questi tre servirebbe prima ingerire le sessioni Practice nel
      ti_archive: e' una fonte nuova, non una rigenerazione. Nessun numero e' stato
      stimato al posto del dato mancante.
+   - [SBLOCCATO 22/07] Le Practice CI SONO, e sono sempre state online. `ingest_ti2026.py`
+     scaricava solo Race+Sprint; ora scarica anche 'Practice 1/2/3'. In repo: 22 sessioni,
+     3,5 MB, schema IDENTICO a Race.json (39 colonne, zero differenze - verificato campo
+     per campo su Belgio). Sui weekend sprint esiste solo la FP1: l'elenco SPRINT nello
+     script viene da data/calendario_2026.json, non e' indovinato.
+     ATTENZIONE, il difetto era nostro e va ricordato: l'URL non codificava il nome della
+     sessione, e 'Practice 1' ha uno spazio. Ogni tentativo falliva e lo script stampava
+     "assente online" - cioe' diceva CHE IL DATO NON C'ERA quando non c'era la richiesta.
+     La riga che diceva "non esiste da nessuna parte" era vera solo del nostro codice.
+   - I tre CSV cancellati sono ora RICOSTRUIBILI (i loro generatori no: vanno riscritti).
+     Ricade qui anche il punto 10: `val2026` cablato in finalize_warmin.py:6 nacque su
+     `tyre_observations`, cancellato "perche' non ricostruibile". Adesso lo e'.
+   - LIMITE che resta, e non lo tocca l'ingestione: i giri delle libere sono SPORCHI
+     (carburante ignoto, run interrotti, push e long-run mescolati). Descrivono il
+     venerdi; NON stimano il degrado - quel rigetto e' gia' a referto.
 
 10. [debito dichiarato 22/07] warm-in: sorgente ora committata, resta un pezzo cablato.
     - `data/warmin_prior.csv` alimenta `warminA`, cioe' un ingrediente della baseline

@@ -9,8 +9,25 @@ import os, json, urllib.request, urllib.parse, time
 
 GARE = ['Australian Grand Prix','Chinese Grand Prix','Japanese Grand Prix','Miami Grand Prix',
         'Monaco Grand Prix','Barcelona Grand Prix','Canadian Grand Prix','Austrian Grand Prix',
-        'British Grand Prix']
+        'British Grand Prix','Belgian Grand Prix','Hungarian Grand Prix']
 SESSIONI = ('Race','Sprint')
+
+# PROVE LIBERE (aggiunte 22/07/2026). Il per-giro delle FP non esisteva nel repo — il TODO
+# lo dava per irrecuperabile — ma e' online con lo STESSO schema di Race.json: verificato
+# scaricandolo. Non serviva una fonte nuova, serviva chiederla.
+#
+# LIMITE DICHIARATO, e vale la pena ripeterlo: questi giri sono SPORCHI (carico carburante
+# ignoto, run interrotti, push e long-run mescolati). Servono a descrivere il venerdi —
+# chi ha girato, su che mescola, per quanti giri — NON a stimare il degrado: quel rigetto e'
+# gia' a referto (i gap FP-replay escono tutti negativi e l'ordine SOFT>=MEDIUM>=HARD si
+# rovescia, firma di un termine per-giro non rimosso).
+SESSIONI_FP = ('Practice 1', 'Practice 2', 'Practice 3')
+
+# Sui weekend SPRINT si corre una sola libera: provare anche FP2/FP3 stamperebbe due
+# "assente online" per riga, indistinguibili da un guasto della fonte. Elenco derivato da
+# data/calendario_2026.json (le gare con una sessione 'sprint'), non indovinato.
+SPRINT = {'Chinese Grand Prix', 'Miami Grand Prix', 'Canadian Grand Prix',
+          'British Grand Prix', 'Dutch Grand Prix', 'Singapore Grand Prix'}
 # gare la cui Race e' gia' in ti_cache (nome file cache) -> non riscaricare la Race
 IN_CACHE = {'Australian Grand Prix':'Australian','Chinese Grand Prix':'Chinese',
             'Japanese Grand Prix':'Japanese','Miami Grand Prix':'Miami',
@@ -25,14 +42,15 @@ def get(url):
     except Exception: return None
 
 for gara in GARE:
-    for sess in SESSIONI:
+    fp = SESSIONI_FP[:1] if gara in SPRINT else SESSIONI_FP
+    for sess in SESSIONI + fp:
         if sess=='Race' and gara in IN_CACHE and \
            os.path.exists(os.path.join('data','ti_cache',IN_CACHE[gara]+'.json')):
             continue  # gia' congelata in ti_cache
         dst_dir = os.path.join(OUT, gara); dst = os.path.join(dst_dir, sess+'.json')
         if os.path.exists(dst) and os.path.getsize(dst)>1000:
             print(f"skip (gia' presente): {gara}/{sess}"); continue
-        raw = get(f"https://raw.githubusercontent.com/TracingInsights/2026/main/{urllib.parse.quote(gara)}/{sess}/session_laptimes.json")
+        raw = get(f"https://raw.githubusercontent.com/TracingInsights/2026/main/{urllib.parse.quote(gara)}/{urllib.parse.quote(sess)}/session_laptimes.json")
         if raw is None:
             print(f"assente online: {gara}/{sess}"); continue
         d = json.loads(raw)  # valida che sia JSON prima di scrivere
