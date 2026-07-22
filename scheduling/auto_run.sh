@@ -13,6 +13,19 @@ export PATH="/opt/homebrew/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin"
 REPO="$HOME/muretto"
 cd "$REPO" || exit 1
 
+# IL PYTHON GIUSTO, e non e' lo stesso sulle due macchine. Sul VPS la crontab invocava
+# .venv-auto/bin/python DIRETTAMENTE, saltando questo script — e quindi saltando
+# l'aggiornamento del codice qui sotto: la macchina girava per sempre con l'ultimo push
+# riuscito. Per poterci puntare la crontab, questo script deve sapere quale python usare,
+# altrimenti "python3" sul VPS non trova numpy e il ciclo muore in silenzio.
+if [ -x "$REPO/.venv-auto/bin/python" ]; then
+  PY="$REPO/.venv-auto/bin/python"
+elif [ -x "$REPO/.venv/bin/python" ]; then
+  PY="$REPO/.venv/bin/python"
+else
+  PY="python3"
+fi
+
 # Un solo giro alla volta (evita sovrapposizioni se un run e' lungo):
 LOCK="$REPO/data/.auto_gara.lock"
 if ! mkdir "$LOCK" 2>/dev/null; then
@@ -43,6 +56,6 @@ trap 'rmdir "$LOCK" 2>/dev/null' EXIT
   fi
 } >> "$REPO/data/auto_gara.log" 2>&1
 
-echo "==== $(date '+%F %T') avvio auto_gara --push ====" >> "$REPO/data/auto_gara.log"
-python3 auto_gara.py --push >> "$REPO/data/auto_gara.log" 2>&1
+echo "==== $(date '+%F %T') avvio auto_gara --push (python: $PY) ====" >> "$REPO/data/auto_gara.log"
+"$PY" auto_gara.py --push >> "$REPO/data/auto_gara.log" 2>&1
 echo "==== $(date '+%F %T') fine (exit $?) ====" >> "$REPO/data/auto_gara.log"
