@@ -54,3 +54,23 @@ parte solo quando c'e' davvero una gara nuova o una release f1db nuova.
 - Un lock (`data/.auto_gara.lock`) evita due giri sovrapposti.
 - Le gare gia' pubblicate non vengono ritoccate (registro dup); la neutralizzazione delle
   gare esistenti e' congelata per costruzione.
+
+
+## Come si verifica che la macchina si aggiorni da sola
+
+Non basta lanciare lo script: va lanciato NELL'AMBIENTE DI CRON, che e' spoglio.
+
+    ssh muretto@... 'env -i PATH=/usr/local/bin:/usr/bin:/bin HOME=/home/muretto \
+        /home/muretto/muretto/scheduling/auto_run.sh; echo exit=$?'
+
+Due guasti sono stati trovati solo cosi', il 22/07/2026, e nessuno dei due si
+vedeva lanciando `sh auto_run.sh` a mano:
+
+  - shebang `#!/bin/zsh` e zsh non installato sul VPS -> exit 127 con "No such
+    file or directory", che parla dell'interprete e si legge come "manca il file";
+  - il lock: la crontab usava `flock` (che crea un FILE) sullo stesso percorso su
+    cui lo script fa `mkdir` -> "gia' in esecuzione, salto", per sempre.
+
+E per provare che l'aggiornamento funziona davvero, si torna indietro di un
+commit e si guarda se il giro dopo risale — ATTENZIONE a scegliere un commit in
+cui lo script stesso e' sano, altrimenti si testa la propria rottura.
