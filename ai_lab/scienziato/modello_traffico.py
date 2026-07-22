@@ -82,6 +82,7 @@ class ModelloTraffico:
         ll.sort()
         ci = lambda v: [round(v[int(.025 * len(v))], 5), round(v[int(.975 * len(v))], 5)]
 
+        ver_ = self.verifica(per_gara, dati, None)
         return {
             'coefficienti': {
                 'a': round(glob['a'], 5), 'lam': glob['lam'],
@@ -101,7 +102,12 @@ class ModelloTraffico:
                                 st.median([e['costo'] for e in enc]), 3),
                             'costo_per_giro_mediano_reale_s': round(
                                 st.median([e['costo'] / e['durata'] for e in enc]), 3)},
-            'verifica': self.verifica(per_gara, dati, None),
+            'verifica': ver_,
+            # CONTRATTO (emendamento 22/07/2026): ACCENDIBILE al PRIMO livello, come per
+            # ogni altro modello — prima stava solo annidato dentro verifica, e un lettore
+            # automatico non poteva leggere il verdetto senza sapere dove scavare.
+            'ACCENDIBILE': bool((ver_.get('cancello_accensione') or {}).get('ACCENDIBILE')),
+            'cancello_accensione': ver_.get('cancello_accensione'),
             'limite_onesto': [
                 'CAMPO REALE: si calcola solo contro il campo com era. Le altre auto non '
                 'rallentano perche sei li, non si difendono, non cambiano strategia. Dice '

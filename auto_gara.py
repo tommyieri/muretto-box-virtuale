@@ -95,9 +95,45 @@ def commit_push(msg):
 
 
 # ------------------------------------------------------ ONDATA 1: gara nuova
+def registro_committato():
+    """Il registro COME STA IN GIT, non come sta sul disco.
+
+    LA GARA ORFANA — il guasto che questa funzione chiude. `pipeline_gara.pubblica()`
+    scrive la gara in data/gare_registro.json PRIMA che il giro finisca. Se un passo
+    successivo falliva (gen_foto e gen_grids vanno in rete, quindi succede), il processo
+    moriva prima di commit_push: la gara restava scritta sul disco, mai committata, mai
+    online — e al giro dopo `gia_dentro` la leggeva dal disco e la SALTAVA PER SEMPRE.
+    Nessun errore, nessuna bandiera: una gara semplicemente non esisteva piu'.
+
+    Leggere il registro da HEAD sposta la definizione di "fatta" da «scritta» a
+    «committata», che e' l'unica che conta: se il commit non c'e', il lavoro va rifatto.
+    I generatori sono idempotenti, quindi rifarlo e' gratis.
+    """
+    try:
+        out = subprocess.run(['git', 'show', f'HEAD:{REGISTRO}'], cwd=ROOT,
+                             capture_output=True, text=True, timeout=30)
+        if out.returncode != 0:
+            return None
+        return json.loads(out.stdout)
+    except Exception:
+        return None
+
+
 def wave_nuove():
     mappa = json.load(open(os.path.join(ROOT, MAPPA)))
-    reg = json.load(open(os.path.join(ROOT, REGISTRO)))
+    reg_disco = json.load(open(os.path.join(ROOT, REGISTRO)))
+    reg_git = registro_committato()
+    if reg_git is None:
+        # senza git non si puo' distinguere: si tiene il comportamento vecchio, ma si dice
+        log('ATTENZIONE: registro di HEAD illeggibile, uso quello su disco '
+            '(una gara pubblicata e non committata verrebbe saltata)')
+        reg = reg_disco
+    else:
+        reg = reg_git
+        orfane = set(reg_disco) - set(reg_git)
+        if orfane:
+            log(f'RIPRENDO {len(orfane)} gara/e pubblicata/e ma MAI COMMITTATA/E: '
+                f'{sorted(orfane)}')
     gia_dentro = {v['ti'] for v in reg.values()}
     nuove = []
     for ti, m in mappa.items():
@@ -111,10 +147,17 @@ def wave_nuove():
     for ti, nome, cid in nuove:
         log(f'== {nome} ({ti}) ==')
         sh([PY, 'pipeline_gara.py', 'auto', nome, ti, cid])   # guardrail=bandiere
-        sh([PY, 'aggiorna_ui.py', '--gara', nome])            # UI + griglie (se f1db le ha)
-        sh([PY, 'gen_race_control.py'])                       # lista gare dal registro
-        sh([PY, 'gen_rc_feed.py'])
-        sh([PY, 'gen_classifiche_ufficiali.py'])
+        # check=False su TUTTI i passi dopo la pubblicazione. Motivo: pipeline_gara ha
+        # gia' scritto la gara nel registro, quindi un sys.exit qui lasciava una gara
+        # pubblicata sul disco e mai committata (v. registro_committato). Adesso la ripresa
+        # esiste, ma il rimedio giusto resta non morire: questi quattro passi rigenerano
+        # viste e classifiche, e una vista mancante e' un guaio molto minore di una gara
+        # che sparisce. Quello che NON puo' fallire in silenzio e' pipeline_gara (sopra,
+        # check=True): li' c'e' il guardrail delle bandiere.
+        sh([PY, 'aggiorna_ui.py', '--gara', nome], check=False)   # UI + griglie
+        sh([PY, 'gen_race_control.py'], check=False)              # lista gare dal registro
+        sh([PY, 'gen_rc_feed.py'], check=False)
+        sh([PY, 'gen_classifiche_ufficiali.py'], check=False)
         # file per-gara accessori, ex ORFANI: ora hanno un generatore con perimetro dal
         # registro, quindi la gara nuova entra da sola. Vanno DOPO la pubblicazione in
         # demo/ perche' gen_arrivi legge demo/data/esiti.json (e' li' che vive l'NP).
@@ -133,7 +176,15 @@ def wave_nuove():
         # Percio' i generatori dei cancelli (gen_cancello_*.py) NON sono in questa lista.
         #
         # modelli vivi: si ricalibrano da soli sul fondo aggiornato, con targhetta.
-        sh([PY, 'gen_modelli_lab.py', '--data', _oggi()])
+        sh([PY, 'gen_modelli_lab.py', '--data', _oggi()], check=False)   # la ricerca non ferma la gara
+        # IL BANCO DEL MOTORE, dentro il ciclo (22/07/2026). Era l'unico artefatto che
+        # misura l'errore del PRODOTTO contro il reale, e stava FUORI: nessuno ricalcolava
+        # a ogni gara quanto sbaglia il motore che il cliente usa. Ora il suo perimetro
+        # viene dal registro e i coefficienti dai modelli vivi, quindi segue la stagione da
+        # solo; e tiene una memoria (data/errore_motore_storico.json) con una regola
+        # d'allarme dichiarata. DOPO gen_modelli_lab, perche' legge i coefficienti che
+        # quello ha appena ricalibrato.
+        sh(['node', 'gen_backtest_motore.mjs'], check=False)
         # climatologia e bande: deterministici, senza rete, secondi. Ognuno si
         # auto-verifica riproducibile prima di riscriversi. bande_demo DOPO climatologia
         # perche' ne deriva, e prende la mappa gara->cid dal registro.

@@ -14,6 +14,7 @@
 //                 (carburante bruciato nella finestra) e (giri di gomma in piu'), cosi' i
 //                 pezzi devono TORNARE con la fisica invece di essere attribuiti a occhio.
 import { simulate } from './demo/engine.mjs';
+import { eta0PaceBase } from './demo/pitbande.mjs';
 import fs from 'fs';
 
 const GARE = ['Australia', 'Cina', 'Giappone', 'Miami', 'Canada', 'Monaco', 'Spagna',
@@ -80,8 +81,16 @@ function errori(c, opzioni) {
   }
   const extra = { ...opzioni };
   if (extra.degrado === 'FONDO') {
+    // RIPARATO 22/07/2026: qui c'era `age0`, campo che demo/engine.mjs:48 NON legge. Il
+    // gancio vuole `eta` ed `eta0` ed e' sicuro per assenza, quindi questa variante
+    // misurava ZERO ESATTO: il confronto "kernel + degrado del fondo" era il kernel
+    // contro se' stesso. eta0 arriva dalla stessa formula del pannello, non da una copia.
     const deg = {};
-    for (const d of c.presenti) deg[d] = { rate: RHO[comp[d]] ?? 0, age0: 0 };
+    for (const d of c.presenti) {
+      const x = c.r.byLap[c.L][d];
+      deg[d] = { rate: RHO[comp[d]] ?? 0, eta: x.tyre_age,
+                 eta0: eta0PaceBase(c.r.byLap, c.L, d, x.stint) };
+    }
     extra.degrado = deg;
   }
   let paceUso = pace;

@@ -141,6 +141,40 @@
    "criterio": "si propone per il live solo se l IC95 appaiato contro il traffico-zero esclude lo zero. Finche no, resta spento."
   }
  },
+ "ACCENDIBILE": false,
+ "cancello_accensione": {
+  "batte_traffico_zero": false,
+  "appaiato_vs_zero": -0.1962,
+  "ci95_appaiato": [
+   -0.3452,
+   0.3983
+  ],
+  "esclude_lo_zero": false,
+  "ACCENDIBILE": false,
+  "partizione": {
+   "versione": "v2_temporale",
+   "T_stella": "2026-05-24",
+   "K_min": 4,
+   "n_calibrazione": 4,
+   "n_verifica": 6,
+   "gare_calibrazione": [
+    "2026 Australia",
+    "2026 Cina",
+    "2026 Giappone",
+    "2026 Miami"
+   ],
+   "gare_verifica": [
+    "2026 Canada",
+    "2026 Monaco",
+    "2026 Spagna",
+    "2026 Austria",
+    "2026 British",
+    "2026 Belgian"
+   ],
+   "ordinamento": "cronologico dal fondo"
+  },
+  "criterio": "si propone per il live solo se l IC95 appaiato contro il traffico-zero esclude lo zero. Finche no, resta spento."
+ },
  "limite_onesto": [
   "CAMPO REALE: si calcola solo contro il campo com era. Le altre auto non rallentano perche sei li, non si difendono, non cambiano strategia. Dice \"Leclerc diverso dentro la gara che E successa\", non \"quella che SAREBBE successa\".",
   "REGIME 2026 SOLTANTO: nessun coefficiente ereditato da altri regimi. Si rinforza a ogni Gran Premio nuovo (vedi storico).",
@@ -156,7 +190,8 @@
  "targhetta": {
   "gare_sotto": 10,
   "blocchi_sotto": 10,
-  "calcolato_il": "2026-07-22"
+  "calcolato_il": "2026-07-22",
+  "peso_storico": 0.0
  },
  "storico": [
   {
@@ -193,6 +228,24 @@
     "durata_per_fascia_delta.0.15..99.0": 0.0,
     "durata_media": 0.0
    }
+  },
+  {
+   "calcolato_il": "2026-07-22",
+   "gare_sotto": 10,
+   "delta_coefficienti": {
+    "a": 0.0,
+    "lam": 0.0,
+    "kappa": 0.0,
+    "durata_per_fascia_delta.-99.0..-0.8": 0.0,
+    "durata_per_fascia_delta.-0.8..-0.4": 0.0,
+    "durata_per_fascia_delta.-0.4..-0.15": 0.0,
+    "durata_per_fascia_delta.-0.15..0.15": 0.0,
+    "durata_per_fascia_delta.0.15..99.0": 0.0,
+    "durata_media": 0.0
+   },
+   "ACCENDIBILE": false,
+   "peso_storico": 0.0,
+   "guasti_contratto": null
   }
  ]
 }

@@ -16,10 +16,10 @@
   "esito": "indistinguibile dal kernel"
  },
  "S5|appaiato|degrado del FONDO": {
-  "delta": 4.547473508864641e-13,
+  "delta": 0.046867709666798874,
   "ci95": [
-   -1.0231815394945443e-12,
-   0.008315789473272162
+   -0.158604858935405,
+   0.13620604395509872
   ],
   "esito": "indistinguibile dal kernel"
  },
@@ -32,10 +32,10 @@
   "esito": "indistinguibile dal kernel"
  },
  "S5|appaiato|tutto il fondo insieme": {
-  "delta": 0.012013032081540587,
+  "delta": 0.06457248453762077,
   "ci95": [
-   -0.027652766003257057,
-   0.07444685311440935
+   -0.15326518749816387,
+   0.22279182615238824
   ],
   "esito": "indistinguibile dal kernel"
  },
@@ -154,10 +154,10 @@
   "esito": "indistinguibile dal kernel"
  },
  "S10|appaiato|degrado del FONDO": {
-  "delta": 4.547473508864641e-13,
+  "delta": -0.04610377358471851,
   "ci95": [
-   -2.9558577807620168e-12,
-   0.0476136363643036
+   -0.15227272727179297,
+   0.3230408450729101
   ],
   "esito": "indistinguibile dal kernel"
  },
@@ -170,12 +170,12 @@
   "esito": "indistinguibile dal kernel"
  },
  "S10|appaiato|tutto il fondo insieme": {
-  "delta": 0.18222671980197447,
+  "delta": 0.25862899908599957,
   "ci95": [
-   0.022578426884592773,
-   0.39721026944198456
+   -0.11542102968041945,
+   0.6024247335556083
   ],
-  "esito": "PEGGIORA (IC esclude 0)"
+  "esito": "indistinguibile dal kernel"
  },
  "S10|sweep": [
   {

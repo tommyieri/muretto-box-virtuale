@@ -159,6 +159,14 @@ class TokenOpenF1:
                 return self._token
             return self._rinnova()
 
+    def scade_entro(self, margine=MARGINE_RINNOVO_S):
+        """True se il token manca o e' entro `margine` secondi dalla scadenza,
+        cioe' se la prossima token() lo rinnoverebbe davvero. Serve a legare la
+        riconnessione proattiva alla scadenza VERA invece che a un uptime fisso
+        (vedi il commento in _connetti: le due sveglie erano disallineate)."""
+        with self._lock:
+            return (not self._token) or time.time() >= self._scade - margine
+
     def _rinnova(self):
         import requests
         utente, password = leggi_env(self.percorso_env)
@@ -362,9 +370,21 @@ class IngressoOpenF1:
             self._t_ultimo = time.monotonic()
             inizio = time.monotonic()
             while not self._chiusa.is_set():
-                # riconnessione proattiva col token fresco prima della
-                # scadenza (955s di vita utile con margine 300 su 3600)
-                if time.monotonic() - inizio > 3600 - 2 * MARGINE_RINNOVO_S:
+                # Riconnessione proattiva legata alla SCADENZA VERA del token.
+                #
+                # Prima era legata all'uptime della CONNESSIONE (3600 - 2*margine
+                # = 3000 s). Ma token() considera fresco il token fino a
+                # scade-margine, cioe' fino a 3300 s di eta' del TOKEN: e poiche'
+                # la connessione e' sempre piu' giovane del token, la sveglia
+                # delle 3000 suonava SEMPRE prima della soglia di rinnovo. Si
+                # riconnetteva quindi col VECCHIO token (600 s di vita residua) e
+                # poi si restava connessi con un token SCADUTO fino alla sveglia
+                # successiva. Osservato in produzione il 22/07/2026: /status
+                # riportava connesso=true e openf1_token.valido=false da 36
+                # minuti — cioe' esattamente il segnale che il runbook (riga 239)
+                # dice di trattare come credenziali rotte. Un allarme falso in
+                # mezzo a una gara e' peggio di nessun allarme.
+                if self.token.scade_entro(MARGINE_RINNOVO_S):
                     log.info("riconnessione proattiva per rinnovo token")
                     break
                 self._chiusa.wait(timeout=1.0)

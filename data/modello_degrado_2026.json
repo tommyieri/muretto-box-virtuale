@@ -326,7 +326,8 @@
  "targhetta": {
   "gare_sotto": 10,
   "blocchi_sotto": 10,
-  "calcolato_il": "2026-07-22"
+  "calcolato_il": "2026-07-22",
+  "peso_storico": 0.0
  },
  "storico": [
   {
@@ -369,6 +370,18 @@
     "rho_MEDIUM": 0.0,
     "rho_HARD": 0.0
    }
+  },
+  {
+   "calcolato_il": "2026-07-22",
+   "gare_sotto": 10,
+   "delta_coefficienti": {
+    "rho_SOFT": 0.0,
+    "rho_MEDIUM": 0.0,
+    "rho_HARD": 0.0
+   },
+   "ACCENDIBILE": false,
+   "peso_storico": 0.0,
+   "guasti_contratto": null
   }
  ]
 }

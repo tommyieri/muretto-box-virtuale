@@ -1,0 +1,38 @@
+[
+ {
+  "gare": 10,
+  "gare_elenco": [
+   "Australia",
+   "Cina",
+   "Giappone",
+   "Miami",
+   "Canada",
+   "Monaco",
+   "Spagna",
+   "Austria",
+   "Gran Bretagna",
+   "Belgio"
+  ],
+  "s5": {
+   "rel": 1.1589,
+   "ci": [
+    1.051,
+    1.431
+   ],
+   "bias": -8.6437
+  },
+  "s10": {
+   "rel": 2.1846,
+   "ci": [
+    1.833,
+    3.541
+   ],
+   "bias": -16.2219
+  },
+  "traffico_fonte": "./data/modello_traffico_2026.json",
+  "degrado_fonte": "./data/modello_degrado_2026.json",
+  "peggiorato": false,
+  "consecutivi": 0,
+  "bandiera": false
+ }
+]

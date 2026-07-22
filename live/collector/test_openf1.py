@@ -6,6 +6,8 @@ Uso:  .venv/bin/python live/collector/test_openf1.py
 
 import json
 import sys
+import threading
+import time
 import tempfile
 from datetime import datetime
 from pathlib import Path
@@ -19,7 +21,9 @@ from ingress_openf1 import (  # noqa: E402
     BACKOFF_MAX_S,
     FINESTRA_CONNECT_S,
     MAX_CONNECT_FINESTRA,
+    MARGINE_RINNOVO_S,
     GuardiaConnessioni,
+    TokenOpenF1,
     RegistratoreJSONL,
     leggi_env,
     leggi_jsonl,
@@ -78,6 +82,45 @@ def test_backoff_sotto_soglia():
         dentro = [x for x in istanti if t0 <= x < t0 + 60.0]
         assert len(dentro) <= MAX_CONNECT_FINESTRA, \
             f"backoff: {len(dentro)} CONNECT in 60s da t={t0}"
+
+
+@caso("token: la sveglia della riconnessione e' allineata alla scadenza VERA")
+def test_riconnessione_allineata_al_token():
+    """REGRESSIONE osservata in produzione il 22/07/2026: /status riportava
+    connesso=true e openf1_token.valido=false da 36 minuti.
+
+    Causa: la riconnessione proattiva era legata all'uptime della CONNESSIONE
+    (3600 - 2*margine = 3000 s), mentre token() considera fresco il token fino
+    a scade-margine (3300 s di eta' del TOKEN). Poiche' la connessione e'
+    sempre piu' giovane del token, la sveglia suonava SEMPRE prima della
+    soglia di rinnovo: ci si riconnetteva col vecchio token e poi si restava
+    connessi con un token scaduto. Un falso allarme rosso in mezzo a una gara.
+
+    Invariante che questo test difende: quando la sveglia suona, la token()
+    successiva DEVE rinnovare davvero."""
+    tok = TokenOpenF1.__new__(TokenOpenF1)
+    tok._lock = threading.Lock()
+
+    ora = time.time()
+    # token appena preso: nessuno deve riconnettersi
+    tok._token, tok._scade = "x", ora + 3600
+    assert not tok.scade_entro(MARGINE_RINNOVO_S), \
+        "token fresco: la sveglia non deve suonare"
+
+    # vecchia sveglia: 3000 s di connessione. Il token ne ha 600 di vita: la
+    # riconnessione di allora avveniva QUI, e non rinnovava niente.
+    tok._scade = ora + 600
+    assert not tok.scade_entro(MARGINE_RINNOVO_S), \
+        "a 600 s dalla scadenza token() userebbe ancora la cache"
+
+    # nuova sveglia: suona solo dentro il margine, dove token() rinnova davvero
+    tok._scade = ora + MARGINE_RINNOVO_S - 1
+    assert tok.scade_entro(MARGINE_RINNOVO_S), \
+        "dentro il margine la sveglia DEVE suonare"
+
+    tok._token, tok._scade = None, 0.0
+    assert tok.scade_entro(MARGINE_RINNOVO_S), \
+        "token assente: la sveglia deve suonare"
 
 
 @caso("env: parsing KEY=VALUE, commenti e righe vuote ignorati")
