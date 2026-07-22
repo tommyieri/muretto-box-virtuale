@@ -118,6 +118,15 @@ def wave_nuove():
         # modelli del laboratorio: si ricalibrano da soli sul fondo aggiornato.
         # Idempotente; scrive i coefficienti, NON accende niente in produzione.
         sh([PY, 'gen_modelli_lab.py', '--data', _oggi()])
+        # catena undercut (RICERCA, mai in produzione): la gomma per-gara si estende da
+        # sola (niente piu' fallback alla mediana per la gara nuova), il censimento dei
+        # casi cresce di una gara, la sorveglianza conta e TACE finche' il cancello del
+        # prereg non si apre. Nessuno di questi tre esegue un backtest.
+        # check=False ovunque: una gara bagnata fa uscire conta_undercut con un messaggio,
+        # e la ricerca non deve MAI fermare la pubblicazione di una gara.
+        sh([PY, 'gen_degrado_gamma.py', '--write'], check=False)
+        sh([PY, 'conta_undercut.py', '--gara', nome], check=False)
+        sh([PY, 'undercut_sorveglianza.py'], check=False)
     if not golden():
         sys.exit('[auto] FERMO: golden falliti dopo l\'ondata 1 — niente commit, indagare.')
     ba = _bandiere_testo()
