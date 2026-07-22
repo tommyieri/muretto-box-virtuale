@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <!--
-  LIVE (ui-v4) — WORK IN PROGRESS DICHIARATO. Questa pagina promette, non simula di
-  mantenere: date/orari veri dal calendario generato (f1db, orari UTC convertiti nel
-  fuso del lettore; se l'orario manca si mostra solo la data — MAI orari inventati),
-  e un mock statico ESPLICITAMENTE marcato "anteprima" senza numeri finti.
+  LIVE — la pagina della gara mentre succede. Tre cose, tutte dagli STESSI eventi del
+  collettore (una sola connessione WebSocket):
 
-  R1 (torre di cronometraggio live, additivo): classifica per posizione con gap dal
-  leader, ultimo giro e stato pit. Alimentata dagli STESSI eventi della mappa
-  (timing_update/driver_list/snapshot); nessun dato nuovo dal collettore. Fuori
-  sessione la torre si svuota (come la mappa): mai numeri finti.
+    mappa       le auto in pista, posizioni dal feed
+    torre       classifica, gap, settori e micro-settori
+    muretto     "se fermo questo pilota adesso, dove rientra?" — dal 22/07/2026
+
+  Il muretto e' LO STESSO pannello di gara.html (demo/muretto.mjs); cambia solo la
+  sorgente, tradotta da live_bylap.mjs. Si accende solo in gara, perche' la distanza
+  arriva da LapCount che il feed manda soltanto in gara.
+
+  La regola che tiene insieme tutto: fuori sessione la pagina si SVUOTA. Date e orari
+  vengono dal calendario generato (f1db, UTC convertiti nel fuso del lettore; se l'ora
+  manca si mostra solo la data). Mai numeri finti, mai una riga congelata che sembra viva.
 -->
 <html lang="it">
 <head>
@@ -39,8 +44,12 @@
   </div>
 
   <div class="wip panel">
-    <span class="wip-tag">IN COSTRUZIONE</span>
-    La stessa domanda del muretto &mdash; &ldquo;se pitto al giro L, dove rientro?&rdquo; &mdash; in tempo reale.
+    <span class="wip-tag">IN DIRETTA</span>
+    La stessa domanda del muretto &mdash; &ldquo;se pitto al giro L, dove rientro?&rdquo; &mdash; mentre la
+    gara succede. Il pannello &egrave; identico a quello delle gare gi&agrave; corse: cambia solo che
+    i dati arrivano dal feed invece che da un archivio, e che il campo si ferma dov&rsquo;&egrave;
+    davvero. <b>Nelle libere e in qualifica resta spento</b>: senza giri di gara la domanda
+    non esiste.
   </div>
 
   <div class="sez-tit">Prossimo evento</div>
