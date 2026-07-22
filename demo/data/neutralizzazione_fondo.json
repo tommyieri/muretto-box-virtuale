@@ -1,0 +1,237 @@
+{
+ "_nota": "GENERATO da gen_neutralizzazione_fondo.py sul fondo 2018-2026. La perdita e misurata CONTRO IL CAMPO che non si e fermato, non contro il proprio passo verde: col riferimento sbagliato il verdetto si ribalta (2,19 invece di 0,79).",
+ "globale": {
+  "perdita_verde_s": 22.54,
+  "perdita_neutralizzata_s": 18.37,
+  "rapporto": 0.791,
+  "n_verdi": 3533,
+  "n_neutralizzate": 629,
+  "quota_gare_in_cui_conviene": 0.754
+ },
+ "per_circuito": {
+  "austin": {
+   "gare": 6,
+   "con_neutralizzazione": 5,
+   "probabilita": 0.833,
+   "rapporto": 0.791,
+   "rapporto_n_gare": 3
+  },
+  "bahrain": {
+   "gare": 8,
+   "con_neutralizzazione": 7,
+   "probabilita": 0.875,
+   "rapporto": 0.858,
+   "rapporto_n_gare": 4
+  },
+  "bahrain-outer": {
+   "gare": 1,
+   "con_neutralizzazione": 1,
+   "probabilita": null,
+   "rapporto": null,
+   "rapporto_n_gare": 1
+  },
+  "baku": {
+   "gare": 7,
+   "con_neutralizzazione": 7,
+   "probabilita": 1.0,
+   "rapporto": 0.778,
+   "rapporto_n_gare": 5
+  },
+  "catalunya": {
+   "gare": 7,
+   "con_neutralizzazione": 3,
+   "probabilita": 0.429,
+   "rapporto": null,
+   "rapporto_n_gare": 1
+  },
+  "hockenheim": {
+   "gare": 2,
+   "con_neutralizzazione": 2,
+   "probabilita": null,
+   "rapporto": null,
+   "rapporto_n_gare": 0
+  },
+  "hungaroring": {
+   "gare": 8,
+   "con_neutralizzazione": 3,
+   "probabilita": 0.375,
+   "rapporto": null,
+   "rapporto_n_gare": 0
+  },
+  "imola": {
+   "gare": 5,
+   "con_neutralizzazione": 4,
+   "probabilita": 0.8,
+   "rapporto": 0.746,
+   "rapporto_n_gare": 2
+  },
+  "interlagos": {
+   "gare": 7,
+   "con_neutralizzazione": 6,
+   "probabilita": 0.857,
+   "rapporto": 0.77,
+   "rapporto_n_gare": 4
+  },
+  "istanbul": {
+   "gare": 2,
+   "con_neutralizzazione": 1,
+   "probabilita": null,
+   "rapporto": null,
+   "rapporto_n_gare": 0
+  },
+  "jeddah": {
+   "gare": 5,
+   "con_neutralizzazione": 5,
+   "probabilita": 1.0,
+   "rapporto": 0.925,
+   "rapporto_n_gare": 3
+  },
+  "las-vegas": {
+   "gare": 3,
+   "con_neutralizzazione": 2,
+   "probabilita": null,
+   "rapporto": 0.967,
+   "rapporto_n_gare": 2
+  },
+  "lusail": {
+   "gare": 4,
+   "con_neutralizzazione": 4,
+   "probabilita": 1.0,
+   "rapporto": null,
+   "rapporto_n_gare": 1
+  },
+  "marina-bay": {
+   "gare": 5,
+   "con_neutralizzazione": 3,
+   "probabilita": 0.6,
+   "rapporto": null,
+   "rapporto_n_gare": 1
+  },
+  "melbourne": {
+   "gare": 7,
+   "con_neutralizzazione": 6,
+   "probabilita": 0.857,
+   "rapporto": 0.628,
+   "rapporto_n_gare": 4
+  },
+  "mexico-city": {
+   "gare": 6,
+   "con_neutralizzazione": 6,
+   "probabilita": 1.0,
+   "rapporto": null,
+   "rapporto_n_gare": 1
+  },
+  "miami": {
+   "gare": 5,
+   "con_neutralizzazione": 4,
+   "probabilita": 0.8,
+   "rapporto": 0.715,
+   "rapporto_n_gare": 3
+  },
+  "monaco": {
+   "gare": 7,
+   "con_neutralizzazione": 5,
+   "probabilita": 0.714,
+   "rapporto": 2.334,
+   "rapporto_n_gare": 2
+  },
+  "montreal": {
+   "gare": 7,
+   "con_neutralizzazione": 6,
+   "probabilita": 0.857,
+   "rapporto": 0.75,
+   "rapporto_n_gare": 2
+  },
+  "monza": {
+   "gare": 8,
+   "con_neutralizzazione": 5,
+   "probabilita": 0.625,
+   "rapporto": 0.842,
+   "rapporto_n_gare": 4
+  },
+  "mugello": {
+   "gare": 1,
+   "con_neutralizzazione": 1,
+   "probabilita": null,
+   "rapporto": null,
+   "rapporto_n_gare": 0
+  },
+  "nurburgring": {
+   "gare": 1,
+   "con_neutralizzazione": 1,
+   "probabilita": null,
+   "rapporto": null,
+   "rapporto_n_gare": 1
+  },
+  "paul-ricard": {
+   "gare": 4,
+   "con_neutralizzazione": 3,
+   "probabilita": 0.75,
+   "rapporto": null,
+   "rapporto_n_gare": 1
+  },
+  "portimao": {
+   "gare": 2,
+   "con_neutralizzazione": 1,
+   "probabilita": null,
+   "rapporto": null,
+   "rapporto_n_gare": 0
+  },
+  "shanghai": {
+   "gare": 5,
+   "con_neutralizzazione": 4,
+   "probabilita": 0.8,
+   "rapporto": 0.633,
+   "rapporto_n_gare": 3
+  },
+  "silverstone": {
+   "gare": 10,
+   "con_neutralizzazione": 8,
+   "probabilita": 0.8,
+   "rapporto": 1.049,
+   "rapporto_n_gare": 4
+  },
+  "sochi": {
+   "gare": 3,
+   "con_neutralizzazione": 1,
+   "probabilita": null,
+   "rapporto": null,
+   "rapporto_n_gare": 1
+  },
+  "spa-francorchamps": {
+   "gare": 9,
+   "con_neutralizzazione": 6,
+   "probabilita": 0.667,
+   "rapporto": null,
+   "rapporto_n_gare": 1
+  },
+  "spielberg": {
+   "gare": 11,
+   "con_neutralizzazione": 9,
+   "probabilita": 0.818,
+   "rapporto": 0.84,
+   "rapporto_n_gare": 4
+  },
+  "suzuka": {
+   "gare": 7,
+   "con_neutralizzazione": 4,
+   "probabilita": 0.571,
+   "rapporto": 0.798,
+   "rapporto_n_gare": 3
+  },
+  "yas-marina": {
+   "gare": 8,
+   "con_neutralizzazione": 4,
+   "probabilita": 0.5,
+   "rapporto": 0.72,
+   "rapporto_n_gare": 2
+  },
+  "zandvoort": {
+   "gare": 5,
+   "con_neutralizzazione": 3,
+   "probabilita": 0.6,
+   "rapporto": 0.872,
+   "rapporto_n_gare": 2
+  }
+ }
+}

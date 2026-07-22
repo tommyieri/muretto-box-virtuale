@@ -127,10 +127,12 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
 <script type="module">
 // ?v= su TUTTI i moduli: senza, un deploy puo' servire HTML nuovo con moduli .mjs vecchi
 // dalla cache del browser (pagina mista = sintomi di sync fantasma). Bump a ogni release.
-import { evaluatePit } from './pitscenario.mjs?v=200726b';
-import { treScenariPit, bandaCircuito } from './pitbande.mjs?v=200726b';
-import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs?v=200726b';
-const BUILD = '200726b';
+import { evaluatePit, stessoGiroReale } from './pitscenario.mjs?v=220726a';
+import { treScenariPit, bandaCircuito } from './pitbande.mjs?v=220726a';
+import { misura as misuraSoste } from './gradino.mjs?v=220726a';
+import { grossi as calcolaGrossi, undercut as calcolaUndercut, trafficoRientro, pitLossPilota, deriva as calcolaDeriva, deltaPasso, raggruppamento, sogliaDifesa, meteo as cancelloMeteo, penalitaPendente } from './grossi.mjs?v=220726a';
+import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs?v=220726a';
+const BUILD = '220726a';
 const el = id => document.getElementById(id);
 const ROW_H = 44;
 let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams={}, pitloss={}, plMeta={}, neutral={}, teamCol={}, calendario=null;
@@ -142,6 +144,12 @@ let pista=null, leadCum=null, cumPil=null, teamOfR=null;   // vista pallini (gar
 let rcmAll=null, ufficAll=null, rcmGara=null, ufficGara=null, penPil={};
 let numDi={};   // sigla -> numero di gara (da schede_2026.json, fonte f1db)
 let bandeClim=null;   // FASE A: bande climatologiche per circuito (demo/data/climatologia_bande.json)
+// probabilita di neutralizzazione e quanto costa fermarsi sotto, per circuito, dal fondo
+// 2018-2026 (gen_neutralizzazione_fondo.py). Assente -> la riga Safety Car non compare.
+let neutroFondo=null;
+// come la Safety Car rimescola (gen_raggruppamento.py, fondo 2018-2026): compressione dei
+// distacchi ed ESITO OSSERVATO di "io mi fermo in verde, lui si ferma sotto SC".
+let ragg=null;
 
 // --- contatore anonimo aggregato (strumentazione, non simulatore) ---
 const conta = e => { try { navigator.sendBeacon(`api/contatore?e=${e}`); } catch(_){} };
@@ -152,6 +160,92 @@ function hookWaitlist(){
   if(!WAITLIST_ATTIVA)
     return `<div class="kv"><span class="k">Undercut/Overcut</span><span class="v dim">valutazione strategica in sviluppo (serve il degrado gomma)</span></div>`;
   return '';
+}
+
+// --- GRADINO DI SOSTA (acceso su decisione PO, 2026-07-22) --------------------
+// Fino al 22/07 il motore non simulava NEMMENO UN GIRO dopo la sosta e non resettava la
+// gomma: fermarsi al giro 12 o al 18 dava lo STESSO identico numero (0,000000000000 s di
+// differenza, verificato). L'undercut non era incerto, era impossibile per costruzione.
+// Ora il pannello misura DALLA GARA IN CORSO, con le sole soste gia' avvenute prima del
+// giro di congelamento (causale: nessuno sbircia il futuro), due numeri:
+//   perdita  = (in-lap - passo prima) + (out-lap - passo dopo)  -> il pit-loss di OGGI
+//   gradino  = passo dopo - passo prima                          -> quanto vale gomma nuova
+// Misurati sui 10 GP 2026: la perdita riproduce il realizzato del repo a 0,48 s mediani
+// (la tabella di produzione sta a 1,11 s), il gradino vale -1,04 s/giro grezzo.
+// NON si mostra mai un verdetto ("l'undercut riesce"): si mostra la QUANTITA' che serve.
+const GRADINO_ATTIVO = true;
+
+// --- IL CAP DEL TRAFFICO, SPENTO (decisione PO, 22/07/2026) ------------------
+// Il cap (ZONE=1,5 STRENGTH=1,0) incolla l'inseguitore al passo di chi precede e non lo
+// lascia MAI passare. engine/LIMITI_NOTI.md §4 lo dichiarava "all'ottimo pratico", ma
+// quella misura e' su finestre verdi SENZA soste — dove il cap quasi non morde, perche'
+// nessuno rientra addosso a nessuno.
+//
+// Misurato dove il prodotto chiede davvero (78 soste vere, orizzonte 5 giri, gradino acceso):
+//     cap acceso   MAE 6,154 s   cambi di posizione previsti 30,4%
+//     cap a meta   MAE 4,997 s                               26,0%
+//     cap SPENTO   MAE 4,775 s                               24,7%
+//     la realta                                              25,6%
+// Spegnerlo vale UN SECONDO E MEZZO di errore in meno, e il tasso di cambi di posizione
+// passa da una sovrastima a un valore calibrato quasi esatto.
+//
+// IL PREZZO, e va detto al cliente perche' e' un cambio di promessa: senza cap due auto
+// possono attraversarsi. Il motore riproduce QUANTI cambi di posizione avvengono, non
+// QUALI. Chi legge "rientri P6" deve sapere che il duello vero non e' simulato.
+const CAP_TRAFFICO = false;
+const ZONE_PANNELLO = CAP_TRAFFICO ? 1.5 : 0;
+// MISURATO, non scelto: a 2 soste il pit-loss vivo ha MAE 3,15 s — PEGGIORE del prior di
+// circuito (2,45) e dello storico (2,88). A 3 soste crolla a 1,14. Sotto la terza sosta la
+// misura della gara non e' ancora meglio del non-saperla, quindi non si mostra.
+const MIN_SOSTE_UI = 3;
+
+// Tassi storici 2026 (71 casi veri, misurati; NON un modello — vanno letti con la loro n).
+// Le fasce centrali sono rumorose e per questo NON vengono mostrate a fasce: si mostrano
+// solo il tasso complessivo e i due estremi, che sono gli unici robusti.
+// PERIMETRO DICHIARATO, perche' in repo convivono DUE numeri veri e diversi: il perimetro
+// pre-registrato dell'undercut v2 conta 31 casi con 10 riusciti (32%), questa misura ne
+// conta 71 con 17 riusciti (24%) perche' getta una rete piu' larga (gap0 <= 6 s, overlap
+// 1-6 giri, tutte le gare asciutte). Nessuno dei due mente: mancava dire QUALE. Mostrare
+// una percentuale senza la sua popolazione e' il modo piu' educato di dire una cosa falsa.
+const UNDERCUT_STORICO = { complessivo: 0.24, n: 71,
+                           sotto1s: 0.71, n_sotto1s: 7,
+                           sopra45s: 0.00, n_sopra45s: 17,
+                           perimetro: 'gap ≤ 6 s, 1-6 giri di overlap, gare asciutte 2026' };
+
+// DOMINIO OSSERVATO. I 71 casi veri del 2026 hanno gap0 in (0, 6] s e sovrapposizione
+// 1-6 giri: fuori di li' non c'e' materiale e il numero sarebbe inventato. Con un gap di
+// 11 s "serve che resti fuori 6 giri" e' aritmetica corretta e consiglio senza senso —
+// su sei giri il rivale si ferma, degrada, e il campo congelato non regge piu'.
+const UC_GAP_MAX = 6.0, UC_K_MAX = 6;
+
+function rigaUndercut(L, gradino, present, sameLap){
+  // Chi ho davanti ADESSO (non al rientro: quello e' la riga "Davanti"), fra i piloti a
+  // pari giro. Sono FATTI letti dal fondo, non stime.
+  const cum = d => race.byLap[L][d]?.cum_time;
+  const mio = cum(selDrv);
+  if(typeof mio !== 'number') return '';
+  const davanti = sameLap.filter(d => d!==selDrv && typeof cum(d)==='number' && cum(d) < mio)
+                         .sort((a,b) => cum(b) - cum(a))[0];
+  const K = (k) => `<div class="kv"><span class="k">Undercut</span><span class="v">${k}</span></div>`;
+  if(!davanti) return K(`<span class="dim">aria pulita davanti: non c'&egrave; nessuno da scavalcare</span>`);
+  const gap0 = mio - cum(davanti);
+  const perGiro = Math.abs(Math.min(gradino, 0));
+  if(perGiro < 0.05)
+    return K(`${davanti} a ${gap0.toFixed(1)} s <span class="sub">oggi la gomma nuova non rende: qui conta la track position</span>`);
+  if(gap0 > UC_GAP_MAX)
+    return K(`${davanti} &egrave; a ${gap0.toFixed(1)} s <span class="sub">troppo lontano: fuori dai casi osservati nel 2026 (max ${UC_GAP_MAX.toFixed(0)} s)</span>`);
+  const giri = Math.ceil(gap0 / perGiro);
+  if(giri > UC_K_MAX)
+    return K(`${davanti} a ${gap0.toFixed(1)} s <span class="sub">servirebbero pi&ugrave; di ${UC_K_MAX} giri di vantaggio: fuori dominio</span>`);
+  const storico = gap0 < 1.0
+    ? `sotto 1 s nel 2026 &egrave; riuscito ${Math.round(UNDERCUT_STORICO.sotto1s*100)}% (${UNDERCUT_STORICO.n_sotto1s} casi)`
+    : gap0 > 4.5
+      ? `sopra 4,5 s nel 2026 non &egrave; <b>mai</b> riuscito (0 su ${UNDERCUT_STORICO.n_sopra45s})`
+      : `nel 2026 riesce nel ${Math.round(UNDERCUT_STORICO.complessivo*100)}% dei tentativi (${UNDERCUT_STORICO.n} casi, ${UNDERCUT_STORICO.perimetro})`;
+  // "davanti a te ADESSO": e' un'altra cosa dalla riga "Davanti", che dice chi ti trovi
+  // davanti DOPO il rientro. Due momenti diversi, due nomi che possono non coincidere.
+  return K(`su <b>${davanti}</b>, ${gap0.toFixed(1)} s davanti a te <i>adesso</i> &rarr; serve che resti fuori <b>${giri} ${giri===1?'giro':'giri'}</b> in pi&ugrave;
+    <span class="sub">${storico}</span>`);
 }
 
 // FASE A — i tre scenari di degrado (CHIAMA il gancio via pitbande.mjs). SCENARI, non
@@ -212,6 +306,8 @@ async function boot() {
   try { teamCol = await (await fetch('team_colori.json')).json(); } catch(e){ teamCol={}; }
   try { calendario = await (await fetch('data/calendario_2026.json')).json(); } catch(e){ calendario=null; }
   try { bandeClim = await (await fetch('data/climatologia_bande.json')).json(); } catch(e){ bandeClim=null; }
+  try { neutroFondo = await (await fetch('data/neutralizzazione_fondo.json')).json(); } catch(e){ neutroFondo=null; }
+  try { ragg = await (await fetch('data/raggruppamento.json')).json(); } catch(e){ ragg=null; }
   try { pitstops = await (await fetch('data/pitstops_2026.json')).json(); } catch(e){ pitstops=null; }
   try { rcmAll = await (await fetch('data/race_control_2026.json')).json(); } catch(e){ rcmAll=null; }
   try { ufficAll = await (await fetch('data/ufficiali_2026.json')).json(); } catch(e){ ufficAll=null; }
@@ -711,8 +807,37 @@ function updatePit(){
   el('pitTitle').innerHTML = `Se ${selDrv} pitta ${adesso?'adesso':`al giro ${pitL}`}&hellip; <small>rivali congelati</small>`;
   el('pitLapLabel').textContent = adesso ? `${pitL} (adesso)` : pitL;
   const present=Object.keys(race.byLap[L]).filter(d=>typeof race.byLap[L][d].cum_time==='number'&&!race.nonParten.has(d));
-  const loss=pitloss[race.gara]??22.0;
-  const r=evaluatePit({byLap:race.byLap,nLaps:race.n_laps,pace:race.pace[String(L)],driver:selDrv,freezeLap:L,pitLap:pitL,pitLoss:loss,present,gara:race.gara,laps:race.laps});
+  const lossTab=pitloss[race.gara]??22.0;
+  // I due numeri della gara IN CORSO, dalle sole soste gia' avvenute prima del freeze.
+  // sotto SC/VSC il gradino non si applica: va saputo PRIMA di chiamare il motore
+  const neutroPre = (l, pl) => !!(race.byLap[pl] && race.byLap[pl][selDrv]
+                                  && race.byLap[pl][selDrv].neutralized);
+  const viva = GRADINO_ATTIVO ? misuraSoste(race.byLap, race.n_laps, L)
+                              : { perdita:null, gradino:null, n_gradino:0, n_perdita:0 };
+  const usaViva = viva.perdita != null && viva.n_perdita >= MIN_SOSTE_UI;
+  // PENALITA PENDENTE — misurato sul 2026: l'82% delle penalita di tempo si sconta ALLA
+  // SOSTA SUCCESSIVA, cioe' esattamente nel momento che il pannello sta simulando. Entra
+  // quindi NEL COSTO, non accanto: il cliente deve leggere UN numero, quello vero per lui.
+  // Le penalita POST-GARA restano fuori (4 su 22, cambiano le prime 5 in 0 gare su 10):
+  // quelle si mostrano e non si simulano, come gia' fa race control livello 1.
+  const pen = penalitaPendente(penPil[selDrv], L, pitL);
+  const lossBase = usaViva ? viva.perdita : lossTab;
+  const loss = lossBase + (pen.secondi || 0);
+  const gradino = (viva.gradino != null && viva.n_gradino >= MIN_SOSTE_UI) ? viva.gradino : null;
+  // ORIZZONTE + GRADINO passati (22/07/2026). Prima non lo erano, e il pannello era
+  // INCOERENTE CON SE STESSO nel 100% dei casi: Rientro/Davanti/Dietro venivano da un
+  // motore che non sapeva che fermarsi cambia qualcosa, mentre due righe sotto "Gomma
+  // nuova" e "Undercut" usavano il gradino. Sposta il 7,3% delle posizioni mostrate.
+  // LA DERIVA DEL CAMPO. Il resto della griglia e' reale: la sua evoluzione e il suo
+  // carburante sono gia' nei tempi veri. Solo la macchina instradata rischia di restare
+  // ferma mentre la gara scorre — quindi la deriva tocca lei e nessun altro.
+  // guardia: neutroPre e' definita sopra; `neutro` (che viene dal motore) qui non esiste
+  // ancora — usarlo faceva morire updatePit con "Cannot access 'neutro' before
+  // initialization" e il pannello restava chiuso senza dire niente.
+  const der = neutroPre(L, pitL) ? null : calcolaDeriva(race.byLap, race.n_laps, L);
+  const derVal = (der && der.stato === 'MISURATO') ? der.valore : null;
+  const r=evaluatePit({byLap:race.byLap,nLaps:race.n_laps,pace:race.pace[String(L)],driver:selDrv,freezeLap:L,pitLap:pitL,pitLoss:loss,present,gara:race.gara,laps:race.laps,
+    orizzonte:(gradino!=null && !neutroPre(L,pitL))?5:0, gradino, ZONE:ZONE_PANNELLO, deriva:derVal});
   const box=el('pitKv');
   if(!r.ok){
     // traduzione UI del limite dichiarato del motore: chi e' appena passato dai box non
@@ -734,12 +859,127 @@ function updatePit(){
   const warn = ng.finestra_attiva
     ? `<div class="warn">⚠ Pit in finestra ${ng.tipo} (giri ${ng.finestra[0]}–${ng.finestra[1]}, durata tipica ${ng.durata_tipica} giri): il pit-loss verde qui sovrastima la perdita reale.</div>`
     : '';
+  // Provenienza del pit-loss: la misura di OGGI batte la tabella (0,48 s contro 1,11 s di
+  // scarto mediano dal realizzato), ma va detto DA DOVE viene, sempre.
+  const provPL = (pen.secondi
+      ? `<span class="sub">${lossBase.toFixed(1)} + ${pen.nota} &middot; ${pen.limite}</span>`
+      : (usaViva
+        ? `<span class="sub">misurato oggi su ${viva.n_perdita} soste &middot; tabella ${lossTab.toFixed(1)}</span>`
+        : `<span class="sub">stima di circuito &middot; nessuna sosta ancora misurabile</span>`));
+  // Il gradino: quanto vale la gomma nuova in QUESTA gara. Mai sotto neutralizzazione.
+  const rigaGradino = (gradino != null && !neutro)
+    ? `<div class="kv"><span class="k">Gomma nuova</span><span class="v num">${gradino.toFixed(2)} s/giro
+         <span class="sub">misurato oggi su ${viva.n_gradino} soste</span></span></div>`
+    : (GRADINO_ATTIVO && !neutro
+        ? `<div class="kv"><span class="k">Gomma nuova</span><span class="v dim">non ancora misurabile: servono ${MIN_SOSTE_UI} soste in gara</span></div>`
+        : '');
+  // stessi piloti a pari giro che usa il motore: l'undercut su un doppiato non esiste
+  const sameLap = stessoGiroReale(race.byLap, L, race.n_laps, selDrv, present);
+  const rigaUC = (gradino != null && !neutro) ? rigaUndercut(L, gradino, present, sameLap) : '';
+  const notaCap = CAP_TRAFFICO ? '' :
+    `<div class="kv"><span class="k">Duelli</span><span class="v dim">il motore riproduce
+     <b>quanti</b> cambi di posizione avvengono, non <b>quali</b>: il duello in pista non &egrave; simulato</span></div>`;
+
+  // --- I GROSSI, misurati da questa gara (demo/grossi.mjs) ---------------------
+  const G = calcolaGrossi(race.byLap, race.n_laps, L,
+                          { priorPitLoss: lossTab, neutro });
+  const kv = (k, v, sub) => `<div class="kv"><span class="k">${k}</span><span class="v">${v}`
+    + (sub ? ` <span class="sub">${sub}</span>` : '') + `</span></div>`;
+  // IL CANCELLO METEO — non un modello: due stati. Si accende dalla MESCOLA del campo, mai
+  // dal flag wR (verificato inaffidabile). Quando e' acceso i numeri del pannello non
+  // valgono: pit-loss, degrado e gomma nuova sono misurati TUTTI su asciutto, e dentro un
+  // passaggio di mescola il passo si muove di 3 s/giro — cento volte quei numeri.
+  const met = cancelloMeteo(race.byLap, race.n_laps, L);
+  let righeGrossi = '';
+  if (met.stato === 'FUORI_DOMINIO') {
+    righeGrossi += `<div class="warn">⛔ ${met.nota}<span class="sub">${met.limite}</span></div>`;
+  }
+  if (G.stato !== 'SOSPESO' && met.stato !== 'FUORI_DOMINIO') {
+    // scomposizione del pit-loss: quanto ci mette LA SUA squadra rispetto alla pista
+    const plp = pitLossPilota(G.pit_loss, race.byLap[L]?.[selDrv]?.team);
+    if (plp.nota_squadra) righeGrossi += kv('Box della squadra', plp.nota_squadra,
+      'il transito e della pista, questo e della squadra: si muovono separati');
+    // degrado letto dalla SOSTA, non dentro lo stint
+    const d = G.degrado;
+    if (d.stato === 'MISURATO')
+      righeGrossi += kv('Degrado', `${d.valore.toFixed(2)} s/giro per ogni giro di vita gomma`,
+        `letto da ${d.n} soste di oggi &middot; degrado + evoluzione pista insieme`);
+    // warm-up della mescola che monterebbe
+    const cmpNuovo = race.byLap[L]?.[selDrv]?.compound;
+    const w = cmpNuovo && G.warm_up.per_mescola?.[cmpNuovo];
+    if (w && w.stato === 'MISURATO')
+      righeGrossi += kv('Primo giro su gomma nuova',
+        `${w.valore >= 0 ? '+' : ''}${w.valore.toFixed(2)} s`,
+        `${cmpNuovo} misurato su ${w.n} soste &middot; mangia parte dell'undercut`);
+    // DELTA-PASSO: non e' un modello, e' una sottrazione. Il rivale davanti al rientro ha
+    // tempi VERI e gia' noti; io dopo la sosta sono passo + gradino. La differenza dice
+    // quanto DURA l'incontro — ed e' l'unico ingresso del traffico che non serve stimare.
+    const pc = race.pace[String(L)] || {};
+    if (r.davanti_ho && pc[r.davanti_ho] != null && pc[selDrv] != null) {
+      // PASSO CONTRO PASSO, senza il gradino. Sommarlo al mio e confrontarlo col passo
+      // MEDIO del rivale e' un doppio conteggio: il gradino misura "gomma nuova contro la
+      // MIA gomma vecchia", mentre il suo passo-base e' la mediana del suo stint finora,
+      // gomme giovani comprese. A Spagna quel doppio conteggio dava 2,31 s/giro di
+      // vantaggio dove i tempi veri ne dicono 0,37. Il guadagno da gomma nuova ha gia' la
+      // sua riga: chi legge somma, il codice no.
+      const dp = deltaPasso({ paceIo: pc[selDrv], paceRivale: pc[r.davanti_ho],
+                              gap: r.gap_ahead, rivale: r.davanti_ho });
+      if (dp.stato === 'MISURATO')
+        righeGrossi += kv('Delta-passo', dp.lettura,
+          dp.intrappolato ? 'la U rovesciata: i piu bloccati non sono i lenti, sono quelli appena piu veloci'
+                          : null);
+    }
+    // LA DERIVA: quanto scorre la gara, e quindi di quanto la mia auto si muove con essa
+    if (der && der.stato === 'MISURATO')
+      righeGrossi += kv('Come scorre la gara', der.nota,
+        `misurata sugli ultimi ${der.n} giri del campo &middot; carburante ed evoluzione pista insieme`);
+    else if (der && der.stato === 'FUORI_DOMINIO')
+      righeGrossi += kv('Come scorre la gara', '<span class="dim">non leggibile adesso</span>', der.nota);
+    // LA SAFETY CAR — UNA RIGA SOLA, e non e' il costo della sosta.
+    //
+    // Qui c'era anche "quanto costa fermarsi sotto neutralizzazione", dal rapporto SC/verde
+    // per circuito. TOLTA il 22/07/2026 su decisione del PO, e la ragione va scritta perche'
+    // e' una lezione e non una preferenza: quel rapporto poggia su 3-4 gare per pista, e su
+    // un caso reale di Silverstone ha prodotto la risposta ROVESCIATA — diceva "il leader
+    // resta davanti di 6 s" dove il fondo, su 286 casi identici, dice che chi insegue passa
+    // nel 61%. Un numero che sbaglia il segno su poche gare non si mostra accanto a uno che
+    // poggia su dieci volte tanto: il cliente non ha modo di sapere quale dei due pesare.
+    //
+    // Resta l'ESITO OSSERVATO, che e' la risposta e non i suoi ingredienti, con la
+    // probabilita' del circuito come contesto (quella poggia su 8-11 gare, non su 4).
+    const cidGara = (calendario?.gare || []).find(x => x.gara_demo === race.gara)?.circuitId;
+    const probSC = neutroFondo?.per_circuito?.[cidGara]?.probabilita ?? null;
+    const rg = raggruppamento(r.gap_behind, ragg);
+    const sd = sogliaDifesa(cidGara, ragg);
+    if (rg.stato === 'MISURATO' && rg.quota >= 0.35) {
+      // il RISCHIO adesso, e QUANTO SERVIREBBE: la seconda e' la parte azionabile
+      const quanto = sd.stato === 'MISURATO'
+        ? ` &mdash; ${sd.nota} (${sd.limite})` : '';
+      const ctx = probSC != null
+        ? `${rg.contesto} &middot; su questa pista una Safety Car arriva nel ${Math.round(probSC * 100)}% delle gare`
+        : rg.contesto;
+      righeGrossi += `<div class="warn">⚠ Se esce la Safety Car subito dopo: ${rg.nota}${quanto}`
+        + `<span class="sub">${ctx} &middot; ${rg.limite}</span></div>`;
+    } else if (sd.stato === 'MISURATO' && r.gap_behind != null) {
+      // niente allarme, ma il margine si dice lo stesso: e' il numero che il muretto usa
+      righeGrossi += kv('Margine sulla Safety Car',
+        `hai ${r.gap_behind.toFixed(1)} s su chi ti insegue, ${sd.nota}`, sd.limite);
+    }
+    // traffico al rientro: parla solo dove morde davvero
+    const t = trafficoRientro(r.gap_ahead);
+    if (t.stato === 'MISURATO')
+      righeGrossi += `<div class="warn">⚠ ${t.nota} <span class="sub">${t.limite}</span></div>`;
+  }
   box.innerHTML = warn + `
-    <div class="kv"><span class="k">Pit-loss</span><span class="v num">+${loss.toFixed(1)} s</span></div>
+    <div class="kv"><span class="k">Pit-loss</span><span class="v num">+${loss.toFixed(1)} s ${provPL}</span></div>
     <div class="kv"><span class="k">Rientro</span><span class="v">P${r.rientro_pos} <span class="sub">tra i ${r.su_totale} a pari giro</span></span></div>
     <div class="kv"><span class="k">Davanti</span><span class="v">${dav}</span></div>
     <div class="kv"><span class="k">Dietro</span><span class="v">${die}</span></div>
-    ${scenariDegrado(L, pitL, loss, present, neutro) || hookWaitlist()}`;
+    ${rigaGradino}
+    ${rigaUC}
+    ${righeGrossi}
+    ${notaCap}
+    ${scenariDegrado(L, pitL, loss, present, neutro) || (rigaUC ? '' : hookWaitlist())}`;
 }
 
 el('play').addEventListener('click', ()=>{ clock.toggle(); setPlayIcon(clock.playing); });
