@@ -1,19 +1,19 @@
 codice,freq_arch_2023_25,freq_2026,freq_totale,sequenza,decodifica,neutralizzato_v1,significato_fisico
-1,70465,8908,79373,VERDE,committato,False,verde
-12,2045,352,2397,VERDE->GIALLO,parziale (contiene ipotesi 2/7),False,bandiera gialla (settore) senza SC/VSC: nessuna neutralizzazione formale
-4,1924,414,2338,SC,committato,True,giro interamente sotto SC = REGIME SC
-41,745,72,817,SC->VERDE,committato,True,giro iniziato sotto SC e finito in verde = RESTART
-124,584,77,661,VERDE->GIALLO->SC,parziale (contiene ipotesi 2/7),True,giro iniziato in verde/giallo e finito sotto SC = DEPLOY
-671,348,137,485,VSC->VSC_END->VERDE,parziale (contiene ipotesi 2/7),True,"VSC che si chiude entro il giro, finito in verde"
+1,70465,9616,80081,VERDE,committato,False,verde
+12,2045,373,2418,VERDE->GIALLO,parziale (contiene ipotesi 2/7),False,bandiera gialla (settore) senza SC/VSC: nessuna neutralizzazione formale
+4,1924,456,2380,SC,committato,True,giro interamente sotto SC = REGIME SC
+41,745,93,838,SC->VERDE,committato,True,giro iniziato sotto SC e finito in verde = RESTART
+124,584,99,683,VERDE->GIALLO->SC,parziale (contiene ipotesi 2/7),True,giro iniziato in verde/giallo e finito sotto SC = DEPLOY
+671,348,151,499,VSC->VSC_END->VERDE,parziale (contiene ipotesi 2/7),True,"VSC che si chiude entro il giro, finito in verde"
 126,219,82,301,VERDE->GIALLO->VSC,parziale (contiene ipotesi 2/7),True,giro sotto VSC (deploy/chiusura)
 21,252,37,289,GIALLO->VERDE,parziale (contiene ipotesi 2/7),False,bandiera gialla (settore) senza SC/VSC: nessuna neutralizzazione formale
+16,120,74,194,VERDE->VSC,committato,True,giro sotto VSC (deploy/chiusura)
 6,124,65,189,VSC,committato,True,giro interamente sotto VSC = REGIME VSC
 14,166,15,181,VERDE->SC,committato,True,giro iniziato in verde/giallo e finito sotto SC = DEPLOY
-16,120,60,180,VERDE->VSC,committato,True,giro sotto VSC (deploy/chiusura)
 24,122,39,161,GIALLO->SC,parziale (contiene ipotesi 2/7),True,giro iniziato in verde/giallo e finito sotto SC = DEPLOY
 26,124,23,147,GIALLO->VSC,parziale (contiene ipotesi 2/7),True,giro sotto VSC (deploy/chiusura)
-167,60,50,110,VERDE->VSC->VSC_END,parziale (contiene ipotesi 2/7),True,giro sotto VSC (deploy/chiusura)
-71,43,26,69,VSC_END->VERDE,parziale (contiene ipotesi 2/7),False,deploy poi chiusura di VSC entro il giro (VSC breve)
+167,60,76,136,VERDE->VSC->VSC_END,parziale (contiene ipotesi 2/7),True,giro sotto VSC (deploy/chiusura)
+71,43,30,73,VSC_END->VERDE,parziale (contiene ipotesi 2/7),False,deploy poi chiusura di VSC entro il giro (VSC breve)
 2,46,10,56,GIALLO,parziale (contiene ipotesi 2/7),False,bandiera gialla (settore) senza SC/VSC: nessuna neutralizzazione formale
 45,56,0,56,SC->RED,committato,True,bandiera rossa in questo giro (gara sospesa / laptime non valido)
 67,34,18,52,VSC->VSC_END,parziale (contiene ipotesi 2/7),True,giro sotto VSC (deploy/chiusura)

@@ -124,6 +124,9 @@ def wave_nuove():
         # prereg non si apre. Nessuno di questi tre esegue un backtest.
         # check=False ovunque: una gara bagnata fa uscire conta_undercut con un messaggio,
         # e la ricerca non deve MAI fermare la pubblicazione di una gara.
+        # analisi neutralizzazione a due livelli: inventario derivato dal registro, quindi
+        # la gara nuova entra da sola. Non tocca la produzione (gen_neutralizzazione.py).
+        sh([PY, 'gen_neutralizzazione_v2.py'], check=False)
         sh([PY, 'gen_degrado_gamma.py', '--write'], check=False)
         sh([PY, 'conta_undercut.py', '--gara', nome], check=False)
         sh([PY, 'undercut_sorveglianza.py'], check=False)
