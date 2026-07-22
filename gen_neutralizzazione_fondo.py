@@ -94,6 +94,7 @@ def main():
 
     freq = defaultdict(lambda: [0, 0])          # cid -> [gare, con neutralizzazione]
     rapporti = defaultdict(list)                # cid -> rapporti per gara
+    perdite_v = defaultdict(list)               # cid -> perdite verdi (ogni sosta)
     tutti_v, tutti_n = [], []
 
     for anno in ANNI:
@@ -116,6 +117,7 @@ def main():
             n = [p for p, n in s if n]
             tutti_v += v
             tutti_n += n
+            perdite_v[c] += v
             if len(v) >= 4 and len(n) >= MIN_SOSTE:
                 rapporti[c].append(st.median(n) / st.median(v))
 
@@ -144,6 +146,16 @@ def main():
                 'con_neutralizzazione': con,
                 # sotto MIN_GARE la quota non si pubblica: e' un null onesto
                 'probabilita': round(con / tot, 3) if tot >= MIN_GARE else None}
+        # PIT-LOSS TIPICO DEL CIRCUITO. Serve al muretto in LIVE: nel 2026 solo dieci
+        # piste sono state corse e misurate (demo/data/pitloss.json), le altre dodici del
+        # calendario non hanno nessun numero. Senza questo il pannello, per i primi giri
+        # di una gara all'Hungaroring, userebbe un 22,0 s generico senza dire da dove
+        # viene. Qui c'e' invece la mediana delle soste VERDI vere di quella pista dal
+        # 2018, con la sua numerosita' accanto — e quando la gara in corso avra' tre
+        # soste misurate sara' comunque lei a comandare (MIN_SOSTE_UI).
+        pv = perdite_v.get(c) or []
+        voce['pit_loss_tipico_s'] = round(st.median(pv), 2) if len(pv) >= 20 else None
+        voce['pit_loss_n_soste'] = len(pv)
         rr = rapporti.get(c) or []
         if len(rr) >= 2:
             voce['rapporto'] = round(st.median(rr), 3)

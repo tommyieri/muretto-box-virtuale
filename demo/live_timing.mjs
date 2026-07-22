@@ -149,7 +149,10 @@ export function creaTorreTiming({ lista, nota }) {
     lista.innerHTML = stato.righe().map(r => {
       const g = gap(r);
       const tempo = r.best_lap || r.last_lap;
-      return `<div class="tw-row${r.in_pit ? ' tw-pit' : ''}">`
+      // data-sigla: la torre e' anche il modo per SCEGLIERE il pilota, come la
+      // classifica in gara.html. Chi la disegna non sa cosa ci farai: espone il dato
+      // e basta, il gestore del click vive nella pagina.
+      return `<div class="tw-row${r.in_pit ? ' tw-pit' : ''}" data-sigla="${esc(r.sigla)}">`
         + `<div class="tw-main">`
         +   `<span class="tw-pos">${r.pos ?? '–'}</span>`
         +   `<span class="tw-col" style="background:${esc(r.colore)}"></span>`

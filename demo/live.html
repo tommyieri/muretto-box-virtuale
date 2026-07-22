@@ -62,6 +62,26 @@
       niente numeri finti, mai.</div>
   </section>
 
+  <!-- IL MURETTO IN DIRETTA. La stessa domanda e lo stesso pannello di gara.html
+       (demo/muretto.mjs), alimentato dal flusso invece che dal JSON di una gara finita.
+       Scegli un pilota e la pagina risponde: se lo fermo adesso, dove rientra. -->
+  <div class="sez-tit">Il muretto</div>
+  <section class="panel" id="mu-panel">
+    <div class="mu-testa">
+      <span class="mu-lab">Il tuo pilota</span>
+      <select id="mu-drv" aria-label="Scegli il pilota da seguire"><option value="">&mdash;</option></select>
+      <span class="mu-giro" id="mu-giro"></span>
+    </div>
+    <div class="mu-slider" id="mu-slider" hidden>Pit al giro <b id="mu-lapLabel">&ndash;</b>
+      <input type="range" id="mu-lap" min="2" max="2" value="2"></div>
+    <div id="mu-kv"></div>
+    <div id="mu-nota" class="lv-nota">Durante una <b>gara</b> scegli qui il pilota da seguire e il
+      pannello risponde alla domanda del muretto: <i>se lo fermo adesso, dove rientra?</i>
+      Serve qualche giro perch&eacute; il passo-base di ogni pilota si misuri &mdash; il pannello
+      dice sempre a che punto &egrave;. Nelle libere e in qualifica resta spento: senza giri di gara
+      la domanda non esiste.</div>
+  </section>
+
   <div class="sez-tit">Classifica live</div>
   <section class="panel" id="tw-panel">
     <div id="tw-list" class="tw-list"></div>
@@ -104,6 +124,36 @@
   .tw-sec-t{display:block;font:700 .68rem/1.3 -apple-system,Arial;font-variant-numeric:tabular-nums;margin-bottom:.15rem}
   .tw-bar{display:flex;gap:1px;height:.32rem;border-radius:2px;overflow:hidden}
   .tw-seg{flex:1 1 0;min-width:1px;display:block}
+  .tw-row[data-sigla]{cursor:pointer}
+  .tw-row.tw-sel{background:#16202c;box-shadow:inset 2px 0 0 #e80d2e}
+
+  /* il muretto in diretta: stessa veste del pannello pit di gara.html */
+  .mu-testa{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.6rem}
+  .mu-lab{color:#8b93a5;font-size:.82rem}
+  #mu-drv{background:#141b25;color:#e8edf5;border:1px solid #2a333f;border-radius:5px;
+    padding:.3rem .5rem;font:700 .86rem -apple-system,Arial}
+  .mu-giro{color:#8b93a5;font-size:.8rem;margin-left:auto;font-variant-numeric:tabular-nums}
+  .mu-slider{display:flex;align-items:center;gap:.5rem;color:#8b93a5;font-size:.82rem;margin-bottom:.6rem}
+  .mu-slider input{flex:1 1 auto}
+  .mu-slider b{color:#e8edf5}
+  #mu-kv .kv{display:flex;gap:.8rem;padding:.4rem 0;border-bottom:1px solid #1c2430;font-size:.86rem}
+  #mu-kv .kv .k{color:#8b93a5;flex:0 0 8.5rem}
+  #mu-kv .kv .v{color:#e8edf5;flex:1 1 auto}
+  #mu-kv .kv .v.num{font-variant-numeric:tabular-nums;font-weight:700}
+  #mu-kv .kv .v.dim,#mu-kv .dim{color:#8b93a5;font-weight:400}
+  #mu-kv .sub{display:block;color:#767e8e;font-size:.76rem;font-weight:400;margin-top:.1rem}
+  #mu-kv .g{color:#3fbf6f;font-variant-numeric:tabular-nums}
+  #mu-kv .warn{background:#1e1a10;border-left:3px solid #f5a03c;padding:.45rem .6rem;
+    margin:.4rem 0;font-size:.83rem;color:#e8d9b8;border-radius:0 4px 4px 0}
+  #mu-kv .pitmsg{color:#8b93a5;font-size:.85rem;padding:.5rem 0}
+  #mu-kv .scenari{margin-top:.6rem}
+  #mu-kv .sc-h{font-size:.82rem;color:#aab2c0;margin-bottom:.3rem}
+  #mu-kv .sc-tag{display:inline-block;background:#242b38;color:#8b93a5;font-size:.68rem;
+    letter-spacing:.05em;padding:.1em .5em;border-radius:3px;margin-left:.4rem}
+  #mu-kv .sc-t{width:100%;border-collapse:collapse;font-size:.8rem;font-variant-numeric:tabular-nums}
+  #mu-kv .sc-t th{color:#767e8e;font-weight:600;text-align:left;padding:.2rem .4rem}
+  #mu-kv .sc-t td{padding:.2rem .4rem;border-top:1px solid #1c2430}
+  #mu-kv .sc-o{color:#3fbf6f}#mu-kv .sc-c{color:#aab2c0}#mu-kv .sc-p{color:#f5a03c}
 </style>
 
 <footer class="footer">
@@ -175,6 +225,9 @@ async function bootMappa(g){
   // R2: torre timing, stessi eventi della mappa (nessun secondo WebSocket)
   const torre = creaTorreTiming({ lista: el('tw-list'), nota: el('tw-nota') });
 
+  // IL MURETTO IN DIRETTA — di nuovo gli stessi eventi, nessuna terza connessione.
+  const muretto = await creaMurettoLive(g);
+
   // R2b: dataset PERSISTENTE dell'ultima qualifica (dati veri da FastF1,
   // gen_quali.py). Serve a NON mostrare una pagina vuota fuori sessione:
   // quando il feed e' muto, la torre mostra l'ultima quali salvata; il
@@ -186,6 +239,7 @@ async function bootMappa(g){
     onEvento(e){
       mappa.applica(e);
       torre.applica(e);
+      muretto.applica(e);
       const stato = e.type === 'track_status' ? e.status
         : (e.type === 'snapshot' ? e.track_status : null);
       if (stato){
@@ -229,6 +283,128 @@ async function bootMappa(g){
       el('live-nota').hidden = false; el('live-pista-stato').hidden = true;
     }
   }, 1000);
+}
+
+// ============================================================ IL MURETTO IN DIRETTA
+//
+// La stessa domanda del pannello di gara.html, sulla gara che sta succedendo. E' LO
+// STESSO CODICE (demo/muretto.mjs): cambia solo da dove arrivano i dati — dal flusso del
+// collettore invece che dal JSON di una gara finita. Il traduttore e' live_bylap.mjs, ed
+// e' provato contro la gara vera di Spa (demo/test_live_bylap.mjs).
+//
+// SOLO IN GARA, e il cancello e' un fatto non una preferenza: la distanza di gara arriva
+// dal messaggio LapCount, che il feed manda soltanto in gara. Nelle libere e in qualifica
+// non esiste, quindi il pannello non si accende — ed e' giusto: senza giri di gara e senza
+// un ordine di corsa, "se lo fermo adesso dove rientra" non e' una domanda.
+async function creaMurettoLive(g){
+  const [{ creaByLapLive }, { pannelloMuretto }] = await Promise.all([
+    import('./live_bylap.mjs?v=220726b'), import('./muretto.mjs?v=220726b')]);
+  const B = creaByLapLive();
+
+  // Le tabelle dal fondo 2018-2026, le stesse che usa gara.html. Il ?v= non e' cosmesi:
+  // questi file li riscrive auto_gara.py dopo ogni gara, e senza marcatura di versione il
+  // browser continua a servire quello vecchio. Preso in faccia al collaudo — il pannello
+  // diceva "per questa pista non c'e' nessun pit-loss" con il numero gia' sul disco.
+  const V = '220726b';
+  const j = async (u, d) => { try { return await (await fetch(`${u}?v=${V}`)).json(); } catch(_) { return d; } };
+  const [pitloss, neutroFondo, ragg, bandeClim] = await Promise.all([
+    j('data/pitloss.json', {}), j('data/neutralizzazione_fondo.json', null),
+    j('data/raggruppamento.json', null), j('data/climatologia_bande.json', null)]);
+
+  // IL PIT-LOSS PRIMA CHE LA GARA LO DICA. Ordine dichiarato, dal piu' vicino al piu'
+  // lontano: (1) misurato sulla gara demo 2026 di questa pista, se c'e'; (2) il tipico
+  // del circuito dal fondo 2018-2026; (3) niente. Dal momento in cui la gara in corso ha
+  // tre soste misurabili comanda comunque lei — questo serve solo ai primi giri.
+  const cid = g.circuitId;
+  const vocePL = neutroFondo?.per_circuito?.[cid] || {};
+  const plDemo = g.gara_demo ? pitloss[g.gara_demo] : null;
+  const plFondo = vocePL.pit_loss_tipico_s ?? null;
+  const pitLossTabella = plDemo ?? plFondo ?? null;
+  const provPitLoss = plDemo != null
+    ? `misurato sulla gara 2026 di questa pista`
+    : (plFondo != null ? `tipico del circuito su ${vocePL.pit_loss_n_soste} soste dal 2018` : null);
+
+  let scelto = null, ridisegna = null;
+
+  const opz = () => {
+    const sel = el('mu-drv');
+    const L = B.giroPieno();
+    const sigle = L ? Object.keys(B.byLap()[L] || {}).sort() : [];
+    // ricostruisco la tendina solo se l'elenco e' cambiato davvero: riscriverla a ogni
+    // giro chiuderebbe il menu in faccia a chi lo sta usando
+    const chiave = sigle.join(',');
+    if (sel.dataset.chiave === chiave) return;
+    sel.dataset.chiave = chiave;
+    sel.innerHTML = '<option value="">— scegli —</option>'
+      + sigle.map(s => `<option value="${s}">${s}</option>`).join('');
+    if (scelto && sigle.includes(scelto)) sel.value = scelto;
+  };
+
+  ridisegna = () => {
+    const kv = el('mu-kv'), nota = el('mu-nota'), sl = el('mu-slider');
+    const nLaps = B.nLaps(), L = B.giroPieno();
+    el('mu-giro').textContent = nLaps ? `giro ${B.giro() ?? '–'} / ${nLaps}` : '';
+    opz();
+    // evidenzia in torre il pilota scelto
+    for (const r of el('tw-list').querySelectorAll('.tw-row'))
+      r.classList.toggle('tw-sel', r.dataset.sigla === scelto);
+
+    if (!nLaps){ kv.innerHTML = ''; sl.hidden = true; nota.hidden = false; return; }
+    if (!scelto){ kv.innerHTML = ''; sl.hidden = true; nota.hidden = false; return; }
+    const d = B.diagnosi(L);
+    if (!d.pronto){
+      sl.hidden = true; nota.hidden = true;
+      kv.innerHTML = `<div class="pitmsg">Ancora presto: ${d.motivo}.
+        <span class="sub">Il passo-base di ogni pilota si misura dai suoi giri veri in gara;
+        finche non c'e, il pannello preferisce tacere.</span></div>`;
+      return;
+    }
+    nota.hidden = true; sl.hidden = false;
+    // il giro in corso e' il primo fermabile: L e' l'ultimo COMPLETATO
+    const lap = el('mu-lap'), minOra = L + 1;
+    if (+lap.min !== minOra || +lap.max !== nLaps){
+      lap.min = minOra; lap.max = nLaps;
+      if (+lap.value < minOra) lap.value = minOra;
+    }
+    const pitL = +lap.value;
+    el('mu-lapLabel').textContent = pitL === minOra ? `${pitL} (adesso)` : pitL;
+
+    const r = pannelloMuretto({
+      byLap: B.byLap(), nLaps, pace: B.pace(L), laps: null,
+      // gara: null -> niente scenari di degrado. Le bande climatologiche sono indicizzate
+      // sul nome della gara demo, e una pista non ancora corsa nel 2026 non ce l'ha.
+      // Tacere e' l'unica risposta onesta: uno scenario senza banda sarebbe inventato.
+      gara: g.gara_demo || null, circuitId: cid,
+      driver: scelto, freezeLap: L, pitLap: pitL,
+      pitLossTabella, penalita: null, nonParten: new Set(),
+      neutroFondo, ragg, bandeClim,
+    });
+    // quando il riferimento manca, a dirlo e' il pannello stesso (muretto.mjs): un
+    // secondo avviso qui sopra rischiava di contraddirlo, ed e' esattamente cio' che
+    // faceva — "nessun riferimento" e un centimetro sotto "+22,0 s".
+    kv.innerHTML = r.html
+      + (provPitLoss ? `<div class="kv"><span class="k">Riferimento</span>
+           <span class="v dim">pit-loss di partenza: ${provPitLoss}</span></div>` : '');
+  };
+
+  el('mu-drv').addEventListener('change', e => { scelto = e.target.value || null; ridisegna(); });
+  el('mu-lap').addEventListener('input', ridisegna);
+  // la torre e' l'altro modo di scegliere: stesso gesto della classifica in gara.html
+  el('tw-list').addEventListener('click', e => {
+    const r = e.target.closest('.tw-row[data-sigla]');
+    if (!r) return;
+    scelto = r.dataset.sigla; el('mu-drv').value = scelto; ridisegna();
+  });
+
+  let ultimo = null;
+  return {
+    applica(e){
+      B.applica(e);
+      // si ridisegna quando la gara cambia davvero giro, non 50 volte al secondo
+      const L = B.giroPieno();
+      if (L !== ultimo){ ultimo = L; ridisegna(); }
+    },
+  };
 }
 
 // R2b: carica l'ultima qualifica salvata (manifest -> file). null se assente.

@@ -43,7 +43,15 @@
 //     passo, non un numero inventato.
 
 // il vocabolario di Fase 1 per il track status; neutralizzato = campo fermo per tutti
+// Un giro e' neutralizzato se durante quel giro la pista non era libera.
 const NEUTRO = new Set(['SCDeployed', 'SCEnding', 'VSCDeployed', 'VSCEnding', 'Red']);
+// Ma "Ending" vuol dire che sta FINENDO: la Safety Car rientra, il giro DOPO e' verde.
+// Contare anche quello come neutralizzato costava caro, e non in modo visibile: buttava
+// via giri buoni, e con essi le soste che quei giri servivano a misurare. Su Spa il
+// pannello live riconosceva 5 soste su 8 e mostrava un pit-loss di 24,06 s dove la
+// stessa gara ne misura 21,15. Distinguendo "spiegata" da "in rientro": 7 soste su 8 e
+// 21,81 s, e le celle neutralizzate passano da 835 a 870 su 871 identiche all'ufficiale.
+const PIENA = new Set(['SCDeployed', 'VSCDeployed', 'Red']);
 
 const FUEL = 3.0 / 70.0;   // stesso coefficiente del kernel (engine/engine.py)
 
@@ -71,8 +79,14 @@ export function creaByLapLive() {
   let cur = new Map();        // num -> stato corrente dal feed
   let byLap = {};             // L -> {sigla -> cella}
   let cumLeader = {};         // L -> tempo cumulato di riferimento
-  let inLapDi = new Map();    // num -> giro di in-lap (dedotto da InPit)
+  // TUTTI gli in-lap di ogni pilota, non solo l'ultimo. HAD a Spa si e' fermato al giro 1
+  // E al giro 2: con un valore solo il secondo ingresso cancellava il primo, l'out-lap
+  // della prima sosta non veniva mai riconosciuto e da li' in poi il suo stint restava
+  // indietro di uno per TUTTA la gara (43 celle sbagliate su 44 giri).
+  let inLapDi = new Map();    // num -> Set dei giri di in-lap (dedotti da InPit)
   let sporco = new Map();     // num -> il giro in corso ha visto neutralizzazione
+  let stintDi = new Map();    // num -> stint corrente (avanza sull'out-lap, non sull'in-lap)
+  let inizioStint = new Map(); // num -> primo giro dello stint corrente (per l'eta' gomma)
   let stato = 'AllClear';
   let giro = null, nLaps = null;
   let memoPace = {};
@@ -121,7 +135,13 @@ export function creaByLapLive() {
     const gap = v.pos === 1 ? 0 : v.gap_s;
     const s = sigla(num);
     const tg = tempoInSecondi(v.last_lap);
-    const inLap = inLapDi.get(num) === L;
+    const miei = inLapDi.get(num);
+    const inLap = !!miei && miei.has(L);
+    const outLap = !!miei && miei.has(L - 1);
+    if (outLap) {
+      stintDi.set(num, (stintDi.get(num) || 1) + 1);
+      inizioStint.set(num, L);          // il giro di rientro e' il primo sulla gomma nuova
+    }
     let cum = (rif != null && gap != null) ? rif + gap : null;
     // L'ECCEZIONE DELL'IN-LAP, misurata: entrando in pit lane il feed SMETTE di
     // aggiornare il gap (l'ultimo punto di cronometraggio e' prima dell'ingresso), e
@@ -141,14 +161,41 @@ export function creaByLapLive() {
       lap_time: tg,
       team: (piloti.get(num) || {}).team || null,
       compound: v.compound || null,
-      tyre_age: v.tyre_age != null ? v.tyre_age : null,
-      stint: (v.pit_stops || 0) + 1,
+      // ETA' GOMMA: quella del FEED, +1. E il +1 e' verificato — il feed conta i giri
+      // fatti prima di questo, il dato ufficiale include anche quello in corso.
+      //
+      // Verrebbe voglia di contarla da soli, visto che il rientro ai box lo riconosciamo
+      // per tutti e 21 i piloti. Provato, e SBAGLIATO: "giri da quando e' montata" e
+      // "eta' della gomma" sono due cose diverse. Un set usato montato alla sosta parte
+      // gia' con dei giri addosso — su ANT a Spa erano tre, ed e' il motivo per cui il
+      // feed sembrava in ritardo mentre invece aveva ragione lui. Il degrado del kernel
+      // e' tarato su quella grandezza li', la vita della gomma: contare i giri dallo
+      // stop farebbe leggere al pannello live una curva diversa da quella del pannello
+      // sulle gare vecchie, a parita' di situazione.
+      //
+      // Il conteggio resta come RIPIEGO per chi si collega a meta' gara prima che il
+      // feed abbia mandato lo stint: meglio un'eta' relativa che nessuna.
+      tyre_age: v.tyre_age != null ? v.tyre_age + 1
+                : (inizioStint.has(num) ? L - inizioStint.get(num) + 1 : null),
+      // STINT: l'IN-LAP APPARTIENE ALLO STINT VECCHIO. Si guida sulla gomma vecchia — e'
+      // il giro in cui la si porta ai box. Ma NumberOfPitStops scatta gia' all'ingresso
+      // in corsia, quindi contarlo li' spostava l'in-lap nello stint nuovo.
+      //
+      // Non era un dettaglio: gradino.mjs cerca i giri di riferimento PRIMA della sosta
+      // chiedendo "stesso stint dell'in-lap". Con l'in-lap gia' promosso, quei giri non
+      // esistevano e ogni sosta veniva scartata — al giro 38 di Spa il pannello live
+      // vedeva ZERO soste dove la stessa gara ne mostra OTTO, e continuava a mostrare il
+      // pit-loss di tabella al posto di quello misurato in gara. Sintomo silenzioso: il
+      // pannello rispondeva, con il numero peggiore.
+      //
+      // Lo stint avanza percio' sull'OUT-lap, che e' il primo giro sulla gomma nuova.
+      stint: stintDi.get(num) || 1,
       in_lap: inLap,
-      out_lap: inLapDi.get(num) === L - 1,
+      out_lap: outLap,
       neutralized: !!sporco.get(num),
     };
-    // il giro nuovo ricomincia pulito, e il suo stato di pista e' quello di adesso
-    sporco.set(num, NEUTRO.has(stato));
+    // il giro nuovo ricomincia pulito, a meno che la neutralizzazione sia ancora PIENA
+    sporco.set(num, PIENA.has(stato));
     memoPace = {};
   }
 
@@ -163,7 +210,10 @@ export function creaByLapLive() {
       const era = v.in_pit;
       v.in_pit = !!d.in_pit;
       // entra ai box: il giro IN CORSO (quello dopo l'ultimo completato) e' l'in-lap
-      if (!era && v.in_pit) inLapDi.set(num, (v.lap != null ? v.lap : 0) + 1);
+      if (!era && v.in_pit) {
+        if (!inLapDi.has(num)) inLapDi.set(num, new Set());
+        inLapDi.get(num).add((v.lap != null ? v.lap : 0) + 1);
+      }
     }
     if ('lap' in d) v.lap = d.lap;
     // la riga si chiude QUI, con il gap di un attimo fa — non con quello del giro dopo
@@ -175,6 +225,7 @@ export function creaByLapLive() {
     if (e.type === 'snapshot') {
       // riallineamento completo (riconnessione o arrivo a meta' sessione)
       piloti = new Map(); cur = new Map(); inLapDi = new Map(); sporco = new Map();
+      stintDi = new Map(); inizioStint = new Map();
       byLap = {}; cumLeader = {}; memoPace = {};
       for (const [num, d] of Object.entries(e.driver_list || {})) piloti.set(num, { ...d });
       stato = e.track_status || 'AllClear';
@@ -236,10 +287,34 @@ export function creaByLapLive() {
 
   return {
     applica,
-    // l'ultimo giro per cui esiste una riga chiusa: e' quello su cui si puo' congelare
+    // l'ultimo giro per cui esiste una riga chiusa, DA CHIUNQUE (anche dal solo leader)
     ultimoGiroChiuso() {
       const k = Object.keys(byLap).map(Number);
       return k.length ? Math.max(...k) : null;
+    },
+
+    // IL GIRO SU CUI SI CONGELA, che non e' lo stesso.
+    //
+    // In una gara finita ogni giro del JSON ha dentro tutti: il dato e' gia' ordinato per
+    // giro. In diretta no — i piloti tagliano il traguardo a venti secondi l'uno
+    // dall'altro, e nell'istante in cui il leader chiude il giro 11 gli altri sono ancora
+    // sul 10. Prendere "l'ultimo giro chiuso" significa quindi congelare su un giro in
+    // cui c'e' UNA macchina sola: il pannello confronterebbe il pilota scelto con nessuno.
+    // Preso in faccia al primo replay: la tendina dei piloti conteneva un nome solo.
+    //
+    // Si congela percio' sull'ultimo giro in cui il campo e' (quasi) tutto dentro. Il
+    // "quasi" e' necessario: chi e' ai box o doppiato quel giro non lo chiude mai, e
+    // aspettarlo bloccherebbe il pannello per sempre.
+    giroPieno() {
+      const laps = Object.keys(byLap).map(Number).sort((a, b) => a - b);
+      if (!laps.length) return null;
+      const ultimo = laps[laps.length - 1];
+      const attivi = new Set();
+      for (const L of laps) if (L > ultimo - 3) for (const s in byLap[L]) attivi.add(s);
+      const soglia = Math.max(6, Math.ceil(attivi.size * 0.8));
+      for (let L = ultimo; L >= 1; L--)
+        if (Object.keys(byLap[L] || {}).length >= soglia) return L;
+      return null;
     },
     byLap: () => byLap,
     nLaps: () => nLaps,

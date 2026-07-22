@@ -140,7 +140,14 @@ export function pannelloMuretto(C) {
   const nonParten = C.nonParten || new Set();
   const present = Object.keys(C.byLap[L] || {})
     .filter(d => typeof C.byLap[L][d].cum_time === 'number' && !nonParten.has(d));
-  const lossTab = C.pitLossTabella ?? 22.0;
+  // IL PIT-LOSS NON SI INVENTA. Qui c'era `?? 22.0`: un valore di comodo che nessuno
+  // aveva misurato, per nessuna pista. Sulle dieci gare demo non si vedeva mai, perche'
+  // un numero c'e' sempre — ma il muretto in diretta gira anche su circuiti mai corsi nel
+  // 2026, e li' saltava fuori. La pagina live avvisava "per questa pista non c'e' nessun
+  // pit-loss di riferimento" e la riga sotto ne mostrava uno di 22,0 s: due frasi che si
+  // smentiscono a distanza di un centimetro. Senza un costo della sosta la domanda "dove
+  // rientro" non ha risposta, e la risposta giusta e' dirlo.
+  const lossTab = C.pitLossTabella ?? null;
 
   // sotto SC/VSC il gradino non si applica: va saputo PRIMA di chiamare il motore
   const neutroPre = () => !!(C.byLap[pitL] && C.byLap[pitL][C.driver]
@@ -156,6 +163,9 @@ export function pannelloMuretto(C) {
   // quindi NEL COSTO, non accanto: il cliente deve leggere UN numero, quello vero per lui.
   // Le penalita' POST-GARA restano fuori: quelle si mostrano e non si simulano.
   const pen = penalitaPendente(C.penalita, L, pitL);
+  if (!usaViva && lossTab == null)
+    return { ok: false, html: `<div class="pitmsg">Non c&rsquo;&egrave; ancora un costo della sosta per questa pista: nessuna gara misurata e nessuna sosta gi&agrave; avvenuta oggi.
+      <span class="sub">Senza sapere quanto costa fermarsi, &ldquo;dove rientro&rdquo; non ha una risposta. Bastano <b>${MIN_SOSTE_UI} soste</b> in questa gara e il pannello si accende da solo.</span></div>` };
   const lossBase = usaViva ? viva.perdita : lossTab;
   const loss = lossBase + (pen.secondi || 0);
   const gradino = (viva.gradino != null && viva.n_gradino >= MIN_SOSTE_UI) ? viva.gradino : null;
@@ -172,12 +182,34 @@ export function pannelloMuretto(C) {
     gradino, ZONE: ZONE_PANNELLO, deriva: derVal });
 
   if (!r.ok) {
-    // traduzione UI del limite dichiarato del motore: chi e' appena passato dai box non
-    // ha passo-base al congelamento — spiegarlo, non citare solo il codice
+    // Traduzione UI del limite dichiarato del motore. Il passo-base vuole 3 giri VERDI
+    // nello stint in corso: chi si e' appena fermato non li ha, e per due o tre giri non
+    // e' valutabile. Il caso non e' raro — e' esattamente il pilota che uno va a guardare
+    // subito dopo una sosta. Prima qui usciva "Non valutabile a questo giro (pilota non
+    // in pista al giro scelto)", che sembra un errore e invece e' il motore che si
+    // rifiuta di rispondere senza dati: va detto in italiano, con quanto manca.
     const c = C.byLap[L]?.[C.driver];
-    return { ok: false, html: (c && (c.in_lap || c.out_lap))
-      ? `<div class="pitmsg">${C.driver} &egrave; appena passato dai box: il motore non ha ancora un passo-base per valutarlo. Fai scorrere la gara di un giro o due, o sposta il cursore pi&ugrave; avanti.</div>`
-      : `<div class="pitmsg">Non valutabile a questo giro (${r.reason}).</div>` };
+    if (c && (c.in_lap || c.out_lap))
+      return { ok: false, html: `<div class="pitmsg">${C.driver} &egrave; appena passato dai box: il motore non ha ancora un passo-base per valutarlo. Fai scorrere la gara di un giro o due, o sposta il cursore pi&ugrave; avanti.</div>` };
+    // quanti giri verdi ha nello stint in corso
+    let verdi = 0;
+    if (c && c.stint != null) {
+      for (let k = 1; k <= L; k++) {
+        const x = C.byLap[k]?.[C.driver];
+        if (x && x.stint === c.stint && x.lap_time != null && !x.neutralized && !x.in_lap && !x.out_lap) verdi++;
+      }
+    }
+    // e chi non ha nemmeno una riga al giro di congelamento: succede a chi apre la pagina
+    // a gara iniziata. Non e' un errore, e' storia che non abbiamo visto — e dirlo cosi'
+    // e' diverso dal far comparire "pilota non in pista al giro scelto", che sembra un
+    // guasto e invece e' il motore che si rifiuta di rispondere senza dati.
+    if (!c)
+      return { ok: false, html: `<div class="pitmsg">Di ${C.driver} non abbiamo ancora giri: la pagina &egrave; stata aperta a gara iniziata e il passo si misura solo su quello che vediamo succedere.
+        <span class="sub">Bastano tre o quattro giri e il pannello si accende da solo.</span></div>` };
+    if (verdi < 3)
+      return { ok: false, html: `<div class="pitmsg">Di ${C.driver} servono <b>3 giri</b> puliti sulla gomma che ha adesso per misurarne il passo, e ne abbiamo ${verdi}.
+        <span class="sub">Succede dopo una sosta, o quando la pagina si apre a gara iniziata. Il passo non si eredita dallo stint precedente: sarebbe la gomma sbagliata.</span></div>` };
+    return { ok: false, html: `<div class="pitmsg">Non valutabile a questo giro (${r.reason}).</div>` };
   }
 
   const neutro = r.sotto_neutralizzazione === true;
@@ -197,7 +229,7 @@ export function pannelloMuretto(C) {
   const provPL = pen.secondi
     ? `<span class="sub">${lossBase.toFixed(1)} + ${pen.nota} &middot; ${pen.limite}</span>`
     : (usaViva
-      ? `<span class="sub">misurato oggi su ${viva.n_perdita} soste &middot; tabella ${lossTab.toFixed(1)}</span>`
+      ? `<span class="sub">misurato oggi su ${viva.n_perdita} soste${lossTab != null ? ` &middot; tabella ${lossTab.toFixed(1)}` : ' &middot; nessun riferimento per questa pista'}</span>`
       : '<span class="sub">stima di circuito &middot; nessuna sosta ancora misurabile</span>');
   const rigaGradino = (gradino != null && !neutro)
     ? `<div class="kv"><span class="k">Gomma nuova</span><span class="v num">${gradino.toFixed(2)} s/giro
@@ -213,7 +245,7 @@ export function pannelloMuretto(C) {
      <b>quanti</b> cambi di posizione avvengono, non <b>quali</b>: il duello in pista non &egrave; simulato</span></div>`;
 
   // --- I GROSSI, misurati da questa gara (demo/grossi.mjs) ---------------------
-  const G = calcolaGrossi(C.byLap, C.nLaps, L, { priorPitLoss: lossTab, neutro });
+  const G = calcolaGrossi(C.byLap, C.nLaps, L, { priorPitLoss: lossTab ?? lossBase, neutro });
   // IL CANCELLO METEO — non un modello: due stati. Si accende dalla MESCOLA del campo, mai
   // dal flag di pioggia (verificato inaffidabile). Quando e' acceso i numeri del pannello
   // non valgono: pit-loss, degrado e gomma nuova sono misurati TUTTI su asciutto, e dentro
