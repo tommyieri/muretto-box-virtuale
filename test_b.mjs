@@ -41,6 +41,13 @@ console.log(`max |JS - Python|: ${maxDiff.toExponential(2)}`);
 console.log("\ntop 5 differenze per caso:");
 for (const x of byDiff.slice(0, 5))
   console.log(`  ${x.gara} L${x.L} ${x.A}/${x.B}: py=${x.err.toFixed(6)} js=${x.errJS.toFixed(6)} diff=${x.diff.toExponential(2)}`);
-console.log("\n=> " + (rows.length === 449 && maxDiff < 1e-9
+// USCITA 1 SUL FALLIMENTO (22/07/2026). Fino a oggi questo file stampava FAIL e usciva 0.
+// auto_gara.py:69 ne legge il codice di ritorno per decidere se pubblicare: leggeva SEMPRE
+// zero. Cioe' il golden piu' citato del progetto non ha mai fermato niente — era un
+// ornamento, e l'unico cancello vero era demo/test_pit.mjs. Un test che non ferma non e'
+// una guardia: e' una rassicurazione.
+const ok = rows.length === 449 && maxDiff < 1e-9;
+console.log("\n=> " + (ok
   ? "PASS: motore JS allineato al Python col-traffico (449/449, sotto 1e-9)"
   : "FAIL: allineamento rotto, NON procedere alla timeline"));
+if (!ok) process.exit(1);

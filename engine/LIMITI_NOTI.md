@@ -83,6 +83,36 @@ Confronto **appaiato per gara**, orizzonte 10 giri (Δ > 0 = peggio del kernel):
 orizzonte 10 e 0,019 s a orizzonte 5, con ottimi **incoerenti fra i due orizzonti**. Superficie
 piatta: **ritararli non serve**.
 
+### ⚠️ EMENDAMENTO 22/07/2026 — la frase qui sopra è vera, e fuorviante
+
+Tutte le misure di questa sezione sono su **finestre verdi SENZA soste**. Lì il cap quasi non
+morde, perché nessuno rientra addosso a nessuno: la superficie è piatta perché il fenomeno è
+assente, non perché il parametro sia giusto.
+
+Sul bersaglio che il prodotto chiede davvero — **il rientro dopo una sosta** — il cap è la
+singola approssimazione più costosa. Misurato su **78 soste vere**, orizzonte 5 giri, gradino
+acceso, tutto il resto identico:
+
+| variante | MAE sul gap | cambi di posizione previsti |
+|---|---|---|
+| cap acceso (`ZONE 1,5 · STRENGTH 1,0`) | 6,154 s | 139/457 = **30,4 %** |
+| cap a metà (`STRENGTH 0,5`) | 4,997 s | 26,0 % |
+| **cap spento (`ZONE 0`)** | **4,775 s** | **24,7 %** |
+| **la realtà** | — | **25,6 %** |
+
+Spegnerlo vale **−1,38 s** di errore, e porta il tasso di cambi di posizione da una
+**sovrastima** a un valore calibrato quasi esatto.
+
+**Decisione del PO, 22/07/2026: il cap è SPENTO nel pannello** (`CAP_TRAFFICO = false` in
+`demo/gara.html`), registrato nella configurazione `pannello` del golden.
+
+**Il prezzo, dichiarato in pagina**: senza cap due auto possono attraversarsi. Il motore
+riproduce **quanti** cambi di posizione avvengono, non **quali** — il duello in pista non è
+simulato.
+
+*Lezione di metodo, più importante del parametro: un ottimo misurato su una popolazione in cui
+il fenomeno non c'è non è un ottimo. È un'assenza scambiata per una risposta.*
+
 ## 5. Il degrado: il motore non ne ha
 
 `AdvanceModel` incrementa `tyre_age` ma **non lo usa mai**: il motore assume **degrado zero**.

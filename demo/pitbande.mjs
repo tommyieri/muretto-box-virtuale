@@ -24,7 +24,10 @@ const COMPOUNDS = ['SOFT', 'MEDIUM', 'HARD'];
 // dell'eta' passata al gancio (gancio NON toccato): tyreAge0' = tyreAge0 - A0 + 1, cosi'
 // la penalita' del gancio rate*(tyreAge0'+s-1) diventa rate*((tyreAge0+s) - A0) = rate*(A-A0).
 // A0 si ricostruisce dal replay in-pagina (stesso window della pace_base del kernel).
-function eta0PaceBase(byLap, L, drv, stint) {
+// ESPORTATA il 22/07/2026: la stessa formula serve ai banchi del motore
+// (gen_backtest_motore.mjs, gen_motore_appaiato.mjs), che prima passavano al gancio un
+// campo morto (`age0`) e quindi misuravano ZERO ESATTO. Una sola definizione, non due.
+export function eta0PaceBase(byLap, L, drv, stint) {
   const eta = [];
   for (let k = 1; k <= L; k++) {
     const c = byLap[k] && byLap[k][drv];
