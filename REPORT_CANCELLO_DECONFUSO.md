@@ -4,6 +4,23 @@
 `PREREG_SESSIONE_DECONFUSO.md` (committata prima dei numeri, commit bade791).
 Generatore: `gen_cancello_deconfuso.py`; dettaglio: `data/CANCELLO_DECONFUSO_REPORT.txt`.*
 
+> **RILETTURA DEL 22/07/2026 — la classe è cambiata, e non per l'evidenza.**
+> Rieseguito oggi, il cancello dà **NON TESTABILE — 3/7 (43%), IC95 [−0.1344, +0.0613]**:
+> il primario scende **da 9 coppie a 7**, sotto la soglia congelata di 8.
+> **Non è il Belgio**: è la **regola Monaco** (`CID_NO_DEGRADO = ('monaco',)` in
+> `gen_climatologia_degrado.py:57`, ratificata *dopo* che questo cancello era stato
+> scritto), che toglie dalla climatologia le coppie di un circuito dove la pendenza-life
+> misura traffico e non gomma. Con quella regola in vigore, le coppie testabili non
+> bastano più.
+> **Cosa NON cambia**: la direzione. 43% resta lontanissimo dalla soglia del 60%, e il
+> secondario 2025 (9/18 = 50%) è immobile. Il de-confuso non ha smesso di essere NULL
+> perché l'evidenza si è girata: ha smesso di essere **giudicabile**.
+> Il verdetto qui sotto resta a referto com'è, sotto i dati e le regole di allora — non
+> si riscrive la storia. Questa è la nota che dice al lettore di oggi che rilanciando il
+> generatore vedrà un'altra classe, e perché.
+> *(Rilettura fatta con il prior riparato: fino al 22/07 `prior_2026()` leggeva un CSV
+> climatologia 2026-inclusivo, cioè il prior leggeva la gara che doveva predire.)*
+
 ## Esito (formato del mandato)
 
 **CANCELLO: NULL — vittorie 3/9 (33%), IC95 [−0.0494, +0.0613]**

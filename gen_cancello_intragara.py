@@ -73,13 +73,54 @@ def misure_gara(path):
 
 
 def prior_2026():
-    """centrale del CSV climatologia archiviato (leave-2026-out), solo righe INFORMATIVA."""
-    pri = {}
-    with open(CSV_CLIM, newline='') as f:
-        for r in csv.DictReader(f):
-            if r['flag_k1'] == 'INFORMATIVA':
-                pri[(r['compound'], r['cid'])] = float(r['banda_centrale_med'])
+    """centrale leave-2026-out (righe INFORMATIVA), RICOSTRUITO dalla fonte.
+
+    PERCHE' NON PIU' IL CSV SU DISCO (cambiato il 22/07/2026). Questa funzione leggeva
+    data/climatologia_degrado.csv fidandosi del nome. Ma dal 20/07 quel CSV e'
+    2026-INCLUSIVO — `include_2026 = True` su tutte e 58 le righe, e la variante
+    leave-2026-out non esiste piu' in repo. Usarlo come prior vuol dire far leggere al
+    prior la stessa gara che deve predire. Misurato: il prior indovina il bersaglio alla
+    quarta cifra (err 0.0000) e il cancello intra-gara CAMBIA CLASSE, da NON TESTABILE a
+    NULL. Sembra un progresso: e' circolarita'. Il prior si ricostruisce quindi dalla
+    fonte con la STESSA catena (`righe_csv(..., include_2026=False)`), che riproduce il
+    referto cifra per cifra.
+
+    La funzione e' importata da de-confuso, combinazione e adattamento: la riparazione
+    vale per tutti e quattro i cancelli in un punto solo."""
+    stints, _ = raccogli()
+    righe, _ = righe_csv(stints, include_2026=False)
+    pri = {(r['compound'], r['cid']): r['banda_centrale_med']
+           for r in righe if r['flag_k1'] == 'INFORMATIVA'}
+    _guardia_prior(pri)
     return pri
+
+
+def _guardia_prior(pri):
+    """Bretella alla cintura: il CSV su disco NON e' piu' il prior, ma se un giorno
+    tornasse leave-2026-out deve COMBACIARE col ricostruito — e se non combacia ci si
+    ferma, invece di scoprire in silenzio che le due catene si sono separate."""
+    if not os.path.exists(CSV_CLIM):
+        return
+    with open(CSV_CLIM, newline='') as f:
+        righe = [r for r in csv.DictReader(f) if r['flag_k1'] == 'INFORMATIVA']
+    if not righe:
+        return
+    incl = {r.get('include_2026') for r in righe}
+    if incl != {'False'}:
+        print(f"[prior] climatologia_degrado.csv e' 2026-INCLUSIVO ({'/'.join(sorted(map(str, incl)))}): "
+              f"NON usato come prior, sarebbe circolare. Prior ricostruito leave-2026-out: "
+              f"{len(pri)} combinazioni INFORMATIVE.")
+        return
+    disco = {(r['compound'], r['cid']): float(r['banda_centrale_med']) for r in righe}
+    fuori = {k: (pri[k], disco[k]) for k in set(pri) & set(disco)
+             if abs(pri[k] - disco[k]) > 5e-4}
+    if fuori:
+        raise RuntimeError(
+            f"il CSV climatologia si dichiara leave-2026-out ma NON combacia col prior "
+            f"ricostruito in {len(fuori)} combinazioni (es. {list(fuori.items())[:2]}): "
+            f"le due catene si sono separate, va capito prima di produrre un verdetto.")
+    print(f"[prior] climatologia_degrado.csv e' leave-2026-out e COMBACIA col ricostruito "
+          f"({len(pri)} combinazioni): cintura e bretella d'accordo.")
 
 
 def prior_2324():
