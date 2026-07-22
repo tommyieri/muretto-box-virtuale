@@ -42,6 +42,24 @@ FP_HA_GENERATORE = False   # accertato: nessuno script tracciato scrive long_run
 
 
 def main():
+    # (C0) La fonte NON esiste piu': cancellata il 22/07/2026 con l'OK del PO, come debito.
+    # Motivo inciso qui perche' non si perda: i long-run FP 2026 non sono ricostruibili dal
+    # grezzo in repo — data/ti_archive contiene solo Race.json e Sprint.json, nessuna
+    # sessione Practice; senza il per-giro delle libere non c'e' nulla da cui rigenerare i
+    # degrado_slope. Il verdetto di questa sessione NON cambia: era gia' NON UTILIZZABILE,
+    # e (C0) era gia' NO. Il report resta agli atti in data/READINESS_FP_DEGRADO_REPORT.txt.
+    if not os.path.exists(SRC_FP):
+        print("=" * 78)
+        print("PRONTEZZA-DATO long-run FP — FONTE ASSENTE, VERDETTO INVARIATO")
+        print("=" * 78)
+        print(f"{SRC_FP} non esiste piu': cancellato il 22/07/2026 (OK del PO) perche' era")
+        print("DEBITO — nessun generatore committato, e non ricostruibile dal grezzo in repo")
+        print("(data/ti_archive e data/ti_cache hanno solo Race/Sprint, nessuna Practice).")
+        print("(C0) era gia' NO -> ESITO: NON UTILIZZABILE (rigetto). Nulla entra nel motore.")
+        print(f"Il report congelato resta in {OUT_TXT}: non lo riscrivo su una fonte assente.")
+        print("=" * 78)
+        return 0
+
     # riferimento verificato: replay marg_iso_centrale per compound
     rep = {c: [] for c in SLICK}
     for r in csv.DictReader(open(SRC_REPLAY)):
@@ -133,4 +151,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    raise SystemExit(main())

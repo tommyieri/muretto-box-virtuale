@@ -82,6 +82,10 @@ def rettifica(cum, laps, pen, pit_laps, regola):
 def main():
     with open('data/race_control_2026.csv') as f:
         rc = list(csv.DictReader(f))
+    # NON PIU' ORFANO (22/07/2026): data/arrivi_2026.csv ha ora un generatore committato
+    # (gen_arrivi.py, con guardia che riproduce cella per cella le 7 gare congelate) e copre
+    # tutte le gare del registro. Resta comunque la classifica DEI DATI DI PISTA, non la FIA:
+    # il confronto qui sotto e' di trasparenza, l'arbitro resta FastF1 results.
     orfano = {}
     with open('data/arrivi_2026.csv') as f:
         for r in csv.DictReader(f):
@@ -90,7 +94,7 @@ def main():
     with open('demo/data/esiti.json') as f:
         esiti = json.load(f)
 
-    tab, n_r1, n_r2, n_orf = [], 0, 0, 0
+    tab, n_r1, n_r2, n_orf, n_cop = [], 0, 0, 0, 0
     for gara in GARE:
         nl, cum, laps, pit_laps = dati_gara(gara)
         np_ = {d for d, t in esiti.get(gara, {}).items() if t == 'NP'}
@@ -114,6 +118,7 @@ def main():
         ok2, app2, _ = esiti_regole['R2']
         n_r1 += ok1; n_r2 += ok2
         if gara in orfano:
+            n_cop += 1
             n_orf += (rett1 == sorted(cum, key=lambda d: orfano[gara].get(d, 99)))
 
         # attribuzione automatica: aggiunte ufficiali (quanti FIA) senza traccia RCM,
@@ -147,7 +152,8 @@ def main():
     v = lambda n: 'GO' if n == 9 else ('GO PARZIALE' if n >= 7 else 'STOP')
     print(f'\nR1 (pre-registrata) vs ufficiale FIA: {n_r1}/9 -> {v(n_r1)}')
     print(f'R2 (rivista post-hoc, diagnosi)     : {n_r2}/9 -> {v(n_r2)}')
-    print(f'per trasparenza, R1 vs orfano arrivi_2026.csv (7 gare coperte): {n_orf}/7')
+    # denominatore DERIVATO (era cablato a 7): arrivi_2026.csv ora cresce col registro
+    print(f'per trasparenza, R1 vs arrivi_2026.csv ({n_cop} gare coperte): {n_orf}/{n_cop}')
     print('\nVERDETTO pre-registrato (R1, arbitro ufficiale corretto): '
           f'{n_r1}/9 -> {v(n_r1)}  (soglie: 9/9 GO, 7-8 GO PARZIALE, <7 STOP)')
 

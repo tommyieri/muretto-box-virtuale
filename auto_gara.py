@@ -115,6 +115,15 @@ def wave_nuove():
         sh([PY, 'gen_race_control.py'])                       # lista gare dal registro
         sh([PY, 'gen_rc_feed.py'])
         sh([PY, 'gen_classifiche_ufficiali.py'])
+        # file per-gara accessori, ex ORFANI: ora hanno un generatore con perimetro dal
+        # registro, quindi la gara nuova entra da sola. Vanno DOPO la pubblicazione in
+        # demo/ perche' gen_arrivi legge demo/data/esiti.json (e' li' che vive l'NP).
+        # check=False di proposito: la guardia sta DENTRO il generatore, che se non
+        # riproduce una cella congelata esce 1 SENZA scrivere — il file resta buono e il
+        # log lo grida. Fermare la pubblicazione di una gara di domenica perche' TI ha
+        # ritoccato una gara vecchia sarebbe il rimedio peggiore del male.
+        sh([PY, 'gen_classifica_giro.py', '--write'], check=False)
+        sh([PY, 'gen_arrivi.py', '--write'], check=False)
         # modelli del laboratorio: si ricalibrano da soli sul fondo aggiornato.
         # Idempotente; scrive i coefficienti, NON accende niente in produzione.
         sh([PY, 'gen_modelli_lab.py', '--data', _oggi()])

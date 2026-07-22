@@ -8,10 +8,16 @@ Regola: i dati vengono da f1db/TI, MAI trascritti a mano. Ogni griglia/pole va v
    - Le altre 7: da riverificare pole con Tommi.
 2. [aperto] Penalita' di tempo in gara (timePenalty da f1db race-results).
    - DISCREPANZA: Gasly Monaco +5s (memoria Tommi) vs f1db = None. Da chiarire.
-3. [aperto] Austria assente in arrivi_2026.csv e classifica_giro_2026.csv.
-   - Rigenerare esiti Austria (NP/RIT/doppiato) da f1db race-results.
-4. [aperto] arrivi_2026.csv fermo a 7 gare, Australia 21 righe (manca PIA).
-   - File accessorio vecchio: rigenerare da f1db.
+3. [chiuso 22/07] Austria assente in arrivi_2026.csv e classifica_giro_2026.csv.
+   - Chiuso alla radice: i due file erano ORFANI (nessun generatore). Ora hanno
+     gen_arrivi.py e gen_classifica_giro.py, con perimetro derivato da
+     data/gare_registro.json e guardia che riproduce cella per cella le 7 gare
+     congelate. Entrambi rigenerati a 10 gare (Austria, Gran Bretagna, Belgio incluse).
+4. [chiuso 22/07] arrivi_2026.csv fermo a 7 gare, Australia 21 righe (manca PIA).
+   - Le 7 gare: chiuse dal generatore (v. punto 3), ora 10.
+   - Le 21 righe NON erano un bug del file: PIA non ha nessun giro nel grezzo di
+     Australia (muro in ricognizione, punto 5) e il grezzo e' la fonte. Il generatore
+     scrive una riga per pilota PRESENTE nei dati di pista, mai una riga inventata.
 5. [fatto-parziale] Piastri Australia (muro in ricognizione) e casi NP:
    - gestiti come categoria "in griglia ma zero dati" -> saltati al via, mostrati come non-partiti.
 6. [in corso] Vista: nessuno sparisce mai dalla griglia.
@@ -45,6 +51,22 @@ Regola: i dati vengono da f1db/TI, MAI trascritti a mano. Ogni griglia/pole va v
      RESTA: (a) decodifica stint nel collettore = produzione, PO; (b) shadow-run durante
      HUN (calcola+registra, non pubblica; KPI in PREREG_SESSIONE_FASEC.md); (c) pubblicaz. = PO.
    - [accensione demo fatta 20/07: SCENARI_ATTIVI=true, PR #64 mergiata]
+
+9. [chiuso 22/07] Fonti orfane per-gara: censite tutte e cinque, nessuna resta debito.
+   - RICOSTRUITE (generatore + guardia, perimetro dal registro, ora 10 gare):
+     data/classifica_giro_2026.csv -> gen_classifica_giro.py
+     data/arrivi_2026.csv          -> gen_arrivi.py
+   - CANCELLATE con l'OK del PO, perche' NON ricostruibili dal grezzo in repo: il
+     per-giro delle PROVE LIBERE non esiste da nessuna parte (data/ti_archive e
+     data/ti_cache contengono solo Race.json e Sprint.json, mai una Practice), e
+     ingest_ti2026.py scarica solo Race+Sprint. gen_libere_ti.py legge le libere
+     dalla rete ma ne pubblica solo il timesheet del giro veloce, non i giri:
+     data/long_run_fp_2026.csv     (277/343 righe = Practice 1/2/3)
+     data/team_profile_2026.csv    (73/77 righe con fonte FP, e nessun lettore)
+     data/tyre_observations_2026.csv (1630/8824 righe FP, e nessun lettore)
+   - Per riavere questi tre servirebbe prima ingerire le sessioni Practice nel
+     ti_archive: e' una fonte nuova, non una rigenerazione. Nessun numero e' stato
+     stimato al posto del dato mancante.
 
 ## Principi
 - La griglia non deve mai svuotarsi: all'ultimo giro si vedono tutti e 22.
