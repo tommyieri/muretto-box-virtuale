@@ -9,9 +9,10 @@ tutte e tre le domande aperte della bozza:
 | (b) aggregazione di `α` | **centratura per-gara + mediana** sulle gare precedenti |
 | (c) set fuori campione | **Belgio = 0 casi** (misurato, §4) → il prereg nasce **DORMIENTE** |
 
-**Stato: SIGILLATO E DORMIENTE.** Il nucleo scientifico (§1–§6) è chiuso fra i marcatori
-`NUCLEO-INIZIO`/`NUCLEO-FINE` e la sua impronta è depositata in §10. Nessun numero della v2
-è stato calcolato al momento del sigillo. **Nessun backtest è eseguibile** finché §6 non
+**Stato: SIGILLATO (v2) E DORMIENTE.** Il nucleo scientifico è versionato in §10: **blocco A**
+(§1–§6, ratificato il 22/07) e **blocco B** (§11, GO-5, ratificato lo stesso giorno come
+emendamento 1 — stringe, non ammorbidisce). Il blocco A è **byte-identico** fra v1 e v2.
+Nessun numero della v2 è stato calcolato al momento del sigillo. **Nessun backtest è eseguibile** finché §6 non
 apre il cancello: oggi `|D_new| = 0`. Ordine dei commit obbligatorio: questo file, da solo,
 in un commit; qualunque misura nei commit successivi. Se una soglia GO viene ammorbidita
 dopo aver visto i numeri, l'ordine dei commit deve smascherarlo (anti-HARKing, come
@@ -273,32 +274,45 @@ modello v2 valutata sugli esiti, nemmeno "per curiosità".
 7. `REPORT_UNDERCUT_V2.md` con **la caccia**, non solo l'esito: cosa piantato, i NULL
    motivati, il placebo, i breakdown per gara e per circuito (LOCO).
 
-## 10. Sigillo del nucleo scientifico
+## 10. Sigillo del nucleo scientifico — VERSIONATO
 
-Impronta sha256 del testo compreso fra i marcatori di nucleo (§1–§6), calcolata alla
-ratifica del 2026-07-22:
+Il nucleo non è un blocco solo: è una **lista di blocchi sigillati**, ciascuno con la sua
+impronta e la sua data. Così una stretta successiva non cancella il sigillo precedente — che
+resta verificabile da chiunque rilegga i verdetti nati sotto di esso — e non può nemmeno
+riscriverlo di nascosto.
+
+| versione | blocchi | data | atto |
+|---|---|---|---|
+| **v1** | A (§1–§6) | 2026-07-22 | ratifica iniziale, `--attore "Tommi"` |
+| **v2** (corrente) | A (§1–§6) + B (§11, GO-5) | 2026-07-22 | emendamento 1 ratificato, `--attore "Tommi"` — **stringe**, non ammorbidisce |
 
 ```
-NUCLEO_SHA256 = 5791fbc6c317c2333573bd077864a93351c5a11fda5ceee63437b65230187916
+BLOCCO_A_SHA256 = 5791fbc6c317c2333573bd077864a93351c5a11fda5ceee63437b65230187916
+BLOCCO_B_SHA256 = 85b4c083e34a93fbe2755380dc643d7ae5ce91faa68959e7b68a7d2e4b816053
 ```
 
-Ricalcolabile da chiunque, senza strumenti nuovi. I marcatori sono ancorati a inizio riga,
-così il comando non rimatcha se stesso e questa sezione resta fuori dal nucleo:
+**Il blocco A non è cambiato di un byte fra v1 e v2**: la sua impronta è la stessa di ieri,
+e questo è il punto — GO-5 si aggiunge, non riscrive. Ricalcolabili da chiunque, senza
+strumenti nuovi (i marcatori sono ancorati a inizio riga, così i comandi non rimatchano se
+stessi e questa sezione resta fuori da entrambi i blocchi):
 
 ```bash
 awk '/^<!-- NUCLEO-INIZIO -->$/{f=1;next} /^<!-- NUCLEO-FINE -->$/{f=0} f' PREREG_UNDERCUT_V2.md | shasum -a 256
 ```
 
-Se l'impronta non corrisponde, il nucleo è stato toccato dopo la ratifica: il documento non
-protegge più niente e il verdetto che ne discende va considerato non valido.
+```bash
+awk '/^<!-- NUCLEO2-INIZIO -->$/{f=1;next} /^<!-- NUCLEO2-FINE -->$/{f=0} f' PREREG_UNDERCUT_V2.md | shasum -a 256
+```
 
-## 11. PROPOSTA DI EMENDAMENTO 1 — NON RATIFICATA, in attesa di `--attore`
+Se un'impronta non corrisponde, quel blocco è stato toccato dopo la ratifica: il documento
+non protegge più niente e il verdetto che ne discende va considerato non valido.
 
-**Il nucleo §1–§6 non è toccato: l'impronta di §10 verifica ancora.** Questa sezione è
-fuori dal nucleo e non ammorbidisce niente — **stringe**. È proposta il 22/07/2026, dopo la
-sola misura di fattibilità (§9.3) e **prima che qualunque esito sia stato guardato**:
-l'ordine dei commit lo dimostra. Se il PO non la ratifica, il prereg resta valido com'è, con
-il rischio qui sotto scritto e non coperto.
+## 11. EMENDAMENTO 1 — RATIFICATO (`--attore "Tommi"`, 2026-07-22)
+
+**Il blocco A (§1–§6) non è toccato: la sua impronta è identica a quella di v1.** Questo
+emendamento è il **blocco B** del sigillo versionato (§10) e non ammorbidisce niente —
+**stringe**. È stato proposto e ratificato il 22/07/2026, dopo la sola misura di fattibilità
+(§9.3) e **prima che qualunque esito sia stato guardato**: l'ordine dei commit lo dimostra.
 
 **Il fatto che la fa nascere** (generatore: `copertura_alpha_undercut.py`, misure in
 `data/copertura_alpha_undercut.json`): sulle coppie A–B reali dei 31 casi 2026, chi attacca è
@@ -318,14 +332,43 @@ quasi simmetrica attorno a zero. Il termine vero batterebbe quel placebo **anche
 unico contributo fosse cavalcare il tasso di base**. §5 difende dal segno *fabbricato*, non
 dallo spostamento *sistematico*.
 
-**GO-5 proposta (condizione decisiva, si aggiunge alle 1–5 di §6):**
+<!-- NUCLEO2-INIZIO -->
+### GO-5 — controllo a spostamento costante (condizione decisiva, si aggiunge alle 1–5 di §6)
 
-> **Controllo a spostamento costante.** Si costruisce `v2_costante`, identica alla v2 ma con
-> `Δpasso` sostituito dalla **mediana di `Δpasso` sui casi** — stesso segno, stessa
-> magnitudine tipica, **zero informazione sulla coppia specifica**. La v2 deve superare
-> `v2_costante` sui difficili fuori campione. Se non la supera, il guadagno è tasso di base
-> travestito e il termine è **NO-GO**, anche se GO-1…GO-4 passassero.
+**Il controllo.** Si costruisce `v2_costante`, identica alla v2 ma con `Δpasso` sostituito da
+una **costante** `Δ̄` — stesso segno, stessa magnitudine tipica, **zero informazione sulla
+coppia specifica**. La v2 deve superare `v2_costante` sui difficili fuori campione. Se non la
+supera, il guadagno è tasso di base travestito e il termine è **NO-GO**, anche se GO-1…GO-4
+passassero.
 
-La mediana usata dal controllo si calcola **sui casi fuori campione stessi**, non su quelli
-in campione: il controllo deve avere lo stesso vantaggio informativo del modello, altrimenti
-è un avversario storpiato.
+**(i) L'insieme su cui si calcola `Δ̄`, dichiarato ora.** `Δ̄` è la **mediana di `Δpasso`
+calcolata esattamente sui casi che vengono giudicati**: i difficili fuori campione
+(gap0 ∈ (1,0; 3,5]) delle gare 10+ **che hanno `α_prior` per entrambi i piloti**, cioè
+l'insieme `D_new` valutato, né uno di più né uno di meno. Non i 31 casi in campione, non i
+casi facili, non i casi scartati per α mancante. `Δ̄` è **uno scalare unico** per l'intera
+valutazione, non una costante per gara né per circuito. Usa lo stesso `α_prior` causale di
+§3.1. Se la valutazione viene ripetuta più avanti con più gare, `Δ̄` si **ricalcola** sul
+nuovo `D_new`: è una regola, non una scelta libera al momento del verdetto. Il controllo ha
+così esattamente lo stesso vantaggio informativo del modello, tolta la sola cosa in esame —
+l'informazione sulla coppia — altrimenti sarebbe un avversario storpiato.
+
+**(ii) Pavimento di rumore — battere non basta, deve battere OLTRE il rumore.** Con `D_new`
+piccolo, "v2 fa un caso in più di `v2_costante`" non è un risultato: è il lancio di una
+moneta. Il confronto è **appaiato** (gli stessi casi, due modelli), quindi si giudica sui
+**casi discordi**: `n₊` = casi in cui v2 indovina e `v2_costante` sbaglia, `n₋` = il
+contrario. Perché GO-5 sia superata servono **entrambe**:
+> - `n₊ + n₋ ≥ 5` — sotto i 5 discordi nessun esito può raggiungere la soglia sotto, e
+>   dichiararlo prima evita di scoprirlo dopo;
+> - test binomiale esatto a una coda su `n₊` contro `n₊ + n₋` con p = 0,5 (McNemar esatto),
+>   **p ≤ 0,05**.
+>
+> Lo stesso pavimento si applica al confronto **GO-3** (v2 contro v1) per tutta la durata di
+> validità di questo blocco: il blocco A resta byte-identico e la sua soglia non si tocca —
+> qui si **aggiunge** una condizione, e aggiungere una condizione può solo rendere più
+> difficile passare, mai più facile. Se GO-3 passava per un caso di scarto, adesso non passa
+> più: è voluto.
+
+**(iii) Nessuna delle tre regole qui sopra si tocca senza `--attore` e senza una nuova
+versione del sigillo (§10).** Se una soglia di questo blocco venisse ammorbidita dopo aver
+visto i numeri, la tabella delle versioni e l'ordine dei commit devono smascherarlo.
+<!-- NUCLEO2-FINE -->
