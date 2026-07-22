@@ -68,6 +68,31 @@ Regola: i dati vengono da f1db/TI, MAI trascritti a mano. Ogni griglia/pole va v
      ti_archive: e' una fonte nuova, non una rigenerazione. Nessun numero e' stato
      stimato al posto del dato mancante.
 
+10. [debito dichiarato 22/07] warm-in: sorgente ora committata, resta un pezzo cablato.
+    - `data/warmin_prior.csv` alimenta `warminA`, cioe' un ingrediente della baseline
+      SIGILLATA dell'undercut (`margine_v1`). Era l'unico artefatto che nessuno sapeva
+      piu' rifare: generatore senza fonte, `.pkl` gitignorato e presente su UNA sola
+      macchina. Bastava perdere quel file per perdere il numero.
+    - FATTO: `data/_warmin_raw_multiyear.pkl` (56 KB) e' uscito dal .gitignore ed e'
+      committato. Verificato che `python3 finalize_warmin.py` riproduca warmin_prior.csv
+      BIT-IDENTICO e SENZA RETE. Il warm-in smette di essere "congelato per forza".
+    - RESTA APERTO, e non e' urgente: (a) il pickle stesso nasce da `ingest_warmin.py` /
+      `ingest_2025.py`, che vanno in rete — la catena e' riproducibile ma non dal grezzo
+      in repo; (b) i valori 2026 sono CABLATI in `finalize_warmin.py:6`
+      (`val2026 = {...}`, ricostruiti a suo tempo su `tyre_observations`, file oggi
+      cancellato perche' non ricostruibile). Rifare quei sei numeri da una fonte viva e'
+      il lavoro vero, da fare con calma.
+
+11. [rinviato per decisione del PO] `TODAY` cablato in `gen_censimento_pitloss.py:30`.
+    - `TODAY = datetime.date(2026, 7, 14)` ed `events_for` scarta le gare con data >=
+      TODAY: senza rimedio nessuna gara futura entrerebbe MAI nel pit-loss.
+    - Oggi e' neutralizzato A RUNTIME da `gen_pitloss_pergara.py` (frontiera = data
+      odierna, stampata a ogni esecuzione); il file FF3 non e' toccato.
+    - Cambiarlo alla fonte sposterebbe il perimetro di artefatti FF3/FF4 gia' a referto
+      (`censimento_pitloss_2026.csv`, `censimento_stops.csv`): e' una RI-DERIVAZIONE
+      DELIBERATA — si ri-deriva e si versiona, dichiarandolo — non manutenzione.
+      Da fare quando si riapre di proposito lo studio pit-loss, non prima.
+
 ## Principi
 - La griglia non deve mai svuotarsi: all'ultimo giro si vedono tutti e 22.
 - Il motore non fa sparire nessuno: porta tutti fino in fondo.

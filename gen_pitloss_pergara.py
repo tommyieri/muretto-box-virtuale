@@ -114,6 +114,19 @@ def med(v):
     return float(np.median(v)) if v else np.nan
 
 
+# Due vocabolari committati chiamano lo stesso circuito con due nomi: il registro del
+# progetto dice 'madring' (data/mappa_gare.json, data/calendario_2026.json), FF3 dice
+# 'madrid' — e la riga di Madrid e' GIA' a referto sotto quel nome in
+# data/censimento_pitloss_2026.csv. Rinominare FF3 sposterebbe un artefatto gia' scritto,
+# che e' una ri-derivazione deliberata e non manutenzione (decisione del PO: rinviata a
+# quando si riapre di proposito lo studio pit-loss). Finche' non si riapre, i due
+# vocabolari si legano con un ALIAS DICHIARATO — stessa cura di ALIAS_ARCHIVIO in
+# gen_neutralizzazione_v2 per Barcelona/Spanish. L'alias vale SOLO per trovare le chiavi
+# di localita': nel CSV la gara resta col cid del registro, che e' la fonte unica.
+# Dichiarato PRIMA che Madrid corra, cosi' quel weekend non si scopre niente.
+CID_ALIAS = {'madring': 'madrid'}
+
+
 def perimetro():
     """Le gare su cui il realizzato si misura, DERIVATE dal registro invece che a mano.
 
@@ -127,17 +140,19 @@ def perimetro():
     reg = json.load(open(REGISTRO))
     out = []
     for nome, v in reg.items():
-        cid = v['cid']
-        if cid not in KEYS_PER_CID:
+        cid = v['cid']                          # il cid del REGISTRO: e' quello che va nel CSV
+        cid_ff = CID_ALIAS.get(cid, cid)        # il nome con cui lo stesso circuito vive in FF3
+        if cid_ff not in KEYS_PER_CID:
             raise RuntimeError(
                 f"perimetro: '{nome}' -> cid '{cid}' non ha chiavi di localita' nelle liste "
                 f"committate (gen_censimento_pitloss.CIRCUITS / gen_pitloss_engine_ready."
-                f"CIRCUITS). Il circuito va dichiarato la', non qui.")
+                f"CIRCUITS). Il circuito va dichiarato la', non qui — oppure, se e' gia' li'"
+                f" sotto un altro nome, il ponte va messo in CID_ALIAS con la sua ragione.")
         if nome not in PROD:
             raise RuntimeError(
                 f"perimetro: '{nome}' e' nel registro ma non in demo/data/pitloss.json: "
                 f"senza il valore di produzione delta e classe non sono definiti.")
-        out.append((cid, KEYS_PER_CID[cid], nome))
+        out.append((cid, KEYS_PER_CID[cid_ff], nome))
 
     visti = {nome: cid for cid, _, nome in out}
     for nome, (cid_atteso, *_) in RIGHE_CONGELATE.items():
