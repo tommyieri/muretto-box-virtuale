@@ -61,12 +61,26 @@ def raw_head(ti):
     return raw_head_sess(ti, 'Race')
 
 
+# I golden del ciclo. test_live_bylap.mjs e' entrato il 22/07/2026 insieme al muretto in
+# diretta: sorveglia il CAVO LIVE (flusso del collettore -> struttura del motore) contro la
+# gara di Spa ricostruita dai dati ufficiali. Sta qui e non altrove perche' i suoi guasti
+# sono silenziosi — quando il cavo sbaglia il pannello non si rompe, risponde col numero
+# peggiore — e perche' le tabelle che legge (pit-loss di circuito, raggruppamento) le
+# riscrive questo stesso ciclo dopo ogni gara.
+GOLDEN = [('test_b.mjs', None), ('test_pit.mjs', 'demo'), ('test_live_bylap.mjs', 'demo')]
+
+
 def golden():
     """True se i golden passano. In dry-run assume verde (non esegue)."""
+    nomi = ', '.join(n for n, _ in GOLDEN)
     if DRY:
-        log('DRY  golden (test_b.mjs, test_pit.mjs) — assunti verdi'); return True
-    ok = subprocess.run(['node', 'test_b.mjs'], cwd=ROOT).returncode == 0
-    ok &= subprocess.run(['node', 'test_pit.mjs'], cwd=os.path.join(ROOT, 'demo')).returncode == 0
+        log(f'DRY  golden ({nomi}) — assunti verdi'); return True
+    ok = True
+    for nome, sub in GOLDEN:
+        cwd = os.path.join(ROOT, sub) if sub else ROOT
+        if subprocess.run(['node', nome], cwd=cwd).returncode != 0:
+            log(f'     golden ROTTO: {nome}')
+            ok = False
     return ok
 
 
