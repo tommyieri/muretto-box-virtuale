@@ -44,14 +44,20 @@ log = logging.getLogger("replay")
 
 CAMPI_TIMING = ("pos", "gap", "in_pit", "last_lap",
                 "best_lap", "interval", "sectors", "micro",
-                "compound", "tyre_age")   # Fase C: stint gomma (SignalR)
+                "compound", "tyre_age",   # Fase C: stint gomma (SignalR)
+                # il muretto in live: giro per-pilota e gap in SECONDI (22/07/2026).
+                # Senza questi il flusso disegna una classifica ma non simula niente.
+                "lap", "gap_s", "interval_s", "pit_stops", "retired")
 
 
 def _vista_driver(stato, auto):
     d = stato.driver_list.get(str(auto), {})
     colore = d.get("TeamColour")
     return {"sigla": d.get("Tla"),
-            "colore": ("#" + colore) if colore else None}
+            "colore": ("#" + colore) if colore else None,
+            # la squadra: il pannello scompone il pit-loss in "pista" e "squadra",
+            # e senza questo campo la seconda meta' non e' calcolabile in live
+            "team": d.get("TeamName")}
 
 
 def _fmt(ts):
@@ -182,7 +188,8 @@ def eventi_da_messaggi(flusso, stato=None):
             cambi = {}
             for a in toccate:
                 dopo = _vista_driver(stato, a)
-                if dopo != prima[a] and (dopo["sigla"] or dopo["colore"]):
+                if dopo != prima[a] and (dopo["sigla"] or dopo["colore"]
+                                         or dopo["team"]):
                     cambi[str(a)] = dopo
             if cambi:
                 for e in spingi({"type": "driver_list",
@@ -195,6 +202,18 @@ def eventi_da_messaggi(flusso, stato=None):
             if stato.track_status != precedente:
                 for e in spingi({"type": "track_status",
                                  "status": stato.track_status}, ts):
+                    yield e
+
+        elif topic == "LapCount":
+            # giro di gara e distanza. Il feed lo manda a ogni giro; TotalLaps
+            # solo nel primo messaggio (e' un delta), quindi lo si tiene nello
+            # stato e si ripete: chi si collega a meta' gara deve saperlo.
+            stato.aggiorna(topic, payload, ts)
+            n = stato.lap_count.get("CurrentLap")
+            tot = stato.lap_count.get("TotalLaps")
+            if n is not None:
+                for e in spingi({"type": "lap_count", "giro": n,
+                                 "giri_totali": tot}, ts):
                     yield e
 
         elif topic == "SessionStatus":

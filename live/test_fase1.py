@@ -277,8 +277,10 @@ def test_replay_diff():
         ]) + "\n")
         eventi = [e for e in eventi_replay([f]) if e["type"] == "timing_update"]
     assert len(eventi) == 2, eventi
+    # gap_s: lo STESSO gap in secondi. La torre mostra la stringa, il motore
+    # ha bisogno del numero — e senza di lui il pannello in live non esiste.
     assert eventi[0]["cars"]["4"] == {"pos": 3, "gap": "+0.500",
-                                      "in_pit": True}, eventi[0]
+                                      "in_pit": True, "gap_s": 0.5}, eventi[0]
     assert eventi[1]["cars"]["4"] == {"pos": 2}, eventi[1]
 
 

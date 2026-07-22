@@ -385,6 +385,10 @@ class Replica:
         self.track_status = None
         self.session_status = None
         self.t = None
+        # giro di gara e distanza: chi si collega a meta' gara li trova nello
+        # snapshot, non deve aspettare il prossimo passaggio sul traguardo
+        self.giro = None
+        self.giri_totali = None
 
     def applica(self, e):
         self.t = e.get("t") or self.t
@@ -403,12 +407,17 @@ class Replica:
             self.track_status = e["status"]
         elif e["type"] == "session_status":
             self.session_status = e["status"]
+        elif e["type"] == "lap_count":
+            self.giro = e.get("giro")
+            if e.get("giri_totali") is not None:
+                self.giri_totali = e["giri_totali"]
 
     def snapshot(self):
         return {"type": "snapshot", "t": self.t, "cars": self.cars,
                 "extra_cars": self.extra, "driver_list": self.drivers,
                 "track_status": self.track_status,
-                "session_status": self.session_status}
+                "session_status": self.session_status,
+                "giro": self.giro, "giri_totali": self.giri_totali}
 
 
 # ------------------------------------------------------------- server WS

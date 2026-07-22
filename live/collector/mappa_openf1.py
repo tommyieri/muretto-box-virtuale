@@ -47,7 +47,23 @@ from replay import _fmt  # noqa: E402
 log = logging.getLogger("mappa_openf1")
 
 CAMPI_TIMING = ("pos", "gap", "in_pit", "last_lap",
-                "best_lap", "interval", "sectors", "micro")
+                "best_lap", "interval", "sectors", "micro",
+                # il muretto in live (22/07/2026): OpenF1 questi due li ha gia'
+                # NUMERICI e li stavamo buttando via formattandoli in stringa.
+                # gap_to_leader e' un float; lap_number sta in v1/laps.
+                "lap", "gap_s", "interval_s")
+
+
+def _num(v):
+    """Un valore OpenF1 -> float, o None se non e' un numero.
+
+    Serve perche' gap_to_leader e' float per chi e' a contatto ma diventa
+    "+1 LAP" per i doppiati: la stessa chiave con due tipi. None significa
+    "non simulabile", e chi legge deve saltarlo — mai sostituirlo con zero.
+    """
+    if isinstance(v, bool) or not isinstance(v, (int, float)):
+        return None
+    return float(v)
 
 
 def parse_data(testo):
@@ -129,7 +145,8 @@ class StatoOpenF1:
         return self.timing.setdefault(
             str(auto), {"pos": None, "gap": "", "in_pit": False,
                         "last_lap": None, "best_lap": None,
-                        "interval": None, "sectors": [], "micro": []})
+                        "interval": None, "sectors": [], "micro": [],
+                        "lap": None, "gap_s": None, "interval_s": None})
 
 
 def _mappa_race_control(obj):
@@ -261,6 +278,12 @@ def eventi_da_openf1(flusso, stato=None):
                 campi = {"gap": formatta_gap(o.get("gap_to_leader"))}
                 iv = formatta_gap(o.get("interval"))
                 campi["interval"] = iv or None   # to car ahead; None per il leader
+                # e lo STESSO dato in secondi, che e' quello con cui si simula.
+                # OpenF1 mette "+1 LAP" (stringa) per i doppiati: _num lo scarta
+                # e resta None, che e' la risposta giusta — un doppiato non ha un
+                # gap in secondi, e trattarlo come 0 lo incolla al leader.
+                campi["gap_s"] = _num(o.get("gap_to_leader"))
+                campi["interval_s"] = _num(o.get("interval"))
                 yield from applica(o["driver_number"], campi, t)
 
         elif topic == "v1/laps":
@@ -271,6 +294,9 @@ def eventi_da_openf1(flusso, stato=None):
                     continue
                 num = str(o["driver_number"])
                 campi = {}
+                ln = o.get("lap_number")
+                if isinstance(ln, int):
+                    campi["lap"] = ln
                 giro = formatta_giro(o.get("lap_duration"))
                 if giro is not None:
                     campi["last_lap"] = giro

@@ -228,6 +228,43 @@ def _valore_tempo(nodo):
     return valore if valore else None
 
 
+def _intero(v):
+    """Intero dal feed, o None. Il feed manda numeri, stringhe e vuoti."""
+    try:
+        return int(v)
+    except (TypeError, ValueError):
+        return None
+
+
+def _secondi(v):
+    """Un tempo del feed -> secondi, o None quando NON E' un numero.
+
+    Il gap dal leader arriva come stringa e non e' sempre un tempo:
+        "+1.234"  -> 1.234        un gap vero
+        "1:02.345"-> 62.345       oltre il minuto
+        ""        -> None         il leader: non ha gap da se stesso
+        "LAP 1"   -> None         primo giro, la gara non ha ancora un ordine
+        "1L"      -> None         doppiato: il gap non e' piu' un tempo
+    None NON e' zero. Un doppiato con gap 0 finirebbe incollato al leader e il
+    pannello lo userebbe come rivale al rientro: e' il modo piu' rapido per
+    far dire una bugia al motore. Chi legge questo campo deve saltare i None.
+    """
+    if isinstance(v, dict):
+        v = v.get("Value", "")
+    if isinstance(v, (int, float)):
+        return float(v)
+    if not isinstance(v, str) or not v.strip():
+        return None
+    s = v.strip().lstrip("+")
+    try:
+        if ":" in s:
+            m, _, r = s.partition(":")
+            return int(m) * 60 + float(r)
+        return float(s)
+    except ValueError:
+        return None
+
+
 def _vista_settori(sectors):
     """Da Sectors (lista di settori del feed) a [{t, best}] per S1/S2/S3.
     `best` = 'o' (OverallFastest, viola) / 'p' (PersonalFastest, verde) /
@@ -303,6 +340,10 @@ class StatoSessione:
         self.weather = {}
         self.race_control = []    # lista messaggi race control
         self.session_info = {}
+        # giro di gara e distanza (LapCount). TotalLaps arriva UNA volta sola,
+        # nel primo messaggio: tenerlo qui e' l'unico modo perche' chi si
+        # collega a meta' gara sappia quanti giri mancano.
+        self.lap_count = {}
 
     def aggiorna(self, topic, payload, ts=None):
         """Applica un messaggio decodificato allo stato. Ritorna True se il
@@ -342,6 +383,9 @@ class StatoSessione:
                 nuovi = list(nuovi.values())
             self.race_control.extend(m for m in nuovi if isinstance(m, dict))
             return True
+        if topic == "LapCount":
+            merge_delta(self.lap_count, payload)
+            return True
         if topic == "SessionInfo":
             merge_delta(self.session_info, payload)
             return True
@@ -371,6 +415,23 @@ class StatoSessione:
             "micro": _vista_micro(sectors),
             "compound": compound,     # Fase C: stint gomma dal SignalR
             "tyre_age": tyre_age,
+            # --- I TRE CAMPI CHE APRONO IL MURETTO IN LIVE (22/07/2026) -----------
+            # Fin qui la torre mostrava il gap come STRINGA, e il giro non usciva
+            # affatto: numero_giri() esisteva ma nessuno lo chiamava. Con solo quelli
+            # si disegna una classifica e non si simula niente, perche' il motore
+            # ragiona per giro e in secondi.
+            #   lap        il giro COMPLETATO da questo pilota (non quello del leader:
+            #              chi e' ai box o doppiato sta su un giro diverso, ed e'
+            #              esattamente la differenza che il pannello deve vedere)
+            #   gap_s      il gap dal leader in secondi. None quando non e' un numero
+            #              — doppiati ("1L"), primo giro ("LAP 1"), leader ("").
+            #              None e' un'informazione: dice "qui non si simula".
+            #   pit_stops  soste gia' fatte, per sapere su che gomma siamo
+            "lap": _intero(stato.get("NumberOfLaps")),
+            "gap_s": _secondi(gap),
+            "interval_s": _secondi(interval),
+            "pit_stops": _intero(stato.get("NumberOfPitStops")),
+            "retired": bool(stato.get("Retired", False)),
         }
 
     def best_lap(self, auto):
