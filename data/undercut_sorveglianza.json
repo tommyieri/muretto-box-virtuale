@@ -1,0 +1,22 @@
+{
+ "gare_fuori_campione": [
+  "Belgio"
+ ],
+ "D_new": 0,
+ "difficili_coperti": 0,
+ "copertura": 0.0,
+ "cancello_aperto": false,
+ "soglie": {
+  "D_new_min": 15,
+  "copertura_min": 0.8
+ },
+ "dettaglio": [
+  {
+   "gara": "Belgio",
+   "casi": 0,
+   "difficili": 0,
+   "difficili_coperti": 0,
+   "nel_fondo": true
+  }
+ ]
+}

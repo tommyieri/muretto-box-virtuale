@@ -26,14 +26,16 @@ trascrizione a mano — doppio arrotondamento pieno->4dp->3dp con half-up). Il c
 dichiara "identico" se il valore rigenerato ARROTONDATO a 4 decimali riproduce la cella
 (|delta| <= 5e-5); oltre = discrepanza.
 """
-import sys, csv, os
+import sys, csv, os, json
 import numpy as np
 from test_identificabilita_degrado import (RACES, SLICK, SOGLIA_OUTLIER,
                                            carica, pulisci, filtro_outlier)
 from test_forma_fgiro import prepara, costruisci, stima
+from drycheck_2026 import valuta
 
 FORMA = 'linlog'
 CSV_PATH = os.path.join(os.path.dirname(__file__), 'data', 'degrado_gamma_linlog.csv')
+REGISTRO = os.path.join(os.path.dirname(__file__), 'data', 'gare_registro.json')
 COLS = ['gara', 'compound', 'gamma', 'ic_lo', 'ic_hi', 'significativo']
 # la chiave-RACES 'British' e' etichettata 'Gran Bretagna' (nome IT) nel CSV congelato.
 NOME_CSV = {'British': 'Gran Bretagna'}
@@ -59,10 +61,40 @@ def calcola_gamma(path):
                 gidx=gidx, drvs=drvs, N=N)
 
 
+def perimetro():
+    """Le gare su cui i gamma si calcolano, DERIVATE dal registro invece che scritte a mano.
+
+    PERCHE' NON PIU' LA LISTA FISSA. RACES era congelata a 8 gare e non si estendeva: la
+    prima gara nuova con casi undercut avrebbe trovato la sua (gara, compound) mancante e
+    il backtest sarebbe ripiegato sulla mediana dei compound — la gomma GREZZA proprio
+    fuori campione, dove si decide. Il perimetro derivato si estende da solo a ogni gara
+    pubblicata, e l'esclusione del Canada NON e' piu' una riga cablata: cade da sola dal
+    dry-check (partenza umida -> BAGNATA), che e' la regola gia' dichiarata altrove.
+
+    GUARDIA CONTRO LA DERIVA: il perimetro derivato deve CONTENERE, con gli stessi
+    percorsi, tutte le gare della lista congelata. Se una sparisce o cambia sorgente, il
+    generatore si ferma invece di riscrivere il CSV su un perimetro diverso in silenzio."""
+    reg = json.load(open(REGISTRO))
+    fuori = {}
+    for nome, v in reg.items():
+        if valuta(json.load(open(v['raw'])), 'Race')['esito'] != 'OK':
+            continue
+        fuori[nome] = v['raw']
+    for nome, path in RACES.items():
+        atteso = NOME_CSV.get(nome, nome)
+        if atteso not in fuori:
+            raise RuntimeError(f"deriva del perimetro: '{atteso}' e' nella lista congelata "
+                               f"(RACES) ma non nel registro dry -> il CSV cambierebbe base")
+        if os.path.normpath(fuori[atteso]) != os.path.normpath(path):
+            raise RuntimeError(f"deriva del perimetro: '{atteso}' cambia sorgente "
+                               f"({path} -> {fuori[atteso]})")
+    return fuori
+
+
 def rigenera():
     """Ricalcola i gamma linlog 2026 dal dato grezzo. Ritorna lista di dict a PIENA precisione."""
     out = []
-    for nome, path in RACES.items():
+    for nome, path in perimetro().items():
         r = calcola_gamma(path)
         s = r['s']
         if s is None:

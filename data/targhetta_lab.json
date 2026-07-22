@@ -1,0 +1,125 @@
+{
+ "aggiornato_il": "2026-07-22",
+ "gare_nel_registro": 10,
+ "artefatti": {
+  "data/climatologia_degrado.csv": {
+   "sha256_12": "66ef73d6d2b6",
+   "byte": 4986,
+   "righe": 58,
+   "cambiato_il": "2026-07-22",
+   "gare_nel_registro_allora": 10
+  },
+  "data/degrado_gamma_linlog.csv": {
+   "sha256_12": "a5c03f7c4144",
+   "byte": 1036,
+   "righe": 24,
+   "cambiato_il": "2026-07-22",
+   "gare_nel_registro_allora": 10
+  },
+  "data/faseb_magnitudine.csv": {
+   "sha256_12": "c0b8d8675e6e",
+   "byte": 3966914,
+   "righe": 34707,
+   "cambiato_il": "2026-07-22",
+   "gare_nel_registro_allora": 10
+  },
+  "data/faseb2_copertura.csv": {
+   "sha256_12": "4d6a18455a6c",
+   "byte": 604919,
+   "righe": 6163,
+   "cambiato_il": "2026-07-22",
+   "gare_nel_registro_allora": 10
+  },
+  "data/stabilita_partizione.json": {
+   "sha256_12": "9c700f9d85bf",
+   "byte": 10613,
+   "cambiato_il": "2026-07-22",
+   "gare_nel_registro_allora": 10
+  },
+  "data/neutralizzazione_due_livelli.csv": {
+   "sha256_12": "d30f91954a42",
+   "byte": 8337,
+   "righe": 154,
+   "cambiato_il": "2026-07-22",
+   "gare_nel_registro_allora": 10
+  },
+  "data/rlap_per_regime.csv": {
+   "sha256_12": "aed91b0e14d2",
+   "byte": 3398,
+   "righe": 80,
+   "cambiato_il": "2026-07-22",
+   "gare_nel_registro_allora": 10
+  },
+  "data/status_vocabolario.csv": {
+   "sha256_12": "89ffa5fd475c",
+   "byte": 4553,
+   "righe": 39,
+   "cambiato_il": "2026-07-22",
+   "gare_nel_registro_allora": 10
+  },
+  "data/pitloss_realizzato_2026.csv": {
+   "sha256_12": "6c155af0aaa7",
+   "byte": 815,
+   "righe": 10,
+   "cambiato_il": "2026-07-22",
+   "gare_nel_registro_allora": 10
+  },
+  "data/pergara_stops.csv": {
+   "sha256_12": "c2d07a53138a",
+   "byte": 93883,
+   "righe": 1424,
+   "cambiato_il": "2026-07-22",
+   "gare_nel_registro_allora": 10
+  },
+  "data/arrivi_2026.csv": {
+   "sha256_12": "e12c7448642e",
+   "byte": 17017,
+   "righe": 219,
+   "cambiato_il": "2026-07-22",
+   "gare_nel_registro_allora": 10
+  },
+  "data/classifica_giro_2026.csv": {
+   "sha256_12": "1be452565368",
+   "byte": 807222,
+   "righe": 11302,
+   "cambiato_il": "2026-07-22",
+   "gare_nel_registro_allora": 10
+  },
+  "data/undercut_casi_2026.json": {
+   "sha256_12": "e8eee913de5a",
+   "byte": 6279,
+   "cambiato_il": "2026-07-22",
+   "gare_nel_registro_allora": 10
+  },
+  "data/copertura_alpha_undercut.json": {
+   "sha256_12": "3967e9f1f269",
+   "byte": 15811,
+   "cambiato_il": "2026-07-22",
+   "gare_nel_registro_allora": 10
+  },
+  "data/undercut_sorveglianza.json": {
+   "sha256_12": "f321437864e6",
+   "byte": 316,
+   "cambiato_il": "2026-07-22",
+   "gare_nel_registro_allora": 10
+  },
+  "demo/data/climatologia_bande.json": {
+   "sha256_12": "1acaf67102df",
+   "byte": 4594,
+   "cambiato_il": "2026-07-22",
+   "gare_nel_registro_allora": 10
+  },
+  "data/modello_degrado_2026.json": {
+   "sha256_12": "3a83af92e26b",
+   "byte": 10123,
+   "cambiato_il": "2026-07-22",
+   "gare_nel_registro_allora": 10
+  },
+  "data/modello_traffico_2026.json": {
+   "sha256_12": "3bc7811357df",
+   "byte": 7018,
+   "cambiato_il": "2026-07-22",
+   "gare_nel_registro_allora": 10
+  }
+ }
+}

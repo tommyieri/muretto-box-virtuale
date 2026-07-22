@@ -71,3 +71,11 @@ silverstone,VSC_DEPLOY,61,99.886,94.17,1.061
 silverstone,VSC_RESTART,53,104.865,94.17,1.114
 silverstone,RED,0,,94.17,
 silverstone,VERDE,2973,94.17,94.17,1.0
+spa-francorchamps,SC_REGIME,40,172.486,110.819,1.556
+spa-francorchamps,VSC_REGIME,45,123.589,110.819,1.115
+spa-francorchamps,SC_DEPLOY,0,,110.819,
+spa-francorchamps,SC_RESTART,23,171.923,110.819,1.551
+spa-francorchamps,VSC_DEPLOY,16,112.065,110.819,1.011
+spa-francorchamps,VSC_RESTART,13,113.416,110.819,1.023
+spa-francorchamps,RED,0,,110.819,
+spa-francorchamps,VERDE,2926,110.819,110.819,1.0

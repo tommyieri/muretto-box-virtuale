@@ -65,8 +65,11 @@ def fisica(code):
     return 'verde'
 
 # ---- inventario file per circuito ----------------------------------------------------------
-# 9 circuiti del registro -> nome cartella GP in ti_archive
-CIRCUITI = {
+# I due inventari erano scritti a mano e si fermavano ai 9 circuiti di allora: Spa non
+# c'era, e nessuno se ne accorgeva perche' il generatore girava lo stesso. Ora si
+# DERIVANO dal registro, cosi' una gara nuova entra da sola. Le mappe congelate restano
+# come GUARDIA: se la derivazione non le riproduce identiche, il generatore si ferma.
+_CIRCUITI_CONGELATI = {
     'melbourne':  'Australian Grand Prix',
     'shanghai':   'Chinese Grand Prix',
     'suzuka':     'Japanese Grand Prix',
@@ -77,12 +80,44 @@ CIRCUITI = {
     'spielberg':  'Austrian Grand Prix',
     'silverstone':'British Grand Prix',
 }
-# 2026 demo: ti_cache (le 8) + ti_archive/2026 (British)
-TICACHE_2026 = {
+_TICACHE_CONGELATO = {
     'Australian Grand Prix':'Australian','Chinese Grand Prix':'Chinese','Japanese Grand Prix':'Japanese',
     'Miami Grand Prix':'Miami','Canadian Grand Prix':'Canadian','Monaco Grand Prix':'Monaco',
     'Spanish Grand Prix':'Barcelona','Austrian Grand Prix':'Austrian',
 }
+# TracingInsights ha RINOMINATO un evento fra lo storico e il 2026: l'archivio 2023-25 dice
+# 'Spanish', il registro 2026 dice 'Barcelona'. Alias DICHIARATO, non indovinato: senza,
+# la Spagna perderebbe in silenzio tutto il suo storico.
+ALIAS_ARCHIVIO = {'Barcelona Grand Prix': 'Spanish Grand Prix'}
+
+
+def _inventari():
+    """(circuiti, ticache) derivati dal registro, con guardia contro la deriva."""
+    reg = json.load(open(os.path.join(DATA, 'gare_registro.json')))
+    circuiti, ticache = {}, {}
+    for v in reg.values():
+        gp = ALIAS_ARCHIVIO.get(v['ti'], v['ti'])
+        circuiti[v['cid']] = gp
+        if os.sep + 'ti_cache' + os.sep in os.sep + v['raw'].replace('/', os.sep):
+            ticache[gp] = os.path.splitext(os.path.basename(v['raw']))[0]
+    for cid, gp in _CIRCUITI_CONGELATI.items():
+        if circuiti.get(cid) != gp:
+            raise RuntimeError(f"deriva dell'inventario: '{cid}' era '{gp}', ora "
+                               f"'{circuiti.get(cid)}' — serve un alias dichiarato")
+    for gp, base in _TICACHE_CONGELATO.items():
+        if ticache.get(gp) != base:
+            raise RuntimeError(f"deriva del ti_cache: '{gp}' era '{base}', ora '{ticache.get(gp)}'")
+    for cid, gp in circuiti.items():
+        trovato = (gp in ticache and os.path.exists(os.path.join(DATA, 'ti_cache', ticache[gp] + '.json'))) \
+            or any(os.path.exists(os.path.join(DATA, 'ti_archive', y, gp, 'Race.json'))
+                   for y in ('2023', '2024', '2025', '2026'))
+        if not trovato:
+            raise RuntimeError(f"'{cid}' -> '{gp}': nessun Race.json da nessuna parte "
+                               f"(rinominato a monte? va dichiarato in ALIAS_ARCHIVIO)")
+    return circuiti, ticache
+
+
+CIRCUITI, TICACHE_2026 = _inventari()
 
 def race_files_for(gp):
     """Tutti i Race.json disponibili per un GP, tutte le stagioni (2023-2026)."""

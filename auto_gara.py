@@ -115,9 +115,56 @@ def wave_nuove():
         sh([PY, 'gen_race_control.py'])                       # lista gare dal registro
         sh([PY, 'gen_rc_feed.py'])
         sh([PY, 'gen_classifiche_ufficiali.py'])
-        # modelli del laboratorio: si ricalibrano da soli sul fondo aggiornato.
-        # Idempotente; scrive i coefficienti, NON accende niente in produzione.
+        # file per-gara accessori, ex ORFANI: ora hanno un generatore con perimetro dal
+        # registro, quindi la gara nuova entra da sola. Vanno DOPO la pubblicazione in
+        # demo/ perche' gen_arrivi legge demo/data/esiti.json (e' li' che vive l'NP).
+        # check=False di proposito: la guardia sta DENTRO il generatore, che se non
+        # riproduce una cella congelata esce 1 SENZA scrivere — il file resta buono e il
+        # log lo grida. Fermare la pubblicazione di una gara di domenica perche' TI ha
+        # ritoccato una gara vecchia sarebbe il rimedio peggiore del male.
+        sh([PY, 'gen_classifica_giro.py', '--write'], check=False)
+        sh([PY, 'gen_arrivi.py', '--write'], check=False)
+        # ------------------------------------------------------------------ LABORATORIO
+        # Tutto quello che segue e' RICERCA: aggiorna DATI, non accende niente in
+        # produzione, e gira con check=False perche' la ricerca non deve MAI fermare la
+        # pubblicazione di una gara. Regola che vale per tutto il blocco: si aggiorna il
+        # DATO a ogni gara; il VERDETTO di un KPI pre-registrato NON si rigira qui — per
+        # quello ci sono le sorveglianze in fondo, che contano e tacciono.
+        # Percio' i generatori dei cancelli (gen_cancello_*.py) NON sono in questa lista.
+        #
+        # modelli vivi: si ricalibrano da soli sul fondo aggiornato, con targhetta.
         sh([PY, 'gen_modelli_lab.py', '--data', _oggi()])
+        # climatologia e bande: deterministici, senza rete, secondi. Ognuno si
+        # auto-verifica riproducibile prima di riscriversi. bande_demo DOPO climatologia
+        # perche' ne deriva, e prende la mappa gara->cid dal registro.
+        sh([PY, 'gen_climatologia_degrado.py', '--write'], check=False)
+        sh([PY, 'gen_bande_demo.py', '--write'], check=False)
+        # Fase B (magnitudine e copertura degli scenari) e stabilita' della partizione:
+        # emettono un verdetto MECCANICO contro soglie congelate; quello strategico resta
+        # del PO, e nessuno di questi accende alcunche'.
+        sh([PY, 'gen_faseb_magnitudine.py', '--write'], check=False)
+        sh([PY, 'gen_faseb2_copertura.py', '--write'], check=False)
+        sh([PY, 'gen_stabilita_partizione.py'], check=False)
+        # analisi neutralizzazione a due livelli: inventario derivato dal registro, quindi
+        # la gara nuova entra da sola. Non tocca la produzione (gen_neutralizzazione.py).
+        sh([PY, 'gen_neutralizzazione_v2.py'], check=False)
+        # pit-loss realizzato per-gara (FF5): usa FastF1, quindi RETE. Idempotente.
+        # Tempistica da sapere: events_for scarta le gare con data >= oggi, quindi la gara
+        # entra IL GIORNO DOPO; rieseguirlo il lunedi' la prende. ~8 minuti a cache calda.
+        sh([PY, 'gen_pitloss_pergara.py'], check=False)
+        # catena undercut: la gomma per-gara si estende da sola (niente piu' fallback alla
+        # mediana per la gara nuova) e il censimento dei casi cresce di una gara.
+        # Una gara bagnata fa uscire conta_undercut con un messaggio: e' normale.
+        sh([PY, 'gen_degrado_gamma.py', '--write'], check=False)
+        sh([PY, 'conta_undercut.py', '--gara', nome], check=False)
+        # SORVEGLIANZE — il modo giusto di far vivere un sigillo: il dato si aggiorna a
+        # ogni gara, il verdetto si rivaluta UNA VOLTA quando il cancello dichiarato prima
+        # si apre. Non rigirano nessun test, non toccano niente di congelato, tacciono se
+        # non e' cambiato nulla.
+        sh([PY, 'undercut_sorveglianza.py'], check=False)
+        sh([PY, os.path.join('ai_lab', 'scienziato', 'sorveglianza.py')], check=False)
+        # targhetta: ultima, cosi' vede tutto quello che e' stato appena rigenerato.
+        sh([PY, 'gen_targhetta_lab.py'], check=False)
     if not golden():
         sys.exit('[auto] FERMO: golden falliti dopo l\'ondata 1 — niente commit, indagare.')
     ba = _bandiere_testo()

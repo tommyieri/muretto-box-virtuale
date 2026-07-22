@@ -2,9 +2,10 @@ gara,circuito,condizione_2026,n_stop_2026,realizzato,iqr_2026,tipico_2018_2025,n
 Australia,melbourne,DRY,7,24.1,10.17,21.75,5,18.15,-5.95,DA ATTIVARE
 Cina,shanghai,DRY,4,34.51,16.77,24.04,4,22.97,-11.54,NON MISURABILE
 Giappone,suzuka,DRY,4,22.79,0.84,23.0,5,23.72,0.93,NON MISURABILE
-Miami,miami,DRY,18,20.11,0.98,19.68,4,22.63,2.52,DA ATTIVARE
+Miami,miami,DRY,18,20.11,0.98,19.68,4,20.11,0.0,GIA CALIBRATA
 Canada,montreal,DRY,5,24.24,4.26,19.7,5,24.37,0.13,GIA CALIBRATA
 Monaco,monaco,DRY,14,22.61,3.44,20.74,4,24.8,2.19,DA ATTIVARE
 Spagna,catalunya,DRY,35,24.59,1.93,22.93,7,22.38,-2.21,DA ATTIVARE
 Austria,spielberg,DRY,30,21.98,0.76,21.19,9,21.63,-0.35,GIA CALIBRATA
 Gran Bretagna,silverstone,DRY,17,20.43,3.41,20.0,7,20.8,0.37,GIA CALIBRATA
+Belgio,spa-francorchamps,DRY,8,22.5,5.17,18.58,6,23.36,0.86,GIA CALIBRATA

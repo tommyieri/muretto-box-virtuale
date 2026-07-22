@@ -12,6 +12,13 @@ fix_import.py
 *.bak
 *.bak2
 *.pkl
+# ECCEZIONE DICHIARATA (22/07/2026): la materia prima del warm-in si committa.
+# data/warmin_prior.csv e' l'ingrediente `warminA` della baseline sigillata dell'undercut,
+# e finche' questo pickle restava ignorato bastava che sparisse dal Mac per perdere
+# l'unica cosa da cui il CSV si rifa'. 56 KB, e con lui `python3 finalize_warmin.py`
+# riproduce warmin_prior.csv BIT-IDENTICO e SENZA RETE (verificato). Assicurazione a
+# costo zero: un dato senza sorgente committata non e' una certezza, e' un debito.
+!data/_warmin_raw_multiyear.pkl
 *.tmp
 *~
 demo/_backup_preSC/

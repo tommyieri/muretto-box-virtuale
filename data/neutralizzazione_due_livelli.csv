@@ -144,3 +144,12 @@ silverstone,British Grand Prix,2026,39,39,VSC_RESTART,1
 silverstone,British Grand Prix,2026,46,46,SC_DEPLOY,1
 silverstone,British Grand Prix,2026,47,51,SC_REGIME,5
 silverstone,British Grand Prix,2026,52,52,SC_RESTART,1
+spa-francorchamps,Belgian Grand Prix,2025,1,1,SC_DEPLOY,1
+spa-francorchamps,Belgian Grand Prix,2025,2,3,SC_REGIME,2
+spa-francorchamps,Belgian Grand Prix,2025,4,4,SC_RESTART,1
+spa-francorchamps,Belgian Grand Prix,2026,1,1,SC_DEPLOY,1
+spa-francorchamps,Belgian Grand Prix,2026,2,3,SC_REGIME,2
+spa-francorchamps,Belgian Grand Prix,2026,4,4,SC_RESTART,1
+spa-francorchamps,Belgian Grand Prix,2026,17,17,VSC_DEPLOY,1
+spa-francorchamps,Belgian Grand Prix,2026,18,20,VSC_REGIME,3
+spa-francorchamps,Belgian Grand Prix,2026,21,21,VSC_RESTART,1
