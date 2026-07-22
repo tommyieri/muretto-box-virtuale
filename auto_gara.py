@@ -136,6 +136,11 @@ def wave_nuove():
         # analisi neutralizzazione a due livelli: inventario derivato dal registro, quindi
         # la gara nuova entra da sola. Non tocca la produzione (gen_neutralizzazione.py).
         sh([PY, 'gen_neutralizzazione_v2.py'], check=False)
+        # pit-loss realizzato per-gara (FF5): usa FastF1, quindi RETE — check=False, non
+        # deve mai fermare la pubblicazione. Idempotente. Tempistica da sapere: events_for
+        # scarta le gare con data >= oggi, quindi la gara entra IL GIORNO DOPO; rieseguirlo
+        # il lunedi' la prende. ~8 minuti a cache calda.
+        sh([PY, 'gen_pitloss_pergara.py'], check=False)
         sh([PY, 'gen_degrado_gamma.py', '--write'], check=False)
         sh([PY, 'conta_undercut.py', '--gara', nome], check=False)
         sh([PY, 'undercut_sorveglianza.py'], check=False)
