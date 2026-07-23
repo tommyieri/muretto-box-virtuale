@@ -22,6 +22,7 @@ import { fileURLToPath } from 'url';
 import { creaByLapLive } from './live_bylap.mjs';
 import { pannelloMuretto } from './muretto.mjs';
 import { misura as misuraSoste } from './gradino.mjs';
+import { mescole as leggiMescole, regolaDueMescole } from './grossi.mjs';
 
 const QUI = path.dirname(fileURLToPath(import.meta.url));
 const FIXTURE = path.join(QUI, '..', 'live', 'fixture', 'spa_2026_gara.jsonl');
@@ -227,6 +228,36 @@ esito(visti.length === TAPPE.length, 'tutte le tappe raggiunte',
 const magri = visti.filter(v => v.n < 12);
 esito(magri.length === 0, 'si congela su un giro col campo dentro, mai su una macchina sola',
       visti.map(v => `g${v.g}:${v.n}`).join(' '));
+
+// 10. LA MESCOLA — la regola e' un vincolo, non una stima, e deve reggere anche in diretta.
+//     Il pannello fa scegliere la gomma, ma NON muove nessun numero: gradino p=0,24,
+//     warm-up p=0,58, degrado p=0,25 sulle 10 gare 2026. L'unica cosa che la scelta
+//     cambia e' l'obbligo delle due mescole, che si verifica CONTANDO.
+console.log();
+console.log('LA MESCOLA — la regola delle due mescole, letta dal flusso');
+{
+  const L = 30;
+  const drv = Object.keys(A.pace(L)).filter(s => A.presenti(L).includes(s)).sort()[0];
+  const mL = leggiMescole(B, A.nLaps(), L, drv);
+  const mV = leggiMescole(V, vero.n_laps, L, drv);
+  esito(mL.usate.sort().join(',') === mV.usate.sort().join(','),
+        `mescole gia usate da ${drv} lette dal flusso`,
+        `live [${mL.usate.join(',')}] · ufficiale [${mV.usate.join(',')}]`);
+  esito(mL.bagnato === mV.bagnato, 'asciutto/bagnato coincide', `live ${mL.bagnato}`);
+  // la stessa gomma gia' montata non puo' mai assolvere l'obbligo se e' l'unica usata
+  const solo = mL.usate.length === 1 ? mL.usate[0] : null;
+  if (solo) {
+    const r = regolaDueMescole(mL, solo, 10);
+    esito(r.ok === false, `rimontare la sola mescola usata (${solo}) e segnalato`, r.nota || '');
+  } else {
+    esito(true, 'obbligo gia assolto a questo giro', `usate: ${mL.usate.join(',')}`);
+  }
+  // e nessuna durata assurda: sotto 4 giri non e' una scelta di gomma, e' un incidente
+  const corte = Object.entries(mL.per_mescola)
+    .filter(([, v]) => v.durata.stato === 'MISURATO' && v.durata.giri < 4).map(([k]) => k);
+  esito(corte.length === 0, 'nessuna durata di stint sotto i 4 giri spacciata per scelta',
+        corte.length ? 'sospette: ' + corte.join(' ') : 'tutte plausibili');
+}
 
 console.log();
 if (falliti) { console.log(`${falliti} controlli ROTTI`); process.exit(1); }

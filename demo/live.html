@@ -76,13 +76,29 @@
        Scegli un pilota e la pagina risponde: se lo fermo adesso, dove rientra. -->
   <div class="sez-tit">Il muretto</div>
   <section class="panel" id="mu-panel">
-    <div class="mu-testa">
-      <span class="mu-lab">Il tuo pilota</span>
-      <select id="mu-drv" aria-label="Scegli il pilota da seguire"><option value="">&mdash;</option></select>
-      <span class="mu-giro" id="mu-giro"></span>
+    <!-- LA PORTA. Prima si sceglieva da una tendina come si sceglie una voce di menu, e
+         il pannello restava una fra tante cose in pagina. Qui invece si entra: scegli il
+         pilota e la pagina diventa la SUA. E' la richiesta del PO ("appena entri
+         seleziona un pilota per seguire la sua strategia"), e cambia il gesto: non stai
+         consultando una tabella, stai al muretto di qualcuno. -->
+    <div class="mu-porta" id="mu-porta">
+      <div class="mu-porta-t">Scegli il pilota di cui fare la strategia</div>
+      <div class="mu-porta-s">Da qui in poi la pagina segue lui: ogni giro, la stessa
+        domanda del muretto.</div>
+      <div class="mu-griglia" id="mu-griglia"></div>
+      <div class="mu-porta-n" id="mu-porta-n">In attesa dei primi giri&hellip;</div>
     </div>
-    <div class="mu-slider" id="mu-slider" hidden>Pit al giro <b id="mu-lapLabel">&ndash;</b>
-      <input type="range" id="mu-lap" min="2" max="2" value="2"></div>
+
+    <div class="mu-testa" id="mu-testa" hidden>
+      <span class="mu-chi"><b id="mu-sigla">&mdash;</b><span id="mu-team"></span></span>
+      <span class="mu-stato" id="mu-stato"></span>
+      <span class="mu-giro" id="mu-giro"></span>
+      <!-- il cambio pilota c'e' ma e' piccolo e sta in fondo: la scelta e un impegno,
+           non un menu a tendina. Toglierlo del tutto punirebbe un click sbagliato e
+           lascerebbe bloccati su un pilota ritirato. -->
+      <button type="button" class="mu-cambia" id="mu-cambia">cambia</button>
+    </div>
+    <button type="button" class="boxbtn" id="mu-box" hidden>BOX <span id="mu-boxgiro"></span></button>
     <div id="mu-kv"></div>
     <div id="mu-nota" class="lv-nota">Durante una <b>gara</b> scegli qui il pilota da seguire e il
       pannello risponde alla domanda del muretto: <i>se lo fermo adesso, dove rientra?</i>
@@ -139,12 +155,27 @@
   /* il muretto in diretta: stessa veste del pannello pit di gara.html */
   .mu-testa{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.6rem}
   .mu-lab{color:#8b93a5;font-size:.82rem}
-  #mu-drv{background:#141b25;color:#e8edf5;border:1px solid #2a333f;border-radius:5px;
-    padding:.3rem .5rem;font:700 .86rem -apple-system,Arial}
-  .mu-giro{color:#8b93a5;font-size:.8rem;margin-left:auto;font-variant-numeric:tabular-nums}
-  .mu-slider{display:flex;align-items:center;gap:.5rem;color:#8b93a5;font-size:.82rem;margin-bottom:.6rem}
-  .mu-slider input{flex:1 1 auto}
-  .mu-slider b{color:#e8edf5}
+  .mu-giro{color:#8b93a5;font-size:.8rem;font-variant-numeric:tabular-nums}
+  /* la porta: si entra scegliendo un pilota, e la pagina diventa la sua */
+  .mu-porta-t{font:800 1rem/1.3 -apple-system,Arial;color:#e8edf5}
+  .mu-porta-s{color:#8b93a5;font-size:.83rem;margin:.2rem 0 .8rem}
+  .mu-porta-n{color:#767e8e;font-size:.8rem}
+  .mu-griglia{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.4rem,1fr));gap:.35rem}
+  .mu-p{display:flex;align-items:center;gap:.35rem;padding:.45rem .5rem;cursor:pointer;
+    background:#141b25;border:1px solid #2a333f;border-radius:6px;color:#e8edf5;
+    font:700 .84rem -apple-system,Arial;text-align:left}
+  .mu-p:hover{border-color:#5a6a80;background:#1a2330}
+  .mu-p-pos{color:#767e8e;font:600 .72rem var(--mono);min-width:1.1rem}
+  .mu-p-t{color:#767e8e;font-weight:400;font-size:.68rem;margin-left:auto;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:3.4rem}
+  .mu-chi{display:flex;align-items:baseline;gap:.45rem}
+  .mu-chi b{font:800 1.15rem/1 var(--mono);letter-spacing:.04em;color:#e8edf5}
+  .mu-chi span{color:#8b93a5;font-size:.78rem}
+  .mu-stato{color:#aab2c0;font-size:.8rem}
+  .mu-stato b{color:#e8edf5;text-transform:capitalize}
+  .mu-cambia{margin-left:auto;background:none;border:0;cursor:pointer;color:#767e8e;
+    font:400 .75rem -apple-system,Arial;text-decoration:underline;padding:0}
+  .mu-cambia:hover{color:#aab2c0}
   #mu-kv .kv{display:flex;gap:.8rem;padding:.4rem 0;border-bottom:1px solid #1c2430;font-size:.86rem}
   #mu-kv .kv .k{color:#8b93a5;flex:0 0 8.5rem}
   #mu-kv .kv .v{color:#e8edf5;flex:1 1 auto}
@@ -333,58 +364,85 @@ async function creaMurettoLive(g){
     ? `misurato sulla gara 2026 di questa pista`
     : (plFondo != null ? `tipico del circuito su ${vocePL.pit_loss_n_soste} soste dal 2018` : null);
 
-  let scelto = null, ridisegna = null;
+  let scelto = null, boxAperto = false, mescolaScelta = null, ridisegna = null;
 
-  const opz = () => {
-    const sel = el('mu-drv');
+  // LA GRIGLIA DI SCELTA. Non una tendina: le sigle in chiaro, con la posizione, come una
+  // formazione da schierare. Si ricostruisce solo quando l'elenco cambia davvero, altrimenti
+  // un giro nuovo la ridisegnerebbe sotto il dito di chi sta scegliendo.
+  const porta = () => {
     const L = B.giroPieno();
-    const sigle = L ? Object.keys(B.byLap()[L] || {}).sort() : [];
-    // ricostruisco la tendina solo se l'elenco e' cambiato davvero: riscriverla a ogni
-    // giro chiuderebbe il menu in faccia a chi lo sta usando
+    const sigle = L ? B.presenti(L).sort() : [];
+    const cont = el('mu-griglia');
     const chiave = sigle.join(',');
-    if (sel.dataset.chiave === chiave) return;
-    sel.dataset.chiave = chiave;
-    sel.innerHTML = '<option value="">— scegli —</option>'
-      + sigle.map(s => `<option value="${s}">${s}</option>`).join('');
-    if (scelto && sigle.includes(scelto)) sel.value = scelto;
+    if (cont.dataset.chiave !== chiave) {
+      cont.dataset.chiave = chiave;
+      const bl = B.byLap()[L] || {};
+      cont.innerHTML = sigle
+        .sort((a, b) => (bl[a]?.cum_time ?? 1e9) - (bl[b]?.cum_time ?? 1e9))
+        .map((sg, i) => `<button type="button" class="mu-p" data-drv="${sg}">`
+          + `<span class="mu-p-pos">${i + 1}</span><b>${sg}</b>`
+          + `<span class="mu-p-t">${bl[sg]?.team || ''}</span></button>`).join('');
+    }
+    el('mu-porta-n').textContent = sigle.length
+      ? '' : 'In attesa dei primi giri: la scelta si apre appena la gara ha un ordine.';
+    el('mu-porta-n').hidden = sigle.length > 0;
   };
 
   ridisegna = () => {
-    const kv = el('mu-kv'), nota = el('mu-nota'), sl = el('mu-slider');
+    const kv = el('mu-kv'), nota = el('mu-nota');
     const nLaps = B.nLaps(), L = B.giroPieno();
-    el('mu-giro').textContent = nLaps ? `giro ${B.giro() ?? '–'} / ${nLaps}` : '';
-    opz();
-    // evidenzia in torre il pilota scelto
+
+    // FUORI GARA: niente porta, niente pannello. La domanda non esiste nelle libere.
+    if (!nLaps) {
+      el('mu-porta').hidden = true; el('mu-testa').hidden = true;
+      el('mu-box').hidden = true; kv.innerHTML = ''; nota.hidden = false;
+      return;
+    }
+    // PRIMA DELLA SCELTA: solo la porta.
+    if (!scelto) {
+      el('mu-porta').hidden = false; el('mu-testa').hidden = true;
+      el('mu-box').hidden = true; kv.innerHTML = ''; nota.hidden = true;
+      porta();
+      return;
+    }
+
+    // DOPO LA SCELTA: la pagina e' sua.
+    el('mu-porta').hidden = true; el('mu-testa').hidden = false; nota.hidden = true;
+    const bl = B.byLap(), c = bl[L]?.[scelto];
+    el('mu-sigla').textContent = scelto;
+    el('mu-team').textContent = c?.team || '';
+    el('mu-giro').textContent = `giro ${B.giro() ?? '–'} / ${nLaps}`;
+    el('mu-stato').innerHTML = c
+      ? (c.compound ? `<b>${c.compound.toLowerCase()}</b>` : '')
+        + (typeof c.tyre_age === 'number' ? ` da ${c.tyre_age} giri` : '')
+      : '';
     for (const r of el('tw-list').querySelectorAll('.tw-row'))
       r.classList.toggle('tw-sel', r.dataset.sigla === scelto);
 
-    if (!nLaps){ kv.innerHTML = ''; sl.hidden = true; nota.hidden = false; return; }
-    if (!scelto){ kv.innerHTML = ''; sl.hidden = true; nota.hidden = false; return; }
     const d = B.diagnosi(L);
-    if (!d.pronto){
-      sl.hidden = true; nota.hidden = true;
+    if (!d.pronto) {
+      el('mu-box').hidden = true;
       kv.innerHTML = `<div class="pitmsg">Ancora presto: ${d.motivo}.
         <span class="sub">Il passo-base di ogni pilota si misura dai suoi giri veri in gara;
         finche non c'e, il pannello preferisce tacere.</span></div>`;
       return;
     }
-    nota.hidden = true; sl.hidden = false;
-    // il giro in corso e' il primo fermabile: L e' l'ultimo COMPLETATO
-    const lap = el('mu-lap'), minOra = L + 1;
-    if (+lap.min !== minOra || +lap.max !== nLaps){
-      lap.min = minOra; lap.max = nLaps;
-      if (+lap.value < minOra) lap.value = minOra;
-    }
-    const pitL = +lap.value;
-    el('mu-lapLabel').textContent = pitL === minOra ? `${pitL} (adesso)` : pitL;
+    // il giro fermabile e' SEMPRE quello in corso: in diretta non esiste "fra dieci giri",
+    // esiste adesso. Nessuno slider — e' la richiesta del PO, e in live e' anche l'unica
+    // cosa vera: il campo congelato non regge dieci giri di gara che devono ancora succedere.
+    const pitL = L + 1;
+    el('mu-box').hidden = false;
+    el('mu-boxgiro').textContent = `giro ${pitL}`;
+    el('mu-box').classList.toggle('on', boxAperto);
+    if (!boxAperto) { kv.innerHTML = ''; return; }
 
     const r = pannelloMuretto({
-      byLap: B.byLap(), nLaps, pace: B.pace(L), laps: null,
+      byLap: bl, nLaps, pace: B.pace(L), laps: null,
       // gara: null -> niente scenari di degrado. Le bande climatologiche sono indicizzate
       // sul nome della gara demo, e una pista non ancora corsa nel 2026 non ce l'ha.
       // Tacere e' l'unica risposta onesta: uno scenario senza banda sarebbe inventato.
       gara: g.gara_demo || null, circuitId: cid,
-      driver: scelto, freezeLap: L, pitLap: pitL,
+      driver: scelto, freezeLap: L, pitLap: pitL, mescola: mescolaScelta,
       pitLossTabella, penalita: null, nonParten: new Set(),
       neutroFondo, ragg, bandeClim,
     });
@@ -396,13 +454,27 @@ async function creaMurettoLive(g){
            <span class="v dim">pit-loss di partenza: ${provPitLoss}</span></div>` : '');
   };
 
-  el('mu-drv').addEventListener('change', e => { scelto = e.target.value || null; ridisegna(); });
-  el('mu-lap').addEventListener('input', ridisegna);
-  // la torre e' l'altro modo di scegliere: stesso gesto della classifica in gara.html
+  el('mu-griglia').addEventListener('click', e => {
+    const b = e.target.closest('[data-drv]'); if (!b) return;
+    scelto = b.dataset.drv; boxAperto = false; mescolaScelta = null; ridisegna();
+  });
+  el('mu-cambia').addEventListener('click', () => {
+    scelto = null; boxAperto = false; mescolaScelta = null; ridisegna();
+  });
+  el('mu-box').addEventListener('click', () => { boxAperto = !boxAperto; ridisegna(); });
+  // i bottoni della mescola vivono dentro l'HTML del pannello, riscritto a ogni giro: la
+  // delega sul contenitore sopravvive alle riscritture, un listener sul bottone no
+  el('mu-kv').addEventListener('click', e => {
+    const b = e.target.closest('[data-mesc]'); if (!b) return;
+    mescolaScelta = mescolaScelta === b.dataset.mesc ? null : b.dataset.mesc;
+    ridisegna();
+  });
+  // la torre resta un secondo modo di scegliere, ma SOLO prima di aver scelto: dopo, un
+  // click distratto sulla classifica non deve cambiare il pilota di cui sei il muretto
   el('tw-list').addEventListener('click', e => {
-    const r = e.target.closest('.tw-row[data-sigla]');
-    if (!r) return;
-    scelto = r.dataset.sigla; el('mu-drv').value = scelto; ridisegna();
+    if (scelto) return;
+    const r = e.target.closest('.tw-row[data-sigla]'); if (!r) return;
+    scelto = r.dataset.sigla; boxAperto = false; mescolaScelta = null; ridisegna();
   });
 
   let ultimo = null;

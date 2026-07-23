@@ -523,6 +523,117 @@ export function penalitaPendente(pen, giroOra, giroSosta) {
   };
 }
 
+// ============================================================ 12. LA MESCOLA
+//
+// LA COSA PIU' IMPORTANTE DI QUESTO BLOCCO E' CIO' CHE NON FA: non cambia nessun numero.
+//
+// Misurato il 24/07/2026 sulle 10 gare 2026, con appaiamento dentro la stessa gara e nella
+// stessa finestra di giri (la mescola NON si monta a caso: la SOFT va al 67% della gara, la
+// HARD al 44%, quindi il confronto grezzo confonde la gomma col momento), e test del nullo
+// per permutazione delle etichette:
+//
+//     gradino di sosta   separazione max 0,567 s/giro   p = 0,24   (154 soste)
+//     warm-up            separazione max 0,249 s        p = 0,58   (221 casi)
+//     degrado            separazione max 0,026 s/giro   p = 0,25   (466 stint)
+//
+// Tre grandezze diverse, tre NULL. E su due c'e' anche il sintomo del rumore: il segno si
+// ROVESCIA cambiando specificazione (SOFT-HARD sul gradino: +0,229 grezzo, -0,313 appaiato;
+// sul warm-up: +0,234 a finestra 3 giri, -0,048 a finestra 12). Un selettore di mescola che
+// muovesse il pit-loss o il rientro direbbe il contrario del vero, non solo qualcosa di
+// incerto.
+//
+// NULL NON VUOL DIRE ZERO: l'esperimento e' cieco sotto 0,81 s/giro sul gradino fra SOFT e
+// HARD, e sotto 0,035 s/giro sul degrado. Un effetto piu' piccolo esisterebbe e questi dati
+// non lo vedrebbero. La conclusione onesta e' "non si distingue dal caso, quindi non si
+// mostra", non "le mescole sono uguali".
+//
+// ALLORA COSA DECIDE, LA MESCOLA? Due cose vere, e nessuna delle due e' un modello:
+//   1. LA REGOLA. In gara asciutta se ne devono usare due diverse. Verificato sui dati 2026:
+//      150 arrivati su 151 hanno usato almeno due mescole, e l'unica eccezione e' SAI in
+//      Canada — che era BAGNATA, dove la regola non si applica. Cioe' 100% dove vale.
+//      Non e' una tendenza: e' un vincolo, e si controlla contando.
+//   2. QUANTO E' DURATA finora, in QUESTA gara. Fatto osservato, con la sua numerosita'.
+//      Ma va detto che e' la durata SCELTA dalle squadre, non quella POSSIBILE: una gomma
+//      puo' reggere piu' di quanto la si e' tenuta, e il dato non sa distinguere.
+//
+// COSA NON SAPPIAMO: quali set restano nel garage. Il feed live manda gli stint gia' fatti
+// (TimingAppData.Stints: Compound, New, TotalLaps) e NIENTE sulle gomme disponibili —
+// verificato sulla registrazione di Spa, non esiste alcun topic che le porti. Quindi il
+// pannello non puo' sapere se una SOFT nuova c'e' ancora, e deve dirlo invece di tacere.
+const SET_NON_NOTI = 'quali set restano nel garage non e nel feed: scegli sapendo che '
+                   + 'la gomma potrebbe non essere disponibile';
+
+export function mescole(byLap, nLaps, finoA, driver) {
+  const L = Math.min(nLaps, finoA);
+  const usate = new Set();
+  let bagnato = false;
+  for (let k = 1; k <= L; k++) {
+    const c = byLap[k]?.[driver];
+    if (!c || !c.compound) continue;
+    if (ASCIUTTE.includes(c.compound)) usate.add(c.compound);
+    if (BAGNATE.includes(c.compound)) bagnato = true;
+  }
+  // durata degli stint CHIUSI da una sosta in questa gara: solo quelli hanno una durata
+  // vera. Uno stint ancora in corso dice solo "almeno tanto", e non si mescola con gli altri.
+  const durata = {};
+  const stint = {};
+  for (let k = 1; k <= L; k++) {
+    for (const d of Object.keys(byLap[k] || {})) {
+      const c = byLap[k][d];
+      if (!c || !ASCIUTTE.includes(c.compound) || c.stint == null) continue;
+      const key = d + '|' + c.stint;
+      const v = (stint[key] ||= { m: c.compound, n: 0, chiuso: false });
+      v.n++;
+      if (c.in_lap) v.chiuso = true;
+    }
+  }
+  // MINIMO 4 GIRI, e non e' pulizia: uno stint di uno o due giri non e' una decisione sulla
+  // gomma, e' una bandiera rossa o un danno. Senza questa soglia il pannello annunciava
+  // "la SOFT dura 1 giro" a Monaco (n=3) e "la MEDIUM dura 1 giro" a Spa — mediane vere di
+  // eventi che non hanno niente a che vedere con quanto regge una gomma.
+  for (const k in stint) if (stint[k].chiuso && stint[k].n >= 4) (durata[stint[k].m] ||= []).push(stint[k].n);
+  const per = {};
+  for (const m of ASCIUTTE) {
+    const v = durata[m] || [];
+    per[m] = {
+      usata: usate.has(m),
+      durata: v.length >= MIN_N
+        ? { stato: MISURATO, giri: mediana(v), n: v.length }
+        : { stato: NON_MISURABILE, n: v.length },
+    };
+  }
+  return {
+    stato: MISURATO, usate: [...usate], bagnato, per_mescola: per,
+    set_non_noti: SET_NON_NOTI,
+    limite_durata: 'e la durata SCELTA dalle squadre in questa gara, non quella possibile',
+  };
+}
+
+/**
+ * La regola delle due mescole, applicata a una scelta. Deterministica: non stima niente.
+ * Torna sempre uno stato dichiarato, mai un silenzio.
+ */
+export function regolaDueMescole(mesc, scelta, giriRimasti) {
+  if (!mesc || mesc.stato !== MISURATO) return { stato: NON_MISURABILE, nota: null };
+  // sul bagnato la regola decade (art. 30.5 lett. m): dirlo, non applicarla di nascosto
+  if (mesc.bagnato)
+    return { stato: FUORI_DOMINIO, ok: true,
+             nota: 'gara bagnata: l obbligo delle due mescole non si applica' };
+  const dopo = new Set([...mesc.usate, ...(scelta ? [scelta] : [])]);
+  if (dopo.size >= 2)
+    return { stato: MISURATO, ok: true,
+             nota: scelta && !mesc.usate.includes(scelta)
+               ? `con questa monti la seconda mescola: obbligo assolto`
+               : 'obbligo delle due mescole gia assolto' };
+  // una sola mescola anche dopo questa sosta -> servira' un'ALTRA sosta
+  const sola = [...dopo][0];
+  return {
+    stato: MISURATO, ok: false, mancante: true,
+    nota: `resteresti solo su ${sola}: serve ancora un altra sosta con una mescola diversa`,
+    limite: giriRimasti != null ? `mancano ${giriRimasti} giri per farla` : null,
+  };
+}
+
 // ============================================================ TUTTI INSIEME
 //
 // Una chiamata sola, allo stato del giro `finoA`. E' quello che il pannello consuma, ed e'

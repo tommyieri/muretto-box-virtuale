@@ -112,8 +112,11 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
           <h3 id="pitTitle">Pit</h3>
           <button class="chiudi" id="pitChiudi" title="Chiudi esplorazione pit">&#10005;</button>
         </div>
-        <div class="pitlap">Pit al giro <b id="pitLapLabel">–</b>
-          <input type="range" id="pitLap" min="2" max="2" value="2"></div>
+        <!-- IL BOX. Prima qui c'era uno slider "pit al giro N", e DUPLICAVA la barra dei
+             giri: portare il cursore al giro 20 e premere BOX fa la stessa domanda. Era
+             anche la causa del bug del "pit nel passato" (pannello aperto al giro 28,
+             gara avanzata al 35, e si continuava a chiedere del 28). Un comando solo. -->
+        <button type="button" class="boxbtn" id="boxBtn">BOX <span id="boxGiro"></span></button>
         <div id="pitKv"></div>
         <div class="pithint">Si apre sul pit <b>adesso</b>; sposta il cursore per pittare pi&ugrave; avanti.
           Rivali congelati al reale &middot; il motore mostra dove rientri, non se conviene.</div>
@@ -137,6 +140,10 @@ const el = id => document.getElementById(id);
 const ROW_H = 44;
 let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams={}, pitloss={}, plMeta={}, neutral={}, teamCol={}, calendario=null;
 let pitstops=null, stopsGara={}, etichettaStop='pit lane';   // durate per-stop f1db (semantica verificata dal generatore)
+// boxGiro = il giro in cui l'utente ha chiamato il box (null = non ancora chiamato).
+// mescolaScelta = la gomma che monterebbe. Sono l'unico stato dell'esplorazione: il giro
+// non si sceglie piu' a parte, e' quello dove sta il cursore quando si preme BOX.
+let boxGiro=null, mescolaScelta=null;
 let curLap=1, selDrv=null, rowEls={}, leaderMemo={}, finestre=null, teamWarned=new Set(), pitLaps={};
 let pista=null, leadCum=null, cumPil=null, teamOfR=null;   // vista pallini (gare con pista_<gara>.json)
 // race control LIVELLO 1 (decisione PO su MOCKUP_RACE_CONTROL_UI.md): le penalita' si
@@ -662,8 +669,7 @@ function openPit(){
   // l'esplorazione ("e se aspetto fino al giro N?"), ma non e' richiesto per avere la
   // risposta. Il freeze e' l'ultimo giro COMPLETATO visibile (curLap-1): pittare al giro
   // IN CORSO (in-lap = curLap) e' quindi sempre possibile. Al giro 1 freeze clampato a 1.
-  const pl=el('pitLap'); pl.min=Math.max(2,curLap); pl.max=race.n_laps;
-  pl.value=pl.min;
+  boxGiro=null; mescolaScelta=null;   // ogni pilota riparte dalla sua domanda
   updatePit();
 }
 function chiudiPit(){ selDrv=null; el('pit').classList.add('hidden');
@@ -672,24 +678,32 @@ function chiudiPit(){ selDrv=null; el('pit').classList.add('hidden');
 function updatePit(){
   // freeze = ultimo giro COMPLETATO visibile: a p=curLap lo schermo mostra la classifica
   // di fine giro curLap-1, ed e' QUELLO lo stato che il motore congela (byLap[freeze]).
-  // LO SLIDER SEGUE LA GARA. openPit lo aggancia al giro in corso, ma se poi il cursore
-  // avanza col pannello aperto il minimo resta indietro: si finisce a chiedere "se pitto
-  // al giro 28" mentre la gara e' al 35 — una sosta NEL PASSATO, con lo scenario degrado
-  // che annuncia "sui prossimi -6 giri". Trovato il 22/07/2026 confrontando il pannello
-  // con la produzione; c'era da prima dell'estrazione, non l'ha introdotto.
-  const pl=el('pitLap'), minOra=Math.max(2,curLap);
-  if (+pl.min !== minOra){ pl.min=minOra; if (+pl.value < minOra) pl.value=minOra; }
-  const L=Math.max(1,curLap-1), pitL=+pl.value;
-  // titolo e label raccontano ADESSO vs esplorazione: "pitta adesso" quando lo slider e'
-  // sul giro in corso, "pitta al giro N" quando l'utente esplora piu' avanti
-  const adesso = pitL === Math.max(2,curLap);
-  el('pitTitle').innerHTML = `Se ${selDrv} pitta ${adesso?'adesso':`al giro ${pitL}`}&hellip; <small>rivali congelati</small>`;
-  el('pitLapLabel').textContent = adesso ? `${pitL} (adesso)` : pitL;
+  // Il giro della sosta e' SEMPRE quello in corso: si sposta il cursore della gara e si
+  // preme BOX. Non c'e' piu' un secondo modo di dire la stessa cosa.
+  const L=Math.max(1,curLap-1), pitL=Math.max(2,curLap);
+  // se la gara e' avanzata dopo la chiamata, la risposta vale per il giro chiamato: si
+  // rifa' la domanda al giro nuovo, invece di lasciare in pagina un numero scaduto
+  if (boxGiro!=null && boxGiro!==pitL) boxGiro=pitL;
+  el('boxGiro').textContent = `giro ${pitL}`;
+  el('boxBtn').classList.toggle('on', boxGiro!=null);
+  el('pitTitle').innerHTML = boxGiro==null
+    ? `${selDrv} <small>&mdash; premi BOX per sapere dove rientra</small>`
+    : `Se ${selDrv} entra <b>adesso</b>&hellip; <small>rivali congelati</small>`;
+  if (boxGiro==null){
+    // prima di chiamare il box: lo stato del pilota, non una risposta che non e stata chiesta
+    const c=race.byLap[L]?.[selDrv];
+    el('pitKv').innerHTML = c
+      ? `<div class="kv"><span class="k">In pista</span><span class="v">giro ${curLap} di ${race.n_laps}`
+        + (c.compound?` &middot; <b>${c.compound.toLowerCase()}</b>`:'')
+        + (typeof c.tyre_age==='number'?` da ${c.tyre_age} giri`:'') + `</span></div>`
+      : `<div class="pitmsg">${selDrv} non &egrave; in pista a questo giro.</div>`;
+    return;
+  }
   const cid = (calendario?.gare || []).find(x => x.gara_demo === race.gara)?.circuitId;
   el('pitKv').innerHTML = pannelloMuretto({
     byLap: race.byLap, nLaps: race.n_laps, pace: race.pace[String(L)], laps: race.laps,
     gara: race.gara, circuitId: cid,
-    driver: selDrv, freezeLap: L, pitLap: pitL,
+    driver: selDrv, freezeLap: L, pitLap: pitL, mescola: mescolaScelta,
     pitLossTabella: pitloss[race.gara] ?? 22.0,
     penalita: penPil[selDrv], nonParten: race.nonParten,
     neutroFondo, ragg, bandeClim,
@@ -700,7 +714,18 @@ el('play').addEventListener('click', ()=>{ clock.toggle(); setPlayIcon(clock.pla
 el('speeds').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b)return;
   clock.setSpeed(+b.dataset.s);
   [...el('speeds').children].forEach(x=>x.classList.toggle('on',x===b)); });
-el('pitLap').addEventListener('input', updatePit);
+el('boxBtn').addEventListener('click', ()=>{
+  boxGiro = boxGiro==null ? Math.max(2,curLap) : null;   // ripremere richiude la risposta
+  if(boxGiro!=null) conta('box');
+  updatePit();
+});
+// i tre bottoni della mescola vivono dentro l'HTML del pannello, che si riscrive a ogni
+// giro: la delega sul contenitore sopravvive alle riscritture, un listener sul bottone no
+el('pitKv').addEventListener('click', e=>{
+  const b=e.target.closest('[data-mesc]'); if(!b) return;
+  mescolaScelta = mescolaScelta===b.dataset.mesc ? null : b.dataset.mesc;
+  updatePit();
+});
 el('pitChiudi').addEventListener('click', chiudiPit);
 el('tabClas').addEventListener('click', ()=>mostraVista('clas'));
 el('tabStrat').addEventListener('click', ()=>mostraVista('strat'));

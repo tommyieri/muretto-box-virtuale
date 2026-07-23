@@ -20,7 +20,8 @@ import { treScenariPit, bandaCircuito } from './pitbande.mjs';
 import { misura as misuraSoste } from './gradino.mjs';
 import { grossi as calcolaGrossi, trafficoRientro, pitLossPilota,
          deriva as calcolaDeriva, deltaPasso, raggruppamento, sogliaDifesa,
-         meteo as cancelloMeteo, penalitaPendente } from './grossi.mjs';
+         meteo as cancelloMeteo, penalitaPendente,
+         mescole as leggiMescole, regolaDueMescole } from './grossi.mjs';
 
 // --- GRADINO DI SOSTA (acceso su decisione PO, 2026-07-22) --------------------
 // Fino al 22/07 il motore non simulava NEMMENO UN GIRO dopo la sosta e non resettava la
@@ -118,6 +119,55 @@ function scenariDegrado(C, L, pitL, loss, present, neutro) {
       <tr><td class="sc-c">centrale</td>${cella(sc.centrale)}</tr>
       <tr><td class="sc-p">pessimistico</td>${cella(sc.pessimistico)}</tr>
     </tbody></table></div>`;
+}
+
+// ---------------------------------------------------------------- la mescola
+// LA SCELTA CHE NON MUOVE I NUMERI, ed e' scritto qui perche' e' il punto piu' facile da
+// sbagliare del pannello. Misurato il 24/07/2026 su 10 gare: gradino p=0,24 · warm-up
+// p=0,58 · degrado p=0,25. Nessuna delle tre differenze fra mescole si distingue dal caso,
+// e su due il segno si rovescia cambiando specificazione. Se questo selettore muovesse il
+// pit-loss o la posizione di rientro, direbbe il contrario del vero.
+//
+// Quindi la mescola qui fa tre cose, tutte verificabili e nessuna stimata:
+//   la REGOLA delle due mescole (vincolo: si conta, non si prevede)
+//   QUANTO E' DURATA finora in questa gara (fatto osservato, con la sua n)
+//   e dice a chiare lettere che sui tempi non cambia niente.
+function righeMescola(C, L, mescolaScelta) {
+  const m = leggiMescole(C.byLap, C.nLaps, L, C.driver);
+  if (!m || m.stato !== 'MISURATO') return '';
+  const giriRimasti = C.nLaps != null ? C.nLaps - L : null;
+  const scelta = mescolaScelta || null;
+  const bottoni = ['SOFT', 'MEDIUM', 'HARD'].map(x => {
+    const v = m.per_mescola[x];
+    const reg = regolaDueMescole(m, x, giriRimasti);
+    const cls = ['mesc-b', x.toLowerCase(), scelta === x ? 'on' : '',
+                 reg.ok === false ? 'viola' : ''].filter(Boolean).join(' ');
+    // "mai vista oggi" diceva il falso accanto a "gia usata": la durata non e' nota,
+    // la mescola si'. Sono due cose diverse e il bottone le mostrava insieme.
+    const dur = v.durata.stato === 'MISURATO'
+      ? `${v.durata.giri.toFixed(0)} giri <i>oggi</i>` : 'durata non nota';
+    return `<button type="button" class="${cls}" data-mesc="${x}">`
+      + `<b>${x}</b><span>${dur}</span>${v.usata ? '<em>gia usata</em>' : ''}</button>`;
+  }).join('');
+  const reg = scelta ? regolaDueMescole(m, scelta, giriRimasti) : null;
+  let avviso = '';
+  if (reg && reg.ok === false)
+    avviso = `<div class="warn">⚠ ${reg.nota}`
+           + (reg.limite ? `<span class="sub">${reg.limite}</span>` : '') + '</div>';
+  else if (reg && reg.stato === 'FUORI_DOMINIO')
+    avviso = `<div class="kv"><span class="k">Regola</span><span class="v dim">${reg.nota}</span></div>`;
+  else if (reg)
+    avviso = `<div class="kv"><span class="k">Regola</span><span class="v">${reg.nota}</span></div>`;
+  return `<div class="mesc">
+      <div class="mesc-h">Che gomma monti</div>
+      <div class="mesc-r">${bottoni}</div>
+      ${avviso}
+      <div class="mesc-n">La mescola <b>non cambia</b> i numeri qui sopra, e non e una
+        semplificazione: misurato sulle 10 gare 2026, la differenza fra mescole su gradino,
+        warm-up e degrado non si distingue dal caso (p 0,24&ndash;0,58). Cambia la
+        <b>regola</b> e quanto la gomma e durata finora.
+        <span class="sub">${m.limite_durata} &middot; ${m.set_non_noti}</span></div>
+    </div>`;
 }
 
 /**
@@ -329,6 +379,7 @@ export function pannelloMuretto(C) {
     ${rigaGradino}
     ${rigaUC}
     ${righeGrossi}
+    ${righeMescola(C, L, C.mescola)}
     ${notaCap}
     ${scenariDegrado(C, L, pitL, loss, present, neutro)}`;
   return { ok: true, html, rientro: r.rientro_pos, su_totale: r.su_totale, motore: r };
