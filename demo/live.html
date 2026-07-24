@@ -20,7 +20,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Live — Muretto Box Virtuale</title>
-<link rel="stylesheet" href="stile.css">
+<link rel="stylesheet" href="stile.css?v=250724c">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>
@@ -69,6 +69,7 @@
     <div id="live-nota" class="lv-nota">Quando una sessione &egrave; in corso, qui compaiono le auto in tempo reale
       (posizioni dal feed, ritardo di distribuzione ~4&nbsp;s). Fuori sessione la mappa resta vuota:
       niente numeri finti, mai.</div>
+    <a id="live-invito" class="live-invito" href="gara.html?g=Belgio" hidden>&#9654; Nessuna gara in diretta adesso &mdash; prova il simulatore su una gara gi&agrave; corsa</a>
   </section>
 
   <!-- IL MURETTO IN DIRETTA. La stessa domanda e lo stesso pannello di gara.html
@@ -139,6 +140,10 @@
   .lv-conn{width:.55rem;height:.55rem;border-radius:50%;background:#5a6272;margin-left:auto}
   .lv-conn.ok{background:#3fbf6f}.lv-conn.retry{background:#f5a03c}
   .lv-nota{color:#8b93a5;font-size:.8rem;margin-top:.5rem}
+  .live-invito{display:inline-block;margin-top:.7rem;padding:.55rem .85rem;border-radius:9px;
+    background:#22c55e;color:#04140a;font:800 .82rem/1 -apple-system,Arial;text-decoration:none;
+    letter-spacing:.2px;transition:filter .15s}
+  .live-invito:hover{filter:brightness(1.08)} .live-invito[hidden]{display:none}
 
   /* R2 — torre di cronometraggio live (card con settori + micro-settori) */
   .tw-list{display:flex;flex-direction:column;gap:.15rem}
@@ -248,8 +253,11 @@ async function boot(){
   if (params.get('demo')) return bootDemo(params.get('demo'), params.get('lap'));
   const cal = await (await fetch('data/calendario_2026.json')).json();
   const ora = new Date();
-  // il weekend della prossima gara in calendario
-  const g = cal.gare.find(x => new Date(x.data+'T23:59:59') >= ora) || cal.gare[cal.gare.length-1];
+  // il weekend della prossima gara in calendario; ?gp=<gara> forza un circuito preciso
+  // (collaudo: la mappa deve combaciare con la sessione rigiocata dal collettore --replay).
+  const gp = params.get('gp');
+  const g = (gp && cal.gare.find(x => x.nome===gp || x.gara_demo===gp))
+    || cal.gare.find(x => new Date(x.data+'T23:59:59') >= ora) || cal.gare[cal.gare.length-1];
   const sess = Object.entries(g.sessioni || {}).map(([k,s]) => ({k, ...quando(s)}))
     .filter(s=>s.d).sort((a,b)=>a.d-b.d);
   const prossima = sess.find(s => s.d >= ora);
@@ -318,9 +326,12 @@ async function bootMappa(g){
   // Fuori sessione: se c'e' una qualifica salvata, la torre la mostra (R2b);
   // altrimenti resta vuota. La mappa resta sempre vuota fuori sessione.
   let statoTorre = null;
+  const dotNav = document.querySelector('.nav a .dot-live');
   setInterval(() => {
     const vivo = client.etaUltimoEvento() < cfg.HEARTBEAT_LIVE_S;
     mappa.setAcceso(vivo);
+    if (dotNav) dotNav.classList.toggle('on', vivo);   // il pallino Live pulsa SOLO se c'e' davvero
+    el('live-invito').hidden = vivo;                    // fuori sessione: invita a provare il simulatore
     const b = el('live-badge');
     if (vivo){
       if (statoTorre !== 'live'){       // passaggio a live: pulisci il persistente
