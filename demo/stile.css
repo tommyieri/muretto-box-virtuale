@@ -98,16 +98,37 @@ h1, h2, h3 { font-family: var(--disp); letter-spacing: .5px; }
   content: ""; position: absolute; left: 12px; right: 12px; bottom: 0; height: 3px;
   background: var(--brand); border-radius: 2px 2px 0 0;
 }
+/* pallino Live: SPENTO di default (grigio, fermo) — non promette una diretta che non c'e';
+   si accende (rosso, pulsa) solo con .on, aggiunto da live.html quando una sessione e' in corso. */
 .nav a .dot-live {
-  width: 6px; height: 6px; border-radius: 50%; background: var(--brand);
+  width: 6px; height: 6px; border-radius: 50%; background: #5a6272;
   display: inline-block; margin-right: 6px;
-  animation: pulse 1.6s ease-in-out infinite;
 }
+.nav a .dot-live.on { background: var(--brand); animation: pulse 1.6s ease-in-out infinite; }
 @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
+/* glossario: il gergo diventa toccabile (glossario.mjs) — hover/tap -> spiegazione in parole piane */
+.gloss { border-bottom: 1px dotted currentColor; cursor: help; }
+.gloss:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 2px; }
+.gloss-tip {
+  position: absolute; z-index: 60; max-width: 264px; padding: .5rem .65rem; border-radius: 8px;
+  background: #0f1620; border: 1px solid #2a333f; color: #e8edf5;
+  font: 400 .82rem/1.42 -apple-system, Arial; box-shadow: 0 10px 28px rgba(0,0,0,.55);
+  pointer-events: none; display: none;
+}
 @media (max-width: 640px) {
   .brand-name small { display: none; }
   .nav a { padding: 0 9px; font-size: 13px; letter-spacing: 1.2px; }
   .topbar { gap: 8px; padding: 0 12px; }
+}
+/* schermi stretti: solo il marchio (piu' spazio alla nav) e nav scorrevole in orizzontale,
+   cosi' NESSUNA voce (era "Analisi") finisce fuori dal bordo e irraggiungibile. */
+@media (max-width: 480px) {
+  .brand-name { display: none; }
+  .topbar { gap: 6px; padding: 0 10px; }
+  .nav { gap: 0; overflow-x: auto; -webkit-overflow-scrolling: touch;
+    scrollbar-width: none; -ms-overflow-style: none; mask-image: linear-gradient(90deg, #000 92%, transparent); }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a { padding: 0 8px; font-size: 12px; letter-spacing: .6px; flex: 0 0 auto; }
 }
 
 /* briciola contestuale (gara / scheda) */
@@ -366,9 +387,11 @@ a.gpcard:hover::after { right: 0; }
 .evtl-leg .sw.rcp { background: var(--pen); height: 9px; width: 3px; }
 
 /* banner bandiera */
-.flag { display: none; align-items: center; justify-content: center; gap: 10px; height: 44px;
-  margin: 10px 0; border-radius: 10px; font: 800 15px/1 var(--mono); letter-spacing: 2px;
+.flag { display: none; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  min-height: 44px; padding: 8px 16px; margin: 10px 0; border-radius: 10px;
   color: #1a0f00; background-size: 40px 40px; animation: flagmove 1s linear infinite; }
+.flag-t { font: 800 14.5px/1.1 var(--mono); letter-spacing: 2px; }
+.flag-s { font: 600 11.5px/1.35 var(--sans); letter-spacing: .2px; text-align: center; max-width: 62ch; opacity: .96; }
 .flag.on { display: flex; }
 .flag.sc { background: repeating-linear-gradient(45deg, #ffb454 0 14px, #e8890f 14px 28px); }
 .flag.vsc { background: repeating-linear-gradient(45deg, #ffe86a 0 14px, #e6c020 14px 28px); color: #2a2200; }
@@ -614,6 +637,9 @@ a.gpcard:hover::after { right: 0; }
 .live-mock .mock-riga.testa { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; }
 .mock-nota { display: none; }
 .anl { padding: 12px 14px; }
+.anl-spiega { color: var(--dim); font-size: .88rem; line-height: 1.5; margin: .2rem 0 .7rem; max-width: 62ch; }
+.anl-spiega b { color: var(--txt); }
+.anl-nb { display: block; color: var(--dim); font-size: .82rem; margin-top: .35rem; opacity: .82; }
 .anl-riga { display: grid; grid-template-columns: 68px 1fr 44px; gap: 10px; align-items: center;
   height: 27px; color: var(--txt); transition: background .12s; }
 .anl-riga:hover { text-decoration: none; background: rgba(255,255,255,.03); }

@@ -199,3 +199,43 @@ export function evaluatePit({ byLap, nLaps, pace, driver, freezeLap, pitLap, pit
     // Additivo: la UI non lo guarda, il golden non lo confronta.
     ordine_previsto: ord.map(([d, t]) => [d, t]) };
 }
+
+// ============================================================================
+// TRAIETTORIA PER-GIRO — additiva, per l'ANIMAZIONE del fantasma.
+// ----------------------------------------------------------------------------
+// evaluatePit risponde a UN giro (lo snapshot all'orizzonte): "dove rientri". Per
+// FAR VEDERE la sosta — il pallino che entra in pit-lane, monta gomma nuova e poi
+// risale sorpassando i rivali, sulla pista E sulla torre dei tempi — serve il cum di
+// OGNI giro dal congelamento al traguardo, non solo l'endpoint.
+//
+// NON tocca evaluatePit ne' i kernel congelati (simulate/simulaConSoste): chiama lo
+// stesso simulaConSoste, con gli STESSI `pits` (incl. le soste dei rivali sotto SC) e
+// gli stessi gradino/deriva. Percio' al giro della risposta il cum coincide bit-a-bit
+// con evaluatePit: l'animazione non puo' contraddire il numero del pannello (verificato
+// da test_traiettoria.mjs). Costo: O(passi^2 * piloti), trascurabile (<100k op / gara).
+export function traiettoriaPit({ byLap, nLaps, pace, driver, freezeLap, pitLap, pitLoss,
+                                 present, gradino = null, deriva = null, ZONE = 1.5 }) {
+  const L = freezeLap;
+  present = present.filter(d => typeof byLap[L]?.[d]?.cum_time === 'number' && pace[d] != null);
+  if (!present.includes(driver)) return null;
+  const state = {}; for (const d of present) state[d] = { cum_time: byLap[L][d].cum_time };
+  const giroNeutralizzato = !!(byLap[pitLap] && byLap[pitLap][driver] && byLap[pitLap][driver].neutralized);
+  // IDENTICO a evaluatePit: sotto SC i rivali a pari giro ancora al 1° stint si fermano con te.
+  const pits = [{ driver, lap: pitLap, loss: pitLoss }];
+  if (SOSTE_RIVALI_SC && giroNeutralizzato) {
+    for (const d of stessoGiroReale(byLap, L, nLaps, driver, present)) {
+      if (d === driver) continue;
+      if (byLap[L][d] && byLap[L][d].stint === 1) pits.push({ driver: d, lap: pitLap, loss: pitLoss });
+    }
+  }
+  const laps = [L], cumByLap = { [L]: {} };
+  for (const d of present) cumByLap[L][d] = state[d].cum_time;   // giro di congelamento = reale
+  const maxStep = nLaps - L;
+  for (let k = 1; k <= maxStep; k++) {
+    const fin = simulaConSoste({ state, pace, freezeLap: L, steps: k, ZONE,
+                                 pits, gradino, deriva, instradato: driver });
+    const lap = L + k; laps.push(lap); cumByLap[lap] = {};
+    for (const d of present) if (fin[d] != null) cumByLap[lap][d] = fin[d];
+  }
+  return { laps, cumByLap, present, freezeLap: L, pitLap, driver, soste_rivali: pits.length - 1 };
+}

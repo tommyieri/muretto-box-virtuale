@@ -101,14 +101,30 @@ export async function creaPista({ canvas, url }) {
     G.clearRect(0, 0, canvas.width, canvas.height);
     tracciato();
     if (spento) return;              // legge del replay: pallini spenti, resta il nastro
-    for (const d of dots) {
+    // il fantasma (d.ghost) si disegna PER ULTIMO, sopra tutti; i rivali (d.dim) sbiaditi
+    const ord = [...dots].sort((a, b) => (a.ghost ? 1 : 0) - (b.ghost ? 1 : 0));
+    for (const d of ord) {
       const [vx, vy] = posizione(d);
       const X = proj.x(vx), Y = proj.y(vy);
-      G.beginPath(); G.arc(X, Y, 5.5 * dpr, 0, 7);
+      const rr = d.ghost ? 8 * dpr : 5.5 * dpr;
+      if (d.dim) G.globalAlpha = 0.4;
+      if (d.ghost) { G.shadowColor = d.colore; G.shadowBlur = 14 * dpr; }
+      G.beginPath(); G.arc(X, Y, rr, 0, 7);
       G.fillStyle = d.colore; G.fill();
-      G.lineWidth = 1.2 * dpr; G.strokeStyle = 'rgba(255,255,255,.85)'; G.stroke();
-      G.fillStyle = '#fff'; G.font = `bold ${9 * dpr}px -apple-system,Arial`;
-      G.fillText(d.sigla, X + 7 * dpr, Y + 3 * dpr);
+      G.shadowBlur = 0;
+      G.lineWidth = (d.ghost ? 2.4 : 1.2) * dpr;
+      G.strokeStyle = d.ghost ? '#fff' : 'rgba(255,255,255,.85)'; G.stroke();
+      G.globalAlpha = 1;
+      if (d.pit) {                          // in sosta ai box: anello tratteggiato + etichetta BOX
+        G.setLineDash([3 * dpr, 2.5 * dpr]);
+        G.strokeStyle = 'rgba(120,220,160,.95)'; G.lineWidth = 2 * dpr;
+        G.beginPath(); G.arc(X, Y, rr + 4.5 * dpr, 0, 7); G.stroke();
+        G.setLineDash([]);
+        G.fillStyle = 'rgba(120,220,160,.95)'; G.font = `bold ${8.5 * dpr}px -apple-system,Arial`;
+        G.fillText('BOX', X - 10 * dpr, Y - (rr + 8 * dpr));
+      }
+      G.fillStyle = '#fff'; G.font = `bold ${(d.ghost ? 11 : 9) * dpr}px -apple-system,Arial`;
+      G.fillText(d.sigla, X + (d.ghost ? 9 : 7) * dpr, Y + 3 * dpr);
     }
   }
 

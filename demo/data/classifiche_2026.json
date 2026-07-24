@@ -1,5 +1,5 @@
 {
- "_nota": "GENERATO da gen_classifiche.py (f1db v2026.10.0, standings canonici al round indicato in aggiornato_al). Non modificare a mano.",
+ "_nota": "GENERATO da gen_classifiche.py (f1db v2026.10.1, standings canonici al round indicato in aggiornato_al). Non modificare a mano.",
  "aggiornato_al": {
   "round": 10,
   "raceId_f1db": 1159,
@@ -257,7 +257,7 @@
    "pos": 1,
    "id": "mercedes",
    "nome": "Mercedes",
-   "punti": 333.0,
+   "punti": 358.0,
    "vittorie": 8,
    "distacco": 0.0,
    "team_demo": "Mercedes"
@@ -266,45 +266,45 @@
    "pos": 2,
    "id": "ferrari",
    "nome": "Ferrari",
-   "punti": 255.0,
+   "punti": 285.0,
    "vittorie": 2,
-   "distacco": 78.0,
+   "distacco": 73.0,
    "team_demo": "Ferrari"
   },
   {
    "pos": 3,
    "id": "mclaren",
    "nome": "McLaren",
-   "punti": 179.0,
+   "punti": 195.0,
    "vittorie": 0,
-   "distacco": 154.0,
+   "distacco": 163.0,
    "team_demo": "McLaren"
   },
   {
    "pos": 4,
    "id": "red-bull",
    "nome": "Red Bull",
-   "punti": 128.0,
+   "punti": 151.0,
    "vittorie": 0,
-   "distacco": 205.0,
+   "distacco": 207.0,
    "team_demo": "Red Bull Racing"
   },
   {
    "pos": 5,
    "id": "alpine",
    "nome": "Alpine",
-   "punti": 60.0,
+   "punti": 61.0,
    "vittorie": 0,
-   "distacco": 273.0,
+   "distacco": 297.0,
    "team_demo": "Alpine"
   },
   {
    "pos": 6,
    "id": "racing-bulls",
    "nome": "Racing Bulls",
-   "punti": 59.0,
+   "punti": 61.0,
    "vittorie": 0,
-   "distacco": 274.0,
+   "distacco": 297.0,
    "team_demo": "Racing Bulls"
   },
   {
@@ -313,7 +313,7 @@
    "nome": "Haas",
    "punti": 21.0,
    "vittorie": 0,
-   "distacco": 312.0,
+   "distacco": 337.0,
    "team_demo": "Haas F1 Team"
   },
   {
@@ -322,16 +322,16 @@
    "nome": "Williams",
    "punti": 11.0,
    "vittorie": 0,
-   "distacco": 322.0,
+   "distacco": 347.0,
    "team_demo": "Williams"
   },
   {
    "pos": 9,
    "id": "audi",
    "nome": "Audi",
-   "punti": 6.0,
+   "punti": 10.0,
    "vittorie": 0,
-   "distacco": 327.0,
+   "distacco": 348.0,
    "team_demo": "Audi"
   },
   {
@@ -340,7 +340,7 @@
    "nome": "Aston Martin",
    "punti": 1.0,
    "vittorie": 0,
-   "distacco": 332.0,
+   "distacco": 357.0,
    "team_demo": "Aston Martin"
   },
   {
@@ -349,7 +349,7 @@
    "nome": "Cadillac",
    "punti": 0.0,
    "vittorie": 0,
-   "distacco": 333.0,
+   "distacco": 358.0,
    "team_demo": "Cadillac"
   }
  ]
