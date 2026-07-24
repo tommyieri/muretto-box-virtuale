@@ -20,7 +20,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Live — Muretto Box Virtuale</title>
-<link rel="stylesheet" href="stile.css?v=250724d">
+<link rel="stylesheet" href="stile.css?v=250724e">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>
@@ -370,8 +370,9 @@ async function bootMappa(g){
 // non esiste, quindi il pannello non si accende — ed e' giusto: senza giri di gara e senza
 // un ordine di corsa, "se lo fermo adesso dove rientra" non e' una domanda.
 async function creaMurettoLive(g, deps = {}){
-  const [{ creaByLapLive }, { pannelloMuretto }, { creaGhostPlay }] = await Promise.all([
-    import('./live_bylap.mjs?v=250724a'), import('./muretto.mjs?v=250724a'), import('./ghostplay.mjs?v=250724c')]);
+  const [{ creaByLapLive }, { pannelloMuretto }, { creaGhostPlay }, { attaccaGlossario }] = await Promise.all([
+    import('./live_bylap.mjs?v=250724a'), import('./muretto.mjs?v=250724a'), import('./ghostplay.mjs?v=250724c'),
+    import('./glossario.mjs?v=250724e')]);
   const B = deps.B || creaByLapLive();
   // pista/mappa/torre servono alla SOSTA MESSA IN SCENA; pausaLive ferma i dati live durante
   // la simulazione; ripristinaTorre ridisegna la torre statica (usato dalla modalità demo).
@@ -494,6 +495,7 @@ async function creaMurettoLive(g, deps = {}){
     kv.innerHTML = r.html
       + (provPitLoss ? `<div class="kv"><span class="k">Riferimento</span>
            <span class="v dim">pit-loss di partenza: ${provPitLoss}</span></div>` : '');
+    attaccaGlossario(kv);   // il gergo diventa toccabile (spiegazione in parole piane)
     lastRes = r;
     if (r && r.ok && r.sim && r.sim.laps && r.sim.laps.length > 1) el('mu-sim').hidden = false;
   };

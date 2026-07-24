@@ -11,7 +11,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gara — Muretto Box Virtuale</title>
-<link rel="stylesheet" href="stile.css?v=250724d">
+<link rel="stylesheet" href="stile.css?v=250724e">
 <style>
   /* SIMULAZIONE FANTASMA — controlli della "sosta messa in scena" (additivo, scoped) */
   .simbtn{ display:block; width:100%; margin:.5rem 0 .2rem; padding:.62rem .8rem; border:0;
@@ -163,6 +163,7 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
 // stessa domanda sono il modo piu' sicuro di ritrovarsi con due numeri diversi.
 import { pannelloMuretto } from './muretto.mjs?v=250724a';
 import { creaGhostPlay } from './ghostplay.mjs?v=250724c';
+import { attaccaGlossario } from './glossario.mjs?v=250724e';
 import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs?v=220726a';
 const BUILD = '250724c-sim';
 const el = id => document.getElementById(id);
@@ -749,6 +750,7 @@ function updatePit(){
     neutroFondo, ragg, bandeClim,
   });
   el('pitKv').innerHTML = res.html;
+  attaccaGlossario(el('pitKv'));    // il gergo (pit-loss, undercut, a pari giro…) diventa toccabile
   lastPitRes = res;                 // per la messa in scena (bottone "Guarda la sosta")
   if (!simMode) mostraSimBtn(res);  // durante la simulazione la barra resta quella attiva
 }

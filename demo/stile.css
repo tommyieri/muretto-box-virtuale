@@ -106,6 +106,15 @@ h1, h2, h3 { font-family: var(--disp); letter-spacing: .5px; }
 }
 .nav a .dot-live.on { background: var(--brand); animation: pulse 1.6s ease-in-out infinite; }
 @keyframes pulse { 0%,100% { opacity: 1 } 50% { opacity: .35 } }
+/* glossario: il gergo diventa toccabile (glossario.mjs) — hover/tap -> spiegazione in parole piane */
+.gloss { border-bottom: 1px dotted currentColor; cursor: help; }
+.gloss:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; border-radius: 2px; }
+.gloss-tip {
+  position: absolute; z-index: 60; max-width: 264px; padding: .5rem .65rem; border-radius: 8px;
+  background: #0f1620; border: 1px solid #2a333f; color: #e8edf5;
+  font: 400 .82rem/1.42 -apple-system, Arial; box-shadow: 0 10px 28px rgba(0,0,0,.55);
+  pointer-events: none; display: none;
+}
 @media (max-width: 640px) {
   .brand-name small { display: none; }
   .nav a { padding: 0 9px; font-size: 13px; letter-spacing: 1.2px; }
