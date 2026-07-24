@@ -128,5 +128,13 @@ export function evaluatePit({ byLap, nLaps, pace, driver, freezeLap, pitLap, pit
     giro_neutralizzato:giroNeutralizzato,
     aria_libera:null, perdita_primi3:null, undercut:null, overcut:null, delta_strategia:null, pit_exit_offset:null,
     // --- FATTI GREZZI ADDITIVI (non toccano rientro_pos/davanti/dietro) ---
-    neutralizzazione_gara: ng };
+    neutralizzazione_gara: ng,
+    // L'ORDINE PREVISTO PER INTERO: [sigla, tempo simulato a fine finestra], dal primo
+    // all'ultimo. rientro_pos e' l'indice del pilota dentro questo, ma il backtest ne ha
+    // bisogno TUTTO: la classifica vera si legge sui piloti ARRIVATI, e per confrontare le
+    // due sulla stessa popolazione bisogna poter ri-classificare la previsione sullo stesso
+    // insieme. Senza, un rivale che si ritira nella finestra sposta di +1 il rango previsto
+    // di tutti quelli sotto di lui, e l'errore che ne esce e' del banco, non del motore.
+    // Additivo: la UI non lo guarda, il golden non lo confronta.
+    ordine_previsto: ord.map(([d, t]) => [d, t]) };
 }

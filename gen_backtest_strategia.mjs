@@ -130,14 +130,32 @@ function rigioca(gara, byLap, N, drv, P) {
   const gapDietro = dietroVero
     ? byLap[Lfin][dietroVero].cum_time - byLap[Lfin][drv].cum_time : null;
 
+  // LA PREVISIONE, RILETTA SULLA STESSA POPOLAZIONE DELLA REALTA'. r.rientro_pos e' contato
+  // su TUTTI i simulabili al congelamento; posVera solo sui VIVI a fine finestra. Confrontarli
+  // e' confrontare due classifiche con denominatori diversi: se un rivale davanti al pilota si
+  // ritira nella finestra, la sua posizione vera migliora di 1 senza che il motore c'entri, e
+  // quel +1 finiva addebitato al modello. Cinque delle dieci gare l'hanno trovato
+  // indipendentemente (Cina, Giappone, Australia, Canada, GB). Correzione del BANCO, non del
+  // prodotto: al congelamento nessuno sa chi si ritirera'. Si ri-classifica la previsione sui
+  // soli piloti arrivati, poi si legge li' il rango del pilota.
+  const prevViva = (r.ordine_previsto || []).filter(([d]) => vivi.includes(d));
+  const prevPosViva = prevViva.findIndex(([d]) => d === drv) + 1;
+  const prevPos = prevPosViva > 0 ? prevPosViva : r.rientro_pos;   // ripiego difensivo
+
   // --- la contaminazione ------------------------------------------------------
+  // Si parte da k = L, non L+1, e si conta in_lap OPPURE out_lap: la perdita di una sosta
+  // si consuma su DUE giri, e un rivale che ENTRA al giro di congelamento esce dentro la
+  // finestra pagando un out-lap che il motore non gli addebita. Contando solo in_lap da L+1
+  // quel rivale non risultava "fermato" e la sosta finiva etichettata PULITA mentre non lo
+  // era — l'etichetta piu' importante mentiva su se stessa (trovato in Australia: SAI@11
+  // valeva l'intero errore della sosta di ALB e non compariva).
   const rivaliFermati = [];
   let neutraDentro = false;
-  for (let k = L + 1; k <= Lfin; k++) {
+  for (let k = L; k <= Lfin; k++) {
     for (const d of insieme) {
       const c = byLap[k]?.[d];
       if (!c) continue;
-      if (d !== drv && c.in_lap) rivaliFermati.push(`${d}@${k}`);
+      if (d !== drv && (c.in_lap || c.out_lap)) rivaliFermati.push(`${d}@${k}`);
     }
     // NEUTRALIZZAZIONE = LA MAGGIORANZA DEL CAMPO, non una macchina qualsiasi.
     // Prima bastava UN'auto con il flag per etichettare la finestra come neutralizzata: con
@@ -150,13 +168,25 @@ function rigioca(gara, byLap, N, drv, P) {
     if (celle.length >= 6 && celle.filter(c => c.neutralized).length > celle.length / 2)
       neutraDentro = true;
   }
-  const esito = neutraDentro ? 'NEUTRA'
+  // ETICHETTA A DUE ASSI, non gerarchica. Prima NEUTRA batteva SOSTE_RIVALI, ma la
+  // neutralizzazione E' la ragione per cui i rivali si fermano: la gerarchia faceva assorbire
+  // il secondo dal primo, e il bias del secchio NEUTRA veniva letto come "effetto della
+  // bandiera" quando era quasi tutto campo-congelato. Su tutte le gare, 136 dei 146 NEUTRA
+  // avevano ANCHE rivali fermi; i 10 NEUTRA PURI si comportano come i PULITA (trovato in
+  // Australia, Giappone). Ora i due assi restano separati e l'etichetta dice quale.
+  const esito = neutraDentro
+    ? (rivaliFermati.length ? 'NEUTRA_SOSTE' : 'NEUTRA_PURA')
     : (rivaliFermati.length ? 'SOSTE_RIVALI' : 'PULITA');
+  // fondo-insieme: quando la previsione e' gia' ultima (o prima), l'errore e' a UNA CODA
+  // sola — il motore non puo' sbagliare mettendoti troppo avanti. 79 casi su 290, e li'
+  // dentro gli errori negativi sono esattamente zero: e' saturazione, non bravura. Va
+  // marcato, o le PULITE sembrano piu' precise di quanto siano (Giappone, Monaco).
+  const fondoInsieme = prevPos === 1 || prevPos === prevViva.length;
 
   return {
     esito, gara, drv, giro_sosta: P, freeze: L, giro_verifica: Lfin, orizzonte,
-    // la previsione
-    prev_pos: r.rientro_pos, prev_su: r.su_totale,
+    // la previsione, contata sulla stessa popolazione della realta'
+    prev_pos: prevPos, prev_su: prevViva.length, prev_pos_grezza: r.rientro_pos,
     prev_davanti: r.davanti_ho, prev_gap_avanti: r.gap_ahead,
     prev_dietro: r.dietro_esco, prev_gap_dietro: r.gap_behind,
     // la realta'
@@ -164,7 +194,8 @@ function rigioca(gara, byLap, N, drv, P) {
     vero_davanti: davantiVero, vero_gap_avanti: gapAvanti,
     vero_dietro: dietroVero, vero_gap_dietro: gapDietro,
     // lo scarto
-    errore_pos: r.rientro_pos - posVera,
+    errore_pos: prevPos - posVera,
+    fondo_insieme: fondoInsieme,
     davanti_azzeccato: r.davanti_ho === davantiVero,
     dietro_azzeccato: r.dietro_esco === dietroVero,
     errore_gap_avanti: (r.gap_ahead != null && gapAvanti != null) ? r.gap_ahead - gapAvanti : null,
@@ -207,25 +238,33 @@ export function backtest(gare = GARE, filtroDrv = null) {
 const med = v => { if (!v.length) return null; const s = [...v].sort((a, b) => a - b), m = s.length >> 1;
   return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
 
+function _riga(v) {
+  const err = v.map(c => c.errore_pos);
+  return {
+    n: v.length,
+    errore_mediano: med(err.map(Math.abs)),
+    errore_medio_con_segno: +(err.reduce((a, b) => a + b, 0) / err.length).toFixed(3),
+    esatte: v.filter(c => c.errore_pos === 0).length,
+    entro_1: v.filter(c => Math.abs(c.errore_pos) <= 1).length,
+    davanti_azzeccato: v.filter(c => c.davanti_azzeccato).length,
+    dietro_azzeccato: v.filter(c => c.dietro_azzeccato).length,
+    a_fondo_insieme: v.filter(c => c.fondo_insieme).length,
+  };
+}
+
 export function riassunto(casi) {
   const buoni = casi.filter(c => c.esito && c.esito !== 'ROTTA');
   const per = {};
-  for (const e of ['PULITA', 'SOSTE_RIVALI', 'NEUTRA']) {
+  for (const e of ['PULITA', 'SOSTE_RIVALI', 'NEUTRA_PURA', 'NEUTRA_SOSTE']) {
     const v = buoni.filter(c => c.esito === e);
-    if (!v.length) { per[e] = { n: 0 }; continue; }
-    const err = v.map(c => c.errore_pos);
-    per[e] = {
-      n: v.length,
-      errore_mediano: med(err.map(Math.abs)),
-      errore_medio_con_segno: +(err.reduce((a, b) => a + b, 0) / err.length).toFixed(3),
-      esatte: v.filter(c => c.errore_pos === 0).length,
-      entro_1: v.filter(c => Math.abs(c.errore_pos) <= 1).length,
-      davanti_azzeccato: v.filter(c => c.davanti_azzeccato).length,
-      dietro_azzeccato: v.filter(c => c.dietro_azzeccato).length,
-    };
+    per[e] = v.length ? _riga(v) : { n: 0 };
   }
+  // la riga che misura DAVVERO il modello: campo fermo E previsione non saturata al fondo.
+  const puliteVere = buoni.filter(c => c.esito === 'PULITA' && !c.fondo_insieme);
   return { totali: casi.length, valutabili: buoni.length,
-           rotte: casi.filter(c => c.esito === 'ROTTA').length, per_esito: per };
+           rotte: casi.filter(c => c.esito === 'ROTTA').length,
+           per_esito: per,
+           pulite_non_saturate: puliteVere.length ? _riga(puliteVere) : { n: 0 } };
 }
 
 // ------------------------------------------------------------------ a mano
@@ -243,18 +282,22 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   console.log('='.repeat(100));
   console.log(`  soste trovate: ${R.totali}   valutabili: ${R.valutabili}   non valutabili: ${R.rotte}`);
   console.log();
-  console.log(`  ${'situazione'.padEnd(16)} ${'n'.padStart(4)} ${'|err| mediano'.padStart(14)} ${'con segno'.padStart(10)} `
-    + `${'esatte'.padStart(8)} ${'entro 1'.padStart(8)} ${'davanti'.padStart(8)} ${'dietro'.padStart(8)}`);
-  for (const [e, v] of Object.entries(R.per_esito)) {
-    if (!v.n) { console.log(`  ${e.padEnd(16)} ${String(0).padStart(4)}   —`); continue; }
-    console.log(`  ${e.padEnd(16)} ${String(v.n).padStart(4)} ${String(v.errore_mediano).padStart(14)} `
+  const riga = (nome, v) => {
+    if (!v.n) { console.log(`  ${nome.padEnd(22)} ${String(0).padStart(4)}   —`); return; }
+    console.log(`  ${nome.padEnd(22)} ${String(v.n).padStart(4)} ${String(v.errore_mediano).padStart(13)} `
       + `${String(v.errore_medio_con_segno).padStart(10)} ${(v.esatte + '/' + v.n).padStart(8)} `
       + `${(v.entro_1 + '/' + v.n).padStart(8)} ${(v.davanti_azzeccato + '/' + v.n).padStart(8)} `
       + `${(v.dietro_azzeccato + '/' + v.n).padStart(8)}`);
-  }
-  console.log('\n  PULITA = nessun rivale si e fermato e niente SC nella finestra: li il modello');
-  console.log('  risponde da solo, ed e l unica riga che misura NOI. Le altre misurano quanto');
-  console.log('  spesso il mondo si muove mentre il campo e congelato.');
+  };
+  console.log(`  ${'situazione'.padEnd(22)} ${'n'.padStart(4)} ${'|err| mediano'.padStart(13)} ${'con segno'.padStart(10)} `
+    + `${'esatte'.padStart(8)} ${'entro 1'.padStart(8)} ${'davanti'.padStart(8)} ${'dietro'.padStart(8)}`);
+  for (const [e, v] of Object.entries(R.per_esito)) riga(e, v);
+  console.log('  ' + '-'.repeat(88));
+  riga('PULITA non saturata', R.pulite_non_saturate);
+  console.log('\n  PULITA NON SATURATA e l unica riga che misura NOI: campo fermo (niente rivali');
+  console.log('  che si fermano, niente neutralizzazione) E previsione non incollata al fondo o');
+  console.log('  alla testa dell insieme, dove l errore e a una coda sola e sembra bravura.');
+  console.log('  Gli altri secchi misurano quanto spesso il mondo si muove col campo congelato.');
 
   if (args[0]) {
     console.log('\n' + '-'.repeat(100));
