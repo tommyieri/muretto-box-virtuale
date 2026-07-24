@@ -387,9 +387,11 @@ a.gpcard:hover::after { right: 0; }
 .evtl-leg .sw.rcp { background: var(--pen); height: 9px; width: 3px; }
 
 /* banner bandiera */
-.flag { display: none; align-items: center; justify-content: center; gap: 10px; height: 44px;
-  margin: 10px 0; border-radius: 10px; font: 800 15px/1 var(--mono); letter-spacing: 2px;
+.flag { display: none; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  min-height: 44px; padding: 8px 16px; margin: 10px 0; border-radius: 10px;
   color: #1a0f00; background-size: 40px 40px; animation: flagmove 1s linear infinite; }
+.flag-t { font: 800 14.5px/1.1 var(--mono); letter-spacing: 2px; }
+.flag-s { font: 600 11.5px/1.35 var(--sans); letter-spacing: .2px; text-align: center; max-width: 62ch; opacity: .96; }
 .flag.on { display: flex; }
 .flag.sc { background: repeating-linear-gradient(45deg, #ffb454 0 14px, #e8890f 14px 28px); }
 .flag.vsc { background: repeating-linear-gradient(45deg, #ffe86a 0 14px, #e6c020 14px 28px); color: #2a2200; }

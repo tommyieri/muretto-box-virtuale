@@ -11,7 +11,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gara — Muretto Box Virtuale</title>
-<link rel="stylesheet" href="stile.css?v=250724e">
+<link rel="stylesheet" href="stile.css?v=250724f">
 <style>
   /* SIMULAZIONE FANTASMA — controlli della "sosta messa in scena" (additivo, scoped) */
   .simbtn{ display:block; width:100%; margin:.5rem 0 .2rem; padding:.62rem .8rem; border:0;
@@ -92,7 +92,7 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
       </div>
       <div class="evtl-leg" id="evtlLeg" style="visibility:hidden">
         <i><span class="sw sc"></span>Safety Car</i>
-        <i><span class="sw vsc"></span>Virtual SC</i>
+        <i><span class="sw vsc"></span>Virtual Safety Car</i>
         <i id="legrf" style="display:none"><span class="sw rf"></span>Bandiera rossa</i>
         <i><span class="sw pitsw"></span>pit stop</i>
         <i id="legrcg" style="display:none"><span class="sw rcg"></span>bandiera gialla</i>
@@ -583,11 +583,19 @@ function frame(p){
   el('evtl').setAttribute('aria-valuenow', curLap);
   const ph=fase(finestre,curLap);
   el('phase').className='phase '+(ph?ph.toLowerCase():'run');
-  el('phase').textContent=ph||'in corso';
+  // pillola fase in parole piene (mai gli acronimi: "RF" non lo capisce nessuno)
+  el('phase').textContent = ph ? ({SC:'Safety Car', VSC:'Virtual SC', RF:'Bandiera rossa'}[ph]) : 'in corso';
   const fl=el('flag');
-  const testoFlag={SC:'⚑ SAFETY CAR', VSC:'⚑ VIRTUAL SAFETY CAR', RF:'⚑ BANDIERA ROSSA · GARA SOSPESA'};
-  if(ph){ fl.className='flag on '+ph.toLowerCase(); fl.textContent=testoFlag[ph]; }
-  else if(fl.className!=='flag'){ fl.className='flag'; fl.textContent=''; }
+  // il banner NON è solo un'etichetta: dice COSA succede e PERCHÉ cambia la strategia. La VSC
+  // resta cauta (il vantaggio della SC piena NON è validato per lei — "i dati sono la verità").
+  const FLAG_UI={
+    SC:{t:'⚑ Safety Car in pista', s:`Le auto rallentano e il gruppo si ricompatta: fermarsi ai box adesso costa molto meno tempo del solito — è il momento buono per la sosta.`},
+    VSC:{t:'⚑ Virtual Safety Car', s:`Tutti rallentano a un ritmo imposto ma restano distanziati: la sosta costa un po' meno del normale — meno però che con la Safety Car piena, e di quanto non sappiamo dirlo con precisione.`},
+    RF:{t:'⚑ Bandiera rossa · gara sospesa', s:`La gara è ferma e le auto rientrano: qui le regole della sosta cambiano del tutto, i conti sul pit stop normale non valgono.`},
+  };
+  if(ph){ const u=FLAG_UI[ph]; fl.className='flag on '+ph.toLowerCase();
+    fl.innerHTML=`<span class="flag-t">${u.t}</span><span class="flag-s">${u.s}</span>`; }
+  else if(fl.className!=='flag'){ fl.className='flag'; fl.innerHTML=''; }
   if(selDrv && !clock.playing) updatePit();
 }
 
