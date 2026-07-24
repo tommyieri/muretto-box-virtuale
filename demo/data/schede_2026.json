@@ -1,5 +1,5 @@
 {
- "_nota": "GENERATO da gen_schede.py (f1db v2026.10.0; carriera = aggregati canonici f1db, stagione = standings + conteggi risultati; cross_check strutturato, mai correzioni a mano). Non modificare a mano.",
+ "_nota": "GENERATO da gen_schede.py (f1db v2026.10.1; carriera = aggregati canonici f1db, stagione = standings + conteggi risultati; cross_check strutturato, mai correzioni a mano). Non modificare a mano.",
  "aggiornato_al": {
   "round": 10,
   "raceId_f1db": 1159,
@@ -1083,7 +1083,7 @@
    },
    "stagione": {
     "pos": 1,
-    "punti": 333.0,
+    "punti": 358.0,
     "vittorie": 8,
     "migliore_risultato": 1,
     "podi": 13
@@ -1116,7 +1116,7 @@
    },
    "stagione": {
     "pos": 2,
-    "punti": 255.0,
+    "punti": 285.0,
     "vittorie": 2,
     "migliore_risultato": 1,
     "podi": 9
@@ -1149,7 +1149,7 @@
    },
    "stagione": {
     "pos": 3,
-    "punti": 179.0,
+    "punti": 195.0,
     "vittorie": 0,
     "migliore_risultato": 2,
     "podi": 4
@@ -1182,7 +1182,7 @@
    },
    "stagione": {
     "pos": 4,
-    "punti": 128.0,
+    "punti": 151.0,
     "vittorie": 0,
     "migliore_risultato": 2,
     "podi": 3
@@ -1215,7 +1215,7 @@
    },
    "stagione": {
     "pos": 5,
-    "punti": 60.0,
+    "punti": 61.0,
     "vittorie": 0,
     "migliore_risultato": 3,
     "podi": 1
@@ -1240,7 +1240,7 @@
    },
    "stagione": {
     "pos": 6,
-    "punti": 59.0,
+    "punti": 61.0,
     "vittorie": 0,
     "migliore_risultato": 6,
     "podi": 0
@@ -1323,7 +1323,7 @@
    },
    "stagione": {
     "pos": 9,
-    "punti": 6.0,
+    "punti": 10.0,
     "vittorie": 0,
     "migliore_risultato": 8,
     "podi": 0
