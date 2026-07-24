@@ -104,14 +104,18 @@ function scenariDegrado(C, L, pitL, loss, present, neutro) {
   const sc = treScenariPit({ byLap: C.byLap, nLaps: C.nLaps, pace: C.pace,
     driver: C.driver, freezeLap: L, pitLap: pitL, pitLoss: loss, present, banda: bc.banda });
   if (!sc.ok || !sc.degrada) return '';
-  const nGiri = pitL - L;
+  // La tabella scenari valuta il giro pit+1 (treScenariPit: steps = pit - L + 1, nessun
+  // orizzonte). E' un GIRO DIVERSO da quello del blocco Rientro sopra, che con l'orizzonte
+  // acceso vale pit+6: dirlo qui evita che i due gap dello stesso rivale sembrino in
+  // contraddizione quando invece sono due istanti diversi della stessa gara.
+  const giroScenari = pitL + 1;
   const cella = e => {
     const dav = e.davanti_ho ? `+${e.gap_ahead.toFixed(1)}s` : 'aria pulita';
     const die = e.dietro_esco ? `+${e.gap_behind.toFixed(1)}s` : '—';
     return `<td>P${e.rientro_pos}</td><td>${dav}</td><td>${die}</td>`;
   };
   return `<div class="scenari">
-    <div class="sc-h">Con degrado gomma sui prossimi ${nGiri} giri
+    <div class="sc-h">Con degrado gomma, al giro ${giroScenari}
       <span class="sc-tag">SCENARI · banda storica ${sc.compound}, non una previsione</span></div>
     <table class="sc-t"><thead><tr><th>scenario</th><th>rientro</th><th>davanti</th><th>dietro</th></tr></thead>
     <tbody>
@@ -190,6 +194,18 @@ export function pannelloMuretto(C) {
   const nonParten = C.nonParten || new Set();
   const present = Object.keys(C.byLap[L] || {})
     .filter(d => typeof C.byLap[L][d].cum_time === 'number' && !nonParten.has(d));
+
+  // IL CANCELLO METEO, PRIMA DI TUTTO. Fino al 24/07/2026 era una nota SOTTO la risposta:
+  // il pannello calcolava e mostrava pit-loss, rientro, degrado e gomma nuova — tutti
+  // misurati su asciutto — e ci appiccicava sotto un ⛔. Il banco l'ha trovato in Canada,
+  // l'unica gara bagnata del 2026: la risposta usciva lo stesso, ed e' il rischio piu' alto
+  // per un utente che si fida, perche' NIENTE lo ferma. Dentro un passaggio di mescola il
+  // passo si muove di 3 s/giro, cento volte i numeri del pannello. Ora tace, come gia' fa
+  // per la partenza e per il pilota senza passo-base: un rifiuto dichiarato, non un cerotto.
+  const met = cancelloMeteo(C.byLap, C.nLaps, L);
+  if (met.stato === 'FUORI_DOMINIO')
+    return { ok: false, meteo: true, html: `<div class="pitmsg">⛔ ${met.nota}
+      <span class="sub">${met.limite}</span></div>` };
   // IL PIT-LOSS NON SI INVENTA. Qui c'era `?? 22.0`: un valore di comodo che nessuno
   // aveva misurato, per nessuna pista. Sulle dieci gare demo non si vedeva mai, perche'
   // un numero c'e' sempre — ma il muretto in diretta gira anche su circuiti mai corsi nel
@@ -226,10 +242,16 @@ export function pannelloMuretto(C) {
   const der = neutroPre() ? null : calcolaDeriva(C.byLap, C.nLaps, L);
   const derVal = (der && der.stato === 'MISURATO') ? der.valore : null;
 
+  // L'ORIZZONTE, estratto perche' serve a DICHIARARE il giro della risposta. Con l'orizzonte
+  // acceso il pannello valuta il giro pit+6, non il giro dopo la sosta: la posizione e i gap
+  // che mostra sono a QUEL giro. Prima non lo diceva, e — peggio — la tabella scenari qui
+  // sotto valuta il giro pit+1: due righe con gap diversi per lo stesso rivale, a tre
+  // centimetri, senza che nessuna dichiarasse a che giro. Trovato in Spagna, Australia e GB.
+  const orizzonte = (gradino != null && !neutroPre()) ? 5 : 0;
+  const giroRisposta = pitL + 1 + orizzonte;   // = Lfin del motore
   const r = evaluatePit({ byLap: C.byLap, nLaps: C.nLaps, pace: C.pace, driver: C.driver,
     freezeLap: L, pitLap: pitL, pitLoss: loss, present, gara: C.gara, laps: C.laps,
-    orizzonte: (gradino != null && !neutroPre()) ? 5 : 0,
-    gradino, ZONE: ZONE_PANNELLO, deriva: derVal });
+    orizzonte, gradino, ZONE: ZONE_PANNELLO, deriva: derVal });
 
   if (!r.ok) {
     // Traduzione UI del limite dichiarato del motore. Il passo-base vuole 3 giri VERDI
@@ -295,17 +317,11 @@ export function pannelloMuretto(C) {
      <b>quanti</b> cambi di posizione avvengono, non <b>quali</b>: il duello in pista non &egrave; simulato</span></div>`;
 
   // --- I GROSSI, misurati da questa gara (demo/grossi.mjs) ---------------------
+  // Il meteo e' gia' stato gestito in cima: se fossimo fuori dominio non saremmo qui.
   const G = calcolaGrossi(C.byLap, C.nLaps, L, { priorPitLoss: lossTab ?? lossBase, neutro });
-  // IL CANCELLO METEO — non un modello: due stati. Si accende dalla MESCOLA del campo, mai
-  // dal flag di pioggia (verificato inaffidabile). Quando e' acceso i numeri del pannello
-  // non valgono: pit-loss, degrado e gomma nuova sono misurati TUTTI su asciutto, e dentro
-  // un passaggio di mescola il passo si muove di 3 s/giro — cento volte quei numeri.
-  const met = cancelloMeteo(C.byLap, C.nLaps, L);
   let righeGrossi = '';
-  if (met.stato === 'FUORI_DOMINIO')
-    righeGrossi += `<div class="warn">⛔ ${met.nota}<span class="sub">${met.limite}</span></div>`;
 
-  if (G.stato !== 'SOSPESO' && met.stato !== 'FUORI_DOMINIO') {
+  if (G.stato !== 'SOSPESO') {
     // quanto ci mette LA SUA squadra rispetto alla pista
     const plp = pitLossPilota(G.pit_loss, C.byLap[L]?.[C.driver]?.team);
     if (plp.nota_squadra) righeGrossi += kv('Box della squadra', plp.nota_squadra,
@@ -371,9 +387,14 @@ export function pannelloMuretto(C) {
       righeGrossi += `<div class="warn">⚠ ${t.nota} <span class="sub">${t.limite}</span></div>`;
   }
 
+  // Il giro a cui vale TUTTO il blocco Rientro/Davanti/Dietro: quando l'orizzonte e' acceso
+  // e' sei giri dopo la sosta, non il giro dopo. Dichiararlo qui rende i gap confrontabili con
+  // quelli della tabella scenari (che vale al giro pit+1) invece che sovrapponibili per errore.
+  const alGiro = orizzonte > 0
+    ? ` &middot; <span class="sub">al giro ${giroRisposta}, ${orizzonte} dopo la sosta</span>` : '';
   const html = warn + `
     <div class="kv"><span class="k">Pit-loss</span><span class="v num">+${loss.toFixed(1)} s ${provPL}</span></div>
-    <div class="kv"><span class="k">Rientro</span><span class="v">P${r.rientro_pos} <span class="sub">tra i ${r.su_totale} a pari giro</span></span></div>
+    <div class="kv"><span class="k">Rientro</span><span class="v">P${r.rientro_pos} <span class="sub">tra i ${r.su_totale} a pari giro</span>${alGiro}</span></div>
     <div class="kv"><span class="k">Davanti</span><span class="v">${dav}</span></div>
     <div class="kv"><span class="k">Dietro</span><span class="v">${die}</span></div>
     ${rigaGradino}
