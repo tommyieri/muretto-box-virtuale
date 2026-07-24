@@ -1,0 +1,61 @@
+{
+  "id": "lift-mercedes-gb-2026",
+  "anno": 2026,
+  "gara": "Gran Bretagna",
+  "gara_lungo": "Gran Premio di Gran Bretagna",
+  "circuito": "Silverstone",
+  "sessione": "Qualifiche",
+  "merc": {
+    "n_giri_tot": 11,
+    "n_lift_tot": 11,
+    "piloti": [
+      "ANT",
+      "RUS"
+    ]
+  },
+  "rivali": {
+    "n_giri": 85,
+    "n_lift": 0,
+    "n_piloti": 20
+  },
+  "evidenza_merc": {
+    "sigla": "ANT",
+    "team": "Mercedes",
+    "colore": "#27F4D2",
+    "n_giri": 6,
+    "n_lift": 6,
+    "frac_lift": 1.0,
+    "lap": 88.111,
+    "d_lift": 44.84444444444489,
+    "dv": 3.0,
+    "vline": 250.0,
+    "vpeak": 253.0,
+    "costo_s": 0.0009429588477042894,
+    "costo_ms": 0.9429588477042894,
+    "d_lift_med": 36.65555555555511,
+    "dv_med": 5.5
+  },
+  "evidenza_merc2": {
+    "sigla": "RUS",
+    "team": "Mercedes",
+    "colore": "#27F4D2",
+    "n_giri": 5,
+    "n_lift": 5,
+    "frac_lift": 1.0,
+    "lap": 88.481,
+    "d_lift": 51.48777777777832,
+    "dv": 7.0,
+    "vline": 240.0,
+    "vpeak": 247.0,
+    "costo_s": 0.005457672508062977,
+    "costo_ms": 5.457672508062977,
+    "d_lift_med": 51.48777777777832,
+    "dv_med": 7.0
+  },
+  "soglie": {
+    "FINALE_M": 160.0,
+    "THR_PIENO": 95.0,
+    "V0_MIN": 200.0,
+    "D_MIN": 12.0
+  }
+}

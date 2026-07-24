@@ -1,0 +1,26 @@
+{
+  "id": "trazione-loop-gb-2026",
+  "stato": "pubblicato",
+  "attore": "Tommi",
+  "creato": "2026-07-24",
+  "storico": [
+    {
+      "stato": "bozza",
+      "attore": "redazione",
+      "quando": "2026-07-24",
+      "nota": "bozza generata"
+    },
+    {
+      "stato": "approvato",
+      "attore": "Tommi",
+      "quando": "2026-07-24",
+      "nota": "autorizzato: mergia tutto e porta online"
+    },
+    {
+      "stato": "pubblicato",
+      "attore": "Tommi",
+      "quando": "2026-07-24",
+      "nota": "pubblicato all'approvazione"
+    }
+  ]
+}

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <!--
-  ANALISI (ui-v4) — placeholder ONESTO della Fase 2, con UN assaggio gia' vero:
-  posizioni guadagnate/perse in gara per pilota (da schede_2026.json, fonte f1db,
-  divergenze-penalita' gia' gestite dal cross-check di gen_schede.py).
+  ANALISI — l'indice della redazione tecnica. Consumatore puro: legge
+  demo/data/analisi_articoli.json (manifest scritto da ai_lab/redazione/coda.py).
+  Di default mostra i soli articoli 'pubblicato'; ?bozze=1 = vista revisore
+  (mostra anche le bozze, marcate) per la revisione umana prima della pubblicazione.
 -->
 <html lang="it">
 <head>
@@ -10,23 +11,21 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Analisi — Muretto Box Virtuale</title>
 <link rel="stylesheet" href="stile.css?v=250724g">
-<style>
-  .anl-spiega{ color:#aab2c0; font-size:.88rem; line-height:1.5; margin:0 0 .7rem; max-width:62ch; }
-  .anl-spiega b{ color:#e8edf5; }
-  .anl-nb{ display:block; color:#8b93a5; font-size:.82rem; margin-top:.35rem; }
-  .anl-leg{ display:flex; flex-wrap:wrap; gap:1.1rem; margin:0 0 .55rem; color:#8b93a5; font-size:.78rem; }
-  .anl-leg i{ display:inline-flex; align-items:center; gap:.42rem; font-style:normal; }
-  .anl-leg .sw{ width:14px; height:10px; border-radius:2px; display:inline-block; }
-  .anl-leg .sw.su{ background:var(--ok); }
-  .anl-leg .sw.giu{ background:color-mix(in srgb, var(--rf) 75%, var(--panel)); }
-  .anl-leg .sw.z{ width:2px; height:14px; background:var(--line2); border-radius:0; }
-  .anl-assehdr{ display:grid; grid-template-columns:68px 1fr 44px; gap:10px; margin-bottom:.35rem; }
-  .anl-assehdr .axis{ grid-column:2; position:relative; display:flex; justify-content:space-between;
-    font:600 .7rem/1 var(--mono); color:#767e8e; letter-spacing:.3px; }
-  .anl-assehdr .zc{ position:absolute; left:50%; transform:translateX(-50%); }
-  .wip-fondo{ margin-top:1.4rem; opacity:.9; }
-</style>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+<style>
+.dash-cta{display:flex;align-items:center;gap:16px;justify-content:space-between;margin:0 0 18px;
+  padding:18px 20px;border:1px solid var(--line2);border-radius:var(--r);
+  background:linear-gradient(100deg,var(--panel2),var(--panel));position:relative;overflow:hidden;
+  transition:transform .12s,border-color .12s}
+.dash-cta::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent)}
+.dash-cta:hover{transform:translateY(-2px);border-color:var(--accent);text-decoration:none}
+.dash-cta .tag{display:inline-block;font:700 9.5px/1 var(--mono);letter-spacing:1px;text-transform:uppercase;
+  color:var(--accent-ink);background:var(--accent);border-radius:4px;padding:4px 7px;margin-bottom:9px}
+.dash-cta b{display:block;font:800 22px/1.05 var(--disp);letter-spacing:.4px;color:var(--txt);margin-bottom:5px}
+.dash-cta .d{color:var(--dim);font-size:13px;line-height:1.45;max-width:52ch}
+.dash-cta .go{font:700 12px/1 var(--mono);letter-spacing:.5px;color:var(--accent);white-space:nowrap}
+@media(max-width:560px){.dash-cta{flex-direction:column;align-items:flex-start;gap:10px}}
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -44,34 +43,19 @@
 
 <div class="wrap-clas">
   <div class="page-testa">
-    <h1>Analisi <em>//</em> i numeri della stagione</h1>
-    <div class="sotto">Prestazioni misurate, gara dopo gara. Tocca un pilota per aprire la scheda.</div>
+    <h1>Analisi <em>//</em> la redazione tecnica</h1>
+    <div class="sotto">Un fatto tecnico curioso, spiegato fino in fondo con i dati: evidenza dai canali, causa fisica, effetto misurato.</div>
   </div>
 
-  <div class="sez-tit">Posizioni guadagnate o perse in gara</div>
-  <section class="panel anl">
-    <p class="anl-spiega">Quante posizioni ogni pilota <b>recupera</b> o <b>perde</b> dalla
-      <b>griglia di partenza</b> all'<b>arrivo</b>, sommate su tutta la stagione 2026.
-      <span class="anl-nb">Chi parte spesso davanti (in pole) ha poco da guadagnare e molto da
-      perdere: per questo un big pu&ograve; stare in rosso pur vincendo tante gare.</span></p>
-    <div class="anl-leg">
-      <i><span class="sw su"></span>guadagna posizioni</i>
-      <i><span class="sw giu"></span>ne perde</i>
-      <i><span class="sw z"></span>parte e finisce uguale (0)</i>
-    </div>
-    <div class="anl-assehdr" aria-hidden="true">
-      <div class="axis"><span>&larr; perse</span><span class="zc">0</span><span>guadagnate &rarr;</span></div>
-    </div>
-    <div id="grafico"></div>
-  </section>
+  <a class="dash-cta" href="dati.html">
+    <div><span class="tag">Interattivo · si aggiorna a ogni gara</span>
+      <b>Dati stagione — il cruscotto</b>
+      <span class="d">Assetto dei team (punta vs curva) e DNA dei circuiti (motore vs carico), gara per gara. Scegli la vista — stagione, ultime 5, o una singola gara — e le tabelle si ricalcolano dal vivo.</span></div>
+    <span class="go">Apri &rarr;</span>
+  </a>
 
-  <!-- la nota "in arrivo" va DOPO il contenuto vero e con meno peso: prima si vede il grafico,
-       non un "coming soon" che fa chiudere la pagina (audit UX C4). -->
-  <div class="wip panel wip-fondo">
-    <span class="wip-tag">IN ARRIVO</span>
-    Telemetrie di gara, prestazioni dei team nel tempo, caratterizzazione dei circuiti
-    (degrado, sorpassabilit&agrave;, pit-loss). Come tutto il resto: solo da dati misurati.
-  </div>
+  <div id="rev" hidden></div>
+  <div class="art-index" id="index"></div>
 </div>
 
 <footer class="footer">
@@ -86,27 +70,44 @@
 </footer>
 
 <script type="module">
-import { scheletro, mostraErrore, prendiJSON } from './stato.mjs?v=250724a';
 const el = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dataIt = d => { try { return new Date(d+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'long'}); } catch(e){ return d; } };
+
+function card(a){
+  const ac = a.accent || 'var(--brand)';
+  const meta = [a.circuito, a.sessione, dataIt(a.data)].filter(Boolean).join(' · ');
+  const tags = (a.tag||[]).slice(0,3).map(t=>`<span class="art-chip">${esc(t)}</span>`).join('');
+  const badge = a.stato !== 'pubblicato' ? `<span class="art-bozza">${esc(a.stato)}</span>` : '';
+  return `<a class="artcard" href="articolo.html?id=${encodeURIComponent(a.id)}" style="--ac:${ac}">
+    <div class="ac-occhiello">${esc(a.occhiello)}${badge}</div>
+    <div class="ac-titolo">${esc(a.titolo)}</div>
+    <div class="ac-sommario">${esc(a.sommario)}</div>
+    <div class="ac-pie"><span class="ac-meta">${esc(meta)}</span></div>
+    <div class="ac-tags">${tags}</div>
+  </a>`;
+}
+
 async function boot(){
-  scheletro(el('grafico'), 10);
-  let schede;
-  try { schede = await prendiJSON('data/schede_2026.json'); }
-  catch(e){ mostraErrore(el('grafico'), boot); return; }
-  let colori = {}; try { colori = await (await fetch('team_colori.json')).json(); } catch(e){}
-  const piloti = Object.entries(schede.piloti)
-    .map(([id,s]) => ({id, sigla:s.sigla, numero:s.numero, team:s.team_demo, v:s.stagione.pos_guadagnate}))
-    .sort((a,b)=>b.v-a.v);
-  const max = Math.max(...piloti.map(p=>Math.abs(p.v)), 1);
-  el('grafico').innerHTML = piloti.map(p=>{
-    const w = Math.abs(p.v)/max*50;                 // 50% = mezza larghezza per lato
-    const lato = p.v>=0 ? `left:50%;width:${w}%` : `left:${50-w}%;width:${w}%`;
-    return `<a class="anl-riga" href="scheda.html?tipo=pilota&id=${encodeURIComponent(p.id)}">
-      <span class="sig"><i style="background:${colori[p.team]||'var(--dim)'}"></i><span class="rnum" style="color:${colori[p.team]||'var(--dim)'}">${p.numero ?? ''}</span>${p.sigla}</span>
-      <span class="asse"><span class="zero"></span>
-        <span class="barra ${p.v>=0?'su':'giu'}" style="${lato}"></span></span>
-      <span class="val num">${p.v>0?'+':''}${p.v}</span></a>`;
-  }).join('');
+  const revisore = new URLSearchParams(location.search).get('bozze') === '1';
+  let man = [];
+  try { man = await (await fetch('data/analisi_articoli.json')).json(); } catch(e){ man = []; }
+  const mostra = man.filter(a => revisore ? true : a.stato === 'pubblicato');
+
+  if (revisore){
+    el('rev').hidden = false;
+    el('rev').innerHTML = `<div class="wip panel"><span class="wip-tag">VISTA REVISORE</span>
+      Stai vedendo anche le bozze non pubblicate. La pubblicazione avviene con
+      l'approvazione da <code>ai_lab/redazione/coda.py --approva &lt;id&gt; --attore "Tommi"</code>.</div>`;
+  }
+
+  if (!mostra.length){
+    el('index').innerHTML = `<div class="wip panel"><span class="wip-tag">IN ARRIVO</span>
+      I primi articoli della redazione tecnica sono in lavorazione: telemetria, degrado,
+      strategia e pit-loss, un fatto per volta.</div>`;
+    return;
+  }
+  el('index').innerHTML = mostra.map(card).join('');
 }
 boot();
 </script>

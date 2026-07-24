@@ -1,0 +1,122 @@
+[
+  {
+    "id": "trazione-loop-gb-2026",
+    "titolo": "The Loop, stessa Red Bull Racing: VER rimette il gas prima del compagno HAD",
+    "occhiello": "Telemetria · Qualifiche Gran Bretagna 2026",
+    "sommario": "Fuori dalla curva più lenta di Silverstone, con la stessa Red Bull Racing, VER torna a gas pieno 8 metri prima del compagno HAD — ed è tra i più pronti dello schieramento. Trazione, o fiducia sull’anteriore.",
+    "data": "2026-07-24",
+    "stato": "pubblicato",
+    "tag": [
+      "telemetria",
+      "Red Bull Racing",
+      "trazione",
+      "qualifiche"
+    ],
+    "circuito": "Silverstone",
+    "sessione": "Qualifiche",
+    "accent": "#2B478F"
+  },
+  {
+    "id": "rapporti-mclaren-mercedes-gb-2026",
+    "titolo": "Stesso motore, cambio opposto: la McLaren è la più corta della griglia",
+    "occhiello": "Telemetria · Qualifiche Gran Bretagna 2026",
+    "sommario": "McLaren, Mercedes e Williams montano lo stesso motore Mercedes. Eppure in ottava marcia la McLaren gira quasi seicento giri più su a 300 all'ora, e rinuncia a qualche km/h di velocità di punta. È una scelta di rapporti — e ha una logica precisa.",
+    "data": "2026-07-24",
+    "stato": "pubblicato",
+    "tag": [
+      "telemetria",
+      "McLaren",
+      "Mercedes",
+      "cambio",
+      "qualifiche"
+    ],
+    "circuito": "Silverstone",
+    "sessione": "Qualifiche",
+    "accent": "#FF8000"
+  },
+  {
+    "id": "lift-mercedes-gb-2026",
+    "titolo": "Il lift Mercedes prima del traguardo",
+    "occhiello": "Telemetria · Qualifiche Gran Bretagna 2026",
+    "sommario": "Sul giro lanciato a Silverstone entrambe le Mercedes staccano il piede dall'acceleratore poche decine di metri prima della linea. Nessun altro lo fa. Sul cronometro costa quasi nulla — ed è proprio questo il punto.",
+    "data": "2026-07-24",
+    "stato": "pubblicato",
+    "tag": [
+      "telemetria",
+      "Mercedes",
+      "qualifiche",
+      "ibrido"
+    ],
+    "circuito": "Silverstone",
+    "sessione": "Qualifiche",
+    "accent": "#27F4D2"
+  },
+  {
+    "id": "frenata-village-gb-2026",
+    "titolo": "Village: HAM è il più tardivo della griglia sui freni",
+    "occhiello": "Telemetria · Qualifiche Gran Bretagna 2026",
+    "sommario": "In una delle staccate più dure di Silverstone HAM attacca i freni più tardi di chiunque sulla griglia: a 100 metri dall’apice, 14 in meno del primo inseguitore, 18 sotto la mediana. Il più tardivo di tutti.",
+    "data": "2026-07-24",
+    "stato": "pubblicato",
+    "tag": [
+      "telemetria",
+      "Ferrari",
+      "frenata",
+      "qualifiche"
+    ],
+    "circuito": "Silverstone",
+    "sessione": "Qualifiche",
+    "accent": "#E8002D"
+  },
+  {
+    "id": "dna-circuiti-2026",
+    "titolo": "Il DNA dei circuiti 2026: chi chiede motore e chi chiede carico",
+    "occhiello": "Telemetria · 9 circuiti 2026",
+    "sommario": "La percentuale di giro a tutto gas è la firma più pulita di un tracciato. Sui 9 circuiti con telemetria va dal 72% di Spa-Francorchamps — oltre due terzi di giro flat-out — al 50% di Barcelona, il più esigente. In mezzo, chi è veloce e flowing e chi è potente ma stop-and-go.",
+    "data": "2026-07-24",
+    "stato": "pubblicato",
+    "tag": [
+      "telemetria",
+      "circuiti",
+      "assetto",
+      "multi-gara"
+    ],
+    "circuito": "9 circuiti",
+    "sessione": "Gara",
+    "accent": "var(--sc)"
+  },
+  {
+    "id": "compagni-marce-stowe-gb-2026",
+    "titolo": "Stowe, stessa Ferrari: LEC in 6ª dove HAM scala in 5ª",
+    "occhiello": "Telemetria · Qualifiche Gran Bretagna 2026",
+    "sommario": "In una curva veloce di Silverstone le due Ferrari passano l’apice a velocità vicina, ma con una marcia di differenza: LEC in 6ª, HAM in 5ª. E scalare non rende HAM più veloce — gli alza il regime. Non è un caso: è una scelta, e si ripete.",
+    "data": "2026-07-24",
+    "stato": "pubblicato",
+    "tag": [
+      "telemetria",
+      "Ferrari",
+      "guida",
+      "qualifiche"
+    ],
+    "circuito": "Silverstone",
+    "sessione": "Qualifiche",
+    "accent": "#E8002D"
+  },
+  {
+    "id": "assetto-punta-curva-2026",
+    "titolo": "La mappa dell’assetto 2026: chi corre carico e chi scarico",
+    "occhiello": "Telemetria · 9 gare 2026",
+    "sommario": "Incrociando velocità di punta e velocità in curva su 9 gare — con la punta ripulita dalla scia — si legge come ogni team ha risolto il compromesso carico-resistenza. In cima, vicine, Ferrari e Red Bull; ai lati chi carica l’ala e chi corre scarico.",
+    "data": "2026-07-24",
+    "stato": "pubblicato",
+    "tag": [
+      "telemetria",
+      "aerodinamica",
+      "assetto",
+      "multi-gara"
+    ],
+    "circuito": "9 gare",
+    "sessione": "Gara",
+    "accent": "#E8002D"
+  }
+]

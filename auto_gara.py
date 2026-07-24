@@ -228,6 +228,12 @@ def wave_nuove():
         # non e' cambiato nulla.
         sh([PY, 'undercut_sorveglianza.py'], check=False)
         sh([PY, os.path.join('ai_lab', 'scienziato', 'sorveglianza.py')], check=False)
+        # REDAZIONE TECNICA — genera le BOZZE degli articoli dai rilevatori registrati.
+        # Solo bozze nell'area Lab (ai_lab/redazione/bozze/): la pubblicazione resta un
+        # gesto umano (coda.py --approva --attore). check=False e ogni rilevatore isolato:
+        # i rilevatori telemetrici si auto-saltano se fastf1 non c'e' (es. VPS) o la
+        # sessione non e' in cache. La redazione non ferma MAI la gara.
+        sh([PY, os.path.join('ai_lab', 'redazione', 'genera.py'), '--gara', nome], check=False)
         # targhetta: ultima, cosi' vede tutto quello che e' stato appena rigenerato.
         sh([PY, 'gen_targhetta_lab.py'], check=False)
     if not golden():

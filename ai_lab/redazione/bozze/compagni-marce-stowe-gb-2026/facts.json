@@ -1,0 +1,38 @@
+{
+  "id": "compagni-marce-stowe-gb-2026",
+  "anno": 2026,
+  "gara": "Gran Bretagna",
+  "circuito": "Silverstone",
+  "sessione": "Qualifiche",
+  "curva": {
+    "numero": 15,
+    "nome": "Stowe",
+    "dist": 4976.008465007108
+  },
+  "A": {
+    "sigla": "LEC",
+    "team": "Ferrari",
+    "gear": 6,
+    "n": 6,
+    "n_gear": 6,
+    "vmin": 225.0,
+    "rpm": 10191.0,
+    "cons": 1.0
+  },
+  "B": {
+    "sigla": "HAM",
+    "team": "Ferrari",
+    "gear": 5,
+    "n": 5,
+    "n_gear": 4,
+    "vmin": 220.0,
+    "rpm": 11559.0,
+    "cons": 0.8
+  },
+  "delta_rpm": 1368.0,
+  "delta_vmin": 5.0,
+  "pattern": {
+    "disaccordi_totali": 13,
+    "disaccordi_team": 1
+  }
+}

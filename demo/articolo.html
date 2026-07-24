@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<!--
+  ARTICOLO (redazione tecnica). Consumatore puro: legge demo/data/analisi/<id>.json
+  (prodotto dalla pipeline ai_lab/redazione/). Ogni numero e ogni grafico SVG vengono
+  dalla stessa catena che li ha calcolati; qui si rende soltanto.
+  URL: articolo.html?id=<id>
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analisi — Muretto Box Virtuale</title>
+<link rel="stylesheet" href="stile.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
+    <span class="brand-mark"><span>M</span></span>
+    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+  </a>
+  <nav class="nav" aria-label="Sezioni">
+    <a href="stagione.html">Stagione</a>
+    <a href="live.html"><span class="dot-live"></span>Live</a>
+    <a href="classifiche.html">Classifiche</a>
+    <a href="analisi.html" class="on">Analisi</a>
+  </nav>
+</header>
+
+<div class="wrap-scheda" style="padding-bottom:0">
+  <a class="crumb" href="analisi.html">&larr; Analisi</a>
+</div>
+
+<article class="wrap-scheda art" id="art"></article>
+
+<footer class="footer">
+  <div class="footer-in">
+    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
+    <nav>
+      <a href="stagione.html">Stagione</a>
+      <a href="live.html">Live</a>
+      <a href="classifiche.html">Classifiche</a>
+      <a href="analisi.html">Analisi</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="module">
+const el = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dataIt = d => { try { return new Date(d+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'}); } catch(e){ return d; } };
+
+function figura(f){
+  if (!f) return '';
+  return `<figure class="art-fig">
+    <div class="art-svg-wrap">${f.svg}</div>
+    <figcaption><span class="cap">${esc(f.didascalia)}</span>
+      <span class="fonte">Fonte: ${esc(f.fonte)}</span></figcaption>
+  </figure>`;
+}
+
+function sezione(s){
+  return `<section class="art-sez">
+    <div class="sez-tit"><span class="art-tag">${esc(s.tag)}</span> ${esc(s.titolo)}</div>
+    <div class="art-prosa">${s.html}</div>
+    ${figura(s.figura)}
+  </section>`;
+}
+
+function provenienza(art){
+  if (!art.provenienza?.length) return '';
+  const righe = art.provenienza.map(p => `<tr>
+    <td class="g">${esc(p.grandezza)}</td>
+    <td class="v">${esc(p.valore)}</td>
+    <td><span class="st st-${esc(p.stato)}">${esc(p.stato)}</span></td>
+    <td class="da">${esc(p.da)}</td></tr>`).join('');
+  return `<section class="art-sez">
+    <div class="sez-tit"><span class="art-tag">Dati</span> Provenienza dei numeri</div>
+    <div class="panel art-prov"><table>
+      <thead><tr><th>grandezza</th><th>valore</th><th>stato</th><th>da dove</th></tr></thead>
+      <tbody>${righe}</tbody></table></div>
+    ${art.fonti?.length ? `<div class="art-fonti">${art.fonti.map(f=>`<div><b>${esc(f.tipo)}</b> — ${esc(f.testo)}</div>`).join('')}</div>` : ''}
+  </section>`;
+}
+
+async function boot(){
+  const id = new URLSearchParams(location.search).get('id');
+  if (!id){ el('art').innerHTML = `<div class="aggiornato">Articolo non indicato.</div>`; return; }
+  let art;
+  try { art = await (await fetch(`data/analisi/${encodeURIComponent(id)}.json`)).json(); }
+  catch(e){ el('art').innerHTML = `<div class="aggiornato">Articolo non trovato — <a href="analisi.html">torna all'analisi</a>.</div>`; return; }
+
+  const ac = art.accent || 'var(--brand)';
+  const stato = art.stato && art.stato !== 'pubblicato'
+    ? `<span class="art-bozza">${esc(art.stato)}</span>` : '';
+  const meta = [art.circuito, art.sessione].filter(Boolean).join(' · ');
+  const tags = (art.tag||[]).map(t=>`<span class="art-chip">${esc(t)}</span>`).join('');
+
+  el('art').innerHTML = `
+    <header class="art-testa" style="--ac:${ac}">
+      <div class="art-occhiello">${esc(art.occhiello)}${stato}</div>
+      <h1 class="art-titolo">${esc(art.titolo)}</h1>
+      <p class="art-sommario">${esc(art.sommario)}</p>
+      <div class="art-riga">
+        <span class="art-firma">${esc(art.firma)}</span>
+        <span class="art-data">${dataIt(art.data)}</span>
+        ${meta ? `<span class="art-dot">·</span><span>${esc(meta)}</span>` : ''}
+      </div>
+      <div class="art-tags">${tags}</div>
+    </header>
+    ${(art.sezioni||[]).map(sezione).join('')}
+    ${provenienza(art)}`;
+  document.title = `${art.titolo} — Muretto Box Virtuale`;
+}
+boot();
+</script>
+</body>
+</html>
