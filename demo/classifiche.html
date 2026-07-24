@@ -9,6 +9,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Classifiche 2026 — Muretto Box Virtuale</title>
 <link rel="stylesheet" href="stile.css?v=250724f">
+<style>
+  /* Colonne numeriche a larghezza fissa: così l'intestazione si allinea
+     esattamente alle righe (con le colonne "auto" non combaciavano). */
+  .clas a { grid-template-columns: 40px 1fr 54px 72px; }
+  .clh { display:grid; grid-template-columns:40px 1fr 54px 72px; gap:10px;
+    padding:9px 16px 9px 18px; border-bottom:1px solid var(--line);
+    font:700 10px/1 var(--mono); letter-spacing:1.2px; text-transform:uppercase;
+    color:var(--dim); }
+  .clh .r{ text-align:right; }
+  /* "motore" = chi fornisce la power unit, non sempre la scuderia stessa. */
+  .clas-nota{ color:#9aa2b2; font:500 12px/1.5 var(--sans, sans-serif); margin:12px 2px 0;
+    display:flex; align-items:flex-start; gap:8px; }
+  .clas-nota b{ color:var(--txt); }
+  .clas-nota .badge{ flex:none; color:var(--dim); font:700 9px/1 var(--mono); letter-spacing:1.3px;
+    text-transform:uppercase; border:1px solid var(--line); border-radius:5px; padding:4px 6px; margin-top:1px; }
+</style>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>
@@ -35,7 +51,11 @@
     <button id="tabP" class="on" role="tab" aria-selected="true">Piloti</button>
     <button id="tabC" role="tab" aria-selected="false">Costruttori</button>
   </div>
-  <div class="clas panel" id="lista"></div>
+  <div class="clas panel">
+    <div class="clh" id="clhead"></div>
+    <div id="lista"></div>
+  </div>
+  <div class="clas-nota" id="nota" hidden></div>
 </div>
 
 <footer class="footer">
@@ -80,7 +100,15 @@ function rigaTeam(c){
 function mostra(tipo){
   el('tabP').classList.toggle('on', tipo==='p'); el('tabC').classList.toggle('on', tipo==='c');
   el('tabP').setAttribute('aria-selected', tipo==='p'); el('tabC').setAttribute('aria-selected', tipo==='c');
+  const chi = tipo==='p' ? 'Pilota' : 'Costruttore';
+  el('clhead').innerHTML =
+    `<span>Pos</span><span>${chi}</span><span class="r">Vitt.</span><span class="r">Punti</span>`;
   el('lista').innerHTML = tipo==='p' ? clas.piloti.map(rigaPilota).join('') : clas.costruttori.map(rigaTeam).join('');
+  // La nota sul "motore" serve solo dove il motore compare: nei costruttori.
+  const nota = el('nota');
+  nota.hidden = tipo!=='c';
+  if (tipo==='c') nota.innerHTML =
+    `<span class="badge">motore</span><span>&egrave; il <b>fornitore della power unit</b> (chi costruisce il motore): non sempre &egrave; la scuderia stessa &mdash; es. un team pu&ograve; correre con motore Mercedes o Honda.</span>`;
 }
 async function boot(){
   clas = await (await fetch('data/classifiche_2026.json')).json();
