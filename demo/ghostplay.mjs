@@ -91,7 +91,8 @@ export function statoAl(C, T, { driver, pitLap, FE = 0.95, FX = 0.05 }) {
   return arr;
 }
 
-// righe della torre (posizione, gap in registro onesto), pronte da rendere.
+// righe della torre a gap GREZZO (prog·durata). Tenuta per retro-compatibilità/test; la
+// torre usa classificaSim, che dà gap PRECISI col modello del replay reale.
 export function righeTorre(stato, lapDur) {
   const leaderProg = stato.length ? stato[0].prog : 0;
   return stato.map((s, i) => {
@@ -103,6 +104,39 @@ export function righeTorre(stato, lapDur) {
       else { const gs = Math.round(dp * lapDur); gapTxt = gs <= 0 ? 'in scia' : `+~${gs}s`; }
     }
     return { drv: s.d, pos: i + 1, leader: i === 0, inPit: s.inPit, box: s.box, gapTxt, gapCls };
+  });
+}
+
+// classifica-sim al giro frazionario p, col PRECISO gap in secondi — STESSO modello del
+// replay reale (gara.html::classificaAt): cum interpolato a (L, f), ordine per icum, e i
+// doppiati contati sul battistrada ai giri L..L+3. Sostituisce il gap grezzo di righeTorre.
+export function classificaSim(C, p, opts = {}) {
+  const { driver = null, pitLap = null } = opts;
+  const L = Math.max(C.freezeLap, Math.min(C.nLap, Math.floor(p)));
+  const f = Math.min(1, Math.max(0, p - L));
+  const cumA = (d, k) => (C.cum[d] || []).find(x => x.lap === k)?.cum;
+  const cumL = {}, ic = {};
+  for (const d of C.present) {
+    const cur = cumA(d, L); if (cur == null) continue;
+    cumL[d] = cur;
+    const pv = cumA(d, L - 1) ?? C.lead[L - 1];
+    ic[d] = (typeof pv === 'number') ? pv + f * (cur - pv) : cur;   // cum interpolato a (L, f)
+  }
+  const lag = {};                                     // battistrada ai giri L..L+3 (per i doppiati)
+  for (let k = L; k <= Math.min(L + 3, C.nLap); k++) {
+    let mn = Infinity;
+    for (const d of C.present) { const c = cumA(d, k); if (c != null && c < mn) mn = c; }
+    if (mn < Infinity) lag[k] = mn;
+  }
+  const ord = Object.keys(ic).sort((a, b) => ic[a] - ic[b]);
+  const leader = ord.length ? ic[ord[0]] : 0;
+  return ord.map((d, i) => {
+    let gd = 0; for (const k in lag) if (+k > L && cumL[d] > lag[k]) gd = +k - L;
+    let gapTxt, gapCls = '';
+    if (gd >= 1) { gapTxt = `+${gd} gir${gd > 1 ? 'i' : 'o'}`; gapCls = 'lapped'; }
+    else if (i === 0) { gapTxt = 'LEADER'; gapCls = 'lead'; }
+    else gapTxt = `+${(ic[d] - leader).toFixed(1)}s`;
+    return { drv: d, pos: i + 1, leader: i === 0, gapTxt, gapCls, inPit: d === driver && L === pitLap };
   });
 }
 
@@ -128,26 +162,37 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro
   const pStop = (rejoinCum != null) ? pDaTempo(C, rejoinCum) : pMaxPieno;
   const giriRest = Math.max(1, pMaxPieno - pMin);
   const lapSec = Math.min(1.2, Math.max(0.35, durataTot / giriRest));
+  const DWELL_S = 1.3;                     // sosta ferma ai box, per rendere visibile il pit stop
   let p = pMin, raf = null, last = null, vivo = false, fase = 1;
+  let ghostInPit = false, dwelled = false, dwelling = false, dwellAcc = 0;
 
   function frame(T) {
     const stato = statoAl(C, T, opts);
     const dots = stato.map(s => ({
       f: s.fd, box: s.box, colore: coloreDi(s.d) || 'var(--dim)', sigla: s.d,
-      ghost: s.d === opts.driver, dim: s.d !== opts.driver,
+      ghost: s.d === opts.driver, dim: s.d !== opts.driver, pit: s.d === opts.driver && s.inPit,
     }));
     if (pista) pista.aggiorna(dots);
-    if (onTower) onTower(righeTorre(stato, C.durata), { lap: Math.round(p) });
+    if (onTower) onTower(classificaSim(C, p, opts), { lap: Math.round(p), p });
+    const g = stato.find(s => s.d === opts.driver);
+    ghostInPit = !!(g && g.inPit);
   }
 
   function step(ts) {
     if (!vivo) return;
     if (last == null) last = ts;
     const dt = (ts - last) / 1000; last = ts;
+    if (dwelling) {                          // fermi ai box: non si avanza, si ridisegna e basta
+      dwellAcc += dt; if (dwellAcc >= DWELL_S) dwelling = false;
+      const T = tempoReale(C, p); if (T !== undefined) frame(T);
+      raf = requestAnimationFrame(step); return;
+    }
     const cap = (fase === 1) ? pStop : pMaxPieno;   // fase 1 non supera il rientro
     p = Math.min(cap, p + dt / lapSec);
     const T = tempoReale(C, p);
     if (T !== undefined) frame(T);
+    // primo istante in pit-lane -> sosta ferma (una volta): il pit stop si vede
+    if (!dwelled && ghostInPit) { dwelling = true; dwelled = true; dwellAcc = 0; }
     if (fase === 1 && giroRisp != null && p >= pStop) { vivo = false; last = null; onRientro && onRientro(); return; }
     if (p >= pMaxPieno) { vivo = false; last = null; onFine && onFine(); return; }
     raf = requestAnimationFrame(step);

@@ -97,6 +97,9 @@ import { evaluatePit } from './pitscenario.mjs';
   check(`torre al rientro (P${posTorre}) == pannello (P${rL.rientro_pos}) [${drvLead}, lead lap]`,
     posTorre === rL.rientro_pos,
     `\n   torre=${ultimaTorre && ultimaTorre.slice(0, 6).map(x => x.pos + x.drv).join(' ')}`);
+  // i gap della torre sono PRECISI (secondi con decimale), non più "+~Ns" grezzi
+  const gEx = ultimaTorre && ultimaTorre.find(r => !r.leader && !/giro/.test(r.gapTxt));
+  check('gap torre precisi (+X.Ys, non +~Ns)', !!gEx && /^\+\d+\.\d+s$/.test(gEx.gapTxt), gEx && gEx.gapTxt);
 
   // continua(): la fase 2 riparte e arriva alla bandiera
   gp.continua();

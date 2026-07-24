@@ -272,7 +272,7 @@ const FLAG = {AllClear:['verde','PISTA VERDE'], Yellow:['gialla','BANDIERA GIALL
 
 async function bootMappa(g){
   const [{ creaPista }, { creaLiveMappa }, { creaTorreTiming }, { creaLiveClient }, cfg] = await Promise.all([
-    import('./pista.mjs?v=250724a'), import('./live_mappa.mjs'), import('./live_timing.mjs'),
+    import('./pista.mjs?v=250724c'), import('./live_mappa.mjs'), import('./live_timing.mjs'),
     import('./live_client.mjs'), import('./live_config.mjs')]);
   const geoRes = await fetch(`data/live_geo_${encodeURIComponent(g.nome)}.json`);
   if (!geoRes.ok) throw new Error(`live_geo_${g.nome}.json assente (runbook: gen_live_geo)`);
@@ -360,7 +360,7 @@ async function bootMappa(g){
 // un ordine di corsa, "se lo fermo adesso dove rientra" non e' una domanda.
 async function creaMurettoLive(g, deps = {}){
   const [{ creaByLapLive }, { pannelloMuretto }, { creaGhostPlay }] = await Promise.all([
-    import('./live_bylap.mjs?v=250724a'), import('./muretto.mjs?v=250724a'), import('./ghostplay.mjs?v=250724b')]);
+    import('./live_bylap.mjs?v=250724a'), import('./muretto.mjs?v=250724a'), import('./ghostplay.mjs?v=250724c')]);
   const B = deps.B || creaByLapLive();
   // pista/mappa/torre servono alla SOSTA MESSA IN SCENA; pausaLive ferma i dati live durante
   // la simulazione; ripristinaTorre ridisegna la torre statica (usato dalla modalità demo).
@@ -607,7 +607,7 @@ function qualiToSnapshot(q){
 async function bootDemo(gara, lapStr){
   el('week').innerHTML = `<div class="live-gp"><b>DEMO &middot; ${gara}</b>`
     + `<span>prova del muretto live su una gara gi&agrave; corsa &mdash; dati reali, nessun feed</span></div>`;
-  const { creaPista } = await import('./pista.mjs?v=250724a');
+  const { creaPista } = await import('./pista.mjs?v=250724c');
   const race = await (await fetch(`data/${encodeURIComponent(gara)}.json`)).json();
   const teamCol = await (await fetch('team_colori.json')).json();
   race.byLap = {}; for (const lp of race.laps) race.byLap[lp.lap] = lp.cars;

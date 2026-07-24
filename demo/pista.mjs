@@ -115,6 +115,14 @@ export async function creaPista({ canvas, url }) {
       G.lineWidth = (d.ghost ? 2.4 : 1.2) * dpr;
       G.strokeStyle = d.ghost ? '#fff' : 'rgba(255,255,255,.85)'; G.stroke();
       G.globalAlpha = 1;
+      if (d.pit) {                          // in sosta ai box: anello tratteggiato + etichetta BOX
+        G.setLineDash([3 * dpr, 2.5 * dpr]);
+        G.strokeStyle = 'rgba(120,220,160,.95)'; G.lineWidth = 2 * dpr;
+        G.beginPath(); G.arc(X, Y, rr + 4.5 * dpr, 0, 7); G.stroke();
+        G.setLineDash([]);
+        G.fillStyle = 'rgba(120,220,160,.95)'; G.font = `bold ${8.5 * dpr}px -apple-system,Arial`;
+        G.fillText('BOX', X - 10 * dpr, Y - (rr + 8 * dpr));
+      }
       G.fillStyle = '#fff'; G.font = `bold ${(d.ghost ? 11 : 9) * dpr}px -apple-system,Arial`;
       G.fillText(d.sigla, X + (d.ghost ? 9 : 7) * dpr, Y + 3 * dpr);
     }
