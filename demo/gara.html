@@ -141,7 +141,8 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
              sulla pista E sulla torre, sorpassando i rivali dove il motore dice che passa. -->
         <button type="button" class="simbtn" id="simBtn" hidden>&#9654; Guarda la sosta</button>
         <div class="simbar" id="simBar" hidden>
-          <span class="simtag">Simulazione: <b id="simDrvLab"></b> si ferma &middot; rivali al passo reale</span>
+          <span class="simtag" id="simTag">Simulazione: <b id="simDrvLab"></b> si ferma &middot; rivali al passo reale</span>
+          <button type="button" id="simCont" hidden>continua &rarr;</button>
           <button type="button" id="simEsci">&#8634; replay reale</button>
         </div>
         <div id="pitKv"></div>
@@ -162,7 +163,7 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
 // stessa domanda sono il modo piu' sicuro di ritrovarsi con due numeri diversi.
 import { pannelloMuretto } from './muretto.mjs?v=250724a';
 import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs?v=220726a';
-const BUILD = '250724a-sim';
+const BUILD = '250724b-sim';
 const el = id => document.getElementById(id);
 const ROW_H = 44;
 let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams={}, pitloss={}, plMeta={}, neutral={}, teamCol={}, calendario=null;
@@ -189,7 +190,8 @@ let ragg=null;
 // pallino del pilota entra ai box, monta gomma nuova e risale sorpassando i rivali, sulla
 // pista E sulla torre. `durateReali` serve a ripristinare il passo d'animazione all'uscita.
 let simMode=false, cumSim=null, leadCumSim=null, simDriver=null, simPitLap=null,
-    simFreeze=null, simPresent=null, simRientroLap=null, lastPitRes=null, durateReali=null;
+    simFreeze=null, simPresent=null, simRientroLap=null, simRientroPos=null, simSegnato=false,
+    simPStop=null, simSuTotale=null, lastPitRes=null, durateReali=null;
 
 // --- contatore anonimo aggregato (strumentazione, non simulatore) ---
 const conta = e => { try { navigator.sendBeacon(`api/contatore?e=${e}`); } catch(_){} };
@@ -767,6 +769,7 @@ function costruisciSim(res){
   const t = res && res.sim; if(!t) return false;
   simDriver=t.driver; simPitLap=t.pitLap; simFreeze=t.freezeLap; simPresent=t.present.slice();
   simRientroLap = res.giroRisposta ?? (t.pitLap+1);
+  simRientroPos = res.rientro ?? null; simSuTotale = res.su_totale ?? null; simSegnato = false;
   cumSim={};
   for(const d of simPresent){
     const arr=[];
@@ -781,7 +784,20 @@ function costruisciSim(res){
     for(const d in cumSim){ const e=cumSim[d].find(x=>x.lap===lap); if(e&&e.cum<mn) mn=e.cum; }
     if(mn<Infinity) leadCumSim[lap]=mn; }
   if(leadCumSim[simFreeze-1]===undefined) leadCumSim[simFreeze-1]=leadCum[simFreeze-1] ?? leadCum[0];
+  // pStop = posizione del battistrada quando il fantasma completa il giro-risposta: la fase 1
+  // si ferma lì, esatta e indipendente dal frame-rate (niente sfilata oltre il rientro).
+  const rc = (cumSim[simDriver]||[]).find(e=>e.lap===simRientroLap)?.cum;
+  simPStop = (rc!=null) ? pDaTempoSim(rc) : null;
   return Object.keys(cumSim).length>0;
+}
+// inverso di tempoRealeSim: dato un tempo del battistrada -> posizione p (giro-frazionario)
+function pDaTempoSim(T){
+  for(let L=simFreeze; L<=race.n_laps; L++){
+    const a=leadCumSim[L-1], b=leadCumSim[L];
+    if(a==null||b==null) continue;
+    if(T<=b) return L + (T-a)/((b-a)||1);
+  }
+  return race.n_laps+1;
 }
 // ancora-tempo e orologio-per-pilota SULLA sorgente simulata (gemelli di tempoReale/giroDi)
 function tempoRealeSim(p){
@@ -811,8 +827,11 @@ function giroDiSim(d,T){
 // un frame della SIMULAZIONE: pallini + torre dalla sorgente controfattuale, fantasma in risalto
 function simFrame(p){
   if(!simMode || !cumSim){ frame(p); return; }
-  const T=tempoRealeSim(p); if(T===undefined) return;
-  const Lc=Math.max(1,Math.min(race.n_laps,Math.floor(p)));
+  // FASE 1: non superare il rientro. Anche se un frame salta, si renderizza al massimo a
+  // pStop (il fantasma non sfila oltre) e poi si ferma lì — la scena coincide col pannello.
+  const pEff = (!simSegnato && simPStop!=null && p>simPStop) ? simPStop : p;
+  const T=tempoRealeSim(pEff); if(T===undefined) return;
+  const Lc=Math.max(1,Math.min(race.n_laps,Math.floor(pEff)));
   const lapDur=((leadCumSim[Lc] ?? 0)-(leadCumSim[Lc-1] ?? 0)) || 90;
   const dots=[], stato=[];
   for(const d of simPresent){
@@ -836,16 +855,31 @@ function simFrame(p){
   });
   for(const d in rowEls) rowEls[d].root.style.display = presenti.has(d) ? '' : 'none';
   el('lapLabel').textContent=Lc;
-  const pct=(p-1)/race.n_laps*100;
+  const pct=(pEff-1)/race.n_laps*100;
   el('evtlCur').style.left=pct+'%'; el('evtlFatto').style.width=pct+'%';
   el('evtl').setAttribute('aria-valuenow',Lc);
+  // FASE 1: raggiunto il rientro, ferma la scena su quel giro — è LA RISPOSTA del pannello.
+  // Oltre è proiezione, e si vede solo premendo "continua".
+  if(!simSegnato && simPStop!=null && p>=simPStop){
+    simSegnato=true; clock.pause(); clock.seek(simPStop); setPlayIcon(false); mostraRientroSim();
+  }
+}
+function mostraRientroSim(){
+  const suff = simSuTotale ? ` tra i ${simSuTotale} a pari giro` : '';
+  el('simTag').innerHTML = `\u{1F4CD} <b>${simDriver} rientra ${simRientroPos ?? '?'}º</b>${suff} — come dice il pannello. Oltre è una proiezione (i rivali non reagiscono).`;
+  el('simCont').hidden = false;
+}
+function continuaSim(){
+  el('simCont').hidden = true;
+  el('simTag').innerHTML = 'Proiezione fino alla bandiera · i rivali non reagiscono';
+  clock.play(); setPlayIcon(true);
 }
 function avviaSimulazione(){
   if(!lastPitRes || !costruisciSim(lastPitRes)) return;
   simMode=true;
   el('pista').classList.add('sim-attiva');
-  el('simBar').hidden=false; el('simBtn').hidden=true;
-  el('simDrvLab').textContent=simDriver;
+  el('simBar').hidden=false; el('simBtn').hidden=true; el('simCont').hidden=true;
+  el('simTag').innerHTML = `Simulazione: <b id="simDrvLab">${simDriver}</b> si ferma · rivali al passo reale`;
   if(pista) pista.setSpento(false);
   // passo d'animazione compresso: tutta la coda di gara in ~18s, senza fondersi al giro-pit
   const rem=Math.max(1, race.n_laps - simFreeze);
@@ -858,9 +892,9 @@ function avviaSimulazione(){
 }
 function esciSimulazione(){
   if(!simMode) return;
-  simMode=false; cumSim=null; leadCumSim=null; simPresent=null;
+  simMode=false; cumSim=null; leadCumSim=null; simPresent=null; simSegnato=false;
   el('pista').classList.remove('sim-attiva');
-  el('simBar').hidden=true;
+  el('simBar').hidden=true; el('simCont').hidden=true;
   for(const d in rowEls) rowEls[d].root.style.display='';
   clock.pause(); setPlayIcon(false);
   if(durateReali) clock.setDur(L=>durateReali[L]);   // ripristina il passo reale
@@ -881,6 +915,7 @@ el('boxBtn').addEventListener('click', ()=>{
 });
 el('simBtn').addEventListener('click', avviaSimulazione);
 el('simEsci').addEventListener('click', esciSimulazione);
+el('simCont').addEventListener('click', continuaSim);
 // i tre bottoni della mescola vivono dentro l'HTML del pannello, che si riscrive a ogni
 // giro: la delega sul contenitore sopravvive alle riscritture, un listener sul bottone no
 el('pitKv').addEventListener('click', e=>{

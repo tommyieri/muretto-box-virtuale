@@ -49,6 +49,17 @@ export function tempoReale(C, p) {
   return t0 + f * (t1 - t0);
 }
 
+// inverso: dato un tempo T del battistrada -> la posizione p (giro-frazionario). Serve a
+// fermare la fase 1 ESATTAMENTE al rientro del fantasma, senza dipendere dal frame-rate.
+export function pDaTempo(C, T) {
+  for (let L = C.freezeLap; L <= C.nLap; L++) {
+    const a = C.lead[L - 1], b = C.lead[L];
+    if (a == null || b == null) continue;
+    if (T <= b) return L + (T - a) / ((b - a) || 1);
+  }
+  return C.nLap + 1;
+}
+
 // orologio-per-pilota sui cum simulati: al tempo T il pilota d e' nel suo giro con frazione fd.
 function giroDi(cumD, leadL0, T) {
   if (!cumD || !cumD.length || !(T >= leadL0)) return null;
@@ -97,15 +108,27 @@ export function righeTorre(stato, lapDur) {
 
 // ---- la messa in scena (browser): loop rAF + rendering su pista + callback torre ----
 // pista: istanza di pista.mjs (aggiorna/pitFrazioni). coloreDi(sigla)->colore. onTower(righe,{lap}).
-export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, durataTot = 16 }) {
+//
+// DUE FASI, per riconciliare l'animazione col numero del pannello:
+//   fase 1  freeze -> GIRO-RISPOSTA: il fantasma si ferma dove il pannello lo valuta
+//           ("rientri 4º"). onRientro() scatta e la scena si mette in pausa: è LA RISPOSTA.
+//   fase 2  giro-risposta -> bandiera: solo su richiesta (continua()). È una PROIEZIONE —
+//           i rivali non reagiscono — e va detto. Senza giroRisposta: una fase sola, fino in fondo.
+export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro,
+                                giroRisposta = null, durataTot = 16 }) {
   const C = costruisciCum(sim);
   const FE = pista?.pitFrazioni?.ingresso ?? 0.95, FX = pista?.pitFrazioni?.uscita ?? 0.05;
   const opts = { driver: sim.driver, pitLap: sim.pitLap, FE, FX };
-  const pMin = C.freezeLap, pMax = C.nLap + 1;
-  // passo: tutta la coda di gara in ~durataTot secondi reali
-  const giriRest = Math.max(1, pMax - pMin);
+  const pMin = C.freezeLap, pMaxPieno = C.nLap + 1;
+  const giroRisp = (giroRisposta && giroRisposta <= C.nLap && giroRisposta >= C.freezeLap) ? giroRisposta : null;
+  // pStop = posizione (giro-frazionario del battistrada) all'ISTANTE in cui il fantasma
+  // completa il giro-risposta. Fermarsi lì è esatto e NON dipende dal frame-rate: p viene
+  // clampato, così la scena non può sfilare oltre il rientro anche se un frame salta.
+  const rejoinCum = giroRisp != null ? (C.cum[opts.driver] || []).find(e => e.lap === giroRisp)?.cum : null;
+  const pStop = (rejoinCum != null) ? pDaTempo(C, rejoinCum) : pMaxPieno;
+  const giriRest = Math.max(1, pMaxPieno - pMin);
   const lapSec = Math.min(1.2, Math.max(0.35, durataTot / giriRest));
-  let p = pMin, raf = null, last = null, vivo = false;
+  let p = pMin, raf = null, last = null, vivo = false, fase = 1;
 
   function frame(T) {
     const stato = statoAl(C, T, opts);
@@ -114,25 +137,29 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, durataTot
       ghost: s.d === opts.driver, dim: s.d !== opts.driver,
     }));
     if (pista) pista.aggiorna(dots);
-    if (onTower) onTower(righeTorre(stato, C.durata), { lap: Math.floor(p) });
+    if (onTower) onTower(righeTorre(stato, C.durata), { lap: Math.round(p) });
   }
 
   function step(ts) {
     if (!vivo) return;
     if (last == null) last = ts;
     const dt = (ts - last) / 1000; last = ts;
-    p = Math.min(pMax, p + dt / lapSec);
+    const cap = (fase === 1) ? pStop : pMaxPieno;   // fase 1 non supera il rientro
+    p = Math.min(cap, p + dt / lapSec);
     const T = tempoReale(C, p);
     if (T !== undefined) frame(T);
-    if (p >= pMax) { vivo = false; last = null; onFine && onFine(); return; }
+    if (fase === 1 && giroRisp != null && p >= pStop) { vivo = false; last = null; onRientro && onRientro(); return; }
+    if (p >= pMaxPieno) { vivo = false; last = null; onFine && onFine(); return; }
     raf = requestAnimationFrame(step);
   }
 
   return {
-    play() { if (vivo) return; if (p >= pMax) p = pMin; vivo = true; last = null; raf = requestAnimationFrame(step); },
+    play() { if (vivo) return; if (p >= pMaxPieno) { p = pMin; fase = 1; } vivo = true; last = null; raf = requestAnimationFrame(step); },
     stop() { vivo = false; last = null; if (raf) cancelAnimationFrame(raf); },
-    riparti() { this.stop(); p = pMin; this.play(); },
+    continua() { fase = 2; if (vivo) return; vivo = true; last = null; raf = requestAnimationFrame(step); },  // fino alla bandiera (proiezione)
+    riparti() { this.stop(); p = pMin; fase = 1; this.play(); },
     get playing() { return vivo; },
+    get haRientro() { return giroRisp != null; },
     _C: C,   // per i test
   };
 }

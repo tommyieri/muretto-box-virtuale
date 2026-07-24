@@ -103,7 +103,8 @@
          su mappa e su torre, sorpassando i rivali dove il motore dice che passa. -->
     <button type="button" class="mu-sim" id="mu-sim" hidden>&#9654; Guarda la sosta</button>
     <div class="mu-simbar" id="mu-simbar" hidden>
-      <span class="mu-simtag">Simulazione: <b id="mu-simdrv"></b> si ferma adesso &middot; rivali al passo reale</span>
+      <span class="mu-simtag" id="mu-simtag">Simulazione: <b id="mu-simdrv"></b> si ferma adesso &middot; rivali al passo reale</span>
+      <button type="button" id="mu-simcont" hidden>continua &rarr;</button>
       <button type="button" id="mu-simesci">&#8634; dati reali</button>
     </div>
     <div id="mu-kv"></div>
@@ -359,7 +360,7 @@ async function bootMappa(g){
 // un ordine di corsa, "se lo fermo adesso dove rientra" non e' una domanda.
 async function creaMurettoLive(g, deps = {}){
   const [{ creaByLapLive }, { pannelloMuretto }, { creaGhostPlay }] = await Promise.all([
-    import('./live_bylap.mjs?v=250724a'), import('./muretto.mjs?v=250724a'), import('./ghostplay.mjs?v=250724a')]);
+    import('./live_bylap.mjs?v=250724a'), import('./muretto.mjs?v=250724a'), import('./ghostplay.mjs?v=250724b')]);
   const B = deps.B || creaByLapLive();
   // pista/mappa/torre servono alla SOSTA MESSA IN SCENA; pausaLive ferma i dati live durante
   // la simulazione; ripristinaTorre ridisegna la torre statica (usato dalla modalità demo).
@@ -514,9 +515,18 @@ async function creaMurettoLive(g, deps = {}){
     if (!pista || !lastRes || !lastRes.sim) return;
     pausaLive.attiva = true;                    // i dati live restano fermi durante la scena
     if (mappa) mappa.setAcceso(false);          // spegni l'overlay GPS: in scena resta il fantasma
-    el('mu-sim').hidden = true; el('mu-simbar').hidden = false;
-    el('mu-simdrv').textContent = scelto;
-    gp = creaGhostPlay({ sim: lastRes.sim, pista, coloreDi, onTower: renderSimTorre });
+    el('mu-sim').hidden = true; el('mu-simbar').hidden = false; el('mu-simcont').hidden = true;
+    el('mu-simtag').innerHTML = `Simulazione: <b>${scelto}</b> si ferma adesso &middot; rivali al passo reale`;
+    gp = creaGhostPlay({ sim: lastRes.sim, pista, coloreDi, onTower: renderSimTorre,
+      giroRisposta: lastRes.giroRisposta,
+      // fase 1 finita: il fantasma è al giro-rientro, esattamente dove il pannello lo valuta
+      onRientro: () => {
+        const suff = lastRes.su_totale ? ` tra i ${lastRes.su_totale} a pari giro` : '';
+        el('mu-simtag').innerHTML = `&#128205; <b>${scelto} rientra ${lastRes.rientro}&ordm;</b>${suff}`
+          + ` &mdash; come dice il pannello. Oltre &egrave; una proiezione (i rivali non reagiscono).`;
+        el('mu-simcont').hidden = false;
+      },
+    });
     gp.play();
   }
   function esciSim(){
@@ -524,9 +534,14 @@ async function creaMurettoLive(g, deps = {}){
     if (pista) pista.aggiorna([]);              // togli il fantasma dalla mappa
     pausaLive.attiva = false;
     if (mappa) mappa.setAcceso(true);
-    el('mu-simbar').hidden = true;
+    el('mu-simbar').hidden = true; el('mu-simcont').hidden = true;
     if (ripristinaTorre) ripristinaTorre();     // demo: ridisegna la torre statica; live: la ridisegna il feed
     ridisegna();
+  }
+  function continuaSim(){
+    el('mu-simcont').hidden = true;
+    el('mu-simtag').innerHTML = 'Proiezione fino alla bandiera &middot; i rivali non reagiscono';
+    if (gp) gp.continua();
   }
   function renderSimTorre(righe){
     el('tw-list').innerHTML = righe.map(r =>
@@ -542,6 +557,7 @@ async function creaMurettoLive(g, deps = {}){
   }
   el('mu-sim').addEventListener('click', avviaSim);
   el('mu-simesci').addEventListener('click', esciSim);
+  el('mu-simcont').addEventListener('click', continuaSim);
 
   ridisegna();   // avvio: porta o nota, secondo lo stato di B
 
