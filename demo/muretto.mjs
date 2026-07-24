@@ -15,7 +15,7 @@
 // dentro la gara che sta succedendo, e lascia il resto del campo dov'e' davvero. Percio'
 // evoluzione pista e carburante degli altri non si modellano — sono gia' nei loro tempi —
 // e l'unica cosa che deriva e' l'auto instradata.
-import { evaluatePit, stessoGiroReale } from './pitscenario.mjs';
+import { evaluatePit, stessoGiroReale, traiettoriaPit } from './pitscenario.mjs?v=250724a';
 import { treScenariPit, bandaCircuito } from './pitbande.mjs';
 import { misura as misuraSoste } from './gradino.mjs';
 import { grossi as calcolaGrossi, trafficoRientro, pitLossPilota,
@@ -477,5 +477,11 @@ export function pannelloMuretto(C) {
     ${righeMescola(C, L, C.mescola)}
     ${notaCap}
     ${scenariDegrado(C, L, pitL, loss, present, neutro)}`;
-  return { ok: true, html, rientro: r.rientro_pos, su_totale: r.su_totale, motore: r };
+  // TRAIETTORIA per l'ANIMAZIONE del fantasma: stessi identici input del motore qui sopra
+  // (pace, loss, gradino, deriva, present), quindi al giro-risposta il cum coincide col
+  // numero del pannello. Il pannello resta il verdetto; questa e' solo la sua messa in scena.
+  const sim = traiettoriaPit({ byLap: C.byLap, nLaps: C.nLaps, pace: C.pace, driver: C.driver,
+    freezeLap: L, pitLap: pitL, pitLoss: loss, present, gradino, deriva: derVal, ZONE: ZONE_PANNELLO });
+  return { ok: true, html, rientro: r.rientro_pos, su_totale: r.su_totale, motore: r,
+    sim, freezeLap: L, pitLap: pitL, giroRisposta };
 }
