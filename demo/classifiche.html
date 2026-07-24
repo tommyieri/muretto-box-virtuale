@@ -8,7 +8,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Classifiche 2026 — Muretto Box Virtuale</title>
-<link rel="stylesheet" href="stile.css?v=250724f">
+<link rel="stylesheet" href="stile.css?v=250724g">
 <style>
   /* Colonne numeriche a larghezza fissa: così l'intestazione si allinea
      esattamente alle righe (con le colonne "auto" non combaciavano). */
@@ -70,6 +70,7 @@
 </footer>
 
 <script type="module">
+import { scheletro, mostraErrore, prendiJSON } from './stato.mjs?v=250724a';
 const el = id => document.getElementById(id);
 let clas=null, colori={}, numeri={}, motori={};
 
@@ -111,7 +112,9 @@ function mostra(tipo){
     `<span class="badge">motore</span><span>&egrave; il <b>fornitore della power unit</b> (chi costruisce il motore): non sempre &egrave; la scuderia stessa &mdash; es. un team pu&ograve; correre con motore Mercedes o Honda.</span>`;
 }
 async function boot(){
-  clas = await (await fetch('data/classifiche_2026.json')).json();
+  scheletro(el('lista'), 10);
+  try { clas = await prendiJSON('data/classifiche_2026.json'); }
+  catch(e){ el('clhead').innerHTML=''; mostraErrore(el('lista'), boot); return; }
   try { colori = await (await fetch('team_colori.json')).json(); } catch(e){}
   try { const sk = await (await fetch('data/schede_2026.json')).json();
         numeri = Object.fromEntries(Object.entries(sk.piloti).map(([id,s])=>[id, s.numero])); } catch(e){}
