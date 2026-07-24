@@ -341,12 +341,12 @@ async function creaMurettoLive(g){
     import('./live_bylap.mjs?v=220726b'), import('./muretto.mjs?v=220726b')]);
   const B = creaByLapLive();
 
-  // Le tabelle dal fondo 2018-2026, le stesse che usa gara.html. Il ?v= non e' cosmesi:
-  // questi file li riscrive auto_gara.py dopo ogni gara, e senza marcatura di versione il
-  // browser continua a servire quello vecchio. Preso in faccia al collaudo — il pannello
-  // diceva "per questa pista non c'e' nessun pit-loss" con il numero gia' sul disco.
-  const V = '220726b';
-  const j = async (u, d) => { try { return await (await fetch(`${u}?v=${V}`)).json(); } catch(_) { return d; } };
+  // Le tabelle dal fondo 2018-2026, le stesse che usa gara.html. La freschezza di data/
+  // e' garantita da UNA regola sola (demo/vercel.json: Cache-Control must-revalidate su
+  // /data/*), non piu' da un ?v= per pagina. Quel tampone era pure agganciato al BUILD e
+  // non al contenuto: auto_gara riscrive i dati senza toccare il BUILD, quindi non bustava
+  // niente. La regola d'header invece fa rivalidare il browser a ogni richiesta.
+  const j = async (u, d) => { try { return await (await fetch(u)).json(); } catch(_) { return d; } };
   const [pitloss, neutroFondo, ragg, bandeClim] = await Promise.all([
     j('data/pitloss.json', {}), j('data/neutralizzazione_fondo.json', null),
     j('data/raggruppamento.json', null), j('data/climatologia_bande.json', null)]);
