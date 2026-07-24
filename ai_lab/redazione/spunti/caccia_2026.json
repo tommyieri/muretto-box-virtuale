@@ -1,0 +1,62 @@
+{
+  "_nota": "Coda spunti — Canale B (caccia all'anomalia nei nostri dati). Ogni spunto e' gia' MISURATO sui nostri dati; diventa articolo passando dal generatore (facts+grafici) e dalla verifica. Raccolto il 2026-07-24 da un fan-out di cacciatori paralleli.",
+  "spunti": [
+    {
+      "id": "clipping-spa-downshift",
+      "titolo": "A Spa meta griglia scala marcia a gas pieno a ~290 km/h: la firma del clipping",
+      "forza": 5,
+      "canale": "B",
+      "gara": "Belgio",
+      "sessione": "Gara",
+      "richiede": "telemetria",
+      "stato_pipeline": "misurato-da-riverificare",
+      "evidenza": "Belgio 2026 gara: su 704 giri verdi flat-out, 584 downshift con gas>=95% non in frenata oltre 240 km/h, concentrati sui due lunghi (Stavelot->Bus Stop 385, Kemmel 140). ANT tocca 328 km/h@5687m in 8a, perde velocita a gas pieno (328->302) e scala 8->7@6109m; LEC picco 320, RPM in 8a crolla 11149->9978 a gas pieno, scala a 282 km/h. Norris (McLaren) tiene l'8a: ZERO scalate.",
+      "causa": "Clipping ibrido: sul lungo la MGU-K esaurisce l'energia; chi ha l'8a lunga scende sotto la power band e molla la 7a a gas pieno per rimettere il termico in giri (~11000). Chi ha l'8a corta (McLaren) resta su di giri e non scala. E' il rovescio dell'articolo sui rapporti.",
+      "effetto": "Scalata 8->7 a gas pieno a ~268-302 km/h (mediana ~291); calo di velocita a gas pieno pre-scalata 26-38 km/h; chi clippa peggio fino a 2 volte/giro, McLaren/Red Bull 0.",
+      "dati": "FastF1 Belgian GP R (car-data in cache); tele.py; giri verdi (TrackStatus=='1')",
+      "collegato_a": "rapporti-mclaren-mercedes-gb-2026"
+    },
+    {
+      "id": "stowe-leclerc-hamilton-marcia",
+      "titolo": "Stowe in sesta: Leclerc tiene la marcia lunga dove Hamilton scala in quinta",
+      "forza": 4,
+      "canale": "B",
+      "gara": "Gran Bretagna",
+      "sessione": "Q",
+      "richiede": "telemetria",
+      "stato_pipeline": "misurato-da-riverificare",
+      "evidenza": "T15 Stowe (~4976 m, curvone ~220 km/h): LEC passa l'apice in 6a su 6/6 giri lanciati (RPM ~10191), HAM in 5a su 4/5 (RPM ~11559, +1368). Vmin apice LEC 225, HAM 220 km/h.",
+      "causa": "Due filosofie di percorrenza sulla stessa Ferrari: Leclerc rapporto lungo per stabilita in un curvone veloce; Hamilton scala per piu rotazione/spinta in uscita.",
+      "effetto": "+5 km/h di minima e ~1370 giri/min in meno per Leclerc; marcia diversa ripetuta e sistematica allo stesso punto-firma.",
+      "dati": "FastF1 British GP Q (car-data in cache); nGear/Speed/RPM all'apice T15"
+    },
+    {
+      "id": "village-piastri-norris-marcia",
+      "titolo": "Village, Piastri in terza e Norris in seconda: rapporto diverso nel tornantino",
+      "forza": 4,
+      "canale": "B",
+      "gara": "Gran Bretagna",
+      "sessione": "Q",
+      "richiede": "telemetria",
+      "stato_pipeline": "misurato-da-riverificare",
+      "evidenza": "T3 Village (~860 m, ~110 km/h): PIA in 3a su 6/6 giri (RPM ~8826), NOR in 2a su 4/5 (RPM ~10610, +1784). Vmin PIA 110, NOR 107 km/h.",
+      "causa": "Norris marcia corta per rotazione e trazione in uscita; Piastri terza per percorrenza piu rotonda, meno rischio pattinamento.",
+      "effetto": "Marcia diversa allo stesso apice, sistematica su Piastri (6/6) contro Norris (4/5); ~1780 giri/min e +3 km/h di minima.",
+      "dati": "FastF1 British GP Q (car-data in cache); nGear/Speed/RPM all'apice T3"
+    },
+    {
+      "id": "brooklands-antonelli-russell-marcia",
+      "titolo": "Brooklands, il rookie piu costante del compagno: Antonelli fisso in quarta",
+      "forza": 3,
+      "canale": "B",
+      "gara": "Gran Bretagna",
+      "sessione": "Q",
+      "richiede": "telemetria",
+      "stato_pipeline": "misurato-da-riverificare",
+      "evidenza": "T6 Brooklands (~1950 m, ~165 km/h): ANT in 4a su 6/6 giri (RPM ~9916, vmin 168), RUS alterna 3a (3 giri) e 4a (2), RPM ~11112, vmin 163.",
+      "causa": "Antonelli ha una percorrenza fissa in quarta; Russell cerca ancora il compromesso e scende in terza in oltre meta dei giri.",
+      "effetto": "+5 km/h e marcia superiore per Antonelli, con la firma piu ripetibile (6/6); contrasto costante-vs-variabile.",
+      "dati": "FastF1 British GP Q (car-data in cache); nGear/Speed/RPM all'apice T6"
+    }
+  ]
+}

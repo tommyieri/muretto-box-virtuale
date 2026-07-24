@@ -50,6 +50,9 @@
   <div class="sez-tit">Stagione 2026</div>
   <div class="stagione" id="stagione"></div>
 
+  <div class="sez-tit">Posizioni guadagnate/perse in gara</div>
+  <section class="panel anl" id="grafico"></section>
+
 </div>
 
 <footer class="footer">
@@ -137,6 +140,32 @@ async function boot(){
   }).join('');
 }
 boot();
+</script>
+
+<script type="module">
+// Posizioni guadagnate/perse in gara (barra divergente per pilota). Consumatore
+// puro di data/schede_2026.json (fonte f1db). Spostato qui da Analisi, che ora
+// ospita gli articoli della redazione tecnica.
+(async () => {
+  const g = document.getElementById('grafico');
+  if (!g) return;
+  let schede, colori = {};
+  try { schede = await (await fetch('data/schede_2026.json')).json(); } catch(e){ return; }
+  try { colori = await (await fetch('team_colori.json')).json(); } catch(e){}
+  const piloti = Object.entries(schede.piloti)
+    .map(([id,s]) => ({id, sigla:s.sigla, numero:s.numero, team:s.team_demo, v:s.stagione.pos_guadagnate}))
+    .sort((a,b)=>b.v-a.v);
+  const max = Math.max(...piloti.map(p=>Math.abs(p.v)), 1);
+  g.innerHTML = piloti.map(p=>{
+    const w = Math.abs(p.v)/max*50;
+    const lato = p.v>=0 ? `left:50%;width:${w}%` : `left:${50-w}%;width:${w}%`;
+    return `<a class="anl-riga" href="scheda.html?tipo=pilota&id=${encodeURIComponent(p.id)}">
+      <span class="sig"><i style="background:${colori[p.team]||'var(--dim)'}"></i><span class="rnum" style="color:${colori[p.team]||'var(--dim)'}">${p.numero ?? ''}</span>${p.sigla}</span>
+      <span class="asse"><span class="zero"></span>
+        <span class="barra ${p.v>=0?'su':'giu'}" style="${lato}"></span></span>
+      <span class="val num">${p.v>0?'+':''}${p.v}</span></a>`;
+  }).join('');
+})();
 </script>
 </body>
 </html>

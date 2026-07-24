@@ -1,0 +1,127 @@
+"""
+genera.py — l'orchestratore della redazione.
+
+Scorre i generatori registrati (registro.GENERATORI) e, per la gara indicata,
+produce le bozze. Ogni generatore gira ISOLATO: se uno fallisce (es. fastf1
+assente, sessione senza telemetria in cache, dato mancante) viene saltato con la
+ragione, e NON blocca gli altri. Nessuna bozza viene pubblicata: restano nell'area
+Lab, in attesa della coda di revisione umana.
+
+E' il passo agganciato al blocco LABORATORIO di auto_gara.py (check=False).
+
+Uso:
+  python3 ai_lab/redazione/genera.py                 # tutti i generatori, gara = default
+  python3 ai_lab/redazione/genera.py --gara "Gran Bretagna"
+  python3 ai_lab/redazione/genera.py --lista          # elenca i generatori registrati
+"""
+from __future__ import annotations
+import os
+import sys
+import argparse
+import importlib
+import traceback
+
+_QUI = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, _QUI)
+sys.path.insert(0, os.path.join(_QUI, "rilevatori"))
+
+import registro  # noqa: E402
+
+
+def _carica(nome):
+    return importlib.import_module(nome)
+
+
+def aggiorna_dati_stagione(verbose=True):
+    """Estrae le feature multi-gara mancanti e ripubblica il cruscotto interattivo
+    (demo/dati.html). Idempotente: le gare gia' estratte tornano dalla cache, solo
+    la nuova viene ricalcolata. Guardato: se fastf1 manca (es. VPS) o una gara e'
+    lacunosa, salta senza fermare nulla. Richiede la telemetria in cache (Mac)."""
+    import json
+    repo = os.path.abspath(os.path.join(_QUI, "..", ".."))
+    try:
+        import multigara
+        import pubblica_dati
+    except Exception as e:
+        if verbose:
+            print(f"  [dati] salto cruscotto (import): {e}")
+        return
+    try:
+        reg = json.load(open(os.path.join(repo, "data", "gare_registro.json")))
+    except Exception as e:
+        if verbose:
+            print(f"  [dati] registro non letto: {e}")
+        reg = {}
+    for k, v in reg.items():
+        gp = v.get("ti")
+        if not gp:
+            continue
+        for fn in (multigara.estrai_gara, multigara.estrai_dna):
+            try:
+                fn(2026, gp, "Race")
+            except Exception as e:
+                if verbose and os.environ.get("REDAZIONE_DEBUG"):
+                    print(f"  [dati] {gp} {fn.__name__}: {e}")
+    try:
+        o = pubblica_dati.pubblica()
+        if verbose:
+            print(f"  [dati] cruscotto aggiornato: {o['n_gare']} gare")
+    except Exception as e:
+        if verbose:
+            print(f"  [dati] pubblicazione fallita: {e}")
+
+
+def genera_tutti(gara=None, data=None, verbose=True):
+    aggiorna_dati_stagione(verbose=verbose)
+    prodotti, saltati = [], []
+    for nome in registro.GENERATORI:
+        try:
+            mod = _carica(nome)
+        except Exception as e:
+            saltati.append((nome, f"import fallito: {e}"))
+            if verbose:
+                print(f"  [SKIP] {nome}: import fallito: {e}")
+            continue
+        try:
+            rec = mod.genera(gara=gara, data=data)
+            if rec:
+                prodotti.append(rec)
+                if verbose:
+                    print(f"  [OK]   {rec['id']} — {rec['titolo']} ({rec['stato']})")
+            else:
+                if verbose:
+                    print(f"  [--]   {nome}: non applicabile a questa gara")
+        except Exception as e:
+            saltati.append((nome, str(e)))
+            if verbose:
+                print(f"  [SKIP] {nome}: {e}")
+                if os.environ.get("REDAZIONE_DEBUG"):
+                    traceback.print_exc()
+    if verbose:
+        print(f"\nBozze prodotte: {len(prodotti)} · saltate: {len(saltati)}")
+        if prodotti:
+            print("Rivedi con:  python3 ai_lab/redazione/coda.py --lista")
+    return prodotti, saltati
+
+
+def lista():
+    for nome in registro.GENERATORI:
+        try:
+            m = _carica(nome)
+            META = getattr(m, "META", {})
+            print(f"  {META.get('canale','?')}  {META.get('id', nome):28} "
+                  f"{META.get('titolo','')}  [{META.get('richiede','-')}]")
+        except Exception as e:
+            print(f"  ?  {nome:28} (import fallito: {e})")
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--gara", default=None)
+    ap.add_argument("--data", default=None, help="AAAA-MM-GG per la targhetta della bozza")
+    ap.add_argument("--lista", action="store_true")
+    a = ap.parse_args()
+    if a.lista:
+        lista()
+    else:
+        genera_tutti(gara=a.gara, data=a.data)

@@ -1,0 +1,142 @@
+{
+  "id": "trazione-loop-gb-2026",
+  "anno": 2026,
+  "gara": "Gran Bretagna",
+  "circuito": "Silverstone",
+  "sessione": "Qualifiche",
+  "curva": {
+    "numero": 4,
+    "nome": "The Loop",
+    "dist": 1029.0217031542932
+  },
+  "feat": {
+    "sigla": "VER",
+    "team": "Red Bull Racing",
+    "full_after": 71.16430555555553,
+    "apex_v": 84.5,
+    "n": 6
+  },
+  "compagno": {
+    "sigla": "HAD",
+    "team": "Red Bull Racing",
+    "full_after": 78.9529166666664,
+    "apex_v": 84.5,
+    "n": 6
+  },
+  "mediana_full_after": 80.16236111111107,
+  "piu_tardi": {
+    "sigla": "ALB",
+    "team": "Williams",
+    "full_after": 87.67055555555544,
+    "apex_v": 79.5,
+    "n": 4
+  },
+  "apex_v": 84.0,
+  "rank": [
+    {
+      "sigla": "VER",
+      "team": "Red Bull Racing",
+      "full_after": 71.16430555555553,
+      "apex_v": 84.5,
+      "n": 6
+    },
+    {
+      "sigla": "LIN",
+      "team": "Racing Bulls",
+      "full_after": 71.84444444444443,
+      "apex_v": 81.0,
+      "n": 5
+    },
+    {
+      "sigla": "GAS",
+      "team": "Alpine",
+      "full_after": 75.05000000000007,
+      "apex_v": 82.0,
+      "n": 4
+    },
+    {
+      "sigla": "ANT",
+      "team": "Mercedes",
+      "full_after": 78.26097222222211,
+      "apex_v": 84.5,
+      "n": 6
+    },
+    {
+      "sigla": "HAD",
+      "team": "Red Bull Racing",
+      "full_after": 78.9529166666664,
+      "apex_v": 84.5,
+      "n": 6
+    },
+    {
+      "sigla": "SAI",
+      "team": "Williams",
+      "full_after": 79.04638888888894,
+      "apex_v": 81.0,
+      "n": 5
+    },
+    {
+      "sigla": "NOR",
+      "team": "McLaren",
+      "full_after": 80.11111111111109,
+      "apex_v": 81.0,
+      "n": 5
+    },
+    {
+      "sigla": "PIA",
+      "team": "McLaren",
+      "full_after": 80.16236111111107,
+      "apex_v": 81.5,
+      "n": 6
+    },
+    {
+      "sigla": "BEA",
+      "team": "Haas F1 Team",
+      "full_after": 80.99972222222232,
+      "apex_v": 83.0,
+      "n": 5
+    },
+    {
+      "sigla": "RUS",
+      "team": "Mercedes",
+      "full_after": 81.45166666666705,
+      "apex_v": 84.0,
+      "n": 5
+    },
+    {
+      "sigla": "HAM",
+      "team": "Ferrari",
+      "full_after": 81.49388888888893,
+      "apex_v": 84.0,
+      "n": 5
+    },
+    {
+      "sigla": "LAW",
+      "team": "Racing Bulls",
+      "full_after": 82.45083333333343,
+      "apex_v": 86.0,
+      "n": 6
+    },
+    {
+      "sigla": "LEC",
+      "team": "Ferrari",
+      "full_after": 82.86166666666657,
+      "apex_v": 84.0,
+      "n": 6
+    },
+    {
+      "sigla": "HUL",
+      "team": "Audi",
+      "full_after": 85.53333333333308,
+      "apex_v": 87.0,
+      "n": 5
+    },
+    {
+      "sigla": "ALB",
+      "team": "Williams",
+      "full_after": 87.67055555555544,
+      "apex_v": 79.5,
+      "n": 4
+    }
+  ]
+}

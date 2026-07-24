@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<!--
+  DATI STAGIONE (interattivo) — cruscotto vivo della sezione Analisi.
+  Consumatore puro: legge demo/data/analisi/stagione_dati.json (scritto da
+  ai_lab/redazione/pubblica_dati.py, rigenerato a ogni gara). Calcola da solo
+  percentili e aggregati: Stagione / Ultime 5 / per-gara. Tema scuro, colori team.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dati stagione — Muretto Box Virtuale</title>
+<link rel="stylesheet" href="stile.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+<style>
+.dash-bar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:14px 0 6px}
+.seg{display:flex;gap:4px;background:var(--panel);border:1px solid var(--line);border-radius:22px;padding:3px}
+.seg button{font:700 11px/1 var(--mono);letter-spacing:.5px;text-transform:uppercase;color:var(--dim);
+  background:transparent;border:0;border-radius:20px;padding:8px 13px;cursor:pointer;transition:color .12s,background .12s}
+.seg button.on{color:var(--accent-ink);background:var(--accent)}
+.seg button:hover:not(.on){color:var(--txt)}
+.selgara{font:600 12px/1 var(--mono);color:var(--txt);background:var(--panel);border:1px solid var(--line2);
+  border-radius:20px;padding:8px 12px;cursor:pointer}
+.dash-info{color:var(--dim);font:11px/1.4 var(--mono);margin-left:auto}
+.dsez{margin:22px 0}
+.dsez .sez-tit{margin-bottom:4px}
+.dsub{color:var(--dim);font-size:12.5px;margin:0 0 12px;line-height:1.5}
+.dtbl{width:100%;border-collapse:collapse;font:12.5px/1.3 var(--mono);font-variant-numeric:tabular-nums}
+.dtbl th{position:sticky;top:0;text-align:left;color:var(--dim);font-size:10px;letter-spacing:.6px;text-transform:uppercase;
+  padding:9px 10px;border-bottom:1px solid var(--line);cursor:pointer;white-space:nowrap;user-select:none;background:var(--bg)}
+.dtbl th:hover{color:var(--txt)}
+.dtbl th .ar{color:var(--accent);margin-left:3px}
+.dtbl td{padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.dtbl tr:hover td{background:rgba(255,255,255,.03)}
+.dtbl .nome{display:flex;align-items:center;gap:8px;color:var(--txt);font-weight:600}
+.dtbl .cbar{width:4px;height:16px;border-radius:2px;flex:0 0 auto}
+.dtbl .num{text-align:right;color:var(--txt)}
+.dtbl .dim{color:var(--dim)}
+.mb{position:relative;height:14px;background:var(--panel2);border-radius:3px;min-width:60px;overflow:hidden}
+.mb i{position:absolute;left:0;top:0;bottom:0;border-radius:3px}
+.mb span{position:absolute;right:5px;top:0;line-height:14px;font-size:10px;color:var(--txt);font-weight:600}
+.pill{font:700 9px/1 var(--mono);letter-spacing:.5px;text-transform:uppercase;padding:3px 6px;border-radius:4px}
+.pill.motore{color:#1a1203;background:var(--sc)} .pill.carico{color:var(--accent-ink);background:var(--accent)}
+.tri{color:var(--dim);font-size:10px}
+.tri.su{color:var(--ok)} .tri.giu{color:var(--rf)}
+.tag-hi td{background:rgba(60,200,255,.08)!important}
+.dchart{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:10px 8px 2px;margin:0 0 14px;overflow-x:auto}
+.dscatter{width:100%;height:auto;display:block;max-width:660px;margin:0 auto}
+@media(max-width:640px){.dtbl .hide-s{display:none}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
+    <span class="brand-mark"><span>M</span></span>
+    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+  </a>
+  <nav class="nav" aria-label="Sezioni">
+    <a href="stagione.html">Stagione</a>
+    <a href="live.html"><span class="dot-live"></span>Live</a>
+    <a href="classifiche.html">Classifiche</a>
+    <a href="analisi.html" class="on">Analisi</a>
+  </nav>
+</header>
+
+<div class="wrap-clas">
+  <div class="wrap-scheda" style="max-width:none;padding:20px 0 0"><a class="crumb" href="analisi.html">&larr; Analisi</a></div>
+  <div class="page-testa">
+    <h1>Dati stagione <em>//</em> il cruscotto</h1>
+    <div class="sotto">Come cambia la stagione, gara dopo gara. Scegli la vista, o una gara, e le tabelle si ricalcolano dal vivo.</div>
+  </div>
+
+  <div class="dash-bar">
+    <div class="seg" id="seg">
+      <button data-v="stagione" class="on">Stagione</button>
+      <button data-v="ultime5">Ultime 5</button>
+    </div>
+    <select class="selgara" id="selgara"><option value="">Per gara…</option></select>
+    <span class="dash-info" id="info"></span>
+  </div>
+
+  <div class="dsez">
+    <div class="sez-tit">Assetto <em>//</em> punta vs curva, per team</div>
+    <p class="dsub" id="sub-ass"></p>
+    <div class="dchart" id="chart-ass"></div>
+    <div style="overflow-x:auto"><table class="dtbl" id="tbl-ass"></table></div>
+    <p class="dsub" style="margin-top:8px">Firma d'<b>assetto</b>, non aero puro: la punta include la potenza del motore, la curva il grip meccanico. La velocità di punta è la mediana sui giri (robusta alla scia).</p>
+  </div>
+
+  <div class="dsez">
+    <div class="sez-tit">DNA circuiti <em>//</em> motore vs carico</div>
+    <p class="dsub" id="sub-dna"></p>
+    <div class="dchart" id="chart-dna"></div>
+    <div style="overflow-x:auto"><table class="dtbl" id="tbl-dna"></table></div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-in">
+    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
+    <nav><a href="stagione.html">Stagione</a><a href="live.html">Live</a><a href="classifiche.html">Classifiche</a><a href="analisi.html">Analisi</a></nav>
+  </div>
+</footer>
+
+<script type="module">
+const el = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const mean = a => a.reduce((s,x)=>s+x,0)/a.length;
+const median = a => { const b=[...a].sort((x,y)=>x-y),n=b.length; return n?(n%2?b[(n-1)/2]:(b[n/2-1]+b[n/2])/2):null; };
+const pct = (v,arr) => { const n=arr.length; if(!n)return 50; const k=arr.filter(x=>x<v).length,e=arr.filter(x=>x===v).length; return 100*(k+0.5*e)/n; };
+let DATI=null, COLORI={}, VISTA={tipo:'stagione'}, SORT={ass:'comb',dna:'ft'}, DIR={ass:-1,dna:-1};
+const col = t => COLORI[t] || 'var(--dim)';
+const CORTO = {'Red Bull Racing':'Red Bull','Haas F1 Team':'Haas','Aston Martin':'Aston'};
+const nm = t => CORTO[t] || t;
+
+function svgScatter(punti, o){
+  const W=680,H=400,ml=54,mr=118,mt=28,mb=42, x0=ml,x1=W-mr,y0=mt,y1=H-mb;
+  const sx=v=>x0+(v-o.xr[0])/(o.xr[1]-o.xr[0])*(x1-x0);
+  const sy=v=>y1-(v-o.yr[0])/(o.yr[1]-o.yr[0])*(y1-y0);
+  const cl=(v,r)=>Math.max(r[0],Math.min(r[1],v));
+  let s=`<svg viewBox="0 0 ${W} ${H}" class="dscatter" font-family="var(--mono)">`;
+  s+=`<style>.dscatter text{fill:var(--dim);font-size:9px}.dscatter .l{fill:var(--txt)}</style>`;
+  s+=`<rect x="${x0}" y="${y0}" width="${x1-x0}" height="${y1-y0}" fill="none" stroke="var(--line)"/>`;
+  o.xt.forEach(t=>{const x=sx(t);s+=`<text x="${x.toFixed(0)}" y="${y1+14}" text-anchor="middle">${t}</text>`;});
+  o.yt.forEach(t=>{const y=sy(t);s+=`<text x="${x0-6}" y="${(y+3).toFixed(0)}" text-anchor="end">${t}</text>`;});
+  s+=`<line x1="${sx(o.cx).toFixed(1)}" y1="${y0}" x2="${sx(o.cx).toFixed(1)}" y2="${y1}" stroke="var(--line)" stroke-dasharray="3 3"/>`;
+  s+=`<line x1="${x0}" y1="${sy(o.cy).toFixed(1)}" x2="${x1}" y2="${sy(o.cy).toFixed(1)}" stroke="var(--line)" stroke-dasharray="3 3"/>`;
+  const ap=[[x1-6,y1-8,'end'],[x1-6,y0+13,'end'],[x0+6,y0+13,'start'],[x0+6,y1-8,'start']];
+  (o.ang||[]).forEach((lab,i)=>{ if(lab){const a=ap[i];s+=`<text x="${a[0]}" y="${a[1]}" text-anchor="${a[2]}" opacity=".65" font-style="italic">${esc(lab)}</text>`;}});
+  s+=`<text x="${((x0+x1)/2).toFixed(0)}" y="${H-5}" text-anchor="middle">${esc(o.xl)}</text>`;
+  s+=`<text x="13" y="${((y0+y1)/2).toFixed(0)}" text-anchor="middle" transform="rotate(-90 13 ${((y0+y1)/2).toFixed(0)})">${esc(o.yl)}</text>`;
+  [...punti].sort((a,b)=>a.x-b.x).forEach(p=>{
+    const px=sx(cl(p.x,o.xr)), py=sy(cl(p.y,o.yr)), c=p.colore||'var(--dim)', r=p.hi?6:4.5;
+    s+=`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${r}" fill="${c}"${p.hi?' stroke="var(--txt)" stroke-width="1.5"':''}/>`;
+    let lx=px+r+4, anc='start'; if(lx>x1-2){lx=px-r-4;anc='end';}
+    s+=`<text x="${lx.toFixed(1)}" y="${(py+3).toFixed(1)}" text-anchor="${anc}" class="${p.hi?'l':''}">${esc(p.label)}</text>`;
+  });
+  return s+'</svg>';
+}
+
+function gareVista(){
+  const g = DATI.gare;
+  if(VISTA.tipo==='ultime5') return g.slice(-5);
+  if(VISTA.tipo==='gara')    return g.filter(x=>x.gp===VISTA.gp);
+  return g;
+}
+
+// ---- ASSETTO ----
+function assettoAggr(gare){
+  const S={},C={},N={};
+  gare.forEach(g=>{
+    const tv=Object.values(g.team).map(d=>d.vmax), tc=Object.values(g.team).map(d=>d.cornering);
+    for(const [t,d] of Object.entries(g.team)){
+      (S[t]=S[t]||[]).push(pct(d.vmax,tv)); (C[t]=C[t]||[]).push(pct(d.cornering,tc)); N[t]=(N[t]||0)+1;
+    }
+  });
+  const rows=[];
+  for(const t in S){ if(N[t]>=Math.min(4,gare.length)){ const s=mean(S[t]),c=mean(C[t]); rows.push({team:t,straight:s,corner:c,comb:(s+c)/2,gap:s-c,n:N[t]});}}
+  return rows;
+}
+function assettoGara(g){
+  const tv=Object.values(g.team).map(d=>d.vmax), tc=Object.values(g.team).map(d=>d.cornering);
+  return Object.entries(g.team).map(([t,d])=>({team:t,vmax:d.vmax,cornering:d.cornering,
+    straight:pct(d.vmax,tv),corner:pct(d.cornering,tc),comb:(pct(d.vmax,tv)+pct(d.cornering,tc))/2}));
+}
+function bar(v,max,c){ const w=Math.max(2,Math.min(100,100*v/max)); return `<div class="mb"><i style="width:${w}%;background:${c}"></i><span>${v.toFixed(0)}</span></div>`; }
+function renderAssetto(){
+  const gare=gareVista(), pergara=(VISTA.tipo==='gara' && gare.length===1);
+  let rows = pergara ? assettoGara(gare[0]) : assettoAggr(gare);
+  const key=SORT.ass, dir=DIR.ass;
+  rows.sort((a,b)=>((b[key]??-1)-(a[key]??-1))*(dir<0?1:-1));
+  const cols = pergara
+    ? [['team','Team'],['vmax','punta km/h'],['cornering','curva km/h'],['comb','combinato']]
+    : [['team','Team'],['straight','rettilineo %'],['corner','curva %'],['comb','combinato']];
+  const th = cols.map(([k,l])=>`<th data-k="${k}" data-t="ass">${l}${key===k?`<span class="ar">${dir<0?'▾':'▴'}</span>`:''}</th>`).join('');
+  const tr = rows.map(r=>{
+    const c=col(r.team);
+    const cell = pergara
+      ? `<td class="num">${bar(r.vmax,340,c)}</td><td class="num">${bar(r.cornering,230,c)}</td><td class="num">${bar(r.comb,100,c)}</td>`
+      : `<td class="num">${bar(r.straight,100,c)}</td><td class="num">${bar(r.corner,100,c)}</td><td class="num">${bar(r.comb,100,'var(--accent)')}</td>`;
+    return `<tr><td class="nome"><span class="cbar" style="background:${c}"></span>${esc(nm(r.team))}</td>${cell}</tr>`;
+  }).join('');
+  el('tbl-ass').innerHTML = `<thead><tr>${th}</tr></thead><tbody>${tr}</tbody>`;
+  const top2 = new Set([...rows].sort((a,b)=>b.comb-a.comb).slice(0,2).map(r=>r.team));
+  el('chart-ass').innerHTML = svgScatter(
+    rows.map(r=>({label:nm(r.team),colore:col(r.team),x:r.straight,y:r.corner,hi:top2.has(r.team)})),
+    {xr:[0,100],yr:[0,100],xt:[0,25,50,75,100],yt:[0,25,50,75,100],cx:50,cy:50,
+     xl:'rettilineo (percentile fra i team)',yl:'curva (percentile)',
+     ang:['scarico: dritto sì, curva no','forte in entrambi','carico: curva sì, dritto no','indietro ovunque']});
+  el('sub-ass').textContent = pergara
+    ? `${gare[0].circuito}: velocità di punta e di curva assolute, e il combinato dei percentili di quella gara.`
+    : `${VISTA.tipo==='ultime5'?'Ultime 5 gare':'Stagione ('+gare.length+' gare)'}: percentili rispetto ai rivali, media. Più alto = più forte in quel campo.`;
+}
+
+// ---- DNA ----
+function renderDna(){
+  const gare=gareVista().filter(g=>g.dna);
+  const tutte=DATI.gare.filter(g=>g.dna);
+  const ftMed=median(tutte.map(g=>g.dna.full_throttle_pct));
+  let rows=gare.map(g=>({c:g.circuito, gp:g.gp, ...g.dna, sel:(VISTA.tipo==='gara'&&g.gp===VISTA.gp)}));
+  const map={ft:'full_throttle_pct',top:'top',vc:'vel_curva_med',km:'lunghezza_m'};
+  const key=map[SORT.dna]||'full_throttle_pct', dir=DIR.dna;
+  rows.sort((a,b)=>((b[key]??-1)-(a[key]??-1))*(dir<0?1:-1));
+  const th=[['ft','a tutto gas %'],['top','punta km/h'],['curve','curve L/M/V'],['vc','vel. curva'],['km','km']];
+  const thh=`<th data-k="c" data-t="dna">Circuito</th>`+th.map(([k,l])=>`<th data-k="${k}" data-t="dna">${l}${SORT.dna===k?`<span class="ar">${dir<0?'▾':'▴'}</span>`:''}</th>`).join('');
+  const maxft=Math.max(...tutte.map(g=>g.dna.full_throttle_pct));
+  const tr=rows.map(r=>{
+    const cc = r.full_throttle_pct>=ftMed ? 'var(--sc)' : 'var(--accent)';
+    const pill = r.full_throttle_pct>=ftMed ? '<span class="pill motore">motore</span>' : '<span class="pill carico">carico</span>';
+    return `<tr class="${r.sel?'tag-hi':''}">
+      <td class="nome">${esc(r.c)} ${pill}</td>
+      <td class="num">${bar(r.full_throttle_pct,maxft*1.02,cc)}</td>
+      <td class="num dim">${r.top.toFixed(0)}</td>
+      <td class="num dim hide-s">${r.curve_lente}/${r.curve_medie}/${r.curve_veloci}</td>
+      <td class="num">${r.vel_curva_med.toFixed(0)}</td>
+      <td class="num dim hide-s">${(r.lunghezza_m/1000).toFixed(1)}</td></tr>`;
+  }).join('');
+  el('tbl-dna').innerHTML=`<thead><tr>${thh}</tr></thead><tbody>${tr}</tbody>`;
+  const minft=Math.min(...tutte.map(g=>g.dna.full_throttle_pct));
+  const maxvc=Math.max(...tutte.map(g=>g.dna.vel_curva_med)), vcMed=median(tutte.map(g=>g.dna.vel_curva_med));
+  el('chart-dna').innerHTML = svgScatter(
+    tutte.map(g=>{
+      const sel = VISTA.tipo==='gara' && g.gp===VISTA.gp;
+      const ext = VISTA.tipo!=='gara' && (g.dna.full_throttle_pct===maxft || g.dna.full_throttle_pct===minft || g.dna.vel_curva_med===maxvc);
+      return {label:g.circuito, colore:g.dna.full_throttle_pct>=ftMed?'var(--sc)':'var(--accent)',
+              x:g.dna.full_throttle_pct, y:g.dna.vel_curva_med, hi:sel||ext};
+    }),
+    {xr:[45,78],yr:[110,220],xt:[50,60,70],yt:[120,150,180,210],cx:ftMed,cy:vcMed,
+     xl:'a tutto gas % (→ motore)',yl:'velocità in curva (km/h)',
+     ang:['motore, curve lente','veloce e potente','tecnico, curve veloci','tecnico e lento']});
+  el('sub-dna').innerHTML = `La <b>% a tutto gas</b> (frazione di giro con acceleratore ≥95%) dice quanto un circuito chiede motore o carico. `+
+    (VISTA.tipo==='gara' ? `Evidenziato ${esc(gareVista()[0]?.circuito||'')}.` : `In arancio le piste da motore, in ciano quelle da carico.`);
+}
+
+function render(){
+  renderAssetto(); renderDna();
+  el('info').textContent = `aggiornato ${DATI.aggiornato} · ${DATI.n_gare} gare · Monaco esclusa (telemetria lacunosa)`;
+}
+function setVista(v){
+  VISTA=v;
+  [...el('seg').children].forEach(b=>b.classList.toggle('on', v.tipo===b.dataset.v));
+  if(v.tipo!=='gara') el('selgara').value='';
+  render();
+}
+
+document.addEventListener('click', e=>{
+  const th=e.target.closest('th[data-k]'); if(!th)return;
+  const t=th.dataset.t, k=th.dataset.k;
+  if(SORT[t]===k) DIR[t]*=-1; else { SORT[t]=k; DIR[t]=-1; }
+  render();
+});
+el('seg').addEventListener('click', e=>{ const b=e.target.closest('button'); if(b) setVista({tipo:b.dataset.v}); });
+el('selgara').addEventListener('change', e=>{ if(e.target.value) setVista({tipo:'gara',gp:e.target.value}); });
+
+async function boot(){
+  try { COLORI = await (await fetch('team_colori.json')).json(); } catch(e){}
+  try { DATI = await (await fetch('data/analisi/stagione_dati.json')).json(); }
+  catch(e){ el('tbl-ass').innerHTML='<tbody><tr><td>Dati non ancora disponibili.</td></tr></tbody>'; return; }
+  el('selgara').innerHTML = '<option value="">Per gara…</option>' +
+    [...DATI.gare].reverse().map(g=>`<option value="${esc(g.gp)}">R${g.round} · ${esc(g.circuito)}</option>`).join('');
+  render();
+}
+boot();
+</script>
+</body>
+</html>
