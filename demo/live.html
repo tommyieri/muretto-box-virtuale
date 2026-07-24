@@ -99,6 +99,13 @@
       <button type="button" class="mu-cambia" id="mu-cambia">cambia</button>
     </div>
     <button type="button" class="boxbtn" id="mu-box" hidden>BOX <span id="mu-boxgiro"></span></button>
+    <!-- LA SOSTA MESSA IN SCENA (live): il pallino entra ai box adesso e segue la strategia,
+         su mappa e su torre, sorpassando i rivali dove il motore dice che passa. -->
+    <button type="button" class="mu-sim" id="mu-sim" hidden>&#9654; Guarda la sosta</button>
+    <div class="mu-simbar" id="mu-simbar" hidden>
+      <span class="mu-simtag">Simulazione: <b id="mu-simdrv"></b> si ferma adesso &middot; rivali al passo reale</span>
+      <button type="button" id="mu-simesci">&#8634; dati reali</button>
+    </div>
     <div id="mu-kv"></div>
     <div id="mu-nota" class="lv-nota">Durante una <b>gara</b> scegli qui il pilota da seguire e il
       pannello risponde alla domanda del muretto: <i>se lo fermo adesso, dove rientra?</i>
@@ -194,6 +201,18 @@
   #mu-kv .sc-t th{color:#767e8e;font-weight:600;text-align:left;padding:.2rem .4rem}
   #mu-kv .sc-t td{padding:.2rem .4rem;border-top:1px solid #1c2430}
   #mu-kv .sc-o{color:#3fbf6f}#mu-kv .sc-c{color:#aab2c0}#mu-kv .sc-p{color:#f5a03c}
+  /* la sosta messa in scena (live) */
+  .mu-sim{display:block;width:100%;margin:.5rem 0 .2rem;padding:.62rem .8rem;border:0;border-radius:9px;
+    background:#22c55e;color:#04140a;font:800 .82rem/1 var(--mono,ui-monospace,monospace);
+    letter-spacing:.4px;text-transform:uppercase;cursor:pointer;transition:filter .15s}
+  .mu-sim:hover{filter:brightness(1.08)} .mu-sim[hidden]{display:none}
+  .mu-simbar{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin:.35rem 0 .1rem;
+    padding:.45rem .6rem;border:1px solid rgba(34,197,94,.42);border-radius:9px;background:rgba(34,197,94,.09);
+    font:600 .72rem -apple-system,Arial}
+  .mu-simbar[hidden]{display:none} .mu-simtag{color:#bdead0} .mu-simtag b{color:#eafff2}
+  .mu-simbar button{border:1px solid rgba(255,255,255,.2);background:transparent;color:#e9edf3;border-radius:6px;
+    padding:.32rem .55rem;font:600 .68rem var(--mono,ui-monospace,monospace);cursor:pointer;white-space:nowrap}
+  .mu-simbar button:hover{background:rgba(255,255,255,.08)}
 </style>
 
 <footer class="footer">
@@ -224,6 +243,8 @@ function quando(s){                       // orari f1db in UTC -> fuso del letto
 }
 
 async function boot(){
+  const params = new URLSearchParams(location.search);
+  if (params.get('demo')) return bootDemo(params.get('demo'), params.get('lap'));
   const cal = await (await fetch('data/calendario_2026.json')).json();
   const ora = new Date();
   // il weekend della prossima gara in calendario
@@ -250,7 +271,7 @@ const FLAG = {AllClear:['verde','PISTA VERDE'], Yellow:['gialla','BANDIERA GIALL
 
 async function bootMappa(g){
   const [{ creaPista }, { creaLiveMappa }, { creaTorreTiming }, { creaLiveClient }, cfg] = await Promise.all([
-    import('./pista.mjs?v=fase3'), import('./live_mappa.mjs'), import('./live_timing.mjs'),
+    import('./pista.mjs?v=250724a'), import('./live_mappa.mjs'), import('./live_timing.mjs'),
     import('./live_client.mjs'), import('./live_config.mjs')]);
   const geoRes = await fetch(`data/live_geo_${encodeURIComponent(g.nome)}.json`);
   if (!geoRes.ok) throw new Error(`live_geo_${g.nome}.json assente (runbook: gen_live_geo)`);
@@ -266,7 +287,8 @@ async function bootMappa(g){
   const torre = creaTorreTiming({ lista: el('tw-list'), nota: el('tw-nota') });
 
   // IL MURETTO IN DIRETTA — di nuovo gli stessi eventi, nessuna terza connessione.
-  const muretto = await creaMurettoLive(g);
+  const pausaLive = { attiva: false };   // ferma i dati live durante la simulazione fantasma
+  const muretto = await creaMurettoLive(g, { pista, mappa, torre, pausaLive });
 
   // R2b: dataset PERSISTENTE dell'ultima qualifica (dati veri da FastF1,
   // gen_quali.py). Serve a NON mostrare una pagina vuota fuori sessione:
@@ -277,9 +299,8 @@ async function bootMappa(g){
   const client = creaLiveClient({
     url: cfg.WS_URL,
     onEvento(e){
-      mappa.applica(e);
-      torre.applica(e);
-      muretto.applica(e);
+      if (!pausaLive.attiva){ mappa.applica(e); torre.applica(e); }
+      muretto.applica(e);   // il muretto accumula sempre; non ridisegna durante la simulazione
       const stato = e.type === 'track_status' ? e.status
         : (e.type === 'snapshot' ? e.track_status : null);
       if (stato){
@@ -336,10 +357,14 @@ async function bootMappa(g){
 // dal messaggio LapCount, che il feed manda soltanto in gara. Nelle libere e in qualifica
 // non esiste, quindi il pannello non si accende — ed e' giusto: senza giri di gara e senza
 // un ordine di corsa, "se lo fermo adesso dove rientra" non e' una domanda.
-async function creaMurettoLive(g){
-  const [{ creaByLapLive }, { pannelloMuretto }] = await Promise.all([
-    import('./live_bylap.mjs?v=220726b'), import('./muretto.mjs?v=220726b')]);
-  const B = creaByLapLive();
+async function creaMurettoLive(g, deps = {}){
+  const [{ creaByLapLive }, { pannelloMuretto }, { creaGhostPlay }] = await Promise.all([
+    import('./live_bylap.mjs?v=250724a'), import('./muretto.mjs?v=250724a'), import('./ghostplay.mjs?v=250724a')]);
+  const B = deps.B || creaByLapLive();
+  // pista/mappa/torre servono alla SOSTA MESSA IN SCENA; pausaLive ferma i dati live durante
+  // la simulazione; ripristinaTorre ridisegna la torre statica (usato dalla modalità demo).
+  const { pista = null, mappa = null, torre = null,
+          pausaLive = { attiva: false }, ripristinaTorre = null } = deps;
 
   // Le tabelle dal fondo 2018-2026, le stesse che usa gara.html. La freschezza di data/
   // e' garantita da UNA regola sola (demo/vercel.json: Cache-Control must-revalidate su
@@ -347,9 +372,12 @@ async function creaMurettoLive(g){
   // non al contenuto: auto_gara riscrive i dati senza toccare il BUILD, quindi non bustava
   // niente. La regola d'header invece fa rivalidare il browser a ogni richiesta.
   const j = async (u, d) => { try { return await (await fetch(u)).json(); } catch(_) { return d; } };
-  const [pitloss, neutroFondo, ragg, bandeClim] = await Promise.all([
+  const [pitloss, neutroFondo, ragg, bandeClim, teamCol] = await Promise.all([
     j('data/pitloss.json', {}), j('data/neutralizzazione_fondo.json', null),
-    j('data/raggruppamento.json', null), j('data/climatologia_bande.json', null)]);
+    j('data/raggruppamento.json', null), j('data/climatologia_bande.json', null),
+    j('team_colori.json', {})]);
+  // colore del pilota per la messa in scena (dal team del giro corrente)
+  const coloreDi = sg => { const L = B.giroPieno(); const t = B.byLap()[L]?.[sg]?.team; return (t && teamCol[t]) || '#9aa4b5'; };
 
   // IL PIT-LOSS PRIMA CHE LA GARA LO DICA. Ordine dichiarato, dal piu' vicino al piu'
   // lontano: (1) misurato sulla gara demo 2026 di questa pista, se c'e'; (2) il tipico
@@ -365,6 +393,7 @@ async function creaMurettoLive(g){
     : (plFondo != null ? `tipico del circuito su ${vocePL.pit_loss_n_soste} soste dal 2018` : null);
 
   let scelto = null, boxAperto = false, mescolaScelta = null, ridisegna = null;
+  let lastRes = null, gp = null;   // ultima risposta del pannello + la messa in scena in corso
 
   // LA GRIGLIA DI SCELTA. Non una tendina: le sigle in chiaro, con la posizione, come una
   // formazione da schierare. Si ricostruisce solo quando l'elenco cambia davvero, altrimenti
@@ -391,6 +420,7 @@ async function creaMurettoLive(g){
   ridisegna = () => {
     const kv = el('mu-kv'), nota = el('mu-nota');
     const nLaps = B.nLaps(), L = B.giroPieno();
+    el('mu-sim').hidden = true;   // visibile solo con una risposta simulabile (sotto)
 
     // FUORI GARA: niente porta, niente pannello. La domanda non esiste nelle libere.
     if (!nLaps) {
@@ -452,6 +482,8 @@ async function creaMurettoLive(g){
     kv.innerHTML = r.html
       + (provPitLoss ? `<div class="kv"><span class="k">Riferimento</span>
            <span class="v dim">pit-loss di partenza: ${provPitLoss}</span></div>` : '');
+    lastRes = r;
+    if (r && r.ok && r.sim && r.sim.laps && r.sim.laps.length > 1) el('mu-sim').hidden = false;
   };
 
   el('mu-griglia').addEventListener('click', e => {
@@ -477,10 +509,48 @@ async function creaMurettoLive(g){
     scelto = r.dataset.sigla; boxAperto = false; mescolaScelta = null; ridisegna();
   });
 
+  // ---- LA SOSTA MESSA IN SCENA (ghostplay) ------------------------------------------
+  function avviaSim(){
+    if (!pista || !lastRes || !lastRes.sim) return;
+    pausaLive.attiva = true;                    // i dati live restano fermi durante la scena
+    if (mappa) mappa.setAcceso(false);          // spegni l'overlay GPS: in scena resta il fantasma
+    el('mu-sim').hidden = true; el('mu-simbar').hidden = false;
+    el('mu-simdrv').textContent = scelto;
+    gp = creaGhostPlay({ sim: lastRes.sim, pista, coloreDi, onTower: renderSimTorre });
+    gp.play();
+  }
+  function esciSim(){
+    if (gp){ gp.stop(); gp = null; }
+    if (pista) pista.aggiorna([]);              // togli il fantasma dalla mappa
+    pausaLive.attiva = false;
+    if (mappa) mappa.setAcceso(true);
+    el('mu-simbar').hidden = true;
+    if (ripristinaTorre) ripristinaTorre();     // demo: ridisegna la torre statica; live: la ridisegna il feed
+    ridisegna();
+  }
+  function renderSimTorre(righe){
+    el('tw-list').innerHTML = righe.map(r =>
+      `<div class="tw-row${r.inPit ? ' tw-pit' : ''}${r.drv === scelto ? ' tw-sel' : ''}"><div class="tw-main">`
+      + `<span class="tw-pos">${r.pos}</span>`
+      + `<span class="tw-col" style="background:${coloreDi(r.drv)}"></span>`
+      + `<span class="tw-sig">${r.drv}</span>`
+      + `<span class="tw-time">${r.drv === scelto ? 'TU' : ''}</span>`
+      + `<span class="tw-gap ${r.leader ? 'tw-lead' : ''}">${r.gapTxt}</span>`
+      + `<span class="tw-tag">${r.inPit ? 'PIT' : ''}</span>`
+      + `</div></div>`).join('');
+    const n = el('tw-nota'); if (n) n.hidden = true;
+  }
+  el('mu-sim').addEventListener('click', avviaSim);
+  el('mu-simesci').addEventListener('click', esciSim);
+
+  ridisegna();   // avvio: porta o nota, secondo lo stato di B
+
   let ultimo = null;
   return {
+    ridisegna,
     applica(e){
       B.applica(e);
+      if (pausaLive.attiva) return;   // sotto simulazione il pannello accumula ma non ridisegna
       // si ridisegna quando la gara cambia davvero giro, non 50 volte al secondo
       const L = B.giroPieno();
       if (L !== ultimo){ ultimo = L; ridisegna(); }
@@ -512,6 +582,68 @@ function qualiToSnapshot(q){
   }
   return { type: 'snapshot', driver_list, cars,
            track_status: null, session_status: null };
+}
+
+// ============================================================ MODALITÀ DEMO (?demo=<gara>)
+// Prova il muretto live senza un feed: una gara GIÀ CORSA alimenta il pannello e la messa in
+// scena della sosta, con dati reali ma dichiaratamente NON in diretta. È l'equivalente del
+// collettore --replay per la sola parte-muretto (niente GPS: la mappa mostra il fantasma).
+async function bootDemo(gara, lapStr){
+  el('week').innerHTML = `<div class="live-gp"><b>DEMO &middot; ${gara}</b>`
+    + `<span>prova del muretto live su una gara gi&agrave; corsa &mdash; dati reali, nessun feed</span></div>`;
+  const { creaPista } = await import('./pista.mjs?v=250724a');
+  const race = await (await fetch(`data/${encodeURIComponent(gara)}.json`)).json();
+  const teamCol = await (await fetch('team_colori.json')).json();
+  race.byLap = {}; for (const lp of race.laps) race.byLap[lp.lap] = lp.cars;
+  const N = race.n_laps;
+  const L = Math.max(2, Math.min(N - 1, lapStr ? +lapStr : Math.round(N * 0.7)));
+  const cont = el('live-mappa');
+  const pista = await creaPista({ canvas: cont.querySelector('canvas'),
+                                  url: `data/pista_${encodeURIComponent(gara)}.json` });
+  el('live-overlay').style.display = 'none';
+  const b = el('live-badge'); b.className = 'lv-badge lv-off';
+  b.textContent = `DEMO — ${gara} · giro ${L}/${N}`;
+  el('live-nota').textContent = 'Modalità demo: la gara è già corsa, i dati sono reali ma non in diretta. '
+    + 'Serve a provare il muretto live e la messa in scena della sosta senza un feed. '
+    + 'Scegli un pilota qui sotto, premi BOX, poi "Guarda la sosta".';
+  el('live-nota').hidden = false;
+  const B = fintaByLap(race, L);
+  const ripristinaTorre = () => renderTorreDemo(race, L, teamCol);
+  ripristinaTorre();
+  await creaMurettoLive({ nome: gara, gara_demo: gara, circuitId: null }, { B, pista, ripristinaTorre });
+}
+// finta B (stessa interfaccia di creaByLapLive) a partire dai dati di una gara finita
+function fintaByLap(race, L){
+  const nLaps = race.n_laps;
+  return {
+    applica(){},
+    byLap: () => race.byLap,
+    nLaps: () => nLaps,
+    giro: () => L,
+    giroPieno: () => L,
+    pace: Lx => race.pace[String(Lx)] || {},
+    presenti: Lx => Object.keys(race.byLap[Lx] || {}).filter(d => typeof race.byLap[Lx][d].cum_time === 'number'),
+    diagnosi: Lx => { const n = Object.keys(race.pace[String(Lx)] || {}).length;
+      return n >= 6 ? { pronto: true, n } : { pronto: false, n, motivo: `passo-base per ${n} piloti` }; },
+  };
+}
+// torre statica al giro L dai dati della gara (ordinata per cum_time)
+function renderTorreDemo(race, L, teamCol){
+  const A = race.byLap[L] || {};
+  const ord = Object.entries(A).filter(([d, c]) => typeof c.cum_time === 'number')
+    .sort((a, b) => a[1].cum_time - b[1].cum_time);
+  const leader = ord.length ? ord[0][1].cum_time : 0;
+  el('tw-list').innerHTML = ord.map(([d, c], i) => {
+    const gap = c.cum_time - leader;
+    return `<div class="tw-row" data-sigla="${d}"><div class="tw-main">`
+      + `<span class="tw-pos">${i + 1}</span>`
+      + `<span class="tw-col" style="background:${teamCol[c.team] || '#9aa4b5'}"></span>`
+      + `<span class="tw-sig">${d}</span>`
+      + `<span class="tw-time">${c.compound ? c.compound.toLowerCase() : ''}</span>`
+      + `<span class="tw-gap ${i === 0 ? 'tw-lead' : ''}">${i === 0 ? 'LEADER' : '+' + gap.toFixed(1) + 's'}</span>`
+      + `<span class="tw-tag"></span></div></div>`;
+  }).join('');
+  el('tw-nota').hidden = true;
 }
 boot();
 </script>
