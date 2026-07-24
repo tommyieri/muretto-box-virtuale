@@ -1,8 +1,4 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "_nota": "Root del deploy = demo/ (verificato: /gara.html risponde, /demo/gara.html no). Questo file vive qui, non nella radice del repo. Contiene SOLO header: non tocca il routing statico a zero-config.",
-  "_perche": "I JSON sotto data/ li riscrive auto_gara.py dopo ogni gara (pitloss, neutralizzazione_fondo, raggruppamento, climatologia_bande, i JSON gara, il manifest). Vercel gia' li serviva con max-age=0, must-revalidate, ma era un DEFAULT non documentato: qui lo rendiamo DELIBERATO, cosi' sopravvive a un cambio di default della piattaforma ed e' una regola sola invece di una toppa ?v= per pagina. Il 22/07/2026 la copia vecchia si vide in collaudo su localhost (python http.server non manda header di cache); in produzione il default gia' proteggeva.",
-  "_verifica": "no-cache (non max-age=0) e X-Muretto-Cache servono a PROVARE che questo file e' letto: se in produzione compaiono, la regola e' attiva; se resta max-age=0 senza il marcatore, vercel.json non e' nella root giusta.",
   "headers": [
     {
       "source": "/data/(.*)",
