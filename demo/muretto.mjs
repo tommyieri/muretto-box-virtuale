@@ -285,13 +285,73 @@ export function pannelloMuretto(C) {
   }
 
   const neutro = r.sotto_neutralizzazione === true;
+  // LIMITE B — LA RISOLUZIONE DEL GAP DI RIENTRO (dichiarato 24/07/2026).
+  // Il gap che il pannello mostra e' SEMPRE quello dell'auto appena uscita dai box, il cui
+  // passo post-sosta e' la quantita' meno nota della gara. Misurato sui casi a campo fermo:
+  // l'errore tipico sul gap di rientro e' ~5 s (mediana), il 41% sbaglia di piu' di 5 s, e a
+  // fine finestra arriva a ~15 s. Stampare "+2,5s" e' una FALSA PRECISIONE: un muretto lo
+  // legge "attaccabile, zona DRS" e quattro volte su dieci la macchina esce da tutt'altra
+  // parte. Percio': niente decimali, e sotto la risoluzione la riga dice "quasi appaiati"
+  // invece di un numero che non regge. NB: fra due auto CONGELATE il gap e' preciso (floor
+  // 1,1 s), ma qui uno dei due si e' appena fermato — ed e' quello il rumore.
+  const soglia = orizzonte > 0 ? 5 : 3;   // scettico: sotto ~5 s a orizzonte pieno il numero non distingue
   const gapTxt = (nome, gap) => {
     if (!nome) return '<span class="g">—</span>';
     if (neutro || gap == null) return `${nome} <span class="sub">gap n/d sotto neutralizzazione</span>`;
-    return `${nome} <span class="g">+${gap.toFixed(1)}s</span>`;
+    if (Math.abs(gap) <= soglia)
+      return `${nome} <span class="sub">quasi appaiati: sotto la risoluzione del rientro</span>`;
+    return `${nome} <span class="g">~${Math.round(gap)} s</span>`;
   };
   const dav = r.davanti_ho ? gapTxt(r.davanti_ho, r.gap_ahead) : '<span class="g">aria pulita</span>';
   const die = gapTxt(r.dietro_esco, r.gap_behind);
+  // la nota sulla risoluzione, UNA volta, e solo se un gap e' mostrato come NUMERO: quando
+  // entrambi i gap sono gia' "quasi appaiati" la nota e' ridondante (quel testo dice gia'
+  // che sono sotto la risoluzione).
+  const gapNumero = g => g != null && Math.abs(g) > soglia;
+  const mostraGap = !neutro && ((gapNumero(r.gap_ahead) && r.davanti_ho) || (gapNumero(r.gap_behind) && r.dietro_esco));
+  const cavGap = mostraGap
+    ? `<div class="cav">Il gap di rientro &egrave; <b>indicativo</b>: l&#39;auto appena uscita dai box
+        pu&ograve; uscire qualche secondo diversa, di pi&ugrave; a fine finestra &mdash; tipico ~5 s,
+        fino a ~15 s. <span class="sub">fra due auto gi&agrave; in pista invece il gap &egrave; preciso.</span></div>`
+    : '';
+
+  // LIMITE C — LA SATURAZIONE (dichiarato 24/07/2026). Quando il pannello ti mette all'ESTREMO
+  // del tuo gruppo a pari giro, l'errore e' a UNA coda sola per costruzione: da ultimo la sosta
+  // puo' solo tenerti ultimo, e "P8 di 8" sembra una previsione precisa ma e' un pavimento. Lo
+  // scettico ha corretto il testo: NON si mostrano i numeri di validazione (misurati su un
+  // gruppo raffinato coi giri futuri, che in diretta non esiste); si dice solo che e' il fondo
+  // del gruppo CHE IL PANNELLO VEDE ADESSO, non una posizione garantita in gara.
+  const alFondo = r.rientro_pos === r.su_totale && r.su_totale >= 2;
+  const inTesta = r.rientro_pos === 1 && r.su_totale >= 2;
+  const cavSatur = alFondo
+    ? `<div class="cav">Sei <b>ultimo</b> dei ${r.su_totale} che il pannello vede a pari giro: la
+        sosta non ti fa scendere sotto il fondo di <i>questo</i> gruppo. Ma il gruppo si affina
+        coi giri e il motore non sa dirti di quanto potresti risalire.
+        <span class="sub">un pavimento, non una posizione garantita in gara.</span></div>`
+    : inTesta
+      ? `<div class="cav">Sei <b>primo</b> dei ${r.su_totale} che il pannello vede a pari giro: la
+          sosta non ti fa salire pi&ugrave; in alto. Il motore non sa dirti di quanto potresti scendere.
+          <span class="sub">un soffitto, non una posizione garantita in gara.</span></div>`
+      : '';
+
+  // LIMITE A — L'ESPOSIZIONE AL CAMPO CHE SI MUOVE, in VERDE (dichiarato 24/07/2026).
+  // Sotto Safety Car assumiamo le soste dei rivali (fix acceso). In verde no: chi si fermera'
+  // e' una scelta, non un obbligo. Misurato: in pit verde l'errore cresce di +0,10 posizioni
+  // per ogni rivale che si ferma nella finestra (r=0,575). Il predittore vivo e' "rivali del
+  // gruppo ancora al primo stint" (stint 1 = non si sono ancora fermati). Lo scettico ha
+  // corretto due cose: (1) NIENTE filtro di prossimita', abbassa la correlazione; (2) N segnala
+  // la PRESENZA del rischio, NON la sua taglia — e la direzione e' PRUDENTE: il pannello quasi
+  // mai ti mette troppo avanti (~6% peggio), meta' delle volte e' esatto, meta' rientri MEGLIO.
+  const gruppoPari = stessoGiroReale(C.byLap, L, C.nLaps, C.driver, present);
+  const nDaFermare = gruppoPari.filter(d => d !== C.driver && C.byLap[L][d]?.stint === 1).length;
+  const cavEsposiz = (!neutro && r.soste_rivali_assunte === 0 && !alFondo && !inTesta && nDaFermare >= 2)
+    ? `<div class="cav"><b>${nDaFermare}</b> rivali del tuo gruppo non si sono ancora fermati: la
+        posizione qui sopra &egrave; <b>prudente</b>. Quasi mai troppo ottimistica &mdash; rientri
+        peggio di cos&igrave; solo in un caso su venti; met&agrave; delle volte &egrave; gi&agrave;
+        esatta, l&#39;altra met&agrave; rientri pi&ugrave; avanti, fino a 1-2 posizioni se si ferma
+        buona parte del gruppo. <span class="sub">il numero dice che il rischio c&#39;&egrave;, non
+        quanto sar&agrave; grande.</span></div>`
+    : '';
   // L'ASSUNZIONE DICHIARATA. Sotto Safety Car il motore assume che anche i rivali ancora
   // da fermare si fermino con te: e' la mossa che conviene a tutti, ed e' cio' che rende la
   // posizione affidabile qui (bias +1,42 -> +0,14 sul banco). Ma e' un'ASSUNZIONE, non un
@@ -406,8 +466,11 @@ export function pannelloMuretto(C) {
     <div class="kv"><span class="k">Pit-loss</span><span class="v num">+${loss.toFixed(1)} s ${provPL}</span></div>
     <div class="kv"><span class="k">Rientro</span><span class="v">P${r.rientro_pos} <span class="sub">tra i ${r.su_totale} a pari giro</span>${alGiro}</span></div>
     ${rigaAssunzione}
+    ${cavSatur}
+    ${cavEsposiz}
     <div class="kv"><span class="k">Davanti</span><span class="v">${dav}</span></div>
     <div class="kv"><span class="k">Dietro</span><span class="v">${die}</span></div>
+    ${cavGap}
     ${rigaGradino}
     ${rigaUC}
     ${righeGrossi}
