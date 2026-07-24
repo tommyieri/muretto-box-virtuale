@@ -202,6 +202,8 @@ function rigioca(gara, byLap, N, drv, P) {
     // il contesto, che spiega
     rivali_fermati: rivaliFermati, n_rivali_fermati: rivaliFermati.length,
     sotto_neutralizzazione: r.sotto_neutralizzazione === true,
+    giro_neutralizzato: r.giro_neutralizzato === true,
+    soste_rivali_assunte: r.soste_rivali_assunte || 0,
     pit_loss_usato: +loss.toFixed(2),
     pit_loss_da: usaViva ? `misurato oggi (${viva.n_perdita} soste)` : 'tabella di circuito',
     gradino_usato: gradino != null ? +gradino.toFixed(3) : null,

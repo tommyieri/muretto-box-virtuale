@@ -292,6 +292,16 @@ export function pannelloMuretto(C) {
   };
   const dav = r.davanti_ho ? gapTxt(r.davanti_ho, r.gap_ahead) : '<span class="g">aria pulita</span>';
   const die = gapTxt(r.dietro_esco, r.gap_behind);
+  // L'ASSUNZIONE DICHIARATA. Sotto Safety Car il motore assume che anche i rivali ancora
+  // da fermare si fermino con te: e' la mossa che conviene a tutti, ed e' cio' che rende la
+  // posizione affidabile qui (bias +1,42 -> +0,14 sul banco). Ma e' un'ASSUNZIONE, non un
+  // fatto — chi guarda deve saperlo. Senza questa riga la posizione sarebbe piu' giusta e
+  // piu' bugiarda insieme: giusta nel numero, muta sul perche'.
+  const rigaAssunzione = (r.soste_rivali_assunte > 0)
+    ? `<div class="kv"><span class="k">Sotto Safety Car</span><span class="v">assumo che anche
+        <b>${r.soste_rivali_assunte}</b> ${r.soste_rivali_assunte === 1 ? 'rivale ancora da fermare si fermi' : 'rivali ancora da fermare si fermino'} con te
+        <span class="sub">e' la mossa che conviene a tutti sotto neutralizzazione: senza, la posizione ti darebbe troppo avanti</span></span></div>`
+    : '';
   const ng = r.neutralizzazione_gara || {};
   const warn = ng.finestra_attiva
     ? `<div class="warn">⚠ Pit in finestra ${ng.tipo} (giri ${ng.finestra[0]}–${ng.finestra[1]}, durata tipica ${ng.durata_tipica} giri): il pit-loss verde qui sovrastima la perdita reale.</div>`
@@ -395,6 +405,7 @@ export function pannelloMuretto(C) {
   const html = warn + `
     <div class="kv"><span class="k">Pit-loss</span><span class="v num">+${loss.toFixed(1)} s ${provPL}</span></div>
     <div class="kv"><span class="k">Rientro</span><span class="v">P${r.rientro_pos} <span class="sub">tra i ${r.su_totale} a pari giro</span>${alGiro}</span></div>
+    ${rigaAssunzione}
     <div class="kv"><span class="k">Davanti</span><span class="v">${dav}</span></div>
     <div class="kv"><span class="k">Dietro</span><span class="v">${die}</span></div>
     ${rigaGradino}

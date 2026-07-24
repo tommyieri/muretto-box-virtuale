@@ -1,6 +1,11 @@
 import { simulate } from './engine.mjs';
 import { simulaConSoste } from './gradino.mjs';
 import NEUTRAL from './neutralizzazione.json' with { type: 'json' };
+
+// SOSTE DEI RIVALI SOTTO SAFETY CAR — il difetto n.1 del banco della strategia.
+// Acceso il 24/07/2026 su decisione PO. Reversibile da qui: a false il motore torna al
+// campo interamente congelato anche sotto SC (comportamento fino al 24/07).
+const SOSTE_RIVALI_SC = true;
 // --- helper additivi: leggono FATTI GREZZI, non modificano il calcolo del rientro ---
 function neutralizzazioneGara(gara, pitLap) {
   const g = NEUTRAL[gara];
@@ -94,9 +99,42 @@ export function evaluatePit({ byLap, nLaps, pace, driver, freezeLap, pitLap, pit
   if (!(driver in state)) return { ok:false, reason:'pilota non in pista al giro scelto' };
   const steps = (pitLap - L) + 1 + orizzonte;
   const giroNeutralizzato = !!(byLap[pitLap] && byLap[pitLap][driver] && byLap[pitLap][driver].neutralized);
-  // simulaConSoste(gradino=null) e' bit-identico a simulate(steps) — verificato in test_gradino.mjs
+
+  // --- LE SOSTE DEI RIVALI SOTTO SAFETY CAR (il difetto n.1 del banco, acceso 24/07/2026) ---
+  //
+  // Il campo congelato e' la promessa del prodotto — instrada UNA macchina e lascia gli altri
+  // dov'e' — e regge finche' il mondo sta fermo. Ma sotto Safety Car il mondo NON sta fermo:
+  // si ferma tutto insieme, ai box, ed e' proprio per questo che ci si ferma (la sosta costa
+  // meno). Il motore pagava il pit-loss a te solo e lasciava i rivali a passo pieno, quindi
+  // chi si fermava con te ti scavalcava nella simulazione ma non nella realta'. Misurato sul
+  // banco della strategia: 145 soste, bias +1,41, in tutte e 10 le gare 2026.
+  //
+  // COSA SI PUO' SAPERE IN DIRETTA. Non chi si fermera' (quello e' il futuro), ma chi HA UN
+  // MOTIVO di fermarsi adesso: sotto SC si ferma chi non ha ancora fatto la sosta, cioe' chi
+  // e' ancora sul primo stint. E' un'ASSUNZIONE, non una certezza — e va dichiarata. MISURATO:
+  // fermare con te i rivali a pari giro ancora sullo stint 1 porta il bias da +1,42 a +0,14,
+  // 33 casi migliorati su 8 peggiorati, e il 67% di quelli che fermiamo si ferma davvero.
+  //
+  // Stessa perdita per tutti: sotto SC il costo relativo fra chi si ferma e' pari, e la
+  // posizione e' una quantita' relativa. Il gradino lo prendono anche loro (montano gomma
+  // nuova come te); la deriva resta solo tua. Si accende SOLO se il TUO giro di pit e'
+  // neutralizzato: se ti fermi in verde, i rivali non si fermano con te e questa non scatta.
+  let sosteRivaliAssunte = 0;
+  const pits = [{ driver, lap: pitLap, loss: pitLoss }];
+  if (SOSTE_RIVALI_SC && giroNeutralizzato) {
+    const pariGiro = stessoGiroReale(byLap, L, nLaps, driver, present);
+    for (const d of pariGiro) {
+      if (d === driver) continue;
+      if (byLap[L][d] && byLap[L][d].stint === 1) {   // non ha ancora fatto la sosta
+        pits.push({ driver: d, lap: pitLap, loss: pitLoss });
+        sosteRivaliAssunte++;
+      }
+    }
+  }
+
+  // simulaConSoste(gradino=null, un solo pit) e' bit-identico a simulate(steps) — test_gradino.mjs
   const fin = simulaConSoste({ state, pace, freezeLap:L, steps, ZONE,
-                               pits:[{ driver, lap:pitLap, loss:pitLoss }], gradino,
+                               pits, gradino,
                                deriva, instradato: driver });
   if (fin[driver] == null) return { ok:false, reason:'pilota non simulabile' };
   const same = stessoGiroReale(byLap, L, nLaps, driver, present).filter(d => fin[d] != null);
@@ -146,6 +184,9 @@ export function evaluatePit({ byLap, nLaps, pace, driver, freezeLap, pitLap, pit
     nota_gap: sotto_neutralizzazione ? 'gap non quantificabile sotto '+(ng.tipo ?? 'neutralizzazione')+' — il pit-loss verde sovrastima la perdita reale' : null,
     // campi che richiedono DEGRADO / difficolta-sorpasso: dichiarati, non calcolati
     giro_neutralizzato:giroNeutralizzato,
+    // quanti rivali il motore ha assunto si fermino con te sotto SC (0 = campo tutto fermo).
+    // La UI lo DICHIARA: e' un'assunzione, non una certezza, e chi guarda deve saperlo.
+    soste_rivali_assunte: sosteRivaliAssunte,
     aria_libera:null, perdita_primi3:null, undercut:null, overcut:null, delta_strategia:null, pit_exit_offset:null,
     // --- FATTI GREZZI ADDITIVI (non toccano rientro_pos/davanti/dietro) ---
     neutralizzazione_gara: ng,
