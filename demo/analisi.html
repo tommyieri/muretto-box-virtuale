@@ -10,6 +10,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Analisi — Muretto Box Virtuale</title>
 <link rel="stylesheet" href="stile.css?v=250724f">
+<style>
+  .anl-spiega{ color:#aab2c0; font-size:.88rem; line-height:1.5; margin:0 0 .7rem; max-width:62ch; }
+  .anl-spiega b{ color:#e8edf5; }
+  .anl-nb{ display:block; color:#8b93a5; font-size:.82rem; margin-top:.35rem; }
+  .anl-leg{ display:flex; flex-wrap:wrap; gap:1.1rem; margin:0 0 .55rem; color:#8b93a5; font-size:.78rem; }
+  .anl-leg i{ display:inline-flex; align-items:center; gap:.42rem; font-style:normal; }
+  .anl-leg .sw{ width:14px; height:10px; border-radius:2px; display:inline-block; }
+  .anl-leg .sw.su{ background:var(--ok); }
+  .anl-leg .sw.giu{ background:color-mix(in srgb, var(--rf) 75%, var(--panel)); }
+  .anl-leg .sw.z{ width:2px; height:14px; background:var(--line2); border-radius:0; }
+  .anl-assehdr{ display:grid; grid-template-columns:68px 1fr 44px; gap:10px; margin-bottom:.35rem; }
+  .anl-assehdr .axis{ grid-column:2; position:relative; display:flex; justify-content:space-between;
+    font:600 .7rem/1 var(--mono); color:#767e8e; letter-spacing:.3px; }
+  .anl-assehdr .zc{ position:absolute; left:50%; transform:translateX(-50%); }
+  .wip-fondo{ margin-top:1.4rem; opacity:.9; }
+</style>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>
@@ -32,14 +48,30 @@
     <div class="sotto">Prestazioni misurate, gara dopo gara. Tocca un pilota per aprire la scheda.</div>
   </div>
 
-  <div class="wip panel">
+  <div class="sez-tit">Posizioni guadagnate o perse in gara</div>
+  <section class="panel anl">
+    <p class="anl-spiega">Quante posizioni ogni pilota <b>recupera</b> o <b>perde</b> dalla
+      <b>griglia di partenza</b> all'<b>arrivo</b>, sommate su tutta la stagione 2026.
+      <span class="anl-nb">Chi parte spesso davanti (in pole) ha poco da guadagnare e molto da
+      perdere: per questo un big pu&ograve; stare in rosso pur vincendo tante gare.</span></p>
+    <div class="anl-leg">
+      <i><span class="sw su"></span>guadagna posizioni</i>
+      <i><span class="sw giu"></span>ne perde</i>
+      <i><span class="sw z"></span>parte e finisce uguale (0)</i>
+    </div>
+    <div class="anl-assehdr" aria-hidden="true">
+      <div class="axis"><span>&larr; perse</span><span class="zc">0</span><span>guadagnate &rarr;</span></div>
+    </div>
+    <div id="grafico"></div>
+  </section>
+
+  <!-- la nota "in arrivo" va DOPO il contenuto vero e con meno peso: prima si vede il grafico,
+       non un "coming soon" che fa chiudere la pagina (audit UX C4). -->
+  <div class="wip panel wip-fondo">
     <span class="wip-tag">IN ARRIVO</span>
     Telemetrie di gara, prestazioni dei team nel tempo, caratterizzazione dei circuiti
-    (degrado, sorpassabilit&agrave;, pit-loss).
+    (degrado, sorpassabilit&agrave;, pit-loss). Come tutto il resto: solo da dati misurati.
   </div>
-
-  <div class="sez-tit">Posizioni guadagnate/perse in gara</div>
-  <section class="panel anl" id="grafico"></section>
 </div>
 
 <footer class="footer">
