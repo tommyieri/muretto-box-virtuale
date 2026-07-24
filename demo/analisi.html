@@ -9,7 +9,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Analisi — Muretto Box Virtuale</title>
-<link rel="stylesheet" href="stile.css?v=250724f">
+<link rel="stylesheet" href="stile.css?v=250724g">
 <style>
   .anl-spiega{ color:#aab2c0; font-size:.88rem; line-height:1.5; margin:0 0 .7rem; max-width:62ch; }
   .anl-spiega b{ color:#e8edf5; }
@@ -86,9 +86,13 @@
 </footer>
 
 <script type="module">
+import { scheletro, mostraErrore, prendiJSON } from './stato.mjs?v=250724a';
 const el = id => document.getElementById(id);
 async function boot(){
-  const schede = await (await fetch('data/schede_2026.json')).json();
+  scheletro(el('grafico'), 10);
+  let schede;
+  try { schede = await prendiJSON('data/schede_2026.json'); }
+  catch(e){ mostraErrore(el('grafico'), boot); return; }
   let colori = {}; try { colori = await (await fetch('team_colori.json')).json(); } catch(e){}
   const piloti = Object.entries(schede.piloti)
     .map(([id,s]) => ({id, sigla:s.sigla, numero:s.numero, team:s.team_demo, v:s.stagione.pos_guadagnate}))
