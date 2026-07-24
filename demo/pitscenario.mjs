@@ -107,15 +107,35 @@ export function evaluatePit({ byLap, nLaps, pace, driver, freezeLap, pitLap, pit
   const gapA = ahead?(me-ahead[1]):null, gapB = behind?(behind[1]-me):null;
 
   // --- SOPPRESSIONE GAP SOTTO NEUTRALIZZAZIONE ---
-  // Se il pit cade in una finestra SC/VSC reale, i gap in secondi sono affetti da DUE bias
-  // che spingono nella stessa direzione (pit-loss verde sovrastima la perdita reale; il gruppo
-  // si ricompatta) di grandezza nota nel segno ma ignota nel valore. Coerente col precedente
-  // aria_libera/traffico: null onesto, non numero-biased con cerotto testuale.
-  // Restano: nomi davanti/dietro, posizione di rientro, ordine (meno biased dei secondi).
-  // Scatta su finestra di gara O flag per-auto del pilota al giro del pit:
-  // metodo e definizione della finestra in data/NEUTRALIZZAZIONE_NOTA.txt (fix C1).
+  // Se la finestra e' neutralizzata i gap in secondi hanno DUE bias concordi (pit-loss verde
+  // sovrastima la perdita; il gruppo si ricompatta): noti nel segno, ignoti nel valore. Si
+  // sopprimono, come aria_libera/traffico. Restano nomi e posizione, meno biased.
+  //
+  // COSA GUARDA (riscritto 24/07/2026, banco della strategia).
+  // Prima: la tabella demo/neutralizzazione.json (finestre della gara FINITA) O il flag del
+  // pilota AL SOLO giro del pit. Due difetti misurati sulle 10 gare:
+  //   - la tabella VIENE DAL FUTURO: e' costruita a gara conclusa, in diretta non esiste, e su
+  //     Gran Bretagna dichiarava finestre dove il campo non era nemmeno neutralizzato.
+  //   - guardava SOLO il giro del pit: con l'orizzonte la finestra e' [pit, pit+orizzonte+1],
+  //     e se la Safety Car esce DOPO il pit il pannello dava gap quantificabili che non lo
+  //     erano — 51 casi su 405, il pit verde con la risposta letta sotto SC.
+  // Ora: la MAGGIORANZA DEL CAMPO col flag neutralized, scandita su TUTTA la finestra fino al
+  // giro di verifica. E' osservabile in diretta (il flag arriva dal feed, giro per giro) e
+  // copre l'orizzonte. MISURATO: riproduce il 100% dei casi che la tabella-futuro coglieva
+  // (184/184, nessun falso negativo) e ne aggiunge 74 giusti. La soglia di maggioranza e' la
+  // stessa del banco: sotto una gialla LOCALE poche auto hanno il flag, non il campo.
+  const Lfin = L + steps;
+  let sotto_neutralizzazione = false;
+  for (let k = pitLap; k <= Math.min(nLaps, Lfin) && !sotto_neutralizzazione; k++) {
+    if (byLap[k] && byLap[k][driver] && byLap[k][driver].neutralized) { sotto_neutralizzazione = true; break; }
+    const celle = present.map(d => byLap[k] && byLap[k][d]).filter(Boolean);
+    if (celle.length >= 6 && celle.filter(c => c.neutralized).length > celle.length / 2)
+      sotto_neutralizzazione = true;
+  }
+  // ng resta come ARRICCHIMENTO diagnostico (la "durata tipica" della finestra), che vive solo
+  // sulle gare gia' corse dove la tabella c'e'; in diretta e' semplicemente assente. NON guida
+  // piu' sotto_neutralizzazione: quella deve funzionare live, e questa no.
   const ng = neutralizzazioneGara(gara, pitLap);
-  const sotto_neutralizzazione = ng.finestra_attiva === true || giroNeutralizzato;
   const gap_ahead_out  = sotto_neutralizzazione ? null : gapA;
   const gap_behind_out = sotto_neutralizzazione ? null : gapB;
 
