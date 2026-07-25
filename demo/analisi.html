@@ -13,10 +13,12 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e4002b%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 <style>
   :root{
-    --paper:#F2F4F1; --paper-2:#E9ECE7; --card:#FFFFFF;
-    --ink:#12151B; --ink-soft:#2A303A; --dim:#5A6472; --line:#DDE1DC;
-    --red:#E4002B; --red-ink:#B00021; --viola:#7A2CC9; --verde:#0F8A46;
-    --shadow:0 1px 2px rgba(18,21,27,.06), 0 8px 24px -14px rgba(18,21,27,.22);
+    /* CARBONIO (coerente col resto del sito): fondo scuro, il dato porta il colore */
+    --paper:#0A0B0E; --paper-2:#15171C; --card:#15171C;
+    --ink:#EEF1F6; --ink-soft:#B7BECC; --dim:#868E9F; --line:#282C35;
+    --red:#E4002B; --red-ink:#FF3355; --viola:#B47CFF; --verde:#34D178;
+    --band:#0E1013;   /* fascia header carbonio (decoupla dal testo chiaro --ink) */
+    --shadow:inset 0 1px 0 rgba(255,255,255,.045), 0 12px 28px -16px rgba(0,0,0,.6);
     --disp:"Barlow Condensed","Arial Narrow","Roboto Condensed",system-ui,sans-serif;
     --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
     --mono:"JetBrains Mono","SF Mono",ui-monospace,Menlo,Consolas,monospace;
@@ -28,9 +30,9 @@
   a{color:inherit;text-decoration:none}
   :focus-visible{ outline:2px solid var(--red); outline-offset:2px; border-radius:3px; }
 
-  /* fascia-header scura (monitor dei tempi) */
-  .band{ background:var(--ink); color:#fff; padding:14px clamp(16px,4vw,34px) 0;
-    position:relative; }
+  /* fascia-header carbonio */
+  .band{ background:var(--band); color:#fff; padding:14px clamp(16px,4vw,34px) 0;
+    position:relative; border-bottom:1px solid var(--line); }
   .band::before{ content:""; position:absolute; left:0; right:0; top:0; height:3px; background:var(--red); }
   .band-top{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
   .mark{ width:32px; height:32px; border-radius:8px; background:var(--red); flex:none;
@@ -71,9 +73,9 @@
     @keyframes rise{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:none; } }
   }
 
-  .revbox{ background:#FFF7E6; border:1px solid #F0D48A; border-radius:10px; padding:13px 15px;
-    margin-bottom:16px; font-size:13px; color:#7a5a10; }
-  .revbox code{ font:600 12px var(--mono); background:#F3E4BC; padding:1px 5px; border-radius:4px; }
+  .revbox{ background:rgba(255,210,78,.08); border:1px solid rgba(255,210,78,.3); border-radius:10px; padding:13px 15px;
+    margin-bottom:16px; font-size:13px; color:#E8C766; }
+  .revbox code{ font:600 12px var(--mono); background:rgba(255,255,255,.08); color:#EEF1F6; padding:1px 5px; border-radius:4px; }
 
   /* Articoli (editoriale) */
   .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
@@ -120,7 +122,7 @@
   .gp{ appearance:none; cursor:pointer; font:700 11px/1 var(--disp); letter-spacing:.06em; text-transform:uppercase;
     border:1px solid var(--line); background:var(--card); color:var(--ink-soft); border-radius:999px; padding:8px 13px; transition:.12s; }
   .gp:hover{ border-color:#c3c9c2; }
-  .gp[aria-pressed="true"]{ background:var(--ink); color:#fff; border-color:var(--ink); }
+  .gp[aria-pressed="true"]{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
   .sessrow{ display:flex; gap:7px; flex-wrap:wrap; margin-bottom:16px; align-items:center; }
   .sess{ appearance:none; cursor:pointer; font:700 10px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase;
     border:1px solid var(--line); border-radius:6px; padding:8px 11px; color:var(--ink-soft); background:var(--card); }
