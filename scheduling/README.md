@@ -41,6 +41,33 @@ Caveat: ambiente diverso dal Mac → il pace potrebbe differire a livello di flo
 JS hanno tolleranza 1e-9, ma la generazione dati non e' garantita bit-identica). Accettabile
 con la filosofia "pubblica e correggi", ma da sapere.
 
+## La telemetria: `auto_tele.py`, e perche' gira sul MAC (non sul VPS)
+
+`auto_gara.py` pubblica tempi e settori da TracingInsights. La **telemetria**
+(velocita'/gas/freno del giro veloce) nasce invece dalle REGISTRAZIONI del
+collettore, che `live/weekend_scheduler.py` salva in `~/muretto/data/live_raw/`
+**sul Mac**: il VPS quei file non li ha. Per questo fino al 25/07/2026 esisteva
+solo `tele_Belgio_gara.json`.
+
+`auto_tele.py` chiude la catena: legge le registrazioni, ricava GP+sessione dal
+nome del file e dal calendario, salta quelle gia' nel `tele_manifest.json`,
+chiama `gen_tele.py` e committa. Idempotente.
+
+```bash
+python3 auto_tele.py --dry-run     # cosa farebbe
+python3 auto_tele.py --push        # genera, committa, pubblica
+```
+
+Per farlo girare da solo durante il weekend (ogni 30 min, come auto_gara sul VPS):
+
+```cron
+*/30 * * * * cd ~/muretto && /usr/bin/python3 auto_tele.py --push >> ~/muretto/data/auto_tele.log 2>&1
+```
+
+Note: fra piu' registrazioni della stessa sessione tiene la **piu' grossa** (il
+registratore riprova e lascia tronconi); sotto 1 MB e' considerata un troncone e
+scartata; una sessione che fallisce non ferma le altre.
+
 ## Frequenza
 30 min cattura una gara finita in fretta. Le HEAD di scoperta e il check release f1db sono
 leggeri: un giro a vuoto (nessuna gara nuova) costa due richieste HTTP. Il grosso del lavoro
