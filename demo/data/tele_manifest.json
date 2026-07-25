@@ -5,6 +5,30 @@
    "sessione": "gara",
    "evento": "GP del Belgio",
    "file": "tele_Belgio_gara.json"
+  },
+  {
+   "gara": "Ungheria",
+   "sessione": "fp1",
+   "evento": "GP d'Ungheria",
+   "file": "tele_Ungheria_fp1.json"
+  },
+  {
+   "gara": "Ungheria",
+   "sessione": "fp2",
+   "evento": "GP d'Ungheria",
+   "file": "tele_Ungheria_fp2.json"
+  },
+  {
+   "gara": "Ungheria",
+   "sessione": "fp3",
+   "evento": "GP d'Ungheria",
+   "file": "tele_Ungheria_fp3.json"
+  },
+  {
+   "gara": "Ungheria",
+   "sessione": "qualifiche",
+   "evento": "GP d'Ungheria",
+   "file": "tele_Ungheria_qualifiche.json"
   }
  ]
 }
