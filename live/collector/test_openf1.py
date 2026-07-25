@@ -239,7 +239,9 @@ def test_mappa_timing():
     ])
     assert [e["type"] for e in eventi] == ["timing_update"] * 5, eventi
     assert eventi[0]["cars"] == {"4": {"pos": 3}}, eventi[0]
-    assert eventi[1]["cars"] == {"4": {"gap": "+1.500"}}, eventi[1]
+    # gap_s: lo stesso gap in secondi accanto alla stringa — serve al muretto in diretta
+    # (la torre mostra la stringa, il motore ha bisogno del numero). Aggiunto col cavo live.
+    assert eventi[1]["cars"] == {"4": {"gap": "+1.500", "gap_s": 1.5}}, eventi[1]
     assert eventi[2]["cars"] == {"4": {"last_lap": "1:43.123",
                                        "best_lap": "1:43.123"}}, eventi[2]
     assert eventi[3]["cars"] == {"4": {"last_lap": "1:44.500"}}, eventi[3]

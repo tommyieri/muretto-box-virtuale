@@ -336,8 +336,26 @@ def eventi_da_openf1(flusso, stato=None):
                            "status": nuovo_stato}
 
         elif topic == "v1/sessions":
-            # nessuna transizione di stato in OpenF1: solo info /status
-            stato.sessione = oggetti[-1]
+            # CAMBIO SESSIONE = SLATE PULITA (25/07/2026). driver_list e timing sono indicizzati
+            # per numero di macchina e NON si svuotavano MAI fra sessioni: le voci di una sessione
+            # passata restavano incollate. In FP1 d'Ungheria i rookie correvano coi PROPRI numeri
+            # (25/50/61/67/72), NON con quelli dei titolari; in qualifica quei numeri non sono in
+            # pista ma restavano nella torre come piloti fantasma. Alla nuova session_key si azzera
+            # lo stato per-pilota e si emette 'reset_sessione' — cosi' anche lo snapshot del
+            # collettore e i client gia' connessi lasciano andare i vecchi. La nuova sessione
+            # ripopola da capo dai suoi v1/drivers (OpenF1 li pubblica per ogni sessione).
+            nuova = oggetti[-1]
+            vecchia_key = (stato.sessione or {}).get("session_key")
+            nuova_key = nuova.get("session_key")
+            stato.sessione = nuova
+            if nuova_key is not None and vecchia_key is not None \
+                    and nuova_key != vecchia_key:
+                stato.driver_list = {}
+                stato.timing = {}
+                stato._best_secs = {}
+                log.info("cambio sessione OpenF1 %s -> %s: stato piloti azzerato",
+                         vecchia_key, nuova_key)
+                yield {"type": "reset_sessione", "t": None}
 
         # v1/car_data, v1/weather: registrati, nessun evento (non fanno
         # parte dell'interfaccia eventi di Fase 1)
