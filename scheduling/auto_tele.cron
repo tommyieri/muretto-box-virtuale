@@ -1,0 +1,4 @@
+# Telemetria per sessione — gira SUL MAC (le registrazioni del collettore stanno qui).
+# Ogni 30 minuti: se c'e' una sessione registrata e non ancora pubblicata, la pubblica.
+# Log: ~/muretto/data/auto_tele.log
+*/30 * * * * /Users/tommi/muretto/scheduling/auto_tele_run.sh
