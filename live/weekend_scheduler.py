@@ -91,6 +91,34 @@ def dormi_fino(quando, etichetta):
             time.sleep(min(manca, 30))
 
 
+def innesca_redazione_fp(label, gp):
+    """Best-effort, NON bloccante: alla chiusura di una finestra di PROVE LIBERE
+    lancia in BACKGROUND la redazione delle BOZZE articoli-FP di questo GP e ritorna
+    subito, senza attendere.
+
+    FastF1 puo' RITARDARE la pubblicazione della sessione: percio' e' best-effort e
+    ri-eseguibile a mano (`python3 ai_lab/redazione/genera_weekend.py --gara <gp>`).
+    I generatori FP leggono FP1/FP2; per una finestra FP3 non si forza la sessione e
+    genera_weekend sceglie da solo la piu' recente disponibile (FP2 poi FP1).
+
+    Qualunque errore viene INGOIATO: la registrazione live viene prima e NON deve
+    mai essere compromessa dalla generazione articoli."""
+    try:
+        script = REPO / "ai_lab" / "redazione" / "genera_weekend.py"
+        cmd = [sys.executable, str(script), "--gara", gp]
+        if label in ("FP1", "FP2"):
+            cmd += ["--sessione", label]
+        rlog = OUT_DIR / "redazione_fp.log"
+        fh = open(rlog, "a")
+        fh.write(f"\n==== {datetime.now(timezone.utc):%Y-%m-%d %H:%M:%S}Z  {label} {gp} ====\n")
+        fh.flush()
+        # Popen (non subprocess.run): fire-and-forget, non attende il completamento.
+        subprocess.Popen(cmd, cwd=str(script.parent), stdout=fh, stderr=subprocess.STDOUT)
+        log(f"  {label}: redazione FP innescata in background ({gp}) -> {rlog.name}")
+    except Exception as e:
+        log(f"  {label}: redazione FP non innescata ({e!r}) — best-effort, ignoro")
+
+
 def registra_sessione(label, inizio, gp):
     apre = inizio - timedelta(minutes=PRE_MIN)
     chiude = inizio + timedelta(minutes=FINESTRA_MIN)
@@ -119,6 +147,12 @@ def registra_sessione(label, inizio, gp):
         # se ha catturato flusso vero (uscita ben oltre il timeout) l'ha registrato: la
         # finestra continua a coprire eventuali riprese (bandiere rosse) finche' non scade.
     log(f"== {label}: finestra chiusa ==")
+    # Chiusa la finestra di una PROVA LIBERA, innesca (best-effort, in background) la
+    # redazione delle bozze articoli-FP di questo GP. FastF1 puo' ritardare la
+    # pubblicazione della sessione -> e' best-effort e ri-eseguibile a mano; e' non
+    # bloccante e ingoia ogni errore, quindi NON compromette mai la registrazione live.
+    if label in ("FP1", "FP2", "FP3"):
+        innesca_redazione_fp(label, gp)
 
 
 def main():

@@ -79,5 +79,6 @@
       "tipo": "metodo",
       "testo": "ai_lab/redazione/multigara.py (estrai_dna) + genera_dna.py — percentuale a tutto gas = distanza con throttle≥95% / lunghezza giro; velocità in curva = mediana all’apice delle curve di circuit_info"
     }
-  ]
+  ],
+  "gp": null
 }

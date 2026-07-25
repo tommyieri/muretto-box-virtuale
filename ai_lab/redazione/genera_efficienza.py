@@ -204,7 +204,7 @@ META = {
     "titolo": "La mappa dell’assetto (punta vs curva, stagione)",
     "tag": ["telemetria", "aerodinamica", "multi-gara"],
     "descrizione": "compromesso carico-resistenza per team su tutta la stagione (tema A2)",
-    "richiede": "telemetria multi-gara", "gare": ["stagione"],
+    "richiede": "telemetria multi-gara", "gare": ["stagione"], "sessioni": ["Race"],
 }
 
 

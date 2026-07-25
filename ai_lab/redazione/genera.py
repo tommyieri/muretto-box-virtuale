@@ -19,6 +19,7 @@ import os
 import sys
 import argparse
 import importlib
+import inspect
 import traceback
 
 _QUI = os.path.dirname(os.path.abspath(__file__))
@@ -71,8 +72,29 @@ def aggiorna_dati_stagione(verbose=True):
             print(f"  [dati] pubblicazione fallita: {e}")
 
 
-def genera_tutti(gara=None, data=None, verbose=True):
-    aggiorna_dati_stagione(verbose=verbose)
+def _match_sessione(mod, sessione):
+    """Un generatore parte sotto un filtro-sessione solo se lo dichiara in
+    META['sessioni'] (lista, es. ['FP1','FP2'] o ['Q'], oppure ['*'] = qualsiasi).
+    Chi NON dichiara 'sessioni' resta fuori dai filtri (es. non parte in FP): cosi'
+    i generatori-gara non si attivano a meta' weekend.
+
+    Senza filtro (sessione=None, giro post-gara) partono tutti TRANNE i generatori
+    SOLO-FP: quelli vivono unicamente sull'innesco FP, altrimenti dopo la gara
+    sfornerebbero bozze-FP stantie."""
+    ss = getattr(mod, "META", {}).get("sessioni")
+    if sessione is None:
+        if ss and all(str(s).startswith("FP") for s in ss):
+            return False
+        return True
+    if not ss:
+        return False
+    return sessione in ss or "*" in ss
+
+
+def genera_tutti(gara=None, data=None, sessione=None, verbose=True):
+    # l'aggiornamento del cruscotto si nutre dei dati-GARA: in un giro FP e' inutile.
+    if sessione is None:
+        aggiorna_dati_stagione(verbose=verbose)
     prodotti, saltati = [], []
     for nome in registro.GENERATORI:
         try:
@@ -82,8 +104,16 @@ def genera_tutti(gara=None, data=None, verbose=True):
             if verbose:
                 print(f"  [SKIP] {nome}: import fallito: {e}")
             continue
+        if not _match_sessione(mod, sessione):
+            continue
         try:
-            rec = mod.genera(gara=gara, data=data)
+            kw = {"gara": gara, "data": data}
+            try:
+                if "sessione" in inspect.signature(mod.genera).parameters:
+                    kw["sessione"] = sessione
+            except (ValueError, TypeError):
+                pass
+            rec = mod.genera(**kw)
             if rec:
                 prodotti.append(rec)
                 if verbose:
@@ -119,9 +149,12 @@ if __name__ == "__main__":
     ap = argparse.ArgumentParser()
     ap.add_argument("--gara", default=None)
     ap.add_argument("--data", default=None, help="AAAA-MM-GG per la targhetta della bozza")
+    ap.add_argument("--sessione", default=None,
+                    help="FP1/FP2/FP3/Q/... : lancia SOLO i generatori che dichiarano "
+                         "quella sessione in META['sessioni']. Senza, giro post-gara completo.")
     ap.add_argument("--lista", action="store_true")
     a = ap.parse_args()
     if a.lista:
         lista()
     else:
-        genera_tutti(gara=a.gara, data=a.data)
+        genera_tutti(gara=a.gara, data=a.data, sessione=a.sessione)

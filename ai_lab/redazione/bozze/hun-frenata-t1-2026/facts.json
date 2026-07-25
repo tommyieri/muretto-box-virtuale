@@ -1,0 +1,281 @@
+{
+  "id": "hun-frenata-t1-2026",
+  "anno": 2026,
+  "gara": "Ungheria",
+  "circuito": "Hungaroring",
+  "sessione": "FP1",
+  "round": 11,
+  "curva": {
+    "numero": 1,
+    "dist": 625.5467109215107,
+    "v_ing_ref": 323.0,
+    "apex_v_ref": 93.0,
+    "dv_ref": 230.0,
+    "ref": "BOR"
+  },
+  "feat": {
+    "sigla": "OCO",
+    "team": "Haas F1 Team",
+    "brake_on": 137.53888888888878,
+    "apex_v": 87.5,
+    "v_ing": 313.5,
+    "dec": 25.420980822483443,
+    "n": 6
+  },
+  "compagno": {
+    "sigla": "HIR",
+    "team": "Haas F1 Team",
+    "brake_on": 155.7045833333333,
+    "apex_v": 87.0,
+    "v_ing": 312.5,
+    "dec": 22.321682986844852,
+    "n": 6
+  },
+  "mediana_brake_on": 151.68444444444444,
+  "secondo": {
+    "sigla": "FOR",
+    "team": "McLaren",
+    "brake_on": 139.28888888888878,
+    "apex_v": 90.0,
+    "v_ing": 308.0,
+    "dec": 24.0318992412962,
+    "n": 11
+  },
+  "gap_2": 1.75,
+  "piu_presto": {
+    "sigla": "ALO",
+    "team": "Aston Martin",
+    "brake_on": 204.3877777777777,
+    "apex_v": 89.0,
+    "v_ing": 296.0,
+    "dec": 15.043232091503624,
+    "n": 8
+  },
+  "dv_comp": 18.16569444444451,
+  "bo_feat": [
+    119.07333333333327,
+    125.68138888888882,
+    131.77777777777771,
+    143.29999999999984,
+    160.3747222222222,
+    163.11111111111097
+  ],
+  "bo_comp": [
+    148.90694444444443,
+    149.2094444444446,
+    155.49805555555542,
+    155.91111111111115,
+    156.5230555555554,
+    162.03083333333325
+  ],
+  "sd_feat": 16.67763212578587,
+  "overlap_2": true,
+  "hir_min": 148.90694444444443,
+  "n_sotto": 4,
+  "drs_degenere": true,
+  "drs_vals": [
+    0
+  ],
+  "n_lanciati_tot": 202,
+  "n_piloti": 22,
+  "rank": [
+    {
+      "sigla": "OCO",
+      "team": "Haas F1 Team",
+      "brake_on": 137.53888888888878,
+      "apex_v": 87.5,
+      "v_ing": 313.5,
+      "dec": 25.420980822483443,
+      "n": 6
+    },
+    {
+      "sigla": "FOR",
+      "team": "McLaren",
+      "brake_on": 139.28888888888878,
+      "apex_v": 90.0,
+      "v_ing": 308.0,
+      "dec": 24.0318992412962,
+      "n": 11
+    },
+    {
+      "sigla": "LEC",
+      "team": "Ferrari",
+      "brake_on": 142.28041666666667,
+      "apex_v": 90.5,
+      "v_ing": 312.0,
+      "dec": 24.174610735993337,
+      "n": 4
+    },
+    {
+      "sigla": "STR",
+      "team": "Aston Martin",
+      "brake_on": 143.40888888888898,
+      "apex_v": 83.0,
+      "v_ing": 289.5,
+      "dec": 20.693562588024218,
+      "n": 4
+    },
+    {
+      "sigla": "HAM",
+      "team": "Ferrari",
+      "brake_on": 145.47180555555562,
+      "apex_v": 88.5,
+      "v_ing": 307.5,
+      "dec": 22.999874928035876,
+      "n": 10
+    },
+    {
+      "sigla": "VER",
+      "team": "Red Bull Racing",
+      "brake_on": 147.60833333333346,
+      "apex_v": 88.0,
+      "v_ing": 313.0,
+      "dec": 23.5820207380643,
+      "n": 7
+    },
+    {
+      "sigla": "HUL",
+      "team": "Audi",
+      "brake_on": 148.2697222222224,
+      "apex_v": 87.0,
+      "v_ing": 319.0,
+      "dec": 24.50905392429002,
+      "n": 11
+    },
+    {
+      "sigla": "LAW",
+      "team": "Racing Bulls",
+      "brake_on": 149.59194444444444,
+      "apex_v": 84.0,
+      "v_ing": 322.0,
+      "dec": 24.92067412192716,
+      "n": 10
+    },
+    {
+      "sigla": "HAD",
+      "team": "Red Bull Racing",
+      "brake_on": 149.78791666666663,
+      "apex_v": 88.0,
+      "v_ing": 309.5,
+      "dec": 22.677704186072965,
+      "n": 10
+    },
+    {
+      "sigla": "RUS",
+      "team": "Mercedes",
+      "brake_on": 150.33333333333331,
+      "apex_v": 87.0,
+      "v_ing": 308.0,
+      "dec": 22.402634064219434,
+      "n": 7
+    },
+    {
+      "sigla": "HER",
+      "team": "Cadillac",
+      "brake_on": 150.58430555555557,
+      "apex_v": 86.0,
+      "v_ing": 309.0,
+      "dec": 22.56769745588762,
+      "n": 12
+    },
+    {
+      "sigla": "BOR",
+      "team": "Audi",
+      "brake_on": 152.7845833333333,
+      "apex_v": 87.0,
+      "v_ing": 306.0,
+      "dec": 21.73312279725722,
+      "n": 14
+    },
+    {
+      "sigla": "ARO",
+      "team": "Alpine",
+      "brake_on": 153.5543055555556,
+      "apex_v": 85.5,
+      "v_ing": 319.5,
+      "dec": 23.81079440769687,
+      "n": 12
+    },
+    {
+      "sigla": "GAS",
+      "team": "Alpine",
+      "brake_on": 154.61652777777778,
+      "apex_v": 85.0,
+      "v_ing": 320.0,
+      "dec": 23.748269688719134,
+      "n": 11
+    },
+    {
+      "sigla": "HIR",
+      "team": "Haas F1 Team",
+      "brake_on": 155.7045833333333,
+      "apex_v": 87.0,
+      "v_ing": 312.5,
+      "dec": 22.321682986844852,
+      "n": 6
+    },
+    {
+      "sigla": "PER",
+      "team": "Cadillac",
+      "brake_on": 155.90694444444438,
+      "apex_v": 89.0,
+      "v_ing": 315.0,
+      "dec": 22.593803481619407,
+      "n": 12
+    },
+    {
+      "sigla": "ALB",
+      "team": "Williams",
+      "brake_on": 160.57777777777784,
+      "apex_v": 85.0,
+      "v_ing": 314.0,
+      "dec": 21.952699741673577,
+      "n": 11
+    },
+    {
+      "sigla": "LIN",
+      "team": "Racing Bulls",
+      "brake_on": 163.7965277777778,
+      "apex_v": 85.5,
+      "v_ing": 321.0,
+      "dec": 22.5481945333599,
+      "n": 8
+    },
+    {
+      "sigla": "VES",
+      "team": "Mercedes",
+      "brake_on": 166.3555555555556,
+      "apex_v": 87.0,
+      "v_ing": 307.0,
+      "dec": 20.102339181286542,
+      "n": 9
+    },
+    {
+      "sigla": "NOR",
+      "team": "McLaren",
+      "brake_on": 171.54263888888883,
+      "apex_v": 85.5,
+      "v_ing": 308.5,
+      "dec": 19.760321260515177,
+      "n": 10
+    },
+    {
+      "sigla": "SAI",
+      "team": "Williams",
+      "brake_on": 171.84916666666663,
+      "apex_v": 85.0,
+      "v_ing": 312.0,
+      "dec": 20.231772658804125,
+      "n": 9
+    },
+    {
+      "sigla": "ALO",
+      "team": "Aston Martin",
+      "brake_on": 204.3877777777777,
+      "apex_v": 89.0,
+      "v_ing": 296.0,
+      "dec": 15.043232091503624,
+      "n": 8
+    }
+  ]
+}

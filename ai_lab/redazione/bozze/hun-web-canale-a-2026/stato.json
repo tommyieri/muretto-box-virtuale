@@ -1,0 +1,26 @@
+{
+  "id": "hun-web-canale-a-2026",
+  "stato": "pubblicato",
+  "attore": "Tommi",
+  "creato": "2026-07-25",
+  "storico": [
+    {
+      "stato": "bozza",
+      "attore": "redazione",
+      "quando": "2026-07-25",
+      "nota": "bozza generata"
+    },
+    {
+      "stato": "approvato",
+      "attore": "Tommi",
+      "quando": "2026-07-25",
+      "nota": "autorizzato: vai con il deploy e messa online di tutto"
+    },
+    {
+      "stato": "pubblicato",
+      "attore": "Tommi",
+      "quando": "2026-07-25",
+      "nota": "pubblicato all'approvazione"
+    }
+  ]
+}

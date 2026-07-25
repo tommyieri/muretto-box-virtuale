@@ -222,7 +222,7 @@ META = {
     "titolo": "Compagni in disaccordo sulla marcia (curva veloce)",
     "tag": ["telemetria", "guida", "qualifiche"],
     "descrizione": "dove due compagni scelgono marce diverse all’apice (tema T3)",
-    "richiede": "telemetria", "gare": ["Gran Bretagna"],
+    "richiede": "telemetria", "gare": ["Gran Bretagna"], "sessioni": ["Q"],
 }
 
 

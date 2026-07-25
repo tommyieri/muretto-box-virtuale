@@ -57,6 +57,9 @@ def _card(art):
         "sommario": art["sommario"], "data": art["data"], "stato": art["stato"],
         "tag": art.get("tag", []), "circuito": art.get("circuito"),
         "sessione": art.get("sessione"), "accent": art.get("accent"),
+        # raggruppamento per Gran Premio nell'indice: gp = nome del GP (es. "Ungheria"),
+        # assente/None = articolo trasversale (piu' gare). round = ordina i GP.
+        "gp": art.get("gp"), "round": art.get("round"),
     }
 
 
