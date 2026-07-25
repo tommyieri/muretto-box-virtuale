@@ -129,6 +129,11 @@
   .sess[aria-pressed="true"]{ border-color:var(--red); color:var(--red); box-shadow:inset 0 0 0 1px var(--red); }
   .sess[disabled]{ color:#aab0b8; background:var(--paper-2); border-style:dashed; cursor:default; }
   .sesshint{ font-size:11.5px; color:var(--dim); margin-left:2px; }
+  /* selettore Gran Premio degli articoli */
+  .art-sel{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:26px 0 4px; }
+  .art-sel-lab{ font:700 9.5px/1 var(--mono); letter-spacing:.16em; text-transform:uppercase; color:var(--dim); }
+  .art-sel .gp-n{ color:var(--dim); font:700 9px/1 var(--mono); margin-left:6px; }
+  .art-sel .gp[aria-pressed="true"] .gp-n{ color:inherit; opacity:.7; }
   .sheet-wrap{ overflow-x:auto; border:1px solid var(--line); border-radius:12px; background:var(--card); box-shadow:var(--shadow); }
   table.sheet{ width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; min-width:560px; }
   .sheet thead th{ font:700 9.5px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--dim);
@@ -294,28 +299,56 @@ async function bootArticoli(){
     return;
   }
   const { gruppi, trasv } = gruppaPerGp(mostra);
-  let html = gruppi.map(g =>
-    sezione('Gran Premio', g.gp, [g.circ, dataIt(g.data)].filter(Boolean).join(' · '), g.arts)
-  ).join('');
-  if (trasv.length) html += sezione('Trasversali', 'Tutta la stagione',
-    'Analisi che attraversano più gare, non legate a un singolo Gran Premio', trasv, 'trasv');
-  el('grid').innerHTML = html;
+
+  // 1) SEMPRE VALIDI in cima: non invecchiano, valgono tutta la stagione.
+  //    (prima stavano in fondo, dove non li vedeva nessuno.)
+  const testa = trasv.length
+    ? sezione('Sempre validi', 'Valgono tutta la stagione',
+        'Analisi che attraversano più gare: restano vere anche dopo il prossimo weekend', trasv, 'trasv')
+    : '';
+
+  // 2) POI, GRAN PREMIO PER GRAN PREMIO: si sceglie col selettore (piu' recente
+  //    di default), cosi' la pagina non e' un muro di articoli.
+  if (!gruppi.length){ el('grid').innerHTML = testa; return; }
+  let selGp = gruppi[0].gp;
+  const disegna = () => {
+    const g = gruppi.find(x=>x.gp===selGp) || gruppi[0];
+    const chips = gruppi.map(x =>
+      `<button class="gp" data-gp="${esc(x.gp)}" aria-pressed="${x.gp===selGp}">${esc(x.gp)}
+         <span class="gp-n">${x.arts.length}</span></button>`).join('');
+    el('grid').innerHTML = testa +
+      `<div class="art-sel"><span class="art-sel-lab">Gran Premio</span>
+         <div class="selrow" id="gpsel">${chips}</div></div>` +
+      sezione('Gran Premio', g.gp, [g.circ, dataIt(g.data)].filter(Boolean).join(' · '), g.arts);
+    el('gpsel').addEventListener('click', e => {
+      const b = e.target.closest('.gp'); if (!b) return;
+      selGp = b.dataset.gp; disegna();
+    });
+  };
+  disegna();
 }
 
 /* ---------------- TELEMETRIA ---------------- */
-const GPS_FALLBACK = ["Australia","Cina","Giappone","Miami","Canada","Monaco","Spagna","Austria","Gran Bretagna","Belgio"];
-const LIBERE_GP = { "Belgio": true };   // solo Belgio ha le libere salvate
-const SPRINT_GP = { "Cina": true };     // solo Cina ha la sprint salvata
-let GPS = GPS_FALLBACK.slice();
-let selGP = "Australia", selSess = "q";
+// Disponibilita' LETTA DAI MANIFEST (prima era cablata: "solo Belgio/Cina").
+// Cosi' appena l'automazione pubblica una sessione — anche a meta' weekend,
+// es. la FP1 appena finita — compare qui da sola, senza toccare il codice.
+let GPS = [];                       // [{gara, data}] in ordine cronologico
+const LIBERE = {};                  // gara -> ['fp1','fp2',...]
+const SPRINT = {};                  // gara -> true
+let selGP = null, selSess = 'q';
+
+const ORDINE_SESS = { fp1:1, fp2:2, fp3:3, sq:4, q:5 };   // dentro il weekend
 
 // definizione sessioni per un GP (id, etichetta, come caricare i piloti)
 function sessioniDi(gp){
-  const out = [{ id:"q", lab:"Qualifiche", file:`data/quali_${gp}.json`, pick:d=>d.piloti }];
-  if (LIBERE_GP[gp]) ["fp1","fp2","fp3"].forEach(f=>out.push({
-    id:f, lab:f.toUpperCase(), file:`data/libere_${gp}.json`, pick:d=>((d.sessioni||{})[f]||{}).piloti }));
-  if (SPRINT_GP[gp]) out.push({ id:"sq", lab:"Sprint Quali", file:`data/sprint_${gp}.json`, pick:d=>(d.sprint_quali||{}).piloti });
-  return out;
+  const out = [];
+  (LIBERE[gp] || []).forEach(f => out.push({
+    id:f, lab:f.toUpperCase(), file:`data/libere_${gp}.json`,
+    pick:d=>((d.sessioni||{})[f]||{}).piloti }));
+  if (SPRINT[gp]) out.push({ id:'sq', lab:'Sprint Quali', file:`data/sprint_${gp}.json`,
+    pick:d=>(d.sprint_quali||{}).piloti });
+  out.push({ id:'q', lab:'Qualifiche', file:`data/quali_${gp}.json`, pick:d=>d.piloti });
+  return out.sort((a,b)=>(ORDINE_SESS[a.id]||9)-(ORDINE_SESS[b.id]||9));
 }
 function rigaSheet(r){
   const sv = s => `<td class="sv ${s && s.best==='o' ? 'vv':''}">${esc(s? s.t : '')}</td>`;
@@ -329,17 +362,15 @@ function rigaSheet(r){
   </tr>`;
 }
 function renderGpRow(){
-  el('gprow').innerHTML = GPS.map(g=>`<button class="gp" aria-pressed="${g===selGP}">${esc(g)}</button>`).join('');
+  // il piu' recente per primo: si entra sull'ultimo weekend, non sul primo
+  el('gprow').innerHTML = GPS.map(g=>g.gara).reverse()
+    .map(g=>`<button class="gp" aria-pressed="${g===selGP}">${esc(g)}</button>`).join('');
 }
 function renderSessRow(){
   const ss = sessioniDi(selGP);
-  const extra = [];
-  if (!LIBERE_GP[selGP]) extra.push('Libere —');
-  if (!SPRINT_GP[selGP]) extra.push('Sprint —');
   el('sessrow').innerHTML =
     ss.map(s=>`<button class="sess" data-sess="${s.id}" aria-pressed="${s.id===selSess}">${esc(s.lab)}</button>`).join('') +
-    extra.map(x=>`<button class="sess" disabled>${esc(x)}</button>`).join('') +
-    `<span class="sesshint">Le Libere sono salvate solo per il Belgio, la Sprint solo per la Cina · le Qualifiche per tutti i 10 GP.</span>`;
+    `<span class="sesshint">Ogni sessione compare qui appena registrata, senza aspettare la fine del weekend.</span>`;
 }
 async function loadSheet(){
   el('selname').textContent = '· ' + selGP + ' 2026';
@@ -356,18 +387,54 @@ async function loadSheet(){
     <thead><tr><th class="l">Pos</th><th class="l">Pilota</th><th>Giro</th><th>Gap</th><th>S1</th><th>S2</th><th>S3</th></tr></thead>
     <tbody>${piloti.map(rigaSheet).join('')}</tbody></table></div>`;
 }
+const prendi = async u => { const r = await fetch(u); if(!r.ok) throw 0; return r.json(); };
+const listaDi = m => Array.isArray(m) ? m : (m.disponibili || m.gare || []);
+
 async function bootTelemetria(){
+  // 1) chi c'e': dai tre manifest (quali / libere / sprint)
+  let qm=[], lm=[], sm=[], qmFull=null, lmFull=null, smFull=null;
+  try { qmFull = await prendi('data/quali_manifest.json');  qm = listaDi(qmFull); } catch(e){}
+  try { lmFull = await prendi('data/libere_manifest.json'); lm = listaDi(lmFull); } catch(e){}
+  try { smFull = await prendi('data/sprint_manifest.json'); sm = listaDi(smFull); } catch(e){}
+
+  const perGara = new Map();
+  const nomeDi = v => typeof v === 'string' ? v : (v.gara || v.nome);
+  const segna = v => { const g = nomeDi(v); if (g) perGara.set(g, { gara:g }); return g; };
+  qm.forEach(segna);
+  lm.forEach(v => { const g = segna(v); if (g) LIBERE[g] = (v.sessioni || ['fp1','fp2','fp3']); });
+  sm.forEach(v => { const g = segna(v); if (g) SPRINT[g] = true; });
+
+  // ORDINE: dal calendario (le date nei manifest sono quasi tutte vuote).
+  let ordine = new Map();
   try {
-    const qm = await (await fetch('data/quali_manifest.json')).json();
-    const disp = Array.isArray(qm) ? qm : (qm.disponibili || qm.gare);
-    if (Array.isArray(disp) && disp.length) GPS = disp.map(x => typeof x === 'string' ? x : (x.gara || x.nome)).filter(Boolean);
+    const cal = await prendi('data/calendario_2026.json');
+    (cal.gare || []).forEach((g,i) => ordine.set(g.nome || g.gara_demo, g.round ?? i));
   } catch(e){}
+  GPS = [...perGara.values()].sort((a,b) =>
+    (ordine.get(a.gara) ?? 999) - (ordine.get(b.gara) ?? 999));
+
+  // 2) DOVE SI ENTRA: l'ULTIMA sessione registrata (non l'ultimo GP).
+  //    Il segnale buono e' il campo "ultima" che scrive il generatore; fra i
+  //    tre manifest vince il GP piu' avanti in calendario. A meta' weekend,
+  //    appena finita la FP1, si entra li'.
+  const candidati = [qmFull, lmFull, smFull]
+    .map(m => m && m.ultima && nomeDi(m.ultima)).filter(Boolean);
+  const ultimoGP = candidati.length
+    ? candidati.sort((a,b)=>(ordine.get(a) ?? -1)-(ordine.get(b) ?? -1)).pop()
+    : (GPS.length ? GPS[GPS.length - 1].gara : null);
+  selGP = perGara.has(ultimoGP) ? ultimoGP : (GPS.length ? GPS[GPS.length-1].gara : null);
+  if (selGP){
+    const ss = sessioniDi(selGP);
+    selSess = ss.length ? ss[ss.length - 1].id : 'q';   // la piu' avanzata del weekend
+  }
   el('n-tel').textContent = GPS.length + ' GP';
-  if (!GPS.includes(selGP)) selGP = GPS[0];
+  if (!selGP){ el('sheetbox').innerHTML = `<div class="empty">Nessuna sessione registrata.</div>`; return; }
   renderGpRow(); renderSessRow(); loadSheet();
 
   el('gprow').addEventListener('click', e=>{ const b=e.target.closest('.gp'); if(!b) return;
-    selGP = b.textContent; selSess = 'q'; renderGpRow(); renderSessRow(); loadSheet(); });
+    selGP = b.textContent;
+    const ss = sessioniDi(selGP); selSess = ss.length ? ss[ss.length-1].id : 'q';
+    renderGpRow(); renderSessRow(); loadSheet(); });
   el('sessrow').addEventListener('click', e=>{ const b=e.target.closest('.sess[data-sess]'); if(!b) return;
     selSess = b.dataset.sess; renderSessRow(); loadSheet(); });
 }
