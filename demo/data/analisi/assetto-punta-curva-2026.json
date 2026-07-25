@@ -77,5 +77,6 @@
       "tipo": "metodo",
       "testo": "ai_lab/redazione/multigara.py + genera_efficienza.py — vmax = mediana della velocità massima sui giri lanciati (robusta alla scia); cornering = mediana velocità all’apice delle curve <235 km/h; percentile per-gara fra i team, media su ≥6 gare; vertice validato in leave-one-out"
     }
-  ]
+  ],
+  "gp": null
 }

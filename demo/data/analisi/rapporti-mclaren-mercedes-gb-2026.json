@@ -85,5 +85,7 @@
       "tipo": "metodo",
       "testo": "ai_lab/redazione/genera_rapporti.py — rapporto = mediana RPM/velocità in 8ª marcia (Speed>200) sui giri lanciati; immune a slipstream e giro. La mediana del rapporto è preferita alla regressione RPM–velocità, instabile su una finestra di velocità stretta; ristretta alla sola banda 300–313 km/h la differenza McLaren–Mercedes resta 5,5% (nessun bias da distribuzione di velocità)."
     }
-  ]
+  ],
+  "gp": "Gran Bretagna",
+  "round": 9
 }

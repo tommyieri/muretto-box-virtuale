@@ -90,5 +90,7 @@
       "tipo": "metodo",
       "testo": "rilevatore ai_lab/redazione/rilevatori/lift_traguardo.py — soglie dichiarate: finestra 160 m, gas pieno ≥ 95%, V0 ≥ 200 km/h, lift ≥ 12 m"
     }
-  ]
+  ],
+  "gp": "Gran Bretagna",
+  "round": 9
 }

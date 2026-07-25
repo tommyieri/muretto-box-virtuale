@@ -85,5 +85,7 @@
       "tipo": "metodo",
       "testo": "ai_lab/redazione/genera_stowe.py su curve.py — marcia modale all’apice (finestra −25/+75 m attorno al riferimento circuit_info, dove cade il vero minimo di velocità) su ≥3 giri lanciati per curva; disaccordo = moda diversa con consistenza ≥60% per entrambi. Curva-firma scelta = la più veloce (apice 150–260 km/h) tra i disaccordi, non la più veloce in assoluto"
     }
-  ]
+  ],
+  "gp": "Gran Bretagna",
+  "round": 9
 }

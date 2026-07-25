@@ -73,5 +73,7 @@
       "tipo": "metodo",
       "testo": "ai_lab/redazione/genera_trazione.py su curve.py — curva più lenta = apice più basso; ripresa gas = prima distanza dall’apice con throttle ≥95% (l’ordinamento fine dipende dalla soglia; regge a 98%). Mediana su ≥3 giri per pilota; il ranking di schieramento è ristretto ai piloti con ≥4 giri validi — con 2-3 giri altri piloti figurano davanti, quindi il fatto solido è il confronto in casa, non il primato assoluto"
     }
-  ]
+  ],
+  "gp": "Gran Bretagna",
+  "round": 9
 }

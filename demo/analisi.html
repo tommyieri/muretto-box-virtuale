@@ -55,7 +55,7 @@
   </a>
 
   <div id="rev" hidden></div>
-  <div class="art-index" id="index"></div>
+  <div id="index"></div>
 </div>
 
 <footer class="footer">
@@ -88,6 +88,39 @@ function card(a){
   </a>`;
 }
 
+// Raggruppa gli articoli per Gran Premio. gp assente = trasversale (piu' gare).
+// I gruppi GP scorrono dal piu' recente (round, poi data); i trasversali in fondo.
+function gruppaPerGp(articoli){
+  const perGp = new Map(); const trasv = [];
+  for (const a of articoli){
+    const gp = a.gp && String(a.gp).trim();
+    if (!gp){ trasv.push(a); continue; }
+    if (!perGp.has(gp)) perGp.set(gp, []);
+    perGp.get(gp).push(a);
+  }
+  const gruppi = [...perGp.entries()].map(([gp, arts]) => {
+    arts.sort((x,y)=> String(y.data||'').localeCompare(String(x.data||'')));
+    const round = Math.max(0, ...arts.map(a => +a.round || 0));
+    const data  = arts.map(a=>a.data).filter(Boolean).sort().reverse()[0] || '';
+    const circ  = (arts.find(a=>a.circuito)||{}).circuito || '';
+    return { gp, arts, round, data, circ };
+  }).sort((a,b)=> (b.round - a.round) || String(b.data).localeCompare(String(a.data)));
+  return { gruppi, trasv };
+}
+
+function sezione(eyebrow, nome, meta, arts, extra=''){
+  const n = arts.length;
+  return `<section class="gp-grp ${extra}">
+    <header class="gp-testa">
+      <span class="gp-eyebrow">${esc(eyebrow)}</span>
+      <h2 class="gp-nome">${esc(nome)}</h2>
+      ${meta ? `<span class="gp-meta">${esc(meta)}</span>` : ''}
+      <span class="gp-conta">${n} ${n===1?'articolo':'articoli'}</span>
+    </header>
+    <div class="art-index">${arts.map(card).join('')}</div>
+  </section>`;
+}
+
 async function boot(){
   const revisore = new URLSearchParams(location.search).get('bozze') === '1';
   let man = [];
@@ -107,7 +140,14 @@ async function boot(){
       strategia e pit-loss, un fatto per volta.</div>`;
     return;
   }
-  el('index').innerHTML = mostra.map(card).join('');
+
+  const { gruppi, trasv } = gruppaPerGp(mostra);
+  let html = gruppi.map(g =>
+    sezione('Gran Premio', g.gp, [g.circ, dataIt(g.data)].filter(Boolean).join(' · '), g.arts)
+  ).join('');
+  if (trasv.length) html += sezione('Trasversali', 'Tutta la stagione',
+    'Analisi che attraversano più gare, non legate a un singolo Gran Premio', trasv, 'gp-trasv');
+  el('index').innerHTML = html;
 }
 boot();
 </script>
