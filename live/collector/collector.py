@@ -411,6 +411,15 @@ class Replica:
             self.giro = e.get("giro")
             if e.get("giri_totali") is not None:
                 self.giri_totali = e["giri_totali"]
+        elif e["type"] == "reset_sessione":
+            # cambio sessione: lo snapshot riparte pulito, altrimenti i piloti di una sessione
+            # passata (es. i rookie di FP1 coi loro numeri) restano nello snapshot che ogni nuovo
+            # client riceve. track_status/session_status restano: sono stato di pista, non di pilota.
+            self.cars = {}
+            self.extra = {}
+            self.drivers = {}
+            self.giro = None
+            self.giri_totali = None
 
     def snapshot(self):
         return {"type": "snapshot", "t": self.t, "cars": self.cars,

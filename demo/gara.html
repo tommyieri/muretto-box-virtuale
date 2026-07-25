@@ -11,7 +11,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gara — Muretto Box Virtuale</title>
-<link rel="stylesheet" href="stile.css?v=250724g">
+<link rel="stylesheet" href="stile.css?v=250725c">
 <style>
   /* SIMULAZIONE FANTASMA — controlli della "sosta messa in scena" (additivo, scoped) */
   .simbtn{ display:block; width:100%; margin:.5rem 0 .2rem; padding:.62rem .8rem; border:0;
@@ -58,7 +58,6 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
       <span id="hData"></span>
       <span><b id="hGiri">–</b> giri</span>
       <span id="hMeteo"></span>
-      <span id="hVincitore"></span>
     </div>
     <span class="plbadge" id="plBadge" role="button" tabindex="0" aria-describedby="plTip" style="display:none">
       pit-loss <span class="v" id="plVal"></span> <span class="prov" id="plProv"></span>
@@ -103,28 +102,10 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
     </div>
 
     <div class="col-piloti">
-      <div class="tabs" role="tablist">
-        <button id="tabClas" class="on" role="tab" aria-selected="true">Classifica</button>
-        <button id="tabStrat" role="tab" aria-selected="false">Strategia gomme</button>
-        <button id="tabUff" role="tab" aria-selected="false" style="display:none">Ufficiale</button>
-      </div>
+      <!-- Gara ripulita (25/07): solo la CLASSIFICA (la torre). Tap su un pilota = apre il box.
+           Strategia-gomme e vista Ufficiale erano racconto retrospettivo, non input alla
+           simulazione: spostate fuori dalla gara (vanno in Analisi). Niente più tab. -->
       <div class="gridscroll" id="vistaClas"><div class="grid panel notrans" id="grid"></div></div>
-      <!-- strip strategia: una barra per pilota, lunga quanto la gara, segmentata per stint -->
-      <section class="panel strat" id="vistaStrat" hidden>
-        <div id="stratRighe"></div>
-        <div class="strat-leg">
-          <i><span class="sw" style="background:#ff3b3b"></span>soft</i>
-          <i><span class="sw" style="background:#ffd24e"></span>medium</i>
-          <i><span class="sw" style="background:#eef0f3"></span>hard</i>
-          <i><span class="sw" style="background:#43c463;border:1px solid #3ba7ff"></span>inter/wet</i>
-          <i><span class="sw" style="width:2px;background:var(--txt)"></span>pit</i>
-        </div>
-      </section>
-      <!-- doppia vista finale "in pista | ufficiale" (race control livello 1, decisione PO):
-           l'ufficiale e' RIPORTATO da una fonte di classifica FIA, non ricostruito (RC2: STOP) -->
-      <section class="panel uff" id="vistaUff" hidden>
-        <div id="uffTab"></div>
-      </section>
       <div class="colhint">Tocca un pilota: &ldquo;se pitto <b>adesso</b>, dove rientro?&rdquo;</div>
 
       <section class="pit panel hidden" id="pit">
@@ -243,8 +224,7 @@ function header(gara){
   for (const lp of race.laps){ for (const d in lp.cars){ const c=lp.cars[d].compound;
     if (c==='INTERMEDIATE'||c==='WET'){ intwet=true; break; } } if(intwet) break; }
   el('hMeteo').textContent = intwet ? 'bagnata/mista' : 'asciutta';
-  const w = cal?.vincitore;
-  el('hVincitore').innerHTML = w ? `vince <b>${w.sigla}</b>` : '';
+  // niente spoiler-vincitore nell'intestazione: qui si SIMULA, non si racconta il risultato.
   // badge pit-loss: valore da pitloss.json, provenienza da pitloss_meta.json
   // (gara assente dal meta = appena pubblicata dallo staging => tipico, come da README del file)
   const loss = pitloss[gara];
@@ -301,8 +281,6 @@ async function loadGara(gara) {
   // meno durate[1] (mediana): passo d'animazione dichiarato, mai usato come dato di gara.
   leadCum[0] = (leadCum[1] !== undefined) ? leadCum[1] - durate[1] : 0;
   drawPista(gara);
-  buildUfficiale();
-  buildStrat(); mostraVista(false);
   if (simMode) esciSimulazione();   // gara nuova: chiudi una simulazione eventualmente aperta
   clock.setDur(L => durate[L]);
   clock.reset(race.n_laps + 1);   // il traguardo del giro n sta a p = n+1 (ancora dell'orologio)
@@ -641,29 +619,8 @@ function buildStrat(){
   }
   el('stratRighe').innerHTML = righe.join('');
 }
-// tap/click sulla strip: mostra il dettaglio della tacca pit piu' vicina (mobile-friendly)
-{
-  const tip = document.createElement('div'); tip.className='strat-tip'; tip.style.display='none';
-  document.body.appendChild(tip);
-  el('vistaStrat').addEventListener('click', e=>{
-    const barra = e.target.closest('.barra');
-    if (!barra){ tip.style.display='none'; return; }
-    const marks = [...barra.querySelectorAll('.pitt')];
-    if (!marks.length){ tip.style.display='none'; return; }
-    const r = barra.getBoundingClientRect();
-    const vicino = marks.reduce((a,b)=>
-      Math.abs(r.left + (+a.dataset.pct)/100*r.width - e.clientX) <=
-      Math.abs(r.left + (+b.dataset.pct)/100*r.width - e.clientX) ? a : b);
-    const drv = barra.closest('.riga').dataset.drv;
-    tip.textContent = `${drv} — ${vicino.dataset.info}`;
-    tip.style.display='block';
-    const x = r.left + (+vicino.dataset.pct)/100*r.width;
-    tip.style.left = Math.max(8, Math.min(innerWidth - tip.offsetWidth - 8, x - tip.offsetWidth/2)) + 'px';
-    tip.style.top = (r.top + scrollY - tip.offsetHeight - 8) + 'px';
-  });
-  document.addEventListener('click', e=>{ if(!e.target.closest('#vistaStrat')) tip.style.display='none'; });
-}
-function mostraVista(quale){                 // 'clas' | 'strat' | 'uff'
+// (rimossi con la ripulitura gara: il tooltip della strip strategia-gomme.)
+function mostraVista(quale){                 // 'clas' | 'strat' | 'uff' — dead code (nessun tab)
   if (quale === true) quale = 'strat'; if (!quale) quale = 'clas';
   el('vistaClas').hidden = quale!=='clas';
   el('vistaStrat').hidden = quale!=='strat';
@@ -852,9 +809,7 @@ el('pitKv').addEventListener('click', e=>{
   updatePit();
 });
 el('pitChiudi').addEventListener('click', chiudiPit);
-el('tabClas').addEventListener('click', ()=>mostraVista('clas'));
-el('tabStrat').addEventListener('click', ()=>mostraVista('strat'));
-el('tabUff').addEventListener('click', ()=>mostraVista('uff'));
+// (rimossi con la ripulitura gara: i listener dei tab Classifica/Strategia/Ufficiale — resta solo la torre.)
 el('plBadge').addEventListener('click', ()=>el('plTip').classList.toggle('on'));
 el('plBadge').addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el('plTip').classList.toggle('on'); } });
 conta('apertura');

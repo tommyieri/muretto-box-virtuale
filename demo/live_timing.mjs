@@ -68,6 +68,12 @@ export function creaStatoTiming() {
       timing.clear();
       for (const [num, d] of Object.entries(e.driver_list || {})) fondiPilota(num, d);
       for (const [num, c] of Object.entries(e.cars || {})) fondiTiming(num, c);
+    } else if (e.type === 'reset_sessione') {
+      // cambio sessione: si lascia andare tutto. Senza questo, i piloti di una sessione
+      // passata (es. i rookie di FP1 coi loro numeri) restano nella torre come fantasmi
+      // finche' non si ricarica la pagina.
+      piloti.clear();
+      timing.clear();
     }
     // position_frame / track_status / session_status: non toccano la torre
   }

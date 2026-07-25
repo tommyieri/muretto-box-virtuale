@@ -254,6 +254,13 @@ export function creaByLapLive() {
     } else if (e.type === 'lap_count') {
       giro = e.giro != null ? e.giro : giro;
       if (e.giri_totali != null) nLaps = e.giri_totali;
+    } else if (e.type === 'reset_sessione') {
+      // cambio sessione: si riparte da zero, come uno snapshot vuoto. Senza, i piloti di una
+      // sessione passata (i rookie di FP1 coi loro numeri) resterebbero nell'anagrafica.
+      piloti = new Map(); cur = new Map(); inLapDi = new Map(); sporco = new Map();
+      stintDi = new Map(); inizioStint = new Map();
+      byLap = {}; cumLeader = {}; memoPace = {};
+      giro = null; nLaps = null; stato = 'AllClear';
     }
   }
 
