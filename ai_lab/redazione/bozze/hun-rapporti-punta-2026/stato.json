@@ -1,6 +1,6 @@
 {
   "id": "hun-rapporti-punta-2026",
-  "stato": "respinto",
+  "stato": "pubblicato",
   "attore": "Tommi",
   "creato": "2026-07-25",
   "storico": [
@@ -27,6 +27,12 @@
       "attore": "Tommi",
       "quando": "2026-07-25",
       "nota": "policy: FP1 non affidabile / FP2 troppi. Meno articoli, piu appeal."
+    },
+    {
+      "stato": "pubblicato",
+      "attore": "Tommi",
+      "quando": "2026-07-26",
+      "nota": "reintegrato su conferma: #2 (rapporti/punta) - la punta e' virale"
     }
   ]
 }

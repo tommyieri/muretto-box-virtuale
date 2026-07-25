@@ -64,6 +64,27 @@
     "round": 11
   },
   {
+    "id": "hun-rapporti-punta-2026",
+    "titolo": "Il cambio più corto della griglia, sulla pista che meno lo ripaga",
+    "occhiello": "Telemetria · Prove libere 2 · Ungheria 2026",
+    "sommario": "All’Hungaroring — una delle piste dove si sta meno a tutto gas (mediana 39,4% del giro) — la McLaren gira col cambio più corto dello schieramento: entrambe le vetture, con margine netto sull’Audi, la più lunga. È geometria pura del cambio, immune a carburante, mappa motore e scia. Ma la tentazione «corto uguale lento in fondo» in prove libere non regge: il rapporto lo misuriamo, la velocità di punta resta indicativa e non la spieghiamo col cambio.",
+    "data": "2026-07-25",
+    "stato": "pubblicato",
+    "tag": [
+      "telemetria",
+      "McLaren",
+      "Audi",
+      "cambio",
+      "prove libere",
+      "Ungheria"
+    ],
+    "circuito": "Hungaroring",
+    "sessione": "FP2",
+    "accent": "#FF8000",
+    "gp": "Ungheria",
+    "round": 11
+  },
+  {
     "id": "hun-passo-gara-2026",
     "titolo": "Passo-gara Hungaroring: a parità di gomma RUS è 0,8 s davanti a NOR",
     "occhiello": "Passo-gara · FP2 Ungheria 2026",
