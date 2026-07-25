@@ -1,0 +1,233 @@
+{
+  "id": "hun-quali-h2h-2026",
+  "anno": 2026,
+  "gp": "Ungheria",
+  "circuito": "Hungaroring",
+  "round": 11,
+  "sessione": "Qualifiche",
+  "n_coppie": 11,
+  "pole": {
+    "sigla": "NOR",
+    "team": "McLaren",
+    "lap": 77.207
+  },
+  "coppie": [
+    {
+      "team": "Aston Martin",
+      "fast": "ALO",
+      "slow": "STR",
+      "gap": 0.8509999999999991,
+      "t_fast": 79.808,
+      "t_slow": 80.659,
+      "ds1": 0.15399999999999991,
+      "ds2": 0.45899999999999963,
+      "ds3": 0.23799999999999955
+    },
+    {
+      "team": "Haas F1 Team",
+      "fast": "OCO",
+      "slow": "BEA",
+      "gap": 0.49900000000000944,
+      "t_fast": 79.734,
+      "t_slow": 80.233,
+      "ds1": 0.07499999999999929,
+      "ds2": 0.12299999999999756,
+      "ds3": 0.3009999999999984
+    },
+    {
+      "team": "Racing Bulls",
+      "fast": "LIN",
+      "slow": "LAW",
+      "gap": 0.48399999999999466,
+      "t_fast": 78.281,
+      "t_slow": 78.765,
+      "ds1": 0.20200000000000173,
+      "ds2": 0.19400000000000261,
+      "ds3": 0.08800000000000097
+    },
+    {
+      "team": "McLaren",
+      "fast": "NOR",
+      "slow": "PIA",
+      "gap": 0.47700000000000387,
+      "t_fast": 77.207,
+      "t_slow": 77.684,
+      "ds1": 0.2079999999999984,
+      "ds2": 0.02500000000000213,
+      "ds3": 0.24399999999999977
+    },
+    {
+      "team": "Cadillac",
+      "fast": "BOT",
+      "slow": "PER",
+      "gap": 0.43600000000000705,
+      "t_fast": 80.886,
+      "t_slow": 81.322,
+      "ds1": 0.08399999999999963,
+      "ds2": 0.3879999999999981,
+      "ds3": -0.036000000000001364
+    },
+    {
+      "team": "Audi",
+      "fast": "HUL",
+      "slow": "BOR",
+      "gap": 0.4300000000000068,
+      "t_fast": 78.639,
+      "t_slow": 79.069,
+      "ds1": -0.06300000000000239,
+      "ds2": 0.3150000000000013,
+      "ds3": 0.17799999999999727
+    },
+    {
+      "team": "Mercedes",
+      "fast": "ANT",
+      "slow": "RUS",
+      "gap": 0.2810000000000059,
+      "t_fast": 77.479,
+      "t_slow": 77.76,
+      "ds1": 0.014000000000002899,
+      "ds2": 0.06800000000000139,
+      "ds3": 0.19900000000000162
+    },
+    {
+      "team": "Ferrari",
+      "fast": "HAM",
+      "slow": "LEC",
+      "gap": 0.2259999999999991,
+      "t_fast": 77.219,
+      "t_slow": 77.445,
+      "ds1": 0.21300000000000097,
+      "ds2": -0.06700000000000017,
+      "ds3": 0.08000000000000185
+    },
+    {
+      "team": "Alpine",
+      "fast": "GAS",
+      "slow": "COL",
+      "gap": 0.18300000000000693,
+      "t_fast": 78.844,
+      "t_slow": 79.027,
+      "ds1": 0.25900000000000034,
+      "ds2": -0.0470000000000006,
+      "ds3": -0.028999999999999915
+    },
+    {
+      "team": "Red Bull Racing",
+      "fast": "VER",
+      "slow": "HAD",
+      "gap": 0.13100000000000023,
+      "t_fast": 77.725,
+      "t_slow": 77.856,
+      "ds1": -0.004999999999999005,
+      "ds2": 0.3200000000000003,
+      "ds3": -0.18400000000000105
+    },
+    {
+      "team": "Williams",
+      "fast": "SAI",
+      "slow": "ALB",
+      "gap": 0.03700000000000614,
+      "t_fast": 80.621,
+      "t_slow": 80.658,
+      "ds1": 0.003999999999997783,
+      "ds2": 0.030999999999998806,
+      "ds3": 0.0019999999999988916
+    }
+  ],
+  "featured": {
+    "Mercedes": {
+      "team": "Mercedes",
+      "fast": "ANT",
+      "slow": "RUS",
+      "gap": 0.2810000000000059,
+      "t_fast": 77.479,
+      "t_slow": 77.76,
+      "ds1": 0.014000000000002899,
+      "ds2": 0.06800000000000139,
+      "ds3": 0.19900000000000162
+    },
+    "McLaren": {
+      "team": "McLaren",
+      "fast": "NOR",
+      "slow": "PIA",
+      "gap": 0.47700000000000387,
+      "t_fast": 77.207,
+      "t_slow": 77.684,
+      "ds1": 0.2079999999999984,
+      "ds2": 0.02500000000000213,
+      "ds3": 0.24399999999999977
+    }
+  },
+  "spread": {
+    "max": {
+      "team": "Aston Martin",
+      "fast": "ALO",
+      "slow": "STR",
+      "gap": 0.8509999999999991
+    },
+    "min": {
+      "team": "Williams",
+      "fast": "SAI",
+      "slow": "ALB",
+      "gap": 0.03700000000000614
+    }
+  },
+  "rank_merc": 7,
+  "rank_mcl": 4,
+  "front_teams": [
+    "McLaren",
+    "Ferrari",
+    "Mercedes",
+    "Red Bull Racing"
+  ],
+  "rank_merc_front": 2,
+  "n_front": 4,
+  "ham_pole_def": 0.012000000000000455,
+  "griglia": {
+    "HAM": {
+      "quali": 2,
+      "grid": 5,
+      "motivo": "impeding su Piastri alla curva 1"
+    },
+    "ANT": {
+      "quali": 4,
+      "grid": 7,
+      "motivo": "mancato rallentamento sotto le gialle"
+    },
+    "RUS": {
+      "quali": 7,
+      "grid": 6,
+      "motivo": "nessuna penalità (risale)"
+    }
+  },
+  "run_finale": {
+    "ANT": {
+      "best_finale": true,
+      "delta_finale": null,
+      "tentativo_dopo": true
+    },
+    "RUS": {
+      "best_finale": false,
+      "delta_finale": 1.8259999999999934,
+      "tentativo_dopo": false
+    },
+    "NOR": {
+      "best_finale": true,
+      "delta_finale": null,
+      "tentativo_dopo": true
+    },
+    "PIA": {
+      "best_finale": true,
+      "delta_finale": null,
+      "tentativo_dopo": true
+    }
+  },
+  "rus_s3_pb": true,
+  "pia_s1_pb": true,
+  "lap_ref": {
+    "ANT": 19,
+    "RUS": 16,
+    "NOR": 15,
+    "PIA": 12
+  }
+}
