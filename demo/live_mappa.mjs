@@ -8,16 +8,104 @@
 //   vb = scala * ruota_flip(x, y) + (tx, ty)
 //
 // Interpolazione (dichiarata): lineare tra campioni (~3,8 Hz -> 60 fps)
-// con playhead ritardato di ~2 intervalli mediani; MAI estrapolazione
-// oltre l'ultimo campione (il playhead ci si ferma). Il ritmo del tempo
+// con playhead ritardato di ~2 intervalli mediani. Il ritmo del tempo
 // evento (1x live, Nx replay) e' stimato dal flusso stesso: nessuna
 // differenza di codice tra replay e live.
+//
+// MOVIMENTO FLUIDO (25/07/2026). Prima il playhead veniva RICALCOLATO a
+// ogni fotogramma dall'ultimo campione (tMax/wallTMax): a ogni campione
+// che arriva la base si sposta, e con la rete che ballonzola il tempo
+// saltava avanti/indietro -> il pallino "scattava" (effetto elastico che
+// in diretta si legge come lag continuo). Inoltre il playhead veniva
+// clampato all'ultimo campione: buffer vuoto = pallino FERMO, poi salto.
+// Ora il playhead e' MONOTONO: avanza sempre col tempo di parete e si
+// riallinea al bersaglio cambiando la VELOCITA' di poco (<=15%, non si
+// vede), mai con un salto; salta solo se il disallineamento e' enorme
+// (ricollegamento, cambio sessione). E quando i campioni tardano, il
+// pallino prosegue per un attimo sulla velocita' dell'ultimo tratto
+// invece di inchiodare, poi si riaggancia al dato vero appena arriva.
 //
 // Staleness pre-registrata: auto senza campioni da >10 s (orologio di
 // parete) -> marker grigio; >60 s -> rimossa. Mai un puntino congelato
 // che sembra vivo.
 
 import { STALE_GRIGIO_S, STALE_RIMOZIONE_S } from './live_config.mjs';
+
+// --- movimento: parti pure, testabili senza DOM ------------------------
+export const PH = {
+  BUFFER_INTERVALLI: 2,     // di quanti intervalli stare indietro al vivo
+  RIAGGANCIO_MS: 3000,      // oltre questo scarto: riaggancio secco (ricollegamento)
+  CORREZIONE_MAX: 0.15,     // quanto si puo' accelerare/frenare per rimettersi in pari
+  EXTRAP_MAX_MS: 450,       // per quanto il pallino "prosegue" se il dato tarda
+};
+
+// Playhead monotono con riallineamento dolce.
+export function creaPlayhead(cfg = {}) {
+  const K = { ...PH, ...cfg };
+  let t = null, wall = 0;
+  return {
+    valore: () => t,
+    reset() { t = null; wall = 0; },
+    // bersaglio = dov'e' il vivo, meno il buffer. Ritorna il playhead nuovo.
+    passo(now, bersaglio, ritmo, intervalloMed) {
+      if (!Number.isFinite(bersaglio)) return t;
+      if (t === null || Math.abs(bersaglio - t) > K.RIAGGANCIO_MS) {
+        t = bersaglio; wall = now; return t;          // primo giro o desync grosso
+      }
+      const d = Math.max(0, Math.min(250, now - wall));   // clamp: tab in background
+      wall = now;
+      const err = bersaglio - t;
+      const span = Math.max(1, 4 * intervalloMed);
+      const corr = Math.max(-K.CORREZIONE_MAX, Math.min(K.CORREZIONE_MAX, err / span));
+      t += d * ritmo * (1 + corr);                     // sempre avanti, mai un salto
+      return t;
+    },
+  };
+}
+
+// Lisciatore della posizione DISEGNATA: insegue il bersaglio con un
+// passo-verso (low-pass). Toglie i micro-strappi residui e soprattutto lo
+// strappo quando il feed riprende dopo un buco: il pallino ci arriva in un
+// paio di fotogrammi invece di teletrasportarsi. Oltre SALTO_SECCO_VB
+// (auto nuova, cambio sessione, giro completato) si posiziona di netto.
+export function creaLisciatore({ alfa = 0.28, saltoSecco = 60 } = {}) {
+  let p = null;
+  return {
+    reset() { p = null; },
+    passo(bersaglio) {
+      if (!bersaglio) return null;
+      if (!p || Math.hypot(bersaglio[0] - p[0], bersaglio[1] - p[1]) > saltoSecco) {
+        p = [bersaglio[0], bersaglio[1]];
+      } else {
+        p = [p[0] + (bersaglio[0] - p[0]) * alfa, p[1] + (bersaglio[1] - p[1]) * alfa];
+      }
+      return p;
+    },
+  };
+}
+
+// Posizione interpolata; oltre l'ultimo campione prosegue per un attimo
+// sulla velocita' dell'ultimo tratto (invece di inchiodare).
+export function posizionaSu(campioni, playhead, extrapMaxMs = PH.EXTRAP_MAX_MS) {
+  const c = campioni;
+  if (!c || !c.length) return null;
+  const ultimo = c[c.length - 1];
+  if (c.length === 1) return ultimo.vb;
+  if (playhead >= ultimo.t) {
+    const dt = Math.min(playhead - ultimo.t, extrapMaxMs);
+    const prima = c[c.length - 2];
+    const span = ultimo.t - prima.t;
+    if (span <= 0 || dt <= 0) return ultimo.vb;
+    const vx = (ultimo.vb[0] - prima.vb[0]) / span, vy = (ultimo.vb[1] - prima.vb[1]) / span;
+    return [ultimo.vb[0] + vx * dt, ultimo.vb[1] + vy * dt];
+  }
+  let i = c.length - 1;
+  while (i > 0 && c[i - 1].t > playhead) i--;
+  if (i === 0) return c[0].vb;
+  const a = c[i - 1], b = c[i];
+  const f = b.t === a.t ? 1 : (playhead - a.t) / (b.t - a.t);
+  return [a.vb[0] + (b.vb[0] - a.vb[0]) * f, a.vb[1] + (b.vb[1] - a.vb[1]) * f];
+}
 
 export function creaLiveMappa({ canvasPista, canvasLive, pista, geo }) {
   const G = canvasLive.getContext('2d');
@@ -36,7 +124,7 @@ export function creaLiveMappa({ canvasPista, canvasLive, pista, geo }) {
 
   function voce(num) {
     let v = auto.get(num);
-    if (!v) { v = { campioni: [], wall: 0, inPit: false, extra: false }; auto.set(num, v); }
+    if (!v) { v = { campioni: [], wall: 0, inPit: false, extra: false, lisc: creaLisciatore() }; auto.set(num, v); }
     return v;
   }
 
@@ -75,6 +163,7 @@ export function creaLiveMappa({ canvasPista, canvasLive, pista, geo }) {
       }
     } else if (e.type === 'snapshot') {
       auto.clear(); piloti.clear(); tMax = 0; wallTMax = 0;
+      playhead.reset();          // sessione nuova: non trascinare il tempo vecchio
       for (const [num, d] of Object.entries(e.driver_list || {}))
         piloti.set(num, { sigla: d.sigla, colore: d.colore });
       const tMs = e.t ? Date.parse(e.t) : 0;
@@ -95,17 +184,7 @@ export function creaLiveMappa({ canvasPista, canvasLive, pista, geo }) {
     canvasLive.width = Math.round(w * dpr); canvasLive.height = Math.round(h * dpr);
   }
 
-  function posiziona(v, playhead) {
-    const c = v.campioni;
-    if (!c.length) return null;
-    if (c.length === 1 || playhead >= c[c.length - 1].t) return c[c.length - 1].vb;
-    let i = c.length - 1;
-    while (i > 0 && c[i - 1].t > playhead) i--;
-    if (i === 0) return c[0].vb;
-    const a = c[i - 1], b = c[i];
-    const f = b.t === a.t ? 1 : (playhead - a.t) / (b.t - a.t);
-    return [a.vb[0] + (b.vb[0] - a.vb[0]) * f, a.vb[1] + (b.vb[1] - a.vb[1]) * f];
-  }
+  const playhead = creaPlayhead();
 
   function corridoio(proj, dpr) {
     const C = geo.corridoio_pit_vb;
@@ -128,14 +207,18 @@ export function creaLiveMappa({ canvasPista, canvasLive, pista, geo }) {
     if (!acceso) return;
     corridoio(proj, dpr);
 
-    // playhead: insegue tMax con ritardo di 2 intervalli, mai oltre
-    const playhead = tMax + (Date.now() - wallTMax) * ritmo - 2 * intervalloMed;
+    // playhead MONOTONO: il bersaglio e' il vivo meno il buffer; il playhead
+    // ci si riallinea cambiando velocita' di poco, senza mai saltare indietro.
     const adesso = Date.now();
+    const bersaglio = tMax
+      ? tMax + (adesso - wallTMax) * ritmo - PH.BUFFER_INTERVALLI * intervalloMed
+      : NaN;
+    const ph = playhead.passo(adesso, bersaglio, ritmo, intervalloMed);
 
     for (const [num, v] of auto) {
       const etaS = (adesso - v.wall) / 1000;
       if (etaS > STALE_RIMOZIONE_S) { auto.delete(num); continue; }
-      const p = posiziona(v, Math.min(playhead, v.campioni.at(-1)?.t ?? 0));
+      const p = v.lisc.passo(posizionaSu(v.campioni, ph ?? 0));
       if (!p) continue;
       const X = proj.x(p[0]), Y = proj.y(p[1]);
       const stantio = etaS > STALE_GRIGIO_S;
