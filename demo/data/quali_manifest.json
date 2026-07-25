@@ -59,12 +59,18 @@
    "evento": "GP di Gran Bretagna",
    "data": null,
    "file": "quali_Gran Bretagna.json"
+  },
+  {
+   "gara": "Ungheria",
+   "evento": "GP d'Ungheria",
+   "data": null,
+   "file": "quali_Ungheria.json"
   }
  ],
  "ultima": {
-  "gara": "Gran Bretagna",
-  "evento": "GP di Gran Bretagna",
+  "gara": "Ungheria",
+  "evento": "GP d'Ungheria",
   "data": null,
-  "file": "quali_Gran Bretagna.json"
+  "file": "quali_Ungheria.json"
  }
 }
