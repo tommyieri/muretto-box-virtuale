@@ -11,8 +11,9 @@ COME INDIVIDUA IL GP. Riusa la logica di live/weekend_scheduler.py::sessioni_fut
 il weekend in corso e' quello che contiene la sessione piu' vicina a ora. Da li'
 prende il nome (italiano) del GP. Con --gara si forza a mano.
 
-QUALE SESSIONE. Prova FP2, poi FP1 (la piu' recente prima). Si ferma alla prima che
-produce bozze. Con --sessione si forza una singola sessione.
+QUALE SESSIONE. Prova FP3, poi FP2 (la piu' recente prima; FP1 esclusa perche' con
+assetti e benzina diversi non e' affidabile). Si ferma alla prima che produce bozze.
+Con --sessione si forza una singola sessione.
 
 BEST-EFFORT. Se FastF1 non ha ancora pubblicato la sessione (ritardo tipico), i
 generatori si auto-saltano dentro genera_tutti e qui non si rompe niente: lo script
@@ -20,7 +21,7 @@ e' ri-eseguibile a mano piu' tardi. In modalita' sessione genera_tutti NON aggio
 il cruscotto (e' un giro di libere, non un giro post-gara).
 
 USO:
-  python3 ai_lab/redazione/genera_weekend.py                 # weekend in corso, FP2->FP1
+  python3 ai_lab/redazione/genera_weekend.py                 # weekend in corso, FP3->FP2
   python3 ai_lab/redazione/genera_weekend.py --sessione FP2  # solo FP2
   python3 ai_lab/redazione/genera_weekend.py --gara Ungheria # forza il GP
 """
@@ -28,6 +29,7 @@ from __future__ import annotations
 import os
 import sys
 import argparse
+import subprocess
 
 _QUI = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, _QUI)
@@ -37,7 +39,7 @@ import base    # noqa: E402  (per base.REPO)
 import genera  # noqa: E402
 
 # prove libere in ordine di preferenza: la piu' recente prima
-FP_ORDINE = ["FP2", "FP1"]
+FP_ORDINE = ["FP3", "FP2"]   # FP1 esclusa: assetti/benzina diversi -> non affidabile
 
 
 def gp_weekend_in_corso():
@@ -82,15 +84,60 @@ def genera_per_gp(gara, sessioni, data=None):
     return None, []
 
 
+def _git(args, capture=False):
+    return subprocess.run(["git", *args], cwd=base.REPO,
+                          capture_output=capture, text=True)
+
+
+def pubblica_e_deploy(prodotti, deploy=False):
+    """Pubblica in automatico le bozze prodotte (policy 25/07: a fine sessione,
+    senza input umano) e, con deploy=True, committa e mette online.
+    Il push e' GUARDATO: se il main locale e' indietro rispetto a origin non pusha
+    (evita il non-fast-forward), lasciando il commit pronto per una sync a mano."""
+    import coda
+    pubbl = []
+    for r in prodotti:
+        try:
+            coda.transizione(r["id"], "approvato", attore="auto",
+                             nota="pubblicazione automatica post-sessione (policy Tommi 25/07)")
+            pubbl.append(r["id"]); print(f"   pubblicato: {r['id']}")
+        except SystemExit as e:
+            print(f"   [pubblica] {r['id']}: transizione non riuscita ({e})")
+        except Exception as e:
+            print(f"   [pubblica] {r['id']}: errore ({e})")
+    if not pubbl or not deploy:
+        if pubbl and not deploy:
+            print("   (committa/metti online con --deploy)")
+        return pubbl
+    _git(["add", "-A"])
+    if _git(["diff", "--cached", "--quiet"]).returncode == 0:
+        print("   niente da committare."); return pubbl
+    msg = (f"Redazione FP: pubblicati {len(pubbl)} articoli\n\n"
+           f"{', '.join(pubbl)}\nPubblicazione automatica post-sessione (policy 25/07).\n\n"
+           f"Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>")
+    _git(["commit", "-q", "-m", msg]); print("   commit fatto.")
+    _git(["fetch", "origin", "-q"])
+    behind = (_git(["rev-list", "--count", "HEAD..origin/main"], capture=True).stdout or "").strip()
+    if behind and behind != "0":
+        print(f"   commit OK, ma main e' indietro di {behind} su origin: NON pusho "
+              f"(evito il non-ff). Sincronizza e ri-deploya."); return pubbl
+    _git(["push", "origin", "HEAD"]); print("   push -> deploy Vercel.")
+    return pubbl
+
+
 def main():
     ap = argparse.ArgumentParser(
-        description="Innesco redazione dai dati FP del weekend in corso (bozze, mai pubblicazione)")
+        description="Innesco redazione dai dati FP del weekend in corso (genera + auto-pubblica)")
     ap.add_argument("--gara", default=None,
                     help="forza il GP (nome italiano del registro o nome/localita' FastF1); "
                          "default = weekend in corso dal calendario")
     ap.add_argument("--sessione", default=None,
-                    help="FP1/FP2: forza una singola sessione; default = prova FP2 poi FP1")
+                    help="FP2/FP3: forza una singola sessione; default = prova FP3 poi FP2")
     ap.add_argument("--data", default=None, help="AAAA-MM-GG per la targhetta della bozza")
+    ap.add_argument("--pubblica", action="store_true",
+                    help="auto-pubblica le bozze prodotte (policy: a fine sessione, senza input)")
+    ap.add_argument("--deploy", action="store_true",
+                    help="con --pubblica: committa e pusha (push guardato: salta se main indietro)")
     a = ap.parse_args()
 
     gara = a.gara or gp_weekend_in_corso()
@@ -106,7 +153,10 @@ def main():
         print(f"\nFP {ses} · {gara}: {len(prodotti)} bozze prodotte:")
         for r in prodotti:
             print(f"   {r['id']} — {r['titolo']} ({r['stato']})")
-        print("Rivedi con:  python3 ai_lab/redazione/coda.py --lista")
+        if a.pubblica:
+            pubblica_e_deploy(prodotti, deploy=a.deploy)
+        else:
+            print("Rivedi con:  python3 ai_lab/redazione/coda.py --lista")
     else:
         # best-effort: nessuna bozza NON e' un errore (FP non ancora pubblicata,
         # oppure dati insufficienti). Si rilancia a mano piu' tardi.

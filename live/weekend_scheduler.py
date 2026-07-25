@@ -93,20 +93,21 @@ def dormi_fino(quando, etichetta):
 
 def innesca_redazione_fp(label, gp):
     """Best-effort, NON bloccante: alla chiusura di una finestra di PROVE LIBERE
-    lancia in BACKGROUND la redazione delle BOZZE articoli-FP di questo GP e ritorna
-    subito, senza attendere.
+    lancia in BACKGROUND la redazione che GENERA, AUTO-PUBBLICA e METTE ONLINE gli
+    articoli-FP di questo GP (--pubblica --deploy) e ritorna subito, senza attendere.
+    Policy 25/07: a fine sessione si pubblica da soli, senza input umano.
 
     FastF1 puo' RITARDARE la pubblicazione della sessione: percio' e' best-effort e
     ri-eseguibile a mano (`python3 ai_lab/redazione/genera_weekend.py --gara <gp>`).
-    I generatori FP leggono FP1/FP2; per una finestra FP3 non si forza la sessione e
-    genera_weekend sceglie da solo la piu' recente disponibile (FP2 poi FP1).
+    I generatori FP leggono FP2/FP3 (FP1 escluso: assetti e benzina diversi la rendono
+    non affidabile); genera_weekend sceglie da solo la piu' recente disponibile (FP3 poi FP2).
 
     Qualunque errore viene INGOIATO: la registrazione live viene prima e NON deve
     mai essere compromessa dalla generazione articoli."""
     try:
         script = REPO / "ai_lab" / "redazione" / "genera_weekend.py"
-        cmd = [sys.executable, str(script), "--gara", gp]
-        if label in ("FP1", "FP2"):
+        cmd = [sys.executable, str(script), "--gara", gp, "--pubblica", "--deploy"]
+        if label in ("FP2", "FP3"):
             cmd += ["--sessione", label]
         rlog = OUT_DIR / "redazione_fp.log"
         fh = open(rlog, "a")
@@ -151,7 +152,7 @@ def registra_sessione(label, inizio, gp):
     # redazione delle bozze articoli-FP di questo GP. FastF1 puo' ritardare la
     # pubblicazione della sessione -> e' best-effort e ri-eseguibile a mano; e' non
     # bloccante e ingoia ogni errore, quindi NON compromette mai la registrazione live.
-    if label in ("FP1", "FP2", "FP3"):
+    if label in ("FP2", "FP3"):   # FP1 escluso: assetti/benzina diversi -> non affidabile
         innesca_redazione_fp(label, gp)
 
 
