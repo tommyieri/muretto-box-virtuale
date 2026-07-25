@@ -11,26 +11,26 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gara — Muretto Box Virtuale</title>
-<link rel="stylesheet" href="stile.css?v=250724g">
+<link rel="stylesheet" href="stile.css?v=250725a">
 <style>
   /* SIMULAZIONE FANTASMA — controlli della "sosta messa in scena" (additivo, scoped) */
   .simbtn{ display:block; width:100%; margin:.5rem 0 .2rem; padding:.62rem .8rem; border:0;
-    border-radius:9px; background:#22c55e; color:#04140a; font:800 13px/1 var(--mono,ui-monospace,monospace);
+    border-radius:9px; background:#0F8A46; color:#FFFFFF; font:800 13px/1 var(--mono,ui-monospace,monospace);
     letter-spacing:.4px; text-transform:uppercase; cursor:pointer; transition:filter .15s, transform .05s; }
   .simbtn:hover{ filter:brightness(1.08); } .simbtn:active{ transform:translateY(1px); }
   .simbtn[hidden]{ display:none; }
   .simbar{ display:flex; align-items:center; justify-content:space-between; gap:.5rem;
-    margin:.35rem 0 .1rem; padding:.45rem .6rem; border:1px solid rgba(34,197,94,.42);
-    border-radius:9px; background:rgba(34,197,94,.09); font:600 11.5px var(--sans,system-ui,sans-serif); }
+    margin:.35rem 0 .1rem; padding:.45rem .6rem; border:1px solid rgba(15,138,70,.45);
+    border-radius:9px; background:rgba(15,138,70,.10); font:600 11.5px var(--sans,system-ui,sans-serif); }
   .simbar[hidden]{ display:none; }
-  .simbar .simtag{ color:#bdead0; } .simbar .simtag b{ color:#eafff2; }
-  .simbar button{ border:1px solid rgba(255,255,255,.2); background:transparent; color:var(--txt,#e9edf3);
+  .simbar .simtag{ color:#12151B; } .simbar .simtag b{ color:#0F8A46; }
+  .simbar button{ border:1px solid rgba(0,0,0,.14); background:transparent; color:var(--txt,#12151B);
     border-radius:6px; padding:.32rem .55rem; font:600 11px var(--mono,ui-monospace,monospace);
     cursor:pointer; white-space:nowrap; }
-  .simbar button:hover{ background:rgba(255,255,255,.08); }
+  .simbar button:hover{ background:rgba(0,0,0,.05); }
   .pista.sim-attiva .spenta{ display:none !important; }
   .pista.sim-attiva canvas{ opacity:1 !important; filter:none !important; }
-  .pista.sim-attiva{ outline:1px solid rgba(34,197,94,.28); outline-offset:-1px; }
+  .pista.sim-attiva{ outline:1px solid rgba(15,138,70,.5); outline-offset:-1px; }
 </style>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
