@@ -1,115 +1,339 @@
 <!DOCTYPE html>
 <!--
-  ANALISI — l'indice della redazione tecnica. Consumatore puro: legge
-  demo/data/analisi_articoli.json (manifest scritto da ai_lab/redazione/coda.py).
-  Di default mostra i soli articoli 'pubblicato'; ?bozze=1 = vista revisore
-  (mostra anche le bozze, marcate) per la revisione umana prima della pubblicazione.
+  ANALISI (redesign chiaro/racing, auto-contenuto — NON usa il tema scuro di stile.css).
+  Due schede: ARTICOLI (indice redazione da data/analisi_articoli.json; ?bozze=1 = vista
+  revisore) e TELEMETRIA (foglio-tempi per sessione: miglior giro + settori S1/S2/S3,
+  viola=record; dati reali da data/quali_<GP>.json, libere_Belgio, sprint_Cina).
 -->
 <html lang="it">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Analisi — Muretto Box Virtuale</title>
-<link rel="stylesheet" href="stile.css?v=250724g">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e4002b%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 <style>
-.dash-cta{display:flex;align-items:center;gap:16px;justify-content:space-between;margin:0 0 18px;
-  padding:18px 20px;border:1px solid var(--line2);border-radius:var(--r);
-  background:linear-gradient(100deg,var(--panel2),var(--panel));position:relative;overflow:hidden;
-  transition:transform .12s,border-color .12s}
-.dash-cta::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--accent)}
-.dash-cta:hover{transform:translateY(-2px);border-color:var(--accent);text-decoration:none}
-.dash-cta .tag{display:inline-block;font:700 9.5px/1 var(--mono);letter-spacing:1px;text-transform:uppercase;
-  color:var(--accent-ink);background:var(--accent);border-radius:4px;padding:4px 7px;margin-bottom:9px}
-.dash-cta b{display:block;font:800 22px/1.05 var(--disp);letter-spacing:.4px;color:var(--txt);margin-bottom:5px}
-.dash-cta .d{color:var(--dim);font-size:13px;line-height:1.45;max-width:52ch}
-.dash-cta .go{font:700 12px/1 var(--mono);letter-spacing:.5px;color:var(--accent);white-space:nowrap}
-@media(max-width:560px){.dash-cta{flex-direction:column;align-items:flex-start;gap:10px}}
+  :root{
+    --paper:#F2F4F1; --paper-2:#E9ECE7; --card:#FFFFFF;
+    --ink:#12151B; --ink-soft:#2A303A; --dim:#5A6472; --line:#DDE1DC;
+    --red:#E4002B; --red-ink:#B00021; --viola:#7A2CC9; --verde:#0F8A46;
+    --shadow:0 1px 2px rgba(18,21,27,.06), 0 8px 24px -14px rgba(18,21,27,.22);
+    --disp:"Barlow Condensed","Arial Narrow","Roboto Condensed",system-ui,sans-serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:"JetBrains Mono","SF Mono",ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{ background:var(--paper); color:var(--ink); font-family:var(--sans); line-height:1.5;
+    -webkit-font-smoothing:antialiased; min-height:100vh; }
+  a{color:inherit;text-decoration:none}
+  :focus-visible{ outline:2px solid var(--red); outline-offset:2px; border-radius:3px; }
+
+  /* fascia-header scura (monitor dei tempi) */
+  .band{ background:var(--ink); color:#fff; padding:14px clamp(16px,4vw,34px) 0;
+    position:relative; }
+  .band::before{ content:""; position:absolute; left:0; right:0; top:0; height:3px; background:var(--red); }
+  .band-top{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .mark{ width:32px; height:32px; border-radius:8px; background:var(--red); flex:none;
+    display:grid; place-items:center; font:800 19px/1 var(--disp); color:#fff; transform:skewX(-6deg); }
+  .mark span{ transform:skewX(6deg); }
+  .brand{ display:flex; flex-direction:column; line-height:1; color:#fff; }
+  .brand b{ font:800 15px/1 var(--disp); letter-spacing:.14em; }
+  .brand small{ font:600 8px/1 var(--mono); letter-spacing:.24em; color:#9aa3b2; margin-top:3px; }
+  nav.site{ display:flex; gap:2px; margin-left:auto; flex-wrap:wrap; }
+  nav.site a{ color:#aeb6c2; font:700 13px/1 var(--disp); letter-spacing:.12em; text-transform:uppercase;
+    padding:8px 12px; border-radius:7px; transition:color .15s; display:inline-flex; align-items:center; gap:6px; }
+  nav.site a:hover{ color:#fff; }
+  nav.site a.on{ color:#fff; }
+  nav.site a.on::after{ content:""; }
+  nav.site .dot{ width:6px; height:6px; border-radius:50%; background:#5a6272; display:inline-block; }
+
+  .band-title{ margin-top:18px; }
+  .band-title h1{ margin:0; font:800 clamp(32px,7vw,52px)/.9 var(--disp);
+    letter-spacing:.01em; text-transform:uppercase; }
+  .band-title h1 i{ color:var(--red); font-style:normal; }
+  .band-title .lede{ color:#aab2be; font-size:13px; max-width:52ch; margin:7px 0 0; }
+
+  .tabs{ display:flex; gap:4px; margin-top:20px; }
+  .tab{ appearance:none; border:0; cursor:pointer; background:transparent; color:#aeb6c2;
+    font:800 13px/1 var(--disp); letter-spacing:.12em; text-transform:uppercase;
+    padding:13px 20px 15px; border-radius:9px 9px 0 0; position:relative; transition:color .15s; }
+  .tab:hover{ color:#fff; }
+  .tab[aria-selected="true"]{ color:var(--ink); background:var(--paper); }
+  .tab[aria-selected="true"]::before{ content:""; position:absolute; left:0; right:0; top:0; height:3px;
+    background:var(--red); border-radius:3px 3px 0 0; }
+  .tab .n{ font:700 9px/1 var(--mono); letter-spacing:.05em; color:var(--red); margin-left:7px; vertical-align:2px; }
+  .tab[aria-selected="false"] .n{ color:#6b7482; }
+
+  main{ max-width:1000px; margin:0 auto; padding:26px clamp(16px,4vw,34px) 60px; }
+  .panel[hidden]{ display:none; }
+  @media (prefers-reduced-motion:no-preference){
+    .panel{ animation:rise .28s ease both; }
+    @keyframes rise{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:none; } }
+  }
+
+  .revbox{ background:#FFF7E6; border:1px solid #F0D48A; border-radius:10px; padding:13px 15px;
+    margin-bottom:16px; font-size:13px; color:#7a5a10; }
+  .revbox code{ font:600 12px var(--mono); background:#F3E4BC; padding:1px 5px; border-radius:4px; }
+
+  /* Articoli (editoriale) */
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+  .card{ display:flex; flex-direction:column; background:var(--card); border:1px solid var(--line);
+    border-radius:12px; padding:20px 20px 16px; box-shadow:var(--shadow);
+    position:relative; overflow:hidden; transition:transform .14s, box-shadow .14s, border-color .14s; }
+  .card::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--ac,var(--red)); }
+  @media (prefers-reduced-motion:no-preference){
+    .card:hover{ transform:translateY(-3px); box-shadow:0 2px 4px rgba(18,21,27,.08),0 16px 34px -16px rgba(18,21,27,.3); border-color:#cdd3cd; }
+  }
+  .eyebrow{ font:700 9.5px/1.3 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--ac,var(--red)); margin-bottom:9px;
+    display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .card h3{ margin:0 0 8px; font:700 20px/1.08 var(--disp); letter-spacing:.005em; color:var(--ink); }
+  .card p{ margin:0; font-size:13px; line-height:1.5; color:var(--ink-soft);
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  .card .foot{ margin-top:14px; padding-top:12px; border-top:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .meta{ font:600 10.5px/1 var(--mono); letter-spacing:.02em; color:var(--dim); }
+  .chips{ display:flex; gap:5px; flex-wrap:wrap; margin-top:10px; }
+  .chip{ font:600 9.5px/1 var(--mono); letter-spacing:.04em; color:var(--dim); background:var(--paper-2); border-radius:5px; padding:5px 7px; }
+  .bozza{ font:700 8.5px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; color:#7a5a10; background:#F0D48A; border-radius:4px; padding:4px 6px; }
+  .go{ font:700 11px/1 var(--mono); color:var(--red); white-space:nowrap; }
+  .empty{ background:var(--card); border:1px dashed var(--line); border-radius:12px; padding:26px; color:var(--dim); font-size:14px; }
+
+  /* Telemetria (foglio-tempi) */
+  .tele-head{ display:flex; align-items:baseline; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:14px; }
+  .tele-head h2{ margin:0; font:800 22px/1 var(--disp); letter-spacing:.02em; text-transform:uppercase; }
+  .tele-head .sub{ color:var(--dim); font-size:12.5px; }
+  .selname{ color:var(--red); }
+  .selrow{ display:flex; gap:7px; flex-wrap:wrap; margin-bottom:10px; }
+  .gp{ appearance:none; cursor:pointer; font:700 11px/1 var(--disp); letter-spacing:.06em; text-transform:uppercase;
+    border:1px solid var(--line); background:var(--card); color:var(--ink-soft); border-radius:999px; padding:8px 13px; transition:.12s; }
+  .gp:hover{ border-color:#c3c9c2; }
+  .gp[aria-pressed="true"]{ background:var(--ink); color:#fff; border-color:var(--ink); }
+  .sessrow{ display:flex; gap:7px; flex-wrap:wrap; margin-bottom:16px; align-items:center; }
+  .sess{ appearance:none; cursor:pointer; font:700 10px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase;
+    border:1px solid var(--line); border-radius:6px; padding:8px 11px; color:var(--ink-soft); background:var(--card); }
+  .sess[aria-pressed="true"]{ border-color:var(--red); color:var(--red); box-shadow:inset 0 0 0 1px var(--red); }
+  .sess[disabled]{ color:#aab0b8; background:var(--paper-2); border-style:dashed; cursor:default; }
+  .sesshint{ font-size:11.5px; color:var(--dim); margin-left:2px; }
+  .sheet-wrap{ overflow-x:auto; border:1px solid var(--line); border-radius:12px; background:var(--card); box-shadow:var(--shadow); }
+  table.sheet{ width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; min-width:560px; }
+  .sheet thead th{ font:700 9.5px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--dim);
+    text-align:right; padding:13px 12px; border-bottom:1px solid var(--line); background:var(--paper); position:sticky; top:0; }
+  .sheet thead th.l{ text-align:left; }
+  .sheet tbody td{ padding:11px 12px; border-bottom:1px solid var(--line); font:600 13.5px/1 var(--mono); text-align:right; color:var(--ink); }
+  .sheet tbody tr:last-child td{ border-bottom:0; }
+  .sheet tbody tr:hover td{ background:var(--paper); }
+  .sheet .pos{ color:var(--dim); font-size:12px; text-align:left; width:34px; }
+  .sheet tr.pole .pos{ color:var(--red); font-weight:800; }
+  .sheet .who{ text-align:left; }
+  .sheet .who .num{ display:inline-block; min-width:24px; text-align:right; color:var(--dim); margin-right:8px; }
+  .sheet .who .dot{ display:inline-block; width:8px; height:8px; border-radius:2px; margin-right:7px; }
+  .sheet .who .sig{ font-weight:800; letter-spacing:.03em; color:var(--ink); }
+  .sheet .best{ font-weight:800; }
+  .sheet .gap{ color:var(--dim); font-size:12px; }
+  .sheet .sv.vv{ color:var(--viola); font-weight:800; }
+  .sheet .sv.vv::after{ content:""; display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--viola); margin-left:6px; vertical-align:2px; }
+  .leg{ display:flex; gap:16px; flex-wrap:wrap; margin:11px 2px 0; font:600 11px/1 var(--mono); color:var(--dim); }
+  .leg i{ font-style:normal; display:inline-flex; align-items:center; gap:6px; }
+  .leg .sw{ width:9px; height:9px; border-radius:50%; }
+  .links{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:20px; }
+  @media(max-width:560px){ .links{ grid-template-columns:1fr; } }
+  .link{ display:flex; align-items:center; gap:13px; background:var(--card); border:1px solid var(--line);
+    border-radius:11px; padding:15px 16px; box-shadow:var(--shadow); transition:.13s; }
+  .link:hover{ border-color:#c3c9c2; transform:translateY(-2px); }
+  .link .ic{ width:38px; height:38px; border-radius:9px; flex:none; display:grid; place-items:center; background:var(--paper-2); font:800 15px/1 var(--disp); color:var(--red); }
+  .link b{ display:block; font:700 15px/1.1 var(--disp); letter-spacing:.02em; }
+  .link span{ font-size:11.5px; color:var(--dim); }
+
+  footer.foot{ border-top:1px solid var(--line); }
+  .foot-in{ max-width:1000px; margin:0 auto; padding:22px clamp(16px,4vw,34px) 34px;
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap; color:var(--dim); font:600 11px/1 var(--mono); letter-spacing:.06em; }
+  .foot-in b{ color:var(--ink); font:800 14px/1 var(--disp); letter-spacing:.1em; }
+  .foot-in nav{ display:flex; gap:16px; margin-left:auto; text-transform:uppercase; }
 </style>
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
-    <span class="brand-mark"><span>M</span></span>
-    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
-  </a>
-  <nav class="nav" aria-label="Sezioni">
-    <a href="stagione.html">Stagione</a>
-    <a href="live.html"><span class="dot-live"></span>Live</a>
-    <a href="classifiche.html">Classifiche</a>
-    <a href="analisi.html" class="on">Analisi</a>
-  </nav>
-</header>
+  <header class="band">
+    <div class="band-top">
+      <a class="brand-link" href="index.html" style="display:flex;align-items:center;gap:12px">
+        <span class="mark"><span>M</span></span>
+        <span class="brand"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+      </a>
+      <nav class="site" aria-label="Sezioni">
+        <a href="stagione.html">Stagione</a>
+        <a href="live.html"><span class="dot"></span>Live</a>
+        <a href="classifiche.html">Classifiche</a>
+        <a href="analisi.html" class="on">Analisi</a>
+      </nav>
+    </div>
 
-<div class="wrap-clas">
-  <div class="page-testa">
-    <h1>Analisi <em>//</em> la redazione tecnica</h1>
-    <div class="sotto">Un fatto tecnico curioso, spiegato fino in fondo con i dati: evidenza dai canali, causa fisica, effetto misurato.</div>
-  </div>
+    <div class="band-title">
+      <h1>Analisi <i>//</i> i dati</h1>
+      <p class="lede">Due nature, due letture: i <b style="color:#e6eaf0">pezzi</b> della redazione tecnica e la <b style="color:#e6eaf0">telemetria grezza</b> di ogni sessione.</p>
+    </div>
 
-  <a class="dash-cta" href="dati.html">
-    <div><span class="tag">Interattivo · si aggiorna a ogni gara</span>
-      <b>Dati stagione — il cruscotto</b>
-      <span class="d">Assetto dei team (punta vs curva) e DNA dei circuiti (motore vs carico), gara per gara. Scegli la vista — stagione, ultime 5, o una singola gara — e le tabelle si ricalcolano dal vivo.</span></div>
-    <span class="go">Apri &rarr;</span>
-  </a>
+    <div class="tabs" role="tablist" aria-label="Sezioni di Analisi">
+      <button class="tab" role="tab" id="t-art" aria-controls="panel-articoli" aria-selected="true">Articoli<span class="n" id="n-art"></span></button>
+      <button class="tab" role="tab" id="t-tel" aria-controls="panel-telemetria" aria-selected="false">Telemetria<span class="n" id="n-tel"></span></button>
+    </div>
+  </header>
 
-  <div id="rev" hidden></div>
-  <div class="art-index" id="index"></div>
-</div>
+  <main>
+    <section class="panel" id="panel-articoli" role="tabpanel" aria-labelledby="t-art">
+      <div id="rev" hidden></div>
+      <div class="grid" id="grid"></div>
+    </section>
 
-<footer class="footer">
-  <div class="footer-in">
-    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
-    <nav>
-      <a href="stagione.html">Stagione</a>
-      <a href="live.html">Live</a>
-      <a href="classifiche.html">Classifiche</a>
-    </nav>
-  </div>
-</footer>
+    <section class="panel" id="panel-telemetria" role="tabpanel" aria-labelledby="t-tel" hidden>
+      <div class="tele-head">
+        <h2>Foglio tempi <span class="selname" id="selname">·</span></h2>
+        <span class="sub">Miglior giro per pilota, con i tre settori. <b style="color:var(--viola)">Viola</b> = record di sessione.</span>
+      </div>
+      <div class="selrow" id="gprow"></div>
+      <div class="sessrow" id="sessrow"></div>
+      <div id="sheetbox"></div>
+      <div class="leg">
+        <i><span class="sw" style="background:var(--viola)"></span>record di sessione</i>
+        <i><span class="sw" style="background:var(--dim)"></span>tempo normale</i>
+        <i>Giro = S1 + S2 + S3</i>
+      </div>
+      <div class="links">
+        <a class="link" href="dati.html"><span class="ic">▦</span><span><b>Cruscotto dati</b><span>Assetto e DNA dei circuiti, gara per gara — si ricalcola dal vivo.</span></span></a>
+        <a class="link" href="tele.html?g=Belgio&s=gara"><span class="ic">∿</span><span><b>Tracce telemetria</b><span>Velocità, gas e freno del giro veloce, pilota contro pilota.</span></span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-in">
+      <span><b>MURETTO</b> BOX VIRTUALE · STAGIONE 2026</span>
+      <nav>
+        <a href="stagione.html">Stagione</a>
+        <a href="live.html">Live</a>
+        <a href="classifiche.html">Classifiche</a>
+      </nav>
+    </div>
+  </footer>
 
 <script type="module">
 const el = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const dataIt = d => { try { return new Date(d+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'long'}); } catch(e){ return d; } };
+const dataIt = d => { try { return new Date(d+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'long'}); } catch(e){ return d||''; } };
+const AC_MAP = { 'var(--sc)':'#E8892B', 'var(--brand)':'#E4002B', 'var(--lead)':'#E0A400' };
+const acColor = a => !a ? '#E4002B' : (a.startsWith('var(') ? (AC_MAP[a]||'#E4002B') : a);
 
+/* ---------------- ARTICOLI ---------------- */
 function card(a){
-  const ac = a.accent || 'var(--brand)';
+  const ac = acColor(a.accent);
   const meta = [a.circuito, a.sessione, dataIt(a.data)].filter(Boolean).join(' · ');
-  const tags = (a.tag||[]).slice(0,3).map(t=>`<span class="art-chip">${esc(t)}</span>`).join('');
-  const badge = a.stato !== 'pubblicato' ? `<span class="art-bozza">${esc(a.stato)}</span>` : '';
-  return `<a class="artcard" href="articolo.html?id=${encodeURIComponent(a.id)}" style="--ac:${ac}">
-    <div class="ac-occhiello">${esc(a.occhiello)}${badge}</div>
-    <div class="ac-titolo">${esc(a.titolo)}</div>
-    <div class="ac-sommario">${esc(a.sommario)}</div>
-    <div class="ac-pie"><span class="ac-meta">${esc(meta)}</span></div>
-    <div class="ac-tags">${tags}</div>
+  const tags = (a.tag||[]).slice(0,3).map(t=>`<span class="chip">${esc(t)}</span>`).join('');
+  const badge = a.stato !== 'pubblicato' ? `<span class="bozza">${esc(a.stato)}</span>` : '';
+  return `<a class="card" href="articolo.html?id=${encodeURIComponent(a.id)}" style="--ac:${ac}">
+    <div class="eyebrow">${esc(a.occhiello)}${badge}</div>
+    <h3>${esc(a.titolo)}</h3>
+    <p>${esc(a.sommario)}</p>
+    <div class="foot"><span class="meta">${esc(meta)}</span><span class="go">Leggi →</span></div>
+    <div class="chips">${tags}</div>
   </a>`;
 }
-
-async function boot(){
+async function bootArticoli(){
   const revisore = new URLSearchParams(location.search).get('bozze') === '1';
   let man = [];
   try { man = await (await fetch('data/analisi_articoli.json')).json(); } catch(e){ man = []; }
   const mostra = man.filter(a => revisore ? true : a.stato === 'pubblicato');
-
+  el('n-art').textContent = mostra.length;
   if (revisore){
     el('rev').hidden = false;
-    el('rev').innerHTML = `<div class="wip panel"><span class="wip-tag">VISTA REVISORE</span>
-      Stai vedendo anche le bozze non pubblicate. La pubblicazione avviene con
-      l'approvazione da <code>ai_lab/redazione/coda.py --approva &lt;id&gt; --attore "Tommi"</code>.</div>`;
+    el('rev').innerHTML = `<div class="revbox"><b>Vista revisore.</b> Stai vedendo anche le bozze non pubblicate.
+      La pubblicazione avviene con <code>coda.py --approva &lt;id&gt; --attore "Tommi"</code>.</div>`;
   }
-
-  if (!mostra.length){
-    el('index').innerHTML = `<div class="wip panel"><span class="wip-tag">IN ARRIVO</span>
-      I primi articoli della redazione tecnica sono in lavorazione: telemetria, degrado,
-      strategia e pit-loss, un fatto per volta.</div>`;
-    return;
-  }
-  el('index').innerHTML = mostra.map(card).join('');
+  el('grid').innerHTML = mostra.length
+    ? mostra.map(card).join('')
+    : `<div class="empty">I primi articoli della redazione tecnica sono in lavorazione: telemetria, degrado, strategia e pit-loss, un fatto per volta.</div>`;
 }
-boot();
+
+/* ---------------- TELEMETRIA ---------------- */
+const GPS_FALLBACK = ["Australia","Cina","Giappone","Miami","Canada","Monaco","Spagna","Austria","Gran Bretagna","Belgio"];
+const LIBERE_GP = { "Belgio": true };   // solo Belgio ha le libere salvate
+const SPRINT_GP = { "Cina": true };     // solo Cina ha la sprint salvata
+let GPS = GPS_FALLBACK.slice();
+let selGP = "Australia", selSess = "q";
+
+// definizione sessioni per un GP (id, etichetta, come caricare i piloti)
+function sessioniDi(gp){
+  const out = [{ id:"q", lab:"Qualifiche", file:`data/quali_${gp}.json`, pick:d=>d.piloti }];
+  if (LIBERE_GP[gp]) ["fp1","fp2","fp3"].forEach(f=>out.push({
+    id:f, lab:f.toUpperCase(), file:`data/libere_${gp}.json`, pick:d=>((d.sessioni||{})[f]||{}).piloti }));
+  if (SPRINT_GP[gp]) out.push({ id:"sq", lab:"Sprint Quali", file:`data/sprint_${gp}.json`, pick:d=>(d.sprint_quali||{}).piloti });
+  return out;
+}
+function rigaSheet(r){
+  const sv = s => `<td class="sv ${s && s.best==='o' ? 'vv':''}">${esc(s? s.t : '')}</td>`;
+  const S = r.sectors || [];
+  return `<tr class="${r.pos===1?'pole':''}">
+    <td class="pos">P${r.pos}</td>
+    <td class="who"><span class="num">${esc(r.num)}</span><span class="dot" style="background:${r.colore||'#888'}"></span><span class="sig">${esc(r.sigla)}</span></td>
+    <td class="best">${esc(r.best)}</td>
+    <td class="gap">${r.pos===1 ? '—' : esc(r.gap||'')}</td>
+    ${sv(S[0])}${sv(S[1])}${sv(S[2])}
+  </tr>`;
+}
+function renderGpRow(){
+  el('gprow').innerHTML = GPS.map(g=>`<button class="gp" aria-pressed="${g===selGP}">${esc(g)}</button>`).join('');
+}
+function renderSessRow(){
+  const ss = sessioniDi(selGP);
+  const extra = [];
+  if (!LIBERE_GP[selGP]) extra.push('Libere —');
+  if (!SPRINT_GP[selGP]) extra.push('Sprint —');
+  el('sessrow').innerHTML =
+    ss.map(s=>`<button class="sess" data-sess="${s.id}" aria-pressed="${s.id===selSess}">${esc(s.lab)}</button>`).join('') +
+    extra.map(x=>`<button class="sess" disabled>${esc(x)}</button>`).join('') +
+    `<span class="sesshint">Le Libere sono salvate solo per il Belgio, la Sprint solo per la Cina · le Qualifiche per tutti i 10 GP.</span>`;
+}
+async function loadSheet(){
+  el('selname').textContent = '· ' + selGP + ' 2026';
+  const ss = sessioniDi(selGP);
+  const s = ss.find(x=>x.id===selSess) || ss[0];
+  selSess = s.id;
+  el('sheetbox').innerHTML = `<div class="empty">Carico i tempi…</div>`;
+  let piloti;
+  try { piloti = s.pick(await (await fetch(s.file)).json()); } catch(e){ piloti = null; }
+  if (!piloti || !piloti.length){
+    el('sheetbox').innerHTML = `<div class="empty">Per questa sessione non ho i tempi.</div>`; return;
+  }
+  el('sheetbox').innerHTML = `<div class="sheet-wrap"><table class="sheet">
+    <thead><tr><th class="l">Pos</th><th class="l">Pilota</th><th>Giro</th><th>Gap</th><th>S1</th><th>S2</th><th>S3</th></tr></thead>
+    <tbody>${piloti.map(rigaSheet).join('')}</tbody></table></div>`;
+}
+async function bootTelemetria(){
+  try {
+    const qm = await (await fetch('data/quali_manifest.json')).json();
+    const disp = Array.isArray(qm) ? qm : (qm.disponibili || qm.gare);
+    if (Array.isArray(disp) && disp.length) GPS = disp.map(x => typeof x === 'string' ? x : (x.gara || x.nome)).filter(Boolean);
+  } catch(e){}
+  el('n-tel').textContent = GPS.length + ' GP';
+  if (!GPS.includes(selGP)) selGP = GPS[0];
+  renderGpRow(); renderSessRow(); loadSheet();
+
+  el('gprow').addEventListener('click', e=>{ const b=e.target.closest('.gp'); if(!b) return;
+    selGP = b.textContent; selSess = 'q'; renderGpRow(); renderSessRow(); loadSheet(); });
+  el('sessrow').addEventListener('click', e=>{ const b=e.target.closest('.sess[data-sess]'); if(!b) return;
+    selSess = b.dataset.sess; renderSessRow(); loadSheet(); });
+}
+
+/* ---------------- tab ---------------- */
+const tabs=[{b:'t-art',p:'panel-articoli'},{b:'t-tel',p:'panel-telemetria'}];
+let teleBooted=false;
+function select(id){
+  tabs.forEach(t=>{ const on=t.b===id;
+    el(t.b).setAttribute('aria-selected',on); el(t.p).hidden=!on; });
+  if (id==='t-tel' && !teleBooted){ teleBooted=true; bootTelemetria(); }
+}
+tabs.forEach(t=>el(t.b).addEventListener('click',()=>select(t.b)));
+
+// deep-link: analisi.html#telemetria apre la scheda Telemetria
+if (location.hash.replace('#','')==='telemetria') select('t-tel');
+bootArticoli();
 </script>
 </body>
 </html>
