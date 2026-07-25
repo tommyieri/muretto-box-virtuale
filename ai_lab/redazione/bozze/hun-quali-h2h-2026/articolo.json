@@ -1,0 +1,110 @@
+{
+  "id": "hun-quali-h2h-2026",
+  "stato": "pubblicato",
+  "data": "2026-07-26",
+  "firma": "Muretto · Redazione tecnica",
+  "accent": "#27F4D2",
+  "canale": "B (nostri dati, cronometro qualifica FastF1)",
+  "gp": "Ungheria",
+  "gara": "Ungheria",
+  "circuito": "Hungaroring",
+  "sessione": "Qualifiche",
+  "round": 11,
+  "tag": [
+    "qualifiche",
+    "H2H",
+    "compagni",
+    "Mercedes",
+    "McLaren",
+    "Ungheria"
+  ],
+  "occhiello": "Cronometro delle qualifiche · Ungheria 2026 · round 11",
+  "titolo": "Antonelli mette 281 millesimi su Russell. Poi la griglia ribalta tutto.",
+  "sommario": "Il duello più pulito è quello interno: stessa monoposto, due piloti. Sul giro secco delle qualifiche d’Ungheria il rookie Antonelli batte Russell di <b>+0,281</b> (Mercedes) e Norris batte Piastri di <b>+0,477</b> (McLaren). Ma sono numeri del CRONOMETRO, non della griglia: con la penalità Antonelli scatterà P7, dietro il compagno che ha appena battuto. E su entrambi i confronti pesa un asterisco.",
+  "sezioni": [
+    {
+      "tag": "Evidenza",
+      "titolo": "Stessa monoposto, due piloti: ANT +0,281, NOR +0,477",
+      "html": "<p>Il confronto fra compagni di squadra è l’unico che azzera la vettura: stessa monoposto, stesso muretto, cambia la mano del pilota. Lo misuriamo sul <b>giro secco</b> — il miglior giro di ciascun pilota nella sessione di qualifica (FastF1), distacco = più lento meno più veloce.</p><p>In casa <b>Mercedes</b> il rookie <b>ANT</b> mette <b>+0,281</b> (281 millesimi) sul più esperto <b>RUS</b>; in casa <b>McLaren</b> <b>NOR</b> ne mette <b>+0,477</b> su <b>PIA</b>. Non sono i margini più larghi dello schieramento — il più ampio è ALO (Aston Martin) su STR (+0,851), il più stretto SAI (Williams) su ALB (+0,037) — ma fra i quattro team davanti raccontano molto: Norris firma il divario interno più netto del gruppo di testa, Antonelli il secondo, e lo fa da debuttante contro un compagno di ben altra esperienza. Il cronometro, qui, è nudo.</p>",
+      "figura": {
+        "svg": "<svg viewBox=\"0 0 760 278\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"'JetBrains Mono',ui-monospace,Menlo,monospace\" class=\"art-svg\"><style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}</style><text x=\"104\" y=\"18\" class=\"lbl\" font-size=\"14\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\" letter-spacing=\"0.5\">Il duello interno: distacco fra compagni sul giro secco</text><text x=\"744\" y=\"18\" font-size=\"10.5\" text-anchor=\"end\">Qualifiche Ungheria 2026 · 11 coppie</text><line x1=\"104\" y1=\"36\" x2=\"104\" y2=\"260\" stroke=\"var(--line2)\" stroke-width=\"1\"/><text x=\"96\" y=\"53.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">ALO › STR</text><rect x=\"104\" y=\"43.0\" width=\"430.1\" height=\"12\" rx=\"2\" fill=\"#229971\" opacity=\"0.32\"/><text x=\"540.1\" y=\"53.0\" font-size=\"10\" class=\"\">0.851</text><text x=\"96\" y=\"73.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">OCO › BEA</text><rect x=\"104\" y=\"63.0\" width=\"252.2\" height=\"12\" rx=\"2\" fill=\"#B6BABD\" opacity=\"0.32\"/><text x=\"362.2\" y=\"73.0\" font-size=\"10\" class=\"\">0.499</text><text x=\"96\" y=\"93.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">LIN › LAW</text><rect x=\"104\" y=\"83.0\" width=\"244.6\" height=\"12\" rx=\"2\" fill=\"#6692FF\" opacity=\"0.32\"/><text x=\"354.6\" y=\"93.0\" font-size=\"10\" class=\"\">0.484</text><text x=\"96\" y=\"113.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">NOR › PIA</text><rect x=\"104\" y=\"103.0\" width=\"241.1\" height=\"12\" rx=\"2\" fill=\"#FF8000\" opacity=\"1\"/><text x=\"351.1\" y=\"113.0\" font-size=\"10\" class=\"lbl\">0.477</text><text x=\"96\" y=\"133.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">BOT › PER</text><rect x=\"104\" y=\"123.0\" width=\"220.3\" height=\"12\" rx=\"2\" fill=\"#D4A537\" opacity=\"0.32\"/><text x=\"330.3\" y=\"133.0\" font-size=\"10\" class=\"\">0.436</text><text x=\"96\" y=\"153.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">HUL › BOR</text><rect x=\"104\" y=\"143.0\" width=\"217.3\" height=\"12\" rx=\"2\" fill=\"#A21D2B\" opacity=\"0.32\"/><text x=\"327.3\" y=\"153.0\" font-size=\"10\" class=\"\">0.430</text><text x=\"96\" y=\"173.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">ANT › RUS</text><rect x=\"104\" y=\"163.0\" width=\"142.0\" height=\"12\" rx=\"2\" fill=\"#27F4D2\" opacity=\"1\"/><text x=\"252.0\" y=\"173.0\" font-size=\"10\" class=\"lbl\">0.281</text><text x=\"96\" y=\"193.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">HAM › LEC</text><rect x=\"104\" y=\"183.0\" width=\"114.2\" height=\"12\" rx=\"2\" fill=\"#E8002D\" opacity=\"0.32\"/><text x=\"224.2\" y=\"193.0\" font-size=\"10\" class=\"\">0.226</text><text x=\"96\" y=\"213.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">GAS › COL</text><rect x=\"104\" y=\"203.0\" width=\"92.5\" height=\"12\" rx=\"2\" fill=\"#FF87BC\" opacity=\"0.32\"/><text x=\"202.5\" y=\"213.0\" font-size=\"10\" class=\"\">0.183</text><text x=\"96\" y=\"233.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">VER › HAD</text><rect x=\"104\" y=\"223.0\" width=\"66.2\" height=\"12\" rx=\"2\" fill=\"#2B478F\" opacity=\"0.32\"/><text x=\"176.2\" y=\"233.0\" font-size=\"10\" class=\"\">0.131</text><text x=\"96\" y=\"253.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">SAI › ALB</text><rect x=\"104\" y=\"243.0\" width=\"18.7\" height=\"12\" rx=\"2\" fill=\"#1868DB\" opacity=\"0.32\"/><text x=\"128.7\" y=\"253.0\" font-size=\"10\" class=\"\">0.037</text><text x=\"670\" y=\"274\" font-size=\"9.5\" text-anchor=\"end\">distacco in secondi del compagno più lento (miglior giro di sessione)</text></svg>",
+        "didascalia": "Distacco fra compagni sul miglior giro di sessione, una barra per coppia (ordinate dal margine più largo). In evidenza le due di testa: ANT › RUS +0,281 (Mercedes) e NOR › PIA +0,477 (McLaren).",
+        "fonte": "FastF1 · giri di qualifica (pick_fastest), Ungheria 2026"
+      }
+    },
+    {
+      "tag": "Causa",
+      "titolo": "Dove si accumula il distacco — e i due asterischi",
+      "html": "<p>Dove si accumula il distacco lo dicono i settori. Su <b>RUS</b> il ritardo da ANT è quasi tutto nel <b>settore 3</b> (<b>+0,199</b> dei +0,281 totali, contro +0,014 e +0,068 nei primi due); su <b>PIA</b> si divide fra il <b>settore 1</b> (<b>+0,208</b>) e il settore 3 (+0,244), col centrale quasi in pari (+0,025). Ma attenzione a leggerli: sono settori di giri <b>puliti</b>. Il «giro secco» prende il miglior giro di ciascuno, non l’ultimo: quello di RUS è netto (anzi, il suo S3 lì è il più veloce dell’intera sessione) e quello di PIA porta il suo miglior S1 della sessione. Non c’è nulla di sporco lì dentro: quel divario è passo vero.</p><p>L’asterisco è un altro, e sta nel <b>giro finale</b> — quello che RUS e PIA non hanno potuto sfruttare. Su una pista in evoluzione ANT e NOR hanno firmato il loro tempo migliore proprio sull’<b>ultimo</b> lanciato; i compagni no. L’ultimo giro di RUS è arrivato a <b>+1,8 s</b> dal suo riferimento — coerente con le cronache, che parlano di una perdita d’acqua e dell’auto fermata — mentre PIA è rientrato per l’ultimo run senza mettere a referto un tempo valido, in quello che i media descrivono come un giro abortito alla curva 1 per l’impeding di Hamilton (un intralcio, non un contatto). Morale: i due più lenti si sono giocati un’ultima carta che non ha reso, e su un asfalto che migliorava il margine che misuriamo può <b>sovrastimare</b> il divario reale. Sono letture di contesto, non nostre misure — e ciò che isolerebbe il passo puro (assetto, carico, mappe motore) non è pubblico: non lo stimiamo di nascosto.</p>",
+      "figura": {
+        "svg": "<svg viewBox=\"0 0 760 178\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"'JetBrains Mono',ui-monospace,Menlo,monospace\" class=\"art-svg\"><style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}</style><text x=\"104\" y=\"18\" class=\"lbl\" font-size=\"14\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\" letter-spacing=\"0.5\">Dove si perde il tempo: il distacco settore per settore</text><text x=\"744\" y=\"18\" font-size=\"10.5\" text-anchor=\"end\">RUS vs ANT · PIA vs NOR</text><line x1=\"104\" y1=\"36\" x2=\"104\" y2=\"160\" stroke=\"var(--line2)\" stroke-width=\"1\"/><text x=\"96\" y=\"53.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">RUS · S1</text><rect x=\"104\" y=\"43.0\" width=\"7.1\" height=\"12\" rx=\"2\" fill=\"#27F4D2\" opacity=\"0.32\"/><text x=\"117.1\" y=\"53.0\" font-size=\"10\" class=\"\">0.014</text><text x=\"96\" y=\"73.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">RUS · S2</text><rect x=\"104\" y=\"63.0\" width=\"34.4\" height=\"12\" rx=\"2\" fill=\"#27F4D2\" opacity=\"0.32\"/><text x=\"144.4\" y=\"73.0\" font-size=\"10\" class=\"\">0.068</text><text x=\"96\" y=\"93.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">RUS · S3</text><rect x=\"104\" y=\"83.0\" width=\"100.6\" height=\"12\" rx=\"2\" fill=\"#27F4D2\" opacity=\"1\"/><text x=\"210.6\" y=\"93.0\" font-size=\"10\" class=\"lbl\">0.199</text><text x=\"96\" y=\"113.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">PIA · S1</text><rect x=\"104\" y=\"103.0\" width=\"105.1\" height=\"12\" rx=\"2\" fill=\"#FF8000\" opacity=\"1\"/><text x=\"215.1\" y=\"113.0\" font-size=\"10\" class=\"lbl\">0.208</text><text x=\"96\" y=\"133.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">PIA · S2</text><rect x=\"104\" y=\"123.0\" width=\"12.6\" height=\"12\" rx=\"2\" fill=\"#FF8000\" opacity=\"0.32\"/><text x=\"122.6\" y=\"133.0\" font-size=\"10\" class=\"\">0.025</text><text x=\"96\" y=\"153.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">PIA · S3</text><rect x=\"104\" y=\"143.0\" width=\"123.3\" height=\"12\" rx=\"2\" fill=\"#FF8000\" opacity=\"1\"/><text x=\"233.3\" y=\"153.0\" font-size=\"10\" class=\"lbl\">0.244</text><text x=\"670\" y=\"174\" font-size=\"9.5\" text-anchor=\"end\">distacco per settore dal compagno (s) · S1–S3 sul giro secco</text></svg>",
+        "didascalia": "Il distacco spezzato nei tre settori, misurato sui giri PULITI migliori di ciascuno: RUS cede soprattutto in S3, PIA fra S1 e S3 — divari di passo reali. Gli asterischi (guasto d’acqua per RUS, impeding per PIA) riguardano il giro FINALE mancato, non questi settori.",
+        "fonte": "FastF1 · tempi sul giro e per settore, Ungheria 2026"
+      }
+    },
+    {
+      "tag": "Effetto",
+      "titolo": "Il cronometro dice Antonelli, la griglia dice Russell",
+      "html": "<p>Ed ecco il ribaltamento. Il cronometro dice ANT; la <b>griglia</b> dice RUS. Perché la qualifica non è lo schieramento: <b>ANT</b>, quarto sul giro, incassa tre posizioni di penalità (mancato rallentamento sotto le gialle) e scatterà <b>P7</b> — <b>dietro</b> <b>RUS</b>, che risale a <b>P6</b>. Stessa sorte per Hamilton, secondo sul cronometro a soli 0,012 dalla pole: tre posizioni (impeding su Piastri alla curva 1) lo portano da P2 a <b>P5</b>. Chi ha vinto il duello interno sul giro secco, davanti, partirà comunque dietro chi ha perso.</p><p>Il giro secco resta la fotografia più onesta del passo di ciascuno — con i due asterischi dichiarati. Il resto è cronaca, e la cronaca dice che è la prima pole non-Mercedes della stagione, con Norris a interrompere una serie di dieci pole del duo Mercedes e Hamilton a mancare per dodici millesimi il suo decimo giro-record all’Hungaroring. «Tough, tough Quali», l’ha chiamata Norris. Sul cronometro, comunque, il duello dei compagni l’hanno vinto i due che scatteranno più indietro.</p>",
+      "figura": null
+    }
+  ],
+  "provenienza": [
+    {
+      "grandezza": "distacco fra compagni sul giro secco",
+      "valore": "ANT›RUS +0,281 (Mercedes) · NOR›PIA +0,477 (McLaren) · 11 coppie, spread +0,037–+0,851",
+      "stato": "MISURATO",
+      "da": "FastF1 pick_fastest per pilota; gap = miglior giro più lento − più veloce"
+    },
+    {
+      "grandezza": "decomposizione per settore (coppie in evidenza)",
+      "valore": "RUS: S1 +0,014 / S2 +0,068 / S3 +0,199 · PIA: S1 +0,208 / S2 +0,025 / S3 +0,244",
+      "stato": "MISURATO",
+      "da": "tempi per settore del miglior giro (FastF1 Sector1/2/3Time)"
+    },
+    {
+      "grandezza": "deficit di Hamilton dalla pole (al cronometro)",
+      "valore": "+0,012 da NOR",
+      "stato": "MISURATO",
+      "da": "differenza fra i migliori giri di HAM e della pole"
+    },
+    {
+      "grandezza": "giro di riferimento e stato del run finale",
+      "valore": "ANT giro 19 (best = ultimo lanciato completato) · RUS giro 16 (best NON finale; ultimo lanciato +1,8 s) · NOR giro 15 (best = ultimo lanciato completato) · PIA giro 12 (best = ultimo lanciato completato)",
+      "stato": "MISURATO",
+      "da": "numero del giro veloce (pick_fastest) e confronto con l’ultimo giro lanciato accurato completato: distingue chi ha migliorato fino all’ultimo (ANT, NOR) da chi ha il riferimento su un giro precedente (RUS)"
+    },
+    {
+      "grandezza": "posizioni di griglia dopo le penalità",
+      "valore": "ANT P7 (da P4, −3) dietro RUS P6 · HAM P5 (da P2, −3)",
+      "stato": "NON_MISURABILE",
+      "da": "decisione dei commissari (fatto ufficiale), non ricavabile dalla telemetria"
+    },
+    {
+      "grandezza": "passo puro depurato dai confonditori (guasto RUS, impeding PIA)",
+      "valore": "non isolabile",
+      "stato": "NON_MISURABILE",
+      "da": "il run finale di RUS (perdita d’acqua) e di PIA (impeding, giro abortito) li ha privati di un possibile miglioramento su pista in evoluzione; il tempo che avrebbero fatto non è stimabile. NB: i settori-distacco sono misurati su giri PULITI precedenti, non su quelli compromessi"
+    },
+    {
+      "grandezza": "assetto, carico e mappe motore (che spiegherebbero il residuo)",
+      "valore": "non pubblici",
+      "stato": "NON_MISURABILE",
+      "da": "dati di regolazione della vettura non nel feed pubblico 2026"
+    }
+  ],
+  "fonti": [
+    {
+      "tipo": "dati",
+      "testo": "FastF1 3.8.3 — tempi sul giro e per settore, giri di qualifica del Gran Premio d’Ungheria 2026 (round 11, Hungaroring), cache locale"
+    },
+    {
+      "tipo": "contesto",
+      "testo": "Penalità di griglia e cronaca della sessione (prima pole non-Mercedes della stagione; Hamilton a 12 millesimi dal decimo giro-record all’Hungaroring; citazione Norris «I'm very, very happy - very happy to be back on top. A tough, tough Quali.») — F1.com/stampa specializzata: contesto giornalistico, non nostri dati"
+    },
+    {
+      "tipo": "metodo",
+      "testo": "ai_lab/redazione/genera_hun_quali_h2h_2026.py — H2H = miglior giro di sessione per pilota (FastF1 pick_fastest), gap fra compagni identificati per nome-team; decomposizione per settore dal medesimo giro. Il gap Antonelli–Russell «0,035 s» che circola su motorsport.com è incoerente con la Q3 e viene scartato: valgono i nostri +0,281. Confonditori dichiarati e NON corretti: il giro secco di ciascuno è un giro pulito (i settori-distacco sono passo vero, non eventi), ma il run finale di Russell (perdita d’acqua) e di Piastri (impeding, giro abortito) è andato perso — su pista in evoluzione il margine misurato può sovrastimare il divario reale."
+    }
+  ]
+}
