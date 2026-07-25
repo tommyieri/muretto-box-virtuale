@@ -10,13 +10,24 @@
     "fp2",
     "fp3"
    ]
+  },
+  {
+   "gara": "Ungheria",
+   "evento": "GP d'Ungheria",
+   "data": null,
+   "file": "libere_Ungheria.json",
+   "sessioni": [
+    "fp1",
+    "fp2",
+    "fp3"
+   ]
   }
  ],
  "ultima": {
-  "gara": "Belgio",
-  "evento": "GP del Belgio",
-  "data": "2026-07-18",
-  "file": "libere_Belgio.json",
+  "gara": "Ungheria",
+  "evento": "GP d'Ungheria",
+  "data": null,
+  "file": "libere_Ungheria.json",
   "sessioni": [
    "fp1",
    "fp2",

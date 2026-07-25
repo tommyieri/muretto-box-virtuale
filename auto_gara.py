@@ -48,8 +48,13 @@ def sh(cmd, check=True):
 
 
 def raw_head_sess(ti, sess):
+    # NOTA (25/07/2026): anche `sess` va quotato. Senza, 'Practice 1' e
+    # 'Sprint Qualifying' (con lo spazio) alzavano InvalidURL, che l'except
+    # qui sotto trasformava in "sessione non online": le ondate libere e
+    # sprint non hanno MAI pubblicato nulla da sole. 'Race'/'Qualifying' non
+    # hanno spazi, e infatti erano le uniche a funzionare.
     url = (f'https://raw.githubusercontent.com/TracingInsights/2026/main/'
-           f'{urllib.parse.quote(ti)}/{sess}/session_laptimes.json')
+           f'{urllib.parse.quote(ti)}/{urllib.parse.quote(sess)}/session_laptimes.json')
     req = urllib.request.Request(url, method='HEAD', headers={'User-Agent': 'muretto'})
     try:
         urllib.request.urlopen(req, timeout=30); return True
