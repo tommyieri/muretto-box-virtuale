@@ -629,6 +629,12 @@ a.gpcard:hover::after { right: 0; }
 .live-sess.next .q { color: var(--txt); }
 .live-sess .tag { font: 700 9px/1 var(--mono); letter-spacing: .8px; color: var(--accent-ink);
   background: var(--accent); border-radius: 4px; padding: 3px 6px; }
+/* sessione IN CORSO adesso: verde (--ok) con puntino pulsante, distinta dal rosso "prossimo" */
+.live-sess.live .n { color: var(--ok); font-weight: 700; }
+.live-sess.live .q { color: var(--txt); }
+.live-sess .tag.live { background: var(--ok); display: inline-flex; align-items: center; gap: 5px; }
+.live-sess .tag.live .dot-live { width: 6px; height: 6px; border-radius: 50%; background: var(--accent-ink);
+  animation: pulse 1.4s ease-in-out infinite; }
 .live-mock { position: relative; padding: 14px 16px; overflow: hidden; user-select: none; }
 .mock-marca { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
   font: 800 20px/1.3 var(--disp); letter-spacing: 4px; color: color-mix(in srgb, var(--txt) 50%, transparent);

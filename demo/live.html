@@ -260,12 +260,22 @@ async function boot(){
     || cal.gare.find(x => new Date(x.data+'T23:59:59') >= ora) || cal.gare[cal.gare.length-1];
   const sess = Object.entries(g.sessioni || {}).map(([k,s]) => ({k, ...quando(s)}))
     .filter(s=>s.d).sort((a,b)=>a.d-b.d);
-  const prossima = sess.find(s => s.d >= ora);
+  // durata tipica per riconoscere la sessione IN CORSO adesso (non solo "la prossima"):
+  // prima il pannello saltava alla sessione futura successiva e faceva sembrare che non si
+  // fosse aggiornato mentre la quali era in pista. Finestre generose: reggono i ritardi.
+  const durataMin = k => k==='gara' ? 210 : k.startsWith('fp') ? 90
+                       : k==='sprint' ? 75 : (k.includes('quali') ? 75 : 90);
+  const inCorso = sess.find(s => ora >= s.d && ora < new Date(s.d.getTime() + durataMin(s.k)*60000));
+  const prossima = !inCorso ? sess.find(s => s.d >= ora) : null;
   el('week').innerHTML = `
     <div class="live-gp"><b>${g.titolo}</b><span>${g.circuito}</span></div>
-    ${sess.map(s=>`<div class="live-sess${s===prossima?' next':''}">
-       <span class="n">${NOMI[s.k]||s.k}</span><span class="q num">${s.testo}</span>
-       ${s===prossima?'<span class="tag">prossimo</span>':''}</div>`).join('')}`;
+    ${sess.map(s=>{
+      const stato = s===inCorso ? ' live' : (s===prossima ? ' next' : '');
+      const tag = s===inCorso ? '<span class="tag live"><span class="dot-live"></span>in corso</span>'
+                : (s===prossima ? '<span class="tag">prossimo</span>' : '');
+      return `<div class="live-sess${stato}">
+        <span class="n">${NOMI[s.k]||s.k}</span><span class="q num">${s.testo}</span>${tag}</div>`;
+    }).join('')}`;
   bootMappa(g).catch(err => {
     console.error('mappa live:', err);
     el('live-nota').textContent = 'Mappa live non disponibile per questo circuito: ' + err.message;
@@ -332,6 +342,7 @@ async function bootMappa(g){
     mappa.setAcceso(vivo);
     if (dotNav) dotNav.classList.toggle('on', vivo);   // il pallino Live pulsa SOLO se c'e' davvero
     el('live-invito').hidden = vivo;                    // fuori sessione: invita a provare il simulatore
+    muretto.tick();   // rivaluta "e' la gara?" ogni secondo (accende/spegne il muretto da solo)
     const b = el('live-badge');
     if (vivo){
       if (statoTorre !== 'live'){       // passaggio a live: pulisci il persistente
@@ -378,6 +389,20 @@ async function creaMurettoLive(g, deps = {}){
   // la simulazione; ripristinaTorre ridisegna la torre statica (usato dalla modalità demo).
   const { pista = null, mappa = null, torre = null,
           pausaLive = { attiva: false }, ripristinaTorre = null } = deps;
+
+  // IL MURETTO SOLO IN GARA (25/07/2026). La domanda "se lo fermo adesso dove rientra" non
+  // esiste nelle libere e in qualifica: li' non c'e' strategia di gara, e BOX non ha senso.
+  // Si accendeva su nLaps (LapCount), assumendo che il feed lo mandasse solo in gara: vero
+  // per SignalR, FALSO per OpenF1 — che in diretta e' la sorgente e riporta i giri anche in
+  // quali, cosi' BOX compariva. Il collettore non dice che sessione e' (sessione: null),
+  // quindi il tipo lo si deduce dal CALENDARIO: gara solo dentro la finestra dell'orario di
+  // gara (larga 3,5 h per ritardi e bandiere rosse). Client-side, niente collettore. In
+  // modalita' demo (deps.B fornito) il cancello NON si applica: li' si rigioca una gara vera.
+  const gs = g && g.sessioni && g.sessioni.gara;
+  const inizioGara = (gs && gs.ora_utc) ? new Date(`${gs.data}T${gs.ora_utc}:00Z`).getTime() : null;
+  const eGaraOra = () => !!deps.B || (inizioGara != null
+    && Date.now() >= inizioGara - 10 * 60000
+    && Date.now() <= inizioGara + 3.5 * 3600000);
 
   // Le tabelle dal fondo 2018-2026, le stesse che usa gara.html. La freschezza di data/
   // e' garantita da UNA regola sola (demo/vercel.json: Cache-Control must-revalidate su
@@ -435,6 +460,14 @@ async function creaMurettoLive(g, deps = {}){
     const nLaps = B.nLaps(), L = B.giroPieno();
     el('mu-sim').hidden = true;   // visibile solo con una risposta simulabile (sotto)
 
+    // NON E' LA GARA (libere, qualifica): la domanda del muretto non esiste. Tutto spento,
+    // resta solo la nota che spiega perche'. Prima di nLaps apposta: in quali OpenF1 puo'
+    // mandare un conteggio giri, e senza questo cancello BOX comparirebbe.
+    if (!eGaraOra()) {
+      el('mu-porta').hidden = true; el('mu-testa').hidden = true;
+      el('mu-box').hidden = true; kv.innerHTML = ''; nota.hidden = false;
+      return;
+    }
     // FUORI GARA: niente porta, niente pannello. La domanda non esiste nelle libere.
     if (!nLaps) {
       el('mu-porta').hidden = true; el('mu-testa').hidden = true;
@@ -584,6 +617,10 @@ async function creaMurettoLive(g, deps = {}){
       const L = B.giroPieno();
       if (L !== ultimo){ ultimo = L; ridisegna(); }
     },
+    // ripassata periodica (dal battito da 1s): rivaluta "e' la gara?" col passare del tempo,
+    // cosi' il muretto si accende/spegne da solo al cambio di sessione anche a pagina aperta.
+    // Rispetta la pausa: durante la sosta messa in scena non tocca il pannello.
+    tick(){ if (!pausaLive.attiva) ridisegna(); },
   };
 }
 
