@@ -206,7 +206,7 @@ META = {
     "titolo": "Chi frena più tardi (la staccata più dura)",
     "tag": ["telemetria", "frenata", "qualifiche"],
     "descrizione": "punto di frenata alla staccata più pesante (tema M2)",
-    "richiede": "telemetria", "gare": ["Gran Bretagna"],
+    "richiede": "telemetria", "gare": ["Gran Bretagna"], "sessioni": ["Q"],
 }
 
 

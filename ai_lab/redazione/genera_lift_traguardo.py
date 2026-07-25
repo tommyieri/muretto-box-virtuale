@@ -360,6 +360,7 @@ META = {
     "descrizione": "lift prima del traguardo in qualifica (recupero energetico)",
     "richiede": "telemetria",
     "gare": ["Gran Bretagna"],
+    "sessioni": ["Q"],
 }
 
 

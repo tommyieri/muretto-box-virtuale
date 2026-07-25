@@ -75,12 +75,17 @@ def aggiorna_dati_stagione(verbose=True):
 def _match_sessione(mod, sessione):
     """Un generatore parte sotto un filtro-sessione solo se lo dichiara in
     META['sessioni'] (lista, es. ['FP1','FP2'] o ['Q'], oppure ['*'] = qualsiasi).
-    Senza filtro (sessione=None, es. il giro post-gara) partono tutti come prima.
     Chi NON dichiara 'sessioni' resta fuori dai filtri (es. non parte in FP): cosi'
-    i generatori-gara non si attivano a meta' weekend."""
-    if sessione is None:
-        return True
+    i generatori-gara non si attivano a meta' weekend.
+
+    Senza filtro (sessione=None, giro post-gara) partono tutti TRANNE i generatori
+    SOLO-FP: quelli vivono unicamente sull'innesco FP, altrimenti dopo la gara
+    sfornerebbero bozze-FP stantie."""
     ss = getattr(mod, "META", {}).get("sessioni")
+    if sessione is None:
+        if ss and all(str(s).startswith("FP") for s in ss):
+            return False
+        return True
     if not ss:
         return False
     return sessione in ss or "*" in ss

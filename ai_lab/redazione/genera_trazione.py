@@ -226,7 +226,7 @@ META = {
     "titolo": "Chi rimette il gas per primo (curva lenta)",
     "tag": ["telemetria", "trazione", "qualifiche"],
     "descrizione": "ripresa del gas all’uscita della curva più lenta (tema T2)",
-    "richiede": "telemetria", "gare": ["Gran Bretagna"],
+    "richiede": "telemetria", "gare": ["Gran Bretagna"], "sessioni": ["Q"],
 }
 
 

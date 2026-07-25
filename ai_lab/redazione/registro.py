@@ -17,4 +17,6 @@ GENERATORI = [
     "genera_trazione",
     "genera_efficienza",
     "genera_dna",
+    "genera_fp_passo",
+    "genera_fp_rapporti",
 ]

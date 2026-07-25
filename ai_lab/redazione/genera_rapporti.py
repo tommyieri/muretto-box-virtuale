@@ -244,7 +244,7 @@ META = {
     "titolo": "Stesso motore, cambio opposto: la McLaren è la più corta della griglia",
     "tag": ["telemetria", "McLaren", "Mercedes", "cambio"],
     "descrizione": "rapporti del cambio a parità di power unit (McLaren la più corta)",
-    "richiede": "telemetria", "gare": ["Gran Bretagna"],
+    "richiede": "telemetria", "gare": ["Gran Bretagna"], "sessioni": ["Q"],
 }
 
 

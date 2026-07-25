@@ -167,7 +167,7 @@ META = {
     "titolo": "Il DNA dei circuiti (motore vs carico)",
     "tag": ["telemetria", "circuiti", "multi-gara"],
     "descrizione": "caratterizzazione dei tracciati dalla domanda telemetrica (tema X1)",
-    "richiede": "telemetria multi-gara", "gare": ["stagione"],
+    "richiede": "telemetria multi-gara", "gare": ["stagione"], "sessioni": ["Race"],
 }
 
 
