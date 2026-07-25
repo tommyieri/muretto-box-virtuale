@@ -23,47 +23,6 @@
     "round": 11
   },
   {
-    "id": "hun-trazione-lento-2026",
-    "titolo": "Le due curve lente dell'Hungaroring, stessa Cadillac: HER rimette il gas prima del compagno PER",
-    "occhiello": "Telemetria · Prove libere (FP1) Ungheria 2026",
-    "sommario": "Nelle due curve più lente del giro — curva 1 (apice ≈87 km/h) e curva 13 (≈94) — con la stessa Cadillac HER torna a gas pieno prima di PER in entrambe, netto alla 13: 80 contro 103 metri dall'apice. E una seconda misura indipendente, la risalita di velocità, concorda. Un gesto curva-per-curva, però, non un tratto valido su tutta la pista.",
-    "data": "2026-07-25",
-    "stato": "pubblicato",
-    "tag": [
-      "telemetria",
-      "Cadillac",
-      "trazione",
-      "FP1",
-      "Ungheria"
-    ],
-    "circuito": "Hungaroring",
-    "sessione": "FP1",
-    "accent": "#D4A537",
-    "gp": "Ungheria",
-    "round": 11
-  },
-  {
-    "id": "hun-rapporti-punta-2026",
-    "titolo": "Il cambio più corto della griglia, sulla pista che meno lo ripaga",
-    "occhiello": "Telemetria · Prove libere 2 · Ungheria 2026",
-    "sommario": "All’Hungaroring — una delle piste dove si sta meno a tutto gas (mediana 39,4% del giro) — la McLaren gira col cambio più corto dello schieramento: entrambe le vetture, con margine netto sull’Audi, la più lunga. È geometria pura del cambio, immune a carburante, mappa motore e scia. Ma la tentazione «corto uguale lento in fondo» in prove libere non regge: il rapporto lo misuriamo, la velocità di punta resta indicativa e non la spieghiamo col cambio.",
-    "data": "2026-07-25",
-    "stato": "pubblicato",
-    "tag": [
-      "telemetria",
-      "McLaren",
-      "Audi",
-      "cambio",
-      "prove libere",
-      "Ungheria"
-    ],
-    "circuito": "Hungaroring",
-    "sessione": "FP2",
-    "accent": "#FF8000",
-    "gp": "Ungheria",
-    "round": 11
-  },
-  {
     "id": "hun-passo-gara-2026",
     "titolo": "Passo-gara Hungaroring: a parità di gomma RUS è 0,8 s davanti a NOR",
     "occhiello": "Passo-gara · FP2 Ungheria 2026",
@@ -79,44 +38,6 @@
     "circuito": "Hungaroring",
     "sessione": "FP2",
     "accent": "#27F4D2",
-    "gp": "Ungheria",
-    "round": 11
-  },
-  {
-    "id": "hun-minime-curva-2026",
-    "titolo": "Il cuore lento del Hungaroring: a T6/T7 tutti attorno ai cento all’ora, nello stesso punto",
-    "occhiello": "Telemetria · Prove libere Ungheria 2026",
-    "sommario": "In FP1 il settore centrale (T4–T11) precipita attorno ai 100 km/h nel complesso T6/T7 — il punto più basso (T6 a 97 di mediana), e per tutti nella stessa posizione (~2372 m). Nelle curve lente il campo si stringe entro 5,0–7,5 km/h; solo dove si va forte (T4) si apre a 27. In prove libere è un indizio, non un verdetto.",
-    "data": "2026-07-25",
-    "stato": "pubblicato",
-    "tag": [
-      "telemetria",
-      "curve",
-      "geometria",
-      "prove libere"
-    ],
-    "circuito": "Hungaroring",
-    "sessione": "FP1",
-    "accent": "var(--accent)",
-    "gp": "Ungheria",
-    "round": 11
-  },
-  {
-    "id": "hun-frenata-t1-2026",
-    "titolo": "Curva 1: OCO attacca i freni 18 metri più tardi del compagno",
-    "occhiello": "Telemetria · Libere 1 Ungheria 2026",
-    "sommario": "Alla staccata più dura dell’Hungaroring — curva 1, da 323 a 93 km/h, circa 230 km/h di calo — OCO inizia a frenare a 138 metri dall’apice contro i 156 del compagno HIR, la stessa Haas: 18 metri più tardi. Stessa velocità d’ingresso e d’apice, ma la frenata è compressa in meno spazio — quindi più forte.",
-    "data": "2026-07-25",
-    "stato": "pubblicato",
-    "tag": [
-      "telemetria",
-      "Haas F1 Team",
-      "frenata",
-      "libere"
-    ],
-    "circuito": "Hungaroring",
-    "sessione": "FP1",
-    "accent": "#B6BABD",
     "gp": "Ungheria",
     "round": 11
   },
