@@ -1,0 +1,29 @@
+# Il cambio più corto della griglia, sulla pista che meno lo ripaga
+
+*Telemetria · Prove libere 2 · Ungheria 2026 — Muretto · Redazione tecnica · 2026-07-25 · BOZZA*
+
+> All’Hungaroring — una delle piste dove si sta meno a tutto gas (mediana 39,4% del giro) — la McLaren gira col cambio più corto dello schieramento: entrambe le vetture, con margine netto sull’Audi, la più lunga. È geometria pura del cambio, immune a carburante, mappa motore e scia. Ma la tentazione «corto uguale lento in fondo» in prove libere non regge: il rapporto lo misuriamo, la velocità di punta resta indicativa e non la spieghiamo col cambio.
+
+## Evidenza — La 7ª più corta della griglia, su entrambe le McLaren
+In una marcia fissa il regime del motore cresce con la velocità secondo una costante: quella costante è il rapporto. La misuriamo in 7ª — la marcia più usata sopra i 250 km/h in questa sessione (4879 campioni contro 2656 in 8ª) — sui giri lanciati di FP2. Vale 42,08 e 42,02 giri/min per km/h sulle due McLaren (PIA, NOR), contro 36,63 e 36,68 sulle due Audi: uno spread del 14,9% fra la più corta e la più lunga. È una misura pulita — geometria del cambio, non la tocca né la scia né la mappa motore né il carburante.Tradotto sulla retta RPM-velocità: a 280 km/h in 7ª la McLaren gira 1527 giri in più dell’Audi. È il cambio più corto di tutta la griglia — lo stesso ordine già emerso a Silverstone — e lo è su una pista, l’Hungaroring, dove la velocità di punta conta poco.
+*[figura] In 7ª il regime cresce con la velocità secondo il rapporto: le linee McLaren sono più ripide (cambio più corto), le Audi più piatte. A 280 km/h il divario è di 1527 giri/min. — fonte: FastF1 · car telemetry (nGear/RPM/Speed), Hungary 2026 FP2*
+
+## Causa — Geometria, non artefatto: regge in 8ª e in banda stretta
+Il primato non è un effetto di come è distribuita la velocità nei nostri campioni. Ristretto alla sola banda 260–285 km/h, il rapporto della McLaren più corta resta 42,04, praticamente identico al 42,08 misurato su tutta la banda: nessun bias. E l’ordine si ripete in 8ª, dove la McLaren resta in testa fra le vetture con dati affidabili (36,45 e 36,42). L’8ª però è poco usata e per alcune vetture — ALO (Aston Martin), BOR (Audi) — non ha campioni utili sopra i 250 km/h: per questo il confronto di griglia lo teniamo in 7ª, dove tutti hanno dati, verificando che la 8ª racconti la stessa cosa.Un cambio più corto tiene il regime più alto a ogni velocità: è una scelta di rapporti, e la McLaren la porta all’estremo. Le conseguenze a valle — recupero energia, finestra termica del motore — non le misuriamo (i canali ERS non sono nel feed pubblico 2026) e non le asseriamo.
+*[figura] Rapporto in 7ª per vettura (asse troncato da 36 per leggere le differenze). Più alto = 7ª più corta. Le due McLaren sono staccate in cima, le due Audi in fondo. — fonte: FastF1 · car telemetry, elaborazione redazione*
+
+## Effetto — Corto non vuol dire lento in fondo
+Qui scatta la tentazione: cambio corto uguale meno velocità di punta. In prove libere non regge. La correlazione fra rapporto in 7ª e velocità di punta mediana è praticamente nulla: Spearman -0,04 su 21 vetture. La Mercedes ha la punta più bassa dello schieramento (306 km/h, RUS (Mercedes)) con un cambio di mezzo; l’Audi, la più lunga, ha una delle punte più alte. La McLaren è corta e con punta medio-bassa. Nessuna relazione monotona: il rapporto non spiega la punta.Del resto la punta, in prove libere, è indicativa e basta: carburante e mappa motore sono ignoti, e la scia gonfia il picco — fino a +25 km/h su VER (Red Bull Racing) (343 di picco contro 318 di mediana). Per questo usiamo la mediana dei picchi per-giro, non il picco. E il DRS non aiuta a distinguere: nel feed FP2 il canale è degenere (unico valore 0 su 174 giri lanciati), quindi le punte che misuriamo sono tutte ad ala chiusa. Morale: il rapporto lo misuriamo — geometria, robusta — la punta resta indicativa e non la spieghiamo col cambio.
+*[figura] Ogni punto una vettura: rapporto in 7ª (orizzontale) contro velocità di punta mediana (verticale). La nuvola non ha pendenza (Spearman -0,04): il cambio non predice la punta in prove libere. — fonte: FastF1 · car telemetry, elaborazione redazione*
+
+## Provenienza dei dati
+- **rapporto in 7ª (giri/min per km/h)**: 42,08/42,02 McLaren · 36,63/36,68 Audi (spread 14,9%) — `MISURATO` (mediana RPM/velocità in 7ª (Speed>250) sui giri lanciati FP2; n 87–377 campioni/vettura)
+- **coerenza in 8ª**: 36,45/36,42 McLaren (ancora in testa) — `MISURATO` (stessa misura in 8ª; ALO, BOR esclusi (<15 campioni utili sopra 250 km/h) → confronto di griglia solo in 7ª)
+- **controllo bias-distribuzione (banda stretta)**: 42,04 in 260–285 km/h ≈ 42,08 pieno — `MISURATO` (rapporto McLaren ristretto alla banda comune di velocità)
+- **velocità di punta (mediana dei picchi per-giro)**: 306–326 km/h (mediana griglia 318,5, spread 20) — `MISURATO` (mediana dei picchi per-giro sui giri lanciati; INDICATIVA in FP)
+- **scia (picco − mediana)**: fino a +25 km/h (VER) — `MISURATO` (picco singolo vs mediana dei picchi — motivo per usare la mediana)
+- **correlazione rapporto 7ª ↔ punta**: Spearman -0,04 (n=21) — `MISURATO` (correlazione di rango fra rapporto in 7ª e punta mediana)
+- **% del giro a tutto gas (Throttle≥95)**: mediana griglia 39,4% (min 35,8 / max 47,5, spread 11,7 pt) — `MISURATO` (mediana per-giro; robusto è il valore-griglia (carattere pista), non il ranking per-pilota)
+- **stato DRS (ala aperta/chiusa)**: non leggibile — `NON_MISURABILE` (canale degenere (unico valore [0] su 174 giri lanciati); punte misurate ad ala chiusa)
+- **carburante e mappa motore (confondono la punta in FP)**: ignoti — `NON_MISURABILE` (prove libere: assetto/carico e mappe non pubblici → la punta non è un verdetto)
+- **recupero energia / finestra termica dal regime più alto**: non quantificabile — `NON_MISURABILE` (canali ERS/batteria assenti dal feed pubblico 2026)
