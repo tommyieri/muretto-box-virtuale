@@ -7,7 +7,7 @@
 //   node demo/test_playhead.mjs
 
 globalThis.location = { search: '' };                  // live_config legge location
-const { creaPlayhead, posizionaSu, creaLisciatore, PH } = await import('./live_mappa.mjs');
+const { creaPlayhead, posizionaSu, creaLisciatore, creaRitmo, PH } = await import('./live_mappa.mjs');
 
 let fail = 0;
 const ok = (c, m) => c ? console.log('  ok:', m) : (fail++, console.log('  FAIL:', m));
@@ -32,26 +32,43 @@ function feed({ durataMs = 20000, jitterMs = 90, buchi = [] , seed = 7 } = {}) {
   return arrivi;
 }
 
+// FEED REALE (misurato sulla registrazione della qualifica 25/07/2026):
+// il campionamento e' ~4,2 Hz ma la CONSEGNA e' ~1 Hz A RAFFICHE di ~4 frame.
+// E' il caso che smaschera lo stimatore del ritmo.
+function feedRaffiche({ durataMs = 20000, perRaffica = 4, gapMs = 1000, passoDatoMs = 240,
+                        jitterMs = 60, seed = 11 } = {}) {
+  let s = seed; const rnd = () => (s = (s * 1103515245 + 12345) % 2147483648) / 2147483648;
+  const arrivi = []; let t = 0;
+  for (let wall = 0; wall <= durataMs; wall += gapMs) {
+    const jit = (rnd() - 0.5) * 2 * jitterMs;
+    for (let k = 0; k < perRaffica; k++) {                    // 4 frame in ~3 ms
+      arrivi.push({ wall: wall + 300 + jit + k * 1.2, t, vb: posVera(t) });
+      t += passoDatoMs;
+    }
+  }
+  return arrivi;
+}
+
 // ---- i due motori ------------------------------------------------------
 function simula(motore, arrivi, { fps = 60, durataMs = 20000 } = {}) {
   const campioni = [];
-  let tMax = 0, wallTMax = 0, ritmo = 1, intervalloMed = 260, i = 0;
-  const ph = creaPlayhead();
-  const lisc = creaLisciatore();          // il nuovo motore liscia la posizione disegnata
-  const salti = []; let prec = null;
+  let tMax = 0, wallTMax = 0, ritmoV = 1, intervalloMed = 260, i = 0;
+  const ph = creaPlayhead(), lisc = creaLisciatore(), rit = creaRitmo();
+  const salti = []; let prec = null; let ultimoRitmo = 1;
   for (let wall = 0; wall <= durataMs + 1500; wall += 1000 / fps) {
     while (i < arrivi.length && arrivi[i].wall <= wall) {      // consegna campioni
       const a = arrivi[i++];
       campioni.push({ t: a.t, vb: a.vb });
       if (campioni.length > 12) campioni.shift();
       if (a.t > tMax) {
-        if (wallTMax) {
+        if (wallTMax) {                                        // stimatore VECCHIO
           const dW = wall - wallTMax, dT = a.t - tMax;
           if (dW > 30 && dT > 0) {
-            ritmo = ritmo * 0.9 + Math.min(dT / dW, 100) * 0.1;
+            ritmoV = ritmoV * 0.9 + Math.min(dT / dW, 100) * 0.1;
             intervalloMed = intervalloMed * 0.9 + Math.min(dT, 5000) * 0.1;
           }
         }
+        rit.osserva(wall, a.t);                                // stimatore NUOVO
         tMax = a.t; wallTMax = wall;
       }
     }
@@ -59,16 +76,18 @@ function simula(motore, arrivi, { fps = 60, durataMs = 20000 } = {}) {
     let p;
     if (motore === 'vecchio') {
       // com'era: ricalcolo da tMax a ogni frame + clamp all'ultimo campione
-      const play = tMax + (wall - wallTMax) * ritmo - 2 * intervalloMed;
+      const play = tMax + (wall - wallTMax) * ritmoV - 2 * intervalloMed;
       const clamp = Math.min(play, campioni[campioni.length - 1].t);
       p = posVecchia(campioni, clamp);
     } else {
-      const bers = tMax + (wall - wallTMax) * ritmo - PH.BUFFER_INTERVALLI * intervalloMed;
-      p = lisc.passo(posizionaSu(campioni, ph.passo(wall, bers, ritmo, intervalloMed) ?? 0));
+      const r = rit.ritmo(), buf = rit.buffer(); ultimoRitmo = r;
+      const bers = tMax + (wall - wallTMax) * r - buf;
+      p = lisc.passo(posizionaSu(campioni, ph.passo(wall, bers, r, buf) ?? 0));
     }
     if (p && prec) salti.push(Math.hypot(p[0] - prec[0], p[1] - prec[1]));
     prec = p;
   }
+  salti.ritmoFinale = ultimoRitmo; salti.ritmoVecchio = ritmoV;
   return salti;
 }
 // la vecchia posiziona(): interpolazione, ma inchioda sull'ultimo campione
@@ -109,6 +128,22 @@ console.log(`  nuovo  : max ${N2.max.toFixed(2)}  fermo ${N2.fermiPct.toFixed(1)
 ok(N2.max < V2.max, `col buco, lo strappo alla ripresa e' minore (${V2.max.toFixed(2)} -> ${N2.max.toFixed(2)})`);
 ok(N2.fermiPct < V2.fermiPct, `col buco resta meno fermo (${V2.fermiPct.toFixed(1)}% -> ${N2.fermiPct.toFixed(1)}%)`);
 
+console.log('\n== 2b. FEED VERO A RAFFICHE (4 frame insieme, 1 al secondo) ==');
+console.log('   e\' il caso misurato sulla registrazione della qualifica: qui il vecchio');
+console.log('   stimatore concludeva "ritmo 0,25" e il pallino strisciava, poi saltava.');
+{
+  const arrR = feedRaffiche();
+  const sV = simula('vecchio', arrR), sN = simula('nuovo', arrR);
+  const RV = stat(sV), RN = stat(sN);
+  console.log(`  ritmo stimato: vecchio ${sV.ritmoVecchio.toFixed(2)}  ->  nuovo ${sN.ritmoFinale.toFixed(2)}  (vero = 1.00)`);
+  console.log(`  vecchio: scatto max ${RV.max.toFixed(2)}  mediana ${RV.mediana.toFixed(2)}  fermo ${RV.fermiPct.toFixed(1)}%`);
+  console.log(`  nuovo  : scatto max ${RN.max.toFixed(2)}  mediana ${RN.mediana.toFixed(2)}  fermo ${RN.fermiPct.toFixed(1)}%`);
+  ok(Math.abs(sN.ritmoFinale - 1) < 0.12, `il ritmo torna ~1 (era ${sV.ritmoVecchio.toFixed(2)})`);
+  ok(sV.ritmoVecchio < 0.6, 'confermato: il vecchio stimatore sbagliava di ~4x sulle raffiche');
+  ok(RN.max < RV.max / 2, `scatto peggiore dimezzato e oltre (${RV.max.toFixed(2)} -> ${RN.max.toFixed(2)})`);
+  ok(RN.fermiPct < 2, `il pallino non inchioda fra una raffica e l'altra (${RN.fermiPct.toFixed(1)}%)`);
+}
+
 console.log('\n== 3. il playhead e\' monotono e non salta ==');
 {
   const ph = creaPlayhead();
@@ -116,7 +151,7 @@ console.log('\n== 3. il playhead e\' monotono e non salta ==');
   for (let w = 0; w < 12000; w += 16) {
     // bersaglio con rumore forte: il playhead NON deve seguirlo a scatti
     const bers = w + ((w % 500) < 250 ? 120 : -120);
-    t = ph.passo(w, bers, 1, 260);
+    t = ph.passo(w, bers, 1, 600);
     if (prec !== null) { if (t < prec - 1e-9) indietro++; if (t - prec > 16 * 1.2) salti++; }
     prec = t;
   }
@@ -127,11 +162,11 @@ console.log('\n== 3. il playhead e\' monotono e non salta ==');
 console.log('\n== 4. riaggancio secco su desync grosso (ricollegamento) ==');
 {
   const ph = creaPlayhead();
-  ph.passo(0, 1000, 1, 260); ph.passo(16, 1016, 1, 260);
-  const dopo = ph.passo(32, 60000, 1, 260);          // +59 s: salto voluto
+  ph.passo(0, 1000, 1, 600); ph.passo(16, 1016, 1, 600);
+  const dopo = ph.passo(32, 60000, 1, 600);          // +59 s: salto voluto
   ok(Math.abs(dopo - 60000) < 1, 'con uno scarto enorme si riaggancia subito');
-  const ph2 = creaPlayhead(); ph2.passo(0, 1000, 1, 260);
-  ph2.passo(16, 1300, 1, 260);                        // +300 ms: NON deve saltare
+  const ph2 = creaPlayhead(); ph2.passo(0, 1000, 1, 600);
+  ph2.passo(16, 1300, 1, 600);                        // +300 ms: NON deve saltare
   ok(ph2.valore() < 1100, 'con uno scarto piccolo NON salta, si riallinea piano');
 }
 

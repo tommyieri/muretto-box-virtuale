@@ -33,11 +33,49 @@ import { STALE_GRIGIO_S, STALE_RIMOZIONE_S } from './live_config.mjs';
 
 // --- movimento: parti pure, testabili senza DOM ------------------------
 export const PH = {
-  BUFFER_INTERVALLI: 2,     // di quanti intervalli stare indietro al vivo
   RIAGGANCIO_MS: 3000,      // oltre questo scarto: riaggancio secco (ricollegamento)
   CORREZIONE_MAX: 0.15,     // quanto si puo' accelerare/frenare per rimettersi in pari
   EXTRAP_MAX_MS: 450,       // per quanto il pallino "prosegue" se il dato tarda
+  BUFFER_GAP: 1.25,         // stare indietro di 1,25 buchi-di-consegna: c'e' sempre dato avanti
+  BUFFER_MIN_MS: 500,
+  BUFFER_MAX_MS: 4000,
 };
+
+// RITMO E BUCO DI CONSEGNA — misurati su FINESTRA, non fra due campioni.
+// Il feed non consegna un frame ogni 240 ms: ne consegna ~4 insieme una volta
+// al secondo (misurato sulla registrazione della qualifica). Lo stimatore
+// vecchio guardava il singolo salto al bordo della raffica (220 ms di dato /
+// 1001 ms di attesa) e concludeva "ritmo 0,25": il pallino strisciava al 25%
+// della velocita' e poi saltava ~750 ms di dato in un fotogramma. Su finestra
+// il rapporto torna 1,0 (e Nx nel replay) qualunque sia la forma delle raffiche.
+export function creaRitmo({ finestraMs = 6000, minCampioni = 4, gapIniziale = 700 } = {}) {
+  let arr = [], gap = gapIniziale, ultimoWall = 0;
+  return {
+    osserva(wall, t) {
+      if (ultimoWall) {
+        const g = wall - ultimoWall;
+        if (g > 30) gap = gap * 0.8 + Math.min(g, 5000) * 0.2;   // buco FRA raffiche
+      }
+      ultimoWall = wall;
+      arr.push({ wall, t });
+      while (arr.length > 2 && wall - arr[0].wall > finestraMs) arr.shift();
+    },
+    ritmo() {
+      if (arr.length < minCampioni) return 1;
+      const a = arr[0], b = arr[arr.length - 1];
+      const dW = b.wall - a.wall, dT = b.t - a.t;
+      if (dW <= 0 || dT <= 0) return 1;
+      return Math.min(100, dT / dW);
+    },
+    gap: () => gap,
+    // di quanto stare indietro: deve coprire il buco di consegna, o fra una
+    // raffica e l'altra il pallino resta senza dato davanti (e inchioda).
+    buffer() {
+      return Math.max(PH.BUFFER_MIN_MS, Math.min(PH.BUFFER_MAX_MS, gap * PH.BUFFER_GAP));
+    },
+    reset() { arr = []; gap = gapIniziale; ultimoWall = 0; },
+  };
+}
 
 // Playhead monotono con riallineamento dolce.
 export function creaPlayhead(cfg = {}) {
@@ -47,7 +85,7 @@ export function creaPlayhead(cfg = {}) {
     valore: () => t,
     reset() { t = null; wall = 0; },
     // bersaglio = dov'e' il vivo, meno il buffer. Ritorna il playhead nuovo.
-    passo(now, bersaglio, ritmo, intervalloMed) {
+    passo(now, bersaglio, ritmo, buffer) {
       if (!Number.isFinite(bersaglio)) return t;
       if (t === null || Math.abs(bersaglio - t) > K.RIAGGANCIO_MS) {
         t = bersaglio; wall = now; return t;          // primo giro o desync grosso
@@ -55,7 +93,7 @@ export function creaPlayhead(cfg = {}) {
       const d = Math.max(0, Math.min(250, now - wall));   // clamp: tab in background
       wall = now;
       const err = bersaglio - t;
-      const span = Math.max(1, 4 * intervalloMed);
+      const span = Math.max(1, 2 * buffer);
       const corr = Math.max(-K.CORREZIONE_MAX, Math.min(K.CORREZIONE_MAX, err / span));
       t += d * ritmo * (1 + corr);                     // sempre avanti, mai un salto
       return t;
@@ -119,7 +157,8 @@ export function creaLiveMappa({ canvasPista, canvasLive, pista, geo }) {
   // stato per auto: campioni [{t, vb}], ultimo arrivo wall, timing, extra
   const auto = new Map();      // num -> {campioni, wall, inPit, extra}
   const piloti = new Map();    // num -> {sigla, colore}
-  let tMax = 0, wallTMax = 0, ritmo = 1, intervalloMed = 260;
+  let tMax = 0, wallTMax = 0;
+  const rit = creaRitmo();
   let acceso = false, rafId = null;
 
   function voce(num) {
@@ -135,14 +174,7 @@ export function creaLiveMappa({ canvasPista, canvasLive, pista, geo }) {
     v.campioni.push({ t: tMs, vb: versoVb(xy.x, xy.y) });
     if (v.campioni.length > 12) v.campioni.shift();
     if (tMs > tMax) {
-      if (wallTMax) {
-        const dWall = Date.now() - wallTMax, dT = tMs - tMax;
-        if (dWall > 30 && dT > 0) {           // stima del ritmo (1x, 10x, ...)
-          const r = dT / dWall;
-          ritmo = ritmo * 0.9 + Math.min(r, 100) * 0.1;
-          intervalloMed = intervalloMed * 0.9 + Math.min(dT, 5000) * 0.1;
-        }
-      }
+      rit.osserva(Date.now(), tMs);          // ritmo e buco di consegna su finestra
       tMax = tMs; wallTMax = Date.now();
     }
   }
@@ -163,7 +195,7 @@ export function creaLiveMappa({ canvasPista, canvasLive, pista, geo }) {
       }
     } else if (e.type === 'snapshot') {
       auto.clear(); piloti.clear(); tMax = 0; wallTMax = 0;
-      playhead.reset();          // sessione nuova: non trascinare il tempo vecchio
+      playhead.reset(); rit.reset();   // sessione nuova: tempo e ritmo da capo
       for (const [num, d] of Object.entries(e.driver_list || {}))
         piloti.set(num, { sigla: d.sigla, colore: d.colore });
       const tMs = e.t ? Date.parse(e.t) : 0;
@@ -210,10 +242,9 @@ export function creaLiveMappa({ canvasPista, canvasLive, pista, geo }) {
     // playhead MONOTONO: il bersaglio e' il vivo meno il buffer; il playhead
     // ci si riallinea cambiando velocita' di poco, senza mai saltare indietro.
     const adesso = Date.now();
-    const bersaglio = tMax
-      ? tMax + (adesso - wallTMax) * ritmo - PH.BUFFER_INTERVALLI * intervalloMed
-      : NaN;
-    const ph = playhead.passo(adesso, bersaglio, ritmo, intervalloMed);
+    const ritmo = rit.ritmo(), buffer = rit.buffer();
+    const bersaglio = tMax ? tMax + (adesso - wallTMax) * ritmo - buffer : NaN;
+    const ph = playhead.passo(adesso, bersaglio, ritmo, buffer);
 
     for (const [num, v] of auto) {
       const etaS = (adesso - v.wall) / 1000;
