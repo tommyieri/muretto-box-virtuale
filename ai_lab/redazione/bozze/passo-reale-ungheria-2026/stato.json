@@ -1,0 +1,26 @@
+{
+  "id": "passo-reale-ungheria-2026",
+  "stato": "pubblicato",
+  "attore": "auto",
+  "creato": "2026-07-26",
+  "storico": [
+    {
+      "stato": "bozza",
+      "attore": "redazione",
+      "quando": "2026-07-26",
+      "nota": "bozza generata"
+    },
+    {
+      "stato": "approvato",
+      "attore": "auto",
+      "quando": "2026-07-26",
+      "nota": "pezzo-gara generale, verificatore OK"
+    },
+    {
+      "stato": "pubblicato",
+      "attore": "auto",
+      "quando": "2026-07-26",
+      "nota": "pubblicato all'approvazione"
+    }
+  ]
+}
