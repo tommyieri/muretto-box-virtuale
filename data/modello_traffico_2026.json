@@ -1,25 +1,25 @@
 {
  "coefficienti": {
-  "a": 1.68908,
+  "a": 1.74223,
   "lam": 0.5,
-  "kappa": 0.44273,
+  "kappa": 0.49754,
   "durata_per_fascia_delta": {
-   "-99.0..-0.8": 2.299,
-   "-0.8..-0.4": 2.982,
-   "-0.4..-0.15": 3.218,
-   "-0.15..0.15": 3.246,
-   "0.15..99.0": 2.624
+   "-99.0..-0.8": 2.219,
+   "-0.8..-0.4": 2.882,
+   "-0.4..-0.15": 3.471,
+   "-0.15..0.15": 3.434,
+   "0.15..99.0": 2.564
   },
-  "durata_media": 2.706
+  "durata_media": 2.697
  },
  "intervalli": {
   "a_ci95_blocchi": [
-   0.8624,
-   3.17603
+   0.92258,
+   3.0042
   ],
   "lam_ci95_blocchi": [
    0.3,
-   0.5
+   0.8
   ],
   "nota": "bootstrap sui BLOCCHI (gare), non sulle osservazioni"
  },
@@ -30,8 +30,8 @@
   "finestra_post_restart_giri": 3
  },
  "diagnostica": {
-  "n_incontri": 586,
-  "n_giri_in_traffico": 3291,
+  "n_incontri": 693,
+  "n_giri_in_traffico": 3966,
   "gare": [
    "2026 Australia",
    "2026 Austria",
@@ -40,48 +40,49 @@
    "2026 Canada",
    "2026 Cina",
    "2026 Giappone",
+   "2026 Hungarian",
    "2026 Miami",
    "2026 Monaco",
    "2026 Spagna"
   ],
-  "costo_incontro_mediano_reale_s": 0.429,
-  "costo_per_giro_mediano_reale_s": 0.261
+  "costo_incontro_mediano_reale_s": 0.51,
+  "costo_per_giro_mediano_reale_s": 0.313
  },
  "verifica": {
   "oos": {
-   "errore_modello": 0.9821,
+   "errore_modello": 0.9608,
    "ci95": [
-    0.7279,
-    2.1976
+    0.8573,
+    1.4694
    ],
-   "errore_traffico_zero": 0.7128,
+   "errore_traffico_zero": 0.743,
    "ci95_zero": [
-    0.6447,
-    2.407
+    0.6522,
+    1.1948
    ],
-   "guadagno": -0.2693,
+   "guadagno": -0.2178,
    "n_gare_calibrazione": 4,
-   "n_gare_verifica": 6,
-   "appaiato_mediano": -0.1962
+   "n_gare_verifica": 7,
+   "appaiato_mediano": -0.1142
   },
   "mclaren": {
-   "n_delta_grande": 90,
-   "n_pari_passo": 38,
-   "costo_reale_delta_grande": 0.746,
-   "costo_reale_pari_passo": 0.392,
-   "previsto_delta_grande": 0.426,
-   "previsto_pari_passo": 0.226,
+   "n_delta_grande": 126,
+   "n_pari_passo": 52,
+   "costo_reale_delta_grande": 0.868,
+   "costo_reale_pari_passo": 0.319,
+   "previsto_delta_grande": 0.567,
+   "previsto_pari_passo": 0.239,
    "ordina_giusto": true,
    "criterio": "chi ha delta-passo grande ed e bloccato deve pagare di piu"
   },
   "placebo": {
    "popolazione": "gare di VERIFICA (la stessa del test McLaren)",
-   "n_incontri_finti": 822,
-   "costo_delta_grande_finto": 0.475,
-   "costo_pari_passo_finto": 0.067,
-   "separazione_finta": 0.408,
-   "separazione_reale": 0.354,
-   "quota_finta_su_reale": 1.153,
+   "n_incontri_finti": 1084,
+   "costo_delta_grande_finto": 0.407,
+   "costo_pari_passo_finto": 0.134,
+   "separazione_finta": 0.273,
+   "separazione_reale": 0.549,
+   "quota_finta_su_reale": 0.498,
    "nota": "con leader a caso la separazione deve COLLASSARE. Se la finta vale quanto la reale, la separazione del delta-passo e un ARTEFATTO del passo di chi segue, non fisica del traffico."
   },
   "partizione": {
@@ -89,7 +90,7 @@
    "T_stella": "2026-05-24",
    "K_min": 4,
    "n_calibrazione": 4,
-   "n_verifica": 6,
+   "n_verifica": 7,
    "gare_calibrazione": [
     "2026 Australia",
     "2026 Cina",
@@ -102,17 +103,18 @@
     "2026 Spagna",
     "2026 Austria",
     "2026 British",
-    "2026 Belgian"
+    "2026 Belgian",
+    "2026 Hungarian"
    ],
    "ordinamento": "cronologico dal fondo"
   },
   "kappa_calibrazione": 1.3075,
   "cancello_accensione": {
    "batte_traffico_zero": false,
-   "appaiato_vs_zero": -0.1962,
+   "appaiato_vs_zero": -0.1142,
    "ci95_appaiato": [
-    -0.3452,
-    0.3983
+    -0.3392,
+    0.241
    ],
    "esclude_lo_zero": false,
    "ACCENDIBILE": false,
@@ -121,7 +123,7 @@
     "T_stella": "2026-05-24",
     "K_min": 4,
     "n_calibrazione": 4,
-    "n_verifica": 6,
+    "n_verifica": 7,
     "gare_calibrazione": [
      "2026 Australia",
      "2026 Cina",
@@ -134,7 +136,8 @@
      "2026 Spagna",
      "2026 Austria",
      "2026 British",
-     "2026 Belgian"
+     "2026 Belgian",
+     "2026 Hungarian"
     ],
     "ordinamento": "cronologico dal fondo"
    },
@@ -144,10 +147,10 @@
  "ACCENDIBILE": false,
  "cancello_accensione": {
   "batte_traffico_zero": false,
-  "appaiato_vs_zero": -0.1962,
+  "appaiato_vs_zero": -0.1142,
   "ci95_appaiato": [
-   -0.3452,
-   0.3983
+   -0.3392,
+   0.241
   ],
   "esclude_lo_zero": false,
   "ACCENDIBILE": false,
@@ -156,7 +159,7 @@
    "T_stella": "2026-05-24",
    "K_min": 4,
    "n_calibrazione": 4,
-   "n_verifica": 6,
+   "n_verifica": 7,
    "gare_calibrazione": [
     "2026 Australia",
     "2026 Cina",
@@ -169,7 +172,8 @@
     "2026 Spagna",
     "2026 Austria",
     "2026 British",
-    "2026 Belgian"
+    "2026 Belgian",
+    "2026 Hungarian"
    ],
    "ordinamento": "cronologico dal fondo"
   },
@@ -188,9 +192,9 @@
  "nome": "traffico_2026",
  "regime": "2026",
  "targhetta": {
-  "gare_sotto": 10,
-  "blocchi_sotto": 10,
-  "calcolato_il": "2026-07-22",
+  "gare_sotto": 11,
+  "blocchi_sotto": 11,
+  "calcolato_il": "2026-07-26",
   "peso_storico": 0.0
  },
  "storico": [
@@ -242,6 +246,24 @@
     "durata_per_fascia_delta.-0.15..0.15": 0.0,
     "durata_per_fascia_delta.0.15..99.0": 0.0,
     "durata_media": 0.0
+   },
+   "ACCENDIBILE": false,
+   "peso_storico": 0.0,
+   "guasti_contratto": null
+  },
+  {
+   "calcolato_il": "2026-07-26",
+   "gare_sotto": 11,
+   "delta_coefficienti": {
+    "a": 0.05315,
+    "lam": 0.0,
+    "kappa": 0.05481,
+    "durata_per_fascia_delta.-99.0..-0.8": -0.08,
+    "durata_per_fascia_delta.-0.8..-0.4": -0.1,
+    "durata_per_fascia_delta.-0.4..-0.15": 0.253,
+    "durata_per_fascia_delta.-0.15..0.15": 0.188,
+    "durata_per_fascia_delta.0.15..99.0": -0.06,
+    "durata_media": -0.009
    },
    "ACCENDIBILE": false,
    "peso_storico": 0.0,

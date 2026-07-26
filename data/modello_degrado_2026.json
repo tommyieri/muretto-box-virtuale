@@ -1,21 +1,21 @@
 {
  "coefficienti": {
-  "rho_SOFT": 0.0541,
-  "rho_MEDIUM": 0.0441,
-  "rho_HARD": 0.0398
+  "rho_SOFT": 0.0566,
+  "rho_MEDIUM": 0.0571,
+  "rho_HARD": 0.0512
  },
  "intervalli": {
   "rho_SOFT_ci95_blocchi": [
-   -0.0233,
-   0.2393
+   -0.0178,
+   0.1585
   ],
   "rho_MEDIUM_ci95_blocchi": [
-   -0.0093,
-   0.122
+   0.0011,
+   0.1013
   ],
   "rho_HARD_ci95_blocchi": [
-   0.0096,
-   0.0877
+   0.0244,
+   0.0829
   ]
  },
  "forma": {
@@ -33,24 +33,25 @@
    "2026 Canada",
    "2026 Cina",
    "2026 Giappone",
+   "2026 Hungarian",
    "2026 Miami",
    "2026 Monaco",
    "2026 Spagna"
   ],
-  "ordine_SOFT_MEDIUM_HARD_esce_da_solo": true,
+  "ordine_SOFT_MEDIUM_HARD_esce_da_solo": false,
   "stabilita_segno_fra_gare": {
    "SOFT": {
-    "n_gare": 5,
+    "n_gare": 6,
     "n_negative": 2,
     "escursione": 0.2626
    },
    "MEDIUM": {
-    "n_gare": 9,
+    "n_gare": 10,
     "n_negative": 2,
     "escursione": 0.1864
    },
    "HARD": {
-    "n_gare": 9,
+    "n_gare": 10,
     "n_negative": 1,
     "escursione": 0.1215
    }
@@ -61,6 +62,7 @@
     "2026 Austria": 0.07764,
     "2026 Belgian": 0.2393,
     "2026 Canada": -0.01233,
+    "2026 Hungarian": 0.05919,
     "2026 Monaco": -0.02327
    },
    "MEDIUM": {
@@ -70,6 +72,7 @@
     "2026 Canada": -0.00926,
     "2026 Cina": 0.12203,
     "2026 Giappone": 0.09484,
+    "2026 Hungarian": 0.07017,
     "2026 Miami": 0.00499,
     "2026 Monaco": 0.01146,
     "2026 Spagna": 0.17236
@@ -81,6 +84,7 @@
     "2026 British": 0.06266,
     "2026 Cina": 0.03799,
     "2026 Giappone": 0.08768,
+    "2026 Hungarian": 0.08294,
     "2026 Miami": -0.00201,
     "2026 Monaco": 0.00961,
     "2026 Spagna": 0.11953
@@ -100,14 +104,15 @@
    "2026 Spagna",
    "2026 Austria",
    "2026 British",
-   "2026 Belgian"
+   "2026 Belgian",
+   "2026 Hungarian"
   ],
   "partizione": {
    "versione": "v2_temporale",
    "T_stella": "2026-05-24",
    "K_min": 4,
    "n_calibrazione": 4,
-   "n_verifica": 6,
+   "n_verifica": 7,
    "gare_calibrazione": [
     "2026 Australia",
     "2026 Cina",
@@ -120,7 +125,8 @@
     "2026 Spagna",
     "2026 Austria",
     "2026 British",
-    "2026 Belgian"
+    "2026 Belgian",
+    "2026 Hungarian"
    ],
    "ordinamento": "cronologico dal fondo"
   },
@@ -168,30 +174,37 @@
      "errore_modello": 17.044,
      "errore_zero": 24.469,
      "guadagno": 7.425
+    },
+    {
+     "gara": "2026 Hungarian",
+     "n_piloti": 7,
+     "errore_modello": 16.944,
+     "errore_zero": 18.01,
+     "guadagno": 1.065
     }
    ],
-   "guadagno_mediano": -30.364,
+   "guadagno_mediano": -22.925,
    "ci95": [
-    -60.346,
-    7.425
+    -57.369,
+    4.245
    ],
-   "n_gare": 5,
+   "n_gare": 6,
    "esclude_lo_zero": false,
    "SUPERATO": false,
    "criterio": "errore di ricostruzione minore del degrado-zero RISTIMATO, con IC95 appaiato sui blocchi che esclude lo zero"
   },
   "X": {
    "etichetta": "cancello degrado_2026",
-   "n_casi": 3,
-   "n_gare": 2,
-   "n_vinti": 1,
-   "quota": 0.3333,
-   "margine_mediano_vittorie": 36.17,
+   "n_casi": 7,
+   "n_gare": 3,
+   "n_vinti": 2,
+   "quota": 0.2857,
+   "margine_mediano_vittorie": 33.98,
    "tol": 27.483,
    "G_stella": 1.5,
    "esclusi": {
-    "giri mancanti (ritiro o buchi)": 81,
-    "cancello di calibrazione": 28,
+    "giri mancanti (ritiro o buchi)": 95,
+    "cancello di calibrazione": 31,
     "mescola SOFT senza rho": 2,
     "rientro in traffico": 2
    },
@@ -205,6 +218,11 @@
      "n": 1,
      "vinti": 0,
      "quota": 0.0
+    },
+    "2026 Hungarian": {
+     "n": 4,
+     "vinti": 1,
+     "quota": 0.25
     }
    },
    "gare_verifica": [
@@ -212,6 +230,7 @@
     "2026 Belgian",
     "2026 British",
     "2026 Canada",
+    "2026 Hungarian",
     "2026 Monaco",
     "2026 Spagna"
    ]
@@ -219,21 +238,21 @@
   "cancello_accensione": {
    "A_predittivo": {
     "SUPERATO": false,
-    "guadagno_mediano_s": -30.364,
+    "guadagno_mediano_s": -22.925,
     "ci95": [
-     -60.346,
-     7.425
+     -57.369,
+     4.245
     ],
     "criterio": "errore di ricostruzione minore del degrado-zero RISTIMATO, con IC95 appaiato sui blocchi che esclude lo zero"
    },
    "B_prodotto": {
     "SUPERATO": false,
     "numerosita_sufficiente": false,
-    "n_casi": 3,
-    "n_gare": 2,
-    "X": 0.3333,
+    "n_casi": 7,
+    "n_gare": 3,
+    "X": 0.2857,
     "X_richiesta": 0.6,
-    "margine_mediano_s": 36.17,
+    "margine_mediano_s": 33.98,
     "margine_richiesto_s": 54.967,
     "criterio": "X >= 0.6 e margine >= 2.0*tol su >= 30 casi e >= 4 gare"
    },
@@ -243,7 +262,7 @@
     "T_stella": "2026-05-24",
     "K_min": 4,
     "n_calibrazione": 4,
-    "n_verifica": 6,
+    "n_verifica": 7,
     "gare_calibrazione": [
      "2026 Australia",
      "2026 Cina",
@@ -256,7 +275,8 @@
      "2026 Spagna",
      "2026 Austria",
      "2026 British",
-     "2026 Belgian"
+     "2026 Belgian",
+     "2026 Hungarian"
     ],
     "ordinamento": "cronologico dal fondo"
    },
@@ -266,21 +286,21 @@
  "cancello_accensione": {
   "A_predittivo": {
    "SUPERATO": false,
-   "guadagno_mediano_s": -30.364,
+   "guadagno_mediano_s": -22.925,
    "ci95": [
-    -60.346,
-    7.425
+    -57.369,
+    4.245
    ],
    "criterio": "errore di ricostruzione minore del degrado-zero RISTIMATO, con IC95 appaiato sui blocchi che esclude lo zero"
   },
   "B_prodotto": {
    "SUPERATO": false,
    "numerosita_sufficiente": false,
-   "n_casi": 3,
-   "n_gare": 2,
-   "X": 0.3333,
+   "n_casi": 7,
+   "n_gare": 3,
+   "X": 0.2857,
    "X_richiesta": 0.6,
-   "margine_mediano_s": 36.17,
+   "margine_mediano_s": 33.98,
    "margine_richiesto_s": 54.967,
    "criterio": "X >= 0.6 e margine >= 2.0*tol su >= 30 casi e >= 4 gare"
   },
@@ -290,7 +310,7 @@
    "T_stella": "2026-05-24",
    "K_min": 4,
    "n_calibrazione": 4,
-   "n_verifica": 6,
+   "n_verifica": 7,
    "gare_calibrazione": [
     "2026 Australia",
     "2026 Cina",
@@ -303,7 +323,8 @@
     "2026 Spagna",
     "2026 Austria",
     "2026 British",
-    "2026 Belgian"
+    "2026 Belgian",
+    "2026 Hungarian"
    ],
    "ordinamento": "cronologico dal fondo"
   },
@@ -312,21 +333,22 @@
  "ACCENDIBILE": false,
  "limite_onesto": [
   "REGIME 2026 SOLTANTO: nessun coefficiente ereditato da altri regimi. Il 2026 e una rottura regolamentare (altra macchina, push-to-pass a batteria al posto del DRS) e il transfer storico->2026 e misurato NULLO.",
-  "10 GARE SOTTO: gli intervalli sono larghi e sono riportati larghi. Nessuna cifra decimale va difesa oltre quello che l IC95 sostiene.",
+  "11 GARE SOTTO: gli intervalli sono larghi e sono riportati larghi. Nessuna cifra decimale va difesa oltre quello che l IC95 sostiene.",
   "CIECO su pioggia (gare escluse) e sui giri neutralizzati (SC/VSC): l eta gomma avanza ma il tempo non si conta.",
   "IL DEGRADO NON E PER-CIRCUITO: gia falsificato (0 circuiti veri su 8). Questo modello NON ha, e non deve avere, un coefficiente per pista.",
   "NIENTE CLIFF: il termine non-lineare (soglia+rampa) e stato montato e SCARTATO — il residuo per fascia di eta gomma e piatto, e il placebo del ginocchio finto ha ucciso il guadagno. Questo modello NON rappresenta il crollo di fine vita.",
+  "CONTROLLO DI SANITA FALLITO: l ordinamento fisico SOFT>MEDIUM>HARD NON esce da solo dai dati. Il numero e riportato com e, non corretto: e un sintomo, non un dettaglio.",
   "SEGNO INSTABILE FRA GARE per HARD, MEDIUM, SOFT: in alcune gare la pendenza stimata e NEGATIVA (gomme che migliorerebbero invecchiando). Dentro la gara la stima e precisa, fra le gare balla: ogni gara sta misurando con cura una cosa diversa. Finche dura, non esiste una pendenza comune 2026 da far viaggiare.",
-  "PARTIZIONE v2_temporale (T* = 2026-05-24, 4 gare in calibrazione / 6 in verifica): lo STESSO modulo e la STESSA soglia del modello traffico — verificato, non assunto, perche i due modelli hanno le stesse 10 gare utili del 2026. Fino al 21/07/2026 il cancello usava pari/dispari su un ordinamento per NOME, che una gara in piu o in meno rovesciava. OGNI VERDETTO SENZA LA TARGHETTA `partizione` E NATO SOTTO LA REGOLA VECCHIA: non si confronta con questo.",
-  "IL CANCELLO (B) NON E GIUDICABILE: 3 casi valutabili su 2 gare, contro i 30 su 4 richiesti. Col taglio temporale la calibrazione si stringe a 4 gare e i casi che passano il cancello di calibrazione crollano: il modello non e spento perche ha perso, e spento perche su (B) non ha ancora abbastanza materiale per giocare. E una differenza che conta, quando si rileggera questo numero.",
+  "PARTIZIONE v2_temporale (T* = 2026-05-24, 4 gare in calibrazione / 7 in verifica): lo STESSO modulo e la STESSA soglia del modello traffico — verificato, non assunto, perche i due modelli hanno le stesse 10 gare utili del 2026. Fino al 21/07/2026 il cancello usava pari/dispari su un ordinamento per NOME, che una gara in piu o in meno rovesciava. OGNI VERDETTO SENZA LA TARGHETTA `partizione` E NATO SOTTO LA REGOLA VECCHIA: non si confronta con questo.",
+  "IL CANCELLO (B) NON E GIUDICABILE: 7 casi valutabili su 3 gare, contro i 30 su 4 richiesti. Col taglio temporale la calibrazione si stringe a 4 gare e i casi che passano il cancello di calibrazione crollano: il modello non e spento perche ha perso, e spento perche su (B) non ha ancora abbastanza materiale per giocare. E una differenza che conta, quando si rileggera questo numero.",
   "SPENTO DA SOLO: non ha superato il proprio cancello di accensione. NON va agganciato al motore. Si riprovera da solo alla prossima gara."
  ],
  "nome": "degrado_2026",
  "regime": "2026",
  "targhetta": {
-  "gare_sotto": 10,
-  "blocchi_sotto": 10,
-  "calcolato_il": "2026-07-22",
+  "gare_sotto": 11,
+  "blocchi_sotto": 11,
+  "calcolato_il": "2026-07-26",
   "peso_storico": 0.0
  },
  "storico": [
@@ -378,6 +400,18 @@
     "rho_SOFT": 0.0,
     "rho_MEDIUM": 0.0,
     "rho_HARD": 0.0
+   },
+   "ACCENDIBILE": false,
+   "peso_storico": 0.0,
+   "guasti_contratto": null
+  },
+  {
+   "calcolato_il": "2026-07-26",
+   "gare_sotto": 11,
+   "delta_coefficienti": {
+    "rho_SOFT": 0.0025,
+    "rho_MEDIUM": 0.013,
+    "rho_HARD": 0.0114
    },
    "ACCENDIBILE": false,
    "peso_storico": 0.0,

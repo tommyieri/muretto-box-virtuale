@@ -1,6 +1,6 @@
 # Il DNA dei circuiti 2026: chi chiede motore e chi chiede carico
 
-*Telemetria · 9 circuiti 2026 — Muretto · Redazione tecnica · 2026-07-24 · BOZZA*
+*Telemetria · 9 circuiti 2026 — Muretto · Redazione tecnica · 2026-07-26 · BOZZA*
 
 > La percentuale di giro a tutto gas è la firma più pulita di un tracciato. Sui 9 circuiti con telemetria va dal 72% di Spa-Francorchamps — oltre due terzi di giro flat-out — al 50% di Barcelona, il più esigente. In mezzo, chi è veloce e flowing e chi è potente ma stop-and-go.
 

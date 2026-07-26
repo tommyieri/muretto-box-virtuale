@@ -79,3 +79,11 @@ spa-francorchamps,VSC_DEPLOY,16,112.065,110.819,1.011
 spa-francorchamps,VSC_RESTART,13,113.416,110.819,1.023
 spa-francorchamps,RED,0,,110.819,
 spa-francorchamps,VERDE,2926,110.819,110.819,1.0
+hungaroring,SC_REGIME,0,,84.374,
+hungaroring,VSC_REGIME,29,94.339,84.374,1.118
+hungaroring,SC_DEPLOY,0,,84.374,
+hungaroring,SC_RESTART,0,,84.374,
+hungaroring,VSC_DEPLOY,16,85.518,84.374,1.014
+hungaroring,VSC_RESTART,16,85.639,84.374,1.015
+hungaroring,RED,0,,84.374,
+hungaroring,VERDE,5013,84.374,84.374,1.0

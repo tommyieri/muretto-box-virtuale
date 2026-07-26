@@ -161,5 +161,17 @@
     "rf": [],
     "durata_sc": 4.0,
     "durata_vsc": 5.0
+  },
+  "Ungheria": {
+    "sc": [],
+    "vsc": [
+      [
+        54,
+        57
+      ]
+    ],
+    "rf": [],
+    "durata_sc": 0.0,
+    "durata_vsc": 4.0
   }
 }

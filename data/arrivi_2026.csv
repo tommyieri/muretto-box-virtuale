@@ -218,3 +218,25 @@ Belgio,RUS,Mercedes,22.0,False,RIT,1,3477.622,MEDIUM,,0
 Belgio,SAI,Williams,16.0,True,pieno_giro,44,8544.55,SOFT,14:HARD,1
 Belgio,STR,Aston Martin,20.0,False,RIT,25,6476.756,HARD,17:SOFT,2
 Belgio,VER,Red Bull Racing,3.0,True,pieno_giro,44,8450.262,MEDIUM,17:HARD,1
+Ungheria,ALB,Williams,18.0,True,doppiato,68,9297.153,MEDIUM,26:HARD;54:SOFT,2
+Ungheria,ALO,Aston Martin,14.0,True,doppiato,69,9310.476,SOFT,34:MEDIUM;55:SOFT,2
+Ungheria,ANT,Mercedes,3.0,True,pieno_giro,70,9263.152,MEDIUM,22:HARD;53:HARD,2
+Ungheria,BEA,Haas F1 Team,17.0,True,doppiato,68,9296.622,MEDIUM,22:HARD;42:HARD,2
+Ungheria,BOR,Audi,11.0,True,doppiato,69,9296.452,SOFT,29:HARD,1
+Ungheria,BOT,Cadillac,22.0,False,RIT,14,4552.49,MEDIUM,,1
+Ungheria,COL,Alpine,15.0,True,doppiato,68,9248.3,MEDIUM,15:HARD;37:HARD,2
+Ungheria,GAS,Alpine,12.0,True,doppiato,69,9297.853,MEDIUM,16:HARD;39:HARD;55:SOFT,3
+Ungheria,HAD,Red Bull Racing,6.0,True,pieno_giro,70,9299.912,MEDIUM,19:HARD;42:HARD,2
+Ungheria,HAM,Ferrari,4.0,True,pieno_giro,70,9263.964,SOFT,13:HARD;30:HARD;56:SOFT,3
+Ungheria,HUL,Audi,9.0,True,doppiato,69,9274.806,MEDIUM,19:HARD;39:SOFT,2
+Ungheria,LAW,Racing Bulls,8.0,True,doppiato,69,9272.457,MEDIUM,21:HARD;42:SOFT,2
+Ungheria,LEC,Ferrari,5.0,True,pieno_giro,70,9268.264,SOFT,16:HARD;36:HARD;56:SOFT,3
+Ungheria,LIN,Racing Bulls,10.0,True,doppiato,69,9295.474,MEDIUM,20:HARD,1
+Ungheria,NOR,McLaren,1.0,True,pieno_giro,70,9244.424,MEDIUM,17:HARD;39:HARD;56:SOFT,3
+Ungheria,OCO,Haas F1 Team,16.0,True,doppiato,68,9257.283,MEDIUM,17:HARD;35:HARD,2
+Ungheria,PER,Cadillac,21.0,False,RIT,48,7629.186,MEDIUM,21:None;46:SOFT,3
+Ungheria,PIA,McLaren,20.0,False,RIT,56,8124.377,MEDIUM,16:HARD;33:HARD,2
+Ungheria,RUS,Mercedes,7.0,True,pieno_giro,70,9301.927,MEDIUM,27:HARD;54:HARD,2
+Ungheria,SAI,Williams,19.0,True,doppiato,68,9297.397,SOFT,18:MEDIUM;43:SOFT;54:SOFT,3
+Ungheria,STR,Aston Martin,13.0,True,doppiato,69,9308.252,SOFT,8:MEDIUM;37:SOFT,2
+Ungheria,VER,Red Bull Racing,2.0,True,pieno_giro,70,9259.504,MEDIUM,14:HARD;41:SOFT,2

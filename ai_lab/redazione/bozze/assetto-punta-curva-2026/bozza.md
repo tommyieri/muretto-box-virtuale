@@ -1,6 +1,6 @@
 # La mappa dell’assetto 2026: chi corre carico e chi scarico
 
-*Telemetria · 9 gare 2026 — Muretto · Redazione tecnica · 2026-07-24 · BOZZA*
+*Telemetria · 9 gare 2026 — Muretto · Redazione tecnica · 2026-07-26 · BOZZA*
 
 > Incrociando velocità di punta e velocità in curva su 9 gare — con la punta ripulita dalla scia — si legge come ogni team ha risolto il compromesso carico-resistenza. In cima, vicine, Ferrari e Red Bull; ai lati chi carica l’ala e chi corre scarico.
 
