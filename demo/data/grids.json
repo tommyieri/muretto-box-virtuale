@@ -8,5 +8,6 @@
 "Spagna":["RUS","HAM","ANT","NOR","VER","HAD","PIA","LAW","HUL","LEC","LIN","BOR","COL","GAS","BEA","SAI","OCO","ALB","PER","BOT","STR","ALO"],
 "Austria":["RUS","LEC","HAM","ANT","VER","NOR","PIA","HAD","LAW","LIN","GAS","BOR","BEA","HUL","OCO","COL","SAI","ALB","PER","BOT","ALO","STR"],
 "Gran Bretagna":["ANT","LEC","HAM","RUS","HAD","NOR","VER","PIA","LIN","LAW","BOR","HUL","BEA","SAI","GAS","ALB","OCO","BOT","COL","PER","ALO","STR"],
-"Belgio":["ANT","VER","RUS","LEC","HAM","PIA","LIN","BOR","LAW","GAS","COL","HUL","NOR","BEA","ALB","OCO","BOT","PER","SAI","STR","HAD","ALO"]
+"Belgio":["ANT","VER","RUS","LEC","HAM","PIA","LIN","BOR","LAW","GAS","COL","HUL","NOR","BEA","ALB","OCO","BOT","PER","SAI","STR","HAD","ALO"],
+"Ungheria":["NOR","LEC","PIA","VER","HAM","RUS","ANT","HAD","LIN","HUL","LAW","GAS","COL","BOR","OCO","ALO","BEA","SAI","ALB","STR","BOT","PER"]
 }

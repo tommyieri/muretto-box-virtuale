@@ -1,10 +1,11 @@
 {
  "gare_fuori_campione": [
-  "Belgio"
+  "Belgio",
+  "Ungheria"
  ],
- "D_new": 0,
- "difficili_coperti": 0,
- "copertura": 0.0,
+ "D_new": 5,
+ "difficili_coperti": 5,
+ "copertura": 1.0,
  "cancello_aperto": false,
  "soglie": {
   "D_new_min": 15,
@@ -17,6 +18,13 @@
    "difficili": 0,
    "difficili_coperti": 0,
    "nel_fondo": true
+  },
+  {
+   "gara": "Ungheria",
+   "casi": 7,
+   "difficili": 5,
+   "difficili_coperti": 5,
+   "nel_fondo": false
   }
  ]
 }

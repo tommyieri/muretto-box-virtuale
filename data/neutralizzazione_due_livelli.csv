@@ -153,3 +153,6 @@ spa-francorchamps,Belgian Grand Prix,2026,4,4,SC_RESTART,1
 spa-francorchamps,Belgian Grand Prix,2026,17,17,VSC_DEPLOY,1
 spa-francorchamps,Belgian Grand Prix,2026,18,20,VSC_REGIME,3
 spa-francorchamps,Belgian Grand Prix,2026,21,21,VSC_RESTART,1
+hungaroring,Hungarian Grand Prix,2026,54,54,VSC_DEPLOY,1
+hungaroring,Hungarian Grand Prix,2026,55,56,VSC_REGIME,2
+hungaroring,Hungarian Grand Prix,2026,57,57,VSC_RESTART,1

@@ -5,20 +5,20 @@ Protocollo: PREREG_SESSIONE_FASEB.md. pace_base = dato vero della demo (kernel).
 M0 gancio attuale rate*(A-1) | M1 rate*(A-A0) | M2 rate*(A-Acur). BIAS+MAE, s/giro.
 
 gare escluse: nessuna
-coppie (caso,giro-futuro): 34707 | casi (pilota,stint,freeze): 7081 | gare: 9
+coppie (caso,giro-futuro): 38898 | casi (pilota,stint,freeze): 7907 | gare: 10
 
 CONFERMA DIAGNOSI (descrittiva, non decide):
-  A0 (mediana life del window pace_base): mediana 8.0 [q25 5.0, q75 11.5]
-  sovrastima implicata del gancio ~ rate*(A0-1) con rate mediano 0.0522 -> ~+0.365 s/giro
+  A0 (mediana life del window pace_base): mediana 7.5 [q25 5.0, q75 11.5]
+  sovrastima implicata del gancio ~ rate*(A0-1) con rate mediano 0.0522 -> ~+0.339 s/giro
 
 MODELLI (err = predetto - osservato):
-  M0: BIAS +0.4212  IC95 [+0.3438, +0.5113] | MAE 0.5718
-  M1: BIAS +0.0494  IC95 [-0.0059, +0.0920] | MAE 0.3456
-  M2: BIAS -0.2496  IC95 [-0.3801, -0.1195] | MAE 0.4252
+  M0: BIAS +0.3973  IC95 [+0.3066, +0.4890] | MAE 0.5621
+  M1: BIAS +0.0318  IC95 [-0.0304, +0.0821] | MAE 0.3518
+  M2: BIAS -0.2653  IC95 [-0.3919, -0.1370] | MAE 0.4273
   M1 vs M0: |bias| minore=True, IC disgiunti=True, MAE non peggiora=True, quasi-nullo=True -> QUALIFICA
   M2 vs M0: |bias| minore=True, IC disgiunti=True, MAE non peggiora=True, quasi-nullo=False -> no
 
 ==============================================================================
-MAGNITUDINE: M1 — corregge il doppio conteggio di M0 (BIAS M0 +0.4212 -> M1 +0.0494). Fix = adapter tyreAge0 (gancio non toccato).
+MAGNITUDINE: M1 — corregge il doppio conteggio di M0 (BIAS M0 +0.3973 -> M1 +0.0318). Fix = adapter tyreAge0 (gancio non toccato).
 Verdetto MECCANICO contro soglie congelate. Il verdetto strategico e' del PO.
 ==============================================================================

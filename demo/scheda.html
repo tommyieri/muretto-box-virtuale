@@ -71,6 +71,18 @@ const riga = (k,v) => `<div class="sk-riga"><span class="k">${k}</span><span cla
 
 function vittRiga(v){ return v ? `${esc(v.gp)} ${v.anno}` : '–'; }
 
+// La stagione puo' correre piu' della carriera. Quando la classifica e' PROVVISORIA (punti
+// dell'ultima gara dalla classifica ufficiale FIA, in attesa della release f1db), il blocco
+// Stagione include quella gara mentre Carriera — che sono aggregati canonici f1db, mai
+// ricalcolati qui — no. Succede per pochi giorni dopo ogni GP, ma un pilota con "1 vittoria
+// nel 2026" e la vittoria non contata in carriera sembra un errore. Lo si scrive.
+function notaCarriera(){
+  const a = schede?.aggiornato_al, c = schede?.carriera_aggiornata_al;
+  if (!a || !c || a.round === c.round) return '';
+  const fino = c.titolo || c.nome || ('round ' + c.round);
+  return `<span class="sk-nota" title="Gli aggregati di carriera vengono da f1db, che non copre ancora l'ultima gara. La stagione qui sotto invece la include.">fino al ${esc(fino)}</span>`;
+}
+
 function schedaPilota(pid, s){
   const f = foto(pid, s);
   const ca = s.carriera, st = s.stagione;
@@ -86,7 +98,7 @@ function schedaPilota(pid, s){
         ${ultimaDemo ? `<a class="sk-vai" href="gara.html?g=${encodeURIComponent(ultimaDemo.gara_demo)}">vedi in gara — ${esc(ultimaDemo.titolo)} &rarr;</a>` : ''}
       </div></div>
     ${f.credit}
-    <section class="sk-sez panel"><h2>Carriera</h2>
+    <section class="sk-sez panel"><h2>Carriera ${notaCarriera()}</h2>
       <div class="sk-tiles">
         ${tile(ca.gp_disputati,'GP disputati')}${tile(ca.vittorie,'vittorie')}${tile(ca.podi,'podi')}
         ${tile(ca.pole,'pole')}${tile(ca.giri_veloci,'giri veloci')}${tile(ca.titoli,'titoli')}${tile(ca.punti,'punti')}
@@ -115,7 +127,7 @@ function schedaTeam(cid, s){
       <div><h1>${esc(s.team_demo || s.nome)}</h1>
         <div class="sub"><span>${esc(s.nome_completo||'')}</span>${mot?`<span class="motore-tag"><span class="mk">motore</span><span class="mv">${esc(mot)}</span></span>`:''}<span>${esc(s.paese||'')}</span></div>
       </div></div>
-    <section class="sk-sez panel"><h2>Carriera</h2>
+    <section class="sk-sez panel"><h2>Carriera ${notaCarriera()}</h2>
       <div class="sk-tiles">
         ${tile(ca.gp_disputati,'GP disputati')}${tile(ca.vittorie,'vittorie')}${tile(ca.podi,'podi')}
         ${tile(ca.pole,'pole')}${tile(ca.giri_veloci,'giri veloci')}${tile(ca.titoli,'titoli costruttori')}${tile(ca.punti,'punti')}

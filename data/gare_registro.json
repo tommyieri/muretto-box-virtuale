@@ -48,5 +48,10 @@
     "ti": "Belgian Grand Prix",
     "raw": "data/ti_archive/2026/Belgian Grand Prix/Race.json",
     "cid": "spa-francorchamps"
+  },
+  "Ungheria": {
+    "ti": "Hungarian Grand Prix",
+    "raw": "data/ti_archive/2026/Hungarian Grand Prix/Race.json",
+    "cid": "hungaroring"
   }
 }

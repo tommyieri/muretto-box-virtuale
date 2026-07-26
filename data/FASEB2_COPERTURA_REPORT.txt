@@ -5,16 +5,17 @@ Protocollo: PREREG_SESSIONE_FASEB2.md. Copertura = obs_cum in [ottimistico,
 pessimistico] sui prossimi giri; soglia congelata 40%.
 
 gare escluse: nessuna
-finestre testabili: 6163 | gare: 9
+finestre testabili: 6895 | gare: 10
 
-COPERTURA (statica, banda climatologica M1): 43.1%  IC95 blocchi-gara [38.5%, 47.0%]  (soglia >= 40%)
-  miss sotto ottimistico (realtà meglio del best): 26.2% | sopra pessimistico (peggio del worst): 30.7%
+COPERTURA (statica, banda climatologica M1): 42.1%  IC95 blocchi-gara [37.9%, 46.2%]  (soglia >= 40%)
+  miss sotto ottimistico (realtà meglio del best): 25.5% | sopra pessimistico (peggio del worst): 32.4%
   per compound:
     SOFT  : 38.4% (n=438)
-    MEDIUM: 45.2% (n=2338)
-    HARD  : 42.3% (n=3387)
+    MEDIUM: 43.9% (n=2586)
+    HARD  : 41.4% (n=3871)
   per circuito:
     catalunya         : 44.1% (n=719)
+    hungaroring       : 33.5% (n=732)
     melbourne         : 47.3% (n=609)
     miami             : 44.4% (n=647)
     montreal          : 47.6% (n=885)
@@ -24,9 +25,9 @@ COPERTURA (statica, banda climatologica M1): 43.1%  IC95 blocchi-gara [38.5%, 47
     spielberg         : 29.9% (n=813)
     suzuka            : 45.0% (n=718)
 
-  [secondario, NON decide] banda RICENTRATA su rate live: 22.0% (delta -21.1%)
+  [secondario, NON decide] banda RICENTRATA su rate live: 22.6% (delta -19.5%)
 
 ==============================================================================
-CALIBRAZIONE: CALIBRATA — copertura 43.1% >= 40%. Gli scenari sono onesti sull'orizzonte pit; accensione SCENARI_ATTIVI = PO.
+CALIBRAZIONE: CALIBRATA — copertura 42.1% >= 40%. Gli scenari sono onesti sull'orizzonte pit; accensione SCENARI_ATTIVI = PO.
 Verdetto MECCANICO contro soglia congelata. Il verdetto strategico è del PO.
 ==============================================================================

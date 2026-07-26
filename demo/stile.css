@@ -554,6 +554,11 @@ a.gpcard:hover::after { right: 0; }
 .page-testa .sotto { color: var(--dim); font-size: 13.5px; margin-top: 4px; }
 .aggiornato { color: var(--dim); font: 600 11px/1.4 var(--mono); letter-spacing: .6px; text-transform: uppercase; margin: 2px 2px 14px; }
 .aggiornato b { color: var(--accent); font-weight: 700; }
+/* coda provvisoria: i punti dell'ultima gara vengono dalla classifica ufficiale FIA e non
+   ancora dagli standings f1db. Dichiarato, non nascosto — ma sottovoce: il numero e' quello
+   giusto (verificato su 9 round), cambia solo la fonte. */
+.aggiornato .prov { color: var(--dim); border: 1px solid currentColor; border-radius: 3px;
+  padding: 1px 5px; font-size: 10px; opacity: .85; cursor: help; }
 .clas-tabs { display: flex; gap: 6px; margin-bottom: 12px; }
 .clas { overflow: hidden; }
 .clas a { display: grid; grid-template-columns: 40px 1fr auto auto; gap: 10px; align-items: center;
@@ -592,6 +597,10 @@ a.gpcard:hover::after { right: 0; }
 .sk-sez h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; color: var(--txt);
   font: 700 14px/1 var(--disp); letter-spacing: 2px; text-transform: uppercase; }
 .sk-sez h2::before { content: "//"; color: var(--brand); font: 800 12px/1 var(--mono); letter-spacing: -1px; }
+/* "fino al GP del Belgio": la carriera viene da f1db e puo' essere una gara indietro
+   rispetto alla stagione, quando la classifica e' provvisoria. Tono da postilla. */
+.sk-sez h2 .sk-nota { margin-left: auto; color: var(--dim); font: 600 10px/1 var(--mono);
+  letter-spacing: .4px; text-transform: none; cursor: help; }
 .sk-tiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
 .sk-tile { background: var(--panel2); border: 1px solid var(--line); border-radius: 10px; padding: 10px 11px; }
 .sk-tile .v { font: 700 18px/1.2 var(--mono); font-variant-numeric: tabular-nums; color: var(--accent); }

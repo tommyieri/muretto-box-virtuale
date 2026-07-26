@@ -48,5 +48,10 @@
     "gara": "Belgio",
     "n_laps": 44,
     "n_drivers": 22
+  },
+  {
+    "gara": "Ungheria",
+    "n_laps": 70,
+    "n_drivers": 22
   }
 ]

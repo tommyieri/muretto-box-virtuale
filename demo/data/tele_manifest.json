@@ -29,6 +29,12 @@
    "sessione": "qualifiche",
    "evento": "GP d'Ungheria",
    "file": "tele_Ungheria_qualifiche.json"
+  },
+  {
+   "gara": "Ungheria",
+   "sessione": "gara",
+   "evento": "GP d'Ungheria",
+   "file": "tele_Ungheria_gara.json"
   }
  ]
 }

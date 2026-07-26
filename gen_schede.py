@@ -56,6 +56,15 @@ def main():
     except FileNotFoundError:
         sys.exit('STOP: manca classifiche_2026.json — eseguire prima gen_classifiche.py')
     agg = clas['aggiornato_al']; ultimo_round = agg['round']
+    # CODA PROVVISORIA (v. punti_provvisori.py). Se le classifiche sono state estese oltre
+    # la release f1db, `ultimo_round` punta a una gara che f1db NON HA: filtrare i risultati
+    # con `round <= ultimo_round` non basterebbe a farla entrare, e la scheda uscirebbe
+    # incoerente — punti dell'Ungheria e medie ferme al Belgio, "10 gare disputate" accanto
+    # a undici. Le righe provvisorie hanno la stessa forma di races-race-results proprio per
+    # essere concatenate qui: da questo punto in giu' nessun calcolo di stagione sa (ne'
+    # deve sapere) che una parte dei suoi dati non viene da f1db.
+    prov = agg.get('provvisorio')
+    round_f1db = prov['canonico_f1db']['round'] if prov else ultimo_round
 
     drivers = {d['id']: d for d in f1db_zip.tabella(zf, 'drivers')}
     constructors = {c['id']: c for c in f1db_zip.tabella(zf, 'constructors')}
@@ -63,7 +72,22 @@ def main():
     gp = {g['id']: g for g in f1db_zip.tabella(zf, 'grands-prix')}
     paesi = {p['id']: p['name'] for p in f1db_zip.tabella(zf, 'countries')}
     rr_tutti = f1db_zip.tabella(zf, 'races-race-results')
-    rr26 = [r for r in rr_tutti if r['year'] == ANNO and int(r['round']) <= ultimo_round]
+    rr26 = [r for r in rr_tutti if r['year'] == ANNO and int(r['round']) <= round_f1db]
+    righe_prov = []
+    if prov:
+        import punti_provvisori
+        # team_demo dalle classifiche appena scritte: e' la stessa mappa che ha usato
+        # gen_classifiche, quindi il guardrail sui cambi di squadra e' lo stesso.
+        team_demo = {c['id']: c.get('team_demo') for c in clas['costruttori']}
+        registro = json.load(open(os.path.join('data', 'gare_registro.json')))
+        try:
+            ext = punti_provvisori.calcola(zf, f1db_zip, team_demo, round_f1db, registro)
+            righe_prov = ext['righe_risultati'] if ext else []
+        except punti_provvisori.ProvvisorioImpossibile as e:
+            # gen_classifiche ha esteso e qui non si riesce: le schede sarebbero incoerenti
+            # con la classifica. Meglio fermarsi e dirlo che pubblicare due verita' diverse.
+            sys.exit(f'STOP: classifiche provvisorie ma schede no — {e}')
+        rr26 += righe_prov
 
     # vittorie per pilota/costruttore ricontate (cross-check degli aggregati canonici)
     vitt_pil, vitt_cos, prima_ult = {}, {}, {}
@@ -164,10 +188,24 @@ def main():
             'cross_check': cross,
         }
 
+    # LA CARRIERA RESTA INDIETRO, E VA DETTO. `stagione` segue la coda provvisoria (le sue
+    # righe sono dentro rr26); `carriera` no, perche' sono gli aggregati canonici di f1db
+    # (totalRaceWins, totalPodiums, ...) e nessuno li ricalcola qui — pole e giri veloci
+    # della gara nuova non li avremmo nemmeno. Finche' la release non esce, una scheda puo'
+    # quindi dire "1 vittoria nel 2026" e non contarla in carriera. E' una differenza vera:
+    # si dichiara nel file invece di nasconderla, cosi' la UI puo' scriverlo e chi legge i
+    # dati sa a che round si ferma ciascun blocco.
+    nota_prov = ''
+    if prov:
+        nota_prov = (f' STAGIONE PROVVISORIA fino al round {ultimo_round} '
+                     f'({", ".join(prov["gare"])}, fonte {prov["fonte"]}); CARRIERA ferma agli '
+                     f'aggregati f1db del round {round_f1db}.')
     out = {'_nota': (f'GENERATO da gen_schede.py (f1db {args.release}; carriera = aggregati '
                      'canonici f1db, stagione = standings + conteggi risultati; cross_check '
-                     'strutturato, mai correzioni a mano). Non modificare a mano.'),
-           'aggiornato_al': agg, 'piloti': schede_piloti, 'team': schede_team}
+                     'strutturato, mai correzioni a mano). Non modificare a mano.' + nota_prov),
+           'aggiornato_al': agg,
+           'carriera_aggiornata_al': prov['canonico_f1db'] if prov else agg,
+           'piloti': schede_piloti, 'team': schede_team}
     dest = os.path.join('demo', 'data', 'schede_2026.json')
     with open(dest, 'w') as f:
         json.dump(out, f, ensure_ascii=False, indent=1); f.write('\n')

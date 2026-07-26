@@ -249,6 +249,158 @@ def wave_nuove():
     return True
 
 
+# ------------------------------------------ ONDATA RIPARAZIONE: cio' che arriva tardi
+# IL BUCO DELL'UNA-TANTUM (aperto fino al 26/07/2026). L'ondata 1 parte quando la gara
+# compare su TracingInsights — poche ore dopo la bandiera a scacchi. Ma tre dei suoi passi
+# non leggono TracingInsights: leggono FastF1, che a quell'ora spesso NON HA ANCORA i dati
+# della gara appena finita. Girando con check=False fallivano in silenzio, e siccome
+# `wave_nuove` salta le gare gia' nel registro, NESSUN giro successivo ci riprovava: quei
+# tre artefatti restavano senza la gara PER SEMPRE.
+#
+# Successo davvero, per l'Ungheria (26/07/2026, ondata 1 alle 15:32 UTC): ufficiali_2026 e
+# race_control_2026 si sono fermati al Belgio. Rilanciati a mano poche ore dopo hanno
+# funzionato al primo colpo — non era un errore, era solo troppo presto.
+#
+# Questa ondata chiude il buco: a ogni giro guarda quali gare del registro MANCANO dagli
+# artefatti derivati e rigenera solo quelli. Convergente invece che una-tantum.
+#
+# FINESTRA di 14 giorni sulla data di gara, e non un contatore di tentativi: e' senza stato
+# (niente file da tenere allineato), copre con abbondanza il ritardo di f1db (5 giorni per
+# il Belgio) e impedisce da sola il ciclo infinito su una gara che FastF1 non avra' mai.
+# Una gara fuori finestra e ancora incompleta viene DETTA nel log, non ritentata in eterno.
+FINESTRA_RIPARAZIONE = 14      # giorni dalla gara entro cui vale la pena riprovare
+
+# (artefatto in demo/data, comandi che lo rigenerano). L'artefatto e' un dict con una
+# chiave per gara: "manca" = la gara del registro non e' fra le sue chiavi.
+RIPARAZIONI = [
+    ('ufficiali_2026.json',    [['gen_classifiche_ufficiali.py']]),
+    ('race_control_2026.json', [['gen_race_control.py'], ['gen_rc_feed.py']]),
+    # grids: da quando ha il ripiego FastF1 non dipende piu' dalla release f1db, quindi
+    # una griglia mancante e' riparabile lo stesso giorno (v. gen_grids.py).
+    ('grids.json',             [['gen_grids.py']]),
+]
+
+
+def _date_gare():
+    """gara -> data (date) dal calendario. {} se il calendario non si legge."""
+    out = {}
+    try:
+        cal = json.load(open(os.path.join(ROOT, CALENDARIO)))
+    except OSError:
+        return out
+    for g in cal.get('gare', []):
+        nome, d = (g.get('nome') or g.get('gara_demo')), g.get('data')
+        if not nome or not d:
+            continue
+        try:
+            out[nome] = datetime.date.fromisoformat(d)
+        except ValueError:
+            pass
+    return out
+
+
+def _gare_mancanti(artefatto, gare):
+    """Gare del registro assenti dalle chiavi dell'artefatto. [] se illeggibile: un file
+    rotto o assente e' un guaio diverso, non lo si cura rilanciando generatori a raffica."""
+    try:
+        d = json.load(open(os.path.join(ROOT, 'demo', 'data', artefatto)))
+    except (OSError, ValueError):
+        log(f'ondata riparazione: {artefatto} illeggibile — non ci provo.')
+        return []
+    return [g for g in gare if g not in d]
+
+
+def _classifiche_indietro():
+    """La classifica e' ferma a una gara prima di quelle che sappiamo gia'?
+
+    Serve perche' la CODA PROVVISORIA (punti_provvisori.py) ha un ingresso che spesso
+    arriva tardi: `ufficiali_2026.json`. Nell'ondata 1 quel file fallisce quando FastF1 non
+    ha ancora la gara, quindi `gen_classifiche` gira su una fonte senza la gara nuova e
+    lascia la classifica al round prima. Riparare `ufficiali` senza rigenerare la classifica
+    lascerebbe il dato buono sul disco e la pagina vecchia: la riparazione si fermerebbe a
+    meta'. Qui si guarda il RISULTATO (a che gara e' aggiornata la classifica) invece dei
+    passi, cosi' vale anche quando f1db resta indietro per giorni.
+    """
+    try:
+        clas = json.load(open(os.path.join(ROOT, 'demo', 'data', 'classifiche_2026.json')))
+        uff = json.load(open(os.path.join(ROOT, 'demo', 'data', 'ufficiali_2026.json')))
+        cal = json.load(open(os.path.join(ROOT, CALENDARIO)))
+    except (OSError, ValueError):
+        return None
+    round_di = {(g.get('nome') or g.get('gara_demo')): g.get('round') for g in cal.get('gare', [])}
+    noti = [round_di[g] for g in uff if round_di.get(g) is not None]
+    if not noti:
+        return None
+    piu_recente = max(noti)
+    attuale = clas.get('aggiornato_al', {}).get('round')
+    if attuale is None or attuale >= piu_recente:
+        return None
+    return (attuale, piu_recente)
+
+
+def wave_riparazione():
+    reg = registro_committato()
+    if reg is None:
+        try:
+            reg = json.load(open(os.path.join(ROOT, REGISTRO)))
+        except OSError:
+            return False
+    date = _date_gare()
+    oggi = datetime.date.today()
+    da_fare, fuori = [], []
+    for artefatto, comandi in RIPARAZIONI:
+        manca = _gare_mancanti(artefatto, reg)
+        if not manca:
+            continue
+        # dentro la finestra? una gara senza data nel calendario si tenta (meglio un giro
+        # in piu' che un artefatto muto)
+        dentro = [g for g in manca
+                  if g not in date or (oggi - date[g]).days <= FINESTRA_RIPARAZIONE]
+        fuori += [(artefatto, g) for g in manca if g not in dentro]
+        if dentro:
+            da_fare.append((artefatto, comandi, dentro))
+    for artefatto, g in fuori:
+        log(f'ondata riparazione: {artefatto} senza {g} ma fuori finestra '
+            f'({FINESTRA_RIPARAZIONE}gg) — NON ritento, va guardato a mano.')
+    indietro = _classifiche_indietro()
+    if not da_fare and not indietro:
+        log('ondata riparazione: artefatti derivati completi.'); return False
+    for artefatto, comandi, manca in da_fare:
+        log(f'ondata riparazione: {artefatto} senza {manca} -> rigenero')
+        for c in comandi:
+            sh([PY, *c], check=False)
+    # ricontrollo: si committa solo cio' che e' davvero rientrato, e si dice cosa no
+    riparati, ancora = [], []
+    for artefatto, _, manca in da_fare:
+        resta = _gare_mancanti(artefatto, manca)
+        riparati += [(artefatto, g) for g in manca if g not in resta]
+        ancora += [(artefatto, g) for g in resta]
+    for artefatto, g in ancora:
+        log(f'ondata riparazione: {artefatto} ancora senza {g} — riprovo al prossimo giro.')
+    # la classifica DOPO gli artefatti: la sua fonte (ufficiali_2026.json) potrebbe essere
+    # appena rientrata qui sopra. gen_schede va sempre insieme a gen_classifiche — legge il
+    # file che quello scrive, e da solo resterebbe indietro di una gara.
+    indietro = _classifiche_indietro()
+    if indietro:
+        log(f'ondata riparazione: classifica al round {indietro[0]} ma sappiamo gia\' il '
+            f'{indietro[1]} -> rigenero classifiche e schede')
+        sh([PY, 'gen_classifiche.py'], check=False)
+        sh([PY, 'gen_schede.py'], check=False)
+        dopo = _classifiche_indietro()
+        if dopo:
+            log(f'ondata riparazione: classifica ANCORA al round {dopo[0]} — '
+                f'riprovo al prossimo giro.')
+        else:
+            riparati.append(('classifiche_2026.json', f'round {indietro[1]}'))
+    if not riparati:
+        return False
+    log(f'ondata riparazione: rientrati {len(riparati)} -> '
+        + ', '.join(f'{a}:{g}' for a, g in riparati))
+    commit_push('auto: riparazione artefatti derivati — '
+                + ', '.join(f'{a} (+{g})' for a, g in riparati))
+    return True
+
+
 # --------------------------------------------- ONDATA QUALI: qualifica nuova
 # Stessa logica delle gare, stessa fonte (TracingInsights raw su GitHub, VPS-ok):
 # quando la sessione Qualifying di un GP e' online e non l'abbiamo ancora
@@ -386,7 +538,32 @@ def _release_pinnata():
     return f1db_zip._DEFAULT_RELEASE
 
 
+def _scrivi_pin(valore):
+    """Scrive (o cancella, se valore e' None) data/f1db_release.txt."""
+    p = os.path.join(ROOT, REL_FILE)
+    if valore is None:
+        try:
+            os.remove(p)
+        except OSError:
+            pass
+    else:
+        open(p, 'w').write(valore)
+
+
 def wave_f1db():
+    """Release f1db nuova -> standings, schede, pit-lane, griglie.
+
+    IL PIN CHE AVANZAVA ANCHE QUANDO IL LAVORO NON RIUSCIVA (corretto il 26/07/2026).
+    Il pin e' l'INGRESSO dei generatori (f1db_zip lo legge per sapere quale release
+    scaricare), quindi va scritto PRIMA di `aggiorna_ui`. Ma finiva scritto anche quando
+    `aggiorna_ui` moriva: al giro dopo `latest == pinnata` e l'ondata 2 diceva "gia'
+    aggiornata" — per sempre. Un singolo intoppo di rete su gen_foto avrebbe congelato
+    classifica e schede pilota all'ultima release riuscita, in silenzio.
+
+    Rimedio: il pin si RIAVVOLGE se il giro non arriva in fondo. Cosi' il suo significato
+    torna a essere quello giusto — «la release da cui la UI e' stata davvero rigenerata» —
+    e il giro successivo riprova da solo.
+    """
     latest = _github_latest()
     if not latest:
         return False
@@ -396,11 +573,25 @@ def wave_f1db():
     log(f'ondata 2: nuova release f1db {latest} (pinnata {pinnata}) -> aggiorno pin e rigenero UI')
     if DRY:
         log(f'DRY  scrivo {REL_FILE} = {latest}')
-    else:
-        open(os.path.join(ROOT, REL_FILE), 'w').write(latest + '\n')
-    sh([PY, 'aggiorna_ui.py'])   # standings, pit-lane, griglie dalla release nuova
+        log(f'DRY  {PY} aggiorna_ui.py')
+        log('DRY  golden — assunti verdi')
+        log(f'DRY  git add -A && commit -m "auto: release f1db {latest} ..."'
+            + (' && push' if PUSH else ''))
+        return True
+    try:
+        prima = open(os.path.join(ROOT, REL_FILE)).read()
+    except OSError:
+        prima = None                       # il file non c'era: riavvolgere = cancellarlo
+    _scrivi_pin(latest + '\n')
+    # check=False: un passo di aggiorna_ui che fallisce (gen_foto va in rete) non deve
+    # uccidere il processo — deve solo far riavvolgere il pin e riprovare al giro dopo.
+    if sh([PY, 'aggiorna_ui.py'], check=False) != 0:
+        _scrivi_pin(prima)
+        log(f'ondata 2: aggiorna_ui fallito — pin riavvolto a {pinnata}, riprovo al prossimo giro.')
+        return False
     if not golden():
-        sys.exit('[auto] FERMO: golden falliti dopo l\'ondata 2 — niente commit, indagare.')
+        _scrivi_pin(prima)
+        sys.exit('[auto] FERMO: golden falliti dopo l\'ondata 2 — pin riavvolto, niente commit, indagare.')
     commit_push(f'auto: release f1db {latest} — standings, pit-lane, griglie aggiornate (ondata 2)')
     return True
 
@@ -429,6 +620,16 @@ if __name__ == '__main__':
     # isolate: un errore sulle quali non deve mai fermare le gare.
     fatto1 = wave_nuove()
     fatto2 = wave_f1db()
+    # DOPO le due ondate principali: raccoglie quello che loro hanno lasciato indietro
+    # (passi FastF1 falliti perche' troppo presto). Isolata come le altre: se si rompe,
+    # gare e release sono gia' state pubblicate.
+    try:
+        fattor = wave_riparazione()
+    except SystemExit:
+        raise
+    except Exception as e:
+        log(f"ondata riparazione: errore ({e!r}) — gare e release gia gestite, proseguo.")
+        fattor = False
     try:
         fattoq = wave_quali()
     except SystemExit:
@@ -450,5 +651,5 @@ if __name__ == '__main__':
     except Exception as e:
         log(f"ondata sprint: errore ({e!r}) — resto gia gestito, proseguo.")
         fattos = False
-    if not (fatto1 or fatto2 or fattoq or fattol or fattos):
+    if not (fatto1 or fatto2 or fattor or fattoq or fattol or fattos):
         log('niente da fare: demo allineata.')

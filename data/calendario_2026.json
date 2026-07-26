@@ -414,8 +414,11 @@
      "ora_utc": "13:00"
     }
    },
-   "gara_demo": null,
-   "vincitore": null
+   "gara_demo": "Ungheria",
+   "vincitore": {
+    "sigla": "NOR",
+    "team": "McLaren"
+   }
   },
   {
    "round": 12,

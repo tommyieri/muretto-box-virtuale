@@ -1,6 +1,6 @@
 {
- "aggiornato_il": "2026-07-22",
- "gare_nel_registro": 10,
+ "aggiornato_il": "2026-07-26",
+ "gare_nel_registro": 11,
  "artefatti": {
   "data/climatologia_degrado.csv": {
    "sha256_12": "66ef73d6d2b6",
@@ -10,52 +10,52 @@
    "gare_nel_registro_allora": 10
   },
   "data/degrado_gamma_linlog.csv": {
-   "sha256_12": "a5c03f7c4144",
-   "byte": 1036,
-   "righe": 24,
-   "cambiato_il": "2026-07-22",
-   "gare_nel_registro_allora": 10
+   "sha256_12": "4ecbebdb77d1",
+   "byte": 1161,
+   "righe": 27,
+   "cambiato_il": "2026-07-26",
+   "gare_nel_registro_allora": 11
   },
   "data/faseb_magnitudine.csv": {
-   "sha256_12": "c0b8d8675e6e",
-   "byte": 3966914,
-   "righe": 34707,
-   "cambiato_il": "2026-07-22",
-   "gare_nel_registro_allora": 10
+   "sha256_12": "7fb5457ded32",
+   "byte": 4457593,
+   "righe": 38898,
+   "cambiato_il": "2026-07-26",
+   "gare_nel_registro_allora": 11
   },
   "data/faseb2_copertura.csv": {
-   "sha256_12": "4d6a18455a6c",
-   "byte": 604919,
-   "righe": 6163,
-   "cambiato_il": "2026-07-22",
-   "gare_nel_registro_allora": 10
+   "sha256_12": "57a64006ed26",
+   "byte": 678041,
+   "righe": 6895,
+   "cambiato_il": "2026-07-26",
+   "gare_nel_registro_allora": 11
   },
   "data/stabilita_partizione.json": {
-   "sha256_12": "9c700f9d85bf",
-   "byte": 10613,
-   "cambiato_il": "2026-07-22",
-   "gare_nel_registro_allora": 10
+   "sha256_12": "a186246a5e6d",
+   "byte": 11533,
+   "cambiato_il": "2026-07-26",
+   "gare_nel_registro_allora": 11
   },
   "data/neutralizzazione_due_livelli.csv": {
-   "sha256_12": "d30f91954a42",
-   "byte": 8337,
-   "righe": 154,
-   "cambiato_il": "2026-07-22",
-   "gare_nel_registro_allora": 10
+   "sha256_12": "c2f6ff25d331",
+   "byte": 8512,
+   "righe": 157,
+   "cambiato_il": "2026-07-26",
+   "gare_nel_registro_allora": 11
   },
   "data/rlap_per_regime.csv": {
-   "sha256_12": "aed91b0e14d2",
-   "byte": 3398,
-   "righe": 80,
-   "cambiato_il": "2026-07-22",
-   "gare_nel_registro_allora": 10
+   "sha256_12": "a3c7bea80189",
+   "byte": 3713,
+   "righe": 88,
+   "cambiato_il": "2026-07-26",
+   "gare_nel_registro_allora": 11
   },
   "data/status_vocabolario.csv": {
-   "sha256_12": "89ffa5fd475c",
-   "byte": 4553,
+   "sha256_12": "60d1486c0dbe",
+   "byte": 4554,
    "righe": 39,
-   "cambiato_il": "2026-07-22",
-   "gare_nel_registro_allora": 10
+   "cambiato_il": "2026-07-26",
+   "gare_nel_registro_allora": 11
   },
   "data/pitloss_realizzato_2026.csv": {
    "sha256_12": "6c155af0aaa7",
@@ -72,18 +72,18 @@
    "gare_nel_registro_allora": 10
   },
   "data/arrivi_2026.csv": {
-   "sha256_12": "e12c7448642e",
-   "byte": 17017,
-   "righe": 219,
-   "cambiato_il": "2026-07-22",
-   "gare_nel_registro_allora": 10
+   "sha256_12": "d1ca4d831566",
+   "byte": 18769,
+   "righe": 241,
+   "cambiato_il": "2026-07-26",
+   "gare_nel_registro_allora": 11
   },
   "data/classifica_giro_2026.csv": {
-   "sha256_12": "1be452565368",
-   "byte": 807222,
-   "righe": 11302,
-   "cambiato_il": "2026-07-22",
-   "gare_nel_registro_allora": 10
+   "sha256_12": "1971e8318031",
+   "byte": 910411,
+   "righe": 12733,
+   "cambiato_il": "2026-07-26",
+   "gare_nel_registro_allora": 11
   },
   "data/undercut_casi_2026.json": {
    "sha256_12": "e8eee913de5a",
@@ -98,28 +98,28 @@
    "gare_nel_registro_allora": 10
   },
   "data/undercut_sorveglianza.json": {
-   "sha256_12": "f321437864e6",
-   "byte": 316,
-   "cambiato_il": "2026-07-22",
-   "gare_nel_registro_allora": 10
+   "sha256_12": "e8bcaf78b1ee",
+   "byte": 444,
+   "cambiato_il": "2026-07-26",
+   "gare_nel_registro_allora": 11
   },
   "demo/data/climatologia_bande.json": {
-   "sha256_12": "1acaf67102df",
-   "byte": 4594,
-   "cambiato_il": "2026-07-22",
-   "gare_nel_registro_allora": 10
+   "sha256_12": "789a5f5e275b",
+   "byte": 4625,
+   "cambiato_il": "2026-07-26",
+   "gare_nel_registro_allora": 11
   },
   "data/modello_degrado_2026.json": {
-   "sha256_12": "3a83af92e26b",
-   "byte": 10123,
-   "cambiato_il": "2026-07-22",
-   "gare_nel_registro_allora": 10
+   "sha256_12": "058aaef4d955",
+   "byte": 11254,
+   "cambiato_il": "2026-07-26",
+   "gare_nel_registro_allora": 11
   },
   "data/modello_traffico_2026.json": {
-   "sha256_12": "3bc7811357df",
-   "byte": 7018,
-   "cambiato_il": "2026-07-22",
-   "gare_nel_registro_allora": 10
+   "sha256_12": "29214a0b54db",
+   "byte": 8896,
+   "cambiato_il": "2026-07-26",
+   "gare_nel_registro_allora": 11
   }
  }
 }
