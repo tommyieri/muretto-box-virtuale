@@ -310,6 +310,34 @@ def _gare_mancanti(artefatto, gare):
     return [g for g in gare if g not in d]
 
 
+def _classifiche_indietro():
+    """La classifica e' ferma a una gara prima di quelle che sappiamo gia'?
+
+    Serve perche' la CODA PROVVISORIA (punti_provvisori.py) ha un ingresso che spesso
+    arriva tardi: `ufficiali_2026.json`. Nell'ondata 1 quel file fallisce quando FastF1 non
+    ha ancora la gara, quindi `gen_classifiche` gira su una fonte senza la gara nuova e
+    lascia la classifica al round prima. Riparare `ufficiali` senza rigenerare la classifica
+    lascerebbe il dato buono sul disco e la pagina vecchia: la riparazione si fermerebbe a
+    meta'. Qui si guarda il RISULTATO (a che gara e' aggiornata la classifica) invece dei
+    passi, cosi' vale anche quando f1db resta indietro per giorni.
+    """
+    try:
+        clas = json.load(open(os.path.join(ROOT, 'demo', 'data', 'classifiche_2026.json')))
+        uff = json.load(open(os.path.join(ROOT, 'demo', 'data', 'ufficiali_2026.json')))
+        cal = json.load(open(os.path.join(ROOT, CALENDARIO)))
+    except (OSError, ValueError):
+        return None
+    round_di = {(g.get('nome') or g.get('gara_demo')): g.get('round') for g in cal.get('gare', [])}
+    noti = [round_di[g] for g in uff if round_di.get(g) is not None]
+    if not noti:
+        return None
+    piu_recente = max(noti)
+    attuale = clas.get('aggiornato_al', {}).get('round')
+    if attuale is None or attuale >= piu_recente:
+        return None
+    return (attuale, piu_recente)
+
+
 def wave_riparazione():
     reg = registro_committato()
     if reg is None:
@@ -334,7 +362,8 @@ def wave_riparazione():
     for artefatto, g in fuori:
         log(f'ondata riparazione: {artefatto} senza {g} ma fuori finestra '
             f'({FINESTRA_RIPARAZIONE}gg) — NON ritento, va guardato a mano.')
-    if not da_fare:
+    indietro = _classifiche_indietro()
+    if not da_fare and not indietro:
         log('ondata riparazione: artefatti derivati completi.'); return False
     for artefatto, comandi, manca in da_fare:
         log(f'ondata riparazione: {artefatto} senza {manca} -> rigenero')
@@ -348,6 +377,21 @@ def wave_riparazione():
         ancora += [(artefatto, g) for g in resta]
     for artefatto, g in ancora:
         log(f'ondata riparazione: {artefatto} ancora senza {g} — riprovo al prossimo giro.')
+    # la classifica DOPO gli artefatti: la sua fonte (ufficiali_2026.json) potrebbe essere
+    # appena rientrata qui sopra. gen_schede va sempre insieme a gen_classifiche — legge il
+    # file che quello scrive, e da solo resterebbe indietro di una gara.
+    indietro = _classifiche_indietro()
+    if indietro:
+        log(f'ondata riparazione: classifica al round {indietro[0]} ma sappiamo gia\' il '
+            f'{indietro[1]} -> rigenero classifiche e schede')
+        sh([PY, 'gen_classifiche.py'], check=False)
+        sh([PY, 'gen_schede.py'], check=False)
+        dopo = _classifiche_indietro()
+        if dopo:
+            log(f'ondata riparazione: classifica ANCORA al round {dopo[0]} — '
+                f'riprovo al prossimo giro.')
+        else:
+            riparati.append(('classifiche_2026.json', f'round {indietro[1]}'))
     if not riparati:
         return False
     log(f'ondata riparazione: rientrati {len(riparati)} -> '

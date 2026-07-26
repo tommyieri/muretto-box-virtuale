@@ -120,8 +120,13 @@ async function boot(){
         numeri = Object.fromEntries(Object.entries(sk.piloti).map(([id,s])=>[id, s.numero])); } catch(e){}
   try { motori = await (await fetch('data/motori_2026.json')).json(); } catch(e){}
   const a = clas.aggiornato_al;
+  // La coda provvisoria si DICE: fino alla release f1db i punti dell'ultima gara vengono
+  // dalla classifica ufficiale FastF1, non dagli standings canonici. Stesso numero, fonte
+  // diversa — e chi guarda ha diritto di saperlo senza aprire il JSON.
+  const p = a.provvisorio;
   el('agg').innerHTML = `aggiornato al <b>${a.titolo || a.nome || ('round '+a.round)}</b>` +
-    (a.data ? ` · ${new Date(a.data+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'long'})}` : '');
+    (a.data ? ` · ${new Date(a.data+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'long'})}` : '') +
+    (p ? ` · <span class="prov" title="I punti di ${p.gare.join(', ')} vengono dalla classifica ufficiale FIA (FastF1). Diventano canonici quando esce la release f1db che li copre.">provvisorio</span>` : '');
   mostra('p');
 }
 el('tabP').addEventListener('click', ()=>mostra('p'));
