@@ -107,8 +107,10 @@ def innesca_redazione_fp(label, gp):
     try:
         script = REPO / "ai_lab" / "redazione" / "genera_weekend.py"
         cmd = [sys.executable, str(script), "--gara", gp, "--pubblica", "--deploy"]
-        if label in ("FP2", "FP3"):
-            cmd += ["--sessione", label]
+        # label -> codice sessione FastF1 (Quali del calendario = "Q" per FastF1/META)
+        ses = "Q" if label == "Quali" else label
+        if ses in ("FP2", "FP3", "Q"):
+            cmd += ["--sessione", ses]
         rlog = OUT_DIR / "redazione_fp.log"
         fh = open(rlog, "a")
         fh.write(f"\n==== {datetime.now(timezone.utc):%Y-%m-%d %H:%M:%S}Z  {label} {gp} ====\n")
@@ -152,7 +154,7 @@ def registra_sessione(label, inizio, gp):
     # redazione delle bozze articoli-FP di questo GP. FastF1 puo' ritardare la
     # pubblicazione della sessione -> e' best-effort e ri-eseguibile a mano; e' non
     # bloccante e ingoia ogni errore, quindi NON compromette mai la registrazione live.
-    if label in ("FP2", "FP3"):   # FP1 escluso: assetti/benzina diversi -> non affidabile
+    if label in ("FP2", "FP3", "Quali"):   # FP1 escluso: assetti/benzina diversi -> non affidabile
         innesca_redazione_fp(label, gp)
 
 

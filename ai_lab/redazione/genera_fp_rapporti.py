@@ -664,7 +664,7 @@ META = {
     "tag": ["telemetria", "cambio", "rapporti", "prove libere", "velocità di punta"],
     "descrizione": ("rapporto del cambio nella marcia-alta (derivata) e velocità di punta "
                     "mediana: la più corta della griglia, e perché corto ≠ lento in fondo"),
-    "richiede": "telemetria", "gare": ["*"], "sessioni": ["FP2", "FP3"],
+    "richiede": "telemetria", "gare": ["*"], "sessioni": ["FP3"],  # rapporti/punta = FP3 basso carico
 }
 
 
