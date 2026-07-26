@@ -889,3 +889,99 @@ def delta_cumulato(serie, delta, corners, *, dist_max, v_range, col_prot, col_ri
                f'distanza sul giro (m) — sopra = più veloce, sotto = chi è avanti sul cronometro</text>')
     out.append('</svg>')
     return "".join(out)
+
+
+def boxplot(righe, *, titolo="", sub="", unita="s", ml=104,
+            caption="mediana + IQR dei giri verdi puliti", x_label="", dec=2,
+            fmt=None):
+    """GRAFICO-EROE del passo-gara: un boxplot orizzontale per pilota, il piu'
+    rapido in alto. Mostra la CONSISTENZA (dispersione), non solo la mediana.
+
+    righe: [{sigla, colore, med, q1, q3, lo, hi, traffico(bool), nota}] gia'
+      ordinata (mediana crescente). med/q1/q3/lo/hi in secondi:
+        box   = intervallo interquartile (Q1-Q3) -> meta' centrale dei giri;
+        linea = mediana (il passo rappresentativo);
+        baffi = estensione (lo-hi, giri entro 1,5xIQR dai quartili).
+      traffico=True marca il pilota il cui passo NON e' pulito (aria sporca):
+      box tratteggiato a bassa opacita' + una tacca; la sua mediana e' una
+      lettura "in scia", non il passo libero. nota = riga piccola sotto la sigla.
+    fmt: funzione sec->str per l'etichetta numerica a destra (default: dec cifre).
+    Aspetto preservato: nulla si deforma. x = tempo sul giro (s), crescente a dx.
+    """
+    import math
+    fmt = fmt or (lambda s: f"{s:.{dec}f}".replace(".", ","))
+    n = len(righe)
+    rowh = 24
+    W = 780
+    mt, mb = 54, 46
+    H = mt + n * rowh + mb
+    x0 = ml
+    x1 = W - 76
+    los = [r["lo"] for r in righe]
+    his = [r["hi"] for r in righe]
+    vlo, vhi = min(los), max(his)
+    pad = (vhi - vlo) * 0.06 or 0.5
+    sx = Scala(vlo - pad, vhi + pad, x0, x1)
+
+    out = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" '
+           f'font-family="{MONO}" class="art-svg">']
+    out.append('<style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}'
+               '.art-svg .grid{stroke:var(--line);stroke-width:1}</style>')
+    if titolo:
+        out.append(f'<text x="{x0}" y="18" class="lbl" font-size="14" '
+                   f'font-family="{DISP}" letter-spacing="0.5">{esc(titolo)}</text>')
+    if sub:
+        out.append(f'<text x="{W-16}" y="18" font-size="10.5" text-anchor="end">{esc(sub)}</text>')
+
+    # griglia verticale: tacche a secondi interi
+    y_top = mt - 6
+    y_bot = H - mb
+    t = math.ceil(vlo - pad)
+    while t <= vhi + pad:
+        x = sx(t)
+        out.append(f'<line x1="{x:.1f}" y1="{y_top}" x2="{x:.1f}" y2="{y_bot}" class="grid"/>')
+        out.append(f'<text x="{x:.1f}" y="{y_bot+13}" font-size="9" text-anchor="middle">{t}</text>')
+        t += 1
+    out.append(f'<text x="{x1}" y="{y_bot+28}" font-size="9.5" text-anchor="end">'
+               f'{esc(x_label or f"tempo sul giro ({unita}) - piu’ a sinistra = piu’ veloce")}</text>')
+
+    for i, r in enumerate(righe):
+        y = mt + i * rowh
+        yc = y + rowh / 2
+        col = r.get("colore") or "var(--dim)"
+        traf = bool(r.get("traffico"))
+        xq1, xq3 = sx(r["q1"]), sx(r["q3"])
+        xlo, xhi = sx(r["lo"]), sx(r["hi"])
+        xmed = sx(r["med"])
+        bh = rowh - 11
+        # baffi
+        out.append(f'<line x1="{xlo:.1f}" y1="{yc:.1f}" x2="{xq1:.1f}" y2="{yc:.1f}" '
+                   f'stroke="{col}" stroke-width="1" opacity="0.6"/>')
+        out.append(f'<line x1="{xq3:.1f}" y1="{yc:.1f}" x2="{xhi:.1f}" y2="{yc:.1f}" '
+                   f'stroke="{col}" stroke-width="1" opacity="0.6"/>')
+        for xx in (xlo, xhi):
+            out.append(f'<line x1="{xx:.1f}" y1="{yc-3:.1f}" x2="{xx:.1f}" y2="{yc+3:.1f}" '
+                       f'stroke="{col}" stroke-width="1" opacity="0.6"/>')
+        # box IQR
+        fillop = "0.15" if traf else "0.42"
+        dash = ' stroke-dasharray="3 2"' if traf else ''
+        out.append(f'<rect x="{xq1:.1f}" y="{y+5.5:.1f}" width="{max(0.6,xq3-xq1):.1f}" height="{bh}" '
+                   f'rx="2" fill="{col}" opacity="{fillop}" stroke="{col}" stroke-width="1.2"{dash}/>')
+        # mediana
+        out.append(f'<line x1="{xmed:.1f}" y1="{y+4:.1f}" x2="{xmed:.1f}" y2="{y+rowh-4:.1f}" '
+                   f'stroke="{col}" stroke-width="2.4"/>')
+        # etichetta pilota a sinistra (con eventuale nota piccola sotto)
+        tag = ("▲ " + esc(r["sigla"])) if traf else esc(r["sigla"])
+        ytxt = yc + (0 if not r.get("nota") else -2)
+        out.append(f'<text x="{x0-9}" y="{ytxt+3:.1f}" font-size="10.5" text-anchor="end" '
+                   f'class="{"" if traf else "lbl"}" opacity="{0.8 if traf else 1}">{tag}</text>')
+        if r.get("nota"):
+            out.append(f'<text x="{x0-9}" y="{yc+11:.1f}" font-size="7" text-anchor="end" '
+                       f'opacity="0.5">{esc(r["nota"])}</text>')
+        # mediana numerica a destra
+        out.append(f'<text x="{x1+6}" y="{yc+3:.1f}" font-size="9.5" '
+                   f'class="{"" if traf else "lbl"}">{fmt(r["med"])}</text>')
+    out.append(f'<text x="{x0}" y="{H-6}" font-size="9" text-anchor="start" opacity="0.85">'
+               f'{esc(caption)}</text>')
+    out.append('</svg>')
+    return "".join(out)

@@ -71,6 +71,21 @@ def aggiorna_dati_stagione(verbose=True):
         if verbose:
             print(f"  [dati] pubblicazione fallita: {e}")
 
+    # FORZA-MACCHINA: stesso giro post-gara, stessa fonte-gare (stagione_dati.json,
+    # appena riscritto sopra). Ripubblica demo/data/analisi/forza_macchina.json: la
+    # gara nuova si estrae UNA volta (Q+R da fastf1) e finisce in cache
+    # (forza_stagione/), le altre tornano dalla cache. Guardato: se fastf1 manca
+    # (VPS) o una gara e' lacunosa, salta senza fermare il resto della redazione.
+    try:
+        import forza_macchina
+        of = forza_macchina.pubblica(2026)
+        if verbose:
+            print(f"  [forza] forza-macchina aggiornata: {of['n_gare']} gare "
+                  f"(ultima {of['ultima']})")
+    except Exception as e:
+        if verbose:
+            print(f"  [forza] forza-macchina saltata: {e}")
+
 
 def _match_sessione(mod, sessione):
     """Un generatore parte sotto un filtro-sessione solo se lo dichiara in

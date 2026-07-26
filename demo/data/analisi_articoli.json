@@ -21,6 +21,26 @@
     "round": 11
   },
   {
+    "id": "passo-reale-ungheria-2026",
+    "titolo": "Il vero passo di Hungaroring: NOR il più rapido (1:24,507), primi 10 in 1,9 s",
+    "occhiello": "Passo-gara · Gara Ungheria 2026",
+    "sommario": "Il passo di gara letto come va letto: per ogni pilota la mediana dei giri verdi puliti (non il giro veloce, non tutti i giri), con la dispersione a fianco. NOR fissa il riferimento a 1:24,507; i primi 10 stanno in 1,9 s. Ma la classifica grezza va corretta: 6 piloti hanno girato per oltre un terzo del tempo in aria sporca, e la benzina che cala rende l’intera griglia ~1,5 s più rapida nella seconda metà. Passo indicativo: carburante e mappe motore restano ignoti.",
+    "data": "2026-07-26",
+    "stato": "pubblicato",
+    "tag": [
+      "passo-gara",
+      "gara",
+      "long-run",
+      "tutto-il-gruppo",
+      "Hungaroring"
+    ],
+    "circuito": "Hungaroring",
+    "sessione": "Gara",
+    "accent": "#FF8000",
+    "gp": "Ungheria",
+    "round": 11
+  },
+  {
     "id": "hun-quali-pole-2026",
     "titolo": "Hamilton più veloce in due settori su tre. E la pole va a Norris per dodici millesimi",
     "occhiello": "Telemetria · Qualifica Ungheria 2026",
