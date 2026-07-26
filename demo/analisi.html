@@ -113,6 +113,19 @@
   .gp-grp.trasv .gp-head::after{ background:#c3c9c2; }
   @media (max-width:560px){ .gp-count{ margin-left:0; } }
 
+  /* Strumenti di stagione (i due pezzi di punta, in cima agli Articoli) */
+  .strumenti{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 26px; }
+  .strum{ display:flex; flex-direction:column; background:var(--card); border:1px solid var(--line);
+    border-radius:12px; padding:18px 20px; position:relative; overflow:hidden; box-shadow:var(--shadow);
+    transition:transform .14s, border-color .14s; }
+  .strum::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--red); }
+  @media (prefers-reduced-motion:no-preference){ .strum:hover{ transform:translateY(-3px); border-color:#3a3f4a; } }
+  .strum-tag{ font:700 9px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--red); margin-bottom:9px; }
+  .strum b{ font:800 21px/1.05 var(--disp); letter-spacing:.3px; color:var(--ink); margin-bottom:6px; }
+  .strum-d{ color:var(--ink-soft); font-size:12.5px; line-height:1.5; flex:1; }
+  .strum-go{ font:700 11px/1 var(--mono); color:var(--red); margin-top:13px; }
+  @media (max-width:640px){ .strumenti{ grid-template-columns:1fr; } }
+
   /* Telemetria (foglio-tempi) */
   .tele-head{ display:flex; align-items:baseline; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:14px; }
   .tele-head h2{ margin:0; font:800 22px/1 var(--disp); letter-spacing:.02em; text-transform:uppercase; }
@@ -217,6 +230,22 @@
   <main>
     <section class="panel" id="panel-articoli" role="tabpanel" aria-labelledby="t-art">
       <div id="rev" hidden></div>
+      <!-- STRUMENTI DI STAGIONE: i due pezzi di punta, calcolati dai nostri dati e
+           aggiornati a ogni gara. In cima, non sepolti: valgono tutta la stagione. -->
+      <div class="strumenti">
+        <a class="strum" href="forza.html">
+          <span class="strum-tag">Interattivo · si aggiorna a ogni gara</span>
+          <b>Forza-macchina, gara per gara</b>
+          <span class="strum-d">Quanto è forte ogni vettura in ogni gara — dal potenziale, non dal piazzamento. Lo slider sceglie l'intervallo e mostra come cambia la gerarchia.</span>
+          <span class="strum-go">Apri →</span>
+        </a>
+        <a class="strum" href="dati.html">
+          <span class="strum-tag">Interattivo · si aggiorna a ogni gara</span>
+          <b>Assetto e DNA dei circuiti</b>
+          <span class="strum-d">Assetto dei team (punta vs curva) e carattere dei tracciati (motore vs carico), gara per gara. Scegli la vista e le tabelle si ricalcolano.</span>
+          <span class="strum-go">Apri →</span>
+        </a>
+      </div>
       <div id="grid"></div>
     </section>
 
@@ -248,8 +277,6 @@
       </section>
 
       <div class="links">
-        <a class="link" href="forza.html"><span class="ic">▥</span><span><b>Forza-macchina</b><span>Quanto è forte ogni vettura, gara per gara — non dal piazzamento ma dal potenziale. Slider e indice che si ricalcolano dal vivo.</span></span></a>
-        <a class="link" href="dati.html"><span class="ic">▦</span><span><b>Cruscotto dati</b><span>Assetto e DNA dei circuiti, gara per gara — si ricalcola dal vivo.</span></span></a>
         <a class="link" href="stagione.html"><span class="ic">▤</span><span><b>Stagione 2026</b><span>Tutti i weekend, gara per gara.</span></span></a>
       </div>
     </section>
