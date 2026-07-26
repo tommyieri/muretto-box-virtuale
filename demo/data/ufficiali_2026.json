@@ -1148,5 +1148,120 @@
     "status": "Retired"
    }
   ]
+ },
+ "Ungheria": {
+  "fonte": "FastF1 results (classifica FIA) — riportata, non ricostruita",
+  "classifica": [
+   {
+    "pos": 1,
+    "pilota": "NOR",
+    "status": "Finished"
+   },
+   {
+    "pos": 2,
+    "pilota": "VER",
+    "status": "Finished"
+   },
+   {
+    "pos": 3,
+    "pilota": "ANT",
+    "status": "Finished"
+   },
+   {
+    "pos": 4,
+    "pilota": "LEC",
+    "status": "Finished"
+   },
+   {
+    "pos": 5,
+    "pilota": "HAM",
+    "status": "Finished"
+   },
+   {
+    "pos": 6,
+    "pilota": "HAD",
+    "status": "Finished"
+   },
+   {
+    "pos": 7,
+    "pilota": "RUS",
+    "status": "Finished"
+   },
+   {
+    "pos": 8,
+    "pilota": "LAW",
+    "status": "Lapped"
+   },
+   {
+    "pos": 9,
+    "pilota": "HUL",
+    "status": "Lapped"
+   },
+   {
+    "pos": 10,
+    "pilota": "LIN",
+    "status": "Lapped"
+   },
+   {
+    "pos": 11,
+    "pilota": "BOR",
+    "status": "Lapped"
+   },
+   {
+    "pos": 12,
+    "pilota": "GAS",
+    "status": "Lapped"
+   },
+   {
+    "pos": 13,
+    "pilota": "STR",
+    "status": "Lapped"
+   },
+   {
+    "pos": 14,
+    "pilota": "ALO",
+    "status": "Lapped"
+   },
+   {
+    "pos": 15,
+    "pilota": "COL",
+    "status": "Lapped"
+   },
+   {
+    "pos": 16,
+    "pilota": "OCO",
+    "status": "Lapped"
+   },
+   {
+    "pos": 17,
+    "pilota": "ALB",
+    "status": "Lapped"
+   },
+   {
+    "pos": 18,
+    "pilota": "SAI",
+    "status": "Lapped"
+   },
+   {
+    "pos": 19,
+    "pilota": "BEA",
+    "status": "Lapped"
+   },
+   {
+    "pos": 20,
+    "pilota": "PIA",
+    "status": "Retired"
+   },
+   {
+    "pos": 21,
+    "pilota": "PER",
+    "status": "Retired"
+   },
+   {
+    "pos": 22,
+    "pilota": "BOT",
+    "status": "Retired"
+   }
+  ]
  }
 }
