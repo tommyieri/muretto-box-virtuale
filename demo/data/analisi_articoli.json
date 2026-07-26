@@ -41,26 +41,6 @@
     "round": 11
   },
   {
-    "id": "hun-quali-pole-2026",
-    "titolo": "Hamilton più veloce in due settori su tre. E la pole va a Norris per dodici millesimi",
-    "occhiello": "Telemetria · Qualifica Ungheria 2026",
-    "sommario": "Norris 1:17.207, Hamilton 1:17.219: 0,012 secondi. Ma il cronometro racconta un ribaltamento — Hamilton è più veloce nel primo settore (0,035 s) e nel terzo (0,174 s), e recupera in tutto 0,209 s. Norris se li riprende, e di più, nel solo settore centrale: 0,221 s nel complesso lento T4→T11, il settore 2 più veloce di tutta la sessione. Attenzione: sono i tempi della qualifica, non la griglia — per un impeding su Piastri alla curva 1 Hamilton scatterà da P5.",
-    "data": "2026-07-26",
-    "stato": "pubblicato",
-    "tag": [
-      "telemetria",
-      "qualifica",
-      "pole",
-      "McLaren",
-      "Ferrari"
-    ],
-    "circuito": "Hungaroring",
-    "sessione": "Qualifiche",
-    "accent": "#FF8000",
-    "gp": "Ungheria",
-    "round": 11
-  },
-  {
     "id": "hun-quali-h2h-2026",
     "titolo": "Antonelli mette 281 millesimi su Russell. Poi la griglia ribalta tutto.",
     "occhiello": "Cronometro delle qualifiche · Ungheria 2026 · round 11",
@@ -160,25 +140,6 @@
     "circuito": "Hungaroring",
     "sessione": "FP2",
     "accent": "#FF8000",
-    "gp": "Ungheria",
-    "round": 11
-  },
-  {
-    "id": "hun-passo-gara-2026",
-    "titolo": "Passo-gara Hungaroring: a parità di gomma RUS è 0,8 s davanti a NOR",
-    "occhiello": "Passo-gara · FP2 Ungheria 2026",
-    "sommario": "La classifica grezza dei long-run in mescola media dice quasi-parità: RUS, VER e NOR entro 0,235 s. Ma i rivali hanno girato su gomme più fresche. A parità di età-gomma (11–16 giri) la Mercedes di RUS è 0,817 s/giro davanti al miglior long-run rivale (NOR), e il margine sale a 1,090 s più avanti nello stint. Carburante e mappe motore restano ignoti: passo indicativo, non verdetto.",
-    "data": "2026-07-25",
-    "stato": "pubblicato",
-    "tag": [
-      "passo-gara",
-      "Mercedes",
-      "long-run",
-      "prove-libere"
-    ],
-    "circuito": "Hungaroring",
-    "sessione": "FP2",
-    "accent": "#27F4D2",
     "gp": "Ungheria",
     "round": 11
   },

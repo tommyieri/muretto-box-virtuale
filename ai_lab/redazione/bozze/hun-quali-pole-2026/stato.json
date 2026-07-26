@@ -1,6 +1,6 @@
 {
   "id": "hun-quali-pole-2026",
-  "stato": "pubblicato",
+  "stato": "respinto",
   "attore": "auto",
   "creato": "2026-07-26",
   "storico": [
@@ -21,6 +21,12 @@
       "attore": "auto",
       "quando": "2026-07-26",
       "nota": "pubblicato all'approvazione"
+    },
+    {
+      "stato": "respinto",
+      "attore": "Tommi",
+      "quando": "2026-07-26",
+      "nota": "pulizia livello: basilare/venerdi-inaffidabile, superato da recap+passo-reale"
     }
   ]
 }

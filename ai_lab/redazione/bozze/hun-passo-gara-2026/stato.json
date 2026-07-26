@@ -1,6 +1,6 @@
 {
   "id": "hun-passo-gara-2026",
-  "stato": "pubblicato",
+  "stato": "respinto",
   "attore": "Tommi",
   "creato": "2026-07-25",
   "storico": [
@@ -21,6 +21,12 @@
       "attore": "Tommi",
       "quando": "2026-07-25",
       "nota": "pubblicato all'approvazione"
+    },
+    {
+      "stato": "respinto",
+      "attore": "Tommi",
+      "quando": "2026-07-26",
+      "nota": "pulizia livello: basilare/venerdi-inaffidabile, superato da recap+passo-reale"
     }
   ]
 }
