@@ -1,5 +1,26 @@
 [
   {
+    "id": "recap-weekend-hungaroring-2026",
+    "titolo": "Dove ha vinto NOR in Ungheria: la pole per 0,012 s (12 millesimi), il dominio nel passo gara",
+    "occhiello": "Recap tecnico · Weekend Ungheria 2026 · round 11",
+    "sommario": "Non chi ha vinto, ma DOVE nasce il vantaggio. NOR in pole per 0,012 s (12 millesimi) su HAM: minisettore per minisettore è un duello (14–10), e il vantaggio del giro è in curva, non in rettilineo. In gara il passo di NOR è 0,247 s/giro davanti al miglior rivale. Ogni numero è un sintomo misurato; la causa (aero, grip, assetto) resta NON_MISURABILE.",
+    "data": "2026-07-26",
+    "stato": "pubblicato",
+    "tag": [
+      "telemetria",
+      "recap",
+      "weekend",
+      "Ungheria",
+      "McLaren",
+      "Ferrari"
+    ],
+    "circuito": "Hungaroring",
+    "sessione": "Weekend",
+    "accent": "#FF8000",
+    "gp": "Ungheria",
+    "round": 11
+  },
+  {
     "id": "hun-quali-pole-2026",
     "titolo": "Hamilton più veloce in due settori su tre. E la pole va a Norris per dodici millesimi",
     "occhiello": "Telemetria · Qualifica Ungheria 2026",
@@ -39,6 +60,44 @@
     "accent": "#27F4D2",
     "gp": "Ungheria",
     "round": 11
+  },
+  {
+    "id": "dna-circuiti-2026",
+    "titolo": "Il DNA dei circuiti 2026: chi chiede motore e chi chiede carico",
+    "occhiello": "Telemetria · 10 circuiti 2026",
+    "sommario": "La percentuale di giro a tutto gas è la firma più pulita di un tracciato. Sui 10 circuiti con telemetria va dal 72% di Spa-Francorchamps — oltre due terzi di giro flat-out — al 50% di Barcelona, il più esigente. In mezzo, chi è veloce e flowing e chi è potente ma stop-and-go.",
+    "data": "2026-07-26",
+    "stato": "pubblicato",
+    "tag": [
+      "telemetria",
+      "circuiti",
+      "assetto",
+      "multi-gara"
+    ],
+    "circuito": "10 circuiti",
+    "sessione": "Gara",
+    "accent": "var(--sc)",
+    "gp": null,
+    "round": null
+  },
+  {
+    "id": "assetto-punta-curva-2026",
+    "titolo": "La mappa dell’assetto 2026: chi corre carico e chi scarico",
+    "occhiello": "Telemetria · 10 gare 2026",
+    "sommario": "Incrociando velocità di punta e velocità in curva su 10 gare — con la punta ripulita dalla scia — si legge come ogni team ha risolto il compromesso carico-resistenza. In cima, vicine, Ferrari e Red Bull; ai lati chi carica l’ala e chi corre scarico.",
+    "data": "2026-07-26",
+    "stato": "pubblicato",
+    "tag": [
+      "telemetria",
+      "aerodinamica",
+      "assetto",
+      "multi-gara"
+    ],
+    "circuito": "10 gare",
+    "sessione": "Gara",
+    "accent": "#E8002D",
+    "gp": null,
+    "round": null
   },
   {
     "id": "hun-web-canale-a-2026",
@@ -181,25 +240,6 @@
     "round": 9
   },
   {
-    "id": "dna-circuiti-2026",
-    "titolo": "Il DNA dei circuiti 2026: chi chiede motore e chi chiede carico",
-    "occhiello": "Telemetria · 9 circuiti 2026",
-    "sommario": "La percentuale di giro a tutto gas è la firma più pulita di un tracciato. Sui 9 circuiti con telemetria va dal 72% di Spa-Francorchamps — oltre due terzi di giro flat-out — al 50% di Barcelona, il più esigente. In mezzo, chi è veloce e flowing e chi è potente ma stop-and-go.",
-    "data": "2026-07-24",
-    "stato": "pubblicato",
-    "tag": [
-      "telemetria",
-      "circuiti",
-      "assetto",
-      "multi-gara"
-    ],
-    "circuito": "9 circuiti",
-    "sessione": "Gara",
-    "accent": "var(--sc)",
-    "gp": null,
-    "round": null
-  },
-  {
     "id": "compagni-marce-stowe-gb-2026",
     "titolo": "Stowe, stessa Ferrari: LEC in 6ª dove HAM scala in 5ª",
     "occhiello": "Telemetria · Qualifiche Gran Bretagna 2026",
@@ -217,24 +257,5 @@
     "accent": "#E8002D",
     "gp": "Gran Bretagna",
     "round": 9
-  },
-  {
-    "id": "assetto-punta-curva-2026",
-    "titolo": "La mappa dell’assetto 2026: chi corre carico e chi scarico",
-    "occhiello": "Telemetria · 9 gare 2026",
-    "sommario": "Incrociando velocità di punta e velocità in curva su 9 gare — con la punta ripulita dalla scia — si legge come ogni team ha risolto il compromesso carico-resistenza. In cima, vicine, Ferrari e Red Bull; ai lati chi carica l’ala e chi corre scarico.",
-    "data": "2026-07-24",
-    "stato": "pubblicato",
-    "tag": [
-      "telemetria",
-      "aerodinamica",
-      "assetto",
-      "multi-gara"
-    ],
-    "circuito": "9 gare",
-    "sessione": "Gara",
-    "accent": "#E8002D",
-    "gp": null,
-    "round": null
   }
 ]

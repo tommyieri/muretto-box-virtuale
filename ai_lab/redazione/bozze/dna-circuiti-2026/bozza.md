@@ -1,8 +1,8 @@
 # Il DNA dei circuiti 2026: chi chiede motore e chi chiede carico
 
-*Telemetria · 9 circuiti 2026 — Muretto · Redazione tecnica · 2026-07-24 · BOZZA*
+*Telemetria · 10 circuiti 2026 — Muretto · Redazione tecnica · 2026-07-26 · BOZZA*
 
-> La percentuale di giro a tutto gas è la firma più pulita di un tracciato. Sui 9 circuiti con telemetria va dal 72% di Spa-Francorchamps — oltre due terzi di giro flat-out — al 50% di Barcelona, il più esigente. In mezzo, chi è veloce e flowing e chi è potente ma stop-and-go.
+> La percentuale di giro a tutto gas è la firma più pulita di un tracciato. Sui 10 circuiti con telemetria va dal 72% di Spa-Francorchamps — oltre due terzi di giro flat-out — al 50% di Barcelona, il più esigente. In mezzo, chi è veloce e flowing e chi è potente ma stop-and-go.
 
 ## Evidenza — Dal flat-out al labirinto
 Per ogni gara abbiamo preso il giro più veloce e misurato la frazione di tracciato percorsa con l’acceleratore oltre il 95% — la percentuale a tutto gas. È il numero che gli ingegneri usano per dire, in una cifra, quanto un circuito chiede motore o carico. Non mescola potenza del motore né gomma — è solo gas contro distanza — anche se resta la firma del pilota più veloce di giornata. Per non appenderla a un giro solo, la prendiamo come mediana sui giri lanciati.Lo spettro 2026 è netto. In testa Spa-Francorchamps con il 72% del giro flat-out, e Montréal (71%): piste da motore. In fondo, Barcelona a 50% — meno di metà giro a tutto gas, il tracciato più esigente per l’ala. Un secondo numero, la velocità media in curva, separa i simili: Silverstone ha le curve più veloci (202 km/h di media, 8 curve veloci), mentre Miami Gardens è la più stop-and-go (121 km/h, 10 curve lente) pur restando flat-out a lungo.
@@ -18,5 +18,5 @@ Tradotto: a Spa-Francorchamps e Montréal conta il motore e l’ala scarica; a B
 ## Provenienza dei dati
 - **percentuale a tutto gas (per circuito)**: Spa-Francorchamps 72% (max) · Barcelona 50% (min) · mediana 65% — `MISURATO` (frazione di distanza con throttle ≥95% sul giro veloce assoluto (FastF1))
 - **velocità media in curva**: Silverstone 202 (max) · Miami Gardens 121 (min) km/h — `MISURATO` (mediana della velocità all’apice delle curve (circuit_info))
-- **circuiti nel campione**: 9 (Monaco/Ungheria/Singapore assenti dalla cache) — `MISURATO` (archivio FastF1 in cache)
+- **circuiti nel campione**: 10 (Monaco/Ungheria/Singapore assenti dalla cache) — `MISURATO` (archivio FastF1 in cache)
 - **velocità di punta per circuito**: riportata ma non centrale — `STIMATO` (picco del giro veloce: può risentire della scia; la percentuale-gas non ne risente)
