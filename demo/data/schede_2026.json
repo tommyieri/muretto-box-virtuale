@@ -1,34 +1,20 @@
 {
- "_nota": "GENERATO da gen_schede.py (f1db v2026.10.1; carriera = aggregati canonici f1db, stagione = standings + conteggi risultati; cross_check strutturato, mai correzioni a mano). Non modificare a mano. STAGIONE PROVVISORIA fino al round 11 (Ungheria, fonte classifica ufficiale FastF1 (demo/data/ufficiali_2026.json)); CARRIERA ferma agli aggregati f1db del round 10.",
+ "_nota": "GENERATO da gen_schede.py (f1db v2026.11.0; carriera = aggregati canonici f1db, stagione = standings + conteggi risultati; cross_check strutturato, mai correzioni a mano). Non modificare a mano.",
  "aggiornato_al": {
   "round": 11,
+  "raceId_f1db": 1160,
   "nome": "Ungheria",
   "titolo": "GP d'Ungheria",
   "data": "2026-07-26",
-  "gara_demo": "Ungheria",
-  "provvisorio": {
-   "da_round": 11,
-   "gare": [
-    "Ungheria"
-   ],
-   "fonte": "classifica ufficiale FastF1 (demo/data/ufficiali_2026.json)",
-   "canonico_f1db": {
-    "round": 10,
-    "raceId_f1db": 1159,
-    "nome": "Belgio",
-    "titolo": "GP del Belgio",
-    "data": "2026-07-19",
-    "gara_demo": "Belgio"
-   }
-  }
+  "gara_demo": "Ungheria"
  },
  "carriera_aggiornata_al": {
-  "round": 10,
-  "raceId_f1db": 1159,
-  "nome": "Belgio",
-  "titolo": "GP del Belgio",
-  "data": "2026-07-19",
-  "gara_demo": "Belgio"
+  "round": 11,
+  "raceId_f1db": 1160,
+  "nome": "Ungheria",
+  "titolo": "GP d'Ungheria",
+  "data": "2026-07-26",
+  "gara_demo": "Ungheria"
  },
  "piloti": {
   "kimi-antonelli": {
@@ -39,13 +25,13 @@
    "constructorId": "mercedes",
    "team_demo": "Mercedes",
    "carriera": {
-    "gp_disputati": 34,
+    "gp_disputati": 35,
     "vittorie": 6,
-    "podi": 11,
+    "podi": 12,
     "pole": 6,
     "giri_veloci": 9,
     "titoli": 0,
-    "punti": 354.0,
+    "punti": 369.0,
     "prima_vittoria": {
      "anno": 2026,
      "gp": "China",
@@ -99,13 +85,13 @@
    "constructorId": "ferrari",
    "team_demo": "Ferrari",
    "carriera": {
-    "gp_disputati": 390,
+    "gp_disputati": 391,
     "vittorie": 106,
     "podi": 207,
     "pole": 104,
     "giri_veloci": 69,
     "titoli": 7,
-    "punti": 5177.5,
+    "punti": 5187.5,
     "prima_vittoria": {
      "anno": 2007,
      "gp": "Canada",
@@ -145,7 +131,8 @@
      "griglia_f1db": 5,
      "griglia_demo": 5,
      "arrivo_f1db": 5,
-     "arrivo_demo": 4
+     "arrivo_demo": 4,
+     "penalita_f1db_s": 5.0
     }
    ]
   },
@@ -157,13 +144,13 @@
    "constructorId": "mercedes",
    "team_demo": "Mercedes",
    "carriera": {
-    "gp_disputati": 162,
+    "gp_disputati": 163,
     "vittorie": 7,
     "podi": 29,
     "pole": 11,
     "giri_veloci": 11,
     "titoli": 0,
-    "punti": 1187.0,
+    "punti": 1193.0,
     "prima_vittoria": {
      "anno": 2022,
      "gp": "São Paulo",
@@ -207,13 +194,13 @@
    "constructorId": "ferrari",
    "team_demo": "Ferrari",
    "carriera": {
-    "gp_disputati": 181,
+    "gp_disputati": 182,
     "vittorie": 9,
     "podi": 54,
     "pole": 27,
-    "giri_veloci": 11,
+    "giri_veloci": 12,
     "titoli": 0,
-    "punti": 1798.0,
+    "punti": 1810.0,
     "prima_vittoria": {
      "anno": 2019,
      "gp": "Belgium",
@@ -274,22 +261,22 @@
    "constructorId": "mclaren",
    "team_demo": "McLaren",
    "carriera": {
-    "gp_disputati": 161,
-    "vittorie": 11,
-    "podi": 46,
-    "pole": 16,
+    "gp_disputati": 162,
+    "vittorie": 12,
+    "podi": 47,
+    "pole": 17,
     "giri_veloci": 20,
     "titoli": 1,
-    "punti": 1533.0,
+    "punti": 1558.0,
     "prima_vittoria": {
      "anno": 2024,
      "gp": "Miami",
      "data": "2024-05-05"
     },
     "ultima_vittoria": {
-     "anno": 2025,
-     "gp": "São Paulo",
-     "data": "2025-11-09"
+     "anno": 2026,
+     "gp": "Hungary",
+     "data": "2026-07-26"
     }
    },
    "stagione": {
@@ -315,13 +302,13 @@
    "constructorId": "red-bull",
    "team_demo": "Red Bull Racing",
    "carriera": {
-    "gp_disputati": 243,
+    "gp_disputati": 244,
     "vittorie": 71,
-    "podi": 130,
+    "podi": 131,
     "pole": 48,
     "giri_veloci": 37,
     "titoli": 4,
-    "punti": 3535.5,
+    "punti": 3553.5,
     "prima_vittoria": {
      "anno": 2016,
      "gp": "Spain",
@@ -356,7 +343,7 @@
    "constructorId": "mclaren",
    "team_demo": "McLaren",
    "carriera": {
-    "gp_disputati": 78,
+    "gp_disputati": 79,
     "vittorie": 9,
     "podi": 28,
     "pole": 6,
@@ -406,13 +393,13 @@
    "constructorId": "red-bull",
    "team_demo": "Red Bull Racing",
    "carriera": {
-    "gp_disputati": 34,
+    "gp_disputati": 35,
     "vittorie": 0,
     "podi": 1,
     "pole": 0,
     "giri_veloci": 0,
     "titoli": 0,
-    "punti": 111.0,
+    "punti": 119.0,
     "prima_vittoria": null,
     "ultima_vittoria": null
    },
@@ -439,13 +426,13 @@
    "constructorId": "racing-bulls",
    "team_demo": "Racing Bulls",
    "carriera": {
-    "gp_disputati": 45,
+    "gp_disputati": 46,
     "vittorie": 0,
     "podi": 0,
     "pole": 0,
     "giri_veloci": 0,
     "titoli": 0,
-    "punti": 83.0,
+    "punti": 87.0,
     "prima_vittoria": null,
     "ultima_vittoria": null
    },
@@ -481,7 +468,7 @@
    "constructorId": "alpine",
    "team_demo": "Alpine",
    "carriera": {
-    "gp_disputati": 187,
+    "gp_disputati": 188,
     "vittorie": 1,
     "podi": 6,
     "pole": 0,
@@ -531,13 +518,13 @@
    "constructorId": "racing-bulls",
    "team_demo": "Racing Bulls",
    "carriera": {
-    "gp_disputati": 9,
+    "gp_disputati": 10,
     "vittorie": 0,
     "podi": 0,
     "pole": 0,
     "giri_veloci": 0,
     "titoli": 0,
-    "punti": 22.0,
+    "punti": 23.0,
     "prima_vittoria": null,
     "ultima_vittoria": null
    },
@@ -573,7 +560,7 @@
    "constructorId": "alpine",
    "team_demo": "Alpine",
    "carriera": {
-    "gp_disputati": 36,
+    "gp_disputati": 37,
     "vittorie": 0,
     "podi": 0,
     "pole": 0,
@@ -641,7 +628,7 @@
    "constructorId": "haas",
    "team_demo": "Haas F1 Team",
    "carriera": {
-    "gp_disputati": 37,
+    "gp_disputati": 38,
     "vittorie": 0,
     "podi": 0,
     "pole": 0,
@@ -679,7 +666,8 @@
      "griglia_f1db": 17,
      "griglia_demo": 17,
      "arrivo_f1db": 19,
-     "arrivo_demo": 17
+     "arrivo_demo": 17,
+     "penalita_f1db_s": 5.0
     }
    ]
   },
@@ -691,7 +679,7 @@
    "constructorId": "audi",
    "team_demo": "Audi",
    "carriera": {
-    "gp_disputati": 33,
+    "gp_disputati": 34,
     "vittorie": 0,
     "podi": 0,
     "pole": 0,
@@ -733,7 +721,7 @@
    "constructorId": "williams",
    "team_demo": "Williams",
    "carriera": {
-    "gp_disputati": 239,
+    "gp_disputati": 240,
     "vittorie": 4,
     "podi": 29,
     "pole": 6,
@@ -791,7 +779,7 @@
    "constructorId": "williams",
    "team_demo": "Williams",
    "carriera": {
-    "gp_disputati": 137,
+    "gp_disputati": 138,
     "vittorie": 0,
     "podi": 2,
     "pole": 0,
@@ -833,7 +821,7 @@
    "constructorId": "haas",
    "team_demo": "Haas F1 Team",
    "carriera": {
-    "gp_disputati": 190,
+    "gp_disputati": 191,
     "vittorie": 1,
     "podi": 4,
     "pole": 0,
@@ -891,13 +879,13 @@
    "constructorId": "audi",
    "team_demo": "Audi",
    "carriera": {
-    "gp_disputati": 259,
+    "gp_disputati": 260,
     "vittorie": 0,
     "podi": 1,
     "pole": 1,
     "giri_veloci": 2,
     "titoli": 0,
-    "punti": 622.0,
+    "punti": 624.0,
     "prima_vittoria": null,
     "ultima_vittoria": null
    },
@@ -934,7 +922,7 @@
    "constructorId": "aston-martin",
    "team_demo": "Aston Martin",
    "carriera": {
-    "gp_disputati": 436,
+    "gp_disputati": 437,
     "vittorie": 32,
     "podi": 106,
     "pole": 22,
@@ -984,7 +972,7 @@
    "constructorId": "aston-martin",
    "team_demo": "Aston Martin",
    "carriera": {
-    "gp_disputati": 199,
+    "gp_disputati": 200,
     "vittorie": 0,
     "podi": 3,
     "pole": 1,
@@ -1017,7 +1005,7 @@
    "constructorId": "cadillac",
    "team_demo": "Cadillac",
    "carriera": {
-    "gp_disputati": 256,
+    "gp_disputati": 257,
     "vittorie": 10,
     "podi": 67,
     "pole": 20,
@@ -1067,7 +1055,7 @@
    "constructorId": "cadillac",
    "team_demo": "Cadillac",
    "carriera": {
-    "gp_disputati": 291,
+    "gp_disputati": 292,
     "vittorie": 6,
     "podi": 39,
     "pole": 3,
@@ -1090,7 +1078,7 @@
     "punti": 0.0,
     "vittorie": 0,
     "migliore_risultato": 14,
-    "media_griglia": 19.45,
+    "media_griglia": 19.2,
     "media_arrivo": 15.29,
     "pos_guadagnate": 28,
     "su_gare": {
@@ -1126,13 +1114,13 @@
    "team_demo": "Mercedes",
    "paese": "Germany",
    "carriera": {
-    "gp_disputati": 351,
+    "gp_disputati": 352,
     "vittorie": 139,
-    "podi": 323,
+    "podi": 324,
     "pole": 153,
     "giri_veloci": 121,
     "titoli": 8,
-    "punti": 8517.5,
+    "punti": 8538.5,
     "prima_vittoria": {
      "anno": 1954,
      "gp": "France",
@@ -1159,13 +1147,13 @@
    "team_demo": "Ferrari",
    "paese": "Italy",
    "carriera": {
-    "gp_disputati": 1132,
+    "gp_disputati": 1133,
     "vittorie": 250,
     "podi": 845,
     "pole": 254,
-    "giri_veloci": 268,
+    "giri_veloci": 269,
     "titoli": 16,
-    "punti": 11316.0,
+    "punti": 11338.0,
     "prima_vittoria": {
      "anno": 1951,
      "gp": "Great Britain",
@@ -1192,22 +1180,22 @@
    "team_demo": "McLaren",
    "paese": "United Kingdom",
    "carriera": {
-    "gp_disputati": 1003,
-    "vittorie": 203,
-    "podi": 562,
-    "pole": 177,
+    "gp_disputati": 1004,
+    "vittorie": 204,
+    "podi": 563,
+    "pole": 178,
     "giri_veloci": 186,
     "titoli": 10,
-    "punti": 8303.5,
+    "punti": 8328.5,
     "prima_vittoria": {
      "anno": 1968,
      "gp": "Belgium",
      "data": "1968-06-09"
     },
     "ultima_vittoria": {
-     "anno": 2025,
-     "gp": "São Paulo",
-     "data": "2025-11-09"
+     "anno": 2026,
+     "gp": "Hungary",
+     "data": "2026-07-26"
     }
    },
    "stagione": {
@@ -1225,13 +1213,13 @@
    "team_demo": "Red Bull Racing",
    "paese": "Austria",
    "carriera": {
-    "gp_disputati": 427,
+    "gp_disputati": 428,
     "vittorie": 130,
-    "podi": 300,
+    "podi": 301,
     "pole": 111,
     "giri_veloci": 103,
     "titoli": 6,
-    "punti": 8439.0,
+    "punti": 8465.0,
     "prima_vittoria": {
      "anno": 2009,
      "gp": "China",
@@ -1258,13 +1246,13 @@
    "team_demo": "Racing Bulls",
    "paese": "Italy",
    "carriera": {
-    "gp_disputati": 34,
+    "gp_disputati": 35,
     "vittorie": 0,
     "podi": 1,
     "pole": 0,
     "giri_veloci": 0,
     "titoli": 0,
-    "punti": 153.0,
+    "punti": 158.0,
     "prima_vittoria": null,
     "ultima_vittoria": null
    },
@@ -1283,7 +1271,7 @@
    "team_demo": "Alpine",
    "paese": "France",
    "carriera": {
-    "gp_disputati": 124,
+    "gp_disputati": 125,
     "vittorie": 1,
     "podi": 7,
     "pole": 0,
@@ -1316,7 +1304,7 @@
    "team_demo": "Haas F1 Team",
    "paese": "United States of America",
    "carriera": {
-    "gp_disputati": 224,
+    "gp_disputati": 225,
     "vittorie": 0,
     "podi": 0,
     "pole": 1,
@@ -1341,13 +1329,13 @@
    "team_demo": "Audi",
    "paese": "Germany",
    "carriera": {
-    "gp_disputati": 10,
+    "gp_disputati": 11,
     "vittorie": 0,
     "podi": 0,
     "pole": 0,
     "giri_veloci": 0,
     "titoli": 0,
-    "punti": 10.0,
+    "punti": 12.0,
     "prima_vittoria": null,
     "ultima_vittoria": null
    },
@@ -1366,7 +1354,7 @@
    "team_demo": "Williams",
    "paese": "United Kingdom",
    "carriera": {
-    "gp_disputati": 860,
+    "gp_disputati": 861,
     "vittorie": 114,
     "podi": 314,
     "pole": 128,
@@ -1399,7 +1387,7 @@
    "team_demo": "Aston Martin",
    "paese": "United Kingdom",
    "carriera": {
-    "gp_disputati": 129,
+    "gp_disputati": 130,
     "vittorie": 0,
     "podi": 9,
     "pole": 0,
@@ -1424,7 +1412,7 @@
    "team_demo": "Cadillac",
    "paese": "United States of America",
    "carriera": {
-    "gp_disputati": 10,
+    "gp_disputati": 11,
     "vittorie": 0,
     "podi": 0,
     "pole": 0,

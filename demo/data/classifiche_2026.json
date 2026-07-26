@@ -1,26 +1,12 @@
 {
- "_nota": "GENERATO da gen_classifiche.py (f1db v2026.10.1, standings canonici al round indicato in aggiornato_al). Non modificare a mano. PROVVISORIA: agli standings f1db e' stata sommata Ungheria (round 11) dalla classifica ufficiale FastF1, in attesa della release f1db che la copra.",
+ "_nota": "GENERATO da gen_classifiche.py (f1db v2026.11.0, standings canonici al round indicato in aggiornato_al). Non modificare a mano.",
  "aggiornato_al": {
   "round": 11,
+  "raceId_f1db": 1160,
   "nome": "Ungheria",
   "titolo": "GP d'Ungheria",
   "data": "2026-07-26",
-  "gara_demo": "Ungheria",
-  "provvisorio": {
-   "da_round": 11,
-   "gare": [
-    "Ungheria"
-   ],
-   "fonte": "classifica ufficiale FastF1 (demo/data/ufficiali_2026.json)",
-   "canonico_f1db": {
-    "round": 10,
-    "raceId_f1db": 1159,
-    "nome": "Belgio",
-    "titolo": "GP del Belgio",
-    "data": "2026-07-19",
-    "gara_demo": "Belgio"
-   }
-  }
+  "gara_demo": "Ungheria"
  },
  "piloti": [
   {
