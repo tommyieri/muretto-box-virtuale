@@ -433,11 +433,13 @@ def grafico_scatter(punti, *, x_range=(0, 100), y_range=(0, 100),
 
 
 def barre_dv(righe, *, titolo="", sub="", unita="km/h", base=0.0, ml=52,
-             caption="km/h persi alla linea (giro veloce)"):
+             caption="km/h persi alla linea (giro veloce)", dec=1):
     """Barre orizzontali: una riga per elemento. righe: [{sigla,colore,valore,
     evidenza(bool)}] gia' ordinata. base>0 tronca l'asse (per differenze piccole
     su valori grandi): va sempre dichiarato nella caption. ml = margine sinistro
     per le etichette (allargalo se le sigle sono lunghe, es. nomi team).
+    dec = cifre decimali dell'etichetta numerica (default 1 = km/h; usa 3 per i
+    distacchi in secondi/millesimi). dec=1 riproduce il comportamento storico.
     """
     n = len(righe)
     rowh = 20
@@ -470,10 +472,420 @@ def barre_dv(righe, *, titolo="", sub="", unita="km/h", base=0.0, ml=52,
         if w > 0.4:
             out.append(f'<rect x="{x0}" y="{y+3:.1f}" width="{w:.1f}" height="{rowh-8}" '
                        f'rx="2" fill="{col}" opacity="{op}"/>')
-        vt = f'{val:.1f}' if val >= 0.05 else '0'
+        vt = f'{val:.{dec}f}' if val >= 0.5 * 10 ** (-dec) else '0'
         tx = x0 + w + 6 if w > 0.4 else x0 + 6
         out.append(f'<text x="{tx:.1f}" y="{y+rowh/2+3:.1f}" font-size="10" '
                    f'class="{"lbl" if r.get("evidenza") else ""}">{vt}</text>')
     out.append(f'<text x="{x1}" y="{H-4}" font-size="9.5" text-anchor="end">{esc(caption)}</text>')
+    out.append('</svg>')
+    return "".join(out)
+
+
+def grafico_pole(serie, delta, corners, settori, *, dist_max, v_range,
+                 titolo="", sub="", endpoint_txt="", picco=None, avvallamento=None):
+    """GRAFICO-EROE «dove si è vinta la pole». Due pannelli allineati sull'asse
+    x = distanza sul giro (m, 0 = linea del traguardo a sinistra):
+      A (alto)  = overlay velocità dei due giri veloci;
+      B (basso) = traccia del VANTAGGIO cumulato del protagonista (s), positivo
+                  in alto = protagonista avanti, negativo = rivale avanti.
+    Le tre ZONE-SETTORE sono ombreggiate e etichettate col delta ufficiale, nel
+    colore del pilota che vince quel settore. Aspetto preservato (annotazioni non
+    si deformano).
+
+    serie:   [{sigla, colore, punti:[(dist, speed)]}]  (protagonista per primo)
+    delta:   [(dist, vantaggio_protagonista_sec)]
+    corners: [{label, dist}]
+    settori: [{d0, d1, testo, colore}]  colore = colore del vincitore del settore
+    picco/avvallamento: dict opzionale {dist, val, txt} da annotare sul pannello B
+    """
+    W, H = 780, 470
+    ml, mr, mt = 54, 18, 70
+    h_a, gap, h_b = 200, 40, 96
+    y_a0, y_a1 = mt, mt + h_a
+    y_b0, y_b1 = y_a1 + gap, y_a1 + gap + h_b
+    x0, x1 = ml, W - mr
+    sx = Scala(0, dist_max, x0, x1)
+    sv = Scala(v_range[0], v_range[1], y_a1, y_a0)
+    dvals = [d for _, d in delta]
+    dlo = min(dvals + [0.0]); dhi = max(dvals + [0.0])
+    pad = (dhi - dlo) * 0.15 or 0.02
+    sd = Scala(dlo - pad, dhi + pad, y_b1, y_b0)
+
+    out = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" '
+           f'font-family="{MONO}" class="art-svg">']
+    out.append('<style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}'
+               '.art-svg .grid{stroke:var(--line);stroke-width:1}</style>')
+    if titolo:
+        out.append(f'<text x="{x0}" y="18" class="lbl" font-size="14.5" '
+                   f'font-family="{DISP}" letter-spacing="0.5">{esc(titolo)}</text>')
+    if sub:
+        out.append(f'<text x="{x0}" y="34" font-size="10.5">{esc(sub)}</text>')
+
+    # --- zone settore (ombra su entrambi i pannelli) + etichetta col delta ufficiale ---
+    for s in settori:
+        xa, xb = sx(s["d0"]), sx(s["d1"])
+        col = s.get("colore") or "var(--dim)"
+        out.append(f'<rect x="{xa:.1f}" y="{y_a0}" width="{xb-xa:.1f}" height="{y_a1-y_a0}" '
+                   f'fill="{col}" opacity="0.07"/>')
+        out.append(f'<rect x="{xa:.1f}" y="{y_b0}" width="{xb-xa:.1f}" height="{y_b1-y_b0}" '
+                   f'fill="{col}" opacity="0.07"/>')
+        out.append(f'<line x1="{xb:.1f}" y1="{y_a0}" x2="{xb:.1f}" y2="{y_b1}" '
+                   f'stroke="var(--line2)" stroke-width="1" stroke-dasharray="2 3" opacity="0.7"/>')
+        out.append(f'<text x="{(xa+xb)/2:.1f}" y="{mt-8}" font-size="11" text-anchor="middle" '
+                   f'class="lbl" font-family="{DISP}" letter-spacing="0.3" fill="{col}">{esc(s["testo"])}</text>')
+
+    # --- pannello A: griglia velocità ---
+    v = v_range[0]
+    while v <= v_range[1]:
+        y = sv(v)
+        out.append(f'<line x1="{x0}" y1="{y:.1f}" x2="{x1}" y2="{y:.1f}" class="grid"/>')
+        out.append(f'<text x="{x0-6}" y="{y+3:.1f}" font-size="9" text-anchor="end">{v}</text>')
+        v += 50
+    out.append(f'<text x="{x0-6}" y="{y_a0-6}" font-size="9" text-anchor="end" fill="var(--accent)">km/h</text>')
+
+    # --- curve: tacche + numeri sull'asse fra i pannelli ---
+    for c in corners:
+        xc = sx(c["dist"])
+        out.append(f'<line x1="{xc:.1f}" y1="{y_a1}" x2="{xc:.1f}" y2="{y_a1+4}" stroke="var(--line2)"/>')
+        out.append(f'<text x="{xc:.1f}" y="{y_a1+14}" font-size="8" text-anchor="middle">{esc(c["label"])}</text>')
+
+    # --- velocità: serie ---
+    for i, s in enumerate(serie):
+        col = s.get("colore") or "var(--dim)"
+        dash = ' stroke-dasharray="5 4"' if i else ''
+        pts = [(sx(d), sv(max(v_range[0], min(v_range[1], v)))) for d, v in s["punti"]]
+        out.append(f'<path d="{_path(pts)}" fill="none" stroke="{col}" stroke-width="2.1" '
+                   f'stroke-linejoin="round" stroke-linecap="round"{dash}/>')
+    # legenda (in alto a dx del pannello A)
+    lx = x1 - 4
+    for s in reversed(serie):
+        col = s.get("colore") or "var(--dim)"
+        sig = str(s["sigla"])
+        lx -= 11 * len(sig) + 8
+        out.append(f'<text x="{lx+22}" y="{y_a0+13}" font-size="10.5" class="lbl" text-anchor="start">{esc(sig)}</text>')
+        out.append(f'<rect x="{lx}" y="{y_a0+5}" width="16" height="3" rx="1.5" fill="{col}"/>')
+        lx -= 12
+
+    # --- pannello B: vantaggio cumulato ---
+    yz = sd(0.0)
+    # aree riempite: sopra lo zero = protagonista avanti; sotto = rivale avanti
+    col_pro = serie[0].get("colore") or "var(--accent)"
+    col_riv = serie[1].get("colore") if len(serie) > 1 else "var(--dim)"
+    trace = [(sx(d), sd(v)) for d, v in delta]
+    if trace:
+        area_up = f'M{trace[0][0]:.1f} {yz:.1f} ' + " ".join(f'L{x:.1f} {y:.1f}' for x, y in trace) + \
+                  f' L{trace[-1][0]:.1f} {yz:.1f} Z'
+        # clip alle metà con due rettangoli
+        out.append(f'<clipPath id="cpU"><rect x="{x0}" y="{y_b0}" width="{x1-x0}" height="{yz-y_b0:.1f}"/></clipPath>')
+        out.append(f'<clipPath id="cpD"><rect x="{x0}" y="{yz:.1f}" width="{x1-x0}" height="{y_b1-yz:.1f}"/></clipPath>')
+        out.append(f'<path d="{area_up}" fill="{col_pro}" opacity="0.16" clip-path="url(#cpU)"/>')
+        out.append(f'<path d="{area_up}" fill="{col_riv}" opacity="0.16" clip-path="url(#cpD)"/>')
+    # linea zero
+    out.append(f'<line x1="{x0}" y1="{yz:.1f}" x2="{x1}" y2="{yz:.1f}" stroke="var(--line2)" stroke-width="1"/>')
+    # tacche y del delta (0 e gli estremi arrotondati)
+    for dv in (dlo, 0.0, dhi):
+        y = sd(dv)
+        out.append(f'<text x="{x0-6}" y="{y+3:.1f}" font-size="8.5" text-anchor="end">'
+                   f'{("+%.2f"%dv).replace(".",",") if dv else "0"}</text>')
+    out.append(f'<text x="{x0-6}" y="{y_b0-4}" font-size="8.5" text-anchor="end" fill="var(--accent)">'
+               f'vantaggio (s)</text>')
+    # traccia del vantaggio
+    out.append(f'<path d="{_path(trace)}" fill="none" stroke="var(--txt)" stroke-width="1.8" '
+               f'stroke-linejoin="round" stroke-linecap="round"/>')
+    # annotazioni picco / avvallamento
+    for an, colr in ((avvallamento, col_riv), (picco, col_pro)):
+        if not an:
+            continue
+        ax, ay = sx(an["dist"]), sd(an["val"])
+        out.append(f'<circle cx="{ax:.1f}" cy="{ay:.1f}" r="3" fill="{colr}"/>')
+        dy = -6 if an["val"] >= 0 else 12
+        anc = "middle" if x0 + 60 < ax < x1 - 60 else ("start" if ax <= x0 + 60 else "end")
+        out.append(f'<text x="{ax:.1f}" y="{ay+dy:.1f}" font-size="9" text-anchor="{anc}" '
+                   f'class="lbl">{esc(an["txt"])}</text>')
+    # endpoint: la pole
+    if trace:
+        ex, ey = trace[-1]
+        out.append(f'<circle cx="{ex:.1f}" cy="{ey:.1f}" r="4" fill="{col_pro}" '
+                   f'stroke="var(--txt)" stroke-width="1"/>')
+        if endpoint_txt:
+            out.append(f'<text x="{ex-6:.1f}" y="{ey-6:.1f}" font-size="10.5" text-anchor="end" '
+                       f'class="lbl" font-family="{DISP}">{esc(endpoint_txt)}</text>')
+    # asse x (distanza) sotto il pannello B
+    for dm in range(0, int(dist_max) + 1, 500):
+        x = sx(dm)
+        out.append(f'<line x1="{x:.1f}" y1="{y_b1}" x2="{x:.1f}" y2="{y_b1+4}" stroke="var(--line2)"/>')
+        lab = "traguardo" if dm == 0 else f"{dm}"
+        anc = "start" if dm == 0 else "middle"
+        out.append(f'<text x="{x:.1f}" y="{y_b1+15}" font-size="8.5" text-anchor="{anc}">{lab}</text>')
+    out.append(f'<text x="{(x0+x1)/2:.0f}" y="{H-5}" font-size="9.5" text-anchor="middle">'
+               f'distanza sul giro (m) — sopra = più veloce, sotto = chi è avanti sul cronometro</text>')
+    out.append('</svg>')
+    return "".join(out)
+
+
+def barre_divergenti(righe, *, col_pos, col_neg, lbl_pos="", lbl_neg="",
+                     titolo="", sub="", unita="km/h", caption="", ml=58):
+    """Barre orizzontali DIVERGENTI da uno zero centrale — una riga per curva,
+    nell'ordine dato (giro dall'alto in basso). valore>0 va a destra (col_pos),
+    valore<0 a sinistra (col_neg). righe: [{label, valore(±), nota}].
+    Mostra a colpo d'occhio DOVE il protagonista guadagna e dove perde.
+    """
+    n = len(righe)
+    rowh = 19
+    W = 760
+    mt, mb = 46, 26
+    H = mt + n * rowh + mb
+    cx = ml + (W - ml - 150) * 0.5 + 40      # zero centrale, spazio per note a dx
+    half = (W - 150 - cx)                      # semiampiezza max a destra
+    half = min(half, cx - ml - 6)
+    vmax = max((abs(r["valore"]) for r in righe), default=1.0) or 1.0
+    sx = Scala(0, vmax * 1.12, 0, half)
+
+    out = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" '
+           f'font-family="{MONO}" class="art-svg">']
+    out.append('<style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}</style>')
+    if titolo:
+        out.append(f'<text x="{ml-6}" y="18" class="lbl" font-size="14" '
+                   f'font-family="{DISP}" letter-spacing="0.5">{esc(titolo)}</text>')
+    if sub:
+        out.append(f'<text x="{W-16}" y="18" font-size="10.5" text-anchor="end">{esc(sub)}</text>')
+    # intestazioni dei due lati
+    if lbl_neg:
+        out.append(f'<text x="{cx-6:.0f}" y="{mt-6}" font-size="10" text-anchor="end" '
+                   f'fill="{col_neg}" font-family="{DISP}">◄ {esc(lbl_neg)}</text>')
+    if lbl_pos:
+        out.append(f'<text x="{cx+6:.0f}" y="{mt-6}" font-size="10" text-anchor="start" '
+                   f'fill="{col_pos}" font-family="{DISP}">{esc(lbl_pos)} ►</text>')
+    # asse zero
+    out.append(f'<line x1="{cx:.1f}" y1="{mt-2}" x2="{cx:.1f}" y2="{H-mb+2}" stroke="var(--line2)" stroke-width="1.2"/>')
+    for i, r in enumerate(righe):
+        y = mt + i * rowh
+        val = r["valore"]
+        w = sx(abs(val))
+        col = col_pos if val > 0 else (col_neg if val < 0 else "var(--dim)")
+        out.append(f'<text x="{ml-6}" y="{y+rowh/2+3:.1f}" font-size="10" text-anchor="end" '
+                   f'class="lbl">{esc(r["label"])}</text>')
+        if w > 0.4:
+            bx = cx if val > 0 else cx - w
+            out.append(f'<rect x="{bx:.1f}" y="{y+3:.1f}" width="{w:.1f}" height="{rowh-8}" '
+                       f'rx="2" fill="{col}" opacity="0.9"/>')
+            vt = (f'{val:+.0f}').replace("-", "−")
+            tx = cx + w + 5 if val > 0 else cx - w - 5
+            anc = "start" if val > 0 else "end"
+            out.append(f'<text x="{tx:.1f}" y="{y+rowh/2+3:.1f}" font-size="9.5" '
+                       f'text-anchor="{anc}" class="lbl">{esc(vt)}</text>')
+        else:
+            out.append(f'<text x="{cx+5:.1f}" y="{y+rowh/2+3:.1f}" font-size="9.5" text-anchor="start">=</text>')
+        if r.get("nota"):
+            out.append(f'<text x="{W-14}" y="{y+rowh/2+3:.1f}" font-size="9" text-anchor="end">{esc(r["nota"])}</text>')
+    if caption:
+        out.append(f'<text x="{ml-6}" y="{H-8}" font-size="9.5">{esc(caption)}</text>')
+    out.append('</svg>')
+    return "".join(out)
+
+
+def mappa_dominanza(segmenti, corners, *, x_range, y_range, col_prot, col_riv,
+                    sig_prot, sig_riv, n_prot, n_riv, start_xy=None,
+                    titolo="", sub="", caption=""):
+    """MAPPA DI DOMINANZA A MINISETTORI, sulla pianta GPS del circuito in scala
+    REALE (assi uguali: 1 metro in X = 1 metro in Y, così il tracciato non si
+    deforma). Ogni minisettore è disegnato del colore del pilota più veloce IN
+    QUEL TRATTO — mostra DOVE, metro per metro, nasce il vantaggio sul giro.
+
+    segmenti: [{punti:[(x,y)], prot:bool}]  (prot=True -> lo vince il protagonista)
+    corners:  [{label, x, y}]               (numeri-curva da posare sulla pianta)
+    x_range/y_range: estensione dati (min,max) su X e Y (stessa scala del GPS)
+    n_prot/n_riv: quanti minisettori vince ciascuno (per la legenda)
+    start_xy: (x,y) della linea del traguardo, se nota (marcatore).
+    """
+    W = 760
+    ml, mr, mt, mb = 22, 22, 66, 30
+    aw, ah = W - ml - mr, 520
+    dxr = (x_range[1] - x_range[0]) or 1.0
+    dyr = (y_range[1] - y_range[0]) or 1.0
+    k = min(aw / dxr, ah / dyr)                    # scala UNICA -> aspetto reale
+    plot_w, plot_h = dxr * k, dyr * k
+    ox = ml + (aw - plot_w) / 2                    # centra il tracciato nel riquadro
+    oy = mt + (ah - plot_h) / 2
+    H = mt + ah + mb
+
+    def px(x):
+        return ox + (x - x_range[0]) * k
+
+    def py(y):
+        return oy + (y_range[1] - y) * k          # Y del GPS va in su -> flip
+
+    out = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" '
+           f'font-family="{MONO}" class="art-svg">']
+    out.append('<style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}</style>')
+    if titolo:
+        out.append(f'<text x="{ml}" y="18" class="lbl" font-size="14.5" '
+                   f'font-family="{DISP}" letter-spacing="0.5">{esc(titolo)}</text>')
+    if sub:
+        out.append(f'<text x="{ml}" y="34" font-size="10.5">{esc(sub)}</text>')
+
+    # --- sagoma di fondo (grigia, sotto): il tracciato intero, per contesto ---
+    allpts = [p for s in segmenti for p in s["punti"]]
+    if allpts:
+        base_path = _path([(px(x), py(y)) for x, y in allpts])
+        out.append(f'<path d="{base_path}" fill="none" stroke="var(--line)" '
+                   f'stroke-width="9" stroke-linejoin="round" stroke-linecap="round" opacity="0.5"/>')
+
+    # --- minisettori colorati (sopra) ---
+    for s in segmenti:
+        col = col_prot if s.get("prot") else col_riv
+        p = _path([(px(x), py(y)) for x, y in s["punti"]])
+        out.append(f'<path d="{p}" fill="none" stroke="{col}" stroke-width="5.5" '
+                   f'stroke-linejoin="round" stroke-linecap="round"/>')
+
+    # --- curve: piccoli numeri sulla pianta ---
+    for c in corners:
+        cx, cy = px(c["x"]), py(c["y"])
+        out.append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="1.6" fill="var(--dim)"/>')
+        out.append(f'<text x="{cx+4:.1f}" y="{cy-3:.1f}" font-size="8" '
+                   f'opacity="0.85">{esc(c["label"])}</text>')
+
+    # --- linea del traguardo ---
+    if start_xy is not None:
+        sxp, syp = px(start_xy[0]), py(start_xy[1])
+        out.append(f'<circle cx="{sxp:.1f}" cy="{syp:.1f}" r="4.5" fill="none" '
+                   f'stroke="var(--txt)" stroke-width="1.6"/>')
+        out.append(f'<text x="{sxp+7:.1f}" y="{syp+3:.1f}" font-size="9" '
+                   f'class="lbl" font-family="{DISP}">START</text>')
+
+    # --- legenda con conteggio dei minisettori vinti ---
+    lx, ly = ml + 2, mt - 14
+    for sig, col, n in ((sig_prot, col_prot, n_prot), (sig_riv, col_riv, n_riv)):
+        out.append(f'<rect x="{lx}" y="{ly-9}" width="16" height="5" rx="2" fill="{col}"/>')
+        out.append(f'<text x="{lx+22}" y="{ly-4}" font-size="11" class="lbl">'
+                   f'{esc(sig)} · {n} settori</text>')
+        lx += 22 + 8 * len(f"{sig} · {n} settori") + 24
+    if caption:
+        out.append(f'<text x="{W-mr}" y="{H-10}" font-size="9.5" text-anchor="end">{esc(caption)}</text>')
+    out.append('</svg>')
+    return "".join(out)
+
+
+def delta_cumulato(serie, delta, corners, *, dist_max, v_range, col_prot, col_riv,
+                   titolo="", sub="", slope=None, peak=None, dip=None, endpoint_txt=""):
+    """DELTA-TIME CUMULATO su asse-distanza (il grafico che l'appassionato vede in
+    TV e non sa leggere). Due pannelli allineati su x = distanza sul giro (m):
+      A (alto)  = overlay velocità dei due giri veloci;
+      B (basso) = vantaggio cumulato del protagonista (s): sopra lo zero = avanti.
+    Il tratto di MASSIMA PENDENZA (dove il decimo nasce più in fretta) è ombreggiato
+    e annotato. Aspetto preservato: le annotazioni non si deformano.
+
+    serie: [{sigla, colore, punti:[(dist, speed)]}] (protagonista per primo)
+    delta: [(dist, vantaggio_prot_sec)]   corners: [{label, dist}]
+    slope: {d0, d1, txt} tratto di massima pendenza da ombreggiare (opz.)
+    peak/dip: {dist, val, txt} punti notevoli sul pannello B (opz.)
+    """
+    W, H = 780, 470
+    ml, mr, mt = 54, 18, 62
+    h_a, gap, h_b = 196, 42, 100
+    y_a0, y_a1 = mt, mt + h_a
+    y_b0, y_b1 = y_a1 + gap, y_a1 + gap + h_b
+    x0, x1 = ml, W - mr
+    sx = Scala(0, dist_max, x0, x1)
+    sv = Scala(v_range[0], v_range[1], y_a1, y_a0)
+    dvals = [d for _, d in delta]
+    dlo = min(dvals + [0.0]); dhi = max(dvals + [0.0])
+    pad = (dhi - dlo) * 0.16 or 0.02
+    sd = Scala(dlo - pad, dhi + pad, y_b1, y_b0)
+
+    out = [f'<svg viewBox="0 0 {W} {H}" xmlns="http://www.w3.org/2000/svg" '
+           f'font-family="{MONO}" class="art-svg">']
+    out.append('<style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}'
+               '.art-svg .grid{stroke:var(--line);stroke-width:1}</style>')
+    if titolo:
+        out.append(f'<text x="{x0}" y="18" class="lbl" font-size="14.5" '
+                   f'font-family="{DISP}" letter-spacing="0.5">{esc(titolo)}</text>')
+    if sub:
+        out.append(f'<text x="{x0}" y="34" font-size="10.5">{esc(sub)}</text>')
+
+    # --- tratto di massima pendenza (ombra su entrambi i pannelli) ---
+    if slope is not None:
+        xa, xb = sx(slope["d0"]), sx(slope["d1"])
+        out.append(f'<rect x="{xa:.1f}" y="{y_a0}" width="{xb-xa:.1f}" height="{y_a1-y_a0}" '
+                   f'fill="{col_prot}" opacity="0.10"/>')
+        out.append(f'<rect x="{xa:.1f}" y="{y_b0}" width="{xb-xa:.1f}" height="{y_b1-y_b0}" '
+                   f'fill="{col_prot}" opacity="0.10"/>')
+        out.append(f'<text x="{(xa+xb)/2:.1f}" y="{mt-6}" font-size="10.5" text-anchor="middle" '
+                   f'class="lbl" font-family="{DISP}" fill="{col_prot}">{esc(slope["txt"])}</text>')
+
+    # --- pannello A: griglia velocità ---
+    v = v_range[0]
+    while v <= v_range[1]:
+        y = sv(v)
+        out.append(f'<line x1="{x0}" y1="{y:.1f}" x2="{x1}" y2="{y:.1f}" class="grid"/>')
+        out.append(f'<text x="{x0-6}" y="{y+3:.1f}" font-size="9" text-anchor="end">{v}</text>')
+        v += 50
+    out.append(f'<text x="{x0-6}" y="{y_a0-6}" font-size="9" text-anchor="end" fill="var(--accent)">km/h</text>')
+
+    # --- curve: tacche + numeri sull'asse fra i pannelli ---
+    for c in corners:
+        xc = sx(c["dist"])
+        out.append(f'<line x1="{xc:.1f}" y1="{y_a1}" x2="{xc:.1f}" y2="{y_a1+4}" stroke="var(--line2)"/>')
+        out.append(f'<text x="{xc:.1f}" y="{y_a1+14}" font-size="8" text-anchor="middle">{esc(c["label"])}</text>')
+
+    # --- velocità: serie (protagonista pieno, rivale tratteggiato) ---
+    for i, s in enumerate(serie):
+        col = s.get("colore") or "var(--dim)"
+        dash = ' stroke-dasharray="5 4"' if i else ''
+        pts = [(sx(d), sv(max(v_range[0], min(v_range[1], v)))) for d, v in s["punti"]]
+        out.append(f'<path d="{_path(pts)}" fill="none" stroke="{col}" stroke-width="2.1" '
+                   f'stroke-linejoin="round" stroke-linecap="round"{dash}/>')
+    lx = x1 - 4
+    for s in reversed(serie):
+        col = s.get("colore") or "var(--dim)"
+        sig = str(s["sigla"])
+        lx -= 11 * len(sig) + 8
+        out.append(f'<text x="{lx+22}" y="{y_a0+13}" font-size="10.5" class="lbl" text-anchor="start">{esc(sig)}</text>')
+        out.append(f'<rect x="{lx}" y="{y_a0+5}" width="16" height="3" rx="1.5" fill="{col}"/>')
+        lx -= 12
+
+    # --- pannello B: vantaggio cumulato ---
+    yz = sd(0.0)
+    trace = [(sx(d), sd(v)) for d, v in delta]
+    if trace:
+        area = f'M{trace[0][0]:.1f} {yz:.1f} ' + " ".join(f'L{x:.1f} {y:.1f}' for x, y in trace) + \
+               f' L{trace[-1][0]:.1f} {yz:.1f} Z'
+        out.append(f'<clipPath id="dcU"><rect x="{x0}" y="{y_b0}" width="{x1-x0}" height="{yz-y_b0:.1f}"/></clipPath>')
+        out.append(f'<clipPath id="dcD"><rect x="{x0}" y="{yz:.1f}" width="{x1-x0}" height="{y_b1-yz:.1f}"/></clipPath>')
+        out.append(f'<path d="{area}" fill="{col_prot}" opacity="0.16" clip-path="url(#dcU)"/>')
+        out.append(f'<path d="{area}" fill="{col_riv}" opacity="0.16" clip-path="url(#dcD)"/>')
+    out.append(f'<line x1="{x0}" y1="{yz:.1f}" x2="{x1}" y2="{yz:.1f}" stroke="var(--line2)" stroke-width="1"/>')
+    for dv in (dlo, 0.0, dhi):
+        y = sd(dv)
+        out.append(f'<text x="{x0-6}" y="{y+3:.1f}" font-size="8.5" text-anchor="end">'
+                   f'{("+%.2f"%dv).replace(".",",") if abs(dv)>1e-9 else "0"}</text>')
+    out.append(f'<text x="{x0-6}" y="{y_b0-4}" font-size="8.5" text-anchor="end" fill="var(--accent)">'
+               f'Δt (s)</text>')
+    out.append(f'<path d="{_path(trace)}" fill="none" stroke="var(--txt)" stroke-width="1.8" '
+               f'stroke-linejoin="round" stroke-linecap="round"/>')
+    for an, colr in ((dip, col_riv), (peak, col_prot)):
+        if not an:
+            continue
+        ax, ay = sx(an["dist"]), sd(an["val"])
+        out.append(f'<circle cx="{ax:.1f}" cy="{ay:.1f}" r="3" fill="{colr}"/>')
+        dy = -6 if an["val"] >= 0 else 12
+        anc = "middle" if x0 + 60 < ax < x1 - 60 else ("start" if ax <= x0 + 60 else "end")
+        out.append(f'<text x="{ax:.1f}" y="{ay+dy:.1f}" font-size="9" text-anchor="{anc}" '
+                   f'class="lbl">{esc(an["txt"])}</text>')
+    if trace:
+        ex, ey = trace[-1]
+        out.append(f'<circle cx="{ex:.1f}" cy="{ey:.1f}" r="4" fill="{col_prot}" '
+                   f'stroke="var(--txt)" stroke-width="1"/>')
+        if endpoint_txt:
+            out.append(f'<text x="{ex-6:.1f}" y="{ey-6:.1f}" font-size="10.5" text-anchor="end" '
+                       f'class="lbl" font-family="{DISP}">{esc(endpoint_txt)}</text>')
+    for dm in range(0, int(dist_max) + 1, 500):
+        x = sx(dm)
+        out.append(f'<line x1="{x:.1f}" y1="{y_b1}" x2="{x:.1f}" y2="{y_b1+4}" stroke="var(--line2)"/>')
+        lab = "traguardo" if dm == 0 else f"{dm}"
+        anc = "start" if dm == 0 else "middle"
+        out.append(f'<text x="{x:.1f}" y="{y_b1+15}" font-size="8.5" text-anchor="{anc}">{lab}</text>')
+    out.append(f'<text x="{(x0+x1)/2:.0f}" y="{H-5}" font-size="9.5" text-anchor="middle">'
+               f'distanza sul giro (m) — sopra = più veloce, sotto = chi è avanti sul cronometro</text>')
     out.append('</svg>')
     return "".join(out)

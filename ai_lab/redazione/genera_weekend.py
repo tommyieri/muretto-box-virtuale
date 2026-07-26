@@ -94,12 +94,33 @@ def pubblica_e_deploy(prodotti, deploy=False):
     senza input umano) e, con deploy=True, committa e mette online.
     Il push e' GUARDATO: se il main locale e' indietro rispetto a origin non pusha
     (evita il non-fast-forward), lasciando il commit pronto per una sync a mano."""
-    import coda
+    import json, coda
+    try:
+        import redattore
+    except Exception:
+        redattore = None
     pubbl = []
     for r in prodotti:
+        # VERIFICATORE pre-pubblicazione: un pezzo che non passa NON va online (resta
+        # bozza per la revisione umana). Deterministico sempre; LLM avversariale se c'e'
+        # la chiave. Fail-safe: se il verificatore stesso erra, si pubblica (i check
+        # deterministici di scrittura sono gia' passati a monte).
+        if redattore is not None:
+            try:
+                d = os.path.join(base.BOZZE, r["id"])
+                art = json.load(open(os.path.join(d, "articolo.json")))
+                fp = os.path.join(d, "facts.json")
+                fatti = json.load(open(fp)) if os.path.exists(fp) else {}
+                esito = redattore.verifica(art, fatti)
+                if not esito.get("ok", True):
+                    print(f"   [verifica] {r['id']}: NON pubblicato — problemi: {esito['problemi']}")
+                    continue
+                print(f"   [verifica] {r['id']}: OK")
+            except Exception as e:
+                print(f"   [verifica] {r['id']}: verificatore in errore ({e}) — procedo (fail-safe)")
         try:
             coda.transizione(r["id"], "approvato", attore="auto",
-                             nota="pubblicazione automatica post-sessione (policy Tommi 25/07)")
+                             nota="pubblicazione automatica post-sessione (policy Tommi 25/07), verifica OK")
             pubbl.append(r["id"]); print(f"   pubblicato: {r['id']}")
         except SystemExit as e:
             print(f"   [pubblica] {r['id']}: transizione non riuscita ({e})")

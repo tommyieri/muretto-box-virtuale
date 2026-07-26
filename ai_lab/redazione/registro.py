@@ -21,6 +21,7 @@ GENERATORI = [
     "genera_fp_rapporti",
     "genera_quali_gap_pole",
     "genera_curva_simbolo",
+    "genera_recap_weekend",
     # genera_linea_diversa: NON in rotazione — il GPS (~13-16 m) non risolve le
     # traiettorie su una pista larga ~11-13 m (differenza sotto il rumore stesso-pilota).
     # File tenuto (fail-safe, si auto-salta) come tentativo documentato: decisione PO.

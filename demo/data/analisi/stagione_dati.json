@@ -1,8 +1,8 @@
 {
   "anno": 2026,
   "aggiornato": "2026-07-26",
-  "n_gare": 9,
-  "ultima": "Spa-Francorchamps",
+  "n_gare": 10,
+  "ultima": "Budapest",
   "gare": [
     {
       "gp": "Australian Grand Prix",
@@ -564,6 +564,69 @@
         "Aston Martin": {
           "vmax": 311.8,
           "cornering": 139.0
+        }
+      }
+    },
+    {
+      "gp": "Hungary",
+      "circuito": "Budapest",
+      "data": "2026-07-26",
+      "round": 11,
+      "dna": {
+        "full_throttle_pct": 50.4,
+        "top": 329.0,
+        "n_curve": 16,
+        "curve_lente": 4,
+        "curve_medie": 11,
+        "curve_veloci": 1,
+        "vel_curva_med": 184.0,
+        "lunghezza_m": 4323.0,
+        "n_giri": 12
+      },
+      "team": {
+        "McLaren": {
+          "vmax": 316.0,
+          "cornering": 140.0
+        },
+        "Red Bull Racing": {
+          "vmax": 318.5,
+          "cornering": 139.5
+        },
+        "Mercedes": {
+          "vmax": 333.0,
+          "cornering": 144.2
+        },
+        "Ferrari": {
+          "vmax": 332.2,
+          "cornering": 142.0
+        },
+        "Racing Bulls": {
+          "vmax": 318.0,
+          "cornering": 136.0
+        },
+        "Audi": {
+          "vmax": 330.5,
+          "cornering": 135.8
+        },
+        "Alpine": {
+          "vmax": 330.5,
+          "cornering": 138.0
+        },
+        "Aston Martin": {
+          "vmax": 319.2,
+          "cornering": 137.0
+        },
+        "Haas F1 Team": {
+          "vmax": 320.5,
+          "cornering": 137.8
+        },
+        "Williams": {
+          "vmax": 329.0,
+          "cornering": 141.5
+        },
+        "Cadillac": {
+          "vmax": 325.0,
+          "cornering": 137.5
         }
       }
     }

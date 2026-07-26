@@ -1,0 +1,5 @@
+# Articoli della redazione — gira SUL MAC (telemetria FastF1 in cache qui).
+# A :15 e :45 (sfasato dai :00/:30 della telemetria per non sovrapporsi): se una
+# sessione del GP in corso e' disponibile e non ancora fatta, genera->verifica->pubblica.
+# Log: ~/muretto/data/auto_articoli.log
+15,45 * * * * /Users/tommi/muretto/scheduling/auto_articoli_run.sh

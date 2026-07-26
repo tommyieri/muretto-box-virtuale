@@ -1,7 +1,7 @@
 {
   "id": "dna-circuiti-2026",
   "anno": 2026,
-  "n_gare": 9,
+  "n_gare": 10,
   "circuiti": [
     {
       "nome": "Spa-Francorchamps",
@@ -108,6 +108,19 @@
       "n_giri": 12
     },
     {
+      "nome": "Budapest",
+      "gp": "Hungary",
+      "full_throttle_pct": 50.4,
+      "top": 329.0,
+      "n_curve": 16,
+      "curve_lente": 4,
+      "curve_medie": 11,
+      "curve_veloci": 1,
+      "vel_curva_med": 184.0,
+      "lunghezza_m": 4323.0,
+      "n_giri": 12
+    },
+    {
       "nome": "Barcelona",
       "gp": "Barcelona",
       "full_throttle_pct": 49.7,
@@ -121,7 +134,7 @@
       "n_giri": 12
     }
   ],
-  "ft_mediana": 65.2,
+  "ft_mediana": 65.15,
   "motore": {
     "nome": "Spa-Francorchamps",
     "gp": "Belgian",
