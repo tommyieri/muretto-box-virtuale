@@ -83,9 +83,12 @@ def _match_sessione(mod, sessione):
     sfornerebbero bozze-FP stantie."""
     ss = getattr(mod, "META", {}).get("sessioni")
     if sessione is None:
-        if ss and all(str(s).startswith("FP") for s in ss):
-            return False
-        return True
+        # post-gara (auto_gara): SOLO i generatori-gara/stagione (Race/*) o senza
+        # sessione dichiarata. Quelli di FP e di Qualifica partono al loro innesco
+        # di sessione (scheduler), non post-gara: cosi' non si sdoppiano.
+        if not ss:
+            return True
+        return "Race" in ss or "*" in ss
     if not ss:
         return False
     return sessione in ss or "*" in ss

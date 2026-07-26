@@ -640,7 +640,7 @@ META = {
     "titolo": "Passo-gara dai long-run, de-confuso dall’età-gomma (specifico-FP)",
     "tag": ["passo-gara", "long-run", "prove-libere"],
     "descrizione": "il riferimento del passo-gara sui long-run, de-confuso dall’età-gomma — per qualsiasi GP",
-    "richiede": "telemetria", "gare": ["*"], "sessioni": ["FP2", "FP3"],
+    "richiede": "telemetria", "gare": ["*"], "sessioni": ["FP2"],  # passo-gara = long-run FP2
 }
 
 
