@@ -77,6 +77,61 @@ def guardia_numeri(html, ammessi):
     return fuori
 
 
+_VIETATI = re.compile(
+    r"\b(ERS|MGU-?[KH]?|clipping|deployment|harvest\w*|SoC|stato di carica|"
+    r"mappa energetica|recupero energetico|batteria)\b", re.I)
+
+
+def verifica(articolo, facts):
+    """Verificatore pre-pubblicazione. Ritorna {'ok':bool, 'problemi':[...]}.
+    DETERMINISTICO sempre (numeri tracciabili nei fatti + termini vietati 2026:
+    energia/ERS/clipping...). Se c'e' la chiave, aggiunge un passaggio LLM
+    AVVERSARIALE (editor scettico) che cerca overclaim, caveat mancanti,
+    contraddizioni, meteo/strategia inventati. Fail-safe: senza chiave o con
+    errore restano i soli check deterministici (mai un falso 'ok' per un errore)."""
+    import json as _json
+    problemi = []
+    sez = articolo.get("sezioni", [])
+    # DETERMINISTICO: solo i termini vietati (affidabile, zero falsi positivi). NON uso
+    # qui guardia_numeri: bloccherebbe i numeri DERIVATI legittimi (es. "0,9 m" da un gap
+    # in tempo x la velocita'), che non stanno grezzi nei fatti. La tracciabilita' dei
+    # numeri la giudica l'LLM, che distingue il derivato dall'inventato.
+    for s in sez:
+        html = s.get("html", "") or ""
+        if _VIETATI.search(re.sub("<[^>]+>", " ", html)):
+            problemi.append(f"termine vietato (energia/ERS, assente nel 2026) in '{s.get('tag')}'")
+    try:
+        if disponibile():
+            import anthropic
+            client = anthropic.Anthropic()
+            corpo = _json.dumps({"provenienza": articolo.get("provenienza"),
+                                 "sezioni": [{"tag": s.get("tag"), "titolo": s.get("titolo"),
+                                              "html": s.get("html")} for s in sez]}, ensure_ascii=False)
+            prompt = ("Sei l'editor scettico di Muretto. Dati i FATTI e l'ARTICOLO, elenca SOLO i "
+                      "problemi REALI come JSON array di stringhe (vuoto se non ce ne sono):\n"
+                      "- numeri chiaramente INVENTATI: non nei fatti E non ricavabili con semplice "
+                      "aritmetica dai fatti. NON segnalare quantita' DERIVATE (es. una distanza da "
+                      "tempo x velocita'), arrotondamenti, interi di conteggio, anni, o CITAZIONI "
+                      "attribuite a una fonte indicata in provenienza;\n"
+                      "- affermazioni su energia/ERS/deployment/clipping/batteria;\n"
+                      "- meteo o condizioni pista inventati; strategia gomme o numero di soste speculati;\n"
+                      "- superlativi assoluti non dimostrati; contraddizioni interne;\n"
+                      "- se cita la qualifica, manca il caveat 'qualifica != griglia'.\n"
+                      "NON inventare problemi inesistenti; se il pezzo e' corretto, rispondi [].\n\nFATTI:\n" +
+                      _json.dumps(facts or {}, ensure_ascii=False) + "\n\nARTICOLO:\n" + corpo +
+                      "\n\nRispondi SOLO col JSON array.")
+            msg = client.messages.create(model=MODELLO, max_tokens=2000,
+                                         messages=[{"role": "user", "content": prompt}])
+            out = "".join(b.text for b in msg.content if getattr(b, "type", "") == "text")
+            m = re.search(r"\[.*\]", out, re.S)
+            if m:
+                for p in _json.loads(m.group(0)):
+                    problemi.append("editor-LLM: " + str(p))
+    except Exception:
+        pass  # fail-safe: restano i check deterministici (termini vietati)
+    return {"ok": len(problemi) == 0, "problemi": problemi}
+
+
 def scrivi_prosa(fatti, breve, numeri_ammessi):
     """Scrive le sezioni con l'LLM. Ritorna la lista [{tag,titolo,html}] oppure
     None se l'LLM non e' disponibile o la guardia dei numeri non passa.
