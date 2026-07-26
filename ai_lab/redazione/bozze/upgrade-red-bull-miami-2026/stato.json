@@ -1,0 +1,26 @@
+{
+  "id": "upgrade-red-bull-miami-2026",
+  "stato": "pubblicato",
+  "attore": "auto",
+  "creato": "2026-07-26",
+  "storico": [
+    {
+      "stato": "bozza",
+      "attore": "redazione",
+      "quando": "2026-07-26",
+      "nota": "bozza generata"
+    },
+    {
+      "stato": "approvato",
+      "attore": "auto",
+      "quando": "2026-07-27",
+      "nota": null
+    },
+    {
+      "stato": "pubblicato",
+      "attore": "auto",
+      "quando": "2026-07-27",
+      "nota": "pubblicato all'approvazione"
+    }
+  ]
+}
