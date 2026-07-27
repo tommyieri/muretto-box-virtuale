@@ -198,6 +198,19 @@ def costruisci(gara, sessione=None, data_bozza=None):
     ff1_name, gp_it = _risolvi_gara(gara)
 
     ses = tele.carica_sessione(anno, ff1_name, sessione)
+
+    # WEEKEND SPRINT: questo pezzo si fa da parte. Il sabato di uno sprint la
+    # redazione ha gia' tre pezzi di telemetria (la scia nella sprint, il passo
+    # della sprint, il gap dalla pole) piu' il confronto fra le due qualifiche:
+    # il tetto di 6-7 pezzi a weekend salta, e il ritratto di una curva e' l'unico
+    # senza una scoperta dentro. Ritorna None (contratto: non si solleva).
+    try:
+        _sprint = "sprint" in str(ses.event["EventFormat"]).lower()
+    except Exception:
+        _sprint = False
+    if _sprint:
+        return None
+
     piloti = tele.piloti_sessione(ses)
     colori = base.carica_colori()
     cs = curve.curve(ses)
@@ -499,6 +512,13 @@ META = {
     "titolo": "La curva-simbolo del circuito (ritratto a tre fasi)",
     "tag": ["telemetria", "curva-simbolo", "guida"],
     "descrizione": "la staccata-icona del circuito e come i piloti la attaccano — per qualsiasi GP",
+    # SOLO "Q". Valutato per i WEEKEND SPRINT (dove il venerdì ha SQ al posto di
+    # FP2/FP3) e SCARTATO, con la prova in mano: fatto girare su Miami 2026 SQ e Q
+    # sceglie la STESSA curva (curva 17), scrive lo STESSO titolo e produce lo STESSO
+    # id di bozza (curva-simbolo-miami-gardens-2026, senza sessione) — cioè la bozza
+    # del sabato cancella quella del venerdì. Cambia solo il protagonista (HAD in SQ,
+    # VER in Q): non è un secondo articolo, è lo stesso articolo con un nome diverso
+    # dentro. In un weekend da 6-7 pezzi un doppione non si paga.
     "richiede": "telemetria", "gare": ["*"], "sessioni": ["Q"],  # affiancata alla quali (evita sovraccarico FP)
 }
 

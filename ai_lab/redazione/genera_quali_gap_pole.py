@@ -110,11 +110,20 @@ SES_IT = {"Qualifying": "Qualifica", "Sprint Qualifying": "Qualifica Sprint",
           "Sprint": "Sprint", "Race": "Gara"}
 
 
-def _settori_ufficiali(nome, prot, rivale):
+def _settori_ufficiali(nome, prot, rivale, sessione="Q"):
     """Tempi di settore da demo/data/quali_<nome>.json se disponibili per ENTRAMBI
     i piloti (fonte canonica dei delta). Ritorna (secProt, secRiv, best_flags, file)
-    oppure None (-> si ripiega su FastF1)."""
+    oppure None (-> si ripiega su FastF1).
+
+    IL FILE E' SOLO DELLA QUALIFICA DELLA DOMENICA. Il nome quali_<gara>.json non
+    porta la sessione: chiamato con sessione="SQ" (Qualifica Sprint del venerdì)
+    restituirebbe i settori del SABATO spacciandoli per quelli del venerdì, senza un
+    solo errore — la stessa classe di guasto silenzioso che tele.risolvi_gp evita
+    sulle gare. Fuori dalla qualifica vera si ripiega su FastF1, che i settori li
+    legge dalla sessione giusta."""
     if not nome:
+        return None
+    if str(sessione or "").strip().upper() not in ("Q", "QUALIFYING"):
         return None
     p = os.path.join(DATA, f"quali_{nome}.json")
     if not os.path.exists(p):
@@ -235,7 +244,7 @@ def costruisci(gara, sessione="Q", data_bozza=None):
         colH = "var(--dim)"
 
     # --- delta per settore: JSON ufficiale se c'e', altrimenti FastF1 ----------
-    off = _settori_ufficiali(nome_it, PROT, RIVALE)
+    off = _settori_ufficiali(nome_it, PROT, RIVALE, sessione=sessione)
     if off:
         secN, secH, best_flag, sett_file = off
         sett_fonte = f"tempi di settore ufficiali (demo/data/{sett_file})"
@@ -685,6 +694,15 @@ META = {
     "tag": ["telemetria", "qualifica", "pole"],
     "descrizione": ("overlay Speed-vs-Distance + vantaggio cumulato + minime per curva: "
                     "dove pole-man e P2 guadagnano/perdono il giro — per qualsiasi GP"),
+    # SOLO "Q". Valutato per i WEEKEND SPRINT e SCARTATO, con tre ragioni misurate:
+    #  1) l'id della bozza è quali-gap-pole-<circuito>-<anno>, senza sessione: una
+    #     bozza da SQ (venerdì) e una da Q (sabato) si sovrascriverebbero a vicenda;
+    #  2) i settori "ufficiali" vengono da demo/data/quali_<gara>.json, che è il file
+    #     della qualifica del sabato: su SQ pubblicherebbe i settori del giorno dopo
+    #     (ora guardato dentro _settori_ufficiali, ma il rischio resta strutturale);
+    #  3) tutta la prosa dell'Effetto parla della GRIGLIA della domenica e delle
+    #     penalità: da una SQ non è una cosa vera, e il confronto SQ↔Q è già il pezzo
+    #     "scalino fra le due qualifiche" (genera_sprint_scalino.py).
     "richiede": "telemetria", "gare": ["*"], "sessioni": ["Q"],
 }
 

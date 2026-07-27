@@ -9,10 +9,18 @@ Angolo (Canale B, telemetria FastF1). Due misure, robustezza opposta:
      sessione (la più usata ad alta velocità che tutti raggiungono) e la soglia di
      velocità oltre cui quella marcia è davvero in uso — nessun numero di pista è
      cablato.
-  2) LA PUNTA in prove libere è INDICATIVA: carburante e mappa motore ignoti, la
-     scia gonfia il picco. Per questo la mediana dei picchi per-giro, mai il picco.
-     E soprattutto: il rapporto NON deve "spiegare" la punta (Spearman): corto ≠
-     lento in fondo. È il cuore, ed è track-agnostic.
+  2) LA PUNTA è INDICATIVA: carburante e mappa motore ignoti, la scia gonfia il
+     picco. Per questo la mediana dei picchi per-giro, mai il picco. E soprattutto:
+     il rapporto NON deve "spiegare" la punta (Spearman): corto ≠ lento in fondo.
+     È il cuore, ed è track-agnostic.
+
+WEEKEND SPRINT. In un weekend con la sprint le sessioni "FP2" e "FP3" NON ESISTONO:
+il venerdì ha FP1 e poi subito la Qualifica Sprint ("SQ"). Questo pezzo gira anche
+su SQ — la misura è identica (giri lanciati, marcia-alta derivata, mediana dei
+picchi) — e cambia solo il CAVEAT: in prove libere carburante e mappa motore sono
+ignoti, in qualifica sprint i giri lanciati sono tutti a benzina bassa e motore in
+spinta, quindi la punta è meno sporca (ma la scia resta, e la mediana pure). La
+prosa si adatta da sola via _ambito(): nessuna sessione è cablata nel testo.
 
 Nessun literal di Gran Premio/circuito/round/anno: tutto derivato dai parametri e
 da ses.event. Le caratterizzazioni assolute di pista ("punta alta/bassa") sono
@@ -92,8 +100,90 @@ def _ses_label(sessione):
     if m:
         return f"Prove libere {m.group(1)}"
     s = str(sessione or "").strip().upper()
-    return {"Q": "Qualifica", "S": "Sprint", "SQ": "Sprint Qualifica",
+    return {"Q": "Qualifica", "S": "Sprint", "SQ": "Qualifica Sprint",
             "SS": "Sprint Shootout", "R": "Gara"}.get(s, sessione or "sessione")
+
+
+def _ambito(sessione):
+    """Come la prosa chiama il contesto della sessione, e quanto pesa il caveat
+    sulla punta. La misura non cambia (giri lanciati, marcia-alta derivata): cambia
+    quello che si può onestamente dire della velocità di punta.
+
+    In PROVE LIBERE carburante e mappa motore sono ignoti: la punta è indicativa e
+    basta. In QUALIFICA SPRINT i giri lanciati sono tutti a benzina bassa e motore
+    in spinta — il confondente più grosso sparisce, resta la scia (per cui si usa
+    comunque la mediana dei picchi per-giro, non il picco). Dirlo al contrario
+    sarebbe una bugia in entrambe le direzioni: in FP la punta non è un verdetto,
+    in SQ il caveat sul carburante non c'è.
+    """
+    s = str(sessione or "").strip().upper()
+    if s in ("SQ", "SS"):
+        return {
+            "nome": "qualifica sprint",
+            "in": "in qualifica sprint",
+            "In": "In qualifica sprint",
+            "confondente": ("i giri lanciati sono tutti a benzina bassa e motore in spinta, "
+                            "quindi il carburante non confonde — ma la scia sì, e gonfia il picco"),
+            "prov_valore": "benzina bassa per tutti; mappe non pubbliche",
+            "prov_stato": "STIMATO",
+            "prov_da": ("qualifica sprint: il carico di carburante è basso per tutti (giro secco), "
+                        "le mappe restano non pubbliche → la punta è confrontabile ma non è un verdetto"),
+        }
+    return {
+        "nome": "prove libere",
+        "in": "in prove libere",
+        "In": "In prove libere",
+        "confondente": ("carburante e mappa motore sono ignoti, e la scia gonfia il picco"),
+        "prov_valore": "ignoti",
+        "prov_stato": "NON_MISURABILE",
+        "prov_da": ("prove libere: assetto/carico e mappe non pubblici → la punta non è un verdetto"),
+    }
+
+
+def _p_spearman(rho, n):
+    """p a due code della correlazione di rango, via l'approssimazione t di Student
+    (t = rho·sqrt((n−2)/(1−rho²)), n−2 gradi). Serve UN cancello, non un trattato:
+    con ~20 vetture la soglia del 5% cade intorno a |rho| = 0,45."""
+    import math as _m
+    if rho is None or n is None or n < 4 or abs(rho) >= 1.0:
+        return None
+    t = abs(rho) * _m.sqrt((n - 2) / (1.0 - rho * rho))
+    # coda della t con df = n-2, per via dell'incompleta beta (math.erf non basta)
+    df = n - 2
+    x = df / (df + t * t)
+    return _beta_inc(0.5 * df, 0.5, x)
+
+
+def _beta_inc(a, b, x):
+    """I_x(a,b) — beta incompleta regolarizzata, frazione continua di Lentz.
+    (Il p a due code della t è esattamente I_{df/(df+t²)}(df/2, 1/2).)"""
+    import math as _m
+    if x <= 0:
+        return 0.0
+    if x >= 1:
+        return 1.0
+    lbeta = _m.lgamma(a) + _m.lgamma(b) - _m.lgamma(a + b)
+    front = _m.exp(_m.log(x) * a + _m.log(1 - x) * b - lbeta) / a
+    if x >= (a + 1) / (a + b + 2):
+        return 1.0 - _beta_inc(b, a, 1 - x)
+    f, c, d = 1.0, 1.0, 0.0
+    for i in range(0, 300):
+        m = i // 2
+        if i == 0:
+            num = 1.0
+        elif i % 2 == 0:
+            num = (m * (b - m) * x) / ((a + 2 * m - 1) * (a + 2 * m))
+        else:
+            num = -((a + m) * (a + b + m) * x) / ((a + 2 * m) * (a + 2 * m + 1))
+        d = 1.0 + num * d
+        d = 1e-30 if abs(d) < 1e-30 else d
+        d = 1.0 / d
+        c = 1.0 + num / c
+        c = 1e-30 if abs(c) < 1e-30 else c
+        f *= c * d
+        if abs(1.0 - c * d) < 1e-10:
+            break
+    return front * (f - 1.0)
 
 
 # ---------------------------------------------------------------- misura -------
@@ -279,6 +369,7 @@ def costruisci(gara=None, data_bozza=None, sessione=None):
     slug_gp = _slug(location or gp_disp)
     idart = f"fp-rapporti-{slug_gp}-{anno}"
     ses_lab = _ses_label(sessione)
+    amb = _ambito(sessione)      # come la prosa chiama la sessione, e che caveat merita
 
     # --- passo 1: raccolta grezza per pilota ---
     dati = {}
@@ -366,6 +457,15 @@ def costruisci(gara=None, data_bozza=None, sessione=None):
     xs = [con_top[s]["ratio_top"] for s in comuni]
     ys = [per_car[s]["vmax_med"] for s in comuni]
     rho = spearman(xs, ys)
+    # IL CANCELLO DEL PEZZO. La tesi "corto ≠ lento in fondo" è un NULL: si può
+    # sostenere solo finché la correlazione NON regge. Su FP3 è sempre stata attorno
+    # a zero (misurato: −0,01 Ungheria, −0,07 Belgio, +0,02 Austria), ma in QUALIFICA
+    # SPRINT il carburante non confonde più e il legame geometrico può affiorare
+    # (misurato: −0,48 a Miami, p=0,03). Se regge, l'articolo NON insiste sul null:
+    # cambia titolo e prosa e racconta l'eccezione. Un pezzo che scrive "praticamente
+    # nulla" accanto a −0,48 sarebbe semplicemente falso.
+    p_rho = _p_spearman(rho, len(comuni))
+    rho_regge = bool(p_rho is not None and p_rho < 0.05)
 
     # --- % pieno gas (carattere della sessione, valore-griglia) ---
     gas = [(s, d["pct_gas"]) for s, d in per_car.items()]
@@ -399,6 +499,7 @@ def costruisci(gara=None, data_bozza=None, sessione=None):
         "scia_top": {"sig": scia_top[0], "picco": scia_top[1]["vmax_picco"],
                      "med": scia_top[1]["vmax_med"], "scia": scia_top[1]["scia"]},
         "spearman": rho, "n_corr": len(comuni),
+        "spearman_p": p_rho, "spearman_regge": rho_regge,
         "gas_grid": gas_grid, "gas_hi": gas_hi, "gas_lo": gas_lo, "gas_spread": gas_spread,
         "drs": sorted(drs_all), "drs_degenere": drs_degenere,
         "gear_hi": {GEAR_TOP: n_top_hi, **({COER: n_coer_hi} if COER else {})},
@@ -454,7 +555,7 @@ def costruisci(gara=None, data_bozza=None, sessione=None):
         x_label=f"rapporto in {_ord(GEAR_TOP)} (giri/min per km/h) → più corto",
         y_label="velocità di punta mediana (km/h)",
         cx=stt.median(xs), cy=vmed_grid,
-        titolo="Corto ≠ lento in fondo",
+        titolo=("Corto e lento in fondo, qui insieme" if rho_regge else "Corto ≠ lento in fondo"),
         sub=f"Spearman {it(rho,2)} · n={len(comuni)} vetture · {sessione}",
         ang=("corto, punta bassa", "corto, punta alta",
              "lungo, punta alta", "lungo, punta bassa"))
@@ -467,15 +568,24 @@ def costruisci(gara=None, data_bozza=None, sessione=None):
                    if corto_doppio else f"{sg(CORTO)}")
 
     occhiello = f"Telemetria · {ses_lab} · {gp_disp} {anno}"
-    titolo = f"Il cambio più corto della griglia, e perché non racconta la velocità di punta"
+    titolo = (f"Il cambio più corto della griglia, e quanto pesa davvero sulla velocità di punta"
+              if rho_regge else
+              f"Il cambio più corto della griglia, e perché non racconta la velocità di punta")
     sommario = (
         f"Sui giri lanciati di {ses_lab} a {location} la {_ord(GEAR_TOP)} marcia — la "
         f"marcia-alta più usata della sessione, ricavata dai dati — misura il rapporto "
         f"del cambio: il più corto è di {corto_frase}, il più lungo di {sg(LUNGO)}, uno "
         f"spread del {it(spread_pc)}%. È geometria pura, immune a carburante, mappa "
-        f"motore e scia. Ma la tentazione «corto uguale lento in fondo» non regge: il "
-        f"rapporto lo misuriamo, la velocità di punta in prove libere resta indicativa e "
-        f"non la spieghiamo col cambio (Spearman {it(rho,2)}).")
+        f"motore e scia. "
+        + (f"E qui, per una volta, la tentazione «corto uguale lento in fondo» qualcosa "
+           f"la dice: chi ha il rapporto più corto tende ad arrivare più piano in fondo "
+           f"(Spearman {it(rho,2)}, p={it(p_rho,3)} su {len(comuni)} vetture). Resta una "
+           f"correlazione fra {len(comuni)} punti, non una legge: il rapporto è misurato, "
+           f"la punta {amb['in']} no."
+           if rho_regge else
+           f"Ma la tentazione «corto uguale lento in fondo» non regge: il rapporto lo "
+           f"misuriamo, la velocità di punta {amb['in']} resta indicativa e non la "
+           f"spieghiamo col cambio (Spearman {it(rho,2)})."))
 
     # Evidenza
     ev_html = (
@@ -519,9 +629,9 @@ def costruisci(gara=None, data_bozza=None, sessione=None):
             f"Per questo il confronto di griglia lo teniamo qui.</p>")
     causa_html += (
         f"<p>Un cambio più corto tiene il regime più alto a ogni velocità: è una scelta di "
-        f"rapporti, e questa vettura la porta all’estremo. Le conseguenze a valle — "
-        f"recupero energia, finestra termica del motore — non le misuriamo (i canali ERS "
-        f"non sono nel feed pubblico) e non le asseriamo.</p>")
+        f"rapporti, e questa vettura la porta all’estremo. Che cosa comporti più a valle, "
+        f"sul propulsore e sulle sue temperature, qui non si misura e non si asserisce: nel "
+        f"feed pubblico quei canali non ci sono.</p>")
 
     # Effetto
     drs_frase = (
@@ -530,23 +640,41 @@ def costruisci(gara=None, data_bozza=None, sessione=None):
         f"che misuriamo sono tutte ad ala chiusa."
         if drs_degenere else "")
     eff_html = (
-        f"<p>Qui scatta la tentazione: cambio corto uguale meno velocità di punta. In "
-        f"prove libere <b>non regge</b>. La correlazione fra rapporto in {_ord(GEAR_TOP)} "
-        f"e velocità di punta mediana è praticamente nulla: <b>Spearman {it(rho,2)}</b> su "
-        f"{len(comuni)} vetture. La punta più bassa dello schieramento è di {sg(vmax_bot[0])} "
-        f"(<b>{it(vmax_bot[1],0)} km/h</b>), la più alta di {sg(vmax_top[0])} "
-        f"(<b>{it(vmax_top[1],0)}</b>); la vettura più corta e quella più lunga non stanno "
-        f"agli estremi della punta. Nessuna relazione monotona: il rapporto non spiega la "
-        f"velocità di fondo.</p>"
-        f"<p>Del resto la punta, in prove libere, è indicativa e basta: carburante e mappa "
-        f"motore sono ignoti, e la scia gonfia il picco — fino a "
+        (f"<p>Qui scatta la tentazione: cambio corto uguale meno velocità di punta. "
+         f"{amb['In']} qualcosa <b>regge davvero</b>, ed è giusto dirlo invece di ripetere "
+         f"il ritornello: la correlazione di rango fra rapporto in {_ord(GEAR_TOP)} e punta "
+         f"mediana vale <b>Spearman {it(rho,2)}</b> su {len(comuni)} vetture "
+         f"(p={it(p_rho,3)}), cioè chi monta più corto tende a passare più piano in fondo. "
+         f"La punta più bassa dello schieramento è di {sg(vmax_bot[0])} "
+         f"(<b>{it(vmax_bot[1],0)} km/h</b>), la più alta di {sg(vmax_top[0])} "
+         f"(<b>{it(vmax_top[1],0)}</b>). Attenzione a cosa NON dice: sono "
+         f"{len(comuni)} punti e una correlazione, non una relazione causale — chi sceglie "
+         f"corto lo fa per la trazione, e paga in fondo perché è la stessa scelta, non "
+         f"perché il cambio "
+         f"«tagli» la punta.</p>"
+         if rho_regge else
+         f"<p>Qui scatta la tentazione: cambio corto uguale meno velocità di punta. "
+         f"{amb['In']} <b>non regge</b>. La correlazione fra rapporto in {_ord(GEAR_TOP)} "
+         f"e velocità di punta mediana è praticamente nulla: <b>Spearman {it(rho,2)}</b> su "
+         f"{len(comuni)} vetture. La punta più bassa dello schieramento è di {sg(vmax_bot[0])} "
+         f"(<b>{it(vmax_bot[1],0)} km/h</b>), la più alta di {sg(vmax_top[0])} "
+         f"(<b>{it(vmax_top[1],0)}</b>); la vettura più corta e quella più lunga non stanno "
+         f"agli estremi della punta. Nessuna relazione monotona: il rapporto non spiega la "
+         f"velocità di fondo.</p>")
+        + f"<p>Del resto la punta, {amb['in']}, va presa per quello che è: {amb['confondente']}"
+        f" — fino a "
         f"<b>+{it(F['scia_top']['scia'],0)} km/h</b> su {sg(F['scia_top']['sig'])} "
         f"({it(F['scia_top']['picco'],0)} di picco contro {it(F['scia_top']['med'],0)} di "
         f"mediana). Per questo usiamo la mediana dei picchi per-giro, non il picco."
-        + drs_frase +
-        f" A titolo di contesto della sessione, la griglia sta a tutto gas per una mediana "
-        f"del {it(gas_grid)}% del giro. Morale: il rapporto lo misuriamo — geometria, "
-        f"robusta — la punta resta indicativa e non la spieghiamo col cambio.</p>")
+        + drs_frase
+        + f" A titolo di contesto della sessione, la griglia sta a tutto gas per una mediana "
+        f"del {it(gas_grid)}% del giro. "
+        + (f"Morale: il rapporto lo misuriamo — geometria, robusta — e in questa sessione "
+           f"cammina insieme alla punta; ma è la punta a restare il numero debole, non il "
+           f"rapporto.</p>"
+           if rho_regge else
+           f"Morale: il rapporto lo misuriamo — geometria, robusta — la punta resta "
+           f"indicativa e non la spieghiamo col cambio.</p>"))
 
     figure = {
         "grafico1": {"svg": svg1,
@@ -563,9 +691,13 @@ def costruisci(gara=None, data_bozza=None, sessione=None):
         "grafico3": {"svg": svg3,
                      "didascalia": (f"Ogni punto una vettura: rapporto in {_ord(GEAR_TOP)} "
                                     f"(orizzontale) contro velocità di punta mediana "
-                                    f"(verticale). La nuvola non ha pendenza (Spearman "
-                                    f"{it(rho,2)}): il cambio non predice la punta in prove "
-                                    f"libere."),
+                                    + (f"(verticale). La nuvola ha una pendenza (Spearman "
+                                       f"{it(rho,2)}, p={it(p_rho,3)}): {amb['in']} il rapporto "
+                                       f"più corto va con la punta più bassa."
+                                       if rho_regge else
+                                       f"(verticale). La nuvola non ha pendenza (Spearman "
+                                       f"{it(rho,2)}): il cambio non predice la punta "
+                                       f"{amb['in']}.")),
                      "fonte": "FastF1 · car telemetry, elaborazione redazione"},
     }
 
@@ -603,15 +735,18 @@ def costruisci(gara=None, data_bozza=None, sessione=None):
          "valore": (f"{it(vmax_bot[1],0)}–{it(vmax_top[1],0)} km/h "
                     f"(mediana griglia {it(vmed_grid,1)}, spread {it(v_spread,0)})"),
          "stato": "MISURATO",
-         "da": "mediana dei picchi per-giro sui giri lanciati; INDICATIVA in FP"},
+         "da": f"mediana dei picchi per-giro sui giri lanciati; INDICATIVA {amb['in']}"},
         {"grandezza": "scia (picco − mediana)",
          "valore": f"fino a +{it(F['scia_top']['scia'],0)} km/h ({F['scia_top']['sig']})",
          "stato": "MISURATO",
          "da": "picco singolo vs mediana dei picchi — motivo per usare la mediana"},
         {"grandezza": f"correlazione rapporto {_ord(GEAR_TOP)} ↔ punta",
-         "valore": f"Spearman {it(rho,2)} (n={len(comuni)})",
+         "valore": (f"Spearman {it(rho,2)} (n={len(comuni)}, p={it(p_rho,3) if p_rho is not None else '–'}"
+                    f", {'regge' if rho_regge else 'non regge'} la soglia 0,05)"),
          "stato": "MISURATO",
-         "da": "correlazione di rango fra rapporto e punta mediana"},
+         "da": ("correlazione di rango fra rapporto e punta mediana; p a due code dalla t "
+                "di Student. La tesi «corto ≠ lento in fondo» vale solo quando NON regge: "
+                "quando regge, il pezzo lo dice e cambia titolo")},
         {"grandezza": "% del giro a tutto gas (Throttle≥95)",
          "valore": (f"mediana griglia {it(gas_grid)}% (min {it(gas_lo[1])} / max "
                     f"{it(gas_hi[1])}, spread {it(gas_spread)} pt)"),
@@ -623,12 +758,12 @@ def costruisci(gara=None, data_bozza=None, sessione=None):
          "da": (f"canale degenere (unico valore {F['drs']} su {n_lap_tot} giri lanciati); "
                 f"punte misurate ad ala chiusa" if drs_degenere
                 else "canale DRS presente, non usato per correggere la punta")},
-        {"grandezza": "carburante e mappa motore (confondono la punta in FP)",
-         "valore": "ignoti", "stato": "NON_MISURABILE",
-         "da": "prove libere: assetto/carico e mappe non pubblici → la punta non è un verdetto"},
-        {"grandezza": "recupero energia / finestra termica dal regime più alto",
+        {"grandezza": f"carburante e mappa motore ({amb['nome']}: confondono la punta)",
+         "valore": amb["prov_valore"], "stato": amb["prov_stato"],
+         "da": amb["prov_da"]},
+        {"grandezza": "effetti del regime più alto sul propulsore (temperature, consumi)",
          "valore": "non quantificabile", "stato": "NON_MISURABILE",
-         "da": "canali ERS/batteria assenti dal feed pubblico"},
+         "da": "i canali relativi non sono nel feed pubblico"},
     ]
 
     articolo = {
@@ -638,7 +773,7 @@ def costruisci(gara=None, data_bozza=None, sessione=None):
         "canale": "B (nostri dati, telemetria FastF1)",
         "gp": gp_disp, "gara": gp_disp, "circuito": location, "sessione": sessione,
         "tag": ["telemetria", "cambio", "rapporti", "velocità di punta",
-                "prove libere", gp_disp, team_corto, team_lungo],
+                amb["nome"], gp_disp, team_corto, team_lungo],
         "occhiello": occhiello, "titolo": titolo, "sommario": sommario,
         "sezioni": sezioni,
         "provenienza": provenienza,
@@ -660,18 +795,35 @@ def costruisci(gara=None, data_bozza=None, sessione=None):
 
 META = {
     "id": "fp-rapporti", "canale": "B",
-    "titolo": "Rapporti del cambio e velocità di punta (specifico-FP, track-agnostic)",
-    "tag": ["telemetria", "cambio", "rapporti", "prove libere", "velocità di punta"],
+    "titolo": "Rapporti del cambio e velocità di punta (FP3 o Qualifica Sprint, track-agnostic)",
+    "tag": ["telemetria", "cambio", "rapporti", "velocità di punta"],
     "descrizione": ("rapporto del cambio nella marcia-alta (derivata) e velocità di punta "
                     "mediana: la più corta della griglia, e perché corto ≠ lento in fondo"),
-    "richiede": "telemetria", "gare": ["*"], "sessioni": ["FP3"],  # rapporti/punta = FP3 basso carico
+    # FP3 nei weekend normali; SQ nei WEEKEND SPRINT, dove FP2/FP3 non esistono e il
+    # venerdì resterebbe muto. Stessa misura, caveat diverso (vedi _ambito).
+    "richiede": "telemetria", "gare": ["*"], "sessioni": ["FP3", "SQ"],
 }
 
 
 def genera(gara=None, data=None, sessione=None):
+    """Regola di casa: un generatore non applicabile ritorna None, MAI solleva.
+
+    Serve DAVVERO da quando questo pezzo dichiara due sessioni ("FP3" nei weekend
+    normali, "SQ" nei weekend sprint): ognuna delle due non esiste nell'altro tipo di
+    weekend, e FastF1 non ritorna vuoto — solleva. Misurato sul contratto di
+    produzione: Ungheria (non sprint) con sessione="SQ" -> ValueError "Session type
+    'SQ' does not exist for this event"; Olanda (sprint) con "FP3" -> stesso errore su
+    'FP3'; Olanda con "SQ" prima che si giri -> RuntimeError "troppi pochi piloti".
+    Tutti e tre sono "non applicabile", non un guasto: qui diventano None."""
     if gara is None:
         return None
-    F, art = costruisci(gara=gara, data_bozza=data, sessione=sessione or SES_DEF)
+    try:
+        F, art = costruisci(gara=gara, data_bozza=data, sessione=sessione or SES_DEF)
+    except Exception as e:
+        if os.environ.get("REDAZIONE_DEBUG"):
+            raise
+        print(f"  [fp-rapporti] {gara} ({sessione or SES_DEF}): {e} — salto.")
+        return None
     base.scrivi_bozza(F["id"], art, F)
     return {"id": F["id"], "titolo": art["titolo"], "stato": art["stato"], "canale": "B"}
 
