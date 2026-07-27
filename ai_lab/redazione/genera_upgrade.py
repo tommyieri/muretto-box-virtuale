@@ -1,44 +1,94 @@
 """
-Articolo "L'upgrade ha funzionato?" (Canale A+B, MULTI-GARA): un team porta un
-aggiornamento a un GP; noi NON vediamo il componente (niente foto, niente paddock)
-ma ne misuriamo l'EFFETTO dai dati, prima-vs-dopo la gara-upgrade.
+Sviluppo relativo — chi ha sviluppato meglio (o peggio) del gruppo, fra due blocchi
+di gare. Articolo TRASVERSALE (gp=None), si riaggiorna a ogni gara.
 
-Onesto per costruzione:
-  SINTOMO — la macchina e' cambiata, e DOVE (punta vs curva) — e' MISURATO.
-  CAUSA   — quale pezzo (ala meno resistente, mappa motore, assetto, o solo
-            "aver sistemato i problemi") — e' NON_MISURABILE: la velocita' di
-            punta mescola potenza PU e resistenza, e i due non si separano dai
-            nostri canali. Persino il team lo dichiara (vedi fonti).
+PERCHE' NON PIU' "l'upgrade di X a Y ha funzionato?".  La versione precedente di
+questo file prendeva UN candidato da un dossier di stampa cablato in costante e
+misurava il prima-vs-dopo attorno alla sua gara-upgrade.  Quella domanda, sui dati
+2026, non e' rispondibile:
 
-Metodo (team/gara-agnostico):
-  - un DOSSIER di candidati con fonte di stampa (Canale A): team + gara-upgrade;
-  - un RILEVATORE indipendente (Canale B) che, senza sapere nulla della stampa,
-    cerca nel forza-macchina il passo piu' netto e STABILE della stagione: se il
-    candidato della stampa e' anche il #1 del rilevatore, la riproduzione regge;
-  - un CANCELLO: si scrive solo se l'effetto e' abbastanza netto (indice e
-    distacco in qualifica). Se i dati non mostrano un salto chiaro -> None
-    (mistero aperto, non si forza).
+  1. NON ESISTE UN "PRIMA SENZA UPGRADE.  Dal documento FIA "Car Presentation
+     Submissions" si sa quante volte ogni squadra ha portato aggiornamenti nel 2026:
+     Haas 11 gare su 11, Red Bull 10, Racing Bulls 10, Cadillac 10, McLaren 9,
+     Ferrari 9, Mercedes 8, Williams 8, Audi 8, Alpine 7, Aston Martin 4.  Il blocco
+     "prima" di qualunque split contiene gia' altri aggiornamenti: manca il
+     controfattuale, e il confronto attribuisce a UN pacchetto l'effetto di tutti.
+     E' esattamente il difetto dell'articolo "upgrade-red-bull-miami-2026", che usava
+     Melbourne/Shanghai/Suzuka come "prima" mentre a Melbourne la Red Bull aveva gia'
+     portato 3 componenti e a Suzuka 4.
+  2. DOPO UNA GARA LA RISPOSTA ONESTA E' SEMPRE "NON SEPARABILE": un pacchetto, un
+     weekend, un circuito.  Non c'e' ripetizione, quindi non c'e' misura.
+  3. L'INDICE FORZA-MACCHINA E' UN PERCENTILE PER GARA, cioe' a somma zero: se
+     migliorano tutti, non si muove nessuno.  Su una grandezza cosi' l'unica
+     affermazione che regge e' RELATIVA.
 
-Framing onesto (chi GUIDA il pezzo): non si apre col numero piu' vistoso, ma con
-il piu' ROBUSTO. Ogni segnale prima-vs-dopo passa da un test di permutazione (esatto
-per split piccoli) e da un controllo di SEPARAZIONE DI RANGO (ogni gara-dopo migliore
-di ogni gara-prima). Il generatore ordina i segnali aggregati per robustezza
-(separazione completa prima, poi p piu' basso) e mette il migliore come prova-guida
-(sommario + grafico-eroe); il segnale piu' debole scende a CONTESTO, citato col suo
-limite. Regola generale, non cablata: vale per qualunque team/gara-upgrade.
+LA DOMANDA NUOVA, che invece si puo' misurare: fra il blocco di gare A e il blocco B,
+quali squadre si sono mosse rispetto al GRUPPO?  Multi-gara, ripetuta, e mai un
+verdetto su un singolo pacchetto.
 
-Segnali (tutti dai file gia' pronti, nessun numero a mano):
-  forza_macchina.json  indice 0-100 per team/gara (potenziale + passo, percentile per-gara)
-  forza_stagione/*     potenziale/passo in secondi + gap-al-leader (per il distacco)
-  dati_stagione/*      vmax e cornering (km/h) -> il DOVE: punta o curva
+COME SI MISURA
+  posizione relativa in qualifica, per squadra e per gara:
+      rel = 100 * (potenziale - mediana del campo) / mediana del campo     [% di giro]
+  negativa = piu' veloce della mediana dello schieramento.  E' normalizzata dentro la
+  gara, quindi confrontabile fra circuiti; il riferimento e' la MEDIANA del campo, non
+  il leader (col leader, un leader che scappa peggiora tutti gli altri per costruzione).
+  Sviluppo relativo di una squadra = media(rel nel blocco B) - media(rel nel blocco A).
+  Segno invertito nel testo: "guadagno" = terreno guadagnato sul gruppo.
 
-Confronto BEFORE/AFTER la gara-upgrade. I distacchi sono normalizzati (percentile
-o % dal leader), mai tempi assoluti: le piste differiscono.
+  CANALE PRIMARIO = qualifica (potenziale).  Il passo gara e' CORROBORAZIONE, non
+  prova: e' inquinato dal traffico (misurato altrove in casa: +8,17 s di mediana per
+  gara) e nel 2026 manca per alcune squadre in alcune gare.
 
-python3 UTENTE. Solo lettura del repo; bozza nell'area Lab. Non tocca demo/ ne' engine/.
+  FINESTRA: le gare disponibili tagliate a meta' (regola fissa, non scelta sui
+  risultati).  Si sposta da sola a ogni gara nuova, quindi ogni affermazione viene
+  ri-testata la settimana dopo.  --da/--a restringono il perimetro a mano.
+
+I CANCELLI (se non passano, l'articolo NON esce: return None)
+  - finestra minima: MIN_PRIMA gare nel blocco A e MIN_DOPO nel blocco B;
+  - PERMUTAZIONE CORRETTA PER LA FAMIGLIA (max-T STUDENTIZZATO): si guardano 11
+    squadre in una volta, quindi il p per-squadra non basta (a p<0,05 su 11 test ci si
+    aspetta ~0,55 falsi positivi per sport).  Si permutano le etichette gara UNA volta
+    sola e si prende il massimo su TUTTE le squadre di |sviluppo| DIVISO il suo errore
+    standard: p_famiglia = frazione delle permutazioni in cui quel massimo batte la
+    statistica osservata.  Controlla il tasso di errore d'insieme e tiene conto della
+    correlazione fra squadre (rel e' quasi a somma zero: se una sale, qualcuna scende).
+    La divisione per l'errore standard NON e' un dettaglio: senza, il massimo nullo e'
+    quasi sempre della squadra piu' ballerina, e se quella e' la protagonista la
+    correzione non corregge niente (sul 2026: Aston Martin aveva p_famiglia identico
+    al p grezzo, 0,0476, con la serie piu' variabile del campo).  Il p a medie nude
+    resta calcolato e dichiarato, ma non e' il cancello.
+  - se NESSUNA squadra sta sotto ALFA, non c'e' articolo.
+  - separazione di rango completa (ogni gara di B oltre ogni gara di A): riportata
+    come rinforzo, mai pretesa; sul 2026 non ce l'ha nessuno, e si dice.
+
+LO SFORZO DICHIARATO (fonte FIA, via fia_cp.py)
+  Dal "Car Presentation Submissions" si contano i componenti portati da ogni squadra
+  a ogni gara.  Si tengono SOLO i motivi "Performance": le voci "Circuit specific"
+  non sono sviluppo, sono configurazione per quel tracciato (a Monaco valgono il 29%
+  delle righe, a Spa il 24%) e sommarle sarebbe un errore di categoria.
+  Peso: ESPOSIZIONE DIFFERENZIALE.  Un pezzo arrivato al round r e' rimasto sulla
+  macchina per una frazione delle gare di B e una frazione delle gare di A; quello che
+  puo' spostare un contrasto A-vs-B e' la DIFFERENZA fra le due frazioni.  Un pezzo
+  del round 1 pesa 0 (c'era in tutte e due), uno arrivato subito dopo il taglio pesa 1,
+  l'ultimo arrivato pesa poco.  E' il peso che il contrasto misura davvero, non una
+  scelta di comodo.
+
+TRE NULL DELLA FONTE FIA, dichiarati e mai colmati:
+  N1 il documento non dice MAI su quale vettura o pilota va il pezzo (zero occorrenze
+     di "car N" / "both cars" / "driver N" nei documenti 2026; "chassis" e "driver"
+     da soli NON sono fra le formule cercate: la' sono nomi di componente);
+  N2 non contiene nessun numero di prestazione: il CONTEGGIO dei pezzi NON e' la
+     taglia dell'aggiornamento (un fondo nuovo e una staffa di scarico contano 1);
+  N3 a volte il pezzo e' "available"/"optional": portato, non per forza montato.
+  Percio' lo sforzo dichiarato e' un indicatore di ATTIVITA', non di prestazione, e la
+  causa (quale pezzo ha prodotto cosa) resta NON_MISURABILE.
+
+python3 UTENTE.  Solo lettura del repo; bozza nell'area Lab.  Non tocca demo/ ne'
+engine/ (in demo ci scrive coda.py, dopo l'approvazione umana).
 """
 from __future__ import annotations
 import os
+import re
 import sys
 import json
 import math
@@ -48,23 +98,60 @@ import statistics as st
 
 _QUI = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, _QUI)
-import svg   # noqa: E402
-import base  # noqa: E402
+import svg      # noqa: E402
+import base     # noqa: E402
+import fia_cp   # noqa: E402
 
 REPO = os.path.abspath(os.path.join(_QUI, "..", ".."))
 FORZA_JSON = os.path.join(REPO, "demo", "data", "analisi", "forza_macchina.json")
 FORZA_STAGIONE = os.path.join(_QUI, "forza_stagione")   # potenziale/passo/gap in s
 DATI_STAGIONE = os.path.join(_QUI, "dati_stagione")     # vmax/cornering km/h
+CALENDARIO = os.path.join(REPO, "data", "calendario_2026.json")
 
 ID_META = "upgrade"
+ANNO = 2026
 
-# --- CANCELLI (dichiarati): sotto queste soglie non c'e' storia -> None ---
-SOGLIA_STEP_INDICE = 8.0     # salto minimo dell'indice (media dopo - media prima)
-SOGLIA_RIDUZIONE_PP = 0.30   # riduzione minima del distacco in qualifica (punti %)
-MIN_PRIMA = 2                # gare minime prima dell'upgrade
-MIN_DOPO = 3                 # gare minime dalla gara-upgrade in poi
+# --- CANCELLI (dichiarati) ---------------------------------------------------
+MIN_PRIMA = 3          # gare minime nel blocco A
+MIN_DOPO = 3           # gare minime nel blocco B
+ALFA = 0.05            # soglia sul p CORRETTO PER LA FAMIGLIA (max-T STUDENTIZZATO)
+CAP_PERM = 200000      # oltre questo numero di split si campiona invece di enumerare
+SEME = 20260727        # seme fisso: la permutazione campionata dev'essere riproducibile
+MIN_SQUADRE = 6        # sotto questo numero di squadre complete la famiglia non ha senso
+MIN_GARE_FIA = 4       # meno documenti FIA leggibili di cosi' -> braccio sforzo assente
 
-CORTO = {"Red Bull Racing": "Red Bull", "Haas F1 Team": "Haas", "Aston Martin": "Aston"}
+# La cache dei PDF FIA sta fuori dal repo (fia_cp.CACHE_DIR). Si puo' puntare altrove
+# con MURETTO_FIA_CP o con --cp: serve ai collaudi e alle rigenerazioni offline.
+CARTELLA_CP = os.environ.get("MURETTO_FIA_CP") or fia_cp.CACHE_DIR
+
+# Nomi squadra: la fonte FIA e i nostri file di stagione non li scrivono uguali.
+# Tabella esplicita, come in fia_cp: se un nome non e' qui non si indovina.
+TEAM_FIA = {
+    "McLaren": "McLaren", "Mercedes": "Mercedes", "Red Bull Racing": "Red Bull",
+    "Ferrari": "Ferrari", "Williams": "Williams", "Racing Bulls": "Racing Bulls",
+    "Aston Martin": "Aston Martin", "Haas F1 Team": "Haas", "Alpine": "Alpine",
+    "Audi": "Audi", "Cadillac": "Cadillac",
+}
+CORTO = {"Red Bull Racing": "Red Bull", "Haas F1 Team": "Haas", "Aston Martin": "Aston Martin"}
+
+# Nome del GP come lo scrive la FIA -> slug del calendario di casa. Esplicita per la
+# stessa ragione di fia_cp._SQUADRE: un GP non mappato e' un'anomalia da dichiarare,
+# non da indovinare. T11: "Barcelona-Catalunya" e "Spanish" (=Madrid) sono DUE gare.
+GP_FIA = {
+    "australian": "australia", "chinese": "china", "japanese": "japan",
+    "miami": "miami", "canadian": "canada", "monaco": "monaco",
+    "barcelona catalunya": "barcelona-catalunya", "spanish": "spain",
+    "austrian": "austria", "british": "great-britain", "belgian": "belgium",
+    "hungarian": "hungary", "dutch": "netherlands", "italian": "italy",
+    "azerbaijan": "azerbaijan", "singapore": "singapore",
+    "united states": "united-states", "mexico city": "mexico", "mexican": "mexico",
+    "sao paulo": "sao-paulo", "las vegas": "las-vegas", "qatar": "qatar",
+    "abu dhabi": "abu-dhabi",
+}
+
+# La famiglia di motivi che conta come SVILUPPO. "Circuit specific" e' configurazione
+# per il tracciato, "Reliability" e' rimedio a un guasto: nessuna delle due e' progresso.
+FAMIGLIA_SVILUPPO = "Performance"
 
 
 def it(x, dec=1):
@@ -75,46 +162,25 @@ def nm(t):
     return CORTO.get(t, t)
 
 
-# ----------------------------------------------------------------------------
-# DOSSIER — spunti di stampa (Canale A). Ogni voce e' un candidato: team, gara in
-# cui e' arrivato l'aggiornamento (round), e le FONTI (con URL). I NUMERI non
-# stanno qui: escono tutti dai dati. Qui c'e' solo il "dove guardare".
-# ----------------------------------------------------------------------------
-DOSSIER = [
-    {
-        "team": "Red Bull Racing",
-        "team_slug": "red-bull",
-        "gp_upgrade": "Miami Grand Prix",
-        "gp_slug": "miami",
-        "gp_nome": "Miami",
-        "round_upgrade": 4,
-        "anno": 2026,
-        "claim_stampa": (
-            "pacchetto d'aggiornamento a Miami (ala posteriore rotante “Macarena” "
-            "a bassa resistenza, piu' ala anteriore, fondo e cofano rivisti); il team "
-            "stima ~0,6 s guadagnati e il distacco dai primi sceso da ~1,2-1,3 s a ~0,6 s"
-        ),
-        "fonti": [
-            {"tipo": "spunto (stampa)",
-             "testo": "PlanetF1 — “Red Bull upgrades find missing 0.6s as RB22 breakthrough emerges” "
-                      "(gap sceso da ~1,2-1,3 s a ~0,6 s; il TP Mekies: difficile dire quanto sia "
-                      "upgrade e quanto “aver sistemato i problemi”). "
-                      "https://www.planetf1.com/news/red-bull-rb22-upgrades-miami-grand-prix-2026"},
-            {"tipo": "spunto (stampa)",
-             "testo": "GPblog — “Red Bull's Miami upgrade analysed: how RB22 ‘B’ spec improved "
-                      "performance” (ala “Macarena” che ruota 160° in modalita' rettilineo "
-                      "per ridurre la resistenza; RB22 fra le piu' veloci sul dritto in qualifica a Miami). "
-                      "https://www.gpblog.com/en/tech/red-bull-finally-able-to-challenge-mercedes-thanks-to-updates"},
-        ],
-    },
-]
+def _chiave(s):
+    return re.sub(r"[^a-z0-9]+", " ", (s or "").lower()).replace(" grand prix", "").strip()
 
 
-# ----------------------------------------------------------------------------
-# CARICAMENTO DATI
-# ----------------------------------------------------------------------------
+def _scala(ms):
+    """Millesimi in parole: sotto il secondo restano millesimi, sopra diventano secondi."""
+    if ms is None:
+        return "–"
+    return f"{it(ms / 1000.0, 2)} s" if abs(ms) >= 1000 else f"{abs(ms)} millesimi"
+
+
+# ---------------------------------------------------------------------------
+# CARICAMENTO DATI (solo lettura, nessun numero scritto a mano)
+# ---------------------------------------------------------------------------
 def _carica_forza():
-    return json.load(open(FORZA_JSON))
+    try:
+        return json.load(open(FORZA_JSON))
+    except Exception:
+        return None
 
 
 def _carica_dir(d):
@@ -130,12 +196,24 @@ def _carica_dir(d):
     return sorted(out, key=lambda g: g.get("round", 0))
 
 
+def _calendario():
+    """slug del GP -> round. Vuoto se il calendario non c'e' (il braccio FIA si spegne)."""
+    try:
+        cal = json.load(open(CALENDARIO))
+    except Exception:
+        return {}
+    return {g["gp"]: g["round"] for g in cal.get("gare", []) if g.get("gp")}
+
+
+# ---------------------------------------------------------------------------
+# SERIE (riusate dalla versione precedente: stessa semantica, stesse fonti)
+# ---------------------------------------------------------------------------
 def _serie(gare, team, key):
     return [(g["round"], g["team"].get(team, {}).get(key)) for g in gare]
 
 
 def _ba(coppie, up):
-    """(round,val) -> (lista_prima, lista_dopo) rispetto al round-upgrade (incluso in dopo)."""
+    """(round,val) -> (lista_prima, lista_dopo) rispetto al round di taglio (incluso in dopo)."""
     b = [v for r, v in coppie if v is not None and r < up]
     a = [v for r, v in coppie if v is not None and r >= up]
     return b, a
@@ -169,13 +247,29 @@ def _percentile_campo(g, team, key):
     return 100.0 * sum(1 for x in vals if x < v) / len(vals)
 
 
-# ----------------------------------------------------------------------------
-# ROBUSTEZZA di un segnale prima-vs-dopo: test di permutazione (esatto se lo split
-# e' piccolo, altrimenti campionato) + separazione di rango completa. Serve a
-# decidere QUALE segnale guida il pezzo: si preferisce quello con separazione
-# completa, poi quello col p piu' basso. Team/gara-agnostico.
-# ----------------------------------------------------------------------------
-def _robustezza(prima, dopo, direzione, cap=200000):
+def _rel_campo(g, team, key):
+    """Posizione relativa: % di giro rispetto alla MEDIANA del campo in quella gara.
+
+    Perche' la mediana e non il leader: col leader come riferimento, un leader che
+    scappa peggiora per costruzione il "distacco" di tutti gli altri, e uno che
+    rallenta li migliora tutti — il segnale del gruppo entra nel numero di ognuno.
+    La mediana e' il centro dello schieramento e non si sposta per un solo estremo.
+    """
+    vals = [x[key] for x in g["team"].values() if x.get(key)]
+    v = g["team"].get(team, {}).get(key)
+    if len(vals) < 3 or not v:
+        return None
+    med = st.median(vals)
+    if not med:
+        return None
+    return 100.0 * (v - med) / med
+
+
+# ---------------------------------------------------------------------------
+# ROBUSTEZZA di un segnale prima-vs-dopo (riusata): test di permutazione (esatto se
+# lo split e' piccolo, altrimenti campionato) + separazione di rango completa.
+# ---------------------------------------------------------------------------
+def _robustezza(prima, dopo, direzione, cap=CAP_PERM):
     """direzione='giu' (dopo piu' basso = meglio, es. distacco) o 'su' (dopo piu'
     alto = meglio, es. indice). Ritorna dict {p, est, tot, sep, migliora}.
     Statistica = miglioramento della media (segnata secondo la direzione); p = frazione
@@ -202,7 +296,7 @@ def _robustezza(prima, dopo, direzione, cap=200000):
                 est += 1
     else:
         import random
-        rnd = random.Random(20260726)
+        rnd = random.Random(SEME)
         tot = cap
         idxs = list(range(N))
         for _ in range(cap):
@@ -216,506 +310,1007 @@ def _robustezza(prima, dopo, direzione, cap=200000):
             "sep": sep, "migliora": oss > 0}
 
 
-# ----------------------------------------------------------------------------
-# RILEVATORE indipendente (Canale B): il passo piu' netto e STABILE della
-# stagione, senza sapere nulla della stampa. Metrica = riduzione del distacco
-# medio in qualifica (%) fra "prima" e "dopo", allo split che la massimizza.
-# ----------------------------------------------------------------------------
-def _rileva(gare_s):
+# ---------------------------------------------------------------------------
+# RILEVATORE CIECO (riusato): scorre TUTTI i team e TUTTI gli split senza sapere
+# nulla di aggiornamenti o di stampa. Qui serve a una domanda sola: lo split fisso
+# (meta' stagione) e' anche quello che massimizza il movimento della squadra che
+# passa il cancello? Se si', lo si dichiara — e' una coincidenza del calendario,
+# non una scelta, ma va detta.
+# ---------------------------------------------------------------------------
+def _rileva(gare_s, key="potenziale"):
+    """Per ogni squadra, lo split che massimizza |sviluppo relativo| e quanto vale."""
     teams = sorted({t for g in gare_s for t in g["team"]})
     rounds = [g["round"] for g in gare_s]
     out = []
     for t in teams:
-        s = [(g["round"], _pct_leader_quali(g, t)) for g in gare_s]
+        s = [(g["round"], _rel_campo(g, t, key)) for g in gare_s]
         best = None
         for k in range(MIN_PRIMA, len(s) - MIN_DOPO + 1):
             up_r = rounds[k]
             b, a = _ba(s, up_r)
-            if len(b) >= MIN_PRIMA and len(a) >= MIN_DOPO:
-                red = st.mean(b) - st.mean(a)     # >0 = distacco ridotto
-                sd = st.pstdev(a) if len(a) > 1 else 0.0
-                if best is None or red > best["riduzione"]:
-                    best = {"round": up_r, "riduzione": red, "sigma_dopo": sd}
+            if len(b) < MIN_PRIMA or len(a) < MIN_DOPO:
+                continue
+            d = st.mean(a) - st.mean(b)          # <0 = terreno guadagnato sul gruppo
+            sd = st.pstdev(a) if len(a) > 1 else 0.0
+            if best is None or abs(d) > abs(best["sviluppo"]):
+                best = {"round": up_r, "sviluppo": d, "sigma_dopo": sd}
         if best:
             out.append({"team": t, **best})
-    out.sort(key=lambda x: -x["riduzione"])
+    out.sort(key=lambda x: -abs(x["sviluppo"]))
     return out
 
 
-# ----------------------------------------------------------------------------
-# MISURA dell'effetto per un candidato
-# ----------------------------------------------------------------------------
-def _misura(cand):
-    fm = _carica_forza()
-    fmg = sorted(fm["gare"], key=lambda g: g["round"])
-    fs = _carica_dir(FORZA_STAGIONE)   # potenziale/passo/gap in s
-    ds = _carica_dir(DATI_STAGIONE)    # vmax/cornering km/h
-    team = cand["team"]
-    up = cand["round_upgrade"]
+# ---------------------------------------------------------------------------
+# PERMUTAZIONE MAX-T sulla FAMIGLIA delle squadre.
+# ---------------------------------------------------------------------------
+def _se(pr, do):
+    """Errore standard della differenza fra le due medie (forma di Welch).
 
-    # indice forza-macchina (percentile per-gara di potenziale+passo)
-    idx = _serie(fmg, team, "indice")
-    b_i, a_i = _ba(idx, up)
-    if len(b_i) < MIN_PRIMA or len(a_i) < MIN_DOPO:
+    Pavimento a 1e-9 di proposito: se una serie e' costante l'errore standard e'
+    zero e la statistica studentizzata esplode. Farla esplodere NELLA distribuzione
+    nulla e' la scelta conservativa (alza il massimo nullo, quindi rende piu'
+    difficile passare); azzerarla sarebbe la scelta comoda.
+    """
+    def var_media(x):
+        m = len(x)
+        if m < 2:
+            return 0.0
+        mu = st.mean(x)
+        return sum((a - mu) ** 2 for a in x) / (m * (m - 1))
+    return max(math.sqrt(var_media(pr) + var_media(do)), 1e-9)
+
+
+def _maxT(matrice, k, cap=CAP_PERM):
+    """p corretto per la famiglia, per ogni squadra. Statistica STUDENTIZZATA.
+
+    `matrice`: {team: [valori in ordine di round]} — stessa lunghezza, nessun None.
+    `k`: quante gare nel blocco A (le prime k dell'ordine dato).
+
+    Si permutano le ETICHETTE DI GARA una volta sola per replica e si prende il
+    massimo su tutte le squadre: e' il classico max-T. Due proprieta' che servono
+    qui: (a) controlla il tasso di errore d'insieme mentre si guardano 11 squadre in
+    un colpo; (b) la permutazione e' comune, quindi la dipendenza fra squadre (rel e'
+    quasi a somma zero) e' conservata invece di essere ignorata.
+
+    PERCHE' STUDENTIZZATA, e perche' e' una correzione di sostanza e non di forma.
+    La prima versione prendeva il massimo delle DIFFERENZE FRA MEDIE nude. Con
+    squadre che hanno rumori molto diversi quel massimo e' quasi sempre della squadra
+    piu' ballerina: se la protagonista e' proprio quella, la correzione non corregge
+    niente — il suo p di famiglia esce IDENTICO al p grezzo, cioe' come se le altre
+    dieci squadre non fossero state guardate. Misurato sul 2026 (10 gare, 252
+    divisioni, 11 squadre): Aston Martin aveva la serie piu' variabile del campo
+    (sd 0,97 contro 0,56 della seconda), p_famiglia = p_grezzo = 0,0476 a fronte di
+    una soglia 0,05 — un solo scambio piu' in la' e sarebbe stato 0,0516. Le altre
+    dieci squadre la correzione la pagavano tutta (Williams 0,016 -> 0,302).
+    Dividere per l'errore standard mette le squadre sulla stessa scala PRIMA di
+    prendere il massimo: e' la versione che controlla davvero il tasso d'errore
+    d'insieme quando le varianze sono diverse. Con essa, sugli stessi dati, non
+    passa nessuno — e l'articolo non esce. Il p non studentizzato resta calcolato e
+    dichiarato (`p_famiglia_medie`), ma NON e' piu' il cancello.
+
+    Ritorna (per_squadra, tot, esatto) con per_squadra = {team: {sviluppo, sep, T,
+    se, p_famiglia, p_grezzo, p_famiglia_medie, p_grezzo_medie}}.
+    """
+    teams = sorted(matrice)
+    if not teams:
+        return {}, 0, True
+    n = len(matrice[teams[0]])
+    oss = {}
+    for t in teams:
+        v = matrice[t]
+        pr, do = v[:k], v[k:]
+        se = _se(pr, do)
+        d = st.mean(do) - st.mean(pr)
+        oss[t] = {"sviluppo": d, "se": se, "T": abs(d) / se,
+                  "sep": (max(do) < min(pr)) or (min(do) > max(pr))}
+    ncomb = math.comb(n, k)
+    esatto = ncomb <= cap
+    if esatto:
+        splits = itertools.combinations(range(n), k)
+        tot = ncomb
+    else:
+        import random
+        rnd = random.Random(SEME)
+        idxs = list(range(n))
+        splits = (tuple(rnd.sample(idxs, k)) for _ in range(cap))
+        tot = cap
+    conta_fam = {t: 0 for t in teams}
+    conta_gre = {t: 0 for t in teams}
+    conta_fam_m = {t: 0 for t in teams}
+    conta_gre_m = {t: 0 for t in teams}
+    for combo in splits:
+        cs = set(combo)
+        statT, statD = {}, {}
+        maxT = maxD = 0.0
+        for t in teams:
+            v = matrice[t]
+            pr = [v[i] for i in range(n) if i in cs]
+            do = [v[i] for i in range(n) if i not in cs]
+            d = abs(st.mean(do) - st.mean(pr))
+            T = d / _se(pr, do)
+            statT[t], statD[t] = T, d
+            if T > maxT:
+                maxT = T
+            if d > maxD:
+                maxD = d
+        for t in teams:
+            if maxT >= oss[t]["T"] - 1e-9:
+                conta_fam[t] += 1
+            if statT[t] >= oss[t]["T"] - 1e-9:
+                conta_gre[t] += 1
+            if maxD >= abs(oss[t]["sviluppo"]) - 1e-9:
+                conta_fam_m[t] += 1
+            if statD[t] >= abs(oss[t]["sviluppo"]) - 1e-9:
+                conta_gre_m[t] += 1
+    fuori = {}
+    for t in teams:
+        fuori[t] = {**oss[t],
+                    "p_famiglia": conta_fam[t] / tot,
+                    "p_grezzo": conta_gre[t] / tot,
+                    "p_famiglia_medie": conta_fam_m[t] / tot,
+                    "p_grezzo_medie": conta_gre_m[t] / tot}
+    return fuori, tot, esatto
+
+
+# ---------------------------------------------------------------------------
+# SFORZO DICHIARATO dalla fonte FIA (fia_cp) — braccio opzionale.
+# ---------------------------------------------------------------------------
+def _leggi_cp(cartella, anno, cal):
+    """Legge la cache dei "Car Presentation Submissions" e ritorna (per_round, diag).
+
+    per_round: {round: {squadra_fia: {famiglia: n}}}
+    Ogni documento passa DUE cancelli di fia_cp prima di contare qualcosa:
+      - cancello_identita, chiuso sul GP che il PDF stesso dichiara in copertina
+        (nome file dell'anno + copertina che nomina anno e gara: e' la difesa T9);
+      - cancello_qualita, che blocca i documenti da cui si e' persa una riga.
+    Un documento scartato NON diventa uno zero: diventa una gara ESCLUSA e dichiarata.
+    Zero componenti si conta solo quando la fonte dice "No updates submitted".
+    """
+    diag = {"letti": [], "esclusi": [], "non_mappati": [], "cartella": cartella}
+    per_round = {}
+    if not cartella or not os.path.isdir(cartella):
+        diag["esclusi"].append(f"cartella assente: {cartella}")
+        return per_round, diag
+    for f in sorted(os.listdir(cartella)):
+        if not f.lower().endswith(".pdf") or not f.startswith(f"{anno}_"):
+            continue
+        path = os.path.join(cartella, f)
+        est = fia_cp.estrai(path)
+        if not est or est.get("anno") != anno or not est.get("gp"):
+            diag["esclusi"].append(f"{f}: copertina non leggibile o anno diverso")
+            continue
+        # L'identita' si chiude sul GP che il documento stesso dichiara: cosi' il
+        # cancello controlla davvero (con atteso_gp vuoto sarebbe un no-op).
+        ok_id, motivo = fia_cp.cancello_identita(path, anno, est["gp"])
+        if not ok_id:
+            diag["esclusi"].append(f"{est['gp']}: identita' respinta ({motivo})")
+            continue
+        slug = GP_FIA.get(_chiave(est["gp"]))
+        r = cal.get(slug) if slug else None
+        if r is None:
+            diag["non_mappati"].append(est["gp"])
+            continue
+        ok_q, problemi = fia_cp.cancello_qualita(est)
+        if not ok_q:
+            diag["esclusi"].append(f"round {r} ({est['gp']}): {problemi[0]}")
+            continue
+        conte = {}
+        for s in est["squadre"]:
+            if not s.get("team_norm"):
+                continue
+            fam = {}
+            for c in s["componenti"]:
+                fam[c["motivo_famiglia"]] = fam.get(c["motivo_famiglia"], 0) + 1
+            conte[s["team_norm"]] = fam
+        per_round[r] = conte
+        diag["letti"].append({"round": r, "gp": est["gp"],
+                              "componenti": sum(sum(v.values()) for v in conte.values())})
+    diag["letti"].sort(key=lambda x: x["round"])
+    return per_round, diag
+
+
+def _peso_differenziale(r, rounds_prima, rounds_dopo):
+    """Quanto un pezzo arrivato al round r pesa su un contrasto A-vs-B.
+
+    E' la differenza fra la frazione delle gare di B che quel pezzo ha vissuto e la
+    frazione delle gare di A: 0 per un pezzo del primo round (c'era in entrambi i
+    blocchi, non puo' spiegare una differenza), 1 per un pezzo arrivato appena dopo
+    il taglio, poco per l'ultimo arrivato — che ha corso una gara sola del blocco B.
+    """
+    q_dopo = sum(1 for x in rounds_dopo if x >= r) / len(rounds_dopo)
+    q_prima = sum(1 for x in rounds_prima if x >= r) / len(rounds_prima)
+    return q_dopo - q_prima
+
+
+def _sforzo(per_round, rounds_prima, rounds_dopo, famiglia=FAMIGLIA_SVILUPPO,
+            pesato=True, solo_dopo=False):
+    """Sforzo dichiarato per squadra (nome FIA). Vedi _peso_differenziale."""
+    fuori = {}
+    for t in fia_cp.SQUADRE_2026:
+        s = 0.0
+        for r, conte in per_round.items():
+            if solo_dopo and r < rounds_dopo[0]:
+                continue
+            n = conte.get(t, {}).get(famiglia, 0)
+            s += n * (_peso_differenziale(r, rounds_prima, rounds_dopo) if pesato else 1.0)
+        fuori[t] = round(s, 3)
+    return fuori
+
+
+# ---------------------------------------------------------------------------
+# CORRELAZIONE DI RANGO fra sforzo dichiarato e sviluppo misurato (11 punti).
+# ---------------------------------------------------------------------------
+def _ranghi(xs):
+    ordine = sorted(range(len(xs)), key=lambda i: xs[i])
+    r = [0.0] * len(xs)
+    i = 0
+    while i < len(ordine):
+        j = i
+        while j + 1 < len(ordine) and xs[ordine[j + 1]] == xs[ordine[i]]:
+            j += 1
+        medio = (i + j) / 2.0 + 1
+        for q in range(i, j + 1):
+            r[ordine[q]] = medio
+        i = j + 1
+    return r
+
+
+def _spearman(xs, ys, cap=CAP_PERM):
+    """(rho, p) con p da permutazione (esatta se n! <= cap, altrimenti campionata).
+
+    Con 11 squadre la potenza e' minima: serve |rho| ~0,6 per arrivare a p<0,05.
+    Un rho non significativo qui NON dice "nessuna relazione", dice "non risolvibile
+    con 11 punti" — e va scritto cosi'.
+    """
+    n = len(xs)
+    if n < 4:
+        return None, None
+    rx, ry = _ranghi(xs), _ranghi(ys)
+    mx, my = st.mean(rx), st.mean(ry)
+    den = (sum((a - mx) ** 2 for a in rx) * sum((b - my) ** 2 for b in ry)) ** 0.5
+    if not den:
+        return None, None
+    rho = sum((a - mx) * (b - my) for a, b in zip(rx, ry)) / den
+    if math.factorial(n) <= cap:
+        perms = itertools.permutations(range(n))
+        tot = math.factorial(n)
+    else:
+        import random
+        rnd = random.Random(SEME)
+        base_i = list(range(n))
+
+        def gen():
+            for _ in range(cap):
+                rnd.shuffle(base_i)
+                yield tuple(base_i)
+        perms = gen()
+        tot = cap
+    est = 0
+    dx = sum((a - mx) ** 2 for a in rx) ** 0.5
+    for p in perms:
+        r2 = [ry[i] for i in p]
+        m2 = st.mean(r2)
+        d2 = sum((b - m2) ** 2 for b in r2) ** 0.5
+        if not d2:
+            continue
+        v = sum((a - mx) * (b - m2) for a, b in zip(rx, r2)) / (dx * d2)
+        if abs(v) >= abs(rho) - 1e-12:
+            est += 1
+    return rho, est / tot
+
+
+# ---------------------------------------------------------------------------
+# MISURA
+# ---------------------------------------------------------------------------
+def _misura(cartella_cp=None, da=None, a=None, anno=ANNO, diario=None):
+    """Tutti i numeri dell'articolo. Ritorna il dizionario dei fatti, o None se i
+    cancelli non passano (finestra troppo corta, campo troppo piccolo, nessuna
+    squadra che si separa dal gruppo).
+
+    `diario`: lista opzionale in cui si scrive PERCHE' si e' rinunciato. Un NULL
+    muto non e' un NULL onesto: chi lancia il generatore deve poter leggere qual e'
+    il cancello che si e' chiuso e con quali numeri.
+    """
+    def nota(x):
+        if diario is not None:
+            diario.append(x)
+
+    gare = _carica_dir(FORZA_STAGIONE)
+    if da is not None:
+        gare = [g for g in gare if g["round"] >= da]
+    if a is not None:
+        gare = [g for g in gare if g["round"] <= a]
+    if len(gare) < MIN_PRIMA + MIN_DOPO:
+        nota(f"finestra troppo corta: {len(gare)} gare, ne servono almeno "
+             f"{MIN_PRIMA + MIN_DOPO}")
         return None
 
-    # distacchi (normalizzati): gap-al-leader in s, e % dal leader
-    gap = _serie(fs, team, "gap")
-    b_g, a_g = _ba(gap, up)
-    qd = [(g["round"], _pct_leader_quali(g, team)) for g in fs]
-    b_qd, a_qd = _ba(qd, up)
-    pd = [(g["round"], _pct_leader_passo(g, team)) for g in fs]
-    b_pd, a_pd = _ba(pd, up)
+    n = len(gare)
+    k = n // 2                                  # regola fissa: taglio a meta'
+    if k < MIN_PRIMA or n - k < MIN_DOPO:
+        nota(f"blocchi troppo corti: {k} + {n - k} gare (minimo {MIN_PRIMA} + {MIN_DOPO})")
+        return None
+    rounds = [g["round"] for g in gare]
+    r_prima, r_dopo = rounds[:k], rounds[k:]
+    circ = {g["round"]: g.get("circuito") for g in gare}
 
-    # DOVE: punta (vmax) vs curva (cornering), in percentile-campo
-    vm = [(g["round"], _percentile_campo(g, team, "vmax")) for g in ds]
-    co = [(g["round"], _percentile_campo(g, team, "cornering")) for g in ds]
-    b_vm, a_vm = _ba(vm, up)
-    b_co, a_co = _ba(co, up)
+    teams = sorted({t for g in gare for t in g["team"]})
+    matrice, incomplete = {}, []
+    for t in teams:
+        serie = [_rel_campo(g, t, "potenziale") for g in gare]
+        if any(v is None for v in serie):
+            incomplete.append(t)                # squadra con buchi: fuori dalla famiglia
+            continue
+        matrice[t] = serie
+    if len(matrice) < MIN_SQUADRE:
+        nota(f"campo troppo piccolo: {len(matrice)} squadre complete (minimo "
+             f"{MIN_SQUADRE}); incomplete: {', '.join(incomplete) or 'nessuna'}")
+        return None
 
-    # il distacco nella gara-upgrade stessa (per la corroborazione con la stampa)
-    gu = next((g for g in fs if g["round"] == up), None)
-    gap_gara_upgrade = gu["team"].get(team, {}).get("gap") if gu else None
-    pil_upgrade = gu["team"].get(team, {}).get("potenziale_pilota") if gu else None
+    per_squadra, tot_perm, esatto = _maxT(matrice, k)
+    if not per_squadra:
+        nota("permutazione non calcolabile")
+        return None
 
-    m = lambda L: st.mean(L) if L else None
+    # CANCELLO: almeno una squadra si separa dal gruppo, col p corretto per la
+    # famiglia. Il p e' quello STUDENTIZZATO (vedi _maxT): la versione a medie nude
+    # non corregge la squadra piu' rumorosa, che e' proprio quella che ha piu'
+    # probabilita' di finire in cima.
+    passanti = [t for t, d in per_squadra.items() if d["p_famiglia"] <= ALFA]
+    if not passanti:
+        migliore = min(per_squadra.items(), key=lambda kv: kv[1]["p_famiglia"])
+        nota(f"nessuna squadra sotto alfa={ALFA} col p di famiglia studentizzato su "
+             f"{tot_perm} divisioni {'esatte' if esatto else 'campionate'} e "
+             f"{len(matrice)} squadre. Il migliore e' {migliore[0]}: T "
+             f"{migliore[1]['T']:.2f}, p_famiglia {migliore[1]['p_famiglia']:.4f} "
+             f"(a medie nude sarebbe {migliore[1]['p_famiglia_medie']:.4f}: e' la "
+             f"differenza fra correggere e non correggere per la varianza)")
+        passa_medie = sorted(t for t, d in per_squadra.items()
+                             if d["p_famiglia_medie"] <= ALFA)
+        if passa_medie:
+            nota(f"col max-T NON studentizzato passerebbe {', '.join(passa_medie)} — e "
+                 f"sarebbe un artefatto di varianza: "
+                 + "; ".join(f"{t} sd serie {st.pstdev(matrice[t]):.3f}"
+                             for t in passa_medie)
+                 + f" contro una mediana di campo "
+                   f"{st.median([st.pstdev(v) for v in matrice.values()]):.3f}")
+        return None
 
-    # --- ROBUSTEZZA dei segnali (separazione di rango + permutazione) ---
-    r_quali = _robustezza(b_g, a_g, "giu")        # distacco in qualifica (secondi)
-    r_indice = _robustezza(b_i, a_i, "su")        # forza-indice
-    r_punta = _robustezza(b_vm, a_vm, "su")       # velocita' di punta (percentile)
+    # ordine di lettura: dal maggior guadagno alla maggior perdita
+    classifica = sorted(per_squadra.items(), key=lambda kv: kv[1]["sviluppo"])
 
-    # punta: quante gare-dopo stanno sopra la mediana di schieramento (percentile >= 50)
-    MEDIANA = 50.0
-    punta_dopo_sopra = sum(1 for v in a_vm if v is not None and v >= MEDIANA)
+    # corroborazione sul passo gara (canale secondario, spesso incompleto)
+    passo = {}
+    for t in teams:
+        serie = [_rel_campo(g, t, "passo") for g in gare]
+        pr = [v for v in serie[:k] if v is not None]
+        do = [v for v in serie[k:] if v is not None]
+        if len(pr) >= 2 and len(do) >= 2:
+            passo[t] = {"sviluppo": st.mean(do) - st.mean(pr),
+                        "n_prima": len(pr), "n_dopo": len(do)}
 
-    # curva: l'outlier della gara-upgrade (assetto scarico) trascina il "calo".
-    # quanto vale la curva DOPO togliendo la gara-upgrade stessa?
-    co_up = next((v for r, v in co if r == up), None)
-    a_co_senza = [v for r, v in co if v is not None and r > up]
+    # --- braccio FIA: lo sforzo dichiarato ---------------------------------
+    cal = _calendario()
+    per_round, diag_cp = _leggi_cp(cartella_cp or CARTELLA_CP, anno, cal)
+    sf = sf_grezzo = None
+    rho = p_rho = rho_alt = p_rho_alt = None
+    coppie = []
+    if len(per_round) >= MIN_GARE_FIA and cal:
+        sf = _sforzo(per_round, r_prima, r_dopo)
+        sf_grezzo = _sforzo(per_round, r_prima, r_dopo, pesato=False, solo_dopo=True)
+        noti = [t for t in matrice if TEAM_FIA.get(t) in sf]
+        xs = [sf[TEAM_FIA[t]] for t in noti]
+        ys = [-per_squadra[t]["sviluppo"] for t in noti]      # >0 = terreno guadagnato
+        rho, p_rho = _spearman(xs, ys)
+        rho_alt, p_rho_alt = _spearman([sf_grezzo[TEAM_FIA[t]] for t in noti], ys)
+        coppie = [{"team": t, "sforzo": sf[TEAM_FIA[t]],
+                   "sforzo_grezzo": sf_grezzo[TEAM_FIA[t]],
+                   "guadagno": -per_squadra[t]["sviluppo"]} for t in noti]
+        coppie.sort(key=lambda c: -c["sforzo"])
 
-    # serie del distacco (secondi) per round, per il grafico-eroe della prova-guida
-    serie_gap = [(r, round(v, 3) if v is not None else None) for r, v in gap]
+    # famiglie dei motivi lette (per dire quanto pesa il "Circuit specific" escluso)
+    fam_tot = {}
+    for conte in per_round.values():
+        for fam in conte.values():
+            for nome, v in fam.items():
+                fam_tot[nome] = fam_tot.get(nome, 0) + v
 
-    # la miglior gara PRIMA per indice (perche' non c'e' separazione di rango)
-    prima_idx = [(r, v) for r, v in idx if v is not None and r < up]
-    imax = max(prima_idx, key=lambda rv: rv[1]) if prima_idx else (None, None)
-    circ = {g["round"]: g["circuito"] for g in fmg}
+    # il rilevatore cieco: lo split fisso e' anche quello massimo per chi passa?
+    cieco = {r["team"]: r for r in _rileva(gare)}
 
-    # --- SCELTA della prova-guida (data-driven): fra i segnali AGGREGATI, il piu'
-    # robusto guida (separazione completa prima, poi p piu' basso). Regola generale. ---
-    aggregati = [
-        {"key": "quali", **r_quali},
-        {"key": "indice", **r_indice},
-    ]
-    aggregati.sort(key=lambda b: (0 if b["sep"] else 1,
-                                  b["p"] if b["p"] is not None else 1.0))
-    guida = aggregati[0]["key"]
+    # GIRO-TIPO: la mediana, sulle gare della finestra, del tempo mediano di
+    # riferimento in qualifica. Non entra in nessun conto — serve solo a dare una
+    # scala leggibile a una grandezza normalizzata ("1% di giro" non dice niente a
+    # nessuno, "otto decimi" si'). Le piste sono diverse: e' un metro nominale.
+    mediane = []
+    for g in gare:
+        vals = [x["potenziale"] for x in g["team"].values() if x.get("potenziale")]
+        if vals:
+            mediane.append(st.median(vals))
+    giro_tipo = st.median(mediane) if mediane else None
+
+    protagonista = min(per_squadra.items(), key=lambda kv: kv[1]["p_famiglia"])[0]
+    d_prot = per_squadra[protagonista]
+    guadagna = d_prot["sviluppo"] < 0
 
     F = {
-        "team": team, "gara_upgrade": cand["gp_nome"], "round_upgrade": up,
-        "anno": cand["anno"], "n_gare": len(fmg),
-        "n_prima": len(b_i), "n_dopo": len(a_i),
-        "gare_prima": [g["circuito"] for g in fmg if g["round"] < up],
-        "gare_dopo": [g["circuito"] for g in fmg if g["round"] >= up],
-        "serie_indice": idx,
-        "serie_gap": serie_gap,
-        "indice_prima": round(m(b_i), 1), "indice_dopo": round(m(a_i), 1),
-        "indice_step": round(m(a_i) - m(b_i), 1),
-        "gap_s_prima": round(m(b_g), 2), "gap_s_dopo": round(m(a_g), 2),
-        "quali_def_prima": round(m(b_qd), 2), "quali_def_dopo": round(m(a_qd), 2),
-        "quali_riduzione_pp": round(m(b_qd) - m(a_qd), 2),
-        "passo_def_prima": round(m(b_pd), 2), "passo_def_dopo": round(m(a_pd), 2),
-        "punta_pct_prima": round(m(b_vm)), "punta_pct_dopo": round(m(a_vm)),
-        "curva_pct_prima": round(m(b_co)), "curva_pct_dopo": round(m(a_co)),
-        "gap_gara_upgrade_s": round(gap_gara_upgrade, 2) if gap_gara_upgrade is not None else None,
-        "pilota_gara_upgrade": pil_upgrade,
-        # --- robustezza / framing ---
-        "guida": guida,
-        "quali_p": r_quali["p"], "quali_sep": r_quali["sep"],
-        "quali_perm_est": r_quali["est"], "quali_perm_tot": r_quali["tot"],
-        "indice_p": r_indice["p"], "indice_sep": r_indice["sep"],
-        "indice_perm_est": r_indice["est"], "indice_perm_tot": r_indice["tot"],
-        "indice_max_prima": round(imax[1]) if imax[1] is not None else None,
-        "indice_max_prima_gara": circ.get(imax[0]),
-        "punta_p": r_punta["p"], "punta_sep": r_punta["sep"],
-        "punta_dopo_sopra": punta_dopo_sopra, "punta_mediana": round(MEDIANA),
-        "curva_pct_upgrade": round(co_up) if co_up is not None else None,
-        "curva_pct_dopo_senza": round(m(a_co_senza)) if a_co_senza else None,
+        "anno": anno,
+        "n_gare": n, "n_prima": k, "n_dopo": n - k,
+        "rounds": rounds, "rounds_prima": r_prima, "rounds_dopo": r_dopo,
+        "gare_prima": [circ[r] for r in r_prima],
+        "gare_dopo": [circ[r] for r in r_dopo],
+        "circuiti": circ,
+        "n_squadre": len(matrice), "squadre_incomplete": incomplete,
+        "alfa": ALFA, "perm_tot": tot_perm, "perm_esatta": esatto,
+        "giro_tipo": round(giro_tipo, 3) if giro_tipo else None,
+        "classifica": [
+            {"team": t, "sviluppo": round(d["sviluppo"], 3),
+             "guadagno": round(-d["sviluppo"], 3),
+             "guadagno_ms": (round(-d["sviluppo"] / 100.0 * giro_tipo * 1000)
+                             if giro_tipo else None),
+             "p_famiglia": round(d["p_famiglia"], 4),
+             "p_grezzo": round(d["p_grezzo"], 4), "sep": d["sep"],
+             "T": round(d["T"], 3), "se": round(d["se"], 4),
+             "p_famiglia_medie": round(d["p_famiglia_medie"], 4),
+             "p_grezzo_medie": round(d["p_grezzo_medie"], 4),
+             "sd_serie": round(st.pstdev(matrice[t]), 3),
+             "passa": d["p_famiglia"] <= ALFA,
+             "sforzo": (sf or {}).get(TEAM_FIA.get(t, ""), None),
+             "serie": [round(v, 3) for v in matrice[t]]}
+            for t, d in classifica],
+        "n_passanti": len(passanti), "passanti": sorted(passanti),
+        "con_separazione": sorted(t for t, d in per_squadra.items() if d["sep"]),
+        # protagonista = la squadra col p di famiglia piu' basso
+        "prot": protagonista, "prot_corto": nm(protagonista),
+        "prot_sviluppo": round(d_prot["sviluppo"], 3),
+        "prot_guadagno": round(-d_prot["sviluppo"], 3),
+        "prot_verso": "guadagnato" if guadagna else "perso",
+        "prot_p_famiglia": round(d_prot["p_famiglia"], 4),
+        "prot_p_grezzo": round(d_prot["p_grezzo"], 4),
+        "prot_T": round(d_prot["T"], 3),
+        "prot_p_famiglia_medie": round(d_prot["p_famiglia_medie"], 4),
+        "statistica": "max-T studentizzato (differenza fra medie / errore standard)",
+        "prot_sep": d_prot["sep"],
+        "prot_ms": (round(abs(d_prot["sviluppo"]) / 100.0 * giro_tipo * 1000)
+                    if giro_tipo else None),
+        "prot_serie": [(r, round(v, 3)) for r, v in zip(rounds, matrice[protagonista])],
+        "prot_rel_prima": round(st.mean(matrice[protagonista][:k]), 3),
+        "prot_rel_dopo": round(st.mean(matrice[protagonista][k:]), 3),
+        "prot_ultima": round(matrice[protagonista][-1], 3),
+        "prot_ultima_gara": circ[rounds[-1]],
+        "prot_passo": (round(passo[protagonista]["sviluppo"], 3)
+                       if protagonista in passo else None),
+        "prot_passo_n": (f"{passo[protagonista]['n_prima']}+{passo[protagonista]['n_dopo']}"
+                         if protagonista in passo else None),
+        "prot_cieco_round": cieco.get(protagonista, {}).get("round"),
+        "prot_cieco_max": (round(cieco[protagonista]["sviluppo"], 3)
+                           if protagonista in cieco else None),
+        "taglio_round": r_dopo[0],
+        # --- braccio FIA ---
+        "cp_letti": diag_cp["letti"], "cp_esclusi": diag_cp["esclusi"],
+        "cp_non_mappati": diag_cp["non_mappati"], "cp_cartella": diag_cp["cartella"],
+        "cp_n": len(per_round),
+        "sforzo": sf, "sforzo_grezzo": sf_grezzo, "coppie": coppie,
+        "fam_tot": fam_tot,
+        "fam_sviluppo": fam_tot.get(FAMIGLIA_SVILUPPO, 0),
+        "fam_circuito": fam_tot.get("Circuit specific", 0),
+        "rho": round(rho, 3) if rho is not None else None,
+        "rho_p": round(p_rho, 4) if p_rho is not None else None,
+        "rho_alt": round(rho_alt, 3) if rho_alt is not None else None,
+        "rho_alt_p": round(p_rho_alt, 4) if p_rho_alt is not None else None,
+        "rho_regge": (p_rho is not None and p_rho <= ALFA),
+        "rho_regge_alt": (p_rho_alt is not None and p_rho_alt <= ALFA),
     }
-    return F, fmg
+    # La squadra che meglio mostra quanto costa la correzione: p grezzo sotto soglia
+    # (da sola sembrerebbe un caso) ma p di famiglia sopra (fra undici, non lo e').
+    candidati = [c for c in F["classifica"]
+                 if c["p_grezzo"] <= ALFA and c["p_famiglia"] > ALFA]
+    if candidati:
+        F["esempio_scarto"] = min(candidati, key=lambda c: c["p_grezzo"])
+
+    if F["sforzo"]:
+        ordinati = sorted(F["sforzo"].items(), key=lambda kv: -kv[1])
+        F["sforzo_max"] = ordinati[0]
+        F["sforzo_min"] = ordinati[-1]
+        F["prot_sforzo"] = F["sforzo"].get(TEAM_FIA.get(protagonista, ""))
+        F["prot_sforzo_rango"] = 1 + [t for t, _ in ordinati].index(TEAM_FIA[protagonista])
+    return F
 
 
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # GRAFICI
-# ----------------------------------------------------------------------------
-def _grafico_quali(F, col):
-    """GRAFICO-EROE (prova-guida): il distacco in qualifica dal piu' veloce, gara per
-    gara. Con la gara-upgrade marcata e le due medie prima/dopo come piani orizzontali:
-    dopo l'upgrade la linea scende e non risale piu' — la separazione di rango si legge
-    a colpo d'occhio (nessuna gara-dopo torna nella fascia delle gare-prima)."""
-    pr = [(r, v) for r, v in F["serie_gap"] if v is not None]
-    up = F["round_upgrade"]
-    rmin = min(r for r, _ in pr)
-    rmax = max(r for r, _ in pr)
-    ymax = max(v for _, v in pr)
-    ytop = max(1.4, round(ymax * 1.12, 1))
+# ---------------------------------------------------------------------------
+def _grafico_classifica(F):
+    """GRAFICO-EROE: chi ha guadagnato e chi ha perso terreno sul gruppo, in % di giro.
+    Barre divergenti da uno zero che e' il gruppo stesso: a destra chi si e' avvicinato
+    al centro dello schieramento piu' della media, a sinistra chi e' scivolato."""
+    righe = []
+    for c in F["classifica"]:
+        # Il valore della barra e' in MILLESIMI su un giro-tipo: la grandezza vera e'
+        # normalizzata (% di giro) e su una barra si leggerebbe "+0" per tutti.
+        nota = f"{it(c['guadagno'], 2)}% · p {it(c['p_famiglia'], 3)}"
+        if c["passa"]:
+            nota += " ★"
+        righe.append({"label": nm(c["team"]),
+                      "valore": c["guadagno_ms"] if c["guadagno_ms"] is not None
+                      else c["guadagno"], "nota": nota})
+    return svg.barre_divergenti(
+        righe, col_pos="#3fb2e8", col_neg="#e8613a",
+        lbl_pos="terreno guadagnato sul gruppo", lbl_neg="terreno perso", ml=92,
+        titolo=f"Chi si e' mosso rispetto al gruppo, {F['anno']}",
+        sub=f"round {F['rounds_prima'][0]}–{F['rounds_prima'][-1]} vs "
+            f"{F['rounds_dopo'][0]}–{F['rounds_dopo'][-1]}",
+        unita="millesimi",
+        caption=(f"qualifica, distanza dalla MEDIANA del campo · millesimi su un giro-tipo "
+                 f"di {it(F['giro_tipo'], 1)} s · ★ = regge il conto su {F['n_squadre']} "
+                 f"squadre"))
+
+
+def _grafico_prot(F):
+    """La serie del protagonista gara per gara, contro lo zero (= mediana del campo).
+    Si vede se il movimento e' un gradino o una deriva, e dove sta l'ultima gara."""
+    pr = [(r, v) for r, v in F["prot_serie"]]
+    rmin, rmax = pr[0][0], pr[-1][0]
+    vals = [v for _, v in pr]
+    lo = min(0.0, min(vals)) - 0.4
+    hi = max(0.0, max(vals)) + 0.4
+    # Tre serie e non quattro: la mediana del campo e' gia' lo zero dell'asse, e una
+    # legenda in piu' non ci sta in larghezza.
     serie = [
-        {"sigla": f"{nm(F['team'])} · distacco quali", "colore": col, "punti": pr},
-        {"sigla": "media prima", "colore": "var(--dim)",
-         "punti": [(rmin, F["gap_s_prima"]), (up - 0.001, F["gap_s_prima"])]},
-        {"sigla": "media dopo", "colore": "var(--accent)",
-         "punti": [(up, F["gap_s_dopo"]), (rmax, F["gap_s_dopo"])]},
+        {"sigla": F["prot_corto"], "colore": F["prot_colore"], "punti": pr},
+        {"sigla": "media blocco A", "colore": "var(--dim)",
+         "punti": [(rmin, F["prot_rel_prima"]),
+                   (F["taglio_round"] - 0.001, F["prot_rel_prima"])]},
+        # Non var(--accent): sui team verdi la media si confonderebbe con la squadra.
+        {"sigla": "media blocco B", "colore": "var(--txt)",
+         "punti": [(F["taglio_round"], F["prot_rel_dopo"]), (rmax, F["prot_rel_dopo"])]},
     ]
-    ticks = [r for r, _ in pr]
-    sep_txt = ("ogni gara dopo l'upgrade sotto ogni gara prima (separazione completa)"
-               if F.get("quali_sep") else "media prima vs media dopo")
+    passo = 0.5 if (hi - lo) < 4 else 1.0
+    ticks = []
+    v = math.ceil(lo / passo) * passo          # mai un tick fuori dall'asse
+    while v <= hi:
+        ticks.append(round(v, 1))
+        v += passo
     return svg.grafico_xy(
-        serie, x_range=(rmin, rmax), y_range=(0, ytop),
-        x_ticks=ticks, y_ticks=[0, 0.5, 1.0],
-        x_label="round del mondiale 2026 (numero di gara)",
-        y_label="distacco (s)",
-        x_annota=up, annota_txt=f"upgrade {F['gara_upgrade']}",
-        titolo=f"Il distacco di {nm(F['team'])} in qualifica, gara per gara",
-        sub=f"dal piu' veloce · prima {it(F['gap_s_prima'],2)} → dopo {it(F['gap_s_dopo'],2)} s · {sep_txt}")
+        serie, x_range=(rmin, rmax), y_range=(lo, hi),
+        x_ticks=[r for r, _ in pr], y_ticks=ticks,
+        x_label=f"round del mondiale {F['anno']} (numero di gara)",
+        y_label="% di giro",
+        x_annota=F["taglio_round"], annota_txt=f"taglio: round {F['taglio_round']}",
+        titolo=f"{F['prot_corto']} contro il centro dello schieramento, gara per gara",
+        sub=f"blocco A {it(F['prot_rel_prima'], 2)}% → blocco B {it(F['prot_rel_dopo'], 2)}% · "
+            f"zero = mediana del campo · sopra lo zero = piu' lento")
 
 
-def _grafico_indice(F, col):
-    """Grafico di CONTESTO: l'evoluzione dell'indice per round, con la gara-upgrade
-    marcata e le due medie prima/dopo. Segnale piu' debole del distacco-quali (nessuna
-    separazione di rango): qui accompagna, non guida."""
-    pr = [(r, v) for r, v in F["serie_indice"] if v is not None]
-    up = F["round_upgrade"]
-    rmin = min(r for r, _ in pr)
-    rmax = max(r for r, _ in pr)
-    serie = [
-        {"sigla": f"{nm(F['team'])} · forza-indice", "colore": col, "punti": pr},
-        {"sigla": "media prima", "colore": "var(--dim)",
-         "punti": [(rmin, F["indice_prima"]), (up - 0.001, F["indice_prima"])]},
-        {"sigla": "media dopo", "colore": "var(--accent)",
-         "punti": [(up, F["indice_dopo"]), (rmax, F["indice_dopo"])]},
-    ]
-    ticks = [r for r, _ in pr]
-    return svg.grafico_xy(
-        serie, x_range=(rmin, rmax), y_range=(0, 100),
-        x_ticks=ticks, y_ticks=[0, 25, 50, 75, 100],
-        x_label="round del mondiale 2026 (numero di gara)",
-        y_label="indice 0–100",
-        x_annota=up, annota_txt=f"upgrade {F['gara_upgrade']}",
-        titolo=f"La forza-macchina di {nm(F['team'])}, gara per gara",
-        sub=f"prima {it(F['indice_prima'],0)} → dopo {it(F['indice_dopo'],0)} "
-            f"(+{it(F['indice_step'],0)}) · indice = potenziale + passo, percentile per-gara")
+def _grafico_sforzo(F, colori):
+    """Sforzo dichiarato (FIA) contro sviluppo misurato: 11 punti, una squadra ciascuno.
+    E' il confronto onesto fra quello che le squadre HANNO PORTATO e quello che si vede
+    nel cronometro. Non e' una prova di causa: il conteggio dei pezzi non e' la taglia."""
+    punti = [{"label": nm(c["team"]), "colore": colori.get(c["team"]) or "var(--dim)",
+              "x": c["sforzo"], "y": c["guadagno"],
+              "evidenza": c["team"] == F["prot"]} for c in F["coppie"]]
+    xs = [p["x"] for p in punti]
+    ys = [p["y"] for p in punti]
+    passo_x = 5 if max(xs) <= 30 else 10
+    xhi = int(math.ceil((max(xs) + 1) / passo_x) * passo_x)
+    ylo = math.floor(min(ys) * 2) / 2 - 0.3
+    yhi = math.ceil(max(ys) * 2) / 2 + 0.3
+    xt = list(range(0, xhi + 1, passo_x))
+    yt = []
+    v = ylo
+    while v <= yhi + 1e-9:
+        yt.append(round(v, 1))
+        v += 0.5
+    return svg.grafico_scatter(
+        punti, x_range=(0, xhi), y_range=(ylo, yhi), x_ticks=xt, y_ticks=yt,
+        cx=round(st.median(xs), 1), cy=0,
+        x_label="componenti «Performance» portati, pesati per la finestra (→ piu' sforzo)",
+        y_label="terreno guadagnato sul gruppo (% di giro)",
+        titolo="Chi ha portato di piu' ha guadagnato di piu'?",
+        sub=f"{len(punti)} squadre · rho di Spearman {it(F['rho'], 2)} "
+            f"(p {it(F['rho_p'], 3)}) · fonte pezzi: FIA Car Presentation Submissions",
+        ang=("molti pezzi, terreno perso", "molti pezzi, terreno guadagnato",
+             "pochi pezzi, terreno guadagnato", "pochi pezzi, terreno perso"))
 
 
-def _grafico_dove(F, col):
-    """Dove: percentile-campo su punta e curva, prima vs dopo. Mostra se il salto
-    e' sul dritto o in curva. Evidenziate le barre della PUNTA (dove sta l'effetto
-    in questo caso), le altre in ombra."""
-    su_punta = F["punta_pct_dopo"] > F["punta_pct_prima"]
-    righe = [
-        {"sigla": "punta · dopo", "colore": col, "valore": float(F["punta_pct_dopo"]), "evidenza": su_punta},
-        {"sigla": "punta · prima", "colore": col, "valore": float(F["punta_pct_prima"]), "evidenza": su_punta},
-        {"sigla": "curva · dopo", "colore": col, "valore": float(F["curva_pct_dopo"]), "evidenza": not su_punta},
-        {"sigla": "curva · prima", "colore": col, "valore": float(F["curva_pct_prima"]), "evidenza": not su_punta},
-    ]
-    return svg.barre_dv(
-        righe, titolo="Dove e' cambiata la macchina: punta vs curva", ml=88, dec=0,
-        sub="percentile nel campo (50 = media)",
-        caption=f"percentile della velocita' di punta e in curva · prima = pre-upgrade, dopo = da {F['gara_upgrade']}")
-
-
-# ----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 # COSTRUZIONE ARTICOLO
-# ----------------------------------------------------------------------------
-def costruisci(data_bozza=None):
-    fs = _carica_dir(FORZA_STAGIONE)
-    if len(fs) < MIN_PRIMA + MIN_DOPO:
+# ---------------------------------------------------------------------------
+def costruisci(data_bozza=None, cartella_cp=None, da=None, a=None, anno=ANNO,
+               diario=None):
+    F = _misura(cartella_cp=cartella_cp, da=da, a=a, anno=anno, diario=diario)
+    if not F:
         return None
-    ranking = _rileva(fs)
-    ranking_map = {r["team"]: (i + 1, r) for i, r in enumerate(ranking)}
-
-    # scegli il primo candidato del dossier che PASSA il cancello sui dati
-    for cand in DOSSIER:
-        res = _misura(cand)
-        if not res:
-            continue
-        F, fmg = res
-        # CANCELLO: salto dell'indice e riduzione del distacco entrambi sopra soglia
-        if F["indice_step"] < SOGLIA_STEP_INDICE:
-            continue
-        if F["quali_riduzione_pp"] < SOGLIA_RIDUZIONE_PP:
-            continue
-        # ok: costruisci
-        rango, rig = ranking_map.get(F["team"], (None, None))
-        F["rilevatore_rango"] = rango
-        F["rilevatore_riduzione"] = round(rig["riduzione"], 2) if rig else None
-        F["rilevatore_sigma_dopo"] = round(rig["sigma_dopo"], 2) if rig else None
-        F["rilevatore_round"] = rig["round"] if rig else None
-        return _componi(cand, F, fmg, data_bozza)
-    return None
-
-
-def _componi(cand, F, fmg, data_bozza=None):
     colori = base.carica_colori()
-    col = colori.get(F["team"]) or "var(--dim)"
-    team_slug, gp_slug, anno = cand["team_slug"], cand["gp_slug"], cand["anno"]
-    ID = f"upgrade-{team_slug}-{gp_slug}-{anno}"
+    F["prot_colore"] = colori.get(F["prot"]) or "var(--dim)"
+    return _componi(F, colori, data_bozza)
 
-    su_punta = F["punta_pct_dopo"] > F["punta_pct_prima"]
-    dove = "sul rettilineo" if su_punta else "in curva"
 
-    tnm = nm(F["team"])
-    gu = F["gara_upgrade"]
+def _componi(F, colori, data_bozza=None):
+    ID = f"sviluppo-relativo-{F['anno']}"
+    prot = F["prot_corto"]
+    A = f"round {F['rounds_prima'][0]}–{F['rounds_prima'][-1]}"
+    B = f"round {F['rounds_dopo'][0]}–{F['rounds_dopo'][-1]}"
+    verso = F["prot_verso"]
+    quanto = it(abs(F["prot_sviluppo"]), 2)
+    migliori = [c for c in F["classifica"] if c["guadagno"] > 0][:3]
+    peggiori = [c for c in F["classifica"] if c["guadagno"] < 0][-3:]
 
-    # il rilevatore cieco conferma il candidato della stampa?
-    conferma = (F.get("rilevatore_rango") == 1 and F.get("rilevatore_round") == F["round_upgrade"])
-    frase_rilevatore = (
-        f"E non e' un artefatto del sapere gia' dove guardare: un rilevatore cieco, che cerca "
-        f"nel forza-macchina la riduzione di distacco piu' netta e stabile della stagione senza "
-        f"sapere nulla dell'aggiornamento, indica <b>proprio {tnm} a {gu}</b> come il numero uno "
-        f"(riduzione {it(F['rilevatore_riduzione'],2)} punti %, la piu' grande del gruppo, con lo "
-        f"scarto piu' piccolo dopo: {it(F['rilevatore_sigma_dopo'],2)})."
-        if conferma else
-        f"Il rilevatore indipendente colloca {tnm} fra le riduzioni di distacco piu' nette della "
-        f"stagione (#{F.get('rilevatore_rango')})."
+    def elenco(cs):
+        return ", ".join(f"{nm(c['team'])} {it(c['guadagno'], 2)}%" for c in cs)
+
+    # --- Evidenza 1: la classifica dello sviluppo relativo ------------------
+    ev1 = (
+        f"<p>La domanda non e' “l'aggiornamento di questa squadra ha funzionato”: e' "
+        f"<b>chi si e' mosso rispetto al gruppo</b>. Per ogni gara misuriamo dove sta "
+        f"ciascuna squadra in qualifica rispetto alla <b>mediana dello schieramento</b>, "
+        f"in percentuale di giro — cosi' il numero e' confrontabile fra circuiti diversi "
+        f"e non dipende da quanto e' scappato il primo. Poi confrontiamo due blocchi di "
+        f"gare: <b>{A}</b> ({F['n_prima']} gare) contro <b>{B}</b> ({F['n_dopo']} gare), "
+        f"tagliando a meta' le {F['n_gare']} gare disponibili.</p>"
+        f"<p>Chi ha guadagnato terreno: {elenco(migliori)}. Chi lo ha perso: "
+        f"{elenco(peggiori)}. Sono numeri piccoli perche' sono <b>relativi</b>: se in "
+        f"quelle gare hanno migliorato tutti allo stesso modo, qui non si muove nessuno. "
+        f"E' il limite della grandezza, ed e' voluto — il progresso assoluto dello "
+        f"schieramento con questi dati non e' separabile dall'evoluzione della pista, "
+        f"delle gomme e del carburante.</p>"
     )
-    corrob = ""
-    if F["gap_gara_upgrade_s"] is not None:
-        corrob = (
-            f" Nella gara stessa dell'upgrade il distacco dal piu' veloce si e' fermato a "
-            f"<b>{it(F['gap_gara_upgrade_s'],2)} s</b>, il miglior venerdi/sabato della prima "
-            f"parte di stagione."
+    ev1 += (
+        f"<p>Guardando {F['n_squadre']} squadre insieme, qualcosa di vistoso salta fuori "
+        f"per caso: e' quasi certo. Percio' il conto non e' squadra per squadra. Si "
+        f"rimescolano le etichette delle gare fra i due blocchi "
+        f"({'tutte le ' if F['perm_esatta'] else ''}{F['perm_tot']} "
+        f"{'divisioni possibili' if F['perm_esatta'] else 'divisioni estratte'}) e ogni "
+        f"volta si prende il <b>movimento piu' grande dell'intero gruppo</b>, misurato in "
+        f"errori standard e non in punti nudi — altrimenti quel massimo sarebbe quasi "
+        f"sempre della squadra col ritmo piu' ballerino, e a lei la correzione non "
+        f"costerebbe nulla: una squadra conta come separata solo se batte quel massimo. "
+        + (f"Ne resta <b>una</b>: {prot}."
+           if F["n_passanti"] == 1 else
+           f"Ne restano <b>{F['n_passanti']}</b>: {', '.join(nm(t) for t in F['passanti'])}.")
+        + f" {prot} ha {verso} <b>{quanto}% di giro</b> sul gruppo, con "
+          f"p {it(F['prot_p_famiglia'], 3)}."
+        + (f" Per dare una scala a un numero normalizzato: su un giro-tipo di "
+           f"{it(F['giro_tipo'], 1)} s — la mediana dei tempi di riferimento della "
+           f"finestra — {quanto}% sono circa <b>{_scala(F['prot_ms'])}</b>. E' un metro "
+           f"nominale, serve solo a capire l'ordine di grandezza: le piste sono diverse."
+           if F.get("prot_ms") else "")
+        + "</p>"
+    )
+    if F.get("esempio_scarto"):
+        e = F["esempio_scarto"]
+        ev1 += (
+            f"<p>Quanto pesa quella correzione si vede bene su {nm(e['team'])}: presa da "
+            f"sola avrebbe p {it(e['p_grezzo'], 3)}, cioe' sembrerebbe un caso solido; "
+            f"messa in fila con le altre {F['n_squadre'] - 1} sale a "
+            f"{it(e['p_famiglia'], 3)}. Non e' un cavillo: e' la differenza fra “questa "
+            f"squadra si e' mossa” e “fra undici squadre, una si e' mossa tanto cosi'”, e "
+            f"la seconda succede quasi sempre anche quando non e' successo niente.</p>"
+        )
+    if not F["con_separazione"]:
+        ev1 += (
+            f"<p>Un limite da mettere subito: <b>nessuna squadra</b>, nemmeno {prot}, ha "
+            f"la separazione di rango completa — cioe' non esiste una squadra le cui gare "
+            f"del blocco B stiano <i>tutte</i> oltre <i>tutte</i> quelle del blocco A. "
+            f"Quello che si misura e' uno spostamento della media, non un gradino netto. "
+            f"Con {F['n_prima']} e {F['n_dopo']} gare per blocco e' quanto i dati "
+            f"consentono di dire.</p>"
         )
 
-    # ------------------------------------------------------------------
-    # BLOCCHI di prosa (uno per segnale). Ogni segnale aggregato ha un ruolo:
-    # "guida" (prova portante, con separazione di rango + permutazione) oppure
-    # "contesto" (segnale di supporto, citato col suo limite). L'ordinamento a
-    # monte (F["guida"]) decide chi guida e chi scende a contesto.
-    # ------------------------------------------------------------------
-    def blocco_quali(ruolo):
-        intro = (
-            f"<p>Il metro piu' pulito e' il <b>distacco in qualifica</b> dal piu' veloce, letto "
-            f"sul cronometro e ripulito dal circuito. Quello di {tnm} passa da "
-            f"<b>{it(F['gap_s_prima'],2)} s</b> di media prima dell'upgrade a "
-            f"<b>{it(F['gap_s_dopo'],2)} s</b> dopo — in percentuale sul giro, da "
-            f"{it(F['quali_def_prima'],2)}% a {it(F['quali_def_dopo'],2)}% — con i distacchi "
-            f"normalizzati fra i team di ogni gara (mai tempi assoluti: le piste sono diverse).</p>"
+    # --- Evidenza 2: il protagonista gara per gara --------------------------
+    ev2 = (
+        f"<p>Vista gara per gara, la storia di {prot} e' questa: "
+        f"<b>{it(F['prot_rel_prima'], 2)}%</b> di media dalla mediana del campo nel blocco "
+        f"A, <b>{it(F['prot_rel_dopo'], 2)}%</b> nel blocco B. Nell'ultima gara letta "
+        f"({F['prot_ultima_gara']}) il valore e' <b>{it(F['prot_ultima'], 2)}%</b>.</p>"
+    )
+    if F["prot_passo"] is not None:
+        concorde = (F["prot_passo"] * F["prot_sviluppo"]) > 0
+        gp_passo = -F["prot_passo"]
+        ev2 += (
+            f"<p>Il passo gara, tenuto come corroborazione e non come prova, "
+            + (f"dice la stessa cosa: {it(abs(gp_passo), 2)}% di terreno "
+               f"{'guadagnato' if gp_passo > 0 else 'perso'} sul gruppo"
+               if concorde else
+               f"<b>non conferma</b>: va nella direzione opposta "
+               f"({it(abs(gp_passo), 2)}% di terreno "
+               f"{'guadagnato' if gp_passo > 0 else 'perso'})")
+            + f" su {F['prot_passo_n']} gare utilizzabili. Lo teniamo un gradino sotto "
+              f"perche' il passo di una gara e' inquinato dal traffico — una macchina "
+              f"bloccata dietro un'altra non ha un passo leggibile — e nel 2026 manca del "
+              f"tutto per qualche squadra in qualche gara. "
+            + ("Il disaccordo fra i due canali e' un limite dichiarato, non una nota a "
+               "pie' di pagina: il movimento che misuriamo si vede sul giro secco e non "
+               "sul ritmo di gara."
+               if not concorde else
+               "Due canali diversi che si muovono insieme sono un indizio in piu'.")
+            + "</p>"
         )
-        if ruolo == "guida":
-            if F.get("quali_sep"):
-                forza = (
-                    f"<p>La forza di questo dato non e' la taglia del salto, ma che le due fasi "
-                    f"<b>non si sovrappongono</b>: ognuna delle {F['n_dopo']} gare dopo l'upgrade "
-                    f"ha un distacco piu' piccolo di ognuna delle {F['n_prima']} gare prima — "
-                    f"separazione di rango completa. Con uno split cosi' ({F['n_prima']} contro "
-                    f"{F['n_dopo']}) e' la disposizione piu' estrema possibile: un test di "
-                    f"permutazione la colloca a <b>{F['quali_perm_est']} caso su "
-                    f"{F['quali_perm_tot']}</b> (p ≈ {it(F['quali_p'],3)}). {frase_rilevatore}</p>"
-                )
-            else:
-                forza = (f"<p>Un test di permutazione dà p ≈ {it(F['quali_p'],3)}. {frase_rilevatore}</p>")
-            caveat = (
-                f"<p>Un avvertimento d'obbligo: il distacco in qualifica misura il potenziale sul "
-                f"giro secco, <b>non</b> la posizione in griglia (che dipende anche da eliminazioni, "
-                f"bandiere e traffico) ne' il passo gara. Lo usiamo come metro del potenziale della "
-                f"macchina. Sul passo gara il progresso c'e' ma e' piu' tenue: da "
-                f"{it(F['passo_def_prima'],2)}% a {it(F['passo_def_dopo'],2)}% dal piu' veloce.{corrob} "
-                f"Il dimezzamento combacia, per ordine di grandezza, con la stima della stessa "
-                f"squadra riportata dalla stampa: convergenza, non prova.</p>"
+    if F["prot_cieco_round"] is not None:
+        coincide = F["prot_cieco_round"] == F["taglio_round"]
+        ev2 += (
+            f"<p>Il taglio a meta' stagione non l'abbiamo scelto guardando i risultati: e' "
+            f"una regola fissa, e si sposta da sola a ogni gara nuova. Va detto pero' che "
+            + (f"<b>coincide</b> con il punto in cui il movimento di {prot} e' massimo "
+               f"({it(abs(F['prot_cieco_max']), 2)}%): una coincidenza del calendario, che "
+               f"rende questo numero il piu' generoso possibile per {prot}. La prossima "
+               f"gara spostera' il taglio e rifara' il conto."
+               if coincide else
+               f"il punto di massimo movimento di {prot} sarebbe il round "
+               f"{F['prot_cieco_round']} ({it(abs(F['prot_cieco_max']), 2)}%), non il "
+               f"nostro: il taglio fisso non e' quello che favorisce la squadra.")
+            + "</p>"
+        )
+
+    # --- Evidenza 3: lo sforzo dichiarato (FIA) -----------------------------
+    ev3 = None
+    if F.get("coppie"):
+        sm, sM = F["sforzo_min"], F["sforzo_max"]
+        letti = ", ".join(str(x["round"]) for x in F["cp_letti"])
+        ev3 = (
+            f"<p>Fin qui il cronometro. C'e' pero' una seconda fonte, indipendente e "
+            f"ufficiale: il documento FIA <i>Car Presentation Submissions</i>, pubblicato "
+            f"il venerdi' di ogni Gran Premio, che elenca squadra per squadra i componenti "
+            f"aggiornati portati in pista. Da li' si conta lo <b>sforzo dichiarato</b>. "
+            f"Abbiamo letto {F['cp_n']} documenti {F['anno']} (round {letti}), per un "
+            f"totale di {sum(F['fam_tot'].values())} componenti.</p>"
+            f"<p>Due precisazioni prima dei numeri. Primo: contano solo le voci con motivo "
+            f"<b>“Performance”</b> ({F['fam_sviluppo']} su {sum(F['fam_tot'].values())}); "
+            f"le {F['fam_circuito']} voci <b>“Circuit specific”</b> restano fuori, perche' "
+            f"sono configurazione per quel tracciato — ala scarica a Monza, carico a "
+            f"Monaco — e non sviluppo della macchina. Secondo: un pezzo portato all'ultima "
+            f"gara della finestra non puo' spiegare la media della finestra, quindi ogni "
+            f"componente pesa per quante gare del blocco B lo hanno avuto addosso <i>in "
+            f"piu'</i> rispetto al blocco A. Cosi' pesato, il piu' attivo e' "
+            f"<b>{nm(sM[0])}</b> ({it(sM[1], 1)}), il meno attivo <b>{nm(sm[0])}</b> "
+            f"({it(sm[1], 1)}).</p>"
+        )
+        if F.get("prot_sforzo") is not None:
+            ev3 += (
+                f"<p>E {prot}? E' <b>{F['prot_sforzo_rango']}ª su "
+                f"{len(F['sforzo'])}</b> per sforzo dichiarato ({it(F['prot_sforzo'], 1)}): "
+                f"il conto del cronometro e quello dei pezzi raccontano la stessa cosa.</p>"
             )
-            return ("Il distacco in qualifica si dimezza — e le due meta' non si toccano",
-                    intro + forza + caveat)
-        return ("Anche il distacco in qualifica cala, e in modo netto",
-                intro + f"<p>Sul passo gara il progresso e' piu' tenue (da {it(F['passo_def_prima'],2)}% "
-                        f"a {it(F['passo_def_dopo'],2)}%). Nota: la qualifica misura il potenziale sul "
-                        f"giro secco, non la griglia.</p>")
-
-    def blocco_indice(ruolo):
-        intro = (
-            f"<p>La <b>forza-macchina</b> complessiva — un indice 0–100 per gara che fonde "
-            f"potenziale in qualifica e passo in aria pulita, normalizzato fra i team — si muove "
-            f"nella stessa direzione: da <b>{it(F['indice_prima'],0)}</b> nelle {F['n_prima']} gare "
-            f"prima a <b>{it(F['indice_dopo'],0)}</b> nelle {F['n_dopo']} dopo (+{it(F['indice_step'],0)}).</p>"
+        ev3 += (
+            f"<p>Sull'intero gruppo la relazione fra sforzo dichiarato e terreno guadagnato "
+            f"c'e' e ha il segno che ci si aspetta (rho di Spearman "
+            f"<b>{it(F['rho'], 2)}</b>, p {it(F['rho_p'], 3)}), ma non e' un risultato su "
+            f"cui appoggiarsi: <b>e' fragile</b>. Le squadre sono "
+            f"{len(F['coppie'])} — con cosi' pochi punti serve un legame quasi perfetto per "
+            f"uscire dal caso — e contando i pezzi in un altro modo altrettanto "
+            f"difendibile (numero grezzo di componenti portati nel blocco B, senza pesarli) "
+            f"il legame scende a rho {it(F['rho_alt'], 2)} con p {it(F['rho_alt_p'], 3)}"
+            + (", cioe' sparisce" if not F["rho_regge_alt"] else "") +
+            f". Lo registriamo come indicazione, non come misura: chi porta piu' pezzi "
+            f"<i>tende</i> a guadagnare terreno, ma i nostri dati non lo stabiliscono.</p>"
         )
-        if ruolo == "contesto":
-            limiti = (
-                f"<p>E' un indizio di conferma, non la prova portante, e va preso con le molle. "
-                f"Primo: <b>nessuna separazione di rango</b> — la miglior gara prima dell'upgrade "
-                f"({F['indice_max_prima_gara']}) valeva gia' <b>{it(F['indice_max_prima'],0)}</b>, "
-                f"quanto la media dopo, cosi' le due fasi si sovrappongono. Secondo: poggia su sole "
-                f"{F['n_prima']} gare prima. Un test di permutazione lo dà a p ≈ {it(F['indice_p'],2)}, "
-                f"al limite della significativita'. Per questo la prova-guida resta il distacco in "
-                f"qualifica, non l'indice.</p>"
-            )
-            return ("La forza-macchina conferma — ma e' il segnale piu' debole", intro + limiti)
-        forte = (
-            f"<p>Un test di permutazione dà p ≈ {it(F['indice_p'],2)}"
-            + (", con separazione di rango completa" if F.get("indice_sep") else "")
-            + f". {frase_rilevatore}</p>"
-        )
-        return ("La forza-macchina fa un gradino che non si richiude", intro + forte)
 
-    def blocco_dove():
-        p1 = (
-            f"<p>Dove e' finito il guadagno? Separiamo i due canali con cui una macchina fa il "
-            f"tempo: la <b>velocita' di punta</b> (dritto) e la <b>velocita' in curva</b>, "
-            f"ciascuna come percentile nel campo (50 = media schieramento). La punta di {tnm} sale "
-            f"dal <b>{it(F['punta_pct_prima'],0)}°</b> al <b>{it(F['punta_pct_dopo'],0)}°</b> "
-            f"percentile — da parte bassa del gruppo a meta' alta — e regge: <b>{F['punta_dopo_sopra']} "
-            f"delle {F['n_dopo']}</b> gare dopo l'upgrade stanno sopra la mediana di schieramento "
-            f"(percentile ≥ {F['punta_mediana']}).</p>"
-        )
-        p2 = (
-            f"<p>La curva sembra dire il contrario, ma solo in media: scende "
-            f"({it(F['curva_pct_prima'],0)}° → {it(F['curva_pct_dopo'],0)}°), e il calo e' in buona "
-            f"parte l'ombra di una sola gara. Proprio a {gu} l'assetto scarico spinse il percentile "
-            f"in curva sul fondo del gruppo ({it(F['curva_pct_upgrade'],0)}°); togliendo quella "
-            f"gara, nelle restanti la curva resta intorno al <b>{it(F['curva_pct_dopo_senza'],0)}°</b> "
-            f"percentile, in linea col livello di prima. Il guadagno netto e quantificabile e' "
-            f"quello {dove}.</p>"
-        )
-        return ("Il guadagno e' sul rettilineo", p1 + p2)
+    # --- Causa --------------------------------------------------------------
+    causa = (
+        f"<p>Quello che sta sopra e' un <b>effetto</b>, non una causa. Il documento FIA "
+        f"dice quali componenti sono arrivati e perche' (in categoria), e il cronometro "
+        f"dice dove sta la macchina rispetto al gruppo. Fra le due cose non c'e' un ponte "
+        f"che si possa attraversare con questi dati, e i motivi sono tre, tutti nella "
+        f"fonte.</p>"
+        f"<p>Primo: il documento <b>non dice mai su quale vettura</b> vada il pezzo — non "
+        f"compare nemmeno una volta un riferimento al numero di macchina o al pilota. "
+        f"Secondo: non contiene <b>nessun numero di prestazione</b>, quindi il conteggio "
+        f"dei pezzi non e' la taglia dell'aggiornamento: un fondo nuovo e una staffa di "
+        f"scarico contano uno a testa. Terzo: alcune voci sono dichiarate "
+        f"“disponibili” o “opzionali”, cioe' <b>portate ma non per forza montate</b>.</p>"
+        f"<p>Aggiungiamo il difetto piu' grosso, che non e' della fonte ma della domanda "
+        f"vecchia: le squadre aggiornano <b>quasi ogni gara</b>. Non esiste un blocco di "
+        f"gare “senza aggiornamenti” da usare come termine di paragone. Percio' qui non "
+        f"si dira' mai che un singolo pacchetto ha funzionato: si dira' solo se, fra due "
+        f"blocchi di gare, una squadra si e' mossa rispetto alle altre. Attribuire quel "
+        f"movimento a un pezzo — o distinguerlo da un cambio di assetto, da una pista che "
+        f"si adatta meglio alla macchina o da un pilota in forma — resta fuori portata.</p>"
+    )
 
-    def blocco_causa():
-        return ("Perche' la punta sale — e cosa resta invisibile",
-            f"<p>Attenzione al confine. La velocita' di punta <b>non e' solo resistenza "
-            f"aerodinamica</b>: dipende anche dalla potenza dell'unita' motrice e da come questa "
-            f"viene messa a terra sul rettilineo. I due contributi — meno resistenza, o piu' "
-            f"spinta — sui nostri canali <b>non si separano</b>.</p>"
-            f"<p>Perche' la punta salga senza che la curva migliori, la lettura naturale e' una "
-            f"macchina che sul dritto <b>perde meno</b> o <b>spinge di piu'</b>. Ma se dietro ci "
-            f"sia meno ala, un'ala che si “apre” in rettilineo, l'assetto o la mappatura del "
-            f"motore, dai dati non lo possiamo dire: il singolo pezzo resta una variabile latente.</p>")
+    # --- Effetto ------------------------------------------------------------
+    eff = (
+        f"<p><b>Cosa possiamo dire.</b> Fra {A} e {B}, "
+        + (f"una sola squadra si stacca dal gruppo in modo che regga al conto corretto: "
+           f"{prot}, che ha {verso} {quanto}% di giro."
+           if F["n_passanti"] == 1 else
+           f"{F['n_passanti']} squadre si staccano dal gruppo: "
+           f"{', '.join(nm(t) for t in F['passanti'])}.")
+        + f" Tutte le altre stanno dentro il rumore: i loro spostamenti sono compatibili "
+          f"con un rimescolamento casuale delle gare.</p>"
+        f"<p><b>Cosa non possiamo dire.</b> Nulla su un singolo aggiornamento, di nessuna "
+        f"squadra. Nulla sul progresso assoluto: la grandezza e' relativa, e se migliorano "
+        f"tutti resta ferma. E nulla sul perche': la causa e' fuori dai nostri canali.</p>"
+        f"<p>Questo pezzo non e' un verdetto, e' un <b>tracciato</b>: si riscrive dopo ogni "
+        f"gara, il taglio si sposta, e le squadre che oggi stanno dentro il rumore possono "
+        f"uscirne — o {prot} puo' rientrarci. Il modo giusto di leggerlo e' guardare come "
+        f"cambia, non quanto vale oggi.</p>"
+    )
 
-    def blocco_effetto():
-        return ("Cosa possiamo dire, e cosa no",
-            f"<p>Il <b>sintomo</b> e' misurato e netto: da {gu} la macchina di {tnm} e' piu' "
-            f"veloce, il guadagno e' {dove}, e regge per {F['n_dopo']} gare. Il segnale piu' solido "
-            f"e' il distacco in qualifica, che si dimezza (da {it(F['gap_s_prima'],2)} a "
-            f"{it(F['gap_s_dopo'],2)} s) senza mai risalire, dopo l'upgrade, nella fascia di prima. "
-            f"La velocita' di punta ({it(F['punta_pct_prima'],0)}° → {it(F['punta_pct_dopo'],0)}°) e "
-            f"la forza-macchina complessiva (+{it(F['indice_step'],0)}) puntano nella stessa "
-            f"direzione.</p>"
-            f"<p>La <b>causa</b>, no. Quale pezzo abbia prodotto il guadagno — e persino quanto sia "
-            f"“upgrade” e quanto sia “aver sistemato i problemi”, come ha ammesso lo stesso team — e' "
-            f"fuori dalla portata dei nostri dati. Misuriamo l'effetto sulla macchina, non il "
-            f"componente che l'ha causato. Ma su una cosa i numeri sono netti: l'upgrade, comunque "
-            f"lo si chiami, <b>ha funzionato</b>.</p>")
+    sommario = (
+        f"Le squadre di Formula 1 aggiornano la macchina quasi ogni gara, quindi non "
+        f"esiste un “prima senza aggiornamenti” con cui confrontarsi: chiedere se un "
+        f"singolo pacchetto ha funzionato e' una domanda senza risposta. Quella che una "
+        f"risposta ce l'ha e' un'altra: fra {A} e {B}, chi si e' mosso rispetto al gruppo? "
+        + (f"Una squadra sola esce dal rumore quando si tiene conto che stiamo guardando "
+           f"{F['n_squadre']} squadre insieme: {prot}, che ha {verso} {quanto}% di giro "
+           f"sulla mediana dello schieramento."
+           if F["n_passanti"] == 1 else
+           f"{F['n_passanti']} squadre escono dal rumore: "
+           f"{', '.join(nm(t) for t in F['passanti'])}.")
+        + (f" Accanto al cronometro mettiamo lo sforzo dichiarato alla FIA — i componenti "
+           f"aggiornati che ogni squadra ha davvero portato — e la domanda scomoda: chi ha "
+           f"portato di piu' ha guadagnato di piu'? Un po' si', ma il legame e' troppo "
+           f"fragile per chiamarlo misura." if F.get("coppie") else "")
+    )
 
-    # ordina: prova-guida (piu' robusta) in testa, l'altro segnale aggregato a contesto
-    if F["guida"] == "indice":
-        g_tit, g_html, g_fig = (*blocco_indice("guida"), "indice")
-        c_tit, c_html, c_fig = (*blocco_quali("contesto"), "quali")
-    else:
-        g_tit, g_html, g_fig = (*blocco_quali("guida"), "quali")
-        c_tit, c_html, c_fig = (*blocco_indice("contesto"), "indice")
-    d_tit, d_html = blocco_dove()
-    ca_tit, ca_html = blocco_causa()
-    e_tit, e_html = blocco_effetto()
+    sezioni = [
+        {"tag": "Evidenza", "titolo": "Chi si e' mosso rispetto al gruppo", "html": ev1,
+         "figura": "classifica"},
+        {"tag": "Evidenza", "titolo": f"{prot}, gara per gara", "html": ev2,
+         "figura": "prot"},
+    ]
+    if ev3:
+        sezioni.append({"tag": "Evidenza",
+                        "titolo": "Quanti pezzi ha portato davvero ognuno",
+                        "html": ev3, "figura": "sforzo"})
+    sezioni.append({"tag": "Causa", "titolo": "Perche' non diremo mai “questo pezzo ha "
+                                             "funzionato”", "html": causa})
+    sezioni.append({"tag": "Effetto", "titolo": "Cosa resta in mano", "html": eff})
 
-    if F["guida"] == "indice":
-        sommario = (
-            f"{tnm} ha portato un pacchetto d'aggiornamento a {gu}. Non vediamo il pezzo, ma ne "
-            f"misuriamo l'effetto: la forza-macchina sale da {it(F['indice_prima'],0)} a "
-            f"{it(F['indice_dopo'],0)} (+{it(F['indice_step'],0)}), il distacco in qualifica dal "
-            f"piu' veloce cala da {it(F['gap_s_prima'],2)} a {it(F['gap_s_dopo'],2)} s e il guadagno "
-            f"e' {dove}. QUALE pezzo l'abbia prodotto, invece, i nostri dati non lo dicono."
-        )
-    else:
-        sommario = (
-            f"{tnm} ha portato un pacchetto d'aggiornamento a {gu}. Non vediamo il pezzo, ma ne "
-            f"misuriamo l'effetto — e la prova piu' solida e' il distacco in qualifica dal piu' "
-            f"veloce, che si dimezza (da {it(F['gap_s_prima'],2)} a {it(F['gap_s_dopo'],2)} s) con "
-            f"uno stacco netto: ognuna delle {F['n_dopo']} gare dopo l'upgrade batte ognuna delle "
-            f"{F['n_prima']} prima. Il guadagno e' {dove}: la velocita' di punta sale dal "
-            f"{it(F['punta_pct_prima'],0)}° al {it(F['punta_pct_dopo'],0)}° percentile del campo. La "
-            f"forza-macchina complessiva cresce nella stessa direzione (+{it(F['indice_step'],0)}), "
-            f"ma su poche gare e senza lo stesso stacco: un indizio, non la prova. QUALE pezzo "
-            f"l'abbia prodotto, i nostri dati non lo dicono."
-        )
+    prov = [
+        {"grandezza": "sviluppo relativo in qualifica, per squadra (blocco A → blocco B)",
+         "valore": "; ".join(f"{nm(c['team'])} {it(c['guadagno'], 2)}%"
+                             for c in F["classifica"]),
+         "stato": "MISURATO",
+         "da": "forza_stagione/*.json — potenziale = miglior giro di qualifica per squadra; "
+               "posizione relativa = % dalla MEDIANA del campo di quella gara; sviluppo = "
+               "media(blocco B) − media(blocco A)"},
+        {"grandezza": f"cancello statistico (p corretto per la famiglia di {F['n_squadre']} squadre)",
+         "valore": (f"{F['prot_corto']} T {it(F['prot_T'], 2)} · p "
+                    f"{it(F['prot_p_famiglia'], 3)} (grezzo {it(F['prot_p_grezzo'], 3)}) · "
+                    f"soglia {it(F['alfa'], 2)} · {F['perm_tot']} divisioni "
+                    f"{'enumerate tutte' if F['perm_esatta'] else 'estratte'} · "
+                    f"squadre che passano: {F['n_passanti']} · lo stesso test a medie "
+                    f"nude darebbe p {it(F['prot_p_famiglia_medie'], 3)}"),
+         "stato": "MISURATO",
+         "da": "permutazione max-T STUDENTIZZATA: si rimescolano le etichette gara una "
+               "volta per replica e si prende, su tutte le squadre, il massimo della "
+               "differenza fra medie DIVISA per il suo errore standard. La divisione e' "
+               "il punto: a medie nude il massimo nullo lo prende quasi sempre la squadra "
+               "piu' variabile, e se e' la protagonista la correzione per la famiglia non "
+               "le costa niente (p di famiglia identico al p grezzo). Controlla il tasso "
+               "d'errore d'insieme anche con varianze diverse e conserva la dipendenza "
+               "fra squadre"},
+        {"grandezza": "separazione di rango completa (ogni gara di B oltre ogni gara di A)",
+         "valore": (", ".join(nm(t) for t in F["con_separazione"])
+                    if F["con_separazione"] else "nessuna squadra"),
+         "stato": "MISURATO",
+         "da": "confronto min/max fra i due blocchi, squadra per squadra"},
+    ]
+    if F.get("coppie"):
+        prov.append(
+            {"grandezza": "sforzo dichiarato: componenti «Performance» pesati per la finestra",
+             "valore": "; ".join(f"{nm(t)} {it(v, 1)}" for t, v in
+                                 sorted(F["sforzo"].items(), key=lambda kv: -kv[1])),
+             "stato": "MISURATO",
+             "da": f"FIA Car Presentation Submissions, {F['cp_n']} documenti {F['anno']} letti "
+                   f"con ai_lab/redazione/fia_cp.py (cancello identita' + cancello qualita'); "
+                   f"escluse le {F['fam_circuito']} voci «Circuit specific»; peso = "
+                   f"esposizione differenziale del pezzo fra i due blocchi"})
+        prov.append(
+            {"grandezza": "legame fra sforzo dichiarato e terreno guadagnato",
+             "valore": (f"rho di Spearman {it(F['rho'], 2)} (p {it(F['rho_p'], 3)}, "
+                        f"permutazione) su {len(F['coppie'])} squadre; conteggio grezzo "
+                        f"alternativo: rho {it(F['rho_alt'], 2)} (p {it(F['rho_alt_p'], 3)}) "
+                        f"— la relazione NON regge al cambio di conteggio"),
+             "stato": "MISURATO",
+             "da": "correlazione di rango fra le due colonne + test di permutazione; "
+                   "11 squadre = potenza minima, il risultato e' un'indicazione"})
+    if F.get("cp_esclusi"):
+        prov.append(
+            {"grandezza": "documenti FIA esclusi dal conteggio",
+             "valore": "; ".join(F["cp_esclusi"]),
+             "stato": "NON_MISURABILE",
+             "da": "fia_cp.cancello_qualita / cancello_identita: un documento da cui si e' "
+                   "persa una riga non diventa uno zero, diventa una gara esclusa"})
+    prov += [
+        {"grandezza": "su quale vettura e quale pilota va ogni componente",
+         "valore": "la fonte non lo dice mai (zero riferimenti a vettura o pilota nei "
+                   f"documenti {F['anno']})",
+         "stato": "NON_MISURABILE", "da": "FIA Car Presentation Submissions"},
+        {"grandezza": "taglia in prestazione di un aggiornamento",
+         "valore": "la fonte non contiene numeri di prestazione: il CONTEGGIO dei pezzi "
+                   "non e' la grandezza dell'upgrade, e alcune voci sono solo "
+                   "«available»/«optional» (portate, non per forza montate)",
+         "stato": "NON_MISURABILE", "da": "FIA Car Presentation Submissions"},
+        {"grandezza": "causa del movimento di una squadra (quale pezzo, o se e' un pezzo)",
+         "valore": "non identificabile: le squadre aggiornano quasi ogni gara, quindi manca "
+                   "il termine di paragone senza aggiornamenti; assetto, evoluzione della "
+                   "pista e forma dei piloti non si separano dal contributo dei componenti",
+         "stato": "NON_MISURABILE",
+         "da": "nessun canale isola il singolo pezzo — vedi la sezione Causa"},
+    ]
+    if F["prot_passo"] is not None:
+        prov.insert(3, {
+            "grandezza": f"corroborazione sul passo gara ({F['prot_corto']})",
+            "valore": f"{it(-F['prot_passo'], 2)}% di terreno sul gruppo "
+                      f"({F['prot_passo_n']} gare utilizzabili)",
+            "stato": "MISURATO",
+            "da": "forza_stagione/*.json (passo = mediana in aria pulita), stessa posizione "
+                  "relativa alla mediana del campo · CANALE SECONDARIO: il passo di gara e' "
+                  "inquinato dal traffico e nel 2026 manca per alcune squadre"})
 
     art = {
         "id": ID, "stato": "bozza",
         "data": data_bozza or datetime.date.today().isoformat(),
-        "firma": "Muretto · Redazione tecnica", "accent": col,
-        "canale": "A+B (spunto di stampa, riprodotto e misurato sui nostri dati)",
-        "gara": f"Stagione {anno}", "circuito": f"{F['n_gare']} gare",
+        "firma": "Muretto · Redazione tecnica", "accent": F["prot_colore"],
+        "canale": "B (anomalia nei nostri dati) + fonte ufficiale FIA",
+        # articolo TRASVERSALE: gp/round assenti -> finisce in "Valgono tutta la stagione"
+        "gp": None, "round": None,
+        "gara": f"Stagione {F['anno']}", "circuito": f"{F['n_gare']} gare",
         "sessione": "Gara",
-        "tag": ["upgrade", "aerodinamica", "telemetria", "multi-gara"],
-        "occhiello": f"L'upgrade ha funzionato? · {tnm} · {gu} {anno}",
-        "titolo": f"L'upgrade di {tnm} a {gu}: cosa dicono i dati (e cosa no)",
+        "tag": ["sviluppo", "aggiornamenti", "multi-gara", "qualifica", "FIA"],
+        "occhiello": f"Sviluppo relativo {F['anno']} · {A} vs {B}",
+        "titolo": "Chi ha sviluppato meglio del gruppo (e perche' non chiediamo se "
+                  "«l'upgrade ha funzionato»)",
         "sommario": sommario,
-        "sezioni": [
-            {"tag": "Evidenza", "titolo": g_tit, "html": g_html, "figura": g_fig},
-            {"tag": "Evidenza", "titolo": d_tit, "html": d_html, "figura": "dove"},
-            {"tag": "Contesto", "titolo": c_tit, "html": c_html, "figura": c_fig},
-            {"tag": "Causa", "titolo": ca_tit, "html": ca_html},
-            {"tag": "Effetto", "titolo": e_tit, "html": e_html},
-        ],
-        "provenienza": [
-            {"grandezza": "distacco in qualifica dal piu' veloce (prima → dopo) — PROVA-GUIDA",
-             "valore": (f"{it(F['gap_s_prima'],2)} → {it(F['gap_s_dopo'],2)} s "
-                        f"({it(F['quali_def_prima'],2)}% → {it(F['quali_def_dopo'],2)}%, −{it(F['quali_riduzione_pp'],2)} pp) · "
-                        f"separazione di rango completa ({F['n_dopo']} dopo tutte sotto le {F['n_prima']} prima), "
-                        f"permutazione {F['quali_perm_est']} su {F['quali_perm_tot']} (p ≈ {it(F['quali_p'],3)})"),
-             "stato": "MISURATO",
-             "da": "forza_stagione/*.json (gap-al-leader in s e % dal leader) + test di permutazione/separazione di rango"},
-            {"grandezza": "DOVE: velocita' di punta vs curva (percentile-campo, prima → dopo)",
-             "valore": (f"punta {it(F['punta_pct_prima'],0)}°→{it(F['punta_pct_dopo'],0)}° "
-                        f"({F['punta_dopo_sopra']}/{F['n_dopo']} gare dopo ≥{F['punta_mediana']}°) · "
-                        f"curva {it(F['curva_pct_prima'],0)}°→{it(F['curva_pct_dopo'],0)}° "
-                        f"(per lo piu' per l'outlier {gu}, {it(F['curva_pct_upgrade'],0)}°; senza {gu} ≈{it(F['curva_pct_dopo_senza'],0)}°)"),
-             "stato": "MISURATO",
-             "da": "dati_stagione/*.json (vmax e cornering km/h), percentile fra i team per-gara"},
-            {"grandezza": "forza-indice prima → dopo (segnale di CONTESTO)",
-             "valore": (f"{it(F['indice_prima'],0)} → {it(F['indice_dopo'],0)} (+{it(F['indice_step'],0)}) · "
-                        f"nessuna separazione di rango ({F['indice_max_prima_gara']} gia' {it(F['indice_max_prima'],0)}), "
-                        f"{F['n_prima']} gare prima, permutazione p ≈ {it(F['indice_p'],2)}"),
-             "stato": "MISURATO",
-             "da": "forza_macchina.json (indice = potenziale + passo, percentile per-gara), media prima/dopo + permutazione"},
-            {"grandezza": "conferma del rilevatore cieco",
-             "valore": (f"#{F.get('rilevatore_rango')} della stagione, split al round {F.get('rilevatore_round')} "
-                        f"(riduzione {it(F.get('rilevatore_riduzione'),2)} pp, σ dopo {it(F.get('rilevatore_sigma_dopo'),2)})"),
-             "stato": "MISURATO",
-             "da": "rilevatore indipendente su forza_stagione (max riduzione distacco-qualifica, split ottimo)"},
-            {"grandezza": "QUALE componente ha prodotto il guadagno",
-             "valore": "non identificabile (la punta mescola potenza PU e resistenza; upgrade vs 'problemi risolti' non separabili)",
-             "stato": "NON_MISURABILE",
-             "da": "nessun canale isola il singolo pezzo; ammesso dallo stesso team (vedi fonti)"},
-        ],
-        "fonti": cand["fonti"] + [
+        "sezioni": sezioni,
+        "provenienza": prov,
+        "fonti": ([
+            {"tipo": "fonte ufficiale",
+             "testo": f"FIA — «Car Presentation Submissions», {F['cp_n']} documenti "
+                      f"{F['anno']} (elenco per squadra dei componenti aggiornati, "
+                      f"pubblicato il venerdi' di gara). Letti con "
+                      f"ai_lab/redazione/fia_cp.py."}]
+            if F["cp_n"] else []) + [
             {"tipo": "dati",
-             "testo": f"FastF1 3.8.3 — qualifica e gara di {F['n_gare']} GP 2026; potenziale = miglior giro "
-                      f"di qualifica (team = migliore dei due piloti), passo = mediana in aria pulita, "
-                      f"vmax/cornering = telemetria vettura (giri lanciati)"},
+             "testo": f"FastF1 3.8.3 — qualifica e gara di {F['n_gare']} GP {F['anno']}; "
+                      f"potenziale = miglior giro di qualifica (squadra = migliore dei due "
+                      f"piloti), passo = mediana dei giri in aria pulita"},
             {"tipo": "metodo",
-             "testo": "ai_lab/redazione/genera_upgrade.py — confronto prima/dopo la gara-upgrade; distacchi "
-                      "normalizzati (percentile e % dal leader), mai tempi assoluti; prova-guida scelta per "
-                      "robustezza (separazione di rango + test di permutazione); rilevatore cieco per la conferma"},
+             "testo": "ai_lab/redazione/genera_upgrade.py — posizione relativa alla mediana "
+                      "del campo per gara; due blocchi di gare tagliati a meta' per regola "
+                      "fissa; permutazione max-T STUDENTIZZATA sull'intera famiglia di "
+                      "squadre (statistica divisa per il suo errore standard, cosi' la "
+                      "squadra piu' rumorosa non si porta via il massimo nullo); "
+                      "correlazione di rango con lo sforzo dichiarato alla FIA"},
         ],
     }
 
     FIG = {
-        "quali": {"svg": _grafico_quali(F, col),
-                  "didascalia": (f"Il distacco di {tnm} in qualifica dal piu' veloce, round per round. "
-                                 f"La verticale marca {gu}; le linee piatte sono la media prima "
-                                 f"({it(F['gap_s_prima'],2)} s) e dopo ({it(F['gap_s_dopo'],2)} s). Dopo "
-                                 f"l'upgrade nessuna gara risale nella fascia di prima."),
-                  "fonte": "forza_stagione (FastF1), elaborazione redazione"},
-        "indice": {"svg": _grafico_indice(F, col),
-                   "didascalia": (f"La forza-macchina di {tnm} round per round (indice 0–100). La verticale "
-                                  f"marca {gu}; le linee piatte sono la media prima ({it(F['indice_prima'],0)}) "
-                                  f"e dopo ({it(F['indice_dopo'],0)}). Il gradino c'e', ma {F['indice_max_prima_gara']} "
-                                  f"(gara prima) tocca gia' il livello di dopo: nessuna separazione netta."),
-                   "fonte": "forza_macchina.json (FastF1), elaborazione redazione"},
-        "dove": {"svg": _grafico_dove(F, col),
-                 "didascalia": (f"Velocita' di punta e in curva come percentile nel campo (50 = media), prima "
-                                f"e dopo l'upgrade. Il salto netto e' sulla punta; il calo in curva e' quasi "
-                                f"tutto dovuto alla sola {gu} (assetto scarico). Percentile, non km/h: le piste "
-                                f"non sono confrontabili in assoluto."),
-                 "fonte": "dati_stagione (FastF1 car telemetry), elaborazione redazione"},
+        "classifica": {
+            "svg": _grafico_classifica(F),
+            "didascalia": (
+                f"Quanto ha guadagnato o perso ogni squadra rispetto alla mediana dello "
+                f"schieramento in qualifica, fra {A} e {B}. La barra e' in millesimi su un "
+                f"giro-tipo di {it(F['giro_tipo'], 1)} s (metro nominale, per dare la "
+                f"scala); il valore esatto, in percentuale di giro, e' a destra insieme al "
+                f"p. Lo zero e' il gruppo: chi non si muove non e' fermo, e' fermo "
+                f"<i>rispetto agli altri</i>. La stella marca l'unica squadra che regge il "
+                f"conto corretto per le {F['n_squadre']} squadre guardate insieme."),
+            "fonte": "forza_stagione (FastF1) + FIA Car Presentation Submissions, "
+                     "elaborazione redazione"},
+        "prot": {
+            "svg": _grafico_prot(F),
+            "didascalia": (
+                f"{prot} contro il centro dello schieramento, round per round: sopra lo zero "
+                f"= piu' lento della mediana del campo. La verticale marca il taglio fra i "
+                f"due blocchi; le linee piatte sono le due medie. Si vede se il movimento e' "
+                f"un gradino o una deriva — e dove sta l'ultima gara."),
+            "fonte": "forza_stagione (FastF1), elaborazione redazione"},
     }
+    if F.get("coppie"):
+        FIG["sforzo"] = {
+            "svg": _grafico_sforzo(F, colori),
+            "didascalia": (
+                f"Ogni punto e' una squadra: in orizzontale i componenti «Performance» "
+                f"dichiarati alla FIA (pesati per quante gare del blocco B li hanno avuti "
+                f"addosso in piu' rispetto al blocco A), in verticale il terreno guadagnato "
+                f"sul gruppo. La pendenza c'e' ({it(F['rho'], 2)} di rho), ma con "
+                f"{len(F['coppie'])} punti e un conteggio che si puo' fare in piu' modi non "
+                f"e' una misura: e' un'indicazione."),
+            "fonte": "FIA Car Presentation Submissions + forza_stagione (FastF1), "
+                     "elaborazione redazione"}
     for sez in art["sezioni"]:
         if sez.get("figura") in FIG:
             sez["figura"] = FIG[sez["figura"]]
@@ -727,51 +1322,80 @@ def _componi(cand, F, fmg, data_bozza=None):
 
 
 META = {
-    "id": ID_META, "canale": "A+B",
-    "titolo": "L'upgrade ha funzionato? (effetto misurato, causa non misurabile)",
-    "tag": ["upgrade", "telemetria", "aerodinamica", "multi-gara"],
-    "descrizione": "un team porta un aggiornamento a un GP: misuriamo l'effetto (DOVE e quanto) "
-                   "prima-vs-dopo, la causa (quale pezzo) resta NON_MISURABILE",
-    "richiede": "forza_macchina + telemetria multi-gara",
+    "id": ID_META, "canale": "B + fonte ufficiale FIA",
+    "titolo": "Sviluppo relativo: chi ha sviluppato meglio (o peggio) del gruppo",
+    "tag": ["sviluppo", "aggiornamenti", "multi-gara", "FIA"],
+    "descrizione": "fra due blocchi di gare, quali squadre si sono mosse rispetto al "
+                   "gruppo; accanto, i componenti che ognuna ha davvero portato secondo "
+                   "il documento FIA. Mai un verdetto su un singolo pacchetto: la causa "
+                   "resta NON_MISURABILE",
+    "richiede": "forza_stagione multi-gara (+ cache FIA Car Presentation Submissions)",
+    # NON ['*']: matcherebbe anche il giro post-gara. L'articolo e' trasversale e si
+    # riaggiorna dopo ogni gara, quindi resta in rotazione sulla sessione di gara.
     "gare": ["*"], "sessioni": ["Race"],
 }
 
 
 def genera(gara=None, data=None, sessione=None):
-    r = costruisci(data_bozza=data)
+    """Ritorna None (senza sollevare) quando i cancelli non passano: la redazione non
+    deve mai fermarsi per un articolo che non c'e'."""
+    try:
+        r = costruisci(data_bozza=data)
+    except Exception as e:                      # nessun generatore puo' far cadere il giro
+        print(f"genera_upgrade: rinuncio ({e})", file=sys.stderr)
+        return None
     if not r:
         return None
     F, art = r
     base.scrivi_bozza(F["id"], art, F)
-    return {"id": F["id"], "titolo": art["titolo"], "stato": art["stato"], "canale": "A+B"}
+    return {"id": F["id"], "titolo": art["titolo"], "stato": art["stato"],
+            "canale": art["canale"]}
 
 
 if __name__ == "__main__":
     import argparse
-    ap = argparse.ArgumentParser(description="Genera l'articolo 'l'upgrade ha funzionato?'")
+    ap = argparse.ArgumentParser(
+        description="Sviluppo relativo: chi si e' mosso rispetto al gruppo fra due "
+                    "blocchi di gare")
     ap.add_argument("--data", default=None,
-                    help="data della bozza (ISO, es. 2026-07-26); default = oggi. "
+                    help="data della bozza (ISO, es. 2026-07-27); default = oggi. "
                          "Usare per NON stampare la data all'orologio d'ambiente.")
+    ap.add_argument("--cp", default=None,
+                    help=f"cartella con i PDF FIA Car Presentation (default: {CARTELLA_CP})")
+    ap.add_argument("--da", type=int, default=None, help="primo round del perimetro")
+    ap.add_argument("--a", type=int, default=None, help="ultimo round del perimetro")
+    ap.add_argument("--dry", action="store_true", help="non scrivere la bozza")
     args = ap.parse_args()
 
-    r = costruisci(data_bozza=args.data)
+    diario = []
+    r = costruisci(data_bozza=args.data, cartella_cp=args.cp, da=args.da, a=args.a,
+                   diario=diario)
     if not r:
-        print("nessun candidato supera il cancello: nessun effetto chiaro da raccontare")
+        print("NULL DICHIARATO: nessun articolo. Il cancello che si e' chiuso:")
+        for m in diario or ["(nessun motivo registrato)"]:
+            print(f"  - {m}")
         sys.exit()
     F, art = r
-    base.scrivi_bozza(F["id"], art, F)
-    print(f"Bozza {F['id']} scritta (data {art['data']}).")
-    print(f"  {F['team']} @ {F['gara_upgrade']} (round {F['round_upgrade']})")
-    print(f"  PROVA-GUIDA: {F['guida']}")
-    print(f"  quali    {F['gap_s_prima']} -> {F['gap_s_dopo']} s  "
-          f"({F['quali_def_prima']}% -> {F['quali_def_dopo']}%, -{F['quali_riduzione_pp']} pp)  "
-          f"| sep-rango {F['quali_sep']}, perm {F['quali_perm_est']}/{F['quali_perm_tot']} (p~{F['quali_p']})")
-    print(f"  indice   {F['indice_prima']} -> {F['indice_dopo']}  (+{F['indice_step']})  "
-          f"| sep-rango {F['indice_sep']} (max prima {F['indice_max_prima_gara']} {F['indice_max_prima']}), p~{F['indice_p']}")
-    print(f"  passo    {F['passo_def_prima']}% -> {F['passo_def_dopo']}%")
-    print(f"  punta    {F['punta_pct_prima']}deg -> {F['punta_pct_dopo']}deg "
-          f"({F['punta_dopo_sopra']}/{F['n_dopo']} dopo >= {F['punta_mediana']}deg)  "
-          f"| curva {F['curva_pct_prima']}deg -> {F['curva_pct_dopo']}deg "
-          f"(upgrade {F['curva_pct_upgrade']}deg, senza {F['gara_upgrade']} ~{F['curva_pct_dopo_senza']}deg)")
-    print(f"  rilevatore: #{F.get('rilevatore_rango')} split round {F.get('rilevatore_round')} "
-          f"(riduzione {F.get('rilevatore_riduzione')} pp, sigma {F.get('rilevatore_sigma_dopo')})")
+    if not args.dry:
+        base.scrivi_bozza(F["id"], art, F)
+        print(f"Bozza {F['id']} scritta (data {art['data']}).")
+    print(f"  finestra: blocco A round {F['rounds_prima']} | blocco B round {F['rounds_dopo']}")
+    print(f"  permutazione: {F['perm_tot']} divisioni "
+          f"({'esatta' if F['perm_esatta'] else 'campionata'}), soglia {F['alfa']}")
+    print(f"  {'squadra':16} {'sviluppo':>9} {'guadagno':>9} {'p_fam':>7} {'p_grez':>7} "
+          f"{'sep':>5} {'sforzo':>7}")
+    for c in F["classifica"]:
+        sforzo = "-" if c["sforzo"] is None else f"{c['sforzo']:.1f}"
+        print(f"  {nm(c['team']):16} {c['sviluppo']:+9.3f} {c['guadagno']:+9.3f} "
+              f"{c['p_famiglia']:7.4f} {c['p_grezzo']:7.4f} {str(c['sep']):>5} "
+              f"{sforzo:>7}" + ("   <-- passa" if c["passa"] else ""))
+    print(f"  passano il cancello: {F['n_passanti']} ({', '.join(nm(t) for t in F['passanti'])})")
+    print(f"  separazione di rango: {F['con_separazione'] or 'nessuna squadra'}")
+    if F.get("coppie"):
+        print(f"  FIA: {F['cp_n']} documenti letti, componenti per famiglia {F['fam_tot']}")
+        if F["cp_esclusi"]:
+            print(f"       esclusi: {F['cp_esclusi']}")
+        print(f"  sforzo vs guadagno: rho {F['rho']} (p {F['rho_p']}) | "
+              f"conteggio grezzo rho {F['rho_alt']} (p {F['rho_alt_p']})")
+    else:
+        print("  FIA: braccio sforzo ASSENTE (cache non trovata o troppo corta)")

@@ -1,6 +1,6 @@
 {
   "anno": 2026,
-  "aggiornato": "2026-07-26",
+  "aggiornato": "2026-07-27",
   "n_gare": 10,
   "ultima": "Budapest",
   "gare": [
@@ -568,7 +568,7 @@
       }
     },
     {
-      "gp": "Hungary",
+      "gp": "Hungarian Grand Prix",
       "circuito": "Budapest",
       "data": "2026-07-26",
       "round": 11,
