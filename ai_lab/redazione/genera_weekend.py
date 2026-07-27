@@ -66,6 +66,12 @@ def gp_weekend_in_corso():
     return ss[0][2] or None
 
 
+# "FIA" e' una PSEUDO-sessione (vedi auto_articoli.py): non viene da FastF1 ma dal
+# documento FIA "Car Presentation Submissions", che esce il venerdi' prima delle FP1.
+# NON va tradotta come "R": resta un filtro normale, e partono i soli generatori che
+# dichiarano META['sessioni'] = ['FIA']. Chi la innesca ha gia' passato i cancelli di
+# fia_cp: qui non si controlla nulla, si genera e basta.
+#
 # "R"/"Race" NON e' un filtro-sessione come FP2/FP3/Q: e' il GIRO POST-GARA completo.
 # I generatori-gara/stagione dichiarano sessioni=["Race"] e partono SOLO col filtro
 # None (vedi genera._match_sessione), che fa anche l'aggiornamento cruscotto/forza/
@@ -101,9 +107,12 @@ def _git(args, capture=False):
                           capture_output=capture, text=True)
 
 
-def pubblica_e_deploy(prodotti, deploy=False):
+def pubblica_e_deploy(prodotti, deploy=False, etichetta="FP"):
     """Pubblica in automatico le bozze prodotte (policy 25/07: a fine sessione,
     senza input umano) e, con deploy=True, committa e mette online.
+    `etichetta` dice solo COSA si sta pubblicando (default "FP"): finisce nella nota
+    della coda e nel messaggio di commit, cosi' un'anteprima FIA non si traveste da
+    giro di prove libere nella storia del repo.
     Il push e' GUARDATO: se il main locale e' indietro rispetto a origin non pusha
     (evita il non-fast-forward), lasciando il commit pronto per una sync a mano."""
     import json, coda
@@ -132,7 +141,7 @@ def pubblica_e_deploy(prodotti, deploy=False):
                 print(f"   [verifica] {r['id']}: verificatore in errore ({e}) — procedo (fail-safe)")
         try:
             coda.transizione(r["id"], "approvato", attore="auto",
-                             nota="pubblicazione automatica post-sessione (policy Tommi 25/07), verifica OK")
+                             nota=f"pubblicazione automatica {etichetta} (policy Tommi 25/07), verifica OK")
             pubbl.append(r["id"]); print(f"   pubblicato: {r['id']}")
         except SystemExit as e:
             print(f"   [pubblica] {r['id']}: transizione non riuscita ({e})")
@@ -145,7 +154,7 @@ def pubblica_e_deploy(prodotti, deploy=False):
     _git(["add", "-A"])
     if _git(["diff", "--cached", "--quiet"]).returncode == 0:
         print("   niente da committare."); return pubbl
-    msg = (f"Redazione FP: pubblicati {len(pubbl)} articoli\n\n"
+    msg = (f"Redazione {etichetta}: pubblicati {len(pubbl)} articoli\n\n"
            f"{', '.join(pubbl)}\nPubblicazione automatica post-sessione (policy 25/07).\n\n"
            f"Co-Authored-By: Claude Opus 4.8 <noreply@anthropic.com>")
     _git(["commit", "-q", "-m", msg]); print("   commit fatto.")
