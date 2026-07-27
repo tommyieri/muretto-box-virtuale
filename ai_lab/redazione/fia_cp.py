@@ -12,6 +12,12 @@ Questo modulo fa cinque cose, in quest'ordine, e ognuna puo' dire di no:
   4. estrai(path) -> {gp, anno, squadre[], diagnostica}
   5. cancello_qualita(estratto) -> (ok, problemi[])
 
+In piu', a richiesta del chiamante (mai automatica):
+  riconcilia_famiglie(estratto) -> [riassegnazioni]   la famiglia che la CELLA non
+  scrive, ripresa da un'altra riga dello STESSO documento con lo stesso sottotipo.
+  Le famiglie della FIA restano tre: 'altro' vuol dire "cella incompleta", non
+  "quarta famiglia".
+
 Uso tipico dalla redazione:
 
     doc = fia_cp.scopri_documento(2026, atteso_gp='Hungarian Grand Prix')
@@ -366,6 +372,67 @@ def separa_motivo(grezzo):
                 resto = ' - '.join(pezzi[:i]).strip()
             return fam, resto.rstrip('.')
     return FAMIGLIA_ALTRO, testo
+
+
+def riconcilia_famiglie(estratto):
+    """Rimette la famiglia alle righe in cui la CELLA non la scrive. Ritorna la lista
+    delle riassegnazioni (vuota se non ce n'e' nessuna); modifica l'estratto sul posto.
+
+    PERCHE'. `separa_motivo` legge la famiglia dal prefisso della cella "Primary
+    reason". Quando il prefisso manca la famiglia esce FAMIGLIA_ALTRO — che vuol dire
+    "la cella non lo dice", NON "esiste una quarta famiglia della FIA". Le famiglie
+    dichiarate dalla FIA restano tre (FAMIGLIE) e nessuna riga puo' stare fuori da
+    tutte: e' la compilazione a essere incompleta, non la tassonomia.
+
+    LA REGOLA, e i suoi limiti. Si riassegna SOLO quando lo STESSO sottotipo compare
+    ALTROVE NELLO STESSO DOCUMENTO con una famiglia scritta, e con UNA SOLA famiglia.
+    Nessuna somiglianza, nessun sinonimo, nessuna euristica sul significato: o la
+    fonte lo ha gia' scritto a lettere in quella pagina, o la riga resta 'altro' e si
+    dichiara. Esempio 2026 (Ungheria): Mercedes / Coke-Engine Cover ha 'Cooling Range'
+    nudo, mentre McLaren e Racing Bulls scrivono 'Circuit specific - Cooling Range'
+    nello stesso PDF: stessa ragione, prefisso mancante in una cella sola.
+    Controesempio dello stesso corpus (Barcellona): Red Bull / 'Local load and flow
+    conditioning.' non compare da nessun'altra parte -> NON si tocca.
+
+    La riga riassegnata resta tracciabile: `motivo_famiglia_origine` vale 'cella' per
+    default e 'riconciliata' per queste, e `motivo_famiglia_cella` conserva quel che
+    c'era scritto. Chi pubblica un numero che dipende da questa regola deve dirlo.
+
+    Non e' chiamata da estrai(): estrai riporta la fonte com'e'. Questa e' una lettura
+    in piu', esplicita, che il chiamante decide di fare e di dichiarare.
+    """
+    if not estratto or not estratto.get('squadre'):
+        return []
+    righe = [c for s in estratto['squadre'] for c in s.get('componenti') or []]
+    for c in righe:
+        c.setdefault('motivo_famiglia_origine', 'cella')
+        c.setdefault('motivo_famiglia_cella', c.get('motivo_famiglia'))
+    testimoni = {}
+    for c in righe:
+        if c.get('motivo_famiglia') in FAMIGLIE and c.get('motivo_famiglia_origine') == 'cella':
+            testimoni.setdefault(_chiave(c.get('motivo_sottotipo')), set()).add(
+                c['motivo_famiglia'])
+    fatte = []
+    for s in estratto['squadre']:
+        for c in s.get('componenti') or []:
+            if c.get('motivo_famiglia') != FAMIGLIA_ALTRO:
+                continue
+            k = _chiave(c.get('motivo_sottotipo'))
+            viste = testimoni.get(k) or set()
+            if len(viste) != 1:
+                continue                    # muta o ambigua: non si indovina
+            fam = next(iter(viste))
+            c['motivo_famiglia'] = fam
+            c['motivo_famiglia_origine'] = 'riconciliata'
+            fatte.append({'team': s.get('team_norm') or s.get('team'),
+                          'componente': c.get('componente'),
+                          'sottotipo': c.get('motivo_sottotipo'),
+                          'famiglia': fam,
+                          'testimoni': sum(
+                              1 for x in righe
+                              if _chiave(x.get('motivo_sottotipo')) == k
+                              and x.get('motivo_famiglia_origine') == 'cella')})
+    return fatte
 
 
 # ================================================================ 1. SCOPERTA

@@ -37,15 +37,75 @@ def _prepara():
     _pronto = True
 
 
+def _mappa_gare():
+    """data/mappa_gare.json: nome-evento FastF1 -> {nome (italiano), cid, titolo}.
+    Copre tutte e 22 le gare della stagione, anche quelle non ancora corse."""
+    import json
+    p = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(
+        os.path.abspath(__file__)))), "data", "mappa_gare.json")
+    try:
+        return json.load(open(p))
+    except Exception:
+        return {}
+
+
+def risolvi_gp(gp: str):
+    """Nome italiano -> nome-evento FastF1. Ritorna (nome_risolto, tradotto?).
+
+    PERCHE' ESISTE (bug reale, verificato): fastf1.get_session fa FUZZY MATCH sul
+    nome e NON solleva se sbaglia. Con 'Olanda' restituisce il **Gran Premio del
+    Canada** (round 5). I generatori ricevono il nome ITALIANO della gara, e tre di
+    loro lo passavano qui di peso: a Zandvoort avrebbero pubblicato dati canadesi
+    spacciandoli per olandesi, senza un solo errore. gare_registro.json non salva:
+    contiene solo le gare GIA' corse, e il weekend in corso non c'e' ancora.
+
+    Ordine: (1) e' gia' un nome-evento FastF1 -> invariato; (2) e' il nome italiano
+    in mappa_gare -> tradotto; (3) e' nel registro delle gare corse -> il suo 'ti';
+    (4) sconosciuto -> invariato (comportamento storico: non si rompe nulla, ma il
+    controllo a valle in carica_sessione becca comunque la gara sbagliata)."""
+    m = _mappa_gare()
+    if gp in m:
+        return gp, False
+    for k, v in m.items():
+        if (v or {}).get("nome") == gp:
+            return k, True
+    import json
+    try:
+        reg = json.load(open(os.path.join(os.path.dirname(os.path.dirname(
+            os.path.dirname(os.path.abspath(__file__)))), "data", "gare_registro.json")))
+        ti = (reg.get(gp) or {}).get("ti")
+        if ti:
+            return ti, True
+    except Exception:
+        pass
+    return gp, False
+
+
 def carica_sessione(anno: int, gp: str, sessione: str = "Q"):
     """Carica una sessione con laps + telemetria dalla cache.
 
-    gp: nome per LOCALITA'/evento accettato da FastF1 (es. 'British Grand Prix').
+    gp: nome-evento FastF1 (es. 'British Grand Prix') OPPURE nome italiano della
+    gara (es. 'Olanda'): viene tradotto da risolvi_gp prima di toccare FastF1.
     Ritorna l'oggetto Session di FastF1 (gia' .load()).
+
+    GUARDIA ANTI-GARA-SBAGLIATA: dopo il caricamento si verifica che l'evento
+    ottenuto sia davvero quello chiesto. Se il fuzzy match di FastF1 ha pescato
+    un'altra gara si SOLLEVA, invece di lasciar scrivere un articolo con i dati di
+    un altro Gran Premio (il generatore chiamante si auto-salta, come da contratto).
     """
     _prepara()
     import fastf1
-    ses = fastf1.get_session(anno, gp, sessione)
+    nome, _tradotto = risolvi_gp(gp)
+    ses = fastf1.get_session(anno, nome, sessione)
+    try:
+        # ses.event e' un oggetto pandas: niente "or {}" (solleva "truth value ambiguous")
+        ottenuto = str(ses.event["EventName"])
+    except Exception:
+        ottenuto = ""
+    if ottenuto and nome in _mappa_gare() and ottenuto != nome:
+        raise ValueError(
+            f"FastF1 ha risolto {gp!r} -> {ottenuto!r} invece di {nome!r}: "
+            f"gara sbagliata, non carico (fuzzy match)")
     ses.load(telemetry=True, laps=True, weather=False, messages=False)
     return ses
 

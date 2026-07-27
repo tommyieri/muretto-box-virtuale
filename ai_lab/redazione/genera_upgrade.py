@@ -45,13 +45,18 @@ COME SI MISURA
 
 I CANCELLI (se non passano, l'articolo NON esce: return None)
   - finestra minima: MIN_PRIMA gare nel blocco A e MIN_DOPO nel blocco B;
-  - PERMUTAZIONE CORRETTA PER LA FAMIGLIA (max-T): si guardano 11 squadre in una
-    volta, quindi il p per-squadra non basta (a p<0,05 su 11 test ci si aspetta ~0,55
-    falsi positivi per sport).  Si permutano le etichette gara UNA volta sola e si
-    prende il massimo |sviluppo| su TUTTE le squadre: p_famiglia = frazione delle
-    permutazioni in cui quel massimo batte lo sviluppo osservato.  Controlla il tasso
-    di errore d'insieme e tiene conto della correlazione fra squadre (rel e' quasi a
-    somma zero: se una sale, qualcuna scende).
+  - PERMUTAZIONE CORRETTA PER LA FAMIGLIA (max-T STUDENTIZZATO): si guardano 11
+    squadre in una volta, quindi il p per-squadra non basta (a p<0,05 su 11 test ci si
+    aspetta ~0,55 falsi positivi per sport).  Si permutano le etichette gara UNA volta
+    sola e si prende il massimo su TUTTE le squadre di |sviluppo| DIVISO il suo errore
+    standard: p_famiglia = frazione delle permutazioni in cui quel massimo batte la
+    statistica osservata.  Controlla il tasso di errore d'insieme e tiene conto della
+    correlazione fra squadre (rel e' quasi a somma zero: se una sale, qualcuna scende).
+    La divisione per l'errore standard NON e' un dettaglio: senza, il massimo nullo e'
+    quasi sempre della squadra piu' ballerina, e se quella e' la protagonista la
+    correzione non corregge niente (sul 2026: Aston Martin aveva p_famiglia identico
+    al p grezzo, 0,0476, con la serie piu' variabile del campo).  Il p a medie nude
+    resta calcolato e dichiarato, ma non e' il cancello.
   - se NESSUNA squadra sta sotto ALFA, non c'e' articolo.
   - separazione di rango completa (ogni gara di B oltre ogni gara di A): riportata
     come rinforzo, mai pretesa; sul 2026 non ce l'ha nessuno, e si dice.
@@ -70,7 +75,8 @@ LO SFORZO DICHIARATO (fonte FIA, via fia_cp.py)
 
 TRE NULL DELLA FONTE FIA, dichiarati e mai colmati:
   N1 il documento non dice MAI su quale vettura o pilota va il pezzo (zero occorrenze
-     di "car N" / "both cars" / "driver" / "chassis" nei documenti 2026);
+     di "car N" / "both cars" / "driver N" nei documenti 2026; "chassis" e "driver"
+     da soli NON sono fra le formule cercate: la' sono nomi di componente);
   N2 non contiene nessun numero di prestazione: il CONTEGGIO dei pezzi NON e' la
      taglia dell'aggiornamento (un fondo nuovo e una staffa di scarico contano 1);
   N3 a volte il pezzo e' "available"/"optional": portato, non per forza montato.
@@ -108,7 +114,7 @@ ANNO = 2026
 # --- CANCELLI (dichiarati) ---------------------------------------------------
 MIN_PRIMA = 3          # gare minime nel blocco A
 MIN_DOPO = 3           # gare minime nel blocco B
-ALFA = 0.05            # soglia sul p CORRETTO PER LA FAMIGLIA (max-T su tutte le squadre)
+ALFA = 0.05            # soglia sul p CORRETTO PER LA FAMIGLIA (max-T STUDENTIZZATO)
 CAP_PERM = 200000      # oltre questo numero di split si campiona invece di enumerare
 SEME = 20260727        # seme fisso: la permutazione campionata dev'essere riproducibile
 MIN_SQUADRE = 6        # sotto questo numero di squadre complete la famiglia non ha senso
@@ -337,20 +343,53 @@ def _rileva(gare_s, key="potenziale"):
 # ---------------------------------------------------------------------------
 # PERMUTAZIONE MAX-T sulla FAMIGLIA delle squadre.
 # ---------------------------------------------------------------------------
+def _se(pr, do):
+    """Errore standard della differenza fra le due medie (forma di Welch).
+
+    Pavimento a 1e-9 di proposito: se una serie e' costante l'errore standard e'
+    zero e la statistica studentizzata esplode. Farla esplodere NELLA distribuzione
+    nulla e' la scelta conservativa (alza il massimo nullo, quindi rende piu'
+    difficile passare); azzerarla sarebbe la scelta comoda.
+    """
+    def var_media(x):
+        m = len(x)
+        if m < 2:
+            return 0.0
+        mu = st.mean(x)
+        return sum((a - mu) ** 2 for a in x) / (m * (m - 1))
+    return max(math.sqrt(var_media(pr) + var_media(do)), 1e-9)
+
+
 def _maxT(matrice, k, cap=CAP_PERM):
-    """p corretto per la famiglia, per ogni squadra.
+    """p corretto per la famiglia, per ogni squadra. Statistica STUDENTIZZATA.
 
     `matrice`: {team: [valori in ordine di round]} — stessa lunghezza, nessun None.
     `k`: quante gare nel blocco A (le prime k dell'ordine dato).
 
     Si permutano le ETICHETTE DI GARA una volta sola per replica e si prende il
-    massimo |sviluppo| su tutte le squadre: e' il classico max-T. Due proprieta' che
-    servono qui: (a) controlla il tasso di errore d'insieme mentre si guardano 11
-    squadre in un colpo; (b) la permutazione e' comune, quindi la dipendenza fra
-    squadre (rel e' quasi a somma zero) e' conservata invece di essere ignorata.
+    massimo su tutte le squadre: e' il classico max-T. Due proprieta' che servono
+    qui: (a) controlla il tasso di errore d'insieme mentre si guardano 11 squadre in
+    un colpo; (b) la permutazione e' comune, quindi la dipendenza fra squadre (rel e'
+    quasi a somma zero) e' conservata invece di essere ignorata.
 
-    Ritorna (per_squadra, tot, esatto) con per_squadra = {team: {sviluppo, sep,
-    p_famiglia, p_grezzo}}.
+    PERCHE' STUDENTIZZATA, e perche' e' una correzione di sostanza e non di forma.
+    La prima versione prendeva il massimo delle DIFFERENZE FRA MEDIE nude. Con
+    squadre che hanno rumori molto diversi quel massimo e' quasi sempre della squadra
+    piu' ballerina: se la protagonista e' proprio quella, la correzione non corregge
+    niente — il suo p di famiglia esce IDENTICO al p grezzo, cioe' come se le altre
+    dieci squadre non fossero state guardate. Misurato sul 2026 (10 gare, 252
+    divisioni, 11 squadre): Aston Martin aveva la serie piu' variabile del campo
+    (sd 0,97 contro 0,56 della seconda), p_famiglia = p_grezzo = 0,0476 a fronte di
+    una soglia 0,05 — un solo scambio piu' in la' e sarebbe stato 0,0516. Le altre
+    dieci squadre la correzione la pagavano tutta (Williams 0,016 -> 0,302).
+    Dividere per l'errore standard mette le squadre sulla stessa scala PRIMA di
+    prendere il massimo: e' la versione che controlla davvero il tasso d'errore
+    d'insieme quando le varianze sono diverse. Con essa, sugli stessi dati, non
+    passa nessuno — e l'articolo non esce. Il p non studentizzato resta calcolato e
+    dichiarato (`p_famiglia_medie`), ma NON e' piu' il cancello.
+
+    Ritorna (per_squadra, tot, esatto) con per_squadra = {team: {sviluppo, sep, T,
+    se, p_famiglia, p_grezzo, p_famiglia_medie, p_grezzo_medie}}.
     """
     teams = sorted(matrice)
     if not teams:
@@ -360,7 +399,9 @@ def _maxT(matrice, k, cap=CAP_PERM):
     for t in teams:
         v = matrice[t]
         pr, do = v[:k], v[k:]
-        oss[t] = {"sviluppo": st.mean(do) - st.mean(pr),
+        se = _se(pr, do)
+        d = st.mean(do) - st.mean(pr)
+        oss[t] = {"sviluppo": d, "se": se, "T": abs(d) / se,
                   "sep": (max(do) < min(pr)) or (min(do) > max(pr))}
     ncomb = math.comb(n, k)
     esatto = ncomb <= cap
@@ -375,28 +416,39 @@ def _maxT(matrice, k, cap=CAP_PERM):
         tot = cap
     conta_fam = {t: 0 for t in teams}
     conta_gre = {t: 0 for t in teams}
+    conta_fam_m = {t: 0 for t in teams}
+    conta_gre_m = {t: 0 for t in teams}
     for combo in splits:
         cs = set(combo)
-        stat = {}
-        massimo = 0.0
+        statT, statD = {}, {}
+        maxT = maxD = 0.0
         for t in teams:
             v = matrice[t]
             pr = [v[i] for i in range(n) if i in cs]
             do = [v[i] for i in range(n) if i not in cs]
-            s = abs(st.mean(do) - st.mean(pr))
-            stat[t] = s
-            if s > massimo:
-                massimo = s
+            d = abs(st.mean(do) - st.mean(pr))
+            T = d / _se(pr, do)
+            statT[t], statD[t] = T, d
+            if T > maxT:
+                maxT = T
+            if d > maxD:
+                maxD = d
         for t in teams:
-            if massimo >= abs(oss[t]["sviluppo"]) - 1e-9:
+            if maxT >= oss[t]["T"] - 1e-9:
                 conta_fam[t] += 1
-            if stat[t] >= abs(oss[t]["sviluppo"]) - 1e-9:
+            if statT[t] >= oss[t]["T"] - 1e-9:
                 conta_gre[t] += 1
+            if maxD >= abs(oss[t]["sviluppo"]) - 1e-9:
+                conta_fam_m[t] += 1
+            if statD[t] >= abs(oss[t]["sviluppo"]) - 1e-9:
+                conta_gre_m[t] += 1
     fuori = {}
     for t in teams:
         fuori[t] = {**oss[t],
                     "p_famiglia": conta_fam[t] / tot,
-                    "p_grezzo": conta_gre[t] / tot}
+                    "p_grezzo": conta_gre[t] / tot,
+                    "p_famiglia_medie": conta_fam_m[t] / tot,
+                    "p_grezzo_medie": conta_gre_m[t] / tot}
     return fuori, tot, esatto
 
 
@@ -550,21 +602,33 @@ def _spearman(xs, ys, cap=CAP_PERM):
 # ---------------------------------------------------------------------------
 # MISURA
 # ---------------------------------------------------------------------------
-def _misura(cartella_cp=None, da=None, a=None, anno=ANNO):
+def _misura(cartella_cp=None, da=None, a=None, anno=ANNO, diario=None):
     """Tutti i numeri dell'articolo. Ritorna il dizionario dei fatti, o None se i
     cancelli non passano (finestra troppo corta, campo troppo piccolo, nessuna
-    squadra che si separa dal gruppo)."""
+    squadra che si separa dal gruppo).
+
+    `diario`: lista opzionale in cui si scrive PERCHE' si e' rinunciato. Un NULL
+    muto non e' un NULL onesto: chi lancia il generatore deve poter leggere qual e'
+    il cancello che si e' chiuso e con quali numeri.
+    """
+    def nota(x):
+        if diario is not None:
+            diario.append(x)
+
     gare = _carica_dir(FORZA_STAGIONE)
     if da is not None:
         gare = [g for g in gare if g["round"] >= da]
     if a is not None:
         gare = [g for g in gare if g["round"] <= a]
     if len(gare) < MIN_PRIMA + MIN_DOPO:
+        nota(f"finestra troppo corta: {len(gare)} gare, ne servono almeno "
+             f"{MIN_PRIMA + MIN_DOPO}")
         return None
 
     n = len(gare)
     k = n // 2                                  # regola fissa: taglio a meta'
     if k < MIN_PRIMA or n - k < MIN_DOPO:
+        nota(f"blocchi troppo corti: {k} + {n - k} gare (minimo {MIN_PRIMA} + {MIN_DOPO})")
         return None
     rounds = [g["round"] for g in gare]
     r_prima, r_dopo = rounds[:k], rounds[k:]
@@ -579,15 +643,37 @@ def _misura(cartella_cp=None, da=None, a=None, anno=ANNO):
             continue
         matrice[t] = serie
     if len(matrice) < MIN_SQUADRE:
+        nota(f"campo troppo piccolo: {len(matrice)} squadre complete (minimo "
+             f"{MIN_SQUADRE}); incomplete: {', '.join(incomplete) or 'nessuna'}")
         return None
 
     per_squadra, tot_perm, esatto = _maxT(matrice, k)
     if not per_squadra:
+        nota("permutazione non calcolabile")
         return None
 
-    # CANCELLO: almeno una squadra si separa dal gruppo, col p corretto per la famiglia.
+    # CANCELLO: almeno una squadra si separa dal gruppo, col p corretto per la
+    # famiglia. Il p e' quello STUDENTIZZATO (vedi _maxT): la versione a medie nude
+    # non corregge la squadra piu' rumorosa, che e' proprio quella che ha piu'
+    # probabilita' di finire in cima.
     passanti = [t for t, d in per_squadra.items() if d["p_famiglia"] <= ALFA]
     if not passanti:
+        migliore = min(per_squadra.items(), key=lambda kv: kv[1]["p_famiglia"])
+        nota(f"nessuna squadra sotto alfa={ALFA} col p di famiglia studentizzato su "
+             f"{tot_perm} divisioni {'esatte' if esatto else 'campionate'} e "
+             f"{len(matrice)} squadre. Il migliore e' {migliore[0]}: T "
+             f"{migliore[1]['T']:.2f}, p_famiglia {migliore[1]['p_famiglia']:.4f} "
+             f"(a medie nude sarebbe {migliore[1]['p_famiglia_medie']:.4f}: e' la "
+             f"differenza fra correggere e non correggere per la varianza)")
+        passa_medie = sorted(t for t, d in per_squadra.items()
+                             if d["p_famiglia_medie"] <= ALFA)
+        if passa_medie:
+            nota(f"col max-T NON studentizzato passerebbe {', '.join(passa_medie)} — e "
+                 f"sarebbe un artefatto di varianza: "
+                 + "; ".join(f"{t} sd serie {st.pstdev(matrice[t]):.3f}"
+                             for t in passa_medie)
+                 + f" contro una mediana di campo "
+                   f"{st.median([st.pstdev(v) for v in matrice.values()]):.3f}")
         return None
 
     # ordine di lettura: dal maggior guadagno alla maggior perdita
@@ -664,6 +750,10 @@ def _misura(cartella_cp=None, da=None, a=None, anno=ANNO):
                              if giro_tipo else None),
              "p_famiglia": round(d["p_famiglia"], 4),
              "p_grezzo": round(d["p_grezzo"], 4), "sep": d["sep"],
+             "T": round(d["T"], 3), "se": round(d["se"], 4),
+             "p_famiglia_medie": round(d["p_famiglia_medie"], 4),
+             "p_grezzo_medie": round(d["p_grezzo_medie"], 4),
+             "sd_serie": round(st.pstdev(matrice[t]), 3),
              "passa": d["p_famiglia"] <= ALFA,
              "sforzo": (sf or {}).get(TEAM_FIA.get(t, ""), None),
              "serie": [round(v, 3) for v in matrice[t]]}
@@ -677,6 +767,9 @@ def _misura(cartella_cp=None, da=None, a=None, anno=ANNO):
         "prot_verso": "guadagnato" if guadagna else "perso",
         "prot_p_famiglia": round(d_prot["p_famiglia"], 4),
         "prot_p_grezzo": round(d_prot["p_grezzo"], 4),
+        "prot_T": round(d_prot["T"], 3),
+        "prot_p_famiglia_medie": round(d_prot["p_famiglia_medie"], 4),
+        "statistica": "max-T studentizzato (differenza fra medie / errore standard)",
         "prot_sep": d_prot["sep"],
         "prot_ms": (round(abs(d_prot["sviluppo"]) / 100.0 * giro_tipo * 1000)
                     if giro_tipo else None),
@@ -823,8 +916,9 @@ def _grafico_sforzo(F, colori):
 # ---------------------------------------------------------------------------
 # COSTRUZIONE ARTICOLO
 # ---------------------------------------------------------------------------
-def costruisci(data_bozza=None, cartella_cp=None, da=None, a=None, anno=ANNO):
-    F = _misura(cartella_cp=cartella_cp, da=da, a=a, anno=anno)
+def costruisci(data_bozza=None, cartella_cp=None, da=None, a=None, anno=ANNO,
+               diario=None):
+    F = _misura(cartella_cp=cartella_cp, da=da, a=a, anno=anno, diario=diario)
     if not F:
         return None
     colori = base.carica_colori()
@@ -867,8 +961,10 @@ def _componi(F, colori, data_bozza=None):
         f"rimescolano le etichette delle gare fra i due blocchi "
         f"({'tutte le ' if F['perm_esatta'] else ''}{F['perm_tot']} "
         f"{'divisioni possibili' if F['perm_esatta'] else 'divisioni estratte'}) e ogni "
-        f"volta si prende il <b>movimento piu' grande dell'intero gruppo</b>: una squadra "
-        f"conta come separata solo se batte quel massimo. "
+        f"volta si prende il <b>movimento piu' grande dell'intero gruppo</b>, misurato in "
+        f"errori standard e non in punti nudi — altrimenti quel massimo sarebbe quasi "
+        f"sempre della squadra col ritmo piu' ballerino, e a lei la correzione non "
+        f"costerebbe nulla: una squadra conta come separata solo se batte quel massimo. "
         + (f"Ne resta <b>una</b>: {prot}."
            if F["n_passanti"] == 1 else
            f"Ne restano <b>{F['n_passanti']}</b>: {', '.join(nm(t) for t in F['passanti'])}.")
@@ -1070,15 +1166,21 @@ def _componi(F, colori, data_bozza=None):
                "posizione relativa = % dalla MEDIANA del campo di quella gara; sviluppo = "
                "media(blocco B) − media(blocco A)"},
         {"grandezza": f"cancello statistico (p corretto per la famiglia di {F['n_squadre']} squadre)",
-         "valore": (f"{F['prot_corto']} p {it(F['prot_p_famiglia'], 3)} (grezzo "
-                    f"{it(F['prot_p_grezzo'], 3)}) · soglia {it(F['alfa'], 2)} · "
-                    f"{F['perm_tot']} divisioni "
+         "valore": (f"{F['prot_corto']} T {it(F['prot_T'], 2)} · p "
+                    f"{it(F['prot_p_famiglia'], 3)} (grezzo {it(F['prot_p_grezzo'], 3)}) · "
+                    f"soglia {it(F['alfa'], 2)} · {F['perm_tot']} divisioni "
                     f"{'enumerate tutte' if F['perm_esatta'] else 'estratte'} · "
-                    f"squadre che passano: {F['n_passanti']}"),
+                    f"squadre che passano: {F['n_passanti']} · lo stesso test a medie "
+                    f"nude darebbe p {it(F['prot_p_famiglia_medie'], 3)}"),
          "stato": "MISURATO",
-         "da": "permutazione max-T: si rimescolano le etichette gara una volta per replica "
-               "e si prende il massimo |sviluppo| su tutte le squadre (controlla il tasso "
-               "d'errore d'insieme e conserva la dipendenza fra squadre)"},
+         "da": "permutazione max-T STUDENTIZZATA: si rimescolano le etichette gara una "
+               "volta per replica e si prende, su tutte le squadre, il massimo della "
+               "differenza fra medie DIVISA per il suo errore standard. La divisione e' "
+               "il punto: a medie nude il massimo nullo lo prende quasi sempre la squadra "
+               "piu' variabile, e se e' la protagonista la correzione per la famiglia non "
+               "le costa niente (p di famiglia identico al p grezzo). Controlla il tasso "
+               "d'errore d'insieme anche con varianze diverse e conserva la dipendenza "
+               "fra squadre"},
         {"grandezza": "separazione di rango completa (ogni gara di B oltre ogni gara di A)",
          "valore": (", ".join(nm(t) for t in F["con_separazione"])
                     if F["con_separazione"] else "nessuna squadra"),
@@ -1168,7 +1270,9 @@ def _componi(F, colori, data_bozza=None):
             {"tipo": "metodo",
              "testo": "ai_lab/redazione/genera_upgrade.py — posizione relativa alla mediana "
                       "del campo per gara; due blocchi di gare tagliati a meta' per regola "
-                      "fissa; permutazione max-T sull'intera famiglia di squadre; "
+                      "fissa; permutazione max-T STUDENTIZZATA sull'intera famiglia di "
+                      "squadre (statistica divisa per il suo errore standard, cosi' la "
+                      "squadra piu' rumorosa non si porta via il massimo nullo); "
                       "correlazione di rango con lo sforzo dichiarato alla FIA"},
         ],
     }
@@ -1263,10 +1367,13 @@ if __name__ == "__main__":
     ap.add_argument("--dry", action="store_true", help="non scrivere la bozza")
     args = ap.parse_args()
 
-    r = costruisci(data_bozza=args.data, cartella_cp=args.cp, da=args.da, a=args.a)
+    diario = []
+    r = costruisci(data_bozza=args.data, cartella_cp=args.cp, da=args.da, a=args.a,
+                   diario=diario)
     if not r:
-        print("NULL: nessuna squadra si separa dal gruppo (o finestra troppo corta). "
-              "Nessun articolo.")
+        print("NULL DICHIARATO: nessun articolo. Il cancello che si e' chiuso:")
+        for m in diario or ["(nessun motivo registrato)"]:
+            print(f"  - {m}")
         sys.exit()
     F, art = r
     if not args.dry:

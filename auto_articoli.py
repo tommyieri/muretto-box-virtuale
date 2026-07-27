@@ -117,6 +117,18 @@ def gp_attivo():
     return genera_weekend.gp_weekend_in_corso()
 
 
+def _gara_lavorata(gara):
+    """True se la gara e' gia' in data/gare_registro.json, cioe' si e' corsa E la
+    pipeline (auto_gara) ne ha lavorato i dati. E' il semaforo del giro post-gara:
+    vedi la GUARDIA POST-GARA in main(). In dubbio (file illeggibile) ritorna False:
+    meglio ritentare al giro dopo che segnare "R" come fatta a vuoto."""
+    try:
+        reg = json.load(open(os.path.join(_QUI, "data", "gare_registro.json")))
+        return gara in reg
+    except Exception:
+        return False
+
+
 # ============================================================ anteprima FIA
 
 def _anno_gp(gara):
@@ -299,6 +311,9 @@ def _passo_fia(gara, st, fatte, dry_run=False, push=False,
     os.environ["MURETTO_FIA_PDF"] = pdf
     os.environ["MURETTO_FIA_GP"] = atteso
     os.environ["MURETTO_FIA_ANNO"] = str(anno)
+    # La data di uscita viaggia insieme al file: senza, chi legge il PDF non puo'
+    # rifare il cancello di FRESCHEZZA e si fiderebbe di noi sulla parola.
+    os.environ["MURETTO_FIA_PUBBLICATO"] = doc.get("pubblicato_iso") or ""
 
     _, prodotti = genera_weekend.genera_per_gp(gara, [SESSIONE_FIA])
     if not prodotti:
@@ -359,6 +374,19 @@ def main():
                       f"nulla segnato, ritento al prossimo giro")
             continue
         if ses in fatte:
+            continue
+        # GUARDIA POST-GARA. "R" non e' come le altre sessioni: il giro post-gara fa
+        # partire ANCHE i generatori di STAGIONE (dna, efficienza, sviluppo relativo),
+        # che producono sempre perche' si nutrono dei dati delle gare precedenti. Senza
+        # questa guardia il cron, gia' dal giovedi' (gp_attivo apre la finestra a -3
+        # giorni), otterrebbe quelle bozze, segnerebbe "R" come FATTA e i veri pezzi
+        # post-gara (recap, vero passo) non uscirebbero MAI in automatico.
+        # Segnale usato: la gara e' in data/gare_registro.json, dove la mette auto_gara
+        # DOPO averla lavorata. Vuol dire insieme: la gara si e' corsa E i suoi dati ci
+        # sono. Piu' affidabile dell'orologio (che direbbe solo che e' passata l'ora).
+        if ses == "R" and not _gara_lavorata(gara):
+            print(f"  R: la gara non e' ancora nel registro (non corsa, o dati non "
+                  f"ancora lavorati): niente giro post-gara, ritento al prossimo giro")
             continue
         # prova a generare i pezzi di questa sessione (self-skip se FastF1 non ha ancora i dati)
         _, prodotti = genera_weekend.genera_per_gp(gara, [ses])
