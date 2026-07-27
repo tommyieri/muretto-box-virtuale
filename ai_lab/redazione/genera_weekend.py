@@ -66,13 +66,25 @@ def gp_weekend_in_corso():
     return ss[0][2] or None
 
 
+# "R"/"Race" NON e' un filtro-sessione come FP2/FP3/Q: e' il GIRO POST-GARA completo.
+# I generatori-gara/stagione dichiarano sessioni=["Race"] e partono SOLO col filtro
+# None (vedi genera._match_sessione), che fa anche l'aggiornamento cruscotto/forza/
+# trasversali. Percio' qui "R" va tradotto in sessione=None, altrimenti nessun
+# generatore-gara combacia con la stringa "R" e i pezzi post-gara non escono mai.
+_POST_GARA = {"R", "RACE", "GARA"}
+
+
 def genera_per_gp(gara, sessioni, data=None):
     """Prova le sessioni in ordine; alla prima che produce bozze si ferma.
-    Ritorna (sessione_usata, prodotti) oppure (None, []) se nessuna ha prodotto."""
+    Ritorna (sessione_usata, prodotti) oppure (None, []) se nessuna ha prodotto.
+    "R" (o "Race"/"Gara") = giro POST-GARA: filtro None -> generatori-gara/stagione
+    + aggiornamento cruscotto/forza/trasversali."""
     for ses in sessioni:
-        print(f"\n== tentativo sessione {ses} ({gara}) ==")
+        eff = None if str(ses).upper() in _POST_GARA else ses
+        etich = "post-gara (Race/stagione)" if eff is None else ses
+        print(f"\n== tentativo sessione {etich} ({gara}) ==")
         try:
-            prodotti, saltati = genera.genera_tutti(gara=gara, data=data, sessione=ses)
+            prodotti, saltati = genera.genera_tutti(gara=gara, data=data, sessione=eff)
         except Exception as e:
             # genera_tutti isola gia' i singoli generatori; qui si arriva solo per
             # un guasto dell'orchestratore stesso. Best-effort: si prova la prossima.

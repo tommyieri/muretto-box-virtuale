@@ -13,6 +13,22 @@ REPO="$HOME/muretto"
 LOG="$REPO/data/auto_articoli.log"
 cd "$REPO" || exit 1
 
+# CHIAVE LLM: cron NON sorgente ~/.zshrc, quindi ANTHROPIC_API_KEY non ci sarebbe e
+# scrittore + verificatore-LLM si spegnerebbero (prosa a template, niente editor
+# avversariale). La estraiamo dalla riga `export ANTHROPIC_API_KEY="..."` di ~/.zshrc
+# senza sorgere l'intero file (che ha guardie interattive). Mai stampata nel log.
+if [ -z "${ANTHROPIC_API_KEY:-}" ] && [ -f "$HOME/.zshrc" ]; then
+  _kl="$(grep -m1 -E '^[[:space:]]*export[[:space:]]+ANTHROPIC_API_KEY=' "$HOME/.zshrc" 2>/dev/null)"
+  if [ -n "$_kl" ]; then
+    _kv="${_kl#*=}"                       # dopo il primo =
+    _kv="${_kv%%[[:space:]]#*}"           # via un eventuale commento in coda
+    _kv="${_kv%\"}"; _kv="${_kv#\"}"      # via virgolette doppie
+    _kv="${_kv%\'}"; _kv="${_kv#\'}"      # o singole
+    [ -n "$_kv" ] && export ANTHROPIC_API_KEY="$_kv"
+  fi
+  unset _kl _kv
+fi
+
 # La redazione usa il python3 di sistema (fastf1 + anthropic installati li'), NON il venv.
 PY="python3"
 
@@ -41,6 +57,6 @@ trap 'rmdir "$LOCK" 2>/dev/null' EXIT
   fi
 } >> "$LOG" 2>&1
 
-echo "==== $(date '+%F %T') avvio auto_articoli --push (python: $PY) ====" >> "$LOG"
+echo "==== $(date '+%F %T') avvio auto_articoli --push (python: $PY · LLM: $([ -n "${ANTHROPIC_API_KEY:-}" ] && echo attivo || echo ASSENTE)) ====" >> "$LOG"
 "$PY" auto_articoli.py --push >> "$LOG" 2>&1
 echo "==== $(date '+%F %T') fine (exit $?) ====" >> "$LOG"
