@@ -27,4 +27,9 @@ GENERATORI = [
     # genera_linea_diversa: NON in rotazione — il GPS (~13-16 m) non risolve le
     # traiettorie su una pista larga ~11-13 m (differenza sotto il rumore stesso-pilota).
     # File tenuto (fail-safe, si auto-salta) come tentativo documentato: decisione PO.
+    # genera_degrado_stint: NON in rotazione — NULL documentato (Ungheria 2026). Il
+    # rumore di gara (~462 ms/giro RMSE) e' ~12x il segnale di degrado (~37 ms/giro):
+    # pendenze per-stint inaffidabili; il pool per-mescola da' un ordine assurdo
+    # (soft < hard = confondente benzina/fase, non gomma). File tenuto col CANCELLO
+    # di robustezza che si auto-chiude: un GP con degrado pulito lo riaprirebbe.
 ]
