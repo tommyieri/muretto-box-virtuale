@@ -51,7 +51,7 @@ def _leggi(id_):
     return d, art, st
 
 
-def _card(art):
+def _card(art, pagina=True):
     return {
         "id": art["id"], "titolo": art["titolo"], "occhiello": art["occhiello"],
         "sommario": art["sommario"], "data": art["data"], "stato": art["stato"],
@@ -60,6 +60,12 @@ def _card(art):
         # raggruppamento per Gran Premio nell'indice: gp = nome del GP (es. "Ungheria"),
         # assente/None = articolo trasversale (piu' gare). round = ordina i GP.
         "gp": art.get("gp"), "round": art.get("round"),
+        # LA PAGINA STATICA C'E'? Il pre-render e' fail-safe: puo' fallire e lasciare
+        # l'articolo pubblicato ma senza demo/articolo/<id>.html. Il JS di analisi.html
+        # non puo' guardare il disco, quindi glielo diciamo qui: con pagina=false la
+        # card punta ad articolo.html?id=, che rende dal JSON e non da' 404. Assente =
+        # true (le card scritte prima di questo campo hanno tutte la loro pagina).
+        "pagina": bool(pagina),
     }
 
 
@@ -74,12 +80,87 @@ def _upsert_manifest(card):
     json.dump(man, open(MANIFEST, "w"), ensure_ascii=False, indent=2)
 
 
+def _statico():
+    if _QUI not in sys.path:
+        sys.path.insert(0, _QUI)
+    import statico
+    return statico
+
+
+def _pre_render(art):
+    """Scrive SOLO demo/articolo/<id>.html (+ anteprima social). Ritorna True/False.
+
+    Separato dagli indici di proposito: il manifest deve sapere se la pagina c'e'
+    PRIMA che gli indici si rigenerino, altrimenti la card di analisi.html punterebbe
+    a un file che non esiste."""
+    try:
+        _statico().scrivi_articolo(art)
+        return os.path.exists(os.path.join(REPO, "demo", "articolo", art["id"] + ".html"))
+    except Exception as e:
+        print(f"[coda] ATTENZIONE: pre-render statico fallito per {art.get('id')}: "
+              f"{type(e).__name__}: {e}")
+        return False
+
+
+def _rigenera_indici(id_=None, pagina=True):
+    """Elenco crawlabile + robots/sitemap/feed/404.
+
+    Il JSON e' la verita'; l'HTML statico e' una resa. Percio' qui si e' FAIL-SAFE: se
+    la rigenerazione inciampa, la pubblicazione del JSON NON fallisce. Ma il messaggio
+    dice tutta la verita', non mezza: senza pagina statica il link della card e'
+    <b>diverso</b> (articolo.html?id=), e sitemap/feed non annunciano l'articolo."""
+    try:
+        _statico().rigenera_indici()
+        ok = True
+    except Exception as e:
+        print(f"[coda] ATTENZIONE: rigenerazione indici fallita: {type(e).__name__}: {e}")
+        ok = False
+    if not pagina:
+        print(f"[coda] il JSON e' pubblicato lo stesso, e l'articolo RESTA LEGGIBILE: la "
+              f"card di analisi.html punta ad articolo.html?id={id_}, che rende dal JSON.")
+        print(f"[coda] ma la pagina /articolo/{id_}.html NON esiste, quindi l'articolo "
+              f"NON e' in sitemap.xml ne' in feed.xml (per non annunciare un 404) e non "
+              f"e' nel blocco crawlabile di analisi.html.")
+        print("[coda] rimedio: python3 ai_lab/redazione/statico.py --tutto")
+    elif not ok:
+        print(f"[coda] la pagina /articolo/{id_}.html c'e', ma gli indici possono essere "
+              f"indietro. Rimedio: python3 ai_lab/redazione/statico.py --tutto")
+    return ok
+
+
+def _ritira_statico(id_):
+    """Un articolo respinto sparisce da TUTTO: pagina, anteprima social, JSON servito,
+    sitemap/feed/elenco. Restare online anche solo con l'immagine sarebbe
+    un'anteprima social orfana di un articolo respinto — e il JSON servito lo
+    renderebbe ancora leggibile da articolo.html?id=.
+    Stesso patto fail-safe del resto."""
+    try:
+        statico = _statico()
+        for p in (os.path.join(REPO, "demo", "articolo", id_ + ".html"),
+                  os.path.join(REPO, "demo", "og", id_ + ".png"),
+                  os.path.join(ANALISI_DIR, id_ + ".json")):
+            if os.path.exists(p):
+                os.remove(p)
+        statico.rigenera_indici()
+        return True
+    except Exception as e:
+        print(f"[coda] ATTENZIONE: ritiro statico fallito per {id_}: "
+              f"{type(e).__name__}: {e}")
+        return False
+
+
 def _scrivi_demo(art):
-    """Copia l'articolo (col suo stato) in demo/data/analisi/ e aggiorna l'indice."""
+    """Copia l'articolo (col suo stato) in demo/data/analisi/, rende la pagina,
+    aggiorna l'indice con l'esito della resa, e solo allora rigenera gli indici.
+
+    L'ORDINE CONTA: pagina -> manifest (che registra se la pagina c'e') -> indici.
+    Cosi' la card di analisi.html sa gia' dove puntare quando il JS la disegna."""
     os.makedirs(ANALISI_DIR, exist_ok=True)
     json.dump(art, open(os.path.join(ANALISI_DIR, art["id"] + ".json"), "w"),
               ensure_ascii=False, indent=2)
-    _upsert_manifest(_card(art))
+    pagina = _pre_render(art)
+    _upsert_manifest(_card(art, pagina=pagina))
+    _rigenera_indici(art.get("id"), pagina=pagina)
 
 
 def _salva_stato(d, art, st):
@@ -116,6 +197,7 @@ def transizione(id_, nuovo, attore=None, nota=None):
         if os.path.exists(MANIFEST):
             man = [m for m in json.load(open(MANIFEST)) if m["id"] != id_]
             json.dump(man, open(MANIFEST, "w"), ensure_ascii=False, indent=2)
+        _ritira_statico(id_)
     return art["stato"]
 
 
@@ -124,8 +206,8 @@ def anteprima(id_):
     nell'indice: stato resta 'bozza'.  Serve alla revisione umana."""
     _, art, _ = _leggi(id_)
     _scrivi_demo(art)               # manifest lo segna 'bozza' -> l'indice lo salta
-    print(f"[coda] anteprima pronta: demo/articolo.html?id={id_}  (stato: {art['stato']}, "
-          f"NON nell'indice pubblico)")
+    print(f"[coda] anteprima pronta: demo/articolo/{id_}.html  (stato: {art['stato']}, "
+          f"NON nell'indice pubblico, NON nella sitemap, marcata 'noindex')")
 
 
 def lista():

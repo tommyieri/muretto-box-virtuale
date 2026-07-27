@@ -31,6 +31,30 @@ class Scala:
         return self.p0 + (v - self.d0) * self.k
 
 
+def titola(svg, didascalia):
+    """Rende leggibile un grafico a chi non lo vede: <title> come PRIMO figlio
+    (e' il nome accessibile di un SVG), piu' role="img" e aria-label sul nodo
+    radice.  Senza, uno screen reader annuncia un blocco di testi sparsi.
+
+    Idempotente: se il <title> c'e' gia', l'SVG torna intatto.  Nessun costo per
+    chi vede la pagina: <title> in SVG non e' un tooltip di testo visibile.
+    """
+    if not svg or not didascalia:
+        return svg
+    i = svg.find(">")
+    if not svg.lstrip().startswith("<svg") or i < 0:
+        return svg
+    testa, resto = svg[:i], svg[i + 1:]
+    if resto.lstrip().startswith("<title"):
+        return svg
+    d = esc(didascalia)
+    if 'role="img"' not in testa:
+        testa += ' role="img"'
+    if "aria-label=" not in testa:
+        testa += f' aria-label="{d}"'
+    return f"{testa}><title>{d}</title>{resto}"
+
+
 def _path(punti):
     if not punti:
         return ""

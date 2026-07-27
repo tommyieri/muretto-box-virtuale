@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <!--
-  ARTICOLO (redazione tecnica). Consumatore puro: legge demo/data/analisi/<id>.json
-  (prodotto dalla pipeline ai_lab/redazione/). Ogni numero e ogni grafico SVG vengono
-  dalla stessa catena che li ha calcolati; qui si rende soltanto.
-  URL: articolo.html?id=<id>
+  ARTICOLO — PAGINA DI COMPATIBILITA'.  Il canonico e' /articolo/<id>.html,
+  pre-renderizzato da ai_lab/redazione/statico.py: li' il testo sta NELL'HTML e i
+  crawler lo vedono.  Su hosting statico una query string non puo' scegliere un
+  file, quindi articolo.html?id=... non poteva essere il canonico.
+  Questa pagina resta perche' i link gia' condivisi non muoiano: e' 'noindex' e
+  rimanda al nuovo indirizzo; se il rimando non parte (JS spento) rende comunque
+  l'articolo come prima, leggendo demo/data/analisi/<id>.json.
 -->
 <html lang="it">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Analisi — Muretto Box Virtuale</title>
+<meta name="robots" content="noindex, follow">
 <link rel="stylesheet" href="stile.css">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
@@ -50,10 +54,28 @@ const el = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const dataIt = d => { try { return new Date(d+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'}); } catch(e){ return d; } };
 
+// Gemello JS di svg.py::titola(), applicato anche da statico.py alla pagina
+// pre-renderizzata. Serviva anche QUI: questa e' la pagina di ripiego quando la
+// statica manca, e senza <title>/role/aria-label uno screen reader annuncia un
+// blocco di testi sparsi invece del nome del grafico. Idempotente: se il <title>
+// c'e' gia' (SVG nato dopo l'accessibilita'), l'SVG torna intatto.
+function titolaSvg(svg, didascalia){
+  if (!svg || !didascalia) return svg || '';
+  const i = svg.indexOf('>');
+  if (!svg.trimStart().startsWith('<svg') || i < 0) return svg;
+  let testa = svg.slice(0, i);
+  const resto = svg.slice(i + 1);
+  if (resto.trimStart().startsWith('<title')) return svg;
+  const d = esc(didascalia);
+  if (!testa.includes('role="img"')) testa += ' role="img"';
+  if (!testa.includes('aria-label=')) testa += ` aria-label="${d}"`;
+  return `${testa}><title>${d}</title>${resto}`;
+}
+
 function figura(f){
   if (!f) return '';
   return `<figure class="art-fig">
-    <div class="art-svg-wrap">${f.svg}</div>
+    <div class="art-svg-wrap">${titolaSvg(f.svg, f.didascalia)}</div>
     <figcaption><span class="cap">${esc(f.didascalia)}</span>
       <span class="fonte">Fonte: ${esc(f.fonte)}</span></figcaption>
   </figure>`;
@@ -86,6 +108,17 @@ function provenienza(art){
 async function boot(){
   const id = new URLSearchParams(location.search).get('id');
   if (!id){ el('art').innerHTML = `<div class="aggiornato">Articolo non indicato.</div>`; return; }
+
+  // RIMANDO AL CANONICO. Se la pagina pre-renderizzata esiste ci si va (replace:
+  // non sporca la cronologia, Indietro torna da dove sei venuto). Se non esiste
+  // — es. una bozza mai resa — si continua a rendere qui, come prima.
+  if (!/[/\\?#]/.test(id)){
+    const dove = `articolo/${encodeURIComponent(id)}.html`;
+    try {
+      if ((await fetch(dove, {method:'HEAD'})).ok){ location.replace(dove + location.hash); return; }
+    } catch(e){ /* offline o file assente: si rende qui sotto */ }
+  }
+
   let art;
   try { art = await (await fetch(`data/analisi/${encodeURIComponent(id)}.json`)).json(); }
   catch(e){ el('art').innerHTML = `<div class="aggiornato">Articolo non trovato — <a href="analisi.html">torna all'analisi</a>.</div>`; return; }

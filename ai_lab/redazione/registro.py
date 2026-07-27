@@ -25,6 +25,22 @@ GENERATORI = [
     "genera_recap_weekend",
     "genera_upgrade",
     "genera_upgrade_preview",
+    # --- WEEKEND SPRINT ---------------------------------------------------------
+    # Si accendono da soli SOLO nei weekend con la sprint: dichiarano sessioni "S"
+    # (la Sprint) o "Q", e la prima cosa che fanno e' controllare l'EventFormat di
+    # FastF1 — in un weekend normale ritornano None senza sollevare.
+    # CABLAGGIO: auto_articoli.py::SESSIONI elenca [FIA, FP2, FP3, SQ, S, Q, R]. "SQ" e
+    # "S" ci sono state aggiunte proprio per questi pezzi (e per genera_fp_rapporti, che
+    # nel weekend sprint si aggancia a SQ): prima non avevano innesco automatico ed
+    # erano scritti ma non consegnati.
+    "genera_sprint_aria",      # sessione S — la scia: +km/h sul dritto, -km/h all'apice
+    "genera_sprint_passo",     # sessione S — il passo su sequenze in aria libera
+    # sessione Q — SQ vs Q, il parco chiuso aperto. IN ROTAZIONE MA COL CANCELLO
+    # CHIUSO SU TUTTI E QUATTRO GLI SPRINT 2026: la concordanza dei compagni sul delta
+    # grezzo era regressione verso la media (i compagni condividono il livello in SQ),
+    # e con i segni presi sui residui + null di permutazione nessun evento passa
+    # (Miami 0,004 -> 0,311). Resta perche' si riaprirebbe da solo su un effetto vero.
+    "genera_sprint_scalino",
     # genera_linea_diversa: NON in rotazione — il GPS (~13-16 m) non risolve le
     # traiettorie su una pista larga ~11-13 m (differenza sotto il rumore stesso-pilota).
     # File tenuto (fail-safe, si auto-salta) come tentativo documentato: decisione PO.

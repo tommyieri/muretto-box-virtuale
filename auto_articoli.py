@@ -53,7 +53,13 @@ MAPPA_GARE = os.path.join(_QUI, "data", "mappa_gare.json")
 # prima perche' e' l'unica cosa pubblicabile prima che si giri (il documento esce
 # il venerdi' mattina, prima delle FP1).
 SESSIONE_FIA = "FIA"
-SESSIONI = [SESSIONE_FIA, "FP2", "FP3", "Q", "R"]   # FP1 escluso di proposito
+# In ordine di weekend. "SQ" (Qualifica Sprint, venerdi') e "S" (Sprint, sabato)
+# esistono SOLO nei weekend sprint; nei weekend normali i generatori che le dichiarano
+# non trovano la sessione e ritornano None, quindi il giro costa un tentativo e basta.
+# Simmetricamente FP2/FP3 non esistono nei weekend sprint. Senza "SQ" e "S" qui dentro,
+# i pezzi della sprint non avevano NESSUN innesco automatico: erano scritti ma non
+# consegnati, e la prossima gara (Zandvoort, round 12) e' proprio un weekend sprint.
+SESSIONI = [SESSIONE_FIA, "FP2", "FP3", "SQ", "S", "Q", "R"]   # FP1 escluso di proposito
 
 # Chiave dello stato dove vive l'impronta del documento FIA gia' pubblicato. Comincia
 # con "_" perche' lo stato e' {nome_gara: [sessioni]} e nessuna gara si chiama cosi'.
