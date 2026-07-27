@@ -1,7 +1,7 @@
 {
   "id": "upgrade-red-bull-miami-2026",
-  "stato": "pubblicato",
-  "attore": "auto",
+  "stato": "respinto",
+  "attore": "redazione tecnica (agente)",
   "creato": "2026-07-26",
   "storico": [
     {
@@ -21,6 +21,12 @@
       "attore": "auto",
       "quando": "2026-07-27",
       "nota": "pubblicato all'approvazione"
+    },
+    {
+      "stato": "respinto",
+      "attore": "redazione tecnica (agente)",
+      "quando": "2026-07-27",
+      "nota": "finestra contaminata: il blocco 'prima' (Melbourne/Shanghai/Suzuka) contiene gia' aggiornamenti Red Bull secondo il documento FIA Car Presentation Submissions (3 componenti a Melbourne, 4 a Suzuka). Manca il controfattuale, l'effetto attribuito al pacchetto di Miami non e' separabile. Sostituito da sviluppo-relativo-2026."
     }
   ]
 }
