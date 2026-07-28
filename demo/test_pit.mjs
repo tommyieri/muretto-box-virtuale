@@ -26,17 +26,20 @@ const near=(a,b)=>{ if(a==null&&b==null)return true; if(typeof a==='number'&&typ
 
 let fail=0;
 for(let i=0;i<GOLDEN.length;i++){
-  const g=GOLDEN[i], c=CASI[Math.floor(i/2)], r=loadRace(c.gara), L=c.freezeLap;
+  // il caso si legge DAL GOLDEN, non da un'aritmetica sull'indice: con tre configurazioni
+  // CASI[Math.floor(i/2)] rigiocava il caso sbagliato senza dire niente.
+  const g=GOLDEN[i], c={gara:g.gara,driver:g.driver,pitLap:g.pitLap}, r=loadRace(g.gara), L=g.freezeLap;
   // la configurazione e' REGISTRATA nel golden: il test la rilegge invece di indovinarla,
   // cosi' base e pannello sono coperti dallo stesso file e nessuno dei due puo' sparire.
   const res=evaluatePit({ byLap:r.byLap,nLaps:r.n_laps,pace:r.pace[String(L)],
     driver:c.driver,freezeLap:L,pitLap:c.pitLap,pitLoss:(pitloss[c.gara]??22.0)+penDi(c.gara,c.driver,L),
     present:present(r,L),gara:c.gara,laps:r.laps,
-    orizzonte:g.orizzonte??0, gradino:g.gradino??null, ZONE:g.ZONE??1.5, deriva:g.deriva??null });
+    orizzonte:g.orizzonte??0, gradino:g.gradino??null, ZONE:g.ZONE??1.5, deriva:g.deriva??null,
+    passo:g.passo??null });
   for(const k of CAMPI){
     const got=res[k]??null, exp=g[k]??null;
     if(!near(got,exp)){ console.error(`FAIL ${g.caso} campo ${k}: atteso ${exp} ottenuto ${got}`); fail++; }
   }
 }
 if(fail){ console.error(`\n✗ test_pit: ${fail} scostamenti`); process.exit(1); }
-console.log(`✓ test_pit: ${GOLDEN.length}/${GOLDEN.length} casi (base + pannello) combaciano col golden`);
+console.log(`✓ test_pit: ${GOLDEN.length}/${GOLDEN.length} casi (base + pannello + passo v2) combaciano col golden`);

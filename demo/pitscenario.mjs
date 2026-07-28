@@ -1,6 +1,37 @@
 import { simulate } from './engine.mjs';
 import { simulaConSoste } from './gradino.mjs';
+import { passiBase, simulaSimmetrico } from './passo.mjs';
 import NEUTRAL from './neutralizzazione.json' with { type: 'json' };
+
+// PASSO v2 — il modello simmetrico (demo/passo.mjs), acceso dal chiamante.
+//
+//   passo = null  ->  percorso storico BIT-IDENTICO: passo piatto + gradino costante.
+//   passo = {delta, rho}  ->  t = base + delta_giro*(giro-1) + rho*eta, e la SOSTA AZZERA
+//                             l'eta invece di regalare uno sconto costante.
+//
+// PERCHE' NON E' UNA TARATURA. Col gradino costante anticipare la sosta e' SEMPRE meglio: la
+// derivata non cambia mai segno, e "quando mi fermo?" non ha risposta — misurato, 0 ottimi
+// interni su 249 (ai_lab/simulatore/REPORT_FASE0.md). Con l'azzeramento dell'eta anticipare
+// accorcia il primo stint e allunga il secondo: il minimo cade in mezzo, e la domanda esiste.
+//
+// I DUE INGREDIENTI CHE SI SPENGONO INSIEME, e va detto perche' sarebbe il bug piu' facile:
+//   `gradino`  lo sostituisce l'azzeramento dell'eta. Tenerli entrambi conterebbe due volte.
+//   `deriva`   era una pezza che dava la deriva di gara ALLA SOLA auto instradata, proprio
+//              perche' il passo era piatto. Ora la deriva ce l'hanno tutti, dentro il modello:
+//              lasciarla accesa la darebbe DUE VOLTE a chi si ferma.
+function simulaPasso({ passo, byLap, nLaps, pace, freezeLap, steps, pits, present,
+                       gradino, deriva, instradato, ZONE }) {
+  if (!passo) {
+    const state = {};
+    for (const d of present) state[d] = { cum_time: byLap[freezeLap][d].cum_time };
+    return simulaConSoste({ state, pace, freezeLap, steps, ZONE, pits, gradino,
+                            deriva, instradato });
+  }
+  const base = passiBase(byLap, nLaps, freezeLap, present,
+                         { delta: passo.delta, rho: passo.rho, eta0: 0 });
+  return simulaSimmetrico({ base, byLap, nLaps, freezeLap, steps, pits,
+                            delta: passo.delta, rho: passo.rho, gradino: null, ZONE });
+}
 
 // SOSTE DEI RIVALI SOTTO SAFETY CAR — il difetto n.1 del banco della strategia.
 // Acceso il 24/07/2026 su decisione PO. Reversibile da qui: a false il motore torna al
@@ -91,7 +122,7 @@ export function confrontaPit({ byLap, nLaps, pace, driver, freezeLap, pitLapA, p
 //   deriva = d     -> segue la deriva del campo, d s/giro per ogni giro che passa. Tocca
 //                     SOLO lei: gli altri sono reali, la loro evoluzione e' gia' nei tempi.
 export function evaluatePit({ byLap, nLaps, pace, driver, freezeLap, pitLap, pitLoss, present, gara=null, laps=null, ZONE = 1.5,
-                              orizzonte = 0, gradino = null, deriva = null }) {
+                              orizzonte = 0, gradino = null, deriva = null, passo = null }) {
   const L = freezeLap;
   // solo piloti SIMULABILI: hanno cum_time e un pace-base al freeze (chi ha appena pittato non ne ha)
   present = present.filter(d => typeof byLap[L][d].cum_time==='number' && pace[d]!=null);
@@ -133,9 +164,8 @@ export function evaluatePit({ byLap, nLaps, pace, driver, freezeLap, pitLap, pit
   }
 
   // simulaConSoste(gradino=null, un solo pit) e' bit-identico a simulate(steps) — test_gradino.mjs
-  const fin = simulaConSoste({ state, pace, freezeLap:L, steps, ZONE,
-                               pits, gradino,
-                               deriva, instradato: driver });
+  const fin = simulaPasso({ passo, byLap, nLaps, pace, freezeLap:L, steps, pits, present,
+                            gradino, deriva, instradato: driver, ZONE });
   if (fin[driver] == null) return { ok:false, reason:'pilota non simulabile' };
   const same = stessoGiroReale(byLap, L, nLaps, driver, present).filter(d => fin[d] != null);
   const ord = same.map(d=>[d,fin[d]]).sort((a,b)=>(a[1]-b[1])||(a[0]<b[0]?-1:1));
@@ -214,7 +244,8 @@ export function evaluatePit({ byLap, nLaps, pace, driver, freezeLap, pitLap, pit
 // con evaluatePit: l'animazione non puo' contraddire il numero del pannello (verificato
 // da test_traiettoria.mjs). Costo: O(passi^2 * piloti), trascurabile (<100k op / gara).
 export function traiettoriaPit({ byLap, nLaps, pace, driver, freezeLap, pitLap, pitLoss,
-                                 present, gradino = null, deriva = null, ZONE = 1.5 }) {
+                                 present, gradino = null, deriva = null, ZONE = 1.5,
+                                 passo = null }) {
   const L = freezeLap;
   present = present.filter(d => typeof byLap[L]?.[d]?.cum_time === 'number' && pace[d] != null);
   if (!present.includes(driver)) return null;
@@ -232,8 +263,10 @@ export function traiettoriaPit({ byLap, nLaps, pace, driver, freezeLap, pitLap, 
   for (const d of present) cumByLap[L][d] = state[d].cum_time;   // giro di congelamento = reale
   const maxStep = nLaps - L;
   for (let k = 1; k <= maxStep; k++) {
-    const fin = simulaConSoste({ state, pace, freezeLap: L, steps: k, ZONE,
-                                 pits, gradino, deriva, instradato: driver });
+    // stessi ingredienti di evaluatePit, incluso il passo v2: l'animazione non puo'
+    // contraddire il numero del pannello (test_traiettoria.mjs).
+    const fin = simulaPasso({ passo, byLap, nLaps, pace, freezeLap: L, steps: k, pits,
+                              present, gradino, deriva, instradato: driver, ZONE });
     const lap = L + k; laps.push(lap); cumByLap[lap] = {};
     for (const d of present) if (fin[d] != null) cumByLap[lap][d] = fin[d];
   }

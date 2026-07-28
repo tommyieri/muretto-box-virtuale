@@ -17,7 +17,7 @@
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { passiBase, derivaPerGiro, simulaSimmetrico } from './passo.mjs';
+import { passiBase, derivaPerGiro, simulaSimmetrico } from '../../demo/passo.mjs';
 import { simulaConSoste, misura } from '../../demo/gradino.mjs';
 import { stessoGiroReale } from '../../demo/pitscenario.mjs';
 

@@ -28,6 +28,17 @@ const CONFIG = {
     const dv = d.stato === 'MISURATO' ? +d.valore.toFixed(5) : null;
     return { orizzonte: gr != null ? 5 : 0, gradino: gr, ZONE: 0, deriva: dv };
   },
+  // PASSO v2 (28/07/2026): la configurazione che il cliente esegue DA ORA. Il golden
+  // 'pannello' qui sopra congela il ramo precedente e resta, come storia; ma un golden che
+  // protegge solo un ramo che nessuno percorre e' un ornamento — e questo file lo dice gia'
+  // di se stesso, dieci righe piu' su. Con v2 gradino e deriva NON si passano: li sostituisce
+  // il modello, e passarli li conterebbe due volte.
+  passo_v2: () => {
+    const m = JSON.parse(fs.readFileSync('./data/modello_passo_2026.json', 'utf8'));
+    return { orizzonte: 5, gradino: null, ZONE: 0, deriva: null,
+             passo: { delta: +m.deriva.delta_gara_s.toFixed(6),
+                      rho: +m.degrado.rho_s_giro.toFixed(6) } };
+  },
 };
 const pitloss = JSON.parse(fs.readFileSync('./data/pitloss.json','utf8'));
 // le penalita' pendenti entrano nel costo simulato dal 22/07: il golden deve vederle,
@@ -60,12 +71,18 @@ for(const c of CASI){
     byLap:r.byLap, nLaps:r.n_laps, pace:r.pace[String(L)],
     driver:c.driver, freezeLap:L, pitLap:c.pitLap, pitLoss:loss,
     present:present(r,L), gara:c.gara, laps:r.laps,
-    orizzonte:cfg.orizzonte, gradino:cfg.gradino, ZONE:cfg.ZONE ?? 1.5, deriva:cfg.deriva ?? null
+    orizzonte:cfg.orizzonte, gradino:cfg.gradino, ZONE:cfg.ZONE ?? 1.5, deriva:cfg.deriva ?? null,
+    passo:cfg.passo ?? null
   });
   out.push({
     caso:`${c.gara}:${c.driver}:fz${L}:pit${c.pitLap}#${nomeCfg}`,
     cfg:nomeCfg, orizzonte:cfg.orizzonte,
+    // IL CASO VIAGGIA COL GOLDEN (28/07/2026). Il test lo ricavava da CASI[Math.floor(i/2)]:
+    // due configurazioni cablate nell'aritmetica dell'indice. Aggiungerne una terza lo
+    // rompeva in silenzio, rigiocando il caso sbagliato. Ora ogni riga si basta.
+    gara:c.gara, driver:c.driver, freezeLap:L, pitLap:c.pitLap,
     gradino:cfg.gradino, ZONE:cfg.ZONE ?? 1.5, deriva:cfg.deriva ?? null,
+    passo:cfg.passo ?? null,
     ok:res.ok, reason:res.reason??null,
     rientro_pos:res.rientro_pos??null, su_totale:res.su_totale??null,
     davanti_ho:res.davanti_ho??null, gap_ahead:res.gap_ahead??null,

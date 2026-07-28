@@ -383,7 +383,7 @@ async function bootMappa(g){
 // un ordine di corsa, "se lo fermo adesso dove rientra" non e' una domanda.
 async function creaMurettoLive(g, deps = {}){
   const [{ creaByLapLive }, { pannelloMuretto }, { creaGhostPlay }, { attaccaGlossario }] = await Promise.all([
-    import('./live_bylap.mjs?v=250724a'), import('./muretto.mjs?v=250724a'), import('./ghostplay.mjs?v=250724c'),
+    import('./live_bylap.mjs?v=250724a'), import('./muretto.mjs?v=280726a'), import('./ghostplay.mjs?v=250724c'),
     import('./glossario.mjs?v=250724e')]);
   const B = deps.B || creaByLapLive();
   // pista/mappa/torre servono alla SOSTA MESSA IN SCENA; pausaLive ferma i dati live durante
@@ -411,10 +411,14 @@ async function creaMurettoLive(g, deps = {}){
   // non al contenuto: auto_gara riscrive i dati senza toccare il BUILD, quindi non bustava
   // niente. La regola d'header invece fa rivalidare il browser a ogni richiesta.
   const j = async (u, d) => { try { return await (await fetch(u)).json(); } catch(_) { return d; } };
-  const [pitloss, neutroFondo, ragg, bandeClim, teamCol] = await Promise.all([
+  const [pitloss, neutroFondo, ragg, bandeClim, teamCol, modelloPasso] = await Promise.all([
     j('data/pitloss.json', {}), j('data/neutralizzazione_fondo.json', null),
     j('data/raggruppamento.json', null), j('data/climatologia_bande.json', null),
-    j('team_colori.json', {})]);
+    j('team_colori.json', {}),
+    // PASSO v2: deriva di gara + degrado. Assente -> il pannello torna da solo al passo
+    // piatto, senza inventare niente. Stesso file e stesso modello del replay: la diretta
+    // e la gara finita devono rispondere con gli stessi coefficienti.
+    j('data/modello_passo_2026.json', null)]);
   // colore del pilota per la messa in scena (dal team del giro corrente)
   const coloreDi = sg => { const L = B.giroPieno(); const t = B.byLap()[L]?.[sg]?.team; return (t && teamCol[t]) || '#9aa4b5'; };
 
@@ -521,7 +525,7 @@ async function creaMurettoLive(g, deps = {}){
       gara: g.gara_demo || null, circuitId: cid,
       driver: scelto, freezeLap: L, pitLap: pitL, mescola: mescolaScelta,
       pitLossTabella, penalita: null, nonParten: new Set(),
-      neutroFondo, ragg, bandeClim,
+      neutroFondo, ragg, bandeClim, modelloPasso,
     });
     // quando il riferimento manca, a dirlo e' il pannello stesso (muretto.mjs): un
     // secondo avviso qui sopra rischiava di contraddirlo, ed e' esattamente cio' che

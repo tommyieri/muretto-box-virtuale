@@ -1,0 +1,74 @@
+{
+ "_nota": "GENERATO da ai_lab/simulatore/gen_modello_passo.mjs — non modificare a mano.",
+ "forma": "t(pilota, giro) = base + delta_per_giro*(giro-1) + rho*eta_gomma;  la sosta AZZERA eta e paga il pit-loss. base si misura con la STESSA equazione (demo/passo.mjs): si sottrae cio che si ri-aggiunge.",
+ "deriva": {
+  "delta_gara_s": 3.170091432416614,
+  "ic95": [
+   1.6816366212206821,
+   3.902692465741128
+  ],
+  "unita": "s di scivolamento totale dal giro 1 al giro N; POSITIVO = i giri accelerano",
+  "per_circuito": false,
+  "perche_non_per_circuito": "T2 e T3 di PREREG_fase1.md non passano: il circuito spiega il 43% della varianza (non oltre meta), e fuori campione il per-circuito batte il Phi unico solo in 4 gare su 10.",
+  "n_gare_2026": 9,
+  "n_gare_storico": 132,
+  "storico_s": 3.111199730696785
+ },
+ "degrado": {
+  "rho_s_giro": 0.03892170855500294,
+  "ic95": [
+   0.021963034507978242,
+   0.06292754790123263
+  ],
+  "unita": "s al giro per ogni giro di vita della gomma",
+  "per_mescola": false,
+  "perche_non_per_mescola": "sul 2026 le mescole NON separano il degrado: rho_SOFT - rho_HARD = -0.0075, IC95 che contiene lo zero, p(permutazione) = 0.209, e l ordine SOFT>MEDIUM>HARD esce da solo in 2 gare su 10. Un rho per mescola direbbe una differenza che i dati non sostengono.",
+  "per_mescola_misurato": {
+   "C_SOFT": -0.07210424914194856,
+   "rho_SOFT": 0.03351605934974831,
+   "C_MEDIUM": 0.1265213925250151,
+   "rho_MEDIUM": 0.03658181733356904,
+   "C_HARD": -0.05441714338306659,
+   "rho_HARD": 0.04097657115637185,
+   "Phi": -0.04476652704259775
+  },
+  "n_giri": 8192,
+  "gare": [
+   "Australian Grand Prix",
+   "Austrian Grand Prix",
+   "Barcelona Grand Prix",
+   "Belgian Grand Prix",
+   "British Grand Prix",
+   "Canadian Grand Prix",
+   "Chinese Grand Prix",
+   "Hungarian Grand Prix",
+   "Japanese Grand Prix",
+   "Miami Grand Prix"
+  ]
+ },
+ "targhetta": {
+  "regime": "2026",
+  "escluse": [
+   "Monaco Grand Prix"
+  ],
+  "fonte": "grezzo (data/ti_cache + data/ti_archive) via lab/fondo.py — nessun derivato letto",
+  "prereg": [
+   "ai_lab/simulatore/PREREG_fase0.md",
+   "ai_lab/simulatore/PREREG_fase1.md"
+  ],
+  "report": [
+   "ai_lab/simulatore/REPORT_FASE0.md",
+   "ai_lab/simulatore/REPORT_FASE1.md",
+   "ai_lab/simulatore/REPORT_FASE2.md"
+  ],
+  "seed": 20260728
+ },
+ "limiti_onesti": [
+  "REGIME 2026 SOLTANTO. Il 2026 e una rottura regolamentare; i coefficienti storici non sono ereditati.",
+  "DELTA E UN LIMITE SUPERIORE sull effetto carburante: contiene anche evoluzione pista e gestione, e i tempi di gara non li separano. Per il simulatore va bene — serve l effetto netto del giro — ma il nome FUEL_COEFF sarebbe una bugia comoda.",
+  "RHO E COMUNE alle tre mescole asciutte. Non e una semplificazione di comodo: e cio che i dati 2026 sostengono. La differenza fra mescole va cercata sul fondo 2018-2025 (Fase 3).",
+  "NIENTE CLIFF: il modello e lineare nell eta. Non rappresenta il crollo di fine vita.",
+  "CIECO SUL BAGNATO: le gomme da bagnato sono fuori dalla stima e fuori dal modello (Fase 4).",
+  "IL DEGRADO NON E PER-CIRCUITO e la deriva nemmeno: entrambe le ipotesi sono state testate e non passano (REPORT_FASE1.md)."
+ ]
+}

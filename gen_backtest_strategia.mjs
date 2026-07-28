@@ -42,6 +42,11 @@
 // in un altro modo (accorciare l'orizzonte, o dichiarare l'incertezza).
 import fs from 'fs';
 import { pannelloMuretto } from './demo/muretto.mjs';
+// il modello del passo che la produzione legge; MURETTO_PASSO_V2=0 lo spegne per il confronto
+const PASSO_V2 = process.env.MURETTO_PASSO_V2 === '0' ? null : (() => {
+  try { return JSON.parse(fs.readFileSync('./demo/data/modello_passo_2026.json', 'utf8')); }
+  catch { return null; }
+})();
 import { evaluatePit, stessoGiroReale } from './demo/pitscenario.mjs';
 import { misura as misuraSoste } from './demo/gradino.mjs';
 import { deriva as calcolaDeriva, penalitaPendente } from './demo/grossi.mjs';
@@ -97,13 +102,24 @@ function rigioca(gara, byLap, N, drv, P) {
   const neutroPre = !!(byLap[P]?.[drv]?.neutralized);
   const der = neutroPre ? null : calcolaDeriva(byLap, N, L);
   const derVal = (der && der.stato === 'MISURATO') ? der.valore : null;
-  const orizzonte = (gradino != null && !neutroPre) ? ORIZZONTE : 0;
+  // PASSO v2 (28/07/2026): stessa scelta del pannello, e per la stessa ragione — se il
+  // banco misurasse un motore diverso da quello che il cliente esegue, non misurerebbe il
+  // prodotto. Si spegne con MURETTO_PASSO_V2=0 per confrontare i due mondi sullo stesso banco.
+  const passo = PASSO_V2 ? { delta: PASSO_V2.deriva.delta_gara_s,
+                             rho: PASSO_V2.degrado.rho_s_giro } : null;
+  // ORIZZONTE: per confrontare v1 e v2 ALLA PARI serve la stessa regola, altrimenti i
+  // secchi del banco si spostano e il confronto misura due cose insieme.
+  // MURETTO_ORIZZONTE_V2=0 -> regola vecchia (legata al gradino) anche con v2 acceso.
+  const orizzonte = ((process.env.MURETTO_ORIZZONTE_V2 === '0' ? gradino != null
+                                                               : (passo || gradino != null))
+                     && !neutroPre) ? ORIZZONTE : 0;
 
   const pace = (carica.cache ||= {});
   const r = evaluatePit({
     byLap, nLaps: N, pace: pacePerGiro(gara, L), driver: drv, freezeLap: L, pitLap: P,
     pitLoss: loss, present, gara, laps: byLap._laps,
-    orizzonte, gradino, ZONE: 0, deriva: derVal,
+    orizzonte, gradino: passo ? null : gradino, ZONE: 0,
+    deriva: passo ? null : derVal, passo,
   });
   if (!r.ok) return { esito: 'ROTTA', perche: r.reason };
 

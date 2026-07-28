@@ -15,7 +15,7 @@
 // dentro la gara che sta succedendo, e lascia il resto del campo dov'e' davvero. Percio'
 // evoluzione pista e carburante degli altri non si modellano — sono gia' nei loro tempi —
 // e l'unica cosa che deriva e' l'auto instradata.
-import { evaluatePit, stessoGiroReale, traiettoriaPit } from './pitscenario.mjs?v=250724a';
+import { evaluatePit, stessoGiroReale, traiettoriaPit } from './pitscenario.mjs?v=280726a';
 import { treScenariPit, bandaCircuito } from './pitbande.mjs';
 import { misura as misuraSoste } from './gradino.mjs';
 import { grossi as calcolaGrossi, trafficoRientro, pitLossPilota,
@@ -58,6 +58,29 @@ export const UNDERCUT_STORICO = { complessivo: 0.24, n: 71,
 const UC_GAP_MAX = 6.0, UC_K_MAX = 6;
 
 export const SCENARI_ATTIVI = true;
+
+// --- PASSO v2: LA DERIVA DI GARA E L'ETA' GOMMA (acceso 28/07/2026, decisione PO) ---
+//
+// Fino a oggi il motore propagava un passo PIATTO e regalava a chi si fermava uno sconto
+// costante (il `gradino`). Due conseguenze, misurate e non congetturate:
+//   1. i tempi assoluti erano ottimisti di ~2,2 s/giro (il carburante veniva sottratto per
+//      misurare il passo e mai ri-aggiunto per simularlo);
+//   2. "quando conviene fermarsi" NON AVEVA RISPOSTA: con uno sconto costante anticipare e'
+//      sempre meglio. Zero ottimi interni su 249 soste vere.
+//
+// Adesso: t = base + deriva*(giro-1) + rho*eta, e la sosta AZZERA l'eta. Misurato:
+//   bias sui tempi assoluti  -2,19  ->  -0,17 s/giro   (MAE 2,19 -> 0,58)
+//   ottimi interni            0,0%  ->  69,9%, e i 101 casi al bordo sono TUTTI corretti
+//   posizioni di rientro che cambiano: 12,8% (43 su 336, max 2, in prevalenza peggiori)
+//
+// L'ultima riga e' un CAMBIO DI PROMESSA e sta dichiarata in pagina (v. `notaPasso`): chi
+// si fermava con gomme giovani non guadagna piu' niente di gratuito.
+//
+// Reversibile da qui: a false il pannello torna esattamente a com'era (percorso storico
+// bit-identico, gradino e deriva riaccesi).
+// Coefficienti: demo/data/modello_passo_2026.json, con targhetta e limiti dichiarati.
+// Pre-registrazioni e report: ai_lab/simulatore/.
+export const PASSO_V2_ATTIVO = true;
 
 const kv = (k, v, sub) => `<div class="kv"><span class="k">${k}</span><span class="v">${v}`
   + (sub ? ` <span class="sub">${sub}</span>` : '') + '</span></div>';
@@ -247,11 +270,25 @@ export function pannelloMuretto(C) {
   // che mostra sono a QUEL giro. Prima non lo diceva, e — peggio — la tabella scenari qui
   // sotto valuta il giro pit+1: due righe con gap diversi per lo stesso rivale, a tre
   // centimetri, senza che nessuna dichiarasse a che giro. Trovato in Spagna, Australia e GB.
-  const orizzonte = (gradino != null && !neutroPre()) ? 5 : 0;
+  // PASSO v2: se acceso, `gradino` e `deriva` NON si passano al motore — li sostituisce il
+  // modello (l'azzeramento dell'eta al posto del gradino, la deriva per tutti al posto della
+  // pezza sulla sola auto instradata). Passarli comunque li conterebbe due volte.
+  const passo = (PASSO_V2_ATTIVO && C.modelloPasso) ? {
+    delta: C.modelloPasso.deriva.delta_gara_s,
+    rho: C.modelloPasso.degrado.rho_s_giro,
+  } : null;
+  // L'ORIZZONTE. Esiste perche' tutto cio' che il prodotto promette "al rientro" — traffico,
+  // aria libera, undercut — era impossibile quando la sosta cadeva sull'ULTIMO giro simulato.
+  // Era legato a `gradino != null`, cioe' a "sono gia' avvenute 3 soste in questa gara": con
+  // v2 quella condizione non c'entra piu' niente, il modello c'e' dal primo giro. Legarcelo
+  // avrebbe dato risposte valutate a giri diversi nella stessa gara, senza una ragione.
+  const orizzonte = ((passo || gradino != null) && !neutroPre()) ? 5 : 0;
   const giroRisposta = pitL + 1 + orizzonte;   // = Lfin del motore
+  const gradinoMotore = passo ? null : gradino;
+  const derivaMotore = passo ? null : derVal;
   const r = evaluatePit({ byLap: C.byLap, nLaps: C.nLaps, pace: C.pace, driver: C.driver,
     freezeLap: L, pitLap: pitL, pitLoss: loss, present, gara: C.gara, laps: C.laps,
-    orizzonte, gradino, ZONE: ZONE_PANNELLO, deriva: derVal });
+    orizzonte, gradino: gradinoMotore, ZONE: ZONE_PANNELLO, deriva: derivaMotore, passo });
 
   if (!r.ok) {
     // Traduzione UI del limite dichiarato del motore. Il passo-base vuole 3 giri VERDI
@@ -373,18 +410,49 @@ export function pannelloMuretto(C) {
     : (usaViva
       ? `<span class="sub">misurato oggi su ${viva.n_perdita} soste${lossTab != null ? ` &middot; tabella ${lossTab.toFixed(1)}` : ' &middot; nessun riferimento per questa pista'}</span>`
       : '<span class="sub">stima di circuito &middot; nessuna sosta ancora misurabile</span>');
-  const rigaGradino = (gradino != null && !neutro)
-    ? `<div class="kv"><span class="k">Gomma nuova</span><span class="v num">${gradino.toFixed(2)} s/giro
-         <span class="sub">misurato oggi su ${viva.n_gradino} soste</span></span></div>`
-    : (GRADINO_ATTIVO && !neutro
-      ? `<div class="kv"><span class="k">Gomma nuova</span><span class="v dim">non ancora misurabile: servono ${MIN_SOSTE_UI} soste in gara</span></div>`
-      : '');
+  // QUANTO RENDE LA GOMMA NUOVA, e da dove viene il numero.
+  // Col passo v2 non e' piu' il `gradino` costante a guidare la risposta, ma rho x l'eta della
+  // gomma che togli: piu' e' vecchia quella che hai, piu' guadagni a cambiarla — ed e' il
+  // motivo per cui adesso esiste un giro MIGLIORE in cui fermarsi invece che "subito, sempre".
+  // Il gradino resta MOSTRATO, come riscontro indipendente: viene dalle soste gia' avvenute
+  // oggi, rho dalla pendenza dentro gli stint di dieci gare. Due strade separate che arrivano
+  // vicine si sostengono a vicenda; e la riga dice quale delle due muove i numeri.
+  const eta0Mio = typeof C.byLap[L]?.[C.driver]?.tyre_age === 'number'
+    ? C.byLap[L][C.driver].tyre_age : null;
+  const guadagnoGomma = (passo && eta0Mio != null) ? -passo.rho * eta0Mio : gradino;
+  const rigaGradino = (passo && eta0Mio != null && !neutro)
+    ? `<div class="kv"><span class="k">Gomma nuova</span><span class="v num">${guadagnoGomma.toFixed(2)} s/giro
+         <span class="sub">la tua ha <b>${eta0Mio} giri</b> &middot; ${passo.rho.toFixed(3)} s/giro per ogni giro di vita, misurato sul 2026</span></span></div>`
+      + (gradino != null
+        ? `<div class="kv"><span class="k">Riscontro</span><span class="v dim">le soste gi&agrave; avvenute oggi danno ${gradino.toFixed(2)} s/giro
+             <span class="sub">misura indipendente, su ${viva.n_gradino} soste: non entra nel calcolo, lo conferma</span></span></div>`
+        : '')
+    : (gradino != null && !neutro
+      ? `<div class="kv"><span class="k">Gomma nuova</span><span class="v num">${gradino.toFixed(2)} s/giro
+           <span class="sub">misurato oggi su ${viva.n_gradino} soste</span></span></div>`
+      : (GRADINO_ATTIVO && !neutro
+        ? `<div class="kv"><span class="k">Gomma nuova</span><span class="v dim">non ancora misurabile: servono ${MIN_SOSTE_UI} soste in gara</span></div>`
+        : ''));
   // stessi piloti a pari giro che usa il motore: l'undercut su un doppiato non esiste
   const sameLap = stessoGiroReale(C.byLap, L, C.nLaps, C.driver, present);
-  const rigaUC = (gradino != null && !neutro) ? rigaUndercut(C, L, gradino, sameLap) : '';
+  // l'undercut si calcola sul vantaggio che il MOTORE usa davvero: con v2 e' rho x eta, non
+  // il gradino. Due numeri diversi per la stessa cosa, a tre centimetri, sarebbero il difetto
+  // che questo arco ha passato una settimana a chiudere.
+  const rigaUC = (guadagnoGomma != null && !neutro)
+    ? rigaUndercut(C, L, guadagnoGomma, sameLap) : '';
   const notaCap = CAP_TRAFFICO ? '' :
     `<div class="kv"><span class="k">Duelli</span><span class="v dim">il motore riproduce
      <b>quanti</b> cambi di posizione avvengono, non <b>quali</b>: il duello in pista non &egrave; simulato</span></div>`;
+  // IL CAMBIO DI PROMESSA, DICHIARATO DOVE SI VEDE. Sta accanto alla nota sui duelli perche'
+  // e' la stessa specie di riga: non un dettaglio tecnico, ma un limite che chi legge deve
+  // conoscere per non fidarsi piu' di quanto conviene.
+  const notaPasso = passo ? `<div class="kv"><span class="k">Come invecchia</span><span class="v dim">
+     il passo tiene conto del <b>carburante che scende</b> e della <b>gomma che invecchia</b>
+     (${passo.rho.toFixed(3)} s/giro per giro di vita): fermarsi presto non &egrave; pi&ugrave; gratis
+     e c&rsquo;&egrave; un giro migliore degli altri.
+     <span class="sub">degrado <b>uguale per tutte le mescole</b>: sul 2026 la differenza fra
+     soft, medium e hard non si distingue dal caso &middot; niente crollo di fine vita &middot;
+     misurato sull&rsquo;asciutto</span></span></div>` : '';
 
   // --- I GROSSI, misurati da questa gara (demo/grossi.mjs) ---------------------
   // Il meteo e' gia' stato gestito in cima: se fossimo fuori dominio non saremmo qui.
@@ -475,13 +543,15 @@ export function pannelloMuretto(C) {
     ${rigaUC}
     ${righeGrossi}
     ${righeMescola(C, L, C.mescola)}
+    ${notaPasso}
     ${notaCap}
     ${scenariDegrado(C, L, pitL, loss, present, neutro)}`;
   // TRAIETTORIA per l'ANIMAZIONE del fantasma: stessi identici input del motore qui sopra
   // (pace, loss, gradino, deriva, present), quindi al giro-risposta il cum coincide col
   // numero del pannello. Il pannello resta il verdetto; questa e' solo la sua messa in scena.
   const sim = traiettoriaPit({ byLap: C.byLap, nLaps: C.nLaps, pace: C.pace, driver: C.driver,
-    freezeLap: L, pitLap: pitL, pitLoss: loss, present, gradino, deriva: derVal, ZONE: ZONE_PANNELLO });
+    freezeLap: L, pitLap: pitL, pitLoss: loss, present, gradino: gradinoMotore,
+    deriva: derivaMotore, ZONE: ZONE_PANNELLO, passo });
   return { ok: true, html, rientro: r.rientro_pos, su_totale: r.su_totale, motore: r,
     sim, freezeLap: L, pitLap: pitL, giroRisposta };
 }

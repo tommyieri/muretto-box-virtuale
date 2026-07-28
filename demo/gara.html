@@ -142,7 +142,7 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
 // IL PANNELLO E' UN MODULO (demo/muretto.mjs), non piu' codice di questa pagina: la
 // stessa identica risposta la mostra live.html sulla gara in corso. Due copie della
 // stessa domanda sono il modo piu' sicuro di ritrovarsi con due numeri diversi.
-import { pannelloMuretto } from './muretto.mjs?v=250724a';
+import { pannelloMuretto } from './muretto.mjs?v=280726a';
 import { creaGhostPlay } from './ghostplay.mjs?v=250724c';
 import { attaccaGlossario } from './glossario.mjs?v=250724e';
 import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs?v=220726a';
@@ -162,6 +162,9 @@ let pista=null, leadCum=null, cumPil=null, teamOfR=null;   // vista pallini (gar
 let rcmAll=null, ufficAll=null, rcmGara=null, ufficGara=null, penPil={};
 let numDi={};   // sigla -> numero di gara (da schede_2026.json, fonte f1db)
 let bandeClim=null;   // FASE A: bande climatologiche per circuito (demo/data/climatologia_bande.json)
+// PASSO v2: deriva di gara + degrado (demo/data/modello_passo_2026.json, con targhetta).
+// Assente -> il pannello torna da solo al passo piatto: nessun numero inventato.
+let modelloPasso=null;
 // probabilita di neutralizzazione e quanto costa fermarsi sotto, per circuito, dal fondo
 // 2018-2026 (gen_neutralizzazione_fondo.py). Assente -> la riga Safety Car non compare.
 let neutroFondo=null;
@@ -199,6 +202,7 @@ async function boot() {
   try { teamCol = await (await fetch('team_colori.json')).json(); } catch(e){ teamCol={}; }
   try { calendario = await (await fetch('data/calendario_2026.json')).json(); } catch(e){ calendario=null; }
   try { bandeClim = await (await fetch('data/climatologia_bande.json')).json(); } catch(e){ bandeClim=null; }
+  try { modelloPasso = await (await fetch('data/modello_passo_2026.json')).json(); } catch(e){ modelloPasso=null; }
   try { neutroFondo = await (await fetch('data/neutralizzazione_fondo.json')).json(); } catch(e){ neutroFondo=null; }
   try { ragg = await (await fetch('data/raggruppamento.json')).json(); } catch(e){ ragg=null; }
   try { pitstops = await (await fetch('data/pitstops_2026.json')).json(); } catch(e){ pitstops=null; }
@@ -712,7 +716,7 @@ function updatePit(){
     driver: selDrv, freezeLap: L, pitLap: pitL, mescola: mescolaScelta,
     pitLossTabella: pitloss[race.gara] ?? 22.0,
     penalita: penPil[selDrv], nonParten: race.nonParten,
-    neutroFondo, ragg, bandeClim,
+    neutroFondo, ragg, bandeClim, modelloPasso,
   });
   el('pitKv').innerHTML = res.html;
   attaccaGlossario(el('pitKv'));    // il gergo (pit-loss, undercut, a pari giro…) diventa toccabile
