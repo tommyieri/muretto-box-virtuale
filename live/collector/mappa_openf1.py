@@ -46,7 +46,9 @@ from replay import _fmt  # noqa: E402
 
 log = logging.getLogger("mappa_openf1")
 
-CAMPI_TIMING = ("pos", "gap", "in_pit", "last_lap",
+# `giro_verde` (28/07/2026): il giro appena chiuso e' stato tutto verde?
+# Serve a pace_base in diretta per usare LO STESSO filtro del replay.
+CAMPI_TIMING = ("giro_verde", "pos", "gap", "in_pit", "last_lap",
                 "best_lap", "interval", "sectors", "micro",
                 # il muretto in live (22/07/2026): OpenF1 questi due li ha gia'
                 # NUMERICI e li stavamo buttando via formattandoli in stringa.

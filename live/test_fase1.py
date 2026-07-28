@@ -118,23 +118,46 @@ def test_stint_da_timingappdata():
 
 @caso("Fase C: pace_base live — semantica kernel (stint, verdi, soglia 3)")
 def test_pace_base_live():
+    """AGGIORNATO 28/07/2026 con l'allineamento al kernel.
+
+    Questo test codificava la semantica VECCHIA — bastava "non neutralizzato, no
+    in/out-lap" — che e' esattamente il difetto che l'audit ha chiuso. Un test che
+    protegge il comportamento sbagliato non e' una guardia, e' un lucchetto.
+    Ora chiede gli stessi campi del kernel e sorveglia anche i tre criteri nuovi.
+    """
     from pace_base_live import PaceBaseLive, fuel_corr
     N = 52
+    V = dict(status='1', compound='MEDIUM')      # un giro verde puro, su slick
     pb = PaceBaseLive(N)
     # 2 giri verdi -> ancora None (soglia 3)
-    pb.osserva("4", 3, 90.0, 1)
-    pb.osserva("4", 4, 90.5, 1)
+    pb.osserva("4", 3, 90.0, 1, **V)
+    pb.osserva("4", 4, 90.5, 1, **V)
     assert pb.pace("4") is None, pb.pace("4")
     # 3o giro verde -> mediana dei 3 fuel-corretti
-    pb.osserva("4", 5, 91.0, 1)
+    pb.osserva("4", 5, 91.0, 1, **V)
     atteso = sorted(fuel_corr(t, l, N) for t, l in [(90.0, 3), (90.5, 4), (91.0, 5)])[1]
     assert abs(pb.pace("4") - atteso) < 1e-9, (pb.pace("4"), atteso)
-    # giro neutralizzato: escluso dalla mediana (verde-only, come il kernel)
     prima = pb.pace("4")
-    pb.osserva("4", 6, 200.0, 1, neutralized=True)
+    # giro neutralizzato: escluso (come prima)
+    pb.osserva("4", 6, 200.0, 1, neutralized=True, **V)
     assert pb.pace("4") == prima, "il giro neutralizzato non deve entrare"
+    # --- i tre criteri che il kernel NON aveva, e che l'audit ha aggiunto ---
+    pb.osserva("4", 7, 200.0, 1, status='12', compound='MEDIUM')
+    assert pb.pace("4") == prima, "bandiera GIALLA ('2' nello status) non deve entrare"
+    pb.osserva("4", 8, 200.0, 1, deleted=True, **V)
+    assert pb.pace("4") == prima, "un giro CANCELLATO non deve entrare"
+    pb.osserva("4", 9, 200.0, 1, status='1', compound='INTERMEDIATE')
+    assert pb.pace("4") == prima, "un giro su gomma da BAGNATO non deve entrare"
+    pb.osserva("4", 10, 200.0, 1, status='1', compound=None)
+    assert pb.pace("4") == prima, "mescola IGNOTA non deve entrare: non si indovina"
+    # la diretta non ha lo status per-auto-per-giro: porta il verdetto gia' fatto
+    pb.osserva("4", 11, 90.2, 1, compound='MEDIUM', giro_verde=True)
+    assert pb.pace("4") != prima, "giro_verde=True deve far entrare il giro (via diretta)"
+    dopo = pb.pace("4")
+    pb.osserva("4", 12, 200.0, 1, compound='MEDIUM', giro_verde=False)
+    assert pb.pace("4") == dopo, "giro_verde=False deve escludere"
     # nuovo stint -> segmento azzerato -> di nuovo None finche' <3
-    pb.osserva("4", 7, 89.0, 2)
+    pb.osserva("4", 13, 89.0, 2, **V)
     assert pb.pace("4") is None, "nuovo stint deve azzerare il segmento"
 
 

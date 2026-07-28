@@ -42,7 +42,9 @@ from inspect_recording import parse_timestamp  # noqa: E402
 
 log = logging.getLogger("replay")
 
-CAMPI_TIMING = ("pos", "gap", "in_pit", "last_lap",
+# `giro_verde` (28/07/2026): il giro appena chiuso e' stato tutto verde?
+# Serve a pace_base in diretta per usare LO STESSO filtro del replay.
+CAMPI_TIMING = ("giro_verde", "pos", "gap", "in_pit", "last_lap",
                 "best_lap", "interval", "sectors", "micro",
                 "compound", "tyre_age",   # Fase C: stint gomma (SignalR)
                 # il muretto in live: giro per-pilota e gap in SECONDI (22/07/2026).

@@ -337,6 +337,37 @@ class StatoSessione:
         self.driver_list = {}     # numero auto -> anagrafica
         self.track_status = None  # es. 'AllClear'
         self.session_status = None  # es. 'Started'
+        # --- IL GIRO E' STATO TUTTO VERDE? (28/07/2026, allineamento col kernel) ---
+        # L'archivio ha uno `status` PER-AUTO-PER-GIRO: la concatenazione degli stati
+        # attraversati in quel giro (data/STATUS_VOCABOLARIO_NOTA.md). Il feed live no:
+        # manda TrackStatus di SESSIONE, a istanti. La concatenazione va ricostruita, ed
+        # e' l'unico modo perche' pace_base in diretta usi lo stesso filtro del replay.
+        # Meccanismo: un contatore che avanza ogni volta che la pista SMETTE di essere
+        # AllClear. Un giro e' verde se il contatore non e' avanzato mentre lo si
+        # percorreva, e se alla chiusura la pista e' ancora AllClear.
+        # QUANTO VALE, MISURATO (gara di Ungheria 26/07, 827 giri confrontati con lo
+        # status per-auto dell'archivio). NON e' un'approssimazione conservativa — lo
+        # avevo scritto e la misura lo ha smentito:
+        #     accordo con l'archivio      84,8%
+        #     FALSI VERDI (live dice verde, archivio no)   65   <- il verso pericoloso
+        #     scartati in piu                              61   <- il verso prudente
+        # e sul PASSO, che e' cio' che conta: il 34% delle celle resta oltre 0,10 s
+        # dall'archivio, con punte di 2,4 s.
+        #
+        # PERCHE': TrackStatus e' della PISTA, lo status dell'archivio e' dell'AUTO. Una
+        # gialla di settore locale non produce nessun TrackStatus track-wide, quindi qui
+        # non si vede; e chi ha gia' passato il punto dell'incidente corre verde mentre
+        # la pista e' gialla.
+        #
+        # CONCLUSIONE, dichiarata: questo campo e' STRETTAMENTE MEGLIO del filtro
+        # precedente (che guardava solo `neutralized`) e prende SC, VSC e bandiere rosse,
+        # cioe' i regimi grossi. Ma NON basta a dichiarare la diretta allineata al replay.
+        # Chiuderlo davvero richiede le bandiere di SETTORE per-auto: e' un'indagine a
+        # se', non una riga di codice. Vedi ai_lab/simulatore/REPORT_LIVE_ALLINEAMENTO.md.
+        self._eventi_non_verdi = 0   # quante volte la pista ha smesso di essere AllClear
+        self._marker_giro = {}       # auto -> contatore all'inizio del giro in corso
+        self._giri_visti = {}        # auto -> ultimo NumberOfLaps visto
+        self._verde_ultimo_giro = {}  # auto -> il giro appena chiuso era tutto verde?
         self.weather = {}
         self.race_control = []    # lista messaggi race control
         self.session_info = {}
@@ -352,6 +383,7 @@ class StatoSessione:
             for auto, delta in payload.get("Lines", {}).items():
                 stato = self.piloti.setdefault(str(auto), {})
                 merge_delta(stato, delta if isinstance(delta, dict) else {})
+                self._chiudi_giro(str(auto), stato)
             return True
         if topic == "TimingAppData":
             # stint gomma (Stints[].Compound / .TotalLaps): fusi nello stesso
@@ -369,7 +401,13 @@ class StatoSessione:
                                 delta)
             return True
         if topic == "TrackStatus":
-            self.track_status = payload.get("Message") or payload.get("Status")
+            nuovo = payload.get("Message") or payload.get("Status")
+            # valori osservati sulla registrazione di Spa: AllClear, Yellow,
+            # SCDeployed, VSCDeployed, VSCEnding. Tutto cio' che non e' AllClear
+            # sporca il giro in corso di TUTTI.
+            if nuovo is not None and str(nuovo) != 'AllClear':
+                self._eventi_non_verdi += 1
+            self.track_status = nuovo
             return True
         if topic == "SessionStatus":
             self.session_status = payload.get("Status")
@@ -415,6 +453,9 @@ class StatoSessione:
             "micro": _vista_micro(sectors),
             "compound": compound,     # Fase C: stint gomma dal SignalR
             "tyre_age": tyre_age,
+            # il giro appena CHIUSO e' stato tutto verde? None = non lo sappiamo
+            # (prima osservazione dell'auto). None non e' verde: vedi _chiudi_giro.
+            "giro_verde": self._verde_ultimo_giro.get(str(auto)),
             # --- I TRE CAMPI CHE APRONO IL MURETTO IN LIVE (22/07/2026) -----------
             # Fin qui la torre mostrava il gap come STRINGA, e il giro non usciva
             # affatto: numero_giri() esisteva ma nessuno lo chiamava. Con solo quelli
@@ -440,3 +481,26 @@ class StatoSessione:
 
     def numero_giri(self, auto):
         return self.piloti.get(str(auto), {}).get("NumberOfLaps")
+
+    def _chiudi_giro(self, auto, stato):
+        """NumberOfLaps e' avanzato -> il giro precedente si e' appena chiuso: era verde?
+
+        Alla PRIMA osservazione di un'auto non si sa niente del giro appena chiuso
+        (potremmo esserci collegati a meta'): resta None, e None non e' verde.
+        """
+        n = stato.get("NumberOfLaps")
+        try:
+            n = int(n) if n not in (None, "") else None
+        except (TypeError, ValueError):
+            n = None
+        if n is None or n == self._giri_visti.get(auto):
+            return
+        primo = auto not in self._giri_visti
+        self._giri_visti[auto] = n
+        if primo:
+            self._verde_ultimo_giro[auto] = None
+        else:
+            self._verde_ultimo_giro[auto] = (
+                self._eventi_non_verdi == self._marker_giro.get(auto)
+                and str(self.track_status or 'AllClear') == 'AllClear')
+        self._marker_giro[auto] = self._eventi_non_verdi
