@@ -46,8 +46,17 @@ for (const x of byDiff.slice(0, 5))
 // zero. Cioe' il golden piu' citato del progetto non ha mai fermato niente — era un
 // ornamento, e l'unico cancello vero era demo/test_pit.mjs. Un test che non ferma non e'
 // una guardia: e' una rassicurazione.
-const ok = rows.length === 449 && maxDiff < 1e-9;
+// IL 449 CABLATO ERA UN SECONDO GOLDEN NON DICHIARATO (corretto 28/07/2026).
+// Questo test esiste per una cosa sola: verificare che il motore JS riproduca il Python.
+// Ma la condizione conteneva anche `rows.length === 449`, cioe' congelava di nascosto QUANTI
+// casi il Python riesce a valutare — una grandezza che dipende dai dati, non dall'allineamento.
+// Quando il filtro verde di pace_base e' stato corretto (audit del kernel, 28/07), tre piloti
+// hanno smesso di avere un passo e i casi valutabili sono passati da 449 a 443: l'allineamento
+// era PERFETTO (max |JS - Python| = 0.00e+0) e il test falliva lo stesso, per il conteggio.
+// Ora l'attesa si legge dal riferimento: "JS riproduce OGNI caso che il Python ha prodotto".
+// Il numero non e' piu' scritto in nessun posto, quindi non puo' piu' scadere.
+const ok = rows.length === ref.length && maxDiff < 1e-9;
 console.log("\n=> " + (ok
-  ? "PASS: motore JS allineato al Python col-traffico (449/449, sotto 1e-9)"
+  ? `PASS: motore JS allineato al Python col-traffico (${rows.length}/${ref.length}, sotto 1e-9)`
   : "FAIL: allineamento rotto, NON procedere alla timeline"));
 if (!ok) process.exit(1);

@@ -37,6 +37,20 @@ export function simulate({ state, pace, track = 1.0, steps = 5, freezeLap = 0, p
   const cum = {};
   for (const d of drivers) cum[d] = state[d].cum_time;
 
+  // CHI NON HA UN PASSO NON HA UN FUTURO, E VA DETTO (corretto 28/07/2026).
+  // Prima: un pilota senza `pace` non veniva mai fatto avanzare, ma restava nel risultato
+  // col cum del giro di CONGELAMENTO — un numero che sembra valido e non lo e'. I chiamanti
+  // di produzione si salvavano filtrando a monte (evaluatePit e traiettoriaPit fanno
+  // `pace[d]!=null`), ma il kernel restituiva comunque una bugia a chi non filtrava.
+  // Trovato quando il filtro verde di pace_base e' stato corretto: tre piloti hanno perso il
+  // passo e test_b.mjs e' esploso con errori di 480 s, cioe' cinque giri di gara fermi.
+  // Ora l'assenza e' ESPLICITA: null. I chiamanti che gia' controllano `== null` non
+  // cambiano comportamento; chi non controllava smette di ricevere un numero inventato.
+  for (const d of drivers) {
+    const p = pace[d];
+    if (p === undefined || p === null) cum[d] = null;
+  }
+
   for (let s = 0; s < steps; s++) {
     const curLap = freezeLap + s;
     const pending = {};

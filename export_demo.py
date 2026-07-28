@@ -19,6 +19,11 @@ def export_gara(gara, raw=None):
                 "lap": c.lap, "stint": c.stint, "compound": c.compound,
                 "tyre_age": c.tyre_age, "in_lap": c.in_lap, "out_lap": c.out_lap,
                 "neutralized": c.neutralized,
+                # AGGIUNTI 28/07/2026. Senza `status` grezzo e `deleted` nessun consumatore a
+                # valle (demo/, live/, laboratorio) puo' rifare un filtro verde corretto: il
+                # solo booleano `neutralized` non distingue una gialla da un giro pulito, e
+                # non dice niente sui giri cancellati. Additivi: chi non li legge non cambia.
+                "status": c.status, "deleted": c.deleted,
             }
         laps.append({"lap": states.index(s) + 1, "cars": cars})
     # tabella pace[L][drv]: passo-base congelato calcolato dalla verita Python
