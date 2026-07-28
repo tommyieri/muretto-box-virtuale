@@ -151,7 +151,13 @@ def pubblica_e_deploy(prodotti, deploy=False, etichetta="FP"):
         if pubbl and not deploy:
             print("   (committa/metti online con --deploy)")
         return pubbl
-    _git(["add", "-A"])
+    # add MIRATO, mai "-A": il cron gira nel checkout ~/muretto, che ha untracked
+    # NON del sito (cache FastF1 6,6 MB in data/fastf1_cache/, log, note di lavoro,
+    # lo stato locale del cron). Un "git add -A" li spingerebbe tutti su origin al
+    # primo deploy. La redazione produce SOLO dentro demo/ (articoli, pagine
+    # pre-renderizzate, og, sitemap/feed/robots/404, cruscotto) e ai_lab/redazione/
+    # bozze/: si committa esattamente quello.
+    _git(["add", "demo", "ai_lab/redazione/bozze"])
     if _git(["diff", "--cached", "--quiet"]).returncode == 0:
         print("   niente da committare."); return pubbl
     msg = (f"Redazione {etichetta}: pubblicati {len(pubbl)} articoli\n\n"
