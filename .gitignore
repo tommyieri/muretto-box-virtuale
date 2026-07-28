@@ -29,3 +29,13 @@ data/auto_gara.log
 data/auto_gara.launchd.log
 data/.auto_gara.lock
 data/live_raw/
+# cache FastF1 sul Mac (sibling di data/ff1_cache/ gia' ignorato sopra): 6,6 MB di
+# .ff1pkl + .sqlite, materia rigenerabile, mai contenuto del repo. `*.pkl` non basta:
+# l'estensione qui e' `.ff1pkl`.
+data/fastf1_cache/
+*.ff1pkl
+# log e stato LOCALI del cron articoli (per-macchina, non vanno su origin)
+data/auto_tele.log
+data/.auto_articoli.log
+data/.auto_articoli_stato.json
+data/.auto_articoli.lockdir/
