@@ -1,0 +1,507 @@
+{
+ "targhetta": {
+  "prereg": "ai_lab/simulatore/PREREG_fase1.md",
+  "fonte": "grezzo via lab/fondo.py",
+  "seed": 20260728,
+  "aria_libera_s": 2.0,
+  "life_min": 3,
+  "outlier_k": 1.07,
+  "boot": 2000,
+  "perm": 2000,
+  "gare_storiche": 132,
+  "gare_2026": 9,
+  "giri_usati_storico": 70546,
+  "giri_usati_2026": 4911,
+  "alias": {
+   "Barcelona Grand Prix": "Spanish Grand Prix"
+  },
+  "escluse_2026": [
+   "Monaco Grand Prix"
+  ],
+  "era_prior": [
+   "2022",
+   "2023",
+   "2024",
+   "2025"
+  ],
+  "emendamento": "prior ristretto all era a effetto suolo: T2 con la finestra pre-registrata 2018-2025 NON passa"
+ },
+ "definizione": "Delta = scivolamento totale del tempo sul giro dal giro 1 al giro N; POSITIVO = i giri accelerano. Somma di carburante, evoluzione pista e gestione: LIMITE SUPERIORE sul carburante.",
+ "delta_per_gara_storico": {
+  "2018|Austrian Grand Prix": 3.6018669956825864,
+  "2018|Bahrain Grand Prix": 3.1992092341998983,
+  "2018|Brazilian Grand Prix": 3.4395372301896145,
+  "2018|British Grand Prix": 3.320796072778863,
+  "2018|Hungarian Grand Prix": 3.2197368843480856,
+  "2018|Japanese Grand Prix": 2.9587157943190676,
+  "2018|Spanish Grand Prix": 2.1266681261361318,
+  "2018|United States Grand Prix": 4.031702125660911,
+  "2019|Abu Dhabi Grand Prix": 2.733133510525357,
+  "2019|Australian Grand Prix": 3.301898341058609,
+  "2019|Austrian Grand Prix": 2.078568881865329,
+  "2019|Azerbaijan Grand Prix": 4.261360521886193,
+  "2019|Bahrain Grand Prix": 2.675921525796486,
+  "2019|Belgian Grand Prix": 3.024380805778807,
+  "2019|Brazilian Grand Prix": 2.6100202837409126,
+  "2019|British Grand Prix": 2.7717860304513757,
+  "2019|Canadian Grand Prix": 2.424889520386888,
+  "2019|Chinese Grand Prix": 3.2278118757637864,
+  "2019|French Grand Prix": 3.0841817088079795,
+  "2019|Hungarian Grand Prix": 3.372829785586808,
+  "2019|Italian Grand Prix": 2.7941185423748967,
+  "2019|Japanese Grand Prix": 3.425189382266299,
+  "2020|70th Anniversary Grand Prix": 2.468867194100048,
+  "2020|Abu Dhabi Grand Prix": 2.8390608039558,
+  "2020|Austrian Grand Prix": 1.5158003082035334,
+  "2020|Bahrain Grand Prix": 3.38864192222833,
+  "2020|Belgian Grand Prix": 4.458339801950231,
+  "2020|British Grand Prix": 4.07002323806685,
+  "2020|Eifel Grand Prix": 4.2210015921832,
+  "2020|Emilia Romagna Grand Prix": 3.5969273290424386,
+  "2020|Italian Grand Prix": 2.9192947002908816,
+  "2020|Portuguese Grand Prix": 3.1903194354296724,
+  "2020|Russian Grand Prix": 3.361419631527467,
+  "2020|Sakhir Grand Prix": 2.4846030461169244,
+  "2020|Spanish Grand Prix": 3.6430794551908976,
+  "2020|Styrian Grand Prix": 1.9631827670897153,
+  "2020|Tuscan Grand Prix": 4.983175619959976,
+  "2021|Abu Dhabi Grand Prix": 2.484348514571625,
+  "2021|Austrian Grand Prix": 2.3177987046739617,
+  "2021|Azerbaijan Grand Prix": 2.4279992983234444,
+  "2021|Bahrain Grand Prix": 3.651849388141284,
+  "2021|Dutch Grand Prix": 3.4339150006008112,
+  "2021|French Grand Prix": 3.4110223083933424,
+  "2021|Italian Grand Prix": 2.792470113162612,
+  "2021|Mexico City Grand Prix": 3.1494919523012994,
+  "2021|Monaco Grand Prix": 1.730485316103208,
+  "2021|Portuguese Grand Prix": 1.7590727732808773,
+  "2021|Qatar Grand Prix": 4.0661690079959705,
+  "2021|Spanish Grand Prix": 2.830647180969449,
+  "2021|Styrian Grand Prix": 2.4213103542683374,
+  "2021|São Paulo Grand Prix": 2.6797328873069923,
+  "2021|United States Grand Prix": 3.270313907567865,
+  "2022|Abu Dhabi Grand Prix": 2.553321312189758,
+  "2022|Australian Grand Prix": 2.387797195872349,
+  "2022|Austrian Grand Prix": 2.1247713245786586,
+  "2022|Azerbaijan Grand Prix": 3.3957555505178214,
+  "2022|Bahrain Grand Prix": 4.362087137101778,
+  "2022|Belgian Grand Prix": 3.443775418592616,
+  "2022|British Grand Prix": 2.8588387500929877,
+  "2022|Canadian Grand Prix": 2.3252789722717466,
+  "2022|Dutch Grand Prix": 2.892265804122967,
+  "2022|French Grand Prix": 3.8700591547201966,
+  "2022|Hungarian Grand Prix": 2.008086311743851,
+  "2022|Italian Grand Prix": 2.372699548802119,
+  "2022|Mexico City Grand Prix": 1.9581633929256677,
+  "2022|Miami Grand Prix": 2.9561023444733987,
+  "2022|Saudi Arabian Grand Prix": 4.216934312111842,
+  "2022|Spanish Grand Prix": 2.9304033723817806,
+  "2022|São Paulo Grand Prix": 3.072613632235491,
+  "2022|United States Grand Prix": 3.398620724967667,
+  "2023|Abu Dhabi Grand Prix": 3.297921572331904,
+  "2023|Australian Grand Prix": 3.2524473503851032,
+  "2023|Austrian Grand Prix": 2.1496166139167765,
+  "2023|Azerbaijan Grand Prix": 4.0055864421428184,
+  "2023|Bahrain Grand Prix": 3.789955161072922,
+  "2023|Belgian Grand Prix": 3.1278375219941013,
+  "2023|British Grand Prix": 2.58050368600238,
+  "2023|Canadian Grand Prix": 2.442764164784908,
+  "2023|Hungarian Grand Prix": 3.071831590285383,
+  "2023|Italian Grand Prix": 1.8101902307967594,
+  "2023|Japanese Grand Prix": 3.25464667421973,
+  "2023|Las Vegas Grand Prix": 4.1731766598742945,
+  "2023|Mexico City Grand Prix": 2.8751709873994664,
+  "2023|Miami Grand Prix": 2.612928885735644,
+  "2023|Qatar Grand Prix": 3.946734827231306,
+  "2023|Saudi Arabian Grand Prix": 3.163517892416218,
+  "2023|Singapore Grand Prix": 3.1060792330917972,
+  "2023|Spanish Grand Prix": 3.3213311400386383,
+  "2023|São Paulo Grand Prix": 2.925956735452058,
+  "2023|United States Grand Prix": 3.4340573989421106,
+  "2024|Abu Dhabi Grand Prix": 3.22444559211205,
+  "2024|Australian Grand Prix": 2.7707159928000404,
+  "2024|Austrian Grand Prix": 1.8114113397714036,
+  "2024|Azerbaijan Grand Prix": 3.6637876975918116,
+  "2024|Bahrain Grand Prix": 3.7454659757234534,
+  "2024|Belgian Grand Prix": 4.105062517058863,
+  "2024|Chinese Grand Prix": 4.407919555823009,
+  "2024|Dutch Grand Prix": 2.709800009431651,
+  "2024|Emilia Romagna Grand Prix": 2.111321857471166,
+  "2024|Hungarian Grand Prix": 2.828434150534069,
+  "2024|Italian Grand Prix": 3.1803760871004845,
+  "2024|Japanese Grand Prix": 4.765164780539116,
+  "2024|Las Vegas Grand Prix": 4.003138206876657,
+  "2024|Mexico City Grand Prix": 2.805002099533985,
+  "2024|Miami Grand Prix": 3.419551799380639,
+  "2024|Monaco Grand Prix": 8.610414234756888,
+  "2024|Qatar Grand Prix": 3.699743727998694,
+  "2024|Saudi Arabian Grand Prix": 5.338195318127669,
+  "2024|Singapore Grand Prix": 2.578070806113621,
+  "2024|Spanish Grand Prix": 3.4973390925424113,
+  "2024|United States Grand Prix": 3.575873105302853,
+  "2025|Abu Dhabi Grand Prix": 3.0913865904151674,
+  "2025|Austrian Grand Prix": 2.0607809849318732,
+  "2025|Azerbaijan Grand Prix": 2.965960193033933,
+  "2025|Bahrain Grand Prix": 4.389761901573547,
+  "2025|Canadian Grand Prix": 2.723922000256663,
+  "2025|Chinese Grand Prix": 4.014019415272998,
+  "2025|Dutch Grand Prix": 3.8059262461937737,
+  "2025|Emilia Romagna Grand Prix": 3.564220303771717,
+  "2025|Hungarian Grand Prix": 2.595088543199676,
+  "2025|Italian Grand Prix": 2.8777903896300794,
+  "2025|Japanese Grand Prix": 3.7286684634684506,
+  "2025|Las Vegas Grand Prix": 3.590832859789717,
+  "2025|Mexico City Grand Prix": 2.981654691359461,
+  "2025|Miami Grand Prix": 5.201443184976713,
+  "2025|Monaco Grand Prix": 2.237957713385384,
+  "2025|Qatar Grand Prix": 3.1163202283017726,
+  "2025|Saudi Arabian Grand Prix": 2.5239868860021204,
+  "2025|Singapore Grand Prix": 2.772007822489134,
+  "2025|Spanish Grand Prix": 3.6748912408699073,
+  "2025|São Paulo Grand Prix": 2.267913631366041,
+  "2025|United States Grand Prix": 2.709549150363989
+ },
+ "delta_per_gara_2026": {
+  "Australian Grand Prix": 1.6816366212206821,
+  "Austrian Grand Prix": 2.355455579713624,
+  "Barcelona Grand Prix": 3.902692465741128,
+  "Belgian Grand Prix": 1.9968391047575111,
+  "British Grand Prix": 3.170091432416614,
+  "Chinese Grand Prix": 3.4234862724887796,
+  "Hungarian Grand Prix": 3.5179007777141327,
+  "Japanese Grand Prix": 4.391775846626926,
+  "Miami Grand Prix": 0.6057187237191592
+ },
+ "mediane": {
+  "storico": 3.111199730696785,
+  "2026": 3.170091432416614,
+  "storico_senza_filtro_aria": 3.2431393264567685,
+  "2026_senza_filtro_aria": 3.2867155197968616
+ },
+ "ic95": {
+  "storico": [
+   2.925956735452058,
+   3.2535745038503494
+  ],
+  "2026": [
+   1.6816366212206821,
+   3.902692465741128
+  ]
+ },
+ "varianza": {
+  "sd_fra_circuiti": 0.7309493098753352,
+  "sd_dentro_circuito": 0.8355943298064638,
+  "k_shrinkage": 2.167233871697158,
+  "n_circuiti_ripetuti": 24
+ },
+ "phi_per_circuito_2026": {
+  "Australian Grand Prix": {
+   "delta_2026": 1.6816366212206821,
+   "prior_storico": 2.803653513019164,
+   "n_storico": 3,
+   "w_2026": 0.3157329204313388,
+   "phi": 2.449395842998336,
+   "fonte": "storico x3"
+  },
+  "Austrian Grand Prix": {
+   "delta_2026": 2.355455579713624,
+   "prior_storico": 2.0366450657996777,
+   "n_storico": 4,
+   "w_2026": 0.3157329204313388,
+   "phi": 2.137304040421944,
+   "fonte": "storico x4"
+  },
+  "Barcelona Grand Prix": {
+   "delta_2026": 3.902692465741128,
+   "prior_storico": 3.3559912114581847,
+   "n_storico": 4,
+   "w_2026": 0.3157329204313388,
+   "phi": 3.5286027950764143,
+   "fonte": "storico x4 (alias)"
+  },
+  "Belgian Grand Prix": {
+   "delta_2026": 1.9968391047575111,
+   "prior_storico": 3.558891819215193,
+   "n_storico": 3,
+   "w_2026": 0.3157329204313388,
+   "phi": 3.065700353811769,
+   "fonte": "storico x3"
+  },
+  "British Grand Prix": {
+   "delta_2026": 3.170091432416614,
+   "prior_storico": 2.719671218047684,
+   "n_storico": 2,
+   "w_2026": 0.3157329204313388,
+   "phi": 2.861883707751696,
+   "fonte": "storico x2"
+  },
+  "Chinese Grand Prix": {
+   "delta_2026": 3.4234862724887796,
+   "prior_storico": 4.210969485548004,
+   "n_storico": 2,
+   "w_2026": 0.3157329204313388,
+   "phi": 3.9623351108981613,
+   "fonte": "storico x2"
+  },
+  "Hungarian Grand Prix": {
+   "delta_2026": 3.5179007777141327,
+   "prior_storico": 2.625860148940745,
+   "n_storico": 4,
+   "w_2026": 0.3157329204313388,
+   "phi": 2.9075067418067744,
+   "fonte": "storico x4"
+  },
+  "Japanese Grand Prix": {
+   "delta_2026": 4.391775846626926,
+   "prior_storico": 3.9161599727424323,
+   "n_storico": 3,
+   "w_2026": 0.3157329204313388,
+   "phi": 4.066327561607487,
+   "fonte": "storico x3"
+  },
+  "Miami Grand Prix": {
+   "delta_2026": 0.6057187237191592,
+   "prior_storico": 3.5475065536415986,
+   "n_storico": 4,
+   "w_2026": 0.3157329204313388,
+   "phi": 2.618687290810816,
+   "fonte": "storico x4"
+  }
+ },
+ "soglie": {
+  "T1": false,
+  "T2_emendato": false,
+  "T2_preregistrato": false,
+  "T4": false
+ },
+ "filtri_contati": {
+  "grezzi": 177953,
+  "non_verde_puro": 25809,
+  "non_slick": 9360,
+  "in_out_lap": 7448,
+  "senza_tempo_o_cancellato": 1606,
+  "usati": 75457,
+  "warm_up_life_sotto_3": 4243,
+  "traffico_sotto_2s": 50470,
+  "outlier_1_07": 144,
+  "rango_mescola_MEDIUM": 77,
+  "giro_1": 1406,
+  "rango_mescola_HARD": 205,
+  "pioggia_wR": 1092,
+  "rango_mescola_SOFT": 543,
+  "senza_life": 93
+ },
+ "gare_cadute": [
+  [
+   "2018",
+   "Abu Dhabi Grand Prix",
+   "nessun giro utile"
+  ],
+  [
+   "2018",
+   "Australian Grand Prix",
+   "rango / troppo pochi giri"
+  ],
+  [
+   "2018",
+   "Azerbaijan Grand Prix",
+   "rango / troppo pochi giri"
+  ],
+  [
+   "2018",
+   "Belgian Grand Prix",
+   "rango / troppo pochi giri"
+  ],
+  [
+   "2018",
+   "Canadian Grand Prix",
+   "nessun giro utile"
+  ],
+  [
+   "2018",
+   "Chinese Grand Prix",
+   "SE 1.51 > 1.0"
+  ],
+  [
+   "2018",
+   "French Grand Prix",
+   "rango / troppo pochi giri"
+  ],
+  [
+   "2018",
+   "German Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2018",
+   "Italian Grand Prix",
+   "rango / troppo pochi giri"
+  ],
+  [
+   "2018",
+   "Mexican Grand Prix",
+   "nessun giro utile"
+  ],
+  [
+   "2018",
+   "Monaco Grand Prix",
+   "nessun giro utile"
+  ],
+  [
+   "2018",
+   "Russian Grand Prix",
+   "rango / troppo pochi giri"
+  ],
+  [
+   "2018",
+   "Singapore Grand Prix",
+   "rango / troppo pochi giri"
+  ],
+  [
+   "2019",
+   "German Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2019",
+   "Mexican Grand Prix",
+   "nessun giro utile"
+  ],
+  [
+   "2019",
+   "Monaco Grand Prix",
+   "nessun giro utile"
+  ],
+  [
+   "2019",
+   "Russian Grand Prix",
+   "nessun giro utile"
+  ],
+  [
+   "2019",
+   "Singapore Grand Prix",
+   "nessun giro utile"
+  ],
+  [
+   "2019",
+   "Spanish Grand Prix",
+   "nessun giro utile"
+  ],
+  [
+   "2019",
+   "United States Grand Prix",
+   "nessun giro utile"
+  ],
+  [
+   "2020",
+   "Hungarian Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2020",
+   "Turkish Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2021",
+   "Belgian Grand Prix",
+   "nessun giro utile"
+  ],
+  [
+   "2021",
+   "British Grand Prix",
+   "SE 1.39 > 1.0"
+  ],
+  [
+   "2021",
+   "Emilia Romagna Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2021",
+   "Hungarian Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2021",
+   "Russian Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2021",
+   "Saudi Arabian Grand Prix",
+   "SE 1.19 > 1.0"
+  ],
+  [
+   "2021",
+   "Turkish Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2022",
+   "Emilia Romagna Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2022",
+   "Japanese Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2022",
+   "Monaco Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2022",
+   "Singapore Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2023",
+   "Dutch Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2023",
+   "Monaco Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2024",
+   "British Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2024",
+   "Canadian Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2024",
+   "São Paulo Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2025",
+   "Australian Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2025",
+   "Belgian Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2025",
+   "British Grand Prix",
+   "bagnata"
+  ],
+  [
+   "2026",
+   "Canadian Grand Prix",
+   "bagnata"
+  ]
+ ],
+ "SE_max": 1.0
+}

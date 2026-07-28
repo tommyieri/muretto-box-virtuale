@@ -1,0 +1,310 @@
+{
+ "targhetta": {
+  "anno": "2026",
+  "gare_usate": [
+   "Australian Grand Prix",
+   "Austrian Grand Prix",
+   "Barcelona Grand Prix",
+   "Belgian Grand Prix",
+   "British Grand Prix",
+   "Canadian Grand Prix",
+   "Chinese Grand Prix",
+   "Hungarian Grand Prix",
+   "Japanese Grand Prix",
+   "Miami Grand Prix"
+  ],
+  "escluse": [
+   "Monaco Grand Prix"
+  ],
+  "n_giri": 8192,
+  "boot": 2000,
+  "perm": 2000,
+  "seed": 20260728,
+  "prereg": "ai_lab/simulatore/PREREG_fase0.md",
+  "fonte": "grezzo (ti_cache + ti_archive) via lab/fondo.py",
+  "nessun_derivato_letto": true
+ },
+ "pooled_per_mescola": {
+  "C_SOFT": -0.07210424914194856,
+  "rho_SOFT": 0.03351605934974831,
+  "C_MEDIUM": 0.1265213925250151,
+  "rho_MEDIUM": 0.03658181733356904,
+  "C_HARD": -0.05441714338306659,
+  "rho_HARD": 0.04097657115637185,
+  "Phi": -0.04476652704259775
+ },
+ "pooled_comune": {
+  "C_SOFT": -0.11411504012591708,
+  "C_MEDIUM": 0.12074974188999817,
+  "C_HARD": -0.006634701764081241,
+  "rho_comune": 0.03892170855500294,
+  "Phi": -0.044661831919250196
+ },
+ "ic95_blocchi_gara": {
+  "C_SOFT": [
+   -0.39870497220851153,
+   0.10521892873658056
+  ],
+  "rho_SOFT": [
+   0.010118372198656472,
+   0.09403108266345044
+  ],
+  "C_MEDIUM": [
+   -0.0004391589922701214,
+   0.27588394799134974
+  ],
+  "rho_MEDIUM": [
+   0.01800220626463924,
+   0.06616784832295786
+  ],
+  "C_HARD": [
+   -0.23724344745264372,
+   0.1972719541865595
+  ],
+  "rho_HARD": [
+   0.024861218887449618,
+   0.06788681313797684
+  ],
+  "Phi": [
+   -0.052567694760428524,
+   -0.038940892971470735
+  ],
+  "rho_SOFT_meno_HARD": [
+   -0.03371822381441919,
+   0.04884759682972637
+  ],
+  "rho_comune": [
+   0.021963034507978242,
+   0.06292754790123263
+  ]
+ },
+ "nullo_permutazione": {
+  "stat": "abs(rho_SOFT - rho_HARD)",
+  "osservato": -0.007460511806623542,
+  "p": 0.20889555222388806,
+  "n": 2000
+ },
+ "per_gara": {
+  "Australian Grand Prix": {
+   "C_SOFT": -0.45171077544471255,
+   "rho_SOFT": 0.05339130939850347,
+   "C_MEDIUM": 0.5739878006043088,
+   "rho_MEDIUM": -0.012674629720906312,
+   "C_HARD": -0.1222770251596006,
+   "rho_HARD": 0.03924086157945075,
+   "Phi": -0.04255272891364626
+  },
+  "Austrian Grand Prix": {
+   "C_SOFT": 0.0838405776164654,
+   "rho_SOFT": 0.06567039718735684,
+   "C_MEDIUM": -0.026998412747395492,
+   "rho_MEDIUM": 0.07662786726802195,
+   "C_HARD": -0.05684216486906982,
+   "rho_HARD": 0.06975400803856208,
+   "Phi": -0.03833030131082933
+  },
+  "Barcelona Grand Prix": {
+   "C_SOFT": -0.4472671910420219,
+   "rho_SOFT": 0.21329448304421345,
+   "C_MEDIUM": 0.08593484550417722,
+   "rho_MEDIUM": 0.17091613733063007,
+   "C_HARD": 0.3613323455378457,
+   "rho_HARD": 0.1299680568504611,
+   "Phi": -0.06080466773578474
+  },
+  "Belgian Grand Prix": {
+   "C_SOFT": -0.3317696587010098,
+   "rho_SOFT": 0.07777322420833559,
+   "C_MEDIUM": 0.015186065817042226,
+   "rho_MEDIUM": 0.0775773817237059,
+   "C_HARD": 0.3165835928839664,
+   "rho_HARD": 0.04848768671874341,
+   "Phi": -0.056897603597372
+  },
+  "British Grand Prix": {
+   "C_SOFT": -0.7013583938406268,
+   "rho_SOFT": 0.13938966917085718,
+   "C_MEDIUM": 0.3416183600262295,
+   "rho_MEDIUM": 0.05362459123742734,
+   "C_HARD": 0.35974003381439207,
+   "rho_HARD": 0.06685067949698477,
+   "Phi": -0.06686451193815314
+  },
+  "Canadian Grand Prix": {
+   "C_SOFT": 0.08920732217331567,
+   "rho_SOFT": -0.008861387776195634,
+   "C_MEDIUM": -0.07599490430620519,
+   "rho_MEDIUM": 0.00025912733450876986,
+   "C_HARD": -0.013212417867111323,
+   "rho_HARD": -0.004795542986981151,
+   "Phi": -0.031270899521003
+  },
+  "Chinese Grand Prix": {
+   "C_SOFT": 0.17711044213075505,
+   "rho_SOFT": 0.07125540574228305,
+   "C_MEDIUM": -0.2589751917162992,
+   "rho_MEDIUM": 0.11658661860885208,
+   "C_HARD": 0.08186474958554564,
+   "rho_HARD": 0.0360519453368689,
+   "Phi": -0.06782960910790499
+  },
+  "Hungarian Grand Prix": {
+   "C_SOFT": 0.10975016013359666,
+   "rho_SOFT": 0.05679178360438408,
+   "C_MEDIUM": -0.0884733264039415,
+   "rho_MEDIUM": 0.0688034381979106,
+   "C_HARD": -0.02127683372965346,
+   "rho_HARD": 0.07839189766865777,
+   "Phi": -0.05373245714717987
+  },
+  "Japanese Grand Prix": {
+   "C_MEDIUM": 0.01804233218122945,
+   "rho_MEDIUM": 0.05539739808269129,
+   "C_HARD": -0.018042332181229467,
+   "rho_HARD": 0.05218867752717075,
+   "Phi": -0.07219934263477096
+  },
+  "Miami Grand Prix": {
+   "C_SOFT": -0.35225599164119736,
+   "rho_SOFT": -0.012783141215479655,
+   "C_MEDIUM": 0.5329982407924869,
+   "rho_MEDIUM": 0.0113040516860796,
+   "C_HARD": -0.1807422491512924,
+   "rho_HARD": 0.009960313414301807,
+   "Phi": -0.0028043063069308452
+  }
+ },
+ "diagnostica": {
+  "Australian Grand Prix": {
+   "tolti_traffico": 80,
+   "tolti_stint_corti": 8,
+   "piloti_con_2_stint": 19
+  },
+  "Austrian Grand Prix": {
+   "tolti_traffico": 82,
+   "tolti_stint_corti": 2,
+   "piloti_con_2_stint": 20
+  },
+  "Barcelona Grand Prix": {
+   "tolti_traffico": 46,
+   "tolti_stint_corti": 12,
+   "piloti_con_2_stint": 21
+  },
+  "Belgian Grand Prix": {
+   "tolti_traffico": 51,
+   "tolti_stint_corti": 0,
+   "piloti_con_2_stint": 21
+  },
+  "British Grand Prix": {
+   "tolti_traffico": 55,
+   "tolti_stint_corti": 8,
+   "piloti_con_2_stint": 22
+  },
+  "Canadian Grand Prix": {
+   "tolti_traffico": 112,
+   "tolti_stint_corti": 2,
+   "piloti_con_2_stint": 19
+  },
+  "Chinese Grand Prix": {
+   "tolti_traffico": 73,
+   "tolti_stint_corti": 0,
+   "piloti_con_2_stint": 17
+  },
+  "Hungarian Grand Prix": {
+   "tolti_traffico": 108,
+   "tolti_stint_corti": 0,
+   "piloti_con_2_stint": 21
+  },
+  "Japanese Grand Prix": {
+   "tolti_traffico": 80,
+   "tolti_stint_corti": 6,
+   "piloti_con_2_stint": 22
+  },
+  "Miami Grand Prix": {
+   "tolti_traffico": 75,
+   "tolti_stint_corti": 17,
+   "piloti_con_2_stint": 19
+  }
+ },
+ "soglie": {
+  "S1": true,
+  "S2": false,
+  "S3": false,
+  "S3_gare_in_ordine": 2,
+  "S4": false
+ },
+ "validita_prereg_9": {
+  "giri_per_mescola_per_gara": {
+   "SOFT": [
+    0,
+    8,
+    12,
+    44,
+    52,
+    89,
+    91,
+    119,
+    278,
+    320
+   ],
+   "MEDIUM": [
+    126,
+    135,
+    203,
+    241,
+    276,
+    305,
+    389,
+    407,
+    422,
+    460
+   ],
+   "HARD": [
+    51,
+    330,
+    371,
+    438,
+    439,
+    449,
+    479,
+    524,
+    527,
+    607
+   ]
+  },
+  "piloti_2stint_per_gara": [
+   17,
+   19,
+   19,
+   19,
+   20,
+   21,
+   21,
+   21,
+   22,
+   22
+  ],
+  "tutti_ic_ambigui": false
+ },
+ "sensibilita_senza_taglio_traffico": {
+  "n": 8954,
+  "pooled_comune": {
+   "C_SOFT": -0.06882022204758301,
+   "C_MEDIUM": 0.08017274913871464,
+   "C_HARD": -0.011352527091131269,
+   "rho_comune": 0.03473343595770262,
+   "Phi": -0.04372089613752876
+  },
+  "pooled_per_mescola": {
+   "C_SOFT": 0.07703594241109017,
+   "rho_SOFT": 0.0166945270246219,
+   "C_MEDIUM": 0.07488097014813244,
+   "rho_MEDIUM": 0.02941107327319751,
+   "C_HARD": -0.1519169125592215,
+   "rho_HARD": 0.04048071602723334,
+   "Phi": -0.04402096241239327
+  }
+ },
+ "forma": "t(d,L) = alpha_d + C_c + rho_c*life + Phi*L",
+ "nota_Phi": "carburante ed evoluzione pista INSIEME: questi dati non li separano"
+}

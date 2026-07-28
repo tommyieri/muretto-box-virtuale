@@ -1,0 +1,173 @@
+{
+ "targhetta": {
+  "prereg": "ai_lab/simulatore/PREREG_fase1.md",
+  "phi_unico": 3.170091432416614,
+  "gare": [
+   "Australia",
+   "Cina",
+   "Giappone",
+   "Miami",
+   "Canada",
+   "Spagna",
+   "Austria",
+   "Gran Bretagna",
+   "Belgio",
+   "Ungheria"
+  ],
+  "escluse": [
+   "Monaco"
+  ],
+  "orizzonti": [
+   5,
+   10,
+   20
+  ],
+  "ZONE": 0
+ },
+ "T5": {
+  "passa": false,
+  "per_orizzonte": {
+   "5": {
+    "bias_oggi": -2.204863470200618,
+    "mae_oggi": 2.2068874022131073,
+    "bias_nuovo": -0.4598267619992129,
+    "mae_nuovo": 0.6834140679370391,
+    "n": 6979,
+    "bias_con_rho": -0.16931245144128063,
+    "mae_con_rho": 0.582261502063523
+   },
+   "10": {
+    "bias_oggi": -2.1635689800221383,
+    "mae_oggi": 2.1671756922948555,
+    "bias_nuovo": -0.5429428675203577,
+    "mae_nuovo": 0.7568146757020104,
+    "n": 11988,
+    "bias_con_rho": -0.17838940962668756,
+    "mae_con_rho": 0.6235696693205228
+   },
+   "20": {
+    "bias_oggi": -2.0507969031552378,
+    "mae_oggi": 2.0580258711960453,
+    "bias_nuovo": -0.6610450184897573,
+    "mae_nuovo": 0.8622356197938964,
+    "n": 17748,
+    "bias_con_rho": -0.17597403039211443,
+    "mae_con_rho": 0.6775418699496932
+   }
+  }
+ },
+ "T3": {
+  "passa": false,
+  "vinte": 4,
+  "su": 10,
+  "per_gara": [
+   {
+    "gara": "Australia",
+    "mae_unico": 0.8366288660264553,
+    "mae_circuito_oos": 0.7953755414634449,
+    "bias_oggi": -2.105855021143467,
+    "bias_nuovo": -0.6645226453839181
+   },
+   {
+    "gara": "Cina",
+    "mae_unico": 0.5143606991523803,
+    "mae_circuito_oos": 0.5958860475997934,
+    "bias_oggi": -1.7022113826055403,
+    "bias_nuovo": -0.2508717128559308
+   },
+   {
+    "gara": "Giappone",
+    "mae_unico": 0.47773195632494964,
+    "mae_circuito_oos": 0.5446779789149185,
+    "bias_oggi": -2.018401796945196,
+    "bias_nuovo": -0.2759457350404374
+   },
+   {
+    "gara": "Miami",
+    "mae_unico": 0.6310596399975978,
+    "mae_circuito_oos": 0.681841964428336,
+    "bias_oggi": -2.224848171121042,
+    "bias_nuovo": -0.5595064059804431
+   },
+   {
+    "gara": "Canada",
+    "mae_unico": 0.7386351778516171,
+    "mae_circuito_oos": 0.7386351778516171,
+    "bias_oggi": -1.561100740795071,
+    "bias_nuovo": 0.11004703313871615
+   },
+   {
+    "gara": "Spagna",
+    "mae_unico": 1.1748206379036692,
+    "mae_circuito_oos": 1.19557495690541,
+    "bias_oggi": -2.7565350592885376,
+    "bias_nuovo": -1.0970694395218956
+   },
+   {
+    "gara": "Austria",
+    "mae_unico": 0.8790379990157277,
+    "mae_circuito_oos": 0.7522373316265699,
+    "bias_oggi": -2.4677538782761532,
+    "bias_nuovo": -0.8345946367395803
+   },
+   {
+    "gara": "Gran Bretagna",
+    "mae_unico": 0.636339527675781,
+    "mae_circuito_oos": 0.5745415580267459,
+    "bias_oggi": -2.281030155776122,
+    "bias_nuovo": -0.5988013915795782
+   },
+   {
+    "gara": "Belgio",
+    "mae_unico": 0.7246771331666344,
+    "mae_circuito_oos": 0.7674592771160498,
+    "bias_oggi": -2.307682009569378,
+    "bias_nuovo": -0.5066495824481385
+   },
+   {
+    "gara": "Ungheria",
+    "mae_unico": 0.8018800406301496,
+    "mae_circuito_oos": 0.7506317218958274,
+    "bias_oggi": -2.3110368801492274,
+    "bias_nuovo": -0.7277506962886169
+   }
+  ]
+ },
+ "T6": {
+  "passa": true,
+  "n": 336,
+  "cambiate": 4,
+  "quota": 0.011904761904761904,
+  "casi": [
+   {
+    "gara": "Miami",
+    "drv": "NOR",
+    "P": 27,
+    "oggi": 2,
+    "nuovo": 3
+   },
+   {
+    "gara": "Miami",
+    "drv": "PIA",
+    "P": 28,
+    "oggi": 6,
+    "nuovo": 5
+   },
+   {
+    "gara": "Spagna",
+    "drv": "ANT",
+    "P": 14,
+    "oggi": 3,
+    "nuovo": 4
+   },
+   {
+    "gara": "Austria",
+    "drv": "VER",
+    "P": 18,
+    "oggi": 5,
+    "nuovo": 6
+   }
+  ]
+ },
+ "decisione": "non si pubblica il modello; si pubblica il report del perche"
+}
