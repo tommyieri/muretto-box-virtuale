@@ -12,6 +12,10 @@
 <meta name="description" content="Replay per-giro delle gare di Formula 1 2026 e un simulatore di pit stop: se pitto al giro L, dove rientro? Tutto da dati misurati.">
 <link rel="canonical" href="https://murettobox.com/">
 <link rel="stylesheet" href="stile.css?v=250725c">
+<link rel="stylesheet" href="hero.css?v=260728n">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- il dato della hero parte insieme al CSS, non dopo il modulo -->
+<link rel="preload" href="data/hero.json" as="fetch" type="application/json" crossorigin="anonymous">
 <style>
   .land-prova{ margin-top:.9rem; color:#8b93a5; font-size:.86rem; max-width:44rem; }
   .land-prova b{ color:#cfd6e2; }
@@ -34,25 +38,72 @@
 
 <div class="wrap-home">
 
-  <!-- ======================================================= HERO -->
-  <section class="land-hero">
-    <div class="eyebrow">Muretto Box Virtuale &middot; Stagione 2026</div>
-    <h1>La strategia di gara,<br>vista <em>dal muretto</em>.</h1>
-    <p class="land-sub">
-      Il <b>muretto box</b> &egrave; il tavolo a bordo pista dove il team decide la strategia.
-      Qui lo fai tu: prendi una gara vera di F1 2026, <b>fermi un pilota ai box</b> e guardi
-      dove rientrerebbe &mdash; sulla pista e in classifica, coi rivali al loro passo reale.
-      Niente numeri inventati: tutto da dati misurati.
-    </p>
-    <div class="cta-row">
-      <a class="btn btn-pri" href="gara.html?g=Belgio">&#9654; Prova il simulatore</a>
-      <a class="btn btn-ghost" href="stagione.html">Entra nella stagione 2026 &rarr;</a>
+  <!-- ======================================================= HERO
+       Demo interattiva, non decorazione: la scena e i due esiti vengono da
+       demo/data/hero.json, scritto da gen_hero.mjs chiamando lo STESSO motore
+       della pagina-gara (evaluatePit). Progetto e razionale: NOTA_HERO.md.
+       Titolo, promessa e CTA sono statici qui dentro: si leggono al primo frame
+       e restano leggibili anche se JS non parte. -->
+  <section class="hero" id="hero" aria-labelledby="hero-tit">
+    <div class="hero-grid">
+
+      <!-- ------------------------------------------------ la promessa e i comandi -->
+      <div class="hero-say">
+        <p class="hero-eyebrow">Spa-Francorchamps &middot; giro 20 di 44 <i>&middot; dati misurati</i></p>
+
+        <h1 class="hero-tit" id="hero-tit">Decidi tu<br><em>quando fermarsi.</em></h1>
+
+        <p class="hero-sub">
+          Il <b>muretto box</b> decide la strategia. Qui lo fai tu: fermi il leader ai box e
+          il motore dice <b>dove rientri</b>, coi rivali al loro passo reale.
+        </p>
+
+        <!-- M7 · CHOICE — le due strade, riempite dal motore -->
+        <div class="hero-choices" role="group" aria-label="Quando fermarsi ai box" aria-busy="true"></div>
+
+        <!-- M8 · COMPOUND — il gesto del muretto, con la sua nota onesta -->
+        <div class="hero-mesc">
+          <div class="hero-mesc-h">Che gomma monti</div>
+          <div class="hero-mesc-r"></div>
+          <p class="hero-mesc-n">La mescola <b>non cambia</b> la risposta, ed &egrave; misurato:
+            sulle gare 2026 non si distingue dal caso. Quello che la cambia &egrave; <b>il momento</b>.</p>
+        </div>
+
+        <!-- M10 · OUTCOME — lo spazio è riservato dal CSS: il verdetto non sposta nulla -->
+        <div class="hero-verdetto" aria-live="polite">
+          <span class="hero-verdetto-flash" aria-hidden="true"></span>
+          <div class="hero-verdetto-corpo">
+            <p class="hero-verdetto-attesa">Scegli quando fermarti: il motore dice dove rientri,
+              coi rivali al loro passo reale.</p>
+          </div>
+        </div>
+
+        <div class="hero-cta">
+          <a class="btn btn-pri" href="gara.html?g=Belgio">&#9654; Prova sulla gara vera</a>
+          <a class="btn btn-ghost" href="#cose">Come funziona &darr;</a>
+        </div>
+
+      </div>
+
+      <!-- ------------------------------------------------------------- il palco -->
+      <div class="hero-scena">
+      <div class="hero-stage">
+        <div class="hero-hud"></div>
+        <div class="hero-pista"></div>
+        <ol class="hero-tower" aria-label="Classifica simulata"></ol>
+        <div class="hero-prompt" aria-hidden="true"></div>
+        <div class="hero-pit" aria-hidden="true"></div>
+        <button type="button" class="hero-rivedi">Rivedi</button>
+        <p class="hero-firma"><span>Sei tu,</span> <span><em>al muretto.</em></span></p>
+      </div>
+      <p class="hero-fonte">Pit-loss e passo dei rivali misurati sulla gara. Pista dal giro GPS reale.</p>
+      </div>
+
     </div>
-    <div class="land-prova">Scegli un pilota, premi <b>BOX</b>, poi <b>&ldquo;Guarda la sosta&rdquo;</b>: il suo pallino entra ai box e segue la tua strategia.</div>
   </section>
 
   <!-- ======================================================= COS'È -->
-  <div class="sez-tit">Cos'&egrave;</div>
+  <div class="sez-tit" id="cose">Cos'&egrave;</div>
   <section class="panel land-cose">
     <p>
       Il <b>Muretto Box Virtuale</b> &egrave; una piattaforma di analisi e strategia di gara.
@@ -169,5 +220,13 @@
     </nav>
   </div>
 </footer>
+
+<!-- La hero si avvia da sola. GSAP viene caricato DA hero.mjs, e solo quando la
+     hero e' davvero in viewport e il movimento e' consentito: chi ha
+     prefers-reduced-motion non scarica un byte di libreria. -->
+<script type="module">
+  import { creaHero } from './hero.mjs?v=260728n';
+  creaHero(document.getElementById('hero'));
+</script>
 </body>
 </html>
