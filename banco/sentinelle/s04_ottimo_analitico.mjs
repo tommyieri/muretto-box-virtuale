@@ -47,10 +47,16 @@ for (const [Lf, N, eta] of casi) {
     `Lf=${Lf} N=${N} età=${eta}: argmin al giro ${argmin}, atteso Lf+{${attesi}} (x*=${xStar})`);
 }
 
-// la perdita di sosta trasla la curva ma NON sposta l'argmin (è costante in L)
-const base = { griglia: { EGO: { base: 90, eta: 8, cum: 1000 } }, pilota: 'EGO', Lf: 20, giriTotali: 57, par };
+// la perdita di sosta trasla la curva ma NON sposta l'argmin (è costante in L).
+// CORREZIONE A REFERTO (2026-07-29, prima stesura fallita di suo): con età 8
+// x* = 14,5 è un PAREGGIO ESATTO fra i giri 34 e 35, e l'argmin di un
+// pareggio lo decidono le briciole float — la condizione era mal specificata
+// (il fallimento era del banco, non del kernel). Ri-dichiarata su x* INTERO:
+// età 7 → x* = 15, minimo unico. (Disciplina E08: la metrica sbagliata si
+// mette a referto e se ne dichiara una nuova, non si tace.)
+const base = { griglia: { EGO: { base: 90, eta: 7, cum: 1000 } }, pilota: 'EGO', Lf: 20, giriTotali: 57, par };
 const a1 = argminCurva(curvaQuandoConviene({ ...base, perditaSosta: 18.4 }));
 const a2 = argminCurva(curvaQuandoConviene({ ...base, perditaSosta: 28.1 }));
-b.verifica(a1 === a2, `la perdita di sosta ha spostato l'argmin (${a1} vs ${a2}): c'è un termine che dipende da L e non dovrebbe`);
+b.verifica(a1 === 35 && a2 === 35, `la perdita di sosta ha spostato l'argmin (${a1} vs ${a2}, atteso 35 = Lf+x*): c'è un termine che dipende da L e non dovrebbe`);
 
 b.fine();
