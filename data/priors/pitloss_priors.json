@@ -1,0 +1,36 @@
+{
+  "_cos_e": "Prior esterni di pit-loss (perdita totale di una sosta in verde, s) per circuito, fattori di neutralizzazione e stazionario. Sono PRIOR ESTERNI: da promuovere a misura interna sul fondo, con targhetta aggiornata, quando la misura c'e'. Consumati dal costruttore di scenari (scenario/costruttore.mjs) e dal Director.",
+  "targhetta": {
+    "natura": "prior esterno misurato",
+    "campione": "2.106 stop 2022-2026",
+    "data": "2026-07-29",
+    "ereditato_da": "archivio muretto-box-virtuale (CLAUDE.md §I numeri che si ereditano)"
+  },
+
+  "pit_loss_verde_s": {
+    "spa-francorchamps": 18.4,
+    "miami": 19.74,
+    "silverstone": 20.95,
+    "spielberg": 21.48,
+    "monaco": 22.01,
+    "catalunya": 23.83,
+    "losail": 27.7,
+    "singapore": 27.9,
+    "imola": 28.1
+  },
+  "mediana_era_s": 22.1,
+
+  "fattori_neutralizzazione": {
+    "_nota": "pittando sotto neutralizzazione si paga una frazione della perdita verde",
+    "SC":  { "fattore": 0.50, "banda": [0.40, 0.60] },
+    "VSC": { "fattore": 0.65, "banda": [0.60, 0.70] },
+    "targhetta": { "natura": "prior esterno", "data": "2026-07-29" }
+  },
+
+  "stazionario_s": {
+    "tipico": 2.5,
+    "pavimento_fisico": 1.8,
+    "_nota": "il pavimento fisico e' un vincolo del Director: un output che implica uno stazionario sotto 1,8 s e' un paradosso, non un record",
+    "targhetta": { "natura": "prior esterno", "data": "2026-07-29" }
+  }
+}

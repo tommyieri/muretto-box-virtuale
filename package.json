@@ -1,0 +1,10 @@
+{
+  "name": "murettobox",
+  "private": true,
+  "type": "module",
+  "description": "MurettoBox — simulatore di strategia F1, ricostruzione da zero (CLAUDE.md è la legge del progetto)",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "test": "node banco/corri.mjs"
+  }
+}
