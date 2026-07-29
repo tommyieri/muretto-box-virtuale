@@ -1,0 +1,53 @@
+{
+  "_nota": "Mandato editoriale — COSA scrive la redazione. Deciso da Tommi il 2026-07-24 dopo il menu editoriale (65 tipi, artefatto). Scout e cacciatori si tarano su questo; ogni tipo attivo diventa un generatore in registro.py.",
+  "politica": {
+    "dati": "solo_si",
+    "nota": "Solo dove i nostri dati bastano davvero. Nessuna inferenza nascosta: le grandezze non misurabili (es. ERS/batteria 2026) si dichiarano variabili latenti, non si stimano."
+  },
+  "abilitante_chiave": "MAPPA-CURVE GPS (corner-map): definire curve e rettilinei per circuito da GPS/FastF1 circuit_info, e misurare un canale nel punto-firma. Una volta costruita, sblocca quasi tutti i temi telemetrici (T, M, P2) e alimenta A. E' il prossimo mattone.",
+  "temi_attivi": [
+    {
+      "dominio": "Tecnica di guida", "codici": ["T1", "T2", "T3", "T5"],
+      "tipi": ["velocita minima in curva (apex)", "gas in uscita e trazione", "delta compagni per mini-settore", "marce e punti di cambiata in curva"],
+      "abilitante": "mappa-curve GPS",
+      "pronto": "T3 gia MISURATO dalla caccia (Stowe: LEC 6a 6/6 vs HAM 5a, +5 km/h e +1368 giri; Village: PIA 3a vs NOR 2a). Primo colpo veloce.",
+      "priorita": 1
+    },
+    {
+      "dominio": "Assetto & frenata", "codici": ["M1", "M2", "M3"],
+      "tipi": ["trazione e pattinamento in uscita", "zona di frenata: staccata/rilascio/trail-braking", "impronta d'assetto (scarico vs carico)"],
+      "abilitante": "mappa-curve + zone-frenata GPS",
+      "pronto": "vicino: stessa mappa-curve; M2 dai canali Brake/Speed nelle staccate",
+      "priorita": 2
+    },
+    {
+      "dominio": "Energia & clipping", "codici": ["P1", "P2", "P6"],
+      "tipi": ["super-clipping (velocita cala a gas pieno)", "lift-and-coast (rilascio prima della curva)", "cambiate/RPM al servizio del recupero"],
+      "abilitante": "segmentazione dei rettilinei (per P1: distinguere calo-a-gas-pieno su rettilineo dalle curve flat-out)",
+      "pronto": "P6 FATTO (rapporti). P2 vicino (throttle all'ingresso curva). P1 misurato a Spa dalla caccia, serve la segmentazione rettilinei per non confondere le curve in pieno.",
+      "priorita": 2
+    },
+    {
+      "dominio": "Aerodinamica: trim & efficienza", "codici": ["A1", "A2", "A3"],
+      "tipi": ["livello di carico a una gara", "efficienza: mappa punta-vs-curva", "configurazione per-circuito"],
+      "abilitante": "mappa-curve GPS (curve FISSE comparabili) + confronto MULTI-GARA",
+      "pronto": "NO al singolo circuito: sondato, la minima-di-curva a giro-intero e rumorosa. Serve la mappa-curve (curve fisse) e piu gare. Build piu grosso.",
+      "priorita": 3
+    },
+    {
+      "dominio": "DNA circuito & confronti", "codici": ["X1", "X2", "X4"],
+      "tipi": ["caratterizzazione pista (sorpassabilita, tipi di settore)", "confronto anno-su-anno / epoche", "qualifica vs passo gara"],
+      "abilitante": "confronto MULTI-GARA / archivio 2018-2026",
+      "pronto": "serve la macchina di confronto fra gare/anni; sfrutta l'archivio storico gia in cache.",
+      "priorita": 3
+    }
+  ],
+  "temi_esclusi": {
+    "elenco": ["Gomme & degrado", "Strategia & gestione gara", "Data-journalism"],
+    "perche": "Gia coperti dai modelli analitici del repo (degrado/undercut/pit-loss) o meno tecnici; la redazione punta sul filone telemetria-visiva dove il feed 2026 non ci limita."
+  },
+  "articoli_fatti": [
+    {"id": "lift-mercedes-gb-2026", "tipo": "energia (famiglia P)", "stato": "bozza verificata"},
+    {"id": "rapporti-mclaren-mercedes-gb-2026", "tipo": "P6/cambio + T", "stato": "bozza verificata"}
+  ]
+}

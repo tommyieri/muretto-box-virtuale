@@ -1,0 +1,23 @@
+{
+ "forma": "C0 solo-gap",
+ "intensita": {
+  "a": 0.50716,
+  "lam": 0.8,
+  "formula": "i(g) = a * exp(-g/lam)"
+ },
+ "durata": {
+  "globale": 2.887
+ },
+ "kappa": null,
+ "soglia_incontro_s": 1.5,
+ "finestra_post_restart": 3,
+ "regime": "2022-25 (a effetto suolo)",
+ "targhetta": {
+  "gare_sotto": 46,
+  "incontri_calibrazione": 1623,
+  "incontri_verifica": 1671,
+  "calcolato_il": "2026-07-21"
+ },
+ "limite_onesto": "si calcola SOLO contro il campo reale: le altre auto non rallentano perche sei li, non si difendono, non cambiano strategia. Dice \"Leclerc diverso dentro la gara che E' successa\", non \"la gara che SAREBBE successa\".",
+ "cieco_2026": "Spearman(theta storico, theta 2026) = -0,024: il 2026 sul sorpasso e scorrelato dal passato. Il modello nasce sul regime storico; il 2026 si rafforza con l uso."
+}

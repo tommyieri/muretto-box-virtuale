@@ -1,0 +1,133 @@
+{
+ "data_calcolo": "2026-07-21",
+ "sc_vsc": {
+  "K": 3,
+  "n_normali": 13776,
+  "n_post": 8329,
+  "c_normale": 0.2686605406163835,
+  "c_post_restart": 0.6297660835204812,
+  "compatibili": true,
+  "targhetta": {
+   "gare_sotto": 46,
+   "calcolato_il": "2026-07-21"
+  }
+ },
+ "esempio_guida": {
+  "per_fascia": {
+   "< -0.80": {
+    "n": 918,
+    "giri_mediani": 1.0,
+    "ci95": [
+     1.0,
+     1.0
+    ],
+    "media": 2.309
+   },
+   "-0.80..-0.40": {
+    "n": 416,
+    "giri_mediani": 2.0,
+    "ci95": [
+     2.0,
+     2.0
+    ],
+    "media": 3.438
+   },
+   "-0.40..-0.15": {
+    "n": 283,
+    "giri_mediani": 2,
+    "ci95": [
+     2,
+     3
+    ],
+    "media": 3.912
+   },
+   "-0.15..+0.15": {
+    "n": 433,
+    "giri_mediani": 2,
+    "ci95": [
+     2,
+     2
+    ],
+    "media": 3.337
+   },
+   "+0.15..+99.00": {
+    "n": 1244,
+    "giri_mediani": 1.0,
+    "ci95": [
+     1.0,
+     1.0
+    ],
+    "media": 2.59
+   }
+  },
+  "targhetta": {
+   "gare_sotto": 46,
+   "calcolato_il": "2026-07-21"
+  }
+ },
+ "forme": {
+  "M0": {
+   "errore": 0.38829924756929,
+   "ci95": [
+    0.3544103814880297,
+    0.4224492337050711
+   ],
+   "parametri": {
+    "forma": "M0",
+    "a": 0.9869045367692223,
+    "lam": 1.0
+   }
+  },
+  "M_dichiarato": 0.034,
+  "M1": {
+   "errore": 0.4158454806097366,
+   "ci95": [
+    0.34615757059443464,
+    0.43373623383543786
+   ],
+   "miglioramento": -0.0275,
+   "supera_M": false,
+   "esclude_zero": false,
+   "esito": "RUMORE",
+   "parametri": {
+    "forma": "M1",
+    "a": 0.5071600965117989,
+    "c": 0.5399972624045256,
+    "lam": 0.8
+   }
+  },
+  "M2": {
+   "errore": 0.4166698224781156,
+   "ci95": [
+    0.35831468417277357,
+    0.43063373539917105
+   ],
+   "miglioramento": -0.0284,
+   "supera_M": false,
+   "esclude_zero": true,
+   "esito": "RUMORE",
+   "parametri": {
+    "forma": "M2",
+    "a": 0.7000000000000001,
+    "c": 0.75,
+    "lam": 0.5
+   }
+  },
+  "targhetta": {
+   "gare_sotto": 46,
+   "calcolato_il": "2026-07-21"
+  }
+ },
+ "placebo": {
+  "c_placebo": 0.23289364191288178,
+  "c_vero": 0.5399972624045256,
+  "miglioramento_placebo": -0.0392,
+  "miglioramento_vero": -0.0275,
+  "regge": false,
+  "null_nuovo_da_sigillare": true,
+  "targhetta": {
+   "gare_sotto": 46,
+   "calcolato_il": "2026-07-21"
+  }
+ }
+}

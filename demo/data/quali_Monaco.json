@@ -1,0 +1,558 @@
+{
+ "gara": "Monaco",
+ "evento": "GP di Monaco",
+ "sessione": "Qualifiche",
+ "data": null,
+ "piloti": [
+  {
+   "pos": 1,
+   "num": "12",
+   "sigla": "ANT",
+   "colore": "#27F4D2",
+   "best": "1:12.051",
+   "gap": "",
+   "q1": null,
+   "q2": null,
+   "q3": "1:12.051",
+   "sectors": [
+    {
+     "t": "18.934",
+     "best": null
+    },
+    {
+     "t": "33.989",
+     "best": null
+    },
+    {
+     "t": "19.128",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 2,
+   "num": "3",
+   "sigla": "VER",
+   "colore": "#2B478F",
+   "best": "1:12.094",
+   "gap": "+0.043",
+   "q1": null,
+   "q2": null,
+   "q3": "1:12.094",
+   "sectors": [
+    {
+     "t": "18.827",
+     "best": "o"
+    },
+    {
+     "t": "34.184",
+     "best": null
+    },
+    {
+     "t": "19.083",
+     "best": "o"
+    }
+   ]
+  },
+  {
+   "pos": 3,
+   "num": "44",
+   "sigla": "HAM",
+   "colore": "#E8002D",
+   "best": "1:12.279",
+   "gap": "+0.228",
+   "q1": null,
+   "q2": null,
+   "q3": "1:12.279",
+   "sectors": [
+    {
+     "t": "19.103",
+     "best": null
+    },
+    {
+     "t": "33.957",
+     "best": "o"
+    },
+    {
+     "t": "19.219",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 4,
+   "num": "16",
+   "sigla": "LEC",
+   "colore": "#E8002D",
+   "best": "1:12.351",
+   "gap": "+0.300",
+   "q1": null,
+   "q2": null,
+   "q3": "1:12.351",
+   "sectors": [
+    {
+     "t": "19.042",
+     "best": null
+    },
+    {
+     "t": "34.035",
+     "best": null
+    },
+    {
+     "t": "19.274",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 5,
+   "num": "6",
+   "sigla": "HAD",
+   "colore": "#2B478F",
+   "best": "1:12.434",
+   "gap": "+0.383",
+   "q1": null,
+   "q2": null,
+   "q3": "1:12.434",
+   "sectors": [
+    {
+     "t": "19.001",
+     "best": null
+    },
+    {
+     "t": "34.202",
+     "best": null
+    },
+    {
+     "t": "19.231",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 6,
+   "num": "63",
+   "sigla": "RUS",
+   "colore": "#27F4D2",
+   "best": "1:12.445",
+   "gap": "+0.394",
+   "q1": null,
+   "q2": null,
+   "q3": "1:12.445",
+   "sectors": [
+    {
+     "t": "18.970",
+     "best": null
+    },
+    {
+     "t": "34.253",
+     "best": null
+    },
+    {
+     "t": "19.222",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 7,
+   "num": "81",
+   "sigla": "PIA",
+   "colore": "#FF8000",
+   "best": "1:12.624",
+   "gap": "+0.573",
+   "q1": null,
+   "q2": null,
+   "q3": "1:12.624",
+   "sectors": [
+    {
+     "t": "19.047",
+     "best": null
+    },
+    {
+     "t": "34.288",
+     "best": null
+    },
+    {
+     "t": "19.289",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 8,
+   "num": "1",
+   "sigla": "NOR",
+   "colore": "#FF8000",
+   "best": "1:12.765",
+   "gap": "+0.714",
+   "q1": null,
+   "q2": null,
+   "q3": "1:12.765",
+   "sectors": [
+    {
+     "t": "19.124",
+     "best": null
+    },
+    {
+     "t": "34.297",
+     "best": null
+    },
+    {
+     "t": "19.344",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 9,
+   "num": "10",
+   "sigla": "GAS",
+   "colore": "#FF87BC",
+   "best": "1:13.226",
+   "gap": "+1.175",
+   "q1": null,
+   "q2": null,
+   "q3": "1:13.226",
+   "sectors": [
+    {
+     "t": "19.278",
+     "best": null
+    },
+    {
+     "t": "34.512",
+     "best": null
+    },
+    {
+     "t": "19.436",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 10,
+   "num": "30",
+   "sigla": "LAW",
+   "colore": "#6692FF",
+   "best": "1:13.412",
+   "gap": "+1.361",
+   "q1": null,
+   "q2": null,
+   "q3": "1:13.412",
+   "sectors": [
+    {
+     "t": "19.302",
+     "best": null
+    },
+    {
+     "t": "34.755",
+     "best": null
+    },
+    {
+     "t": "19.355",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 11,
+   "num": "23",
+   "sigla": "ALB",
+   "colore": "#1868DB",
+   "best": "1:13.787",
+   "gap": "+1.736",
+   "q1": null,
+   "q2": null,
+   "q3": "1:13.787",
+   "sectors": [
+    {
+     "t": "19.350",
+     "best": null
+    },
+    {
+     "t": "34.774",
+     "best": null
+    },
+    {
+     "t": "19.663",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 12,
+   "num": "55",
+   "sigla": "SAI",
+   "colore": "#1868DB",
+   "best": "1:13.815",
+   "gap": "+1.764",
+   "q1": null,
+   "q2": null,
+   "q3": "1:13.815",
+   "sectors": [
+    {
+     "t": "19.342",
+     "best": null
+    },
+    {
+     "t": "34.796",
+     "best": null
+    },
+    {
+     "t": "19.677",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 13,
+   "num": "27",
+   "sigla": "HUL",
+   "colore": "#A21D2B",
+   "best": "1:13.902",
+   "gap": "+1.851",
+   "q1": null,
+   "q2": null,
+   "q3": "1:13.902",
+   "sectors": [
+    {
+     "t": "19.565",
+     "best": null
+    },
+    {
+     "t": "34.871",
+     "best": null
+    },
+    {
+     "t": "19.466",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 14,
+   "num": "43",
+   "sigla": "COL",
+   "colore": "#FF87BC",
+   "best": "1:13.995",
+   "gap": "+1.944",
+   "q1": null,
+   "q2": null,
+   "q3": "1:13.995",
+   "sectors": [
+    {
+     "t": "19.481",
+     "best": null
+    },
+    {
+     "t": "35.010",
+     "best": null
+    },
+    {
+     "t": "19.504",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 15,
+   "num": "41",
+   "sigla": "LIN",
+   "colore": "#6692FF",
+   "best": "1:14.248",
+   "gap": "+2.197",
+   "q1": null,
+   "q2": null,
+   "q3": "1:14.248",
+   "sectors": [
+    {
+     "t": "19.495",
+     "best": null
+    },
+    {
+     "t": "35.153",
+     "best": null
+    },
+    {
+     "t": "19.600",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 16,
+   "num": "5",
+   "sigla": "BOR",
+   "colore": "#A21D2B",
+   "best": "1:14.683",
+   "gap": "+2.632",
+   "q1": null,
+   "q2": null,
+   "q3": "1:14.683",
+   "sectors": [
+    {
+     "t": "19.493",
+     "best": null
+    },
+    {
+     "t": "35.314",
+     "best": null
+    },
+    {
+     "t": "19.876",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 17,
+   "num": "31",
+   "sigla": "OCO",
+   "colore": "#B6BABD",
+   "best": "1:14.722",
+   "gap": "+2.671",
+   "q1": null,
+   "q2": null,
+   "q3": "1:14.722",
+   "sectors": [
+    {
+     "t": "19.620",
+     "best": null
+    },
+    {
+     "t": "35.247",
+     "best": null
+    },
+    {
+     "t": "19.855",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 18,
+   "num": "11",
+   "sigla": "PER",
+   "colore": "#D4A537",
+   "best": "1:14.747",
+   "gap": "+2.696",
+   "q1": null,
+   "q2": null,
+   "q3": "1:14.747",
+   "sectors": [
+    {
+     "t": "19.485",
+     "best": null
+    },
+    {
+     "t": "35.304",
+     "best": null
+    },
+    {
+     "t": "19.958",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 19,
+   "num": "87",
+   "sigla": "BEA",
+   "colore": "#B6BABD",
+   "best": "1:14.814",
+   "gap": "+2.763",
+   "q1": null,
+   "q2": null,
+   "q3": "1:14.814",
+   "sectors": [
+    {
+     "t": "19.699",
+     "best": null
+    },
+    {
+     "t": "35.214",
+     "best": null
+    },
+    {
+     "t": "19.901",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 20,
+   "num": "77",
+   "sigla": "BOT",
+   "colore": "#D4A537",
+   "best": "1:15.283",
+   "gap": "+3.232",
+   "q1": null,
+   "q2": null,
+   "q3": "1:15.283",
+   "sectors": [
+    {
+     "t": "19.862",
+     "best": null
+    },
+    {
+     "t": "35.430",
+     "best": null
+    },
+    {
+     "t": "19.991",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 21,
+   "num": "14",
+   "sigla": "ALO",
+   "colore": "#229971",
+   "best": "1:15.349",
+   "gap": "+3.298",
+   "q1": null,
+   "q2": null,
+   "q3": "1:15.349",
+   "sectors": [
+    {
+     "t": "19.764",
+     "best": null
+    },
+    {
+     "t": "35.556",
+     "best": null
+    },
+    {
+     "t": "20.029",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 22,
+   "num": "18",
+   "sigla": "STR",
+   "colore": "#229971",
+   "best": "1:16.061",
+   "gap": "+4.010",
+   "q1": null,
+   "q2": null,
+   "q3": "1:16.061",
+   "sectors": [
+    {
+     "t": "20.050",
+     "best": null
+    },
+    {
+     "t": "35.799",
+     "best": null
+    },
+    {
+     "t": "20.212",
+     "best": null
+    }
+   ]
+  }
+ ]
+}

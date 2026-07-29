@@ -1,0 +1,46 @@
+{
+ "aston-martin": {
+  "motore": "Honda",
+  "engineManufacturerId": "honda"
+ },
+ "williams": {
+  "motore": "Mercedes",
+  "engineManufacturerId": "mercedes"
+ },
+ "audi": {
+  "motore": "Audi",
+  "engineManufacturerId": "audi"
+ },
+ "alpine": {
+  "motore": "Mercedes",
+  "engineManufacturerId": "mercedes"
+ },
+ "cadillac": {
+  "motore": "Ferrari",
+  "engineManufacturerId": "ferrari"
+ },
+ "mclaren": {
+  "motore": "Mercedes",
+  "engineManufacturerId": "mercedes"
+ },
+ "mercedes": {
+  "motore": "Mercedes",
+  "engineManufacturerId": "mercedes"
+ },
+ "red-bull": {
+  "motore": "Red Bull Ford",
+  "engineManufacturerId": "red-bull-ford"
+ },
+ "ferrari": {
+  "motore": "Ferrari",
+  "engineManufacturerId": "ferrari"
+ },
+ "haas": {
+  "motore": "Ferrari",
+  "engineManufacturerId": "ferrari"
+ },
+ "racing-bulls": {
+  "motore": "Red Bull Ford",
+  "engineManufacturerId": "red-bull-ford"
+ }
+}

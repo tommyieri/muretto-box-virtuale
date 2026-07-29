@@ -1,0 +1,1741 @@
+{
+ "censimento_2026": [
+  {
+   "gara": "2026 Australia",
+   "bagnata": false,
+   "N": 58,
+   "giri_totali": 1007,
+   "giri_neutralizzati": 120,
+   "quota_neutralizzata": 0.1192,
+   "indici_giro_neutralizzati": 13,
+   "giri_puliti": 787,
+   "giri_aria_libera": 388,
+   "mescole": {
+    "MEDIUM": 203,
+    "HARD": 484,
+    "SOFT": 100
+   }
+  },
+  {
+   "gara": "2026 Austria",
+   "bagnata": false,
+   "N": 71,
+   "giri_totali": 1339,
+   "giri_neutralizzati": 76,
+   "quota_neutralizzata": 0.0568,
+   "indici_giro_neutralizzati": 7,
+   "giri_puliti": 1085,
+   "giri_aria_libera": 449,
+   "mescole": {
+    "MEDIUM": 461,
+    "HARD": 502,
+    "SOFT": 122
+   }
+  },
+  {
+   "gara": "2026 Belgian",
+   "bagnata": false,
+   "N": 44,
+   "giri_totali": 872,
+   "giri_neutralizzati": 139,
+   "quota_neutralizzata": 0.1594,
+   "indici_giro_neutralizzati": 9,
+   "giri_puliti": 661,
+   "giri_aria_libera": 240,
+   "mescole": {
+    "MEDIUM": 147,
+    "HARD": 458,
+    "SOFT": 56
+   }
+  },
+  {
+   "gara": "2026 British",
+   "bagnata": false,
+   "N": 52,
+   "giri_totali": 1113,
+   "giri_neutralizzati": 177,
+   "quota_neutralizzata": 0.159,
+   "indici_giro_neutralizzati": 15,
+   "giri_puliti": 777,
+   "giri_aria_libera": 331,
+   "mescole": {
+    "HARD": 339,
+    "MEDIUM": 427,
+    "SOFT": 11
+   }
+  },
+  {
+   "gara": "2026 Canada",
+   "bagnata": false,
+   "N": 68,
+   "giri_totali": 1212,
+   "giri_neutralizzati": 100,
+   "quota_neutralizzata": 0.0825,
+   "indici_giro_neutralizzati": 15,
+   "giri_puliti": 868,
+   "giri_aria_libera": 528,
+   "mescole": {
+    "SOFT": 348,
+    "MEDIUM": 463,
+    "HARD": 57
+   }
+  },
+  {
+   "gara": "2026 Cina",
+   "bagnata": false,
+   "N": 56,
+   "giri_totali": 924,
+   "giri_neutralizzati": 69,
+   "quota_neutralizzata": 0.0747,
+   "indici_giro_neutralizzati": 4,
+   "giri_puliti": 711,
+   "giri_aria_libera": 272,
+   "mescole": {
+    "HARD": 572,
+    "MEDIUM": 128,
+    "SOFT": 11
+   }
+  },
+  {
+   "gara": "2026 Giappone",
+   "bagnata": false,
+   "N": 53,
+   "giri_totali": 1107,
+   "giri_neutralizzati": 135,
+   "quota_neutralizzata": 0.122,
+   "indici_giro_neutralizzati": 7,
+   "giri_puliti": 884,
+   "giri_aria_libera": 202,
+   "mescole": {
+    "MEDIUM": 402,
+    "HARD": 482
+   }
+  },
+  {
+   "gara": "2026 Miami",
+   "bagnata": false,
+   "N": 57,
+   "giri_totali": 1040,
+   "giri_neutralizzati": 121,
+   "quota_neutralizzata": 0.1163,
+   "indici_giro_neutralizzati": 7,
+   "giri_puliti": 742,
+   "giri_aria_libera": 330,
+   "mescole": {
+    "MEDIUM": 297,
+    "HARD": 399,
+    "SOFT": 46
+   }
+  },
+  {
+   "gara": "2026 Monaco",
+   "bagnata": false,
+   "N": 78,
+   "giri_totali": 1452,
+   "giri_neutralizzati": 208,
+   "quota_neutralizzata": 0.1433,
+   "indici_giro_neutralizzati": 14,
+   "giri_puliti": 1097,
+   "giri_aria_libera": 489,
+   "mescole": {
+    "MEDIUM": 568,
+    "SOFT": 223,
+    "HARD": 306
+   }
+  },
+  {
+   "gara": "2026 Spagna",
+   "bagnata": false,
+   "N": 66,
+   "giri_totali": 1236,
+   "giri_neutralizzati": 91,
+   "quota_neutralizzata": 0.0736,
+   "indici_giro_neutralizzati": 15,
+   "giri_puliti": 953,
+   "giri_aria_libera": 432,
+   "mescole": {
+    "MEDIUM": 234,
+    "HARD": 612,
+    "SOFT": 107
+   }
+  }
+ ],
+ "equivalenza": {
+  "possibile": true,
+  "gare": [
+   "2023 Abu Dhabi",
+   "2023 Hungarian",
+   "2023 Italian"
+  ],
+  "n_confronti": 19,
+  "n_scostamenti": 0,
+  "scostamenti": [],
+  "PASS": true
+ },
+ "falsificazione_F": {
+  "giudicabile": true,
+  "n_gare_confronto": 18,
+  "gare_calibrazione": [
+   "2023 Abu Dhabi",
+   "2023 Italian",
+   "2023 Spanish",
+   "2024 Bahrain",
+   "2024 Emilia Romagna",
+   "2024 Italian",
+   "2024 Singapore",
+   "2025 Hungarian",
+   "2025 Japanese"
+  ],
+  "gare_verifica": [
+   "2023 Hungarian",
+   "2023 Miami",
+   "2023 United States",
+   "2024 Dutch",
+   "2024 Hungarian",
+   "2024 Japanese",
+   "2025 Abu Dhabi",
+   "2025 Italian",
+   "2025 Singapore"
+  ],
+  "rho_viaggiante": {
+   "HARD": 0.0509,
+   "MEDIUM": 0.058,
+   "SOFT": 0.0838
+  },
+  "X_veto": {
+   "etichetta": "storico — veto (vecchia)",
+   "n_casi": 15,
+   "n_gare": 6,
+   "n_vinti": 3,
+   "quota": 0.2,
+   "margine_mediano_vittorie": 20.05,
+   "tol": 18.796,
+   "G_stella": 1.5,
+   "esclusi": {
+    "giri mancanti (ritiro o buchi)": 62,
+    "cancello di calibrazione": 62,
+    "rientro in traffico": 10,
+    "mescola SOFT senza rho": 10
+   },
+   "per_gara": {
+    "2023 Hungarian": {
+     "n": 2,
+     "vinti": 0,
+     "quota": 0.0
+    },
+    "2023 Miami": {
+     "n": 2,
+     "vinti": 0,
+     "quota": 0.0
+    },
+    "2023 United States": {
+     "n": 1,
+     "vinti": 1,
+     "quota": 1.0
+    },
+    "2024 Dutch": {
+     "n": 2,
+     "vinti": 1,
+     "quota": 0.5
+    },
+    "2025 Abu Dhabi": {
+     "n": 4,
+     "vinti": 1,
+     "quota": 0.25
+    },
+    "2025 Italian": {
+     "n": 4,
+     "vinti": 0,
+     "quota": 0.0
+    }
+   },
+   "gare_verifica": [
+    "2023 Hungarian",
+    "2023 Miami",
+    "2023 United States",
+    "2024 Dutch",
+    "2024 Hungarian",
+    "2024 Japanese",
+    "2025 Abu Dhabi",
+    "2025 Italian",
+    "2025 Singapore"
+   ]
+  },
+  "X_verde": {
+   "etichetta": "storico — giri verdi (nuova)",
+   "n_casi": 13,
+   "n_gare": 6,
+   "n_vinti": 3,
+   "quota": 0.2308,
+   "margine_mediano_vittorie": 20.05,
+   "tol": 18.796,
+   "G_stella": 1.5,
+   "esclusi": {
+    "giri mancanti (ritiro o buchi)": 62,
+    "cancello di calibrazione": 62,
+    "rientro in traffico": 12,
+    "mescola SOFT senza rho": 10
+   },
+   "per_gara": {
+    "2023 Hungarian": {
+     "n": 2,
+     "vinti": 0,
+     "quota": 0.0
+    },
+    "2023 Miami": {
+     "n": 2,
+     "vinti": 0,
+     "quota": 0.0
+    },
+    "2023 United States": {
+     "n": 1,
+     "vinti": 1,
+     "quota": 1.0
+    },
+    "2024 Dutch": {
+     "n": 2,
+     "vinti": 1,
+     "quota": 0.5
+    },
+    "2025 Abu Dhabi": {
+     "n": 4,
+     "vinti": 1,
+     "quota": 0.25
+    },
+    "2025 Italian": {
+     "n": 2,
+     "vinti": 0,
+     "quota": 0.0
+    }
+   },
+   "gare_verifica": [
+    "2023 Hungarian",
+    "2023 Miami",
+    "2023 United States",
+    "2024 Dutch",
+    "2024 Hungarian",
+    "2024 Japanese",
+    "2025 Abu Dhabi",
+    "2025 Italian",
+    "2025 Singapore"
+   ]
+  },
+  "appaiato_per_gara": {
+   "2023 Hungarian": 0.0,
+   "2023 Miami": 0.0,
+   "2023 United States": 0.0,
+   "2024 Dutch": 0.0,
+   "2025 Abu Dhabi": 0.0,
+   "2025 Italian": 0.0
+  },
+  "mediana": 0.0,
+  "ci95": [
+   0.0,
+   0.0
+  ],
+  "GONFIA": false,
+  "potere": {
+   "giri_non_verdi": 150,
+   "giri_totali": 20498,
+   "quota_non_verdi": 0.0073,
+   "VACUA": true,
+   "nota": "dove il veto permette il confronto le due contabilita quasi coincidono: il pareggio non e una promozione"
+  },
+  "esito": "VACUA — non giudica",
+  "F2": {
+   "giudicabile": true,
+   "gare": [
+    "2023 Austrian",
+    "2023 Bahrain",
+    "2023 Canadian",
+    "2023 Japanese",
+    "2023 Mexico City",
+    "2023 Qatar",
+    "2023 Saudi Arabian",
+    "2023 São Paulo",
+    "2024 Abu Dhabi",
+    "2024 Australian",
+    "2024 Austrian",
+    "2024 Azerbaijan",
+    "2024 Chinese",
+    "2024 Mexico City",
+    "2024 Monaco",
+    "2024 Saudi Arabian",
+    "2024 United States",
+    "2025 Austrian",
+    "2025 Azerbaijan",
+    "2025 Canadian",
+    "2025 Emilia Romagna",
+    "2025 Las Vegas",
+    "2025 Mexico City",
+    "2025 Monaco",
+    "2025 Qatar",
+    "2025 Saudi Arabian",
+    "2025 Spanish",
+    "2025 United States"
+   ],
+   "gare_calibrazione": [
+    "2023 Austrian",
+    "2023 Canadian",
+    "2023 Mexico City",
+    "2023 Saudi Arabian",
+    "2024 Abu Dhabi",
+    "2024 Austrian",
+    "2024 Chinese",
+    "2024 Monaco",
+    "2024 United States",
+    "2025 Azerbaijan",
+    "2025 Emilia Romagna",
+    "2025 Mexico City",
+    "2025 Qatar",
+    "2025 Spanish"
+   ],
+   "gare_verifica": [
+    "2023 Bahrain",
+    "2023 Japanese",
+    "2023 Qatar",
+    "2023 São Paulo",
+    "2024 Australian",
+    "2024 Azerbaijan",
+    "2024 Mexico City",
+    "2024 Saudi Arabian",
+    "2025 Austrian",
+    "2025 Canadian",
+    "2025 Las Vegas",
+    "2025 Monaco",
+    "2025 Saudi Arabian",
+    "2025 United States"
+   ],
+   "X_pieni": {
+    "etichetta": "F2 — giri pieni (cosa avrebbe detto la vecchia)",
+    "n_casi": 80,
+    "n_gare": 10,
+    "n_vinti": 9,
+    "quota": 0.1125,
+    "margine_mediano_vittorie": 236.47,
+    "tol": 193.713,
+    "G_stella": 1.5,
+    "esclusi": {
+     "giri mancanti (ritiro o buchi)": 93,
+     "mescola SOFT senza rho": 11,
+     "cancello di calibrazione": 25,
+     "rientro in traffico": 9,
+     "pit-loss non ricostruibile": 1,
+     "mescola HARD senza rho": 3
+    },
+    "per_gara": {
+     "2023 Bahrain": {
+      "n": 9,
+      "vinti": 0,
+      "quota": 0.0
+     },
+     "2023 Qatar": {
+      "n": 9,
+      "vinti": 9,
+      "quota": 1.0
+     },
+     "2024 Australian": {
+      "n": 7,
+      "vinti": 0,
+      "quota": 0.0
+     },
+     "2024 Azerbaijan": {
+      "n": 6,
+      "vinti": 0,
+      "quota": 0.0
+     },
+     "2025 Austrian": {
+      "n": 6,
+      "vinti": 0,
+      "quota": 0.0
+     },
+     "2025 Canadian": {
+      "n": 3,
+      "vinti": 0,
+      "quota": 0.0
+     },
+     "2025 Las Vegas": {
+      "n": 13,
+      "vinti": 0,
+      "quota": 0.0
+     },
+     "2025 Monaco": {
+      "n": 4,
+      "vinti": 0,
+      "quota": 0.0
+     },
+     "2025 Saudi Arabian": {
+      "n": 12,
+      "vinti": 0,
+      "quota": 0.0
+     },
+     "2025 United States": {
+      "n": 11,
+      "vinti": 0,
+      "quota": 0.0
+     }
+    },
+    "gare_verifica": [
+     "2023 Bahrain",
+     "2023 Japanese",
+     "2023 Qatar",
+     "2023 São Paulo",
+     "2024 Australian",
+     "2024 Azerbaijan",
+     "2024 Mexico City",
+     "2024 Saudi Arabian",
+     "2025 Austrian",
+     "2025 Canadian",
+     "2025 Las Vegas",
+     "2025 Monaco",
+     "2025 Saudi Arabian",
+     "2025 United States"
+    ]
+   },
+   "X_verdi": {
+    "etichetta": "F2 — giri verdi (la regola nuova)",
+    "n_casi": 75,
+    "n_gare": 11,
+    "n_vinti": 23,
+    "quota": 0.3067,
+    "margine_mediano_vittorie": 37.44,
+    "tol": 32.184,
+    "G_stella": 1.5,
+    "esclusi": {
+     "cancello di calibrazione": 36,
+     "giri mancanti (ritiro o buchi)": 93,
+     "rientro in traffico": 9,
+     "mescola SOFT senza rho": 5,
+     "pit-loss non ricostruibile": 1,
+     "mescola HARD senza rho": 3
+    },
+    "per_gara": {
+     "2023 Bahrain": {
+      "n": 4,
+      "vinti": 2,
+      "quota": 0.5
+     },
+     "2023 Japanese": {
+      "n": 6,
+      "vinti": 4,
+      "quota": 0.6667
+     },
+     "2023 Qatar": {
+      "n": 9,
+      "vinti": 9,
+      "quota": 1.0
+     },
+     "2024 Australian": {
+      "n": 5,
+      "vinti": 0,
+      "quota": 0.0
+     },
+     "2024 Azerbaijan": {
+      "n": 9,
+      "vinti": 3,
+      "quota": 0.3333
+     },
+     "2024 Mexico City": {
+      "n": 7,
+      "vinti": 4,
+      "quota": 0.5714
+     },
+     "2025 Austrian": {
+      "n": 6,
+      "vinti": 0,
+      "quota": 0.0
+     },
+     "2025 Las Vegas": {
+      "n": 9,
+      "vinti": 0,
+      "quota": 0.0
+     },
+     "2025 Monaco": {
+      "n": 2,
+      "vinti": 0,
+      "quota": 0.0
+     },
+     "2025 Saudi Arabian": {
+      "n": 10,
+      "vinti": 1,
+      "quota": 0.1
+     },
+     "2025 United States": {
+      "n": 8,
+      "vinti": 0,
+      "quota": 0.0
+     }
+    },
+    "gare_verifica": [
+     "2023 Bahrain",
+     "2023 Japanese",
+     "2023 Qatar",
+     "2023 São Paulo",
+     "2024 Australian",
+     "2024 Azerbaijan",
+     "2024 Mexico City",
+     "2024 Saudi Arabian",
+     "2025 Austrian",
+     "2025 Canadian",
+     "2025 Las Vegas",
+     "2025 Monaco",
+     "2025 Saudi Arabian",
+     "2025 United States"
+    ]
+   },
+   "appaiato_per_gara": {
+    "2023 Bahrain": 0.5,
+    "2023 Qatar": 0.0,
+    "2024 Australian": 0.0,
+    "2024 Azerbaijan": 0.3333,
+    "2025 Austrian": 0.0,
+    "2025 Las Vegas": 0.0,
+    "2025 Monaco": 0.0,
+    "2025 Saudi Arabian": 0.1,
+    "2025 United States": 0.0
+   },
+   "mediana": 0.0,
+   "ci95": [
+    0.0,
+    0.3333
+   ],
+   "GONFIA": false,
+   "esito": "REGGE",
+   "nota_onesta": "F2 aggiunta DOPO che F si e rivelata vacua: test piu severo, non piu permissivo"
+  }
+ },
+ "C1": {
+  "gare": [
+   "2026 Australia",
+   "2026 Austria",
+   "2026 Belgian",
+   "2026 British",
+   "2026 Canada",
+   "2026 Cina",
+   "2026 Giappone",
+   "2026 Miami",
+   "2026 Monaco",
+   "2026 Spagna"
+  ],
+  "gare_calibrazione": [
+   "2026 Australia",
+   "2026 Belgian",
+   "2026 Canada",
+   "2026 Giappone",
+   "2026 Monaco"
+  ],
+  "gare_verifica": [
+   "2026 Austria",
+   "2026 British",
+   "2026 Cina",
+   "2026 Miami",
+   "2026 Spagna"
+  ],
+  "rho": {
+   "HARD": 0.0395,
+   "MEDIUM": 0.0011,
+   "SOFT": 0.0209
+  },
+  "rho_dettaglio": {
+   "HARD": {
+    "mediana": 0.0395,
+    "ci95": [
+     0.0096,
+     0.0877
+    ],
+    "n_gare": 4,
+    "per_gara": {
+     "2026 Australia": 0.0398,
+     "2026 Belgian": 0.03912,
+     "2026 Giappone": 0.08768,
+     "2026 Monaco": 0.00961
+    }
+   },
+   "MEDIUM": {
+    "mediana": 0.0011,
+    "ci95": [
+     -0.0141,
+     0.0948
+    ],
+    "n_gare": 4,
+    "per_gara": {
+     "2026 Australia": -0.01408,
+     "2026 Canada": -0.00926,
+     "2026 Giappone": 0.09484,
+     "2026 Monaco": 0.01146
+    }
+   },
+   "SOFT": {
+    "mediana": 0.0209,
+    "ci95": [
+     -0.0233,
+     0.2393
+    ],
+    "n_gare": 4,
+    "per_gara": {
+     "2026 Australia": 0.05407,
+     "2026 Belgian": 0.2393,
+     "2026 Canada": -0.01233,
+     "2026 Monaco": -0.02327
+    }
+   }
+  },
+  "ordine_SMH_esce_da_solo": false,
+  "tol": 55.304,
+  "n_scarti_calibrazione": 36,
+  "X": {
+   "etichetta": "C1 lineare 2026 — fuori campione",
+   "n_casi": 16,
+   "n_gare": 3,
+   "n_vinti": 1,
+   "quota": 0.0625,
+   "margine_mediano_vittorie": 65.31,
+   "tol": 55.304,
+   "G_stella": 1.5,
+   "esclusi": {
+    "giri mancanti (ritiro o buchi)": 62,
+    "rientro in traffico": 8,
+    "cancello di calibrazione": 5,
+    "mescola SOFT senza rho": 2
+   },
+   "per_gara": {
+    "2026 British": {
+     "n": 2,
+     "vinti": 0,
+     "quota": 0.0
+    },
+    "2026 Cina": {
+     "n": 8,
+     "vinti": 1,
+     "quota": 0.125
+    },
+    "2026 Miami": {
+     "n": 6,
+     "vinti": 0,
+     "quota": 0.0
+    }
+   },
+   "gare_verifica": [
+    "2026 Austria",
+    "2026 British",
+    "2026 Cina",
+    "2026 Miami",
+    "2026 Spagna"
+   ]
+  },
+  "casi": [
+   {
+    "reale": 3877.59,
+    "sim_reale": 3876.0,
+    "scarto_calibrazione": -1.59,
+    "sim_ottima": 3850.8,
+    "margine": 26.79,
+    "vince": false,
+    "n_verdi": 40,
+    "n_giri_gara": 52,
+    "strategia": {
+     "lunghezze": [
+      42,
+      10
+     ],
+     "mescole": [
+      "MEDIUM",
+      "HARD"
+     ],
+     "pit_ai_giri": [
+      42
+     ]
+    },
+    "strategia_reale_soste": 2,
+    "pit_loss": 22.111,
+    "gara": "2026 British",
+    "pilota": "BEA",
+    "circuito": "British"
+   },
+   {
+    "reale": 3898.32,
+    "sim_reale": 3905.44,
+    "scarto_calibrazione": 7.12,
+    "sim_ottima": 3875.3,
+    "margine": 23.02,
+    "vince": false,
+    "n_verdi": 40,
+    "n_giri_gara": 52,
+    "strategia": {
+     "lunghezze": [
+      42,
+      10
+     ],
+     "mescole": [
+      "MEDIUM",
+      "HARD"
+     ],
+     "pit_ai_giri": [
+      42
+     ]
+    },
+    "strategia_reale_soste": 2,
+    "pit_loss": 22.111,
+    "gara": "2026 British",
+    "pilota": "PER",
+    "circuito": "British"
+   },
+   {
+    "reale": 4533.52,
+    "sim_reale": 4555.47,
+    "scarto_calibrazione": 21.95,
+    "sim_ottima": 4500.59,
+    "margine": 32.93,
+    "vince": false,
+    "n_verdi": 47,
+    "n_giri_gara": 56,
+    "strategia": {
+     "lunghezze": [
+      48,
+      8
+     ],
+     "mescole": [
+      "MEDIUM",
+      "HARD"
+     ],
+     "pit_ai_giri": [
+      48
+     ]
+    },
+    "strategia_reale_soste": 1,
+    "pit_loss": 26.916,
+    "gara": "2026 Cina",
+    "pilota": "ANT",
+    "circuito": "Cina"
+   },
+   {
+    "reale": 4600.77,
+    "sim_reale": 4611.45,
+    "scarto_calibrazione": 10.68,
+    "sim_ottima": 4556.57,
+    "margine": 44.2,
+    "vince": false,
+    "n_verdi": 47,
+    "n_giri_gara": 56,
+    "strategia": {
+     "lunghezze": [
+      48,
+      8
+     ],
+     "mescole": [
+      "MEDIUM",
+      "HARD"
+     ],
+     "pit_ai_giri": [
+      48
+     ]
+    },
+    "strategia_reale_soste": 1,
+    "pit_loss": 26.916,
+    "gara": "2026 Cina",
+    "pilota": "BEA",
+    "circuito": "Cina"
+   },
+   {
+    "reale": 4497.79,
+    "sim_reale": 4515.29,
+    "scarto_calibrazione": 17.5,
+    "sim_ottima": 4461.62,
+    "margine": 36.17,
+    "vince": false,
+    "n_verdi": 46,
+    "n_giri_gara": 56,
+    "strategia": {
+     "lunghezze": [
+      48,
+      8
+     ],
+     "mescole": [
+      "MEDIUM",
+      "HARD"
+     ],
+     "pit_ai_giri": [
+      48
+     ]
+    },
+    "strategia_reale_soste": 1,
+    "pit_loss": 26.916,
+    "gara": "2026 Cina",
+    "pilota": "GAS",
+    "circuito": "Cina"
+   },
+   {
+    "reale": 4540.07,
+    "sim_reale": 4534.83,
+    "scarto_calibrazione": -5.25,
+    "sim_ottima": 4474.77,
+    "margine": 65.31,
+    "vince": true,
+    "n_verdi": 46,
+    "n_giri_gara": 56,
+    "strategia": {
+     "lunghezze": [
+      48,
+      8
+     ],
+     "mescole": [
+      "MEDIUM",
+      "HARD"
+     ],
+     "pit_ai_giri": [
+      48
+     ]
+    },
+    "strategia_reale_soste": 1,
+    "pit_loss": 26.916,
+    "gara": "2026 Cina",
+    "pilota": "HAD",
+    "circuito": "Cina"
+   },
+   {
+    "reale": 4563.73,
+    "sim_reale": 4578.51,
+    "scarto_calibrazione": 14.78,
+    "sim_ottima": 4523.63,
+    "margine": 40.1,
+    "vince": false,
+    "n_verdi": 47,
+    "n_giri_gara": 56,
+    "strategia": {
+     "lunghezze": [
+      48,
+      8
+     ],
+     "mescole": [
+      "MEDIUM",
+      "HARD"
+     ],
+     "pit_ai_giri": [
+      48
+     ]
+    },
+    "strategia_reale_soste": 1,
+    "pit_loss": 26.916,
+    "gara": "2026 Cina",
+    "pilota": "HAM",
+    "circuito": "Cina"
+   },
+   {
+    "reale": 4430.19,
+    "sim_reale": 4431.82,
+    "scarto_calibrazione": 1.63,
+    "sim_ottima": 4377.52,
+    "margine": 52.67,
+    "vince": false,
+    "n_verdi": 45,
+    "n_giri_gara": 56,
+    "strategia": {
+     "lunghezze": [
+      48,
+      8
+     ],
+     "mescole": [
+      "MEDIUM",
+      "HARD"
+     ],
+     "pit_ai_giri": [
+      48
+     ]
+    },
+    "strategia_reale_soste": 1,
+    "pit_loss": 26.916,
+    "gara": "2026 Cina",
+    "pilota": "LAW",
+    "circuito": "Cina"
+   },
+   {
+    "reale": 4566.09,
+    "sim_reale": 4608.41,
+    "scarto_calibrazione": 42.32,
+    "sim_ottima": 4553.53,
+    "margine": 12.56,
+    "vince": false,
+    "n_verdi": 47,
+    "n_giri_gara": 56,
+    "strategia": {
+     "lunghezze": [
+      48,
+      8
+     ],
+     "mescole": [
+      "MEDIUM",
+      "HARD"
+     ],
+     "pit_ai_giri": [
+      48
+     ]
+    },
+    "strategia_reale_soste": 1,
+    "pit_loss": 26.916,
+    "gara": "2026 Cina",
+    "pilota": "LEC",
+    "circuito": "Cina"
+   },
+   {
+    "reale": 4539.78,
+    "sim_reale": 4547.43,
+    "scarto_calibrazione": 7.65,
+    "sim_ottima": 4492.54,
+    "margine": 47.23,
+    "vince": false,
+    "n_verdi": 47,
+    "n_giri_gara": 56,
+    "strategia": {
+     "lunghezze": [
+      48,
+      8
+     ],
+     "mescole": [
+      "MEDIUM",
+      "HARD"
+     ],
+     "pit_ai_giri": [
+      48
+     ]
+    },
+    "strategia_reale_soste": 1,
+    "pit_loss": 26.916,
+    "gara": "2026 Cina",
+    "pilota": "RUS",
+    "circuito": "Cina"
+   },
+   {
+    "reale": 4368.62,
+    "sim_reale": 4380.57,
+    "scarto_calibrazione": 11.95,
+    "sim_ottima": 4380.36,
+    "margine": -11.73,
+    "vince": false,
+    "n_verdi": 46,
+    "n_giri_gara": 57,
+    "strategia": {
+     "lunghezze": [
+      30,
+      27
+     ],
+     "mescole": [
+      "MEDIUM",
+      "HARD"
+     ],
+     "pit_ai_giri": [
+      30
+     ]
+    },
+    "strategia_reale_soste": 1,
+    "pit_loss": 19.591,
+    "gara": "2026 Miami",
+    "pilota": "ALB",
+    "circuito": "Miami"
+   },
+   {
+    "reale": 4341.25,
+    "sim_reale": 4347.31,
+    "scarto_calibrazione": 6.06,
+    "sim_ottima": 4347.3,
+    "margine": -6.05,
+    "vince": false,
+    "n_verdi": 46,
+    "n_giri_gara": 57,
+    "strategia": {
+     "lunghezze": [
+      30,
+      27
+     ],
+     "mescole": [
+      "MEDIUM",
+      "HARD"
+     ],
+     "pit_ai_giri": [
+      30
+     ]
+    },
+    "strategia_reale_soste": 1,
+    "pit_loss": 19.591,
+    "gara": "2026 Miami",
+    "pilota": "COL",
+    "circuito": "Miami"
+   },
+   {
+    "reale": 4331.03,
+    "sim_reale": 4350.43,
+    "scarto_calibrazione": 19.39,
+    "sim_ottima": 4350.21,
+    "margine": -19.18,
+    "vince": false,
+    "n_verdi": 46,
+    "n_giri_gara": 57,
+    "strategia": {
+     "lunghezze": [
+      30,
+      27
+     ],
+     "mescole": [
+      "MEDIUM",
+      "HARD"
+     ],
+     "pit_ai_giri": [
+      30
+     ]
+    },
+    "strategia_reale_soste": 1,
+    "pit_loss": 19.591,
+    "gara": "2026 Miami",
+    "pilota": "HAM",
+    "circuito": "Miami"
+   },
+   {
+    "reale": 4306.44,
+    "sim_reale": 4331.59,
+    "scarto_calibrazione": 25.15,
+    "sim_ottima": 4331.49,
+    "margine": -25.04,
+    "vince": false,
+    "n_verdi": 46,
+    "n_giri_gara": 57,
+    "strategia": {
+     "lunghezze": [
+      30,
+      27
+     ],
+     "mescole": [
+      "MEDIUM",
+      "HARD"
+     ],
+     "pit_ai_giri": [
+      30
+     ]
+    },
+    "strategia_reale_soste": 1,
+    "pit_loss": 19.591,
+    "gara": "2026 Miami",
+    "pilota": "PIA",
+    "circuito": "Miami"
+   },
+   {
+    "reale": 4320.69,
+    "sim_reale": 4343.21,
+    "scarto_calibrazione": 22.52,
+    "sim_ottima": 4341.07,
+    "margine": -20.38,
+    "vince": false,
+    "n_verdi": 46,
+    "n_giri_gara": 57,
+    "strategia": {
+     "lunghezze": [
+      30,
+      27
+     ],
+     "mescole": [
+      "MEDIUM",
+      "HARD"
+     ],
+     "pit_ai_giri": [
+      30
+     ]
+    },
+    "strategia_reale_soste": 1,
+    "pit_loss": 19.591,
+    "gara": "2026 Miami",
+    "pilota": "RUS",
+    "circuito": "Miami"
+   },
+   {
+    "reale": 4361.07,
+    "sim_reale": 4371.05,
+    "scarto_calibrazione": 9.99,
+    "sim_ottima": 4370.95,
+    "margine": -9.88,
+    "vince": false,
+    "n_verdi": 46,
+    "n_giri_gara": 57,
+    "strategia": {
+     "lunghezze": [
+      30,
+      27
+     ],
+     "mescole": [
+      "MEDIUM",
+      "HARD"
+     ],
+     "pit_ai_giri": [
+      30
+     ]
+    },
+    "strategia_reale_soste": 1,
+    "pit_loss": 19.591,
+    "gara": "2026 Miami",
+    "pilota": "SAI",
+    "circuito": "Miami"
+   }
+  ],
+  "cancello_A_predittivo": {
+   "giudicabile": true,
+   "coppie": [
+    {
+     "gara": "2026 Austria",
+     "n_piloti": 8,
+     "errore_modello": 44.519,
+     "errore_zero": 21.077,
+     "guadagno": -23.442
+    },
+    {
+     "gara": "2026 British",
+     "n_piloti": 4,
+     "errore_modello": 4.352,
+     "errore_zero": 26.961,
+     "guadagno": 22.609
+    },
+    {
+     "gara": "2026 Cina",
+     "n_piloti": 8,
+     "errore_modello": 12.731,
+     "errore_zero": 16.211,
+     "guadagno": 3.479
+    },
+    {
+     "gara": "2026 Miami",
+     "n_piloti": 7,
+     "errore_modello": 19.393,
+     "errore_zero": 4.286,
+     "guadagno": -15.107
+    },
+    {
+     "gara": "2026 Spagna",
+     "n_piloti": 2,
+     "errore_modello": 65.132,
+     "errore_zero": 7.576,
+     "guadagno": -57.556
+    }
+   ],
+   "guadagno_mediano": -15.107,
+   "ci95": [
+    -57.556,
+    22.609
+   ],
+   "n_gare": 5,
+   "esclude_lo_zero": false,
+   "SUPERATO": false,
+   "criterio": "errore di ricostruzione minore del degrado-zero RISTIMATO, con IC95 appaiato sui blocchi che esclude lo zero"
+  },
+  "cancello_B_prodotto": {
+   "numerosita_ok": false,
+   "SUPERATO": false,
+   "quota_richiesta": 0.6,
+   "margine_richiesto": 110.608
+  },
+  "ACCENDIBILE": false
+ },
+ "C2": {
+  "curva_residuo_per_eta": [
+   {
+    "fascia": [
+     3,
+     9
+    ],
+    "n_gare": 10,
+    "mediana": 0.0367,
+    "ci95": [
+     -0.2012,
+     0.4632
+    ]
+   },
+   {
+    "fascia": [
+     10,
+     14
+    ],
+    "n_gare": 10,
+    "mediana": 0.3057,
+    "ci95": [
+     -0.2507,
+     0.8214
+    ]
+   },
+   {
+    "fascia": [
+     15,
+     19
+    ],
+    "n_gare": 10,
+    "mediana": 0.0259,
+    "ci95": [
+     -0.3513,
+     0.9492
+    ]
+   },
+   {
+    "fascia": [
+     20,
+     24
+    ],
+    "n_gare": 10,
+    "mediana": 0.0092,
+    "ci95": [
+     -0.3731,
+     0.9998
+    ]
+   },
+   {
+    "fascia": [
+     25,
+     29
+    ],
+    "n_gare": 10,
+    "mediana": -0.119,
+    "ci95": [
+     -0.3255,
+     1.0655
+    ]
+   },
+   {
+    "fascia": [
+     30,
+     99
+    ],
+    "n_gare": 8,
+    "mediana": -0.0298,
+    "ci95": [
+     -0.4207,
+     1.5163
+    ]
+   }
+  ],
+  "cliff_ha_bersaglio": false,
+  "identificabilita": [
+   {
+    "gara": "2026 Australia",
+    "corr_giro_eta": 0.545,
+    "se_rho": {
+     "HARD": 0.00671,
+     "MEDIUM": 0.01437,
+     "SOFT": 0.01786
+    },
+    "rho": {
+     "HARD": 0.0398,
+     "MEDIUM": -0.01408,
+     "SOFT": 0.05407
+    },
+    "rapporto_rho_su_se": {
+     "HARD": 5.93,
+     "MEDIUM": 0.98,
+     "SOFT": 3.03
+    }
+   },
+   {
+    "gara": "2026 Austria",
+    "corr_giro_eta": 0.309,
+    "se_rho": {
+     "HARD": 0.00625,
+     "MEDIUM": 0.00794,
+     "SOFT": 0.02171
+    },
+    "rho": {
+     "HARD": 0.08218,
+     "MEDIUM": 0.08062,
+     "SOFT": 0.07764
+    },
+    "rapporto_rho_su_se": {
+     "HARD": 13.15,
+     "MEDIUM": 10.15,
+     "SOFT": 3.58
+    }
+   },
+   {
+    "gara": "2026 Belgian",
+    "corr_giro_eta": 0.481,
+    "se_rho": {
+     "HARD": 0.01152,
+     "SOFT": 0.19122
+    },
+    "rho": {
+     "HARD": 0.03912,
+     "SOFT": 0.2393
+    },
+    "rapporto_rho_su_se": {
+     "HARD": 3.4,
+     "SOFT": 1.25
+    }
+   },
+   {
+    "gara": "2026 British",
+    "corr_giro_eta": 0.167,
+    "se_rho": {
+     "HARD": 0.01134,
+     "MEDIUM": 0.01219
+    },
+    "rho": {
+     "HARD": 0.06266,
+     "MEDIUM": 0.04408
+    },
+    "rapporto_rho_su_se": {
+     "HARD": 5.52,
+     "MEDIUM": 3.62
+    }
+   },
+   {
+    "gara": "2026 Canada",
+    "corr_giro_eta": 0.54,
+    "se_rho": {
+     "MEDIUM": 0.00844,
+     "SOFT": 0.01179
+    },
+    "rho": {
+     "MEDIUM": -0.00926,
+     "SOFT": -0.01233
+    },
+    "rapporto_rho_su_se": {
+     "MEDIUM": 1.1,
+     "SOFT": 1.05
+    }
+   },
+   {
+    "gara": "2026 Cina",
+    "corr_giro_eta": 0.727,
+    "se_rho": {
+     "HARD": 0.00479,
+     "MEDIUM": 0.01926
+    },
+    "rho": {
+     "HARD": 0.03799,
+     "MEDIUM": 0.12203
+    },
+    "rapporto_rho_su_se": {
+     "HARD": 7.92,
+     "MEDIUM": 6.34
+    }
+   },
+   {
+    "gara": "2026 Giappone",
+    "corr_giro_eta": 0.797,
+    "se_rho": {
+     "HARD": 0.00934,
+     "MEDIUM": 0.00824
+    },
+    "rho": {
+     "HARD": 0.08768,
+     "MEDIUM": 0.09484
+    },
+    "rapporto_rho_su_se": {
+     "HARD": 9.39,
+     "MEDIUM": 11.5
+    }
+   },
+   {
+    "gara": "2026 Miami",
+    "corr_giro_eta": 0.314,
+    "se_rho": {
+     "HARD": 0.03191,
+     "MEDIUM": 0.02213
+    },
+    "rho": {
+     "HARD": -0.00201,
+     "MEDIUM": 0.00499
+    },
+    "rapporto_rho_su_se": {
+     "HARD": 0.06,
+     "MEDIUM": 0.23
+    }
+   },
+   {
+    "gara": "2026 Monaco",
+    "corr_giro_eta": 0.212,
+    "se_rho": {
+     "HARD": 0.0267,
+     "MEDIUM": 0.00999,
+     "SOFT": 0.00782
+    },
+    "rho": {
+     "HARD": 0.00961,
+     "MEDIUM": 0.01146,
+     "SOFT": -0.02327
+    },
+    "rapporto_rho_su_se": {
+     "HARD": 0.36,
+     "MEDIUM": 1.15,
+     "SOFT": 2.98
+    }
+   },
+   {
+    "gara": "2026 Spagna",
+    "corr_giro_eta": 0.478,
+    "se_rho": {
+     "HARD": 0.01207,
+     "MEDIUM": 0.0205
+    },
+    "rho": {
+     "HARD": 0.11953,
+     "MEDIUM": 0.17236
+    },
+    "rapporto_rho_su_se": {
+     "HARD": 9.91,
+     "MEDIUM": 8.41
+    }
+   }
+  ],
+  "n_gare_senza_pendenza_a_2se": 2,
+  "stabilita_segno": {
+   "SOFT": {
+    "n_gare": 5,
+    "n_negative": 2,
+    "valori": [
+     0.0541,
+     0.0776,
+     0.2393,
+     -0.0123,
+     -0.0233
+    ],
+    "min": -0.0233,
+    "max": 0.2393,
+    "escursione": 0.2626
+   },
+   "MEDIUM": {
+    "n_gare": 9,
+    "n_negative": 2,
+    "valori": [
+     -0.0141,
+     0.0806,
+     0.0441,
+     -0.0093,
+     0.122,
+     0.0948,
+     0.005,
+     0.0115,
+     0.1724
+    ],
+    "min": -0.0141,
+    "max": 0.1724,
+    "escursione": 0.1864
+   },
+   "HARD": {
+    "n_gare": 9,
+    "n_negative": 1,
+    "valori": [
+     0.0398,
+     0.0822,
+     0.0391,
+     0.0627,
+     0.038,
+     0.0877,
+     -0.002,
+     0.0096,
+     0.1195
+    ],
+    "min": -0.002,
+    "max": 0.1195,
+    "escursione": 0.1215
+   }
+  },
+  "per_circuito": {
+   "British": {
+    "n": 2,
+    "v": 0
+   },
+   "Cina": {
+    "n": 8,
+    "v": 1
+   },
+   "Miami": {
+    "n": 6,
+    "v": 0
+   }
+  },
+  "per_lunghezza_stint": {
+   ">30": {
+    "n": 10,
+    "v": 1
+   },
+   "21-30": {
+    "n": 6,
+    "v": 0
+   }
+  },
+  "esclusi": {
+   "giri mancanti (ritiro o buchi)": 62,
+   "rientro in traffico": 8,
+   "cancello di calibrazione": 5,
+   "mescola SOFT senza rho": 2
+  }
+ },
+ "C3": {
+  "informativo": true,
+  "motivo_declassamento": "C2 ha falsificato il cliff",
+  "griglia_k": [
+   {
+    "k": 8,
+    "errore_calibrazione": 43.36,
+    "gamma": {
+     "HARD": 0.05348,
+     "MEDIUM": 0.08521,
+     "SOFT": 0.05161
+    }
+   },
+   {
+    "k": 10,
+    "errore_calibrazione": 40.572,
+    "gamma": {
+     "HARD": 0.04218,
+     "MEDIUM": 0.08101,
+     "SOFT": 0.02722
+    }
+   },
+   {
+    "k": 12,
+    "errore_calibrazione": 36.758,
+    "gamma": {
+     "HARD": 0.03085,
+     "MEDIUM": 0.07228,
+     "SOFT": 0.0038
+    }
+   },
+   {
+    "k": 14,
+    "errore_calibrazione": 40.934,
+    "gamma": {
+     "HARD": 0.0174,
+     "MEDIUM": 0.07035,
+     "SOFT": 0.01771
+    }
+   },
+   {
+    "k": 16,
+    "errore_calibrazione": 41.59,
+    "gamma": {
+     "HARD": 0.00649,
+     "MEDIUM": 0.07243,
+     "SOFT": 0.01253
+    }
+   },
+   {
+    "k": 18,
+    "errore_calibrazione": 38.642,
+    "gamma": {
+     "HARD": -0.00876,
+     "MEDIUM": 0.07752,
+     "SOFT": 0.01362
+    }
+   },
+   {
+    "k": 20,
+    "errore_calibrazione": 39.116,
+    "gamma": {
+     "HARD": -0.0125,
+     "MEDIUM": 0.08207,
+     "SOFT": 0.01699
+    }
+   },
+   {
+    "k": 22,
+    "errore_calibrazione": 39.403,
+    "gamma": {
+     "HARD": -0.01582,
+     "MEDIUM": 0.09067,
+     "SOFT": 0.02114
+    }
+   },
+   {
+    "k": 24,
+    "errore_calibrazione": 39.791,
+    "gamma": {
+     "HARD": -0.02274,
+     "SOFT": 0.00394,
+     "MEDIUM": 0.07117
+    }
+   },
+   {
+    "k": 26,
+    "errore_calibrazione": 39.036,
+    "gamma": {
+     "MEDIUM": 0.07557,
+     "SOFT": 0.03477,
+     "HARD": 0.0751
+    }
+   }
+  ],
+  "k_scelto": 12,
+  "rho": {
+   "HARD": 0.03332,
+   "MEDIUM": -0.0149,
+   "SOFT": 0.00797
+  },
+  "gamma": {
+   "HARD": 0.03085,
+   "MEDIUM": 0.07228,
+   "SOFT": 0.0038
+  },
+  "guadagno_ricostruzione_oos": {
+   "mediana": -2.125,
+   "ci95": [
+    -10.2909,
+    0.7115
+   ],
+   "n_gare": 5
+  },
+  "placebo": {
+   "n_estrazioni": 40,
+   "guadagno_vero": -2.125,
+   "guadagno_finto_mediano": -2.6053,
+   "quota_finti_almeno_quanto_il_vero": 0.35,
+   "UCCIDE": true,
+   "SIGILLO": "NULL NUOVO, NON auto-sigillato: lo sigilla Tommi al merge con --attore, se il tavolo lo vuole permanente"
+  },
+  "X_c3": {
+   "etichetta": "C3 soglia+rampa — fuori campione",
+   "n_casi": 26,
+   "n_gare": 4,
+   "n_vinti": 1,
+   "quota": 0.0385,
+   "margine_mediano_vittorie": 91.77,
+   "tol": 78.46,
+   "G_stella": 1.5,
+   "esclusi": {
+    "giri mancanti (ritiro o buchi)": 62,
+    "cancello di calibrazione": 1,
+    "mescola SOFT senza rho": 2,
+    "rientro in traffico": 2
+   },
+   "per_gara": {
+    "2026 Austria": {
+     "n": 7,
+     "vinti": 1,
+     "quota": 0.1429
+    },
+    "2026 British": {
+     "n": 4,
+     "vinti": 0,
+     "quota": 0.0
+    },
+    "2026 Cina": {
+     "n": 8,
+     "vinti": 0,
+     "quota": 0.0
+    },
+    "2026 Miami": {
+     "n": 7,
+     "vinti": 0,
+     "quota": 0.0
+    }
+   },
+   "gare_verifica": [
+    "2026 Austria",
+    "2026 British",
+    "2026 Cina",
+    "2026 Miami",
+    "2026 Spagna"
+   ]
+  },
+  "differenza_appaiata": {
+   "mediana": 0.0,
+   "ci95": [
+    -0.125,
+    0.0
+   ]
+  },
+  "SUPERA": false,
+  "esito": "DICHIARATO E SCARTATO"
+ }
+}

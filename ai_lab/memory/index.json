@@ -1,0 +1,172 @@
+{
+  "dossier": [
+    {
+      "id": "AUD-AUSTRA-20260721-01",
+      "data": "2026-07-21 08:13",
+      "gara": "Australia",
+      "versione_motore": "sha256:d2bee2dca871",
+      "dataset": [
+        "data/ti_cache/Australian.json"
+      ],
+      "stato": "aperto",
+      "generato_da": "deterministico (LLM non disponibile)",
+      "sintesi": {
+        "stint_analizzati": 45,
+        "residuo_mediano_s": 0.093,
+        "noise_floor_s": 0.468,
+        "conteggi": {
+          "degrado": 22,
+          "traffico": 6,
+          "pit_lane": 0,
+          "warm_up": 0,
+          "safety_car": 0,
+          "dati_mancanti": 6,
+          "rumore": 6,
+          "non_classificabile": 11
+        }
+      },
+      "file": "reports/AUD-AUSTRA-20260721-01.md",
+      "fatti": "reports/AUD-AUSTRA-20260721-01.facts.json"
+    },
+    {
+      "id": "AUD-BELGIO-20260721-01",
+      "data": "2026-07-21 08:13",
+      "gara": "Belgio",
+      "versione_motore": "sha256:d2bee2dca871",
+      "dataset": [
+        "data/ti_archive/2026/Belgian Grand Prix/Race.json"
+      ],
+      "stato": "aperto",
+      "generato_da": "deterministico (LLM non disponibile)",
+      "sintesi": {
+        "stint_analizzati": 40,
+        "residuo_mediano_s": 0.6515,
+        "noise_floor_s": 0.316,
+        "conteggi": {
+          "degrado": 18,
+          "traffico": 3,
+          "pit_lane": 0,
+          "warm_up": 0,
+          "safety_car": 0,
+          "dati_mancanti": 2,
+          "rumore": 2,
+          "non_classificabile": 17
+        }
+      },
+      "file": "reports/AUD-BELGIO-20260721-01.md",
+      "fatti": "reports/AUD-BELGIO-20260721-01.facts.json"
+    },
+    {
+      "id": "AUD-GRANBR-20260721-01",
+      "data": "2026-07-21 08:13",
+      "gara": "Gran Bretagna",
+      "versione_motore": "sha256:d2bee2dca871",
+      "dataset": [
+        "data/ti_archive/2026/British Grand Prix/Race.json"
+      ],
+      "stato": "aperto",
+      "generato_da": "deterministico (LLM non disponibile)",
+      "sintesi": {
+        "stint_analizzati": 42,
+        "residuo_mediano_s": 0.605,
+        "noise_floor_s": 0.287,
+        "conteggi": {
+          "degrado": 24,
+          "traffico": 1,
+          "pit_lane": 0,
+          "warm_up": 0,
+          "safety_car": 0,
+          "dati_mancanti": 10,
+          "rumore": 2,
+          "non_classificabile": 15
+        }
+      },
+      "file": "reports/AUD-GRANBR-20260721-01.md",
+      "fatti": "reports/AUD-GRANBR-20260721-01.facts.json"
+    },
+    {
+      "id": "AUD-MIAMI-20260721-01",
+      "data": "2026-07-21 08:15",
+      "gara": "Miami",
+      "versione_motore": "sha256:d2bee2dca871",
+      "dataset": [
+        "data/ti_cache/Miami.json"
+      ],
+      "stato": "aperto",
+      "generato_da": "deterministico (LLM non disponibile)",
+      "sintesi": {
+        "stint_analizzati": 36,
+        "residuo_mediano_s": 0.702,
+        "noise_floor_s": 0.241,
+        "conteggi": {
+          "degrado": 21,
+          "traffico": 0,
+          "pit_lane": 0,
+          "warm_up": 0,
+          "safety_car": 0,
+          "dati_mancanti": 7,
+          "rumore": 0,
+          "non_classificabile": 15
+        }
+      },
+      "file": "reports/AUD-MIAMI-20260721-01.md",
+      "fatti": "reports/AUD-MIAMI-20260721-01.facts.json"
+    },
+    {
+      "id": "AUD-MONACO-20260721-01",
+      "data": "2026-07-21 08:13",
+      "gara": "Monaco",
+      "versione_motore": "sha256:d2bee2dca871",
+      "dataset": [
+        "data/ti_cache/Monaco.json"
+      ],
+      "stato": "aperto",
+      "generato_da": "deterministico (LLM non disponibile)",
+      "sintesi": {
+        "stint_analizzati": 33,
+        "residuo_mediano_s": -0.085,
+        "noise_floor_s": 0.5,
+        "conteggi": {
+          "degrado": 16,
+          "traffico": 0,
+          "pit_lane": 0,
+          "warm_up": 0,
+          "safety_car": 0,
+          "dati_mancanti": 20,
+          "rumore": 2,
+          "non_classificabile": 15
+        }
+      },
+      "file": "reports/AUD-MONACO-20260721-01.md",
+      "fatti": "reports/AUD-MONACO-20260721-01.facts.json"
+    },
+    {
+      "id": "AUD-SPAGNA-20260721-01",
+      "data": "2026-07-21 08:15",
+      "gara": "Spagna",
+      "versione_motore": "sha256:d2bee2dca871",
+      "dataset": [
+        "data/ti_cache/Barcelona.json"
+      ],
+      "stato": "aperto",
+      "generato_da": "deterministico (LLM non disponibile)",
+      "sintesi": {
+        "stint_analizzati": 60,
+        "residuo_mediano_s": 1.3175,
+        "noise_floor_s": 0.208,
+        "conteggi": {
+          "degrado": 38,
+          "traffico": 0,
+          "pit_lane": 0,
+          "warm_up": 0,
+          "safety_car": 0,
+          "dati_mancanti": 8,
+          "rumore": 0,
+          "non_classificabile": 22
+        }
+      },
+      "file": "reports/AUD-SPAGNA-20260721-01.md",
+      "fatti": "reports/AUD-SPAGNA-20260721-01.facts.json"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "EXP-0004",
+  "stato": "RESPINTO",
+  "da": "Tommi",
+  "quando": "2026-07-21 08:31:24",
+  "sigillo_prereg": "sha256:3ef634d8ef89d334",
+  "prossimi_stati_ammessi": [],
+  "nota": "prima serve capire il non_classificabile-HARD"
+}

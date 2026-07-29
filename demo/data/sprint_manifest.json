@@ -1,0 +1,24 @@
+{
+ "disponibili": [
+  {
+   "gara": "Cina",
+   "evento": "GP di Cina",
+   "data": null,
+   "file": "sprint_Cina.json",
+   "sezioni": [
+    "sprint_quali",
+    "sprint"
+   ]
+  }
+ ],
+ "ultima": {
+  "gara": "Cina",
+  "evento": "GP di Cina",
+  "data": null,
+  "file": "sprint_Cina.json",
+  "sezioni": [
+   "sprint_quali",
+   "sprint"
+  ]
+ }
+}

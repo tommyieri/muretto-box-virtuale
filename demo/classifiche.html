@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<!--
+  CLASSIFICHE (ui-v3). Consumatore puro: legge demo/data/classifiche_2026.json
+  (standings f1db canonici, generati da gen_classifiche.py) e team_colori.json.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Classifiche 2026 — Muretto Box Virtuale</title>
+<link rel="canonical" href="https://murettobox.com/classifiche.html">
+<link rel="stylesheet" href="stile.css?v=250725c">
+<style>
+  /* Colonne numeriche a larghezza fissa: così l'intestazione si allinea
+     esattamente alle righe (con le colonne "auto" non combaciavano). */
+  .clas a { grid-template-columns: 40px 1fr 54px 72px; }
+  .clh { display:grid; grid-template-columns:40px 1fr 54px 72px; gap:10px;
+    padding:9px 16px 9px 18px; border-bottom:1px solid var(--line);
+    font:700 10px/1 var(--mono); letter-spacing:1.2px; text-transform:uppercase;
+    color:var(--dim); }
+  .clh .r{ text-align:right; }
+  /* "motore" = chi fornisce la power unit, non sempre la scuderia stessa. */
+  .clas-nota{ color:#9aa2b2; font:500 12px/1.5 var(--sans, sans-serif); margin:12px 2px 0;
+    display:flex; align-items:flex-start; gap:8px; }
+  .clas-nota b{ color:var(--txt); }
+  .clas-nota .badge{ flex:none; color:var(--dim); font:700 9px/1 var(--mono); letter-spacing:1.3px;
+    text-transform:uppercase; border:1px solid var(--line); border-radius:5px; padding:4px 6px; margin-top:1px; }
+</style>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
+    <span class="brand-mark"><span>M</span></span>
+    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+  </a>
+  <nav class="nav" aria-label="Sezioni">
+    <a href="stagione.html">Stagione</a>
+    <a href="live.html"><span class="dot-live"></span>Live</a>
+    <a href="analisi.html">Analisi</a>
+    <a href="classifiche.html" class="on">Classifiche</a>
+  </nav>
+</header>
+
+<div class="wrap-clas">
+  <div class="page-testa">
+    <h1>Classifiche <em>//</em> campionato 2026</h1>
+    <div class="sotto">Piloti e costruttori, gara per gara. Tocca una riga per aprire la scheda.</div>
+  </div>
+  <div class="aggiornato" id="agg"></div>
+  <div class="clas-tabs" role="tablist">
+    <button id="tabP" class="on" role="tab" aria-selected="true">Piloti</button>
+    <button id="tabC" role="tab" aria-selected="false">Costruttori</button>
+  </div>
+  <div class="clas panel">
+    <div class="clh" id="clhead"></div>
+    <div id="lista"></div>
+  </div>
+  <div class="clas-nota" id="nota" hidden></div>
+</div>
+
+<footer class="footer">
+  <div class="footer-in">
+    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
+    <nav>
+      <a href="stagione.html">Stagione</a>
+      <a href="live.html">Live</a>
+      <a href="analisi.html">Analisi</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="module">
+import { scheletro, mostraErrore, prendiJSON } from './stato.mjs?v=250724a';
+const el = id => document.getElementById(id);
+let clas=null, colori={}, numeri={}, motori={};
+
+const colore = t => colori[t] || 'var(--dim)';
+
+function rigaPilota(p){
+  const n = numeri[p.id];
+  return `<a href="scheda.html?tipo=pilota&id=${encodeURIComponent(p.id)}">
+    <span class="cbar" style="background:${colore(p.team_demo)}"></span>
+    <span class="pos">${p.pos ?? '–'}</span>
+    <span class="chi"><span class="n"><span class="rnum" style="color:${colore(p.team_demo)}">${n ?? ''}</span> ${p.sigla} <span style="font-weight:400">${p.nome}</span></span>
+      <span class="t">${p.team_demo || ''}</span></span>
+    <span class="vitt">${p.vittorie ? p.vittorie+'&nbsp;vitt.' : ''}</span>
+    <span class="pts"><b>${p.punti}</b><span class="d">${p.distacco ? '−'+p.distacco : 'leader'}</span></span>
+  </a>`;
+}
+function rigaTeam(c){
+  const m = motori[c.id]?.motore;
+  return `<a href="scheda.html?tipo=team&id=${encodeURIComponent(c.id)}">
+    <span class="cbar" style="background:${colore(c.team_demo)}"></span>
+    <span class="pos">${c.pos ?? '–'}</span>
+    <span class="chi"><span class="n">${c.team_demo || c.nome}</span>
+      ${m ? `<span class="t"><span class="motore-tag"><span class="mk">motore</span><span class="mv">${m}</span></span></span>` : ''}</span>
+    <span class="vitt">${c.vittorie ? c.vittorie+'&nbsp;vitt.' : ''}</span>
+    <span class="pts"><b>${c.punti}</b><span class="d">${c.distacco ? '−'+c.distacco : 'leader'}</span></span>
+  </a>`;
+}
+function mostra(tipo){
+  el('tabP').classList.toggle('on', tipo==='p'); el('tabC').classList.toggle('on', tipo==='c');
+  el('tabP').setAttribute('aria-selected', tipo==='p'); el('tabC').setAttribute('aria-selected', tipo==='c');
+  const chi = tipo==='p' ? 'Pilota' : 'Costruttore';
+  el('clhead').innerHTML =
+    `<span>Pos</span><span>${chi}</span><span class="r">Vitt.</span><span class="r">Punti</span>`;
+  el('lista').innerHTML = tipo==='p' ? clas.piloti.map(rigaPilota).join('') : clas.costruttori.map(rigaTeam).join('');
+  // La nota sul "motore" serve solo dove il motore compare: nei costruttori.
+  const nota = el('nota');
+  nota.hidden = tipo!=='c';
+  if (tipo==='c') nota.innerHTML =
+    `<span class="badge">motore</span><span>&egrave; il <b>fornitore della power unit</b> (chi costruisce il motore): non sempre &egrave; la scuderia stessa &mdash; es. un team pu&ograve; correre con motore Mercedes o Honda.</span>`;
+}
+async function boot(){
+  scheletro(el('lista'), 10);
+  try { clas = await prendiJSON('data/classifiche_2026.json'); }
+  catch(e){ el('clhead').innerHTML=''; mostraErrore(el('lista'), boot); return; }
+  try { colori = await (await fetch('team_colori.json')).json(); } catch(e){}
+  try { const sk = await (await fetch('data/schede_2026.json')).json();
+        numeri = Object.fromEntries(Object.entries(sk.piloti).map(([id,s])=>[id, s.numero])); } catch(e){}
+  try { motori = await (await fetch('data/motori_2026.json')).json(); } catch(e){}
+  const a = clas.aggiornato_al;
+  // La coda provvisoria si DICE: fino alla release f1db i punti dell'ultima gara vengono
+  // dalla classifica ufficiale FastF1, non dagli standings canonici. Stesso numero, fonte
+  // diversa — e chi guarda ha diritto di saperlo senza aprire il JSON.
+  const p = a.provvisorio;
+  el('agg').innerHTML = `aggiornato al <b>${a.titolo || a.nome || ('round '+a.round)}</b>` +
+    (a.data ? ` · ${new Date(a.data+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'long'})}` : '') +
+    (p ? ` · <span class="prov" title="I punti di ${p.gare.join(', ')} vengono dalla classifica ufficiale FIA (FastF1). Diventano canonici quando esce la release f1db che li copre.">provvisorio</span>` : '');
+  mostra('p');
+}
+el('tabP').addEventListener('click', ()=>mostra('p'));
+el('tabC').addEventListener('click', ()=>mostra('c'));
+boot();
+</script>
+</body>
+</html>

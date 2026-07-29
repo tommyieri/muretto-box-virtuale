@@ -1,0 +1,112 @@
+{
+  "id": "upgrade-red-bull-miami-2026",
+  "stato": "respinto",
+  "data": "2026-07-26",
+  "firma": "Muretto · Redazione tecnica",
+  "accent": "#2B478F",
+  "canale": "A+B (spunto di stampa, riprodotto e misurato sui nostri dati)",
+  "gara": "Stagione 2026",
+  "circuito": "10 gare",
+  "sessione": "Gara",
+  "tag": [
+    "upgrade",
+    "aerodinamica",
+    "telemetria",
+    "multi-gara"
+  ],
+  "occhiello": "L'upgrade ha funzionato? · Red Bull · Miami 2026",
+  "titolo": "L'upgrade di Red Bull a Miami: cosa dicono i dati (e cosa no)",
+  "sommario": "Red Bull ha portato un pacchetto d'aggiornamento a Miami. Non vediamo il pezzo, ma ne misuriamo l'effetto — e la prova piu' solida e' il distacco in qualifica dal piu' veloce, che si dimezza (da 0,97 a 0,38 s) con uno stacco netto: ognuna delle 7 gare dopo l'upgrade batte ognuna delle 3 prima. Il guadagno e' sul rettilineo: la velocita' di punta sale dal 34° al 61° percentile del campo. La forza-macchina complessiva cresce nella stessa direzione (+14), ma su poche gare e senza lo stesso stacco: un indizio, non la prova. QUALE pezzo l'abbia prodotto, i nostri dati non lo dicono.",
+  "sezioni": [
+    {
+      "tag": "Evidenza",
+      "titolo": "Il distacco in qualifica si dimezza — e le due meta' non si toccano",
+      "html": "<p>Il metro piu' pulito e' il <b>distacco in qualifica</b> dal piu' veloce, letto sul cronometro e ripulito dal circuito. Quello di Red Bull passa da <b>0,97 s</b> di media prima dell'upgrade a <b>0,38 s</b> dopo — in percentuale sul giro, da 1,12% a 0,48% — con i distacchi normalizzati fra i team di ogni gara (mai tempi assoluti: le piste sono diverse).</p><p>La forza di questo dato non e' la taglia del salto, ma che le due fasi <b>non si sovrappongono</b>: ognuna delle 7 gare dopo l'upgrade ha un distacco piu' piccolo di ognuna delle 3 gare prima — separazione di rango completa. Con uno split cosi' (3 contro 7) e' la disposizione piu' estrema possibile: un test di permutazione la colloca a <b>1 caso su 120</b> (p ≈ 0,008). E non e' un artefatto del sapere gia' dove guardare: un rilevatore cieco, che cerca nel forza-macchina la riduzione di distacco piu' netta e stabile della stagione senza sapere nulla dell'aggiornamento, indica <b>proprio Red Bull a Miami</b> come il numero uno (riduzione 0,65 punti %, la piu' grande del gruppo, con lo scarto piu' piccolo dopo: 0,18).</p><p>Un avvertimento d'obbligo: il distacco in qualifica misura il potenziale sul giro secco, <b>non</b> la posizione in griglia (che dipende anche da eliminazioni, bandiere e traffico) ne' il passo gara. Lo usiamo come metro del potenziale della macchina. Sul passo gara il progresso c'e' ma e' piu' tenue: da 1,35% a 0,79% dal piu' veloce. Nella gara stessa dell'upgrade il distacco dal piu' veloce si e' fermato a <b>0,17 s</b>, il miglior venerdi/sabato della prima parte di stagione. Il dimezzamento combacia, per ordine di grandezza, con la stima della stessa squadra riportata dalla stampa: convergenza, non prova.</p>",
+      "figura": {
+        "svg": "<svg viewBox=\"0 0 760 380\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"'JetBrains Mono',ui-monospace,Menlo,monospace\" class=\"art-svg\"><style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}.art-svg .grid{stroke:var(--line);stroke-width:1}</style><text x=\"60\" y=\"17\" class=\"lbl\" font-size=\"14\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\" letter-spacing=\"0.5\">Il distacco di Red Bull in qualifica, gara per gara</text><text x=\"60\" y=\"33\" font-size=\"10.5\">dal piu&#x27; veloce · prima 0,97 → dopo 0,38 s · ogni gara dopo l&#x27;upgrade sotto ogni gara prima (separazione completa)</text><line x1=\"60\" y1=\"336.0\" x2=\"744\" y2=\"336.0\" class=\"grid\"/><text x=\"54\" y=\"339.0\" font-size=\"9.5\" text-anchor=\"end\">0</text><line x1=\"60\" y1=\"235.3\" x2=\"744\" y2=\"235.3\" class=\"grid\"/><text x=\"54\" y=\"238.3\" font-size=\"9.5\" text-anchor=\"end\">0.5</text><line x1=\"60\" y1=\"134.6\" x2=\"744\" y2=\"134.6\" class=\"grid\"/><text x=\"54\" y=\"137.6\" font-size=\"9.5\" text-anchor=\"end\">1.0</text><text x=\"54\" y=\"46\" font-size=\"9\" text-anchor=\"end\" fill=\"var(--accent)\">distacco (s)</text><line x1=\"60.0\" y1=\"336\" x2=\"60.0\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"60.0\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">1</text><line x1=\"128.4\" y1=\"336\" x2=\"128.4\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"128.4\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">2</text><line x1=\"196.8\" y1=\"336\" x2=\"196.8\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"196.8\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">3</text><line x1=\"265.2\" y1=\"336\" x2=\"265.2\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"265.2\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">4</text><line x1=\"333.6\" y1=\"336\" x2=\"333.6\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"333.6\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">5</text><line x1=\"470.4\" y1=\"336\" x2=\"470.4\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"470.4\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">7</text><line x1=\"538.8\" y1=\"336\" x2=\"538.8\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"538.8\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">8</text><line x1=\"607.2\" y1=\"336\" x2=\"607.2\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"607.2\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">9</text><line x1=\"675.6\" y1=\"336\" x2=\"675.6\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"675.6\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">10</text><line x1=\"744.0\" y1=\"336\" x2=\"744.0\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"744.0\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">11</text><text x=\"402\" y=\"374\" font-size=\"9.5\" text-anchor=\"middle\">round del mondiale 2026 (numero di gara)</text><line x1=\"265.2\" y1=\"54\" x2=\"265.2\" y2=\"336\" stroke=\"var(--accent)\" stroke-width=\"1\" stroke-dasharray=\"3 3\" opacity=\"0.8\"/><text x=\"265.2\" y=\"48\" font-size=\"10.5\" text-anchor=\"middle\" class=\"lbl\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\">upgrade Miami</text><path d=\"M60.00 177.88 L128.40 147.06 L196.80 94.29 L265.20 302.56 L333.60 269.73 L470.40 267.11 L538.80 263.08 L607.20 208.09 L675.60 272.15 L744.00 231.66\" fill=\"none\" stroke=\"#2B478F\" stroke-width=\"2.2\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M60.00 140.61 L265.13 140.61\" fill=\"none\" stroke=\"var(--dim)\" stroke-width=\"2.2\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M265.20 259.46 L744.00 259.46\" fill=\"none\" stroke=\"var(--accent)\" stroke-width=\"2.2\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><rect x=\"64\" y=\"58\" width=\"14\" height=\"3\" rx=\"1.5\" fill=\"#2B478F\"/><text x=\"84\" y=\"62\" font-size=\"10.5\" class=\"lbl\">Red Bull · distacco quali</text><rect x=\"379\" y=\"58\" width=\"14\" height=\"3\" rx=\"1.5\" fill=\"var(--dim)\"/><text x=\"399\" y=\"62\" font-size=\"10.5\" class=\"lbl\">media prima</text><rect x=\"540\" y=\"58\" width=\"14\" height=\"3\" rx=\"1.5\" fill=\"var(--accent)\"/><text x=\"560\" y=\"62\" font-size=\"10.5\" class=\"lbl\">media dopo</text></svg>",
+        "didascalia": "Il distacco di Red Bull in qualifica dal piu' veloce, round per round. La verticale marca Miami; le linee piatte sono la media prima (0,97 s) e dopo (0,38 s). Dopo l'upgrade nessuna gara risale nella fascia di prima.",
+        "fonte": "forza_stagione (FastF1), elaborazione redazione"
+      }
+    },
+    {
+      "tag": "Evidenza",
+      "titolo": "Il guadagno e' sul rettilineo",
+      "html": "<p>Dove e' finito il guadagno? Separiamo i due canali con cui una macchina fa il tempo: la <b>velocita' di punta</b> (dritto) e la <b>velocita' in curva</b>, ciascuna come percentile nel campo (50 = media schieramento). La punta di Red Bull sale dal <b>34°</b> al <b>61°</b> percentile — da parte bassa del gruppo a meta' alta — e regge: <b>6 delle 7</b> gare dopo l'upgrade stanno sopra la mediana di schieramento (percentile ≥ 50).</p><p>La curva sembra dire il contrario, ma solo in media: scende (69° → 51°), e il calo e' in buona parte l'ombra di una sola gara. Proprio a Miami l'assetto scarico spinse il percentile in curva sul fondo del gruppo (0°); togliendo quella gara, nelle restanti la curva resta intorno al <b>59°</b> percentile, in linea col livello di prima. Il guadagno netto e quantificabile e' quello sul rettilineo.</p>",
+      "figura": {
+        "svg": "<svg viewBox=\"0 0 760 138\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"'JetBrains Mono',ui-monospace,Menlo,monospace\" class=\"art-svg\"><style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}</style><text x=\"88\" y=\"18\" class=\"lbl\" font-size=\"14\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\" letter-spacing=\"0.5\">Dove e&#x27; cambiata la macchina: punta vs curva</text><text x=\"744\" y=\"18\" font-size=\"10.5\" text-anchor=\"end\">percentile nel campo (50 = media)</text><line x1=\"88\" y1=\"36\" x2=\"88\" y2=\"120\" stroke=\"var(--line2)\" stroke-width=\"1\"/><text x=\"80\" y=\"53.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">punta · dopo</text><rect x=\"88\" y=\"43.0\" width=\"459.4\" height=\"12\" rx=\"2\" fill=\"#2B478F\" opacity=\"1\"/><text x=\"553.4\" y=\"53.0\" font-size=\"10\" class=\"lbl\">61</text><text x=\"80\" y=\"73.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">punta · prima</text><rect x=\"88\" y=\"63.0\" width=\"256.1\" height=\"12\" rx=\"2\" fill=\"#2B478F\" opacity=\"1\"/><text x=\"350.1\" y=\"73.0\" font-size=\"10\" class=\"lbl\">34</text><text x=\"80\" y=\"93.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">curva · dopo</text><rect x=\"88\" y=\"83.0\" width=\"384.1\" height=\"12\" rx=\"2\" fill=\"#2B478F\" opacity=\"0.32\"/><text x=\"478.1\" y=\"93.0\" font-size=\"10\" class=\"\">51</text><text x=\"80\" y=\"113.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">curva · prima</text><rect x=\"88\" y=\"103.0\" width=\"519.6\" height=\"12\" rx=\"2\" fill=\"#2B478F\" opacity=\"0.32\"/><text x=\"613.6\" y=\"113.0\" font-size=\"10\" class=\"\">69</text><text x=\"670\" y=\"134\" font-size=\"9.5\" text-anchor=\"end\">percentile della velocita&#x27; di punta e in curva · prima = pre-upgrade, dopo = da Miami</text></svg>",
+        "didascalia": "Velocita' di punta e in curva come percentile nel campo (50 = media), prima e dopo l'upgrade. Il salto netto e' sulla punta; il calo in curva e' quasi tutto dovuto alla sola Miami (assetto scarico). Percentile, non km/h: le piste non sono confrontabili in assoluto.",
+        "fonte": "dati_stagione (FastF1 car telemetry), elaborazione redazione"
+      }
+    },
+    {
+      "tag": "Contesto",
+      "titolo": "La forza-macchina conferma — ma e' il segnale piu' debole",
+      "html": "<p>La <b>forza-macchina</b> complessiva — un indice 0–100 per gara che fonde potenziale in qualifica e passo in aria pulita, normalizzato fra i team — si muove nella stessa direzione: da <b>65</b> nelle 3 gare prima a <b>79</b> nelle 7 dopo (+14).</p><p>E' un indizio di conferma, non la prova portante, e va preso con le molle. Primo: <b>nessuna separazione di rango</b> — la miglior gara prima dell'upgrade (Melbourne) valeva gia' <b>81</b>, quanto la media dopo, cosi' le due fasi si sovrappongono. Secondo: poggia su sole 3 gare prima. Un test di permutazione lo dà a p ≈ 0,05, al limite della significativita'. Per questo la prova-guida resta il distacco in qualifica, non l'indice.</p>",
+      "figura": {
+        "svg": "<svg viewBox=\"0 0 760 380\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"'JetBrains Mono',ui-monospace,Menlo,monospace\" class=\"art-svg\"><style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}.art-svg .grid{stroke:var(--line);stroke-width:1}</style><text x=\"60\" y=\"17\" class=\"lbl\" font-size=\"14\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\" letter-spacing=\"0.5\">La forza-macchina di Red Bull, gara per gara</text><text x=\"60\" y=\"33\" font-size=\"10.5\">prima 65 → dopo 79 (+14) · indice = potenziale + passo, percentile per-gara</text><line x1=\"60\" y1=\"336.0\" x2=\"744\" y2=\"336.0\" class=\"grid\"/><text x=\"54\" y=\"339.0\" font-size=\"9.5\" text-anchor=\"end\">0</text><line x1=\"60\" y1=\"265.5\" x2=\"744\" y2=\"265.5\" class=\"grid\"/><text x=\"54\" y=\"268.5\" font-size=\"9.5\" text-anchor=\"end\">25</text><line x1=\"60\" y1=\"195.0\" x2=\"744\" y2=\"195.0\" class=\"grid\"/><text x=\"54\" y=\"198.0\" font-size=\"9.5\" text-anchor=\"end\">50</text><line x1=\"60\" y1=\"124.5\" x2=\"744\" y2=\"124.5\" class=\"grid\"/><text x=\"54\" y=\"127.5\" font-size=\"9.5\" text-anchor=\"end\">75</text><line x1=\"60\" y1=\"54.0\" x2=\"744\" y2=\"54.0\" class=\"grid\"/><text x=\"54\" y=\"57.0\" font-size=\"9.5\" text-anchor=\"end\">100</text><text x=\"54\" y=\"46\" font-size=\"9\" text-anchor=\"end\" fill=\"var(--accent)\">indice 0–100</text><line x1=\"60.0\" y1=\"336\" x2=\"60.0\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"60.0\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">1</text><line x1=\"128.4\" y1=\"336\" x2=\"128.4\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"128.4\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">2</text><line x1=\"196.8\" y1=\"336\" x2=\"196.8\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"196.8\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">3</text><line x1=\"265.2\" y1=\"336\" x2=\"265.2\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"265.2\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">4</text><line x1=\"333.6\" y1=\"336\" x2=\"333.6\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"333.6\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">5</text><line x1=\"470.4\" y1=\"336\" x2=\"470.4\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"470.4\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">7</text><line x1=\"538.8\" y1=\"336\" x2=\"538.8\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"538.8\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">8</text><line x1=\"607.2\" y1=\"336\" x2=\"607.2\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"607.2\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">9</text><line x1=\"675.6\" y1=\"336\" x2=\"675.6\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"675.6\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">10</text><line x1=\"744.0\" y1=\"336\" x2=\"744.0\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"744.0\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">11</text><text x=\"402\" y=\"374\" font-size=\"9.5\" text-anchor=\"middle\">round del mondiale 2026 (numero di gara)</text><line x1=\"265.2\" y1=\"54\" x2=\"265.2\" y2=\"336\" stroke=\"var(--accent)\" stroke-width=\"1\" stroke-dasharray=\"3 3\" opacity=\"0.8\"/><text x=\"265.2\" y=\"48\" font-size=\"10.5\" text-anchor=\"middle\" class=\"lbl\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\">upgrade Miami</text><path d=\"M60.00 107.58 L128.40 172.44 L196.80 179.49 L265.20 107.58 L333.60 125.91 L470.40 113.22 L538.80 85.02 L607.20 123.09 L675.60 94.89 L744.00 138.60\" fill=\"none\" stroke=\"#2B478F\" stroke-width=\"2.2\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M60.00 153.26 L265.13 153.26\" fill=\"none\" stroke=\"var(--dim)\" stroke-width=\"2.2\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M265.20 112.66 L744.00 112.66\" fill=\"none\" stroke=\"var(--accent)\" stroke-width=\"2.2\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><rect x=\"64\" y=\"58\" width=\"14\" height=\"3\" rx=\"1.5\" fill=\"#2B478F\"/><text x=\"84\" y=\"62\" font-size=\"10.5\" class=\"lbl\">Red Bull · forza-indice</text><rect x=\"357\" y=\"58\" width=\"14\" height=\"3\" rx=\"1.5\" fill=\"var(--dim)\"/><text x=\"377\" y=\"62\" font-size=\"10.5\" class=\"lbl\">media prima</text><rect x=\"518\" y=\"58\" width=\"14\" height=\"3\" rx=\"1.5\" fill=\"var(--accent)\"/><text x=\"538\" y=\"62\" font-size=\"10.5\" class=\"lbl\">media dopo</text></svg>",
+        "didascalia": "La forza-macchina di Red Bull round per round (indice 0–100). La verticale marca Miami; le linee piatte sono la media prima (65) e dopo (79). Il gradino c'e', ma Melbourne (gara prima) tocca gia' il livello di dopo: nessuna separazione netta.",
+        "fonte": "forza_macchina.json (FastF1), elaborazione redazione"
+      }
+    },
+    {
+      "tag": "Causa",
+      "titolo": "Perche' la punta sale — e cosa resta invisibile",
+      "html": "<p>Attenzione al confine. La velocita' di punta <b>non e' solo resistenza aerodinamica</b>: dipende anche dalla potenza dell'unita' motrice e da come questa viene messa a terra sul rettilineo. I due contributi — meno resistenza, o piu' spinta — sui nostri canali <b>non si separano</b>.</p><p>Perche' la punta salga senza che la curva migliori, la lettura naturale e' una macchina che sul dritto <b>perde meno</b> o <b>spinge di piu'</b>. Ma se dietro ci sia meno ala, un'ala che si “apre” in rettilineo, l'assetto o la mappatura del motore, dai dati non lo possiamo dire: il singolo pezzo resta una variabile latente.</p>"
+    },
+    {
+      "tag": "Effetto",
+      "titolo": "Cosa possiamo dire, e cosa no",
+      "html": "<p>Il <b>sintomo</b> e' misurato e netto: da Miami la macchina di Red Bull e' piu' veloce, il guadagno e' sul rettilineo, e regge per 7 gare. Il segnale piu' solido e' il distacco in qualifica, che si dimezza (da 0,97 a 0,38 s) senza mai risalire, dopo l'upgrade, nella fascia di prima. La velocita' di punta (34° → 61°) e la forza-macchina complessiva (+14) puntano nella stessa direzione.</p><p>La <b>causa</b>, no. Quale pezzo abbia prodotto il guadagno — e persino quanto sia “upgrade” e quanto sia “aver sistemato i problemi”, come ha ammesso lo stesso team — e' fuori dalla portata dei nostri dati. Misuriamo l'effetto sulla macchina, non il componente che l'ha causato. Ma su una cosa i numeri sono netti: l'upgrade, comunque lo si chiami, <b>ha funzionato</b>.</p>"
+    }
+  ],
+  "provenienza": [
+    {
+      "grandezza": "distacco in qualifica dal piu' veloce (prima → dopo) — PROVA-GUIDA",
+      "valore": "0,97 → 0,38 s (1,12% → 0,48%, −0,65 pp) · separazione di rango completa (7 dopo tutte sotto le 3 prima), permutazione 1 su 120 (p ≈ 0,008)",
+      "stato": "MISURATO",
+      "da": "forza_stagione/*.json (gap-al-leader in s e % dal leader) + test di permutazione/separazione di rango"
+    },
+    {
+      "grandezza": "DOVE: velocita' di punta vs curva (percentile-campo, prima → dopo)",
+      "valore": "punta 34°→61° (6/7 gare dopo ≥50°) · curva 69°→51° (per lo piu' per l'outlier Miami, 0°; senza Miami ≈59°)",
+      "stato": "MISURATO",
+      "da": "dati_stagione/*.json (vmax e cornering km/h), percentile fra i team per-gara"
+    },
+    {
+      "grandezza": "forza-indice prima → dopo (segnale di CONTESTO)",
+      "valore": "65 → 79 (+14) · nessuna separazione di rango (Melbourne gia' 81), 3 gare prima, permutazione p ≈ 0,05",
+      "stato": "MISURATO",
+      "da": "forza_macchina.json (indice = potenziale + passo, percentile per-gara), media prima/dopo + permutazione"
+    },
+    {
+      "grandezza": "conferma del rilevatore cieco",
+      "valore": "#1 della stagione, split al round 4 (riduzione 0,65 pp, σ dopo 0,18)",
+      "stato": "MISURATO",
+      "da": "rilevatore indipendente su forza_stagione (max riduzione distacco-qualifica, split ottimo)"
+    },
+    {
+      "grandezza": "QUALE componente ha prodotto il guadagno",
+      "valore": "non identificabile (la punta mescola potenza PU e resistenza; upgrade vs 'problemi risolti' non separabili)",
+      "stato": "NON_MISURABILE",
+      "da": "nessun canale isola il singolo pezzo; ammesso dallo stesso team (vedi fonti)"
+    }
+  ],
+  "fonti": [
+    {
+      "tipo": "spunto (stampa)",
+      "testo": "PlanetF1 — “Red Bull upgrades find missing 0.6s as RB22 breakthrough emerges” (gap sceso da ~1,2-1,3 s a ~0,6 s; il TP Mekies: difficile dire quanto sia upgrade e quanto “aver sistemato i problemi”). https://www.planetf1.com/news/red-bull-rb22-upgrades-miami-grand-prix-2026"
+    },
+    {
+      "tipo": "spunto (stampa)",
+      "testo": "GPblog — “Red Bull's Miami upgrade analysed: how RB22 ‘B’ spec improved performance” (ala “Macarena” che ruota 160° in modalita' rettilineo per ridurre la resistenza; RB22 fra le piu' veloci sul dritto in qualifica a Miami). https://www.gpblog.com/en/tech/red-bull-finally-able-to-challenge-mercedes-thanks-to-updates"
+    },
+    {
+      "tipo": "dati",
+      "testo": "FastF1 3.8.3 — qualifica e gara di 10 GP 2026; potenziale = miglior giro di qualifica (team = migliore dei due piloti), passo = mediana in aria pulita, vmax/cornering = telemetria vettura (giri lanciati)"
+    },
+    {
+      "tipo": "metodo",
+      "testo": "ai_lab/redazione/genera_upgrade.py — confronto prima/dopo la gara-upgrade; distacchi normalizzati (percentile e % dal leader), mai tempi assoluti; prova-guida scelta per robustezza (separazione di rango + test di permutazione); rilevatore cieco per la conferma"
+    }
+  ]
+}

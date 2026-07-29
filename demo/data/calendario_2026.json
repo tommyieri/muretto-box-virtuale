@@ -1,0 +1,809 @@
+{
+ "_nota": "GENERATO da gen_calendario.py (f1db v2026.9.1, races 2026). Non modificare a mano: rilanciare il generatore.",
+ "stagione": 2026,
+ "gare": [
+  {
+   "round": 1,
+   "data": "2026-03-08",
+   "gp": "australia",
+   "circuitId": "melbourne",
+   "nome": "Australia",
+   "titolo": "GP d'Australia",
+   "circuito": "Melbourne Grand Prix Circuit",
+   "giri": 58,
+   "alpha2": "AU",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-03-06",
+     "ora_utc": "01:30"
+    },
+    "fp2": {
+     "data": "2026-03-06",
+     "ora_utc": "05:00"
+    },
+    "fp3": {
+     "data": "2026-03-07",
+     "ora_utc": "01:30"
+    },
+    "qualifiche": {
+     "data": "2026-03-07",
+     "ora_utc": "05:00"
+    },
+    "gara": {
+     "data": "2026-03-08",
+     "ora_utc": "04:00"
+    }
+   },
+   "gara_demo": "Australia",
+   "vincitore": {
+    "sigla": "RUS",
+    "team": "Mercedes"
+   }
+  },
+  {
+   "round": 2,
+   "data": "2026-03-15",
+   "gp": "china",
+   "circuitId": "shanghai",
+   "nome": "Cina",
+   "titolo": "GP di Cina",
+   "circuito": "Shanghai International Circuit",
+   "giri": 56,
+   "alpha2": "CN",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-03-13",
+     "ora_utc": "03:30"
+    },
+    "sprint_quali": {
+     "data": "2026-03-13",
+     "ora_utc": "07:30"
+    },
+    "sprint": {
+     "data": "2026-03-14",
+     "ora_utc": "03:00"
+    },
+    "qualifiche": {
+     "data": "2026-03-14",
+     "ora_utc": "07:00"
+    },
+    "gara": {
+     "data": "2026-03-15",
+     "ora_utc": "07:00"
+    }
+   },
+   "gara_demo": "Cina",
+   "vincitore": {
+    "sigla": "ANT",
+    "team": "Mercedes"
+   }
+  },
+  {
+   "round": 3,
+   "data": "2026-03-29",
+   "gp": "japan",
+   "circuitId": "suzuka",
+   "nome": "Giappone",
+   "titolo": "GP del Giappone",
+   "circuito": "Suzuka Circuit",
+   "giri": 53,
+   "alpha2": "JP",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-03-27",
+     "ora_utc": "02:30"
+    },
+    "fp2": {
+     "data": "2026-03-27",
+     "ora_utc": "06:00"
+    },
+    "fp3": {
+     "data": "2026-03-28",
+     "ora_utc": "02:30"
+    },
+    "qualifiche": {
+     "data": "2026-03-28",
+     "ora_utc": "06:00"
+    },
+    "gara": {
+     "data": "2026-03-29",
+     "ora_utc": "05:00"
+    }
+   },
+   "gara_demo": "Giappone",
+   "vincitore": {
+    "sigla": "ANT",
+    "team": "Mercedes"
+   }
+  },
+  {
+   "round": 4,
+   "data": "2026-05-03",
+   "gp": "miami",
+   "circuitId": "miami",
+   "nome": "Miami",
+   "titolo": "GP di Miami",
+   "circuito": "Miami International Autodrome",
+   "giri": 57,
+   "alpha2": "US",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-05-01",
+     "ora_utc": "16:00"
+    },
+    "sprint_quali": {
+     "data": "2026-05-01",
+     "ora_utc": "20:30"
+    },
+    "sprint": {
+     "data": "2026-05-02",
+     "ora_utc": "16:00"
+    },
+    "qualifiche": {
+     "data": "2026-05-02",
+     "ora_utc": "20:00"
+    },
+    "gara": {
+     "data": "2026-05-03",
+     "ora_utc": "17:00"
+    }
+   },
+   "gara_demo": "Miami",
+   "vincitore": {
+    "sigla": "ANT",
+    "team": "Mercedes"
+   }
+  },
+  {
+   "round": 5,
+   "data": "2026-05-24",
+   "gp": "canada",
+   "circuitId": "montreal",
+   "nome": "Canada",
+   "titolo": "GP del Canada",
+   "circuito": "Circuit Gilles Villeneuve",
+   "giri": 68,
+   "alpha2": "CA",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-05-22",
+     "ora_utc": "16:30"
+    },
+    "sprint_quali": {
+     "data": "2026-05-22",
+     "ora_utc": "20:30"
+    },
+    "sprint": {
+     "data": "2026-05-23",
+     "ora_utc": "16:00"
+    },
+    "qualifiche": {
+     "data": "2026-05-23",
+     "ora_utc": "20:00"
+    },
+    "gara": {
+     "data": "2026-05-24",
+     "ora_utc": "20:00"
+    }
+   },
+   "gara_demo": "Canada",
+   "vincitore": {
+    "sigla": "ANT",
+    "team": "Mercedes"
+   }
+  },
+  {
+   "round": 6,
+   "data": "2026-06-07",
+   "gp": "monaco",
+   "circuitId": "monaco",
+   "nome": "Monaco",
+   "titolo": "GP di Monaco",
+   "circuito": "Circuit de Monaco",
+   "giri": 78,
+   "alpha2": "MC",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-06-05",
+     "ora_utc": "11:30"
+    },
+    "fp2": {
+     "data": "2026-06-05",
+     "ora_utc": "15:00"
+    },
+    "fp3": {
+     "data": "2026-06-06",
+     "ora_utc": "10:30"
+    },
+    "qualifiche": {
+     "data": "2026-06-06",
+     "ora_utc": "14:00"
+    },
+    "gara": {
+     "data": "2026-06-07",
+     "ora_utc": "13:00"
+    }
+   },
+   "gara_demo": "Monaco",
+   "vincitore": {
+    "sigla": "ANT",
+    "team": "Mercedes"
+   }
+  },
+  {
+   "round": 7,
+   "data": "2026-06-14",
+   "gp": "barcelona-catalunya",
+   "circuitId": "catalunya",
+   "nome": "Spagna",
+   "titolo": "GP di Spagna — Barcellona",
+   "circuito": "Circuit de Barcelona-Catalunya",
+   "giri": 66,
+   "alpha2": "ES",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-06-12",
+     "ora_utc": "11:30"
+    },
+    "fp2": {
+     "data": "2026-06-12",
+     "ora_utc": "15:00"
+    },
+    "fp3": {
+     "data": "2026-06-13",
+     "ora_utc": "10:30"
+    },
+    "qualifiche": {
+     "data": "2026-06-13",
+     "ora_utc": "14:00"
+    },
+    "gara": {
+     "data": "2026-06-14",
+     "ora_utc": "13:00"
+    }
+   },
+   "gara_demo": "Spagna",
+   "vincitore": {
+    "sigla": "HAM",
+    "team": "Ferrari"
+   }
+  },
+  {
+   "round": 8,
+   "data": "2026-06-28",
+   "gp": "austria",
+   "circuitId": "spielberg",
+   "nome": "Austria",
+   "titolo": "GP d'Austria",
+   "circuito": "Red Bull Ring",
+   "giri": 71,
+   "alpha2": "AT",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-06-26",
+     "ora_utc": "11:30"
+    },
+    "fp2": {
+     "data": "2026-06-26",
+     "ora_utc": "15:00"
+    },
+    "fp3": {
+     "data": "2026-06-27",
+     "ora_utc": "10:30"
+    },
+    "qualifiche": {
+     "data": "2026-06-27",
+     "ora_utc": "14:00"
+    },
+    "gara": {
+     "data": "2026-06-28",
+     "ora_utc": "13:00"
+    }
+   },
+   "gara_demo": "Austria",
+   "vincitore": {
+    "sigla": "RUS",
+    "team": "Mercedes"
+   }
+  },
+  {
+   "round": 9,
+   "data": "2026-07-05",
+   "gp": "great-britain",
+   "circuitId": "silverstone",
+   "nome": "Gran Bretagna",
+   "titolo": "GP di Gran Bretagna",
+   "circuito": "Silverstone Circuit",
+   "giri": 52,
+   "alpha2": "GB",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-07-03",
+     "ora_utc": "11:30"
+    },
+    "sprint_quali": {
+     "data": "2026-07-03",
+     "ora_utc": "15:30"
+    },
+    "sprint": {
+     "data": "2026-07-04",
+     "ora_utc": "11:00"
+    },
+    "qualifiche": {
+     "data": "2026-07-04",
+     "ora_utc": "15:00"
+    },
+    "gara": {
+     "data": "2026-07-05",
+     "ora_utc": "14:00"
+    }
+   },
+   "gara_demo": "Gran Bretagna",
+   "vincitore": {
+    "sigla": "LEC",
+    "team": "Ferrari"
+   }
+  },
+  {
+   "round": 10,
+   "data": "2026-07-19",
+   "gp": "belgium",
+   "circuitId": "spa-francorchamps",
+   "nome": "Belgio",
+   "titolo": "GP del Belgio",
+   "circuito": "Circuit de Spa-Francorchamps",
+   "giri": 44,
+   "alpha2": "BE",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-07-17",
+     "ora_utc": "11:30"
+    },
+    "fp2": {
+     "data": "2026-07-17",
+     "ora_utc": "15:00"
+    },
+    "fp3": {
+     "data": "2026-07-18",
+     "ora_utc": "10:30"
+    },
+    "qualifiche": {
+     "data": "2026-07-18",
+     "ora_utc": "14:00"
+    },
+    "gara": {
+     "data": "2026-07-19",
+     "ora_utc": "13:00"
+    }
+   },
+   "gara_demo": "Belgio",
+   "vincitore": {
+    "sigla": "ANT",
+    "team": "Mercedes"
+   }
+  },
+  {
+   "round": 11,
+   "data": "2026-07-26",
+   "gp": "hungary",
+   "circuitId": "hungaroring",
+   "nome": "Ungheria",
+   "titolo": "GP d'Ungheria",
+   "circuito": "Hungaroring",
+   "giri": 70,
+   "alpha2": "HU",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-07-24",
+     "ora_utc": "11:30"
+    },
+    "fp2": {
+     "data": "2026-07-24",
+     "ora_utc": "15:00"
+    },
+    "fp3": {
+     "data": "2026-07-25",
+     "ora_utc": "10:30"
+    },
+    "qualifiche": {
+     "data": "2026-07-25",
+     "ora_utc": "14:00"
+    },
+    "gara": {
+     "data": "2026-07-26",
+     "ora_utc": "13:00"
+    }
+   },
+   "gara_demo": "Ungheria",
+   "vincitore": {
+    "sigla": "NOR",
+    "team": "McLaren"
+   }
+  },
+  {
+   "round": 12,
+   "data": "2026-08-23",
+   "gp": "netherlands",
+   "circuitId": "zandvoort",
+   "nome": "Olanda",
+   "titolo": "GP d'Olanda",
+   "circuito": "Circuit Park Zandvoort",
+   "giri": 72,
+   "alpha2": "NL",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-08-21",
+     "ora_utc": "10:30"
+    },
+    "sprint_quali": {
+     "data": "2026-08-21",
+     "ora_utc": "14:30"
+    },
+    "sprint": {
+     "data": "2026-08-22",
+     "ora_utc": "10:00"
+    },
+    "qualifiche": {
+     "data": "2026-08-22",
+     "ora_utc": "14:00"
+    },
+    "gara": {
+     "data": "2026-08-23",
+     "ora_utc": "13:00"
+    }
+   },
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 13,
+   "data": "2026-09-06",
+   "gp": "italy",
+   "circuitId": "monza",
+   "nome": "Italia",
+   "titolo": "GP d'Italia",
+   "circuito": "Autodromo Nazionale Monza",
+   "giri": 53,
+   "alpha2": "IT",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-09-04",
+     "ora_utc": "10:30"
+    },
+    "fp2": {
+     "data": "2026-09-04",
+     "ora_utc": "14:00"
+    },
+    "fp3": {
+     "data": "2026-09-05",
+     "ora_utc": "10:30"
+    },
+    "qualifiche": {
+     "data": "2026-09-05",
+     "ora_utc": "14:00"
+    },
+    "gara": {
+     "data": "2026-09-06",
+     "ora_utc": "13:00"
+    }
+   },
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 14,
+   "data": "2026-09-13",
+   "gp": "spain",
+   "circuitId": "madring",
+   "nome": "Madrid",
+   "titolo": "GP di Madrid",
+   "circuito": "Circuito de Madring",
+   "giri": 57,
+   "alpha2": "ES",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-09-11",
+     "ora_utc": "11:30"
+    },
+    "fp2": {
+     "data": "2026-09-11",
+     "ora_utc": "15:00"
+    },
+    "fp3": {
+     "data": "2026-09-12",
+     "ora_utc": "10:30"
+    },
+    "qualifiche": {
+     "data": "2026-09-12",
+     "ora_utc": "14:00"
+    },
+    "gara": {
+     "data": "2026-09-13",
+     "ora_utc": "13:00"
+    }
+   },
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 15,
+   "data": "2026-09-26",
+   "gp": "azerbaijan",
+   "circuitId": "baku",
+   "nome": "Azerbaigian",
+   "titolo": "GP dell'Azerbaigian",
+   "circuito": "Baku City Circuit",
+   "giri": 51,
+   "alpha2": "AZ",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-09-24",
+     "ora_utc": "08:30"
+    },
+    "fp2": {
+     "data": "2026-09-24",
+     "ora_utc": "12:00"
+    },
+    "fp3": {
+     "data": "2026-09-25",
+     "ora_utc": "08:30"
+    },
+    "qualifiche": {
+     "data": "2026-09-25",
+     "ora_utc": "12:00"
+    },
+    "gara": {
+     "data": "2026-09-26",
+     "ora_utc": "11:00"
+    }
+   },
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 16,
+   "data": "2026-10-11",
+   "gp": "singapore",
+   "circuitId": "marina-bay",
+   "nome": "Singapore",
+   "titolo": "GP di Singapore",
+   "circuito": "Marina Bay Street Circuit",
+   "giri": 62,
+   "alpha2": "SG",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-10-09",
+     "ora_utc": "09:30"
+    },
+    "sprint_quali": {
+     "data": "2026-10-09",
+     "ora_utc": "12:30"
+    },
+    "sprint": {
+     "data": "2026-10-10",
+     "ora_utc": "09:00"
+    },
+    "qualifiche": {
+     "data": "2026-10-10",
+     "ora_utc": "13:00"
+    },
+    "gara": {
+     "data": "2026-10-11",
+     "ora_utc": "12:00"
+    }
+   },
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 17,
+   "data": "2026-10-25",
+   "gp": "united-states",
+   "circuitId": "austin",
+   "nome": "Stati Uniti",
+   "titolo": "GP degli Stati Uniti",
+   "circuito": "Circuit of the Americas",
+   "giri": 56,
+   "alpha2": "US",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-10-23",
+     "ora_utc": "17:30"
+    },
+    "fp2": {
+     "data": "2026-10-23",
+     "ora_utc": "21:00"
+    },
+    "fp3": {
+     "data": "2026-10-24",
+     "ora_utc": "17:30"
+    },
+    "qualifiche": {
+     "data": "2026-10-24",
+     "ora_utc": "21:00"
+    },
+    "gara": {
+     "data": "2026-10-25",
+     "ora_utc": "20:00"
+    }
+   },
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 18,
+   "data": "2026-11-01",
+   "gp": "mexico",
+   "circuitId": "mexico-city",
+   "nome": "Messico",
+   "titolo": "GP del Messico",
+   "circuito": "Autódromo Hermanos Rodríguez",
+   "giri": 71,
+   "alpha2": "MX",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-10-30",
+     "ora_utc": "18:30"
+    },
+    "fp2": {
+     "data": "2026-10-30",
+     "ora_utc": "22:00"
+    },
+    "fp3": {
+     "data": "2026-10-31",
+     "ora_utc": "17:30"
+    },
+    "qualifiche": {
+     "data": "2026-10-31",
+     "ora_utc": "21:00"
+    },
+    "gara": {
+     "data": "2026-11-01",
+     "ora_utc": "20:00"
+    }
+   },
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 19,
+   "data": "2026-11-08",
+   "gp": "sao-paulo",
+   "circuitId": "interlagos",
+   "nome": "San Paolo",
+   "titolo": "GP di San Paolo",
+   "circuito": "Autódromo José Carlos Pace",
+   "giri": 71,
+   "alpha2": "BR",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-11-06",
+     "ora_utc": "15:30"
+    },
+    "fp2": {
+     "data": "2026-11-06",
+     "ora_utc": "19:00"
+    },
+    "fp3": {
+     "data": "2026-11-07",
+     "ora_utc": "14:30"
+    },
+    "qualifiche": {
+     "data": "2026-11-07",
+     "ora_utc": "18:00"
+    },
+    "gara": {
+     "data": "2026-11-08",
+     "ora_utc": "17:00"
+    }
+   },
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 20,
+   "data": "2026-11-22",
+   "gp": "las-vegas",
+   "circuitId": "las-vegas",
+   "nome": "Las Vegas",
+   "titolo": "GP di Las Vegas",
+   "circuito": "Las Vegas Street Circuit",
+   "giri": 50,
+   "alpha2": "US",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-11-20",
+     "ora_utc": "00:30"
+    },
+    "fp2": {
+     "data": "2026-11-20",
+     "ora_utc": "04:00"
+    },
+    "fp3": {
+     "data": "2026-11-21",
+     "ora_utc": "00:30"
+    },
+    "qualifiche": {
+     "data": "2026-11-21",
+     "ora_utc": "04:00"
+    },
+    "gara": {
+     "data": "2026-11-22",
+     "ora_utc": "04:00"
+    }
+   },
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 21,
+   "data": "2026-11-29",
+   "gp": "qatar",
+   "circuitId": "lusail",
+   "nome": "Qatar",
+   "titolo": "GP del Qatar",
+   "circuito": "Lusail International Circuit",
+   "giri": 57,
+   "alpha2": "QA",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-11-27",
+     "ora_utc": "13:30"
+    },
+    "fp2": {
+     "data": "2026-11-27",
+     "ora_utc": "17:00"
+    },
+    "fp3": {
+     "data": "2026-11-28",
+     "ora_utc": "14:30"
+    },
+    "qualifiche": {
+     "data": "2026-11-28",
+     "ora_utc": "18:00"
+    },
+    "gara": {
+     "data": "2026-11-29",
+     "ora_utc": "16:00"
+    }
+   },
+   "gara_demo": null,
+   "vincitore": null
+  },
+  {
+   "round": 22,
+   "data": "2026-12-06",
+   "gp": "abu-dhabi",
+   "circuitId": "yas-marina",
+   "nome": "Abu Dhabi",
+   "titolo": "GP di Abu Dhabi",
+   "circuito": "Yas Marina Circuit",
+   "giri": 58,
+   "alpha2": "AE",
+   "sessioni": {
+    "fp1": {
+     "data": "2026-12-04",
+     "ora_utc": "09:30"
+    },
+    "fp2": {
+     "data": "2026-12-04",
+     "ora_utc": "13:00"
+    },
+    "fp3": {
+     "data": "2026-12-05",
+     "ora_utc": "10:30"
+    },
+    "qualifiche": {
+     "data": "2026-12-05",
+     "ora_utc": "14:00"
+    },
+    "gara": {
+     "data": "2026-12-06",
+     "ora_utc": "13:00"
+    }
+   },
+   "gara_demo": null,
+   "vincitore": null
+  }
+ ]
+}

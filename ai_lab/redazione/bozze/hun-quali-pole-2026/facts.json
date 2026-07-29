@@ -1,0 +1,203 @@
+{
+  "id": "hun-quali-pole-2026",
+  "anno": 2026,
+  "gara": "Ungheria",
+  "circuito": "Hungaroring",
+  "sessione": "Qualifiche",
+  "round": 11,
+  "protagonista": "NOR",
+  "rivale": "HAM",
+  "team": {
+    "NOR": "McLaren",
+    "HAM": "Ferrari"
+  },
+  "tempi": {
+    "NOR": "1:17.207",
+    "HAM": "1:17.219"
+  },
+  "pole_margin_s": 0.012,
+  "settori_s": {
+    "NOR": [
+      27.364,
+      27.621,
+      22.222
+    ],
+    "HAM": [
+      27.329,
+      27.842,
+      22.048
+    ]
+  },
+  "delta_settore_nor_meno_ham": [
+    0.035,
+    -0.221,
+    0.174
+  ],
+  "vincitore_settore": [
+    "HAM",
+    "NOR",
+    "HAM"
+  ],
+  "best_flag": {
+    "NOR": [
+      null,
+      "o",
+      null
+    ],
+    "HAM": [
+      "o",
+      null,
+      "o"
+    ]
+  },
+  "recupero_ham_s1_s3_s": 0.209,
+  "perdita_ham_s2_s": 0.221,
+  "confine_settori_m": {
+    "S1_fine": 1725.0,
+    "S2_fine": 3247.0,
+    "giro": 4327.0
+  },
+  "vmax_kmh": {
+    "NOR": 331.0,
+    "HAM": 333.0
+  },
+  "v_linea_nor_kmh": 284.0,
+  "gap_luce_m": 0.95,
+  "traccia_vantaggio": {
+    "fine_s": 0.014,
+    "max_nor": {
+      "dist_m": 3413.0,
+      "val_s": 0.194
+    },
+    "max_ham": {
+      "dist_m": 719.0,
+      "val_s": -0.047
+    }
+  },
+  "minime_curva": [
+    {
+      "curva": "T1",
+      "nor": 92.0,
+      "ham": 94.0,
+      "delta_nor_meno_ham": -2.0,
+      "settore": 1
+    },
+    {
+      "curva": "T1A",
+      "nor": 235.0,
+      "ham": 234.0,
+      "delta_nor_meno_ham": 1.0,
+      "settore": 1
+    },
+    {
+      "curva": "T2",
+      "nor": 121.0,
+      "ham": 120.0,
+      "delta_nor_meno_ham": 1.0,
+      "settore": 1
+    },
+    {
+      "curva": "T3",
+      "nor": 231.0,
+      "ham": 232.0,
+      "delta_nor_meno_ham": -1.0,
+      "settore": 1
+    },
+    {
+      "curva": "T4",
+      "nor": 234.0,
+      "ham": 231.0,
+      "delta_nor_meno_ham": 3.0,
+      "settore": 2
+    },
+    {
+      "curva": "T5",
+      "nor": 150.0,
+      "ham": 149.0,
+      "delta_nor_meno_ham": 1.0,
+      "settore": 2
+    },
+    {
+      "curva": "T6",
+      "nor": 111.0,
+      "ham": 104.0,
+      "delta_nor_meno_ham": 7.0,
+      "settore": 2
+    },
+    {
+      "curva": "T7",
+      "nor": 111.0,
+      "ham": 104.0,
+      "delta_nor_meno_ham": 7.0,
+      "settore": 2
+    },
+    {
+      "curva": "T8",
+      "nor": 167.0,
+      "ham": 169.0,
+      "delta_nor_meno_ham": -2.0,
+      "settore": 2
+    },
+    {
+      "curva": "T9",
+      "nor": 154.0,
+      "ham": 154.0,
+      "delta_nor_meno_ham": 0.0,
+      "settore": 2
+    },
+    {
+      "curva": "T10",
+      "nor": 245.0,
+      "ham": 245.0,
+      "delta_nor_meno_ham": 0.0,
+      "settore": 2
+    },
+    {
+      "curva": "T11",
+      "nor": 220.0,
+      "ham": 226.0,
+      "delta_nor_meno_ham": -6.0,
+      "settore": 2
+    },
+    {
+      "curva": "T12",
+      "nor": 115.0,
+      "ham": 117.0,
+      "delta_nor_meno_ham": -2.0,
+      "settore": 3
+    },
+    {
+      "curva": "T12A",
+      "nor": 164.0,
+      "ham": 186.0,
+      "delta_nor_meno_ham": -22.0,
+      "settore": 3
+    },
+    {
+      "curva": "T13",
+      "nor": 98.0,
+      "ham": 98.0,
+      "delta_nor_meno_ham": 0.0,
+      "settore": 3
+    },
+    {
+      "curva": "T14",
+      "nor": 132.0,
+      "ham": 135.0,
+      "delta_nor_meno_ham": -3.0,
+      "settore": 3
+    }
+  ],
+  "s2_curve_a_nor": [
+    "T4",
+    "T5",
+    "T6",
+    "T7"
+  ],
+  "s2_best": {
+    "curva": "T6",
+    "delta": 7.0
+  },
+  "outlier_misura": "T12A",
+  "n_curve": 16
+}

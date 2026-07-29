@@ -1,0 +1,3517 @@
+{
+  "metodo": {
+    "natura": "estrazione deterministica, nessun LLM coinvolto per costruzione",
+    "fonte_fatti": "sidecar <ID>.facts.json congelato dall'Auditor",
+    "fonte_ipotesi": "sezione \"## Ipotesi\" del dossier, riportata VERBATIM",
+    "grana_osservazione": "dossier x componente x mescola",
+    "natura_collegamenti": "co-occorrenze misurate fra osservazioni che condividono componente e condizione; mai causali, mai testuali",
+    "regola_confidenza": "sale con la replicazione su circuiti diversi, non con la dimensione dell'effetto: una sola gara resta \"basso\"",
+    "soglie": {
+      "MIN_STINT_OSSERVAZIONE": 2,
+      "FATTORE_MARCATO": 2.0,
+      "GARE_MEDIO": 2,
+      "GARE_ALTO": 3,
+      "STINT_MEDIO": 5
+    },
+    "limiti": [
+      "le osservazioni vengono dalle stesse gare che alimentano i coefficienti del progetto: la replicazione qui e' fra circuiti, NON fuori campione",
+      "un fenomeno \"non_classificabile\" resta tale: l'estrattore non scioglie ambiguita' che la misura non ha sciolto",
+      "osservazioni con versioni diverse del motore non sono confrontabili"
+    ]
+  },
+  "copertura": {
+    "dossier_letti": 6,
+    "dossier_saltati": [],
+    "osservazioni": 36,
+    "fenomeni": 11,
+    "collegamenti": 65,
+    "ipotesi": 0,
+    "versioni_motore": [
+      "sha256:d2bee2dca871"
+    ],
+    "motore_omogeneo": true
+  },
+  "dossier": [
+    {
+      "id": "AUD-AUSTRA-20260721-01",
+      "gara": "Australia",
+      "data": "2026-07-21 08:13",
+      "versione_motore": "sha256:d2bee2dca871",
+      "stato": "aperto",
+      "generato_da": "deterministico (LLM non disponibile)",
+      "n_osservazioni": 8,
+      "gruppi_scartati_per_supporto": [
+        {
+          "componente": "non_classificabile",
+          "mescola": "SOFT",
+          "n_stint": 1,
+          "motivo": "supporto < 2 stint"
+        },
+        {
+          "componente": "rumore",
+          "mescola": "HARD",
+          "n_stint": 1,
+          "motivo": "supporto < 2 stint"
+        },
+        {
+          "componente": "traffico",
+          "mescola": "HARD",
+          "n_stint": 1,
+          "motivo": "supporto < 2 stint"
+        }
+      ],
+      "ipotesi": [],
+      "nota_ipotesi": "dossier in modalita' deterministica: nessuna ipotesi formulata",
+      "confidenza_dichiarata_testo": "Non valutabile meccanicamente. Elementi oggettivi disponibili: campione =\n45 stint; rapporto effetto/rumore mediano =\n0.2×."
+    },
+    {
+      "id": "AUD-BELGIO-20260721-01",
+      "gara": "Belgio",
+      "data": "2026-07-21 08:13",
+      "versione_motore": "sha256:d2bee2dca871",
+      "stato": "aperto",
+      "generato_da": "deterministico (LLM non disponibile)",
+      "n_osservazioni": 8,
+      "gruppi_scartati_per_supporto": [
+        {
+          "componente": "traffico",
+          "mescola": "MEDIUM",
+          "n_stint": 1,
+          "motivo": "supporto < 2 stint"
+        }
+      ],
+      "ipotesi": [],
+      "nota_ipotesi": "dossier in modalita' deterministica: nessuna ipotesi formulata",
+      "confidenza_dichiarata_testo": "Non valutabile meccanicamente. Elementi oggettivi disponibili: campione =\n40 stint; rapporto effetto/rumore mediano =\n2.1×."
+    },
+    {
+      "id": "AUD-GRANBR-20260721-01",
+      "gara": "Gran Bretagna",
+      "data": "2026-07-21 08:13",
+      "versione_motore": "sha256:d2bee2dca871",
+      "stato": "aperto",
+      "generato_da": "deterministico (LLM non disponibile)",
+      "n_osservazioni": 4,
+      "gruppi_scartati_per_supporto": [
+        {
+          "componente": "degrado",
+          "mescola": "SOFT",
+          "n_stint": 1,
+          "motivo": "supporto < 2 stint"
+        },
+        {
+          "componente": "rumore",
+          "mescola": "HARD",
+          "n_stint": 1,
+          "motivo": "supporto < 2 stint"
+        },
+        {
+          "componente": "rumore",
+          "mescola": "MEDIUM",
+          "n_stint": 1,
+          "motivo": "supporto < 2 stint"
+        },
+        {
+          "componente": "traffico",
+          "mescola": "HARD",
+          "n_stint": 1,
+          "motivo": "supporto < 2 stint"
+        }
+      ],
+      "ipotesi": [],
+      "nota_ipotesi": "dossier in modalita' deterministica: nessuna ipotesi formulata",
+      "confidenza_dichiarata_testo": "Non valutabile meccanicamente. Elementi oggettivi disponibili: campione =\n42 stint; rapporto effetto/rumore mediano =\n2.1×."
+    },
+    {
+      "id": "AUD-MIAMI-20260721-01",
+      "gara": "Miami",
+      "data": "2026-07-21 08:15",
+      "versione_motore": "sha256:d2bee2dca871",
+      "stato": "aperto",
+      "generato_da": "deterministico (LLM non disponibile)",
+      "n_osservazioni": 5,
+      "gruppi_scartati_per_supporto": [
+        {
+          "componente": "degrado",
+          "mescola": "SOFT",
+          "n_stint": 1,
+          "motivo": "supporto < 2 stint"
+        }
+      ],
+      "ipotesi": [],
+      "nota_ipotesi": "dossier in modalita' deterministica: nessuna ipotesi formulata",
+      "confidenza_dichiarata_testo": "Non valutabile meccanicamente. Elementi oggettivi disponibili: campione =\n36 stint; rapporto effetto/rumore mediano =\n2.9×."
+    },
+    {
+      "id": "AUD-MONACO-20260721-01",
+      "gara": "Monaco",
+      "data": "2026-07-21 08:13",
+      "versione_motore": "sha256:d2bee2dca871",
+      "stato": "aperto",
+      "generato_da": "deterministico (LLM non disponibile)",
+      "n_osservazioni": 5,
+      "gruppi_scartati_per_supporto": [
+        {
+          "componente": "degrado",
+          "mescola": "HARD",
+          "n_stint": 1,
+          "motivo": "supporto < 2 stint"
+        },
+        {
+          "componente": "non_classificabile",
+          "mescola": "SOFT",
+          "n_stint": 1,
+          "motivo": "supporto < 2 stint"
+        }
+      ],
+      "ipotesi": [],
+      "nota_ipotesi": "dossier in modalita' deterministica: nessuna ipotesi formulata",
+      "confidenza_dichiarata_testo": "Non valutabile meccanicamente. Elementi oggettivi disponibili: campione =\n33 stint; rapporto effetto/rumore mediano =\n0.2×."
+    },
+    {
+      "id": "AUD-SPAGNA-20260721-01",
+      "gara": "Spagna",
+      "data": "2026-07-21 08:15",
+      "versione_motore": "sha256:d2bee2dca871",
+      "stato": "aperto",
+      "generato_da": "deterministico (LLM non disponibile)",
+      "n_osservazioni": 6,
+      "gruppi_scartati_per_supporto": [],
+      "ipotesi": [],
+      "nota_ipotesi": "dossier in modalita' deterministica: nessuna ipotesi formulata",
+      "confidenza_dichiarata_testo": "Non valutabile meccanicamente. Elementi oggettivi disponibili: campione =\n60 stint; rapporto effetto/rumore mediano =\n6.3×."
+    }
+  ],
+  "osservazioni": [
+    {
+      "id": "OSS-Australia-degrado-HARD",
+      "dossier_id": "AUD-AUSTRA-20260721-01",
+      "gara": "Australia",
+      "circuito": "Australia",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-degrado-HARD",
+      "componente": "degrado",
+      "condizioni": {
+        "mescola": "HARD",
+        "eta_gomma_max_mediana": 30,
+        "frazione_traffico_mediana": 0.07,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 120
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 15,
+          "mediana": 1.092,
+          "q25": 0.709,
+          "q75": 1.434,
+          "min": -0.923,
+          "max": 1.799
+        },
+        "perdita_cumulata_s": {
+          "n": 15,
+          "mediana": 23.96,
+          "q25": 7.75,
+          "q75": 36.93,
+          "min": -11.78,
+          "max": 61.57
+        },
+        "pendenza_s_per_giro": {
+          "n": 15,
+          "mediana": 0.0749,
+          "q25": 0.0469,
+          "q75": 0.1098,
+          "min": 0.0369,
+          "max": 0.2231
+        },
+        "differenziale_traffico_s": {
+          "n": 10,
+          "mediana": 0.5315,
+          "q25": -0.36,
+          "q75": 0.96,
+          "min": -0.682,
+          "max": 1.515
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 15,
+        "n_giri": 348,
+        "piloti": [
+          "ALB",
+          "ANT",
+          "BEA",
+          "BOR",
+          "COL",
+          "GAS",
+          "HAM",
+          "LAW",
+          "LEC",
+          "LIN",
+          "NOR",
+          "PER",
+          "RUS",
+          "SAI",
+          "STR"
+        ]
+      },
+      "rumore_gara_s": 0.468,
+      "effetto_s_giro": 1.092,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 2.33,
+      "forza": "marcato"
+    },
+    {
+      "id": "OSS-Australia-degrado-MEDIUM",
+      "dossier_id": "AUD-AUSTRA-20260721-01",
+      "gara": "Australia",
+      "circuito": "Australia",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "componente": "degrado",
+      "condizioni": {
+        "mescola": "MEDIUM",
+        "eta_gomma_max_mediana": 17,
+        "frazione_traffico_mediana": 0.11,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 120
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 3,
+          "mediana": -0.297,
+          "q25": -1.187,
+          "q75": 0.578,
+          "min": -1.187,
+          "max": 0.578
+        },
+        "perdita_cumulata_s": {
+          "n": 3,
+          "mediana": 2.89,
+          "q25": -6.4,
+          "q75": 12.47,
+          "min": -6.4,
+          "max": 12.47
+        },
+        "pendenza_s_per_giro": {
+          "n": 3,
+          "mediana": 0.1108,
+          "q25": 0.1002,
+          "q75": 0.2381,
+          "min": 0.1002,
+          "max": 0.2381
+        },
+        "differenziale_traffico_s": {
+          "n": 2,
+          "mediana": 2.236,
+          "q25": 0.314,
+          "q75": 4.158,
+          "min": 0.314,
+          "max": 4.158
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 3,
+        "n_giri": 30,
+        "piloti": [
+          "OCO",
+          "PER",
+          "VER"
+        ]
+      },
+      "rumore_gara_s": 0.468,
+      "effetto_s_giro": -0.297,
+      "segno": "negativo",
+      "rapporto_effetto_rumore": 0.63,
+      "forza": "nullo"
+    },
+    {
+      "id": "OSS-Australia-degrado-SOFT",
+      "dossier_id": "AUD-AUSTRA-20260721-01",
+      "gara": "Australia",
+      "circuito": "Australia",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-degrado-SOFT",
+      "componente": "degrado",
+      "condizioni": {
+        "mescola": "SOFT",
+        "eta_gomma_max_mediana": 18.0,
+        "frazione_traffico_mediana": 0.0,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 120
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 4,
+          "mediana": 0.066,
+          "q25": -0.102,
+          "q75": 0.708,
+          "min": -0.523,
+          "max": 0.708
+        },
+        "perdita_cumulata_s": {
+          "n": 4,
+          "mediana": 5.745,
+          "q25": 3.17,
+          "q75": 18.37,
+          "min": -0.43,
+          "max": 18.37
+        },
+        "pendenza_s_per_giro": {
+          "n": 4,
+          "mediana": 0.1299,
+          "q25": 0.1011,
+          "q75": 0.6203,
+          "min": 0.072,
+          "max": 0.6203
+        },
+        "differenziale_traffico_s": {
+          "n": 1,
+          "mediana": 1.072,
+          "q25": 1.072,
+          "q75": 1.072,
+          "min": 1.072,
+          "max": 1.072
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 4,
+        "n_giri": 51,
+        "piloti": [
+          "ALB",
+          "LAW",
+          "PER",
+          "SAI"
+        ]
+      },
+      "rumore_gara_s": 0.468,
+      "effetto_s_giro": 0.066,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 0.14,
+      "forza": "nullo"
+    },
+    {
+      "id": "OSS-Australia-non_classificabile-HARD",
+      "dossier_id": "AUD-AUSTRA-20260721-01",
+      "gara": "Australia",
+      "circuito": "Australia",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "componente": "non_classificabile",
+      "condizioni": {
+        "mescola": "HARD",
+        "eta_gomma_max_mediana": 17,
+        "frazione_traffico_mediana": 0.67,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 120
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 3,
+          "mediana": 0.874,
+          "q25": -1.26,
+          "q75": 1.24,
+          "min": -1.26,
+          "max": 1.24
+        },
+        "perdita_cumulata_s": {
+          "n": 3,
+          "mediana": 11.09,
+          "q25": -6.84,
+          "q75": 43.47,
+          "min": -6.84,
+          "max": 43.47
+        },
+        "pendenza_s_per_giro": {
+          "n": 3,
+          "mediana": 0.0486,
+          "q25": 0.0453,
+          "q75": 0.1277,
+          "min": 0.0453,
+          "max": 0.1277
+        },
+        "differenziale_traffico_s": {
+          "n": 3,
+          "mediana": -0.856,
+          "q25": -1.526,
+          "q75": -0.342,
+          "min": -1.526,
+          "max": -0.342
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 3,
+        "n_giri": 54,
+        "piloti": [
+          "BOT",
+          "OCO",
+          "VER"
+        ]
+      },
+      "rumore_gara_s": 0.468,
+      "effetto_s_giro": 0.874,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 1.87,
+      "forza": "debole"
+    },
+    {
+      "id": "OSS-Australia-non_classificabile-MEDIUM",
+      "dossier_id": "AUD-AUSTRA-20260721-01",
+      "gara": "Australia",
+      "circuito": "Australia",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "componente": "non_classificabile",
+      "condizioni": {
+        "mescola": "MEDIUM",
+        "eta_gomma_max_mediana": 10,
+        "frazione_traffico_mediana": 0.4,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 120
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 7,
+          "mediana": -1.284,
+          "q25": -1.392,
+          "q75": -0.741,
+          "min": -1.69,
+          "max": -0.645
+        },
+        "perdita_cumulata_s": {
+          "n": 7,
+          "mediana": -6.53,
+          "q25": -7.91,
+          "q75": -4.78,
+          "min": -9.83,
+          "max": -3.67
+        },
+        "pendenza_s_per_giro": {
+          "n": 7,
+          "mediana": 0.0504,
+          "q25": -0.0315,
+          "q75": 0.1696,
+          "min": -0.0714,
+          "max": 0.2239
+        },
+        "differenziale_traffico_s": {
+          "n": 2,
+          "mediana": 0.236,
+          "q25": 0.205,
+          "q75": 0.267,
+          "min": 0.205,
+          "max": 0.267
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 7,
+        "n_giri": 50,
+        "piloti": [
+          "ALB",
+          "ANT",
+          "BOR",
+          "GAS",
+          "LEC",
+          "LIN",
+          "NOR"
+        ]
+      },
+      "rumore_gara_s": 0.468,
+      "effetto_s_giro": -1.284,
+      "segno": "negativo",
+      "rapporto_effetto_rumore": 2.74,
+      "forza": "marcato"
+    },
+    {
+      "id": "OSS-Australia-rumore-MEDIUM",
+      "dossier_id": "AUD-AUSTRA-20260721-01",
+      "gara": "Australia",
+      "circuito": "Australia",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-rumore-MEDIUM",
+      "componente": "rumore",
+      "condizioni": {
+        "mescola": "MEDIUM",
+        "eta_gomma_max_mediana": 11,
+        "frazione_traffico_mediana": 0.4,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 120
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 5,
+          "mediana": -0.232,
+          "q25": -0.321,
+          "q75": 0.093,
+          "min": -0.386,
+          "max": 0.096
+        },
+        "perdita_cumulata_s": {
+          "n": 5,
+          "mediana": -0.04,
+          "q25": -1.51,
+          "q75": 0.75,
+          "min": -2.09,
+          "max": 2.81
+        },
+        "pendenza_s_per_giro": {
+          "n": 5,
+          "mediana": -0.0206,
+          "q25": -0.0574,
+          "q75": 0.003,
+          "min": -0.0721,
+          "max": 0.0219
+        },
+        "differenziale_traffico_s": {
+          "n": 4,
+          "mediana": 0.358,
+          "q25": 0.3,
+          "q75": 0.422,
+          "min": -0.578,
+          "max": 0.422
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 5,
+        "n_giri": 51,
+        "piloti": [
+          "HAD",
+          "HAM",
+          "NOR",
+          "RUS",
+          "STR"
+        ]
+      },
+      "rumore_gara_s": 0.468,
+      "effetto_s_giro": -0.232,
+      "segno": "negativo",
+      "rapporto_effetto_rumore": 0.5,
+      "forza": "nullo"
+    },
+    {
+      "id": "OSS-Australia-traffico-MEDIUM",
+      "dossier_id": "AUD-AUSTRA-20260721-01",
+      "gara": "Australia",
+      "circuito": "Australia",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-traffico-MEDIUM",
+      "componente": "traffico",
+      "condizioni": {
+        "mescola": "MEDIUM",
+        "eta_gomma_max_mediana": 11,
+        "frazione_traffico_mediana": 1.0,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 120
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 3,
+          "mediana": -0.677,
+          "q25": -0.91,
+          "q75": 1.14,
+          "min": -0.91,
+          "max": 1.14
+        },
+        "perdita_cumulata_s": {
+          "n": 3,
+          "mediana": -2.67,
+          "q25": -5.74,
+          "q75": 7.82,
+          "min": -5.74,
+          "max": 7.82
+        },
+        "pendenza_s_per_giro": {
+          "n": 3,
+          "mediana": -0.3153,
+          "q25": -0.452,
+          "q75": -0.051,
+          "min": -0.452,
+          "max": -0.051
+        },
+        "differenziale_traffico_s": {
+          "n": 1,
+          "mediana": 0.626,
+          "q25": 0.626,
+          "q75": 0.626,
+          "min": 0.626,
+          "max": 0.626
+        }
+      },
+      "grandezza_portante": "differenziale_traffico_s",
+      "supporto": {
+        "n_stint": 3,
+        "n_giri": 20,
+        "piloti": [
+          "BEA",
+          "LAW",
+          "SAI"
+        ]
+      },
+      "rumore_gara_s": 0.468,
+      "effetto_s_giro": 0.626,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 1.34,
+      "forza": "debole"
+    },
+    {
+      "id": "OSS-Australia-traffico-SOFT",
+      "dossier_id": "AUD-AUSTRA-20260721-01",
+      "gara": "Australia",
+      "circuito": "Australia",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-traffico-SOFT",
+      "componente": "traffico",
+      "condizioni": {
+        "mescola": "SOFT",
+        "eta_gomma_max_mediana": 10.0,
+        "frazione_traffico_mediana": 0.8,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 120
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 2,
+          "mediana": -0.995,
+          "q25": -1.792,
+          "q75": -0.198,
+          "min": -1.792,
+          "max": -0.198
+        },
+        "perdita_cumulata_s": {
+          "n": 2,
+          "mediana": -4.63,
+          "q25": -8.32,
+          "q75": -0.94,
+          "min": -8.32,
+          "max": -0.94
+        },
+        "pendenza_s_per_giro": {
+          "n": 2,
+          "mediana": -0.1795,
+          "q25": -0.2895,
+          "q75": -0.0695,
+          "min": -0.2895,
+          "max": -0.0695
+        },
+        "differenziale_traffico_s": {
+          "n": 1,
+          "mediana": 0.489,
+          "q25": 0.489,
+          "q75": 0.489,
+          "min": 0.489,
+          "max": 0.489
+        }
+      },
+      "grandezza_portante": "differenziale_traffico_s",
+      "supporto": {
+        "n_stint": 2,
+        "n_giri": 10,
+        "piloti": [
+          "ALO",
+          "SAI"
+        ]
+      },
+      "rumore_gara_s": 0.468,
+      "effetto_s_giro": 0.489,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 1.04,
+      "forza": "debole"
+    },
+    {
+      "id": "OSS-Belgio-degrado-HARD",
+      "dossier_id": "AUD-BELGIO-20260721-01",
+      "gara": "Belgio",
+      "circuito": "Belgio",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-degrado-HARD",
+      "componente": "degrado",
+      "condizioni": {
+        "mescola": "HARD",
+        "eta_gomma_max_mediana": 24.0,
+        "frazione_traffico_mediana": 0.13,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 139
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 14,
+          "mediana": 1.014,
+          "q25": -0.599,
+          "q75": 1.364,
+          "min": -0.986,
+          "max": 2.822
+        },
+        "perdita_cumulata_s": {
+          "n": 14,
+          "mediana": 18.62,
+          "q25": -4.93,
+          "q75": 25.11,
+          "min": -13.65,
+          "max": 29.69
+        },
+        "pendenza_s_per_giro": {
+          "n": 14,
+          "mediana": 0.0643,
+          "q25": 0.0435,
+          "q75": 0.113,
+          "min": 0.04,
+          "max": 0.4223
+        },
+        "differenziale_traffico_s": {
+          "n": 10,
+          "mediana": 0.4155,
+          "q25": 0.05,
+          "q75": 0.607,
+          "min": -0.997,
+          "max": 1.505
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 14,
+        "n_giri": 238,
+        "piloti": [
+          "ALO",
+          "BEA",
+          "BOR",
+          "BOT",
+          "HAD",
+          "HAM",
+          "LEC",
+          "LIN",
+          "NOR",
+          "OCO",
+          "PIA",
+          "SAI",
+          "VER"
+        ]
+      },
+      "rumore_gara_s": 0.316,
+      "effetto_s_giro": 1.014,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 3.21,
+      "forza": "marcato"
+    },
+    {
+      "id": "OSS-Belgio-degrado-MEDIUM",
+      "dossier_id": "AUD-BELGIO-20260721-01",
+      "gara": "Belgio",
+      "circuito": "Belgio",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "componente": "degrado",
+      "condizioni": {
+        "mescola": "MEDIUM",
+        "eta_gomma_max_mediana": 17.0,
+        "frazione_traffico_mediana": 0.06,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 139
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 2,
+          "mediana": 0.44,
+          "q25": 0.214,
+          "q75": 0.666,
+          "min": 0.214,
+          "max": 0.666
+        },
+        "perdita_cumulata_s": {
+          "n": 2,
+          "mediana": 2.975,
+          "q25": 1.32,
+          "q75": 4.63,
+          "min": 1.32,
+          "max": 4.63
+        },
+        "pendenza_s_per_giro": {
+          "n": 2,
+          "mediana": 0.1295,
+          "q25": 0.102,
+          "q75": 0.1569,
+          "min": 0.102,
+          "max": 0.1569
+        },
+        "differenziale_traffico_s": {
+          "n": 1,
+          "mediana": 0.887,
+          "q25": 0.887,
+          "q75": 0.887,
+          "min": 0.887,
+          "max": 0.887
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 2,
+        "n_giri": 18,
+        "piloti": [
+          "ALB",
+          "ANT"
+        ]
+      },
+      "rumore_gara_s": 0.316,
+      "effetto_s_giro": 0.44,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 1.39,
+      "forza": "debole"
+    },
+    {
+      "id": "OSS-Belgio-degrado-SOFT",
+      "dossier_id": "AUD-BELGIO-20260721-01",
+      "gara": "Belgio",
+      "circuito": "Belgio",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-degrado-SOFT",
+      "componente": "degrado",
+      "condizioni": {
+        "mescola": "SOFT",
+        "eta_gomma_max_mediana": 20.0,
+        "frazione_traffico_mediana": 0.12,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 139
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 2,
+          "mediana": 1.7985,
+          "q25": 1.025,
+          "q75": 2.572,
+          "min": 1.025,
+          "max": 2.572
+        },
+        "perdita_cumulata_s": {
+          "n": 2,
+          "mediana": 18.815,
+          "q25": 18.75,
+          "q75": 18.88,
+          "min": 18.75,
+          "max": 18.88
+        },
+        "pendenza_s_per_giro": {
+          "n": 2,
+          "mediana": 0.6026,
+          "q25": 0.0502,
+          "q75": 1.1549,
+          "min": 0.0502,
+          "max": 1.1549
+        },
+        "differenziale_traffico_s": {
+          "n": 1,
+          "mediana": -0.176,
+          "q25": -0.176,
+          "q75": -0.176,
+          "min": -0.176,
+          "max": -0.176
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 2,
+        "n_giri": 26,
+        "piloti": [
+          "ALO",
+          "ANT"
+        ]
+      },
+      "rumore_gara_s": 0.316,
+      "effetto_s_giro": 1.798,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 5.69,
+      "forza": "marcato"
+    },
+    {
+      "id": "OSS-Belgio-non_classificabile-HARD",
+      "dossier_id": "AUD-BELGIO-20260721-01",
+      "gara": "Belgio",
+      "circuito": "Belgio",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "componente": "non_classificabile",
+      "condizioni": {
+        "mescola": "HARD",
+        "eta_gomma_max_mediana": 28,
+        "frazione_traffico_mediana": 0.71,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 139
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 7,
+          "mediana": 0.841,
+          "q25": 0.423,
+          "q75": 1.084,
+          "min": 0.006,
+          "max": 1.103
+        },
+        "perdita_cumulata_s": {
+          "n": 7,
+          "mediana": 13.34,
+          "q25": 9.35,
+          "q75": 22.54,
+          "min": 0.09,
+          "max": 25.75
+        },
+        "pendenza_s_per_giro": {
+          "n": 7,
+          "mediana": 0.0239,
+          "q25": 0.0106,
+          "q75": 0.066,
+          "min": -0.0132,
+          "max": 0.1552
+        },
+        "differenziale_traffico_s": {
+          "n": 7,
+          "mediana": -0.043,
+          "q25": -0.47,
+          "q75": 0.097,
+          "min": -0.763,
+          "max": 0.273
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 7,
+        "n_giri": 126,
+        "piloti": [
+          "ALB",
+          "BEA",
+          "COL",
+          "GAS",
+          "LAW",
+          "OCO",
+          "STR"
+        ]
+      },
+      "rumore_gara_s": 0.316,
+      "effetto_s_giro": 0.841,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 2.66,
+      "forza": "marcato"
+    },
+    {
+      "id": "OSS-Belgio-non_classificabile-MEDIUM",
+      "dossier_id": "AUD-BELGIO-20260721-01",
+      "gara": "Belgio",
+      "circuito": "Belgio",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "componente": "non_classificabile",
+      "condizioni": {
+        "mescola": "MEDIUM",
+        "eta_gomma_max_mediana": 17.5,
+        "frazione_traffico_mediana": 0.8,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 139
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 8,
+          "mediana": 0.417,
+          "q25": 0.156,
+          "q75": 0.675,
+          "min": -0.564,
+          "max": 1.367
+        },
+        "perdita_cumulata_s": {
+          "n": 8,
+          "mediana": 2.915,
+          "q25": 0.92,
+          "q75": 6.56,
+          "min": -2.13,
+          "max": 11.33
+        },
+        "pendenza_s_per_giro": {
+          "n": 8,
+          "mediana": 0.1518,
+          "q25": 0.0949,
+          "q75": 0.2545,
+          "min": 0.0378,
+          "max": 0.3235
+        },
+        "differenziale_traffico_s": {
+          "n": 6,
+          "mediana": -0.5525,
+          "q25": -0.862,
+          "q75": -0.262,
+          "min": -1.231,
+          "max": 0.304
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 8,
+        "n_giri": 66,
+        "piloti": [
+          "BOR",
+          "COL",
+          "GAS",
+          "HAM",
+          "LEC",
+          "LIN",
+          "PIA",
+          "VER"
+        ]
+      },
+      "rumore_gara_s": 0.316,
+      "effetto_s_giro": 0.417,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 1.32,
+      "forza": "debole"
+    },
+    {
+      "id": "OSS-Belgio-non_classificabile-SOFT",
+      "dossier_id": "AUD-BELGIO-20260721-01",
+      "gara": "Belgio",
+      "circuito": "Belgio",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-non_classificabile-SOFT",
+      "componente": "non_classificabile",
+      "condizioni": {
+        "mescola": "SOFT",
+        "eta_gomma_max_mediana": 12.0,
+        "frazione_traffico_mediana": 0.5,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 139
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 2,
+          "mediana": 0.345,
+          "q25": 0.1,
+          "q75": 0.59,
+          "min": 0.1,
+          "max": 0.59
+        },
+        "perdita_cumulata_s": {
+          "n": 2,
+          "mediana": 2.55,
+          "q25": 1.5,
+          "q75": 3.6,
+          "min": 1.5,
+          "max": 3.6
+        },
+        "pendenza_s_per_giro": {
+          "n": 2,
+          "mediana": 0.0119,
+          "q25": -0.4038,
+          "q75": 0.4276,
+          "min": -0.4038,
+          "max": 0.4276
+        },
+        "differenziale_traffico_s": null
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 2,
+        "n_giri": 11,
+        "piloti": [
+          "BOT",
+          "SAI"
+        ]
+      },
+      "rumore_gara_s": 0.316,
+      "effetto_s_giro": 0.345,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 1.09,
+      "forza": "debole"
+    },
+    {
+      "id": "OSS-Belgio-rumore-MEDIUM",
+      "dossier_id": "AUD-BELGIO-20260721-01",
+      "gara": "Belgio",
+      "circuito": "Belgio",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-rumore-MEDIUM",
+      "componente": "rumore",
+      "condizioni": {
+        "mescola": "MEDIUM",
+        "eta_gomma_max_mediana": 16.5,
+        "frazione_traffico_mediana": 0.42,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 139
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 2,
+          "mediana": -0.053,
+          "q25": -0.255,
+          "q75": 0.149,
+          "min": -0.255,
+          "max": 0.149
+        },
+        "perdita_cumulata_s": {
+          "n": 2,
+          "mediana": -0.765,
+          "q25": -3.09,
+          "q75": 1.56,
+          "min": -3.09,
+          "max": 1.56
+        },
+        "pendenza_s_per_giro": {
+          "n": 2,
+          "mediana": 0.0094,
+          "q25": -0.0106,
+          "q75": 0.0293,
+          "min": -0.0106,
+          "max": 0.0293
+        },
+        "differenziale_traffico_s": {
+          "n": 2,
+          "mediana": 0.19,
+          "q25": 0.138,
+          "q75": 0.242,
+          "min": 0.138,
+          "max": 0.242
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 2,
+        "n_giri": 19,
+        "piloti": [
+          "HUL",
+          "NOR"
+        ]
+      },
+      "rumore_gara_s": 0.316,
+      "effetto_s_giro": -0.053,
+      "segno": "negativo",
+      "rapporto_effetto_rumore": 0.17,
+      "forza": "nullo"
+    },
+    {
+      "id": "OSS-Belgio-traffico-HARD",
+      "dossier_id": "AUD-BELGIO-20260721-01",
+      "gara": "Belgio",
+      "circuito": "Belgio",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-traffico-HARD",
+      "componente": "traffico",
+      "condizioni": {
+        "mescola": "HARD",
+        "eta_gomma_max_mediana": 20.5,
+        "frazione_traffico_mediana": 0.8,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 139
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 2,
+          "mediana": 0.528,
+          "q25": 0.394,
+          "q75": 0.662,
+          "min": 0.394,
+          "max": 0.662
+        },
+        "perdita_cumulata_s": {
+          "n": 2,
+          "mediana": 8.32,
+          "q25": 3.96,
+          "q75": 12.68,
+          "min": 3.96,
+          "max": 12.68
+        },
+        "pendenza_s_per_giro": {
+          "n": 2,
+          "mediana": -0.0504,
+          "q25": -0.0666,
+          "q75": -0.0341,
+          "min": -0.0666,
+          "max": -0.0341
+        },
+        "differenziale_traffico_s": {
+          "n": 1,
+          "mediana": 0.333,
+          "q25": 0.333,
+          "q75": 0.333,
+          "min": 0.333,
+          "max": 0.333
+        }
+      },
+      "grandezza_portante": "differenziale_traffico_s",
+      "supporto": {
+        "n_stint": 2,
+        "n_giri": 29,
+        "piloti": [
+          "HAD",
+          "HUL"
+        ]
+      },
+      "rumore_gara_s": 0.316,
+      "effetto_s_giro": 0.333,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 1.05,
+      "forza": "debole"
+    },
+    {
+      "id": "OSS-GranBretagna-degrado-HARD",
+      "dossier_id": "AUD-GRANBR-20260721-01",
+      "gara": "Gran Bretagna",
+      "circuito": "Gran Bretagna",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-degrado-HARD",
+      "componente": "degrado",
+      "condizioni": {
+        "mescola": "HARD",
+        "eta_gomma_max_mediana": 20.0,
+        "frazione_traffico_mediana": 0.08,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 177
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 14,
+          "mediana": 0.605,
+          "q25": 0.502,
+          "q75": 0.915,
+          "min": 0.224,
+          "max": 1.424
+        },
+        "perdita_cumulata_s": {
+          "n": 14,
+          "mediana": 10.765,
+          "q25": 8.98,
+          "q75": 13.01,
+          "min": 4.85,
+          "max": 43.4
+        },
+        "pendenza_s_per_giro": {
+          "n": 14,
+          "mediana": 0.0571,
+          "q25": 0.05,
+          "q75": 0.0722,
+          "min": 0.0337,
+          "max": 0.5524
+        },
+        "differenziale_traffico_s": {
+          "n": 8,
+          "mediana": 0.2865,
+          "q25": -0.268,
+          "q75": 0.683,
+          "min": -0.557,
+          "max": 0.898
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 14,
+        "n_giri": 196,
+        "piloti": [
+          "ALB",
+          "ALO",
+          "BEA",
+          "BOR",
+          "BOT",
+          "GAS",
+          "HAD",
+          "LAW",
+          "LEC",
+          "LIN",
+          "PER",
+          "PIA",
+          "SAI",
+          "VER"
+        ]
+      },
+      "rumore_gara_s": 0.287,
+      "effetto_s_giro": 0.605,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 2.11,
+      "forza": "marcato"
+    },
+    {
+      "id": "OSS-GranBretagna-degrado-MEDIUM",
+      "dossier_id": "AUD-GRANBR-20260721-01",
+      "gara": "Gran Bretagna",
+      "circuito": "Gran Bretagna",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "componente": "degrado",
+      "condizioni": {
+        "mescola": "MEDIUM",
+        "eta_gomma_max_mediana": 21,
+        "frazione_traffico_mediana": 0.08,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 177
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 9,
+          "mediana": 0.727,
+          "q25": 0.54,
+          "q75": 1.115,
+          "min": 0.354,
+          "max": 1.274
+        },
+        "perdita_cumulata_s": {
+          "n": 9,
+          "mediana": 11.91,
+          "q25": 6.99,
+          "q75": 20.0,
+          "min": 4.05,
+          "max": 33.95
+        },
+        "pendenza_s_per_giro": {
+          "n": 9,
+          "mediana": 0.0589,
+          "q25": 0.0502,
+          "q75": 0.0801,
+          "min": 0.0348,
+          "max": 0.1255
+        },
+        "differenziale_traffico_s": {
+          "n": 7,
+          "mediana": 0.63,
+          "q25": -0.164,
+          "q75": 1.14,
+          "min": -0.825,
+          "max": 1.176
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 9,
+        "n_giri": 142,
+        "piloti": [
+          "BOR",
+          "BOT",
+          "HAD",
+          "HAM",
+          "LAW",
+          "LEC",
+          "RUS",
+          "STR"
+        ]
+      },
+      "rumore_gara_s": 0.287,
+      "effetto_s_giro": 0.727,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 2.53,
+      "forza": "marcato"
+    },
+    {
+      "id": "OSS-GranBretagna-non_classificabile-HARD",
+      "dossier_id": "AUD-GRANBR-20260721-01",
+      "gara": "Gran Bretagna",
+      "circuito": "Gran Bretagna",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "componente": "non_classificabile",
+      "condizioni": {
+        "mescola": "HARD",
+        "eta_gomma_max_mediana": 24.0,
+        "frazione_traffico_mediana": 0.33,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 177
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 4,
+          "mediana": 0.624,
+          "q25": 0.297,
+          "q75": 1.466,
+          "min": -0.029,
+          "max": 1.466
+        },
+        "perdita_cumulata_s": {
+          "n": 4,
+          "mediana": 12.465,
+          "q25": 8.41,
+          "q75": 23.68,
+          "min": 2.79,
+          "max": 23.68
+        },
+        "pendenza_s_per_giro": {
+          "n": 4,
+          "mediana": 0.0169,
+          "q25": 0.01,
+          "q75": 0.0296,
+          "min": -0.0225,
+          "max": 0.0296
+        },
+        "differenziale_traffico_s": {
+          "n": 3,
+          "mediana": -0.017,
+          "q25": -0.018,
+          "q75": 0.246,
+          "min": -0.018,
+          "max": 0.246
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 4,
+        "n_giri": 68,
+        "piloti": [
+          "COL",
+          "HAM",
+          "OCO",
+          "STR"
+        ]
+      },
+      "rumore_gara_s": 0.287,
+      "effetto_s_giro": 0.624,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 2.17,
+      "forza": "marcato"
+    },
+    {
+      "id": "OSS-GranBretagna-non_classificabile-MEDIUM",
+      "dossier_id": "AUD-GRANBR-20260721-01",
+      "gara": "Gran Bretagna",
+      "circuito": "Gran Bretagna",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "componente": "non_classificabile",
+      "condizioni": {
+        "mescola": "MEDIUM",
+        "eta_gomma_max_mediana": 20,
+        "frazione_traffico_mediana": 0.67,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 177
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 11,
+          "mediana": 0.554,
+          "q25": 0.405,
+          "q75": 0.747,
+          "min": 0.142,
+          "max": 0.935
+        },
+        "perdita_cumulata_s": {
+          "n": 11,
+          "mediana": 9.87,
+          "q25": 4.39,
+          "q75": 13.57,
+          "min": 1.57,
+          "max": 19.64
+        },
+        "pendenza_s_per_giro": {
+          "n": 11,
+          "mediana": 0.0261,
+          "q25": -0.0229,
+          "q75": 0.0421,
+          "min": -0.04,
+          "max": 0.1087
+        },
+        "differenziale_traffico_s": {
+          "n": 10,
+          "mediana": -0.0045,
+          "q25": -0.16,
+          "q75": 0.246,
+          "min": -0.277,
+          "max": 0.284
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 11,
+        "n_giri": 185,
+        "piloti": [
+          "ALO",
+          "ANT",
+          "BEA",
+          "COL",
+          "HUL",
+          "LIN",
+          "NOR",
+          "OCO",
+          "PER",
+          "SAI",
+          "VER"
+        ]
+      },
+      "rumore_gara_s": 0.287,
+      "effetto_s_giro": 0.554,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 1.93,
+      "forza": "debole"
+    },
+    {
+      "id": "OSS-Miami-degrado-HARD",
+      "dossier_id": "AUD-MIAMI-20260721-01",
+      "gara": "Miami",
+      "circuito": "Miami",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-degrado-HARD",
+      "componente": "degrado",
+      "condizioni": {
+        "mescola": "HARD",
+        "eta_gomma_max_mediana": 30,
+        "frazione_traffico_mediana": 0.0,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 121
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 11,
+          "mediana": 1.065,
+          "q25": 0.844,
+          "q75": 1.142,
+          "min": 0.019,
+          "max": 1.384
+        },
+        "perdita_cumulata_s": {
+          "n": 11,
+          "mediana": 27.53,
+          "q25": 18.93,
+          "q75": 29.95,
+          "min": 3.89,
+          "max": 50.6
+        },
+        "pendenza_s_per_giro": {
+          "n": 11,
+          "mediana": 0.0566,
+          "q25": 0.0538,
+          "q75": 0.0649,
+          "min": 0.0349,
+          "max": 0.1027
+        },
+        "differenziale_traffico_s": {
+          "n": 5,
+          "mediana": -0.08,
+          "q25": -0.12,
+          "q75": -0.017,
+          "min": -0.421,
+          "max": 0.284
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 11,
+        "n_giri": 266,
+        "piloti": [
+          "ALB",
+          "ANT",
+          "BOR",
+          "COL",
+          "HAM",
+          "LEC",
+          "LIN",
+          "OCO",
+          "RUS",
+          "SAI",
+          "VER"
+        ]
+      },
+      "rumore_gara_s": 0.241,
+      "effetto_s_giro": 1.065,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 4.42,
+      "forza": "marcato"
+    },
+    {
+      "id": "OSS-Miami-degrado-MEDIUM",
+      "dossier_id": "AUD-MIAMI-20260721-01",
+      "gara": "Miami",
+      "circuito": "Miami",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "componente": "degrado",
+      "condizioni": {
+        "mescola": "MEDIUM",
+        "eta_gomma_max_mediana": 27,
+        "frazione_traffico_mediana": 0.29,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 121
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 9,
+          "mediana": 0.384,
+          "q25": 0.285,
+          "q75": 0.696,
+          "min": -0.036,
+          "max": 1.038
+        },
+        "perdita_cumulata_s": {
+          "n": 9,
+          "mediana": 5.92,
+          "q25": 2.78,
+          "q75": 11.11,
+          "min": 0.5,
+          "max": 30.51
+        },
+        "pendenza_s_per_giro": {
+          "n": 9,
+          "mediana": 0.0747,
+          "q25": 0.0607,
+          "q75": 0.0888,
+          "min": 0.0497,
+          "max": 0.1373
+        },
+        "differenziale_traffico_s": {
+          "n": 7,
+          "mediana": -0.293,
+          "q25": -0.428,
+          "q75": -0.067,
+          "min": -0.772,
+          "max": 0.185
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 9,
+        "n_giri": 138,
+        "piloti": [
+          "ALB",
+          "ALO",
+          "BOT",
+          "COL",
+          "LIN",
+          "NOR",
+          "PER",
+          "SAI",
+          "STR"
+        ]
+      },
+      "rumore_gara_s": 0.241,
+      "effetto_s_giro": 0.384,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 1.59,
+      "forza": "debole"
+    },
+    {
+      "id": "OSS-Miami-non_classificabile-HARD",
+      "dossier_id": "AUD-MIAMI-20260721-01",
+      "gara": "Miami",
+      "circuito": "Miami",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "componente": "non_classificabile",
+      "condizioni": {
+        "mescola": "HARD",
+        "eta_gomma_max_mediana": 28.5,
+        "frazione_traffico_mediana": 0.42,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 121
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 4,
+          "mediana": 1.1375,
+          "q25": 1.005,
+          "q75": 1.911,
+          "min": 0.994,
+          "max": 1.911
+        },
+        "perdita_cumulata_s": {
+          "n": 4,
+          "mediana": 26.29,
+          "q25": 23.2,
+          "q75": 35.38,
+          "min": 21.62,
+          "max": 35.38
+        },
+        "pendenza_s_per_giro": {
+          "n": 4,
+          "mediana": 0.0397,
+          "q25": 0.0155,
+          "q75": 0.0923,
+          "min": 0.0071,
+          "max": 0.0923
+        },
+        "differenziale_traffico_s": {
+          "n": 4,
+          "mediana": -0.4435,
+          "q25": -0.549,
+          "q75": 0.142,
+          "min": -0.851,
+          "max": 0.142
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 4,
+        "n_giri": 88,
+        "piloti": [
+          "BEA",
+          "NOR",
+          "PER",
+          "PIA"
+        ]
+      },
+      "rumore_gara_s": 0.241,
+      "effetto_s_giro": 1.137,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 4.72,
+      "forza": "marcato"
+    },
+    {
+      "id": "OSS-Miami-non_classificabile-MEDIUM",
+      "dossier_id": "AUD-MIAMI-20260721-01",
+      "gara": "Miami",
+      "circuito": "Miami",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "componente": "non_classificabile",
+      "condizioni": {
+        "mescola": "MEDIUM",
+        "eta_gomma_max_mediana": 25.5,
+        "frazione_traffico_mediana": 0.52,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 121
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 8,
+          "mediana": 0.621,
+          "q25": 0.329,
+          "q75": 0.865,
+          "min": -0.487,
+          "max": 0.902
+        },
+        "perdita_cumulata_s": {
+          "n": 8,
+          "mediana": 6.17,
+          "q25": 3.32,
+          "q75": 10.52,
+          "min": -8.07,
+          "max": 11.51
+        },
+        "pendenza_s_per_giro": {
+          "n": 8,
+          "mediana": 0.0816,
+          "q25": 0.0278,
+          "q75": 0.1117,
+          "min": 0.0044,
+          "max": 0.1185
+        },
+        "differenziale_traffico_s": {
+          "n": 6,
+          "mediana": -0.317,
+          "q25": -0.511,
+          "q75": -0.21,
+          "min": -0.725,
+          "max": -0.059
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 8,
+        "n_giri": 99,
+        "piloti": [
+          "ANT",
+          "BEA",
+          "BOR",
+          "HAM",
+          "LEC",
+          "OCO",
+          "PIA",
+          "RUS"
+        ]
+      },
+      "rumore_gara_s": 0.241,
+      "effetto_s_giro": 0.621,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 2.58,
+      "forza": "marcato"
+    },
+    {
+      "id": "OSS-Miami-non_classificabile-SOFT",
+      "dossier_id": "AUD-MIAMI-20260721-01",
+      "gara": "Miami",
+      "circuito": "Miami",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-non_classificabile-SOFT",
+      "componente": "non_classificabile",
+      "condizioni": {
+        "mescola": "SOFT",
+        "eta_gomma_max_mediana": 15,
+        "frazione_traffico_mediana": 0.38,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 121
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 3,
+          "mediana": 0.421,
+          "q25": 0.205,
+          "q75": 0.604,
+          "min": 0.205,
+          "max": 0.604
+        },
+        "perdita_cumulata_s": {
+          "n": 3,
+          "mediana": 5.27,
+          "q25": 3.79,
+          "q75": 6.4,
+          "min": 3.79,
+          "max": 6.4
+        },
+        "pendenza_s_per_giro": {
+          "n": 3,
+          "mediana": -0.0461,
+          "q25": -0.2337,
+          "q75": 0.431,
+          "min": -0.2337,
+          "max": 0.431
+        },
+        "differenziale_traffico_s": {
+          "n": 2,
+          "mediana": 0.67,
+          "q25": -0.123,
+          "q75": 1.463,
+          "min": -0.123,
+          "max": 1.463
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 3,
+        "n_giri": 25,
+        "piloti": [
+          "ALO",
+          "BOT",
+          "STR"
+        ]
+      },
+      "rumore_gara_s": 0.241,
+      "effetto_s_giro": 0.421,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 1.75,
+      "forza": "debole"
+    },
+    {
+      "id": "OSS-Monaco-degrado-MEDIUM",
+      "dossier_id": "AUD-MONACO-20260721-01",
+      "gara": "Monaco",
+      "circuito": "Monaco",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "componente": "degrado",
+      "condizioni": {
+        "mescola": "MEDIUM",
+        "eta_gomma_max_mediana": 39.0,
+        "frazione_traffico_mediana": 0.01,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 208
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 12,
+          "mediana": -0.3625,
+          "q25": -0.59,
+          "q75": 0.463,
+          "min": -0.767,
+          "max": 1.311
+        },
+        "perdita_cumulata_s": {
+          "n": 12,
+          "mediana": 1.215,
+          "q25": -17.84,
+          "q75": 13.03,
+          "min": -27.62,
+          "max": 28.95
+        },
+        "pendenza_s_per_giro": {
+          "n": 12,
+          "mediana": 0.0684,
+          "q25": 0.0543,
+          "q75": 0.0936,
+          "min": 0.0315,
+          "max": 0.11
+        },
+        "differenziale_traffico_s": {
+          "n": 6,
+          "mediana": -0.3725,
+          "q25": -1.476,
+          "q75": 1.571,
+          "min": -1.928,
+          "max": 2.084
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 12,
+        "n_giri": 391,
+        "piloti": [
+          "ALB",
+          "ANT",
+          "BOT",
+          "COL",
+          "GAS",
+          "HAD",
+          "HAM",
+          "LAW",
+          "LEC",
+          "PER",
+          "PIA",
+          "SAI"
+        ]
+      },
+      "rumore_gara_s": 0.5,
+      "effetto_s_giro": -0.363,
+      "segno": "negativo",
+      "rapporto_effetto_rumore": 0.73,
+      "forza": "nullo"
+    },
+    {
+      "id": "OSS-Monaco-degrado-SOFT",
+      "dossier_id": "AUD-MONACO-20260721-01",
+      "gara": "Monaco",
+      "circuito": "Monaco",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-degrado-SOFT",
+      "componente": "degrado",
+      "condizioni": {
+        "mescola": "SOFT",
+        "eta_gomma_max_mediana": 52,
+        "frazione_traffico_mediana": 0.0,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 208
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 3,
+          "mediana": 0.634,
+          "q25": -0.085,
+          "q75": 0.764,
+          "min": -0.085,
+          "max": 0.764
+        },
+        "perdita_cumulata_s": {
+          "n": 3,
+          "mediana": 59.17,
+          "q25": -0.94,
+          "q75": 63.04,
+          "min": -0.94,
+          "max": 63.04
+        },
+        "pendenza_s_per_giro": {
+          "n": 3,
+          "mediana": 0.0605,
+          "q25": 0.0577,
+          "q75": 0.0639,
+          "min": 0.0577,
+          "max": 0.0639
+        },
+        "differenziale_traffico_s": {
+          "n": 1,
+          "mediana": 2.082,
+          "q25": 2.082,
+          "q75": 2.082,
+          "min": 2.082,
+          "max": 2.082
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 3,
+        "n_giri": 105,
+        "piloti": [
+          "ALO",
+          "LAW",
+          "STR"
+        ]
+      },
+      "rumore_gara_s": 0.5,
+      "effetto_s_giro": 0.634,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 1.27,
+      "forza": "debole"
+    },
+    {
+      "id": "OSS-Monaco-non_classificabile-HARD",
+      "dossier_id": "AUD-MONACO-20260721-01",
+      "gara": "Monaco",
+      "circuito": "Monaco",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "componente": "non_classificabile",
+      "condizioni": {
+        "mescola": "HARD",
+        "eta_gomma_max_mediana": 27,
+        "frazione_traffico_mediana": 0.42,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 208
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 9,
+          "mediana": 0.937,
+          "q25": -0.913,
+          "q75": 2.981,
+          "min": -1.398,
+          "max": 4.435
+        },
+        "perdita_cumulata_s": {
+          "n": 9,
+          "mediana": 23.76,
+          "q25": -6.7,
+          "q75": 52.17,
+          "min": -36.03,
+          "max": 178.93
+        },
+        "pendenza_s_per_giro": {
+          "n": 9,
+          "mediana": -0.0141,
+          "q25": -0.0911,
+          "q75": 0.0085,
+          "min": -0.1718,
+          "max": 0.1375
+        },
+        "differenziale_traffico_s": {
+          "n": 6,
+          "mediana": 2.152,
+          "q25": 1.674,
+          "q75": 2.824,
+          "min": -0.328,
+          "max": 3.701
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 9,
+        "n_giri": 230,
+        "piloti": [
+          "ANT",
+          "BEA",
+          "BOR",
+          "COL",
+          "GAS",
+          "HAM",
+          "HUL",
+          "OCO",
+          "RUS"
+        ]
+      },
+      "rumore_gara_s": 0.5,
+      "effetto_s_giro": 0.937,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 1.87,
+      "forza": "debole"
+    },
+    {
+      "id": "OSS-Monaco-non_classificabile-MEDIUM",
+      "dossier_id": "AUD-MONACO-20260721-01",
+      "gara": "Monaco",
+      "circuito": "Monaco",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "componente": "non_classificabile",
+      "condizioni": {
+        "mescola": "MEDIUM",
+        "eta_gomma_max_mediana": 30,
+        "frazione_traffico_mediana": 0.71,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 208
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 5,
+          "mediana": -0.221,
+          "q25": -0.821,
+          "q75": 0.64,
+          "min": -0.905,
+          "max": 3.659
+        },
+        "perdita_cumulata_s": {
+          "n": 5,
+          "mediana": 13.43,
+          "q25": -5.43,
+          "q75": 16.93,
+          "min": -29.26,
+          "max": 32.22
+        },
+        "pendenza_s_per_giro": {
+          "n": 5,
+          "mediana": 0.0759,
+          "q25": 0.0667,
+          "q75": 0.1285,
+          "min": -0.0667,
+          "max": 0.5128
+        },
+        "differenziale_traffico_s": {
+          "n": 5,
+          "mediana": -0.523,
+          "q25": -0.82,
+          "q75": 0.194,
+          "min": -2.334,
+          "max": 2.136
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 5,
+        "n_giri": 129,
+        "piloti": [
+          "BOR",
+          "HUL",
+          "LIN",
+          "NOR",
+          "RUS"
+        ]
+      },
+      "rumore_gara_s": 0.5,
+      "effetto_s_giro": -0.221,
+      "segno": "negativo",
+      "rapporto_effetto_rumore": 0.44,
+      "forza": "nullo"
+    },
+    {
+      "id": "OSS-Monaco-rumore-HARD",
+      "dossier_id": "AUD-MONACO-20260721-01",
+      "gara": "Monaco",
+      "circuito": "Monaco",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-rumore-HARD",
+      "componente": "rumore",
+      "condizioni": {
+        "mescola": "HARD",
+        "eta_gomma_max_mediana": 17.0,
+        "frazione_traffico_mediana": 0.0,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 208
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 2,
+          "mediana": -0.0855,
+          "q25": -0.181,
+          "q75": 0.01,
+          "min": -0.181,
+          "max": 0.01
+        },
+        "perdita_cumulata_s": {
+          "n": 2,
+          "mediana": 1.67,
+          "q25": -0.53,
+          "q75": 3.87,
+          "min": -0.53,
+          "max": 3.87
+        },
+        "pendenza_s_per_giro": {
+          "n": 2,
+          "mediana": -0.0367,
+          "q25": -0.076,
+          "q75": 0.0025,
+          "min": -0.076,
+          "max": 0.0025
+        },
+        "differenziale_traffico_s": null
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 2,
+        "n_giri": 24,
+        "piloti": [
+          "LEC",
+          "PIA"
+        ]
+      },
+      "rumore_gara_s": 0.5,
+      "effetto_s_giro": -0.085,
+      "segno": "negativo",
+      "rapporto_effetto_rumore": 0.17,
+      "forza": "nullo"
+    },
+    {
+      "id": "OSS-Spagna-degrado-HARD",
+      "dossier_id": "AUD-SPAGNA-20260721-01",
+      "gara": "Spagna",
+      "circuito": "Spagna",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-degrado-HARD",
+      "componente": "degrado",
+      "condizioni": {
+        "mescola": "HARD",
+        "eta_gomma_max_mediana": 22,
+        "frazione_traffico_mediana": 0.06,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 91
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 25,
+          "mediana": 1.23,
+          "q25": 0.977,
+          "q75": 1.61,
+          "min": -0.654,
+          "max": 2.395
+        },
+        "perdita_cumulata_s": {
+          "n": 25,
+          "mediana": 21.51,
+          "q25": 13.68,
+          "q75": 25.71,
+          "min": -10.47,
+          "max": 31.26
+        },
+        "pendenza_s_per_giro": {
+          "n": 25,
+          "mediana": 0.1171,
+          "q25": 0.0967,
+          "q75": 0.1621,
+          "min": 0.0572,
+          "max": 0.2806
+        },
+        "differenziale_traffico_s": {
+          "n": 14,
+          "mediana": -0.1015,
+          "q25": -0.92,
+          "q75": 0.238,
+          "min": -1.363,
+          "max": 3.319
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 25,
+        "n_giri": 383,
+        "piloti": [
+          "ALB",
+          "ALO",
+          "ANT",
+          "BEA",
+          "COL",
+          "GAS",
+          "HAD",
+          "HAM",
+          "LAW",
+          "LEC",
+          "LIN",
+          "NOR",
+          "OCO",
+          "PER",
+          "PIA",
+          "RUS",
+          "SAI",
+          "VER"
+        ]
+      },
+      "rumore_gara_s": 0.208,
+      "effetto_s_giro": 1.23,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 5.91,
+      "forza": "marcato"
+    },
+    {
+      "id": "OSS-Spagna-degrado-MEDIUM",
+      "dossier_id": "AUD-SPAGNA-20260721-01",
+      "gara": "Spagna",
+      "circuito": "Spagna",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "componente": "degrado",
+      "condizioni": {
+        "mescola": "MEDIUM",
+        "eta_gomma_max_mediana": 13,
+        "frazione_traffico_mediana": 0.07,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 91
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 11,
+          "mediana": 1.394,
+          "q25": 1.09,
+          "q75": 1.665,
+          "min": 0.538,
+          "max": 1.881
+        },
+        "perdita_cumulata_s": {
+          "n": 11,
+          "mediana": 13.37,
+          "q25": 7.34,
+          "q75": 29.55,
+          "min": 4.63,
+          "max": 30.05
+        },
+        "pendenza_s_per_giro": {
+          "n": 11,
+          "mediana": 0.1302,
+          "q25": 0.088,
+          "q75": 0.2691,
+          "min": 0.0844,
+          "max": 0.3875
+        },
+        "differenziale_traffico_s": {
+          "n": 6,
+          "mediana": 0.0865,
+          "q25": 0.02,
+          "q75": 1.208,
+          "min": -0.776,
+          "max": 1.823
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 11,
+        "n_giri": 116,
+        "piloti": [
+          "BOT",
+          "HAM",
+          "LAW",
+          "LIN",
+          "NOR",
+          "OCO",
+          "PER",
+          "PIA",
+          "RUS",
+          "VER"
+        ]
+      },
+      "rumore_gara_s": 0.208,
+      "effetto_s_giro": 1.394,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 6.7,
+      "forza": "marcato"
+    },
+    {
+      "id": "OSS-Spagna-degrado-SOFT",
+      "dossier_id": "AUD-SPAGNA-20260721-01",
+      "gara": "Spagna",
+      "circuito": "Spagna",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-degrado-SOFT",
+      "componente": "degrado",
+      "condizioni": {
+        "mescola": "SOFT",
+        "eta_gomma_max_mediana": 13.5,
+        "frazione_traffico_mediana": 0.0,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 91
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 2,
+          "mediana": 0.9815,
+          "q25": 0.962,
+          "q75": 1.001,
+          "min": 0.962,
+          "max": 1.001
+        },
+        "perdita_cumulata_s": {
+          "n": 2,
+          "mediana": 9.385,
+          "q25": 5.66,
+          "q75": 13.11,
+          "min": 5.66,
+          "max": 13.11
+        },
+        "pendenza_s_per_giro": {
+          "n": 2,
+          "mediana": 0.2024,
+          "q25": 0.1165,
+          "q75": 0.2883,
+          "min": 0.1165,
+          "max": 0.2883
+        },
+        "differenziale_traffico_s": null
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 2,
+        "n_giri": 16,
+        "piloti": [
+          "ALB",
+          "HAM"
+        ]
+      },
+      "rumore_gara_s": 0.208,
+      "effetto_s_giro": 0.981,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 4.72,
+      "forza": "marcato"
+    },
+    {
+      "id": "OSS-Spagna-non_classificabile-HARD",
+      "dossier_id": "AUD-SPAGNA-20260721-01",
+      "gara": "Spagna",
+      "circuito": "Spagna",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "componente": "non_classificabile",
+      "condizioni": {
+        "mescola": "HARD",
+        "eta_gomma_max_mediana": 20,
+        "frazione_traffico_mediana": 0.68,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 91
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 9,
+          "mediana": 1.358,
+          "q25": 0.995,
+          "q75": 1.445,
+          "min": 0.213,
+          "max": 1.973
+        },
+        "perdita_cumulata_s": {
+          "n": 9,
+          "mediana": 19.96,
+          "q25": 15.32,
+          "q75": 23.98,
+          "min": 2.22,
+          "max": 36.84
+        },
+        "pendenza_s_per_giro": {
+          "n": 9,
+          "mediana": 0.1389,
+          "q25": 0.1281,
+          "q75": 0.1653,
+          "min": -0.1616,
+          "max": 0.3351
+        },
+        "differenziale_traffico_s": {
+          "n": 8,
+          "mediana": -0.364,
+          "q25": -1.297,
+          "q75": -0.021,
+          "min": -1.66,
+          "max": 1.511
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 9,
+        "n_giri": 128,
+        "piloti": [
+          "ALO",
+          "ANT",
+          "BOR",
+          "COL",
+          "GAS",
+          "HUL",
+          "LIN",
+          "NOR"
+        ]
+      },
+      "rumore_gara_s": 0.208,
+      "effetto_s_giro": 1.358,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 6.53,
+      "forza": "marcato"
+    },
+    {
+      "id": "OSS-Spagna-non_classificabile-MEDIUM",
+      "dossier_id": "AUD-SPAGNA-20260721-01",
+      "gara": "Spagna",
+      "circuito": "Spagna",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "componente": "non_classificabile",
+      "condizioni": {
+        "mescola": "MEDIUM",
+        "eta_gomma_max_mediana": 14,
+        "frazione_traffico_mediana": 0.78,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 91
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 7,
+          "mediana": 1.57,
+          "q25": 1.085,
+          "q75": 1.586,
+          "min": 1.006,
+          "max": 1.661
+        },
+        "perdita_cumulata_s": {
+          "n": 7,
+          "mediana": 11.62,
+          "q25": 8.77,
+          "q75": 14.0,
+          "min": 7.27,
+          "max": 18.3
+        },
+        "pendenza_s_per_giro": {
+          "n": 7,
+          "mediana": 0.1071,
+          "q25": 0.0818,
+          "q75": 0.1592,
+          "min": 0.078,
+          "max": 0.1716
+        },
+        "differenziale_traffico_s": {
+          "n": 5,
+          "mediana": -0.238,
+          "q25": -0.482,
+          "q75": 0.037,
+          "min": -0.62,
+          "max": 0.32
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 7,
+        "n_giri": 63,
+        "piloti": [
+          "ALB",
+          "ANT",
+          "BEA",
+          "BOR",
+          "GAS",
+          "HAD",
+          "LEC"
+        ]
+      },
+      "rumore_gara_s": 0.208,
+      "effetto_s_giro": 1.57,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 7.55,
+      "forza": "marcato"
+    },
+    {
+      "id": "OSS-Spagna-non_classificabile-SOFT",
+      "dossier_id": "AUD-SPAGNA-20260721-01",
+      "gara": "Spagna",
+      "circuito": "Spagna",
+      "versione_motore": "sha256:d2bee2dca871",
+      "fenomeno": "FEN-non_classificabile-SOFT",
+      "componente": "non_classificabile",
+      "condizioni": {
+        "mescola": "SOFT",
+        "eta_gomma_max_mediana": 12.0,
+        "frazione_traffico_mediana": 0.73,
+        "gara_con_neutralizzazioni": true,
+        "giri_neutralizzati_gara": 91
+      },
+      "variabili": {
+        "residuo_mediano_s": {
+          "n": 6,
+          "mediana": 1.422,
+          "q25": 1.131,
+          "q75": 1.628,
+          "min": 1.002,
+          "max": 1.804
+        },
+        "perdita_cumulata_s": {
+          "n": 6,
+          "mediana": 9.65,
+          "q25": 7.28,
+          "q75": 10.7,
+          "min": 6.23,
+          "max": 11.26
+        },
+        "pendenza_s_per_giro": {
+          "n": 6,
+          "mediana": 0.2246,
+          "q25": 0.1432,
+          "q75": 0.2551,
+          "min": 0.1165,
+          "max": 0.2555
+        },
+        "differenziale_traffico_s": {
+          "n": 5,
+          "mediana": -0.644,
+          "q25": -0.989,
+          "q75": -0.58,
+          "min": -1.004,
+          "max": -0.561
+        }
+      },
+      "grandezza_portante": "residuo_mediano_s",
+      "supporto": {
+        "n_stint": 6,
+        "n_giri": 41,
+        "piloti": [
+          "COL",
+          "HUL",
+          "OCO",
+          "PER",
+          "SAI",
+          "VER"
+        ]
+      },
+      "rumore_gara_s": 0.208,
+      "effetto_s_giro": 1.422,
+      "segno": "positivo",
+      "rapporto_effetto_rumore": 6.84,
+      "forza": "marcato"
+    }
+  ],
+  "fenomeni": [
+    {
+      "id": "FEN-degrado-HARD",
+      "componente": "degrado",
+      "natura": "meccanismo candidato: degrado, non ancora validato",
+      "condizione_chiave": {
+        "mescola": "HARD"
+      },
+      "osservazioni": [
+        "OSS-Australia-degrado-HARD",
+        "OSS-Belgio-degrado-HARD",
+        "OSS-GranBretagna-degrado-HARD",
+        "OSS-Miami-degrado-HARD",
+        "OSS-Spagna-degrado-HARD"
+      ],
+      "circuiti": [
+        "Australia",
+        "Belgio",
+        "Gran Bretagna",
+        "Miami",
+        "Spagna"
+      ],
+      "n_gare": 5,
+      "effetto_mediano_s_giro": 1.065,
+      "confidenza": {
+        "livello": "alto",
+        "gare_concordi": 5,
+        "circuiti": [
+          "Australia",
+          "Belgio",
+          "Gran Bretagna",
+          "Miami",
+          "Spagna"
+        ],
+        "n_stint_totali": 79,
+        "perche": "replicato su 5 circuiti con segno concorde",
+        "regola": "basso=1 circuito; medio>=2 circuiti e >=5 stint; alto>=3 circuiti, >=2 marcate, segno concorde"
+      },
+      "manca_per_salire": null
+    },
+    {
+      "id": "FEN-degrado-SOFT",
+      "componente": "degrado",
+      "natura": "meccanismo candidato: degrado, non ancora validato",
+      "condizione_chiave": {
+        "mescola": "SOFT"
+      },
+      "osservazioni": [
+        "OSS-Australia-degrado-SOFT",
+        "OSS-Belgio-degrado-SOFT",
+        "OSS-Monaco-degrado-SOFT",
+        "OSS-Spagna-degrado-SOFT"
+      ],
+      "circuiti": [
+        "Australia",
+        "Belgio",
+        "Monaco",
+        "Spagna"
+      ],
+      "n_gare": 4,
+      "effetto_mediano_s_giro": 0.981,
+      "confidenza": {
+        "livello": "alto",
+        "gare_concordi": 3,
+        "circuiti": [
+          "Belgio",
+          "Monaco",
+          "Spagna"
+        ],
+        "n_stint_totali": 7,
+        "perche": "replicato su 3 circuiti con segno concorde",
+        "regola": "basso=1 circuito; medio>=2 circuiti e >=5 stint; alto>=3 circuiti, >=2 marcate, segno concorde"
+      },
+      "manca_per_salire": null
+    },
+    {
+      "id": "FEN-non_classificabile-HARD",
+      "componente": "non_classificabile",
+      "natura": "osservazione riproducibile SENZA meccanismo identificato: la confidenza riguarda la ripetibilita', non la spiegazione",
+      "condizione_chiave": {
+        "mescola": "HARD"
+      },
+      "osservazioni": [
+        "OSS-Australia-non_classificabile-HARD",
+        "OSS-Belgio-non_classificabile-HARD",
+        "OSS-GranBretagna-non_classificabile-HARD",
+        "OSS-Miami-non_classificabile-HARD",
+        "OSS-Monaco-non_classificabile-HARD",
+        "OSS-Spagna-non_classificabile-HARD"
+      ],
+      "circuiti": [
+        "Australia",
+        "Belgio",
+        "Gran Bretagna",
+        "Miami",
+        "Monaco",
+        "Spagna"
+      ],
+      "n_gare": 6,
+      "effetto_mediano_s_giro": 0.905,
+      "confidenza": {
+        "livello": "alto",
+        "gare_concordi": 6,
+        "circuiti": [
+          "Australia",
+          "Belgio",
+          "Gran Bretagna",
+          "Miami",
+          "Monaco",
+          "Spagna"
+        ],
+        "n_stint_totali": 36,
+        "perche": "replicato su 6 circuiti con segno concorde",
+        "regola": "basso=1 circuito; medio>=2 circuiti e >=5 stint; alto>=3 circuiti, >=2 marcate, segno concorde"
+      },
+      "manca_per_salire": null
+    },
+    {
+      "id": "FEN-degrado-MEDIUM",
+      "componente": "degrado",
+      "natura": "meccanismo candidato: degrado, non ancora validato",
+      "condizione_chiave": {
+        "mescola": "MEDIUM"
+      },
+      "osservazioni": [
+        "OSS-Australia-degrado-MEDIUM",
+        "OSS-Belgio-degrado-MEDIUM",
+        "OSS-GranBretagna-degrado-MEDIUM",
+        "OSS-Miami-degrado-MEDIUM",
+        "OSS-Monaco-degrado-MEDIUM",
+        "OSS-Spagna-degrado-MEDIUM"
+      ],
+      "circuiti": [
+        "Australia",
+        "Belgio",
+        "Gran Bretagna",
+        "Miami",
+        "Monaco",
+        "Spagna"
+      ],
+      "n_gare": 6,
+      "effetto_mediano_s_giro": 0.584,
+      "confidenza": {
+        "livello": "alto",
+        "gare_concordi": 4,
+        "circuiti": [
+          "Belgio",
+          "Gran Bretagna",
+          "Miami",
+          "Spagna"
+        ],
+        "n_stint_totali": 31,
+        "perche": "replicato su 4 circuiti con segno concorde",
+        "regola": "basso=1 circuito; medio>=2 circuiti e >=5 stint; alto>=3 circuiti, >=2 marcate, segno concorde"
+      },
+      "manca_per_salire": null
+    },
+    {
+      "id": "FEN-non_classificabile-SOFT",
+      "componente": "non_classificabile",
+      "natura": "osservazione riproducibile SENZA meccanismo identificato: la confidenza riguarda la ripetibilita', non la spiegazione",
+      "condizione_chiave": {
+        "mescola": "SOFT"
+      },
+      "osservazioni": [
+        "OSS-Belgio-non_classificabile-SOFT",
+        "OSS-Miami-non_classificabile-SOFT",
+        "OSS-Spagna-non_classificabile-SOFT"
+      ],
+      "circuiti": [
+        "Belgio",
+        "Miami",
+        "Spagna"
+      ],
+      "n_gare": 3,
+      "effetto_mediano_s_giro": 0.421,
+      "confidenza": {
+        "livello": "medio",
+        "gare_concordi": 3,
+        "circuiti": [
+          "Belgio",
+          "Miami",
+          "Spagna"
+        ],
+        "n_stint_totali": 11,
+        "perche": "replicato su 3 circuiti con segno concorde",
+        "regola": "basso=1 circuito; medio>=2 circuiti e >=5 stint; alto>=3 circuiti, >=2 marcate, segno concorde"
+      },
+      "manca_per_salire": "un terzo circuito concorde per salire ad \"alto\""
+    },
+    {
+      "id": "FEN-traffico-MEDIUM",
+      "componente": "traffico",
+      "natura": "meccanismo candidato: traffico, non ancora validato",
+      "condizione_chiave": {
+        "mescola": "MEDIUM"
+      },
+      "osservazioni": [
+        "OSS-Australia-traffico-MEDIUM"
+      ],
+      "circuiti": [
+        "Australia"
+      ],
+      "n_gare": 1,
+      "effetto_mediano_s_giro": 0.626,
+      "confidenza": {
+        "livello": "basso",
+        "gare_concordi": 1,
+        "circuiti": [
+          "Australia"
+        ],
+        "n_stint_totali": 3,
+        "perche": "osservato su un solo circuito: in-sample, non ancora replicato fuori campione",
+        "regola": "basso=1 circuito; medio>=2 circuiti e >=5 stint; alto>=3 circuiti, >=2 marcate, segno concorde"
+      },
+      "manca_per_salire": "una misura su un circuito diverso da Australia per passare da in-sample a replicato"
+    },
+    {
+      "id": "FEN-non_classificabile-MEDIUM",
+      "componente": "non_classificabile",
+      "natura": "osservazione riproducibile SENZA meccanismo identificato: la confidenza riguarda la ripetibilita', non la spiegazione",
+      "condizione_chiave": {
+        "mescola": "MEDIUM"
+      },
+      "osservazioni": [
+        "OSS-Australia-non_classificabile-MEDIUM",
+        "OSS-Belgio-non_classificabile-MEDIUM",
+        "OSS-GranBretagna-non_classificabile-MEDIUM",
+        "OSS-Miami-non_classificabile-MEDIUM",
+        "OSS-Monaco-non_classificabile-MEDIUM",
+        "OSS-Spagna-non_classificabile-MEDIUM"
+      ],
+      "circuiti": [
+        "Australia",
+        "Belgio",
+        "Gran Bretagna",
+        "Miami",
+        "Monaco",
+        "Spagna"
+      ],
+      "n_gare": 6,
+      "effetto_mediano_s_giro": 0.554,
+      "confidenza": {
+        "livello": "contesa",
+        "gare_concordi": 0,
+        "circuiti": [
+          "Australia",
+          "Belgio",
+          "Gran Bretagna",
+          "Miami",
+          "Spagna"
+        ],
+        "perche": "osservazioni di segno opposto su circuiti diversi: la mappa registra il conflitto e NON lo media",
+        "regola": "segni discordi fra osservazioni sopra il rumore"
+      },
+      "manca_per_salire": "un esperimento che spieghi perche' il segno si inverte fra circuiti"
+    },
+    {
+      "id": "FEN-traffico-SOFT",
+      "componente": "traffico",
+      "natura": "meccanismo candidato: traffico, non ancora validato",
+      "condizione_chiave": {
+        "mescola": "SOFT"
+      },
+      "osservazioni": [
+        "OSS-Australia-traffico-SOFT"
+      ],
+      "circuiti": [
+        "Australia"
+      ],
+      "n_gare": 1,
+      "effetto_mediano_s_giro": 0.489,
+      "confidenza": {
+        "livello": "basso",
+        "gare_concordi": 1,
+        "circuiti": [
+          "Australia"
+        ],
+        "n_stint_totali": 2,
+        "perche": "osservato su un solo circuito: in-sample, non ancora replicato fuori campione",
+        "regola": "basso=1 circuito; medio>=2 circuiti e >=5 stint; alto>=3 circuiti, >=2 marcate, segno concorde"
+      },
+      "manca_per_salire": "una misura su un circuito diverso da Australia per passare da in-sample a replicato"
+    },
+    {
+      "id": "FEN-traffico-HARD",
+      "componente": "traffico",
+      "natura": "meccanismo candidato: traffico, non ancora validato",
+      "condizione_chiave": {
+        "mescola": "HARD"
+      },
+      "osservazioni": [
+        "OSS-Belgio-traffico-HARD"
+      ],
+      "circuiti": [
+        "Belgio"
+      ],
+      "n_gare": 1,
+      "effetto_mediano_s_giro": 0.333,
+      "confidenza": {
+        "livello": "basso",
+        "gare_concordi": 1,
+        "circuiti": [
+          "Belgio"
+        ],
+        "n_stint_totali": 2,
+        "perche": "osservato su un solo circuito: in-sample, non ancora replicato fuori campione",
+        "regola": "basso=1 circuito; medio>=2 circuiti e >=5 stint; alto>=3 circuiti, >=2 marcate, segno concorde"
+      },
+      "manca_per_salire": "una misura su un circuito diverso da Belgio per passare da in-sample a replicato"
+    },
+    {
+      "id": "FEN-rumore-HARD",
+      "componente": "rumore",
+      "natura": "assenza di effetto: il motore regge entro il rumore",
+      "condizione_chiave": {
+        "mescola": "HARD"
+      },
+      "osservazioni": [
+        "OSS-Monaco-rumore-HARD"
+      ],
+      "circuiti": [
+        "Monaco"
+      ],
+      "n_gare": 1,
+      "effetto_mediano_s_giro": null,
+      "confidenza": {
+        "livello": "nullo",
+        "gare_concordi": 0,
+        "circuiti": [],
+        "perche": "in nessuna gara l'effetto supera il rumore locale",
+        "regola": "effetto <= rumore in tutte le osservazioni"
+      },
+      "manca_per_salire": null
+    },
+    {
+      "id": "FEN-rumore-MEDIUM",
+      "componente": "rumore",
+      "natura": "assenza di effetto: il motore regge entro il rumore",
+      "condizione_chiave": {
+        "mescola": "MEDIUM"
+      },
+      "osservazioni": [
+        "OSS-Australia-rumore-MEDIUM",
+        "OSS-Belgio-rumore-MEDIUM"
+      ],
+      "circuiti": [
+        "Australia",
+        "Belgio"
+      ],
+      "n_gare": 2,
+      "effetto_mediano_s_giro": null,
+      "confidenza": {
+        "livello": "nullo",
+        "gare_concordi": 0,
+        "circuiti": [],
+        "perche": "in nessuna gara l'effetto supera il rumore locale",
+        "regola": "effetto <= rumore in tutte le osservazioni"
+      },
+      "manca_per_salire": null
+    }
+  ],
+  "collegamenti": [
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Australia-degrado-HARD",
+      "a": "OSS-Belgio-degrado-HARD",
+      "fenomeno": "FEN-degrado-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Australia +1.092 s/giro; Belgio +1.014 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Australia-degrado-HARD",
+      "a": "OSS-GranBretagna-degrado-HARD",
+      "fenomeno": "FEN-degrado-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Australia +1.092 s/giro; Gran Bretagna +0.605 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Australia-degrado-HARD",
+      "a": "OSS-Miami-degrado-HARD",
+      "fenomeno": "FEN-degrado-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Australia +1.092 s/giro; Miami +1.065 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Australia-degrado-HARD",
+      "a": "OSS-Spagna-degrado-HARD",
+      "fenomeno": "FEN-degrado-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Australia +1.092 s/giro; Spagna +1.230 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Belgio-degrado-HARD",
+      "a": "OSS-GranBretagna-degrado-HARD",
+      "fenomeno": "FEN-degrado-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Belgio +1.014 s/giro; Gran Bretagna +0.605 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Belgio-degrado-HARD",
+      "a": "OSS-Miami-degrado-HARD",
+      "fenomeno": "FEN-degrado-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Belgio +1.014 s/giro; Miami +1.065 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Belgio-degrado-HARD",
+      "a": "OSS-Spagna-degrado-HARD",
+      "fenomeno": "FEN-degrado-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Belgio +1.014 s/giro; Spagna +1.230 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-GranBretagna-degrado-HARD",
+      "a": "OSS-Miami-degrado-HARD",
+      "fenomeno": "FEN-degrado-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Gran Bretagna +0.605 s/giro; Miami +1.065 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-GranBretagna-degrado-HARD",
+      "a": "OSS-Spagna-degrado-HARD",
+      "fenomeno": "FEN-degrado-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Gran Bretagna +0.605 s/giro; Spagna +1.230 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Miami-degrado-HARD",
+      "a": "OSS-Spagna-degrado-HARD",
+      "fenomeno": "FEN-degrado-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Miami +1.065 s/giro; Spagna +1.230 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "non_replicato",
+      "da": "OSS-Australia-degrado-MEDIUM",
+      "a": "OSS-Belgio-degrado-MEDIUM",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "evidenza": "FEN-degrado-MEDIUM misurato in Australia (-0.297 s/giro, nullo) e Belgio (+0.440 s/giro, debole): in almeno una gara l'effetto resta dentro il rumore",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "non_replicato",
+      "da": "OSS-Australia-degrado-MEDIUM",
+      "a": "OSS-GranBretagna-degrado-MEDIUM",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "evidenza": "FEN-degrado-MEDIUM misurato in Australia (-0.297 s/giro, nullo) e Gran Bretagna (+0.727 s/giro, marcato): in almeno una gara l'effetto resta dentro il rumore",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "non_replicato",
+      "da": "OSS-Australia-degrado-MEDIUM",
+      "a": "OSS-Miami-degrado-MEDIUM",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "evidenza": "FEN-degrado-MEDIUM misurato in Australia (-0.297 s/giro, nullo) e Miami (+0.384 s/giro, debole): in almeno una gara l'effetto resta dentro il rumore",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "non_replicato",
+      "da": "OSS-Australia-degrado-MEDIUM",
+      "a": "OSS-Monaco-degrado-MEDIUM",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "evidenza": "FEN-degrado-MEDIUM misurato in Australia (-0.297 s/giro, nullo) e Monaco (-0.363 s/giro, nullo): in almeno una gara l'effetto resta dentro il rumore",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "non_replicato",
+      "da": "OSS-Australia-degrado-MEDIUM",
+      "a": "OSS-Spagna-degrado-MEDIUM",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "evidenza": "FEN-degrado-MEDIUM misurato in Australia (-0.297 s/giro, nullo) e Spagna (+1.394 s/giro, marcato): in almeno una gara l'effetto resta dentro il rumore",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Belgio-degrado-MEDIUM",
+      "a": "OSS-GranBretagna-degrado-MEDIUM",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Belgio +0.440 s/giro; Gran Bretagna +0.727 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Belgio-degrado-MEDIUM",
+      "a": "OSS-Miami-degrado-MEDIUM",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Belgio +0.440 s/giro; Miami +0.384 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "non_replicato",
+      "da": "OSS-Belgio-degrado-MEDIUM",
+      "a": "OSS-Monaco-degrado-MEDIUM",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "evidenza": "FEN-degrado-MEDIUM misurato in Belgio (+0.440 s/giro, debole) e Monaco (-0.363 s/giro, nullo): in almeno una gara l'effetto resta dentro il rumore",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Belgio-degrado-MEDIUM",
+      "a": "OSS-Spagna-degrado-MEDIUM",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Belgio +0.440 s/giro; Spagna +1.394 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-GranBretagna-degrado-MEDIUM",
+      "a": "OSS-Miami-degrado-MEDIUM",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Gran Bretagna +0.727 s/giro; Miami +0.384 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "non_replicato",
+      "da": "OSS-GranBretagna-degrado-MEDIUM",
+      "a": "OSS-Monaco-degrado-MEDIUM",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "evidenza": "FEN-degrado-MEDIUM misurato in Gran Bretagna (+0.727 s/giro, marcato) e Monaco (-0.363 s/giro, nullo): in almeno una gara l'effetto resta dentro il rumore",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-GranBretagna-degrado-MEDIUM",
+      "a": "OSS-Spagna-degrado-MEDIUM",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Gran Bretagna +0.727 s/giro; Spagna +1.394 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "non_replicato",
+      "da": "OSS-Miami-degrado-MEDIUM",
+      "a": "OSS-Monaco-degrado-MEDIUM",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "evidenza": "FEN-degrado-MEDIUM misurato in Miami (+0.384 s/giro, debole) e Monaco (-0.363 s/giro, nullo): in almeno una gara l'effetto resta dentro il rumore",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Miami-degrado-MEDIUM",
+      "a": "OSS-Spagna-degrado-MEDIUM",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Miami +0.384 s/giro; Spagna +1.394 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "non_replicato",
+      "da": "OSS-Monaco-degrado-MEDIUM",
+      "a": "OSS-Spagna-degrado-MEDIUM",
+      "fenomeno": "FEN-degrado-MEDIUM",
+      "evidenza": "FEN-degrado-MEDIUM misurato in Monaco (-0.363 s/giro, nullo) e Spagna (+1.394 s/giro, marcato): in almeno una gara l'effetto resta dentro il rumore",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "non_replicato",
+      "da": "OSS-Australia-degrado-SOFT",
+      "a": "OSS-Belgio-degrado-SOFT",
+      "fenomeno": "FEN-degrado-SOFT",
+      "evidenza": "FEN-degrado-SOFT misurato in Australia (+0.066 s/giro, nullo) e Belgio (+1.798 s/giro, marcato): in almeno una gara l'effetto resta dentro il rumore",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "non_replicato",
+      "da": "OSS-Australia-degrado-SOFT",
+      "a": "OSS-Monaco-degrado-SOFT",
+      "fenomeno": "FEN-degrado-SOFT",
+      "evidenza": "FEN-degrado-SOFT misurato in Australia (+0.066 s/giro, nullo) e Monaco (+0.634 s/giro, debole): in almeno una gara l'effetto resta dentro il rumore",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "non_replicato",
+      "da": "OSS-Australia-degrado-SOFT",
+      "a": "OSS-Spagna-degrado-SOFT",
+      "fenomeno": "FEN-degrado-SOFT",
+      "evidenza": "FEN-degrado-SOFT misurato in Australia (+0.066 s/giro, nullo) e Spagna (+0.981 s/giro, marcato): in almeno una gara l'effetto resta dentro il rumore",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Belgio-degrado-SOFT",
+      "a": "OSS-Monaco-degrado-SOFT",
+      "fenomeno": "FEN-degrado-SOFT",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Belgio +1.798 s/giro; Monaco +0.634 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Belgio-degrado-SOFT",
+      "a": "OSS-Spagna-degrado-SOFT",
+      "fenomeno": "FEN-degrado-SOFT",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Belgio +1.798 s/giro; Spagna +0.981 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Monaco-degrado-SOFT",
+      "a": "OSS-Spagna-degrado-SOFT",
+      "fenomeno": "FEN-degrado-SOFT",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Monaco +0.634 s/giro; Spagna +0.981 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Australia-non_classificabile-HARD",
+      "a": "OSS-Belgio-non_classificabile-HARD",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Australia +0.874 s/giro; Belgio +0.841 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Australia-non_classificabile-HARD",
+      "a": "OSS-GranBretagna-non_classificabile-HARD",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Australia +0.874 s/giro; Gran Bretagna +0.624 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Australia-non_classificabile-HARD",
+      "a": "OSS-Miami-non_classificabile-HARD",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Australia +0.874 s/giro; Miami +1.137 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Australia-non_classificabile-HARD",
+      "a": "OSS-Monaco-non_classificabile-HARD",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Australia +0.874 s/giro; Monaco +0.937 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Australia-non_classificabile-HARD",
+      "a": "OSS-Spagna-non_classificabile-HARD",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Australia +0.874 s/giro; Spagna +1.358 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Belgio-non_classificabile-HARD",
+      "a": "OSS-GranBretagna-non_classificabile-HARD",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Belgio +0.841 s/giro; Gran Bretagna +0.624 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Belgio-non_classificabile-HARD",
+      "a": "OSS-Miami-non_classificabile-HARD",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Belgio +0.841 s/giro; Miami +1.137 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Belgio-non_classificabile-HARD",
+      "a": "OSS-Monaco-non_classificabile-HARD",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Belgio +0.841 s/giro; Monaco +0.937 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Belgio-non_classificabile-HARD",
+      "a": "OSS-Spagna-non_classificabile-HARD",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Belgio +0.841 s/giro; Spagna +1.358 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-GranBretagna-non_classificabile-HARD",
+      "a": "OSS-Miami-non_classificabile-HARD",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Gran Bretagna +0.624 s/giro; Miami +1.137 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-GranBretagna-non_classificabile-HARD",
+      "a": "OSS-Monaco-non_classificabile-HARD",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Gran Bretagna +0.624 s/giro; Monaco +0.937 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-GranBretagna-non_classificabile-HARD",
+      "a": "OSS-Spagna-non_classificabile-HARD",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Gran Bretagna +0.624 s/giro; Spagna +1.358 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Miami-non_classificabile-HARD",
+      "a": "OSS-Monaco-non_classificabile-HARD",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Miami +1.137 s/giro; Monaco +0.937 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Miami-non_classificabile-HARD",
+      "a": "OSS-Spagna-non_classificabile-HARD",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Miami +1.137 s/giro; Spagna +1.358 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Monaco-non_classificabile-HARD",
+      "a": "OSS-Spagna-non_classificabile-HARD",
+      "fenomeno": "FEN-non_classificabile-HARD",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Monaco +0.937 s/giro; Spagna +1.358 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "divergenza",
+      "da": "OSS-Australia-non_classificabile-MEDIUM",
+      "a": "OSS-Belgio-non_classificabile-MEDIUM",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "evidenza": "stesso componente e stessa mescola ma segno OPPOSTO: Australia -1.284 s/giro contro Belgio +0.417 s/giro",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "divergenza",
+      "da": "OSS-Australia-non_classificabile-MEDIUM",
+      "a": "OSS-GranBretagna-non_classificabile-MEDIUM",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "evidenza": "stesso componente e stessa mescola ma segno OPPOSTO: Australia -1.284 s/giro contro Gran Bretagna +0.554 s/giro",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "divergenza",
+      "da": "OSS-Australia-non_classificabile-MEDIUM",
+      "a": "OSS-Miami-non_classificabile-MEDIUM",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "evidenza": "stesso componente e stessa mescola ma segno OPPOSTO: Australia -1.284 s/giro contro Miami +0.621 s/giro",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "non_replicato",
+      "da": "OSS-Australia-non_classificabile-MEDIUM",
+      "a": "OSS-Monaco-non_classificabile-MEDIUM",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "evidenza": "FEN-non_classificabile-MEDIUM misurato in Australia (-1.284 s/giro, marcato) e Monaco (-0.221 s/giro, nullo): in almeno una gara l'effetto resta dentro il rumore",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "divergenza",
+      "da": "OSS-Australia-non_classificabile-MEDIUM",
+      "a": "OSS-Spagna-non_classificabile-MEDIUM",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "evidenza": "stesso componente e stessa mescola ma segno OPPOSTO: Australia -1.284 s/giro contro Spagna +1.570 s/giro",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Belgio-non_classificabile-MEDIUM",
+      "a": "OSS-GranBretagna-non_classificabile-MEDIUM",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Belgio +0.417 s/giro; Gran Bretagna +0.554 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Belgio-non_classificabile-MEDIUM",
+      "a": "OSS-Miami-non_classificabile-MEDIUM",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Belgio +0.417 s/giro; Miami +0.621 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "non_replicato",
+      "da": "OSS-Belgio-non_classificabile-MEDIUM",
+      "a": "OSS-Monaco-non_classificabile-MEDIUM",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "evidenza": "FEN-non_classificabile-MEDIUM misurato in Belgio (+0.417 s/giro, debole) e Monaco (-0.221 s/giro, nullo): in almeno una gara l'effetto resta dentro il rumore",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Belgio-non_classificabile-MEDIUM",
+      "a": "OSS-Spagna-non_classificabile-MEDIUM",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Belgio +0.417 s/giro; Spagna +1.570 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-GranBretagna-non_classificabile-MEDIUM",
+      "a": "OSS-Miami-non_classificabile-MEDIUM",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Gran Bretagna +0.554 s/giro; Miami +0.621 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "non_replicato",
+      "da": "OSS-GranBretagna-non_classificabile-MEDIUM",
+      "a": "OSS-Monaco-non_classificabile-MEDIUM",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "evidenza": "FEN-non_classificabile-MEDIUM misurato in Gran Bretagna (+0.554 s/giro, debole) e Monaco (-0.221 s/giro, nullo): in almeno una gara l'effetto resta dentro il rumore",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-GranBretagna-non_classificabile-MEDIUM",
+      "a": "OSS-Spagna-non_classificabile-MEDIUM",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Gran Bretagna +0.554 s/giro; Spagna +1.570 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "non_replicato",
+      "da": "OSS-Miami-non_classificabile-MEDIUM",
+      "a": "OSS-Monaco-non_classificabile-MEDIUM",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "evidenza": "FEN-non_classificabile-MEDIUM misurato in Miami (+0.621 s/giro, marcato) e Monaco (-0.221 s/giro, nullo): in almeno una gara l'effetto resta dentro il rumore",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Miami-non_classificabile-MEDIUM",
+      "a": "OSS-Spagna-non_classificabile-MEDIUM",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Miami +0.621 s/giro; Spagna +1.570 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "non_replicato",
+      "da": "OSS-Monaco-non_classificabile-MEDIUM",
+      "a": "OSS-Spagna-non_classificabile-MEDIUM",
+      "fenomeno": "FEN-non_classificabile-MEDIUM",
+      "evidenza": "FEN-non_classificabile-MEDIUM misurato in Monaco (-0.221 s/giro, nullo) e Spagna (+1.570 s/giro, marcato): in almeno una gara l'effetto resta dentro il rumore",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Belgio-non_classificabile-SOFT",
+      "a": "OSS-Miami-non_classificabile-SOFT",
+      "fenomeno": "FEN-non_classificabile-SOFT",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Belgio +0.345 s/giro; Miami +0.421 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Belgio-non_classificabile-SOFT",
+      "a": "OSS-Spagna-non_classificabile-SOFT",
+      "fenomeno": "FEN-non_classificabile-SOFT",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Belgio +0.345 s/giro; Spagna +1.422 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "ripetizione_altra_gara",
+      "da": "OSS-Miami-non_classificabile-SOFT",
+      "a": "OSS-Spagna-non_classificabile-SOFT",
+      "fenomeno": "FEN-non_classificabile-SOFT",
+      "evidenza": "stesso componente e stessa mescola su circuiti diversi (Miami +0.421 s/giro; Spagna +1.422 s/giro), stesso segno, entrambi sopra il rumore della rispettiva gara",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    },
+    {
+      "tipo": "non_replicato",
+      "da": "OSS-Australia-rumore-MEDIUM",
+      "a": "OSS-Belgio-rumore-MEDIUM",
+      "fenomeno": "FEN-rumore-MEDIUM",
+      "evidenza": "FEN-rumore-MEDIUM misurato in Australia (-0.232 s/giro, nullo) e Belgio (-0.053 s/giro, nullo): in almeno una gara l'effetto resta dentro il rumore",
+      "natura": "co-occorrenza misurata, non relazione causale"
+    }
+  ],
+  "ipotesi": []
+}

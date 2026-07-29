@@ -1,0 +1,218 @@
+{
+  "id": "recap-weekend-hungaroring-2026",
+  "anno": 2026,
+  "gp": "Hungarian Grand Prix",
+  "country": "Hungary",
+  "circuito": "Budapest",
+  "round": 11,
+  "nome_it": "Ungheria",
+  "dominante": "NOR",
+  "rivale": "HAM",
+  "dominio_doppio": true,
+  "team": {
+    "NOR": "McLaren",
+    "HAM": "Ferrari"
+  },
+  "q_tempi": {
+    "NOR": "1:17,207",
+    "HAM": "1:17,219"
+  },
+  "pole_margin_s": 0.012,
+  "minisettori": {
+    "n": 24,
+    "vinti_dominante": 14,
+    "vinti_rivale": 10,
+    "ms_guadagnati_dominante": 450.0,
+    "ms_guadagnati_rivale": 438.0
+  },
+  "delta_cumulato": {
+    "fine_s": 0.012,
+    "picco_dominante": {
+      "s": 0.194,
+      "dist_m": 3413.0,
+      "curva": "T12"
+    },
+    "picco_rivale": {
+      "s": -0.047,
+      "dist_m": 719.0,
+      "curva": "T1"
+    }
+  },
+  "max_pendenza_dominante": {
+    "curva": "T7",
+    "ms": 100.0,
+    "d0": 2351.0,
+    "d1": 2532.0
+  },
+  "max_pendenza_rivale": {
+    "curva": "T13",
+    "ms": -112.0
+  },
+  "vmax_kmh": {
+    "NOR": 331.0,
+    "HAM": 333.0
+  },
+  "minime_curva": [
+    {
+      "curva": "T1",
+      "dominante": 92.0,
+      "rivale": 94.0,
+      "delta": -2.0,
+      "outlier": false
+    },
+    {
+      "curva": "T1A",
+      "dominante": 233.0,
+      "rivale": 234.0,
+      "delta": -1.0,
+      "outlier": true
+    },
+    {
+      "curva": "T2",
+      "dominante": 121.0,
+      "rivale": 120.0,
+      "delta": 1.0,
+      "outlier": false
+    },
+    {
+      "curva": "T3",
+      "dominante": 228.0,
+      "rivale": 231.0,
+      "delta": -3.0,
+      "outlier": false
+    },
+    {
+      "curva": "T4",
+      "dominante": 234.0,
+      "rivale": 231.0,
+      "delta": 3.0,
+      "outlier": false
+    },
+    {
+      "curva": "T5",
+      "dominante": 150.0,
+      "rivale": 149.0,
+      "delta": 1.0,
+      "outlier": false
+    },
+    {
+      "curva": "T6",
+      "dominante": 111.0,
+      "rivale": 104.0,
+      "delta": 7.0,
+      "outlier": false
+    },
+    {
+      "curva": "T7",
+      "dominante": 111.0,
+      "rivale": 104.0,
+      "delta": 7.0,
+      "outlier": false
+    },
+    {
+      "curva": "T8",
+      "dominante": 167.0,
+      "rivale": 169.0,
+      "delta": -2.0,
+      "outlier": false
+    },
+    {
+      "curva": "T9",
+      "dominante": 154.0,
+      "rivale": 154.0,
+      "delta": 0.0,
+      "outlier": false
+    },
+    {
+      "curva": "T10",
+      "dominante": 244.0,
+      "rivale": 239.0,
+      "delta": 5.0,
+      "outlier": false
+    },
+    {
+      "curva": "T11",
+      "dominante": 220.0,
+      "rivale": 226.0,
+      "delta": -6.0,
+      "outlier": false
+    },
+    {
+      "curva": "T12",
+      "dominante": 115.0,
+      "rivale": 117.0,
+      "delta": -2.0,
+      "outlier": false
+    },
+    {
+      "curva": "T12A",
+      "dominante": 164.0,
+      "rivale": 184.0,
+      "delta": -20.0,
+      "outlier": true
+    },
+    {
+      "curva": "T13",
+      "dominante": 98.0,
+      "rivale": 98.0,
+      "delta": 0.0,
+      "outlier": false
+    },
+    {
+      "curva": "T14",
+      "dominante": 132.0,
+      "rivale": 135.0,
+      "delta": -3.0,
+      "outlier": false
+    }
+  ],
+  "apici_dominante": [
+    "T7 +7",
+    "T10 +5",
+    "T4 +3",
+    "T2 +1",
+    "T5 +1"
+  ],
+  "apici_rivale": [
+    "T11 -6",
+    "T3 -3",
+    "T14 -3",
+    "T1 -2",
+    "T8 -2"
+  ],
+  "outlier_curve": [
+    "T1A",
+    "T12A"
+  ],
+  "curva_chiave": {
+    "curva": "T7",
+    "delta_apice_kmh": 7.0,
+    "apice_dominante_kmh": 111.0,
+    "apice_rivale_kmh": 104.0,
+    "frenata_m": {
+      "NOR": 87.0,
+      "HAM": 84.0
+    },
+    "gas_pieno_dopo_apice_m": {
+      "NOR": 64.0,
+      "HAM": 80.0
+    }
+  },
+  "passo_gara": {
+    "leader": "NOR",
+    "leader_team": "McLaren",
+    "leader_med": 84.5015,
+    "leader_iqr": 1.8840000000000003,
+    "dominante_med": 84.5015,
+    "dominante_iqr": 1.8840000000000003,
+    "next_sig": "HAM",
+    "next_med": 84.748,
+    "rivale_iqr": 1.286999999999992,
+    "margine_s": 0.247,
+    "field_spread_s": 1.849
+  },
+  "esito_dominante": {
+    "grid": 1,
+    "arrivo": 1
+  }
+}

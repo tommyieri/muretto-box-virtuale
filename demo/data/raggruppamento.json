@@ -1,0 +1,121 @@
+{
+ "_nota": "GENERATO da gen_raggruppamento.py sul fondo 2018-2026. Il tasso di esito e OSSERVATO, non ricostruito: sommare pit-loss e compressione dava la risposta rovesciata perche il rapporto SC/verde poggia su troppe poche gare.",
+ "compressione": {
+  "VSC": {
+   "mediana": 1.371,
+   "n_periodi": 16,
+   "lettura": "i distacchi NON si comprimono, anzi si allargano"
+  },
+  "SC": {
+   "mediana": 0.659,
+   "n_periodi": 71,
+   "lettura": "il gruppo si accoda: i distacchi si comprimono"
+  }
+ },
+ "quanto_resta_del_distacco": {
+  "0-2": {
+   "quota": 2.256,
+   "n_coppie": 666
+  },
+  "2-5": {
+   "quota": 1.108,
+   "n_coppie": 1073
+  },
+  "5-10": {
+   "quota": 0.834,
+   "n_coppie": 1407
+  },
+  "10-20": {
+   "quota": 0.539,
+   "n_coppie": 2145
+  },
+  "20-40": {
+   "quota": 0.516,
+   "n_coppie": 2272
+  }
+ },
+ "esito_A_verde_B_sotto_SC": {
+  "0-3": {
+   "n": 51,
+   "quota_B_passa": 0.627
+  },
+  "3-6": {
+   "n": 38,
+   "quota_B_passa": 0.605
+  },
+  "6-10": {
+   "n": 59,
+   "quota_B_passa": 0.441
+  },
+  "10-25": {
+   "n": 138,
+   "quota_B_passa": 0.196
+  }
+ },
+ "esito_complessivo": {
+  "n": 326,
+  "quota_B_passa": 0.337,
+  "guadagno_mediano_s": 10.2
+ },
+ "soglia_pareggio": {
+  "globale": {
+   "soglia_s": 10.1,
+   "gap_tipico_B_passa": 6.0,
+   "gap_tipico_A_resta": 14.2,
+   "n_eventi": 53,
+   "n_coppie": 326
+  },
+  "_nota_per_circuito": "DIAGNOSTICA, non usata dal prodotto: dispersione indistinguibile dal caso (p=0,20). Si riapre quando una pista supera ~10 eventi.",
+  "per_circuito": {
+   "imola": {
+    "soglia_s": 8.4,
+    "gap_tipico_B_passa": 10.5,
+    "gap_tipico_A_resta": 6.3,
+    "n_eventi": 3,
+    "n_coppie": 10
+   },
+   "interlagos": {
+    "soglia_s": 3.7,
+    "gap_tipico_B_passa": 3.0,
+    "gap_tipico_A_resta": 4.3,
+    "n_eventi": 4,
+    "n_coppie": 14
+   },
+   "monza": {
+    "soglia_s": 7.5,
+    "gap_tipico_B_passa": 4.8,
+    "gap_tipico_A_resta": 10.2,
+    "n_eventi": 3,
+    "n_coppie": 19
+   },
+   "shanghai": {
+    "soglia_s": 12.1,
+    "gap_tipico_B_passa": 6.3,
+    "gap_tipico_A_resta": 18.0,
+    "n_eventi": 3,
+    "n_coppie": 9
+   },
+   "silverstone": {
+    "soglia_s": 14.8,
+    "gap_tipico_B_passa": 8.8,
+    "gap_tipico_A_resta": 20.7,
+    "n_eventi": 5,
+    "n_coppie": 18
+   },
+   "suzuka": {
+    "soglia_s": 7.3,
+    "gap_tipico_B_passa": 3.7,
+    "gap_tipico_A_resta": 10.8,
+    "n_eventi": 4,
+    "n_coppie": 21
+   },
+   "zandvoort": {
+    "soglia_s": 11.7,
+    "gap_tipico_B_passa": 8.2,
+    "gap_tipico_A_resta": 15.3,
+    "n_eventi": 3,
+    "n_coppie": 83
+   }
+  }
+ }
+}

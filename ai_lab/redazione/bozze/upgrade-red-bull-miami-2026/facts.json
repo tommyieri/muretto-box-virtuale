@@ -1,0 +1,145 @@
+{
+  "team": "Red Bull Racing",
+  "gara_upgrade": "Miami",
+  "round_upgrade": 4,
+  "anno": 2026,
+  "n_gare": 10,
+  "n_prima": 3,
+  "n_dopo": 7,
+  "gare_prima": [
+    "Melbourne",
+    "Shanghai",
+    "Suzuka"
+  ],
+  "gare_dopo": [
+    "Miami Gardens",
+    "Montréal",
+    "Barcelona",
+    "Spielberg",
+    "Silverstone",
+    "Spa-Francorchamps",
+    "Budapest"
+  ],
+  "serie_indice": [
+    [
+      1,
+      81.0
+    ],
+    [
+      2,
+      58.0
+    ],
+    [
+      3,
+      55.5
+    ],
+    [
+      4,
+      81.0
+    ],
+    [
+      5,
+      74.5
+    ],
+    [
+      7,
+      79.0
+    ],
+    [
+      8,
+      89.0
+    ],
+    [
+      9,
+      75.5
+    ],
+    [
+      10,
+      85.5
+    ],
+    [
+      11,
+      70.0
+    ]
+  ],
+  "serie_gap": [
+    [
+      1,
+      0.785
+    ],
+    [
+      2,
+      0.938
+    ],
+    [
+      3,
+      1.2
+    ],
+    [
+      4,
+      0.166
+    ],
+    [
+      5,
+      0.329
+    ],
+    [
+      7,
+      0.342
+    ],
+    [
+      8,
+      0.362
+    ],
+    [
+      9,
+      0.635
+    ],
+    [
+      10,
+      0.317
+    ],
+    [
+      11,
+      0.518
+    ]
+  ],
+  "indice_prima": 64.8,
+  "indice_dopo": 79.2,
+  "indice_step": 14.4,
+  "gap_s_prima": 0.97,
+  "gap_s_dopo": 0.38,
+  "quali_def_prima": 1.12,
+  "quali_def_dopo": 0.48,
+  "quali_riduzione_pp": 0.65,
+  "passo_def_prima": 1.35,
+  "passo_def_dopo": 0.79,
+  "punta_pct_prima": 34,
+  "punta_pct_dopo": 61,
+  "curva_pct_prima": 69,
+  "curva_pct_dopo": 51,
+  "gap_gara_upgrade_s": 0.17,
+  "pilota_gara_upgrade": "VER",
+  "guida": "quali",
+  "quali_p": 0.008,
+  "quali_sep": true,
+  "quali_perm_est": 1,
+  "quali_perm_tot": 120,
+  "indice_p": 0.05,
+  "indice_sep": false,
+  "indice_perm_est": 6,
+  "indice_perm_tot": 120,
+  "indice_max_prima": 81,
+  "indice_max_prima_gara": "Melbourne",
+  "punta_p": 0.142,
+  "punta_sep": false,
+  "punta_dopo_sopra": 6,
+  "punta_mediana": 50,
+  "curva_pct_upgrade": 0,
+  "curva_pct_dopo_senza": 59,
+  "rilevatore_rango": 1,
+  "rilevatore_riduzione": 0.65,
+  "rilevatore_sigma_dopo": 0.18,
+  "rilevatore_round": 4,
+  "id": "upgrade-red-bull-miami-2026"
+}

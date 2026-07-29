@@ -1,0 +1,177 @@
+{
+  "Australia": {
+    "sc": [],
+    "vsc": [
+      [
+        11,
+        14
+      ],
+      [
+        18,
+        20
+      ],
+      [
+        32,
+        34
+      ]
+    ],
+    "rf": [],
+    "durata_sc": 0.0,
+    "durata_vsc": 3.3
+  },
+  "Cina": {
+    "sc": [
+      [
+        10,
+        13
+      ]
+    ],
+    "vsc": [],
+    "rf": [],
+    "durata_sc": 4.0,
+    "durata_vsc": 0.0
+  },
+  "Giappone": {
+    "sc": [
+      [
+        21,
+        27
+      ]
+    ],
+    "vsc": [],
+    "rf": [],
+    "durata_sc": 7.0,
+    "durata_vsc": 0.0
+  },
+  "Miami": {
+    "sc": [
+      [
+        5,
+        11
+      ]
+    ],
+    "vsc": [],
+    "rf": [],
+    "durata_sc": 7.0,
+    "durata_vsc": 0.0
+  },
+  "Canada": {
+    "sc": [],
+    "vsc": [
+      [
+        29,
+        32
+      ],
+      [
+        43,
+        46
+      ],
+      [
+        49,
+        54
+      ]
+    ],
+    "rf": [],
+    "durata_sc": 0.0,
+    "durata_vsc": 4.7
+  },
+  "Monaco": {
+    "sc": [
+      [
+        57,
+        70
+      ]
+    ],
+    "vsc": [],
+    "rf": [
+      [
+        67,
+        68
+      ]
+    ],
+    "durata_sc": 14.0,
+    "durata_vsc": 0.0
+  },
+  "Spagna": {
+    "sc": [],
+    "vsc": [
+      [
+        39,
+        42
+      ],
+      [
+        60,
+        65
+      ]
+    ],
+    "rf": [],
+    "durata_sc": 0.0,
+    "durata_vsc": 5.0
+  },
+  "Austria": {
+    "sc": [],
+    "vsc": [
+      [
+        24,
+        26
+      ],
+      [
+        51,
+        53
+      ]
+    ],
+    "rf": [],
+    "durata_sc": 0.0,
+    "durata_vsc": 3.0
+  },
+  "Gran Bretagna": {
+    "sc": [
+      [
+        46,
+        52
+      ]
+    ],
+    "vsc": [
+      [
+        21,
+        22
+      ],
+      [
+        37,
+        39
+      ]
+    ],
+    "rf": [],
+    "durata_sc": 7.0,
+    "durata_vsc": 2.5
+  },
+  "Belgio": {
+    "sc": [
+      [
+        1,
+        4
+      ]
+    ],
+    "vsc": [
+      [
+        17,
+        21
+      ]
+    ],
+    "rf": [],
+    "durata_sc": 4.0,
+    "durata_vsc": 5.0
+  },
+  "Ungheria": {
+    "sc": [],
+    "vsc": [
+      [
+        54,
+        57
+      ]
+    ],
+    "rf": [],
+    "durata_sc": 0.0,
+    "durata_vsc": 4.0
+  }
+}

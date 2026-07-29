@@ -1,0 +1,32 @@
+{
+  "id": "hun-quali-pole-2026",
+  "stato": "respinto",
+  "attore": "auto",
+  "creato": "2026-07-26",
+  "storico": [
+    {
+      "stato": "bozza",
+      "attore": "redazione",
+      "quando": "2026-07-26",
+      "nota": "bozza generata"
+    },
+    {
+      "stato": "approvato",
+      "attore": "auto",
+      "quando": "2026-07-26",
+      "nota": "auto-pubblicazione post-sessione (policy 25/07): quali Ungheria"
+    },
+    {
+      "stato": "pubblicato",
+      "attore": "auto",
+      "quando": "2026-07-26",
+      "nota": "pubblicato all'approvazione"
+    },
+    {
+      "stato": "respinto",
+      "attore": "Tommi",
+      "quando": "2026-07-26",
+      "nota": "pulizia livello: basilare/venerdi-inaffidabile, superato da recap+passo-reale"
+    }
+  ]
+}

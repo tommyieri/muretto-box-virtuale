@@ -1,0 +1,442 @@
+#!/usr/bin/env python
+"""Decoder del feed live timing registrato: da file grezzo a messaggi tipizzati.
+
+Input: file scritti da record_session.py (una riga per messaggio, formato repr
+del client FastF1; le righe dello snapshot iniziale hanno payload JSON-stringa
+e timestamp vuoto). Il parsing riga/timestamp riusa la logica gia' validata in
+inspect_recording.py.
+
+Livelli:
+  - messaggi(path)            -> flusso (topic, payload decodificato, ts busta)
+  - campioni_posizione(...)   -> un campione per auto per timestamp (Position.z)
+  - campioni_cardata(...)     -> canali telemetria per auto (CarData.z)
+  - StatoSessione             -> session state manager: fonde i delta TimingData
+                                 in uno stato per-pilota persistente + stati
+                                 semplici (TrackStatus, SessionStatus,
+                                 DriverList, WeatherData, RaceControlMessages)
+
+Regole dure:
+  - (X,Y,Z)=(0,0,0) = posizione NON disponibile (garage/trasponder muto):
+    mai emessa come posizione valida.
+  - righe non riconosciute: contate e loggate, mai crash (il decoder deve
+    digerire anche registrazioni troncate con inizio/fine bruschi).
+
+Solo libreria standard; nessun import dal kernel.
+"""
+
+import json
+import logging
+from dataclasses import dataclass
+from datetime import datetime
+from pathlib import Path
+from typing import Optional
+
+import sys
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from inspect_recording import decodifica_z, parse_riga, parse_timestamp  # noqa: E402
+
+log = logging.getLogger("decoder")
+
+# Mappatura canali CarData.z (feed live timing F1; verificata empiricamente
+# su FP2 Spa 2026: range fisicamente plausibili, vedi REPORT_FASE1.md):
+#   '0'  = RPM motore
+#   '2'  = velocita' [km/h]
+#   '3'  = marcia (0 = folle/retro)
+#   '4'  = throttle [%] (il feed usa 0-104: >100 osservato, non errore)
+#   '5'  = freno (0/104 on-off nel feed)
+#   '45' = DRS (codici stato: 0/8 chiuso, 10/12/14 aperto)
+CANALI_CARDATA = {
+    "0": "rpm",
+    "2": "velocita",
+    "3": "marcia",
+    "4": "throttle",
+    "5": "freno",
+    "45": "drs",
+}
+
+# Range di plausibilita' fisica: fuori range -> warning (mai crash).
+RANGE_PLAUSIBILI = {
+    "rpm": (0, 20000),
+    "velocita": (0, 360),
+    "marcia": (0, 8),
+    "throttle": (0, 110),
+    "freno": (0, 110),
+    "drs": (0, 15),
+}
+_MAX_WARNING_PER_CANALE = 5
+
+
+@dataclass
+class CampionePosizione:
+    t: Optional[datetime]
+    auto: str
+    x: int
+    y: int
+    z: int
+    status: str
+
+
+@dataclass
+class CampioneCarData:
+    t: Optional[datetime]
+    auto: str
+    canali: dict  # nome canale -> valore (solo canali mappati)
+
+
+class StatisticheDecoder:
+    """Contatori del passaggio su un file: righe ok/errore, topic visti."""
+
+    def __init__(self):
+        self.righe_totali = 0
+        self.righe_ok = 0
+        self.righe_vuote = 0
+        self.righe_errore = 0
+        self.per_topic = {}
+
+    @property
+    def frazione_ok(self):
+        utili = self.righe_totali - self.righe_vuote
+        return self.righe_ok / utili if utili else 1.0
+
+
+def messaggi_da_righe(righe, stats=None):
+    """Genera (topic, payload, ts) da un iterabile di righe grezze.
+
+    E' il decoder per-riga condiviso: usato da messaggi() sui file
+    registrati e dal collettore live (Fase 2) sulle righe appena ricevute —
+    stesso codice, stessa semantica. payload e' gia' decodificato
+    (JSON-stringa -> oggetto, topic .z -> base64+deflate raw -> oggetto);
+    ts e' il timestamp della busta (None per le righe di snapshot).
+    Righe illeggibili: contate, mai eccezioni.
+    """
+    if stats is None:
+        stats = StatisticheDecoder()
+    for riga in righe:
+        stats.righe_totali += 1
+        if not riga.strip():
+            stats.righe_vuote += 1
+            continue
+        parsato = parse_riga(riga)
+        if parsato is None:
+            stats.righe_errore += 1
+            log.warning("riga %d illeggibile (troncata?): %.80s",
+                        stats.righe_totali, riga.strip())
+            continue
+        topic, payload, ts = parsato
+        try:
+            if topic.endswith(".z"):
+                if isinstance(payload, str):
+                    payload = decodifica_z(payload)
+            elif isinstance(payload, str):
+                payload = json.loads(payload)
+        except Exception as e:
+            stats.righe_errore += 1
+            log.warning("riga %d: payload %s non decodificabile (%r)",
+                        stats.righe_totali, topic, e)
+            continue
+        stats.righe_ok += 1
+        stats.per_topic[topic] = stats.per_topic.get(topic, 0) + 1
+        yield topic, payload, ts
+
+
+def messaggi(path, stats=None):
+    """Genera (topic, payload, ts) dalle righe di un file registrato."""
+    with open(path, encoding="utf-8") as f:
+        yield from messaggi_da_righe(f, stats)
+
+
+def campioni_posizione(payload):
+    """Da un payload Position.z ai campioni per auto per timestamp.
+
+    Regola dura: (X,Y,Z)=(0,0,0) = posizione non disponibile, mai emessa.
+    """
+    for campione in payload.get("Position", []):
+        ts = parse_timestamp(campione.get("Timestamp", ""))
+        for auto, voce in campione.get("Entries", {}).items():
+            x = voce.get("X", 0)
+            y = voce.get("Y", 0)
+            z = voce.get("Z", 0)
+            if x == 0 and y == 0 and z == 0:
+                continue
+            yield CampionePosizione(t=ts, auto=str(auto), x=x, y=y, z=z,
+                                    status=voce.get("Status", ""))
+
+
+_contatori_warning = {}
+
+
+def campioni_cardata(payload):
+    """Da un payload CarData.z ai canali per auto (solo canali mappati).
+
+    Valori fuori dai range di plausibilita': warning (limitato), mai crash.
+    """
+    for voce in payload.get("Entries", []):
+        ts = parse_timestamp(voce.get("Utc", ""))
+        for auto, dati in voce.get("Cars", {}).items():
+            canali = {}
+            for codice, valore in dati.get("Channels", {}).items():
+                nome = CANALI_CARDATA.get(str(codice))
+                if nome is None:
+                    continue
+                minimo, massimo = RANGE_PLAUSIBILI[nome]
+                if not (isinstance(valore, (int, float))
+                        and minimo <= valore <= massimo):
+                    n = _contatori_warning.get(nome, 0)
+                    _contatori_warning[nome] = n + 1
+                    if n < _MAX_WARNING_PER_CANALE:
+                        log.warning("CarData auto %s: %s=%r fuori range "
+                                    "[%s, %s]", auto, nome, valore,
+                                    minimo, massimo)
+                canali[nome] = valore
+            yield CampioneCarData(t=ts, auto=str(auto), canali=canali)
+
+
+def merge_delta(base, delta):
+    """Merge ricorsivo dei delta del feed nello stato persistente.
+
+    Chiavi presenti nel delta aggiornano, chiavi assenti persistono.
+    Caso feed: un delta dict puo' aggiornare una lista per indice
+    ({'Sectors': {'2': {...}}} su una lista di settori).
+    """
+    if isinstance(base, dict) and isinstance(delta, dict):
+        for chiave, valore in delta.items():
+            if chiave in base:
+                base[chiave] = merge_delta(base[chiave], valore)
+            else:
+                base[chiave] = valore
+        return base
+    if isinstance(base, list) and isinstance(delta, dict):
+        for chiave, valore in delta.items():
+            try:
+                indice = int(chiave)
+            except (TypeError, ValueError):
+                return delta
+            if 0 <= indice < len(base):
+                base[indice] = merge_delta(base[indice], valore)
+            elif indice == len(base):
+                base.append(valore)
+        return base
+    return delta
+
+
+def _valore_tempo(nodo):
+    """Estrae 'Value' da un nodo tempo del feed; None se vuoto/assente."""
+    if isinstance(nodo, dict):
+        valore = nodo.get("Value", "")
+    else:
+        valore = nodo
+    return valore if valore else None
+
+
+def _intero(v):
+    """Intero dal feed, o None. Il feed manda numeri, stringhe e vuoti."""
+    try:
+        return int(v)
+    except (TypeError, ValueError):
+        return None
+
+
+def _secondi(v):
+    """Un tempo del feed -> secondi, o None quando NON E' un numero.
+
+    Il gap dal leader arriva come stringa e non e' sempre un tempo:
+        "+1.234"  -> 1.234        un gap vero
+        "1:02.345"-> 62.345       oltre il minuto
+        ""        -> None         il leader: non ha gap da se stesso
+        "LAP 1"   -> None         primo giro, la gara non ha ancora un ordine
+        "1L"      -> None         doppiato: il gap non e' piu' un tempo
+    None NON e' zero. Un doppiato con gap 0 finirebbe incollato al leader e il
+    pannello lo userebbe come rivale al rientro: e' il modo piu' rapido per
+    far dire una bugia al motore. Chi legge questo campo deve saltare i None.
+    """
+    if isinstance(v, dict):
+        v = v.get("Value", "")
+    if isinstance(v, (int, float)):
+        return float(v)
+    if not isinstance(v, str) or not v.strip():
+        return None
+    s = v.strip().lstrip("+")
+    try:
+        if ":" in s:
+            m, _, r = s.partition(":")
+            return int(m) * 60 + float(r)
+        return float(s)
+    except ValueError:
+        return None
+
+
+def _vista_settori(sectors):
+    """Da Sectors (lista di settori del feed) a [{t, best}] per S1/S2/S3.
+    `best` = 'o' (OverallFastest, viola) / 'p' (PersonalFastest, verde) /
+    None. `t` = tempo del settore ('' -> None). Additivo Fase 3/R2."""
+    out = []
+    if not isinstance(sectors, list):
+        return out
+    for s in sectors:
+        if not isinstance(s, dict):
+            out.append({"t": None, "best": None})
+            continue
+        best = "o" if s.get("OverallFastest") else (
+            "p" if s.get("PersonalFastest") else None)
+        out.append({"t": (s.get("Value") or None), "best": best})
+    return out
+
+
+SLICK_WET = ("SOFT", "MEDIUM", "HARD", "INTERMEDIATE", "WET")
+
+
+def _vista_stint(stints):
+    """Compound + eta'-gomma (TotalLaps) dello stint CORRENTE (l'ultimo).
+    Stints puo' essere lista (snapshot) o dict idx->stint (diff). Additivo
+    Fase C: alimenta gli scenari di degrado live. ('', None) -> None."""
+    if isinstance(stints, list):
+        seq = stints
+    elif isinstance(stints, dict):
+        seq = [stints[k] for k in sorted(stints, key=lambda x: int(x)
+                                         if str(x).lstrip("-").isdigit() else -1)]
+    else:
+        return None, None
+    seq = [s for s in seq if isinstance(s, dict)]
+    if not seq:
+        return None, None
+    cur = seq[-1]
+    comp = cur.get("Compound")
+    comp = comp if comp in SLICK_WET else None
+    try:
+        eta = int(cur.get("TotalLaps")) if cur.get("TotalLaps") is not None else None
+    except (TypeError, ValueError):
+        eta = None
+    return comp, eta
+
+
+def _vista_micro(sectors):
+    """Da Sectors ai codici Status dei micro-settori: [[status...], ...]
+    per S1/S2/S3. Codici misurati sul feed reale (registrazione Spa
+    2026-07-19): 0=non percorso, 2048=giallo, 2049=verde, 2051=viola,
+    2064=pit; altri (2052/2068/...)=neutro. La mappa colore vive nel
+    frontend (live_timing.mjs). Mai inventato: qui si passano i codici
+    grezzi, la semantica e' dichiarata li'."""
+    out = []
+    if not isinstance(sectors, list):
+        return out
+    for s in sectors:
+        segs = s.get("Segments") if isinstance(s, dict) else None
+        arr = []
+        if isinstance(segs, list):
+            arr = [seg.get("Status") for seg in segs
+                   if isinstance(seg, dict)]
+        out.append(arr)
+    return out
+
+
+class StatoSessione:
+    """Session state manager: stato per-pilota + stati semplici di sessione."""
+
+    def __init__(self):
+        self.piloti = {}          # numero auto -> stato TimingData fuso
+        self.driver_list = {}     # numero auto -> anagrafica
+        self.track_status = None  # es. 'AllClear'
+        self.session_status = None  # es. 'Started'
+        self.weather = {}
+        self.race_control = []    # lista messaggi race control
+        self.session_info = {}
+        # giro di gara e distanza (LapCount). TotalLaps arriva UNA volta sola,
+        # nel primo messaggio: tenerlo qui e' l'unico modo perche' chi si
+        # collega a meta' gara sappia quanti giri mancano.
+        self.lap_count = {}
+
+    def aggiorna(self, topic, payload, ts=None):
+        """Applica un messaggio decodificato allo stato. Ritorna True se il
+        topic e' gestito dallo stato, False altrimenti."""
+        if topic == "TimingData":
+            for auto, delta in payload.get("Lines", {}).items():
+                stato = self.piloti.setdefault(str(auto), {})
+                merge_delta(stato, delta if isinstance(delta, dict) else {})
+            return True
+        if topic == "TimingAppData":
+            # stint gomma (Stints[].Compound / .TotalLaps): fusi nello stesso
+            # stato per-pilota di TimingData. merge_delta gestisce sia la lista
+            # (snapshot) sia il diff per-indice. Fase C: alimenta compound +
+            # tyre_age nel live (fonte SignalR, non OpenF1 MQTT).
+            for auto, delta in payload.get("Lines", {}).items():
+                stato = self.piloti.setdefault(str(auto), {})
+                merge_delta(stato, delta if isinstance(delta, dict) else {})
+            return True
+        if topic == "DriverList":
+            for auto, delta in payload.items():
+                if isinstance(delta, dict):
+                    merge_delta(self.driver_list.setdefault(str(auto), {}),
+                                delta)
+            return True
+        if topic == "TrackStatus":
+            self.track_status = payload.get("Message") or payload.get("Status")
+            return True
+        if topic == "SessionStatus":
+            self.session_status = payload.get("Status")
+            return True
+        if topic == "WeatherData":
+            merge_delta(self.weather, payload)
+            return True
+        if topic == "RaceControlMessages":
+            nuovi = payload.get("Messages", [])
+            if isinstance(nuovi, dict):  # delta per indice
+                nuovi = list(nuovi.values())
+            self.race_control.extend(m for m in nuovi if isinstance(m, dict))
+            return True
+        if topic == "LapCount":
+            merge_delta(self.lap_count, payload)
+            return True
+        if topic == "SessionInfo":
+            merge_delta(self.session_info, payload)
+            return True
+        return False
+
+    def vista_pilota(self, auto):
+        """Vista sintetica per-pilota (l'interfaccia dei timing_update)."""
+        stato = self.piloti.get(str(auto), {})
+        pos = stato.get("Position")
+        try:
+            pos = int(pos) if pos not in (None, "") else None
+        except (TypeError, ValueError):
+            pos = None
+        gap = (stato.get("GapToLeader")
+               or stato.get("TimeDiffToFastest") or "")
+        interval = _valore_tempo(stato.get("IntervalToPositionAhead"))
+        sectors = stato.get("Sectors")
+        compound, tyre_age = _vista_stint(stato.get("Stints"))
+        return {
+            "pos": pos,
+            "gap": gap if isinstance(gap, str) else "",
+            "in_pit": bool(stato.get("InPit", False)),
+            "last_lap": _valore_tempo(stato.get("LastLapTime")),
+            "best_lap": _valore_tempo(stato.get("BestLapTime")),
+            "interval": interval if isinstance(interval, str) else None,
+            "sectors": _vista_settori(sectors),
+            "micro": _vista_micro(sectors),
+            "compound": compound,     # Fase C: stint gomma dal SignalR
+            "tyre_age": tyre_age,
+            # --- I TRE CAMPI CHE APRONO IL MURETTO IN LIVE (22/07/2026) -----------
+            # Fin qui la torre mostrava il gap come STRINGA, e il giro non usciva
+            # affatto: numero_giri() esisteva ma nessuno lo chiamava. Con solo quelli
+            # si disegna una classifica e non si simula niente, perche' il motore
+            # ragiona per giro e in secondi.
+            #   lap        il giro COMPLETATO da questo pilota (non quello del leader:
+            #              chi e' ai box o doppiato sta su un giro diverso, ed e'
+            #              esattamente la differenza che il pannello deve vedere)
+            #   gap_s      il gap dal leader in secondi. None quando non e' un numero
+            #              — doppiati ("1L"), primo giro ("LAP 1"), leader ("").
+            #              None e' un'informazione: dice "qui non si simula".
+            #   pit_stops  soste gia' fatte, per sapere su che gomma siamo
+            "lap": _intero(stato.get("NumberOfLaps")),
+            "gap_s": _secondi(gap),
+            "interval_s": _secondi(interval),
+            "pit_stops": _intero(stato.get("NumberOfPitStops")),
+            "retired": bool(stato.get("Retired", False)),
+        }
+
+    def best_lap(self, auto):
+        """Best lap del pilota dallo stato fuso ('' -> None)."""
+        return _valore_tempo(self.piloti.get(str(auto), {}).get("BestLapTime"))
+
+    def numero_giri(self, auto):
+        return self.piloti.get(str(auto), {}).get("NumberOfLaps")

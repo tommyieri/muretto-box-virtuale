@@ -1,0 +1,11 @@
+{
+  "headers": [
+    {
+      "source": "/data/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache" },
+        { "key": "X-Muretto-Cache", "value": "data-revalidate" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<!--
+  ANALISI (redesign chiaro/racing, auto-contenuto — NON usa il tema scuro di stile.css).
+  Due schede: ARTICOLI (indice redazione da data/analisi_articoli.json; ?bozze=1 = vista
+  revisore) e TELEMETRIA (foglio-tempi per sessione: miglior giro + settori S1/S2/S3,
+  viola=record; dati reali da data/quali_<GP>.json, libere_Belgio, sprint_Cina).
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Analisi — Muretto Box Virtuale</title>
+<meta name="description" content="Gli articoli della redazione tecnica: telemetria, passo gara, qualifiche e strategia. Ogni numero con la sua provenienza dichiarata.">
+<link rel="canonical" href="https://murettobox.com/analisi.html">
+<link rel="alternate" type="application/rss+xml" title="Muretto Box Virtuale — Analisi" href="https://murettobox.com/feed.xml">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e4002b%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+<style>
+  :root{
+    /* CARBONIO (coerente col resto del sito): fondo scuro, il dato porta il colore */
+    --paper:#0A0B0E; --paper-2:#15171C; --card:#15171C;
+    --ink:#EEF1F6; --ink-soft:#B7BECC; --dim:#868E9F; --line:#282C35;
+    --red:#E4002B; --red-ink:#FF3355; --viola:#B47CFF; --verde:#34D178;
+    --band:#0E1013;   /* fascia header carbonio (decoupla dal testo chiaro --ink) */
+    --shadow:inset 0 1px 0 rgba(255,255,255,.045), 0 12px 28px -16px rgba(0,0,0,.6);
+    --disp:"Barlow Condensed","Arial Narrow","Roboto Condensed",system-ui,sans-serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+    --mono:"JetBrains Mono","SF Mono",ui-monospace,Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{ background:var(--paper); color:var(--ink); font-family:var(--sans); line-height:1.5;
+    -webkit-font-smoothing:antialiased; min-height:100vh; }
+  a{color:inherit;text-decoration:none}
+  :focus-visible{ outline:2px solid var(--red); outline-offset:2px; border-radius:3px; }
+
+  /* fascia-header carbonio */
+  .band{ background:var(--band); color:#fff; padding:14px clamp(16px,4vw,34px) 0;
+    position:relative; border-bottom:1px solid var(--line); }
+  .band::before{ content:""; position:absolute; left:0; right:0; top:0; height:3px; background:var(--red); }
+  .band-top{ display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+  .mark{ width:32px; height:32px; border-radius:8px; background:var(--red); flex:none;
+    display:grid; place-items:center; font:800 19px/1 var(--disp); color:#fff; transform:skewX(-6deg); }
+  .mark span{ transform:skewX(6deg); }
+  .brand{ display:flex; flex-direction:column; line-height:1; color:#fff; }
+  .brand b{ font:800 15px/1 var(--disp); letter-spacing:.14em; }
+  .brand small{ font:600 8px/1 var(--mono); letter-spacing:.24em; color:#9aa3b2; margin-top:3px; }
+  nav.site{ display:flex; gap:2px; margin-left:auto; flex-wrap:wrap; }
+  nav.site a{ color:#aeb6c2; font:700 13px/1 var(--disp); letter-spacing:.12em; text-transform:uppercase;
+    padding:8px 12px; border-radius:7px; transition:color .15s; display:inline-flex; align-items:center; gap:6px; }
+  nav.site a:hover{ color:#fff; }
+  nav.site a.on{ color:#fff; }
+  nav.site a.on::after{ content:""; }
+  nav.site .dot{ width:6px; height:6px; border-radius:50%; background:#5a6272; display:inline-block; }
+
+  .band-title{ margin-top:18px; }
+  .band-title h1{ margin:0; font:800 clamp(32px,7vw,52px)/.9 var(--disp);
+    letter-spacing:.01em; text-transform:uppercase; }
+  .band-title h1 i{ color:var(--red); font-style:normal; }
+  .band-title .lede{ color:#aab2be; font-size:13px; max-width:52ch; margin:7px 0 0; }
+
+  .tabs{ display:flex; gap:4px; margin-top:20px; }
+  .tab{ appearance:none; border:0; cursor:pointer; background:transparent; color:#aeb6c2;
+    font:800 13px/1 var(--disp); letter-spacing:.12em; text-transform:uppercase;
+    padding:13px 20px 15px; border-radius:9px 9px 0 0; position:relative; transition:color .15s; }
+  .tab:hover{ color:#fff; }
+  .tab[aria-selected="true"]{ color:var(--ink); background:var(--paper); }
+  .tab[aria-selected="true"]::before{ content:""; position:absolute; left:0; right:0; top:0; height:3px;
+    background:var(--red); border-radius:3px 3px 0 0; }
+  .tab .n{ font:700 9px/1 var(--mono); letter-spacing:.05em; color:var(--red); margin-left:7px; vertical-align:2px; }
+  .tab[aria-selected="false"] .n{ color:#6b7482; }
+
+  main{ max-width:1000px; margin:0 auto; padding:26px clamp(16px,4vw,34px) 60px; }
+  .panel[hidden]{ display:none; }
+  @media (prefers-reduced-motion:no-preference){
+    .panel{ animation:rise .28s ease both; }
+    @keyframes rise{ from{ opacity:0; transform:translateY(6px); } to{ opacity:1; transform:none; } }
+  }
+
+  .revbox{ background:rgba(255,210,78,.08); border:1px solid rgba(255,210,78,.3); border-radius:10px; padding:13px 15px;
+    margin-bottom:16px; font-size:13px; color:#E8C766; }
+  .revbox code{ font:600 12px var(--mono); background:rgba(255,255,255,.08); color:#EEF1F6; padding:1px 5px; border-radius:4px; }
+
+  /* Articoli (editoriale) */
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
+  .card{ display:flex; flex-direction:column; background:var(--card); border:1px solid var(--line);
+    border-radius:12px; padding:20px 20px 16px; box-shadow:var(--shadow);
+    position:relative; overflow:hidden; transition:transform .14s, box-shadow .14s, border-color .14s; }
+  .card::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--ac,var(--red)); }
+  @media (prefers-reduced-motion:no-preference){
+    .card:hover{ transform:translateY(-3px); box-shadow:0 2px 4px rgba(18,21,27,.08),0 16px 34px -16px rgba(18,21,27,.3); border-color:#cdd3cd; }
+  }
+  .eyebrow{ font:700 9.5px/1.3 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--ac,var(--red)); margin-bottom:9px;
+    display:flex; align-items:center; gap:8px; flex-wrap:wrap; }
+  .card h3{ margin:0 0 8px; font:700 20px/1.08 var(--disp); letter-spacing:.005em; color:var(--ink); }
+  .card p{ margin:0; font-size:13px; line-height:1.5; color:var(--ink-soft);
+    display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+  .card .foot{ margin-top:14px; padding-top:12px; border-top:1px solid var(--line);
+    display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .meta{ font:600 10.5px/1 var(--mono); letter-spacing:.02em; color:var(--dim); }
+  .chips{ display:flex; gap:5px; flex-wrap:wrap; margin-top:10px; }
+  .chip{ font:600 9.5px/1 var(--mono); letter-spacing:.04em; color:var(--dim); background:var(--paper-2); border-radius:5px; padding:5px 7px; }
+  .bozza{ font:700 8.5px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase; color:#7a5a10; background:#F0D48A; border-radius:4px; padding:4px 6px; }
+  .go{ font:700 11px/1 var(--mono); color:var(--red); white-space:nowrap; }
+  .empty{ background:var(--card); border:1px dashed var(--line); border-radius:12px; padding:26px; color:var(--dim); font-size:14px; }
+  /* raggruppamento per Gran Premio */
+  .gp-grp{ margin:0 0 30px; }
+  .gp-head{ display:flex; align-items:baseline; gap:9px 14px; flex-wrap:wrap; position:relative;
+    padding:0 2px 11px; margin-bottom:15px; border-bottom:1px solid var(--line); }
+  .gp-head::after{ content:""; position:absolute; left:0; bottom:-1px; width:44px; height:2px; background:var(--red); }
+  .gp-eyebrow{ font:700 10px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--red); }
+  .gp-name{ margin:0; font:800 23px/1 var(--disp); letter-spacing:.02em; text-transform:uppercase; color:var(--ink); }
+  .gp-meta{ color:var(--dim); font:600 11.5px/1.3 var(--mono); }
+  .gp-count{ margin-left:auto; color:var(--dim); font:600 10.5px/1 var(--mono);
+    background:var(--paper-2); border:1px solid var(--line); border-radius:999px; padding:5px 10px; white-space:nowrap; }
+  .gp-grp.trasv .gp-eyebrow{ color:var(--dim); }
+  .gp-grp.trasv .gp-head::after{ background:#c3c9c2; }
+  @media (max-width:560px){ .gp-count{ margin-left:0; } }
+
+  /* Strumenti di stagione (i due pezzi di punta, in cima agli Articoli) */
+  .strumenti{ display:grid; grid-template-columns:1fr 1fr; gap:14px; margin:0 0 26px; }
+  .strum{ display:flex; flex-direction:column; background:var(--card); border:1px solid var(--line);
+    border-radius:12px; padding:18px 20px; position:relative; overflow:hidden; box-shadow:var(--shadow);
+    transition:transform .14s, border-color .14s; }
+  .strum::before{ content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--red); }
+  @media (prefers-reduced-motion:no-preference){ .strum:hover{ transform:translateY(-3px); border-color:#3a3f4a; } }
+  .strum-tag{ font:700 9px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--red); margin-bottom:9px; }
+  .strum b{ font:800 21px/1.05 var(--disp); letter-spacing:.3px; color:var(--ink); margin-bottom:6px; }
+  .strum-d{ color:var(--ink-soft); font-size:12.5px; line-height:1.5; flex:1; }
+  .strum-go{ font:700 11px/1 var(--mono); color:var(--red); margin-top:13px; }
+  @media (max-width:640px){ .strumenti{ grid-template-columns:1fr; } }
+
+  /* Telemetria (foglio-tempi) */
+  .tele-head{ display:flex; align-items:baseline; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:14px; }
+  .tele-head h2{ margin:0; font:800 22px/1 var(--disp); letter-spacing:.02em; text-transform:uppercase; }
+  .tele-head .sub{ color:var(--dim); font-size:12.5px; }
+  .selname{ color:var(--red); }
+  .selrow{ display:flex; gap:7px; flex-wrap:wrap; margin-bottom:10px; }
+  .gp{ appearance:none; cursor:pointer; font:700 11px/1 var(--disp); letter-spacing:.06em; text-transform:uppercase;
+    border:1px solid var(--line); background:var(--card); color:var(--ink-soft); border-radius:999px; padding:8px 13px; transition:.12s; }
+  .gp:hover{ border-color:#c3c9c2; }
+  .gp[aria-pressed="true"]{ background:var(--ink); color:var(--paper); border-color:var(--ink); }
+  .sessrow{ display:flex; gap:7px; flex-wrap:wrap; margin-bottom:16px; align-items:center; }
+  .sess{ appearance:none; cursor:pointer; font:700 10px/1 var(--mono); letter-spacing:.08em; text-transform:uppercase;
+    border:1px solid var(--line); border-radius:6px; padding:8px 11px; color:var(--ink-soft); background:var(--card); }
+  .sess[aria-pressed="true"]{ border-color:var(--red); color:var(--red); box-shadow:inset 0 0 0 1px var(--red); }
+  .sess[disabled]{ color:#aab0b8; background:var(--paper-2); border-style:dashed; cursor:default; }
+  .sesshint{ font-size:11.5px; color:var(--dim); margin-left:2px; }
+  /* confronto fra due piloti */
+  .cmp-pick{ display:grid; grid-template-columns:1fr; gap:8px; margin-bottom:14px; }
+  .cmp-lato{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .cmp-tag{ flex:none; width:22px; height:22px; border-radius:6px; display:grid; place-items:center;
+    font:800 12px/1 var(--disp); color:var(--paper); }
+  .cmp-lato .gp{ padding:6px 10px; font-size:10.5px; }
+  .cmp-graf{ background:var(--card); border:1px solid var(--line); border-radius:12px;
+    padding:14px 14px 8px; box-shadow:var(--shadow); }
+  .cmp-riga{ margin-bottom:10px; }
+  .cmp-lab{ display:flex; justify-content:space-between; align-items:baseline;
+    font:700 9.5px/1 var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--dim); margin:0 2px 4px; }
+  .cmp-graf svg{ display:block; width:100%; height:auto; }
+  .cmp-griglia{ stroke:var(--line); stroke-width:1; }
+  .cmp-sum{ display:flex; gap:14px; flex-wrap:wrap; align-items:center; margin:0 0 12px;
+    font:600 12px/1 var(--mono); color:var(--dim); }
+  .cmp-sum b{ color:var(--ink); }
+  .cmp-sum .dlt{ font-weight:800; }
+  /* selettore Gran Premio degli articoli */
+  .art-sel{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:26px 0 4px; }
+  .art-sel-lab{ font:700 9.5px/1 var(--mono); letter-spacing:.16em; text-transform:uppercase; color:var(--dim); }
+  .art-sel .gp-n{ color:var(--dim); font:700 9px/1 var(--mono); margin-left:6px; }
+  .art-sel .gp[aria-pressed="true"] .gp-n{ color:inherit; opacity:.7; }
+  .sheet-wrap{ overflow-x:auto; border:1px solid var(--line); border-radius:12px; background:var(--card); box-shadow:var(--shadow); }
+  table.sheet{ width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; min-width:560px; }
+  .sheet thead th{ font:700 9.5px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--dim);
+    text-align:right; padding:13px 12px; border-bottom:1px solid var(--line); background:var(--paper); position:sticky; top:0; }
+  .sheet thead th.l{ text-align:left; }
+  .sheet tbody td{ padding:11px 12px; border-bottom:1px solid var(--line); font:600 13.5px/1 var(--mono); text-align:right; color:var(--ink); }
+  .sheet tbody tr:last-child td{ border-bottom:0; }
+  .sheet tbody tr:hover td{ background:var(--paper); }
+  .sheet .pos{ color:var(--dim); font-size:12px; text-align:left; width:34px; }
+  .sheet tr.pole .pos{ color:var(--red); font-weight:800; }
+  .sheet .who{ text-align:left; }
+  .sheet .who .num{ display:inline-block; min-width:24px; text-align:right; color:var(--dim); margin-right:8px; }
+  .sheet .who .dot{ display:inline-block; width:8px; height:8px; border-radius:2px; margin-right:7px; }
+  .sheet .who .sig{ font-weight:800; letter-spacing:.03em; color:var(--ink); }
+  .sheet .best{ font-weight:800; }
+  .sheet .gap{ color:var(--dim); font-size:12px; }
+  .sheet .sv.vv{ color:var(--viola); font-weight:800; }
+  .sheet .sv.vv::after{ content:""; display:inline-block; width:5px; height:5px; border-radius:50%; background:var(--viola); margin-left:6px; vertical-align:2px; }
+  .leg{ display:flex; gap:16px; flex-wrap:wrap; margin:11px 2px 0; font:600 11px/1 var(--mono); color:var(--dim); }
+  .leg i{ font-style:normal; display:inline-flex; align-items:center; gap:6px; }
+  .leg .sw{ width:9px; height:9px; border-radius:50%; }
+  .links{ display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:20px; }
+  @media(max-width:560px){ .links{ grid-template-columns:1fr; } }
+  .link{ display:flex; align-items:center; gap:13px; background:var(--card); border:1px solid var(--line);
+    border-radius:11px; padding:15px 16px; box-shadow:var(--shadow); transition:.13s; }
+  .link:hover{ border-color:#c3c9c2; transform:translateY(-2px); }
+  .link .ic{ width:38px; height:38px; border-radius:9px; flex:none; display:grid; place-items:center; background:var(--paper-2); font:800 15px/1 var(--disp); color:var(--red); }
+  .link b{ display:block; font:700 15px/1.1 var(--disp); letter-spacing:.02em; }
+  .link span{ font-size:11.5px; color:var(--dim); }
+
+  footer.foot{ border-top:1px solid var(--line); }
+  .foot-in{ max-width:1000px; margin:0 auto; padding:22px clamp(16px,4vw,34px) 34px;
+    display:flex; align-items:center; gap:16px; flex-wrap:wrap; color:var(--dim); font:600 11px/1 var(--mono); letter-spacing:.06em; }
+  .foot-in b{ color:var(--ink); font:800 14px/1 var(--disp); letter-spacing:.1em; }
+  .foot-in nav{ display:flex; gap:16px; margin-left:auto; text-transform:uppercase; }
+</style>
+</head>
+<body>
+  <header class="band">
+    <div class="band-top">
+      <a class="brand-link" href="index.html" style="display:flex;align-items:center;gap:12px">
+        <span class="mark"><span>M</span></span>
+        <span class="brand"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+      </a>
+      <nav class="site" aria-label="Sezioni">
+        <a href="stagione.html">Stagione</a>
+        <a href="live.html"><span class="dot"></span>Live</a>
+        <a href="analisi.html" class="on">Analisi</a>
+        <a href="classifiche.html">Classifiche</a>
+      </nav>
+    </div>
+
+    <div class="band-title">
+      <h1>Analisi <i>//</i> i dati</h1>
+      <p class="lede">Due nature, due letture: i <b style="color:#e6eaf0">pezzi</b> della redazione tecnica e la <b style="color:#e6eaf0">telemetria grezza</b> di ogni sessione.</p>
+    </div>
+
+    <div class="tabs" role="tablist" aria-label="Sezioni di Analisi">
+      <button class="tab" role="tab" id="t-art" aria-controls="panel-articoli" aria-selected="true">Articoli<span class="n" id="n-art"></span></button>
+      <button class="tab" role="tab" id="t-tel" aria-controls="panel-telemetria" aria-selected="false">Telemetria<span class="n" id="n-tel"></span></button>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel" id="panel-articoli" role="tabpanel" aria-labelledby="t-art">
+      <div id="rev" hidden></div>
+      <!-- STRUMENTI DI STAGIONE: i due pezzi di punta, calcolati dai nostri dati e
+           aggiornati a ogni gara. In cima, non sepolti: valgono tutta la stagione. -->
+      <div class="strumenti">
+        <a class="strum" href="forza.html">
+          <span class="strum-tag">Interattivo · si aggiorna a ogni gara</span>
+          <b>Forza-macchina, gara per gara</b>
+          <span class="strum-d">Quanto è forte ogni vettura in ogni gara — dal potenziale, non dal piazzamento. Lo slider sceglie l'intervallo e mostra come cambia la gerarchia.</span>
+          <span class="strum-go">Apri →</span>
+        </a>
+        <a class="strum" href="dati.html">
+          <span class="strum-tag">Interattivo · si aggiorna a ogni gara</span>
+          <b>Assetto e DNA dei circuiti</b>
+          <span class="strum-d">Assetto dei team (punta vs curva) e carattere dei tracciati (motore vs carico), gara per gara. Scegli la vista e le tabelle si ricalcolano.</span>
+          <span class="strum-go">Apri →</span>
+        </a>
+      </div>
+      <!-- ELENCO CRAWLABILE: contenuto INIZIALE di #grid, non <noscript>.
+           Sono i link veri agli articoli (Google segue solo <a href>); il JS
+           qui sotto lo sostituisce con la vista raggruppata per Gran Premio.
+           Rigenerato da ai_lab/redazione/statico.py fra i due marcatori. -->
+      <div id="grid">
+        <!-- ELENCO:INIZIO — generato da ai_lab/redazione/statico.py, non modificare a mano -->
+        <div class="grid">
+          <a class="card" href="articolo/recap-weekend-hungaroring-2026.html" style="--ac:#FF8000"><div class="eyebrow">Recap tecnico · Weekend Ungheria 2026 · round 11</div><h3>Dove ha vinto NOR in Ungheria: la pole per 0,012 s (12 millesimi), il dominio nel passo gara</h3><p>Non chi ha vinto, ma DOVE nasce il vantaggio. NOR in pole per 0,012 s (12 millesimi) su HAM: minisettore per minisettore è un duello (14–10), e il vantaggio del giro è in curva, non in rettilineo. In gara il passo di NOR è 0,247 s/giro davanti al miglior rivale. Ogni numero è un sintomo misurato; la causa (aero, grip, assetto) resta NON_MISURABILE.</p><div class="foot"><span class="meta">Hungaroring · Weekend · 26 luglio 2026</span><span class="go">Leggi →</span></div><div class="chips"><span class="chip">telemetria</span><span class="chip">recap</span><span class="chip">weekend</span></div></a>
+          <a class="card" href="articolo/passo-reale-ungheria-2026.html" style="--ac:#FF8000"><div class="eyebrow">Passo-gara · Gara Ungheria 2026</div><h3>Il vero passo di Hungaroring: NOR il più rapido (1:24,507), primi 10 in 1,9 s</h3><p>Il passo di gara letto come va letto: per ogni pilota la mediana dei giri verdi puliti (non il giro veloce, non tutti i giri), con la dispersione a fianco. NOR fissa il riferimento a 1:24,507; i primi 10 stanno in 1,9 s. Ma la classifica grezza va corretta: 6 piloti hanno girato per oltre un terzo del tempo in aria sporca, e la benzina che cala rende l’intera griglia ~1,5 s più rapida nella seconda metà. Passo indicativo: carburante e mappe motore restano ignoti.</p><div class="foot"><span class="meta">Hungaroring · Gara · 26 luglio 2026</span><span class="go">Leggi →</span></div><div class="chips"><span class="chip">passo-gara</span><span class="chip">gara</span><span class="chip">long-run</span></div></a>
+          <a class="card" href="articolo/hun-quali-h2h-2026.html" style="--ac:#27F4D2"><div class="eyebrow">Cronometro delle qualifiche · Ungheria 2026 · round 11</div><h3>Antonelli mette 281 millesimi su Russell. Poi la griglia ribalta tutto.</h3><p>Il duello più pulito è quello interno: stessa monoposto, due piloti. Sul giro secco delle qualifiche d’Ungheria il rookie Antonelli batte Russell di +0,281 (Mercedes) e Norris batte Piastri di +0,477 (McLaren). Ma sono numeri del CRONOMETRO, non della griglia: con la penalità Antonelli scatterà P7, dietro il compagno che ha appena battuto. E su entrambi i confronti pesa un asterisco.</p><div class="foot"><span class="meta">Hungaroring · Qualifiche · 26 luglio 2026</span><span class="go">Leggi →</span></div><div class="chips"><span class="chip">qualifiche</span><span class="chip">H2H</span><span class="chip">compagni</span></div></a>
+          <a class="card" href="articolo/dna-circuiti-2026.html" style="--ac:#E8892B"><div class="eyebrow">Telemetria · 10 circuiti 2026</div><h3>Il DNA dei circuiti 2026: chi chiede motore e chi chiede carico</h3><p>La percentuale di giro a tutto gas è la firma più pulita di un tracciato. Sui 10 circuiti con telemetria va dal 72% di Spa-Francorchamps — oltre due terzi di giro flat-out — al 50% di Barcelona, il più esigente. In mezzo, chi è veloce e flowing e chi è potente ma stop-and-go.</p><div class="foot"><span class="meta">10 circuiti · Gara · 26 luglio 2026</span><span class="go">Leggi →</span></div><div class="chips"><span class="chip">telemetria</span><span class="chip">circuiti</span><span class="chip">assetto</span></div></a>
+          <a class="card" href="articolo/assetto-punta-curva-2026.html" style="--ac:#E8002D"><div class="eyebrow">Telemetria · 10 gare 2026</div><h3>La mappa dell’assetto 2026: chi corre carico e chi scarico</h3><p>Incrociando velocità di punta e velocità in curva su 10 gare — con la punta ripulita dalla scia — si legge come ogni team ha risolto il compromesso carico-resistenza. In cima, vicine, Ferrari e Red Bull; ai lati chi carica l’ala e chi corre scarico.</p><div class="foot"><span class="meta">10 gare · Gara · 26 luglio 2026</span><span class="go">Leggi →</span></div><div class="chips"><span class="chip">telemetria</span><span class="chip">aerodinamica</span><span class="chip">assetto</span></div></a>
+          <a class="card" href="articolo/hun-web-canale-a-2026.html" style="--ac:#E8002D"><div class="eyebrow">Prove libere · Venerdì · GP d'Ungheria 2026</div><h3>Ferrari 1-2 sul giro secco, quarta sul passo: le due letture del venerdì</h3><p>Il titolo del venerdì all'Hungaroring è uno solo: «Ferrari domina», 1-2 in FP2 sul giro secco. È vero — e i nostri dati lo confermano al millesimo. Ma è la fotografia di un solo giro con gomma soft. Sul passo dei long-run in gomma medium la classifica si rimescola: davanti ci sono Russell e Verstappen, la Ferrari più veloce scivola quarta. E c'è una lettura in rettilineo che nessuno ha pubblicato: i due Mercedes sono gli ultimi della griglia per velocità di punta.</p><div class="foot"><span class="meta">Hungaroring · FP2 · 25 luglio 2026</span><span class="go">Leggi →</span></div><div class="chips"><span class="chip">telemetria</span><span class="chip">passo gara</span><span class="chip">giro secco</span></div></a>
+          <a class="card" href="articolo/hun-rapporti-punta-2026.html" style="--ac:#FF8000"><div class="eyebrow">Telemetria · Prove libere 2 · Ungheria 2026</div><h3>Il cambio più corto della griglia, sulla pista che meno lo ripaga</h3><p>All’Hungaroring — una delle piste dove si sta meno a tutto gas (mediana 39,4% del giro) — la McLaren gira col cambio più corto dello schieramento: entrambe le vetture, con margine netto sull’Audi, la più lunga. È geometria pura del cambio, immune a carburante, mappa motore e scia. Ma la tentazione «corto uguale lento in fondo» in prove libere non regge: il rapporto lo misuriamo, la velocità di punta resta indicativa e non la spieghiamo col cambio.</p><div class="foot"><span class="meta">Hungaroring · FP2 · 25 luglio 2026</span><span class="go">Leggi →</span></div><div class="chips"><span class="chip">telemetria</span><span class="chip">McLaren</span><span class="chip">Audi</span></div></a>
+          <a class="card" href="articolo/trazione-loop-gb-2026.html" style="--ac:#2B478F"><div class="eyebrow">Telemetria · Qualifiche Gran Bretagna 2026</div><h3>The Loop, stessa Red Bull Racing: VER rimette il gas prima del compagno HAD</h3><p>Fuori dalla curva più lenta di Silverstone, con la stessa Red Bull Racing, VER torna a gas pieno 8 metri prima del compagno HAD — ed è tra i più pronti dello schieramento. Trazione, o fiducia sull’anteriore.</p><div class="foot"><span class="meta">Silverstone · Qualifiche · 24 luglio 2026</span><span class="go">Leggi →</span></div><div class="chips"><span class="chip">telemetria</span><span class="chip">Red Bull Racing</span><span class="chip">trazione</span></div></a>
+          <a class="card" href="articolo/rapporti-mclaren-mercedes-gb-2026.html" style="--ac:#FF8000"><div class="eyebrow">Telemetria · Qualifiche Gran Bretagna 2026</div><h3>Stesso motore, cambio opposto: la McLaren è la più corta della griglia</h3><p>McLaren, Mercedes e Williams montano lo stesso motore Mercedes. Eppure in ottava marcia la McLaren gira quasi seicento giri più su a 300 all'ora, e rinuncia a qualche km/h di velocità di punta. È una scelta di rapporti — e ha una logica precisa.</p><div class="foot"><span class="meta">Silverstone · Qualifiche · 24 luglio 2026</span><span class="go">Leggi →</span></div><div class="chips"><span class="chip">telemetria</span><span class="chip">McLaren</span><span class="chip">Mercedes</span></div></a>
+          <a class="card" href="articolo/lift-mercedes-gb-2026.html" style="--ac:#27F4D2"><div class="eyebrow">Telemetria · Qualifiche Gran Bretagna 2026</div><h3>Il lift Mercedes prima del traguardo</h3><p>Sul giro lanciato a Silverstone entrambe le Mercedes staccano il piede dall'acceleratore poche decine di metri prima della linea. Nessun altro lo fa. Sul cronometro costa quasi nulla — ed è proprio questo il punto.</p><div class="foot"><span class="meta">Silverstone · Qualifiche · 24 luglio 2026</span><span class="go">Leggi →</span></div><div class="chips"><span class="chip">telemetria</span><span class="chip">Mercedes</span><span class="chip">qualifiche</span></div></a>
+          <a class="card" href="articolo/frenata-village-gb-2026.html" style="--ac:#E8002D"><div class="eyebrow">Telemetria · Qualifiche Gran Bretagna 2026</div><h3>Village: HAM è il più tardivo della griglia sui freni</h3><p>In una delle staccate più dure di Silverstone HAM attacca i freni più tardi di chiunque sulla griglia: a 100 metri dall’apice, 14 in meno del primo inseguitore, 18 sotto la mediana. Il più tardivo di tutti.</p><div class="foot"><span class="meta">Silverstone · Qualifiche · 24 luglio 2026</span><span class="go">Leggi →</span></div><div class="chips"><span class="chip">telemetria</span><span class="chip">Ferrari</span><span class="chip">frenata</span></div></a>
+          <a class="card" href="articolo/compagni-marce-stowe-gb-2026.html" style="--ac:#E8002D"><div class="eyebrow">Telemetria · Qualifiche Gran Bretagna 2026</div><h3>Stowe, stessa Ferrari: LEC in 6ª dove HAM scala in 5ª</h3><p>In una curva veloce di Silverstone le due Ferrari passano l’apice a velocità vicina, ma con una marcia di differenza: LEC in 6ª, HAM in 5ª. E scalare non rende HAM più veloce — gli alza il regime. Non è un caso: è una scelta, e si ripete.</p><div class="foot"><span class="meta">Silverstone · Qualifiche · 24 luglio 2026</span><span class="go">Leggi →</span></div><div class="chips"><span class="chip">telemetria</span><span class="chip">Ferrari</span><span class="chip">guida</span></div></a>
+        </div>
+        <!-- ELENCO:FINE -->
+      </div>
+    </section>
+
+    <section class="panel" id="panel-telemetria" role="tabpanel" aria-labelledby="t-tel" hidden>
+      <div class="tele-head">
+        <h2>Foglio tempi <span class="selname" id="selname">·</span></h2>
+        <span class="sub">Miglior giro per pilota, con i tre settori. <b style="color:var(--viola)">Viola</b> = record di sessione.</span>
+      </div>
+      <div class="selrow" id="gprow"></div>
+      <div class="sessrow" id="sessrow"></div>
+      <div id="sheetbox"></div>
+      <div class="leg">
+        <i><span class="sw" style="background:var(--viola)"></span>record di sessione</i>
+        <i><span class="sw" style="background:var(--dim)"></span>tempo normale</i>
+        <i>Giro = S1 + S2 + S3</i>
+      </div>
+      <!-- CONFRONTO FRA DUE PILOTI: i canali del giro piu' veloce, sovrapposti.
+           Nessuna mappa: qui si legge il giro, non la posizione. -->
+      <section id="cmp" hidden>
+        <div class="tele-head" style="margin-top:26px">
+          <h2>Confronto <span class="selname" id="cmpsess"></span></h2>
+          <span class="sub">Il giro più veloce di ciascuno, sovrapposto. Tocca un pilota per cambiarlo.</span>
+        </div>
+        <div class="cmp-pick">
+          <div class="cmp-lato"><span class="cmp-tag" id="cmpTagA">A</span><div class="selrow" id="cmpA"></div></div>
+          <div class="cmp-lato"><span class="cmp-tag" id="cmpTagB">B</span><div class="selrow" id="cmpB"></div></div>
+        </div>
+        <div id="cmpgraf"></div>
+      </section>
+
+      <div class="links">
+        <a class="link" href="stagione.html"><span class="ic">▤</span><span><b>Stagione 2026</b><span>Tutti i weekend, gara per gara.</span></span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="foot-in">
+      <span><b>MURETTO</b> BOX VIRTUALE · STAGIONE 2026</span>
+      <nav>
+        <a href="stagione.html">Stagione</a>
+        <a href="live.html">Live</a>
+        <a href="classifiche.html">Classifiche</a>
+      </nav>
+    </div>
+  </footer>
+
+<script type="module">
+const el = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const dataIt = d => { try { return new Date(d+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'long'}); } catch(e){ return d||''; } };
+const AC_MAP = { 'var(--sc)':'#E8892B', 'var(--brand)':'#E4002B', 'var(--lead)':'#E0A400' };
+const acColor = a => !a ? '#E4002B' : (a.startsWith('var(') ? (AC_MAP[a]||'#E4002B') : a);
+
+/* ---------------- ARTICOLI ---------------- */
+function card(a){
+  const ac = acColor(a.accent);
+  const meta = [a.circuito, a.sessione, dataIt(a.data)].filter(Boolean).join(' · ');
+  const tags = (a.tag||[]).slice(0,3).map(t=>`<span class="chip">${esc(t)}</span>`).join('');
+  const badge = a.stato !== 'pubblicato' ? `<span class="bozza">${esc(a.stato)}</span>` : '';
+  // URL CANONICO: articolo/<id>.html (pagina pre-renderizzata, col testo dentro).
+  // MA il pre-render e' fail-safe e puo' fallire: in quel caso il manifest scrive
+  // pagina:false (lo mette coda.py DOPO aver provato la resa) e qui si ripiega su
+  // articolo.html?id=..., che rende dal JSON. Senza questo ripiego un articolo
+  // pubblicato ma senza pagina statica diventava un 404 cliccabile dall'indice.
+  // Campo assente = true: le card scritte prima di questo controllo hanno la pagina.
+  const href = (a.pagina === false)
+    ? `articolo.html?id=${encodeURIComponent(a.id)}`
+    : `articolo/${encodeURIComponent(a.id)}.html`;
+  return `<a class="card" href="${href}" style="--ac:${ac}">
+    <div class="eyebrow">${esc(a.occhiello)}${badge}</div>
+    <h3>${esc(a.titolo)}</h3>
+    <p>${esc(a.sommario)}</p>
+    <div class="foot"><span class="meta">${esc(meta)}</span><span class="go">Leggi →</span></div>
+    <div class="chips">${tags}</div>
+  </a>`;
+}
+// Raggruppa per Gran Premio: gp assente = trasversale (piu' gare). I GP piu'
+// recenti in alto (round, poi data); i trasversali in fondo.
+function gruppaPerGp(arts){
+  const perGp = new Map(), trasv = [];
+  for (const a of arts){
+    const gp = a.gp && String(a.gp).trim();
+    if (!gp){ trasv.push(a); continue; }
+    if (!perGp.has(gp)) perGp.set(gp, []);
+    perGp.get(gp).push(a);
+  }
+  const gruppi = [...perGp.entries()].map(([gp, g]) => {
+    g.sort((x,y)=> String(y.data||'').localeCompare(String(x.data||'')));
+    return { gp, arts:g, round:Math.max(0,...g.map(a=>+a.round||0)),
+             data:g.map(a=>a.data).filter(Boolean).sort().reverse()[0]||'',
+             circ:(g.find(a=>a.circuito)||{}).circuito||'' };
+  }).sort((a,b)=> (b.round-a.round) || String(b.data).localeCompare(String(a.data)));
+  return { gruppi, trasv };
+}
+function sezione(eyebrow, nome, meta, arts, extra){
+  const n = arts.length;
+  return `<section class="gp-grp ${extra||''}">
+    <header class="gp-head"><span class="gp-eyebrow">${esc(eyebrow)}</span>
+      <h2 class="gp-name">${esc(nome)}</h2>
+      ${meta ? `<span class="gp-meta">${esc(meta)}</span>` : ''}
+      <span class="gp-count">${n} ${n===1?'articolo':'articoli'}</span></header>
+    <div class="grid">${arts.map(card).join('')}</div>
+  </section>`;
+}
+async function bootArticoli(){
+  const revisore = new URLSearchParams(location.search).get('bozze') === '1';
+  let man = [];
+  try { man = await (await fetch('data/analisi_articoli.json')).json(); } catch(e){ man = []; }
+  const mostra = man.filter(a => revisore ? true : a.stato === 'pubblicato');
+  el('n-art').textContent = mostra.length;
+  if (revisore){
+    el('rev').hidden = false;
+    el('rev').innerHTML = `<div class="revbox"><b>Vista revisore.</b> Stai vedendo anche le bozze non pubblicate.
+      La pubblicazione avviene con <code>coda.py --approva &lt;id&gt; --attore "Tommi"</code>.</div>`;
+  }
+  if (!mostra.length){
+    el('grid').innerHTML = `<div class="empty">I primi articoli della redazione tecnica sono in lavorazione: telemetria, degrado, strategia e pit-loss, un fatto per volta.</div>`;
+    return;
+  }
+  const { gruppi, trasv } = gruppaPerGp(mostra);
+
+  // 1) SEMPRE VALIDI in cima: non invecchiano, valgono tutta la stagione.
+  //    (prima stavano in fondo, dove non li vedeva nessuno.)
+  const testa = trasv.length
+    ? sezione('Sempre validi', 'Valgono tutta la stagione',
+        'Analisi che attraversano più gare: restano vere anche dopo il prossimo weekend', trasv, 'trasv')
+    : '';
+
+  // 2) POI, GRAN PREMIO PER GRAN PREMIO: si sceglie col selettore (piu' recente
+  //    di default), cosi' la pagina non e' un muro di articoli.
+  if (!gruppi.length){ el('grid').innerHTML = testa; return; }
+  let selGp = gruppi[0].gp;
+  const disegna = () => {
+    const g = gruppi.find(x=>x.gp===selGp) || gruppi[0];
+    const chips = gruppi.map(x =>
+      `<button class="gp" data-gp="${esc(x.gp)}" aria-pressed="${x.gp===selGp}">${esc(x.gp)}
+         <span class="gp-n">${x.arts.length}</span></button>`).join('');
+    el('grid').innerHTML = testa +
+      `<div class="art-sel"><span class="art-sel-lab">Gran Premio</span>
+         <div class="selrow" id="gpsel">${chips}</div></div>` +
+      sezione('Gran Premio', g.gp, [g.circ, dataIt(g.data)].filter(Boolean).join(' · '), g.arts);
+    el('gpsel').addEventListener('click', e => {
+      const b = e.target.closest('.gp'); if (!b) return;
+      selGp = b.dataset.gp; disegna();
+    });
+  };
+  disegna();
+}
+
+/* ---------------- TELEMETRIA ---------------- */
+// Disponibilita' LETTA DAI MANIFEST (prima era cablata: "solo Belgio/Cina").
+// Cosi' appena l'automazione pubblica una sessione — anche a meta' weekend,
+// es. la FP1 appena finita — compare qui da sola, senza toccare il codice.
+let GPS = [];                       // [{gara, data}] in ordine cronologico
+const LIBERE = {};                  // gara -> ['fp1','fp2',...]
+const SPRINT = {};                  // gara -> true
+let selGP = null, selSess = 'q';
+
+const ORDINE_SESS = { fp1:1, fp2:2, fp3:3, sq:4, q:5 };   // dentro il weekend
+
+// definizione sessioni per un GP (id, etichetta, come caricare i piloti)
+function sessioniDi(gp){
+  const out = [];
+  (LIBERE[gp] || []).forEach(f => out.push({
+    id:f, lab:f.toUpperCase(), file:`data/libere_${gp}.json`, tele:f,
+    pick:d=>((d.sessioni||{})[f]||{}).piloti }));
+  if (SPRINT[gp]) out.push({ id:'sq', lab:'Sprint Quali', file:`data/sprint_${gp}.json`, tele:'sprint_quali',
+    pick:d=>(d.sprint_quali||{}).piloti });
+  out.push({ id:'q', lab:'Qualifiche', file:`data/quali_${gp}.json`, tele:'qualifiche', pick:d=>d.piloti });
+  return out.sort((a,b)=>(ORDINE_SESS[a.id]||9)-(ORDINE_SESS[b.id]||9));
+}
+
+/* ---- confronto fra due piloti (canali del giro piu' veloce) ---- */
+const TELE = new Set();                 // "gara|sessione" con telemetria
+let tel = null, cmpA = null, cmpB = null;
+
+function tracciaSvg(punti, idx, colore, dominio, alt = 46){
+  // punti = [t, velocita, throttle, freno, marcia]; idx = quale canale
+  const [t0, t1] = dominio.t, [v0, v1] = dominio[idx];
+  const X = t => ((t - t0) / Math.max(1e-6, t1 - t0)) * 1000;
+  const Y = v => alt - ((v - v0) / Math.max(1e-6, v1 - v0)) * alt;
+  let d = '';
+  for (let i = 0; i < punti.length; i++){
+    const p = punti[i];
+    d += (i ? 'L' : 'M') + X(p[0]).toFixed(1) + ' ' + Y(p[idx]).toFixed(1);
+  }
+  return `<path d="${d}" fill="none" stroke="${colore}" stroke-width="1.6"
+    vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`;
+}
+function disegnaConfronto(){
+  if (!tel || !cmpA || !cmpB){ el('cmpgraf').innerHTML = ''; return; }
+  const A = tel.piloti[cmpA], B = tel.piloti[cmpB];
+  if (!A || !B){ el('cmpgraf').innerHTML = ''; return; }
+  const colA = A.colore || '#25D6DA', colB = B.colore || '#E4002B';
+  el('cmpTagA').style.background = colA; el('cmpTagB').style.background = colB;
+
+  const tutti = [...A.punti, ...B.punti];
+  const dom = { t:[0, Math.max(...tutti.map(p=>p[0]))] };
+  [1,2,3].forEach(i => {
+    const vs = tutti.map(p=>p[i]);
+    dom[i] = i === 1 ? [Math.min(...vs) - 5, Math.max(...vs) + 5] : [0, Math.max(1, Math.max(...vs))];
+  });
+  const canali = [
+    { i:1, lab:'velocità', unita:'km/h', alt:120 },
+    { i:2, lab:'gas', unita:'%', alt:44 },
+    { i:3, lab:'freno', unita:'', alt:30 },
+  ];
+  const dA = A.giro_s, dB = B.giro_s;
+  const delta = (dA != null && dB != null) ? (dB - dA) : null;
+  const piuVeloce = delta === null ? '' : (delta > 0 ? cmpA : cmpB);
+
+  el('cmpgraf').innerHTML =
+    `<div class="cmp-sum">
+       <span><b style="color:${colA}">${esc(cmpA)}</b> ${esc(A.best_lap||'')}</span>
+       <span><b style="color:${colB}">${esc(cmpB)}</b> ${esc(B.best_lap||'')}</span>
+       ${delta === null ? '' : `<span class="dlt">Δ ${Math.abs(delta).toFixed(3)} s
+         <span style="color:var(--dim);font-weight:600"> — più veloce ${esc(piuVeloce)}</span></span>`}
+     </div>
+     <div class="cmp-graf">` +
+    canali.map(c => `<div class="cmp-riga">
+        <div class="cmp-lab"><span>${c.lab}</span><span>${c.i===1
+          ? Math.round(dom[1][1]) + ' ' + c.unita : ''}</span></div>
+        <svg viewBox="0 0 1000 ${c.alt}" preserveAspectRatio="none" aria-label="${c.lab}">
+          <line class="cmp-griglia" x1="0" y1="${c.alt-.5}" x2="1000" y2="${c.alt-.5}"/>
+          ${tracciaSvg(A.punti, c.i, colA, dom, c.alt)}
+          ${tracciaSvg(B.punti, c.i, colB, dom, c.alt)}
+        </svg></div>`).join('') +
+    `</div>`;
+}
+function renderPick(){
+  const ordina = Object.entries(tel.piloti)
+    .sort((a,b)=>(a[1].giro_s ?? 9e9) - (b[1].giro_s ?? 9e9)).map(([s])=>s);
+  const riga = (sel, id) => ordina.map(s =>
+    `<button class="gp" data-sig="${esc(s)}" aria-pressed="${s===sel}">${esc(s)}</button>`).join('');
+  el('cmpA').innerHTML = riga(cmpA); el('cmpB').innerHTML = riga(cmpB);
+}
+async function caricaConfronto(gara, sessTele){
+  const sez = el('cmp');
+  if (!sessTele || !TELE.has(gara + '|' + sessTele)){ sez.hidden = true; tel = null; return; }
+  try { tel = await prendi(`data/tele_${encodeURIComponent(gara)}_${sessTele}.json`); }
+  catch(e){ sez.hidden = true; tel = null; return; }
+  const ordina = Object.entries(tel.piloti)
+    .sort((a,b)=>(a[1].giro_s ?? 9e9) - (b[1].giro_s ?? 9e9)).map(([s])=>s);
+  if (ordina.length < 2){ sez.hidden = true; return; }
+  cmpA = ordina[0]; cmpB = ordina[1];          // default: i due piu' veloci
+  el('cmpsess').textContent = '· ' + gara + ' ' + (sessTele === 'qualifiche' ? 'qualifiche' : sessTele.toUpperCase());
+  sez.hidden = false;
+  renderPick(); disegnaConfronto();
+}
+function rigaSheet(r){
+  const sv = s => `<td class="sv ${s && s.best==='o' ? 'vv':''}">${esc(s? s.t : '')}</td>`;
+  const S = r.sectors || [];
+  return `<tr class="${r.pos===1?'pole':''}">
+    <td class="pos">P${r.pos}</td>
+    <td class="who"><span class="num">${esc(r.num)}</span><span class="dot" style="background:${r.colore||'#888'}"></span><span class="sig">${esc(r.sigla)}</span></td>
+    <td class="best">${esc(r.best)}</td>
+    <td class="gap">${r.pos===1 ? '—' : esc(r.gap||'')}</td>
+    ${sv(S[0])}${sv(S[1])}${sv(S[2])}
+  </tr>`;
+}
+function renderGpRow(){
+  // il piu' recente per primo: si entra sull'ultimo weekend, non sul primo
+  el('gprow').innerHTML = GPS.map(g=>g.gara).reverse()
+    .map(g=>`<button class="gp" aria-pressed="${g===selGP}">${esc(g)}</button>`).join('');
+}
+function renderSessRow(){
+  const ss = sessioniDi(selGP);
+  el('sessrow').innerHTML =
+    ss.map(s=>`<button class="sess" data-sess="${s.id}" aria-pressed="${s.id===selSess}">${esc(s.lab)}</button>`).join('') +
+    `<span class="sesshint">Ogni sessione compare qui appena registrata, senza aspettare la fine del weekend.</span>`;
+}
+async function loadSheet(){
+  el('selname').textContent = '· ' + selGP + ' 2026';
+  const ss = sessioniDi(selGP);
+  const s = ss.find(x=>x.id===selSess) || ss[0];
+  selSess = s.id;
+  el('sheetbox').innerHTML = `<div class="empty">Carico i tempi…</div>`;
+  let piloti;
+  try { piloti = s.pick(await (await fetch(s.file)).json()); } catch(e){ piloti = null; }
+  if (!piloti || !piloti.length){
+    el('sheetbox').innerHTML = `<div class="empty">Per questa sessione non ho i tempi.</div>`; return;
+  }
+  el('sheetbox').innerHTML = `<div class="sheet-wrap"><table class="sheet">
+    <thead><tr><th class="l">Pos</th><th class="l">Pilota</th><th>Giro</th><th>Gap</th><th>S1</th><th>S2</th><th>S3</th></tr></thead>
+    <tbody>${piloti.map(rigaSheet).join('')}</tbody></table></div>`;
+  caricaConfronto(selGP, s.tele);          // e sotto, il confronto fra due piloti
+}
+const prendi = async u => { const r = await fetch(u); if(!r.ok) throw 0; return r.json(); };
+const listaDi = m => Array.isArray(m) ? m : (m.disponibili || m.gare || []);
+
+async function bootTelemetria(){
+  // 1) chi c'e': dai tre manifest (quali / libere / sprint)
+  let qm=[], lm=[], sm=[], qmFull=null, lmFull=null, smFull=null;
+  try { qmFull = await prendi('data/quali_manifest.json');  qm = listaDi(qmFull); } catch(e){}
+  try { lmFull = await prendi('data/libere_manifest.json'); lm = listaDi(lmFull); } catch(e){}
+  try { smFull = await prendi('data/sprint_manifest.json'); sm = listaDi(smFull); } catch(e){}
+  // quali sessioni hanno la telemetria (canali del giro veloce)
+  try { listaDi(await prendi('data/tele_manifest.json'))
+          .forEach(v => TELE.add(`${v.gara}|${v.sessione}`)); } catch(e){}
+
+  const perGara = new Map();
+  const nomeDi = v => typeof v === 'string' ? v : (v.gara || v.nome);
+  const segna = v => { const g = nomeDi(v); if (g) perGara.set(g, { gara:g }); return g; };
+  qm.forEach(segna);
+  lm.forEach(v => { const g = segna(v); if (g) LIBERE[g] = (v.sessioni || ['fp1','fp2','fp3']); });
+  sm.forEach(v => { const g = segna(v); if (g) SPRINT[g] = true; });
+
+  // ORDINE: dal calendario (le date nei manifest sono quasi tutte vuote).
+  let ordine = new Map();
+  try {
+    const cal = await prendi('data/calendario_2026.json');
+    (cal.gare || []).forEach((g,i) => ordine.set(g.nome || g.gara_demo, g.round ?? i));
+  } catch(e){}
+  GPS = [...perGara.values()].sort((a,b) =>
+    (ordine.get(a.gara) ?? 999) - (ordine.get(b.gara) ?? 999));
+
+  // 2) DOVE SI ENTRA: l'ULTIMA sessione registrata (non l'ultimo GP).
+  //    Il segnale buono e' il campo "ultima" che scrive il generatore; fra i
+  //    tre manifest vince il GP piu' avanti in calendario. A meta' weekend,
+  //    appena finita la FP1, si entra li'.
+  const candidati = [qmFull, lmFull, smFull]
+    .map(m => m && m.ultima && nomeDi(m.ultima)).filter(Boolean);
+  const ultimoGP = candidati.length
+    ? candidati.sort((a,b)=>(ordine.get(a) ?? -1)-(ordine.get(b) ?? -1)).pop()
+    : (GPS.length ? GPS[GPS.length - 1].gara : null);
+  selGP = perGara.has(ultimoGP) ? ultimoGP : (GPS.length ? GPS[GPS.length-1].gara : null);
+  if (selGP){
+    const ss = sessioniDi(selGP);
+    selSess = ss.length ? ss[ss.length - 1].id : 'q';   // la piu' avanzata del weekend
+  }
+  el('n-tel').textContent = GPS.length + ' GP';
+  if (!selGP){ el('sheetbox').innerHTML = `<div class="empty">Nessuna sessione registrata.</div>`; return; }
+  renderGpRow(); renderSessRow(); loadSheet();
+
+  el('gprow').addEventListener('click', e=>{ const b=e.target.closest('.gp'); if(!b) return;
+    selGP = b.textContent;
+    const ss = sessioniDi(selGP); selSess = ss.length ? ss[ss.length-1].id : 'q';
+    renderGpRow(); renderSessRow(); loadSheet(); });
+  el('sessrow').addEventListener('click', e=>{ const b=e.target.closest('.sess[data-sess]'); if(!b) return;
+    selSess = b.dataset.sess; renderSessRow(); loadSheet(); });
+
+  // scelta dei due piloti da confrontare
+  const scegli = (lato) => e => {
+    const b = e.target.closest('.gp'); if (!b || !tel) return;
+    const s = b.dataset.sig;
+    if (lato === 'A'){ if (s === cmpB) cmpB = cmpA; cmpA = s; }
+    else            { if (s === cmpA) cmpA = cmpB; cmpB = s; }
+    renderPick(); disegnaConfronto();
+  };
+  el('cmpA').addEventListener('click', scegli('A'));
+  el('cmpB').addEventListener('click', scegli('B'));
+}
+
+/* ---------------- tab ---------------- */
+const tabs=[{b:'t-art',p:'panel-articoli'},{b:'t-tel',p:'panel-telemetria'}];
+let teleBooted=false;
+function select(id){
+  tabs.forEach(t=>{ const on=t.b===id;
+    el(t.b).setAttribute('aria-selected',on); el(t.p).hidden=!on; });
+  if (id==='t-tel' && !teleBooted){ teleBooted=true; bootTelemetria(); }
+}
+tabs.forEach(t=>el(t.b).addEventListener('click',()=>select(t.b)));
+
+// deep-link: analisi.html#telemetria apre la scheda Telemetria
+if (location.hash.replace('#','')==='telemetria') select('t-tel');
+bootArticoli();
+</script>
+</body>
+</html>

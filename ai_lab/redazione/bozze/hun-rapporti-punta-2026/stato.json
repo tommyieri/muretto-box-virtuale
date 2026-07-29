@@ -1,0 +1,38 @@
+{
+  "id": "hun-rapporti-punta-2026",
+  "stato": "pubblicato",
+  "attore": "Tommi",
+  "creato": "2026-07-25",
+  "storico": [
+    {
+      "stato": "bozza",
+      "attore": "redazione",
+      "quando": "2026-07-25",
+      "nota": "bozza generata"
+    },
+    {
+      "stato": "approvato",
+      "attore": "Tommi",
+      "quando": "2026-07-25",
+      "nota": "autorizzato: vai con il deploy e messa online di tutto"
+    },
+    {
+      "stato": "pubblicato",
+      "attore": "Tommi",
+      "quando": "2026-07-25",
+      "nota": "pubblicato all'approvazione"
+    },
+    {
+      "stato": "respinto",
+      "attore": "Tommi",
+      "quando": "2026-07-25",
+      "nota": "policy: FP1 non affidabile / FP2 troppi. Meno articoli, piu appeal."
+    },
+    {
+      "stato": "pubblicato",
+      "attore": "Tommi",
+      "quando": "2026-07-26",
+      "nota": "reintegrato su conferma: #2 (rapporti/punta) - la punta e' virale"
+    }
+  ]
+}

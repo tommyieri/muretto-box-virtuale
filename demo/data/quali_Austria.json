@@ -1,0 +1,558 @@
+{
+ "gara": "Austria",
+ "evento": "GP d'Austria",
+ "sessione": "Qualifiche",
+ "data": null,
+ "piloti": [
+  {
+   "pos": 1,
+   "num": "63",
+   "sigla": "RUS",
+   "colore": "#27F4D2",
+   "best": "1:06.113",
+   "gap": "",
+   "q1": null,
+   "q2": null,
+   "q3": "1:06.113",
+   "sectors": [
+    {
+     "t": "16.424",
+     "best": "o"
+    },
+    {
+     "t": "29.620",
+     "best": "o"
+    },
+    {
+     "t": "20.069",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 2,
+   "num": "16",
+   "sigla": "LEC",
+   "colore": "#E8002D",
+   "best": "1:06.349",
+   "gap": "+0.236",
+   "q1": null,
+   "q2": null,
+   "q3": "1:06.349",
+   "sectors": [
+    {
+     "t": "16.485",
+     "best": null
+    },
+    {
+     "t": "29.632",
+     "best": null
+    },
+    {
+     "t": "20.232",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 3,
+   "num": "44",
+   "sigla": "HAM",
+   "colore": "#E8002D",
+   "best": "1:06.408",
+   "gap": "+0.295",
+   "q1": null,
+   "q2": null,
+   "q3": "1:06.408",
+   "sectors": [
+    {
+     "t": "16.521",
+     "best": null
+    },
+    {
+     "t": "29.690",
+     "best": null
+    },
+    {
+     "t": "20.197",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 4,
+   "num": "12",
+   "sigla": "ANT",
+   "colore": "#27F4D2",
+   "best": "1:06.414",
+   "gap": "+0.301",
+   "q1": null,
+   "q2": null,
+   "q3": "1:06.414",
+   "sectors": [
+    {
+     "t": "16.564",
+     "best": null
+    },
+    {
+     "t": "29.852",
+     "best": null
+    },
+    {
+     "t": "19.998",
+     "best": "o"
+    }
+   ]
+  },
+  {
+   "pos": 5,
+   "num": "3",
+   "sigla": "VER",
+   "colore": "#2B478F",
+   "best": "1:06.475",
+   "gap": "+0.362",
+   "q1": null,
+   "q2": null,
+   "q3": "1:06.475",
+   "sectors": [
+    {
+     "t": "16.501",
+     "best": null
+    },
+    {
+     "t": "29.719",
+     "best": null
+    },
+    {
+     "t": "20.255",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 6,
+   "num": "1",
+   "sigla": "NOR",
+   "colore": "#FF8000",
+   "best": "1:06.502",
+   "gap": "+0.389",
+   "q1": null,
+   "q2": null,
+   "q3": "1:06.502",
+   "sectors": [
+    {
+     "t": "16.576",
+     "best": null
+    },
+    {
+     "t": "29.642",
+     "best": null
+    },
+    {
+     "t": "20.284",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 7,
+   "num": "81",
+   "sigla": "PIA",
+   "colore": "#FF8000",
+   "best": "1:06.511",
+   "gap": "+0.398",
+   "q1": null,
+   "q2": null,
+   "q3": "1:06.511",
+   "sectors": [
+    {
+     "t": "16.636",
+     "best": null
+    },
+    {
+     "t": "29.742",
+     "best": null
+    },
+    {
+     "t": "20.133",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 8,
+   "num": "6",
+   "sigla": "HAD",
+   "colore": "#2B478F",
+   "best": "1:06.632",
+   "gap": "+0.519",
+   "q1": null,
+   "q2": null,
+   "q3": "1:06.632",
+   "sectors": [
+    {
+     "t": "16.717",
+     "best": null
+    },
+    {
+     "t": "29.787",
+     "best": null
+    },
+    {
+     "t": "20.128",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 9,
+   "num": "30",
+   "sigla": "LAW",
+   "colore": "#6692FF",
+   "best": "1:06.955",
+   "gap": "+0.842",
+   "q1": null,
+   "q2": null,
+   "q3": "1:06.955",
+   "sectors": [
+    {
+     "t": "16.693",
+     "best": null
+    },
+    {
+     "t": "29.937",
+     "best": null
+    },
+    {
+     "t": "20.325",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 10,
+   "num": "41",
+   "sigla": "LIN",
+   "colore": "#6692FF",
+   "best": "1:07.007",
+   "gap": "+0.894",
+   "q1": null,
+   "q2": null,
+   "q3": "1:07.007",
+   "sectors": [
+    {
+     "t": "16.592",
+     "best": null
+    },
+    {
+     "t": "29.992",
+     "best": null
+    },
+    {
+     "t": "20.423",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 11,
+   "num": "10",
+   "sigla": "GAS",
+   "colore": "#FF87BC",
+   "best": "1:07.223",
+   "gap": "+1.110",
+   "q1": null,
+   "q2": null,
+   "q3": "1:07.223",
+   "sectors": [
+    {
+     "t": "16.716",
+     "best": null
+    },
+    {
+     "t": "30.001",
+     "best": null
+    },
+    {
+     "t": "20.506",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 12,
+   "num": "5",
+   "sigla": "BOR",
+   "colore": "#A21D2B",
+   "best": "1:07.293",
+   "gap": "+1.180",
+   "q1": null,
+   "q2": null,
+   "q3": "1:07.293",
+   "sectors": [
+    {
+     "t": "16.749",
+     "best": null
+    },
+    {
+     "t": "30.036",
+     "best": null
+    },
+    {
+     "t": "20.508",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 13,
+   "num": "87",
+   "sigla": "BEA",
+   "colore": "#B6BABD",
+   "best": "1:07.523",
+   "gap": "+1.410",
+   "q1": null,
+   "q2": null,
+   "q3": "1:07.523",
+   "sectors": [
+    {
+     "t": "16.759",
+     "best": null
+    },
+    {
+     "t": "30.118",
+     "best": null
+    },
+    {
+     "t": "20.646",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 14,
+   "num": "27",
+   "sigla": "HUL",
+   "colore": "#A21D2B",
+   "best": "1:07.611",
+   "gap": "+1.498",
+   "q1": null,
+   "q2": null,
+   "q3": "1:07.611",
+   "sectors": [
+    {
+     "t": "16.866",
+     "best": null
+    },
+    {
+     "t": "30.170",
+     "best": null
+    },
+    {
+     "t": "20.575",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 15,
+   "num": "31",
+   "sigla": "OCO",
+   "colore": "#B6BABD",
+   "best": "1:07.817",
+   "gap": "+1.704",
+   "q1": null,
+   "q2": null,
+   "q3": "1:07.817",
+   "sectors": [
+    {
+     "t": "16.804",
+     "best": null
+    },
+    {
+     "t": "30.341",
+     "best": null
+    },
+    {
+     "t": "20.672",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 16,
+   "num": "43",
+   "sigla": "COL",
+   "colore": "#FF87BC",
+   "best": "1:07.894",
+   "gap": "+1.781",
+   "q1": null,
+   "q2": null,
+   "q3": "1:07.894",
+   "sectors": [
+    {
+     "t": "16.692",
+     "best": null
+    },
+    {
+     "t": "30.421",
+     "best": null
+    },
+    {
+     "t": "20.781",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 17,
+   "num": "55",
+   "sigla": "SAI",
+   "colore": "#1868DB",
+   "best": "1:08.252",
+   "gap": "+2.139",
+   "q1": null,
+   "q2": null,
+   "q3": "1:08.252",
+   "sectors": [
+    {
+     "t": "16.845",
+     "best": null
+    },
+    {
+     "t": "30.504",
+     "best": null
+    },
+    {
+     "t": "20.903",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 18,
+   "num": "23",
+   "sigla": "ALB",
+   "colore": "#1868DB",
+   "best": "1:08.509",
+   "gap": "+2.396",
+   "q1": null,
+   "q2": null,
+   "q3": "1:08.509",
+   "sectors": [
+    {
+     "t": "16.854",
+     "best": null
+    },
+    {
+     "t": "30.625",
+     "best": null
+    },
+    {
+     "t": "21.030",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 19,
+   "num": "11",
+   "sigla": "PER",
+   "colore": "#D4A537",
+   "best": "1:08.945",
+   "gap": "+2.832",
+   "q1": null,
+   "q2": null,
+   "q3": "1:08.945",
+   "sectors": [
+    {
+     "t": "16.941",
+     "best": null
+    },
+    {
+     "t": "30.827",
+     "best": null
+    },
+    {
+     "t": "21.177",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 20,
+   "num": "77",
+   "sigla": "BOT",
+   "colore": "#D4A537",
+   "best": "1:09.030",
+   "gap": "+2.917",
+   "q1": null,
+   "q2": null,
+   "q3": "1:09.030",
+   "sectors": [
+    {
+     "t": "16.928",
+     "best": null
+    },
+    {
+     "t": "30.725",
+     "best": null
+    },
+    {
+     "t": "21.377",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 21,
+   "num": "14",
+   "sigla": "ALO",
+   "colore": "#229971",
+   "best": "1:09.942",
+   "gap": "+3.829",
+   "q1": null,
+   "q2": null,
+   "q3": "1:09.942",
+   "sectors": [
+    {
+     "t": "17.188",
+     "best": null
+    },
+    {
+     "t": "31.165",
+     "best": null
+    },
+    {
+     "t": "21.589",
+     "best": null
+    }
+   ]
+  },
+  {
+   "pos": 22,
+   "num": "18",
+   "sigla": "STR",
+   "colore": "#229971",
+   "best": "1:10.363",
+   "gap": "+4.250",
+   "q1": null,
+   "q2": null,
+   "q3": "1:10.363",
+   "sectors": [
+    {
+     "t": "17.362",
+     "best": null
+    },
+    {
+     "t": "31.311",
+     "best": null
+    },
+    {
+     "t": "21.690",
+     "best": null
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,356 @@
+{
+ "_nota": "GENERATO da gen_classifiche.py (f1db v2026.11.0, standings canonici al round indicato in aggiornato_al). Non modificare a mano.",
+ "aggiornato_al": {
+  "round": 11,
+  "raceId_f1db": 1160,
+  "nome": "Ungheria",
+  "titolo": "GP d'Ungheria",
+  "data": "2026-07-26",
+  "gara_demo": "Ungheria"
+ },
+ "piloti": [
+  {
+   "pos": 1,
+   "id": "kimi-antonelli",
+   "sigla": "ANT",
+   "nome": "Kimi Antonelli",
+   "punti": 219.0,
+   "vittorie": 6,
+   "distacco": 0.0,
+   "constructorId": "mercedes",
+   "team_demo": "Mercedes"
+  },
+  {
+   "pos": 2,
+   "id": "lewis-hamilton",
+   "sigla": "HAM",
+   "nome": "Lewis Hamilton",
+   "punti": 169.0,
+   "vittorie": 1,
+   "distacco": 50.0,
+   "constructorId": "ferrari",
+   "team_demo": "Ferrari"
+  },
+  {
+   "pos": 3,
+   "id": "george-russell",
+   "sigla": "RUS",
+   "nome": "George Russell",
+   "punti": 160.0,
+   "vittorie": 2,
+   "distacco": 59.0,
+   "constructorId": "mercedes",
+   "team_demo": "Mercedes"
+  },
+  {
+   "pos": 4,
+   "id": "charles-leclerc",
+   "sigla": "LEC",
+   "nome": "Charles Leclerc",
+   "punti": 138.0,
+   "vittorie": 1,
+   "distacco": 81.0,
+   "constructorId": "ferrari",
+   "team_demo": "Ferrari"
+  },
+  {
+   "pos": 5,
+   "id": "lando-norris",
+   "sigla": "NOR",
+   "nome": "Lando Norris",
+   "punti": 128.0,
+   "vittorie": 1,
+   "distacco": 91.0,
+   "constructorId": "mclaren",
+   "team_demo": "McLaren"
+  },
+  {
+   "pos": 6,
+   "id": "max-verstappen",
+   "sigla": "VER",
+   "nome": "Max Verstappen",
+   "punti": 109.0,
+   "vittorie": 0,
+   "distacco": 110.0,
+   "constructorId": "red-bull",
+   "team_demo": "Red Bull Racing"
+  },
+  {
+   "pos": 7,
+   "id": "oscar-piastri",
+   "sigla": "PIA",
+   "nome": "Oscar Piastri",
+   "punti": 92.0,
+   "vittorie": 0,
+   "distacco": 127.0,
+   "constructorId": "mclaren",
+   "team_demo": "McLaren"
+  },
+  {
+   "pos": 8,
+   "id": "isack-hadjar",
+   "sigla": "HAD",
+   "nome": "Isack Hadjar",
+   "punti": 68.0,
+   "vittorie": 0,
+   "distacco": 151.0,
+   "constructorId": "red-bull",
+   "team_demo": "Red Bull Racing"
+  },
+  {
+   "pos": 9,
+   "id": "liam-lawson",
+   "sigla": "LAW",
+   "nome": "Liam Lawson",
+   "punti": 43.0,
+   "vittorie": 0,
+   "distacco": 176.0,
+   "constructorId": "racing-bulls",
+   "team_demo": "Racing Bulls"
+  },
+  {
+   "pos": 10,
+   "id": "pierre-gasly",
+   "sigla": "GAS",
+   "nome": "Pierre Gasly",
+   "punti": 42.0,
+   "vittorie": 0,
+   "distacco": 177.0,
+   "constructorId": "alpine",
+   "team_demo": "Alpine"
+  },
+  {
+   "pos": 11,
+   "id": "arvid-lindblad",
+   "sigla": "LIN",
+   "nome": "Arvid Lindblad",
+   "punti": 23.0,
+   "vittorie": 0,
+   "distacco": 196.0,
+   "constructorId": "racing-bulls",
+   "team_demo": "Racing Bulls"
+  },
+  {
+   "pos": 12,
+   "id": "franco-colapinto",
+   "sigla": "COL",
+   "nome": "Franco Colapinto",
+   "punti": 19.0,
+   "vittorie": 0,
+   "distacco": 200.0,
+   "constructorId": "alpine",
+   "team_demo": "Alpine"
+  },
+  {
+   "pos": 13,
+   "id": "oliver-bearman",
+   "sigla": "BEA",
+   "nome": "Oliver Bearman",
+   "punti": 18.0,
+   "vittorie": 0,
+   "distacco": 201.0,
+   "constructorId": "haas",
+   "team_demo": "Haas F1 Team"
+  },
+  {
+   "pos": 14,
+   "id": "gabriel-bortoleto",
+   "sigla": "BOR",
+   "nome": "Gabriel Bortoleto",
+   "punti": 10.0,
+   "vittorie": 0,
+   "distacco": 209.0,
+   "constructorId": "audi",
+   "team_demo": "Audi"
+  },
+  {
+   "pos": 15,
+   "id": "carlos-sainz-jr",
+   "sigla": "SAI",
+   "nome": "Carlos Sainz Jr.",
+   "punti": 6.0,
+   "vittorie": 0,
+   "distacco": 213.0,
+   "constructorId": "williams",
+   "team_demo": "Williams"
+  },
+  {
+   "pos": 16,
+   "id": "alexander-albon",
+   "sigla": "ALB",
+   "nome": "Alexander Albon",
+   "punti": 5.0,
+   "vittorie": 0,
+   "distacco": 214.0,
+   "constructorId": "williams",
+   "team_demo": "Williams"
+  },
+  {
+   "pos": 17,
+   "id": "esteban-ocon",
+   "sigla": "OCO",
+   "nome": "Esteban Ocon",
+   "punti": 3.0,
+   "vittorie": 0,
+   "distacco": 216.0,
+   "constructorId": "haas",
+   "team_demo": "Haas F1 Team"
+  },
+  {
+   "pos": 18,
+   "id": "nico-hulkenberg",
+   "sigla": "HUL",
+   "nome": "Nico Hülkenberg",
+   "punti": 2.0,
+   "vittorie": 0,
+   "distacco": 217.0,
+   "constructorId": "audi",
+   "team_demo": "Audi"
+  },
+  {
+   "pos": 19,
+   "id": "fernando-alonso",
+   "sigla": "ALO",
+   "nome": "Fernando Alonso",
+   "punti": 1.0,
+   "vittorie": 0,
+   "distacco": 218.0,
+   "constructorId": "aston-martin",
+   "team_demo": "Aston Martin"
+  },
+  {
+   "pos": 20,
+   "id": "lance-stroll",
+   "sigla": "STR",
+   "nome": "Lance Stroll",
+   "punti": 0.0,
+   "vittorie": 0,
+   "distacco": 219.0,
+   "constructorId": "aston-martin",
+   "team_demo": "Aston Martin"
+  },
+  {
+   "pos": 21,
+   "id": "valtteri-bottas",
+   "sigla": "BOT",
+   "nome": "Valtteri Bottas",
+   "punti": 0.0,
+   "vittorie": 0,
+   "distacco": 219.0,
+   "constructorId": "cadillac",
+   "team_demo": "Cadillac"
+  },
+  {
+   "pos": 22,
+   "id": "sergio-perez",
+   "sigla": "PER",
+   "nome": "Sergio Pérez",
+   "punti": 0.0,
+   "vittorie": 0,
+   "distacco": 219.0,
+   "constructorId": "cadillac",
+   "team_demo": "Cadillac"
+  }
+ ],
+ "costruttori": [
+  {
+   "pos": 1,
+   "id": "mercedes",
+   "nome": "Mercedes",
+   "punti": 379.0,
+   "vittorie": 8,
+   "distacco": 0.0,
+   "team_demo": "Mercedes"
+  },
+  {
+   "pos": 2,
+   "id": "ferrari",
+   "nome": "Ferrari",
+   "punti": 307.0,
+   "vittorie": 2,
+   "distacco": 72.0,
+   "team_demo": "Ferrari"
+  },
+  {
+   "pos": 3,
+   "id": "mclaren",
+   "nome": "McLaren",
+   "punti": 220.0,
+   "vittorie": 1,
+   "distacco": 159.0,
+   "team_demo": "McLaren"
+  },
+  {
+   "pos": 4,
+   "id": "red-bull",
+   "nome": "Red Bull",
+   "punti": 177.0,
+   "vittorie": 0,
+   "distacco": 202.0,
+   "team_demo": "Red Bull Racing"
+  },
+  {
+   "pos": 5,
+   "id": "racing-bulls",
+   "nome": "Racing Bulls",
+   "punti": 66.0,
+   "vittorie": 0,
+   "distacco": 313.0,
+   "team_demo": "Racing Bulls"
+  },
+  {
+   "pos": 6,
+   "id": "alpine",
+   "nome": "Alpine",
+   "punti": 61.0,
+   "vittorie": 0,
+   "distacco": 318.0,
+   "team_demo": "Alpine"
+  },
+  {
+   "pos": 7,
+   "id": "haas",
+   "nome": "Haas",
+   "punti": 21.0,
+   "vittorie": 0,
+   "distacco": 358.0,
+   "team_demo": "Haas F1 Team"
+  },
+  {
+   "pos": 8,
+   "id": "audi",
+   "nome": "Audi",
+   "punti": 12.0,
+   "vittorie": 0,
+   "distacco": 367.0,
+   "team_demo": "Audi"
+  },
+  {
+   "pos": 9,
+   "id": "williams",
+   "nome": "Williams",
+   "punti": 11.0,
+   "vittorie": 0,
+   "distacco": 368.0,
+   "team_demo": "Williams"
+  },
+  {
+   "pos": 10,
+   "id": "aston-martin",
+   "nome": "Aston Martin",
+   "punti": 1.0,
+   "vittorie": 0,
+   "distacco": 378.0,
+   "team_demo": "Aston Martin"
+  },
+  {
+   "pos": 11,
+   "id": "cadillac",
+   "nome": "Cadillac",
+   "punti": 0.0,
+   "vittorie": 0,
+   "distacco": 379.0,
+   "team_demo": "Cadillac"
+  }
+ ]
+}

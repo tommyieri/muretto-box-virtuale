@@ -1,0 +1,778 @@
+{
+ "gia_visti_NON_PROVA": [
+  {
+   "condizione_i_segno_stabile": false,
+   "condizione_ii_distanza_netta": false,
+   "esito": "NON PASSA",
+   "D": 0.0513,
+   "soglia": 0.8686,
+   "lato": "oscilla",
+   "deviazioni": [
+    0.175,
+    0.069,
+    -0.124
+   ],
+   "media_pesata": 3.1859,
+   "globale_meno_c": 3.1346,
+   "circuito": "Abu Dhabi",
+   "regime": "2023-25",
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "valori": [
+    3.31,
+    3.204,
+    3.01
+   ],
+   "metro_vecchio": "INSTABILE",
+   "predizione": "NON PASSERA",
+   "statuto": "PREDIZIONE CONGELATA — metro tarato a posteriori su questi stessi circuiti: NON e' prova"
+  },
+  {
+   "condizione_i_segno_stabile": true,
+   "condizione_ii_distanza_netta": true,
+   "esito": "PER-CIRCUITO VERO",
+   "D": 1.1732,
+   "soglia": 0.8686,
+   "lato": "sotto",
+   "deviazioni": [
+    -0.996,
+    -1.4,
+    -1.131
+   ],
+   "media_pesata": 2.0184,
+   "globale_meno_c": 3.1916,
+   "circuito": "Austrian",
+   "regime": "2023-25",
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "valori": [
+    2.196,
+    1.792,
+    2.061
+   ],
+   "metro_vecchio": "INSTABILE",
+   "predizione": "PASSERA",
+   "statuto": "PREDIZIONE CONGELATA — metro tarato a posteriori su questi stessi circuiti: NON e' prova"
+  },
+  {
+   "condizione_i_segno_stabile": false,
+   "condizione_ii_distanza_netta": false,
+   "esito": "NON PASSA",
+   "D": 0.191,
+   "soglia": 0.8686,
+   "lato": "oscilla",
+   "deviazioni": [
+    0.871,
+    0.526,
+    -0.167
+   ],
+   "media_pesata": 3.3256,
+   "globale_meno_c": 3.1346,
+   "circuito": "Azerbaijan",
+   "regime": "2023-25",
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "valori": [
+    4.006,
+    3.661,
+    2.968
+   ],
+   "metro_vecchio": "INSTABILE",
+   "predizione": "NON PASSERA",
+   "statuto": "PREDIZIONE CONGELATA — metro tarato a posteriori su questi stessi circuiti: NON e' prova"
+  },
+  {
+   "condizione_i_segno_stabile": true,
+   "condizione_ii_distanza_netta": true,
+   "esito": "PER-CIRCUITO VERO",
+   "D": 1.0095,
+   "soglia": 0.8686,
+   "lato": "sopra",
+   "deviazioni": [
+    0.734,
+    0.824,
+    1.41
+   ],
+   "media_pesata": 4.1216,
+   "globale_meno_c": 3.1121,
+   "circuito": "Bahrain",
+   "regime": "2023-25",
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "valori": [
+    3.846,
+    3.936,
+    4.522
+   ],
+   "metro_vecchio": "INSTABILE",
+   "predizione": "PASSERA",
+   "statuto": "PREDIZIONE CONGELATA — metro tarato a posteriori su questi stessi circuiti: NON e' prova"
+  },
+  {
+   "condizione_i_segno_stabile": true,
+   "condizione_ii_distanza_netta": false,
+   "esito": "NON PASSA",
+   "D": 0.2958,
+   "soglia": 0.8686,
+   "lato": "sotto",
+   "deviazioni": [
+    -0.143,
+    -0.369,
+    -0.588
+   ],
+   "media_pesata": 2.8958,
+   "globale_meno_c": 3.1916,
+   "circuito": "Hungarian",
+   "regime": "2023-25",
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "valori": [
+    3.048,
+    2.823,
+    2.604
+   ],
+   "metro_vecchio": "STABILE",
+   "predizione": "NON PASSERA",
+   "statuto": "PREDIZIONE CONGELATA — metro tarato a posteriori su questi stessi circuiti: NON e' prova"
+  },
+  {
+   "condizione_i_segno_stabile": false,
+   "condizione_ii_distanza_netta": false,
+   "esito": "NON PASSA",
+   "D": 0.5399,
+   "soglia": 0.8686,
+   "lato": "oscilla",
+   "deviazioni": [
+    -1.334,
+    0.002,
+    -0.298
+   ],
+   "media_pesata": 2.6375,
+   "globale_meno_c": 3.1773,
+   "circuito": "Italian",
+   "regime": "2023-25",
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "valori": [
+    1.843,
+    3.179,
+    2.88
+   ],
+   "metro_vecchio": "INSTABILE",
+   "predizione": "NON PASSERA",
+   "statuto": "PREDIZIONE CONGELATA — metro tarato a posteriori su questi stessi circuiti: NON e' prova"
+  },
+  {
+   "condizione_i_segno_stabile": true,
+   "condizione_ii_distanza_netta": false,
+   "esito": "NON PASSA",
+   "D": 0.6409,
+   "soglia": 0.8686,
+   "lato": "sopra",
+   "deviazioni": [
+    0.142,
+    1.68,
+    0.604
+   ],
+   "media_pesata": 3.7531,
+   "globale_meno_c": 3.1121,
+   "circuito": "Japanese",
+   "regime": "2023-25",
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "valori": [
+    3.255,
+    4.792,
+    3.716
+   ],
+   "metro_vecchio": "INSTABILE",
+   "predizione": "NON PASSERA",
+   "statuto": "PREDIZIONE CONGELATA — metro tarato a posteriori su questi stessi circuiti: NON e' prova"
+  },
+  {
+   "condizione_i_segno_stabile": true,
+   "condizione_ii_distanza_netta": false,
+   "esito": "NON PASSA",
+   "D": 0.7066,
+   "soglia": 0.8686,
+   "lato": "sopra",
+   "deviazioni": [
+    1.05,
+    0.986,
+    0.462
+   ],
+   "media_pesata": 3.8188,
+   "globale_meno_c": 3.1121,
+   "circuito": "Las Vegas",
+   "regime": "2023-25",
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "valori": [
+    4.162,
+    4.098,
+    3.574
+   ],
+   "metro_vecchio": "STABILE",
+   "predizione": "NON PASSERA",
+   "statuto": "PREDIZIONE CONGELATA — metro tarato a posteriori su questi stessi circuiti: NON e' prova"
+  },
+  {
+   "condizione_i_segno_stabile": true,
+   "condizione_ii_distanza_netta": false,
+   "esito": "NON PASSA",
+   "D": 0.3427,
+   "soglia": 0.8686,
+   "lato": "sotto",
+   "deviazioni": [
+    -0.452,
+    -0.411,
+    -0.273
+   ],
+   "media_pesata": 2.8489,
+   "globale_meno_c": 3.1916,
+   "circuito": "Mexico City",
+   "regime": "2023-25",
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "valori": [
+    2.74,
+    2.781,
+    2.919
+   ],
+   "metro_vecchio": "STABILE",
+   "predizione": "NON PASSERA",
+   "statuto": "PREDIZIONE CONGELATA — metro tarato a posteriori su questi stessi circuiti: NON e' prova"
+  },
+  {
+   "condizione_i_segno_stabile": false,
+   "condizione_ii_distanza_netta": false,
+   "esito": "NON PASSA",
+   "D": 0.6653,
+   "soglia": 0.8686,
+   "lato": "oscilla",
+   "deviazioni": [
+    0.938,
+    0.503,
+    -0.01
+   ],
+   "media_pesata": 3.7939,
+   "globale_meno_c": 3.1285,
+   "circuito": "Qatar",
+   "regime": "2023-25",
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "valori": [
+    4.067,
+    3.631,
+    3.118
+   ],
+   "metro_vecchio": "INSTABILE",
+   "predizione": "NON PASSERA",
+   "statuto": "PREDIZIONE CONGELATA — metro tarato a posteriori su questi stessi circuiti: NON e' prova"
+  },
+  {
+   "condizione_i_segno_stabile": false,
+   "condizione_ii_distanza_netta": false,
+   "esito": "NON PASSA",
+   "D": 0.3298,
+   "soglia": 0.8686,
+   "lato": "oscilla",
+   "deviazioni": [
+    0.002,
+    1.931,
+    -0.624
+   ],
+   "media_pesata": 2.819,
+   "globale_meno_c": 3.1488,
+   "circuito": "Saudi Arabian",
+   "regime": "2023-25",
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "valori": [
+    3.151,
+    5.079,
+    2.524
+   ],
+   "metro_vecchio": "INSTABILE",
+   "predizione": "NON PASSERA",
+   "statuto": "PREDIZIONE CONGELATA — metro tarato a posteriori su questi stessi circuiti: NON e' prova"
+  },
+  {
+   "condizione_i_segno_stabile": true,
+   "condizione_ii_distanza_netta": false,
+   "esito": "NON PASSA",
+   "D": 0.6017,
+   "soglia": 0.8686,
+   "lato": "sotto",
+   "deviazioni": [
+    -0.086,
+    -0.647,
+    -0.306
+   ],
+   "media_pesata": 2.5899,
+   "globale_meno_c": 3.1916,
+   "circuito": "Singapore",
+   "regime": "2023-25",
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "valori": [
+    3.106,
+    2.545,
+    2.886
+   ],
+   "metro_vecchio": "STABILE",
+   "predizione": "NON PASSERA",
+   "statuto": "PREDIZIONE CONGELATA — metro tarato a posteriori su questi stessi circuiti: NON e' prova"
+  },
+  {
+   "condizione_i_segno_stabile": false,
+   "condizione_ii_distanza_netta": false,
+   "esito": "NON PASSA",
+   "D": 0.1984,
+   "soglia": 0.8686,
+   "lato": "oscilla",
+   "deviazioni": [
+    0.19,
+    0.446,
+    -0.416
+   ],
+   "media_pesata": 2.9362,
+   "globale_meno_c": 3.1346,
+   "circuito": "United States",
+   "regime": "2023-25",
+   "anni": [
+    "2023",
+    "2024",
+    "2025"
+   ],
+   "valori": [
+    3.325,
+    3.581,
+    2.718
+   ],
+   "metro_vecchio": "INSTABILE",
+   "predizione": "NON PASSERA",
+   "statuto": "PREDIZIONE CONGELATA — metro tarato a posteriori su questi stessi circuiti: NON e' prova"
+  }
+ ],
+ "indecidibili_predizione": [
+  {
+   "circuito": "Australian",
+   "anni_2023_25": [
+    "2023",
+    "2024"
+   ],
+   "stagioni_mancanti_2023_25": [
+    "2025"
+   ],
+   "valori_2023_25": [
+    3.456,
+    2.78
+   ],
+   "ha_2026": true,
+   "valore_2026": 1.713,
+   "globale_meno_c": 3.151,
+   "deviazioni_parziali": [
+    0.305,
+    -0.371
+   ],
+   "D_parziale": 0.2709,
+   "segno_finora": "oscilla",
+   "predizione": "NON PASSERA",
+   "base": "2 stagioni su 3 — predizione da dati parziali"
+  },
+  {
+   "circuito": "Belgian",
+   "anni_2023_25": [
+    "2024"
+   ],
+   "stagioni_mancanti_2023_25": [
+    "2023",
+    "2025"
+   ],
+   "valori_2023_25": [
+    4.105
+   ],
+   "ha_2026": true,
+   "valore_2026": 2.021,
+   "globale_meno_c": 3.1346,
+   "deviazioni_parziali": [
+    0.971
+   ],
+   "D_parziale": 0.9705,
+   "segno_finora": "sopra",
+   "predizione": "PASSERA",
+   "base": "1 stagioni su 3 — predizione da dati parziali"
+  },
+  {
+   "circuito": "British",
+   "anni_2023_25": [
+    "2023"
+   ],
+   "stagioni_mancanti_2023_25": [
+    "2024",
+    "2025"
+   ],
+   "valori_2023_25": [
+    2.579
+   ],
+   "ha_2026": true,
+   "valore_2026": 3.01,
+   "globale_meno_c": 3.1652,
+   "deviazioni_parziali": [
+    -0.586
+   ],
+   "D_parziale": 0.5861,
+   "segno_finora": "sotto",
+   "predizione": "NON PASSERA",
+   "base": "1 stagioni su 3 — predizione da dati parziali"
+  },
+  {
+   "circuito": "Canadian",
+   "anni_2023_25": [
+    "2023",
+    "2025"
+   ],
+   "stagioni_mancanti_2023_25": [
+    "2024"
+   ],
+   "valori_2023_25": [
+    2.443,
+    2.781
+   ],
+   "ha_2026": true,
+   "valore_2026": 2.049,
+   "globale_meno_c": 3.1795,
+   "deviazioni_parziali": [
+    -0.737,
+    -0.399
+   ],
+   "D_parziale": 0.6277,
+   "segno_finora": "sotto",
+   "predizione": "NON PASSERA",
+   "base": "2 stagioni su 3 — predizione da dati parziali"
+  },
+  {
+   "circuito": "Chinese",
+   "anni_2023_25": [
+    "2024",
+    "2025"
+   ],
+   "stagioni_mancanti_2023_25": [
+    "2023"
+   ],
+   "valori_2023_25": [
+    4.267,
+    3.878
+   ],
+   "ha_2026": true,
+   "valore_2026": 3.424,
+   "globale_meno_c": 3.1182,
+   "deviazioni_parziali": [
+    1.149,
+    0.76
+   ],
+   "D_parziale": 0.879,
+   "segno_finora": "sopra",
+   "predizione": "PASSERA",
+   "base": "2 stagioni su 3 — predizione da dati parziali"
+  },
+  {
+   "circuito": "Dutch",
+   "anni_2023_25": [
+    "2024",
+    "2025"
+   ],
+   "stagioni_mancanti_2023_25": [
+    "2023"
+   ],
+   "valori_2023_25": [
+    2.682,
+    3.55
+   ],
+   "ha_2026": false,
+   "valore_2026": null,
+   "globale_meno_c": 3.151,
+   "deviazioni_parziali": [
+    -0.469,
+    0.399
+   ],
+   "D_parziale": 0.1175,
+   "segno_finora": "oscilla",
+   "predizione": "NON PASSERA",
+   "base": "2 stagioni su 3 — predizione da dati parziali"
+  },
+  {
+   "circuito": "Emilia Romagna",
+   "anni_2023_25": [
+    "2024",
+    "2025"
+   ],
+   "stagioni_mancanti_2023_25": [
+    "2023"
+   ],
+   "valori_2023_25": [
+    1.996,
+    3.396
+   ],
+   "ha_2026": false,
+   "valore_2026": null,
+   "globale_meno_c": 3.151,
+   "deviazioni_parziali": [
+    -1.155,
+    0.245
+   ],
+   "D_parziale": 0.6019,
+   "segno_finora": "oscilla",
+   "predizione": "NON PASSERA",
+   "base": "2 stagioni su 3 — predizione da dati parziali"
+  },
+  {
+   "circuito": "Miami",
+   "anni_2023_25": [
+    "2023",
+    "2024"
+   ],
+   "stagioni_mancanti_2023_25": [
+    "2025"
+   ],
+   "valori_2023_25": [
+    2.611,
+    3.291
+   ],
+   "ha_2026": true,
+   "valore_2026": 0.003,
+   "globale_meno_c": 3.151,
+   "deviazioni_parziali": [
+    -0.54,
+    0.14
+   ],
+   "D_parziale": 0.1813,
+   "segno_finora": "oscilla",
+   "predizione": "NON PASSERA",
+   "base": "2 stagioni su 3 — predizione da dati parziali"
+  },
+  {
+   "circuito": "Monaco",
+   "anni_2023_25": [
+    "2024",
+    "2025"
+   ],
+   "stagioni_mancanti_2023_25": [
+    "2023"
+   ],
+   "valori_2023_25": [
+    8.709,
+    2.346
+   ],
+   "ha_2026": true,
+   "valore_2026": 1.288,
+   "globale_meno_c": 3.151,
+   "deviazioni_parziali": [
+    5.558,
+    -0.805
+   ],
+   "D_parziale": 4.7849,
+   "segno_finora": "oscilla",
+   "predizione": "NON PASSERA",
+   "base": "2 stagioni su 3 — predizione da dati parziali"
+  },
+  {
+   "circuito": "Spanish",
+   "anni_2023_25": [
+    "2023",
+    "2025"
+   ],
+   "stagioni_mancanti_2023_25": [
+    "2024"
+   ],
+   "valori_2023_25": [
+    3.358,
+    3.606
+   ],
+   "ha_2026": true,
+   "valore_2026": 3.913,
+   "globale_meno_c": 3.1182,
+   "deviazioni_parziali": [
+    0.24,
+    0.488
+   ],
+   "D_parziale": 0.2818,
+   "segno_finora": "sopra",
+   "predizione": "NON PASSERA",
+   "base": "2 stagioni su 3 — predizione da dati parziali"
+  },
+  {
+   "circuito": "São Paulo",
+   "anni_2023_25": [
+    "2023",
+    "2025"
+   ],
+   "stagioni_mancanti_2023_25": [
+    "2024"
+   ],
+   "valori_2023_25": [
+    2.959,
+    2.112
+   ],
+   "ha_2026": false,
+   "valore_2026": null,
+   "globale_meno_c": 3.1795,
+   "deviazioni_parziali": [
+    -0.22,
+    -1.067
+   ],
+   "D_parziale": 0.6187,
+   "segno_finora": "sotto",
+   "predizione": "NON PASSERA",
+   "base": "2 stagioni su 3 — predizione da dati parziali"
+  }
+ ],
+ "meta": {
+  "soglia_k3": 0.8686,
+  "soglie_per_k": {
+   "2": {
+    "k": 2,
+    "soglia": 1.2652,
+    "repliche": 10000,
+    "n_fantocci": 190000,
+    "fp_solo_condizione_i": 0.5062,
+    "fp_congiunto_bersaglio": 0.05,
+    "quantili_D_nulla": {
+     "0.5": 0.4538,
+     "0.9": 1.2094,
+     "0.95": 1.3934,
+     "0.99": 4.1228
+    }
+   },
+   "3": {
+    "k": 3,
+    "soglia": 0.8686,
+    "repliche": 10000,
+    "n_fantocci": 190000,
+    "fp_solo_condizione_i": 0.2512,
+    "fp_congiunto_bersaglio": 0.05,
+    "quantili_D_nulla": {
+     "0.5": 0.3484,
+     "0.9": 0.8895,
+     "0.95": 1.1075,
+     "0.99": 2.008
+    }
+   }
+  },
+  "globale_regime_2023_25": 3.151,
+  "globale_regime_2026": 2.1939,
+  "kernel": 3.0,
+  "min_anni": 3,
+  "regola": "PER-CIRCUITO VERO = (i) segno stabile E (ii) D >= soglia",
+  "anti_bara": "i 13 gia visti hanno predizioni, non verdetti; la prova viene da celle che non hanno ispirato il metro",
+  "cross_regime_indizio": [
+   {
+    "circuito": "Australian",
+    "deviazioni": [
+     0.305,
+     -0.371,
+     -0.481
+    ],
+    "segno_stabile_cross_regime": false
+   },
+   {
+    "circuito": "Belgian",
+    "deviazioni": [
+     0.971,
+     -0.173
+    ],
+    "segno_stabile_cross_regime": false
+   },
+   {
+    "circuito": "British",
+    "deviazioni": [
+     -0.586,
+     0.816
+    ],
+    "segno_stabile_cross_regime": false
+   },
+   {
+    "circuito": "Canadian",
+    "deviazioni": [
+     -0.737,
+     -0.399,
+     -0.145
+    ],
+    "segno_stabile_cross_regime": true
+   },
+   {
+    "circuito": "Chinese",
+    "deviazioni": [
+     1.149,
+     0.76,
+     1.23
+    ],
+    "segno_stabile_cross_regime": true
+   },
+   {
+    "circuito": "Miami",
+    "deviazioni": [
+     -0.54,
+     0.14,
+     -2.191
+    ],
+    "segno_stabile_cross_regime": false
+   },
+   {
+    "circuito": "Monaco",
+    "deviazioni": [
+     5.558,
+     -0.805,
+     -0.906
+    ],
+    "segno_stabile_cross_regime": false
+   },
+   {
+    "circuito": "Spanish",
+    "deviazioni": [
+     0.24,
+     0.488,
+     1.719
+    ],
+    "segno_stabile_cross_regime": true
+   }
+  ]
+ }
+}

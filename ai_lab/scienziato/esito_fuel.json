@@ -1,0 +1,3450 @@
+{
+ "B1": {
+  "grandezza": "scivolamento totale del tempo sul giro dal giro 1 al giro N dovuto al termine lineare nel giro-gara (carburante + evoluzione pista)",
+  "unita": "s sull'intera gara",
+  "per_blocco": [
+   {
+    "valore": 3.31,
+    "valore_ci95": [
+     3.1533,
+     3.4668
+    ],
+    "gamma_s_per_giro": -0.05807,
+    "se_gamma": 0.0014,
+    "n_giri": 540,
+    "n_piloti": 20,
+    "n_stint": 50,
+    "n_laps_gara": 58,
+    "data": "2023-11-26",
+    "corr_giro_eta": 0.45,
+    "sigma_residuo": 0.298,
+    "scarti": {
+     "F1_status": 0,
+     "F2_inout": 74,
+     "F3_cancellato": 31,
+     "F4_nan": 0,
+     "F5_giro1": 20,
+     "F6_eta": 53,
+     "F7_compound": 0,
+     "F9_traffico": 439,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.075,
+    "blocco": "2023 Abu Dhabi",
+    "regime": "2022-25",
+    "kernel": 2.9483
+   },
+   {
+    "valore": 3.4561,
+    "valore_ci95": [
+     2.8344,
+     4.0777
+    ],
+    "gamma_s_per_giro": -0.06063,
+    "se_gamma": 0.00556,
+    "n_giri": 339,
+    "n_piloti": 18,
+    "n_stint": 20,
+    "n_laps_gara": 58,
+    "data": "2023-04-02",
+    "corr_giro_eta": 0.88,
+    "sigma_residuo": 0.416,
+    "scarti": {
+     "F1_status": 189,
+     "F2_inout": 50,
+     "F3_cancellato": 1,
+     "F4_nan": 8,
+     "F5_giro1": 0,
+     "F6_eta": 22,
+     "F7_compound": 0,
+     "F9_traffico": 390,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 4
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0321,
+    "blocco": "2023 Australian",
+    "regime": "2022-25",
+    "kernel": 2.9483
+   },
+   {
+    "valore": 2.1957,
+    "valore_ci95": [
+     2.0553,
+     2.336
+    ],
+    "gamma_s_per_giro": -0.03137,
+    "se_gamma": 0.00102,
+    "n_giri": 682,
+    "n_piloti": 19,
+    "n_stint": 46,
+    "n_laps_gara": 71,
+    "data": "2023-07-02",
+    "corr_giro_eta": 0.45,
+    "sigma_residuo": 0.41,
+    "scarti": {
+     "F1_status": 128,
+     "F2_inout": 57,
+     "F3_cancellato": 81,
+     "F4_nan": 1,
+     "F5_giro1": 0,
+     "F6_eta": 53,
+     "F7_compound": 0,
+     "F9_traffico": 352,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0573,
+    "blocco": "2023 Austrian",
+    "regime": "2022-25",
+    "kernel": 2.9577
+   },
+   {
+    "valore": 4.0056,
+    "valore_ci95": [
+     3.5219,
+     4.4893
+    ],
+    "gamma_s_per_giro": -0.08011,
+    "se_gamma": 0.00494,
+    "n_giri": 324,
+    "n_piloti": 18,
+    "n_stint": 26,
+    "n_laps_gara": 51,
+    "data": "2023-04-30",
+    "corr_giro_eta": 0.83,
+    "sigma_residuo": 0.342,
+    "scarti": {
+     "F1_status": 133,
+     "F2_inout": 24,
+     "F3_cancellato": 1,
+     "F4_nan": 1,
+     "F5_giro1": 0,
+     "F6_eta": 27,
+     "F7_compound": 0,
+     "F9_traffico": 452,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0437,
+    "blocco": "2023 Azerbaijan",
+    "regime": "2022-25",
+    "kernel": 2.9412
+   },
+   {
+    "valore": 3.8462,
+    "valore_ci95": [
+     3.3632,
+     4.3292
+    ],
+    "gamma_s_per_giro": -0.06868,
+    "se_gamma": 0.0044,
+    "n_giri": 523,
+    "n_piloti": 20,
+    "n_stint": 58,
+    "n_laps_gara": 57,
+    "data": "2023-03-05",
+    "corr_giro_eta": 0.512,
+    "sigma_residuo": 0.45,
+    "scarti": {
+     "F1_status": 76,
+     "F2_inout": 90,
+     "F3_cancellato": 17,
+     "F4_nan": 1,
+     "F5_giro1": 0,
+     "F6_eta": 48,
+     "F7_compound": 0,
+     "F9_traffico": 294,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 7
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.1198,
+    "blocco": "2023 Bahrain",
+    "regime": "2022-25",
+    "kernel": 2.9474
+   },
+   {
+    "valore": 2.5791,
+    "valore_ci95": [
+     2.2673,
+     2.8909
+    ],
+    "gamma_s_per_giro": -0.05057,
+    "se_gamma": 0.00312,
+    "n_giri": 342,
+    "n_piloti": 19,
+    "n_stint": 36,
+    "n_laps_gara": 52,
+    "data": "2023-07-09",
+    "corr_giro_eta": 0.223,
+    "sigma_residuo": 0.263,
+    "scarti": {
+     "F1_status": 124,
+     "F2_inout": 24,
+     "F3_cancellato": 15,
+     "F4_nan": 1,
+     "F5_giro1": 20,
+     "F6_eta": 30,
+     "F7_compound": 0,
+     "F9_traffico": 415,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0284,
+    "blocco": "2023 British",
+    "regime": "2022-25",
+    "kernel": 2.9423
+   },
+   {
+    "valore": 2.4428,
+    "valore_ci95": [
+     2.2505,
+     2.6351
+    ],
+    "gamma_s_per_giro": -0.0354,
+    "se_gamma": 0.00142,
+    "n_giri": 512,
+    "n_piloti": 19,
+    "n_stint": 38,
+    "n_laps_gara": 70,
+    "data": "2023-06-18",
+    "corr_giro_eta": 0.373,
+    "sigma_residuo": 0.285,
+    "scarti": {
+     "F1_status": 185,
+     "F2_inout": 37,
+     "F3_cancellato": 8,
+     "F4_nan": 2,
+     "F5_giro1": 19,
+     "F6_eta": 37,
+     "F7_compound": 34,
+     "F9_traffico": 483,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0376,
+    "blocco": "2023 Canadian",
+    "regime": "2022-25",
+    "kernel": 2.9571
+   },
+   {
+    "valore": 3.0483,
+    "valore_ci95": [
+     2.7969,
+     3.2996
+    ],
+    "gamma_s_per_giro": -0.04418,
+    "se_gamma": 0.00186,
+    "n_giri": 752,
+    "n_piloti": 18,
+    "n_stint": 47,
+    "n_laps_gara": 70,
+    "data": "2023-07-23",
+    "corr_giro_eta": 0.43,
+    "sigma_residuo": 0.564,
+    "scarti": {
+     "F1_status": 39,
+     "F2_inout": 73,
+     "F3_cancellato": 16,
+     "F4_nan": 0,
+     "F5_giro1": 0,
+     "F6_eta": 54,
+     "F7_compound": 0,
+     "F9_traffico": 311,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 7
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0642,
+    "blocco": "2023 Hungarian",
+    "regime": "2022-25",
+    "kernel": 2.9571
+   },
+   {
+    "valore": 1.843,
+    "valore_ci95": [
+     1.6638,
+     2.0221
+    ],
+    "gamma_s_per_giro": -0.03686,
+    "se_gamma": 0.00183,
+    "n_giri": 427,
+    "n_piloti": 19,
+    "n_stint": 38,
+    "n_laps_gara": 51,
+    "data": "2023-09-03",
+    "corr_giro_eta": 0.539,
+    "sigma_residuo": 0.491,
+    "scarti": {
+     "F1_status": 0,
+     "F2_inout": 51,
+     "F3_cancellato": 14,
+     "F4_nan": 3,
+     "F5_giro1": 19,
+     "F6_eta": 44,
+     "F7_compound": 0,
+     "F9_traffico": 400,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0623,
+    "blocco": "2023 Italian",
+    "regime": "2022-25",
+    "kernel": 2.9412
+   },
+   {
+    "valore": 3.2546,
+    "valore_ci95": [
+     2.947,
+     3.5623
+    ],
+    "gamma_s_per_giro": -0.06259,
+    "se_gamma": 0.00302,
+    "n_giri": 436,
+    "n_piloti": 17,
+    "n_stint": 38,
+    "n_laps_gara": 53,
+    "data": "2023-09-24",
+    "corr_giro_eta": 0.424,
+    "sigma_residuo": 0.536,
+    "scarti": {
+     "F1_status": 129,
+     "F2_inout": 65,
+     "F3_cancellato": 13,
+     "F4_nan": 0,
+     "F5_giro1": 0,
+     "F6_eta": 28,
+     "F7_compound": 0,
+     "F9_traffico": 183,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 26
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.1138,
+    "blocco": "2023 Japanese",
+    "regime": "2022-25",
+    "kernel": 2.9434
+   },
+   {
+    "valore": 4.1622,
+    "valore_ci95": [
+     3.408,
+     4.9165
+    ],
+    "gamma_s_per_giro": -0.08494,
+    "se_gamma": 0.00785,
+    "n_giri": 234,
+    "n_piloti": 19,
+    "n_stint": 40,
+    "n_laps_gara": 50,
+    "data": "2023-11-19",
+    "corr_giro_eta": 0.608,
+    "sigma_residuo": 0.725,
+    "scarti": {
+     "F1_status": 269,
+     "F2_inout": 30,
+     "F3_cancellato": 5,
+     "F4_nan": 3,
+     "F5_giro1": 0,
+     "F6_eta": 13,
+     "F7_compound": 0,
+     "F9_traffico": 391,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 1
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0257,
+    "blocco": "2023 Las Vegas",
+    "regime": "2022-25",
+    "kernel": 2.94
+   },
+   {
+    "valore": 2.7398,
+    "valore_ci95": [
+     2.4014,
+     3.0782
+    ],
+    "gamma_s_per_giro": -0.03914,
+    "se_gamma": 0.00247,
+    "n_giri": 478,
+    "n_piloti": 19,
+    "n_stint": 43,
+    "n_laps_gara": 71,
+    "data": "2023-10-29",
+    "corr_giro_eta": 0.642,
+    "sigma_residuo": 0.401,
+    "scarti": {
+     "F1_status": 174,
+     "F2_inout": 34,
+     "F3_cancellato": 6,
+     "F4_nan": 2,
+     "F5_giro1": 0,
+     "F6_eta": 51,
+     "F7_compound": 0,
+     "F9_traffico": 536,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 1
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0417,
+    "blocco": "2023 Mexico City",
+    "regime": "2022-25",
+    "kernel": 2.9577
+   },
+   {
+    "valore": 2.6111,
+    "valore_ci95": [
+     2.3969,
+     2.8253
+    ],
+    "gamma_s_per_giro": -0.04663,
+    "se_gamma": 0.00195,
+    "n_giri": 577,
+    "n_piloti": 20,
+    "n_stint": 35,
+    "n_laps_gara": 57,
+    "data": "2023-05-07",
+    "corr_giro_eta": 0.642,
+    "sigma_residuo": 0.4,
+    "scarti": {
+     "F1_status": 0,
+     "F2_inout": 40,
+     "F3_cancellato": 7,
+     "F4_nan": 0,
+     "F5_giro1": 20,
+     "F6_eta": 39,
+     "F7_compound": 0,
+     "F9_traffico": 455,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0175,
+    "blocco": "2023 Miami",
+    "regime": "2022-25",
+    "kernel": 2.9474
+   },
+   {
+    "valore": 4.0669,
+    "valore_ci95": [
+     3.7148,
+     4.419
+    ],
+    "gamma_s_per_giro": -0.07262,
+    "se_gamma": 0.00321,
+    "n_giri": 444,
+    "n_piloti": 18,
+    "n_stint": 58,
+    "n_laps_gara": 57,
+    "data": "2023-10-08",
+    "corr_giro_eta": 0.131,
+    "sigma_residuo": 0.596,
+    "scarti": {
+     "F1_status": 109,
+     "F2_inout": 90,
+     "F3_cancellato": 46,
+     "F4_nan": 1,
+     "F5_giro1": 0,
+     "F6_eta": 49,
+     "F7_compound": 0,
+     "F9_traffico": 263,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 4
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0447,
+    "blocco": "2023 Qatar",
+    "regime": "2022-25",
+    "kernel": 2.9474
+   },
+   {
+    "valore": 3.151,
+    "valore_ci95": [
+     1.9549,
+     4.3472
+    ],
+    "gamma_s_per_giro": -0.06431,
+    "se_gamma": 0.01245,
+    "n_giri": 420,
+    "n_piloti": 20,
+    "n_stint": 35,
+    "n_laps_gara": 50,
+    "data": "2023-03-19",
+    "corr_giro_eta": 0.889,
+    "sigma_residuo": 0.419,
+    "scarti": {
+     "F1_status": 76,
+     "F2_inout": 23,
+     "F3_cancellato": 15,
+     "F4_nan": 1,
+     "F5_giro1": 19,
+     "F6_eta": 28,
+     "F7_compound": 0,
+     "F9_traffico": 346,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 15
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0133,
+    "blocco": "2023 Saudi Arabian",
+    "regime": "2022-25",
+    "kernel": 2.94
+   },
+   {
+    "valore": 3.1061,
+    "valore_ci95": [
+     2.3822,
+     3.83
+    ],
+    "gamma_s_per_giro": -0.05092,
+    "se_gamma": 0.00605,
+    "n_giri": 289,
+    "n_piloti": 18,
+    "n_stint": 30,
+    "n_laps_gara": 62,
+    "data": "2023-09-17",
+    "corr_giro_eta": 0.562,
+    "sigma_residuo": 0.766,
+    "scarti": {
+     "F1_status": 239,
+     "F2_inout": 7,
+     "F3_cancellato": 9,
+     "F4_nan": 4,
+     "F5_giro1": 0,
+     "F6_eta": 7,
+     "F7_compound": 0,
+     "F9_traffico": 509,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 24
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0749,
+    "blocco": "2023 Singapore",
+    "regime": "2022-25",
+    "kernel": 2.9516
+   },
+   {
+    "valore": 3.3585,
+    "valore_ci95": [
+     3.1513,
+     3.5657
+    ],
+    "gamma_s_per_giro": -0.05167,
+    "se_gamma": 0.00163,
+    "n_giri": 741,
+    "n_piloti": 20,
+    "n_stint": 57,
+    "n_laps_gara": 66,
+    "data": "2023-06-04",
+    "corr_giro_eta": 0.327,
+    "sigma_residuo": 0.531,
+    "scarti": {
+     "F1_status": 0,
+     "F2_inout": 88,
+     "F3_cancellato": 9,
+     "F4_nan": 0,
+     "F5_giro1": 17,
+     "F6_eta": 62,
+     "F7_compound": 0,
+     "F9_traffico": 395,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.065,
+    "blocco": "2023 Spanish",
+    "regime": "2022-25",
+    "kernel": 2.9545
+   },
+   {
+    "valore": 2.9594,
+    "valore_ci95": [
+     2.7388,
+     3.1799
+    ],
+    "gamma_s_per_giro": -0.04228,
+    "se_gamma": 0.00161,
+    "n_giri": 655,
+    "n_piloti": 17,
+    "n_stint": 47,
+    "n_laps_gara": 71,
+    "data": "2023-11-05",
+    "corr_giro_eta": 0.174,
+    "sigma_residuo": 0.473,
+    "scarti": {
+     "F1_status": 32,
+     "F2_inout": 88,
+     "F3_cancellato": 0,
+     "F4_nan": 3,
+     "F5_giro1": 0,
+     "F6_eta": 50,
+     "F7_compound": 0,
+     "F9_traffico": 281,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0575,
+    "blocco": "2023 São Paulo",
+    "regime": "2022-25",
+    "kernel": 2.9577
+   },
+   {
+    "valore": 3.3246,
+    "valore_ci95": [
+     3.0788,
+     3.5704
+    ],
+    "gamma_s_per_giro": -0.06045,
+    "se_gamma": 0.00228,
+    "n_giri": 560,
+    "n_piloti": 19,
+    "n_stint": 49,
+    "n_laps_gara": 56,
+    "data": "2023-10-22",
+    "corr_giro_eta": 0.401,
+    "sigma_residuo": 0.467,
+    "scarti": {
+     "F1_status": 7,
+     "F2_inout": 79,
+     "F3_cancellato": 31,
+     "F4_nan": 0,
+     "F5_giro1": 16,
+     "F6_eta": 53,
+     "F7_compound": 0,
+     "F9_traffico": 263,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 5
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.087,
+    "blocco": "2023 United States",
+    "regime": "2022-25",
+    "kernel": 2.9464
+   },
+   {
+    "valore": 3.2037,
+    "valore_ci95": [
+     3.1176,
+     3.2898
+    ],
+    "gamma_s_per_giro": -0.0562,
+    "se_gamma": 0.00077,
+    "n_giri": 569,
+    "n_piloti": 19,
+    "n_stint": 38,
+    "n_laps_gara": 58,
+    "data": "2024-12-08",
+    "corr_giro_eta": 0.592,
+    "sigma_residuo": 0.384,
+    "scarti": {
+     "F1_status": 100,
+     "F2_inout": 50,
+     "F3_cancellato": 26,
+     "F4_nan": 2,
+     "F5_giro1": 0,
+     "F6_eta": 25,
+     "F7_compound": 0,
+     "F9_traffico": 242,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 21
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0623,
+    "blocco": "2024 Abu Dhabi",
+    "regime": "2022-25",
+    "kernel": 2.9483
+   },
+   {
+    "valore": 2.7796,
+    "valore_ci95": [
+     2.5199,
+     3.0392
+    ],
+    "gamma_s_per_giro": -0.04876,
+    "se_gamma": 0.00232,
+    "n_giri": 538,
+    "n_piloti": 17,
+    "n_stint": 41,
+    "n_laps_gara": 58,
+    "data": "2024-03-24",
+    "corr_giro_eta": 0.267,
+    "sigma_residuo": 0.538,
+    "scarti": {
+     "F1_status": 59,
+     "F2_inout": 66,
+     "F3_cancellato": 1,
+     "F4_nan": 3,
+     "F5_giro1": 18,
+     "F6_eta": 54,
+     "F7_compound": 0,
+     "F9_traffico": 259,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0652,
+    "blocco": "2024 Australian",
+    "regime": "2022-25",
+    "kernel": 2.9483
+   },
+   {
+    "valore": 1.7916,
+    "valore_ci95": [
+     1.6448,
+     1.9383
+    ],
+    "gamma_s_per_giro": -0.02559,
+    "se_gamma": 0.00107,
+    "n_giri": 743,
+    "n_piloti": 20,
+    "n_stint": 55,
+    "n_laps_gara": 71,
+    "data": "2024-06-30",
+    "corr_giro_eta": 0.367,
+    "sigma_residuo": 0.443,
+    "scarti": {
+     "F1_status": 49,
+     "F2_inout": 89,
+     "F3_cancellato": 10,
+     "F4_nan": 0,
+     "F5_giro1": 17,
+     "F6_eta": 62,
+     "F7_compound": 0,
+     "F9_traffico": 430,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 5
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0691,
+    "blocco": "2024 Austrian",
+    "regime": "2022-25",
+    "kernel": 2.9577
+   },
+   {
+    "valore": 3.6608,
+    "valore_ci95": [
+     3.1276,
+     4.194
+    ],
+    "gamma_s_per_giro": -0.07322,
+    "se_gamma": 0.00544,
+    "n_giri": 460,
+    "n_piloti": 20,
+    "n_stint": 33,
+    "n_laps_gara": 51,
+    "data": "2024-09-15",
+    "corr_giro_eta": 0.752,
+    "sigma_residuo": 0.645,
+    "scarti": {
+     "F1_status": 61,
+     "F2_inout": 40,
+     "F3_cancellato": 1,
+     "F4_nan": 2,
+     "F5_giro1": 17,
+     "F6_eta": 36,
+     "F7_compound": 0,
+     "F9_traffico": 356,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0614,
+    "blocco": "2024 Azerbaijan",
+    "regime": "2022-25",
+    "kernel": 2.9412
+   },
+   {
+    "valore": 3.9364,
+    "valore_ci95": [
+     3.7132,
+     4.1597
+    ],
+    "gamma_s_per_giro": -0.07029,
+    "se_gamma": 0.00203,
+    "n_giri": 626,
+    "n_piloti": 20,
+    "n_stint": 54,
+    "n_laps_gara": 57,
+    "data": "2024-03-02",
+    "corr_giro_eta": 0.462,
+    "sigma_residuo": 0.445,
+    "scarti": {
+     "F1_status": 42,
+     "F2_inout": 81,
+     "F3_cancellato": 18,
+     "F4_nan": 0,
+     "F5_giro1": 0,
+     "F6_eta": 62,
+     "F7_compound": 0,
+     "F9_traffico": 300,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.1199,
+    "blocco": "2024 Bahrain",
+    "regime": "2022-25",
+    "kernel": 2.9474
+   },
+   {
+    "valore": 4.1051,
+    "valore_ci95": [
+     3.7463,
+     4.4638
+    ],
+    "gamma_s_per_giro": -0.09547,
+    "se_gamma": 0.00426,
+    "n_giri": 315,
+    "n_piloti": 20,
+    "n_stint": 41,
+    "n_laps_gara": 44,
+    "data": "2024-07-28",
+    "corr_giro_eta": 0.533,
+    "sigma_residuo": 0.388,
+    "scarti": {
+     "F1_status": 19,
+     "F2_inout": 67,
+     "F3_cancellato": 9,
+     "F4_nan": 0,
+     "F5_giro1": 20,
+     "F6_eta": 50,
+     "F7_compound": 0,
+     "F9_traffico": 323,
+     "F8_outlier": 1,
+     "G5_compound_non_identificabile": 37
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0548,
+    "blocco": "2024 Belgian",
+    "regime": "2022-25",
+    "kernel": 2.9318
+   },
+   {
+    "valore": 4.2667,
+    "valore_ci95": [
+     3.6674,
+     4.866
+    ],
+    "gamma_s_per_giro": -0.07758,
+    "se_gamma": 0.00556,
+    "n_giri": 369,
+    "n_piloti": 20,
+    "n_stint": 46,
+    "n_laps_gara": 56,
+    "data": "2024-04-21",
+    "corr_giro_eta": 0.773,
+    "sigma_residuo": 0.401,
+    "scarti": {
+     "F1_status": 221,
+     "F2_inout": 46,
+     "F3_cancellato": 5,
+     "F4_nan": 2,
+     "F5_giro1": 19,
+     "F6_eta": 41,
+     "F7_compound": 0,
+     "F9_traffico": 308,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 21
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.1222,
+    "blocco": "2024 Chinese",
+    "regime": "2022-25",
+    "kernel": 2.9464
+   },
+   {
+    "valore": 2.682,
+    "valore_ci95": [
+     2.3907,
+     2.9732
+    ],
+    "gamma_s_per_giro": -0.03777,
+    "se_gamma": 0.00209,
+    "n_giri": 829,
+    "n_piloti": 20,
+    "n_stint": 41,
+    "n_laps_gara": 72,
+    "data": "2024-08-25",
+    "corr_giro_eta": 0.558,
+    "sigma_residuo": 0.486,
+    "scarti": {
+     "F1_status": 0,
+     "F2_inout": 53,
+     "F3_cancellato": 4,
+     "F4_nan": 0,
+     "F5_giro1": 19,
+     "F6_eta": 46,
+     "F7_compound": 0,
+     "F9_traffico": 475,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0539,
+    "blocco": "2024 Dutch",
+    "regime": "2022-25",
+    "kernel": 2.9583
+   },
+   {
+    "valore": 1.9958,
+    "valore_ci95": [
+     1.6759,
+     2.3157
+    ],
+    "gamma_s_per_giro": -0.03219,
+    "se_gamma": 0.00263,
+    "n_giri": 737,
+    "n_piloti": 20,
+    "n_stint": 38,
+    "n_laps_gara": 63,
+    "data": "2024-05-19",
+    "corr_giro_eta": 0.569,
+    "sigma_residuo": 0.56,
+    "scarti": {
+     "F1_status": 0,
+     "F2_inout": 55,
+     "F3_cancellato": 11,
+     "F4_nan": 0,
+     "F5_giro1": 19,
+     "F6_eta": 46,
+     "F7_compound": 0,
+     "F9_traffico": 369,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 1
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0544,
+    "blocco": "2024 Emilia Romagna",
+    "regime": "2022-25",
+    "kernel": 2.9524
+   },
+   {
+    "valore": 2.823,
+    "valore_ci95": [
+     2.5916,
+     3.0544
+    ],
+    "gamma_s_per_giro": -0.04091,
+    "se_gamma": 0.00171,
+    "n_giri": 734,
+    "n_piloti": 20,
+    "n_stint": 45,
+    "n_laps_gara": 70,
+    "data": "2024-07-21",
+    "corr_giro_eta": 0.484,
+    "sigma_residuo": 0.703,
+    "scarti": {
+     "F1_status": 21,
+     "F2_inout": 82,
+     "F3_cancellato": 5,
+     "F4_nan": 0,
+     "F5_giro1": 19,
+     "F6_eta": 59,
+     "F7_compound": 0,
+     "F9_traffico": 420,
+     "F8_outlier": 1,
+     "G5_compound_non_identificabile": 14
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0852,
+    "blocco": "2024 Hungarian",
+    "regime": "2022-25",
+    "kernel": 2.9571
+   },
+   {
+    "valore": 3.1795,
+    "valore_ci95": [
+     2.9492,
+     3.4099
+    ],
+    "gamma_s_per_giro": -0.06114,
+    "se_gamma": 0.00226,
+    "n_giri": 539,
+    "n_piloti": 20,
+    "n_stint": 43,
+    "n_laps_gara": 53,
+    "data": "2024-09-01",
+    "corr_giro_eta": 0.492,
+    "sigma_residuo": 0.52,
+    "scarti": {
+     "F1_status": 0,
+     "F2_inout": 61,
+     "F3_cancellato": 13,
+     "F4_nan": 0,
+     "F5_giro1": 20,
+     "F6_eta": 50,
+     "F7_compound": 0,
+     "F9_traffico": 325,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0525,
+    "blocco": "2024 Italian",
+    "regime": "2022-25",
+    "kernel": 2.9434
+   },
+   {
+    "valore": 4.7924,
+    "valore_ci95": [
+     4.4649,
+     5.12
+    ],
+    "gamma_s_per_giro": -0.09216,
+    "se_gamma": 0.00321,
+    "n_giri": 433,
+    "n_piloti": 18,
+    "n_stint": 44,
+    "n_laps_gara": 53,
+    "data": "2024-04-07",
+    "corr_giro_eta": 0.393,
+    "sigma_residuo": 0.577,
+    "scarti": {
+     "F1_status": 40,
+     "F2_inout": 89,
+     "F3_cancellato": 8,
+     "F4_nan": 2,
+     "F5_giro1": 0,
+     "F6_eta": 52,
+     "F7_compound": 0,
+     "F9_traffico": 283,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.1378,
+    "blocco": "2024 Japanese",
+    "regime": "2022-25",
+    "kernel": 2.9434
+   },
+   {
+    "valore": 4.0977,
+    "valore_ci95": [
+     3.6593,
+     4.5361
+    ],
+    "gamma_s_per_giro": -0.08363,
+    "se_gamma": 0.00456,
+    "n_giri": 398,
+    "n_piloti": 20,
+    "n_stint": 44,
+    "n_laps_gara": 50,
+    "data": "2024-11-24",
+    "corr_giro_eta": 0.516,
+    "sigma_residuo": 0.606,
+    "scarti": {
+     "F1_status": 0,
+     "F2_inout": 80,
+     "F3_cancellato": 6,
+     "F4_nan": 0,
+     "F5_giro1": 19,
+     "F6_eta": 58,
+     "F7_compound": 0,
+     "F9_traffico": 375,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 2
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.133,
+    "blocco": "2024 Las Vegas",
+    "regime": "2022-25",
+    "kernel": 2.94
+   },
+   {
+    "valore": 2.7806,
+    "valore_ci95": [
+     2.5635,
+     2.9978
+    ],
+    "gamma_s_per_giro": -0.03972,
+    "se_gamma": 0.00158,
+    "n_giri": 669,
+    "n_piloti": 18,
+    "n_stint": 36,
+    "n_laps_gara": 71,
+    "data": "2024-10-27",
+    "corr_giro_eta": 0.326,
+    "sigma_residuo": 0.493,
+    "scarti": {
+     "F1_status": 108,
+     "F2_inout": 43,
+     "F3_cancellato": 10,
+     "F4_nan": 2,
+     "F5_giro1": 0,
+     "F6_eta": 21,
+     "F7_compound": 0,
+     "F9_traffico": 360,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 2
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0555,
+    "blocco": "2024 Mexico City",
+    "regime": "2022-25",
+    "kernel": 2.9577
+   },
+   {
+    "valore": 3.2912,
+    "valore_ci95": [
+     3.0884,
+     3.494
+    ],
+    "gamma_s_per_giro": -0.05877,
+    "se_gamma": 0.00185,
+    "n_giri": 365,
+    "n_piloti": 20,
+    "n_stint": 35,
+    "n_laps_gara": 57,
+    "data": "2024-05-05",
+    "corr_giro_eta": 0.657,
+    "sigma_residuo": 0.314,
+    "scarti": {
+     "F1_status": 129,
+     "F2_inout": 27,
+     "F3_cancellato": 19,
+     "F4_nan": 1,
+     "F5_giro1": 20,
+     "F6_eta": 34,
+     "F7_compound": 0,
+     "F9_traffico": 510,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 6
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0316,
+    "blocco": "2024 Miami",
+    "regime": "2022-25",
+    "kernel": 2.9474
+   },
+   {
+    "valore": 8.709,
+    "valore_ci95": [
+     8.3421,
+     9.0759
+    ],
+    "gamma_s_per_giro": -0.1131,
+    "se_gamma": 0.00243,
+    "n_giri": 520,
+    "n_piloti": 16,
+    "n_stint": 20,
+    "n_laps_gara": 78,
+    "data": "2024-05-26",
+    "corr_giro_eta": 0.798,
+    "sigma_residuo": 1.007,
+    "scarti": {
+     "F1_status": 50,
+     "F2_inout": 12,
+     "F3_cancellato": 3,
+     "F4_nan": 4,
+     "F5_giro1": 0,
+     "F6_eta": 23,
+     "F7_compound": 0,
+     "F9_traffico": 616,
+     "F8_outlier": 1,
+     "G5_compound_non_identificabile": 8
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0488,
+    "blocco": "2024 Monaco",
+    "regime": "2022-25",
+    "kernel": 2.9615
+   },
+   {
+    "valore": 3.6313,
+    "valore_ci95": [
+     2.6759,
+     4.5867
+    ],
+    "gamma_s_per_giro": -0.06485,
+    "se_gamma": 0.0087,
+    "n_giri": 311,
+    "n_piloti": 18,
+    "n_stint": 31,
+    "n_laps_gara": 57,
+    "data": "2024-12-01",
+    "corr_giro_eta": -0.049,
+    "sigma_residuo": 0.407,
+    "scarti": {
+     "F1_status": 242,
+     "F2_inout": 18,
+     "F3_cancellato": 15,
+     "F4_nan": 4,
+     "F5_giro1": 0,
+     "F6_eta": 5,
+     "F7_compound": 0,
+     "F9_traffico": 327,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 21
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": -0.0022,
+    "blocco": "2024 Qatar",
+    "regime": "2022-25",
+    "kernel": 2.9474
+   },
+   {
+    "valore": 5.0794,
+    "valore_ci95": [
+     3.8081,
+     6.3508
+    ],
+    "gamma_s_per_giro": -0.10366,
+    "se_gamma": 0.01324,
+    "n_giri": 369,
+    "n_piloti": 19,
+    "n_stint": 23,
+    "n_laps_gara": 50,
+    "data": "2024-03-09",
+    "corr_giro_eta": 0.853,
+    "sigma_residuo": 0.476,
+    "scarti": {
+     "F1_status": 68,
+     "F2_inout": 11,
+     "F3_cancellato": 16,
+     "F4_nan": 1,
+     "F5_giro1": 19,
+     "F6_eta": 23,
+     "F7_compound": 0,
+     "F9_traffico": 364,
+     "F8_outlier": 1,
+     "G5_compound_non_identificabile": 29
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0494,
+    "blocco": "2024 Saudi Arabian",
+    "regime": "2022-25",
+    "kernel": 2.94
+   },
+   {
+    "valore": 2.5446,
+    "valore_ci95": [
+     2.3724,
+     2.7168
+    ],
+    "gamma_s_per_giro": -0.04171,
+    "se_gamma": 0.00144,
+    "n_giri": 686,
+    "n_piloti": 20,
+    "n_stint": 38,
+    "n_laps_gara": 62,
+    "data": "2024-09-22",
+    "corr_giro_eta": 0.417,
+    "sigma_residuo": 0.665,
+    "scarti": {
+     "F1_status": 0,
+     "F2_inout": 48,
+     "F3_cancellato": 12,
+     "F4_nan": 0,
+     "F5_giro1": 20,
+     "F6_eta": 41,
+     "F7_compound": 0,
+     "F9_traffico": 370,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0436,
+    "blocco": "2024 Singapore",
+    "regime": "2022-25",
+    "kernel": 2.9516
+   },
+   {
+    "valore": 3.581,
+    "valore_ci95": [
+     3.2573,
+     3.9046
+    ],
+    "gamma_s_per_giro": -0.06511,
+    "se_gamma": 0.003,
+    "n_giri": 578,
+    "n_piloti": 19,
+    "n_stint": 38,
+    "n_laps_gara": 56,
+    "data": "2024-10-20",
+    "corr_giro_eta": 0.296,
+    "sigma_residuo": 0.501,
+    "scarti": {
+     "F1_status": 132,
+     "F2_inout": 43,
+     "F3_cancellato": 31,
+     "F4_nan": 1,
+     "F5_giro1": 0,
+     "F6_eta": 24,
+     "F7_compound": 0,
+     "F9_traffico": 248,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 2
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0396,
+    "blocco": "2024 United States",
+    "regime": "2022-25",
+    "kernel": 2.9464
+   },
+   {
+    "valore": 3.0105,
+    "valore_ci95": [
+     2.8571,
+     3.164
+    ],
+    "gamma_s_per_giro": -0.05282,
+    "se_gamma": 0.00137,
+    "n_giri": 467,
+    "n_piloti": 20,
+    "n_stint": 39,
+    "n_laps_gara": 58,
+    "data": "2025-12-07",
+    "corr_giro_eta": 0.481,
+    "sigma_residuo": 0.417,
+    "scarti": {
+     "F1_status": 0,
+     "F2_inout": 54,
+     "F3_cancellato": 38,
+     "F4_nan": 0,
+     "F5_giro1": 20,
+     "F6_eta": 46,
+     "F7_compound": 0,
+     "F9_traffico": 531,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0756,
+    "blocco": "2025 Abu Dhabi",
+    "regime": "2022-25",
+    "kernel": 2.9483
+   },
+   {
+    "valore": 2.0609,
+    "valore_ci95": [
+     1.894,
+     2.2278
+    ],
+    "gamma_s_per_giro": -0.02987,
+    "se_gamma": 0.00123,
+    "n_giri": 592,
+    "n_piloti": 17,
+    "n_stint": 41,
+    "n_laps_gara": 70,
+    "data": "2025-06-29",
+    "corr_giro_eta": 0.346,
+    "sigma_residuo": 0.435,
+    "scarti": {
+     "F1_status": 67,
+     "F2_inout": 62,
+     "F3_cancellato": 11,
+     "F4_nan": 3,
+     "F5_giro1": 0,
+     "F6_eta": 30,
+     "F7_compound": 0,
+     "F9_traffico": 346,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 16
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0567,
+    "blocco": "2025 Austrian",
+    "regime": "2022-25",
+    "kernel": 2.9571
+   },
+   {
+    "valore": 2.9677,
+    "valore_ci95": [
+     2.6717,
+     3.2637
+    ],
+    "gamma_s_per_giro": -0.05935,
+    "se_gamma": 0.00302,
+    "n_giri": 443,
+    "n_piloti": 19,
+    "n_stint": 30,
+    "n_laps_gara": 51,
+    "data": "2025-09-21",
+    "corr_giro_eta": 0.223,
+    "sigma_residuo": 0.418,
+    "scarti": {
+     "F1_status": 139,
+     "F2_inout": 32,
+     "F3_cancellato": 0,
+     "F4_nan": 1,
+     "F5_giro1": 0,
+     "F6_eta": 16,
+     "F7_compound": 0,
+     "F9_traffico": 337,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0178,
+    "blocco": "2025 Azerbaijan",
+    "regime": "2022-25",
+    "kernel": 2.9412
+   },
+   {
+    "valore": 4.5223,
+    "valore_ci95": [
+     4.2363,
+     4.8084
+    ],
+    "gamma_s_per_giro": -0.08076,
+    "se_gamma": 0.00261,
+    "n_giri": 363,
+    "n_piloti": 20,
+    "n_stint": 42,
+    "n_laps_gara": 57,
+    "data": "2025-04-13",
+    "corr_giro_eta": 0.777,
+    "sigma_residuo": 0.346,
+    "scarti": {
+     "F1_status": 80,
+     "F2_inout": 56,
+     "F3_cancellato": 28,
+     "F4_nan": 0,
+     "F5_giro1": 20,
+     "F6_eta": 44,
+     "F7_compound": 0,
+     "F9_traffico": 537,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.145,
+    "blocco": "2025 Bahrain",
+    "regime": "2022-25",
+    "kernel": 2.9474
+   },
+   {
+    "valore": 2.7807,
+    "valore_ci95": [
+     2.502,
+     3.0593
+    ],
+    "gamma_s_per_giro": -0.0403,
+    "se_gamma": 0.00206,
+    "n_giri": 551,
+    "n_piloti": 20,
+    "n_stint": 45,
+    "n_laps_gara": 70,
+    "data": "2025-06-15",
+    "corr_giro_eta": 0.323,
+    "sigma_residuo": 0.494,
+    "scarti": {
+     "F1_status": 106,
+     "F2_inout": 59,
+     "F3_cancellato": 9,
+     "F4_nan": 3,
+     "F5_giro1": 18,
+     "F6_eta": 49,
+     "F7_compound": 0,
+     "F9_traffico": 554,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0405,
+    "blocco": "2025 Canadian",
+    "regime": "2022-25",
+    "kernel": 2.9571
+   },
+   {
+    "valore": 3.8777,
+    "valore_ci95": [
+     3.4788,
+     4.2767
+    ],
+    "gamma_s_per_giro": -0.0705,
+    "se_gamma": 0.0037,
+    "n_giri": 607,
+    "n_piloti": 19,
+    "n_stint": 36,
+    "n_laps_gara": 56,
+    "data": "2025-03-23",
+    "corr_giro_eta": 0.717,
+    "sigma_residuo": 0.52,
+    "scarti": {
+     "F1_status": 71,
+     "F2_inout": 49,
+     "F3_cancellato": 3,
+     "F4_nan": 0,
+     "F5_giro1": 0,
+     "F6_eta": 32,
+     "F7_compound": 0,
+     "F9_traffico": 303,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0385,
+    "blocco": "2025 Chinese",
+    "regime": "2022-25",
+    "kernel": 2.9464
+   },
+   {
+    "valore": 3.5498,
+    "valore_ci95": [
+     3.3481,
+     3.7515
+    ],
+    "gamma_s_per_giro": -0.05,
+    "se_gamma": 0.00145,
+    "n_giri": 364,
+    "n_piloti": 19,
+    "n_stint": 37,
+    "n_laps_gara": 72,
+    "data": "2025-08-31",
+    "corr_giro_eta": 0.387,
+    "sigma_residuo": 0.342,
+    "scarti": {
+     "F1_status": 314,
+     "F2_inout": 24,
+     "F3_cancellato": 7,
+     "F4_nan": 2,
+     "F5_giro1": 19,
+     "F6_eta": 27,
+     "F7_compound": 0,
+     "F9_traffico": 607,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0794,
+    "blocco": "2025 Dutch",
+    "regime": "2022-25",
+    "kernel": 2.9583
+   },
+   {
+    "valore": 3.396,
+    "valore_ci95": [
+     3.0002,
+     3.7918
+    ],
+    "gamma_s_per_giro": -0.05477,
+    "se_gamma": 0.00326,
+    "n_giri": 403,
+    "n_piloti": 20,
+    "n_stint": 43,
+    "n_laps_gara": 63,
+    "data": "2025-05-18",
+    "corr_giro_eta": 0.315,
+    "sigma_residuo": 0.417,
+    "scarti": {
+     "F1_status": 219,
+     "F2_inout": 26,
+     "F3_cancellato": 3,
+     "F4_nan": 2,
+     "F5_giro1": 18,
+     "F6_eta": 38,
+     "F7_compound": 0,
+     "F9_traffico": 498,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0507,
+    "blocco": "2025 Emilia Romagna",
+    "regime": "2022-25",
+    "kernel": 2.9524
+   },
+   {
+    "valore": 2.6037,
+    "valore_ci95": [
+     2.0774,
+     3.1301
+    ],
+    "gamma_s_per_giro": -0.03774,
+    "se_gamma": 0.00389,
+    "n_giri": 637,
+    "n_piloti": 20,
+    "n_stint": 43,
+    "n_laps_gara": 70,
+    "data": "2025-08-03",
+    "corr_giro_eta": 0.411,
+    "sigma_residuo": 0.646,
+    "scarti": {
+     "F1_status": 0,
+     "F2_inout": 60,
+     "F3_cancellato": 14,
+     "F4_nan": 0,
+     "F5_giro1": 19,
+     "F6_eta": 48,
+     "F7_compound": 0,
+     "F9_traffico": 581,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 9
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0524,
+    "blocco": "2025 Hungarian",
+    "regime": "2022-25",
+    "kernel": 2.9571
+   },
+   {
+    "valore": 2.8798,
+    "valore_ci95": [
+     2.7507,
+     3.0089
+    ],
+    "gamma_s_per_giro": -0.05538,
+    "se_gamma": 0.00127,
+    "n_giri": 449,
+    "n_piloti": 19,
+    "n_stint": 28,
+    "n_laps_gara": 53,
+    "data": "2025-09-07",
+    "corr_giro_eta": 0.329,
+    "sigma_residuo": 0.243,
+    "scarti": {
+     "F1_status": 19,
+     "F2_inout": 41,
+     "F3_cancellato": 19,
+     "F4_nan": 1,
+     "F5_giro1": 17,
+     "F6_eta": 35,
+     "F7_compound": 0,
+     "F9_traffico": 386,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 8
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0145,
+    "blocco": "2025 Italian",
+    "regime": "2022-25",
+    "kernel": 2.9434
+   },
+   {
+    "valore": 3.7159,
+    "valore_ci95": [
+     3.6242,
+     3.8076
+    ],
+    "gamma_s_per_giro": -0.07146,
+    "se_gamma": 0.0009,
+    "n_giri": 485,
+    "n_piloti": 18,
+    "n_stint": 32,
+    "n_laps_gara": 53,
+    "data": "2025-04-06",
+    "corr_giro_eta": 0.462,
+    "sigma_residuo": 0.359,
+    "scarti": {
+     "F1_status": 0,
+     "F2_inout": 42,
+     "F3_cancellato": 8,
+     "F4_nan": 0,
+     "F5_giro1": 20,
+     "F6_eta": 40,
+     "F7_compound": 0,
+     "F9_traffico": 447,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 17
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0369,
+    "blocco": "2025 Japanese",
+    "regime": "2022-25",
+    "kernel": 2.9434
+   },
+   {
+    "valore": 3.5738,
+    "valore_ci95": [
+     3.2285,
+     3.9191
+    ],
+    "gamma_s_per_giro": -0.07294,
+    "se_gamma": 0.0036,
+    "n_giri": 458,
+    "n_piloti": 18,
+    "n_stint": 29,
+    "n_laps_gara": 50,
+    "data": "2025-11-23",
+    "corr_giro_eta": 0.547,
+    "sigma_residuo": 0.506,
+    "scarti": {
+     "F1_status": 92,
+     "F2_inout": 33,
+     "F3_cancellato": 0,
+     "F4_nan": 1,
+     "F5_giro1": 0,
+     "F6_eta": 19,
+     "F7_compound": 0,
+     "F9_traffico": 283,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.034,
+    "blocco": "2025 Las Vegas",
+    "regime": "2022-25",
+    "kernel": 2.94
+   },
+   {
+    "valore": 2.9189,
+    "valore_ci95": [
+     2.7482,
+     3.0895
+    ],
+    "gamma_s_per_giro": -0.0417,
+    "se_gamma": 0.00124,
+    "n_giri": 624,
+    "n_piloti": 19,
+    "n_stint": 40,
+    "n_laps_gara": 71,
+    "data": "2025-10-26",
+    "corr_giro_eta": 0.245,
+    "sigma_residuo": 0.383,
+    "scarti": {
+     "F1_status": 81,
+     "F2_inout": 55,
+     "F3_cancellato": 3,
+     "F4_nan": 1,
+     "F5_giro1": 20,
+     "F6_eta": 46,
+     "F7_compound": 0,
+     "F9_traffico": 366,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 67
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0538,
+    "blocco": "2025 Mexico City",
+    "regime": "2022-25",
+    "kernel": 2.9577
+   },
+   {
+    "valore": 2.3461,
+    "valore_ci95": [
+     1.3596,
+     3.3327
+    ],
+    "gamma_s_per_giro": -0.03047,
+    "se_gamma": 0.00654,
+    "n_giri": 563,
+    "n_piloti": 19,
+    "n_stint": 45,
+    "n_laps_gara": 78,
+    "data": "2025-05-25",
+    "corr_giro_eta": 0.483,
+    "sigma_residuo": 1.239,
+    "scarti": {
+     "F1_status": 174,
+     "F2_inout": 72,
+     "F3_cancellato": 12,
+     "F4_nan": 2,
+     "F5_giro1": 0,
+     "F6_eta": 33,
+     "F7_compound": 0,
+     "F9_traffico": 554,
+     "F8_outlier": 1,
+     "G5_compound_non_identificabile": 14
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0312,
+    "blocco": "2025 Monaco",
+    "regime": "2022-25",
+    "kernel": 2.9615
+   },
+   {
+    "valore": 3.1182,
+    "valore_ci95": [
+     2.5404,
+     3.696
+    ],
+    "gamma_s_per_giro": -0.05568,
+    "se_gamma": 0.00526,
+    "n_giri": 336,
+    "n_piloti": 17,
+    "n_stint": 29,
+    "n_laps_gara": 57,
+    "data": "2025-11-30",
+    "corr_giro_eta": 0.365,
+    "sigma_residuo": 0.458,
+    "scarti": {
+     "F1_status": 76,
+     "F2_inout": 49,
+     "F3_cancellato": 18,
+     "F4_nan": 1,
+     "F5_giro1": 19,
+     "F6_eta": 41,
+     "F7_compound": 0,
+     "F9_traffico": 501,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 26
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0243,
+    "blocco": "2025 Qatar",
+    "regime": "2022-25",
+    "kernel": 2.9474
+   },
+   {
+    "valore": 2.5244,
+    "valore_ci95": [
+     2.0993,
+     2.9495
+    ],
+    "gamma_s_per_giro": -0.05152,
+    "se_gamma": 0.00443,
+    "n_giri": 456,
+    "n_piloti": 18,
+    "n_stint": 33,
+    "n_laps_gara": 50,
+    "data": "2025-04-20",
+    "corr_giro_eta": 0.434,
+    "sigma_residuo": 0.547,
+    "scarti": {
+     "F1_status": 55,
+     "F2_inout": 32,
+     "F3_cancellato": 12,
+     "F4_nan": 1,
+     "F5_giro1": 0,
+     "F6_eta": 16,
+     "F7_compound": 0,
+     "F9_traffico": 325,
+     "F8_outlier": 1,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0502,
+    "blocco": "2025 Saudi Arabian",
+    "regime": "2022-25",
+    "kernel": 2.94
+   },
+   {
+    "valore": 2.8856,
+    "valore_ci95": [
+     2.1467,
+     3.6245
+    ],
+    "gamma_s_per_giro": -0.0473,
+    "se_gamma": 0.00618,
+    "n_giri": 592,
+    "n_piloti": 20,
+    "n_stint": 40,
+    "n_laps_gara": 62,
+    "data": "2025-10-05",
+    "corr_giro_eta": 0.563,
+    "sigma_residuo": 0.822,
+    "scarti": {
+     "F1_status": 40,
+     "F2_inout": 47,
+     "F3_cancellato": 18,
+     "F4_nan": 0,
+     "F5_giro1": 18,
+     "F6_eta": 42,
+     "F7_compound": 0,
+     "F9_traffico": 471,
+     "F8_outlier": 1,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0533,
+    "blocco": "2025 Singapore",
+    "regime": "2022-25",
+    "kernel": 2.9516
+   },
+   {
+    "valore": 3.6062,
+    "valore_ci95": [
+     3.1445,
+     4.068
+    ],
+    "gamma_s_per_giro": -0.05548,
+    "se_gamma": 0.00362,
+    "n_giri": 561,
+    "n_piloti": 19,
+    "n_stint": 60,
+    "n_laps_gara": 66,
+    "data": "2025-06-01",
+    "corr_giro_eta": 0.225,
+    "sigma_residuo": 0.522,
+    "scarti": {
+     "F1_status": 114,
+     "F2_inout": 81,
+     "F3_cancellato": 9,
+     "F4_nan": 1,
+     "F5_giro1": 18,
+     "F6_eta": 58,
+     "F7_compound": 0,
+     "F9_traffico": 361,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0765,
+    "blocco": "2025 Spanish",
+    "regime": "2022-25",
+    "kernel": 2.9545
+   },
+   {
+    "valore": 2.1125,
+    "valore_ci95": [
+     1.8786,
+     2.3464
+    ],
+    "gamma_s_per_giro": -0.03018,
+    "se_gamma": 0.0017,
+    "n_giri": 544,
+    "n_piloti": 18,
+    "n_stint": 43,
+    "n_laps_gara": 71,
+    "data": "2025-11-09",
+    "corr_giro_eta": 0.122,
+    "sigma_residuo": 0.315,
+    "scarti": {
+     "F1_status": 149,
+     "F2_inout": 68,
+     "F3_cancellato": 0,
+     "F4_nan": 2,
+     "F5_giro1": 0,
+     "F6_eta": 35,
+     "F7_compound": 0,
+     "F9_traffico": 438,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 15
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0655,
+    "blocco": "2025 São Paulo",
+    "regime": "2022-25",
+    "kernel": 2.9577
+   },
+   {
+    "valore": 2.7184,
+    "valore_ci95": [
+     2.5868,
+     2.8499
+    ],
+    "gamma_s_per_giro": -0.04943,
+    "se_gamma": 0.00122,
+    "n_giri": 532,
+    "n_piloti": 19,
+    "n_stint": 35,
+    "n_laps_gara": 56,
+    "data": "2025-10-19",
+    "corr_giro_eta": 0.186,
+    "sigma_residuo": 0.388,
+    "scarti": {
+     "F1_status": 102,
+     "F2_inout": 38,
+     "F3_cancellato": 28,
+     "F4_nan": 1,
+     "F5_giro1": 0,
+     "F6_eta": 38,
+     "F7_compound": 0,
+     "F9_traffico": 314,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 14
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0475,
+    "blocco": "2025 United States",
+    "regime": "2022-25",
+    "kernel": 2.9464
+   },
+   {
+    "valore": 1.7131,
+    "valore_ci95": [
+     1.2147,
+     2.2115
+    ],
+    "gamma_s_per_giro": -0.03005,
+    "se_gamma": 0.00446,
+    "n_giri": 544,
+    "n_piloti": 20,
+    "n_stint": 44,
+    "n_laps_gara": 58,
+    "data": "2026-03-08",
+    "corr_giro_eta": 0.613,
+    "sigma_residuo": 0.652,
+    "scarti": {
+     "F1_status": 124,
+     "F2_inout": 25,
+     "F3_cancellato": 5,
+     "F4_nan": 4,
+     "F5_giro1": 20,
+     "F6_eta": 42,
+     "F7_compound": 0,
+     "F9_traffico": 243,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0389,
+    "blocco": "2026 Australia",
+    "regime": "2026",
+    "kernel": 2.9483
+   },
+   {
+    "valore": 2.3385,
+    "valore_ci95": [
+     2.0837,
+     2.5932
+    ],
+    "gamma_s_per_giro": -0.03341,
+    "se_gamma": 0.00186,
+    "n_giri": 743,
+    "n_piloti": 20,
+    "n_stint": 57,
+    "n_laps_gara": 71,
+    "data": "2026-06-28",
+    "corr_giro_eta": 0.399,
+    "sigma_residuo": 0.563,
+    "scarti": {
+     "F1_status": 88,
+     "F2_inout": 71,
+     "F3_cancellato": 15,
+     "F4_nan": 23,
+     "F5_giro1": 0,
+     "F6_eta": 57,
+     "F7_compound": 0,
+     "F9_traffico": 342,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0796,
+    "blocco": "2026 Austria",
+    "regime": "2026",
+    "kernel": 2.9577
+   },
+   {
+    "valore": 2.0206,
+    "valore_ci95": [
+     1.0261,
+     3.0151
+    ],
+    "gamma_s_per_giro": -0.04699,
+    "se_gamma": 0.0118,
+    "n_giri": 379,
+    "n_piloti": 21,
+    "n_stint": 39,
+    "n_laps_gara": 44,
+    "data": "2026-07-19",
+    "corr_giro_eta": 0.495,
+    "sigma_residuo": 0.682,
+    "scarti": {
+     "F1_status": 82,
+     "F2_inout": 23,
+     "F3_cancellato": 8,
+     "F4_nan": 83,
+     "F5_giro1": 0,
+     "F6_eta": 15,
+     "F7_compound": 0,
+     "F9_traffico": 282,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0671,
+    "blocco": "2026 Belgian",
+    "regime": "2026",
+    "kernel": 2.9318
+   },
+   {
+    "valore": 3.0099,
+    "valore_ci95": [
+     2.6854,
+     3.3343
+    ],
+    "gamma_s_per_giro": -0.05902,
+    "se_gamma": 0.00325,
+    "n_giri": 525,
+    "n_piloti": 22,
+    "n_stint": 48,
+    "n_laps_gara": 52,
+    "data": "2026-07-05",
+    "corr_giro_eta": 0.252,
+    "sigma_residuo": 0.516,
+    "scarti": {
+     "F1_status": 194,
+     "F2_inout": 52,
+     "F3_cancellato": 16,
+     "F4_nan": 43,
+     "F5_giro1": 0,
+     "F6_eta": 30,
+     "F7_compound": 0,
+     "F9_traffico": 241,
+     "F8_outlier": 1,
+     "G5_compound_non_identificabile": 11
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0517,
+    "blocco": "2026 British",
+    "regime": "2026",
+    "kernel": 2.9423
+   },
+   {
+    "valore": 2.0493,
+    "valore_ci95": [
+     1.704,
+     2.3947
+    ],
+    "gamma_s_per_giro": -0.03059,
+    "se_gamma": 0.00263,
+    "n_giri": 630,
+    "n_piloti": 21,
+    "n_stint": 46,
+    "n_laps_gara": 68,
+    "data": "2026-05-24",
+    "corr_giro_eta": 0.546,
+    "sigma_residuo": 0.832,
+    "scarti": {
+     "F1_status": 220,
+     "F2_inout": 32,
+     "F3_cancellato": 27,
+     "F4_nan": 6,
+     "F5_giro1": 19,
+     "F6_eta": 39,
+     "F7_compound": 0,
+     "F9_traffico": 199,
+     "F8_outlier": 1,
+     "G5_compound_non_identificabile": 39
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": -0.0122,
+    "blocco": "2026 Canada",
+    "regime": "2026",
+    "kernel": 2.9559
+   },
+   {
+    "valore": 3.4235,
+    "valore_ci95": [
+     3.0641,
+     3.7828
+    ],
+    "gamma_s_per_giro": -0.06225,
+    "se_gamma": 0.00333,
+    "n_giri": 400,
+    "n_piloti": 18,
+    "n_stint": 29,
+    "n_laps_gara": 56,
+    "data": "2026-03-15",
+    "corr_giro_eta": 0.782,
+    "sigma_residuo": 0.454,
+    "scarti": {
+     "F1_status": 166,
+     "F2_inout": 15,
+     "F3_cancellato": 3,
+     "F4_nan": 5,
+     "F5_giro1": 0,
+     "F6_eta": 23,
+     "F7_compound": 0,
+     "F9_traffico": 306,
+     "F8_outlier": 1,
+     "G5_compound_non_identificabile": 5
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0882,
+    "blocco": "2026 Cina",
+    "regime": "2026",
+    "kernel": 2.9464
+   },
+   {
+    "valore": 4.3918,
+    "valore_ci95": [
+     3.467,
+     5.3166
+    ],
+    "gamma_s_per_giro": -0.08446,
+    "se_gamma": 0.00907,
+    "n_giri": 394,
+    "n_piloti": 21,
+    "n_stint": 36,
+    "n_laps_gara": 53,
+    "data": "2026-03-29",
+    "corr_giro_eta": 0.821,
+    "sigma_residuo": 0.428,
+    "scarti": {
+     "F1_status": 139,
+     "F2_inout": 26,
+     "F3_cancellato": 5,
+     "F4_nan": 1,
+     "F5_giro1": 22,
+     "F6_eta": 29,
+     "F7_compound": 0,
+     "F9_traffico": 490,
+     "F8_outlier": 1,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0749,
+    "blocco": "2026 Giappone",
+    "regime": "2026",
+    "kernel": 2.9434
+   },
+   {
+    "valore": 0.0026,
+    "valore_ci95": [
+     -1.3021,
+     1.3074
+    ],
+    "gamma_s_per_giro": -5e-05,
+    "se_gamma": 0.01189,
+    "n_giri": 498,
+    "n_piloti": 20,
+    "n_stint": 37,
+    "n_laps_gara": 57,
+    "data": "2026-05-03",
+    "corr_giro_eta": 0.263,
+    "sigma_residuo": 0.576,
+    "scarti": {
+     "F1_status": 181,
+     "F2_inout": 41,
+     "F3_cancellato": 8,
+     "F4_nan": 7,
+     "F5_giro1": 20,
+     "F6_eta": 41,
+     "F7_compound": 0,
+     "F9_traffico": 244,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": -0.0049,
+    "blocco": "2026 Miami",
+    "regime": "2026",
+    "kernel": 2.9474
+   },
+   {
+    "valore": 1.288,
+    "valore_ci95": [
+     -0.0249,
+     2.6008
+    ],
+    "gamma_s_per_giro": -0.01673,
+    "se_gamma": 0.0087,
+    "n_giri": 756,
+    "n_piloti": 21,
+    "n_stint": 47,
+    "n_laps_gara": 78,
+    "data": "2026-06-07",
+    "corr_giro_eta": 0.18,
+    "sigma_residuo": 0.92,
+    "scarti": {
+     "F1_status": 243,
+     "F2_inout": 41,
+     "F3_cancellato": 25,
+     "F4_nan": 7,
+     "F5_giro1": 0,
+     "F6_eta": 39,
+     "F7_compound": 0,
+     "F9_traffico": 339,
+     "F8_outlier": 2,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.0355,
+    "blocco": "2026 Monaco",
+    "regime": "2026",
+    "kernel": 2.9615
+   },
+   {
+    "valore": 3.9133,
+    "valore_ci95": [
+     3.696,
+     4.1306
+    ],
+    "gamma_s_per_giro": -0.0602,
+    "se_gamma": 0.00171,
+    "n_giri": 631,
+    "n_piloti": 21,
+    "n_stint": 63,
+    "n_laps_gara": 66,
+    "data": "2026-06-14",
+    "corr_giro_eta": 0.527,
+    "sigma_residuo": 0.672,
+    "scarti": {
+     "F1_status": 98,
+     "F2_inout": 86,
+     "F3_cancellato": 13,
+     "F4_nan": 2,
+     "F5_giro1": 21,
+     "F6_eta": 63,
+     "F7_compound": 0,
+     "F9_traffico": 322,
+     "F8_outlier": 0,
+     "G5_compound_non_identificabile": 0
+    },
+    "curvatura_giro2": null,
+    "degrado_medio_s_giro": 0.1631,
+    "blocco": "2026 Spagna",
+    "regime": "2026",
+    "kernel": 2.9545
+   }
+  ],
+  "esclusi": [
+   {
+    "blocco": "2023 Belgian",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   },
+   {
+    "blocco": "2023 Dutch",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   },
+   {
+    "blocco": "2023 Monaco",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   },
+   {
+    "blocco": "2024 British",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   },
+   {
+    "blocco": "2024 Canadian",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   },
+   {
+    "blocco": "2024 Spanish",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   },
+   {
+    "blocco": "2024 São Paulo",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   },
+   {
+    "blocco": "2025 Australian",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   },
+   {
+    "blocco": "2025 Belgian",
+    "regime": "2022-25",
+    "motivo": "G3 rango non pieno"
+   },
+   {
+    "blocco": "2025 British",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   },
+   {
+    "blocco": "2025 Miami",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   }
+  ],
+  "regimi": {
+   "2022-25": {
+    "mediana": 3.151,
+    "media": 3.2807,
+    "ci95": [
+     2.9189,
+     3.396
+    ],
+    "n_blocchi": 59,
+    "repliche": 5000,
+    "seed": 20260721,
+    "kernel_mediano": 2.9474
+   },
+   "2026": {
+    "mediana": 2.1939,
+    "media": 2.4151,
+    "ci95": [
+     1.6543,
+     3.4235
+    ],
+    "n_blocchi": 10,
+    "repliche": 5000,
+    "seed": 20260721,
+    "kernel_mediano": 2.9478
+   }
+  },
+  "null": {
+   "2022-25": {
+    "n_permutazioni": 400,
+    "n_gare": 56,
+    "mediana_null_aggregato": 0.005,
+    "q95_|null_aggregato|": 0.3123,
+    "p": 0.00249,
+    "q95_|null_singola_gara|": 2.1485
+   },
+   "2026": {
+    "n_permutazioni": 400,
+    "n_gare": 10,
+    "mediana_null_aggregato": 0.0154,
+    "q95_|null_aggregato|": 0.4352,
+    "p": 0.00249,
+    "q95_|null_singola_gara|": 1.9908
+   }
+  },
+  "confronto_regimi": {
+   "regimi": [
+    "2022-25",
+    "2026"
+   ],
+   "differenza": 0.9571,
+   "ci95": [
+    -0.3584,
+    1.5781
+   ],
+   "distinguibili": false,
+   "n_blocchi": [
+    59,
+    10
+   ]
+  }
+ },
+ "B2": {
+  "per_regime": {
+   "2022-25": {
+    "esito": "UGUALE",
+    "kernel": 2.9474,
+    "ricostruito": 3.151,
+    "ci95": [
+     2.9189,
+     3.396
+    ],
+    "scarto": 0.2036,
+    "n_blocchi": 59,
+    "blocchi_divergenti": [
+     {
+      "blocco": "2024 Austrian",
+      "ricostruito": 1.7916,
+      "ci95": [
+       1.6448,
+       1.9383
+      ],
+      "kernel": 2.9577
+     },
+     {
+      "blocco": "2023 Italian",
+      "ricostruito": 1.843,
+      "ci95": [
+       1.6638,
+       2.0221
+      ],
+      "kernel": 2.9412
+     },
+     {
+      "blocco": "2024 Emilia Romagna",
+      "ricostruito": 1.9958,
+      "ci95": [
+       1.6759,
+       2.3157
+      ],
+      "kernel": 2.9524
+     },
+     {
+      "blocco": "2025 Austrian",
+      "ricostruito": 2.0609,
+      "ci95": [
+       1.894,
+       2.2278
+      ],
+      "kernel": 2.9571
+     },
+     {
+      "blocco": "2025 São Paulo",
+      "ricostruito": 2.1125,
+      "ci95": [
+       1.8786,
+       2.3464
+      ],
+      "kernel": 2.9577
+     },
+     {
+      "blocco": "2023 Austrian",
+      "ricostruito": 2.1957,
+      "ci95": [
+       2.0553,
+       2.336
+      ],
+      "kernel": 2.9577
+     },
+     {
+      "blocco": "2023 Canadian",
+      "ricostruito": 2.4428,
+      "ci95": [
+       2.2505,
+       2.6351
+      ],
+      "kernel": 2.9571
+     },
+     {
+      "blocco": "2024 Singapore",
+      "ricostruito": 2.5446,
+      "ci95": [
+       2.3724,
+       2.7168
+      ],
+      "kernel": 2.9516
+     },
+     {
+      "blocco": "2023 British",
+      "ricostruito": 2.5791,
+      "ci95": [
+       2.2673,
+       2.8909
+      ],
+      "kernel": 2.9423
+     },
+     {
+      "blocco": "2023 Miami",
+      "ricostruito": 2.6111,
+      "ci95": [
+       2.3969,
+       2.8253
+      ],
+      "kernel": 2.9474
+     },
+     {
+      "blocco": "2025 United States",
+      "ricostruito": 2.7184,
+      "ci95": [
+       2.5868,
+       2.8499
+      ],
+      "kernel": 2.9464
+     },
+     {
+      "blocco": "2024 Italian",
+      "ricostruito": 3.1795,
+      "ci95": [
+       2.9492,
+       3.4099
+      ],
+      "kernel": 2.9434
+     },
+     {
+      "blocco": "2024 Abu Dhabi",
+      "ricostruito": 3.2037,
+      "ci95": [
+       3.1176,
+       3.2898
+      ],
+      "kernel": 2.9483
+     },
+     {
+      "blocco": "2023 Japanese",
+      "ricostruito": 3.2546,
+      "ci95": [
+       2.947,
+       3.5623
+      ],
+      "kernel": 2.9434
+     },
+     {
+      "blocco": "2024 Miami",
+      "ricostruito": 3.2912,
+      "ci95": [
+       3.0884,
+       3.494
+      ],
+      "kernel": 2.9474
+     },
+     {
+      "blocco": "2023 Abu Dhabi",
+      "ricostruito": 3.31,
+      "ci95": [
+       3.1533,
+       3.4668
+      ],
+      "kernel": 2.9483
+     },
+     {
+      "blocco": "2023 United States",
+      "ricostruito": 3.3246,
+      "ci95": [
+       3.0788,
+       3.5704
+      ],
+      "kernel": 2.9464
+     },
+     {
+      "blocco": "2023 Spanish",
+      "ricostruito": 3.3585,
+      "ci95": [
+       3.1513,
+       3.5657
+      ],
+      "kernel": 2.9545
+     },
+     {
+      "blocco": "2025 Emilia Romagna",
+      "ricostruito": 3.396,
+      "ci95": [
+       3.0002,
+       3.7918
+      ],
+      "kernel": 2.9524
+     },
+     {
+      "blocco": "2025 Dutch",
+      "ricostruito": 3.5498,
+      "ci95": [
+       3.3481,
+       3.7515
+      ],
+      "kernel": 2.9583
+     },
+     {
+      "blocco": "2025 Las Vegas",
+      "ricostruito": 3.5738,
+      "ci95": [
+       3.2285,
+       3.9191
+      ],
+      "kernel": 2.94
+     },
+     {
+      "blocco": "2024 United States",
+      "ricostruito": 3.581,
+      "ci95": [
+       3.2573,
+       3.9046
+      ],
+      "kernel": 2.9464
+     },
+     {
+      "blocco": "2025 Spanish",
+      "ricostruito": 3.6062,
+      "ci95": [
+       3.1445,
+       4.068
+      ],
+      "kernel": 2.9545
+     },
+     {
+      "blocco": "2024 Azerbaijan",
+      "ricostruito": 3.6608,
+      "ci95": [
+       3.1276,
+       4.194
+      ],
+      "kernel": 2.9412
+     },
+     {
+      "blocco": "2025 Japanese",
+      "ricostruito": 3.7159,
+      "ci95": [
+       3.6242,
+       3.8076
+      ],
+      "kernel": 2.9434
+     },
+     {
+      "blocco": "2023 Bahrain",
+      "ricostruito": 3.8462,
+      "ci95": [
+       3.3632,
+       4.3292
+      ],
+      "kernel": 2.9474
+     },
+     {
+      "blocco": "2025 Chinese",
+      "ricostruito": 3.8777,
+      "ci95": [
+       3.4788,
+       4.2767
+      ],
+      "kernel": 2.9464
+     },
+     {
+      "blocco": "2024 Bahrain",
+      "ricostruito": 3.9364,
+      "ci95": [
+       3.7132,
+       4.1597
+      ],
+      "kernel": 2.9474
+     },
+     {
+      "blocco": "2023 Azerbaijan",
+      "ricostruito": 4.0056,
+      "ci95": [
+       3.5219,
+       4.4893
+      ],
+      "kernel": 2.9412
+     },
+     {
+      "blocco": "2023 Qatar",
+      "ricostruito": 4.0669,
+      "ci95": [
+       3.7148,
+       4.419
+      ],
+      "kernel": 2.9474
+     },
+     {
+      "blocco": "2024 Las Vegas",
+      "ricostruito": 4.0977,
+      "ci95": [
+       3.6593,
+       4.5361
+      ],
+      "kernel": 2.94
+     },
+     {
+      "blocco": "2024 Belgian",
+      "ricostruito": 4.1051,
+      "ci95": [
+       3.7463,
+       4.4638
+      ],
+      "kernel": 2.9318
+     },
+     {
+      "blocco": "2023 Las Vegas",
+      "ricostruito": 4.1622,
+      "ci95": [
+       3.408,
+       4.9165
+      ],
+      "kernel": 2.94
+     },
+     {
+      "blocco": "2024 Chinese",
+      "ricostruito": 4.2667,
+      "ci95": [
+       3.6674,
+       4.866
+      ],
+      "kernel": 2.9464
+     },
+     {
+      "blocco": "2025 Bahrain",
+      "ricostruito": 4.5223,
+      "ci95": [
+       4.2363,
+       4.8084
+      ],
+      "kernel": 2.9474
+     },
+     {
+      "blocco": "2024 Japanese",
+      "ricostruito": 4.7924,
+      "ci95": [
+       4.4649,
+       5.12
+      ],
+      "kernel": 2.9434
+     },
+     {
+      "blocco": "2024 Saudi Arabian",
+      "ricostruito": 5.0794,
+      "ci95": [
+       3.8081,
+       6.3508
+      ],
+      "kernel": 2.94
+     },
+     {
+      "blocco": "2024 Monaco",
+      "ricostruito": 8.709,
+      "ci95": [
+       8.3421,
+       9.0759
+      ],
+      "kernel": 2.9615
+     }
+    ]
+   },
+   "2026": {
+    "esito": "UGUALE",
+    "kernel": 2.9478,
+    "ricostruito": 2.1939,
+    "ci95": [
+     1.6543,
+     3.4235
+    ],
+    "scarto": -0.7539,
+    "n_blocchi": 10,
+    "blocchi_divergenti": [
+     {
+      "blocco": "2026 Miami",
+      "ricostruito": 0.0026,
+      "ci95": [
+       -1.3021,
+       1.3074
+      ],
+      "kernel": 2.9474
+     },
+     {
+      "blocco": "2026 Monaco",
+      "ricostruito": 1.288,
+      "ci95": [
+       -0.0249,
+       2.6008
+      ],
+      "kernel": 2.9615
+     },
+     {
+      "blocco": "2026 Australia",
+      "ricostruito": 1.7131,
+      "ci95": [
+       1.2147,
+       2.2115
+      ],
+      "kernel": 2.9483
+     },
+     {
+      "blocco": "2026 Canada",
+      "ricostruito": 2.0493,
+      "ci95": [
+       1.704,
+       2.3947
+      ],
+      "kernel": 2.9559
+     },
+     {
+      "blocco": "2026 Austria",
+      "ricostruito": 2.3385,
+      "ci95": [
+       2.0837,
+       2.5932
+      ],
+      "kernel": 2.9577
+     },
+     {
+      "blocco": "2026 Cina",
+      "ricostruito": 3.4235,
+      "ci95": [
+       3.0641,
+       3.7828
+      ],
+      "kernel": 2.9464
+     },
+     {
+      "blocco": "2026 Spagna",
+      "ricostruito": 3.9133,
+      "ci95": [
+       3.696,
+       4.1306
+      ],
+      "kernel": 2.9545
+     },
+     {
+      "blocco": "2026 Giappone",
+      "ricostruito": 4.3918,
+      "ci95": [
+       3.467,
+       5.3166
+      ],
+      "kernel": 2.9434
+     }
+    ]
+   }
+  },
+  "esito": "UGUALE",
+  "autorita": "proposta — la decisione e' del tavolo umano (Tommi + Claude)",
+  "se_diverso": "FERMO: non si monta nulla, non si sostituisce il numero"
+ },
+ "fuori_campione": {
+  "2022-25": {
+   "possibile": true,
+   "n_calibrazione": 30,
+   "n_verifica": 29,
+   "previsione_ricostruita": 3.1071,
+   "errore_mediano_ricostruita": 0.5242,
+   "errore_mediano_kernel": 0.6517,
+   "vince": "ricostruita",
+   "gare_calibrazione": [
+    "2023 Bahrain",
+    "2023 Australian",
+    "2023 Miami",
+    "2023 Canadian",
+    "2023 British",
+    "2023 Italian",
+    "2023 Japanese",
+    "2023 United States",
+    "2023 São Paulo",
+    "2023 Abu Dhabi",
+    "2024 Saudi Arabian",
+    "2024 Japanese",
+    "2024 Miami",
+    "2024 Monaco",
+    "2024 Hungarian",
+    "2024 Dutch",
+    "2024 Azerbaijan",
+    "2024 United States",
+    "2024 Las Vegas",
+    "2024 Abu Dhabi",
+    "2025 Japanese",
+    "2025 Saudi Arabian",
+    "2025 Monaco",
+    "2025 Canadian",
+    "2025 Hungarian",
+    "2025 Italian",
+    "2025 Singapore",
+    "2025 Mexico City",
+    "2025 Las Vegas",
+    "2025 Abu Dhabi"
+   ],
+   "gare_verifica": [
+    "2023 Saudi Arabian",
+    "2023 Azerbaijan",
+    "2023 Spanish",
+    "2023 Austrian",
+    "2023 Hungarian",
+    "2023 Singapore",
+    "2023 Qatar",
+    "2023 Mexico City",
+    "2023 Las Vegas",
+    "2024 Bahrain",
+    "2024 Australian",
+    "2024 Chinese",
+    "2024 Emilia Romagna",
+    "2024 Austrian",
+    "2024 Belgian",
+    "2024 Italian",
+    "2024 Singapore",
+    "2024 Mexico City",
+    "2024 Qatar",
+    "2025 Chinese",
+    "2025 Bahrain",
+    "2025 Emilia Romagna",
+    "2025 Spanish",
+    "2025 Austrian",
+    "2025 Dutch",
+    "2025 Azerbaijan",
+    "2025 United States",
+    "2025 São Paulo",
+    "2025 Qatar"
+   ]
+  },
+  "2026": {
+   "possibile": true,
+   "n_calibrazione": 5,
+   "n_verifica": 5,
+   "previsione_ricostruita": 3.0099,
+   "errore_mediano_ricostruita": 0.9893,
+   "errore_mediano_kernel": 0.9112,
+   "vince": "kernel",
+   "gare_calibrazione": [
+    "2026 Australia",
+    "2026 Giappone",
+    "2026 Canada",
+    "2026 Spagna",
+    "2026 British"
+   ],
+   "gare_verifica": [
+    "2026 Cina",
+    "2026 Miami",
+    "2026 Monaco",
+    "2026 Austria",
+    "2026 Belgian"
+   ]
+  }
+ },
+ "robustezze": {
+  "aria_1.0s": {
+   "2022-25": {
+    "mediana": 3.1342,
+    "ci95": [
+     2.9314,
+     3.4739
+    ],
+    "n_blocchi": 60
+   },
+   "2026": {
+    "mediana": 2.3423,
+    "ci95": [
+     1.7288,
+     3.568
+    ],
+    "n_blocchi": 10
+   }
+  },
+  "aria_3.0s": {
+   "2022-25": {
+    "mediana": 3.1268,
+    "ci95": [
+     2.8328,
+     3.3456
+    ],
+    "n_blocchi": 57
+   },
+   "2026": {
+    "mediana": 2.1178,
+    "ci95": [
+     1.7335,
+     3.5955
+    ],
+    "n_blocchi": 10
+   }
+  },
+  "nessun_filtro_traffico": {
+   "2022-25": {
+    "mediana": 3.1841,
+    "ci95": [
+     2.9821,
+     3.5434
+    ],
+    "n_blocchi": 60
+   },
+   "2026": {
+    "mediana": 2.6434,
+    "ci95": [
+     1.7526,
+     3.4544
+    ],
+    "n_blocchi": 10
+   }
+  },
+  "eta_dal_campo_life": {
+   "2022-25": {
+    "mediana": 3.1635,
+    "ci95": [
+     2.926,
+     3.4196
+    ],
+    "n_blocchi": 59
+   },
+   "2026": {
+    "mediana": 2.2361,
+    "ci95": [
+     1.6816,
+     3.4235
+    ],
+    "n_blocchi": 10
+   }
+  },
+  "senza_livelli_compound": {
+   "2022-25": {
+    "mediana": 3.2012,
+    "ci95": [
+     2.9804,
+     3.4949
+    ],
+    "n_blocchi": 59
+   },
+   "2026": {
+    "mediana": 2.3301,
+    "ci95": [
+     1.9299,
+     3.1301
+    ],
+    "n_blocchi": 10
+   }
+  },
+  "con_eta_quadratica": {
+   "2022-25": {
+    "mediana": 3.1459,
+    "ci95": [
+     2.9131,
+     3.3798
+    ],
+    "n_blocchi": 59
+   },
+   "2026": {
+    "mediana": 2.285,
+    "ci95": [
+     1.7205,
+     3.4012
+    ],
+    "n_blocchi": 10
+   }
+  }
+ },
+ "B3": {
+  "fronti": [
+   {
+    "fronte": "ampiezza IC95 regime 2022-25",
+    "misura": 0.477,
+    "relativa": 0.151,
+    "n_blocchi": 59
+   },
+   {
+    "fronte": "gare con intervallo piu largo, regime 2022-25",
+    "gare": [
+     {
+      "blocco": "2024 Saudi Arabian",
+      "ampiezza_ci95": 2.543,
+      "corr_giro_eta": 0.853,
+      "n_giri": 369
+     },
+     {
+      "blocco": "2023 Saudi Arabian",
+      "ampiezza_ci95": 2.392,
+      "corr_giro_eta": 0.889,
+      "n_giri": 420
+     },
+     {
+      "blocco": "2025 Monaco",
+      "ampiezza_ci95": 1.973,
+      "corr_giro_eta": 0.483,
+      "n_giri": 563
+     },
+     {
+      "blocco": "2024 Qatar",
+      "ampiezza_ci95": 1.911,
+      "corr_giro_eta": -0.049,
+      "n_giri": 311
+     },
+     {
+      "blocco": "2023 Las Vegas",
+      "ampiezza_ci95": 1.509,
+      "corr_giro_eta": 0.608,
+      "n_giri": 234
+     }
+    ]
+   },
+   {
+    "fronte": "dispersione FRA circuiti, regime 2022-25 (il kernel assume un valore unico)",
+    "n": 59,
+    "min": 1.7916,
+    "q25": 2.7184,
+    "mediana": 3.151,
+    "q75": 3.6608,
+    "max": 8.709,
+    "iqr": 0.9424,
+    "sd": 1.0136
+   },
+   {
+    "fronte": "desincronizzazione debole (|corr|>0.75), regime 2022-25",
+    "n_gare": 8,
+    "gare": [
+     "2023 Australian",
+     "2023 Azerbaijan",
+     "2023 Saudi Arabian",
+     "2024 Azerbaijan",
+     "2024 Chinese",
+     "2024 Monaco",
+     "2024 Saudi Arabian",
+     "2025 Bahrain"
+    ]
+   },
+   {
+    "fronte": "ampiezza IC95 regime 2026",
+    "misura": 1.769,
+    "relativa": 0.806,
+    "n_blocchi": 10
+   },
+   {
+    "fronte": "gare con intervallo piu largo, regime 2026",
+    "gare": [
+     {
+      "blocco": "2026 Monaco",
+      "ampiezza_ci95": 2.626,
+      "corr_giro_eta": 0.18,
+      "n_giri": 756
+     },
+     {
+      "blocco": "2026 Miami",
+      "ampiezza_ci95": 2.609,
+      "corr_giro_eta": 0.263,
+      "n_giri": 498
+     },
+     {
+      "blocco": "2026 Belgian",
+      "ampiezza_ci95": 1.989,
+      "corr_giro_eta": 0.495,
+      "n_giri": 379
+     },
+     {
+      "blocco": "2026 Giappone",
+      "ampiezza_ci95": 1.85,
+      "corr_giro_eta": 0.821,
+      "n_giri": 394
+     },
+     {
+      "blocco": "2026 Australia",
+      "ampiezza_ci95": 0.997,
+      "corr_giro_eta": 0.613,
+      "n_giri": 544
+     }
+    ]
+   },
+   {
+    "fronte": "dispersione FRA circuiti, regime 2026 (il kernel assume un valore unico)",
+    "n": 10,
+    "min": 0.0026,
+    "q25": 1.7131,
+    "mediana": 2.1939,
+    "q75": 3.4235,
+    "max": 4.3918,
+    "iqr": 1.7104,
+    "sd": 1.3081
+   },
+   {
+    "fronte": "desincronizzazione debole (|corr|>0.75), regime 2026",
+    "n_gare": 2,
+    "gare": [
+     "2026 Cina",
+     "2026 Giappone"
+    ]
+   }
+  ],
+  "esclusi": [
+   {
+    "blocco": "2023 Belgian",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   },
+   {
+    "blocco": "2023 Dutch",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   },
+   {
+    "blocco": "2023 Monaco",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   },
+   {
+    "blocco": "2024 British",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   },
+   {
+    "blocco": "2024 Canadian",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   },
+   {
+    "blocco": "2024 Spanish",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   },
+   {
+    "blocco": "2024 São Paulo",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   },
+   {
+    "blocco": "2025 Australian",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   },
+   {
+    "blocco": "2025 Belgian",
+    "regime": "2022-25",
+    "motivo": "G3 rango non pieno"
+   },
+   {
+    "blocco": "2025 British",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   },
+   {
+    "blocco": "2025 Miami",
+    "regime": "2022-25",
+    "motivo": "G1 pioggia (wR)"
+   }
+  ],
+  "robustezze": {
+   "aria_1.0s": {
+    "2022-25": {
+     "mediana": 3.1342,
+     "ci95": [
+      2.9314,
+      3.4739
+     ],
+     "n_blocchi": 60
+    },
+    "2026": {
+     "mediana": 2.3423,
+     "ci95": [
+      1.7288,
+      3.568
+     ],
+     "n_blocchi": 10
+    }
+   },
+   "aria_3.0s": {
+    "2022-25": {
+     "mediana": 3.1268,
+     "ci95": [
+      2.8328,
+      3.3456
+     ],
+     "n_blocchi": 57
+    },
+    "2026": {
+     "mediana": 2.1178,
+     "ci95": [
+      1.7335,
+      3.5955
+     ],
+     "n_blocchi": 10
+    }
+   },
+   "nessun_filtro_traffico": {
+    "2022-25": {
+     "mediana": 3.1841,
+     "ci95": [
+      2.9821,
+      3.5434
+     ],
+     "n_blocchi": 60
+    },
+    "2026": {
+     "mediana": 2.6434,
+     "ci95": [
+      1.7526,
+      3.4544
+     ],
+     "n_blocchi": 10
+    }
+   },
+   "eta_dal_campo_life": {
+    "2022-25": {
+     "mediana": 3.1635,
+     "ci95": [
+      2.926,
+      3.4196
+     ],
+     "n_blocchi": 59
+    },
+    "2026": {
+     "mediana": 2.2361,
+     "ci95": [
+      1.6816,
+      3.4235
+     ],
+     "n_blocchi": 10
+    }
+   },
+   "senza_livelli_compound": {
+    "2022-25": {
+     "mediana": 3.2012,
+     "ci95": [
+      2.9804,
+      3.4949
+     ],
+     "n_blocchi": 59
+    },
+    "2026": {
+     "mediana": 2.3301,
+     "ci95": [
+      1.9299,
+      3.1301
+     ],
+     "n_blocchi": 10
+    }
+   },
+   "con_eta_quadratica": {
+    "2022-25": {
+     "mediana": 3.1459,
+     "ci95": [
+      2.9131,
+      3.3798
+     ],
+     "n_blocchi": 59
+    },
+    "2026": {
+     "mediana": 2.285,
+     "ci95": [
+      1.7205,
+      3.4012
+     ],
+     "n_blocchi": 10
+    }
+   }
+  },
+  "fuori_campione": {
+   "2022-25": {
+    "possibile": true,
+    "n_calibrazione": 30,
+    "n_verifica": 29,
+    "previsione_ricostruita": 3.1071,
+    "errore_mediano_ricostruita": 0.5242,
+    "errore_mediano_kernel": 0.6517,
+    "vince": "ricostruita",
+    "gare_calibrazione": [
+     "2023 Bahrain",
+     "2023 Australian",
+     "2023 Miami",
+     "2023 Canadian",
+     "2023 British",
+     "2023 Italian",
+     "2023 Japanese",
+     "2023 United States",
+     "2023 São Paulo",
+     "2023 Abu Dhabi",
+     "2024 Saudi Arabian",
+     "2024 Japanese",
+     "2024 Miami",
+     "2024 Monaco",
+     "2024 Hungarian",
+     "2024 Dutch",
+     "2024 Azerbaijan",
+     "2024 United States",
+     "2024 Las Vegas",
+     "2024 Abu Dhabi",
+     "2025 Japanese",
+     "2025 Saudi Arabian",
+     "2025 Monaco",
+     "2025 Canadian",
+     "2025 Hungarian",
+     "2025 Italian",
+     "2025 Singapore",
+     "2025 Mexico City",
+     "2025 Las Vegas",
+     "2025 Abu Dhabi"
+    ],
+    "gare_verifica": [
+     "2023 Saudi Arabian",
+     "2023 Azerbaijan",
+     "2023 Spanish",
+     "2023 Austrian",
+     "2023 Hungarian",
+     "2023 Singapore",
+     "2023 Qatar",
+     "2023 Mexico City",
+     "2023 Las Vegas",
+     "2024 Bahrain",
+     "2024 Australian",
+     "2024 Chinese",
+     "2024 Emilia Romagna",
+     "2024 Austrian",
+     "2024 Belgian",
+     "2024 Italian",
+     "2024 Singapore",
+     "2024 Mexico City",
+     "2024 Qatar",
+     "2025 Chinese",
+     "2025 Bahrain",
+     "2025 Emilia Romagna",
+     "2025 Spanish",
+     "2025 Austrian",
+     "2025 Dutch",
+     "2025 Azerbaijan",
+     "2025 United States",
+     "2025 São Paulo",
+     "2025 Qatar"
+    ]
+   },
+   "2026": {
+    "possibile": true,
+    "n_calibrazione": 5,
+    "n_verifica": 5,
+    "previsione_ricostruita": 3.0099,
+    "errore_mediano_ricostruita": 0.9893,
+    "errore_mediano_kernel": 0.9112,
+    "vince": "kernel",
+    "gare_calibrazione": [
+     "2026 Australia",
+     "2026 Giappone",
+     "2026 Canada",
+     "2026 Spagna",
+     "2026 British"
+    ],
+    "gare_verifica": [
+     "2026 Cina",
+     "2026 Miami",
+     "2026 Monaco",
+     "2026 Austria",
+     "2026 Belgian"
+    ]
+   }
+  }
+ }
+}

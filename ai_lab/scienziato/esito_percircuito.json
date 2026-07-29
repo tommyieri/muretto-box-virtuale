@@ -1,0 +1,1821 @@
+{
+ "tabella": {
+  "Abu Dhabi": {
+   "2023": {
+    "valore": 3.31,
+    "ci95": [
+     3.1533,
+     3.4668
+    ],
+    "n_giri": 540,
+    "curvatura_giro2": 9.1e-05
+   },
+   "2024": {
+    "valore": 3.2037,
+    "ci95": [
+     3.1176,
+     3.2898
+    ],
+    "n_giri": 569,
+    "curvatura_giro2": -4.8e-05
+   },
+   "2025": {
+    "valore": 3.0105,
+    "ci95": [
+     2.8571,
+     3.164
+    ],
+    "n_giri": 467,
+    "curvatura_giro2": 0.000373
+   }
+  },
+  "Australian": {
+   "2023": {
+    "valore": 3.4561,
+    "ci95": [
+     2.8344,
+     4.0777
+    ],
+    "n_giri": 339,
+    "curvatura_giro2": 0.000626
+   },
+   "2024": {
+    "valore": 2.7796,
+    "ci95": [
+     2.5199,
+     3.0392
+    ],
+    "n_giri": 538,
+    "curvatura_giro2": -8.6e-05
+   },
+   "2026": {
+    "valore": 1.7131,
+    "ci95": [
+     1.2147,
+     2.2115
+    ],
+    "n_giri": 544,
+    "curvatura_giro2": -0.000181
+   }
+  },
+  "Austrian": {
+   "2023": {
+    "valore": 2.1957,
+    "ci95": [
+     2.0553,
+     2.336
+    ],
+    "n_giri": 682,
+    "curvatura_giro2": -2e-06
+   },
+   "2024": {
+    "valore": 1.7916,
+    "ci95": [
+     1.6448,
+     1.9383
+    ],
+    "n_giri": 743,
+    "curvatura_giro2": -0.000123
+   },
+   "2025": {
+    "valore": 2.0609,
+    "ci95": [
+     1.894,
+     2.2278
+    ],
+    "n_giri": 592,
+    "curvatura_giro2": 0.000109
+   },
+   "2026": {
+    "valore": 2.3385,
+    "ci95": [
+     2.0837,
+     2.5932
+    ],
+    "n_giri": 743,
+    "curvatura_giro2": 0.000342
+   }
+  },
+  "Azerbaijan": {
+   "2023": {
+    "valore": 4.0056,
+    "ci95": [
+     3.5219,
+     4.4893
+    ],
+    "n_giri": 324,
+    "curvatura_giro2": -0.000413
+   },
+   "2024": {
+    "valore": 3.6608,
+    "ci95": [
+     3.1276,
+     4.194
+    ],
+    "n_giri": 460,
+    "curvatura_giro2": 0.000554
+   },
+   "2025": {
+    "valore": 2.9677,
+    "ci95": [
+     2.6717,
+     3.2637
+    ],
+    "n_giri": 443,
+    "curvatura_giro2": 0.001117
+   }
+  },
+  "Bahrain": {
+   "2023": {
+    "valore": 3.8462,
+    "ci95": [
+     3.3632,
+     4.3292
+    ],
+    "n_giri": 523,
+    "curvatura_giro2": 0.000733
+   },
+   "2024": {
+    "valore": 3.9364,
+    "ci95": [
+     3.7132,
+     4.1597
+    ],
+    "n_giri": 626,
+    "curvatura_giro2": 0.000476
+   },
+   "2025": {
+    "valore": 4.5223,
+    "ci95": [
+     4.2363,
+     4.8084
+    ],
+    "n_giri": 363,
+    "curvatura_giro2": 0.000241
+   }
+  },
+  "British": {
+   "2023": {
+    "valore": 2.5791,
+    "ci95": [
+     2.2673,
+     2.8909
+    ],
+    "n_giri": 342,
+    "curvatura_giro2": 0.000756
+   },
+   "2026": {
+    "valore": 3.0099,
+    "ci95": [
+     2.6854,
+     3.3343
+    ],
+    "n_giri": 525,
+    "curvatura_giro2": -0.000901
+   }
+  },
+  "Canadian": {
+   "2023": {
+    "valore": 2.4428,
+    "ci95": [
+     2.2505,
+     2.6351
+    ],
+    "n_giri": 512,
+    "curvatura_giro2": 3.6e-05
+   },
+   "2025": {
+    "valore": 2.7807,
+    "ci95": [
+     2.502,
+     3.0593
+    ],
+    "n_giri": 551,
+    "curvatura_giro2": 4.6e-05
+   },
+   "2026": {
+    "valore": 2.0493,
+    "ci95": [
+     1.704,
+     2.3947
+    ],
+    "n_giri": 630,
+    "curvatura_giro2": 0.000555
+   }
+  },
+  "Hungarian": {
+   "2023": {
+    "valore": 3.0483,
+    "ci95": [
+     2.7969,
+     3.2996
+    ],
+    "n_giri": 752,
+    "curvatura_giro2": 0.00017
+   },
+   "2024": {
+    "valore": 2.823,
+    "ci95": [
+     2.5916,
+     3.0544
+    ],
+    "n_giri": 734,
+    "curvatura_giro2": 0.000304
+   },
+   "2025": {
+    "valore": 2.6037,
+    "ci95": [
+     2.0774,
+     3.1301
+    ],
+    "n_giri": 637,
+    "curvatura_giro2": 8.1e-05
+   }
+  },
+  "Italian": {
+   "2023": {
+    "valore": 1.843,
+    "ci95": [
+     1.6638,
+     2.0221
+    ],
+    "n_giri": 427,
+    "curvatura_giro2": 0.000152
+   },
+   "2024": {
+    "valore": 3.1795,
+    "ci95": [
+     2.9492,
+     3.4099
+    ],
+    "n_giri": 539,
+    "curvatura_giro2": -0.000376
+   },
+   "2025": {
+    "valore": 2.8798,
+    "ci95": [
+     2.7507,
+     3.0089
+    ],
+    "n_giri": 449,
+    "curvatura_giro2": 0.000389
+   }
+  },
+  "Japanese": {
+   "2023": {
+    "valore": 3.2546,
+    "ci95": [
+     2.947,
+     3.5623
+    ],
+    "n_giri": 436,
+    "curvatura_giro2": -0.000197
+   },
+   "2024": {
+    "valore": 4.7924,
+    "ci95": [
+     4.4649,
+     5.12
+    ],
+    "n_giri": 433,
+    "curvatura_giro2": -0.001064
+   },
+   "2025": {
+    "valore": 3.7159,
+    "ci95": [
+     3.6242,
+     3.8076
+    ],
+    "n_giri": 485,
+    "curvatura_giro2": 0.0002
+   },
+   "2026": {
+    "valore": 4.3918,
+    "ci95": [
+     3.467,
+     5.3166
+    ],
+    "n_giri": 394,
+    "curvatura_giro2": 0.000191
+   }
+  },
+  "Las Vegas": {
+   "2023": {
+    "valore": 4.1622,
+    "ci95": [
+     3.408,
+     4.9165
+    ],
+    "n_giri": 234,
+    "curvatura_giro2": -0.001105
+   },
+   "2024": {
+    "valore": 4.0977,
+    "ci95": [
+     3.6593,
+     4.5361
+    ],
+    "n_giri": 398,
+    "curvatura_giro2": -3e-05
+   },
+   "2025": {
+    "valore": 3.5738,
+    "ci95": [
+     3.2285,
+     3.9191
+    ],
+    "n_giri": 458,
+    "curvatura_giro2": 0.001045
+   }
+  },
+  "Mexico City": {
+   "2023": {
+    "valore": 2.7398,
+    "ci95": [
+     2.4014,
+     3.0782
+    ],
+    "n_giri": 478,
+    "curvatura_giro2": -0.000383
+   },
+   "2024": {
+    "valore": 2.7806,
+    "ci95": [
+     2.5635,
+     2.9978
+    ],
+    "n_giri": 669,
+    "curvatura_giro2": 0.000216
+   },
+   "2025": {
+    "valore": 2.9189,
+    "ci95": [
+     2.7482,
+     3.0895
+    ],
+    "n_giri": 624,
+    "curvatura_giro2": -9.3e-05
+   }
+  },
+  "Miami": {
+   "2023": {
+    "valore": 2.6111,
+    "ci95": [
+     2.3969,
+     2.8253
+    ],
+    "n_giri": 577,
+    "curvatura_giro2": -3.2e-05
+   },
+   "2024": {
+    "valore": 3.2912,
+    "ci95": [
+     3.0884,
+     3.494
+    ],
+    "n_giri": 365,
+    "curvatura_giro2": 0.00045
+   },
+   "2026": {
+    "valore": 0.0026,
+    "ci95": [
+     -1.3021,
+     1.3074
+    ],
+    "n_giri": 498,
+    "curvatura_giro2": 0.000511
+   }
+  },
+  "Qatar": {
+   "2023": {
+    "valore": 4.0669,
+    "ci95": [
+     3.7148,
+     4.419
+    ],
+    "n_giri": 444,
+    "curvatura_giro2": 0.001301
+   },
+   "2024": {
+    "valore": 3.6313,
+    "ci95": [
+     2.6759,
+     4.5867
+    ],
+    "n_giri": 311,
+    "curvatura_giro2": 0.001773
+   },
+   "2025": {
+    "valore": 3.1182,
+    "ci95": [
+     2.5404,
+     3.696
+    ],
+    "n_giri": 336,
+    "curvatura_giro2": 0.000763
+   }
+  },
+  "Saudi Arabian": {
+   "2023": {
+    "valore": 3.151,
+    "ci95": [
+     1.9549,
+     4.3472
+    ],
+    "n_giri": 420,
+    "curvatura_giro2": -0.000118
+   },
+   "2024": {
+    "valore": 5.0794,
+    "ci95": [
+     3.8081,
+     6.3508
+    ],
+    "n_giri": 369,
+    "curvatura_giro2": 0.000507
+   },
+   "2025": {
+    "valore": 2.5244,
+    "ci95": [
+     2.0993,
+     2.9495
+    ],
+    "n_giri": 456,
+    "curvatura_giro2": 0.00048
+   }
+  },
+  "Singapore": {
+   "2023": {
+    "valore": 3.1061,
+    "ci95": [
+     2.3822,
+     3.83
+    ],
+    "n_giri": 289,
+    "curvatura_giro2": 0.000776
+   },
+   "2024": {
+    "valore": 2.5446,
+    "ci95": [
+     2.3724,
+     2.7168
+    ],
+    "n_giri": 686,
+    "curvatura_giro2": -1.8e-05
+   },
+   "2025": {
+    "valore": 2.8856,
+    "ci95": [
+     2.1467,
+     3.6245
+    ],
+    "n_giri": 592,
+    "curvatura_giro2": -7.1e-05
+   }
+  },
+  "Spanish": {
+   "2023": {
+    "valore": 3.3585,
+    "ci95": [
+     3.1513,
+     3.5657
+    ],
+    "n_giri": 741,
+    "curvatura_giro2": 5.6e-05
+   },
+   "2025": {
+    "valore": 3.6062,
+    "ci95": [
+     3.1445,
+     4.068
+    ],
+    "n_giri": 561,
+    "curvatura_giro2": -9.4e-05
+   },
+   "2026": {
+    "valore": 3.9133,
+    "ci95": [
+     3.696,
+     4.1306
+    ],
+    "n_giri": 631,
+    "curvatura_giro2": -0.000127
+   }
+  },
+  "São Paulo": {
+   "2023": {
+    "valore": 2.9594,
+    "ci95": [
+     2.7388,
+     3.1799
+    ],
+    "n_giri": 655,
+    "curvatura_giro2": -0.000169
+   },
+   "2025": {
+    "valore": 2.1125,
+    "ci95": [
+     1.8786,
+     2.3464
+    ],
+    "n_giri": 544,
+    "curvatura_giro2": -0.000147
+   }
+  },
+  "United States": {
+   "2023": {
+    "valore": 3.3246,
+    "ci95": [
+     3.0788,
+     3.5704
+    ],
+    "n_giri": 560,
+    "curvatura_giro2": -9.5e-05
+   },
+   "2024": {
+    "valore": 3.581,
+    "ci95": [
+     3.2573,
+     3.9046
+    ],
+    "n_giri": 578,
+    "curvatura_giro2": 0.000302
+   },
+   "2025": {
+    "valore": 2.7184,
+    "ci95": [
+     2.5868,
+     2.8499
+    ],
+    "n_giri": 532,
+    "curvatura_giro2": -0.000119
+   }
+  },
+  "Belgian": {
+   "2024": {
+    "valore": 4.1051,
+    "ci95": [
+     3.7463,
+     4.4638
+    ],
+    "n_giri": 315,
+    "curvatura_giro2": -0.000165
+   },
+   "2026": {
+    "valore": 2.0206,
+    "ci95": [
+     1.0261,
+     3.0151
+    ],
+    "n_giri": 379,
+    "curvatura_giro2": -0.000226
+   }
+  },
+  "Chinese": {
+   "2024": {
+    "valore": 4.2667,
+    "ci95": [
+     3.6674,
+     4.866
+    ],
+    "n_giri": 369,
+    "curvatura_giro2": 0.000515
+   },
+   "2025": {
+    "valore": 3.8777,
+    "ci95": [
+     3.4788,
+     4.2767
+    ],
+    "n_giri": 607,
+    "curvatura_giro2": 0.000378
+   },
+   "2026": {
+    "valore": 3.4235,
+    "ci95": [
+     3.0641,
+     3.7828
+    ],
+    "n_giri": 400,
+    "curvatura_giro2": 2.2e-05
+   }
+  },
+  "Dutch": {
+   "2024": {
+    "valore": 2.682,
+    "ci95": [
+     2.3907,
+     2.9732
+    ],
+    "n_giri": 829,
+    "curvatura_giro2": -0.000403
+   },
+   "2025": {
+    "valore": 3.5498,
+    "ci95": [
+     3.3481,
+     3.7515
+    ],
+    "n_giri": 364,
+    "curvatura_giro2": 7e-06
+   }
+  },
+  "Emilia Romagna": {
+   "2024": {
+    "valore": 1.9958,
+    "ci95": [
+     1.6759,
+     2.3157
+    ],
+    "n_giri": 737,
+    "curvatura_giro2": -0.000559
+   },
+   "2025": {
+    "valore": 3.396,
+    "ci95": [
+     3.0002,
+     3.7918
+    ],
+    "n_giri": 403,
+    "curvatura_giro2": -0.0006
+   }
+  },
+  "Monaco": {
+   "2024": {
+    "valore": 8.709,
+    "ci95": [
+     8.3421,
+     9.0759
+    ],
+    "n_giri": 520,
+    "curvatura_giro2": -0.00016
+   },
+   "2025": {
+    "valore": 2.3461,
+    "ci95": [
+     1.3596,
+     3.3327
+    ],
+    "n_giri": 563,
+    "curvatura_giro2": 2.2e-05
+   },
+   "2026": {
+    "valore": 1.288,
+    "ci95": [
+     -0.0249,
+     2.6008
+    ],
+    "n_giri": 756,
+    "curvatura_giro2": -0.000777
+   }
+  }
+ },
+ "bucket": {
+  "INSTABILE": [
+   {
+    "bucket": "INSTABILE",
+    "Q": 7.591,
+    "df": 2,
+    "critico_95": 5.991,
+    "tau_s": 0.111,
+    "I2": 0.737,
+    "k": 3,
+    "anni": [
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "valori": [
+     3.31,
+     3.204,
+     3.01
+    ],
+    "se": [
+     0.08,
+     0.044,
+     0.078
+    ],
+    "media_pesata": 3.1859,
+    "ci95_media_pesata": [
+     3.1182,
+     3.2536
+    ],
+    "sd_inter_annuale": 0.152,
+    "semiampiezza_media": 0.132,
+    "motivo": null,
+    "circuito": "Abu Dhabi"
+   },
+   {
+    "bucket": "INSTABILE",
+    "Q": 15.555,
+    "df": 2,
+    "critico_95": 5.991,
+    "tau_s": 0.2,
+    "I2": 0.871,
+    "k": 3,
+    "anni": [
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "valori": [
+     2.196,
+     1.792,
+     2.061
+    ],
+    "se": [
+     0.072,
+     0.075,
+     0.085
+    ],
+    "media_pesata": 2.0184,
+    "ci95_media_pesata": [
+     1.9317,
+     2.105
+    ],
+    "sd_inter_annuale": 0.206,
+    "semiampiezza_media": 0.151,
+    "motivo": null,
+    "circuito": "Austrian"
+   },
+   {
+    "bucket": "INSTABILE",
+    "Q": 14.727,
+    "df": 2,
+    "critico_95": 5.991,
+    "tau_s": 0.553,
+    "I2": 0.864,
+    "k": 3,
+    "anni": [
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "valori": [
+     4.006,
+     3.661,
+     2.968
+    ],
+    "se": [
+     0.247,
+     0.272,
+     0.151
+    ],
+    "media_pesata": 3.3256,
+    "ci95_media_pesata": [
+     3.0974,
+     3.5538
+    ],
+    "sd_inter_annuale": 0.529,
+    "semiampiezza_media": 0.438,
+    "motivo": null,
+    "circuito": "Azerbaijan"
+   },
+   {
+    "bucket": "INSTABILE",
+    "Q": 11.431,
+    "df": 2,
+    "critico_95": 5.991,
+    "tau_s": 0.342,
+    "I2": 0.825,
+    "k": 3,
+    "anni": [
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "valori": [
+     3.846,
+     3.936,
+     4.522
+    ],
+    "se": [
+     0.246,
+     0.114,
+     0.146
+    ],
+    "media_pesata": 4.1216,
+    "ci95_media_pesata": [
+     3.9563,
+     4.287
+    ],
+    "sd_inter_annuale": 0.367,
+    "semiampiezza_media": 0.331,
+    "motivo": null,
+    "circuito": "Bahrain"
+   },
+   {
+    "bucket": "INSTABILE",
+    "Q": 110.356,
+    "df": 2,
+    "critico_95": 5.991,
+    "tau_s": 0.658,
+    "I2": 0.982,
+    "k": 3,
+    "anni": [
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "valori": [
+     1.843,
+     3.179,
+     2.88
+    ],
+    "se": [
+     0.091,
+     0.118,
+     0.066
+    ],
+    "media_pesata": 2.6375,
+    "ci95_media_pesata": [
+     2.5421,
+     2.7328
+    ],
+    "sd_inter_annuale": 0.701,
+    "semiampiezza_media": 0.18,
+    "motivo": null,
+    "circuito": "Italian"
+   },
+   {
+    "bucket": "INSTABILE",
+    "Q": 49.394,
+    "df": 2,
+    "critico_95": 5.991,
+    "tau_s": 0.59,
+    "I2": 0.96,
+    "k": 3,
+    "anni": [
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "valori": [
+     3.255,
+     4.792,
+     3.716
+    ],
+    "se": [
+     0.157,
+     0.167,
+     0.047
+    ],
+    "media_pesata": 3.7531,
+    "ci95_media_pesata": [
+     3.6682,
+     3.838
+    ],
+    "sd_inter_annuale": 0.789,
+    "semiampiezza_media": 0.242,
+    "motivo": null,
+    "circuito": "Japanese"
+   },
+   {
+    "bucket": "INSTABILE",
+    "Q": 7.674,
+    "df": 2,
+    "critico_95": 5.991,
+    "tau_s": 0.497,
+    "I2": 0.739,
+    "k": 3,
+    "anni": [
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "valori": [
+     4.067,
+     3.631,
+     3.118
+    ],
+    "se": [
+     0.18,
+     0.487,
+     0.295
+    ],
+    "media_pesata": 3.7939,
+    "ci95_media_pesata": [
+     3.5071,
+     4.0807
+    ],
+    "sd_inter_annuale": 0.475,
+    "semiampiezza_media": 0.628,
+    "motivo": null,
+    "circuito": "Qatar"
+   },
+   {
+    "bucket": "INSTABILE",
+    "Q": 14.285,
+    "df": 2,
+    "critico_95": 5.991,
+    "tau_s": 1.191,
+    "I2": 0.86,
+    "k": 3,
+    "anni": [
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "valori": [
+     3.151,
+     5.079,
+     2.524
+    ],
+    "se": [
+     0.61,
+     0.649,
+     0.217
+    ],
+    "media_pesata": 2.819,
+    "ci95_media_pesata": [
+     2.437,
+     3.2011
+    ],
+    "sd_inter_annuale": 1.332,
+    "semiampiezza_media": 0.964,
+    "motivo": null,
+    "circuito": "Saudi Arabian"
+   },
+   {
+    "bucket": "INSTABILE",
+    "Q": 35.37,
+    "df": 2,
+    "critico_95": 5.991,
+    "tau_s": 0.468,
+    "I2": 0.943,
+    "k": 3,
+    "anni": [
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "valori": [
+     3.325,
+     3.581,
+     2.718
+    ],
+    "se": [
+     0.125,
+     0.165,
+     0.067
+    ],
+    "media_pesata": 2.9362,
+    "ci95_media_pesata": [
+     2.827,
+     3.0454
+    ],
+    "sd_inter_annuale": 0.443,
+    "semiampiezza_media": 0.234,
+    "motivo": null,
+    "circuito": "United States"
+   }
+  ],
+  "INDECIDIBILE": [
+   {
+    "bucket": "INDECIDIBILE",
+    "motivo": "2 anni (<3)",
+    "k": 2,
+    "anni": [
+     "2023",
+     "2024"
+    ],
+    "valori": [
+     3.4561,
+     2.7796
+    ],
+    "semiampiezza_media": 0.441,
+    "circuito": "Australian"
+   },
+   {
+    "bucket": "INDECIDIBILE",
+    "motivo": "1 anni (<3)",
+    "k": 1,
+    "anni": [
+     "2024"
+    ],
+    "valori": [
+     4.1051
+    ],
+    "semiampiezza_media": 0.359,
+    "circuito": "Belgian"
+   },
+   {
+    "bucket": "INDECIDIBILE",
+    "motivo": "1 anni (<3)",
+    "k": 1,
+    "anni": [
+     "2023"
+    ],
+    "valori": [
+     2.5791
+    ],
+    "semiampiezza_media": 0.312,
+    "circuito": "British"
+   },
+   {
+    "bucket": "INDECIDIBILE",
+    "motivo": "2 anni (<3)",
+    "k": 2,
+    "anni": [
+     "2023",
+     "2025"
+    ],
+    "valori": [
+     2.4428,
+     2.7807
+    ],
+    "semiampiezza_media": 0.235,
+    "circuito": "Canadian"
+   },
+   {
+    "bucket": "INDECIDIBILE",
+    "motivo": "2 anni (<3)",
+    "k": 2,
+    "anni": [
+     "2024",
+     "2025"
+    ],
+    "valori": [
+     4.2667,
+     3.8777
+    ],
+    "semiampiezza_media": 0.499,
+    "circuito": "Chinese"
+   },
+   {
+    "bucket": "INDECIDIBILE",
+    "motivo": "2 anni (<3)",
+    "k": 2,
+    "anni": [
+     "2024",
+     "2025"
+    ],
+    "valori": [
+     2.682,
+     3.5498
+    ],
+    "semiampiezza_media": 0.246,
+    "circuito": "Dutch"
+   },
+   {
+    "bucket": "INDECIDIBILE",
+    "motivo": "2 anni (<3)",
+    "k": 2,
+    "anni": [
+     "2024",
+     "2025"
+    ],
+    "valori": [
+     1.9958,
+     3.396
+    ],
+    "semiampiezza_media": 0.358,
+    "circuito": "Emilia Romagna"
+   },
+   {
+    "bucket": "INDECIDIBILE",
+    "motivo": "2 anni (<3)",
+    "k": 2,
+    "anni": [
+     "2023",
+     "2024"
+    ],
+    "valori": [
+     2.6111,
+     3.2912
+    ],
+    "semiampiezza_media": 0.209,
+    "circuito": "Miami"
+   },
+   {
+    "bucket": "INDECIDIBILE",
+    "motivo": "2 anni (<3)",
+    "k": 2,
+    "anni": [
+     "2024",
+     "2025"
+    ],
+    "valori": [
+     8.709,
+     2.3461
+    ],
+    "semiampiezza_media": 0.677,
+    "circuito": "Monaco"
+   },
+   {
+    "bucket": "INDECIDIBILE",
+    "motivo": "2 anni (<3)",
+    "k": 2,
+    "anni": [
+     "2023",
+     "2025"
+    ],
+    "valori": [
+     3.3585,
+     3.6062
+    ],
+    "semiampiezza_media": 0.334,
+    "circuito": "Spanish"
+   },
+   {
+    "bucket": "INDECIDIBILE",
+    "motivo": "2 anni (<3)",
+    "k": 2,
+    "anni": [
+     "2023",
+     "2025"
+    ],
+    "valori": [
+     2.9594,
+     2.1125
+    ],
+    "semiampiezza_media": 0.227,
+    "circuito": "São Paulo"
+   }
+  ],
+  "STABILE": [
+   {
+    "bucket": "STABILE",
+    "Q": 2.977,
+    "df": 2,
+    "critico_95": 5.991,
+    "tau_s": 0.107,
+    "I2": 0.328,
+    "k": 3,
+    "anni": [
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "valori": [
+     3.048,
+     2.823,
+     2.604
+    ],
+    "se": [
+     0.128,
+     0.118,
+     0.269
+    ],
+    "media_pesata": 2.8958,
+    "ci95_media_pesata": [
+     2.7338,
+     3.0578
+    ],
+    "sd_inter_annuale": 0.222,
+    "semiampiezza_media": 0.336,
+    "motivo": null,
+    "circuito": "Hungarian"
+   },
+   {
+    "bucket": "STABILE",
+    "Q": 4.285,
+    "df": 2,
+    "critico_95": 5.991,
+    "tau_s": 0.26,
+    "I2": 0.533,
+    "k": 3,
+    "anni": [
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "valori": [
+     4.162,
+     4.098,
+     3.574
+    ],
+    "se": [
+     0.385,
+     0.224,
+     0.176
+    ],
+    "media_pesata": 3.8188,
+    "ci95_media_pesata": [
+     3.5635,
+     4.0741
+    ],
+    "sd_inter_annuale": 0.323,
+    "semiampiezza_media": 0.513,
+    "motivo": null,
+    "circuito": "Las Vegas"
+   },
+   {
+    "bucket": "STABILE",
+    "Q": 1.426,
+    "df": 2,
+    "critico_95": 5.991,
+    "tau_s": 0.0,
+    "I2": 0.0,
+    "k": 3,
+    "anni": [
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "valori": [
+     2.74,
+     2.781,
+     2.919
+    ],
+    "se": [
+     0.173,
+     0.111,
+     0.087
+    ],
+    "media_pesata": 2.8489,
+    "ci95_media_pesata": [
+     2.7242,
+     2.9737
+    ],
+    "sd_inter_annuale": 0.094,
+    "semiampiezza_media": 0.242,
+    "motivo": null,
+    "circuito": "Mexico City"
+   },
+   {
+    "bucket": "STABILE",
+    "Q": 2.834,
+    "df": 2,
+    "critico_95": 5.991,
+    "tau_s": 0.177,
+    "I2": 0.294,
+    "k": 3,
+    "anni": [
+     "2023",
+     "2024",
+     "2025"
+    ],
+    "valori": [
+     3.106,
+     2.545,
+     2.886
+    ],
+    "se": [
+     0.369,
+     0.088,
+     0.377
+    ],
+    "media_pesata": 2.5899,
+    "ci95_media_pesata": [
+     2.4265,
+     2.7533
+    ],
+    "sd_inter_annuale": 0.283,
+    "semiampiezza_media": 0.545,
+    "motivo": null,
+    "circuito": "Singapore"
+   }
+  ]
+ },
+ "leave_one_year_out": {
+  "n_celle": 39,
+  "n_circuiti": 13,
+  "errore_mediano_percircuito": 0.3367,
+  "errore_mediano_globale": 0.5037,
+  "guadagno": 0.167,
+  "celle_dove_vince_percircuito": 25,
+  "dettaglio": [
+   {
+    "circuito": "Abu Dhabi",
+    "anno": "2023",
+    "valore": 3.31,
+    "previsione_circuito": 3.107,
+    "previsione_globale": 3.149,
+    "errore_circuito": 0.203,
+    "errore_globale": 0.161
+   },
+   {
+    "circuito": "Abu Dhabi",
+    "anno": "2024",
+    "valore": 3.204,
+    "previsione_circuito": 3.16,
+    "previsione_globale": 3.048,
+    "errore_circuito": 0.043,
+    "errore_globale": 0.155
+   },
+   {
+    "circuito": "Abu Dhabi",
+    "anno": "2025",
+    "valore": 3.01,
+    "previsione_circuito": 3.257,
+    "previsione_globale": 3.255,
+    "errore_circuito": 0.246,
+    "errore_globale": 0.244
+   },
+   {
+    "circuito": "Austrian",
+    "anno": "2023",
+    "valore": 2.196,
+    "previsione_circuito": 1.926,
+    "previsione_globale": 3.149,
+    "errore_circuito": 0.269,
+    "errore_globale": 0.953
+   },
+   {
+    "circuito": "Austrian",
+    "anno": "2024",
+    "valore": 1.792,
+    "previsione_circuito": 2.128,
+    "previsione_globale": 3.048,
+    "errore_circuito": 0.337,
+    "errore_globale": 1.257
+   },
+   {
+    "circuito": "Austrian",
+    "anno": "2025",
+    "valore": 2.061,
+    "previsione_circuito": 1.994,
+    "previsione_globale": 3.255,
+    "errore_circuito": 0.067,
+    "errore_globale": 1.194
+   },
+   {
+    "circuito": "Azerbaijan",
+    "anno": "2023",
+    "valore": 4.006,
+    "previsione_circuito": 3.314,
+    "previsione_globale": 3.149,
+    "errore_circuito": 0.691,
+    "errore_globale": 0.857
+   },
+   {
+    "circuito": "Azerbaijan",
+    "anno": "2024",
+    "valore": 3.661,
+    "previsione_circuito": 3.487,
+    "previsione_globale": 3.048,
+    "errore_circuito": 0.174,
+    "errore_globale": 0.613
+   },
+   {
+    "circuito": "Azerbaijan",
+    "anno": "2025",
+    "valore": 2.968,
+    "previsione_circuito": 3.833,
+    "previsione_globale": 3.255,
+    "errore_circuito": 0.866,
+    "errore_globale": 0.287
+   },
+   {
+    "circuito": "Bahrain",
+    "anno": "2023",
+    "valore": 3.846,
+    "previsione_circuito": 4.229,
+    "previsione_globale": 3.149,
+    "errore_circuito": 0.383,
+    "errore_globale": 0.697
+   },
+   {
+    "circuito": "Bahrain",
+    "anno": "2024",
+    "valore": 3.936,
+    "previsione_circuito": 4.184,
+    "previsione_globale": 3.048,
+    "errore_circuito": 0.248,
+    "errore_globale": 0.888
+   },
+   {
+    "circuito": "Bahrain",
+    "anno": "2025",
+    "valore": 4.522,
+    "previsione_circuito": 3.891,
+    "previsione_globale": 3.255,
+    "errore_circuito": 0.631,
+    "errore_globale": 1.268
+   },
+   {
+    "circuito": "Hungarian",
+    "anno": "2023",
+    "valore": 3.048,
+    "previsione_circuito": 2.713,
+    "previsione_globale": 3.149,
+    "errore_circuito": 0.335,
+    "errore_globale": 0.101
+   },
+   {
+    "circuito": "Hungarian",
+    "anno": "2024",
+    "valore": 2.823,
+    "previsione_circuito": 2.826,
+    "previsione_globale": 3.048,
+    "errore_circuito": 0.003,
+    "errore_globale": 0.225
+   },
+   {
+    "circuito": "Hungarian",
+    "anno": "2025",
+    "valore": 2.604,
+    "previsione_circuito": 2.936,
+    "previsione_globale": 3.255,
+    "errore_circuito": 0.332,
+    "errore_globale": 0.651
+   },
+   {
+    "circuito": "Italian",
+    "anno": "2023",
+    "valore": 1.843,
+    "previsione_circuito": 3.03,
+    "previsione_globale": 3.149,
+    "errore_circuito": 1.187,
+    "errore_globale": 1.306
+   },
+   {
+    "circuito": "Italian",
+    "anno": "2024",
+    "valore": 3.179,
+    "previsione_circuito": 2.361,
+    "previsione_globale": 3.048,
+    "errore_circuito": 0.818,
+    "errore_globale": 0.131
+   },
+   {
+    "circuito": "Italian",
+    "anno": "2025",
+    "valore": 2.88,
+    "previsione_circuito": 2.511,
+    "previsione_globale": 3.255,
+    "errore_circuito": 0.369,
+    "errore_globale": 0.375
+   },
+   {
+    "circuito": "Japanese",
+    "anno": "2023",
+    "valore": 3.255,
+    "previsione_circuito": 4.254,
+    "previsione_globale": 3.149,
+    "errore_circuito": 1.0,
+    "errore_globale": 0.106
+   },
+   {
+    "circuito": "Japanese",
+    "anno": "2024",
+    "valore": 4.792,
+    "previsione_circuito": 3.485,
+    "previsione_globale": 3.048,
+    "errore_circuito": 1.307,
+    "errore_globale": 1.744
+   },
+   {
+    "circuito": "Japanese",
+    "anno": "2025",
+    "valore": 3.716,
+    "previsione_circuito": 4.024,
+    "previsione_globale": 3.255,
+    "errore_circuito": 0.308,
+    "errore_globale": 0.461
+   },
+   {
+    "circuito": "Las Vegas",
+    "anno": "2023",
+    "valore": 4.162,
+    "previsione_circuito": 3.836,
+    "previsione_globale": 3.149,
+    "errore_circuito": 0.326,
+    "errore_globale": 1.013
+   },
+   {
+    "circuito": "Las Vegas",
+    "anno": "2024",
+    "valore": 4.098,
+    "previsione_circuito": 3.868,
+    "previsione_globale": 3.048,
+    "errore_circuito": 0.23,
+    "errore_globale": 1.049
+   },
+   {
+    "circuito": "Las Vegas",
+    "anno": "2025",
+    "valore": 3.574,
+    "previsione_circuito": 4.13,
+    "previsione_globale": 3.255,
+    "errore_circuito": 0.556,
+    "errore_globale": 0.319
+   },
+   {
+    "circuito": "Mexico City",
+    "anno": "2023",
+    "valore": 2.74,
+    "previsione_circuito": 2.85,
+    "previsione_globale": 3.149,
+    "errore_circuito": 0.11,
+    "errore_globale": 0.409
+   },
+   {
+    "circuito": "Mexico City",
+    "anno": "2024",
+    "valore": 2.781,
+    "previsione_circuito": 2.829,
+    "previsione_globale": 3.048,
+    "errore_circuito": 0.049,
+    "errore_globale": 0.268
+   },
+   {
+    "circuito": "Mexico City",
+    "anno": "2025",
+    "valore": 2.919,
+    "previsione_circuito": 2.76,
+    "previsione_globale": 3.255,
+    "errore_circuito": 0.159,
+    "errore_globale": 0.336
+   },
+   {
+    "circuito": "Qatar",
+    "anno": "2023",
+    "valore": 4.067,
+    "previsione_circuito": 3.375,
+    "previsione_globale": 3.149,
+    "errore_circuito": 0.692,
+    "errore_globale": 0.918
+   },
+   {
+    "circuito": "Qatar",
+    "anno": "2024",
+    "valore": 3.631,
+    "previsione_circuito": 3.593,
+    "previsione_globale": 3.048,
+    "errore_circuito": 0.039,
+    "errore_globale": 0.583
+   },
+   {
+    "circuito": "Qatar",
+    "anno": "2025",
+    "valore": 3.118,
+    "previsione_circuito": 3.849,
+    "previsione_globale": 3.255,
+    "errore_circuito": 0.731,
+    "errore_globale": 0.136
+   },
+   {
+    "circuito": "Saudi Arabian",
+    "anno": "2023",
+    "valore": 3.151,
+    "previsione_circuito": 3.802,
+    "previsione_globale": 3.149,
+    "errore_circuito": 0.651,
+    "errore_globale": 0.002
+   },
+   {
+    "circuito": "Saudi Arabian",
+    "anno": "2024",
+    "valore": 5.079,
+    "previsione_circuito": 2.838,
+    "previsione_globale": 3.048,
+    "errore_circuito": 2.242,
+    "errore_globale": 2.031
+   },
+   {
+    "circuito": "Saudi Arabian",
+    "anno": "2025",
+    "valore": 2.524,
+    "previsione_circuito": 4.115,
+    "previsione_globale": 3.255,
+    "errore_circuito": 1.591,
+    "errore_globale": 0.73
+   },
+   {
+    "circuito": "Singapore",
+    "anno": "2023",
+    "valore": 3.106,
+    "previsione_circuito": 2.715,
+    "previsione_globale": 3.149,
+    "errore_circuito": 0.391,
+    "errore_globale": 0.043
+   },
+   {
+    "circuito": "Singapore",
+    "anno": "2024",
+    "valore": 2.545,
+    "previsione_circuito": 2.996,
+    "previsione_globale": 3.048,
+    "errore_circuito": 0.451,
+    "errore_globale": 0.504
+   },
+   {
+    "circuito": "Singapore",
+    "anno": "2025",
+    "valore": 2.886,
+    "previsione_circuito": 2.825,
+    "previsione_globale": 3.255,
+    "errore_circuito": 0.06,
+    "errore_globale": 0.369
+   },
+   {
+    "circuito": "United States",
+    "anno": "2023",
+    "valore": 3.325,
+    "previsione_circuito": 3.15,
+    "previsione_globale": 3.149,
+    "errore_circuito": 0.175,
+    "errore_globale": 0.176
+   },
+   {
+    "circuito": "United States",
+    "anno": "2024",
+    "valore": 3.581,
+    "previsione_circuito": 3.022,
+    "previsione_globale": 3.048,
+    "errore_circuito": 0.559,
+    "errore_globale": 0.533
+   },
+   {
+    "circuito": "United States",
+    "anno": "2025",
+    "valore": 2.718,
+    "previsione_circuito": 3.453,
+    "previsione_globale": 3.255,
+    "errore_circuito": 0.734,
+    "errore_globale": 0.536
+   }
+  ]
+ },
+ "loyo_per_circuito": {
+  "Abu Dhabi": {
+   "vinte": 1,
+   "n": 3,
+   "err_circuito": 0.164,
+   "err_globale": 0.187
+  },
+  "Austrian": {
+   "vinte": 3,
+   "n": 3,
+   "err_circuito": 0.224,
+   "err_globale": 1.135
+  },
+  "Azerbaijan": {
+   "vinte": 2,
+   "n": 3,
+   "err_circuito": 0.577,
+   "err_globale": 0.586
+  },
+  "Bahrain": {
+   "vinte": 3,
+   "n": 3,
+   "err_circuito": 0.421,
+   "err_globale": 0.951
+  },
+  "Hungarian": {
+   "vinte": 2,
+   "n": 3,
+   "err_circuito": 0.223,
+   "err_globale": 0.326
+  },
+  "Italian": {
+   "vinte": 2,
+   "n": 3,
+   "err_circuito": 0.791,
+   "err_globale": 0.604
+  },
+  "Japanese": {
+   "vinte": 2,
+   "n": 3,
+   "err_circuito": 0.872,
+   "err_globale": 0.77
+  },
+  "Las Vegas": {
+   "vinte": 2,
+   "n": 3,
+   "err_circuito": 0.371,
+   "err_globale": 0.794
+  },
+  "Mexico City": {
+   "vinte": 3,
+   "n": 3,
+   "err_circuito": 0.106,
+   "err_globale": 0.338
+  },
+  "Qatar": {
+   "vinte": 2,
+   "n": 3,
+   "err_circuito": 0.487,
+   "err_globale": 0.546
+  },
+  "Saudi Arabian": {
+   "vinte": 0,
+   "n": 3,
+   "err_circuito": 1.495,
+   "err_globale": 0.921
+  },
+  "Singapore": {
+   "vinte": 2,
+   "n": 3,
+   "err_circuito": 0.301,
+   "err_globale": 0.305
+  },
+  "United States": {
+   "vinte": 1,
+   "n": 3,
+   "err_circuito": 0.489,
+   "err_globale": 0.415
+  }
+ },
+ "null_etichette": {
+  "repliche": 2000,
+  "guadagno_osservato": 0.167,
+  "mediana_null": -0.1525,
+  "q95_null": 0.0354,
+  "p": 0.0025
+ },
+ "globale_ricostruito_2023_25": 3.151,
+ "kernel": 3.0,
+ "spearman_2026": -0.055,
+ "spearman_curvatura_delta": 0.097,
+ "curvatura_per_circuito": {
+  "Qatar": {
+   "delta_medio": 3.605,
+   "curvatura": 0.001279
+  },
+  "British": {
+   "delta_medio": 2.579,
+   "curvatura": 0.000756
+  },
+  "Bahrain": {
+   "delta_medio": 4.102,
+   "curvatura": 0.00048333333333333334
+  },
+  "Chinese": {
+   "delta_medio": 4.072,
+   "curvatura": 0.00044650000000000007
+  },
+  "Azerbaijan": {
+   "delta_medio": 3.545,
+   "curvatura": 0.0004193333333333333
+  },
+  "Saudi Arabian": {
+   "delta_medio": 3.585,
+   "curvatura": 0.00028966666666666664
+  },
+  "Australian": {
+   "delta_medio": 3.118,
+   "curvatura": 0.00027
+  },
+  "Singapore": {
+   "delta_medio": 2.845,
+   "curvatura": 0.000229
+  },
+  "Miami": {
+   "delta_medio": 2.951,
+   "curvatura": 0.00020899999999999998
+  },
+  "Hungarian": {
+   "delta_medio": 2.825,
+   "curvatura": 0.000185
+  },
+  "Abu Dhabi": {
+   "delta_medio": 3.175,
+   "curvatura": 0.00013866666666666666
+  },
+  "Italian": {
+   "delta_medio": 2.634,
+   "curvatura": 5.5000000000000016e-05
+  },
+  "Canadian": {
+   "delta_medio": 2.612,
+   "curvatura": 4.1e-05
+  },
+  "United States": {
+   "delta_medio": 3.208,
+   "curvatura": 2.9333333333333336e-05
+  },
+  "Austrian": {
+   "delta_medio": 2.016,
+   "curvatura": -5.333333333333334e-06
+  },
+  "Spanish": {
+   "delta_medio": 3.482,
+   "curvatura": -1.8999999999999998e-05
+  },
+  "Las Vegas": {
+   "delta_medio": 3.945,
+   "curvatura": -3.000000000000005e-05
+  },
+  "Monaco": {
+   "delta_medio": 5.528,
+   "curvatura": -6.900000000000001e-05
+  },
+  "Mexico City": {
+   "delta_medio": 2.813,
+   "curvatura": -8.666666666666667e-05
+  },
+  "São Paulo": {
+   "delta_medio": 2.536,
+   "curvatura": -0.000158
+  },
+  "Belgian": {
+   "delta_medio": 4.105,
+   "curvatura": -0.000165
+  },
+  "Dutch": {
+   "delta_medio": 3.116,
+   "curvatura": -0.000198
+  },
+  "Japanese": {
+   "delta_medio": 3.921,
+   "curvatura": -0.0003536666666666667
+  },
+  "Emilia Romagna": {
+   "delta_medio": 2.696,
+   "curvatura": -0.0005794999999999999
+  }
+ }
+}

@@ -1,0 +1,43 @@
+# Caddy — reverse proxy TLS del collettore (Fase 3, parte B).
+# Installazione: sudo cp live/collector/Caddyfile /etc/caddy/Caddyfile
+#                sudo systemctl reload caddy
+# Certificati Let's Encrypt automatici (serve il DNS: A ws.murettobox.com
+# -> 167.233.236.186; Caddy ritenta ACME finche' il record non esiste).
+#
+# Origin allowlist su /ws: siti autorizzati (murettobox.com + anteprime
+# Vercel) e localhost per sviluppo. I client NON-browser (client_test.py,
+# monitoraggio) non mandano Origin e passano: il controllo e' una
+# protezione browser-side, i dati serviti sono pubblici in sola lettura.
+
+ws.murettobox.com {
+	@ws_origin_ok {
+		path /ws
+		header_regexp origin Origin ^https?://(murettobox\.com|www\.murettobox\.com|[a-z0-9.-]+\.vercel\.app|localhost(:[0-9]+)?|127\.0\.0\.1(:[0-9]+)?)$
+	}
+	handle @ws_origin_ok {
+		reverse_proxy 127.0.0.1:8765
+	}
+
+	@ws_senza_origin {
+		path /ws
+		not header Origin *
+	}
+	handle @ws_senza_origin {
+		reverse_proxy 127.0.0.1:8765
+	}
+
+	@ws_negato {
+		path /ws
+	}
+	handle @ws_negato {
+		respond "origin non autorizzata" 403
+	}
+
+	handle /status {
+		reverse_proxy 127.0.0.1:8766
+	}
+
+	handle {
+		respond "muretto live collector" 404
+	}
+}

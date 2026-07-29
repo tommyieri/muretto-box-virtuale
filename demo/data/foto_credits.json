@@ -1,0 +1,225 @@
+{
+ "_nota": "GENERATO da gen_foto.py (Wikimedia Commons). Solo licenze libere (PD/CC0/CC BY/CC BY-SA) CON autore: attribuzione obbligatoria in UI. Pilota assente = avatar sui colori team. Team: niente loghi (non liberi in generale), solo colori. Non modificare a mano.",
+ "piloti": {
+  "alexander-albon": {
+   "file": "File:Alex Albon at the Melbourne Walk during the 2026 Australian Grand Prix (028A8626) (cropped).jpg",
+   "autore": "Yu Chu Chin",
+   "licenza": "CC BY-SA 4.0",
+   "licenza_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:Alex_Albon_at_the_Melbourne_Walk_during_the_2026_Australian_Grand_Prix_(028A8626)_(cropped).jpg",
+   "wikidata": "Q16149172",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/alexander-albon.jpg"
+  },
+  "arvid-lindblad": {
+   "file": "File:Arvid Lindblad at the Red Bull Fan Zone – Crown Riverwalk, Melbourne (028A7869).jpg",
+   "autore": "Yu Chu Chin",
+   "licenza": "CC BY-SA 4.0",
+   "licenza_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:Arvid_Lindblad_at_the_Red_Bull_Fan_Zone_%E2%80%93_Crown_Riverwalk,_Melbourne_(028A7869).jpg",
+   "wikidata": "Q117035650",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/arvid-lindblad.jpg"
+  },
+  "carlos-sainz-jr": {
+   "file": "File:Formel12021-SchlossGabelhofen(15) (cropped).jpg",
+   "autore": "XaviYuahanda",
+   "licenza": "CC BY-SA 4.0",
+   "licenza_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:Formel12021-SchlossGabelhofen(15)_(cropped).jpg",
+   "wikidata": "Q544856",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/carlos-sainz-jr.jpg"
+  },
+  "charles-leclerc": {
+   "file": "File:2024-08-25 Motorsport, Formel 1, Großer Preis der Niederlande 2024 STP 3978 by Stepro (cropped2).jpg",
+   "autore": "Steffen Prößdorf",
+   "licenza": "CC BY-SA 4.0",
+   "licenza_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:2024-08-25_Motorsport,_Formel_1,_Gro%C3%9Fer_Preis_der_Niederlande_2024_STP_3978_by_Stepro_(cropped2).jpg",
+   "wikidata": "Q17541912",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/charles-leclerc.jpg"
+  },
+  "esteban-ocon": {
+   "file": "File:Esteban Ocon 2017 Malaysia 1.jpg",
+   "autore": "Morio",
+   "licenza": "CC BY-SA 4.0",
+   "licenza_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:Esteban_Ocon_2017_Malaysia_1.jpg",
+   "wikidata": "Q15074165",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/esteban-ocon.jpg"
+  },
+  "fernando-alonso": {
+   "file": "File:Alonso 2016.jpg",
+   "autore": "Box Repsol | Flickr",
+   "licenza": "CC BY 2.0",
+   "licenza_url": "https://creativecommons.org/licenses/by/2.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:Alonso_2016.jpg",
+   "wikidata": "Q10514",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/fernando-alonso.jpg"
+  },
+  "franco-colapinto": {
+   "file": "File:Franco Colapinto at the Melbourne Walk during the 2026 Australian Grand Prix (028A8689).jpg",
+   "autore": "Yu Chu Chin",
+   "licenza": "CC BY-SA 4.0",
+   "licenza_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:Franco_Colapinto_at_the_Melbourne_Walk_during_the_2026_Australian_Grand_Prix_(028A8689).jpg",
+   "wikidata": "Q88463514",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/franco-colapinto.jpg"
+  },
+  "gabriel-bortoleto": {
+   "file": "File:G. Bortoleto 17 Sep 2024.png",
+   "autore": "Lito Cavalcanti",
+   "licenza": "CC BY 3.0",
+   "licenza_url": "https://creativecommons.org/licenses/by/3.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:G._Bortoleto_17_Sep_2024.png",
+   "wikidata": "Q106641273",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/gabriel-bortoleto.png"
+  },
+  "george-russell": {
+   "file": "File:KingsLeonSilverstne040724 (28 of 112) (53838006028) (cropped).jpg",
+   "autore": "Raph_PH",
+   "licenza": "CC BY 2.0",
+   "licenza_url": "https://creativecommons.org/licenses/by/2.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:KingsLeonSilverstne040724_(28_of_112)_(53838006028)_(cropped).jpg",
+   "wikidata": "Q17319645",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/george-russell.jpg"
+  },
+  "isack-hadjar": {
+   "file": "File:Isack Hadjar 2022.JPG",
+   "autore": "Lukas Raich",
+   "licenza": "CC BY-SA 4.0",
+   "licenza_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:Isack_Hadjar_2022.JPG",
+   "wikidata": "Q105071364",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/isack-hadjar.jpg"
+  },
+  "kimi-antonelli": {
+   "file": "File:Kimi Antonelli at the Melbourne Walk during the 2026 Australian Grand Prix (028A7923) cropped.jpg",
+   "autore": "Yu Chu Chin",
+   "licenza": "CC BY-SA 4.0",
+   "licenza_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:Kimi_Antonelli_at_the_Melbourne_Walk_during_the_2026_Australian_Grand_Prix_(028A7923)_cropped.jpg",
+   "wikidata": "Q112073790",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/kimi-antonelli.jpg"
+  },
+  "lance-stroll": {
+   "file": "File:FIA F1 Austria 2022 Lance Stroll (cropped 2).jpg",
+   "autore": "Lukas Raich",
+   "licenza": "CC BY-SA 4.0",
+   "licenza_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:FIA_F1_Austria_2022_Lance_Stroll_(cropped_2).jpg",
+   "wikidata": "Q16238921",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/lance-stroll.jpg"
+  },
+  "lando-norris": {
+   "file": "File:2024-08-25 Motorsport, Formel 1, Großer Preis der Niederlande 2024 STP 4016 by Stepro (cropped).jpg",
+   "autore": "Steffen Prößdorf, crop by Cerebral726",
+   "licenza": "CC BY-SA 4.0",
+   "licenza_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:2024-08-25_Motorsport,_Formel_1,_Gro%C3%9Fer_Preis_der_Niederlande_2024_STP_4016_by_Stepro_(cropped).jpg",
+   "wikidata": "Q22007193",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/lando-norris.jpg"
+  },
+  "lewis-hamilton": {
+   "file": "File:Lewis Hamilton 2022 São Paulo Grand Prix (52498120773) (cropped).jpg",
+   "autore": "Governo do Estado de São Paulo",
+   "licenza": "CC BY 2.0",
+   "licenza_url": "https://creativecommons.org/licenses/by/2.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:Lewis_Hamilton_2022_S%C3%A3o_Paulo_Grand_Prix_(52498120773)_(cropped).jpg",
+   "wikidata": "Q9673",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/lewis-hamilton.jpg"
+  },
+  "liam-lawson": {
+   "file": "File:Liam Lawson at the Red Bull Fan Zone – Crown Riverwalk, Melbourne (028A7795).jpg",
+   "autore": "Yu Chu Chin",
+   "licenza": "CC BY-SA 4.0",
+   "licenza_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:Liam_Lawson_at_the_Red_Bull_Fan_Zone_%E2%80%93_Crown_Riverwalk,_Melbourne_(028A7795).jpg",
+   "wikidata": "Q59180330",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/liam-lawson.jpg"
+  },
+  "max-verstappen": {
+   "file": "File:2024-08-25 Motorsport, Formel 1, Großer Preis der Niederlande 2024 STP 3973 by Stepro (portrait cropped).jpg",
+   "autore": "Steffen Prößdorf",
+   "licenza": "CC BY-SA 4.0",
+   "licenza_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:2024-08-25_Motorsport,_Formel_1,_Gro%C3%9Fer_Preis_der_Niederlande_2024_STP_3973_by_Stepro_(portrait_cropped).jpg",
+   "wikidata": "Q2239218",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/max-verstappen.jpg"
+  },
+  "nico-hulkenberg": {
+   "file": "File:2019 Formula One tests Barcelona, Hulkenberg (40287128313) (headshot).jpg",
+   "autore": "Original:  Marc Alvarado / Derivative work:  Danyele",
+   "licenza": "CC BY-SA 2.0",
+   "licenza_url": "https://creativecommons.org/licenses/by-sa/2.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:2019_Formula_One_tests_Barcelona,_Hulkenberg_(40287128313)_(headshot).jpg",
+   "wikidata": "Q76547",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/nico-hulkenberg.jpg"
+  },
+  "oliver-bearman": {
+   "file": "File:2025 Japan GP - Haas - Oliver Bearman - Thursday (cropped02).jpg",
+   "autore": "Liauzh",
+   "licenza": "CC BY-SA 4.0",
+   "licenza_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:2025_Japan_GP_-_Haas_-_Oliver_Bearman_-_Thursday_(cropped02).jpg",
+   "wikidata": "Q107023292",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/oliver-bearman.jpg"
+  },
+  "oscar-piastri": {
+   "file": "File:Oscar Piastri Spa (cropped).jpg",
+   "autore": "JJHowlett",
+   "licenza": "CC BY-SA 4.0",
+   "licenza_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:Oscar_Piastri_Spa_(cropped).jpg",
+   "wikidata": "Q28741262",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/oscar-piastri.jpg"
+  },
+  "pierre-gasly": {
+   "file": "File:2019 Formula One tests Barcelona, Gasly (47200027932).jpg",
+   "autore": "Marc Alvarado",
+   "licenza": "CC BY-SA 2.0",
+   "licenza_url": "https://creativecommons.org/licenses/by-sa/2.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:2019_Formula_One_tests_Barcelona,_Gasly_(47200027932).jpg",
+   "wikidata": "Q11816647",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/pierre-gasly.jpg"
+  },
+  "sergio-perez": {
+   "file": "File:2021 US GP driver parade (cropped2).jpg",
+   "autore": "Grahampurse",
+   "licenza": "CC BY-SA 4.0",
+   "licenza_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:2021_US_GP_driver_parade_(cropped2).jpg",
+   "wikidata": "Q82805",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/sergio-perez.jpg"
+  },
+  "valtteri-bottas": {
+   "file": "File:Valtteri Bottas at the 2026 Adelaide Motorsport Festival (028A7556).jpg",
+   "autore": "Yu Chu Chin",
+   "licenza": "CC BY-SA 4.0",
+   "licenza_url": "https://creativecommons.org/licenses/by-sa/4.0",
+   "pagina": "https://commons.wikimedia.org/wiki/File:Valtteri_Bottas_at_the_2026_Adelaide_Motorsport_Festival_(028A7556).jpg",
+   "wikidata": "Q138745",
+   "larghezza_px": 400,
+   "percorso": "assets/piloti/valtteri-bottas.jpg"
+  }
+ }
+}

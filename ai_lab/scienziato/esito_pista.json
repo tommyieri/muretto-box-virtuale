@@ -1,0 +1,488 @@
+{
+ "data_calcolo": "2026-07-21",
+ "theta": {
+  "Abu Dhabi": {
+   "theta": 1.1285,
+   "b": -0.0453,
+   "se_theta": 0.1765,
+   "n": 1354,
+   "n_gare": 3
+  },
+  "Austrian": {
+   "theta": 0.5781,
+   "b": -0.1475,
+   "se_theta": 0.1301,
+   "n": 1872,
+   "n_gare": 3
+  },
+  "Bahrain": {
+   "theta": 1.1995,
+   "b": -0.0343,
+   "se_theta": 0.2059,
+   "n": 979,
+   "n_gare": 2
+  },
+  "Canadian": {
+   "theta": -0.334,
+   "b": -0.2269,
+   "se_theta": 0.2346,
+   "n": 1042,
+   "n_gare": 2
+  },
+  "Hungarian": {
+   "theta": 2.8491,
+   "b": -0.1217,
+   "se_theta": 0.183,
+   "n": 1988,
+   "n_gare": 3
+  },
+  "Italian": {
+   "theta": 0.6079,
+   "b": -0.0961,
+   "se_theta": 0.1401,
+   "n": 1468,
+   "n_gare": 3
+  },
+  "Japanese": {
+   "theta": 5.08,
+   "b": -0.0406,
+   "se_theta": 1.5668,
+   "n": 701,
+   "n_gare": 3
+  },
+  "Mexico City": {
+   "theta": 0.4898,
+   "b": 0.0346,
+   "se_theta": 0.1802,
+   "n": 1528,
+   "n_gare": 3
+  },
+  "Miami": {
+   "theta": 1.1351,
+   "b": -0.1708,
+   "se_theta": 0.2324,
+   "n": 456,
+   "n_gare": 1
+  },
+  "Qatar": {
+   "theta": 2.6,
+   "b": -0.2008,
+   "se_theta": 0.3396,
+   "n": 702,
+   "n_gare": 2
+  },
+  "Saudi Arabian": {
+   "theta": 1.4195,
+   "b": -0.0804,
+   "se_theta": 0.2256,
+   "n": 993,
+   "n_gare": 3
+  },
+  "Spanish": {
+   "theta": 0.9063,
+   "b": -0.0198,
+   "se_theta": 0.2564,
+   "n": 1140,
+   "n_gare": 2
+  },
+  "São Paulo": {
+   "theta": -0.4339,
+   "b": -0.1062,
+   "se_theta": 0.1877,
+   "n": 519,
+   "n_gare": 1
+  },
+  "United States": {
+   "theta": 2.1244,
+   "b": 0.0005,
+   "se_theta": 0.1999,
+   "n": 1434,
+   "n_gare": 3
+  },
+  "Australian": {
+   "theta": 0.3086,
+   "b": -0.4402,
+   "se_theta": 0.4726,
+   "n": 469,
+   "n_gare": 1
+  },
+  "Azerbaijan": {
+   "theta": 1.6323,
+   "b": -0.0312,
+   "se_theta": 0.21,
+   "n": 787,
+   "n_gare": 2
+  },
+  "Chinese": {
+   "theta": 1.1303,
+   "b": -0.1327,
+   "se_theta": 0.5926,
+   "n": 154,
+   "n_gare": 1
+  },
+  "Dutch": {
+   "theta": 0.7877,
+   "b": -0.0817,
+   "se_theta": 0.1671,
+   "n": 879,
+   "n_gare": 1
+  },
+  "Emilia Romagna": {
+   "theta": 1.048,
+   "b": -0.3179,
+   "se_theta": 0.2655,
+   "n": 1038,
+   "n_gare": 2
+  },
+  "Monaco": {
+   "theta": 3.9928,
+   "b": -0.3527,
+   "se_theta": 0.4515,
+   "n": 1110,
+   "n_gare": 2
+  },
+  "Singapore": {
+   "theta": 1.5112,
+   "b": -0.1181,
+   "se_theta": 0.4345,
+   "n": 1157,
+   "n_gare": 2
+  },
+  "Las Vegas": {
+   "theta": 0.6673,
+   "b": -0.4077,
+   "se_theta": 0.2845,
+   "n": 335,
+   "n_gare": 1
+  }
+ },
+ "placebo_pista": {
+  "sd_vera": 1.2724,
+  "q95_null": 1.6897,
+  "p": 0.4589,
+  "repliche": 400,
+  "null_nuovo_da_sigillare": true,
+  "targhetta": {
+   "gare_sotto": 46,
+   "piste": 22,
+   "calcolato_il": "2026-07-21"
+  }
+ },
+ "imputato_A": {
+  "spearman": 0.229,
+  "celle": {
+   "Monaco": {
+    "csv": 1.0,
+    "theta": 3.993,
+    "ci95": [
+     3.108,
+     4.878
+    ],
+    "esito": "CSV confermato"
+   },
+   "Hungarian": {
+    "csv": 0.737,
+    "theta": 2.849,
+    "ci95": [
+     2.49,
+     3.208
+    ],
+    "esito": "CSV confermato"
+   },
+   "Austrian": {
+    "csv": 0.652,
+    "theta": 0.578,
+    "ci95": [
+     0.323,
+     0.833
+    ],
+    "esito": "CSV CORRETTO dal fondo"
+   },
+   "Australian": {
+    "csv": 0.644,
+    "theta": 0.309,
+    "ci95": [
+     -0.618,
+     1.235
+    ],
+    "esito": "dato insufficiente"
+   },
+   "Qatar": {
+    "csv": 0.622,
+    "theta": 2.6,
+    "ci95": [
+     1.934,
+     3.266
+    ],
+    "esito": "CSV confermato"
+   },
+   "Singapore": {
+    "csv": 0.596,
+    "theta": 1.511,
+    "ci95": [
+     0.66,
+     2.363
+    ],
+    "esito": "dato insufficiente"
+   },
+   "Italian": {
+    "csv": 0.59,
+    "theta": 0.608,
+    "ci95": [
+     0.333,
+     0.883
+    ],
+    "esito": "CSV CORRETTO dal fondo"
+   },
+   "Canadian": {
+    "csv": 0.565,
+    "theta": -0.334,
+    "ci95": [
+     -0.794,
+     0.126
+    ],
+    "esito": "CSV CORRETTO dal fondo"
+   },
+   "Japanese": {
+    "csv": 0.565,
+    "theta": 5.08,
+    "ci95": [
+     2.009,
+     8.151
+    ],
+    "esito": "CSV confermato"
+   },
+   "Bahrain": {
+    "csv": 0.554,
+    "theta": 1.2,
+    "ci95": [
+     0.796,
+     1.603
+    ],
+    "esito": "dato insufficiente"
+   },
+   "Azerbaijan": {
+    "csv": 0.547,
+    "theta": 1.632,
+    "ci95": [
+     1.221,
+     2.044
+    ],
+    "esito": "CSV confermato"
+   },
+   "Spanish": {
+    "csv": 0.534,
+    "theta": 0.906,
+    "ci95": [
+     0.404,
+     1.409
+    ],
+    "esito": "dato insufficiente"
+   },
+   "Saudi Arabian": {
+    "csv": 0.528,
+    "theta": 1.42,
+    "ci95": [
+     0.977,
+     1.862
+    ],
+    "esito": "dato insufficiente"
+   },
+   "Emilia Romagna": {
+    "csv": 0.526,
+    "theta": 1.048,
+    "ci95": [
+     0.528,
+     1.568
+    ],
+    "esito": "dato insufficiente"
+   },
+   "São Paulo": {
+    "csv": 0.484,
+    "theta": -0.434,
+    "ci95": [
+     -0.802,
+     -0.066
+    ],
+    "esito": "CSV confermato"
+   },
+   "Dutch": {
+    "csv": 0.471,
+    "theta": 0.788,
+    "ci95": [
+     0.46,
+     1.115
+    ],
+    "esito": "CSV confermato"
+   },
+   "Mexico City": {
+    "csv": 0.457,
+    "theta": 0.49,
+    "ci95": [
+     0.137,
+     0.843
+    ],
+    "esito": "CSV confermato"
+   },
+   "Miami": {
+    "csv": 0.406,
+    "theta": 1.135,
+    "ci95": [
+     0.68,
+     1.591
+    ],
+    "esito": "dato insufficiente"
+   },
+   "United States": {
+    "csv": 0.336,
+    "theta": 2.124,
+    "ci95": [
+     1.733,
+     2.516
+    ],
+    "esito": "CSV CORRETTO dal fondo"
+   },
+   "Chinese": {
+    "csv": 0.267,
+    "theta": 1.13,
+    "ci95": [
+     -0.031,
+     2.292
+    ],
+    "esito": "dato insufficiente"
+   },
+   "Abu Dhabi": {
+    "csv": 0.249,
+    "theta": 1.129,
+    "ci95": [
+     0.783,
+     1.474
+    ],
+    "esito": "dato insufficiente"
+   },
+   "Las Vegas": {
+    "csv": 0.0,
+    "theta": 0.667,
+    "ci95": [
+     0.11,
+     1.225
+    ],
+    "esito": "dato insufficiente"
+   }
+  },
+  "bilancio": {
+   "CSV confermato": 8,
+   "CSV CORRETTO dal fondo": 4,
+   "dato insufficiente": 10
+  },
+  "nota": "CSV orfano, senza generatore, dichiarato NON FIDATO in data/SORPASSO_NOTA.txt",
+  "targhetta": {
+   "gare_sotto": 46,
+   "piste": 22,
+   "calcolato_il": "2026-07-21"
+  }
+ },
+ "modelli": {
+  "aggregati": {
+   "M0 solo gap": {
+    "errore": 0.3579,
+    "ci95": [
+     0.34625019227469234,
+     0.40859991732322276
+    ]
+   },
+   "M1 + delta-passo": {
+    "errore": 0.4158,
+    "ci95": [
+     0.34615757059443464,
+     0.43373623383543786
+    ]
+   },
+   "Mp + pista": {
+    "errore": 0.3875,
+    "ci95": [
+     0.34625019227469234,
+     0.4096527050797512
+    ]
+   },
+   "Mfull pista+delta": {
+    "errore": 0.3853,
+    "ci95": [
+     0.34615757059443464,
+     0.45922323160352874
+    ]
+   }
+  },
+  "confronti": {
+   "Mp + pista vs M0 solo gap": {
+    "miglioramento": -0.0297,
+    "M": 0.0312,
+    "supera_M": false,
+    "esclude_zero": false,
+    "esito": "RUMORE"
+   },
+   "Mfull pista+delta vs M0 solo gap": {
+    "miglioramento": -0.0274,
+    "M": 0.0312,
+    "supera_M": false,
+    "esclude_zero": false,
+    "esito": "RUMORE"
+   },
+   "Mp + pista vs M1 + delta-passo": {
+    "miglioramento": 0.0283,
+    "M": 0.0438,
+    "supera_M": false,
+    "esclude_zero": false,
+    "esito": "RUMORE"
+   },
+   "Mfull pista+delta vs M1 + delta-passo": {
+    "miglioramento": 0.0306,
+    "M": 0.0438,
+    "supera_M": false,
+    "esclude_zero": false,
+    "esito": "RUMORE"
+   }
+  },
+  "targhetta": {
+   "gare_sotto": 46,
+   "piste": 22,
+   "calcolato_il": "2026-07-21"
+  }
+ },
+ "stabilita": {
+  "sd_inter_mediana": 0.5051,
+  "se_intra_mediana": 0.3302,
+  "rapporto": 1.529,
+  "n_piste": 16,
+  "targhetta": {
+   "gare_sotto": 46,
+   "piste": 22,
+   "calcolato_il": "2026-07-21"
+  }
+ },
+ "regime_2026": {
+  "globali": {
+   "forma": "M1",
+   "a": 0.9197549856707872,
+   "c": 0.435163399912561,
+   "lam": 0.5
+  },
+  "theta": {
+   "Australian": 1.884,
+   "Austrian": 0.895,
+   "British": 0.59,
+   "Canadian": 0.21,
+   "Chinese": 1.281,
+   "Japanese": 0.065,
+   "Miami": 1.267,
+   "Monaco": 6.511,
+   "Spanish": 0.117
+  },
+  "spearman_con_storico": -0.024,
+  "targhetta": {
+   "gare_sotto": 10,
+   "piste": 10,
+   "calcolato_il": "2026-07-21"
+  }
+ }
+}

@@ -1,0 +1,227 @@
+{
+  "anno": 2026,
+  "gp": "Canadian Grand Prix",
+  "circuito": "Montréal",
+  "sessione": "Race",
+  "corner_max": 250.0,
+  "n_piloti": 21,
+  "piloti": {
+    "ANT": {
+      "team": "Mercedes",
+      "vmax": 319.5,
+      "cornering": 127.0,
+      "n_giri": 12,
+      "n_curve": 145
+    },
+    "HAM": {
+      "team": "Ferrari",
+      "vmax": 328.0,
+      "cornering": 128.0,
+      "n_giri": 12,
+      "n_curve": 153
+    },
+    "VER": {
+      "team": "Red Bull Racing",
+      "vmax": 319.0,
+      "cornering": 127.5,
+      "n_giri": 12,
+      "n_curve": 144
+    },
+    "LEC": {
+      "team": "Ferrari",
+      "vmax": 318.0,
+      "cornering": 126.0,
+      "n_giri": 12,
+      "n_curve": 153
+    },
+    "HAD": {
+      "team": "Red Bull Racing",
+      "vmax": 320.0,
+      "cornering": 123.0,
+      "n_giri": 12,
+      "n_curve": 144
+    },
+    "COL": {
+      "team": "Alpine",
+      "vmax": 312.5,
+      "cornering": 125.0,
+      "n_giri": 12,
+      "n_curve": 146
+    },
+    "LAW": {
+      "team": "Racing Bulls",
+      "vmax": 313.5,
+      "cornering": 121.0,
+      "n_giri": 12,
+      "n_curve": 145
+    },
+    "GAS": {
+      "team": "Alpine",
+      "vmax": 315.5,
+      "cornering": 121.0,
+      "n_giri": 12,
+      "n_curve": 144
+    },
+    "SAI": {
+      "team": "Williams",
+      "vmax": 312.5,
+      "cornering": 124.0,
+      "n_giri": 12,
+      "n_curve": 145
+    },
+    "BEA": {
+      "team": "Haas F1 Team",
+      "vmax": 314.5,
+      "cornering": 122.0,
+      "n_giri": 12,
+      "n_curve": 155
+    },
+    "PIA": {
+      "team": "McLaren",
+      "vmax": 318.5,
+      "cornering": 124.0,
+      "n_giri": 12,
+      "n_curve": 145
+    },
+    "HUL": {
+      "team": "Audi",
+      "vmax": 314.5,
+      "cornering": 125.0,
+      "n_giri": 12,
+      "n_curve": 146
+    },
+    "BOR": {
+      "team": "Audi",
+      "vmax": 311.5,
+      "cornering": 124.0,
+      "n_giri": 12,
+      "n_curve": 146
+    },
+    "OCO": {
+      "team": "Haas F1 Team",
+      "vmax": 318.0,
+      "cornering": 120.0,
+      "n_giri": 12,
+      "n_curve": 156
+    },
+    "STR": {
+      "team": "Aston Martin",
+      "vmax": 313.0,
+      "cornering": 117.0,
+      "n_giri": 12,
+      "n_curve": 156
+    },
+    "BOT": {
+      "team": "Cadillac",
+      "vmax": 309.0,
+      "cornering": 120.0,
+      "n_giri": 12,
+      "n_curve": 156
+    },
+    "PER": {
+      "team": "Cadillac",
+      "vmax": 313.0,
+      "cornering": 123.5,
+      "n_giri": 12,
+      "n_curve": 156
+    },
+    "NOR": {
+      "team": "McLaren",
+      "vmax": 320.5,
+      "cornering": 125.0,
+      "n_giri": 12,
+      "n_curve": 145
+    },
+    "RUS": {
+      "team": "Mercedes",
+      "vmax": 320.0,
+      "cornering": 127.0,
+      "n_giri": 12,
+      "n_curve": 146
+    },
+    "ALO": {
+      "team": "Aston Martin",
+      "vmax": 321.0,
+      "cornering": 122.0,
+      "n_giri": 12,
+      "n_curve": 156
+    },
+    "ALB": {
+      "team": "Williams",
+      "vmax": 320.0,
+      "cornering": 121.0,
+      "n_giri": 8,
+      "n_curve": 98
+    }
+  },
+  "team": {
+    "Mercedes": {
+      "vmax": 319.8,
+      "cornering": 127.0,
+      "n_auto": 2
+    },
+    "Ferrari": {
+      "vmax": 323.0,
+      "cornering": 127.0,
+      "n_auto": 2
+    },
+    "Red Bull Racing": {
+      "vmax": 319.5,
+      "cornering": 125.2,
+      "n_auto": 2
+    },
+    "Alpine": {
+      "vmax": 314.0,
+      "cornering": 123.0,
+      "n_auto": 2
+    },
+    "Racing Bulls": {
+      "vmax": 313.5,
+      "cornering": 121.0,
+      "n_auto": 1
+    },
+    "Williams": {
+      "vmax": 316.2,
+      "cornering": 122.5,
+      "n_auto": 2
+    },
+    "Haas F1 Team": {
+      "vmax": 316.2,
+      "cornering": 121.0,
+      "n_auto": 2
+    },
+    "McLaren": {
+      "vmax": 319.5,
+      "cornering": 124.5,
+      "n_auto": 2
+    },
+    "Audi": {
+      "vmax": 313.0,
+      "cornering": 124.5,
+      "n_auto": 2
+    },
+    "Aston Martin": {
+      "vmax": 317.0,
+      "cornering": 119.5,
+      "n_auto": 2
+    },
+    "Cadillac": {
+      "vmax": 311.0,
+      "cornering": 121.8,
+      "n_auto": 2
+    }
+  },
+  "dna": {
+    "full_throttle_pct": 71.2,
+    "top": 320.0,
+    "n_curve": 14,
+    "curve_lente": 7,
+    "curve_medie": 5,
+    "curve_veloci": 2,
+    "vel_curva_med": 130.0,
+    "lunghezza_m": 4328.0,
+    "n_giri": 12
+  },
+  "data": "2026-05-24",
+  "round": 5
+}

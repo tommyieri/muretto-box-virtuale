@@ -1,0 +1,39 @@
+{
+  "_README": "Provenienza dei valori di pitloss.json (che resta l'UNICA fonte dei numeri: qui non ci sono valori, solo metadati — nessuna divergenza possibile). Nessun codice legge questo file. provenienza: 'realizzato' = misurato/verificato sulla gara demo stessa (protocollo FF5); 'tipico' = stima di circuito da censimento, gara non misurata; 'non_misurato' = ereditato f1db / non verificato. Una gara ASSENTE da questo file = appena pubblicata dallo staging, valore tipico dal CSV, non ancora verificata (il protocollo post-gara FF5 aggiunge la riga). ATTENZIONE: pipeline_gara.py pubblica() sovrascrive pitloss.json[gara] col valore CSV a OGNI ri-pubblicazione — una gara 'realizzato' ri-pubblicata perderebbe il valore attivato senza toccare questo file: vedi NOTA_PITLOSS_PERGARA.md.",
+  "Australia": {
+    "provenienza": "non_misurato",
+    "nota": "Eredita' f1db (durata transito). Misura FF5 agli atti (realizzato 24,10) NON attivata: gara SC-dominata (8/9 casi ATT6 sotto SC) e dispersa (IQR 10,2 su 7 stop) — nessun valore unico la serve; l'errore mediano verde (-5,95) resta documentato."
+  },
+  "Cina": {
+    "provenienza": "non_misurato",
+    "nota": "Eredita' f1db. Gara 2026 NON misurabile (n=4 stop validi, di cui due rotti: transiti 37 e 47 s)."
+  },
+  "Giappone": {
+    "provenienza": "non_misurato",
+    "nota": "Eredita' f1db. Gara 2026 NON misurabile (n=4); realizzato stimato 22,79 (delta 0,93, sarebbe comunque GIA' CALIBRATA)."
+  },
+  "Miami": {
+    "provenienza": "realizzato",
+    "nota": "FF5, attivato al checkpoint PO del 14/07/2026 (era 22,63). Misura: 18 stop, IQR 0,98; ATT6 v2: 6 migliorati sensibili su pit verdi, 0 peggiorati. Golden PIA P14->P12."
+  },
+  "Canada": {
+    "provenienza": "non_misurato",
+    "nota": "Eredita' f1db (durata transito). Realizzato FF5 = 24,24 -> GIA' CALIBRATA per coincidenza (delta 0,13): la gara 2026 era atipica (+4,5 sul tipico 19,70) e la durata f1db le capita vicino. Il tipico di circuito (~19,7) vale solo per lo staging, non per questa gara."
+  },
+  "Monaco": {
+    "provenienza": "non_misurato",
+    "nota": "24.80 = pit-loss + traffico al rientro (coda in pit-exit). Le due quantita' NON sono separabili a Monaco (FF3). Il valore funziona perche' assorbe un effetto non modellato: NON correggerlo verso il pit-loss \"vero\" senza aver prima modellato il traffico al rientro, o la demo peggiora. Stesso pattern dell'SC ratio 0,42."
+  },
+  "Spagna": {
+    "provenienza": "non_misurato",
+    "nota": "Eredita' f1db. Misura FF5 agli atti (realizzato 24,59, n=35, IQR 1,93) NON attivata: ai ranghi ATT6 4 sensibili peggiorati vs 1 migliorato (tutti +-1), nessuna evidenza a favore."
+  },
+  "Austria": {
+    "provenienza": "non_misurato",
+    "nota": "Eredita' f1db. Realizzato FF5 = 21,98 -> GIA' CALIBRATA (delta 0,35)."
+  },
+  "Gran Bretagna": {
+    "provenienza": "realizzato",
+    "nota": "20,80 = tipico di circuito FF2 (7 blocchi 2018-2026), attivato con ATT6 v1 (PR #26) e VERIFICATO sulla gara demo: realizzato FF5 = 20,43, delta 0,37 -> GIA' CALIBRATA. Confermato anche da FF4 a giro intero (20,22)."
+  }
+}
