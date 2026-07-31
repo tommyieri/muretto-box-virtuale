@@ -9,7 +9,7 @@
 // fa al congelamento, e il secco SOSTE_RIVALI serve a misurare quanto costa
 // quell'ignoranza invece di nasconderla in una media.
 
-import { regimeNeutralizzato, passoUtilizzabile } from '../../provenienza/definizioni.mjs';
+import { passoUtilizzabile, regimeDiCella, regimeNeutralizzato } from '../../provenienza/definizioni.mjs';
 import { simboliStatus } from '../../provenienza/vocabolario.mjs';
 import { osservazioniVerdi } from '../../provenienza/gare_indice.mjs';
 import { simulate } from '../../engine/kernel.mjs';
@@ -21,16 +21,26 @@ const rango = (elenco, chiave, drv) =>
   [...elenco].sort((a, b) => chiave(a) - chiave(b) || (a.drv < b.drv ? -1 : 1)).findIndex((x) => x.drv === drv) + 1;
 
 /** SC ha la precedenza su VSC quando lo status li porta entrambi. */
-function regimeDellaSosta(celle, L) {
-  for (const lap of [L, L + 1]) {
-    const c = celle.get(lap);
-    if (!c || c.status === null || !regimeNeutralizzato(c)) continue;
-    const simboli = simboliStatus(c.status);
-    if (simboli.has('4')) return 'SC';
-    if (simboli.has('6')) return 'VSC';
-  }
-  return null;
-}
+// IL REGIME SI LEGGE AL CONGELAMENTO, non al giro della sosta (corretto il
+// 01/08/2026, trovato dal confronto fra i due motori).
+//
+// Questa funzione guardava i giri L e L+1, cioe' il FUTURO rispetto al
+// congelamento Lf = L-1. La banda usciva percio' calibrata su un'informazione
+// che il prodotto NON ha nel momento in cui risponde: e' E14 del catalogo — la
+// tabella di neutralizzazione che veniva dal futuro — annidata nella
+// calibrazione invece che nel motore, dove nessuna sentinella di troncamento
+// poteva vederla (s14 verifica il motore, non il banco).
+//
+// Il prezzo: la banda dichiarava di coprire l'88,5% e sul metro del prodotto ne
+// copriva il 67,3%, con 9 gare su 11 sotto il livello dichiarato. Il divario si
+// spiega senza residuo: dove il regime al giro della sosta e' gia' quello che si
+// vede al congelamento la copertura e' l'84,2%; dove la neutralizzazione esce
+// DOPO, il 32,9%. La banda era brava a coprire un mondo in cui si sa il futuro.
+//
+// Ora si chiede la stessa cosa che chiede il motore, allo stesso modo e allo
+// stesso modulo (`regimeDiCella` di provenienza/definizioni.mjs): se la
+// copertura scende, e' la copertura vera che scende — prima era il metro a
+// essere generoso.
 
 export function misuraRientro(gare, { rho, delta70, prior, cancelli }) {
   const { min_giri_base: minGiriBase, min_piloti_confrontabili: minPiloti, orizzonte_giri: STEPS } = cancelli;
@@ -71,7 +81,7 @@ export function misuraRientro(gare, { rho, delta70, prior, cancelli }) {
           basiPerLf.set(Lf, stimaBasi(osservazioni, { delta70, rho, nGiri: gara.nGiri, finoA: Lf, minGiri: minGiriBase }));
         }
         const basi = basiPerLf.get(Lf);
-        const regime = regimeDellaSosta(celle, L);
+        const regime = regimeDiCella(alCongelamento);
         const perdita = perditaBox(prior, nomeGara, regime);
         if (perdita.fallback) gareFallback.add(nomeGara);
 

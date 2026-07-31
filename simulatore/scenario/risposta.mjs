@@ -17,7 +17,7 @@
 // PURO: nessun accesso al disco. Contesto e costanti arrivano dal chiamante —
 // in Node letti dal disco, in pagina dal `contesto_live.json` trasportato.
 import { MESCOLE_SLICK, simboliStatus } from '../provenienza/vocabolario.mjs';
-import { regimeNeutralizzato } from '../provenienza/definizioni.mjs';
+import { regimeDiCella } from '../provenienza/definizioni.mjs';
 import { doveRientri, curvaDelQuando } from './costruttore.mjs';
 import { pianoOttimo } from './piano.mjs';
 import { allarmiPiano } from './allarmi.mjs';
@@ -30,9 +30,7 @@ export function mescolaAlGiro(gara, Lf, pilota) {
 
 /** Il regime al congelamento: 'SC', 'VSC' o null. */
 export function regimeAlGiro(gara, Lf, pilota) {
-  const c = gara.perPilota.get(pilota)?.get(Lf);
-  if (!c || c.status === null || !regimeNeutralizzato(c)) return null;
-  return simboliStatus(c.status).has('4') ? 'SC' : 'VSC';
+  return regimeDiCella(gara.perPilota.get(pilota)?.get(Lf));
 }
 
 /**

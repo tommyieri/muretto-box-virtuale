@@ -67,6 +67,26 @@ function passoPulitoDi(cella, mescole) {
   return true;
 }
 
+/**
+ * IL REGIME DI UNA CELLA: 'SC', 'VSC' oppure null.
+ *
+ * Stava scritta in TRE posti — scenario/costruttore.mjs (regimeAlCongelamento),
+ * scenario/risposta.mjs (regimeAlGiro) e banco/misure/rientro.mjs
+ * (regimeDellaSosta, che pero' guardava anche il giro DOPO). Tre copie della
+ * stessa domanda, e non erano nemmeno d'accordo: quella del banco leggeva il
+ * futuro rispetto al congelamento, ed e' cosi' che la banda di rientro e'
+ * finita calibrata su un'informazione che il prodotto non ha (E14 del
+ * catalogo, dentro la calibrazione invece che dentro il motore).
+ *
+ * Da qui in poi la domanda si fa a questo modulo. Se un giorno servisse
+ * guardare avanti, quella e' un'ALTRA funzione con un altro nome, non un
+ * parametro in piu' su questa.
+ */
+export function regimeDiCella(cella) {
+  if (!cella || cella.status === null || !regimeNeutralizzato(cella)) return null;
+  return simboliStatus(cella.status).has('4') ? 'SC' : 'VSC';
+}
+
 export function verde(cella) {
   return passoPulitoDi(cella, MESCOLE_SLICK);
 }

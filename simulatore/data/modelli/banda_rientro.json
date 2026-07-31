@@ -14,31 +14,6 @@
   "n_gare": 11,
   "contesti": {
     "VERDE": {
-      "semi_ampiezza": 1,
-      "banda": {
-        "sotto": 1,
-        "sopra": 1
-      },
-      "asimmetrica": false,
-      "bias_mediano_posizioni": 0,
-      "n_casi": 209,
-      "copertura_fuori_campione": 0.8852,
-      "copertura_dentro_campione": 0.8852,
-      "circuiti_sotto_livello": [
-        {
-          "gara": "Belgio",
-          "copertura": 0.75,
-          "n_casi": 8
-        },
-        {
-          "gara": "Spagna",
-          "copertura": 0.775,
-          "n_casi": 40
-        }
-      ],
-      "targhetta": "banda ±1 posizioni, misurata su 209 soste vere del 2026: copre il 88.5% fuori campione"
-    },
-    "NEUTRA": {
       "semi_ampiezza": 2,
       "banda": {
         "sotto": 2,
@@ -46,23 +21,48 @@
       },
       "asimmetrica": false,
       "bias_mediano_posizioni": 0,
-      "n_casi": 189,
-      "copertura_fuori_campione": 0.8571,
+      "n_casi": 314,
+      "copertura_fuori_campione": 0.8758,
+      "copertura_dentro_campione": 0.8917,
+      "circuiti_sotto_livello": [
+        {
+          "gara": "Australia",
+          "copertura": 0.5357,
+          "n_casi": 28
+        },
+        {
+          "gara": "Cina",
+          "copertura": 0.5385,
+          "n_casi": 13
+        },
+        {
+          "gara": "Belgio",
+          "copertura": 0.7368,
+          "n_casi": 19
+        }
+      ],
+      "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 87.6% fuori campione"
+    },
+    "NEUTRA": {
+      "semi_ampiezza": 3,
+      "banda": {
+        "sotto": 4,
+        "sopra": 3
+      },
+      "asimmetrica": true,
+      "bias_mediano_posizioni": 1,
+      "n_casi": 84,
+      "copertura_fuori_campione": 0.6548,
       "copertura_dentro_campione": 0.8571,
       "circuiti_sotto_livello": [
         {
           "gara": "Monaco",
-          "copertura": 0.7031,
-          "n_casi": 64
-        },
-        {
-          "gara": "Australia",
-          "copertura": 0.7727,
-          "n_casi": 22
+          "copertura": 0.5085,
+          "n_casi": 59
         }
       ],
-      "targhetta": "banda ±2 posizioni, misurata su 189 soste vere del 2026: copre il 85.7% fuori campione"
+      "targhetta": "banda ±3 posizioni, misurata su 84 soste vere del 2026: copre il 65.5% fuori campione"
     }
   },
-  "contesto_non_separa": "misurato: la vicinanza dei rivali NON separa l'errore in modo distinguibile dal caso (p = 0.29007 alla soglia dichiarata di 2 s). Una banda sola per contesto, non due: una distinzione senza differenza misurata non si tiene \"tanto per\""
+  "contesto_non_separa": "misurato: la vicinanza dei rivali NON separa l'errore in modo distinguibile dal caso (p = 0.46975 alla soglia dichiarata di 2 s). Una banda sola per contesto, non due: una distinzione senza differenza misurata non si tiene \"tanto per\""
 }
