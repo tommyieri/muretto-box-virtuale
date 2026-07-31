@@ -1,0 +1,330 @@
+{
+  "_targhetta": {
+    "tipo": "ESITO di fase — misurato sul fondo 2018-2025, gare bagnate",
+    "prereg": "banco/prereg/PREREG_bagnato.md",
+    "prodotto_da": "fisica/stima_bagnato.py",
+    "fonte": "data/viste/bagnato_fondo.json",
+    "sha256_vista": "1b4ba3e23d9a08bac251599f8a6577c177507611d5cb0bfd785d3edc483a5ea2",
+    "data": "2026-07-29",
+    "avvertenza": "le grandezze qui dentro sono DIAGNOSTICA DESCRITTIVA, non un modello: nessuna è stata validata da un cancello e nessuna deve essere consumata come parametro (per questo l'esito non sta in data/modelli/)"
+  },
+  "verdetto": "NON ESEGUIBILE SU QUESTO FONDO",
+  "motivo": "1 gare giudicabili su 20 bagnate, contro le 8 richieste dalla prereg. Una validazione leave-one-race-out sotto quella soglia non è una misura.",
+  "conseguenza": "il selettore Wet resta SPENTO, con la sua targhetta «modello non ancora misurato». Sentinella: banco/sentinelle/s23_bagnato.mjs",
+  "criterio_dichiarato": {
+    "min_piloti_per_famiglia": 3,
+    "min_giri_misti": 5,
+    "min_gare_giudicabili": 8,
+    "tolleranza_giri": 3,
+    "max_errore_assoluto_mediano": 2,
+    "quota_riprodotte": 0.7
+  },
+  "n_gare_bagnate": 20,
+  "n_gare_giudicabili": 1,
+  "gare_giudicabili": [
+    "2023/Dutch_Grand_Prix"
+  ],
+  "sensibilita_al_criterio": [
+    {
+      "min_piloti": 1,
+      "min_giri_misti": 3,
+      "gare_con_finestra": 8,
+      "gare_con_cambio_di_segno": 5,
+      "dichiarato": false
+    },
+    {
+      "min_piloti": 1,
+      "min_giri_misti": 5,
+      "gare_con_finestra": 6,
+      "gare_con_cambio_di_segno": 4,
+      "dichiarato": false
+    },
+    {
+      "min_piloti": 1,
+      "min_giri_misti": 8,
+      "gare_con_finestra": 2,
+      "gare_con_cambio_di_segno": 2,
+      "dichiarato": false
+    },
+    {
+      "min_piloti": 2,
+      "min_giri_misti": 3,
+      "gare_con_finestra": 4,
+      "gare_con_cambio_di_segno": 3,
+      "dichiarato": false
+    },
+    {
+      "min_piloti": 2,
+      "min_giri_misti": 5,
+      "gare_con_finestra": 2,
+      "gare_con_cambio_di_segno": 1,
+      "dichiarato": false
+    },
+    {
+      "min_piloti": 3,
+      "min_giri_misti": 3,
+      "gare_con_finestra": 3,
+      "gare_con_cambio_di_segno": 1,
+      "dichiarato": false
+    },
+    {
+      "min_piloti": 3,
+      "min_giri_misti": 5,
+      "gare_con_finestra": 1,
+      "gare_con_cambio_di_segno": 1,
+      "dichiarato": true
+    }
+  ],
+  "nota_sensibilita": "il massimo di gare con cambio di segno si ottiene col criterio più permissivo, quello in cui la «mediana» di una famiglia è un giro singolo: resta comunque sotto le 8 richieste, quindi la conclusione non dipende dalla soglia scelta. La prereg vieta comunque di abbassarla.",
+  "gare_senza_riferimento_asciutto": [
+    "2020/Turkish_Grand_Prix",
+    "2021/Turkish_Grand_Prix",
+    "2022/Japanese_Grand_Prix",
+    "2024/São_Paulo_Grand_Prix"
+  ],
+  "nota_riferimento_asciutto": "4 gare su 20 non hanno un riferimento asciutto (meno di 30 giri slick puliti: resta null, regola 6). Sono le gare più bagnate, e sono proprio quelle in cui l'indicatore w del modello pre-registrato non è calcolabile, perché il riferimento sta al suo denominatore. Ostacolo indipendente dal conteggio delle gare giudicabili, messo a referto per la riesecuzione: chi riprenderà la fase dovrà scegliere un indicatore di bagnato che non richieda asciutto nella stessa gara, e quella scelta va pre-registrata.",
+  "causa_strutturale": "la transizione fra famiglie avviene ai box: i giri di cambio sono in-lap e out-lap (esclusi dal passo pulito) e molto spesso sotto Safety Car (esclusa). La finestra in cui due famiglie corrono davvero fianco a fianco e pulite è quasi vuota.",
+  "riesecuzione": "la fase si rieseguirà senza ridiscutere nulla quando il fondo conterrà più gare bagnate, o quando esisterà una fonte per-auto delle bandiere che permetta di ammettere giri oggi esclusi. Questo stimatore fallisce rumorosamente se la condizione di eseguibilità si dà, perché il modello va scritto allora.",
+  "diagnostica_per_gara": [
+    {
+      "chiave": "2018/German_Grand_Prix",
+      "giri_su_bagnato": 35,
+      "riferimento_asciutto_s": 76.335,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": 0.1886,
+      "dispersione_p10_p90_relativa": null,
+      "giudicabile": false
+    },
+    {
+      "chiave": "2019/German_Grand_Prix",
+      "giri_su_bagnato": 762,
+      "riferimento_asciutto_s": 77.485,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": 0.1932,
+      "dispersione_p10_p90_relativa": 0.0702,
+      "giudicabile": false
+    },
+    {
+      "chiave": "2020/Hungarian_Grand_Prix",
+      "giri_su_bagnato": 56,
+      "riferimento_asciutto_s": 79.581,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": 0.2167,
+      "dispersione_p10_p90_relativa": 0.0963,
+      "giudicabile": false
+    },
+    {
+      "chiave": "2020/Turkish_Grand_Prix",
+      "giri_su_bagnato": 1077,
+      "riferimento_asciutto_s": null,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": null,
+      "dispersione_p10_p90_relativa": null,
+      "giudicabile": false
+    },
+    {
+      "chiave": "2021/Emilia_Romagna_Grand_Prix",
+      "giri_su_bagnato": 498,
+      "riferimento_asciutto_s": 78.334,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": 0.1463,
+      "dispersione_p10_p90_relativa": 0.115,
+      "giudicabile": false
+    },
+    {
+      "chiave": "2021/Hungarian_Grand_Prix",
+      "giri_su_bagnato": 51,
+      "riferimento_asciutto_s": 81.436,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": null,
+      "dispersione_p10_p90_relativa": null,
+      "giudicabile": false
+    },
+    {
+      "chiave": "2021/Russian_Grand_Prix",
+      "giri_su_bagnato": 67,
+      "riferimento_asciutto_s": 99.015,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": 0.1574,
+      "dispersione_p10_p90_relativa": 0.0752,
+      "giudicabile": false
+    },
+    {
+      "chiave": "2021/Turkish_Grand_Prix",
+      "giri_su_bagnato": 1146,
+      "riferimento_asciutto_s": null,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": null,
+      "dispersione_p10_p90_relativa": null,
+      "giudicabile": false
+    },
+    {
+      "chiave": "2022/Emilia_Romagna_Grand_Prix",
+      "giri_su_bagnato": 329,
+      "riferimento_asciutto_s": 80.345,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": 0.1666,
+      "dispersione_p10_p90_relativa": 0.0426,
+      "giudicabile": false
+    },
+    {
+      "chiave": "2022/Japanese_Grand_Prix",
+      "giri_su_bagnato": 507,
+      "riferimento_asciutto_s": null,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": null,
+      "dispersione_p10_p90_relativa": null,
+      "giudicabile": false
+    },
+    {
+      "chiave": "2022/Monaco_Grand_Prix",
+      "giri_su_bagnato": 398,
+      "riferimento_asciutto_s": 76.583,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": 0.2409,
+      "dispersione_p10_p90_relativa": 0.1609,
+      "giudicabile": false
+    },
+    {
+      "chiave": "2022/Singapore_Grand_Prix",
+      "giri_su_bagnato": 588,
+      "riferimento_asciutto_s": 109.012,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": 0.1185,
+      "dispersione_p10_p90_relativa": 0.0509,
+      "giudicabile": false
+    },
+    {
+      "chiave": "2023/Dutch_Grand_Prix",
+      "giri_su_bagnato": 328,
+      "riferimento_asciutto_s": 74.57,
+      "giri_finestra_mista": 8,
+      "primo_giro_misto": 3,
+      "ultimo_giro_misto": 10,
+      "crossover_reale": 8,
+      "eccesso_mediano_bagnato_su_asciutto": 0.1378,
+      "dispersione_p10_p90_relativa": 0.0568,
+      "giudicabile": true
+    },
+    {
+      "chiave": "2023/Monaco_Grand_Prix",
+      "giri_su_bagnato": 444,
+      "riferimento_asciutto_s": 76.85,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": 0.2299,
+      "dispersione_p10_p90_relativa": 0.1996,
+      "giudicabile": false
+    },
+    {
+      "chiave": "2024/British_Grand_Prix",
+      "giri_su_bagnato": 234,
+      "riferimento_asciutto_s": 89.635,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": 0.1587,
+      "dispersione_p10_p90_relativa": 0.0805,
+      "giudicabile": false
+    },
+    {
+      "chiave": "2024/Canadian_Grand_Prix",
+      "giri_su_bagnato": 846,
+      "riferimento_asciutto_s": 75.963,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": 0.1639,
+      "dispersione_p10_p90_relativa": 0.1258,
+      "giudicabile": false
+    },
+    {
+      "chiave": "2024/São_Paulo_Grand_Prix",
+      "giri_su_bagnato": 1135,
+      "riferimento_asciutto_s": null,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": null,
+      "dispersione_p10_p90_relativa": null,
+      "giudicabile": false
+    },
+    {
+      "chiave": "2025/Australian_Grand_Prix",
+      "giri_su_bagnato": 750,
+      "riferimento_asciutto_s": 82.97,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": 0.1071,
+      "dispersione_p10_p90_relativa": 0.06,
+      "giudicabile": false
+    },
+    {
+      "chiave": "2025/Belgian_Grand_Prix",
+      "giri_su_bagnato": 239,
+      "riferimento_asciutto_s": 106.205,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": 0.1591,
+      "dispersione_p10_p90_relativa": 0.0263,
+      "giudicabile": false
+    },
+    {
+      "chiave": "2025/British_Grand_Prix",
+      "giri_su_bagnato": 608,
+      "riferimento_asciutto_s": 90.047,
+      "giri_finestra_mista": 0,
+      "primo_giro_misto": null,
+      "ultimo_giro_misto": null,
+      "crossover_reale": null,
+      "eccesso_mediano_bagnato_su_asciutto": 0.1566,
+      "dispersione_p10_p90_relativa": 0.0762,
+      "giudicabile": false
+    }
+  ]
+}

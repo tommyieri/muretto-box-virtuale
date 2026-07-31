@@ -1,0 +1,114 @@
+{
+ "_targhetta": {
+  "tipo": "cancelli PRE-REGISTRATI — copia leggibile dagli script",
+  "prereg": "banco/prereg/PREREG_banco.md",
+  "regola": "le attese non si cablano nei test (E07): i test leggono da qui, e s15 verifica che ogni numero qui presente compaia anche nella prereg in parole",
+  "modifica": "cambiare un numero qui senza cambiare la prereg è riscrivere un cancello dopo aver visto il risultato (regola 3): s15 lo impedisce"
+ },
+ "rientro": {
+  "congelamento": "L-1",
+  "orizzonte_giri": 2,
+  "min_giri_base": 8,
+  "min_piloti_confrontabili": 5,
+  "min_casi_secco": 10,
+  "secchi": [
+   "PULITA",
+   "SOSTE_RIVALI",
+   "NEUTRA"
+  ],
+  "non_regressione_mediana_errore": 0.25,
+  "non_regressione_quota_entro_1_pp": 5,
+  "attesa_sanita": "mediana|errore| PULITA <= mediana|errore| SOSTE_RIVALI"
+ },
+ "g0_primo": {
+  "congelamenti": [
+   10,
+   20,
+   30,
+   40
+  ],
+  "min_giri_rimanenti": 4,
+  "min_giri_base": 8,
+  "tolleranza_bordo_giri": 3,
+  "quota_passaggio_richiesta": 1.0,
+  "stato": "RITIRATA",
+  "ritirata_da": "banco/prereg/PREREG_G0_secondo.md",
+  "motivo_ritiro": "clausola di bordo a due code: bocciava la risposta corretta quando k* cade molto prima del primo giro utile (E08 ripetuto). Resta a referto, non fa piu cancello."
+ },
+ "bias": {
+  "congelamenti": [
+   20,
+   30
+  ],
+  "orizzonti": [
+   5,
+   10,
+   20
+  ],
+  "min_giri_base": 8,
+  "min_piloti_gara": 5,
+  "min_gare_orizzonte": 5,
+  "soglia_bias": 0.17,
+  "soglia_piattezza": 0.1,
+  "non_regressione_bias": 0.02
+ },
+ "g0_secondo": {
+  "prereg": "banco/prereg/PREREG_G0_secondo.md",
+  "congelamenti": [
+   10,
+   20,
+   30,
+   40
+  ],
+  "min_giri_rimanenti": 4,
+  "min_giri_base": 8,
+  "tolleranza_bordo_giri": 3,
+  "clausola_bordo": "unilaterale",
+  "quota_passaggio_richiesta": 1.0
+ },
+ "multistint": {
+  "prereg": "banco/prereg/PREREG_multistint.md",
+  "griglia_R": [
+   12,
+   20,
+   30,
+   40
+  ],
+  "griglia_eta": [
+   0,
+   5,
+   12
+  ],
+  "griglia_perdita": [
+   18.4,
+   22.1,
+   28.1
+  ],
+  "k_massimo": 3,
+  "quota_passaggio_richiesta": 1.0,
+  "congelamenti": [
+   15,
+   30
+  ],
+  "min_giri_rimanenti": 8,
+  "piloti_per_gara": 3,
+  "min_casi_obbligati": 1
+ },
+ "difesa": {
+  "prereg": "banco/prereg/PREREG_difesa.md",
+  "livello_banda": 0.8,
+  "min_gare": 8,
+  "min_casi_secco": 10,
+  "soglia_vicinanza_s": 2,
+  "soglie_sensibilita": [
+   1,
+   2,
+   3,
+   5
+  ],
+  "permutazioni": 10000,
+  "alpha": 0.05,
+  "seme": 20260730,
+  "bias_massimo_simmetrico_posizioni": 1
+ }
+}

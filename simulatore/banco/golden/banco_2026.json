@@ -1,0 +1,961 @@
+{
+  "_targhetta": {
+    "tipo": "misurato sulle 11 gare 2026 dal grezzo pinnato",
+    "prereg": [
+      "banco/prereg/PREREG_banco.md",
+      "banco/prereg/PREREG_G0_secondo.md"
+    ],
+    "modello": "data/modelli/modello_v2.json",
+    "rho": 0.030776,
+    "delta_70": 2.2,
+    "pitloss": "prior esterno data/priors/pitloss_priors.json — NON misurato sul nostro fondo",
+    "generato_da": "banco/misura_tutto.mjs"
+  },
+  "rientro": {
+    "n_soste": 398,
+    "n_scarti": 61,
+    "secchi": {
+      "PULITA": {
+        "n": 35,
+        "sufficiente": true,
+        "mediana_errore_assoluto": 0,
+        "errore_medio_con_segno": -0.3143,
+        "quota_entro_1": 0.9429,
+        "quota_entro_2": 0.9714
+      },
+      "SOSTE_RIVALI": {
+        "n": 174,
+        "sufficiente": true,
+        "mediana_errore_assoluto": 0,
+        "errore_medio_con_segno": 0.408,
+        "quota_entro_1": 0.8736,
+        "quota_entro_2": 0.9655
+      },
+      "NEUTRA": {
+        "n": 189,
+        "sufficiente": true,
+        "mediana_errore_assoluto": 1,
+        "errore_medio_con_segno": 0.7725,
+        "quota_entro_1": 0.6772,
+        "quota_entro_2": 0.8571
+      }
+    },
+    "gare_con_pitloss_di_ripiego": [
+      "Giappone"
+    ],
+    "attesa_sanita": {
+      "enunciato": "mediana|errore| PULITA <= mediana|errore| SOSTE_RIVALI",
+      "PULITA": 0,
+      "SOSTE_RIVALI": 0,
+      "regge": true
+    }
+  },
+  "g0": {
+    "n_casi": 799,
+    "n_interni": 673,
+    "n_al_bordo": 126,
+    "n_esclusi": 0,
+    "passati": 799,
+    "quota_passaggio": 1,
+    "falliti": [],
+    "g0_primo_ritirata": {
+      "passati": 731,
+      "quota_passaggio": 0.914894,
+      "n_falliti": 68,
+      "targhetta": "metrica RITIRATA — clausola di bordo a due code, bocciava la risposta corretta al bordo; resta a referto, non fa cancello (banco/prereg/PREREG_G0_secondo.md)"
+    }
+  },
+  "bias": {
+    "5": {
+      "n_finestre": 16,
+      "n_gare": 11,
+      "giudicabile": true,
+      "bias": 0.072831
+    },
+    "10": {
+      "n_finestre": 10,
+      "n_gare": 8,
+      "giudicabile": true,
+      "bias": -0.07696
+    },
+    "20": {
+      "n_finestre": 4,
+      "n_gare": 3,
+      "giudicabile": false,
+      "bias": -0.292759
+    }
+  },
+  "multistint": {
+    "m1": {
+      "n_casi": 144,
+      "n_ammessi": 120,
+      "n_al_bordo": 24,
+      "forma_chiusa": {
+        "passati": 120,
+        "quota": 1,
+        "falliti": []
+      },
+      "ricerca": {
+        "passati": 144,
+        "quota": 1,
+        "falliti": []
+      },
+      "k_ottimo": {
+        "n": 36,
+        "passati": 36,
+        "quota": 1,
+        "casi": [
+          {
+            "R": 12,
+            "a": 0,
+            "perdita": 18.4,
+            "k_vincente": 0,
+            "k_continuo": -0.653,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 12,
+            "a": 0,
+            "perdita": 22.1,
+            "k_vincente": 0,
+            "k_continuo": -0.6834,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 12,
+            "a": 0,
+            "perdita": 28.1,
+            "k_vincente": 0,
+            "k_continuo": -0.7192,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 12,
+            "a": 5,
+            "perdita": 18.4,
+            "k_vincente": 0,
+            "k_continuo": -0.5084,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 12,
+            "a": 5,
+            "perdita": 22.1,
+            "k_vincente": 0,
+            "k_continuo": -0.5514,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 12,
+            "a": 5,
+            "perdita": 28.1,
+            "k_vincente": 0,
+            "k_continuo": -0.6022,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 12,
+            "a": 12,
+            "perdita": 18.4,
+            "k_vincente": 0,
+            "k_continuo": -0.3059,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 12,
+            "a": 12,
+            "perdita": 22.1,
+            "k_vincente": 0,
+            "k_continuo": -0.3667,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 12,
+            "a": 12,
+            "perdita": 28.1,
+            "k_vincente": 0,
+            "k_continuo": -0.4384,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 20,
+            "a": 0,
+            "perdita": 18.4,
+            "k_vincente": 0,
+            "k_continuo": -0.4216,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 20,
+            "a": 0,
+            "perdita": 22.1,
+            "k_vincente": 0,
+            "k_continuo": -0.4723,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 20,
+            "a": 0,
+            "perdita": 28.1,
+            "k_vincente": 0,
+            "k_continuo": -0.532,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 20,
+            "a": 5,
+            "perdita": 18.4,
+            "k_vincente": 0,
+            "k_continuo": -0.277,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 20,
+            "a": 5,
+            "perdita": 22.1,
+            "k_vincente": 0,
+            "k_continuo": -0.3403,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 20,
+            "a": 5,
+            "perdita": 28.1,
+            "k_vincente": 0,
+            "k_continuo": -0.415,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 20,
+            "a": 12,
+            "perdita": 18.4,
+            "k_vincente": 0,
+            "k_continuo": -0.0746,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 20,
+            "a": 12,
+            "perdita": 22.1,
+            "k_vincente": 0,
+            "k_continuo": -0.1556,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 20,
+            "a": 12,
+            "perdita": 28.1,
+            "k_vincente": 0,
+            "k_continuo": -0.2512,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 30,
+            "a": 0,
+            "perdita": 18.4,
+            "k_vincente": 0,
+            "k_continuo": -0.1324,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 30,
+            "a": 0,
+            "perdita": 22.1,
+            "k_vincente": 0,
+            "k_continuo": -0.2084,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 30,
+            "a": 0,
+            "perdita": 28.1,
+            "k_vincente": 0,
+            "k_continuo": -0.298,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 30,
+            "a": 5,
+            "perdita": 18.4,
+            "k_vincente": 0,
+            "k_continuo": 0.0122,
+            "tipo": "interno",
+            "passa": true
+          },
+          {
+            "R": 30,
+            "a": 5,
+            "perdita": 22.1,
+            "k_vincente": 0,
+            "k_continuo": -0.0764,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 30,
+            "a": 5,
+            "perdita": 28.1,
+            "k_vincente": 0,
+            "k_continuo": -0.181,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 30,
+            "a": 12,
+            "perdita": 18.4,
+            "k_vincente": 0,
+            "k_continuo": 0.2146,
+            "tipo": "interno",
+            "passa": true
+          },
+          {
+            "R": 30,
+            "a": 12,
+            "perdita": 22.1,
+            "k_vincente": 0,
+            "k_continuo": 0.1083,
+            "tipo": "interno",
+            "passa": true
+          },
+          {
+            "R": 30,
+            "a": 12,
+            "perdita": 28.1,
+            "k_vincente": 0,
+            "k_continuo": -0.0172,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 40,
+            "a": 0,
+            "perdita": 18.4,
+            "k_vincente": 0,
+            "k_continuo": 0.1568,
+            "tipo": "interno",
+            "passa": true
+          },
+          {
+            "R": 40,
+            "a": 0,
+            "perdita": 22.1,
+            "k_vincente": 0,
+            "k_continuo": 0.0555,
+            "tipo": "interno",
+            "passa": true
+          },
+          {
+            "R": 40,
+            "a": 0,
+            "perdita": 28.1,
+            "k_vincente": 0,
+            "k_continuo": -0.064,
+            "tipo": "bordo",
+            "passa": true
+          },
+          {
+            "R": 40,
+            "a": 5,
+            "perdita": 18.4,
+            "k_vincente": 0,
+            "k_continuo": 0.3014,
+            "tipo": "interno",
+            "passa": true
+          },
+          {
+            "R": 40,
+            "a": 5,
+            "perdita": 22.1,
+            "k_vincente": 0,
+            "k_continuo": 0.1874,
+            "tipo": "interno",
+            "passa": true
+          },
+          {
+            "R": 40,
+            "a": 5,
+            "perdita": 28.1,
+            "k_vincente": 0,
+            "k_continuo": 0.0531,
+            "tipo": "interno",
+            "passa": true
+          },
+          {
+            "R": 40,
+            "a": 12,
+            "perdita": 18.4,
+            "k_vincente": 1,
+            "k_continuo": 0.5038,
+            "tipo": "interno",
+            "passa": true
+          },
+          {
+            "R": 40,
+            "a": 12,
+            "perdita": 22.1,
+            "k_vincente": 0,
+            "k_continuo": 0.3721,
+            "tipo": "interno",
+            "passa": true
+          },
+          {
+            "R": 40,
+            "a": 12,
+            "perdita": 28.1,
+            "k_vincente": 0,
+            "k_continuo": 0.2169,
+            "tipo": "interno",
+            "passa": true
+          }
+        ]
+      },
+      "bordo_diagnostica": {
+        "n": 24,
+        "riprodotti": 24,
+        "nota": "al bordo il riferimento è la forma chiusa RI-RISOLTA col vincolo che morde. Non fa cancello: la prereg ammette i casi con l'ottimo continuo dentro l'intervallo. Riportato perché un buco silenzioso nella copertura è peggio di un numero che non fa cancello"
+      }
+    },
+    "m2": {
+      "n_casi": 60,
+      "passati": 60,
+      "quota": 1,
+      "falliti": []
+    },
+    "m3": {
+      "approvati": 59,
+      "quota": 1,
+      "n_obbligati_a_fermarsi": 32,
+      "cieco": false,
+      "obbligati_con_sosta": 32,
+      "falliti": []
+    },
+    "m4": {
+      "identici": 59,
+      "quota": 1,
+      "falliti": []
+    },
+    "n_casi_reali": 59,
+    "distribuzione_k": {
+      "0": 25,
+      "1": 34
+    }
+  },
+  "difesa": {
+    "n_casi": 398,
+    "n_gare": 11,
+    "complessiva": {
+      "sufficiente": true,
+      "n": 2,
+      "n_casi": 398,
+      "n_gare": 11,
+      "copertura_dentro_campione": 0.9146,
+      "copertura_fuori_campione": 0.8693,
+      "copertura_fuori_campione_n_meno_1": 0.7312,
+      "copre": true,
+      "minimale": true,
+      "passa": true,
+      "bias_mediano_posizioni": 0,
+      "asimmetrica": false,
+      "banda_dichiarata": {
+        "sotto": 2,
+        "sopra": 2
+      },
+      "per_gara": {
+        "Australia": {
+          "n_casi": 32,
+          "n_loo": 1,
+          "copertura": 0.5938
+        },
+        "Austria": {
+          "n_casi": 41,
+          "n_loo": 2,
+          "copertura": 0.9756
+        },
+        "Belgio": {
+          "n_casi": 20,
+          "n_loo": 2,
+          "copertura": 1
+        },
+        "Canada": {
+          "n_casi": 25,
+          "n_loo": 2,
+          "copertura": 1
+        },
+        "Cina": {
+          "n_casi": 14,
+          "n_loo": 2,
+          "copertura": 0.8571
+        },
+        "Giappone": {
+          "n_casi": 29,
+          "n_loo": 2,
+          "copertura": 0.9655
+        },
+        "GranBretagna": {
+          "n_casi": 49,
+          "n_loo": 2,
+          "copertura": 0.9592
+        },
+        "Miami": {
+          "n_casi": 19,
+          "n_loo": 2,
+          "copertura": 1
+        },
+        "Monaco": {
+          "n_casi": 78,
+          "n_loo": 1,
+          "copertura": 0.6282
+        },
+        "Spagna": {
+          "n_casi": 48,
+          "n_loo": 2,
+          "copertura": 0.9167
+        },
+        "Ungheria": {
+          "n_casi": 43,
+          "n_loo": 2,
+          "copertura": 1
+        }
+      }
+    },
+    "per_secco": {
+      "PULITA": {
+        "sufficiente": true,
+        "n": 1,
+        "n_casi": 35,
+        "n_gare": 9,
+        "copertura_dentro_campione": 0.9429,
+        "copertura_fuori_campione": 0.9429,
+        "copertura_fuori_campione_n_meno_1": 0.6286,
+        "copre": true,
+        "minimale": true,
+        "passa": true,
+        "bias_mediano_posizioni": 0,
+        "asimmetrica": false,
+        "banda_dichiarata": {
+          "sotto": 1,
+          "sopra": 1
+        },
+        "per_gara": {
+          "Australia": {
+            "n_casi": 5,
+            "n_loo": 1,
+            "copertura": 1
+          },
+          "Austria": {
+            "n_casi": 3,
+            "n_loo": 1,
+            "copertura": 1
+          },
+          "Canada": {
+            "n_casi": 3,
+            "n_loo": 1,
+            "copertura": 0.6667
+          },
+          "Cina": {
+            "n_casi": 5,
+            "n_loo": 1,
+            "copertura": 0.8
+          },
+          "Giappone": {
+            "n_casi": 5,
+            "n_loo": 1,
+            "copertura": 1
+          },
+          "GranBretagna": {
+            "n_casi": 2,
+            "n_loo": 1,
+            "copertura": 1
+          },
+          "Miami": {
+            "n_casi": 2,
+            "n_loo": 1,
+            "copertura": 1
+          },
+          "Monaco": {
+            "n_casi": 6,
+            "n_loo": 1,
+            "copertura": 1
+          },
+          "Spagna": {
+            "n_casi": 4,
+            "n_loo": 1,
+            "copertura": 1
+          }
+        }
+      },
+      "SOSTE_RIVALI": {
+        "sufficiente": true,
+        "n": 1,
+        "n_casi": 174,
+        "n_gare": 11,
+        "copertura_dentro_campione": 0.8736,
+        "copertura_fuori_campione": 0.8736,
+        "copertura_fuori_campione_n_meno_1": 0.6264,
+        "copre": true,
+        "minimale": true,
+        "passa": true,
+        "bias_mediano_posizioni": 0,
+        "asimmetrica": false,
+        "banda_dichiarata": {
+          "sotto": 1,
+          "sopra": 1
+        },
+        "per_gara": {
+          "Australia": {
+            "n_casi": 5,
+            "n_loo": 1,
+            "copertura": 1
+          },
+          "Austria": {
+            "n_casi": 30,
+            "n_loo": 1,
+            "copertura": 0.8333
+          },
+          "Belgio": {
+            "n_casi": 8,
+            "n_loo": 1,
+            "copertura": 0.75
+          },
+          "Canada": {
+            "n_casi": 5,
+            "n_loo": 1,
+            "copertura": 1
+          },
+          "Cina": {
+            "n_casi": 1,
+            "n_loo": 1,
+            "copertura": 1
+          },
+          "Giappone": {
+            "n_casi": 9,
+            "n_loo": 1,
+            "copertura": 0.8889
+          },
+          "GranBretagna": {
+            "n_casi": 20,
+            "n_loo": 1,
+            "copertura": 0.9
+          },
+          "Miami": {
+            "n_casi": 17,
+            "n_loo": 1,
+            "copertura": 0.8824
+          },
+          "Monaco": {
+            "n_casi": 8,
+            "n_loo": 1,
+            "copertura": 1
+          },
+          "Spagna": {
+            "n_casi": 36,
+            "n_loo": 1,
+            "copertura": 0.75
+          },
+          "Ungheria": {
+            "n_casi": 35,
+            "n_loo": 1,
+            "copertura": 0.9714
+          }
+        }
+      },
+      "NEUTRA": {
+        "sufficiente": true,
+        "n": 2,
+        "n_casi": 189,
+        "n_gare": 10,
+        "copertura_dentro_campione": 0.8571,
+        "copertura_fuori_campione": 0.8571,
+        "copertura_fuori_campione_n_meno_1": 0.6772,
+        "copre": true,
+        "minimale": true,
+        "passa": true,
+        "bias_mediano_posizioni": 0,
+        "asimmetrica": false,
+        "banda_dichiarata": {
+          "sotto": 2,
+          "sopra": 2
+        },
+        "per_gara": {
+          "Australia": {
+            "n_casi": 22,
+            "n_loo": 2,
+            "copertura": 0.7727
+          },
+          "Austria": {
+            "n_casi": 8,
+            "n_loo": 2,
+            "copertura": 1
+          },
+          "Belgio": {
+            "n_casi": 12,
+            "n_loo": 2,
+            "copertura": 1
+          },
+          "Canada": {
+            "n_casi": 17,
+            "n_loo": 2,
+            "copertura": 1
+          },
+          "Cina": {
+            "n_casi": 8,
+            "n_loo": 2,
+            "copertura": 0.875
+          },
+          "Giappone": {
+            "n_casi": 15,
+            "n_loo": 2,
+            "copertura": 0.9333
+          },
+          "GranBretagna": {
+            "n_casi": 27,
+            "n_loo": 2,
+            "copertura": 0.963
+          },
+          "Monaco": {
+            "n_casi": 64,
+            "n_loo": 2,
+            "copertura": 0.7031
+          },
+          "Spagna": {
+            "n_casi": 8,
+            "n_loo": 2,
+            "copertura": 1
+          },
+          "Ungheria": {
+            "n_casi": 8,
+            "n_loo": 2,
+            "copertura": 1
+          }
+        }
+      }
+    },
+    "per_prodotto": {
+      "VERDE": {
+        "sufficiente": true,
+        "n": 1,
+        "n_casi": 209,
+        "n_gare": 11,
+        "copertura_dentro_campione": 0.8852,
+        "copertura_fuori_campione": 0.8852,
+        "copertura_fuori_campione_n_meno_1": 0.6268,
+        "copre": true,
+        "minimale": true,
+        "passa": true,
+        "bias_mediano_posizioni": 0,
+        "asimmetrica": false,
+        "banda_dichiarata": {
+          "sotto": 1,
+          "sopra": 1
+        },
+        "per_gara": {
+          "Australia": {
+            "n_casi": 10,
+            "n_loo": 1,
+            "copertura": 1
+          },
+          "Austria": {
+            "n_casi": 33,
+            "n_loo": 1,
+            "copertura": 0.8485
+          },
+          "Belgio": {
+            "n_casi": 8,
+            "n_loo": 1,
+            "copertura": 0.75
+          },
+          "Canada": {
+            "n_casi": 8,
+            "n_loo": 1,
+            "copertura": 0.875
+          },
+          "Cina": {
+            "n_casi": 6,
+            "n_loo": 1,
+            "copertura": 0.8333
+          },
+          "Giappone": {
+            "n_casi": 14,
+            "n_loo": 1,
+            "copertura": 0.9286
+          },
+          "GranBretagna": {
+            "n_casi": 22,
+            "n_loo": 1,
+            "copertura": 0.9091
+          },
+          "Miami": {
+            "n_casi": 19,
+            "n_loo": 1,
+            "copertura": 0.8947
+          },
+          "Monaco": {
+            "n_casi": 14,
+            "n_loo": 1,
+            "copertura": 1
+          },
+          "Spagna": {
+            "n_casi": 40,
+            "n_loo": 1,
+            "copertura": 0.775
+          },
+          "Ungheria": {
+            "n_casi": 35,
+            "n_loo": 1,
+            "copertura": 0.9714
+          }
+        }
+      },
+      "NEUTRA": {
+        "sufficiente": true,
+        "n": 2,
+        "n_casi": 189,
+        "n_gare": 10,
+        "copertura_dentro_campione": 0.8571,
+        "copertura_fuori_campione": 0.8571,
+        "copertura_fuori_campione_n_meno_1": 0.6772,
+        "copre": true,
+        "minimale": true,
+        "passa": true,
+        "bias_mediano_posizioni": 0,
+        "asimmetrica": false,
+        "banda_dichiarata": {
+          "sotto": 2,
+          "sopra": 2
+        },
+        "per_gara": {
+          "Australia": {
+            "n_casi": 22,
+            "n_loo": 2,
+            "copertura": 0.7727
+          },
+          "Austria": {
+            "n_casi": 8,
+            "n_loo": 2,
+            "copertura": 1
+          },
+          "Belgio": {
+            "n_casi": 12,
+            "n_loo": 2,
+            "copertura": 1
+          },
+          "Canada": {
+            "n_casi": 17,
+            "n_loo": 2,
+            "copertura": 1
+          },
+          "Cina": {
+            "n_casi": 8,
+            "n_loo": 2,
+            "copertura": 0.875
+          },
+          "Giappone": {
+            "n_casi": 15,
+            "n_loo": 2,
+            "copertura": 0.9333
+          },
+          "GranBretagna": {
+            "n_casi": 27,
+            "n_loo": 2,
+            "copertura": 0.963
+          },
+          "Monaco": {
+            "n_casi": 64,
+            "n_loo": 2,
+            "copertura": 0.7031
+          },
+          "Spagna": {
+            "n_casi": 8,
+            "n_loo": 2,
+            "copertura": 1
+          },
+          "Ungheria": {
+            "n_casi": 8,
+            "n_loo": 2,
+            "copertura": 1
+          }
+        }
+      }
+    },
+    "nota_per_prodotto": "in verde il prodotto NON sa se i rivali si fermeranno (sarebbe informazione dal futuro, E14): la sua banda è calibrata sull'unione di PULITA e SOSTE_RIVALI. Sotto regime il secco è noto e si usa NEUTRA",
+    "secchi_sufficienti": [
+      "PULITA",
+      "SOSTE_RIVALI",
+      "NEUTRA"
+    ],
+    "contesto": {
+      "eseguibile": true,
+      "soglia": 2,
+      "n_contesi": 137,
+      "n_puliti": 261,
+      "mediana_errore_contesi": 1,
+      "mediana_errore_puliti": 0,
+      "differenza_mediane": 1,
+      "p_permutazione": 0.29007,
+      "permutazioni_valide": 10000,
+      "significativo": false,
+      "attesa_direzionale_contesi_sbagliano_di_piu": true,
+      "separa": false
+    },
+    "sensibilita_soglia": [
+      {
+        "soglia": 1,
+        "n_contesi": 75,
+        "differenza_mediane": 1,
+        "p": 0.31077,
+        "separa": false,
+        "dichiarata": false
+      },
+      {
+        "soglia": 2,
+        "n_contesi": 137,
+        "differenza_mediane": 1,
+        "p": 0.29007,
+        "separa": false,
+        "dichiarata": true
+      },
+      {
+        "soglia": 3,
+        "n_contesi": 192,
+        "differenza_mediane": 1,
+        "p": 0.27707,
+        "separa": false,
+        "dichiarata": false
+      },
+      {
+        "soglia": 5,
+        "n_contesi": 240,
+        "differenza_mediane": 1,
+        "p": 0.34797,
+        "separa": false,
+        "dichiarata": false
+      }
+    ],
+    "d1_passa": true,
+    "d1_falliti": [],
+    "d2_separa": false,
+    "d4_asimmetrici": []
+  }
+}

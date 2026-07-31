@@ -1,0 +1,383 @@
+{
+  "_targhetta": {
+    "tipo": "ESITO di fase — cancelli M1…M4 eseguiti come pre-registrati",
+    "prereg": "banco/prereg/PREREG_multistint.md",
+    "prodotto_da": "banco/scrivi_esito_multistint.mjs, sulle misure di banco/misure/multistint.mjs",
+    "rho": 0.030776,
+    "delta_70": 2.2,
+    "data": "2026-07-30"
+  },
+  "verdetto": "PASSA — tutti e quattro i cancelli",
+  "M1": {
+    "domanda": "la ricerca e la forma chiusa descrivono lo stesso oggetto del kernel?",
+    "n_casi": 144,
+    "n_ammessi": 120,
+    "n_al_bordo": 24,
+    "forma_chiusa": "120/120",
+    "ricerca_ristretta": "144/144",
+    "k_ottimo": "36/36",
+    "bordo_diagnostica": {
+      "n": 24,
+      "riprodotti": 24,
+      "nota": "al bordo il riferimento è la forma chiusa RI-RISOLTA col vincolo che morde. Non fa cancello: la prereg ammette i casi con l'ottimo continuo dentro l'intervallo. Riportato perché un buco silenzioso nella copertura è peggio di un numero che non fa cancello"
+    },
+    "nota_ricerca": "la ricerca del prodotto non enumera: parte dalla forma chiusa e raffina entro un raggio dichiarato. Il banco enumera TUTTI i piani interi e verifica che la restrizione non perda l'ottimo — è ciò che autorizza a non enumerare in produzione"
+  },
+  "M2": {
+    "domanda": "il piano a una sosta è lo scenario a una sosta, o sono rimasti due percorsi?",
+    "n_casi": 60,
+    "passati": 60,
+    "nota": "identità ESATTA fra la scrittura {giroPit, mescola} e il piano a una sosta: stesse soste, stesso cum. Non «differenza piccola»"
+  },
+  "M3": {
+    "domanda": "il piano rispetta il regolamento 2026, e il controllo non è cieco?",
+    "n_casi": 59,
+    "approvati_dal_director": 59,
+    "obbligati_dal_regolamento": 32,
+    "obbligati_con_sosta_nel_piano": 32,
+    "cieco": false,
+    "difetto_trovato": "alla prima esecuzione M3 approvava 9 piani a ZERO soste per piloti che al congelamento avevano usato una sola mescola slick — cioè 9 squalifiche proposte come strategia. Il Director li lasciava passare perché `strategia_dichiarata` era legata a «ha almeno una sosta», e un piano a zero soste risultava «strategia non dichiarata»: la regola veniva saltata esattamente dove serviva. Corretti due punti: la strategia di chi fa la domanda è dichiarata sempre, e la ricerca tratta le due mescole come VINCOLO (k ≥ 1), non come preferenza"
+  },
+  "M4": {
+    "domanda": "le durate di stint 2026 sono allarmi, o sono diventate vincoli?",
+    "n_casi": 59,
+    "piani_identici_a_allarmi_spenti": 59,
+    "nota": "spegnere il modulo degli allarmi non cambia un solo piano: le decisioni dei muretti non entrano nella ricerca"
+  },
+  "distribuzione_soste_proposte": {
+    "0": 25,
+    "1": 34
+  },
+  "limite_dichiarato": {
+    "enunciato": "il modello propone POCHE soste, e lo fa per una ragione strutturale, non per un difetto della ricerca",
+    "spiegazione": "la forma chiusa dà (k+1)* = (R+a)·√(ρ/2P). Con ρ = 0,0308 s/giro·giro e una perdita ai box di 18-28 s, su una gara intera (R ≈ 57, a = 0) viene k* ≈ 0,5: zero o una sosta. La realtà ne fa una o due. La differenza non è un errore di calcolo: il modello v2 ha un degrado LINEARE e nessun cliff, quindi non sa che una gomma molto vecchia peggiora più che proporzionalmente — ed è proprio quel peggioramento che in gara giustifica la sosta in più",
+    "conseguenza": "il piano proposto è l'ottimo DI QUESTO MODELLO, non l'ottimo della gara vera, e sbaglierà sempre nella stessa direzione: troppo poche soste. Va scritto accanto al piano, in pagina",
+    "cosa_lo_toglierebbe": "una misura del cliff di fine vita, con la sua prereg e il suo cancello. §Cosa NON costruire al giorno 1 la esclude oggi, e questa fase non l'ha introdotta di straforo per far tornare i numeri"
+  },
+  "k_ottimo_continuo_per_combinazione": [
+    {
+      "R": 12,
+      "a": 0,
+      "perdita": 18.4,
+      "k_vincente": 0,
+      "k_continuo": -0.653,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 12,
+      "a": 0,
+      "perdita": 22.1,
+      "k_vincente": 0,
+      "k_continuo": -0.6834,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 12,
+      "a": 0,
+      "perdita": 28.1,
+      "k_vincente": 0,
+      "k_continuo": -0.7192,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 12,
+      "a": 5,
+      "perdita": 18.4,
+      "k_vincente": 0,
+      "k_continuo": -0.5084,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 12,
+      "a": 5,
+      "perdita": 22.1,
+      "k_vincente": 0,
+      "k_continuo": -0.5514,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 12,
+      "a": 5,
+      "perdita": 28.1,
+      "k_vincente": 0,
+      "k_continuo": -0.6022,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 12,
+      "a": 12,
+      "perdita": 18.4,
+      "k_vincente": 0,
+      "k_continuo": -0.3059,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 12,
+      "a": 12,
+      "perdita": 22.1,
+      "k_vincente": 0,
+      "k_continuo": -0.3667,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 12,
+      "a": 12,
+      "perdita": 28.1,
+      "k_vincente": 0,
+      "k_continuo": -0.4384,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 20,
+      "a": 0,
+      "perdita": 18.4,
+      "k_vincente": 0,
+      "k_continuo": -0.4216,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 20,
+      "a": 0,
+      "perdita": 22.1,
+      "k_vincente": 0,
+      "k_continuo": -0.4723,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 20,
+      "a": 0,
+      "perdita": 28.1,
+      "k_vincente": 0,
+      "k_continuo": -0.532,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 20,
+      "a": 5,
+      "perdita": 18.4,
+      "k_vincente": 0,
+      "k_continuo": -0.277,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 20,
+      "a": 5,
+      "perdita": 22.1,
+      "k_vincente": 0,
+      "k_continuo": -0.3403,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 20,
+      "a": 5,
+      "perdita": 28.1,
+      "k_vincente": 0,
+      "k_continuo": -0.415,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 20,
+      "a": 12,
+      "perdita": 18.4,
+      "k_vincente": 0,
+      "k_continuo": -0.0746,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 20,
+      "a": 12,
+      "perdita": 22.1,
+      "k_vincente": 0,
+      "k_continuo": -0.1556,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 20,
+      "a": 12,
+      "perdita": 28.1,
+      "k_vincente": 0,
+      "k_continuo": -0.2512,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 30,
+      "a": 0,
+      "perdita": 18.4,
+      "k_vincente": 0,
+      "k_continuo": -0.1324,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 30,
+      "a": 0,
+      "perdita": 22.1,
+      "k_vincente": 0,
+      "k_continuo": -0.2084,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 30,
+      "a": 0,
+      "perdita": 28.1,
+      "k_vincente": 0,
+      "k_continuo": -0.298,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 30,
+      "a": 5,
+      "perdita": 18.4,
+      "k_vincente": 0,
+      "k_continuo": 0.0122,
+      "tipo": "interno",
+      "passa": true
+    },
+    {
+      "R": 30,
+      "a": 5,
+      "perdita": 22.1,
+      "k_vincente": 0,
+      "k_continuo": -0.0764,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 30,
+      "a": 5,
+      "perdita": 28.1,
+      "k_vincente": 0,
+      "k_continuo": -0.181,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 30,
+      "a": 12,
+      "perdita": 18.4,
+      "k_vincente": 0,
+      "k_continuo": 0.2146,
+      "tipo": "interno",
+      "passa": true
+    },
+    {
+      "R": 30,
+      "a": 12,
+      "perdita": 22.1,
+      "k_vincente": 0,
+      "k_continuo": 0.1083,
+      "tipo": "interno",
+      "passa": true
+    },
+    {
+      "R": 30,
+      "a": 12,
+      "perdita": 28.1,
+      "k_vincente": 0,
+      "k_continuo": -0.0172,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 40,
+      "a": 0,
+      "perdita": 18.4,
+      "k_vincente": 0,
+      "k_continuo": 0.1568,
+      "tipo": "interno",
+      "passa": true
+    },
+    {
+      "R": 40,
+      "a": 0,
+      "perdita": 22.1,
+      "k_vincente": 0,
+      "k_continuo": 0.0555,
+      "tipo": "interno",
+      "passa": true
+    },
+    {
+      "R": 40,
+      "a": 0,
+      "perdita": 28.1,
+      "k_vincente": 0,
+      "k_continuo": -0.064,
+      "tipo": "bordo",
+      "passa": true
+    },
+    {
+      "R": 40,
+      "a": 5,
+      "perdita": 18.4,
+      "k_vincente": 0,
+      "k_continuo": 0.3014,
+      "tipo": "interno",
+      "passa": true
+    },
+    {
+      "R": 40,
+      "a": 5,
+      "perdita": 22.1,
+      "k_vincente": 0,
+      "k_continuo": 0.1874,
+      "tipo": "interno",
+      "passa": true
+    },
+    {
+      "R": 40,
+      "a": 5,
+      "perdita": 28.1,
+      "k_vincente": 0,
+      "k_continuo": 0.0531,
+      "tipo": "interno",
+      "passa": true
+    },
+    {
+      "R": 40,
+      "a": 12,
+      "perdita": 18.4,
+      "k_vincente": 1,
+      "k_continuo": 0.5038,
+      "tipo": "interno",
+      "passa": true
+    },
+    {
+      "R": 40,
+      "a": 12,
+      "perdita": 22.1,
+      "k_vincente": 0,
+      "k_continuo": 0.3721,
+      "tipo": "interno",
+      "passa": true
+    },
+    {
+      "R": 40,
+      "a": 12,
+      "perdita": 28.1,
+      "k_vincente": 0,
+      "k_continuo": 0.2169,
+      "tipo": "interno",
+      "passa": true
+    }
+  ]
+}

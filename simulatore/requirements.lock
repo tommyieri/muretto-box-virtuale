@@ -1,0 +1,6 @@
+# requirements.lock — l'UNICA lista di dipendenze Python del repo (regola: ambiente pinnato, E19)
+# Interprete: CPython 3.11 (vedi .python-version). Un solo interprete, un solo lockfile.
+# Ogni aggiunta va scritta qui come `pacchetto==versione.esatta`: mai con range,
+# mai in un secondo file.
+numpy==2.4.6
+

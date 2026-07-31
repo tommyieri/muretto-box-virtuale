@@ -1,0 +1,134 @@
+{
+  "_targhetta": {
+    "tipo": "golden dichiarato — le attese viaggiano COI casi (E07)",
+    "attese_calcolate": "per via indipendente dal kernel (aritmetica del caso, verificabile a mano), NON rigenerate dal codice sotto esame: un golden riprodotto da ciò che deve giudicare non giudica nulla",
+    "passo_dei_casi": "`passo` NON è il modello del tempo sul giro del repo (arriva al PROMPT 03): è aritmetica di comodo del caso, base + per_eta·età, che il test avvolge in una funzione e passa al kernel. Il kernel non la conosce: la riceve (regola 10).",
+    "muto_dal": "il pilota che ha `muto_dal: G` non ha passo dal giro G in poi: serve a pretendere il null esplicito (regola 6, E06)",
+    "aggiornamento": "questi numeri si cambiano DELIBERATAMENTE, dichiarando perché; se cambiano da soli dopo un fix, è il fix che va guardato (E22)"
+  },
+  "tolleranza_s": 1e-9,
+  "casi": [
+    {
+      "nome": "orizzonte_piatto",
+      "attesa": "senza soste il cum è il cum al congelamento più la somma dei passi; l'età cresce di uno per giro",
+      "freezeLap": 20,
+      "steps": 3,
+      "stato": [
+        { "drv": "ALB", "lap": 20, "cum_time": 1800.0, "tyre_age": 5 },
+        { "drv": "BOR", "lap": 20, "cum_time": 1805.5, "tyre_age": 2 }
+      ],
+      "passo": {
+        "ALB": { "base": 95.0, "per_eta": 0.04 },
+        "BOR": { "base": 94.5, "per_eta": 0.06 }
+      },
+      "pits": {},
+      "atteso": {
+        "cum": { "ALB": 2085.84, "BOR": 2089.7200000000003 },
+        "eta": { "ALB": 8, "BOR": 5 },
+        "ordine": ["ALB", "BOR"],
+        "ordineIniziale": ["ALB", "BOR"],
+        "esclusi": [],
+        "cambi_posizione": 0
+      }
+    },
+    {
+      "nome": "sosta_azzera_eta",
+      "attesa": "la sosta al giro 22 paga la perdita INTERA su quel giro e azzera l'età: al giro 23 ALB gira su gomma di età 1, e l'età finale è 1 — nessuno sconto perpetuo dopo la sosta (E01), nessuna quota di perdita ri-applicata all'out-lap (E20)",
+      "freezeLap": 20,
+      "steps": 3,
+      "stato": [
+        { "drv": "ALB", "lap": 20, "cum_time": 1800.0, "tyre_age": 5 },
+        { "drv": "BOR", "lap": 20, "cum_time": 1805.5, "tyre_age": 2 }
+      ],
+      "passo": {
+        "ALB": { "base": 95.0, "per_eta": 0.04 },
+        "BOR": { "base": 94.5, "per_eta": 0.06 }
+      },
+      "pits": { "ALB": [{ "lap": 22, "perdita": 21.0 }] },
+      "atteso": {
+        "cum": { "ALB": 2106.56, "BOR": 2089.7200000000003 },
+        "eta": { "ALB": 1, "BOR": 5 },
+        "ordine": ["BOR", "ALB"],
+        "ordineIniziale": ["ALB", "BOR"],
+        "esclusi": [],
+        "cambi_posizione": 2
+      }
+    },
+    {
+      "nome": "attraversamento_senza_cap",
+      "attesa": "HAM parte dietro LEC di 0,5 s e gli passa attraverso: il suo cum è ESATTAMENTE la somma dei suoi passi in aria libera, senza un centesimo di penalità da traffico. Al giorno 1 non esiste cap: si riproduce QUANTI cambi di posizione (2), non QUALI duelli (E16)",
+      "freezeLap": 30,
+      "steps": 4,
+      "stato": [
+        { "drv": "LEC", "lap": 30, "cum_time": 2000.0, "tyre_age": 18 },
+        { "drv": "HAM", "lap": 30, "cum_time": 2000.5, "tyre_age": 2 }
+      ],
+      "passo": {
+        "LEC": { "base": 96.0, "per_eta": 0.05 },
+        "HAM": { "base": 94.0, "per_eta": 0.05 }
+      },
+      "pits": {},
+      "atteso": {
+        "cum": { "LEC": 2388.1, "HAM": 2377.4 },
+        "eta": { "LEC": 22, "HAM": 6 },
+        "ordine": ["HAM", "LEC"],
+        "ordineIniziale": ["LEC", "HAM"],
+        "esclusi": [],
+        "cambi_posizione": 2
+      }
+    },
+    {
+      "nome": "senza_passo_null_esplicito",
+      "attesa": "ZHO non ha passo e SAI non ha cum al congelamento: entrambi escono con null ESPLICITO, non compaiono nell'ordine e portano il motivo dell'esclusione. È il caso E06: il vecchio simulate restituiva loro un cum inventato (errori da 480 s)",
+      "freezeLap": 20,
+      "steps": 3,
+      "stato": [
+        { "drv": "ALB", "lap": 20, "cum_time": 1800.0, "tyre_age": 5 },
+        { "drv": "BOR", "lap": 20, "cum_time": 1805.5, "tyre_age": 2 },
+        { "drv": "SAI", "lap": 20, "cum_time": null, "tyre_age": 3 },
+        { "drv": "ZHO", "lap": 20, "cum_time": 1811.0, "tyre_age": 4 }
+      ],
+      "passo": {
+        "ALB": { "base": 95.0, "per_eta": 0.04 },
+        "BOR": { "base": 94.5, "per_eta": 0.06 },
+        "SAI": { "base": 95.5, "per_eta": 0.05 },
+        "ZHO": null
+      },
+      "pits": {},
+      "atteso": {
+        "cum": { "ALB": 2085.84, "BOR": 2089.7200000000003, "SAI": null, "ZHO": null },
+        "eta": { "ALB": 8, "BOR": 5, "SAI": null, "ZHO": null },
+        "ordine": ["ALB", "BOR"],
+        "ordineIniziale": ["ALB", "BOR", "ZHO"],
+        "esclusi": [
+          { "drv": "SAI", "motivo": "cum_time assente al congelamento" },
+          { "drv": "ZHO", "motivo": "passo assente al giro 21" }
+        ],
+        "cambi_posizione": 0
+      }
+    },
+    {
+      "nome": "passo_sparisce_a_meta",
+      "attesa": "PIA ha passo fino al giro 22 e poi non più: il suo cum è null, NON la somma parziale dei primi due giri. Un cum troncato spacciato per cum a fine orizzonte è esattamente il numero che sembra vero di cui parla la regola 6",
+      "freezeLap": 20,
+      "steps": 4,
+      "stato": [
+        { "drv": "ALB", "lap": 20, "cum_time": 1800.0, "tyre_age": 5 },
+        { "drv": "PIA", "lap": 20, "cum_time": 1802.0, "tyre_age": 6 }
+      ],
+      "passo": {
+        "ALB": { "base": 95.0, "per_eta": 0.04 },
+        "PIA": { "base": 94.8, "per_eta": 0.05, "muto_dal": 23 }
+      },
+      "pits": {},
+      "atteso": {
+        "cum": { "ALB": 2181.2000000000003, "PIA": null },
+        "eta": { "ALB": 9, "PIA": null },
+        "ordine": ["ALB"],
+        "ordineIniziale": ["ALB", "PIA"],
+        "esclusi": [{ "drv": "PIA", "motivo": "passo assente al giro 23" }],
+        "cambi_posizione": 0
+      }
+    }
+  ]
+}

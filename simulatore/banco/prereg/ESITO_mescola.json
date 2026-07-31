@@ -1,0 +1,299 @@
+{
+  "_targhetta": {
+    "tipo": "esito della FASE MESCOLA, eseguita come pre-registrata",
+    "prereg": "banco/prereg/PREREG_mescola.md",
+    "eseguito_da": "fisica/stima_mescola.py",
+    "fonte": "data/viste/stint_fondo.json",
+    "sha256_vista": "fdc4244983b54f6477faf4f8e27ba3734dc3e87f97716e85af79302e4852f7f2",
+    "data": "2026-07-29",
+    "unita": "Delta = media(pendenze SOFT) - media(pendenze HARD) entro (anno, gara, pilota), in s/giro per giro di eta'",
+    "anno_escluso": 2018,
+    "motivo_anno_escluso": "nomenclatura 2018 diversa e 2 soli stint HARD: il contrasto SOFT-HARD non esiste",
+    "bootstrap": "10000 ripetizioni, blocchi = gare (E11), seme 20260729",
+    "permutazione": "test dei segni, 10000 permutazioni"
+  },
+  "complessivo": {
+    "etichetta": "2019-2025 (tutte)",
+    "n_unita": 406,
+    "n_gare": 92,
+    "sufficiente": true,
+    "media": -0.182701,
+    "mediana": -0.082653,
+    "media_pesata": -0.139821,
+    "ic95": [
+      -0.257147,
+      -0.116738
+    ],
+    "p_permutazione": 0.0001
+  },
+  "dentro_campione": {
+    "etichetta": "dentro campione 2019-2023",
+    "n_unita": 300,
+    "n_gare": 66,
+    "sufficiente": true,
+    "media": -0.148075,
+    "mediana": -0.074025,
+    "media_pesata": -0.119098,
+    "ic95": [
+      -0.231083,
+      -0.076131
+    ],
+    "p_permutazione": 0.0001
+  },
+  "per_stagione": {
+    "2019": {
+      "etichetta": "stagione 2019",
+      "n_unita": 52,
+      "n_gare": 12,
+      "sufficiente": true,
+      "media": -0.105406,
+      "mediana": -0.073097,
+      "media_pesata": -0.081539,
+      "ic95": [
+        -0.209547,
+        -0.028721
+      ],
+      "p_permutazione": 0.0004
+    },
+    "2020": {
+      "etichetta": "stagione 2020",
+      "n_unita": 71,
+      "n_gare": 16,
+      "sufficiente": true,
+      "media": -0.207718,
+      "mediana": -0.082293,
+      "media_pesata": -0.175139,
+      "ic95": [
+        -0.376462,
+        -0.062461
+      ],
+      "p_permutazione": 0.0001
+    },
+    "2021": {
+      "etichetta": "stagione 2021",
+      "n_unita": 74,
+      "n_gare": 15,
+      "sufficiente": true,
+      "media": -0.228662,
+      "mediana": -0.111412,
+      "media_pesata": -0.153392,
+      "ic95": [
+        -0.429867,
+        -0.064314
+      ],
+      "p_permutazione": 0.0001
+    },
+    "2022": {
+      "etichetta": "stagione 2022",
+      "n_unita": 48,
+      "n_gare": 11,
+      "sufficiente": true,
+      "media": -0.062362,
+      "mediana": -0.014592,
+      "media_pesata": -0.087932,
+      "ic95": [
+        -0.132689,
+        0.047542
+      ],
+      "p_permutazione": 0.129687
+    },
+    "2023": {
+      "etichetta": "stagione 2023",
+      "n_unita": 55,
+      "n_gare": 12,
+      "sufficiente": true,
+      "media": -0.077798,
+      "mediana": 0.02046,
+      "media_pesata": -0.056724,
+      "ic95": [
+        -0.248227,
+        0.062518
+      ],
+      "p_permutazione": 0.086991
+    },
+    "2024": {
+      "etichetta": "stagione 2024",
+      "n_unita": 62,
+      "n_gare": 14,
+      "sufficiente": true,
+      "media": -0.335621,
+      "mediana": -0.10365,
+      "media_pesata": -0.252406,
+      "ic95": [
+        -0.748184,
+        -0.125026
+      ],
+      "p_permutazione": 0.0001
+    },
+    "2025": {
+      "etichetta": "stagione 2025",
+      "n_unita": 44,
+      "n_gare": 12,
+      "sufficiente": true,
+      "media": -0.203314,
+      "mediana": -0.12708,
+      "media_pesata": -0.145745,
+      "ic95": [
+        -0.442703,
+        -0.03801
+      ],
+      "p_permutazione": 0.003
+    }
+  },
+  "leave_one_year_out": {
+    "2019": {
+      "etichetta": "tutte tranne 2019",
+      "n_unita": 354,
+      "n_gare": 80,
+      "sufficiente": true,
+      "media": -0.194055,
+      "mediana": -0.084671,
+      "media_pesata": -0.149299,
+      "ic95": [
+        -0.277728,
+        -0.120375
+      ],
+      "p_permutazione": 0.0001
+    },
+    "2020": {
+      "etichetta": "tutte tranne 2020",
+      "n_unita": 335,
+      "n_gare": 76,
+      "sufficiente": true,
+      "media": -0.177399,
+      "mediana": -0.083013,
+      "media_pesata": -0.133331,
+      "ic95": [
+        -0.263265,
+        -0.105093
+      ],
+      "p_permutazione": 0.0001
+    },
+    "2021": {
+      "etichetta": "tutte tranne 2021",
+      "n_unita": 332,
+      "n_gare": 77,
+      "sufficiente": true,
+      "media": -0.172457,
+      "mediana": -0.066485,
+      "media_pesata": -0.13573,
+      "ic95": [
+        -0.250491,
+        -0.104153
+      ],
+      "p_permutazione": 0.0001
+    },
+    "2022": {
+      "etichetta": "tutte tranne 2022",
+      "n_unita": 358,
+      "n_gare": 81,
+      "sufficiente": true,
+      "media": -0.198836,
+      "mediana": -0.085956,
+      "media_pesata": -0.146093,
+      "ic95": [
+        -0.284837,
+        -0.123593
+      ],
+      "p_permutazione": 0.0001
+    },
+    "2023": {
+      "etichetta": "tutte tranne 2023",
+      "n_unita": 351,
+      "n_gare": 80,
+      "sufficiente": true,
+      "media": -0.199139,
+      "mediana": -0.085585,
+      "media_pesata": -0.152094,
+      "ic95": [
+        -0.281948,
+        -0.128956
+      ],
+      "p_permutazione": 0.0001
+    },
+    "2024": {
+      "etichetta": "tutte tranne 2024",
+      "n_unita": 344,
+      "n_gare": 78,
+      "sufficiente": true,
+      "media": -0.15514,
+      "mediana": -0.082188,
+      "media_pesata": -0.122228,
+      "ic95": [
+        -0.23146,
+        -0.089607
+      ],
+      "p_permutazione": 0.0001
+    },
+    "2025": {
+      "etichetta": "tutte tranne 2025",
+      "n_unita": 362,
+      "n_gare": 80,
+      "sufficiente": true,
+      "media": -0.180196,
+      "mediana": -0.075624,
+      "media_pesata": -0.139151,
+      "ic95": [
+        -0.260053,
+        -0.109193
+      ],
+      "p_permutazione": 0.0001
+    }
+  },
+  "cancello": {
+    "condizioni": [
+      "IC95 esclude lo zero su ENTRAMBE le stagioni fuori campione",
+      "segno concorde con la stima dentro campione",
+      "segno concorde con l'attesa direzionale dichiarata (Delta > 0: SOFT degrada piu' in fretta)"
+    ],
+    "fuori_campione_soddisfatto": true,
+    "fuori_campione": [
+      2024,
+      2025
+    ],
+    "dentro_campione": [
+      2019,
+      2020,
+      2021,
+      2022,
+      2023
+    ],
+    "min_unita_stagione": 20,
+    "esiti_per_stagione": {
+      "2024": {
+        "giudicabile": true,
+        "ic95_esclude_zero": true,
+        "segno_concorde_col_dentro_campione": true,
+        "passa": true
+      },
+      "2025": {
+        "giudicabile": true,
+        "ic95_esclude_zero": true,
+        "segno_concorde_col_dentro_campione": true,
+        "passa": true
+      }
+    },
+    "attesa_direzionale_soft_piu_veloce_a_degradare": false,
+    "passa": false
+  },
+  "diagnosi_post_hoc": {
+    "SOFT": {
+      "n_stint": 1272,
+      "giri_per_stint_mediana": 13.0,
+      "eta_media": 11.45,
+      "posizione_nella_gara_mediana": 0.051,
+      "quota_ultimo_stint": 0.416,
+      "pendenza_mediana": -0.02643
+    },
+    "HARD": {
+      "n_stint": 2278,
+      "giri_per_stint_mediana": 24.0,
+      "eta_media": 15.55,
+      "posizione_nella_gara_mediana": 0.348,
+      "quota_ultimo_stint": 0.597,
+      "pendenza_mediana": -0.011519
+    },
+    "_lettura": "la SOFT e' la gomma di PARTENZA (posizione mediana 0,05 della distanza contro 0,35 della HARD) e i suoi stint sono meno che meta' di quelli HARD (13 giri contro 24). L'evoluzione della pista NON si cancella nell'appaiamento come fa il carburante, perche' non e' lineare nel giro: e' rapida all'inizio e va a plateau. Uno stint che sta sulla parte ripida vede i tempi scendere e prende una pendenza piu' negativa. E' la stessa non-linearita' che al PROMPT 03 ha fatto litigare la stima entro-blocco di delta70 (3,11) col replay (2,2)."
+  },
+  "conseguenza": "la separazione per mescola NON entra nel modello: rho resta comune e la pagina continua a dichiarare che la mescola scelta non cambia il degrado. Il ripiego 'delta nominale Pirelli' si adottera' solo con una fonte citabile: qui non se ne inventa uno (PREREG_mescola.md)"
+}

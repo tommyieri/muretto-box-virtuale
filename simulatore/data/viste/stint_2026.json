@@ -1,0 +1,43 @@
+{
+ "_targhetta": {
+  "tipo": "MISURATO sulle gare 2026 — durata degli stint per mescola",
+  "natura": "DECISIONI dei team, NON fisica: in live sono ALLARMI, mai stime (CLAUDE.md, §Numeri ereditati)",
+  "uso_consentito": "scenario/allarmi.mjs, per segnalare un piano fuori dall'esperienza 2026. VIETATO come vincolo di un piano (banco/prereg/PREREG_multistint.md, cancello M4)",
+  "selezione": "solo stint CHIUSI da una sosta (lo stint finale termina con la bandiera, non con una decisione) e lunghi almeno 4 giri (sotto, è un incidente: foratura, danno, ripartenza dopo la rossa)",
+  "ereditato": "CLAUDE.md riporta SOFT 14 · MEDIUM 19 · HARD 22. Senza il filtro sui 4 giri questa misura dà SOFT 8: la differenza è di ESTIMANDO, non di misura — 34 stint SOFT su 103 durano meno di 4 giri. Col filtro i numeri si riconciliano (13 · 19 · 22). Entrambe le versioni restano qui: una misura non si cancella (E21)",
+  "generata_da": "provenienza/esporta_stint_2026.mjs",
+  "data": "2026-07-30"
+ },
+ "n_gare": 11,
+ "n_stint_chiusi": 451,
+ "n_stint_censurati_esclusi": 217,
+ "per_mescola": {
+  "HARD": {
+   "n_stint_chiusi": 137,
+   "n_stint_decisione": 125,
+   "n_stint_brevi_esclusi": 12,
+   "mediana_giri": 22,
+   "p90_giri": 31,
+   "massimo_giri": 50,
+   "mediana_giri_senza_filtro": 21
+  },
+  "MEDIUM": {
+   "n_stint_chiusi": 211,
+   "n_stint_decisione": 198,
+   "n_stint_brevi_esclusi": 13,
+   "mediana_giri": 19,
+   "p90_giri": 30,
+   "massimo_giri": 59,
+   "mediana_giri_senza_filtro": 18
+  },
+  "SOFT": {
+   "n_stint_chiusi": 103,
+   "n_stint_decisione": 69,
+   "n_stint_brevi_esclusi": 34,
+   "mediana_giri": 13,
+   "p90_giri": 31,
+   "massimo_giri": 55,
+   "mediana_giri_senza_filtro": 8
+  }
+ }
+}

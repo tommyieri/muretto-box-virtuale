@@ -1,0 +1,78 @@
+{
+  "_targhetta": {
+    "tipo": "misurato sul grezzo 2026 — giro verde più veloce osservato per gara",
+    "definizione": "provenienza/definizioni.mjs · verde && lap_time non nullo",
+    "uso": "limite fisico inferiore del Director; il margine di tolleranza è dichiarato a parte in data/priors/director_limiti.json",
+    "limite": "è il minimo su UNA stagione e su queste 11 gare: non è un record assoluto, e un circuito non elencato non ha pavimento (null, non un valore di ripiego)",
+    "generato_da": "provenienza/genera_pavimenti.mjs",
+    "data": "2026-07-29"
+  },
+  "gare": {
+    "Australia": {
+      "pavimento_s": 82.091,
+      "n_giri_verdi": 854,
+      "fonte": "data/gare_2026/ti_cache/Australia.json",
+      "sha256": "53be856ec28746a8c0665461044e3ea45a5dcd920e8bf60a2744771f87c68201"
+    },
+    "Austria": {
+      "pavimento_s": 70.374,
+      "n_giri_verdi": 1147,
+      "fonte": "data/gare_2026/ti_cache/Austria.json",
+      "sha256": "33fe897497a405d45fc77c7630de0504019fa494f64d3d80de61d3e812629a41"
+    },
+    "Belgio": {
+      "pavimento_s": 108.89,
+      "n_giri_verdi": 679,
+      "fonte": "data/gare_2026/ti_archive/Belgio/Race.json",
+      "sha256": "152c38f58008e2cd181fde72d089fc0014b247cad256253f4cfdc14bc89392a4"
+    },
+    "Canada": {
+      "pavimento_s": 74.21,
+      "n_giri_verdi": 928,
+      "fonte": "data/gare_2026/ti_cache/Canada.json",
+      "sha256": "465de0840d4a4f3e50cfebce3fafaeac5d2fef4f4f18ffb04312bb3321293d0c"
+    },
+    "Cina": {
+      "pavimento_s": 95.275,
+      "n_giri_verdi": 735,
+      "fonte": "data/gare_2026/ti_cache/Cina.json",
+      "sha256": "957bb11e9d5fc11cf31c245da75560f9ee15e54609986b66b024e3751cac8f6c"
+    },
+    "Giappone": {
+      "pavimento_s": 92.432,
+      "n_giri_verdi": 936,
+      "fonte": "data/gare_2026/ti_cache/Giappone.json",
+      "sha256": "8773032ac54cece5033ab2922017cc05635aba352ae6d357a5eec39315044f11"
+    },
+    "GranBretagna": {
+      "pavimento_s": 91.777,
+      "n_giri_verdi": 811,
+      "fonte": "data/gare_2026/ti_archive/GranBretagna/Race.json",
+      "sha256": "2b6c96cb5b909080c4a18cb662c93c39dc9870543c9a8054c48afac212c2f0a7"
+    },
+    "Miami": {
+      "pavimento_s": 91.869,
+      "n_giri_verdi": 803,
+      "fonte": "data/gare_2026/ti_cache/Miami.json",
+      "sha256": "911aaa3d7be8281246c11e9622f7641603be1e08b49befa9579494f070da188d"
+    },
+    "Monaco": {
+      "pavimento_s": 73.481,
+      "n_giri_verdi": 1136,
+      "fonte": "data/gare_2026/ti_cache/Monaco.json",
+      "sha256": "72c051109a5cb8aadb7a3593e590c1500efaa15ac9d1ab7e26fa8e0a5870426e"
+    },
+    "Spagna": {
+      "pavimento_s": 80.122,
+      "n_giri_verdi": 1040,
+      "fonte": "data/gare_2026/ti_cache/Spagna.json",
+      "sha256": "6a833897b29b833e30305c89a6392d9cbd4e2a95f766bb18b0906128d54b7656"
+    },
+    "Ungheria": {
+      "pavimento_s": 82,
+      "n_giri_verdi": 1219,
+      "fonte": "data/gare_2026/ti_archive/Ungheria/Race.json",
+      "sha256": "6a294ee45ec83a322de9802bc6b19cd422ff80d5029d006f64456308ad27531d"
+    }
+  }
+}

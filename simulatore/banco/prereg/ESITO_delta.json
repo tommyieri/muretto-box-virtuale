@@ -1,0 +1,342 @@
+{
+  "_targhetta": {
+    "tipo": "esito dell'esperimento pre-registrato su δ",
+    "prereg": "banco/prereg/PREREG_delta.md",
+    "eseguito_da": "banco/replay_delta.mjs",
+    "data": "2026-07-29",
+    "rho_usato": 0.030776,
+    "nota": "ρ identico nei tre bracci: l'unica cosa che cambia è δ₇₀"
+  },
+  "bracci": {
+    "A": "δ₇₀ = 2,2 (fondo 2026)",
+    "B": "δ₇₀ = 3,0 (vecchio kernel)",
+    "C": "δ₇₀ stimato libero, leave-one-race-out"
+  },
+  "per_orizzonte": {
+    "5": {
+      "n_finestre": 16,
+      "n_gare": 11,
+      "giudicabile": true,
+      "bias": {
+        "A": 0.072831,
+        "B": -0.096576,
+        "C": -0.122903
+      }
+    },
+    "10": {
+      "n_finestre": 10,
+      "n_gare": 8,
+      "giudicabile": true,
+      "bias": {
+        "A": -0.07696,
+        "B": -0.294837,
+        "C": -0.317818
+      }
+    },
+    "20": {
+      "n_finestre": 4,
+      "n_gare": 3,
+      "giudicabile": false,
+      "bias": {
+        "A": -0.292759,
+        "B": -0.568182,
+        "C": -0.62465
+      }
+    }
+  },
+  "vittorie_per_orizzonte": {
+    "A": 2,
+    "B": 0,
+    "C": 0
+  },
+  "max_bias_assoluto_per_braccio": {
+    "A": 0.07696,
+    "B": 0.294837,
+    "C": 0.317818
+  },
+  "coppie_entro_soglia_non_decisivo": [],
+  "non_decisivo": false,
+  "vincitore": "A",
+  "regola_usata": "1 — maggioranza degli orizzonti",
+  "cancello_sanita": {
+    "soglia_bias": 0.17,
+    "soglia_piattezza": 0.1,
+    "max_bias_assoluto": 0.07696,
+    "piattezza": 0.004129,
+    "passa_bias": true,
+    "passa_piattezza": true,
+    "passa": true
+  },
+  "dettaglio_per_finestra": [
+    {
+      "gara": "Australia",
+      "Lf": 20,
+      "H": 5,
+      "n_piloti": 16,
+      "bias_A": 0.514055,
+      "bias_B": 0.333414,
+      "bias_C": 0.326807
+    },
+    {
+      "gara": "Belgio",
+      "Lf": 20,
+      "H": 5,
+      "n_piloti": 9,
+      "bias_A": 0.065439,
+      "bias_B": -0.16097,
+      "bias_C": -0.201944
+    },
+    {
+      "gara": "Canada",
+      "Lf": 20,
+      "H": 5,
+      "n_piloti": 15,
+      "bias_A": 0.49915,
+      "bias_B": 0.356249,
+      "bias_C": 0.333919
+    },
+    {
+      "gara": "Cina",
+      "Lf": 20,
+      "H": 5,
+      "n_piloti": 16,
+      "bias_A": 0.371857,
+      "bias_B": 0.163804,
+      "bias_C": 0.138689
+    },
+    {
+      "gara": "Miami",
+      "Lf": 20,
+      "H": 5,
+      "n_piloti": 13,
+      "bias_A": 0.001295,
+      "bias_B": -0.121207,
+      "bias_C": -0.139868
+    },
+    {
+      "gara": "Monaco",
+      "Lf": 20,
+      "H": 5,
+      "n_piloti": 18,
+      "bias_A": 0.051156,
+      "bias_B": -0.071946,
+      "bias_C": -0.105938
+    },
+    {
+      "gara": "Spagna",
+      "Lf": 20,
+      "H": 5,
+      "n_piloti": 15,
+      "bias_A": 0.080223,
+      "bias_B": -0.067451,
+      "bias_C": -0.074193
+    },
+    {
+      "gara": "Ungheria",
+      "Lf": 20,
+      "H": 5,
+      "n_piloti": 16,
+      "bias_A": 0.189348,
+      "bias_B": 0.047756,
+      "bias_C": 0.035839
+    },
+    {
+      "gara": "Austria",
+      "Lf": 30,
+      "H": 5,
+      "n_piloti": 18,
+      "bias_A": 0.29944,
+      "bias_B": 0.067137,
+      "bias_C": 0.006747
+    },
+    {
+      "gara": "Belgio",
+      "Lf": 30,
+      "H": 5,
+      "n_piloti": 15,
+      "bias_A": -0.076363,
+      "bias_B": -0.341584,
+      "bias_C": -0.38202
+    },
+    {
+      "gara": "Giappone",
+      "Lf": 30,
+      "H": 5,
+      "n_piloti": 20,
+      "bias_A": 0.740194,
+      "bias_B": 0.414932,
+      "bias_C": 0.409272
+    },
+    {
+      "gara": "GranBretagna",
+      "Lf": 30,
+      "H": 5,
+      "n_piloti": 15,
+      "bias_A": 0.105997,
+      "bias_B": -0.187209,
+      "bias_C": -0.221898
+    },
+    {
+      "gara": "Miami",
+      "Lf": 30,
+      "H": 5,
+      "n_piloti": 14,
+      "bias_A": -0.070583,
+      "bias_B": -0.265494,
+      "bias_C": -0.300545
+    },
+    {
+      "gara": "Monaco",
+      "Lf": 30,
+      "H": 5,
+      "n_piloti": 11,
+      "bias_A": -0.327275,
+      "bias_B": -0.454021,
+      "bias_C": -0.492141
+    },
+    {
+      "gara": "Spagna",
+      "Lf": 30,
+      "H": 5,
+      "n_piloti": 10,
+      "bias_A": -0.065271,
+      "bias_B": -0.229008,
+      "bias_C": -0.237151
+    },
+    {
+      "gara": "Ungheria",
+      "Lf": 30,
+      "H": 5,
+      "n_piloti": 16,
+      "bias_A": -0.069528,
+      "bias_B": -0.280128,
+      "bias_C": -0.296555
+    },
+    {
+      "gara": "Australia",
+      "Lf": 20,
+      "H": 10,
+      "n_piloti": 14,
+      "bias_A": 0.428929,
+      "bias_B": 0.220512,
+      "bias_C": 0.212892
+    },
+    {
+      "gara": "Belgio",
+      "Lf": 20,
+      "H": 10,
+      "n_piloti": 9,
+      "bias_A": -0.231944,
+      "bias_B": -0.503807,
+      "bias_C": -0.553004
+    },
+    {
+      "gara": "Monaco",
+      "Lf": 20,
+      "H": 10,
+      "n_piloti": 14,
+      "bias_A": -0.117605,
+      "bias_B": -0.253168,
+      "bias_C": -0.290469
+    },
+    {
+      "gara": "Spagna",
+      "Lf": 20,
+      "H": 10,
+      "n_piloti": 10,
+      "bias_A": -0.149639,
+      "bias_B": -0.336507,
+      "bias_C": -0.345168
+    },
+    {
+      "gara": "Ungheria",
+      "Lf": 20,
+      "H": 10,
+      "n_piloti": 10,
+      "bias_A": 0.075663,
+      "bias_B": -0.104017,
+      "bias_C": -0.118773
+    },
+    {
+      "gara": "Austria",
+      "Lf": 30,
+      "H": 10,
+      "n_piloti": 12,
+      "bias_A": 0.06615,
+      "bias_B": -0.192991,
+      "bias_C": -0.259901
+    },
+    {
+      "gara": "Belgio",
+      "Lf": 30,
+      "H": 10,
+      "n_piloti": 13,
+      "bias_A": -0.036315,
+      "bias_B": -0.34131,
+      "bias_C": -0.39005
+    },
+    {
+      "gara": "Giappone",
+      "Lf": 30,
+      "H": 10,
+      "n_piloti": 20,
+      "bias_A": 0.808706,
+      "bias_B": 0.445708,
+      "bias_C": 0.439365
+    },
+    {
+      "gara": "Miami",
+      "Lf": 30,
+      "H": 10,
+      "n_piloti": 13,
+      "bias_A": -0.162629,
+      "bias_B": -0.397368,
+      "bias_C": -0.439843
+    },
+    {
+      "gara": "Monaco",
+      "Lf": 30,
+      "H": 10,
+      "n_piloti": 10,
+      "bias_A": -0.774616,
+      "bias_B": -0.923253,
+      "bias_C": -0.969233
+    },
+    {
+      "gara": "Belgio",
+      "Lf": 20,
+      "H": 20,
+      "n_piloti": 7,
+      "bias_A": -0.068626,
+      "bias_B": -0.43245,
+      "bias_C": -0.498287
+    },
+    {
+      "gara": "Monaco",
+      "Lf": 20,
+      "H": 20,
+      "n_piloti": 7,
+      "bias_A": -0.516892,
+      "bias_B": -0.703914,
+      "bias_C": -0.751012
+    },
+    {
+      "gara": "Giappone",
+      "Lf": 30,
+      "H": 20,
+      "n_piloti": 17,
+      "bias_A": 0.809614,
+      "bias_B": 0.374458,
+      "bias_C": 0.366899
+    },
+    {
+      "gara": "Monaco",
+      "Lf": 30,
+      "H": 20,
+      "n_piloti": 5,
+      "bias_A": -1.505401,
+      "bias_B": -1.705115,
+      "bias_C": -1.759192
+    }
+  ]
+}

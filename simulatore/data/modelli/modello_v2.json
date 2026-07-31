@@ -1,0 +1,97 @@
+{
+  "_targhetta": {
+    "tipo": "misurato sul fondo 2026 (11 gare) — modello v2",
+    "modello": "t(pilota,giro) = base(pilota) + delta*(giro-1) + rho*eta_gomma ; delta = -delta70/N_giri",
+    "delta70": "carburante totale in secondi su 70 kg (a bordo al giro L: 70-(70/N)(L-1) kg, a delta70/70 s/kg)",
+    "stimatore": "minimi quadrati entro-blocco, effetti fissi per (gara, pilota)",
+    "identificazione": "eta e giro separati dall'azzeramento dell'eta alla sosta; guardia di rango esplicita, niente pinv (E10)",
+    "incertezza": "bootstrap 2000 ripetizioni, blocchi = gare (E11), seme 20260729",
+    "data": "2026-07-29",
+    "fonte": "data/viste/vista_verde_2026.json",
+    "sha256_vista": "634acd2e40cdb6c7a90ab6b1d52a108cf098e09ca60afcfe00e31e4925e699bc",
+    "prodotto_da": "fisica/stima_v2.py",
+    "n_giri_verdi": 10269,
+    "avvertenza": "niente curve per mescola e niente cliff: al giorno 1 le mescole non separano il degrado (p=0,209). Fase 3, con cancello fuori campione."
+  },
+  "rho": {
+    "valore": 0.030776,
+    "ic95": [
+      0.010836,
+      0.052744
+    ],
+    "unita": "s/giro per giro di eta gomma",
+    "targhetta": "misurato, fondo 2026, bootstrap 2.000, blocchi = gare"
+  },
+  "delta_70": {
+    "stimato_libero": 3.107505,
+    "ic95": [
+      2.735848,
+      3.514718
+    ],
+    "unita": "s su 70 kg",
+    "leave_one_race_out": {
+      "Australia": 3.02806,
+      "Austria": 3.204617,
+      "Belgio": 3.14473,
+      "Canada": 3.126934,
+      "Cina": 3.097858,
+      "Giappone": 3.01447,
+      "GranBretagna": 3.099266,
+      "Miami": 3.143009,
+      "Monaco": 3.225571,
+      "Spagna": 3.03688,
+      "Ungheria": 3.063439
+    },
+    "scelto": 2.2,
+    "nota": "il valore da usare lo decide l'esperimento pre-registrato (banco/prereg/PREREG_delta.md); finche' 'scelto' e' null, il modello NON e' cablabile",
+    "decisione": {
+      "esperimento": "banco/prereg/PREREG_delta.md",
+      "esito": "banco/prereg/ESITO_delta.json",
+      "braccio_vincente": "A",
+      "regola_usata": "1 — maggioranza degli orizzonti",
+      "motivo": "|bias| mediano più piccolo su 2 orizzonti giudicabili su 2",
+      "perdenti_a_referto": [
+        {
+          "braccio": "B",
+          "valore": "δ₇₀ = 3,0 (vecchio kernel)",
+          "max_bias_assoluto": 0.294837,
+          "targhetta": "misurato su questo banco 2026 — perdente dell'esperimento pre-registrato, resta a referto (E21: non si cancella una misura perché ha perso)"
+        },
+        {
+          "braccio": "C",
+          "valore": "δ₇₀ stimato libero, leave-one-race-out",
+          "max_bias_assoluto": 0.317818,
+          "targhetta": "misurato su questo banco 2026 — perdente dell'esperimento pre-registrato, resta a referto (E21: non si cancella una misura perché ha perso)"
+        }
+      ],
+      "avvertenza_stima_libera": "la stima entro-blocco e il replay NON concordano: la regressione sul giro di gara non separa carburante ed evoluzione della pista, il replay misura la deriva che serve davvero a proiettare. Il valore cablato è quello che vince sul bersaglio del prodotto (E16).",
+      "limiti_dichiarati": [
+        {
+          "orizzonte": 20,
+          "stato": "NON giudicabile",
+          "gare_disponibili": 3,
+          "gare_richieste": 5,
+          "bias_vincitore": -0.292759,
+          "avvertenza": "il modello NON è validato a 20 giri: su questo campione ridotto il bias del vincitore supera il cancello 0.17. Una finestra di 20 giri tutta verde è rara (mediane stint 2026: SOFT 14 · MEDIUM 19 · HARD 22), quindi il campione seleziona stint lunghi ed è poco rappresentativo. Non usare il modello oltre l'orizzonte validato senza un nuovo banco."
+        }
+      ],
+      "orizzonti_validati": [
+        5,
+        10
+      ]
+    }
+  },
+  "guardie": {
+    "rango": 2,
+    "autovalori_XtX": [
+      536.9330710987836,
+      806386.6811734883
+    ],
+    "condizionamento": 38.75355927822539,
+    "correlazione_giro_eta_entro_blocco": 0.5490482295317913,
+    "nota": "il condizionamento e la correlazione misurano quanto l'azzeramento alla sosta separa davvero eta e giro; niente pinv, niente lstsq: solve esplicita su matrice verificata (E10)",
+    "blocchi_gara_pilota": 232,
+    "blocchi_con_almeno_due_stint": 214,
+    "frazione_blocchi_identificanti": 0.9224
+  }
+}

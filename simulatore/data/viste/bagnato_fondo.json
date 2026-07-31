@@ -1,0 +1,8382 @@
+{
+ "_targhetta": {
+  "tipo": "misurato sul fondo 2018-2025 — passo mediano per famiglia di mescole, giro per giro, sulle gare bagnate",
+  "prereg": "banco/prereg/PREREG_bagnato.md",
+  "definizioni": "provenienza/definizioni.mjs · verde (slick) e passoBagnato (intermedia/wet): stessa definizione, altra famiglia",
+  "riferimento_asciutto": "5° percentile dei giri slick puliti della gara; null sotto 30 giri slick puliti (regola 6)",
+  "generata_da": "provenienza/esporta_bagnato.mjs",
+  "data": "2026-07-29"
+ },
+ "n_gare": 20,
+ "giri_su_bagnato_totali": 10098,
+ "gare": [
+  {
+   "anno": 2018,
+   "gara": "German_Grand_Prix",
+   "chiave": "2018/German_Grand_Prix",
+   "giri_su_bagnato": 35,
+   "n_slick_puliti": 474,
+   "riferimento_asciutto_s": 76.335,
+   "giri": [
+    {
+     "giro": 30,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 79.552,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.552
+    },
+    {
+     "giro": 31,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 79.303,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.303
+    },
+    {
+     "giro": 32,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 79.055,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.055
+    },
+    {
+     "giro": 33,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 79.258,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.258
+    },
+    {
+     "giro": 34,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 79.059,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.059
+    },
+    {
+     "giro": 35,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 78.948,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.948
+    },
+    {
+     "giro": 36,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 78.934,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.934
+    },
+    {
+     "giro": 37,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 78.996,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.996
+    },
+    {
+     "giro": 38,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 78.945,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.945
+    },
+    {
+     "giro": 39,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 78.949,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.949
+    },
+    {
+     "giro": 40,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 78.846,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.846
+    },
+    {
+     "giro": 41,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 78.86,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.86
+    },
+    {
+     "giro": 42,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 79.002,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.002
+    },
+    {
+     "giro": 43,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 79.001,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.001
+    },
+    {
+     "giro": 44,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 80.01,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.01
+    },
+    {
+     "giro": 45,
+     "n_slick": 16,
+     "n_bagnato": 3,
+     "mediana_slick": 81.244,
+     "mediana_bagnato": 90.735,
+     "mediana_campo": 81.359
+    },
+    {
+     "giro": 46,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 80.971,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.971
+    },
+    {
+     "giro": 47,
+     "n_slick": 4,
+     "n_bagnato": 0,
+     "mediana_slick": 79.531,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.531
+    },
+    {
+     "giro": 48,
+     "n_slick": 5,
+     "n_bagnato": 0,
+     "mediana_slick": 81.801,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.801
+    },
+    {
+     "giro": 49,
+     "n_slick": 7,
+     "n_bagnato": 0,
+     "mediana_slick": 87.357,
+     "mediana_bagnato": null,
+     "mediana_campo": 87.357
+    },
+    {
+     "giro": 50,
+     "n_slick": 3,
+     "n_bagnato": 0,
+     "mediana_slick": 82.063,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.063
+    },
+    {
+     "giro": 57,
+     "n_slick": 3,
+     "n_bagnato": 0,
+     "mediana_slick": 84.184,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.184
+    },
+    {
+     "giro": 58,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 79.686,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.686
+    },
+    {
+     "giro": 59,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 78.698,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.698
+    },
+    {
+     "giro": 60,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 78.35,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.35
+    },
+    {
+     "giro": 61,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 78.165,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.165
+    },
+    {
+     "giro": 62,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 78.205,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.205
+    },
+    {
+     "giro": 63,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 78.052,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.052
+    },
+    {
+     "giro": 64,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 77.966,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.966
+    },
+    {
+     "giro": 65,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 77.863,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.863
+    },
+    {
+     "giro": 66,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 77.762,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.762
+    },
+    {
+     "giro": 67,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 78.002,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.002
+    }
+   ]
+  },
+  {
+   "anno": 2019,
+   "gara": "German_Grand_Prix",
+   "chiave": "2019/German_Grand_Prix",
+   "giri_su_bagnato": 762,
+   "n_slick_puliti": 181,
+   "riferimento_asciutto_s": 77.485,
+   "giri": [
+    {
+     "giro": 1,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 112.574,
+     "mediana_campo": 112.574
+    },
+    {
+     "giro": 2,
+     "n_slick": 0,
+     "n_bagnato": 3,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.883,
+     "mediana_campo": 95.883
+    },
+    {
+     "giro": 5,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 99.479,
+     "mediana_campo": 99.479
+    },
+    {
+     "giro": 6,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.977,
+     "mediana_campo": 95.977
+    },
+    {
+     "giro": 7,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.021,
+     "mediana_campo": 95.021
+    },
+    {
+     "giro": 8,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.91,
+     "mediana_campo": 92.91
+    },
+    {
+     "giro": 9,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.649,
+     "mediana_campo": 91.649
+    },
+    {
+     "giro": 10,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.027,
+     "mediana_campo": 92.027
+    },
+    {
+     "giro": 11,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.81,
+     "mediana_campo": 91.81
+    },
+    {
+     "giro": 12,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.793,
+     "mediana_campo": 91.793
+    },
+    {
+     "giro": 13,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.913,
+     "mediana_campo": 91.913
+    },
+    {
+     "giro": 14,
+     "n_slick": 0,
+     "n_bagnato": 5,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.075,
+     "mediana_campo": 91.075
+    },
+    {
+     "giro": 16,
+     "n_slick": 0,
+     "n_bagnato": 13,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.458,
+     "mediana_campo": 92.458
+    },
+    {
+     "giro": 17,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.081,
+     "mediana_campo": 92.081
+    },
+    {
+     "giro": 18,
+     "n_slick": 0,
+     "n_bagnato": 7,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.386,
+     "mediana_campo": 91.386
+    },
+    {
+     "giro": 19,
+     "n_slick": 0,
+     "n_bagnato": 8,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.592,
+     "mediana_campo": 93.592
+    },
+    {
+     "giro": 20,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.82,
+     "mediana_campo": 92.82
+    },
+    {
+     "giro": 21,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.015,
+     "mediana_campo": 93.015
+    },
+    {
+     "giro": 22,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.744,
+     "mediana_campo": 93.744
+    },
+    {
+     "giro": 23,
+     "n_slick": 1,
+     "n_bagnato": 15,
+     "mediana_slick": 92.279,
+     "mediana_bagnato": 93.604,
+     "mediana_campo": 93.378
+    },
+    {
+     "giro": 24,
+     "n_slick": 1,
+     "n_bagnato": 14,
+     "mediana_slick": 91.378,
+     "mediana_bagnato": 94.105,
+     "mediana_campo": 94.101
+    },
+    {
+     "giro": 25,
+     "n_slick": 2,
+     "n_bagnato": 10,
+     "mediana_slick": 93.516,
+     "mediana_bagnato": 94.079,
+     "mediana_campo": 93.82
+    },
+    {
+     "giro": 26,
+     "n_slick": 0,
+     "n_bagnato": 2,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.787,
+     "mediana_campo": 92.787
+    },
+    {
+     "giro": 34,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.834,
+     "mediana_campo": 94.834
+    },
+    {
+     "giro": 35,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.892,
+     "mediana_campo": 91.892
+    },
+    {
+     "giro": 36,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.192,
+     "mediana_campo": 91.192
+    },
+    {
+     "giro": 37,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 90.83,
+     "mediana_campo": 90.83
+    },
+    {
+     "giro": 38,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 90.291,
+     "mediana_campo": 90.291
+    },
+    {
+     "giro": 39,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 90.442,
+     "mediana_campo": 90.442
+    },
+    {
+     "giro": 40,
+     "n_slick": 0,
+     "n_bagnato": 3,
+     "mediana_slick": null,
+     "mediana_bagnato": 88.944,
+     "mediana_campo": 88.944
+    },
+    {
+     "giro": 46,
+     "n_slick": 1,
+     "n_bagnato": 5,
+     "mediana_slick": 87.893,
+     "mediana_bagnato": 88.201,
+     "mediana_campo": 88.047
+    },
+    {
+     "giro": 47,
+     "n_slick": 3,
+     "n_bagnato": 0,
+     "mediana_slick": 83.384,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.384
+    },
+    {
+     "giro": 48,
+     "n_slick": 10,
+     "n_bagnato": 0,
+     "mediana_slick": 80.809,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.809
+    },
+    {
+     "giro": 49,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 79.544,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.544
+    },
+    {
+     "giro": 50,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 79.527,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.527
+    },
+    {
+     "giro": 51,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 78.963,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.963
+    },
+    {
+     "giro": 52,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 78.788,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.788
+    },
+    {
+     "giro": 53,
+     "n_slick": 2,
+     "n_bagnato": 0,
+     "mediana_slick": 80.877,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.877
+    },
+    {
+     "giro": 54,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 78.696,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.696
+    },
+    {
+     "giro": 55,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 78.405,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.405
+    },
+    {
+     "giro": 56,
+     "n_slick": 7,
+     "n_bagnato": 0,
+     "mediana_slick": 78.325,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.325
+    },
+    {
+     "giro": 60,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 79.27,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.27
+    },
+    {
+     "giro": 61,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 78.224,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.224
+    },
+    {
+     "giro": 62,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 77.949,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.949
+    },
+    {
+     "giro": 63,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 78.021,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.021
+    },
+    {
+     "giro": 64,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 79.126,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.126
+    }
+   ]
+  },
+  {
+   "anno": 2020,
+   "gara": "Hungarian_Grand_Prix",
+   "chiave": "2020/Hungarian_Grand_Prix",
+   "giri_su_bagnato": 56,
+   "n_slick_puliti": 1164,
+   "riferimento_asciutto_s": 79.581,
+   "giri": [
+    {
+     "giro": 1,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 105.692,
+     "mediana_campo": 105.692
+    },
+    {
+     "giro": 2,
+     "n_slick": 2,
+     "n_bagnato": 15,
+     "mediana_slick": 98.971,
+     "mediana_bagnato": 96.111,
+     "mediana_campo": 96.192
+    },
+    {
+     "giro": 3,
+     "n_slick": 3,
+     "n_bagnato": 6,
+     "mediana_slick": 94.228,
+     "mediana_bagnato": 96.823,
+     "mediana_campo": 95.65
+    },
+    {
+     "giro": 5,
+     "n_slick": 7,
+     "n_bagnato": 0,
+     "mediana_slick": 89.409,
+     "mediana_bagnato": null,
+     "mediana_campo": 89.409
+    },
+    {
+     "giro": 6,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 86.456,
+     "mediana_bagnato": null,
+     "mediana_campo": 86.456
+    },
+    {
+     "giro": 7,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 85.182,
+     "mediana_bagnato": null,
+     "mediana_campo": 85.182
+    },
+    {
+     "giro": 8,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 84.818,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.818
+    },
+    {
+     "giro": 9,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 84.11,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.11
+    },
+    {
+     "giro": 10,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 83.769,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.769
+    },
+    {
+     "giro": 11,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 83.811,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.811
+    },
+    {
+     "giro": 12,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 84.035,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.035
+    },
+    {
+     "giro": 13,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 83.973,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.973
+    },
+    {
+     "giro": 14,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 84.009,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.009
+    },
+    {
+     "giro": 15,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 84.262,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.262
+    },
+    {
+     "giro": 16,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 84.223,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.223
+    },
+    {
+     "giro": 17,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 84.394,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.394
+    },
+    {
+     "giro": 18,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 84.474,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.474
+    },
+    {
+     "giro": 19,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 83.494,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.494
+    },
+    {
+     "giro": 20,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 83.496,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.496
+    },
+    {
+     "giro": 21,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 82.992,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.992
+    },
+    {
+     "giro": 22,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 82.541,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.541
+    },
+    {
+     "giro": 23,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 82.79,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.79
+    },
+    {
+     "giro": 24,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 82.85,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.85
+    },
+    {
+     "giro": 25,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 82.728,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.728
+    },
+    {
+     "giro": 26,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 82.681,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.681
+    },
+    {
+     "giro": 27,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 82.561,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.561
+    },
+    {
+     "giro": 28,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 82.642,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.642
+    },
+    {
+     "giro": 29,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 82.604,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.604
+    },
+    {
+     "giro": 30,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 82.844,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.844
+    },
+    {
+     "giro": 31,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 82.34,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.34
+    },
+    {
+     "giro": 32,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 82.646,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.646
+    },
+    {
+     "giro": 33,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 82.669,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.669
+    },
+    {
+     "giro": 34,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 82.736,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.736
+    },
+    {
+     "giro": 35,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 82.562,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.562
+    },
+    {
+     "giro": 36,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 81.996,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.996
+    },
+    {
+     "giro": 37,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 81.625,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.625
+    },
+    {
+     "giro": 38,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.324,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.324
+    },
+    {
+     "giro": 39,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 80.96,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.96
+    },
+    {
+     "giro": 40,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 81.019,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.019
+    },
+    {
+     "giro": 41,
+     "n_slick": 11,
+     "n_bagnato": 0,
+     "mediana_slick": 80.503,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.503
+    },
+    {
+     "giro": 42,
+     "n_slick": 6,
+     "n_bagnato": 0,
+     "mediana_slick": 80.959,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.959
+    },
+    {
+     "giro": 43,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 80.966,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.966
+    },
+    {
+     "giro": 44,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 80.915,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.915
+    },
+    {
+     "giro": 45,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 80.778,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.778
+    },
+    {
+     "giro": 46,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 80.864,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.864
+    },
+    {
+     "giro": 47,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 80.865,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.865
+    },
+    {
+     "giro": 48,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 80.886,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.886
+    },
+    {
+     "giro": 49,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 80.804,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.804
+    },
+    {
+     "giro": 50,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 80.715,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.715
+    },
+    {
+     "giro": 51,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 80.619,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.619
+    },
+    {
+     "giro": 52,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 80.605,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.605
+    },
+    {
+     "giro": 53,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 80.583,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.583
+    },
+    {
+     "giro": 54,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 80.66,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.66
+    },
+    {
+     "giro": 55,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 80.664,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.664
+    },
+    {
+     "giro": 56,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 81.027,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.027
+    },
+    {
+     "giro": 57,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 80.944,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.944
+    },
+    {
+     "giro": 58,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 80.617,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.617
+    },
+    {
+     "giro": 59,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 80.696,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.696
+    },
+    {
+     "giro": 60,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 80.712,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.712
+    },
+    {
+     "giro": 61,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 80.831,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.831
+    },
+    {
+     "giro": 62,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 80.713,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.713
+    },
+    {
+     "giro": 63,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 80.765,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.765
+    },
+    {
+     "giro": 64,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 80.641,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.641
+    },
+    {
+     "giro": 65,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 80.536,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.536
+    },
+    {
+     "giro": 66,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 80.866,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.866
+    },
+    {
+     "giro": 67,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 80.425,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.425
+    },
+    {
+     "giro": 68,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 80.477,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.477
+    },
+    {
+     "giro": 69,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 80.911,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.911
+    },
+    {
+     "giro": 70,
+     "n_slick": 5,
+     "n_bagnato": 0,
+     "mediana_slick": 80.276,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.276
+    }
+   ]
+  },
+  {
+   "anno": 2020,
+   "gara": "Turkish_Grand_Prix",
+   "chiave": "2020/Turkish_Grand_Prix",
+   "giri_su_bagnato": 1077,
+   "n_slick_puliti": 0,
+   "riferimento_asciutto_s": null,
+   "giri": [
+    {
+     "giro": 2,
+     "n_slick": 0,
+     "n_bagnato": 2,
+     "mediana_slick": null,
+     "mediana_bagnato": 125.807,
+     "mediana_campo": 125.807
+    },
+    {
+     "giro": 3,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 118.852,
+     "mediana_campo": 118.852
+    },
+    {
+     "giro": 4,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 116.99,
+     "mediana_campo": 116.99
+    },
+    {
+     "giro": 5,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 117.523,
+     "mediana_campo": 117.523
+    },
+    {
+     "giro": 6,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 115.193,
+     "mediana_campo": 115.193
+    },
+    {
+     "giro": 7,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 114.764,
+     "mediana_campo": 114.764
+    },
+    {
+     "giro": 8,
+     "n_slick": 0,
+     "n_bagnato": 11,
+     "mediana_slick": null,
+     "mediana_bagnato": 113.315,
+     "mediana_campo": 113.315
+    },
+    {
+     "giro": 9,
+     "n_slick": 0,
+     "n_bagnato": 10,
+     "mediana_slick": null,
+     "mediana_bagnato": 112.007,
+     "mediana_campo": 112.007
+    },
+    {
+     "giro": 10,
+     "n_slick": 0,
+     "n_bagnato": 13,
+     "mediana_slick": null,
+     "mediana_bagnato": 111.091,
+     "mediana_campo": 111.091
+    },
+    {
+     "giro": 11,
+     "n_slick": 0,
+     "n_bagnato": 14,
+     "mediana_slick": null,
+     "mediana_bagnato": 109.977,
+     "mediana_campo": 109.977
+    },
+    {
+     "giro": 12,
+     "n_slick": 0,
+     "n_bagnato": 10,
+     "mediana_slick": null,
+     "mediana_bagnato": 108.686,
+     "mediana_campo": 108.686
+    },
+    {
+     "giro": 14,
+     "n_slick": 0,
+     "n_bagnato": 1,
+     "mediana_slick": null,
+     "mediana_bagnato": 113.841,
+     "mediana_campo": 113.841
+    },
+    {
+     "giro": 15,
+     "n_slick": 0,
+     "n_bagnato": 11,
+     "mediana_slick": null,
+     "mediana_bagnato": 110.182,
+     "mediana_campo": 110.182
+    },
+    {
+     "giro": 16,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 107.608,
+     "mediana_campo": 107.608
+    },
+    {
+     "giro": 17,
+     "n_slick": 0,
+     "n_bagnato": 1,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.386,
+     "mediana_campo": 104.386
+    },
+    {
+     "giro": 18,
+     "n_slick": 0,
+     "n_bagnato": 1,
+     "mediana_slick": null,
+     "mediana_bagnato": 108.535,
+     "mediana_campo": 108.535
+    },
+    {
+     "giro": 19,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.723,
+     "mediana_campo": 104.723
+    },
+    {
+     "giro": 20,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.697,
+     "mediana_campo": 104.697
+    },
+    {
+     "giro": 21,
+     "n_slick": 0,
+     "n_bagnato": 1,
+     "mediana_slick": null,
+     "mediana_bagnato": 106.092,
+     "mediana_campo": 106.092
+    },
+    {
+     "giro": 22,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.134,
+     "mediana_campo": 104.134
+    },
+    {
+     "giro": 23,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.248,
+     "mediana_campo": 104.248
+    },
+    {
+     "giro": 24,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.469,
+     "mediana_campo": 104.469
+    },
+    {
+     "giro": 25,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.404,
+     "mediana_campo": 104.404
+    },
+    {
+     "giro": 26,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.561,
+     "mediana_campo": 104.561
+    },
+    {
+     "giro": 27,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.859,
+     "mediana_campo": 104.859
+    },
+    {
+     "giro": 28,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.362,
+     "mediana_campo": 104.362
+    },
+    {
+     "giro": 29,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.068,
+     "mediana_campo": 104.068
+    },
+    {
+     "giro": 30,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 103.806,
+     "mediana_campo": 103.806
+    },
+    {
+     "giro": 31,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 103.949,
+     "mediana_campo": 103.949
+    },
+    {
+     "giro": 32,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 103.29,
+     "mediana_campo": 103.29
+    },
+    {
+     "giro": 33,
+     "n_slick": 0,
+     "n_bagnato": 6,
+     "mediana_slick": null,
+     "mediana_bagnato": 102.613,
+     "mediana_campo": 102.613
+    },
+    {
+     "giro": 34,
+     "n_slick": 0,
+     "n_bagnato": 9,
+     "mediana_slick": null,
+     "mediana_bagnato": 103.57,
+     "mediana_campo": 103.57
+    },
+    {
+     "giro": 35,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 102.671,
+     "mediana_campo": 102.671
+    },
+    {
+     "giro": 36,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 102.806,
+     "mediana_campo": 102.806
+    },
+    {
+     "giro": 37,
+     "n_slick": 0,
+     "n_bagnato": 14,
+     "mediana_slick": null,
+     "mediana_bagnato": 102.534,
+     "mediana_campo": 102.534
+    },
+    {
+     "giro": 38,
+     "n_slick": 0,
+     "n_bagnato": 9,
+     "mediana_slick": null,
+     "mediana_bagnato": 103.008,
+     "mediana_campo": 103.008
+    },
+    {
+     "giro": 40,
+     "n_slick": 0,
+     "n_bagnato": 2,
+     "mediana_slick": null,
+     "mediana_bagnato": 105.257,
+     "mediana_campo": 105.257
+    },
+    {
+     "giro": 41,
+     "n_slick": 0,
+     "n_bagnato": 9,
+     "mediana_slick": null,
+     "mediana_bagnato": 102.469,
+     "mediana_campo": 102.469
+    },
+    {
+     "giro": 42,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 102.101,
+     "mediana_campo": 102.101
+    },
+    {
+     "giro": 43,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 101.663,
+     "mediana_campo": 101.663
+    },
+    {
+     "giro": 44,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 102.065,
+     "mediana_campo": 102.065
+    },
+    {
+     "giro": 45,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 102.152,
+     "mediana_campo": 102.152
+    },
+    {
+     "giro": 46,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 101.686,
+     "mediana_campo": 101.686
+    },
+    {
+     "giro": 47,
+     "n_slick": 0,
+     "n_bagnato": 12,
+     "mediana_slick": null,
+     "mediana_bagnato": 101.066,
+     "mediana_campo": 101.066
+    },
+    {
+     "giro": 48,
+     "n_slick": 0,
+     "n_bagnato": 2,
+     "mediana_slick": null,
+     "mediana_bagnato": 102.081,
+     "mediana_campo": 102.081
+    },
+    {
+     "giro": 49,
+     "n_slick": 0,
+     "n_bagnato": 7,
+     "mediana_slick": null,
+     "mediana_bagnato": 101.569,
+     "mediana_campo": 101.569
+    },
+    {
+     "giro": 50,
+     "n_slick": 0,
+     "n_bagnato": 9,
+     "mediana_slick": null,
+     "mediana_bagnato": 100.786,
+     "mediana_campo": 100.786
+    },
+    {
+     "giro": 51,
+     "n_slick": 0,
+     "n_bagnato": 7,
+     "mediana_slick": null,
+     "mediana_bagnato": 101.35,
+     "mediana_campo": 101.35
+    },
+    {
+     "giro": 52,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 101.086,
+     "mediana_campo": 101.086
+    },
+    {
+     "giro": 53,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 100.841,
+     "mediana_campo": 100.841
+    },
+    {
+     "giro": 54,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 101.165,
+     "mediana_campo": 101.165
+    },
+    {
+     "giro": 55,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 100.732,
+     "mediana_campo": 100.732
+    },
+    {
+     "giro": 56,
+     "n_slick": 0,
+     "n_bagnato": 13,
+     "mediana_slick": null,
+     "mediana_bagnato": 100.63,
+     "mediana_campo": 100.63
+    },
+    {
+     "giro": 57,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 100.48,
+     "mediana_campo": 100.48
+    },
+    {
+     "giro": 58,
+     "n_slick": 0,
+     "n_bagnato": 10,
+     "mediana_slick": null,
+     "mediana_bagnato": 100.484,
+     "mediana_campo": 100.484
+    }
+   ]
+  },
+  {
+   "anno": 2021,
+   "gara": "Emilia_Romagna_Grand_Prix",
+   "chiave": "2021/Emilia_Romagna_Grand_Prix",
+   "giri_su_bagnato": 498,
+   "n_slick_puliti": 459,
+   "riferimento_asciutto_s": 78.334,
+   "giri": [
+    {
+     "giro": 7,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.461,
+     "mediana_campo": 104.461
+    },
+    {
+     "giro": 8,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 101.228,
+     "mediana_campo": 101.228
+    },
+    {
+     "giro": 9,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 97.828,
+     "mediana_campo": 97.828
+    },
+    {
+     "giro": 10,
+     "n_slick": 0,
+     "n_bagnato": 1,
+     "mediana_slick": null,
+     "mediana_bagnato": 96.089,
+     "mediana_campo": 96.089
+    },
+    {
+     "giro": 11,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.223,
+     "mediana_campo": 95.223
+    },
+    {
+     "giro": 12,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.429,
+     "mediana_campo": 93.429
+    },
+    {
+     "giro": 13,
+     "n_slick": 0,
+     "n_bagnato": 1,
+     "mediana_slick": null,
+     "mediana_bagnato": 97.606,
+     "mediana_campo": 97.606
+    },
+    {
+     "giro": 14,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.253,
+     "mediana_campo": 91.253
+    },
+    {
+     "giro": 15,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 90.744,
+     "mediana_campo": 90.744
+    },
+    {
+     "giro": 16,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 89.757,
+     "mediana_campo": 89.757
+    },
+    {
+     "giro": 17,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 89.378,
+     "mediana_campo": 89.378
+    },
+    {
+     "giro": 18,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 88.971,
+     "mediana_campo": 88.971
+    },
+    {
+     "giro": 19,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 88.823,
+     "mediana_campo": 88.823
+    },
+    {
+     "giro": 20,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 88.636,
+     "mediana_campo": 88.636
+    },
+    {
+     "giro": 21,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 88.947,
+     "mediana_campo": 88.947
+    },
+    {
+     "giro": 22,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 89.482,
+     "mediana_campo": 89.482
+    },
+    {
+     "giro": 23,
+     "n_slick": 1,
+     "n_bagnato": 16,
+     "mediana_slick": 96.313,
+     "mediana_bagnato": 89.792,
+     "mediana_campo": 90.052
+    },
+    {
+     "giro": 24,
+     "n_slick": 2,
+     "n_bagnato": 16,
+     "mediana_slick": 91.565,
+     "mediana_bagnato": 89.923,
+     "mediana_campo": 90.104
+    },
+    {
+     "giro": 25,
+     "n_slick": 3,
+     "n_bagnato": 15,
+     "mediana_slick": 88.198,
+     "mediana_bagnato": 89.771,
+     "mediana_campo": 89.709
+    },
+    {
+     "giro": 26,
+     "n_slick": 3,
+     "n_bagnato": 12,
+     "mediana_slick": 86.717,
+     "mediana_bagnato": 89.225,
+     "mediana_campo": 89.051
+    },
+    {
+     "giro": 27,
+     "n_slick": 4,
+     "n_bagnato": 6,
+     "mediana_slick": 86.935,
+     "mediana_bagnato": 88.015,
+     "mediana_campo": 87.626
+    },
+    {
+     "giro": 28,
+     "n_slick": 7,
+     "n_bagnato": 0,
+     "mediana_slick": 87.169,
+     "mediana_bagnato": null,
+     "mediana_campo": 87.169
+    },
+    {
+     "giro": 29,
+     "n_slick": 9,
+     "n_bagnato": 0,
+     "mediana_slick": 85.859,
+     "mediana_bagnato": null,
+     "mediana_campo": 85.859
+    },
+    {
+     "giro": 30,
+     "n_slick": 3,
+     "n_bagnato": 0,
+     "mediana_slick": 84.319,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.319
+    },
+    {
+     "giro": 35,
+     "n_slick": 2,
+     "n_bagnato": 0,
+     "mediana_slick": 86.944,
+     "mediana_bagnato": null,
+     "mediana_campo": 86.944
+    },
+    {
+     "giro": 36,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 83.218,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.218
+    },
+    {
+     "giro": 37,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 81.386,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.386
+    },
+    {
+     "giro": 38,
+     "n_slick": 2,
+     "n_bagnato": 0,
+     "mediana_slick": 83.229,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.229
+    },
+    {
+     "giro": 39,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 81.222,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.222
+    },
+    {
+     "giro": 40,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 80.519,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.519
+    },
+    {
+     "giro": 41,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 79.921,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.921
+    },
+    {
+     "giro": 42,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 80.26,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.26
+    },
+    {
+     "giro": 43,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 80.041,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.041
+    },
+    {
+     "giro": 44,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 80.056,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.056
+    },
+    {
+     "giro": 45,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 80.05,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.05
+    },
+    {
+     "giro": 46,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 79.985,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.985
+    },
+    {
+     "giro": 47,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 79.901,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.901
+    },
+    {
+     "giro": 48,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 79.882,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.882
+    },
+    {
+     "giro": 49,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 79.464,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.464
+    },
+    {
+     "giro": 50,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 79.757,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.757
+    },
+    {
+     "giro": 51,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 79.562,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.562
+    },
+    {
+     "giro": 52,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 79.612,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.612
+    },
+    {
+     "giro": 53,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 79.782,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.782
+    },
+    {
+     "giro": 54,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 79.447,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.447
+    },
+    {
+     "giro": 55,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 79.615,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.615
+    },
+    {
+     "giro": 56,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 79.446,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.446
+    },
+    {
+     "giro": 57,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 79.47,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.47
+    },
+    {
+     "giro": 58,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 79.273,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.273
+    },
+    {
+     "giro": 59,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 78.969,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.969
+    },
+    {
+     "giro": 60,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 79.404,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.404
+    },
+    {
+     "giro": 61,
+     "n_slick": 3,
+     "n_bagnato": 0,
+     "mediana_slick": 82.102,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.102
+    },
+    {
+     "giro": 62,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 79.205,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.205
+    },
+    {
+     "giro": 63,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 79.527,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.527
+    }
+   ]
+  },
+  {
+   "anno": 2021,
+   "gara": "Hungarian_Grand_Prix",
+   "chiave": "2021/Hungarian_Grand_Prix",
+   "giri_su_bagnato": 51,
+   "n_slick_puliti": 866,
+   "riferimento_asciutto_s": 81.436,
+   "giri": [
+    {
+     "giro": 5,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 86.393,
+     "mediana_bagnato": null,
+     "mediana_campo": 86.393
+    },
+    {
+     "giro": 6,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 85.931,
+     "mediana_bagnato": null,
+     "mediana_campo": 85.931
+    },
+    {
+     "giro": 7,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 85.802,
+     "mediana_bagnato": null,
+     "mediana_campo": 85.802
+    },
+    {
+     "giro": 8,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 85.395,
+     "mediana_bagnato": null,
+     "mediana_campo": 85.395
+    },
+    {
+     "giro": 9,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 85.141,
+     "mediana_bagnato": null,
+     "mediana_campo": 85.141
+    },
+    {
+     "giro": 10,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 85.156,
+     "mediana_bagnato": null,
+     "mediana_campo": 85.156
+    },
+    {
+     "giro": 11,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 85.184,
+     "mediana_bagnato": null,
+     "mediana_campo": 85.184
+    },
+    {
+     "giro": 12,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 85.096,
+     "mediana_bagnato": null,
+     "mediana_campo": 85.096
+    },
+    {
+     "giro": 13,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 85.162,
+     "mediana_bagnato": null,
+     "mediana_campo": 85.162
+    },
+    {
+     "giro": 14,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 84.827,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.827
+    },
+    {
+     "giro": 15,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 84.399,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.399
+    },
+    {
+     "giro": 16,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 84.166,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.166
+    },
+    {
+     "giro": 17,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 84.124,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.124
+    },
+    {
+     "giro": 18,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 84.245,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.245
+    },
+    {
+     "giro": 19,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 84.493,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.493
+    },
+    {
+     "giro": 20,
+     "n_slick": 11,
+     "n_bagnato": 0,
+     "mediana_slick": 84.441,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.441
+    },
+    {
+     "giro": 21,
+     "n_slick": 11,
+     "n_bagnato": 0,
+     "mediana_slick": 84.002,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.002
+    },
+    {
+     "giro": 22,
+     "n_slick": 12,
+     "n_bagnato": 0,
+     "mediana_slick": 83.965,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.965
+    },
+    {
+     "giro": 23,
+     "n_slick": 12,
+     "n_bagnato": 0,
+     "mediana_slick": 83.535,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.535
+    },
+    {
+     "giro": 24,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 83.682,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.682
+    },
+    {
+     "giro": 25,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 83.326,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.326
+    },
+    {
+     "giro": 26,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 83.238,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.238
+    },
+    {
+     "giro": 27,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 83.35,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.35
+    },
+    {
+     "giro": 28,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 83.339,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.339
+    },
+    {
+     "giro": 29,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 83.359,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.359
+    },
+    {
+     "giro": 30,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 83.65,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.65
+    },
+    {
+     "giro": 31,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 83.435,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.435
+    },
+    {
+     "giro": 32,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 83.955,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.955
+    },
+    {
+     "giro": 33,
+     "n_slick": 12,
+     "n_bagnato": 0,
+     "mediana_slick": 83.823,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.823
+    },
+    {
+     "giro": 34,
+     "n_slick": 12,
+     "n_bagnato": 0,
+     "mediana_slick": 83.187,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.187
+    },
+    {
+     "giro": 35,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 83.028,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.028
+    },
+    {
+     "giro": 36,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 82.928,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.928
+    },
+    {
+     "giro": 37,
+     "n_slick": 12,
+     "n_bagnato": 0,
+     "mediana_slick": 83.217,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.217
+    },
+    {
+     "giro": 38,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 83.001,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.001
+    },
+    {
+     "giro": 39,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 83.13,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.13
+    },
+    {
+     "giro": 40,
+     "n_slick": 12,
+     "n_bagnato": 0,
+     "mediana_slick": 83.089,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.089
+    },
+    {
+     "giro": 41,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 82.949,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.949
+    },
+    {
+     "giro": 42,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.645,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.645
+    },
+    {
+     "giro": 43,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.315,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.315
+    },
+    {
+     "giro": 44,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.512,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.512
+    },
+    {
+     "giro": 45,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.547,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.547
+    },
+    {
+     "giro": 46,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.664,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.664
+    },
+    {
+     "giro": 47,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 82.682,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.682
+    },
+    {
+     "giro": 48,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 82.792,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.792
+    },
+    {
+     "giro": 49,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.666,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.666
+    },
+    {
+     "giro": 50,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.668,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.668
+    },
+    {
+     "giro": 51,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.926,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.926
+    },
+    {
+     "giro": 52,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.939,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.939
+    },
+    {
+     "giro": 53,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 83.155,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.155
+    },
+    {
+     "giro": 54,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 82.693,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.693
+    },
+    {
+     "giro": 55,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.623,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.623
+    },
+    {
+     "giro": 56,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.465,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.465
+    },
+    {
+     "giro": 57,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.451,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.451
+    },
+    {
+     "giro": 58,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.359,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.359
+    },
+    {
+     "giro": 59,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.181,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.181
+    },
+    {
+     "giro": 60,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.227,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.227
+    },
+    {
+     "giro": 61,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.381,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.381
+    },
+    {
+     "giro": 62,
+     "n_slick": 10,
+     "n_bagnato": 0,
+     "mediana_slick": 81.811,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.811
+    },
+    {
+     "giro": 63,
+     "n_slick": 3,
+     "n_bagnato": 0,
+     "mediana_slick": 83.443,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.443
+    },
+    {
+     "giro": 64,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.185,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.185
+    },
+    {
+     "giro": 65,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.307,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.307
+    },
+    {
+     "giro": 66,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.988,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.988
+    },
+    {
+     "giro": 67,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 82.945,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.945
+    },
+    {
+     "giro": 68,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 82.673,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.673
+    },
+    {
+     "giro": 69,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 82.541,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.541
+    },
+    {
+     "giro": 70,
+     "n_slick": 10,
+     "n_bagnato": 0,
+     "mediana_slick": 83.017,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.017
+    }
+   ]
+  },
+  {
+   "anno": 2021,
+   "gara": "Russian_Grand_Prix",
+   "chiave": "2021/Russian_Grand_Prix",
+   "giri_su_bagnato": 67,
+   "n_slick_puliti": 851,
+   "riferimento_asciutto_s": 99.015,
+   "giri": [
+    {
+     "giro": 1,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 112.027,
+     "mediana_bagnato": null,
+     "mediana_campo": 112.027
+    },
+    {
+     "giro": 3,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 102.977,
+     "mediana_bagnato": null,
+     "mediana_campo": 102.977
+    },
+    {
+     "giro": 4,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 102.442,
+     "mediana_bagnato": null,
+     "mediana_campo": 102.442
+    },
+    {
+     "giro": 5,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 102.7,
+     "mediana_bagnato": null,
+     "mediana_campo": 102.7
+    },
+    {
+     "giro": 6,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 102.619,
+     "mediana_bagnato": null,
+     "mediana_campo": 102.619
+    },
+    {
+     "giro": 7,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 102.332,
+     "mediana_bagnato": null,
+     "mediana_campo": 102.332
+    },
+    {
+     "giro": 8,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 102.434,
+     "mediana_bagnato": null,
+     "mediana_campo": 102.434
+    },
+    {
+     "giro": 9,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 102.317,
+     "mediana_bagnato": null,
+     "mediana_campo": 102.317
+    },
+    {
+     "giro": 10,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 102.702,
+     "mediana_bagnato": null,
+     "mediana_campo": 102.702
+    },
+    {
+     "giro": 11,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 102.246,
+     "mediana_bagnato": null,
+     "mediana_campo": 102.246
+    },
+    {
+     "giro": 12,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 102.3,
+     "mediana_bagnato": null,
+     "mediana_campo": 102.3
+    },
+    {
+     "giro": 13,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 102.249,
+     "mediana_bagnato": null,
+     "mediana_campo": 102.249
+    },
+    {
+     "giro": 14,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 101.942,
+     "mediana_bagnato": null,
+     "mediana_campo": 101.942
+    },
+    {
+     "giro": 15,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 101.795,
+     "mediana_bagnato": null,
+     "mediana_campo": 101.795
+    },
+    {
+     "giro": 16,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 101.437,
+     "mediana_bagnato": null,
+     "mediana_campo": 101.437
+    },
+    {
+     "giro": 17,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 101.388,
+     "mediana_bagnato": null,
+     "mediana_campo": 101.388
+    },
+    {
+     "giro": 18,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 101.427,
+     "mediana_bagnato": null,
+     "mediana_campo": 101.427
+    },
+    {
+     "giro": 19,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 101.336,
+     "mediana_bagnato": null,
+     "mediana_campo": 101.336
+    },
+    {
+     "giro": 20,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 101.608,
+     "mediana_bagnato": null,
+     "mediana_campo": 101.608
+    },
+    {
+     "giro": 21,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 101.318,
+     "mediana_bagnato": null,
+     "mediana_campo": 101.318
+    },
+    {
+     "giro": 22,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 101.377,
+     "mediana_bagnato": null,
+     "mediana_campo": 101.377
+    },
+    {
+     "giro": 23,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 101.112,
+     "mediana_bagnato": null,
+     "mediana_campo": 101.112
+    },
+    {
+     "giro": 24,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 101.242,
+     "mediana_bagnato": null,
+     "mediana_campo": 101.242
+    },
+    {
+     "giro": 25,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 101.067,
+     "mediana_bagnato": null,
+     "mediana_campo": 101.067
+    },
+    {
+     "giro": 26,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 101.118,
+     "mediana_bagnato": null,
+     "mediana_campo": 101.118
+    },
+    {
+     "giro": 27,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 101.324,
+     "mediana_bagnato": null,
+     "mediana_campo": 101.324
+    },
+    {
+     "giro": 28,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 100.837,
+     "mediana_bagnato": null,
+     "mediana_campo": 100.837
+    },
+    {
+     "giro": 29,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 100.951,
+     "mediana_bagnato": null,
+     "mediana_campo": 100.951
+    },
+    {
+     "giro": 30,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 100.614,
+     "mediana_bagnato": null,
+     "mediana_campo": 100.614
+    },
+    {
+     "giro": 31,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 100.774,
+     "mediana_bagnato": null,
+     "mediana_campo": 100.774
+    },
+    {
+     "giro": 32,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 100.631,
+     "mediana_bagnato": null,
+     "mediana_campo": 100.631
+    },
+    {
+     "giro": 33,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 100.746,
+     "mediana_bagnato": null,
+     "mediana_campo": 100.746
+    },
+    {
+     "giro": 34,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 100.526,
+     "mediana_bagnato": null,
+     "mediana_campo": 100.526
+    },
+    {
+     "giro": 35,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 100.347,
+     "mediana_bagnato": null,
+     "mediana_campo": 100.347
+    },
+    {
+     "giro": 36,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 100.588,
+     "mediana_bagnato": null,
+     "mediana_campo": 100.588
+    },
+    {
+     "giro": 37,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 100.665,
+     "mediana_bagnato": null,
+     "mediana_campo": 100.665
+    },
+    {
+     "giro": 38,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 100.589,
+     "mediana_bagnato": null,
+     "mediana_campo": 100.589
+    },
+    {
+     "giro": 39,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 100.384,
+     "mediana_bagnato": null,
+     "mediana_campo": 100.384
+    },
+    {
+     "giro": 40,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 100.34,
+     "mediana_bagnato": null,
+     "mediana_campo": 100.34
+    },
+    {
+     "giro": 41,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 100.237,
+     "mediana_bagnato": null,
+     "mediana_campo": 100.237
+    },
+    {
+     "giro": 42,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 99.96,
+     "mediana_bagnato": null,
+     "mediana_campo": 99.96
+    },
+    {
+     "giro": 43,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 100.033,
+     "mediana_bagnato": null,
+     "mediana_campo": 100.033
+    },
+    {
+     "giro": 44,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 100.414,
+     "mediana_bagnato": null,
+     "mediana_campo": 100.414
+    },
+    {
+     "giro": 45,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 100.79,
+     "mediana_bagnato": null,
+     "mediana_campo": 100.79
+    },
+    {
+     "giro": 46,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 101.172,
+     "mediana_bagnato": null,
+     "mediana_campo": 101.172
+    },
+    {
+     "giro": 47,
+     "n_slick": 2,
+     "n_bagnato": 0,
+     "mediana_slick": 102.697,
+     "mediana_bagnato": null,
+     "mediana_campo": 102.697
+    },
+    {
+     "giro": 48,
+     "n_slick": 0,
+     "n_bagnato": 1,
+     "mediana_slick": null,
+     "mediana_bagnato": 120.309,
+     "mediana_campo": 120.309
+    },
+    {
+     "giro": 49,
+     "n_slick": 7,
+     "n_bagnato": 3,
+     "mediana_slick": 114.255,
+     "mediana_bagnato": 114.598,
+     "mediana_campo": 114.326
+    },
+    {
+     "giro": 50,
+     "n_slick": 1,
+     "n_bagnato": 0,
+     "mediana_slick": 117.502,
+     "mediana_bagnato": null,
+     "mediana_campo": 117.502
+    },
+    {
+     "giro": 51,
+     "n_slick": 0,
+     "n_bagnato": 2,
+     "mediana_slick": null,
+     "mediana_bagnato": 118.56,
+     "mediana_campo": 118.56
+    },
+    {
+     "giro": 52,
+     "n_slick": 0,
+     "n_bagnato": 14,
+     "mediana_slick": null,
+     "mediana_bagnato": 111.988,
+     "mediana_campo": 111.988
+    },
+    {
+     "giro": 53,
+     "n_slick": 0,
+     "n_bagnato": 11,
+     "mediana_slick": null,
+     "mediana_bagnato": 112.439,
+     "mediana_campo": 112.439
+    }
+   ]
+  },
+  {
+   "anno": 2021,
+   "gara": "Turkish_Grand_Prix",
+   "chiave": "2021/Turkish_Grand_Prix",
+   "giri_su_bagnato": 1146,
+   "n_slick_puliti": 0,
+   "riferimento_asciutto_s": null,
+   "giri": [
+    {
+     "giro": 3,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 96.638,
+     "mediana_campo": 96.638
+    },
+    {
+     "giro": 4,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 96.636,
+     "mediana_campo": 96.636
+    },
+    {
+     "giro": 5,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 96.752,
+     "mediana_campo": 96.752
+    },
+    {
+     "giro": 6,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 96.727,
+     "mediana_campo": 96.727
+    },
+    {
+     "giro": 7,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 96.671,
+     "mediana_campo": 96.671
+    },
+    {
+     "giro": 8,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 96.853,
+     "mediana_campo": 96.853
+    },
+    {
+     "giro": 9,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 96.647,
+     "mediana_campo": 96.647
+    },
+    {
+     "giro": 10,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 96.425,
+     "mediana_campo": 96.425
+    },
+    {
+     "giro": 11,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.912,
+     "mediana_campo": 95.912
+    },
+    {
+     "giro": 12,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.57,
+     "mediana_campo": 95.57
+    },
+    {
+     "giro": 13,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.614,
+     "mediana_campo": 95.614
+    },
+    {
+     "giro": 14,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.302,
+     "mediana_campo": 95.302
+    },
+    {
+     "giro": 15,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.166,
+     "mediana_campo": 95.166
+    },
+    {
+     "giro": 16,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.205,
+     "mediana_campo": 95.205
+    },
+    {
+     "giro": 17,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.798,
+     "mediana_campo": 94.798
+    },
+    {
+     "giro": 18,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.825,
+     "mediana_campo": 94.825
+    },
+    {
+     "giro": 19,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.671,
+     "mediana_campo": 94.671
+    },
+    {
+     "giro": 20,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.608,
+     "mediana_campo": 94.608
+    },
+    {
+     "giro": 21,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.677,
+     "mediana_campo": 94.677
+    },
+    {
+     "giro": 22,
+     "n_slick": 0,
+     "n_bagnato": 5,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.472,
+     "mediana_campo": 93.472
+    },
+    {
+     "giro": 23,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.941,
+     "mediana_campo": 94.941
+    },
+    {
+     "giro": 24,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.543,
+     "mediana_campo": 94.543
+    },
+    {
+     "giro": 25,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.734,
+     "mediana_campo": 94.734
+    },
+    {
+     "giro": 26,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.887,
+     "mediana_campo": 94.887
+    },
+    {
+     "giro": 27,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.043,
+     "mediana_campo": 95.043
+    },
+    {
+     "giro": 28,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.215,
+     "mediana_campo": 95.215
+    },
+    {
+     "giro": 29,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.723,
+     "mediana_campo": 94.723
+    },
+    {
+     "giro": 30,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.901,
+     "mediana_campo": 94.901
+    },
+    {
+     "giro": 31,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.232,
+     "mediana_campo": 95.232
+    },
+    {
+     "giro": 32,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.28,
+     "mediana_campo": 95.28
+    },
+    {
+     "giro": 33,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.04,
+     "mediana_campo": 95.04
+    },
+    {
+     "giro": 34,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.796,
+     "mediana_campo": 95.796
+    },
+    {
+     "giro": 35,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.358,
+     "mediana_campo": 95.358
+    },
+    {
+     "giro": 36,
+     "n_slick": 0,
+     "n_bagnato": 12,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.54,
+     "mediana_campo": 94.54
+    },
+    {
+     "giro": 37,
+     "n_slick": 0,
+     "n_bagnato": 3,
+     "mediana_slick": null,
+     "mediana_bagnato": 96.248,
+     "mediana_campo": 96.248
+    },
+    {
+     "giro": 38,
+     "n_slick": 0,
+     "n_bagnato": 11,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.406,
+     "mediana_campo": 95.406
+    },
+    {
+     "giro": 39,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.133,
+     "mediana_campo": 95.133
+    },
+    {
+     "giro": 40,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.814,
+     "mediana_campo": 94.814
+    },
+    {
+     "giro": 41,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.854,
+     "mediana_campo": 94.854
+    },
+    {
+     "giro": 42,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.924,
+     "mediana_campo": 94.924
+    },
+    {
+     "giro": 43,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.535,
+     "mediana_campo": 95.535
+    },
+    {
+     "giro": 44,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.262,
+     "mediana_campo": 95.262
+    },
+    {
+     "giro": 45,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.018,
+     "mediana_campo": 95.018
+    },
+    {
+     "giro": 46,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.936,
+     "mediana_campo": 94.936
+    },
+    {
+     "giro": 47,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.519,
+     "mediana_campo": 94.519
+    },
+    {
+     "giro": 48,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.725,
+     "mediana_campo": 94.725
+    },
+    {
+     "giro": 49,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.275,
+     "mediana_campo": 94.275
+    },
+    {
+     "giro": 50,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.255,
+     "mediana_campo": 94.255
+    },
+    {
+     "giro": 51,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.599,
+     "mediana_campo": 94.599
+    },
+    {
+     "giro": 52,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.681,
+     "mediana_campo": 93.681
+    },
+    {
+     "giro": 53,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.403,
+     "mediana_campo": 93.403
+    },
+    {
+     "giro": 54,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.356,
+     "mediana_campo": 93.356
+    },
+    {
+     "giro": 55,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.791,
+     "mediana_campo": 93.791
+    },
+    {
+     "giro": 56,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.888,
+     "mediana_campo": 93.888
+    },
+    {
+     "giro": 57,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.87,
+     "mediana_campo": 93.87
+    },
+    {
+     "giro": 58,
+     "n_slick": 0,
+     "n_bagnato": 9,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.202,
+     "mediana_campo": 93.202
+    }
+   ]
+  },
+  {
+   "anno": 2022,
+   "gara": "Emilia_Romagna_Grand_Prix",
+   "chiave": "2022/Emilia_Romagna_Grand_Prix",
+   "giri_su_bagnato": 329,
+   "n_slick_puliti": 728,
+   "riferimento_asciutto_s": 80.345,
+   "giri": [
+    {
+     "giro": 5,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 97.08,
+     "mediana_campo": 97.08
+    },
+    {
+     "giro": 6,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.7,
+     "mediana_campo": 93.7
+    },
+    {
+     "giro": 7,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.486,
+     "mediana_campo": 92.486
+    },
+    {
+     "giro": 8,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.242,
+     "mediana_campo": 92.242
+    },
+    {
+     "giro": 9,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.735,
+     "mediana_campo": 91.735
+    },
+    {
+     "giro": 10,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.322,
+     "mediana_campo": 92.322
+    },
+    {
+     "giro": 11,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.678,
+     "mediana_campo": 92.678
+    },
+    {
+     "giro": 12,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.754,
+     "mediana_campo": 93.754
+    },
+    {
+     "giro": 13,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.16,
+     "mediana_campo": 94.16
+    },
+    {
+     "giro": 14,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.235,
+     "mediana_campo": 95.235
+    },
+    {
+     "giro": 15,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.343,
+     "mediana_campo": 95.343
+    },
+    {
+     "giro": 16,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.778,
+     "mediana_campo": 94.778
+    },
+    {
+     "giro": 17,
+     "n_slick": 0,
+     "n_bagnato": 14,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.92,
+     "mediana_campo": 93.92
+    },
+    {
+     "giro": 18,
+     "n_slick": 1,
+     "n_bagnato": 3,
+     "mediana_slick": 89.169,
+     "mediana_bagnato": 91.44,
+     "mediana_campo": 91.431
+    },
+    {
+     "giro": 19,
+     "n_slick": 4,
+     "n_bagnato": 0,
+     "mediana_slick": 89.471,
+     "mediana_bagnato": null,
+     "mediana_campo": 89.471
+    },
+    {
+     "giro": 20,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 87.39,
+     "mediana_bagnato": null,
+     "mediana_campo": 87.39
+    },
+    {
+     "giro": 21,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 85.542,
+     "mediana_bagnato": null,
+     "mediana_campo": 85.542
+    },
+    {
+     "giro": 22,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 84.703,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.703
+    },
+    {
+     "giro": 23,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 84.064,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.064
+    },
+    {
+     "giro": 24,
+     "n_slick": 8,
+     "n_bagnato": 0,
+     "mediana_slick": 82.993,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.993
+    },
+    {
+     "giro": 25,
+     "n_slick": 3,
+     "n_bagnato": 0,
+     "mediana_slick": 83.62,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.62
+    },
+    {
+     "giro": 26,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 83.477,
+     "mediana_bagnato": null,
+     "mediana_campo": 83.477
+    },
+    {
+     "giro": 27,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 82.958,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.958
+    },
+    {
+     "giro": 28,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 82.793,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.793
+    },
+    {
+     "giro": 29,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 82.397,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.397
+    },
+    {
+     "giro": 30,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 82.275,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.275
+    },
+    {
+     "giro": 31,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 82.209,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.209
+    },
+    {
+     "giro": 32,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 82.136,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.136
+    },
+    {
+     "giro": 33,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 82.194,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.194
+    },
+    {
+     "giro": 34,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.996,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.996
+    },
+    {
+     "giro": 35,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.846,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.846
+    },
+    {
+     "giro": 36,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.892,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.892
+    },
+    {
+     "giro": 37,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.785,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.785
+    },
+    {
+     "giro": 38,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.737,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.737
+    },
+    {
+     "giro": 39,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.674,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.674
+    },
+    {
+     "giro": 40,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.689,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.689
+    },
+    {
+     "giro": 41,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.785,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.785
+    },
+    {
+     "giro": 42,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.736,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.736
+    },
+    {
+     "giro": 43,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.756,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.756
+    },
+    {
+     "giro": 44,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.714,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.714
+    },
+    {
+     "giro": 45,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.588,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.588
+    },
+    {
+     "giro": 46,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.562,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.562
+    },
+    {
+     "giro": 47,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.758,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.758
+    },
+    {
+     "giro": 48,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.588,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.588
+    },
+    {
+     "giro": 49,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 81.694,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.694
+    },
+    {
+     "giro": 50,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 81.852,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.852
+    },
+    {
+     "giro": 51,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 81.834,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.834
+    },
+    {
+     "giro": 52,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 81.456,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.456
+    },
+    {
+     "giro": 53,
+     "n_slick": 3,
+     "n_bagnato": 0,
+     "mediana_slick": 81.479,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.479
+    },
+    {
+     "giro": 54,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 81.54,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.54
+    },
+    {
+     "giro": 55,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.376,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.376
+    },
+    {
+     "giro": 56,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.555,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.555
+    },
+    {
+     "giro": 57,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.508,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.508
+    },
+    {
+     "giro": 58,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.393,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.393
+    },
+    {
+     "giro": 59,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.662,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.662
+    },
+    {
+     "giro": 60,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.394,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.394
+    },
+    {
+     "giro": 61,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.441,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.441
+    },
+    {
+     "giro": 62,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 81.598,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.598
+    },
+    {
+     "giro": 63,
+     "n_slick": 9,
+     "n_bagnato": 0,
+     "mediana_slick": 81.267,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.267
+    }
+   ]
+  },
+  {
+   "anno": 2022,
+   "gara": "Japanese_Grand_Prix",
+   "chiave": "2022/Japanese_Grand_Prix",
+   "giri_su_bagnato": 507,
+   "n_slick_puliti": 0,
+   "riferimento_asciutto_s": null,
+   "giri": [
+    {
+     "giro": 4,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 166.332,
+     "mediana_campo": 166.332
+    },
+    {
+     "giro": 5,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 172.407,
+     "mediana_campo": 172.407
+    },
+    {
+     "giro": 6,
+     "n_slick": 0,
+     "n_bagnato": 14,
+     "mediana_slick": null,
+     "mediana_bagnato": 117.649,
+     "mediana_campo": 117.649
+    },
+    {
+     "giro": 7,
+     "n_slick": 0,
+     "n_bagnato": 6,
+     "mediana_slick": null,
+     "mediana_bagnato": 113.688,
+     "mediana_campo": 113.688
+    },
+    {
+     "giro": 8,
+     "n_slick": 0,
+     "n_bagnato": 6,
+     "mediana_slick": null,
+     "mediana_bagnato": 110.491,
+     "mediana_campo": 110.491
+    },
+    {
+     "giro": 9,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 108.638,
+     "mediana_campo": 108.638
+    },
+    {
+     "giro": 10,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 108.497,
+     "mediana_campo": 108.497
+    },
+    {
+     "giro": 11,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 107.854,
+     "mediana_campo": 107.854
+    },
+    {
+     "giro": 12,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 108.371,
+     "mediana_campo": 108.371
+    },
+    {
+     "giro": 13,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 107.622,
+     "mediana_campo": 107.622
+    },
+    {
+     "giro": 14,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 108.79,
+     "mediana_campo": 108.79
+    },
+    {
+     "giro": 15,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 108.943,
+     "mediana_campo": 108.943
+    },
+    {
+     "giro": 16,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 108.666,
+     "mediana_campo": 108.666
+    },
+    {
+     "giro": 17,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 109.268,
+     "mediana_campo": 109.268
+    },
+    {
+     "giro": 18,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 109.57,
+     "mediana_campo": 109.57
+    },
+    {
+     "giro": 19,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 109.109,
+     "mediana_campo": 109.109
+    },
+    {
+     "giro": 20,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 109.271,
+     "mediana_campo": 109.271
+    },
+    {
+     "giro": 21,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 109.012,
+     "mediana_campo": 109.012
+    },
+    {
+     "giro": 22,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 108.618,
+     "mediana_campo": 108.618
+    },
+    {
+     "giro": 23,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 109.121,
+     "mediana_campo": 109.121
+    },
+    {
+     "giro": 24,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 109.523,
+     "mediana_campo": 109.523
+    },
+    {
+     "giro": 25,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 109.213,
+     "mediana_campo": 109.213
+    },
+    {
+     "giro": 26,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 109.492,
+     "mediana_campo": 109.492
+    },
+    {
+     "giro": 27,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 109.733,
+     "mediana_campo": 109.733
+    },
+    {
+     "giro": 28,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 109.841,
+     "mediana_campo": 109.841
+    }
+   ]
+  },
+  {
+   "anno": 2022,
+   "gara": "Monaco_Grand_Prix",
+   "chiave": "2022/Monaco_Grand_Prix",
+   "giri_su_bagnato": 398,
+   "n_slick_puliti": 567,
+   "riferimento_asciutto_s": 76.583,
+   "giri": [
+    {
+     "giro": 3,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 107.544,
+     "mediana_campo": 107.544
+    },
+    {
+     "giro": 4,
+     "n_slick": 1,
+     "n_bagnato": 17,
+     "mediana_slick": 104.039,
+     "mediana_bagnato": 103.309,
+     "mediana_campo": 103.674
+    },
+    {
+     "giro": 5,
+     "n_slick": 0,
+     "n_bagnato": 13,
+     "mediana_slick": null,
+     "mediana_bagnato": 101.549,
+     "mediana_campo": 101.549
+    },
+    {
+     "giro": 6,
+     "n_slick": 1,
+     "n_bagnato": 4,
+     "mediana_slick": 99.637,
+     "mediana_bagnato": 100.618,
+     "mediana_campo": 99.941
+    },
+    {
+     "giro": 7,
+     "n_slick": 1,
+     "n_bagnato": 17,
+     "mediana_slick": 99.51,
+     "mediana_bagnato": 100.2,
+     "mediana_campo": 99.855
+    },
+    {
+     "giro": 8,
+     "n_slick": 1,
+     "n_bagnato": 18,
+     "mediana_slick": 97.724,
+     "mediana_bagnato": 99.688,
+     "mediana_campo": 99.631
+    },
+    {
+     "giro": 9,
+     "n_slick": 1,
+     "n_bagnato": 19,
+     "mediana_slick": 97.213,
+     "mediana_bagnato": 98.35,
+     "mediana_campo": 98.279
+    },
+    {
+     "giro": 11,
+     "n_slick": 1,
+     "n_bagnato": 0,
+     "mediana_slick": 97.432,
+     "mediana_bagnato": null,
+     "mediana_campo": 97.432
+    },
+    {
+     "giro": 12,
+     "n_slick": 1,
+     "n_bagnato": 18,
+     "mediana_slick": 95.502,
+     "mediana_bagnato": 97.059,
+     "mediana_campo": 96.562
+    },
+    {
+     "giro": 13,
+     "n_slick": 1,
+     "n_bagnato": 18,
+     "mediana_slick": 94.75,
+     "mediana_bagnato": 96.871,
+     "mediana_campo": 96.803
+    },
+    {
+     "giro": 14,
+     "n_slick": 1,
+     "n_bagnato": 19,
+     "mediana_slick": 93.9,
+     "mediana_bagnato": 94.827,
+     "mediana_campo": 94.822
+    },
+    {
+     "giro": 15,
+     "n_slick": 1,
+     "n_bagnato": 17,
+     "mediana_slick": 93.195,
+     "mediana_bagnato": 94.498,
+     "mediana_campo": 94.402
+    },
+    {
+     "giro": 16,
+     "n_slick": 1,
+     "n_bagnato": 17,
+     "mediana_slick": 92.971,
+     "mediana_bagnato": 95.031,
+     "mediana_campo": 94.942
+    },
+    {
+     "giro": 17,
+     "n_slick": 0,
+     "n_bagnato": 3,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.49,
+     "mediana_campo": 91.49
+    },
+    {
+     "giro": 18,
+     "n_slick": 1,
+     "n_bagnato": 13,
+     "mediana_slick": 93.414,
+     "mediana_bagnato": 94.549,
+     "mediana_campo": 94.379
+    },
+    {
+     "giro": 19,
+     "n_slick": 0,
+     "n_bagnato": 12,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.326,
+     "mediana_campo": 92.326
+    },
+    {
+     "giro": 20,
+     "n_slick": 0,
+     "n_bagnato": 4,
+     "mediana_slick": null,
+     "mediana_bagnato": 88.474,
+     "mediana_campo": 88.474
+    },
+    {
+     "giro": 21,
+     "n_slick": 5,
+     "n_bagnato": 5,
+     "mediana_slick": 89.367,
+     "mediana_bagnato": 90.358,
+     "mediana_campo": 89.863
+    },
+    {
+     "giro": 22,
+     "n_slick": 5,
+     "n_bagnato": 2,
+     "mediana_slick": 92.702,
+     "mediana_bagnato": 89.063,
+     "mediana_campo": 90.44
+    },
+    {
+     "giro": 23,
+     "n_slick": 11,
+     "n_bagnato": 1,
+     "mediana_slick": 88.133,
+     "mediana_bagnato": 89.708,
+     "mediana_campo": 88.15
+    },
+    {
+     "giro": 24,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 84.584,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.584
+    },
+    {
+     "giro": 25,
+     "n_slick": 12,
+     "n_bagnato": 0,
+     "mediana_slick": 82.925,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.925
+    },
+    {
+     "giro": 31,
+     "n_slick": 4,
+     "n_bagnato": 0,
+     "mediana_slick": 89.398,
+     "mediana_bagnato": null,
+     "mediana_campo": 89.398
+    },
+    {
+     "giro": 32,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 114.161,
+     "mediana_bagnato": null,
+     "mediana_campo": 114.161
+    },
+    {
+     "giro": 33,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 84.258,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.258
+    },
+    {
+     "giro": 34,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 82.574,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.574
+    },
+    {
+     "giro": 35,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 82.053,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.053
+    },
+    {
+     "giro": 36,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 82.159,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.159
+    },
+    {
+     "giro": 37,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 81.62,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.62
+    },
+    {
+     "giro": 38,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 81.071,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.071
+    },
+    {
+     "giro": 39,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 80.332,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.332
+    },
+    {
+     "giro": 40,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 79.733,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.733
+    },
+    {
+     "giro": 41,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 79.827,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.827
+    },
+    {
+     "giro": 42,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 79.716,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.716
+    },
+    {
+     "giro": 43,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 78.772,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.772
+    },
+    {
+     "giro": 44,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 79.249,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.249
+    },
+    {
+     "giro": 45,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 79.046,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.046
+    },
+    {
+     "giro": 46,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 78.774,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.774
+    },
+    {
+     "giro": 47,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 78.501,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.501
+    },
+    {
+     "giro": 48,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 78.498,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.498
+    },
+    {
+     "giro": 49,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 78.397,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.397
+    },
+    {
+     "giro": 50,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 78.065,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.065
+    },
+    {
+     "giro": 51,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 77.889,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.889
+    },
+    {
+     "giro": 52,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 78.028,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.028
+    },
+    {
+     "giro": 53,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 78.128,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.128
+    },
+    {
+     "giro": 54,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 78.001,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.001
+    },
+    {
+     "giro": 55,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 78.183,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.183
+    },
+    {
+     "giro": 56,
+     "n_slick": 2,
+     "n_bagnato": 0,
+     "mediana_slick": 78.913,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.913
+    },
+    {
+     "giro": 57,
+     "n_slick": 11,
+     "n_bagnato": 0,
+     "mediana_slick": 77.92,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.92
+    },
+    {
+     "giro": 58,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 78.311,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.311
+    },
+    {
+     "giro": 59,
+     "n_slick": 6,
+     "n_bagnato": 0,
+     "mediana_slick": 78.873,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.873
+    },
+    {
+     "giro": 60,
+     "n_slick": 10,
+     "n_bagnato": 0,
+     "mediana_slick": 78.061,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.061
+    },
+    {
+     "giro": 61,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 78.267,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.267
+    },
+    {
+     "giro": 62,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 78.123,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.123
+    },
+    {
+     "giro": 63,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 78.078,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.078
+    },
+    {
+     "giro": 64,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 78.275,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.275
+    }
+   ]
+  },
+  {
+   "anno": 2022,
+   "gara": "Singapore_Grand_Prix",
+   "chiave": "2022/Singapore_Grand_Prix",
+   "giri_su_bagnato": 588,
+   "n_slick_puliti": 275,
+   "riferimento_asciutto_s": 109.012,
+   "giri": [
+    {
+     "giro": 2,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 127.46,
+     "mediana_campo": 127.46
+    },
+    {
+     "giro": 3,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 125.422,
+     "mediana_campo": 125.422
+    },
+    {
+     "giro": 4,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 124.407,
+     "mediana_campo": 124.407
+    },
+    {
+     "giro": 5,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 123.761,
+     "mediana_campo": 123.761
+    },
+    {
+     "giro": 6,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 123.81,
+     "mediana_campo": 123.81
+    },
+    {
+     "giro": 11,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 123.127,
+     "mediana_campo": 123.127
+    },
+    {
+     "giro": 12,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 122.419,
+     "mediana_campo": 122.419
+    },
+    {
+     "giro": 13,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 122.65,
+     "mediana_campo": 122.65
+    },
+    {
+     "giro": 14,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 122.735,
+     "mediana_campo": 122.735
+    },
+    {
+     "giro": 15,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 122.169,
+     "mediana_campo": 122.169
+    },
+    {
+     "giro": 16,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 121.925,
+     "mediana_campo": 121.925
+    },
+    {
+     "giro": 17,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 122.072,
+     "mediana_campo": 122.072
+    },
+    {
+     "giro": 18,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 121.511,
+     "mediana_campo": 121.511
+    },
+    {
+     "giro": 19,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 121.286,
+     "mediana_campo": 121.286
+    },
+    {
+     "giro": 20,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 121.277,
+     "mediana_campo": 121.277
+    },
+    {
+     "giro": 23,
+     "n_slick": 1,
+     "n_bagnato": 14,
+     "mediana_slick": 129.869,
+     "mediana_bagnato": 120.963,
+     "mediana_campo": 121.076
+    },
+    {
+     "giro": 24,
+     "n_slick": 1,
+     "n_bagnato": 16,
+     "mediana_slick": 125.338,
+     "mediana_bagnato": 120.147,
+     "mediana_campo": 120.225
+    },
+    {
+     "giro": 25,
+     "n_slick": 0,
+     "n_bagnato": 1,
+     "mediana_slick": null,
+     "mediana_bagnato": 118.161,
+     "mediana_campo": 118.161
+    },
+    {
+     "giro": 30,
+     "n_slick": 1,
+     "n_bagnato": 5,
+     "mediana_slick": 122.097,
+     "mediana_bagnato": 119.934,
+     "mediana_campo": 120.511
+    },
+    {
+     "giro": 31,
+     "n_slick": 1,
+     "n_bagnato": 14,
+     "mediana_slick": 119.791,
+     "mediana_bagnato": 118.805,
+     "mediana_campo": 118.834
+    },
+    {
+     "giro": 32,
+     "n_slick": 0,
+     "n_bagnato": 9,
+     "mediana_slick": null,
+     "mediana_bagnato": 118.733,
+     "mediana_campo": 118.733
+    },
+    {
+     "giro": 33,
+     "n_slick": 1,
+     "n_bagnato": 0,
+     "mediana_slick": 116.177,
+     "mediana_bagnato": null,
+     "mediana_campo": 116.177
+    },
+    {
+     "giro": 34,
+     "n_slick": 1,
+     "n_bagnato": 6,
+     "mediana_slick": 114.795,
+     "mediana_bagnato": 118.529,
+     "mediana_campo": 118.369
+    },
+    {
+     "giro": 35,
+     "n_slick": 0,
+     "n_bagnato": 1,
+     "mediana_slick": null,
+     "mediana_bagnato": 118.746,
+     "mediana_campo": 118.746
+    },
+    {
+     "giro": 40,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 119.611,
+     "mediana_bagnato": null,
+     "mediana_campo": 119.611
+    },
+    {
+     "giro": 41,
+     "n_slick": 11,
+     "n_bagnato": 0,
+     "mediana_slick": 116.357,
+     "mediana_bagnato": null,
+     "mediana_campo": 116.357
+    },
+    {
+     "giro": 42,
+     "n_slick": 12,
+     "n_bagnato": 0,
+     "mediana_slick": 114.547,
+     "mediana_bagnato": null,
+     "mediana_campo": 114.547
+    },
+    {
+     "giro": 43,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 114.603,
+     "mediana_bagnato": null,
+     "mediana_campo": 114.603
+    },
+    {
+     "giro": 44,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 114.178,
+     "mediana_bagnato": null,
+     "mediana_campo": 114.178
+    },
+    {
+     "giro": 45,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 114.406,
+     "mediana_bagnato": null,
+     "mediana_campo": 114.406
+    },
+    {
+     "giro": 46,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 113.407,
+     "mediana_bagnato": null,
+     "mediana_campo": 113.407
+    },
+    {
+     "giro": 47,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 112.117,
+     "mediana_bagnato": null,
+     "mediana_campo": 112.117
+    },
+    {
+     "giro": 48,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 111.9,
+     "mediana_bagnato": null,
+     "mediana_campo": 111.9
+    },
+    {
+     "giro": 49,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 111.951,
+     "mediana_bagnato": null,
+     "mediana_campo": 111.951
+    },
+    {
+     "giro": 50,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 111.226,
+     "mediana_bagnato": null,
+     "mediana_campo": 111.226
+    },
+    {
+     "giro": 51,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 111.799,
+     "mediana_bagnato": null,
+     "mediana_campo": 111.799
+    },
+    {
+     "giro": 52,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 110.994,
+     "mediana_bagnato": null,
+     "mediana_campo": 110.994
+    },
+    {
+     "giro": 53,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 110.95,
+     "mediana_bagnato": null,
+     "mediana_campo": 110.95
+    },
+    {
+     "giro": 54,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 110.844,
+     "mediana_bagnato": null,
+     "mediana_campo": 110.844
+    },
+    {
+     "giro": 55,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 110.95,
+     "mediana_bagnato": null,
+     "mediana_campo": 110.95
+    },
+    {
+     "giro": 56,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 110.729,
+     "mediana_bagnato": null,
+     "mediana_campo": 110.729
+    },
+    {
+     "giro": 57,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 111.1,
+     "mediana_bagnato": null,
+     "mediana_campo": 111.1
+    },
+    {
+     "giro": 58,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 110.622,
+     "mediana_bagnato": null,
+     "mediana_campo": 110.622
+    },
+    {
+     "giro": 59,
+     "n_slick": 12,
+     "n_bagnato": 0,
+     "mediana_slick": 111.529,
+     "mediana_bagnato": null,
+     "mediana_campo": 111.529
+    }
+   ]
+  },
+  {
+   "anno": 2023,
+   "gara": "Dutch_Grand_Prix",
+   "chiave": "2023/Dutch_Grand_Prix",
+   "giri_su_bagnato": 328,
+   "n_slick_puliti": 811,
+   "riferimento_asciutto_s": 74.57,
+   "giri": [
+    {
+     "giro": 1,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 95.554,
+     "mediana_bagnato": null,
+     "mediana_campo": 95.554
+    },
+    {
+     "giro": 2,
+     "n_slick": 9,
+     "n_bagnato": 0,
+     "mediana_slick": 110.241,
+     "mediana_bagnato": null,
+     "mediana_campo": 110.241
+    },
+    {
+     "giro": 3,
+     "n_slick": 7,
+     "n_bagnato": 7,
+     "mediana_slick": 112.03,
+     "mediana_bagnato": 89.747,
+     "mediana_campo": 99.188
+    },
+    {
+     "giro": 4,
+     "n_slick": 5,
+     "n_bagnato": 11,
+     "mediana_slick": 108.341,
+     "mediana_bagnato": 85.852,
+     "mediana_campo": 87.113
+    },
+    {
+     "giro": 5,
+     "n_slick": 5,
+     "n_bagnato": 13,
+     "mediana_slick": 100.899,
+     "mediana_bagnato": 84.1,
+     "mediana_campo": 84.876
+    },
+    {
+     "giro": 6,
+     "n_slick": 5,
+     "n_bagnato": 14,
+     "mediana_slick": 94.451,
+     "mediana_bagnato": 84.348,
+     "mediana_campo": 84.554
+    },
+    {
+     "giro": 7,
+     "n_slick": 5,
+     "n_bagnato": 15,
+     "mediana_slick": 87.654,
+     "mediana_bagnato": 84.843,
+     "mediana_campo": 85.204
+    },
+    {
+     "giro": 8,
+     "n_slick": 5,
+     "n_bagnato": 15,
+     "mediana_slick": 83.722,
+     "mediana_bagnato": 84.884,
+     "mediana_campo": 84.742
+    },
+    {
+     "giro": 9,
+     "n_slick": 5,
+     "n_bagnato": 12,
+     "mediana_slick": 81.456,
+     "mediana_bagnato": 85.013,
+     "mediana_campo": 84.495
+    },
+    {
+     "giro": 10,
+     "n_slick": 5,
+     "n_bagnato": 4,
+     "mediana_slick": 79.887,
+     "mediana_bagnato": 84.904,
+     "mediana_campo": 81.081
+    },
+    {
+     "giro": 11,
+     "n_slick": 8,
+     "n_bagnato": 1,
+     "mediana_slick": 78.922,
+     "mediana_bagnato": 85.107,
+     "mediana_campo": 78.942
+    },
+    {
+     "giro": 12,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 78.022,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.022
+    },
+    {
+     "giro": 13,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 77.641,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.641
+    },
+    {
+     "giro": 14,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 77.364,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.364
+    },
+    {
+     "giro": 15,
+     "n_slick": 11,
+     "n_bagnato": 0,
+     "mediana_slick": 77.415,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.415
+    },
+    {
+     "giro": 22,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 78.652,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.652
+    },
+    {
+     "giro": 23,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 77.859,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.859
+    },
+    {
+     "giro": 24,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 77.367,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.367
+    },
+    {
+     "giro": 25,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 77.349,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.349
+    },
+    {
+     "giro": 26,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 77,
+     "mediana_bagnato": null,
+     "mediana_campo": 77
+    },
+    {
+     "giro": 27,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 76.797,
+     "mediana_bagnato": null,
+     "mediana_campo": 76.797
+    },
+    {
+     "giro": 28,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 76.933,
+     "mediana_bagnato": null,
+     "mediana_campo": 76.933
+    },
+    {
+     "giro": 29,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 76.713,
+     "mediana_bagnato": null,
+     "mediana_campo": 76.713
+    },
+    {
+     "giro": 30,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 76.64,
+     "mediana_bagnato": null,
+     "mediana_campo": 76.64
+    },
+    {
+     "giro": 31,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 77.013,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.013
+    },
+    {
+     "giro": 32,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 76.678,
+     "mediana_bagnato": null,
+     "mediana_campo": 76.678
+    },
+    {
+     "giro": 33,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 76.473,
+     "mediana_bagnato": null,
+     "mediana_campo": 76.473
+    },
+    {
+     "giro": 34,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 76.469,
+     "mediana_bagnato": null,
+     "mediana_campo": 76.469
+    },
+    {
+     "giro": 35,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 76.211,
+     "mediana_bagnato": null,
+     "mediana_campo": 76.211
+    },
+    {
+     "giro": 36,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 76.385,
+     "mediana_bagnato": null,
+     "mediana_campo": 76.385
+    },
+    {
+     "giro": 37,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 76.084,
+     "mediana_bagnato": null,
+     "mediana_campo": 76.084
+    },
+    {
+     "giro": 38,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 76.22,
+     "mediana_bagnato": null,
+     "mediana_campo": 76.22
+    },
+    {
+     "giro": 39,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 76.355,
+     "mediana_bagnato": null,
+     "mediana_campo": 76.355
+    },
+    {
+     "giro": 40,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 76.307,
+     "mediana_bagnato": null,
+     "mediana_campo": 76.307
+    },
+    {
+     "giro": 41,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 76.439,
+     "mediana_bagnato": null,
+     "mediana_campo": 76.439
+    },
+    {
+     "giro": 42,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 76.237,
+     "mediana_bagnato": null,
+     "mediana_campo": 76.237
+    },
+    {
+     "giro": 43,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 75.99,
+     "mediana_bagnato": null,
+     "mediana_campo": 75.99
+    },
+    {
+     "giro": 44,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 75.892,
+     "mediana_bagnato": null,
+     "mediana_campo": 75.892
+    },
+    {
+     "giro": 45,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 76.116,
+     "mediana_bagnato": null,
+     "mediana_campo": 76.116
+    },
+    {
+     "giro": 46,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 75.967,
+     "mediana_bagnato": null,
+     "mediana_campo": 75.967
+    },
+    {
+     "giro": 47,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 75.657,
+     "mediana_bagnato": null,
+     "mediana_campo": 75.657
+    },
+    {
+     "giro": 48,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 75.265,
+     "mediana_bagnato": null,
+     "mediana_campo": 75.265
+    },
+    {
+     "giro": 49,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 74.916,
+     "mediana_bagnato": null,
+     "mediana_campo": 74.916
+    },
+    {
+     "giro": 50,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 75.024,
+     "mediana_bagnato": null,
+     "mediana_campo": 75.024
+    },
+    {
+     "giro": 51,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 75,
+     "mediana_bagnato": null,
+     "mediana_campo": 75
+    },
+    {
+     "giro": 52,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 75.383,
+     "mediana_bagnato": null,
+     "mediana_campo": 75.383
+    },
+    {
+     "giro": 53,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 75.258,
+     "mediana_bagnato": null,
+     "mediana_campo": 75.258
+    },
+    {
+     "giro": 54,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 75.21,
+     "mediana_bagnato": null,
+     "mediana_campo": 75.21
+    },
+    {
+     "giro": 55,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 75.148,
+     "mediana_bagnato": null,
+     "mediana_campo": 75.148
+    },
+    {
+     "giro": 56,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 74.98,
+     "mediana_bagnato": null,
+     "mediana_campo": 74.98
+    },
+    {
+     "giro": 57,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 75.067,
+     "mediana_bagnato": null,
+     "mediana_campo": 75.067
+    },
+    {
+     "giro": 58,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 75.175,
+     "mediana_bagnato": null,
+     "mediana_campo": 75.175
+    },
+    {
+     "giro": 59,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 75.278,
+     "mediana_bagnato": null,
+     "mediana_campo": 75.278
+    },
+    {
+     "giro": 60,
+     "n_slick": 4,
+     "n_bagnato": 0,
+     "mediana_slick": 75.681,
+     "mediana_bagnato": null,
+     "mediana_campo": 75.681
+    },
+    {
+     "giro": 61,
+     "n_slick": 0,
+     "n_bagnato": 2,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.075,
+     "mediana_campo": 84.075
+    },
+    {
+     "giro": 62,
+     "n_slick": 0,
+     "n_bagnato": 1,
+     "mediana_slick": null,
+     "mediana_bagnato": 83.125,
+     "mediana_campo": 83.125
+    },
+    {
+     "giro": 67,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 88.624,
+     "mediana_campo": 88.624
+    },
+    {
+     "giro": 68,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.891,
+     "mediana_campo": 84.891
+    },
+    {
+     "giro": 69,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 82.887,
+     "mediana_campo": 82.887
+    },
+    {
+     "giro": 70,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 82.49,
+     "mediana_campo": 82.49
+    },
+    {
+     "giro": 71,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 82.247,
+     "mediana_campo": 82.247
+    },
+    {
+     "giro": 72,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 82.879,
+     "mediana_campo": 82.879
+    }
+   ]
+  },
+  {
+   "anno": 2023,
+   "gara": "Monaco_Grand_Prix",
+   "chiave": "2023/Monaco_Grand_Prix",
+   "giri_su_bagnato": 444,
+   "n_slick_puliti": 938,
+   "riferimento_asciutto_s": 76.85,
+   "giri": [
+    {
+     "giro": 2,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 80.549,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.549
+    },
+    {
+     "giro": 3,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 80.105,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.105
+    },
+    {
+     "giro": 4,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 79.787,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.787
+    },
+    {
+     "giro": 5,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.967,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.967
+    },
+    {
+     "giro": 6,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.893,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.893
+    },
+    {
+     "giro": 7,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.674,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.674
+    },
+    {
+     "giro": 8,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.758,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.758
+    },
+    {
+     "giro": 9,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.819,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.819
+    },
+    {
+     "giro": 10,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.632,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.632
+    },
+    {
+     "giro": 11,
+     "n_slick": 9,
+     "n_bagnato": 0,
+     "mediana_slick": 78.367,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.367
+    },
+    {
+     "giro": 13,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 79.342,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.342
+    },
+    {
+     "giro": 15,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 78.968,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.968
+    },
+    {
+     "giro": 16,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.853,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.853
+    },
+    {
+     "giro": 17,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.995,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.995
+    },
+    {
+     "giro": 18,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 78.453,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.453
+    },
+    {
+     "giro": 19,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 78.198,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.198
+    },
+    {
+     "giro": 20,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 78.32,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.32
+    },
+    {
+     "giro": 21,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 78.161,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.161
+    },
+    {
+     "giro": 22,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.032,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.032
+    },
+    {
+     "giro": 23,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 78.053,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.053
+    },
+    {
+     "giro": 24,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 77.912,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.912
+    },
+    {
+     "giro": 25,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 77.833,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.833
+    },
+    {
+     "giro": 26,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.097,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.097
+    },
+    {
+     "giro": 27,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.054,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.054
+    },
+    {
+     "giro": 28,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.427,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.427
+    },
+    {
+     "giro": 29,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.267,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.267
+    },
+    {
+     "giro": 30,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.349,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.349
+    },
+    {
+     "giro": 31,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 78.458,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.458
+    },
+    {
+     "giro": 32,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 78.668,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.668
+    },
+    {
+     "giro": 33,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 78.556,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.556
+    },
+    {
+     "giro": 34,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 78.334,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.334
+    },
+    {
+     "giro": 35,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 78.327,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.327
+    },
+    {
+     "giro": 36,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 77.876,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.876
+    },
+    {
+     "giro": 37,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 77.908,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.908
+    },
+    {
+     "giro": 38,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 77.963,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.963
+    },
+    {
+     "giro": 39,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.012,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.012
+    },
+    {
+     "giro": 40,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.256,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.256
+    },
+    {
+     "giro": 41,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.267,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.267
+    },
+    {
+     "giro": 42,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.107,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.107
+    },
+    {
+     "giro": 43,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.046,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.046
+    },
+    {
+     "giro": 44,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 78,
+     "mediana_bagnato": null,
+     "mediana_campo": 78
+    },
+    {
+     "giro": 45,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 77.854,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.854
+    },
+    {
+     "giro": 46,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 77.65,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.65
+    },
+    {
+     "giro": 47,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 77.579,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.579
+    },
+    {
+     "giro": 48,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 78.001,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.001
+    },
+    {
+     "giro": 49,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 78.236,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.236
+    },
+    {
+     "giro": 50,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 78.497,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.497
+    },
+    {
+     "giro": 51,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 79.991,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.991
+    },
+    {
+     "giro": 52,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 88.675,
+     "mediana_bagnato": null,
+     "mediana_campo": 88.675
+    },
+    {
+     "giro": 53,
+     "n_slick": 9,
+     "n_bagnato": 2,
+     "mediana_slick": 91.341,
+     "mediana_bagnato": 94.52,
+     "mediana_campo": 92.162
+    },
+    {
+     "giro": 54,
+     "n_slick": 3,
+     "n_bagnato": 0,
+     "mediana_slick": 97.315,
+     "mediana_bagnato": null,
+     "mediana_campo": 97.315
+    },
+    {
+     "giro": 55,
+     "n_slick": 0,
+     "n_bagnato": 1,
+     "mediana_slick": null,
+     "mediana_bagnato": 101.078,
+     "mediana_campo": 101.078
+    },
+    {
+     "giro": 56,
+     "n_slick": 0,
+     "n_bagnato": 9,
+     "mediana_slick": null,
+     "mediana_bagnato": 103.482,
+     "mediana_campo": 103.482
+    },
+    {
+     "giro": 57,
+     "n_slick": 0,
+     "n_bagnato": 7,
+     "mediana_slick": null,
+     "mediana_bagnato": 103.373,
+     "mediana_campo": 103.373
+    },
+    {
+     "giro": 60,
+     "n_slick": 0,
+     "n_bagnato": 2,
+     "mediana_slick": null,
+     "mediana_bagnato": 101.559,
+     "mediana_campo": 101.559
+    },
+    {
+     "giro": 61,
+     "n_slick": 0,
+     "n_bagnato": 10,
+     "mediana_slick": null,
+     "mediana_bagnato": 101.214,
+     "mediana_campo": 101.214
+    },
+    {
+     "giro": 62,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 100.276,
+     "mediana_campo": 100.276
+    },
+    {
+     "giro": 63,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 99.899,
+     "mediana_campo": 99.899
+    },
+    {
+     "giro": 64,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 98.636,
+     "mediana_campo": 98.636
+    },
+    {
+     "giro": 65,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 97.657,
+     "mediana_campo": 97.657
+    },
+    {
+     "giro": 66,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.991,
+     "mediana_campo": 95.991
+    },
+    {
+     "giro": 67,
+     "n_slick": 0,
+     "n_bagnato": 14,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.576,
+     "mediana_campo": 94.576
+    },
+    {
+     "giro": 68,
+     "n_slick": 0,
+     "n_bagnato": 7,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.484,
+     "mediana_campo": 93.484
+    },
+    {
+     "giro": 69,
+     "n_slick": 0,
+     "n_bagnato": 10,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.983,
+     "mediana_campo": 93.983
+    },
+    {
+     "giro": 70,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.237,
+     "mediana_campo": 91.237
+    },
+    {
+     "giro": 71,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 90.098,
+     "mediana_campo": 90.098
+    },
+    {
+     "giro": 72,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 89.695,
+     "mediana_campo": 89.695
+    },
+    {
+     "giro": 73,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 87.84,
+     "mediana_campo": 87.84
+    },
+    {
+     "giro": 74,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 87.516,
+     "mediana_campo": 87.516
+    },
+    {
+     "giro": 75,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 86.417,
+     "mediana_campo": 86.417
+    },
+    {
+     "giro": 76,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 85.927,
+     "mediana_campo": 85.927
+    },
+    {
+     "giro": 77,
+     "n_slick": 0,
+     "n_bagnato": 14,
+     "mediana_slick": null,
+     "mediana_bagnato": 86.088,
+     "mediana_campo": 86.088
+    },
+    {
+     "giro": 78,
+     "n_slick": 0,
+     "n_bagnato": 8,
+     "mediana_slick": null,
+     "mediana_bagnato": 85.976,
+     "mediana_campo": 85.976
+    }
+   ]
+  },
+  {
+   "anno": 2024,
+   "gara": "British_Grand_Prix",
+   "chiave": "2024/British_Grand_Prix",
+   "giri_su_bagnato": 234,
+   "n_slick_puliti": 676,
+   "riferimento_asciutto_s": 89.635,
+   "giri": [
+    {
+     "giro": 1,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 100.32,
+     "mediana_bagnato": null,
+     "mediana_campo": 100.32
+    },
+    {
+     "giro": 2,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 92.942,
+     "mediana_bagnato": null,
+     "mediana_campo": 92.942
+    },
+    {
+     "giro": 3,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 92.605,
+     "mediana_bagnato": null,
+     "mediana_campo": 92.605
+    },
+    {
+     "giro": 4,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 92.968,
+     "mediana_bagnato": null,
+     "mediana_campo": 92.968
+    },
+    {
+     "giro": 5,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 92.697,
+     "mediana_bagnato": null,
+     "mediana_campo": 92.697
+    },
+    {
+     "giro": 6,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 92.697,
+     "mediana_bagnato": null,
+     "mediana_campo": 92.697
+    },
+    {
+     "giro": 7,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 92.733,
+     "mediana_bagnato": null,
+     "mediana_campo": 92.733
+    },
+    {
+     "giro": 8,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 92.798,
+     "mediana_bagnato": null,
+     "mediana_campo": 92.798
+    },
+    {
+     "giro": 9,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 92.57,
+     "mediana_bagnato": null,
+     "mediana_campo": 92.57
+    },
+    {
+     "giro": 10,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 92.647,
+     "mediana_bagnato": null,
+     "mediana_campo": 92.647
+    },
+    {
+     "giro": 11,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 92.491,
+     "mediana_bagnato": null,
+     "mediana_campo": 92.491
+    },
+    {
+     "giro": 12,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 92.414,
+     "mediana_bagnato": null,
+     "mediana_campo": 92.414
+    },
+    {
+     "giro": 13,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 92.629,
+     "mediana_bagnato": null,
+     "mediana_campo": 92.629
+    },
+    {
+     "giro": 14,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 92.488,
+     "mediana_bagnato": null,
+     "mediana_campo": 92.488
+    },
+    {
+     "giro": 15,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 92.543,
+     "mediana_bagnato": null,
+     "mediana_campo": 92.543
+    },
+    {
+     "giro": 16,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 93.135,
+     "mediana_bagnato": null,
+     "mediana_campo": 93.135
+    },
+    {
+     "giro": 17,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 95.014,
+     "mediana_bagnato": null,
+     "mediana_campo": 95.014
+    },
+    {
+     "giro": 18,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 95.789,
+     "mediana_bagnato": null,
+     "mediana_campo": 95.789
+    },
+    {
+     "giro": 19,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 104.426,
+     "mediana_bagnato": null,
+     "mediana_campo": 104.426
+    },
+    {
+     "giro": 20,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 97.219,
+     "mediana_bagnato": null,
+     "mediana_campo": 97.219
+    },
+    {
+     "giro": 21,
+     "n_slick": 15,
+     "n_bagnato": 3,
+     "mediana_slick": 93.484,
+     "mediana_bagnato": 102.846,
+     "mediana_campo": 93.498
+    },
+    {
+     "giro": 22,
+     "n_slick": 15,
+     "n_bagnato": 3,
+     "mediana_slick": 92.495,
+     "mediana_bagnato": 104.936,
+     "mediana_campo": 92.677
+    },
+    {
+     "giro": 23,
+     "n_slick": 16,
+     "n_bagnato": 3,
+     "mediana_slick": 92.751,
+     "mediana_bagnato": 106.593,
+     "mediana_campo": 93.062
+    },
+    {
+     "giro": 24,
+     "n_slick": 16,
+     "n_bagnato": 2,
+     "mediana_slick": 93.792,
+     "mediana_bagnato": 109.798,
+     "mediana_campo": 93.999
+    },
+    {
+     "giro": 25,
+     "n_slick": 16,
+     "n_bagnato": 3,
+     "mediana_slick": 95.542,
+     "mediana_bagnato": 108.245,
+     "mediana_campo": 95.687
+    },
+    {
+     "giro": 26,
+     "n_slick": 9,
+     "n_bagnato": 2,
+     "mediana_slick": 103.26,
+     "mediana_bagnato": 105.696,
+     "mediana_campo": 103.618
+    },
+    {
+     "giro": 27,
+     "n_slick": 1,
+     "n_bagnato": 1,
+     "mediana_slick": 109.747,
+     "mediana_bagnato": 112.538,
+     "mediana_campo": 111.142
+    },
+    {
+     "giro": 28,
+     "n_slick": 0,
+     "n_bagnato": 7,
+     "mediana_slick": null,
+     "mediana_bagnato": 101.897,
+     "mediana_campo": 101.897
+    },
+    {
+     "giro": 29,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 102.362,
+     "mediana_campo": 102.362
+    },
+    {
+     "giro": 30,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 102.577,
+     "mediana_campo": 102.577
+    },
+    {
+     "giro": 31,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 103.251,
+     "mediana_campo": 103.251
+    },
+    {
+     "giro": 32,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.134,
+     "mediana_campo": 104.134
+    },
+    {
+     "giro": 33,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.452,
+     "mediana_campo": 104.452
+    },
+    {
+     "giro": 34,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.649,
+     "mediana_campo": 104.649
+    },
+    {
+     "giro": 35,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 103.59,
+     "mediana_campo": 103.59
+    },
+    {
+     "giro": 36,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 102.726,
+     "mediana_campo": 102.726
+    },
+    {
+     "giro": 37,
+     "n_slick": 0,
+     "n_bagnato": 12,
+     "mediana_slick": null,
+     "mediana_bagnato": 100.544,
+     "mediana_campo": 100.544
+    },
+    {
+     "giro": 38,
+     "n_slick": 0,
+     "n_bagnato": 4,
+     "mediana_slick": null,
+     "mediana_bagnato": 98.612,
+     "mediana_campo": 98.612
+    },
+    {
+     "giro": 39,
+     "n_slick": 6,
+     "n_bagnato": 0,
+     "mediana_slick": 92.93,
+     "mediana_bagnato": null,
+     "mediana_campo": 92.93
+    },
+    {
+     "giro": 40,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 91.712,
+     "mediana_bagnato": null,
+     "mediana_campo": 91.712
+    },
+    {
+     "giro": 41,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 90.649,
+     "mediana_bagnato": null,
+     "mediana_campo": 90.649
+    },
+    {
+     "giro": 42,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 90.164,
+     "mediana_bagnato": null,
+     "mediana_campo": 90.164
+    },
+    {
+     "giro": 43,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 90.144,
+     "mediana_bagnato": null,
+     "mediana_campo": 90.144
+    },
+    {
+     "giro": 44,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 90.211,
+     "mediana_bagnato": null,
+     "mediana_campo": 90.211
+    },
+    {
+     "giro": 45,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 90.227,
+     "mediana_bagnato": null,
+     "mediana_campo": 90.227
+    },
+    {
+     "giro": 46,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 90.16,
+     "mediana_bagnato": null,
+     "mediana_campo": 90.16
+    },
+    {
+     "giro": 47,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 90.148,
+     "mediana_bagnato": null,
+     "mediana_campo": 90.148
+    },
+    {
+     "giro": 48,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 90.365,
+     "mediana_bagnato": null,
+     "mediana_campo": 90.365
+    },
+    {
+     "giro": 49,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 90.751,
+     "mediana_bagnato": null,
+     "mediana_campo": 90.751
+    },
+    {
+     "giro": 50,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 90.544,
+     "mediana_bagnato": null,
+     "mediana_campo": 90.544
+    },
+    {
+     "giro": 51,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 90.733,
+     "mediana_bagnato": null,
+     "mediana_campo": 90.733
+    },
+    {
+     "giro": 52,
+     "n_slick": 12,
+     "n_bagnato": 0,
+     "mediana_slick": 90.496,
+     "mediana_bagnato": null,
+     "mediana_campo": 90.496
+    }
+   ]
+  },
+  {
+   "anno": 2024,
+   "gara": "Canadian_Grand_Prix",
+   "chiave": "2024/Canadian_Grand_Prix",
+   "giri_su_bagnato": 846,
+   "n_slick_puliti": 251,
+   "riferimento_asciutto_s": 75.963,
+   "giri": [
+    {
+     "giro": 2,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 101.606,
+     "mediana_campo": 101.606
+    },
+    {
+     "giro": 3,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 99.935,
+     "mediana_campo": 99.935
+    },
+    {
+     "giro": 4,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 97.549,
+     "mediana_campo": 97.549
+    },
+    {
+     "giro": 5,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 96.59,
+     "mediana_campo": 96.59
+    },
+    {
+     "giro": 7,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.014,
+     "mediana_campo": 94.014
+    },
+    {
+     "giro": 8,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.132,
+     "mediana_campo": 93.132
+    },
+    {
+     "giro": 9,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.343,
+     "mediana_campo": 92.343
+    },
+    {
+     "giro": 10,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.427,
+     "mediana_campo": 91.427
+    },
+    {
+     "giro": 11,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.829,
+     "mediana_campo": 91.829
+    },
+    {
+     "giro": 12,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 90.817,
+     "mediana_campo": 90.817
+    },
+    {
+     "giro": 13,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 90.265,
+     "mediana_campo": 90.265
+    },
+    {
+     "giro": 14,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 89.558,
+     "mediana_campo": 89.558
+    },
+    {
+     "giro": 15,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 89.022,
+     "mediana_campo": 89.022
+    },
+    {
+     "giro": 16,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 88.332,
+     "mediana_campo": 88.332
+    },
+    {
+     "giro": 17,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 87.959,
+     "mediana_campo": 87.959
+    },
+    {
+     "giro": 18,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 87.34,
+     "mediana_campo": 87.34
+    },
+    {
+     "giro": 19,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 86.849,
+     "mediana_campo": 86.849
+    },
+    {
+     "giro": 20,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 86.866,
+     "mediana_campo": 86.866
+    },
+    {
+     "giro": 21,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 87.102,
+     "mediana_campo": 87.102
+    },
+    {
+     "giro": 22,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 86.507,
+     "mediana_campo": 86.507
+    },
+    {
+     "giro": 23,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 86.654,
+     "mediana_campo": 86.654
+    },
+    {
+     "giro": 24,
+     "n_slick": 0,
+     "n_bagnato": 6,
+     "mediana_slick": null,
+     "mediana_bagnato": 86.498,
+     "mediana_campo": 86.498
+    },
+    {
+     "giro": 30,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 88.997,
+     "mediana_campo": 88.997
+    },
+    {
+     "giro": 31,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.035,
+     "mediana_campo": 91.035
+    },
+    {
+     "giro": 32,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.251,
+     "mediana_campo": 91.251
+    },
+    {
+     "giro": 33,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 90.285,
+     "mediana_campo": 90.285
+    },
+    {
+     "giro": 34,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 88.766,
+     "mediana_campo": 88.766
+    },
+    {
+     "giro": 35,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 88.5,
+     "mediana_campo": 88.5
+    },
+    {
+     "giro": 36,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 87.649,
+     "mediana_campo": 87.649
+    },
+    {
+     "giro": 37,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 87.123,
+     "mediana_campo": 87.123
+    },
+    {
+     "giro": 38,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 86.822,
+     "mediana_campo": 86.822
+    },
+    {
+     "giro": 39,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 86.349,
+     "mediana_campo": 86.349
+    },
+    {
+     "giro": 40,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 85.607,
+     "mediana_campo": 85.607
+    },
+    {
+     "giro": 42,
+     "n_slick": 1,
+     "n_bagnato": 14,
+     "mediana_slick": 87.188,
+     "mediana_bagnato": 85.472,
+     "mediana_campo": 85.681
+    },
+    {
+     "giro": 43,
+     "n_slick": 2,
+     "n_bagnato": 11,
+     "mediana_slick": 86.109,
+     "mediana_bagnato": 84.662,
+     "mediana_campo": 84.662
+    },
+    {
+     "giro": 44,
+     "n_slick": 2,
+     "n_bagnato": 3,
+     "mediana_slick": 85.891,
+     "mediana_bagnato": 84.325,
+     "mediana_campo": 84.381
+    },
+    {
+     "giro": 45,
+     "n_slick": 7,
+     "n_bagnato": 1,
+     "mediana_slick": 84.688,
+     "mediana_bagnato": 83.569,
+     "mediana_campo": 84.477
+    },
+    {
+     "giro": 46,
+     "n_slick": 15,
+     "n_bagnato": 1,
+     "mediana_slick": 83.788,
+     "mediana_bagnato": 83.272,
+     "mediana_campo": 83.676
+    },
+    {
+     "giro": 47,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 82.431,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.431
+    },
+    {
+     "giro": 48,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 81.43,
+     "mediana_bagnato": null,
+     "mediana_campo": 81.43
+    },
+    {
+     "giro": 49,
+     "n_slick": 2,
+     "n_bagnato": 0,
+     "mediana_slick": 82.87,
+     "mediana_bagnato": null,
+     "mediana_campo": 82.87
+    },
+    {
+     "giro": 50,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 79.822,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.822
+    },
+    {
+     "giro": 51,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 79.157,
+     "mediana_bagnato": null,
+     "mediana_campo": 79.157
+    },
+    {
+     "giro": 58,
+     "n_slick": 1,
+     "n_bagnato": 0,
+     "mediana_slick": 80.998,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.998
+    },
+    {
+     "giro": 59,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 80.714,
+     "mediana_bagnato": null,
+     "mediana_campo": 80.714
+    },
+    {
+     "giro": 60,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 78.535,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.535
+    },
+    {
+     "giro": 61,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 78.497,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.497
+    },
+    {
+     "giro": 62,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 78.186,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.186
+    },
+    {
+     "giro": 63,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 77.692,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.692
+    },
+    {
+     "giro": 64,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 77.484,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.484
+    },
+    {
+     "giro": 65,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 77.276,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.276
+    },
+    {
+     "giro": 66,
+     "n_slick": 1,
+     "n_bagnato": 0,
+     "mediana_slick": 78.762,
+     "mediana_bagnato": null,
+     "mediana_campo": 78.762
+    },
+    {
+     "giro": 67,
+     "n_slick": 10,
+     "n_bagnato": 0,
+     "mediana_slick": 77.813,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.813
+    },
+    {
+     "giro": 68,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 77.028,
+     "mediana_bagnato": null,
+     "mediana_campo": 77.028
+    },
+    {
+     "giro": 69,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 76.789,
+     "mediana_bagnato": null,
+     "mediana_campo": 76.789
+    },
+    {
+     "giro": 70,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 76.887,
+     "mediana_bagnato": null,
+     "mediana_campo": 76.887
+    }
+   ]
+  },
+  {
+   "anno": 2024,
+   "gara": "São_Paulo_Grand_Prix",
+   "chiave": "2024/São_Paulo_Grand_Prix",
+   "giri_su_bagnato": 1135,
+   "n_slick_puliti": 0,
+   "riferimento_asciutto_s": null,
+   "giri": [
+    {
+     "giro": 2,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 87.164,
+     "mediana_campo": 87.164
+    },
+    {
+     "giro": 3,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 86.508,
+     "mediana_campo": 86.508
+    },
+    {
+     "giro": 5,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 85.547,
+     "mediana_campo": 85.547
+    },
+    {
+     "giro": 6,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 85.2,
+     "mediana_campo": 85.2
+    },
+    {
+     "giro": 7,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 85.374,
+     "mediana_campo": 85.374
+    },
+    {
+     "giro": 8,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 85.19,
+     "mediana_campo": 85.19
+    },
+    {
+     "giro": 9,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.805,
+     "mediana_campo": 84.805
+    },
+    {
+     "giro": 10,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 85.053,
+     "mediana_campo": 85.053
+    },
+    {
+     "giro": 11,
+     "n_slick": 0,
+     "n_bagnato": 2,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.019,
+     "mediana_campo": 84.019
+    },
+    {
+     "giro": 12,
+     "n_slick": 0,
+     "n_bagnato": 10,
+     "mediana_slick": null,
+     "mediana_bagnato": 85.993,
+     "mediana_campo": 85.993
+    },
+    {
+     "giro": 13,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.931,
+     "mediana_campo": 84.931
+    },
+    {
+     "giro": 14,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.813,
+     "mediana_campo": 84.813
+    },
+    {
+     "giro": 15,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.87,
+     "mediana_campo": 84.87
+    },
+    {
+     "giro": 16,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 85.045,
+     "mediana_campo": 85.045
+    },
+    {
+     "giro": 17,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.54,
+     "mediana_campo": 84.54
+    },
+    {
+     "giro": 18,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.547,
+     "mediana_campo": 84.547
+    },
+    {
+     "giro": 19,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.465,
+     "mediana_campo": 84.465
+    },
+    {
+     "giro": 20,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.298,
+     "mediana_campo": 84.298
+    },
+    {
+     "giro": 21,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.224,
+     "mediana_campo": 84.224
+    },
+    {
+     "giro": 22,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.384,
+     "mediana_campo": 84.384
+    },
+    {
+     "giro": 23,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.583,
+     "mediana_campo": 84.583
+    },
+    {
+     "giro": 24,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.617,
+     "mediana_campo": 84.617
+    },
+    {
+     "giro": 25,
+     "n_slick": 0,
+     "n_bagnato": 9,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.877,
+     "mediana_campo": 84.877
+    },
+    {
+     "giro": 26,
+     "n_slick": 0,
+     "n_bagnato": 6,
+     "mediana_slick": null,
+     "mediana_bagnato": 85.597,
+     "mediana_campo": 85.597
+    },
+    {
+     "giro": 29,
+     "n_slick": 0,
+     "n_bagnato": 11,
+     "mediana_slick": null,
+     "mediana_bagnato": 102.264,
+     "mediana_campo": 102.264
+    },
+    {
+     "giro": 34,
+     "n_slick": 0,
+     "n_bagnato": 11,
+     "mediana_slick": null,
+     "mediana_bagnato": 98.583,
+     "mediana_campo": 98.583
+    },
+    {
+     "giro": 35,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.517,
+     "mediana_campo": 91.517
+    },
+    {
+     "giro": 37,
+     "n_slick": 0,
+     "n_bagnato": 13,
+     "mediana_slick": null,
+     "mediana_bagnato": 86.055,
+     "mediana_campo": 86.055
+    },
+    {
+     "giro": 38,
+     "n_slick": 0,
+     "n_bagnato": 2,
+     "mediana_slick": null,
+     "mediana_bagnato": 87.562,
+     "mediana_campo": 87.562
+    },
+    {
+     "giro": 44,
+     "n_slick": 0,
+     "n_bagnato": 1,
+     "mediana_slick": null,
+     "mediana_bagnato": 85.846,
+     "mediana_campo": 85.846
+    },
+    {
+     "giro": 45,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.451,
+     "mediana_campo": 84.451
+    },
+    {
+     "giro": 46,
+     "n_slick": 0,
+     "n_bagnato": 14,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.8,
+     "mediana_campo": 84.8
+    },
+    {
+     "giro": 47,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 84.404,
+     "mediana_campo": 84.404
+    },
+    {
+     "giro": 48,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 83.945,
+     "mediana_campo": 83.945
+    },
+    {
+     "giro": 49,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 83.573,
+     "mediana_campo": 83.573
+    },
+    {
+     "giro": 50,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 83.686,
+     "mediana_campo": 83.686
+    },
+    {
+     "giro": 51,
+     "n_slick": 0,
+     "n_bagnato": 1,
+     "mediana_slick": null,
+     "mediana_bagnato": 82.306,
+     "mediana_campo": 82.306
+    },
+    {
+     "giro": 52,
+     "n_slick": 0,
+     "n_bagnato": 12,
+     "mediana_slick": null,
+     "mediana_bagnato": 83.998,
+     "mediana_campo": 83.998
+    },
+    {
+     "giro": 53,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 83.545,
+     "mediana_campo": 83.545
+    },
+    {
+     "giro": 54,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 82.957,
+     "mediana_campo": 82.957
+    },
+    {
+     "giro": 55,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 83.118,
+     "mediana_campo": 83.118
+    },
+    {
+     "giro": 56,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 82.945,
+     "mediana_campo": 82.945
+    },
+    {
+     "giro": 57,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 82.777,
+     "mediana_campo": 82.777
+    },
+    {
+     "giro": 58,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 82.968,
+     "mediana_campo": 82.968
+    },
+    {
+     "giro": 59,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 82.408,
+     "mediana_campo": 82.408
+    },
+    {
+     "giro": 60,
+     "n_slick": 0,
+     "n_bagnato": 14,
+     "mediana_slick": null,
+     "mediana_bagnato": 82.388,
+     "mediana_campo": 82.388
+    },
+    {
+     "giro": 61,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 82.405,
+     "mediana_campo": 82.405
+    },
+    {
+     "giro": 62,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 82.541,
+     "mediana_campo": 82.541
+    },
+    {
+     "giro": 63,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 82.216,
+     "mediana_campo": 82.216
+    },
+    {
+     "giro": 64,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 82.035,
+     "mediana_campo": 82.035
+    },
+    {
+     "giro": 65,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 81.955,
+     "mediana_campo": 81.955
+    },
+    {
+     "giro": 66,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 82.159,
+     "mediana_campo": 82.159
+    },
+    {
+     "giro": 67,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 82.123,
+     "mediana_campo": 82.123
+    },
+    {
+     "giro": 68,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 81.979,
+     "mediana_campo": 81.979
+    },
+    {
+     "giro": 69,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 82.264,
+     "mediana_campo": 82.264
+    }
+   ]
+  },
+  {
+   "anno": 2025,
+   "gara": "Australian_Grand_Prix",
+   "chiave": "2025/Australian_Grand_Prix",
+   "giri_su_bagnato": 750,
+   "n_slick_puliti": 36,
+   "riferimento_asciutto_s": 82.97,
+   "giri": [
+    {
+     "giro": 8,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 98.441,
+     "mediana_campo": 98.441
+    },
+    {
+     "giro": 9,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 96.253,
+     "mediana_campo": 96.253
+    },
+    {
+     "giro": 10,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.107,
+     "mediana_campo": 95.107
+    },
+    {
+     "giro": 11,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.655,
+     "mediana_campo": 94.655
+    },
+    {
+     "giro": 12,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 94.064,
+     "mediana_campo": 94.064
+    },
+    {
+     "giro": 13,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 93.275,
+     "mediana_campo": 93.275
+    },
+    {
+     "giro": 14,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.859,
+     "mediana_campo": 92.859
+    },
+    {
+     "giro": 15,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.545,
+     "mediana_campo": 92.545
+    },
+    {
+     "giro": 16,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.493,
+     "mediana_campo": 92.493
+    },
+    {
+     "giro": 17,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.966,
+     "mediana_campo": 92.966
+    },
+    {
+     "giro": 18,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.981,
+     "mediana_campo": 92.981
+    },
+    {
+     "giro": 19,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.684,
+     "mediana_campo": 92.684
+    },
+    {
+     "giro": 20,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.356,
+     "mediana_campo": 92.356
+    },
+    {
+     "giro": 21,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.079,
+     "mediana_campo": 92.079
+    },
+    {
+     "giro": 22,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 92.053,
+     "mediana_campo": 92.053
+    },
+    {
+     "giro": 23,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.793,
+     "mediana_campo": 91.793
+    },
+    {
+     "giro": 24,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.852,
+     "mediana_campo": 91.852
+    },
+    {
+     "giro": 25,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.38,
+     "mediana_campo": 91.38
+    },
+    {
+     "giro": 26,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.299,
+     "mediana_campo": 91.299
+    },
+    {
+     "giro": 27,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 90.755,
+     "mediana_campo": 90.755
+    },
+    {
+     "giro": 28,
+     "n_slick": 0,
+     "n_bagnato": 16,
+     "mediana_slick": null,
+     "mediana_bagnato": 90.517,
+     "mediana_campo": 90.517
+    },
+    {
+     "giro": 29,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 90.031,
+     "mediana_campo": 90.031
+    },
+    {
+     "giro": 30,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 89.794,
+     "mediana_campo": 89.794
+    },
+    {
+     "giro": 31,
+     "n_slick": 0,
+     "n_bagnato": 17,
+     "mediana_slick": null,
+     "mediana_bagnato": 90.053,
+     "mediana_campo": 90.053
+    },
+    {
+     "giro": 32,
+     "n_slick": 0,
+     "n_bagnato": 14,
+     "mediana_slick": null,
+     "mediana_bagnato": 89.606,
+     "mediana_campo": 89.606
+    },
+    {
+     "giro": 33,
+     "n_slick": 0,
+     "n_bagnato": 2,
+     "mediana_slick": null,
+     "mediana_bagnato": 87.861,
+     "mediana_campo": 87.861
+    },
+    {
+     "giro": 42,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 86.979,
+     "mediana_bagnato": null,
+     "mediana_campo": 86.979
+    },
+    {
+     "giro": 43,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 84.749,
+     "mediana_bagnato": null,
+     "mediana_campo": 84.749
+    },
+    {
+     "giro": 46,
+     "n_slick": 4,
+     "n_bagnato": 6,
+     "mediana_slick": 98.085,
+     "mediana_bagnato": 91.719,
+     "mediana_campo": 92.578
+    },
+    {
+     "giro": 52,
+     "n_slick": 0,
+     "n_bagnato": 14,
+     "mediana_slick": null,
+     "mediana_bagnato": 95.665,
+     "mediana_campo": 95.665
+    },
+    {
+     "giro": 53,
+     "n_slick": 0,
+     "n_bagnato": 14,
+     "mediana_slick": null,
+     "mediana_bagnato": 91.812,
+     "mediana_campo": 91.812
+    },
+    {
+     "giro": 54,
+     "n_slick": 0,
+     "n_bagnato": 13,
+     "mediana_slick": null,
+     "mediana_bagnato": 90.794,
+     "mediana_campo": 90.794
+    },
+    {
+     "giro": 55,
+     "n_slick": 0,
+     "n_bagnato": 14,
+     "mediana_slick": null,
+     "mediana_bagnato": 90.344,
+     "mediana_campo": 90.344
+    },
+    {
+     "giro": 56,
+     "n_slick": 0,
+     "n_bagnato": 14,
+     "mediana_slick": null,
+     "mediana_bagnato": 90.16,
+     "mediana_campo": 90.16
+    },
+    {
+     "giro": 57,
+     "n_slick": 0,
+     "n_bagnato": 14,
+     "mediana_slick": null,
+     "mediana_bagnato": 90.707,
+     "mediana_campo": 90.707
+    }
+   ]
+  },
+  {
+   "anno": 2025,
+   "gara": "Belgian_Grand_Prix",
+   "chiave": "2025/Belgian_Grand_Prix",
+   "giri_su_bagnato": 239,
+   "n_slick_puliti": 549,
+   "riferimento_asciutto_s": 106.205,
+   "giri": [
+    {
+     "giro": 5,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 122.826,
+     "mediana_campo": 122.826
+    },
+    {
+     "giro": 6,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 121.665,
+     "mediana_campo": 121.665
+    },
+    {
+     "giro": 7,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 121.692,
+     "mediana_campo": 121.692
+    },
+    {
+     "giro": 8,
+     "n_slick": 0,
+     "n_bagnato": 18,
+     "mediana_slick": null,
+     "mediana_bagnato": 122.673,
+     "mediana_campo": 122.673
+    },
+    {
+     "giro": 9,
+     "n_slick": 0,
+     "n_bagnato": 19,
+     "mediana_slick": null,
+     "mediana_bagnato": 124.288,
+     "mediana_campo": 124.288
+    },
+    {
+     "giro": 10,
+     "n_slick": 0,
+     "n_bagnato": 20,
+     "mediana_slick": null,
+     "mediana_bagnato": 124.906,
+     "mediana_campo": 124.906
+    },
+    {
+     "giro": 11,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 124.137,
+     "mediana_campo": 124.137
+    },
+    {
+     "giro": 12,
+     "n_slick": 0,
+     "n_bagnato": 3,
+     "mediana_slick": null,
+     "mediana_bagnato": 123.373,
+     "mediana_campo": 123.373
+    },
+    {
+     "giro": 13,
+     "n_slick": 4,
+     "n_bagnato": 0,
+     "mediana_slick": 112.615,
+     "mediana_bagnato": null,
+     "mediana_campo": 112.615
+    },
+    {
+     "giro": 14,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 110.345,
+     "mediana_bagnato": null,
+     "mediana_campo": 110.345
+    },
+    {
+     "giro": 15,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 109.001,
+     "mediana_bagnato": null,
+     "mediana_campo": 109.001
+    },
+    {
+     "giro": 16,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 108.987,
+     "mediana_bagnato": null,
+     "mediana_campo": 108.987
+    },
+    {
+     "giro": 17,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 108.403,
+     "mediana_bagnato": null,
+     "mediana_campo": 108.403
+    },
+    {
+     "giro": 18,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 108.037,
+     "mediana_bagnato": null,
+     "mediana_campo": 108.037
+    },
+    {
+     "giro": 19,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 108.107,
+     "mediana_bagnato": null,
+     "mediana_campo": 108.107
+    },
+    {
+     "giro": 20,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 108.049,
+     "mediana_bagnato": null,
+     "mediana_campo": 108.049
+    },
+    {
+     "giro": 21,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 108.108,
+     "mediana_bagnato": null,
+     "mediana_campo": 108.108
+    },
+    {
+     "giro": 22,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 107.9,
+     "mediana_bagnato": null,
+     "mediana_campo": 107.9
+    },
+    {
+     "giro": 23,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 108.058,
+     "mediana_bagnato": null,
+     "mediana_campo": 108.058
+    },
+    {
+     "giro": 24,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 107.799,
+     "mediana_bagnato": null,
+     "mediana_campo": 107.799
+    },
+    {
+     "giro": 25,
+     "n_slick": 20,
+     "n_bagnato": 0,
+     "mediana_slick": 107.912,
+     "mediana_bagnato": null,
+     "mediana_campo": 107.912
+    },
+    {
+     "giro": 26,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 107.665,
+     "mediana_bagnato": null,
+     "mediana_campo": 107.665
+    },
+    {
+     "giro": 27,
+     "n_slick": 19,
+     "n_bagnato": 0,
+     "mediana_slick": 107.524,
+     "mediana_bagnato": null,
+     "mediana_campo": 107.524
+    },
+    {
+     "giro": 28,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 107.544,
+     "mediana_bagnato": null,
+     "mediana_campo": 107.544
+    },
+    {
+     "giro": 29,
+     "n_slick": 18,
+     "n_bagnato": 0,
+     "mediana_slick": 107.483,
+     "mediana_bagnato": null,
+     "mediana_campo": 107.483
+    },
+    {
+     "giro": 30,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 107.187,
+     "mediana_bagnato": null,
+     "mediana_campo": 107.187
+    },
+    {
+     "giro": 31,
+     "n_slick": 17,
+     "n_bagnato": 0,
+     "mediana_slick": 107.268,
+     "mediana_bagnato": null,
+     "mediana_campo": 107.268
+    },
+    {
+     "giro": 32,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 107.18,
+     "mediana_bagnato": null,
+     "mediana_campo": 107.18
+    },
+    {
+     "giro": 33,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 107.196,
+     "mediana_bagnato": null,
+     "mediana_campo": 107.196
+    },
+    {
+     "giro": 34,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 107.284,
+     "mediana_bagnato": null,
+     "mediana_campo": 107.284
+    },
+    {
+     "giro": 35,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 107.037,
+     "mediana_bagnato": null,
+     "mediana_campo": 107.037
+    },
+    {
+     "giro": 36,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 107.165,
+     "mediana_bagnato": null,
+     "mediana_campo": 107.165
+    },
+    {
+     "giro": 37,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 107.136,
+     "mediana_bagnato": null,
+     "mediana_campo": 107.136
+    },
+    {
+     "giro": 38,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 106.981,
+     "mediana_bagnato": null,
+     "mediana_campo": 106.981
+    },
+    {
+     "giro": 39,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 106.939,
+     "mediana_bagnato": null,
+     "mediana_campo": 106.939
+    },
+    {
+     "giro": 40,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 107.002,
+     "mediana_bagnato": null,
+     "mediana_campo": 107.002
+    },
+    {
+     "giro": 41,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 106.998,
+     "mediana_bagnato": null,
+     "mediana_campo": 106.998
+    },
+    {
+     "giro": 42,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 106.976,
+     "mediana_bagnato": null,
+     "mediana_campo": 106.976
+    },
+    {
+     "giro": 43,
+     "n_slick": 16,
+     "n_bagnato": 0,
+     "mediana_slick": 106.888,
+     "mediana_bagnato": null,
+     "mediana_campo": 106.888
+    },
+    {
+     "giro": 44,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 107.114,
+     "mediana_bagnato": null,
+     "mediana_campo": 107.114
+    }
+   ]
+  },
+  {
+   "anno": 2025,
+   "gara": "British_Grand_Prix",
+   "chiave": "2025/British_Grand_Prix",
+   "giri_su_bagnato": 608,
+   "n_slick_puliti": 138,
+   "riferimento_asciutto_s": 90.047,
+   "giri": [
+    {
+     "giro": 8,
+     "n_slick": 6,
+     "n_bagnato": 11,
+     "mediana_slick": 103.885,
+     "mediana_bagnato": 106.227,
+     "mediana_campo": 105.834
+    },
+    {
+     "giro": 9,
+     "n_slick": 5,
+     "n_bagnato": 10,
+     "mediana_slick": 101.705,
+     "mediana_bagnato": 107.891,
+     "mediana_campo": 106.326
+    },
+    {
+     "giro": 10,
+     "n_slick": 0,
+     "n_bagnato": 10,
+     "mediana_slick": null,
+     "mediana_bagnato": 108.741,
+     "mediana_campo": 108.741
+    },
+    {
+     "giro": 11,
+     "n_slick": 0,
+     "n_bagnato": 4,
+     "mediana_slick": null,
+     "mediana_bagnato": 110.153,
+     "mediana_campo": 110.153
+    },
+    {
+     "giro": 12,
+     "n_slick": 0,
+     "n_bagnato": 8,
+     "mediana_slick": null,
+     "mediana_bagnato": 107.856,
+     "mediana_campo": 107.856
+    },
+    {
+     "giro": 13,
+     "n_slick": 0,
+     "n_bagnato": 1,
+     "mediana_slick": null,
+     "mediana_bagnato": 107.585,
+     "mediana_campo": 107.585
+    },
+    {
+     "giro": 23,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 105.863,
+     "mediana_campo": 105.863
+    },
+    {
+     "giro": 24,
+     "n_slick": 0,
+     "n_bagnato": 14,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.726,
+     "mediana_campo": 104.726
+    },
+    {
+     "giro": 25,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.158,
+     "mediana_campo": 104.158
+    },
+    {
+     "giro": 26,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.13,
+     "mediana_campo": 104.13
+    },
+    {
+     "giro": 27,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 103.748,
+     "mediana_campo": 103.748
+    },
+    {
+     "giro": 28,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 103.779,
+     "mediana_campo": 103.779
+    },
+    {
+     "giro": 29,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.379,
+     "mediana_campo": 104.379
+    },
+    {
+     "giro": 30,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.388,
+     "mediana_campo": 104.388
+    },
+    {
+     "giro": 31,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.509,
+     "mediana_campo": 104.509
+    },
+    {
+     "giro": 32,
+     "n_slick": 0,
+     "n_bagnato": 14,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.232,
+     "mediana_campo": 104.232
+    },
+    {
+     "giro": 33,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.063,
+     "mediana_campo": 104.063
+    },
+    {
+     "giro": 34,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 104.039,
+     "mediana_campo": 104.039
+    },
+    {
+     "giro": 35,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 103.238,
+     "mediana_campo": 103.238
+    },
+    {
+     "giro": 36,
+     "n_slick": 0,
+     "n_bagnato": 15,
+     "mediana_slick": null,
+     "mediana_bagnato": 102.516,
+     "mediana_campo": 102.516
+    },
+    {
+     "giro": 37,
+     "n_slick": 0,
+     "n_bagnato": 13,
+     "mediana_slick": null,
+     "mediana_bagnato": 101.85,
+     "mediana_campo": 101.85
+    },
+    {
+     "giro": 38,
+     "n_slick": 0,
+     "n_bagnato": 13,
+     "mediana_slick": null,
+     "mediana_bagnato": 102.457,
+     "mediana_campo": 102.457
+    },
+    {
+     "giro": 39,
+     "n_slick": 0,
+     "n_bagnato": 4,
+     "mediana_slick": null,
+     "mediana_bagnato": 99.951,
+     "mediana_campo": 99.951
+    },
+    {
+     "giro": 40,
+     "n_slick": 2,
+     "n_bagnato": 7,
+     "mediana_slick": 104.2,
+     "mediana_bagnato": 102.143,
+     "mediana_campo": 102.225
+    },
+    {
+     "giro": 41,
+     "n_slick": 2,
+     "n_bagnato": 6,
+     "mediana_slick": 100.88,
+     "mediana_bagnato": 100.166,
+     "mediana_campo": 100.693
+    },
+    {
+     "giro": 42,
+     "n_slick": 0,
+     "n_bagnato": 2,
+     "mediana_slick": null,
+     "mediana_bagnato": 98.824,
+     "mediana_campo": 98.824
+    },
+    {
+     "giro": 44,
+     "n_slick": 8,
+     "n_bagnato": 0,
+     "mediana_slick": 95.856,
+     "mediana_bagnato": null,
+     "mediana_campo": 95.856
+    },
+    {
+     "giro": 45,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 93.758,
+     "mediana_bagnato": null,
+     "mediana_campo": 93.758
+    },
+    {
+     "giro": 46,
+     "n_slick": 14,
+     "n_bagnato": 0,
+     "mediana_slick": 92.48,
+     "mediana_bagnato": null,
+     "mediana_campo": 92.48
+    },
+    {
+     "giro": 47,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 91.822,
+     "mediana_bagnato": null,
+     "mediana_campo": 91.822
+    },
+    {
+     "giro": 48,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 90.823,
+     "mediana_bagnato": null,
+     "mediana_campo": 90.823
+    },
+    {
+     "giro": 49,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 90.873,
+     "mediana_bagnato": null,
+     "mediana_campo": 90.873
+    },
+    {
+     "giro": 50,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 90.943,
+     "mediana_bagnato": null,
+     "mediana_campo": 90.943
+    },
+    {
+     "giro": 51,
+     "n_slick": 15,
+     "n_bagnato": 0,
+     "mediana_slick": 90.973,
+     "mediana_bagnato": null,
+     "mediana_campo": 90.973
+    },
+    {
+     "giro": 52,
+     "n_slick": 13,
+     "n_bagnato": 0,
+     "mediana_slick": 91.662,
+     "mediana_bagnato": null,
+     "mediana_campo": 91.662
+    }
+   ]
+  }
+ ]
+}

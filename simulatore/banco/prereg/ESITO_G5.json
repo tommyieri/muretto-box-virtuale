@@ -1,0 +1,365 @@
+{
+  "_targhetta": {
+    "tipo": "esito del cancello causale G5, eseguito come pre-registrato",
+    "prereg": "banco/prereg/PREREG_G5.md",
+    "eseguito_da": "banco/replay_g5.mjs",
+    "percorso": "feed d'archivio → collettore live → calibratore (status per-auto)",
+    "data": "2026-07-29",
+    "conseguenza": "se g5_passa è false, il moltiplicatore resta DIAGNOSTICA: non entra nei percorsi decisionali live"
+  },
+  "per_congelamento": {
+    "15": {
+      "n_gare": 11,
+      "giudicabile": true,
+      "mediana_delta_mae": 0.022578,
+      "vinto_dal_live": false
+    },
+    "25": {
+      "n_gare": 11,
+      "giudicabile": true,
+      "mediana_delta_mae": 0.003139,
+      "vinto_dal_live": false
+    },
+    "35": {
+      "n_gare": 11,
+      "giudicabile": true,
+      "mediana_delta_mae": 0.025103,
+      "vinto_dal_live": false
+    }
+  },
+  "congelamenti_giudicabili": 3,
+  "vinti_dal_live": 0,
+  "g5_passa": false,
+  "dettaglio_per_gara": [
+    {
+      "gara": "Australia",
+      "Lf": 15,
+      "n_bersagli": 620,
+      "moltiplicatore": 0.3,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.800408,
+      "mae_live": 0.721963,
+      "delta_mae": -0.078445
+    },
+    {
+      "gara": "Austria",
+      "Lf": 15,
+      "n_bersagli": 878,
+      "moltiplicatore": 2.504516,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.594829,
+      "mae_live": 0.635077,
+      "delta_mae": 0.040247
+    },
+    {
+      "gara": "Belgio",
+      "Lf": 15,
+      "n_bersagli": 457,
+      "moltiplicatore": 1.024904,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.550527,
+      "mae_live": 0.550376,
+      "delta_mae": -0.000151
+    },
+    {
+      "gara": "Canada",
+      "Lf": 15,
+      "n_bersagli": 611,
+      "moltiplicatore": 0.3,
+      "moltiplicatore_null": false,
+      "mae_statico": 1.032036,
+      "mae_live": 0.872574,
+      "delta_mae": -0.159462
+    },
+    {
+      "gara": "Cina",
+      "Lf": 15,
+      "n_bersagli": 563,
+      "moltiplicatore": 0.767387,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.910832,
+      "mae_live": 0.810071,
+      "delta_mae": -0.10076
+    },
+    {
+      "gara": "Giappone",
+      "Lf": 15,
+      "n_bersagli": 607,
+      "moltiplicatore": 0.3,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.796247,
+      "mae_live": 0.628971,
+      "delta_mae": -0.167276
+    },
+    {
+      "gara": "GranBretagna",
+      "Lf": 15,
+      "n_bersagli": 532,
+      "moltiplicatore": 1.453491,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.568152,
+      "mae_live": 0.59073,
+      "delta_mae": 0.022578
+    },
+    {
+      "gara": "Miami",
+      "Lf": 15,
+      "n_bersagli": 441,
+      "moltiplicatore": 0.3,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.421654,
+      "mae_live": 0.584131,
+      "delta_mae": 0.162477
+    },
+    {
+      "gara": "Monaco",
+      "Lf": 15,
+      "n_bersagli": 860,
+      "moltiplicatore": 0.3,
+      "moltiplicatore_null": false,
+      "mae_statico": 1.004789,
+      "mae_live": 1.115293,
+      "delta_mae": 0.110503
+    },
+    {
+      "gara": "Spagna",
+      "Lf": 15,
+      "n_bersagli": 737,
+      "moltiplicatore": 0.3,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.827073,
+      "mae_live": 0.877686,
+      "delta_mae": 0.050613
+    },
+    {
+      "gara": "Ungheria",
+      "Lf": 15,
+      "n_bersagli": 923,
+      "moltiplicatore": 1.565752,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.759483,
+      "mae_live": 0.790038,
+      "delta_mae": 0.030555
+    },
+    {
+      "gara": "Australia",
+      "Lf": 25,
+      "n_bersagli": 487,
+      "moltiplicatore": 0.3,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.608761,
+      "mae_live": 0.658687,
+      "delta_mae": 0.049926
+    },
+    {
+      "gara": "Austria",
+      "Lf": 25,
+      "n_bersagli": 747,
+      "moltiplicatore": 1.934194,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.561561,
+      "mae_live": 0.5647,
+      "delta_mae": 0.003139
+    },
+    {
+      "gara": "Belgio",
+      "Lf": 25,
+      "n_bersagli": 349,
+      "moltiplicatore": 2.318147,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.446928,
+      "mae_live": 0.589958,
+      "delta_mae": 0.14303
+    },
+    {
+      "gara": "Canada",
+      "Lf": 25,
+      "n_bersagli": 545,
+      "moltiplicatore": 0.3,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.798731,
+      "mae_live": 0.70038,
+      "delta_mae": -0.098351
+    },
+    {
+      "gara": "Cina",
+      "Lf": 25,
+      "n_bersagli": 420,
+      "moltiplicatore": 0.3,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.869339,
+      "mae_live": 0.566758,
+      "delta_mae": -0.30258
+    },
+    {
+      "gara": "Giappone",
+      "Lf": 25,
+      "n_bersagli": 509,
+      "moltiplicatore": 0.3,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.838705,
+      "mae_live": 0.680622,
+      "delta_mae": -0.158083
+    },
+    {
+      "gara": "GranBretagna",
+      "Lf": 25,
+      "n_bersagli": 366,
+      "moltiplicatore": 1.660787,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.620915,
+      "mae_live": 0.618446,
+      "delta_mae": -0.00247
+    },
+    {
+      "gara": "Miami",
+      "Lf": 25,
+      "n_bersagli": 497,
+      "moltiplicatore": 0.3,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.550759,
+      "mae_live": 0.640967,
+      "delta_mae": 0.090208
+    },
+    {
+      "gara": "Monaco",
+      "Lf": 25,
+      "n_bersagli": 666,
+      "moltiplicatore": 0.952828,
+      "moltiplicatore_null": false,
+      "mae_statico": 1.093316,
+      "mae_live": 1.09952,
+      "delta_mae": 0.006204
+    },
+    {
+      "gara": "Spagna",
+      "Lf": 25,
+      "n_bersagli": 551,
+      "moltiplicatore": 2.832994,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.779307,
+      "mae_live": 0.741453,
+      "delta_mae": -0.037853
+    },
+    {
+      "gara": "Ungheria",
+      "Lf": 25,
+      "n_bersagli": 748,
+      "moltiplicatore": 1.964724,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.764411,
+      "mae_live": 0.824589,
+      "delta_mae": 0.060178
+    },
+    {
+      "gara": "Australia",
+      "Lf": 35,
+      "n_bersagli": 351,
+      "moltiplicatore": 0.3,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.577233,
+      "mae_live": 0.684735,
+      "delta_mae": 0.107503
+    },
+    {
+      "gara": "Austria",
+      "Lf": 35,
+      "n_bersagli": 574,
+      "moltiplicatore": 2.125451,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.517055,
+      "mae_live": 0.448298,
+      "delta_mae": -0.068757
+    },
+    {
+      "gara": "Belgio",
+      "Lf": 35,
+      "n_bersagli": 166,
+      "moltiplicatore": 2.245924,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.413725,
+      "mae_live": 0.601705,
+      "delta_mae": 0.18798
+    },
+    {
+      "gara": "Canada",
+      "Lf": 35,
+      "n_bersagli": 414,
+      "moltiplicatore": 0.3,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.725651,
+      "mae_live": 0.640193,
+      "delta_mae": -0.085458
+    },
+    {
+      "gara": "Cina",
+      "Lf": 35,
+      "n_bersagli": 297,
+      "moltiplicatore": 0.3,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.768033,
+      "mae_live": 0.520185,
+      "delta_mae": -0.247848
+    },
+    {
+      "gara": "Giappone",
+      "Lf": 35,
+      "n_bersagli": 348,
+      "moltiplicatore": 0.3,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.813795,
+      "mae_live": 0.599174,
+      "delta_mae": -0.214621
+    },
+    {
+      "gara": "GranBretagna",
+      "Lf": 35,
+      "n_bersagli": 171,
+      "moltiplicatore": 2.585685,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.621146,
+      "mae_live": 0.712605,
+      "delta_mae": 0.091459
+    },
+    {
+      "gara": "Miami",
+      "Lf": 35,
+      "n_bersagli": 344,
+      "moltiplicatore": 0.3,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.595678,
+      "mae_live": 0.674781,
+      "delta_mae": 0.079103
+    },
+    {
+      "gara": "Monaco",
+      "Lf": 35,
+      "n_bersagli": 489,
+      "moltiplicatore": 1.458999,
+      "moltiplicatore_null": false,
+      "mae_statico": 1.186869,
+      "mae_live": 1.161037,
+      "delta_mae": -0.025832
+    },
+    {
+      "gara": "Spagna",
+      "Lf": 35,
+      "n_bersagli": 384,
+      "moltiplicatore": 3,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.79756,
+      "mae_live": 0.822663,
+      "delta_mae": 0.025103
+    },
+    {
+      "gara": "Ungheria",
+      "Lf": 35,
+      "n_bersagli": 563,
+      "moltiplicatore": 2.38006,
+      "moltiplicatore_null": false,
+      "mae_statico": 0.821462,
+      "mae_live": 0.871747,
+      "delta_mae": 0.050286
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "_targhetta": {
+    "tipo": "MISURATO sulle 11 gare 2026 — banda di incertezza sulla posizione di rientro",
+    "prereg": "banco/prereg/PREREG_difesa.md",
+    "cancello": "D1: semi-ampiezza intera MINIMA con copertura fuori campione ≥ 0.8, leave-one-race-out su 11 gare (blocchi = gare, E11)",
+    "fonte": "banco/misure/rientro.mjs — soste REALMENTE avvenute, mai finestre senza sosta (E16)",
+    "prodotto_da": "banco/scrivi_banda_rientro.mjs",
+    "data": "2026-07-30",
+    "cosa_NON_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste",
+    "contesto_verde": "in verde il prodotto NON sa se i rivali si fermeranno (sarebbe informazione dal futuro, E14): la sua banda è calibrata sull'unione di PULITA e SOSTE_RIVALI. Sotto regime il secco è noto e si usa NEUTRA"
+  },
+  "livello": 0.8,
+  "n_casi": 398,
+  "n_gare": 11,
+  "contesti": {
+    "VERDE": {
+      "semi_ampiezza": 1,
+      "banda": {
+        "sotto": 1,
+        "sopra": 1
+      },
+      "asimmetrica": false,
+      "bias_mediano_posizioni": 0,
+      "n_casi": 209,
+      "copertura_fuori_campione": 0.8852,
+      "copertura_dentro_campione": 0.8852,
+      "circuiti_sotto_livello": [
+        {
+          "gara": "Belgio",
+          "copertura": 0.75,
+          "n_casi": 8
+        },
+        {
+          "gara": "Spagna",
+          "copertura": 0.775,
+          "n_casi": 40
+        }
+      ],
+      "targhetta": "banda ±1 posizioni, misurata su 209 soste vere del 2026: copre il 88.5% fuori campione"
+    },
+    "NEUTRA": {
+      "semi_ampiezza": 2,
+      "banda": {
+        "sotto": 2,
+        "sopra": 2
+      },
+      "asimmetrica": false,
+      "bias_mediano_posizioni": 0,
+      "n_casi": 189,
+      "copertura_fuori_campione": 0.8571,
+      "copertura_dentro_campione": 0.8571,
+      "circuiti_sotto_livello": [
+        {
+          "gara": "Monaco",
+          "copertura": 0.7031,
+          "n_casi": 64
+        },
+        {
+          "gara": "Australia",
+          "copertura": 0.7727,
+          "n_casi": 22
+        }
+      ],
+      "targhetta": "banda ±2 posizioni, misurata su 189 soste vere del 2026: copre il 85.7% fuori campione"
+    }
+  },
+  "contesto_non_separa": "misurato: la vicinanza dei rivali NON separa l'errore in modo distinguibile dal caso (p = 0.29007 alla soglia dichiarata di 2 s). Una banda sola per contesto, non due: una distinzione senza differenza misurata non si tiene \"tanto per\""
+}

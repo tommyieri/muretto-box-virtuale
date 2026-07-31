@@ -1,0 +1,8 @@
+# clone di sola lettura del vecchio repo (muretto-box-virtuale): da lì si
+# importano solo DATI (con hash nel manifest), mai il codice — non si committa
+_archivio/
+
+node_modules/
+__pycache__/
+*.pyc
+.DS_Store

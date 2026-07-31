@@ -1,0 +1,52 @@
+{
+  "_targhetta": {
+    "tipo": "POLITICA DI GUARDIA del Director — soglie dichiarate, non misure",
+    "regola": "il Director non caccia numeri nel proprio codice: li legge da qui. Cambiare una guardia è un atto deliberato e visibile nel diff di un file di dati, non una riga di logica sepolta.",
+    "data": "2026-07-29",
+    "non_duplicare": "il pavimento fisico dello stazionario (1,8 s) e i fattori di neutralizzazione vivono in data/priors/pitloss_priors.json e si leggono DA LÀ: qui non se ne tiene una seconda copia (regola 1)."
+  },
+  "margine_pavimento_s": {
+    "valore": 1.5,
+    "targhetta": "dichiarato — quanto un giro verde può stare sotto il minimo MISURATO del circuito prima di essere un paradosso",
+    "perche": "il pavimento in data/modelli/pavimenti_2026.json è il minimo su una sola stagione: una gara più veloce della prossima stagione non deve essere respinta come impossibile. Il margine è la larghezza dell'ignoranza dichiarata, non una tolleranza numerica."
+  },
+  "margine_pitloss_s": {
+    "valore": 1.0,
+    "targhetta": "dichiarato — quanto una perdita ai box in verde può stare sotto il clean-stop (decile migliore) misurato dal prior",
+    "perche": "il clean_10pct del prior è già il decile migliore degli stop reali; sotto quello meno un secondo la sosta non è ottimistica, è impossibile."
+  },
+  "stazionario_massimo_anomalo_s": {
+    "valore": 60,
+    "targhetta": "dichiarato — oltre questo lo stazionario è ANOMALO, non impossibile",
+    "perche": "una sosta lunghissima esiste davvero (danno, riparazione, sosta sotto rossa): si segnala come sospetta e si lascia passare, non si blocca la pagina."
+  },
+  "durata_massima_gara_s": {
+    "valore": 7200,
+    "targhetta": "regolamento 2026 — limite di 2 ore di gara",
+    "applicabilita": "verificato solo se nella simulazione NON compare bandiera rossa (status 5): una sospensione ferma il cronometro della gara ma non quello della sessione."
+  },
+  "durata_massima_finestra_s": {
+    "valore": 10800,
+    "targhetta": "regolamento 2026 — finestra totale di 3 ore, sospensioni comprese",
+    "perche": "misurato sui dati 2026: Monaco dura 144 minuti di tempo-sessione per via della bandiera rossa, ed è regolare. Il limite delle 2 ore su quel numero darebbe un falso positivo."
+  },
+  "bande_neutralizzazione": {
+    "SC": [0.4, 0.6],
+    "VSC": [0.6, 0.7],
+    "targhetta": "trascrizione numerica della banda dichiarata IN PROSA dentro data/priors/pitloss_priors.json (fattori_neutralizzazione.incertezza)",
+    "controllo": "la sentinella s16 verifica che questi numeri compaiano ancora in quella prosa: se il prior cambia banda e qui non si aggiorna, la suite se ne accorge"
+  },
+  "rapporto_pit_neutralizzato_massimo": {
+    "valore": 0.95,
+    "targhetta": "dichiarato — oltre questo rapporto una sosta sotto SC/VSC è prezzata come se fosse in verde",
+    "perche": "il vantaggio di fermarsi sotto neutralizzazione è metà del prodotto: una sosta neutralizzata che costa quanto una verde non è una stima prudente, è un consiglio sbagliato."
+  },
+  "tolleranza_somma_settori_s": {
+    "valore": 0.05,
+    "targhetta": "dichiarato — i settori sono pubblicati al millesimo, la somma può discostarsi per arrotondamento"
+  },
+  "tolleranza_cum_s": {
+    "valore": 0.5,
+    "targhetta": "dichiarato — misurato sul grezzo 2026: la differenza fra cum consecutivi e il tempo sul giro sta entro 0,5 s su 1011 coppie su 1011"
+  }
+}

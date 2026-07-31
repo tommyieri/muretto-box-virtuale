@@ -1,0 +1,36 @@
+# CI del banco — la suite delle sentinelle del simulatore.
+#
+# PERCHE' STA QUI E NON IN simulatore/.github. GitHub Actions legge i workflow SOLO da
+# .github/workflows nella radice del repository: un ci.yml dentro una sottocartella e' un
+# file di testo che non esegue niente. Il repo d'origine (tommyieri/muretto-box) lo aveva
+# in radice perche' li' il simulatore ERA il repo; qui e' un dipartimento, e il workflow
+# va promosso — altrimenti la migrazione avrebbe portato la CI in forma di ornamento,
+# che e' esattamente cio' che la regola 4 del progetto vieta.
+#
+# La suite ESCE 1 se una sola sentinella fallisce (la s03 verifica proprio che il runner
+# propaghi l'exit code). Se qui vedi verde, le 25 sentinelle sono verdi davvero.
+name: banco
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  suite:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: simulatore
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Node pinnato (.nvmrc)
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: simulatore/.nvmrc
+
+      - name: Suite delle sentinelle
+        run: node banco/run_suite.mjs
+
+      - name: Manifest dei dati integro (regola 7)
+        run: node provenienza/verifica_manifest.mjs

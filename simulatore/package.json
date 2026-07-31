@@ -1,0 +1,15 @@
+{
+  "name": "muretto-box",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "description": "MurettoBox \u2014 simulatore di strategia F1, ricostruzione da zero (codice da zero; dati e lezioni si ereditano)",
+  "engines": {
+    "node": "22.x"
+  },
+  "scripts": {
+    "test": "node banco/run_suite.mjs",
+    "notte": "node banco/notte.mjs",
+    "misura": "node banco/misura_tutto.mjs"
+  }
+}
