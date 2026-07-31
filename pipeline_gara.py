@@ -141,10 +141,29 @@ def _prepara(nome, ti, cid):
     if problemi:
         bandiere.append(f"COMPLETEZZA (gara a meta' caricamento?): {'; '.join(problemi)}")
 
-    # conversione — STESSO formato di export_demo.py (adapter e pace del kernel congelato)
-    import pandas as pd
-    from export_demo import export_gara
-    obj = export_gara(nome, raw=pd.DataFrame(d))
+    # CONVERSIONE — dal 31/07/2026 la fa il SIMULATORE, non piu' il kernel Python.
+    # Prima: export_demo.py -> engine/engine.py (adapter pandas + pace_base). Quel kernel
+    # era l'ultimo fornitore di dati del sito, ed e' il motivo per cui non si poteva
+    # cancellare. Ora il per-giro esce da simulatore/provenienza/esporta_demo_gara.mjs:
+    # contratto unico della cella, UNA definizione di verde e di neutralizzato, `status` e
+    # `del` grezzi che viaggiano fino in fondo.
+    #
+    # VERIFICATO PRIMA DI SCAMBIARE, non dopo: sulle 11 gare gia' pubblicate i due
+    # produttori danno file SEMANTICAMENTE IDENTICI, celle e passo, 11/11. Le uniche
+    # differenze sono di serializzazione (Python scrive 113.0 dove JS scrive 113).
+    #
+    # `--da` perche' la gara appena scaricata NON e' ancora nel data/ pinnato del
+    # simulatore: l'import pinnato e' un atto deliberato (regola 7), non un passo
+    # automatico di domenica sera. Si esporta dal grezzo appena validato qui sopra.
+    # --stdout, non un file: cosi' la STAGING resta l'unica cosa che scrive, e la regola
+    # "mai demo/" di questa pipeline non viene scavalcata dall'esportatore.
+    sim = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'simulatore')
+    r = subprocess.run(['node', 'provenienza/esporta_demo_gara.mjs', '--stdout',
+                        '--da', os.path.abspath(raw_path), '--nome', nome],
+                       cwd=sim, capture_output=True, text=True)
+    if r.returncode != 0 or not r.stdout:
+        sys.exit(f"BLOCCO: l'esportazione del per-giro e' fallita per {nome}.\n{r.stderr[:800]}")
+    obj = json.loads(r.stdout)
     N = obj['n_laps']
 
     # GUARDRAIL 3 — sanita'

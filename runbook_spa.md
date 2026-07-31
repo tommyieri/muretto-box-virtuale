@@ -55,7 +55,8 @@ si chiude al Passaggio 2. Sostituisci `<Nome>` `<Cartella TI>` `<cid>` (es. Belg
 
 ### D. Golden + online ⏱
 7. Golden: `node test_b.mjs` · `cd demo && node test_pit.mjs` · `node test_degrado_hook.mjs`
-   · `node test_f1db_checksum.mjs` (+ `.venv/bin/python test_b.py` se hai toccato il kernel).
+   · `node test_f1db_checksum.mjs` (+ `cd simulatore && node banco/run_suite.mjs` se hai
+     toccato il motore: il kernel Python e test_b.py non esistono piu' dal 31/07/2026).
 8. `git add/commit/push` su main → Vercel. **CHECKPOINT 2**: apri
    `muretto-box-virtuale.vercel.app`, verifica in PRODUZIONE (non solo in locale):
    stagione (gara corsa col vincitore, hero sulla prossima), pagina-gara (pista, replay

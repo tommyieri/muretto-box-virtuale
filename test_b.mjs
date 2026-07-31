@@ -1,3 +1,15 @@
+// RILETTA IL 31/07/2026, quando il kernel Python e' stato cancellato.
+// Questo test nacque per verificare che il motore JS riproducesse quello Python. Quel
+// Python non esiste piu': il per-giro del sito lo produce ora il simulatore
+// (simulatore/provenienza/esporta_demo_gara.mjs), e engine/engine.py e' stato tolto.
+//
+// Il file resta, e il suo riferimento (data/ref_traffic_py.json) diventa uno STORICO
+// CONGELATO: non verifica piu' un allineamento fra due lingue — verifica che
+// demo/engine.mjs, il kernel VECCHIO ancora vivo sotto il pannello di live.html, non sia
+// derivato rispetto a com'era. Muore insieme a quel pannello.
+//
+// Il nome del file e i messaggi dicono ancora "vs Python": e' storia, non una promessa
+// attiva. Cambiarli avrebbe reso irriconoscibile un golden che qualcuno potrebbe cercare.
 import { readFileSync } from "fs";
 import { simulate } from "./demo/engine.mjs";
 
