@@ -12,6 +12,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gara — Muretto Box Virtuale</title>
 <link rel="stylesheet" href="stile.css?v=250725c">
+<!-- Lo stile del pannello nuovo, TRASPORTATO da simulatore/web/stile.css e scopato sotto
+     #pitKv: le sue regole non possono ridipingere il resto della pagina. Artefatto
+     generato, con manifest di hash — `trasporta_formattatori.mjs --verifica` esce 1
+     se qualcuno modifica la copia invece dell'originale. -->
+<link rel="stylesheet" href="vendor/simulatore/stile.css?v=280726a">
 <style>
   /* SIMULAZIONE FANTASMA — controlli della "sosta messa in scena" (additivo, scoped) */
   .simbtn{ display:block; width:100%; margin:.5rem 0 .2rem; padding:.62rem .8rem; border:0;
@@ -142,7 +147,16 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
 // IL PANNELLO E' UN MODULO (demo/muretto.mjs), non piu' codice di questa pagina: la
 // stessa identica risposta la mostra live.html sulla gara in corso. Due copie della
 // stessa domanda sono il modo piu' sicuro di ritrovarsi con due numeri diversi.
-import { pannelloMuretto } from './muretto.mjs?v=280726a';
+// IL PANNELLO ORA VIENE DAL SIMULATORE NUOVO, e la pagina NON calcola piu'.
+// I numeri sono pre-calcolati in Node (simulatore/web/genera_vista_gara.mjs, che passa dal
+// Director) e scritti in data/vista/<gara>/<pilota>.json; qui si formatta e basta. E' la
+// regola 8 del simulatore: una seconda implementazione della fisica dentro l'interfaccia
+// sarebbe l'errore E17 nel posto peggiore, perche' la pagina e' cio' che l'utente crede.
+// I formattatori sono ARTEFATTI trasportati da simulatore/web/ (vendor/simulatore/), con
+// manifest di hash: `node web/trasporta_formattatori.mjs --verifica` esce 1 sulla deriva.
+import { disegna } from './vendor/simulatore/render.mjs?v=280726a';
+import { pannello as pannelloNuovo } from './vendor/simulatore/pannello.mjs?v=280726a';
+import { curva as curvaDelQuando } from './vendor/simulatore/curva.mjs?v=280726a';
 import { creaGhostPlay } from './ghostplay.mjs?v=250724c';
 import { attaccaGlossario } from './glossario.mjs?v=250724e';
 import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs?v=220726a';
@@ -165,6 +179,10 @@ let bandeClim=null;   // FASE A: bande climatologiche per circuito (demo/data/cl
 // PASSO v2: deriva di gara + degrado (demo/data/modello_passo_2026.json, con targhetta).
 // Assente -> il pannello torna da solo al passo piatto: nessun numero inventato.
 let modelloPasso=null;
+// LA VISTA DEL SIMULATORE. indiceVista fa da `vista` per i componenti (porta targhetta,
+// modello e mescole); vistaPilota e' la cache per-pilota, scaricata al primo tocco.
+let vistaMap=null, vistaCartella=null, indiceVista=null;
+const vistaPilota={}, fantasmaPilota={};
 // probabilita di neutralizzazione e quanto costa fermarsi sotto, per circuito, dal fondo
 // 2018-2026 (gen_neutralizzazione_fondo.py). Assente -> la riga Safety Car non compare.
 let neutroFondo=null;
@@ -203,6 +221,9 @@ async function boot() {
   try { calendario = await (await fetch('data/calendario_2026.json')).json(); } catch(e){ calendario=null; }
   try { bandeClim = await (await fetch('data/climatologia_bande.json')).json(); } catch(e){ bandeClim=null; }
   try { modelloPasso = await (await fetch('data/modello_passo_2026.json')).json(); } catch(e){ modelloPasso=null; }
+  // la mappa nome-sito -> cartella sta nel DATO, non in un if: il simulatore scrive
+  // "GranBretagna" senza spazio (E24: lo spazio spezza i glob), il sito dice "Gran Bretagna"
+  try { vistaMap = await (await fetch('data/vista/manifest.json')).json(); } catch(e){ vistaMap=null; }
   try { neutroFondo = await (await fetch('data/neutralizzazione_fondo.json')).json(); } catch(e){ neutroFondo=null; }
   try { ragg = await (await fetch('data/raggruppamento.json')).json(); } catch(e){ ragg=null; }
   try { pitstops = await (await fetch('data/pitstops_2026.json')).json(); } catch(e){ pitstops=null; }
@@ -241,9 +262,33 @@ function header(gara){
   } else el('plBadge').style.display = 'none';
 }
 
+async function caricaVistaGara(gara){
+  vistaCartella = vistaMap?.cartella_di?.[gara] ?? null;
+  indiceVista = null;
+  for (const k in vistaPilota) delete vistaPilota[k];
+  for (const k in fantasmaPilota) delete fantasmaPilota[k];
+  if (!vistaCartella) return;
+  try { indiceVista = await (await fetch(`data/vista/${encodeURIComponent(vistaCartella)}/indice.json`)).json(); }
+  catch(e){ indiceVista=null; }
+}
+
+// La risposta di UN pilota, tutti i giri. Si scarica al primo tocco e resta in cache: sono
+// ~13 KB gzippati, e scaricarli per tutti e 22 in anticipo sarebbe far pagare a chi guarda
+// una gara intera il costo di venti piloti che non aprira' mai.
+async function vistaDi(drv){
+  if (!vistaCartella) return null;
+  if (vistaPilota[drv] !== undefined) return vistaPilota[drv];
+  try {
+    const r = await fetch(`data/vista/${encodeURIComponent(vistaCartella)}/${drv}.json`);
+    vistaPilota[drv] = r.ok ? await r.json() : null;
+  } catch(e){ vistaPilota[drv] = null; }
+  return vistaPilota[drv];
+}
+
 async function loadGara(gara) {
   race = await (await fetch(`data/${encodeURIComponent(gara)}.json`)).json();
   race.gara = gara; race.byLap = {};
+  await caricaVistaGara(gara);
   for (const lp of race.laps) race.byLap[lp.lap] = lp.cars;
   lastLap = {};
   for (const lp of race.laps) for (const d in lp.cars) lastLap[d] = lp.lap;
@@ -709,36 +754,91 @@ function updatePit(){
       : `<div class="pitmsg">${selDrv} non &egrave; in pista a questo giro.</div>`;
     return;
   }
-  const cid = (calendario?.gare || []).find(x => x.gara_demo === race.gara)?.circuitId;
-  const res = pannelloMuretto({
-    byLap: race.byLap, nLaps: race.n_laps, pace: race.pace[String(L)], laps: race.laps,
-    gara: race.gara, circuitId: cid,
-    driver: selDrv, freezeLap: L, pitLap: pitL, mescola: mescolaScelta,
-    pitLossTabella: pitloss[race.gara] ?? 22.0,
-    penalita: penPil[selDrv], nonParten: race.nonParten,
-    neutroFondo, ragg, bandeClim, modelloPasso,
-  });
-  el('pitKv').innerHTML = res.html;
-  attaccaGlossario(el('pitKv'));    // il gergo (pit-loss, undercut, a pari giro…) diventa toccabile
-  lastPitRes = res;                 // per la messa in scena (bottone "Guarda la sosta")
-  if (!simMode) mostraSimBtn(res);  // durante la simulazione la barra resta quella attiva
+  mostraRisposta(selDrv, L);
+}
+
+// LA RISPOSTA, LETTA E NON CALCOLATA. Si prende il record del giro di congelamento dalla
+// vista del pilota e lo si passa ai componenti del simulatore: `pannello` e `curva`
+// tornano un albero dichiarativo, `disegna` lo mette nel DOM. Se qui comparisse
+// un'operazione su un tempo sul giro sarebbe una seconda fisica dentro l'interfaccia.
+async function mostraRisposta(drv, L){
+  const kv = el('pitKv');
+  if (!vistaCartella || !indiceVista){
+    kv.innerHTML = `<div class="pitmsg">Per questa gara il simulatore non ha ancora una vista pre-calcolata.
+      <span class="sub">si genera con <code>node web/genera_vista_gara.mjs</code> nel simulatore</span></div>`;
+    return;
+  }
+  kv.innerHTML = '<div class="pitmsg">…</div>';
+  const v = await vistaDi(drv);
+  // la gara puo' essere avanzata mentre il file arrivava: se non siamo piu' su questo
+  // pilota o su questo giro, la risposta che sta tornando e' scaduta e non si mostra
+  if (drv !== selDrv || boxGiro == null || Math.max(1, curLap-1) !== L) return;
+  if (!v){
+    kv.innerHTML = `<div class="pitmsg">${drv} non ha una risposta pre-calcolata in questa gara.</div>`;
+    return;
+  }
+  const s = v.giri.find(g => g.freeze_lap === L);
+  if (!s){
+    kv.innerHTML = `<div class="pitmsg">A questo giro il simulatore non risponde per ${drv}.
+      <span class="sub">la vista copre i giri ${indiceVista.primo_giro}–${indiceVista.ultimo_giro}</span></div>`;
+    lastPitRes = null; el('simBtn').hidden = true; return;
+  }
+  if (s.senza_risposta){
+    kv.innerHTML = `<div class="pitmsg">${s.senza_risposta}</div>`;
+    lastPitRes = null; el('simBtn').hidden = true; return;
+  }
+  kv.replaceChildren(disegna(pannelloNuovo(indiceVista, s)));
+  // LA CURVA DEL QUANDO, che il pannello vecchio non ha mai avuto: per ogni giro
+  // candidato, quanto costa fermarsi li' rispetto al momento migliore.
+  if (s.approvato !== false && s.curva && s.curva.length) kv.append(disegna(curvaDelQuando(indiceVista, s)));
+  attaccaGlossario(kv);
+  lastPitRes = s;
+  if (!simMode) el('simBtn').hidden = !(boxGiro != null && s.approvato !== false);
 }
 
 // ============ SIMULAZIONE FANTASMA: la sosta messa in scena dentro la gara ============
 // Il pannello dà il NUMERO ("rientri P8"); questo lo fa VEDERE: il pallino entra ai box e
 // segue la strategia, sorpassando i rivali dove il motore dice che passa. Sorgente cum =
 // traiettoriaPit (stessi input del pannello), quindi animazione e numero non divergono.
-function mostraSimBtn(res){
-  const ok = boxGiro!=null && res && res.ok && res.sim && res.sim.laps && res.sim.laps.length>1;
-  el('simBtn').hidden = !ok;
-  return ok;
+// IL FANTASMA VIAGGIA A PARTE (<pilota>.fantasma.json) e si scarica solo se lo chiedi:
+// e' un terzo del peso della vista e serve a chi preme "Guarda la sosta". Chi legge la
+// risposta e va avanti non lo paga.
+async function fantasmaDi(drv){
+  if (!vistaCartella) return null;
+  if (fantasmaPilota[drv] !== undefined) return fantasmaPilota[drv];
+  try {
+    const r = await fetch(`data/vista/${encodeURIComponent(vistaCartella)}/${drv}.fantasma.json`);
+    fantasmaPilota[drv] = r.ok ? await r.json() : null;
+  } catch(e){ fantasmaPilota[drv] = null; }
+  return fantasmaPilota[drv];
+}
+
+// ADATTATORE, non un secondo calcolo: la traccia del simulatore e' una lista piatta
+// {drv, giro, cum}; ghostplay.mjs vuole {laps, cumByLap, present}. Qui si cambia FORMA,
+// non contenuto — nessun tempo viene sommato, sottratto o inventato.
+function simDaFantasma(passi, drv, freezeLap){
+  if (!passi || !passi.length) return null;
+  const cumByLap = {}, present = new Set(), laps = new Set();
+  for (const p of passi){
+    (cumByLap[p.giro] ||= {})[p.drv] = p.cum;
+    present.add(p.drv); laps.add(p.giro);
+  }
+  const ord = [...laps].sort((a,b)=>a-b);
+  if (ord.length < 2) return null;
+  return { laps: ord, cumByLap, present: [...present], freezeLap,
+           pitLap: freezeLap + 1, driver: drv };
 }
 // avvia la scena sul motore condiviso. Il pannello dà il numero; qui la messa in scena:
 // il pallino entra ai box (sosta ferma), monta gomma nuova e risale seguendo la strategia,
 // sorpassando i rivali dove il motore dice che passa — su pista E su torre.
-function avviaSimulazione(){
-  const res = lastPitRes; if(!res || !res.sim) return;
-  simMode=true; simDriver=res.sim.driver; simRientroPos=res.rientro ?? null; simSuTotale=res.su_totale ?? null;
+async function avviaSimulazione(){
+  const s = lastPitRes; if(!s || s.approvato === false) return;
+  const f = await fantasmaDi(selDrv);
+  const sim = simDaFantasma(f?.per_giro?.[s.freeze_lap], selDrv, s.freeze_lap);
+  if (!sim){ el('simBtn').hidden = true; return; }
+  const res = { sim, rientro: s.pannello.posizione, su_totale: s.pannello.su_quanti,
+                giroRisposta: s.pannello.giro_di_rientro };
+  simMode=true; simDriver=sim.driver; simRientroPos=res.rientro ?? null; simSuTotale=res.su_totale ?? null;
   clock.pause();                                    // ferma il replay reale (la scena ha un loop suo)
   el('pista').classList.add('sim-attiva'); if(pista) pista.setSpento(false);
   el('simBar').hidden=false; el('simBtn').hidden=true; el('simCont').hidden=true;
@@ -784,7 +884,7 @@ function esciSimulazione(){
   for(const d in rowEls) rowEls[d].root.style.display='';
   setPlayIcon(false);
   if(pista){ pista.aggiorna([]); pista.setSpento(true); }   // togli il fantasma, torna a esplorazione (spenti)
-  if(boxGiro!=null) el('simBtn').hidden=false;               // ri-offri "Guarda la sosta"
+  if(boxGiro!=null && lastPitRes && lastPitRes.approvato!==false) el('simBtn').hidden=false;
   frame(clock.position);                                     // ridisegna il replay reale
 }
 

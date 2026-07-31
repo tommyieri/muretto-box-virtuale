@@ -1,0 +1,27 @@
+{
+ "_nota": "GENERATO da simulatore/web/trasporta_formattatori.mjs. Le copie in questa cartella sono artefatti: si modifica l'originale in simulatore/web/ e si ri-trasporta. `--verifica` esce 1 sulla deriva.",
+ "generato_il": "2026-07-31",
+ "file": {
+  "targhette.mjs": {
+   "sha256_sorgente": "136b4151d4ce76601cca4090971a013cb5be5997db12e3ff919492311d3dbd08",
+   "byte": 7039
+  },
+  "pannello.mjs": {
+   "sha256_sorgente": "b1966779a5addd816ba0190f68dc11a70db56802710b47f8204942de47f2d178",
+   "byte": 13054
+  },
+  "curva.mjs": {
+   "sha256_sorgente": "7b30ca0fab54021cfcafa6d2c82cbb4a36d0195d06bbba178f28dc51dd8a4f3f",
+   "byte": 4880
+  },
+  "render.mjs": {
+   "sha256_sorgente": "d1d73b4c86d549e711f9e3ded16e9e7c1e3ed56a55bc5de6e0d95ac3fc50d387",
+   "byte": 3685
+  },
+  "stile.css": {
+   "sha256_sorgente": "1d0297850e7afd44c18187b9ac6f9f223ab6dbc001dad7e3738163f6dcd46c35",
+   "byte": 4731,
+   "ambito": "#pitKv"
+  }
+ }
+}

@@ -36,12 +36,17 @@ CALENDARIO = os.path.join('demo', 'data', 'calendario_2026.json')
 def log(msg): print(f'[auto] {msg}', flush=True)
 
 
-def sh(cmd, check=True):
-    """Esegue un comando (lista). In dry-run lo stampa e basta."""
+def sh(cmd, check=True, cwd=None):
+    """Esegue un comando (lista). In dry-run lo stampa e basta.
+
+    `cwd` serve ai passi che vivono in una sottocartella con la propria radice: il
+    simulatore risolve i suoi percorsi da se' (dirname(import.meta.url)/..), quindi va
+    lanciato da li' dentro. Default invariato: ROOT.
+    """
     if DRY:
-        log(f'DRY  {" ".join(cmd)}')
+        log(f'DRY  {" ".join(cmd)}' + (f'   [in {cwd}]' if cwd else ''))
         return 0
-    r = subprocess.run(cmd, cwd=ROOT)
+    r = subprocess.run(cmd, cwd=cwd or ROOT)
     if check and r.returncode != 0:
         sys.exit(f'[auto] FERMO: comando fallito ({r.returncode}): {" ".join(cmd)}')
     return r.returncode
@@ -177,6 +182,13 @@ def wave_nuove():
         sh([PY, 'gen_race_control.py'], check=False)              # lista gare dal registro
         sh([PY, 'gen_rc_feed.py'], check=False)
         sh([PY, 'gen_classifiche_ufficiali.py'], check=False)
+        # LA VISTA DEL SIMULATORE per la gara nuova. Senza questo passo il pannello
+        # resterebbe muto proprio sulla gara appena pubblicata: la pagina non calcola
+        # (regola 8 del simulatore), quindi se il pre-calcolo non gira non c'e' risposta.
+        # check=False come i fratelli: una vista mancante e' un guaio minore di una gara
+        # che non esce, e il log lo grida. ~2 minuti per gara.
+        sh(['node', 'web/genera_vista_gara.mjs', nome], cwd=os.path.join(ROOT, 'simulatore'),
+           check=False)
         # file per-gara accessori, ex ORFANI: ora hanno un generatore con perimetro dal
         # registro, quindi la gara nuova entra da sola. Vanno DOPO la pubblicazione in
         # demo/ perche' gen_arrivi legge demo/data/esiti.json (e' li' che vive l'NP).

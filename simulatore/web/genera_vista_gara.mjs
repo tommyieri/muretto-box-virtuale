@@ -32,7 +32,7 @@ import path from 'node:path';
 import { caricaGare2026 } from '../provenienza/gare_2026.mjs';
 import { caricaPrior } from '../provenienza/pitloss.mjs';
 import { regimeNeutralizzato } from '../provenienza/definizioni.mjs';
-import { simboliStatus, MESCOLE_SLICK } from '../provenienza/vocabolario.mjs';
+import { simboliStatus, MESCOLE_SLICK, MESCOLE_SLICK_ATTUALI, MESCOLE_BAGNATO } from '../provenienza/vocabolario.mjs';
 import { caricaCostanti } from '../scenario/director.mjs';
 import { doveRientri, curvaDelQuando } from '../scenario/costruttore.mjs';
 import { pianoOttimo } from '../scenario/piano.mjs';
@@ -45,7 +45,24 @@ const DOVE_DEFAULT = path.join(RADICE, '..', 'demo', 'data', 'vista');
 // verdi nello stint), e a fine gara non c'e' piu' spazio per una sosta: chiedere lo stesso
 // produrrebbe righe di rifiuto pre-calcolate, cioe' peso senza informazione.
 const PRIMO_CONGELAMENTO = 5;
+
+// LA DATA DELLA VISTA. Ogni targhetta la porta (regola 2): un numero senza data non si
+// sa se e' stato rimisurato dopo l'ultimo fix — e' l'errore E22 del catalogo.
+const DATA = new Date().toISOString().slice(0, 10);
 const GIRI_MINIMI_DOPO = 3;
+
+/** Perche' il selettore Wet e' spento, detto dall'ESITO della fase e non da una frase
+ *  cablata (E22): se un domani quel cancello passasse, questa funzione si rifiuta di
+ *  produrre un motivo — il selettore andrebbe acceso, non spiegato. */
+function motivoWet() {
+  const esito = JSON.parse(readFileSync(path.join(RADICE, 'banco', 'prereg', 'ESITO_bagnato.json'), 'utf8'));
+  const cancelli = esito?.cancelli ? Object.values(esito.cancelli) : [];
+  if (cancelli.length && cancelli.every((c) => c?.esito === true)) {
+    throw new Error('il cancello bagnato PASSA: il selettore Wet va acceso, non spiegato');
+  }
+  return esito?.limite_dichiarato?.conseguenza
+      ?? 'modello del bagnato non ancora validato: il selettore resta spento';
+}
 
 function mescolaAlGiro(gara, Lf, pilota) {
   const c = gara.perPilota.get(pilota)?.get(Lf);
@@ -69,6 +86,19 @@ function scenarioPer(nomeGara, gara, Lf, pilota, contesto, extra) {
   } catch (e) {
     return { freeze_lap: Lf, senza_risposta: e.message };
   }
+  // UN RIFIUTO DEL DIRECTOR E' UNA RISPOSTA, e va mostrata. Il componente `pannello` ha
+  // il suo ramo apposta: niente numeri, solo i motivi (regola 6). Trattarlo come
+  // "nessuna risposta" avrebbe nascosto all'utente proprio il caso in cui il guardiano
+  // runtime ha fermato qualcosa — che e' l'informazione piu' utile che ci sia.
+  if (rientro && rientro.approvato === false) {
+    return {
+      freeze_lap: Lf, _data: DATA, gara: nomeGara, pilota, n_giri: gara.nGiri,
+      approvato: false,
+      motivi_rifiuto: (rientro.direttore?.violazioni ?? [])
+        .filter((v) => v.severita === 'FATAL')
+        .map((v) => v.messaggio ?? v.codice),
+    };
+  }
   if (!rientro || rientro.posizione === null || rientro.posizione === undefined) {
     return { freeze_lap: Lf, senza_risposta: 'il motore non ha una risposta a questo giro' };
   }
@@ -89,6 +119,18 @@ function scenarioPer(nomeGara, gara, Lf, pilota, contesto, extra) {
 
   return {
     freeze_lap: Lf,
+    // i tre campi che i componenti leggono da `s` e che il costruttore non mette: senza,
+    // `pannello` costruirebbe targhette senza data e la mappa non avrebbe i riferimenti
+    // dello stazionario. Meglio due numeri ripetuti che un componente che si arrangia.
+    _data: DATA,
+    // `pannello` li legge da `s`, non dal file che li contiene: senza, num() rifiuta un
+    // undefined e l'intero componente cade. Costano una manciata di byte per giro ed
+    // evitano di dover forkare il componente — che sarebbe la vera spesa.
+    gara: nomeGara,
+    pilota,
+    n_giri: gara.nGiri,
+    stazionario_prior_s: extra.prior.stazionario_tipico_s,
+    stazionario_pavimento_s: extra.prior.stazionario_minimo_fisico_s,
     mescola_scelta: mescola,
     regime: regimeAlGiro(gara, Lf, pilota),
     approvato: rientro.approvato,
@@ -137,8 +179,21 @@ export function generaVistaGara(radice, nomeGara, gara, contesto, extra, dove) {
   rmSync(dir, { recursive: true, force: true });
   mkdirSync(dir, { recursive: true });
   const ultimo = gara.nGiri - GIRI_MINIMI_DOPO;
-  const indice = { gara: nomeGara, n_giri: gara.nGiri, primo_giro: PRIMO_CONGELAMENTO,
-                   ultimo_giro: ultimo, piloti: {} };
+  // L'INDICE FA DA `vista` PER I COMPONENTI. Loro leggono vista._targhetta,
+  // vista.modello e vista.mescole: mettendoli qui la pagina passa (indice, scenario) e i
+  // componenti restano gli STESSI del repo d'origine, non una variante per il sito.
+  const indice = {
+    gara: nomeGara, n_giri: gara.nGiri, primo_giro: PRIMO_CONGELAMENTO,
+    ultimo_giro: ultimo, piloti: {},
+    _targhetta: {
+      tipo: 'vista del sito — nessun numero calcolato dal browser',
+      generata_da: 'simulatore/web/genera_vista_gara.mjs',
+      percorso: 'provenienza → engine → scenario (Director compreso) → questo JSON → componenti',
+      data: DATA,
+    },
+    modello: extra.modelloTarghetta,
+    mescole: extra.mescole,
+  };
   for (const pilota of [...gara.perPilota.keys()].sort()) {
     const giri = [];
     for (let Lf = PRIMO_CONGELAMENTO; Lf <= ultimo; Lf += 1) {
@@ -184,6 +239,24 @@ function main() {
   const extra = {
     durate2026: caricaDurate2026(RADICE),
     esitoPiano: JSON.parse(readFileSync(path.join(RADICE, 'banco', 'prereg', 'ESITO_multistint.json'), 'utf8')),
+    prior,
+    modelloTarghetta: {
+      rho: modello.rho.valore,
+      rho_ic: modello.rho.ic95,
+      rho_n: modello._targhetta.n_giri_verdi,
+      rho_targhetta: modello.rho.targhetta,
+      delta_70: modello.delta_70.scelto,
+      delta_70_braccio: modello.delta_70.decisione.braccio_vincente,
+      orizzonti_validati: modello.delta_70.decisione.orizzonti_validati,
+      data: modello._targhetta.data,
+    },
+    // ATTUALI, non MESCOLE_SLICK: quest'ultimo porta anche SUPERSOFT/ULTRASOFT/HYPERSOFT,
+    // che servono a LEGGERE il fondo 2018 e nel 2026 non esistono. Il selettore e' del
+    // prodotto, non dell'archivio. Il Wet resta VISIBILE e SPENTO col suo motivo.
+    mescole: [
+      ...[...MESCOLE_SLICK_ATTUALI].map((codice) => ({ codice, attiva: true, motivo: null })),
+      ...[...MESCOLE_BAGNATO].map((codice) => ({ codice, attiva: false, motivo: motivoWet() })),
+    ],
   };
   mkdirSync(dove, { recursive: true });
 
@@ -201,8 +274,16 @@ function main() {
     console.log(`  ${nomeGara.padEnd(16)} ${String(Object.keys(ind.piloti).length).padStart(3)} piloti `
       + `${String(n).padStart(5)} risposte  ${((Date.now() - t) / 1000).toFixed(0)} s`);
   }
-  writeFileSync(path.join(dove, 'manifest.json'),
-                JSON.stringify({ gare: tutte, generato_il: new Date().toISOString().slice(0, 10) }, null, 1));
+  // LA MAPPA DEI NOMI, invece di cablarla nella pagina. Il sito chiama una gara
+  // "Gran Bretagna", il simulatore "GranBretagna" — ed e' giusto cosi': E24 del catalogo
+  // e' proprio lo spazio nel nome che spezza i glob. Il ponte sta qui, in un dato, non in
+  // un `if` dentro gara.html.
+  const cartellaDi = {};
+  for (const g of tutte) cartellaDi[g.replace(/([a-z])([A-Z])/g, '$1 $2')] = g;
+  writeFileSync(path.join(dove, 'manifest.json'), JSON.stringify({
+    gare: tutte, cartella_di: cartellaDi, generato_il: DATA,
+    nota: 'cartella_di mappa il nome del sito (con spazi) su quello della cartella (senza)',
+  }, null, 1));
   console.log(`\n${totScen} risposte pre-calcolate su ${tutte.length} gare`);
 }
 

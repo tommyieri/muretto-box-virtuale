@@ -76,5 +76,54 @@
    "giri": 50,
    "con_risposta": 40
   }
- }
+ },
+ "_targhetta": {
+  "tipo": "vista del sito — nessun numero calcolato dal browser",
+  "generata_da": "simulatore/web/genera_vista_gara.mjs",
+  "percorso": "provenienza → engine → scenario (Director compreso) → questo JSON → componenti",
+  "data": "2026-07-31"
+ },
+ "modello": {
+  "rho": 0.030776,
+  "rho_ic": [
+   0.010836,
+   0.052744
+  ],
+  "rho_n": 10269,
+  "rho_targhetta": "misurato, fondo 2026, bootstrap 2.000, blocchi = gare",
+  "delta_70": 2.2,
+  "delta_70_braccio": "A",
+  "orizzonti_validati": [
+   5,
+   10
+  ],
+  "data": "2026-07-29"
+ },
+ "mescole": [
+  {
+   "codice": "SOFT",
+   "attiva": true,
+   "motivo": null
+  },
+  {
+   "codice": "MEDIUM",
+   "attiva": true,
+   "motivo": null
+  },
+  {
+   "codice": "HARD",
+   "attiva": true,
+   "motivo": null
+  },
+  {
+   "codice": "INTERMEDIATE",
+   "attiva": false,
+   "motivo": "modello del bagnato non ancora validato: il selettore resta spento"
+  },
+  {
+   "codice": "WET",
+   "attiva": false,
+   "motivo": "modello del bagnato non ancora validato: il selettore resta spento"
+  }
+ ]
 }

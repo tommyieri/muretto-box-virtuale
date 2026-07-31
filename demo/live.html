@@ -7,9 +7,17 @@
     torre       classifica, gap, settori e micro-settori
     muretto     "se fermo questo pilota adesso, dove rientra?" — dal 22/07/2026
 
-  Il muretto e' LO STESSO pannello di gara.html (demo/muretto.mjs); cambia solo la
-  sorgente, tradotta da live_bylap.mjs. Si accende solo in gara, perche' la distanza
-  arriva da LapCount che il feed manda soltanto in gara.
+  ATTENZIONE, DAL 31/07/2026 NON E' PIU' LO STESSO PANNELLO DI gara.html, e va detto
+  invece di lasciare in piedi la frase di prima (che era vera e oggi sarebbe una bugia).
+  gara.html e' passata al simulatore nuovo, che PRE-CALCOLA le risposte in Node e le
+  serve alla pagina gia' fatte (data/vista/): li' la pagina formatta e non calcola.
+  Qui non si puo': la gara sta succedendo, e una risposta pre-calcolata non esiste per
+  definizione. Quindi il live resta su demo/muretto.mjs, che calcola nel browser.
+
+  E' una DIVERGENZA DICHIARATA, non una svista: replay e diretta rispondono con due
+  motori diversi finche' il live non avra' la sua strada (il collettore che calcola e
+  spinge la risposta, oppure il motore nuovo eseguito a bordo pagina). Chi tocca questo
+  file sappia che sta lavorando sul ramo vecchio.
 
   La regola che tiene insieme tutto: fuori sessione la pagina si SVUOTA. Date e orari
   vengono dal calendario generato (f1db, UTC convertiti nel fuso del lettore; se l'ora
@@ -73,8 +81,10 @@
     <a id="live-invito" class="live-invito" href="gara.html?g=Belgio" hidden>&#9654; Nessuna gara in diretta adesso &mdash; prova il simulatore su una gara gi&agrave; corsa</a>
   </section>
 
-  <!-- IL MURETTO IN DIRETTA. La stessa domanda e lo stesso pannello di gara.html
-       (demo/muretto.mjs), alimentato dal flusso invece che dal JSON di una gara finita.
+  <!-- IL MURETTO IN DIRETTA. La stessa domanda di gara.html, ma dal 31/07/2026 NON piu'
+       lo stesso pannello: qui resta demo/muretto.mjs (calcola nel browser), mentre la
+       pagina-gara legge le risposte pre-calcolate del simulatore nuovo. Vedi la nota in
+       testa al file: e' una divergenza dichiarata, non un residuo.
        Scegli un pilota e la pagina risponde: se lo fermo adesso, dove rientra. -->
   <div class="sez-tit">Il muretto</div>
   <section class="panel" id="mu-panel">

@@ -34,3 +34,11 @@ jobs:
 
       - name: Manifest dei dati integro (regola 7)
         run: node provenienza/verifica_manifest.mjs
+
+      # I formattatori serviti dal sito (demo/vendor/simulatore/) sono COPIE generate da
+      # simulatore/web/. Se qualcuno modifica la copia invece dell'originale — o cambia
+      # l'originale senza ri-trasportare — nascono due sorgenti della stessa cosa, che e'
+      # l'errore E12 del catalogo (due definizioni di "verde": 37% di divergenza). Questo
+      # passo esce 1 sulla deriva, quindi non puo' succedere in silenzio.
+      - name: I formattatori del sito non sono derivati
+        run: node web/trasporta_formattatori.mjs --verifica

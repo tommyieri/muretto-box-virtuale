@@ -12,5 +12,19 @@
   "Spagna",
   "Ungheria"
  ],
- "generato_il": "2026-07-31"
+ "cartella_di": {
+  "Australia": "Australia",
+  "Austria": "Austria",
+  "Belgio": "Belgio",
+  "Canada": "Canada",
+  "Cina": "Cina",
+  "Giappone": "Giappone",
+  "Gran Bretagna": "GranBretagna",
+  "Miami": "Miami",
+  "Monaco": "Monaco",
+  "Spagna": "Spagna",
+  "Ungheria": "Ungheria"
+ },
+ "generato_il": "2026-07-31",
+ "nota": "cartella_di mappa il nome del sito (con spazi) su quello della cartella (senza)"
 }
