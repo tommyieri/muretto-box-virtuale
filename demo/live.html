@@ -300,7 +300,13 @@ async function boot(){
     }).join('')}`;
   bootMappa(g).catch(err => {
     console.error('mappa live:', err);
-    el('live-nota').textContent = 'Mappa live non disponibile per questo circuito: ' + err.message;
+    // IL MESSAGGIO TECNICO RESTA IN CONSOLE, non in pagina. Prima qui finiva
+    // `err.message`, cioe' cose come "live_geo_Olanda.json assente (runbook:
+    // gen_live_geo)": un nome di file e un comando interni, letti da chiunque apra
+    // LIVE nella settimana prima di un Gran Premio non ancora preparato.
+    console.warn('mappa live non disponibile:', err);
+    el('live-nota').textContent = 'La mappa di questo circuito non è ancora pronta: '
+      + 'il resto della pagina funziona.';
   });
 }
 
@@ -312,8 +318,14 @@ const FLAG = {AllClear:['verde','PISTA VERDE'], Yellow:['gialla','BANDIERA GIALL
 
 async function bootMappa(g){
   const [{ creaPista }, { creaLiveMappa }, { creaTorreTiming }, { creaLiveClient }, cfg] = await Promise.all([
-    import('./pista.mjs?v=250724c'), import('./live_mappa.mjs'), import('./live_timing.mjs'),
-    import('./live_client.mjs'), import('./live_config.mjs')]);
+    // ?v= ANCHE QUI. Questi quattro moduli erano gli unici importati senza tampone,
+    // e il 31/07/2026 due di loro (live_timing, live_config) hanno ricevuto una
+    // correzione di SICUREZZA: senza bustare la cache, chi ha gia' aperto il sito
+    // continuerebbe a eseguire la versione vulnerabile. Solo /data/* rivalida per
+    // regola d'header (demo/vercel.json); i moduli no.
+    import('./pista.mjs?v=250724c'), import('./live_mappa.mjs?v=310726a'),
+    import('./live_timing.mjs?v=310726a'),
+    import('./live_client.mjs?v=310726a'), import('./live_config.mjs?v=310726a')]);
   const geoRes = await fetch(`data/live_geo_${encodeURIComponent(g.nome)}.json`);
   if (!geoRes.ok) throw new Error(`live_geo_${g.nome}.json assente (runbook: gen_live_geo)`);
   const geo = await geoRes.json();
@@ -581,7 +593,13 @@ async function creaMurettoLive(g, deps = {}){
     kv.replaceChildren(disegna(pannelloNuovo(vistaLive, s)));
     // LA CURVA DEL QUANDO: per ogni giro candidato, quanto costa fermarsi li' rispetto al
     // momento migliore. Il pannello vecchio non sapeva porre questa domanda.
-    if (s.approvato !== false && s.curva && s.curva.length) kv.append(disegna(curvaDelQuando(vistaLive, s)));
+    // LA CURVA SI DISEGNA ANCHE QUANDO E' VUOTA, perche' in quel caso dice PERCHE'.
+    // La guardia chiedeva anche `s.curva.length`, e su 2.678 risposte su 10.131 (il
+    // 26,4%) faceva sparire la sezione senza una riga: la novita' dichiarata del
+    // pannello spariva in piu' di un caso su quattro e sembrava un difetto. Il
+    // componente `curva` ha gia' il suo ramo per l'assenza, con la frase che la
+    // spiega — rendeva irraggiungibile proprio quella. L'assenza si dichiara (regola 6).
+    if (s.approvato !== false && s.curva) kv.append(disegna(curvaDelQuando(vistaLive, s)));
     // I DUE LIMITI DEL LIVE, in fondo alla risposta e non in un commento: chi legge un
     // numero deve vedere da quale conoscenza della gara e' uscito.
     const lim = document.createElement('p');

@@ -88,7 +88,7 @@ function qualiToSnapshot(q){
 }
 
 async function boot(){
-  const { creaTorreTiming } = await import('./live_timing.mjs');
+  const { creaTorreTiming } = await import('./live_timing.mjs?v=310726a');
   let gara = params.get('g');
   // senza ?g=, prende l'ultima dal manifest
   let file = gara ? `quali_${encodeURIComponent(gara)}.json` : null;

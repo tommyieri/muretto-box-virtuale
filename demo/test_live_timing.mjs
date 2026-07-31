@@ -5,6 +5,7 @@
 // Non tocca il DOM (usa creaStatoTiming, il riduttore puro).
 
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import { creaStatoTiming } from './live_timing.mjs';
 
 function caso(nome, fn) {
@@ -117,6 +118,42 @@ caso('R2: diff parziale su un solo settore', () => {
   const r = s.righe()[0];
   assert.equal(r.last_lap, '1:41.9');
   assert.equal(r.sectors[0].t, '29.5');   // il settore precedente persiste
+});
+
+// 8) NIENTE DATO DEL FEED IN innerHTML SENZA ESCAPE.
+// Questo test e' nato da un difetto vero, trovato dall'audit di pre-pubblicazione del
+// 31/07/2026: nella riga della torre ogni campo passava da esc() TRANNE `pos`, che
+// finiva grezzo in innerHTML. I dati di questa torre arrivano da un WebSocket — cioe'
+// da fuori — e con l'override ?ws= (allora aperto a qualunque indirizzo) quella era la
+// via per far eseguire codice sull'origine del sito.
+//
+// Il controllo e' sul SORGENTE e non sul DOM di proposito: la funzione che disegna gira
+// dentro requestAnimationFrame e in Node non c'e' DOM, ma soprattutto un test sul DOM
+// prova UN campo alla volta, mentre qui il difetto e' "uno dei campi e' stato
+// dimenticato". Si guardano quindi tutte le interpolazioni dentro i template della riga
+// e si pretende che ognuna sia esc(...) oppure una funzione che restituisce un colore da
+// un elenco chiuso (colSet, COL_SEG), oppure un campo gia' ripulito a monte.
+//
+// COSA LO FA FALLIRE: qualcuno aggiunge un campo alla riga della torre e lo interpola
+// senza esc(). Provato: togliendo esc() da `pos` questo test esce 1.
+caso('nessun campo del feed entra in innerHTML senza escape', () => {
+  const sorgente = fs.readFileSync(new URL('./live_timing.mjs', import.meta.url), 'utf8');
+  // le interpolazioni ${...} dentro i template letterali del modulo
+  const interpolazioni = [...sorgente.matchAll(/\$\{([^}]*)\}/g)].map((m) => m[1].trim());
+  assert.ok(interpolazioni.length > 8, `poche interpolazioni trovate (${interpolazioni.length}): il controllo non sta guardando niente`);
+  const AMMESSE = [
+    /^esc\(/,                       // esplicitamente ripulito
+    /^colSet\(/,                    // colore da elenco chiuso
+    /^COL_SEG\[/,                   // idem
+    /^g\.(txt|cls)$/,               // gap(): txt passa gia' da esc(), cls e' interno
+    /^r\.in_pit \? /,               // due letterali fissi
+    /^html$/, /^sec$/, /^mic$/,     // pezzi di html gia' costruiti qui dentro
+    /^barraMicro\(/,
+    /^s\.t \? esc\(s\.t\) : /,
+    /^tempo \? esc\(tempo\) : /,
+  ];
+  const nude = interpolazioni.filter((x) => !AMMESSE.some((re) => re.test(x)));
+  assert.deepEqual(nude, [], `interpolazioni senza escape nella torre: ${JSON.stringify(nude)}`);
 });
 
 console.log('\nTUTTI I TEST OK (torre timing R2)');

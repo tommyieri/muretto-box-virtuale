@@ -68,5 +68,11 @@ jobs:
       - name: Il cavo live regge contro la gara vera
         run: node demo/test_live_bylap.mjs
 
+      # La torre timing consuma dati che arrivano da un WebSocket, cioe' da fuori.
+      # Fra i suoi casi c'e' il controllo che nessun campo del feed finisca in
+      # innerHTML senza escape: e' nato da un difetto vero trovato il 31/07/2026.
+      - name: La torre non mette dati del feed in pagina senza escape
+        run: node demo/test_live_timing.mjs
+
       - name: Diretta e replay rispondono con lo stesso motore
         run: node demo/test_parita_live.mjs

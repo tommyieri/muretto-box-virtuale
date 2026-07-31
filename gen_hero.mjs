@@ -2,9 +2,21 @@
 //
 // La hero della landing e' una demo interattiva: mostra una domanda vera del muretto
 // («mi fermo adesso o fra tre giri?») e la risposta del MOTORE DI PRODUZIONE. Perche'
-// quella risposta sia un dato e non una scenografia, questo generatore chiama gli stessi
-// moduli che girano su gara.html — demo/pitscenario.mjs::evaluatePit e ::traiettoriaPit,
-// demo/gradino.mjs::misura — e congela l'esito in demo/data/hero.json.
+// quella risposta sia un dato e non una scenografia, questo generatore chiama un motore
+// vero — demo/pitscenario.mjs::evaluatePit e ::traiettoriaPit, demo/gradino.mjs::misura —
+// e congela l'esito in demo/data/hero.json.
+//
+// ATTENZIONE, DAL 31/07/2026 NON E' PIU' IL MOTORE DELLA PAGINA-GARA. gara.html e'
+// passata al simulatore nuovo, che pre-calcola le risposte (demo/data/vista/). Questo
+// generatore usa ancora il motore precedente, e le due cose NON dicono sempre lo stesso:
+// misurato su Belgio/LEC, al congelamento del giro 20 concordano (P1), ma il caso
+// "aspetta tre giri" della hero da' P4 mentre la pagina-gara, congelata al giro 23,
+// da' P6 — sono due domande vicine e non identiche, e il visitatore non ha modo di
+// saperlo. La hero conta anche su 10 vetture dove il simulatore ne conta 20.
+//
+// Finche' la hero non viene ricostruita sul motore nuovo, la sua targhetta lo DICE
+// invece di promettere una parita' che non c'e' piu' (E22: un numero pubblicato con una
+// targhetta che non e' stata rimisurata dopo un cambio e' peggio di un numero senza).
 //
 // REGOLA DELLA CASA: nessun file dati senza generatore. hero.json non si scrive a mano;
 // se cambia il motore, si rilancia questo e la hero cambia con lui.
@@ -152,7 +164,13 @@ for (const c of ['SOFT', 'MEDIUM', 'HARD']) {
 
 const OUT = {
   _nota: 'GENERATO da gen_hero.mjs — non modificare a mano. I numeri vengono da '
-       + 'demo/pitscenario.mjs::evaluatePit, lo stesso motore della pagina-gara.',
+       + 'demo/pitscenario.mjs::evaluatePit. ATTENZIONE (31/07/2026): NON e\' piu\' il '
+       + 'motore della pagina-gara, che dal 31/07/2026 legge le risposte pre-calcolate '
+       + 'del simulatore (data/vista/). Le due non dicono sempre lo stesso: su '
+       + 'Belgio/LEC concordano al congelamento del giro 20 (P1), ma il caso "aspetta '
+       + 'tre giri" qui da\' P4 e la pagina-gara, congelata al giro 23, da\' P6. '
+       + 'La hero va ricostruita sul motore nuovo: finche\' non succede, questa nota e\' '
+       + 'il posto in cui la differenza e\' dichiarata invece che nascosta.',
   gara: CASO.gara, circuito: CASO.circuito, n_laps: nLaps,
   giro: L,
   pilota: {

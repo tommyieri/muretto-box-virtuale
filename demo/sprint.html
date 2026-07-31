@@ -115,7 +115,7 @@ function renderArrivo(sez){
 }
 
 async function boot(){
-  const { creaTorreTiming } = await import('./live_timing.mjs');
+  const { creaTorreTiming } = await import('./live_timing.mjs?v=310726a');
   let gara = params.get('g');
   let file = gara ? `sprint_${encodeURIComponent(gara)}.json` : null;
   if (!file){

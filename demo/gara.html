@@ -767,8 +767,13 @@ function updatePit(){
 async function mostraRisposta(drv, L){
   const kv = el('pitKv');
   if (!vistaCartella || !indiceVista){
-    kv.innerHTML = `<div class="pitmsg">Per questa gara il simulatore non ha ancora una vista pre-calcolata.
-      <span class="sub">si genera con <code>node web/genera_vista_gara.mjs</code> nel simulatore</span></div>`;
+    // NIENTE COMANDI DA TERMINALE IN UNA PAGINA PUBBLICA. Qui prima si leggeva
+    // "si genera con node web/genera_vista_gara.mjs nel simulatore": un'istruzione
+    // per chi sviluppa, mostrata a chi guarda una gara. Il ramo e' raggiungibile la
+    // prima volta che una gara viene pubblicata senza la sua vista, e non e' un caso
+    // di scuola — il ciclo post-gara genera la vista con check=False.
+    kv.innerHTML = `<div class="pitmsg">Il muretto non &egrave; ancora disponibile per questa gara.
+      <span class="sub">le risposte si preparano dopo la gara: riprova pi&ugrave; tardi</span></div>`;
     return;
   }
   kv.innerHTML = '<div class="pitmsg">…</div>';
@@ -793,7 +798,13 @@ async function mostraRisposta(drv, L){
   kv.replaceChildren(disegna(pannelloNuovo(indiceVista, s)));
   // LA CURVA DEL QUANDO, che il pannello vecchio non ha mai avuto: per ogni giro
   // candidato, quanto costa fermarsi li' rispetto al momento migliore.
-  if (s.approvato !== false && s.curva && s.curva.length) kv.append(disegna(curvaDelQuando(indiceVista, s)));
+  // LA CURVA SI DISEGNA ANCHE QUANDO E' VUOTA, perche' in quel caso dice PERCHE'.
+  // La guardia chiedeva anche `s.curva.length`, e su 2.678 risposte su 10.131 (il
+  // 26,4%) faceva sparire la sezione senza una riga: la novita' dichiarata del
+  // pannello spariva in piu' di un caso su quattro e sembrava un difetto. Il
+  // componente `curva` ha gia' il suo ramo per l'assenza, con la frase che la
+  // spiega — rendeva irraggiungibile proprio quella. L'assenza si dichiara (regola 6).
+  if (s.approvato !== false && s.curva) kv.append(disegna(curvaDelQuando(indiceVista, s)));
   attaccaGlossario(kv);
   lastPitRes = s;
   if (!simMode) el('simBtn').hidden = !(boxGiro != null && s.approvato !== false);

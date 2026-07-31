@@ -160,7 +160,12 @@ export function creaTorreTiming({ lista, nota }) {
       // e basta, il gestore del click vive nella pagina.
       return `<div class="tw-row${r.in_pit ? ' tw-pit' : ''}" data-sigla="${esc(r.sigla)}">`
         + `<div class="tw-main">`
-        +   `<span class="tw-pos">${r.pos ?? '–'}</span>`
+        // esc() ANCHE QUI. Era l'unico campo della riga che finiva in innerHTML
+        // grezzo mentre tutti i fratelli (sigla, colore, tempo, gap, settori) erano
+        // protetti — e i dati di questa torre arrivano da un WebSocket, cioe' da
+        // fuori. Con l'override ?ws= era la via per far eseguire codice sull'origine
+        // del sito. Trovato dall'audit di pre-pubblicazione del 31/07/2026.
+        +   `<span class="tw-pos">${esc(r.pos ?? '–')}</span>`
         +   `<span class="tw-col" style="background:${esc(r.colore)}"></span>`
         +   `<span class="tw-sig">${esc(r.sigla)}</span>`
         +   `<span class="tw-time">${tempo ? esc(tempo) : '—'}</span>`
