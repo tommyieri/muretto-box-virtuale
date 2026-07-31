@@ -1,0 +1,88 @@
+{
+ "gara": "Belgio",
+ "n_giri": 44,
+ "primo_giro": 5,
+ "ultimo_giro": 41,
+ "piloti": {
+  "ALB": {
+   "giri": 37,
+   "con_risposta": 29
+  },
+  "ALO": {
+   "giri": 37,
+   "con_risposta": 28
+  },
+  "ANT": {
+   "giri": 37,
+   "con_risposta": 28
+  },
+  "BEA": {
+   "giri": 37,
+   "con_risposta": 29
+  },
+  "BOR": {
+   "giri": 37,
+   "con_risposta": 29
+  },
+  "BOT": {
+   "giri": 37,
+   "con_risposta": 29
+  },
+  "COL": {
+   "giri": 37,
+   "con_risposta": 29
+  },
+  "GAS": {
+   "giri": 37,
+   "con_risposta": 29
+  },
+  "HAD": {
+   "giri": 37,
+   "con_risposta": 29
+  },
+  "HAM": {
+   "giri": 37,
+   "con_risposta": 29
+  },
+  "HUL": {
+   "giri": 37,
+   "con_risposta": 29
+  },
+  "LAW": {
+   "giri": 37,
+   "con_risposta": 29
+  },
+  "LEC": {
+   "giri": 37,
+   "con_risposta": 29
+  },
+  "LIN": {
+   "giri": 37,
+   "con_risposta": 29
+  },
+  "NOR": {
+   "giri": 37,
+   "con_risposta": 29
+  },
+  "OCO": {
+   "giri": 37,
+   "con_risposta": 29
+  },
+  "PIA": {
+   "giri": 37,
+   "con_risposta": 29
+  },
+  "SAI": {
+   "giri": 37,
+   "con_risposta": 26
+  },
+  "STR": {
+   "giri": 21,
+   "con_risposta": 13
+  },
+  "VER": {
+   "giri": 37,
+   "con_risposta": 29
+  }
+ }
+}

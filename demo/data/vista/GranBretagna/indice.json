@@ -1,0 +1,96 @@
+{
+ "gara": "GranBretagna",
+ "n_giri": 52,
+ "primo_giro": 5,
+ "ultimo_giro": 49,
+ "piloti": {
+  "ALB": {
+   "giri": 39,
+   "con_risposta": 34
+  },
+  "ALO": {
+   "giri": 45,
+   "con_risposta": 40
+  },
+  "ANT": {
+   "giri": 45,
+   "con_risposta": 40
+  },
+  "BEA": {
+   "giri": 45,
+   "con_risposta": 40
+  },
+  "BOR": {
+   "giri": 45,
+   "con_risposta": 40
+  },
+  "BOT": {
+   "giri": 45,
+   "con_risposta": 40
+  },
+  "COL": {
+   "giri": 45,
+   "con_risposta": 40
+  },
+  "GAS": {
+   "giri": 45,
+   "con_risposta": 40
+  },
+  "HAD": {
+   "giri": 45,
+   "con_risposta": 40
+  },
+  "HAM": {
+   "giri": 45,
+   "con_risposta": 40
+  },
+  "HUL": {
+   "giri": 33,
+   "con_risposta": 27
+  },
+  "LAW": {
+   "giri": 45,
+   "con_risposta": 40
+  },
+  "LEC": {
+   "giri": 45,
+   "con_risposta": 40
+  },
+  "LIN": {
+   "giri": 45,
+   "con_risposta": 40
+  },
+  "NOR": {
+   "giri": 45,
+   "con_risposta": 40
+  },
+  "OCO": {
+   "giri": 45,
+   "con_risposta": 40
+  },
+  "PER": {
+   "giri": 45,
+   "con_risposta": 40
+  },
+  "PIA": {
+   "giri": 45,
+   "con_risposta": 39
+  },
+  "RUS": {
+   "giri": 45,
+   "con_risposta": 40
+  },
+  "SAI": {
+   "giri": 45,
+   "con_risposta": 39
+  },
+  "STR": {
+   "giri": 45,
+   "con_risposta": 38
+  },
+  "VER": {
+   "giri": 43,
+   "con_risposta": 38
+  }
+ }
+}

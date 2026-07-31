@@ -1,0 +1,96 @@
+{
+ "gara": "Giappone",
+ "n_giri": 53,
+ "primo_giro": 5,
+ "ultimo_giro": 50,
+ "piloti": {
+  "ALB": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "ALO": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "ANT": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "BEA": {
+   "giri": 17,
+   "con_risposta": 14
+  },
+  "BOR": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "BOT": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "COL": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "GAS": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "HAD": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "HAM": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "HUL": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "LAW": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "LEC": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "LIN": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "NOR": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "OCO": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "PER": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "PIA": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "RUS": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "SAI": {
+   "giri": 46,
+   "con_risposta": 43
+  },
+  "STR": {
+   "giri": 26,
+   "con_risposta": 23
+  },
+  "VER": {
+   "giri": 46,
+   "con_risposta": 43
+  }
+ }
+}

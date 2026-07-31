@@ -1,0 +1,88 @@
+{
+ "gara": "Australia",
+ "n_giri": 58,
+ "primo_giro": 5,
+ "ultimo_giro": 55,
+ "piloti": {
+  "ALB": {
+   "giri": 51,
+   "con_risposta": 48
+  },
+  "ALO": {
+   "giri": 18,
+   "con_risposta": 15
+  },
+  "ANT": {
+   "giri": 51,
+   "con_risposta": 48
+  },
+  "BEA": {
+   "giri": 51,
+   "con_risposta": 48
+  },
+  "BOR": {
+   "giri": 51,
+   "con_risposta": 47
+  },
+  "BOT": {
+   "giri": 12,
+   "con_risposta": 9
+  },
+  "COL": {
+   "giri": 51,
+   "con_risposta": 48
+  },
+  "GAS": {
+   "giri": 51,
+   "con_risposta": 47
+  },
+  "HAD": {
+   "giri": 7,
+   "con_risposta": 4
+  },
+  "HAM": {
+   "giri": 51,
+   "con_risposta": 48
+  },
+  "LAW": {
+   "giri": 51,
+   "con_risposta": 48
+  },
+  "LEC": {
+   "giri": 51,
+   "con_risposta": 48
+  },
+  "LIN": {
+   "giri": 51,
+   "con_risposta": 48
+  },
+  "NOR": {
+   "giri": 51,
+   "con_risposta": 48
+  },
+  "OCO": {
+   "giri": 51,
+   "con_risposta": 48
+  },
+  "PER": {
+   "giri": 51,
+   "con_risposta": 48
+  },
+  "RUS": {
+   "giri": 51,
+   "con_risposta": 48
+  },
+  "SAI": {
+   "giri": 51,
+   "con_risposta": 48
+  },
+  "STR": {
+   "giri": 39,
+   "con_risposta": 36
+  },
+  "VER": {
+   "giri": 51,
+   "con_risposta": 48
+  }
+ }
+}

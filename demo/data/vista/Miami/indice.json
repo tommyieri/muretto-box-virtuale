@@ -1,0 +1,80 @@
+{
+ "gara": "Miami",
+ "n_giri": 57,
+ "primo_giro": 5,
+ "ultimo_giro": 54,
+ "piloti": {
+  "ALB": {
+   "giri": 50,
+   "con_risposta": 40
+  },
+  "ALO": {
+   "giri": 50,
+   "con_risposta": 39
+  },
+  "ANT": {
+   "giri": 50,
+   "con_risposta": 40
+  },
+  "BEA": {
+   "giri": 50,
+   "con_risposta": 40
+  },
+  "BOR": {
+   "giri": 50,
+   "con_risposta": 39
+  },
+  "BOT": {
+   "giri": 50,
+   "con_risposta": 39
+  },
+  "COL": {
+   "giri": 50,
+   "con_risposta": 40
+  },
+  "HAM": {
+   "giri": 50,
+   "con_risposta": 40
+  },
+  "LEC": {
+   "giri": 50,
+   "con_risposta": 40
+  },
+  "LIN": {
+   "giri": 50,
+   "con_risposta": 38
+  },
+  "NOR": {
+   "giri": 50,
+   "con_risposta": 40
+  },
+  "OCO": {
+   "giri": 50,
+   "con_risposta": 40
+  },
+  "PER": {
+   "giri": 50,
+   "con_risposta": 38
+  },
+  "PIA": {
+   "giri": 50,
+   "con_risposta": 40
+  },
+  "RUS": {
+   "giri": 50,
+   "con_risposta": 40
+  },
+  "SAI": {
+   "giri": 50,
+   "con_risposta": 40
+  },
+  "STR": {
+   "giri": 50,
+   "con_risposta": 39
+  },
+  "VER": {
+   "giri": 50,
+   "con_risposta": 40
+  }
+ }
+}

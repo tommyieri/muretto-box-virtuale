@@ -1,0 +1,92 @@
+{
+ "gara": "Monaco",
+ "n_giri": 78,
+ "primo_giro": 5,
+ "ultimo_giro": 75,
+ "piloti": {
+  "ALB": {
+   "giri": 71,
+   "con_risposta": 67
+  },
+  "ALO": {
+   "giri": 71,
+   "con_risposta": 65
+  },
+  "ANT": {
+   "giri": 71,
+   "con_risposta": 67
+  },
+  "BEA": {
+   "giri": 24,
+   "con_risposta": 19
+  },
+  "BOR": {
+   "giri": 71,
+   "con_risposta": 66
+  },
+  "BOT": {
+   "giri": 12,
+   "con_risposta": 7
+  },
+  "COL": {
+   "giri": 71,
+   "con_risposta": 67
+  },
+  "GAS": {
+   "giri": 71,
+   "con_risposta": 67
+  },
+  "HAD": {
+   "giri": 71,
+   "con_risposta": 67
+  },
+  "HAM": {
+   "giri": 71,
+   "con_risposta": 67
+  },
+  "HUL": {
+   "giri": 71,
+   "con_risposta": 67
+  },
+  "LAW": {
+   "giri": 71,
+   "con_risposta": 67
+  },
+  "LEC": {
+   "giri": 61,
+   "con_risposta": 57
+  },
+  "LIN": {
+   "giri": 71,
+   "con_risposta": 67
+  },
+  "NOR": {
+   "giri": 40,
+   "con_risposta": 36
+  },
+  "OCO": {
+   "giri": 71,
+   "con_risposta": 65
+  },
+  "PER": {
+   "giri": 71,
+   "con_risposta": 63
+  },
+  "PIA": {
+   "giri": 71,
+   "con_risposta": 67
+  },
+  "RUS": {
+   "giri": 71,
+   "con_risposta": 67
+  },
+  "SAI": {
+   "giri": 67,
+   "con_risposta": 63
+  },
+  "STR": {
+   "giri": 53,
+   "con_risposta": 47
+  }
+ }
+}

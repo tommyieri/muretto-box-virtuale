@@ -1,0 +1,80 @@
+{
+ "gara": "Cina",
+ "n_giri": 56,
+ "primo_giro": 5,
+ "ultimo_giro": 53,
+ "piloti": {
+  "ALO": {
+   "giri": 28,
+   "con_risposta": 24
+  },
+  "ANT": {
+   "giri": 49,
+   "con_risposta": 45
+  },
+  "BEA": {
+   "giri": 49,
+   "con_risposta": 45
+  },
+  "BOT": {
+   "giri": 49,
+   "con_risposta": 45
+  },
+  "COL": {
+   "giri": 49,
+   "con_risposta": 45
+  },
+  "GAS": {
+   "giri": 49,
+   "con_risposta": 45
+  },
+  "HAD": {
+   "giri": 49,
+   "con_risposta": 40
+  },
+  "HAM": {
+   "giri": 49,
+   "con_risposta": 45
+  },
+  "HUL": {
+   "giri": 49,
+   "con_risposta": 45
+  },
+  "LAW": {
+   "giri": 49,
+   "con_risposta": 40
+  },
+  "LEC": {
+   "giri": 49,
+   "con_risposta": 45
+  },
+  "LIN": {
+   "giri": 49,
+   "con_risposta": 45
+  },
+  "OCO": {
+   "giri": 49,
+   "con_risposta": 45
+  },
+  "PER": {
+   "giri": 49,
+   "con_risposta": 45
+  },
+  "RUS": {
+   "giri": 49,
+   "con_risposta": 45
+  },
+  "SAI": {
+   "giri": 49,
+   "con_risposta": 40
+  },
+  "STR": {
+   "giri": 6,
+   "con_risposta": 2
+  },
+  "VER": {
+   "giri": 41,
+   "con_risposta": 31
+  }
+ }
+}
