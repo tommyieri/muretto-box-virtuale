@@ -12,6 +12,28 @@ perché la pagina è ciò che l'utente crede. `s20` fa fallire la suite se un
 modulo del browser importa dall'albero della fisica o fa aritmetica su un
 coefficiente del modello.
 
+**Con UNA deroga, dichiarata: la diretta.** In `live.html` la gara sta
+succedendo, e una risposta pre-calcolata su un giro non ancora percorso non è
+difficile — è impossibile. Lì il motore gira **nel browser**. Prima di
+concederlo sono state pesate le alternative: il collettore che calcola e spinge
+la risposta (il più bello, ma è un servizio Python che questo repo non collauda,
+e si scriverebbe alla cieca il pezzo che deve reggere durante la gara) e una
+funzione serverless (Vercel serve `demo/` come radice, quindi il motore andrebbe
+copiato dentro `demo/` **comunque**: stesso trasporto, più un giro di rete e un
+avvio a freddo nel momento peggiore).
+
+La deroga vale sulla LETTERA, non sulla ragione. Ciò che la regola vuole
+impedire è E17 — *due* fisiche per due risposte adiacenti — e quel rischio non
+dipende da dove il codice gira, ma dall'esistere di due sorgenti. Qui la
+sorgente resta una: `web/trasporta_motore.mjs` copia i moduli come artefatti con
+manifest di hash, rifiuta di trasportare un motore che in pagina non partirebbe,
+e `--verifica` esce 1 sulla deriva (la CI lo esegue). Il montaggio della
+risposta è lo stesso modulo per entrambe le strade (`scenario/risposta.mjs`), e
+`demo/test_parita_live.mjs` **misura** che le due risposte coincidano su una
+gara vera invece di darlo per scontato. `s26` verifica che il grafo del motore
+resti caricabile in pagina: un solo `import ... from 'node:fs'` lo spegnerebbe,
+e ce ne si accorgerebbe col pannello vuoto durante un Gran Premio.
+
 I componenti non toccano il DOM: restituiscono un **albero dichiarativo**, e
 `render.mjs` lo disegna. È questa separazione che rende possibile l'audit del
 cancello — che cammina il vero output di ogni componente su ogni scenario demo,

@@ -1,0 +1,65 @@
+{
+ "_nota": "GENERATO da simulatore/web/trasporta_motore.mjs. Le copie in questa cartella sono artefatti: si modifica l'originale in simulatore/ e si ri-trasporta. `--verifica` esce 1 sulla deriva. Il motore gira in pagina SOLO per live.html, dove il pre-calcolo non puo' esistere: gara.html continua a non calcolare.",
+ "generato_il": "2026-07-31",
+ "ingressi": [
+  "scenario/risposta.mjs",
+  "provenienza/gare_indice.mjs",
+  "provenienza/contratto.mjs",
+  "provenienza/vocabolario.mjs"
+ ],
+ "file": {
+  "engine/kernel.mjs": {
+   "sha256_sorgente": "ad64a1438c3a499e59023f2cc3bb078f8d5c892d56ab8179383a2c09db19a1f8",
+   "byte": 11768
+  },
+  "engine/passo_v2.mjs": {
+   "sha256_sorgente": "e04d170482ee4dd8cc6f63a49b50ac6bb72675f43e9c407e7db73a0aef9d78b0",
+   "byte": 3930
+  },
+  "provenienza/contratto.mjs": {
+   "sha256_sorgente": "b1e8c76b289535985249358a70b98e052d687839ac8d96668a97fb4a30f071c5",
+   "byte": 4257
+  },
+  "provenienza/definizioni.mjs": {
+   "sha256_sorgente": "50384b18365cd42621c1b51588db8ce435bf2a349de37be5556449d20a68b22c",
+   "byte": 5062
+  },
+  "provenienza/gare_indice.mjs": {
+   "sha256_sorgente": "dd70fcf9df546225b11f4160fdc9065d3713e688626421cf559f1029ee5e9ecc",
+   "byte": 2546
+  },
+  "provenienza/pitloss.mjs": {
+   "sha256_sorgente": "f3b9a65565eb8f337698ff855eae27b732ce7ab93718228ce8e40df16d864a7a",
+   "byte": 4980
+  },
+  "provenienza/vocabolario.mjs": {
+   "sha256_sorgente": "eea1343393aa85b3e488435814af27673a5ab9338d2cdcb01a3e2297d5a4d7ff",
+   "byte": 4370
+  },
+  "scenario/allarmi.mjs": {
+   "sha256_sorgente": "6511783d2a4d765f91ec1127a9a6f193aaad1db38df97f609313e95ef5a36eaa",
+   "byte": 3585
+  },
+  "scenario/costruttore.mjs": {
+   "sha256_sorgente": "ad9d58496a9e44ba500d0b17250eeaa4ab3cbc6098ce14020347b1c1a403ed8e",
+   "byte": 25870
+  },
+  "scenario/director.mjs": {
+   "sha256_sorgente": "a305da62cf49576be92050910d7f9fe8a5abe1bedebb49334b8fcf0e016e4e9a",
+   "byte": 16577
+  },
+  "scenario/piano.mjs": {
+   "sha256_sorgente": "a6a5d0b82329891fa46147a2627d5a4922044d7edff2390fe65b8cbb79b2c17b",
+   "byte": 15055
+  },
+  "scenario/risposta.mjs": {
+   "sha256_sorgente": "31cbeed4344789adbb1c89f4b37de15ae1f377ee191719bd7819e57ec213edbf",
+   "byte": 7459
+  },
+  "contesto_live.json": {
+   "sha256_sorgente": "45bc4eec01bf0f2b5f470ddb8fb638e63c915a3f4c78141350983bddc5250c6c",
+   "byte": 39401,
+   "data": "2026-07-31"
+  }
+ }
+}

@@ -40,7 +40,7 @@ import { bandaDiRientro } from '../../scenario/costruttore.mjs';
 import { misuraTutto, leggiCancelli } from '../misura_tutto.mjs';
 import { misuraRientro } from '../misure/rientro.mjs';
 import { caricaGare2026 } from '../../provenienza/gare_2026.mjs';
-import { caricaPrior } from '../../provenienza/pitloss.mjs';
+import { caricaPrior } from '../../provenienza/pitloss_dati.mjs';
 import { costruisci } from '../scrivi_banda_rientro.mjs';
 
 const b = banco('s25');

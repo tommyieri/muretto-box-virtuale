@@ -9,7 +9,7 @@
 // indovinare una Safety Car. Di conseguenza `pits` è vuoto.
 
 import { passoUtilizzabile } from '../../provenienza/definizioni.mjs';
-import { osservazioniVerdi } from '../../provenienza/gare_2026.mjs';
+import { osservazioniVerdi } from '../../provenienza/gare_indice.mjs';
 import { simulate } from '../../engine/kernel.mjs';
 import { creaPasso, stimaBasi } from '../../engine/passo_v2.mjs';
 

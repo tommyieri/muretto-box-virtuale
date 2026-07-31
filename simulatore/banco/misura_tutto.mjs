@@ -17,9 +17,9 @@ import { misuraRientro } from './misure/rientro.mjs';
 import { misuraG0 } from './misure/g0.mjs';
 import { misuraM1, misuraM2, misuraM3M4 } from './misure/multistint.mjs';
 import { misuraDifesa } from './misure/difesa.mjs';
-import { caricaDurate2026 } from '../scenario/allarmi.mjs';
-import { caricaCostanti } from '../scenario/director.mjs';
-import { caricaPrior } from '../provenienza/pitloss.mjs';
+import { caricaDurate2026 } from '../scenario/allarmi_dati.mjs';
+import { caricaCostanti } from '../scenario/director_dati.mjs';
+import { caricaPrior } from '../provenienza/pitloss_dati.mjs';
 
 export const PERCORSO_GOLDEN_BANCO = 'banco/golden/banco_2026.json';
 

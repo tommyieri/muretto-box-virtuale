@@ -10,7 +10,8 @@
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { caricaGare2026, osservazioniVerdi, indicizza } from '../provenienza/gare_2026.mjs';
+import { caricaGare2026 } from '../provenienza/gare_2026.mjs';
+import { osservazioniVerdi, indicizza } from '../provenienza/gare_indice.mjs';
 import { passoUtilizzabile } from '../provenienza/definizioni.mjs';
 import { creaPasso, stimaBasi } from '../engine/passo_v2.mjs';
 import { raccogliCelle } from '../live/collettore.mjs';

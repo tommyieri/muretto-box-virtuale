@@ -17,13 +17,14 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { caricaGare2026 } from '../provenienza/gare_2026.mjs';
-import { caricaPrior } from '../provenienza/pitloss.mjs';
+import { caricaPrior } from '../provenienza/pitloss_dati.mjs';
 import { verde, regimeNeutralizzato } from '../provenienza/definizioni.mjs';
 import { simboliStatus, MESCOLE_SLICK, MESCOLE_SLICK_ATTUALI, MESCOLE_BAGNATO } from '../provenienza/vocabolario.mjs';
-import { caricaCostanti } from '../scenario/director.mjs';
+import { caricaCostanti } from '../scenario/director_dati.mjs';
 import { doveRientri, curvaDelQuando } from '../scenario/costruttore.mjs';
 import { pianoOttimo } from '../scenario/piano.mjs';
-import { allarmiPiano, caricaDurate2026 } from '../scenario/allarmi.mjs';
+import { allarmiPiano } from '../scenario/allarmi.mjs';
+import { caricaDurate2026 } from '../scenario/allarmi_dati.mjs';
 
 export const PERCORSO_VISTA = 'web/vista/demo.json';
 const DATA = '2026-07-29';

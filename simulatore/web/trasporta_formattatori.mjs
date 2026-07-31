@@ -39,7 +39,12 @@ const FILE = ['targhette.mjs', 'pannello.mjs', 'curva.mjs', 'render.mjs'];
 // pannello, e le variabili di :root diventano variabili del pannello. E' l'unica
 // trasformazione che il trasporto applica, ed e' dichiarata.
 const CSS = 'stile.css';
-const AMBITO = '#pitKv';
+// L'AMBITO E' UNA CLASSE, non l'id di una pagina. Era `#pitKv` — il contenitore di
+// gara.html — e ha smesso di bastare il giorno in cui anche live.html ha montato lo
+// stesso pannello: il suo contenitore si chiama `#mu-kv`, e il foglio non lo vedeva.
+// Con una classe le pagine sono due e la regola resta una: chi mostra il pannello del
+// simulatore se la mette addosso.
+const AMBITO = '.sim-pannello';
 
 function scopa(css, ambito) {
   const fuori = new Set(['*', 'body', 'html']);

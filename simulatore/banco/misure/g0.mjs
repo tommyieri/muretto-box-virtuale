@@ -17,7 +17,7 @@
 // conviene fermarsi"), non la ricostruzione di una sosta avvenuta sotto regime.
 
 import { passoUtilizzabile } from '../../provenienza/definizioni.mjs';
-import { osservazioniVerdi } from '../../provenienza/gare_2026.mjs';
+import { osservazioniVerdi } from '../../provenienza/gare_indice.mjs';
 import { simulate } from '../../engine/kernel.mjs';
 import { creaPasso, stimaBasi } from '../../engine/passo_v2.mjs';
 import { perditaBox } from '../../provenienza/pitloss.mjs';

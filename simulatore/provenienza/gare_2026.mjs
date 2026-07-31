@@ -7,7 +7,10 @@
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { adattaColonnare } from './adattatore.mjs';
-import { passoUtilizzabile } from './definizioni.mjs';
+// `indicizza` e `osservazioniVerdi` NON stanno piu' qui: sono pure e vivono in
+// gare_indice.mjs, perche' il costruttore di scenari le usa anche nel browser e
+// da qui si sarebbe portato dietro node:fs. Chi le vuole le importa da la'.
+import { indicizza } from './gare_indice.mjs';
 
 export function fontiGare2026(radice) {
   const dirCache = path.join(radice, 'data', 'gare_2026', 'ti_cache');
@@ -29,18 +32,6 @@ export function fontiGare2026(radice) {
   return fonti;
 }
 
-/** Indice per pilota + distanza di gara, da righe gia adattate al contratto. */
-export function indicizza(righe) {
-  const perPilota = new Map();
-  let nGiri = 0;
-  for (const { drv, lap, cella } of righe) {
-    if (Number.isInteger(lap) && lap > nGiri) nGiri = lap;
-    if (!perPilota.has(drv)) perPilota.set(drv, new Map());
-    perPilota.get(drv).set(lap, cella);
-  }
-  return { righe, perPilota, nGiri };
-}
-
 /** Righe adattate al contratto + indice per pilota + distanza di gara. */
 export function caricaGara(fonteAbs, etichetta) {
   const { righe } = adattaColonnare(JSON.parse(readFileSync(fonteAbs, 'utf8')), { fonte: etichetta });
@@ -53,19 +44,4 @@ export function caricaGare2026(radice) {
     gare[gara] = { fonte, fonteAbs, ...caricaGara(fonteAbs, gara) };
   }
   return gare;
-}
-
-/**
- * I giri utilizzabili per stimare un passo: verdi, con tempo E con età gomma.
- * L'età nulla esce (regola 6): senza età non si stima un degrado, e mettere
- * uno zero plausibile al suo posto è esattamente ciò che la regola vieta.
- */
-export function osservazioniVerdi(righe) {
-  const fuori = [];
-  for (const { drv, lap, cella } of righe) {
-    if (!passoUtilizzabile(cella) || cella.tyre_age === null) continue;
-    fuori.push({ drv, lap, eta: cella.tyre_age, t: cella.lap_time, stint: cella.stint });
-  }
-  fuori.sort((a, b) => (a.drv < b.drv ? -1 : a.drv > b.drv ? 1 : a.lap - b.lap));
-  return fuori;
 }

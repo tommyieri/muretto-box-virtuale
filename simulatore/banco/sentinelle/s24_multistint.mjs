@@ -31,11 +31,12 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { caricaGare2026 } from '../../provenienza/gare_2026.mjs';
-import { caricaPrior } from '../../provenienza/pitloss.mjs';
-import { caricaCostanti } from '../../scenario/director.mjs';
+import { caricaPrior } from '../../provenienza/pitloss_dati.mjs';
+import { caricaCostanti } from '../../scenario/director_dati.mjs';
 import { costruisciScenario, eseguiEValida } from '../../scenario/costruttore.mjs';
 import { creaPiano, creaStint, formaChiusa, pianoOttimo, mescolePerSoste } from '../../scenario/piano.mjs';
-import { allarmiPiano, caricaDurate2026 } from '../../scenario/allarmi.mjs';
+import { allarmiPiano } from '../../scenario/allarmi.mjs';
+import { caricaDurate2026 } from '../../scenario/allarmi_dati.mjs';
 import { simulate } from '../../engine/kernel.mjs';
 import { misuraTutto, leggiCancelli } from '../misura_tutto.mjs';
 

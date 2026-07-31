@@ -29,7 +29,8 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { caricaGare2026 } from '../../provenienza/gare_2026.mjs';
 import { creaCella } from '../../provenienza/contratto.mjs';
-import { validaSimulazione, simulazioneDaGara, caricaCostanti, SEVERITA } from '../../scenario/director.mjs';
+import { validaSimulazione, simulazioneDaGara, SEVERITA } from '../../scenario/director.mjs';
+import { caricaCostanti } from '../../scenario/director_dati.mjs';
 import { perditaBox } from '../../provenienza/pitloss.mjs';
 
 const b = banco('s16');

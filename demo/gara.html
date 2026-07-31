@@ -131,7 +131,7 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
           <button type="button" id="simCont" hidden>continua &rarr;</button>
           <button type="button" id="simEsci">&#8634; replay reale</button>
         </div>
-        <div id="pitKv"></div>
+        <div id="pitKv" class="sim-pannello"></div>
         <div class="pithint">Si apre sul pit <b>adesso</b>; sposta il cursore per pittare pi&ugrave; avanti.
           Rivali congelati al reale &middot; il motore mostra dove rientri, non se conviene.</div>
       </section>
@@ -144,9 +144,10 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
 <script type="module">
 // ?v= su TUTTI i moduli: senza, un deploy puo' servire HTML nuovo con moduli .mjs vecchi
 // dalla cache del browser (pagina mista = sintomi di sync fantasma). Bump a ogni release.
-// IL PANNELLO E' UN MODULO (demo/muretto.mjs), non piu' codice di questa pagina: la
-// stessa identica risposta la mostra live.html sulla gara in corso. Due copie della
-// stessa domanda sono il modo piu' sicuro di ritrovarsi con due numeri diversi.
+// IL PANNELLO E' QUELLO DEL SIMULATORE, e la stessa identica risposta la mostra
+// live.html sulla gara in corso — dal 31/07/2026 anche li'. Due copie della stessa
+// domanda sono il modo piu' sicuro di ritrovarsi con due numeri diversi, e il
+// cancello demo/test_parita_live.mjs misura che non sia successo.
 // IL PANNELLO ORA VIENE DAL SIMULATORE NUOVO, e la pagina NON calcola piu'.
 // I numeri sono pre-calcolati in Node (simulatore/web/genera_vista_gara.mjs, che passa dal
 // Director) e scritti in data/vista/<gara>/<pilota>.json; qui si formatta e basta. E' la
@@ -157,6 +158,8 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
 import { disegna } from './vendor/simulatore/render.mjs?v=280726a';
 import { pannello as pannelloNuovo } from './vendor/simulatore/pannello.mjs?v=280726a';
 import { curva as curvaDelQuando } from './vendor/simulatore/curva.mjs?v=280726a';
+// l'adattatore del fantasma e' condiviso con live.html: una forma sola per due pagine
+import { simDaFantasma } from './fantasma_sim.mjs?v=310726a';
 import { creaGhostPlay } from './ghostplay.mjs?v=250724c';
 import { attaccaGlossario } from './glossario.mjs?v=250724e';
 import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs?v=220726a';
@@ -196,9 +199,9 @@ let simMode=false, simGp=null, simDriver=null, simRientroPos=null, simSuTotale=n
 // --- contatore anonimo aggregato (strumentazione, non simulatore) ---
 const conta = e => { try { navigator.sendBeacon(`api/contatore?e=${e}`); } catch(_){} };
 
-// Le costanti del pannello (gradino, cap del traffico, soglie, tassi storici) e le sue
-// righe — undercut, scenari di degrado — vivono in demo/muretto.mjs con le loro misure
-// accanto. Qui resta solo il cablaggio: quale gara, quale pilota, quale giro.
+// Le costanti del modello (degrado, deriva, pit-loss, limiti del Director) vivono nel
+// simulatore, con le loro targhette, e arrivano qui dentro la vista pre-calcolata.
+// In questa pagina resta solo il cablaggio: quale gara, quale pilota, quale giro.
 
 const clock = makeClock({ onTick: p => { if (simMode) return; frame(p); }, onEnd: () => setPlayIcon(false), min: 1 });
 
@@ -813,21 +816,6 @@ async function fantasmaDi(drv){
   return fantasmaPilota[drv];
 }
 
-// ADATTATORE, non un secondo calcolo: la traccia del simulatore e' una lista piatta
-// {drv, giro, cum}; ghostplay.mjs vuole {laps, cumByLap, present}. Qui si cambia FORMA,
-// non contenuto — nessun tempo viene sommato, sottratto o inventato.
-function simDaFantasma(passi, drv, freezeLap){
-  if (!passi || !passi.length) return null;
-  const cumByLap = {}, present = new Set(), laps = new Set();
-  for (const p of passi){
-    (cumByLap[p.giro] ||= {})[p.drv] = p.cum;
-    present.add(p.drv); laps.add(p.giro);
-  }
-  const ord = [...laps].sort((a,b)=>a-b);
-  if (ord.length < 2) return null;
-  return { laps: ord, cumByLap, present: [...present], freezeLap,
-           pitLap: freezeLap + 1, driver: drv };
-}
 // avvia la scena sul motore condiviso. Il pannello dà il numero; qui la messa in scena:
 // il pallino entra ai box (sosta ferma), monta gomma nuova e risale seguendo la strategia,
 // sorpassando i rivali dove il motore dice che passa — su pista E su torre.

@@ -42,3 +42,31 @@ jobs:
       # passo esce 1 sulla deriva, quindi non puo' succedere in silenzio.
       - name: I formattatori del sito non sono derivati
         run: node web/trasporta_formattatori.mjs --verifica
+
+      # Il MOTORE servito a live.html (demo/vendor/simulatore/motore/) e' una copia
+      # generata, come i formattatori — con in piu' il contesto_live.json, cioe' le
+      # costanti congelate. Se una costante cambia in simulatore/ e nessuno ri-trasporta,
+      # la diretta risponde con una taratura e il replay con un'altra: E22 (numeri
+      # pubblicati e mai rimisurati dopo un fix). Questo passo esce 1 su quella deriva.
+      - name: Il motore servito alla diretta non e' derivato
+        run: node web/trasporta_motore.mjs --verifica
+
+  # LA PARITA' FRA DIRETTA E REPLAY. Gira fuori da simulatore/ perche' mette insieme i
+  # due lati: il flusso live registrato (live/fixture/) e la vista pre-calcolata
+  # (demo/data/vista/). E' il cancello che impedisce alle due pagine di tornare a
+  # rispondere con due motori — il difetto che questo repo ha pagato per settimane.
+  parita:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Node pinnato (.nvmrc)
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: simulatore/.nvmrc
+
+      - name: Il cavo live regge contro la gara vera
+        run: node demo/test_live_bylap.mjs
+
+      - name: Diretta e replay rispondono con lo stesso motore
+        run: node demo/test_parita_live.mjs

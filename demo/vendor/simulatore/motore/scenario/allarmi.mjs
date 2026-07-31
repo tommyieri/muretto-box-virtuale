@@ -1,3 +1,12 @@
+// ————————————————————————————————————————————————————————————————————————
+// ARTEFATTO GENERATO — non modificare qui.
+//   sorgente: simulatore/scenario/allarmi.mjs
+//   generato: simulatore/web/trasporta_motore.mjs
+// Vercel serve demo/ come radice e non vede simulatore/: questa copia esiste
+// solo per essere ESEGUITA dal pannello live, dove il pre-calcolo non puo'
+// esistere. Modificare QUESTO file lo fa divergere dall'originale, e
+// `node web/trasporta_motore.mjs --verifica` fallisce (lo esegue la CI).
+// ————————————————————————————————————————————————————————————————————————
 // allarmi.mjs — gli ALLARMI su un piano. Non i vincoli: gli allarmi.
 //
 // CLAUDE.md dice che le durate degli stint 2026 sono DECISIONI dei team, non

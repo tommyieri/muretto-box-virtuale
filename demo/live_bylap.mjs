@@ -84,9 +84,16 @@ export function creaByLapLive() {
   // della prima sosta non veniva mai riconosciuto e da li' in poi il suo stint restava
   // indietro di uno per TUTTA la gara (43 celle sbagliate su 44 giri).
   let inLapDi = new Map();    // num -> Set dei giri di in-lap (dedotti da InPit)
-  let sporco = new Map();     // num -> il giro in corso ha visto neutralizzazione
+  // num -> Set degli stati pista GREZZI visti durante il giro in corso.
+  // Era un booleano ("neutralizzato si'/no"). Portare il grezzo invece del
+  // verdetto e' E04 del catalogo: il contratto che non trasportava `status`
+  // rendeva impossibile a valle qualunque distinzione. E serve davvero — il
+  // pannello del simulatore prezza la sosta a 0,50 della perdita sotto SC e
+  // 0,65 sotto VSC: con un booleano quei due casi sarebbero lo stesso caso.
+  let sporco = new Map();
   let stintDi = new Map();    // num -> stint corrente (avanza sull'out-lap, non sull'in-lap)
   let inizioStint = new Map(); // num -> primo giro dello stint corrente (per l'eta' gomma)
+  let ancoraEta = new Map();  // num -> {lap, eta}: la prima eta' vista nello stint
   let stato = 'AllClear';
   let giro = null, nLaps = null;
   let memoPace = {};
@@ -106,23 +113,57 @@ export function creaByLapLive() {
   // Il tempo di riferimento del giro L. Vale la nota in testa: conta che cresca, non
   // quanto valga. Si prende il giro di chi e' primo; se manca, la mediana del campo —
   // e se manca anche quella, un giro non si inventa e la catena si ferma.
+  //
+  // IL CAMBIO DI LEADER SPEZZAVA LA CATENA (corretto il 31/07/2026, trovato dal
+  // Director del simulatore). Il riferimento era `rif[L] = rif[L-1] + tempo di chi
+  // e' primo al giro L`. Finche' e' sempre la stessa macchina, giusto. Ma quando
+  // il primo CAMBIA — a Spa 2026 succede al giro 21, con le soste sotto Safety
+  // Car — il cumulato del nuovo leader non e' quello del vecchio piu' il proprio
+  // giro: e' il PROPRIO cumulato piu' il proprio giro. La differenza a Spa era di
+  // 8,65 s, identica per tutti e venti i piloti, su quattro giri su 44.
+  //
+  // Il vecchio pannello non se ne accorgeva, e la nota in testa spiega perche':
+  // un termine comune a tutti si semplifica in ogni confronto fra piloti dello
+  // stesso giro. Ma NON si semplifica per chi guarda la serie di un pilota nel
+  // tempo, ed e' esattamente cio' che il guardiano del simulatore controlla
+  // (`|Δcum − tempo sul giro| ≤ 0,5 s`). Misurato su Spa 2026 con QUESTO modulo:
+  // le coppie oltre tolleranza passano da 64/823 (7,8%) a 7/823 (0,9%). Il
+  // distacco contro il dato ufficiale resta quello di prima dove conta (mediana
+  // 0,063 → 0,064 s) e il massimo si sposta da 0,180 a 0,251 s, dentro la soglia
+  // di 0,5 s del test del cavo. Il massimo si muove perche' l'in-lap ha un cum
+  // costruito a parte (vedi sotto) che SI appoggia alla catena: chiamare la
+  // correzione "invariante sui distacchi" sarebbe comodo e falso.
   function avanzaRiferimento(L) {
     if (cumLeader[L] != null) return cumLeader[L];
     if (L <= 1) { cumLeader[1] = 0; return 0; }
     const prec = avanzaRiferimento(L - 1);
     if (prec == null) return null;
-    let t = null;
-    for (const [num, v] of cur) if (v.pos === 1 && v.lap === L) t = tempoInSecondi(v.last_lap);
-    if (t == null) {
-      const tutti = [];
-      for (const [num, v] of cur) if (v.lap === L) {
-        const x = tempoInSecondi(v.last_lap);
-        if (x != null) tutti.push(x);
-      }
-      t = mediana(tutti);
+    let t = null, primo = null;
+    for (const [num, v] of cur) if (v.pos === 1 && v.lap === L) { t = tempoInSecondi(v.last_lap); primo = num; }
+    if (t != null) {
+      // il cumulato del leader al giro prima, se quella riga esiste gia': e' il
+      // punto di partenza giusto anche quando il leader e' cambiato
+      const suoPrec = byLap[L - 1]?.[sigla(primo)]?.cum_time;
+      if (typeof suoPrec === 'number') return (cumLeader[L] = suoPrec + t);
+      return (cumLeader[L] = prec + t);
     }
+    const tutti = [];
+    for (const [num, v] of cur) if (v.lap === L) {
+      const x = tempoInSecondi(v.last_lap);
+      if (x != null) tutti.push(x);
+    }
+    t = mediana(tutti);
     if (t == null) return null;
     return (cumLeader[L] = prec + t);
+  }
+
+  // L'eta' gomma al giro L: ancora + giri trascorsi. Senza ancora si ripiega sul
+  // conteggio dallo stint (eta' relativa, meglio di nessuna) e, senza nemmeno
+  // quello, su null — che e' una risposta, non un buco da riempire (regola 6).
+  function etaDi(num, L) {
+    const a = ancoraEta.get(num);
+    if (a) return a.eta + (L - a.lap);
+    return inizioStint.has(num) ? L - inizioStint.get(num) + 1 : null;
   }
 
   // CHIUSURA DELLA RIGA. Chiamata nell'istante esatto in cui il contagiri passa a L:
@@ -141,7 +182,10 @@ export function creaByLapLive() {
     if (outLap) {
       stintDi.set(num, (stintDi.get(num) || 1) + 1);
       inizioStint.set(num, L);          // il giro di rientro e' il primo sulla gomma nuova
+      ancoraEta.delete(num);            // gomma nuova: l'ancora vecchia non vale piu'
     }
+    // l'ancora si posa alla PRIMA eta' che il feed manda in questo stint
+    if (v.tyre_age != null && !ancoraEta.has(num)) ancoraEta.set(num, { lap: L, eta: v.tyre_age + 1 });
     let cum = (rif != null && gap != null) ? rif + gap : null;
     // L'ECCEZIONE DELL'IN-LAP, misurata: entrando in pit lane il feed SMETTE di
     // aggiornare il gap (l'ultimo punto di cronometraggio e' prima dell'ingresso), e
@@ -175,8 +219,16 @@ export function creaByLapLive() {
       //
       // Il conteggio resta come RIPIEGO per chi si collega a meta' gara prima che il
       // feed abbia mandato lo stint: meglio un'eta' relativa che nessuna.
-      tyre_age: v.tyre_age != null ? v.tyre_age + 1
-                : (inizioStint.has(num) ? L - inizioStint.get(num) + 1 : null),
+      // ANCORATA, non ricopiata a ogni giro (corretto il 31/07/2026, trovato dal
+      // Director). Il feed manda l'eta' ma non a ogni passaggio: su Spa 2026
+      // arrivava a giri alterni, e la cella leggeva 8 → 10 → 10 → 12. Non e' un
+      // dettaglio estetico: l'eta' e' il termine che moltiplica il degrado
+      // (rho·eta), quindi un'eta' ferma o saltata e' un tempo sul giro sbagliato.
+      // Si prende percio' la PRIMA eta' vista nello stint come ancora e si conta
+      // da li'. L'offset del feed — che e' il motivo per cui non ce la si calcola
+      // da soli, perche' un set usato parte con dei giri addosso — resta dentro
+      // l'ancora; la cadenza degli aggiornamenti no.
+      tyre_age: etaDi(num, L),
       // STINT: l'IN-LAP APPARTIENE ALLO STINT VECCHIO. Si guida sulla gomma vecchia — e'
       // il giro in cui la si porta ai box. Ma NumberOfPitStops scatta gia' all'ingresso
       // in corsia, quindi contarlo li' spostava l'in-lap nello stint nuovo.
@@ -192,10 +244,16 @@ export function creaByLapLive() {
       stint: stintDi.get(num) || 1,
       in_lap: inLap,
       out_lap: outLap,
-      neutralized: !!sporco.get(num),
+      // Gli stati pista GREZZI visti in questo giro, come li manda il feed.
+      // La traduzione nell'alfabeto del simulatore ({1,2,4,5,6,7}) NON si fa
+      // qui: si fa nel ponte, in un posto solo. Un giro che vede due regimi li
+      // porta entrambi — il contratto ammette piu' simboli, e scegliere qui
+      // quale tenere sarebbe una decisione presa dove nessuno la cerca.
+      stato_pista: [...(sporco.get(num) ?? [])],
+      neutralized: (sporco.get(num)?.size ?? 0) > 0,
     };
     // il giro nuovo ricomincia pulito, a meno che la neutralizzazione sia ancora PIENA
-    sporco.set(num, PIENA.has(stato));
+    sporco.set(num, PIENA.has(stato) ? new Set([stato]) : new Set());
     memoPace = {};
   }
 
@@ -224,7 +282,7 @@ export function creaByLapLive() {
     if (!e || !e.type) return;
     if (e.type === 'snapshot') {
       // riallineamento completo (riconnessione o arrivo a meta' sessione)
-      piloti = new Map(); cur = new Map(); inLapDi = new Map(); sporco = new Map();
+      piloti = new Map(); cur = new Map(); inLapDi = new Map(); sporco = new Map(); ancoraEta = new Map();
       stintDi = new Map(); inizioStint = new Map();
       byLap = {}; cumLeader = {}; memoPace = {};
       for (const [num, d] of Object.entries(e.driver_list || {})) piloti.set(num, { ...d });
@@ -239,7 +297,7 @@ export function creaByLapLive() {
                          'tyre_age', 'pit_stops', 'retired', 'lap']) {
           if (k in c) v[k] = c[k];
         }
-        sporco.set(num, NEUTRO.has(stato));
+        sporco.set(num, NEUTRO.has(stato) ? new Set([stato]) : new Set());
       }
     } else if (e.type === 'driver_list') {
       for (const [num, d] of Object.entries(e.cars || {}))
@@ -250,14 +308,19 @@ export function creaByLapLive() {
       stato = e.status || stato;
       // una neutralizzazione sporca il giro IN CORSO di tutti: se ne accorgera' la
       // chiusura. Non si torna indietro a sporcare i giri gia' chiusi.
-      if (NEUTRO.has(stato)) for (const num of cur.keys()) sporco.set(num, true);
+      if (NEUTRO.has(stato)) {
+        for (const num of cur.keys()) {
+          if (!sporco.has(num)) sporco.set(num, new Set());
+          sporco.get(num).add(stato);
+        }
+      }
     } else if (e.type === 'lap_count') {
       giro = e.giro != null ? e.giro : giro;
       if (e.giri_totali != null) nLaps = e.giri_totali;
     } else if (e.type === 'reset_sessione') {
       // cambio sessione: si riparte da zero, come uno snapshot vuoto. Senza, i piloti di una
       // sessione passata (i rookie di FP1 coi loro numeri) resterebbero nell'anagrafica.
-      piloti = new Map(); cur = new Map(); inLapDi = new Map(); sporco = new Map();
+      piloti = new Map(); cur = new Map(); inLapDi = new Map(); sporco = new Map(); ancoraEta = new Map();
       stintDi = new Map(); inizioStint = new Map();
       byLap = {}; cumLeader = {}; memoPace = {};
       giro = null; nLaps = null; stato = 'AllClear';

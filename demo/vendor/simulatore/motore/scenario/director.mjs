@@ -1,3 +1,12 @@
+// ————————————————————————————————————————————————————————————————————————
+// ARTEFATTO GENERATO — non modificare qui.
+//   sorgente: simulatore/scenario/director.mjs
+//   generato: simulatore/web/trasporta_motore.mjs
+// Vercel serve demo/ come radice e non vede simulatore/: questa copia esiste
+// solo per essere ESEGUITA dal pannello live, dove il pre-calcolo non puo'
+// esistere. Modificare QUESTO file lo fa divergere dall'originale, e
+// `node web/trasporta_motore.mjs --verifica` fallisce (lo esegue la CI).
+// ————————————————————————————————————————————————————————————————————————
 // director.mjs — 🛡️ Simulation Director: l'ULTIMO controllo prima della pagina.
 //
 // DISTINZIONE COSTITUZIONALE (CLAUDE.md). Il Director valida l'OUTPUT a

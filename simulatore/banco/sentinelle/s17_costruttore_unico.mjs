@@ -30,8 +30,8 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { caricaGare2026 } from '../../provenienza/gare_2026.mjs';
-import { caricaPrior } from '../../provenienza/pitloss.mjs';
-import { caricaCostanti } from '../../scenario/director.mjs';
+import { caricaPrior } from '../../provenienza/pitloss_dati.mjs';
+import { caricaCostanti } from '../../scenario/director_dati.mjs';
 import { costruisciScenario, doveRientri, curvaDelQuando } from '../../scenario/costruttore.mjs';
 import { misuraG0 } from '../misure/g0.mjs';
 

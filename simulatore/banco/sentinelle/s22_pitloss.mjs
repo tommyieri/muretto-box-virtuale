@@ -29,9 +29,11 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { caricaPrior, perditaBox, GP_PER_GARA } from '../../provenienza/pitloss.mjs';
+import { perditaBox, GP_PER_GARA } from '../../provenienza/pitloss.mjs';
+import { caricaPrior } from '../../provenienza/pitloss_dati.mjs';
 import { caricaGare2026 } from '../../provenienza/gare_2026.mjs';
-import { validaSimulazione, simulazioneDaGara, caricaCostanti } from '../../scenario/director.mjs';
+import { validaSimulazione, simulazioneDaGara } from '../../scenario/director.mjs';
+import { caricaCostanti } from '../../scenario/director_dati.mjs';
 
 const b = banco('s22');
 const radice = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');

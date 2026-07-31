@@ -24,8 +24,8 @@ import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { caricaGara, fontiGare2026 } from '../../provenienza/gare_2026.mjs';
-import { caricaPrior } from '../../provenienza/pitloss.mjs';
-import { caricaCostanti } from '../../scenario/director.mjs';
+import { caricaPrior } from '../../provenienza/pitloss_dati.mjs';
+import { caricaCostanti } from '../../scenario/director_dati.mjs';
 import { MISURE_A_CONGELAMENTO, NOMI_REGISTRATI } from '../misure_congelamento.mjs';
 
 const b = banco('s14');

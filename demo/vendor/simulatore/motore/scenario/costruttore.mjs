@@ -1,3 +1,12 @@
+// ————————————————————————————————————————————————————————————————————————
+// ARTEFATTO GENERATO — non modificare qui.
+//   sorgente: simulatore/scenario/costruttore.mjs
+//   generato: simulatore/web/trasporta_motore.mjs
+// Vercel serve demo/ come radice e non vede simulatore/: questa copia esiste
+// solo per essere ESEGUITA dal pannello live, dove il pre-calcolo non puo'
+// esistere. Modificare QUESTO file lo fa divergere dall'originale, e
+// `node web/trasporta_motore.mjs --verifica` fallisce (lo esegue la CI).
+// ————————————————————————————————————————————————————————————————————————
 // costruttore.mjs — il COSTRUTTORE DI SCENARI, uno solo (E17).
 //
 // Nel vecchio repo due risposte adiacenti avevano due fisiche: `confrontaPit`

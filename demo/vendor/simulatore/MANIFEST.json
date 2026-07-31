@@ -20,8 +20,8 @@
   },
   "stile.css": {
    "sha256_sorgente": "1d0297850e7afd44c18187b9ac6f9f223ab6dbc001dad7e3738163f6dcd46c35",
-   "byte": 4731,
-   "ambito": "#pitKv"
+   "byte": 5137,
+   "ambito": ".sim-pannello"
   }
  }
 }

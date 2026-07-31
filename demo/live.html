@@ -7,17 +7,27 @@
     torre       classifica, gap, settori e micro-settori
     muretto     "se fermo questo pilota adesso, dove rientra?" — dal 22/07/2026
 
-  ATTENZIONE, DAL 31/07/2026 NON E' PIU' LO STESSO PANNELLO DI gara.html, e va detto
-  invece di lasciare in piedi la frase di prima (che era vera e oggi sarebbe una bugia).
-  gara.html e' passata al simulatore nuovo, che PRE-CALCOLA le risposte in Node e le
-  serve alla pagina gia' fatte (data/vista/): li' la pagina formatta e non calcola.
-  Qui non si puo': la gara sta succedendo, e una risposta pre-calcolata non esiste per
-  definizione. Quindi il live resta su demo/muretto.mjs, che calcola nel browser.
+  IL PANNELLO E' QUELLO DI gara.html (dal 31/07/2026). Le due pagine rispondono con lo
+  STESSO motore, ma per due strade diverse, e la differenza va capita prima di toccare
+  questo file:
 
-  E' una DIVERGENZA DICHIARATA, non una svista: replay e diretta rispondono con due
-  motori diversi finche' il live non avra' la sua strada (il collettore che calcola e
-  spinge la risposta, oppure il motore nuovo eseguito a bordo pagina). Chi tocca questo
-  file sappia che sta lavorando sul ramo vecchio.
+    gara.html   le risposte sono PRE-CALCOLATE in Node (data/vista/): la pagina formatta
+                e non calcola, come vuole la regola 8 del simulatore.
+    live.html   la gara sta succedendo: una risposta pre-calcolata su un giro non ancora
+                percorso non e' difficile, e' impossibile. Qui il motore gira DAVVERO in
+                pagina — non una seconda implementazione, lo STESSO codice trasportato da
+                simulatore/ come artefatto con manifest di hash (vendor/simulatore/motore/,
+                verificato in CI). Il ponte e' demo/ponte_live.mjs.
+
+  E LA PARITA' E' MISURATA, non promessa: demo/test_parita_live.mjs rigioca la gara vera
+  di Spa 2026 dal flusso del collettore e confronta la risposta con la vista
+  pre-calcolata. A parita' di celle le due risposte sono IDENTICHE campo per campo; dal
+  flusso vero la posizione di rientro coincide nel 95,5% dei casi, e lo scarto e' la somma
+  dei due limiti dichiarati del live (stato pista track-wide, giri cancellati ignoti), che
+  il pannello scrive sotto la risposta.
+
+  Chi cambia il pannello, il ponte o il cavo live faccia girare quel test: e' l'unica cosa
+  che impedisce alle due pagine di tornare a raccontare due gare diverse.
 
   La regola che tiene insieme tutto: fuori sessione la pagina si SVUOTA. Date e orari
   vengono dal calendario generato (f1db, UTC convertiti nel fuso del lettore; se l'ora
@@ -30,6 +40,7 @@
 <title>Live — Muretto Box Virtuale</title>
 <link rel="canonical" href="https://murettobox.com/live.html">
 <link rel="stylesheet" href="stile.css?v=250725c">
+<link rel="stylesheet" href="vendor/simulatore/stile.css?v=310726a">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>
@@ -119,7 +130,7 @@
       <button type="button" id="mu-simcont" hidden>continua &rarr;</button>
       <button type="button" id="mu-simesci">&#8634; dati reali</button>
     </div>
-    <div id="mu-kv"></div>
+    <div id="mu-kv" class="sim-pannello"></div>
     <div id="mu-nota" class="lv-nota">Durante una <b>gara</b> scegli qui il pilota da seguire e il
       pannello risponde alla domanda del muretto: <i>se lo fermo adesso, dove rientra?</i>
       Serve qualche giro perch&eacute; il passo-base di ogni pilota si misuri &mdash; il pannello
@@ -392,8 +403,20 @@ async function bootMappa(g){
 // non esiste, quindi il pannello non si accende — ed e' giusto: senza giri di gara e senza
 // un ordine di corsa, "se lo fermo adesso dove rientra" non e' una domanda.
 async function creaMurettoLive(g, deps = {}){
-  const [{ creaByLapLive }, { pannelloMuretto }, { creaGhostPlay }, { attaccaGlossario }] = await Promise.all([
-    import('./live_bylap.mjs?v=250724a'), import('./muretto.mjs?v=280726a'), import('./ghostplay.mjs?v=250724c'),
+  // I FORMATTATORI E IL MOTORE sono ARTEFATTI trasportati da simulatore/ (vendor/simulatore/),
+  // con manifest di hash e verifica in CI. Qui il motore gira DAVVERO in pagina: in diretta
+  // una risposta pre-calcolata non esiste, e il ponte (ponte_live.mjs) traduce le celle del
+  // flusso nel contratto del simulatore. E' lo stesso identico codice del replay — il
+  // cancello demo/test_parita_live.mjs lo misura su una gara vera.
+  const [{ creaByLapLive }, { disegna }, { pannello: pannelloNuovo }, { curva: curvaDelQuando },
+         { rispostaLive, LIMITI_LIVE }, { simDaFantasma }, { creaGhostPlay }, { attaccaGlossario }] = await Promise.all([
+    import('./live_bylap.mjs?v=310726a'),
+    import('./vendor/simulatore/render.mjs?v=310726a'),
+    import('./vendor/simulatore/pannello.mjs?v=310726a'),
+    import('./vendor/simulatore/curva.mjs?v=310726a'),
+    import('./ponte_live.mjs?v=310726a'),
+    import('./fantasma_sim.mjs?v=310726a'),
+    import('./ghostplay.mjs?v=250724c'),
     import('./glossario.mjs?v=250724e')]);
   const B = deps.B || creaByLapLive();
   // pista/mappa/torre servono alla SOSTA MESSA IN SCENA; pausaLive ferma i dati live durante
@@ -421,31 +444,38 @@ async function creaMurettoLive(g, deps = {}){
   // non al contenuto: auto_gara riscrive i dati senza toccare il BUILD, quindi non bustava
   // niente. La regola d'header invece fa rivalidare il browser a ogni richiesta.
   const j = async (u, d) => { try { return await (await fetch(u)).json(); } catch(_) { return d; } };
-  const [pitloss, neutroFondo, ragg, bandeClim, teamCol, modelloPasso] = await Promise.all([
-    j('data/pitloss.json', {}), j('data/neutralizzazione_fondo.json', null),
-    j('data/raggruppamento.json', null), j('data/climatologia_bande.json', null),
-    j('team_colori.json', {}),
-    // PASSO v2: deriva di gara + degrado. Assente -> il pannello torna da solo al passo
-    // piatto, senza inventare niente. Stesso file e stesso modello del replay: la diretta
-    // e la gara finita devono rispondere con gli stessi coefficienti.
-    j('data/modello_passo_2026.json', null)]);
+  // IL CONTESTO DEL MOTORE: le costanti che in Node si leggono dal disco (modello, prior
+  // pit-loss, limiti del Director, banda di rientro, durate stint 2026), congelate in un
+  // JSON solo da simulatore/web/trasporta_motore.mjs. Sono le STESSE che producono la
+  // vista pre-calcolata di gara.html: se qui ne arrivassero altre, diretta e replay
+  // risponderebbero con due tarature — che e' il modo elegante di avere due motori.
+  const [contestoLive, teamCol] = await Promise.all([
+    j('vendor/simulatore/motore/contesto_live.json?v=310726a', null),
+    j('team_colori.json', {})]);
   // colore del pilota per la messa in scena (dal team del giro corrente)
   const coloreDi = sg => { const L = B.giroPieno(); const t = B.byLap()[L]?.[sg]?.team; return (t && teamCol[t]) || '#9aa4b5'; };
 
-  // IL PIT-LOSS PRIMA CHE LA GARA LO DICA. Ordine dichiarato, dal piu' vicino al piu'
-  // lontano: (1) misurato sulla gara demo 2026 di questa pista, se c'e'; (2) il tipico
-  // del circuito dal fondo 2018-2026; (3) niente. Dal momento in cui la gara in corso ha
-  // tre soste misurabili comanda comunque lei — questo serve solo ai primi giri.
-  const cid = g.circuitId;
-  const vocePL = neutroFondo?.per_circuito?.[cid] || {};
-  const plDemo = g.gara_demo ? pitloss[g.gara_demo] : null;
-  const plFondo = vocePL.pit_loss_tipico_s ?? null;
-  const pitLossTabella = plDemo ?? plFondo ?? null;
-  const provPitLoss = plDemo != null
-    ? `misurato sulla gara 2026 di questa pista`
-    : (plFondo != null ? `tipico del circuito su ${vocePL.pit_loss_n_soste} soste dal 2018` : null);
+  // IL PIT-LOSS non si sceglie piu' qui. Lo sceglie il motore, dal suo prior per circuito
+  // (data/priors/pitloss_priors.json, promosso a misura interna dove il cancello e'
+  // passato) e lo dichiara nella targhetta della perdita. Le tre tabelle che questa pagina
+  // caricava per conto suo — pitloss.json, neutralizzazione_fondo.json,
+  // raggruppamento.json — erano la scelta del pannello VECCHIO, e tenerle in piedi accanto
+  // al motore nuovo avrebbe voluto dire due fonti per lo stesso numero (E12).
+  //
+  // LA VISTA per i formattatori. gara.html la legge dall'indice della vista pre-calcolata;
+  // qui si compone dal contesto trasportato, con gli stessi campi e lo stesso significato:
+  // i componenti restano quelli del simulatore, non una variante per il live.
+  const vistaLive = contestoLive && {
+    _targhetta: {
+      tipo: 'diretta — il motore del simulatore eseguito in pagina sulle celle del flusso',
+      generata_da: 'demo/ponte_live.mjs',
+      data: new Date().toISOString().slice(0, 10),
+    },
+    modello: contestoLive.modelloTarghetta,
+    mescole: contestoLive.mescole,
+  };
 
-  let scelto = null, boxAperto = false, mescolaScelta = null, ridisegna = null;
+  let scelto = null, boxAperto = false, ridisegna = null;
   let lastRes = null, gp = null;   // ultima risposta del pannello + la messa in scena in corso
 
   // LA GRIGLIA DI SCELTA. Non una tendina: le sigle in chiaro, con la posizione, come una
@@ -527,63 +557,87 @@ async function creaMurettoLive(g, deps = {}){
     el('mu-box').classList.toggle('on', boxAperto);
     if (!boxAperto) { kv.innerHTML = ''; return; }
 
-    const r = pannelloMuretto({
-      byLap: bl, nLaps, pace: B.pace(L), laps: null,
-      // gara: null -> niente scenari di degrado. Le bande climatologiche sono indicizzate
-      // sul nome della gara demo, e una pista non ancora corsa nel 2026 non ce l'ha.
-      // Tacere e' l'unica risposta onesta: uno scenario senza banda sarebbe inventato.
-      gara: g.gara_demo || null, circuitId: cid,
-      driver: scelto, freezeLap: L, pitLap: pitL, mescola: mescolaScelta,
-      pitLossTabella, penalita: null, nonParten: new Set(),
-      neutroFondo, ragg, bandeClim, modelloPasso,
+    if (!vistaLive) {
+      kv.innerHTML = `<div class="pitmsg">Il motore non e' disponibile in questa pagina.
+        <span class="sub">manca vendor/simulatore/motore/contesto_live.json:
+        si genera con <code>node web/trasporta_motore.mjs</code> nel simulatore</span></div>`;
+      return;
+    }
+    // LA RISPOSTA, calcolata QUI perche' in diretta non puo' essere pre-calcolata. Il ponte
+    // traduce le celle del flusso nel contratto e chiama lo stesso montaggio del replay.
+    const s = rispostaLive({
+      byLap: bl, nGiriGara: nLaps, nomeGara: g.nome,
+      pilota: scelto, freezeLap: L, contestoLive,
     });
-    // quando il riferimento manca, a dirlo e' il pannello stesso (muretto.mjs): un
-    // secondo avviso qui sopra rischiava di contraddirlo, ed e' esattamente cio' che
-    // faceva — "nessun riferimento" e un centimetro sotto "+22,0 s".
-    kv.innerHTML = r.html
-      + (provPitLoss ? `<div class="kv"><span class="k">Riferimento</span>
-           <span class="v dim">pit-loss di partenza: ${provPitLoss}</span></div>` : '');
+    if (!s) {
+      kv.innerHTML = `<div class="pitmsg">A questo giro non si sa su che gomma sta ${scelto}.
+        <span class="sub">senza la mescola il motore non risponde, invece di indovinarla</span></div>`;
+      lastRes = null; el('mu-sim').hidden = true; return;
+    }
+    if (s.senza_risposta) {
+      kv.innerHTML = `<div class="pitmsg">${s.senza_risposta}</div>`;
+      lastRes = null; el('mu-sim').hidden = true; return;
+    }
+    kv.replaceChildren(disegna(pannelloNuovo(vistaLive, s)));
+    // LA CURVA DEL QUANDO: per ogni giro candidato, quanto costa fermarsi li' rispetto al
+    // momento migliore. Il pannello vecchio non sapeva porre questa domanda.
+    if (s.approvato !== false && s.curva && s.curva.length) kv.append(disegna(curvaDelQuando(vistaLive, s)));
+    // I DUE LIMITI DEL LIVE, in fondo alla risposta e non in un commento: chi legge un
+    // numero deve vedere da quale conoscenza della gara e' uscito.
+    const lim = document.createElement('p');
+    lim.className = 'nota limite';
+    lim.textContent = 'In diretta lo stato pista e\' quello della PISTA, non della singola auto'
+      + ` (accordo ${(100 * LIMITI_LIVE.stato_track_wide.accordo).toFixed(1)}% col dato ufficiale)`
+      + ' e il feed non revoca i giri cancellati'
+      + ` (${(100 * LIMITI_LIVE.giri_cancellati_ignoti.quota_sui_verdi).toFixed(1)}% di giri verdi in piu', misurato).`;
+    kv.append(lim);
     attaccaGlossario(kv);   // il gergo diventa toccabile (spiegazione in parole piane)
-    lastRes = r;
-    if (r && r.ok && r.sim && r.sim.laps && r.sim.laps.length > 1) el('mu-sim').hidden = false;
+    lastRes = s;
+    el('mu-sim').hidden = !(s.approvato !== false && s.fantasma && s.fantasma.length);
   };
 
   el('mu-griglia').addEventListener('click', e => {
     const b = e.target.closest('[data-drv]'); if (!b) return;
-    scelto = b.dataset.drv; boxAperto = false; mescolaScelta = null; ridisegna();
+    scelto = b.dataset.drv; boxAperto = false; ridisegna();
   });
   el('mu-cambia').addEventListener('click', () => {
-    scelto = null; boxAperto = false; mescolaScelta = null; ridisegna();
+    scelto = null; boxAperto = false; ridisegna();
   });
   el('mu-box').addEventListener('click', () => { boxAperto = !boxAperto; ridisegna(); });
-  // i bottoni della mescola vivono dentro l'HTML del pannello, riscritto a ogni giro: la
-  // delega sul contenitore sopravvive alle riscritture, un listener sul bottone no
-  el('mu-kv').addEventListener('click', e => {
-    const b = e.target.closest('[data-mesc]'); if (!b) return;
-    mescolaScelta = mescolaScelta === b.dataset.mesc ? null : b.dataset.mesc;
-    ridisegna();
-  });
+  // IL SELETTORE MESCOLA NON E' PIU' AGGANCIATO, ed e' una perdita solo apparente.
+  // Misurato il 31/07/2026 sul pannello vecchio, su Spa: cambiando la mescola scelta la
+  // risposta cambiava in 0 casi su 24 (stessa posizione, stesso giro di rientro). Il
+  // motivo sta nel modello: nel 2026 le mescole NON separano il degrado (SOFT-HARD
+  // p = 0,209), quindi non c'e' niente da far cambiare. Il bottone restava vivo e
+  // rispondeva sempre la stessa cosa, che e' peggio di un bottone spento.
+  // Il selettore resta VISIBILE — mostra su che gomma si sta — e tornera' a decidere
+  // quando la Fase 3 (delta per mescola sul fondo, col suo cancello fuori campione)
+  // avra' qualcosa da dire. Fino ad allora e' un'informazione, non un comando.
   // la torre resta un secondo modo di scegliere, ma SOLO prima di aver scelto: dopo, un
   // click distratto sulla classifica non deve cambiare il pilota di cui sei il muretto
   el('tw-list').addEventListener('click', e => {
     if (scelto) return;
     const r = e.target.closest('.tw-row[data-sigla]'); if (!r) return;
-    scelto = r.dataset.sigla; boxAperto = false; mescolaScelta = null; ridisegna();
+    scelto = r.dataset.sigla; boxAperto = false; ridisegna();
   });
 
   // ---- LA SOSTA MESSA IN SCENA (ghostplay) ------------------------------------------
   function avviaSim(){
-    if (!pista || !lastRes || !lastRes.sim) return;
+    if (!pista || !lastRes || lastRes.approvato === false) return;
+    // la traccia arriva dal record del motore (`fantasma`), non da un secondo calcolo:
+    // stesso adattatore di gara.html, quindi la sosta si vede uguale nelle due pagine
+    const sim = simDaFantasma(lastRes.fantasma, scelto, lastRes.freeze_lap);
+    if (!sim) { el('mu-sim').hidden = true; return; }
     pausaLive.attiva = true;                    // i dati live restano fermi durante la scena
     if (mappa) mappa.setAcceso(false);          // spegni l'overlay GPS: in scena resta il fantasma
     el('mu-sim').hidden = true; el('mu-simbar').hidden = false; el('mu-simcont').hidden = true;
     el('mu-simtag').innerHTML = `Simulazione: <b>${scelto}</b> si ferma adesso &middot; rivali al passo reale`;
-    gp = creaGhostPlay({ sim: lastRes.sim, pista, coloreDi, onTower: renderSimTorre,
-      giroRisposta: lastRes.giroRisposta,
+    gp = creaGhostPlay({ sim, pista, coloreDi, onTower: renderSimTorre,
+      giroRisposta: lastRes.pannello.giro_di_rientro,
       // fase 1 finita: il fantasma è al giro-rientro, esattamente dove il pannello lo valuta
       onRientro: () => {
-        const suff = lastRes.su_totale ? ` tra i ${lastRes.su_totale} a pari giro` : '';
-        el('mu-simtag').innerHTML = `&#128205; <b>${scelto} rientra ${lastRes.rientro}&ordm;</b>${suff}`
+        const suff = lastRes.pannello.su_quanti ? ` tra i ${lastRes.pannello.su_quanti} a pari giro` : '';
+        el('mu-simtag').innerHTML = `&#128205; <b>${scelto} rientra ${lastRes.pannello.posizione}&ordm;</b>${suff}`
           + ` &mdash; come dice il pannello. Oltre &egrave; una proiezione (i rivali non reagiscono).`;
         el('mu-simcont').hidden = false;
       },

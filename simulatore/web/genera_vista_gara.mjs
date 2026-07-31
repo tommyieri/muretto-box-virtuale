@@ -30,13 +30,14 @@ import { mkdirSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { caricaGare2026 } from '../provenienza/gare_2026.mjs';
-import { caricaPrior } from '../provenienza/pitloss.mjs';
-import { regimeNeutralizzato } from '../provenienza/definizioni.mjs';
-import { simboliStatus, MESCOLE_SLICK, MESCOLE_SLICK_ATTUALI, MESCOLE_BAGNATO } from '../provenienza/vocabolario.mjs';
-import { caricaCostanti } from '../scenario/director.mjs';
-import { doveRientri, curvaDelQuando } from '../scenario/costruttore.mjs';
-import { pianoOttimo } from '../scenario/piano.mjs';
-import { allarmiPiano, caricaDurate2026 } from '../scenario/allarmi.mjs';
+import { caricaPrior } from '../provenienza/pitloss_dati.mjs';
+import { MESCOLE_SLICK_ATTUALI, MESCOLE_BAGNATO } from '../provenienza/vocabolario.mjs';
+import { caricaCostanti } from '../scenario/director_dati.mjs';
+import { caricaDurate2026 } from '../scenario/allarmi_dati.mjs';
+// Il record della risposta NON si monta qui: lo monta scenario/risposta.mjs, che
+// e' lo stesso modulo che esegue il pannello LIVE nel browser. Due assemblaggi
+// dello stesso record renderebbero la parita' diretta/replay una coincidenza.
+import { rispostaPer } from '../scenario/risposta.mjs';
 
 const RADICE = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DOVE_DEFAULT = path.join(RADICE, '..', 'demo', 'data', 'vista');
@@ -64,116 +65,6 @@ function motivoWet() {
       ?? 'modello del bagnato non ancora validato: il selettore resta spento';
 }
 
-function mescolaAlGiro(gara, Lf, pilota) {
-  const c = gara.perPilota.get(pilota)?.get(Lf);
-  return c && MESCOLE_SLICK.has(c.compound) ? c.compound : null;
-}
-
-function regimeAlGiro(gara, Lf, pilota) {
-  const c = gara.perPilota.get(pilota)?.get(Lf);
-  if (!c || c.status === null || !regimeNeutralizzato(c)) return null;
-  return simboliStatus(c.status).has('4') ? 'SC' : 'VSC';
-}
-
-/** Un record per (pilota, giro): la risposta, la curva, il piano. Null se non c'e' risposta. */
-function scenarioPer(nomeGara, gara, Lf, pilota, contesto, extra) {
-  const mescola = mescolaAlGiro(gara, Lf, pilota);
-  if (mescola === null) return null;               // gomma ignota o da bagnato: non si finge
-  const giroPit = Lf + 1;
-  let rientro;
-  try {
-    rientro = doveRientri({ gara: nomeGara, freezeLap: Lf, pilota, giroPit, mescola }, contesto);
-  } catch (e) {
-    return { freeze_lap: Lf, senza_risposta: e.message };
-  }
-  // UN RIFIUTO DEL DIRECTOR E' UNA RISPOSTA, e va mostrata. Il componente `pannello` ha
-  // il suo ramo apposta: niente numeri, solo i motivi (regola 6). Trattarlo come
-  // "nessuna risposta" avrebbe nascosto all'utente proprio il caso in cui il guardiano
-  // runtime ha fermato qualcosa — che e' l'informazione piu' utile che ci sia.
-  if (rientro && rientro.approvato === false) {
-    return {
-      freeze_lap: Lf, _data: DATA, gara: nomeGara, pilota, n_giri: gara.nGiri,
-      approvato: false,
-      motivi_rifiuto: (rientro.direttore?.violazioni ?? [])
-        .filter((v) => v.severita === 'FATAL')
-        .map((v) => v.messaggio ?? v.codice),
-    };
-  }
-  if (!rientro || rientro.posizione === null || rientro.posizione === undefined) {
-    return { freeze_lap: Lf, senza_risposta: 'il motore non ha una risposta a questo giro' };
-  }
-  const curva = curvaDelQuando({ gara: nomeGara, freezeLap: Lf, pilota, mescola }, contesto);
-  const ottimo = pianoOttimo(
-    { gara: nomeGara, freezeLap: Lf, pilota, giroFinale: gara.nGiri, kMax: 3 }, contesto);
-
-  // IL FANTASMA, e solo lui: la proiezione del pilota instradato giro per giro. Il reale
-  // sta gia' in demo/data/<gara>.json e non si duplica.
-  const fantasma = [];
-  for (const [drv, passi] of Object.entries(rientro.traccia ?? {})) {
-    for (const p of passi ?? []) {
-      fantasma.push({ drv, giro: p.lap, cum: Number(p.cum_time.toFixed(3)),
-                      ...(p.in_lap ? { in_box: true } : {}),
-                      ...(p.out_lap ? { fuori_box: true } : {}) });
-    }
-  }
-
-  return {
-    freeze_lap: Lf,
-    // i tre campi che i componenti leggono da `s` e che il costruttore non mette: senza,
-    // `pannello` costruirebbe targhette senza data e la mappa non avrebbe i riferimenti
-    // dello stazionario. Meglio due numeri ripetuti che un componente che si arrangia.
-    _data: DATA,
-    // `pannello` li legge da `s`, non dal file che li contiene: senza, num() rifiuta un
-    // undefined e l'intero componente cade. Costano una manciata di byte per giro ed
-    // evitano di dover forkare il componente — che sarebbe la vera spesa.
-    gara: nomeGara,
-    pilota,
-    n_giri: gara.nGiri,
-    stazionario_prior_s: extra.prior.stazionario_tipico_s,
-    stazionario_pavimento_s: extra.prior.stazionario_minimo_fisico_s,
-    mescola_scelta: mescola,
-    regime: regimeAlGiro(gara, Lf, pilota),
-    approvato: rientro.approvato,
-    pannello: {
-      posizione: rientro.posizione,
-      su_quanti: rientro.su_quanti,
-      giro_di_rientro: rientro.giro_di_rientro,
-      davanti: rientro.davanti,
-      dietro: rientro.dietro,
-      gap_soppressi: rientro.gap_soppressi,
-      banda_posizione: rientro.banda_posizione,
-    },
-    perdita: {
-      valore: rientro.perdita.perdita,
-      verde: rientro.perdita.perdita_verde,
-      fattore: rientro.perdita.fattore,
-      circuito: rientro.perdita.circuito,
-      fallback: rientro.perdita.fallback,
-      targhetta: rientro.perdita.targhetta,
-    },
-    curva: curva.curva,
-    minimo: curva.minimo,
-    banda_presente: curva.banda_presente,
-    nota_banda: curva.nota_banda,
-    orizzonte: curva.orizzonte,
-    assunzioni: rientro.assunzioni,
-    piano: ottimo.migliore === null ? null : {
-      k: ottimo.migliore.k,
-      soste: ottimo.migliore.piano.soste,
-      stint: ottimo.migliore.piano.stint,
-      alternative: ottimo.per_k,
-      mescole_gia_usate: ottimo.mescole_gia_usate,
-      vincolo_regolamento: ottimo.vincolo_regolamento,
-      allarmi: allarmiPiano(ottimo.migliore.piano, extra.durate2026),
-      limite: extra.esitoPiano.limite_dichiarato.conseguenza,
-      limite_perche: extra.esitoPiano.limite_dichiarato.spiegazione,
-    },
-    fantasma,
-    violazioni_director: rientro.direttore.violazioni.length,
-    sospetti_director: rientro.direttore.riepilogo.sospetti,
-  };
-}
-
 export function generaVistaGara(radice, nomeGara, gara, contesto, extra, dove) {
   const dir = path.join(dove, nomeGara);
   rmSync(dir, { recursive: true, force: true });
@@ -197,7 +88,7 @@ export function generaVistaGara(radice, nomeGara, gara, contesto, extra, dove) {
   for (const pilota of [...gara.perPilota.keys()].sort()) {
     const giri = [];
     for (let Lf = PRIMO_CONGELAMENTO; Lf <= ultimo; Lf += 1) {
-      const s = scenarioPer(nomeGara, gara, Lf, pilota, contesto, extra);
+      const s = rispostaPer(nomeGara, gara, Lf, pilota, contesto, extra, DATA);
       if (s !== null) giri.push(s);
     }
     const conRisposta = giri.filter((g) => !g.senza_risposta).length;

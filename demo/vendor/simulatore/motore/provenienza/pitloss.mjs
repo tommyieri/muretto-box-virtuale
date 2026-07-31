@@ -1,3 +1,12 @@
+// ————————————————————————————————————————————————————————————————————————
+// ARTEFATTO GENERATO — non modificare qui.
+//   sorgente: simulatore/provenienza/pitloss.mjs
+//   generato: simulatore/web/trasporta_motore.mjs
+// Vercel serve demo/ come radice e non vede simulatore/: questa copia esiste
+// solo per essere ESEGUITA dal pannello live, dove il pre-calcolo non puo'
+// esistere. Modificare QUESTO file lo fa divergere dall'originale, e
+// `node web/trasporta_motore.mjs --verifica` fallisce (lo esegue la CI).
+// ————————————————————————————————————————————————————————————————————————
 // pitloss.mjs — la perdita ai box che il banco dà al kernel, con targhetta.
 //
 // È un PRIOR ESTERNO (regola 2): 2.106 stop misurati 2022-26, file
