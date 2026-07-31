@@ -26,7 +26,7 @@
 // demo/data/<gara>.json, che e' cio' da cui disegna la pista. Riscriverli qui sarebbe una
 // seconda copia della stessa verita' — l'errore che questo progetto paga da sempre. Il
 // FANTASMA invece resta: quello e' proiezione, non dato, e senza non c'e' l'animazione.
-import { mkdirSync, readFileSync, writeFileSync, rmSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync, rmSync, readdirSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { caricaGare2026 } from '../provenienza/gare_2026.mjs';
@@ -113,6 +113,45 @@ export function generaVistaGara(radice, nomeGara, gara, contesto, extra, dove) {
   return indice;
 }
 
+/**
+ * Il manifest della vista, letto da CIO' CHE STA SU DISCO.
+ *
+ * NON dall'elenco delle gare di questa esecuzione, ed e' una distinzione che e'
+ * costata: `auto_gara.py` chiama il generatore con UNA gara sola — quella appena
+ * corsa — e il manifest veniva riscritto con quella sola voce. La prima domenica
+ * dopo la messa in produzione il sito avrebbe perso la mappa dei nomi di tutte le
+ * altre gare, e il pannello sarebbe rimasto muto su dieci gare su undici. Da solo,
+ * di notte, senza che nessuno avesse toccato niente.
+ *
+ * Un indice deve descrivere l'archivio, non l'ultimo giro di manovella.
+ *
+ * LA MAPPA DEI NOMI sta qui e non cablata nella pagina: il sito chiama una gara
+ * "Gran Bretagna", il simulatore "GranBretagna". E24 del catalogo e' proprio lo
+ * spazio nel nome che spezza i glob — il ponte e' un dato, non un `if` in gara.html.
+ */
+export function manifestDaDisco(dove) {
+  const gare = readdirSync(dove, { withFileTypes: true })
+    .filter((v) => v.isDirectory() && existsSync(path.join(dove, v.name, 'indice.json')))
+    .map((v) => v.name)
+    .sort();
+  const cartellaDi = {};
+  for (const g of gare) cartellaDi[g.replace(/([a-z])([A-Z])/g, '$1 $2')] = g;
+  return {
+    gare,
+    cartella_di: cartellaDi,
+    generato_il: DATA,
+    nota: 'cartella_di mappa il nome del sito (con spazi) su quello della cartella (senza). '
+        + 'L\'elenco viene dalle cartelle presenti su disco, NON dalle gare rigenerate '
+        + 'nell\'ultima esecuzione: il generatore gira anche su una gara sola.',
+  };
+}
+
+export function scriviManifest(dove) {
+  const m = manifestDaDisco(dove);
+  writeFileSync(path.join(dove, 'manifest.json'), JSON.stringify(m, null, 1));
+  return m;
+}
+
 function main() {
   const argv = process.argv.slice(2);
   const iDove = argv.indexOf('--dove');
@@ -165,17 +204,9 @@ function main() {
     console.log(`  ${nomeGara.padEnd(16)} ${String(Object.keys(ind.piloti).length).padStart(3)} piloti `
       + `${String(n).padStart(5)} risposte  ${((Date.now() - t) / 1000).toFixed(0)} s`);
   }
-  // LA MAPPA DEI NOMI, invece di cablarla nella pagina. Il sito chiama una gara
-  // "Gran Bretagna", il simulatore "GranBretagna" — ed e' giusto cosi': E24 del catalogo
-  // e' proprio lo spazio nel nome che spezza i glob. Il ponte sta qui, in un dato, non in
-  // un `if` dentro gara.html.
-  const cartellaDi = {};
-  for (const g of tutte) cartellaDi[g.replace(/([a-z])([A-Z])/g, '$1 $2')] = g;
-  writeFileSync(path.join(dove, 'manifest.json'), JSON.stringify({
-    gare: tutte, cartella_di: cartellaDi, generato_il: DATA,
-    nota: 'cartella_di mappa il nome del sito (con spazi) su quello della cartella (senza)',
-  }, null, 1));
-  console.log(`\n${totScen} risposte pre-calcolate su ${tutte.length} gare`);
+  scriviManifest(dove);
+  console.log(`\n${totScen} risposte pre-calcolate su ${tutte.length} gare `
+    + `(il manifest ne elenca ${manifestDaDisco(dove).gare.length}, cioe' tutte quelle su disco)`);
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) main();
