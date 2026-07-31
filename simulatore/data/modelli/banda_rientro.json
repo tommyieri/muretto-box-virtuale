@@ -22,18 +22,23 @@
       "asimmetrica": false,
       "bias_mediano_posizioni": 0,
       "n_casi": 314,
-      "copertura_fuori_campione": 0.8758,
-      "copertura_dentro_campione": 0.8917,
+      "copertura_fuori_campione": 0.879,
+      "copertura_dentro_campione": 0.879,
       "circuiti_sotto_livello": [
         {
-          "gara": "Australia",
-          "copertura": 0.5357,
-          "n_casi": 28
+          "gara": "Cina",
+          "copertura": 0.4615,
+          "n_casi": 13
         },
         {
-          "gara": "Cina",
-          "copertura": 0.5385,
-          "n_casi": 13
+          "gara": "Canada",
+          "copertura": 0.7,
+          "n_casi": 20
+        },
+        {
+          "gara": "Australia",
+          "copertura": 0.7143,
+          "n_casi": 28
         },
         {
           "gara": "Belgio",
@@ -41,7 +46,7 @@
           "n_casi": 19
         }
       ],
-      "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 87.6% fuori campione"
+      "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 87.9% fuori campione"
     },
     "NEUTRA": {
       "semi_ampiezza": 3,
@@ -52,17 +57,17 @@
       "asimmetrica": true,
       "bias_mediano_posizioni": 1,
       "n_casi": 84,
-      "copertura_fuori_campione": 0.6548,
+      "copertura_fuori_campione": 0.7738,
       "copertura_dentro_campione": 0.8571,
       "circuiti_sotto_livello": [
         {
           "gara": "Monaco",
-          "copertura": 0.5085,
+          "copertura": 0.678,
           "n_casi": 59
         }
       ],
-      "targhetta": "banda ±3 posizioni, misurata su 84 soste vere del 2026: copre il 65.5% fuori campione"
+      "targhetta": "banda ±3 posizioni, misurata su 84 soste vere del 2026: copre il 77.4% fuori campione"
     }
   },
-  "contesto_non_separa": "misurato: la vicinanza dei rivali NON separa l'errore in modo distinguibile dal caso (p = 0.46975 alla soglia dichiarata di 2 s). Una banda sola per contesto, non due: una distinzione senza differenza misurata non si tiene \"tanto per\""
+  "contesto_non_separa": "misurato: la vicinanza dei rivali NON separa l'errore in modo distinguibile dal caso (p = 0.74823 alla soglia dichiarata di 2 s). Una banda sola per contesto, non due: una distinzione senza differenza misurata non si tiene \"tanto per\""
 }

@@ -98,8 +98,28 @@ export function misuraRientro(gare, { rho, delta70, prior, cancelli }) {
         if (!insieme.some((c) => c.drv === drv)) { scarta('il pilota non ha passo: previsione null, nessuna posizione'); continue; }
         if (insieme.length < minPiloti) { scarta(`meno di ${minPiloti} piloti confrontabili`); continue; }
 
+        // LA POSIZIONE PREVISTA si conta nel campo del MOTORE (e' quella che il
+        // pannello stampa). LA POSIZIONE VERA si conta nel campo VERO — tutte le
+        // auto che a quel giro hanno un cumulato — perche' e' quella che l'utente
+        // conta guardando la gara.
+        //
+        // Prima si contavano ENTRAMBE dentro il campo del motore, e la banda
+        // copriva benissimo un errore che l'utente non vede: il motore lascia
+        // fuori chi non ha un passo misurato (misurato: il suo campo e' ampio 17
+        // dove il vero e' 20, e i mancanti sono quasi tutti DAVANTI), quindi
+        // "P9 su 17" e "P9 su 20" non sono la stessa promessa. Il divario fra
+        // l'88,5% dichiarato e il 67,3% misurato sul prodotto nasceva per meta'
+        // qui e per meta' dal regime letto dal futuro (corretto sopra).
+        //
+        // Da ora la banda si tara su cio' che l'utente sperimenta. Se il numero
+        // scende, e' perche' era il metro a essere gentile.
         const prevista = rango(insieme, (c) => r.cum[c.drv], drv);
-        const reale = rango(insieme, (c) => c.cumReale, drv);
+        const campoVero = [];
+        for (const [altro, altreCelle] of gara.perPilota) {
+          const b = altreCelle.get(L + 1);
+          if (b && b.cum_time !== null) campoVero.push({ drv: altro, cumReale: b.cum_time });
+        }
+        const reale = rango(campoVero, (c) => c.cumReale, drv);
 
         let secco = 'PULITA';
         if (regime !== null) secco = 'NEUTRA';
