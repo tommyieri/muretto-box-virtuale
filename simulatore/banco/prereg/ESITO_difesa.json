@@ -17,7 +17,7 @@
       "n_gare": 11,
       "copertura_dentro_campione": 0.8543,
       "copertura_fuori_campione": 0.8543,
-      "copertura_fuori_campione_n_meno_1": 0.7236,
+      "copertura_fuori_campione_n_meno_1": 0.7437,
       "copre": true,
       "minimale": true,
       "passa": true,
@@ -93,10 +93,10 @@
         "n_gare": 9,
         "copertura_dentro_campione": 0.8889,
         "copertura_fuori_campione": 0.8889,
-        "copertura_fuori_campione_n_meno_1": 0.5556,
+        "copertura_fuori_campione_n_meno_1": 0.8056,
         "copre": true,
-        "minimale": true,
-        "passa": true,
+        "minimale": false,
+        "passa": false,
         "bias_mediano_posizioni": 0,
         "asimmetrica": false,
         "banda_dichiarata": {
@@ -158,7 +158,7 @@
         "n_gare": 11,
         "copertura_dentro_campione": 0.8705,
         "copertura_fuori_campione": 0.8705,
-        "copertura_fuori_campione_n_meno_1": 0.7446,
+        "copertura_fuori_campione_n_meno_1": 0.7518,
         "copre": true,
         "minimale": true,
         "passa": true,
@@ -231,9 +231,9 @@
         "n": 3,
         "n_casi": 84,
         "n_gare": 8,
-        "copertura_dentro_campione": 0.8571,
+        "copertura_dentro_campione": 0.9167,
         "copertura_fuori_campione": 0.7738,
-        "copertura_fuori_campione_n_meno_1": 0.6429,
+        "copertura_fuori_campione_n_meno_1": 0.6548,
         "copre": false,
         "minimale": true,
         "passa": false,
@@ -246,32 +246,32 @@
         "per_gara": {
           "Australia": {
             "n_casi": 4,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Belgio": {
             "n_casi": 1,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Canada": {
             "n_casi": 5,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Cina": {
             "n_casi": 1,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Giappone": {
             "n_casi": 3,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "GranBretagna": {
             "n_casi": 10,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Monaco": {
@@ -281,7 +281,7 @@
           },
           "Spagna": {
             "n_casi": 1,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           }
         }
@@ -295,7 +295,7 @@
         "n_gare": 11,
         "copertura_dentro_campione": 0.879,
         "copertura_fuori_campione": 0.879,
-        "copertura_fuori_campione_n_meno_1": 0.7611,
+        "copertura_fuori_campione_n_meno_1": 0.7739,
         "copre": true,
         "minimale": true,
         "passa": true,
@@ -368,9 +368,9 @@
         "n": 3,
         "n_casi": 84,
         "n_gare": 8,
-        "copertura_dentro_campione": 0.8571,
+        "copertura_dentro_campione": 0.9167,
         "copertura_fuori_campione": 0.7738,
-        "copertura_fuori_campione_n_meno_1": 0.6429,
+        "copertura_fuori_campione_n_meno_1": 0.6548,
         "copre": false,
         "minimale": true,
         "passa": false,
@@ -383,32 +383,32 @@
         "per_gara": {
           "Australia": {
             "n_casi": 4,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Belgio": {
             "n_casi": 1,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Canada": {
             "n_casi": 5,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Cina": {
             "n_casi": 1,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Giappone": {
             "n_casi": 3,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "GranBretagna": {
             "n_casi": 10,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Monaco": {
@@ -418,7 +418,7 @@
           },
           "Spagna": {
             "n_casi": 1,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           }
         }
@@ -426,14 +426,80 @@
     },
     "falliti": [
       {
+        "secco": "PULITA",
+        "sufficiente": true,
+        "n": 1,
+        "n_casi": 36,
+        "n_gare": 9,
+        "copertura_dentro_campione": 0.8889,
+        "copertura_fuori_campione": 0.8889,
+        "copertura_fuori_campione_n_meno_1": 0.8056,
+        "copre": true,
+        "minimale": false,
+        "passa": false,
+        "bias_mediano_posizioni": 0,
+        "asimmetrica": false,
+        "banda_dichiarata": {
+          "sotto": 1,
+          "sopra": 1
+        },
+        "per_gara": {
+          "Australia": {
+            "n_casi": 5,
+            "n_loo": 1,
+            "copertura": 0.8
+          },
+          "Austria": {
+            "n_casi": 3,
+            "n_loo": 1,
+            "copertura": 1
+          },
+          "Canada": {
+            "n_casi": 3,
+            "n_loo": 1,
+            "copertura": 0.6667
+          },
+          "Cina": {
+            "n_casi": 5,
+            "n_loo": 1,
+            "copertura": 0.8
+          },
+          "Giappone": {
+            "n_casi": 5,
+            "n_loo": 1,
+            "copertura": 1
+          },
+          "GranBretagna": {
+            "n_casi": 2,
+            "n_loo": 1,
+            "copertura": 1
+          },
+          "Miami": {
+            "n_casi": 2,
+            "n_loo": 1,
+            "copertura": 1
+          },
+          "Monaco": {
+            "n_casi": 6,
+            "n_loo": 1,
+            "copertura": 1
+          },
+          "Spagna": {
+            "n_casi": 5,
+            "n_loo": 1,
+            "copertura": 0.8
+          }
+        }
+      },
+      {
         "secco": "NEUTRA",
         "sufficiente": true,
         "n": 3,
         "n_casi": 84,
         "n_gare": 8,
-        "copertura_dentro_campione": 0.8571,
+        "copertura_dentro_campione": 0.9167,
         "copertura_fuori_campione": 0.7738,
-        "copertura_fuori_campione_n_meno_1": 0.6429,
+        "copertura_fuori_campione_n_meno_1": 0.6548,
         "copre": false,
         "minimale": true,
         "passa": false,
@@ -446,32 +512,32 @@
         "per_gara": {
           "Australia": {
             "n_casi": 4,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Belgio": {
             "n_casi": 1,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Canada": {
             "n_casi": 5,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Cina": {
             "n_casi": 1,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Giappone": {
             "n_casi": 3,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "GranBretagna": {
             "n_casi": 10,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Monaco": {
@@ -481,7 +547,7 @@
           },
           "Spagna": {
             "n_casi": 1,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           }
         }
@@ -492,9 +558,9 @@
         "n": 3,
         "n_casi": 84,
         "n_gare": 8,
-        "copertura_dentro_campione": 0.8571,
+        "copertura_dentro_campione": 0.9167,
         "copertura_fuori_campione": 0.7738,
-        "copertura_fuori_campione_n_meno_1": 0.6429,
+        "copertura_fuori_campione_n_meno_1": 0.6548,
         "copre": false,
         "minimale": true,
         "passa": false,
@@ -507,32 +573,32 @@
         "per_gara": {
           "Australia": {
             "n_casi": 4,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Belgio": {
             "n_casi": 1,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Canada": {
             "n_casi": 5,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Cina": {
             "n_casi": 1,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Giappone": {
             "n_casi": 3,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "GranBretagna": {
             "n_casi": 10,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           },
           "Monaco": {
@@ -542,7 +608,7 @@
           },
           "Spagna": {
             "n_casi": 1,
-            "n_loo": 3,
+            "n_loo": "-3/+4",
             "copertura": 1
           }
         }

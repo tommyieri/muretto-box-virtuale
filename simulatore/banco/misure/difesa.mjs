@@ -24,6 +24,45 @@ const copertura = (errori, n) =>
   (errori.length === 0 ? null : errori.filter((e) => Math.abs(e) <= n).length / errori.length);
 
 /**
+ * LA BANDA ASIMMETRICA PIU' STRETTA che copre `q`.
+ *
+ * Serve quando D4 dice che una banda simmetrica nasconderebbe un bias: se la
+ * previsione e' storta, allargare da tutte e due le parti copre pagando due
+ * volte, e la parte che non serve la paga l'utente in vaghezza. Qui si cerca
+ * l'intervallo [-sopra, +sotto] di ampiezza MINIMA che copre la quota chiesta.
+ *
+ * Convenzione dei segni, scritta perche' e' il posto dove ci si sbaglia:
+ * l'errore e' `e = prevista - reale`, quindi la posizione vera sta dentro la
+ * banda [prevista - sotto, prevista + sopra] esattamente quando
+ * `-sopra <= e <= sotto`. Un bias positivo (il motore mette il pilota piu'
+ * INDIETRO del vero) chiede percio' un `sotto` grande, non un `sopra`.
+ *
+ * Con bias nullo la ricerca restituisce l'intervallo simmetrico: la funzione
+ * generalizza `bandaMinima` invece di affiancarla.
+ */
+function bandaAsimmetricaMinima(errori, q) {
+  if (errori.length === 0) return null;
+  const massimo = Math.max(...errori.map((e) => Math.abs(e)));
+  for (let larghezza = 0; larghezza <= 2 * massimo; larghezza += 1) {
+    let migliore = null;
+    for (let sotto = 0; sotto <= larghezza; sotto += 1) {
+      const sopra = larghezza - sotto;
+      const q_ = errori.filter((e) => e >= -sopra && e <= sotto).length / errori.length;
+      // a parita' di larghezza si preferisce la piu' centrata: fra due bande che
+      // coprono uguale, quella meno sbilanciata e' la meno arbitraria
+      if (q_ >= q && (migliore === null || Math.abs(sotto - sopra) < Math.abs(migliore.sotto - migliore.sopra))) {
+        migliore = { sotto, sopra };
+      }
+    }
+    if (migliore) return migliore;
+  }
+  return { sotto: massimo, sopra: massimo };
+}
+
+const coperturaBanda = (errori, banda) => (errori.length === 0 ? null
+  : errori.filter((e) => e >= -banda.sopra && e <= banda.sotto).length / errori.length);
+
+/**
  * D1 · la banda, calibrata leave-one-race-out. Per ogni gara: `n` dalle altre,
  * copertura su quella tenuta fuori. Il cancello chiede due cose — che copra, e
  * che sia la PIÙ PICCOLA che copre: una banda imbottita coprirebbe tutto senza
@@ -41,8 +80,35 @@ export function calibraBanda(casi, { q, minGare, minCasi }) {
   // dentro campione: la banda che il prodotto userebbe
   const errori = casi.map((c) => c.errore);
   const n = bandaMinima(errori, q);
+  // D4 decide la FORMA della banda, e la decide sul campione intero: se la
+  // previsione e' storta di almeno una posizione, una banda simmetrica coprirebbe
+  // pagando due volte — e la meta' che non serve la paga l'utente in vaghezza.
+  const asimmetrica = Math.abs(mediana(errori)) >= 1;
+  // la banda si CERCA della forma decisa. Prima si cercava sempre simmetrica e
+  // l'asimmetria veniva solo dichiarata a valle: il file diceva una banda e la
+  // copertura ne misurava un'altra.
+  // PROVATA E RESPINTA, il 01/08/2026, e resta a referto perche' il prossimo che
+  // legge D4 rosso avra' la stessa idea: cercare la banda ASIMMETRICA piu' stretta
+  // (con `bandaAsimmetricaMinima`, qui sopra) porta la copertura fuori campione di
+  // NEUTRA da 77,4% a 58,3%. Con 84 casi e posizioni intere l'asimmetria si adatta
+  // alla piega del fold e non generalizza: e' overfitting, non correzione di bias.
+  // La banda resta percio' SIMMETRICA, e D4 resta rosso — cioe' dichiarato aperto,
+  // che e' meglio di chiuso male. La strada giusta non e' compensare il bias con la
+  // banda: e' toglierlo dalla previsione (il rodaggio della gomma nuova, misurato
+  // a −0,275 s/giro sui giri 2-8 dopo la sosta, e' il primo indiziato).
+  // LA BANDA SI SPOSTA, non si ri-cerca. Un grado di liberta' solo: la larghezza
+  // resta quella simmetrica minima, e l'intervallo trasla del bias mediano
+  // arrotondato. Corregge una previsione storta senza adattarsi alla piega del
+  // campione — che e' l'errore in cui e' caduta la ricerca a due gradi (sopra).
+  const bandaDi = (e) => {
+    const m = bandaMinima(e, q);
+    const b = asimmetrica ? Math.round(mediana(e)) : 0;
+    return { sotto: m + Math.max(0, b), sopra: m - Math.min(0, b) };
+  };
+  const banda = bandaDi(errori);
 
-  // fuori campione: la copertura vera, e quella di n−1 per la minimalità
+  // fuori campione: la copertura vera, e quella di una posizione piu' stretta
+  // (dal lato largo) per la minimalita'
   let coperti = 0;
   let copertiSotto = 0;
   let totale = 0;
@@ -51,26 +117,30 @@ export function calibraBanda(casi, { q, minGare, minCasi }) {
     const fuori = casi.filter((c) => c.gara === gara);
     const dentro = casi.filter((c) => c.gara !== gara).map((c) => c.errore);
     if (dentro.length === 0 || fuori.length === 0) continue;
-    const nLoo = bandaMinima(dentro, q);
+    const bLoo = bandaDi(dentro);
+    const stretta = bLoo.sotto >= bLoo.sopra
+      ? { sotto: Math.max(0, bLoo.sotto - 1), sopra: bLoo.sopra }
+      : { sotto: bLoo.sotto, sopra: Math.max(0, bLoo.sopra - 1) };
     const e = fuori.map((c) => c.errore);
-    coperti += e.filter((x) => Math.abs(x) <= nLoo).length;
-    copertiSotto += e.filter((x) => Math.abs(x) <= nLoo - 1).length;
+    coperti += e.filter((x) => x >= -bLoo.sopra && x <= bLoo.sotto).length;
+    copertiSotto += e.filter((x) => x >= -stretta.sopra && x <= stretta.sotto).length;
     totale += e.length;
-    perGara[gara] = { n_casi: e.length, n_loo: nLoo, copertura: Number((copertura(e, nLoo)).toFixed(4)) };
+    perGara[gara] = { n_casi: e.length, n_loo: bLoo.sotto === bLoo.sopra ? bLoo.sotto : `-${bLoo.sopra}/+${bLoo.sotto}`,
+                      copertura: Number((coperturaBanda(e, bLoo)).toFixed(4)) };
   }
 
   const coperturaLoo = totale ? coperti / totale : null;
   const coperturaSotto = totale ? copertiSotto / totale : null;
-  // D4: una banda simmetrica attorno a una previsione storta copre e mente
+  // D4: una banda simmetrica attorno a una previsione storta copre e mente.
+  // `asimmetrica` e' gia' stato deciso sopra, perche' decide anche la RICERCA.
   const biasMediano = mediana(errori);
-  const asimmetrica = Math.abs(biasMediano) >= 1;
 
   return {
     sufficiente: true,
     n,
     n_casi: casi.length,
     n_gare: gare.length,
-    copertura_dentro_campione: Number(copertura(errori, n).toFixed(4)),
+    copertura_dentro_campione: Number(coperturaBanda(errori, banda).toFixed(4)),
     copertura_fuori_campione: Number(coperturaLoo.toFixed(4)),
     copertura_fuori_campione_n_meno_1: Number(coperturaSotto.toFixed(4)),
     copre: coperturaLoo >= q,
@@ -79,9 +149,9 @@ export function calibraBanda(casi, { q, minGare, minCasi }) {
     // D4
     bias_mediano_posizioni: Number(biasMediano.toFixed(4)),
     asimmetrica,
-    banda_dichiarata: asimmetrica
-      ? { sotto: n + Math.max(0, Math.round(biasMediano)), sopra: n - Math.min(0, Math.round(biasMediano)) }
-      : { sotto: n, sopra: n },
+    // la banda DICHIARATA e' quella su cui la copertura e' stata misurata, non
+    // una derivata dal bias a posteriori: erano due bande diverse
+    banda_dichiarata: banda,
     per_gara: perGara,
   };
 }

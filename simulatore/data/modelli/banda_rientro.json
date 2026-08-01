@@ -58,7 +58,7 @@
       "bias_mediano_posizioni": 1,
       "n_casi": 84,
       "copertura_fuori_campione": 0.7738,
-      "copertura_dentro_campione": 0.8571,
+      "copertura_dentro_campione": 0.9167,
       "circuiti_sotto_livello": [
         {
           "gara": "Monaco",
