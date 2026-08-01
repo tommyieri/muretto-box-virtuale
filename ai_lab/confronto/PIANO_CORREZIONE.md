@@ -383,6 +383,27 @@ cambi — nell'ultimo terzo di gara il nuovo passa M2 su tutti e tre gli orizzon
   dal futuro — legittima perché identica per i due motori, ma va etichettata a caratteri cubitali.
 - **Costo: grande.** È l'unico modo di sapere se «vince il nuovo» vale oltre due giri.
 
+### ~~7 · Igiene del banco~~ — **CINQUE VOCI SU CINQUE FATTE il 01/08**
+
+> - **`giro_di_rientro` non mente più.** Era cablato a `caso.rientroLap`: con orizzonte 5
+>   diceva 10 invece di 15, proprio sul percorso di chi misura M2 e M3.
+> - **La ri-classificazione è una funzione del banco** (`riclassifica`). Prima ogni misura
+>   se la riscriveva in casa e due agenti potevano riportare due numeri diversi dello stesso
+>   M1 senza che nessuno avesse torto. Verificata: A 42,98% · B 45,11% · B2 45,53%.
+> - **La finestra pulita esclude anche le neutralizzazioni.** Sotto Safety Car il distacco
+>   non evolve dal passo — si comprime del 30% a giro — quindi lì non si misura l'errore
+>   della base. Misurato oggi: **672 finestre** su 5.186, e toglierle porta il p90 da
+>   **1,656 a 1,185 s/giro** (mediana 0,413 → 0,371). *Il piano citava 502 finestre e un p90
+>   da 4,600 a 0,839: quelle erano su un secchio specifico e col motore di allora — la
+>   direzione è la stessa, i numeri no, e vale il misurato di oggi.*
+> - **E21 chiuso con una cifra**, e la cifra dice di non toccare niente: δ₇₀ implicato 3,08
+>   su tutti i giri verdi e **2,43 in aria libera**. Il conflitto era **contaminazione da
+>   traffico**, non evoluzione della pista. `δ₇₀` resta 2,2.
+> - **`s15` ri-baselinata** con una prereg sua (`banco/prereg/PREREG_ribaseline.md`): i
+>   fallimenti passano da sei a tre, e i tre che restano sono tutti già dichiarati.
+
+<details><summary>Il testo originale della voce</summary>
+
 ### 7 · Igiene del banco — nessun numero visibile, ma protegge le prossime misure
 
 > **Due voci di questa lista sono state chiuse dalla voce 1, perché le serviva.** Non
@@ -423,6 +444,8 @@ cambi — nell'ultimo terzo di gara il nuovo passa M2 su tutti e tre gli orizzon
 - **Ri-baselinare le linee di regressione di `s15`** (87,4% / 67,7% / 94,3%): sono state
   misurate col metro vecchio, quello che leggeva il futuro. Confrontare la misura onesta con una
   baseline disonesta non significa niente — **e si fa con una prereg nuova, non con un edit.**
+
+</details>
 
 ### PARCHEGGIATA · il traffico come penalità sul passo
 Il fenomeno è il più regolare trovato (residuo **+0,576 s/giro** sotto 0,5 s di gap, positivo

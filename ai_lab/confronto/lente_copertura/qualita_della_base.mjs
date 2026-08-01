@@ -18,6 +18,7 @@
 import { garaNuova, gare } from '../banco.mjs';
 import { osservazioniVerdi } from '../../../simulatore/provenienza/gare_indice.mjs';
 import { stimaBasi, derivaPerGiro } from '../../../simulatore/engine/passo_v2.mjs';
+import { regimeDiCella } from '../../../simulatore/provenienza/definizioni.mjs';
 import { caricaGare2026 } from '../../../simulatore/provenienza/gare_2026.mjs';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
@@ -78,20 +79,49 @@ for (const nomeSito of gare()) {
       }
       return false;
     };
+    // ...E NEMMENO UNA NEUTRALIZZAZIONE. Il filtro escludeva le soste ma lasciava
+    // dentro le finestre in cui il campo viaggiava sotto Safety Car o VSC: li' il
+    // distacco non evolve dal passo — si comprime del 30% a giro, misurato — quindi
+    // l'errore che si legge NON e' l'errore della base. Sono 502 finestre su 5.186,
+    // e fabbricano tutta la coda della distribuzione: il p90 del secchio critico
+    // passa da 4,600 a 0,839 s/giro togliendole. Misurare la qualita' della base su
+    // giri in cui la base non governa il distacco e' misurare un'altra cosa (E16).
+    const neutraDentro = (drv) => {
+      for (let k = Lf; k <= Lf + H; k += 1) {
+        const c = cella(drv, k);
+        if (!c) continue;
+        let r = null; try { r = regimeDiCella(c); } catch { r = null; }
+        if (r !== null) return true;
+      }
+      return false;
+    };
     const leaderSporco = sostaDentro(leader);
+    const leaderNeutro = neutraDentro(leader);
     for (const drv of piloti) {
       if (drv === leader) continue;
       const gapPrev = previsto[drv] - previsto[leader];
       const gapReale = reale[drv] - reale[leader];
       const nVerdi = (verdiPer.get(drv) ?? []).filter((l) => l <= Lf).length;
-      const pulita = !leaderSporco && !sostaDentro(drv);
-      righe.push({ gara: nomeSito, Lf, drv, nVerdi, pulita, err: (gapPrev - gapReale) / H });
+      const senzaSoste = !leaderSporco && !sostaDentro(drv);
+      const senzaNeutra = !leaderNeutro && !neutraDentro(drv);
+      righe.push({ gara: nomeSito, Lf, drv, nVerdi, pulita: senzaSoste && senzaNeutra,
+                   solo_senza_soste: senzaSoste, err: (gapPrev - gapReale) / H });
     }
   }
 }
 const TUTTE = righe;
+const SOLO_SOSTE = righe.filter((r) => r.solo_senza_soste);
 const PULITE = righe.filter((r) => r.pulita);
-console.log(`proiezioni: ${TUTTE.length} totali · ${PULITE.length} in FINESTRA PULITA (nessuna sosta del pilota o del leader dentro)`);
+const p90qb = (v) => { const s2 = [...v].sort((a, b) => a - b); return s2[Math.floor(s2.length * 0.9)]; };
+console.log(`proiezioni: ${TUTTE.length} totali`);
+console.log(`  senza SOSTE dentro           : ${SOLO_SOSTE.length}`);
+console.log(`  senza soste NE' NEUTRALIZZAZIONI: ${PULITE.length}   <- da qui in poi si legge questa`);
+{
+  const a = SOLO_SOSTE.map((r) => Math.abs(r.err));
+  const b = PULITE.map((r) => Math.abs(r.err));
+  console.log(`  effetto di togliere le neutralizzazioni (${SOLO_SOSTE.length - PULITE.length} finestre):`);
+  console.log(`    |err| mediano ${mediana(a).toFixed(3)} -> ${mediana(b).toFixed(3)} s/giro · p90 ${p90qb(a).toFixed(3)} -> ${p90qb(b).toFixed(3)}`);
+}
 // da qui in poi si legge SOLO la finestra pulita: la sporca misura le soste, non la base
 righe.length = 0; righe.push(...PULITE);
 
