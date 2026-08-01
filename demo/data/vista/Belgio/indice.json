@@ -117,6 +117,7 @@
   },
   "min_giri_base": 4,
   "soste_rivali": "nessuna",
+  "esiti_per_caso_sha256": "eb1691fe25417b32",
   "banda_rientro_sha256": "689e5d8472c1c3aa",
   "pitloss_sha256": "74a9ab69c79adbed"
  },

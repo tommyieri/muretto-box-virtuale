@@ -220,6 +220,8 @@ function main() {
   const prior = caricaPrior(RADICE);
   const costantiDirector = caricaCostanti(RADICE);
   const bandaRientro = JSON.parse(readFileSync(path.join(RADICE, 'data', 'modelli', 'banda_rientro.json'), 'utf8'));
+  const pEsiti = path.join(RADICE, 'data', 'modelli', 'esiti_per_caso.json');
+  const esitiPerCaso = existsSync(pEsiti) ? JSON.parse(readFileSync(pEsiti, 'utf8')) : null;
   const extra = {
     durate2026: caricaDurate2026(RADICE),
     esitoPiano: JSON.parse(readFileSync(path.join(RADICE, 'banco', 'prereg', 'ESITO_multistint.json'), 'utf8')),
@@ -254,6 +256,8 @@ function main() {
       // soglia di base c'e' finita solo dopo che `--sincronizza` aveva risposto
       // «0 viste fuori passo» a un coefficiente appena cambiato.
       soste_rivali: prior.soste_rivali_sotto_regime ?? 'stint1',
+      // nel timbro dal primo minuto: i casi cambiano cio' che la pagina mostra
+      esiti_per_caso_sha256: sha256Corto(pEsiti),
       banda_rientro_sha256: sha256Corto(path.join(RADICE, 'data', 'modelli', 'banda_rientro.json')),
       pitloss_sha256: sha256Corto(path.join(RADICE, 'data', 'priors', 'pitloss_priors.json')),
     },
@@ -296,7 +300,7 @@ function main() {
   for (const [nomeGara, gara] of Object.entries(gare)) {
     if (soloQueste.length && !soloQueste.includes(nomeGara)) continue;
     const t = Date.now();
-    const contesto = { gare, modello, prior, costantiDirector, bandaRientro, nGiriGara: gara.nGiri };
+    const contesto = { gare, modello, prior, costantiDirector, bandaRientro, esitiPerCaso, nGiriGara: gara.nGiri };
     const ind = generaVistaGara(RADICE, nomeGara, gara, contesto, extra, dove);
     const n = Object.values(ind.piloti).reduce((s, x) => s + x.con_risposta, 0);
     totScen += n;

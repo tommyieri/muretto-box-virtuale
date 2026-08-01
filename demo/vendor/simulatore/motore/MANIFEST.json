@@ -53,12 +53,12 @@
    "byte": 15724
   },
   "scenario/risposta.mjs": {
-   "sha256_sorgente": "8f684a6ebb7d7d4690e633d38c2ab5e55dc2973354295ccd8fde33f495149d3f",
-   "byte": 10293
+   "sha256_sorgente": "552053aaa2c9651a77f2dace4b28cc44ab4df6e5757926f1db5a6e705a2fcbc6",
+   "byte": 12182
   },
   "contesto_live.json": {
-   "sha256_sorgente": "2d01bdc4b0a76bd22ba828693a28c9c1aad5f54127c04629e54e20f6ca886f0a",
-   "byte": 52000,
+   "sha256_sorgente": "c09a4b32d9fc68de3e39ed9a686b3a078361b48eb4b53035aa7b4a384d5e0af8",
+   "byte": 53696,
    "data": "2026-08-01"
   }
  }

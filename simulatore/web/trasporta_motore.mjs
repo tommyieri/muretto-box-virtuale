@@ -114,6 +114,10 @@ function contestoLive(dataOggi) {
     limiti: costanti.limiti,
     pavimenti: costanti.pavimenti,
     bandaRientro: leggi('data/modelli/banda_rientro.json'),
+    // I CASI viaggiano col motore, o la diretta direbbe meno del replay sulla
+    // stessa situazione — ed e' la forma di E17 che questo trasporto esiste per
+    // impedire. Il file e' piccolo: sono due contesti, non una tabella per gara.
+    esitiPerCaso: leggi('data/modelli/esiti_per_caso.json'),
     durate2026: caricaDurate2026(RADICE),
     esitoPiano: leggi('banco/prereg/ESITO_multistint.json'),
     modelloTarghetta: {

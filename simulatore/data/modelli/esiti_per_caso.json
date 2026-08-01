@@ -1,0 +1,85 @@
+{
+ "_targhetta": {
+  "tipo": "MISURATO — cosa e' successo davvero a chi si e' fermato, senza nessun modello",
+  "domanda": "quante posizioni ha guadagnato o perso, 10 giri dopo la sosta",
+  "convenzione": "NEGATIVO = ha guadagnato posizioni · POSITIVO = le ha perse",
+  "cosa_non_e": "NON e' una previsione. E' cio' che e' successo a chi si e' trovato in quella situazione: i duelli ci sono dentro perche' sono avvenuti, e la reazione dei rivali pure. Il rumore di gara non e' un errore da correggere: e' la distribuzione.",
+  "carta_delle_ere": "ai_lab/casi/CARTA_DELLE_ERE.md — dove fondo e 2026 divergono vince il 2026; dove i casi non bastano si dice «non lo so»",
+  "soglia_non_lo_so": 30,
+  "incertezza": "bootstrap 1000, blocchi = gare (E11), seme 20260801",
+  "prodotto_da": "provenienza/esporta_esiti_per_caso.mjs",
+  "data": "2026-08-01"
+ },
+ "contesti": {
+  "VERDE": {
+   "era_che_risponde": "2026",
+   "motivo": "fondo e 2026 DIVERGONO: vince il 2026, il fondo resta come contesto",
+   "divergono": true,
+   "fondo": {
+    "sa": true,
+    "n": 3315,
+    "n_gare": 146,
+    "mediana": 2,
+    "p10": 0,
+    "p90": 5,
+    "guadagna": 8.6,
+    "invariata": 21.6,
+    "perde": 69.8,
+    "ic95_perde": [
+     0.6716,
+     0.7236
+    ]
+   },
+   "d2026": {
+    "sa": true,
+    "n": 219,
+    "n_gare": 11,
+    "mediana": 1,
+    "p10": 0,
+    "p90": 4,
+    "guadagna": 9.1,
+    "invariata": 32,
+    "perde": 58.9,
+    "ic95_perde": [
+     0.526,
+     0.6567
+    ]
+   }
+  },
+  "NEUTRA": {
+   "era_che_risponde": "fondo",
+   "motivo": "fondo e 2026 non sono distinguibili: risponde il fondo, che ha l'intervallo utilizzabile",
+   "divergono": false,
+   "fondo": {
+    "sa": true,
+    "n": 974,
+    "n_gare": 85,
+    "mediana": 0,
+    "p10": -3,
+    "p90": 3,
+    "guadagna": 37.3,
+    "invariata": 27.7,
+    "perde": 35,
+    "ic95_perde": [
+     0.3081,
+     0.3979
+    ]
+   },
+   "d2026": {
+    "sa": true,
+    "n": 152,
+    "n_gare": 11,
+    "mediana": 0,
+    "p10": -2,
+    "p90": 2,
+    "guadagna": 45.4,
+    "invariata": 28.3,
+    "perde": 26.3,
+    "ic95_perde": [
+     0.1633,
+     0.4466
+    ]
+   }
+  }
+ }
+}

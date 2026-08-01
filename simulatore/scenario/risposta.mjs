@@ -177,6 +177,37 @@ export function rispostaPer(nomeGara, gara, Lf, pilota, contesto, extra, data) {
     // 11.143 record diventerebbero peso senza informazione. Qui resta cio' che
     // serve a chi legge: QUALE controllo non e' stato eseguito, su quante voci, e
     // il primo motivo per esteso.
+    // ── I CASI: cosa e' successo DAVVERO a chi si e' trovato qui ─────────────
+    //
+    // Accanto alla previsione, e non al posto suo. La previsione dice «rientri
+    // P8»: per farla il motore simula passo, duelli e reazione dei rivali, e due
+    // su tre dichiara di non saperle fare. Questo blocco non prevede niente —
+    // conta. I duelli ci sono dentro perche' sono successi.
+    //
+    // Quale era risponde lo decide la carta delle ere, gia' applicata nel file:
+    // dove fondo e 2026 divergono vince il 2026, dove i casi non bastano il
+    // campo dice «non lo so» invece di riempire il buco.
+    casi: (() => {
+      const t = contesto.esitiPerCaso;
+      if (!t) return null;
+      const ctx = regimeAlGiro(gara, Lf, pilota) === null ? 'VERDE' : 'NEUTRA';
+      const c = t.contesti?.[ctx];
+      if (!c || !c.era_che_risponde) return { contesto: ctx, sa: false, motivo: 'non ci sono abbastanza casi simili: non lo so' };
+      const d = c.era_che_risponde === '2026' ? c.d2026 : c.fondo;
+      if (!d?.sa) return { contesto: ctx, sa: false, motivo: 'non ci sono abbastanza casi simili: non lo so' };
+      return {
+        contesto: ctx, sa: true,
+        era: c.era_che_risponde, perche_questa_era: c.motivo,
+        n: d.n, n_gare: d.n_gare,
+        posizioni_mediana: d.mediana, p10: d.p10, p90: d.p90,
+        guadagna: d.guadagna, invariata: d.invariata, perde: d.perde,
+        orizzonte_giri: 10,
+        cosa_e: `su ${d.n} soste vere in ${d.n_gare} gare, dieci giri dopo: ha guadagnato posizioni nel ${d.guadagna}% dei casi, `
+          + `le ha perse nel ${d.perde}%, ed e' rimasto dov'era nel ${d.invariata}%`,
+        cosa_non_e: 'NON e\' una previsione su di te: e\' cio\' che e\' successo a chi si e\' trovato in questa situazione. '
+          + 'Il rumore di gara non e\' un errore da correggere qui dentro — e\' la distribuzione.',
+      };
+    })(),
     non_verificabili: (() => {
       const righe = rientro.direttore.riepilogo.non_verificabili ?? [];
       const perCodice = new Map();

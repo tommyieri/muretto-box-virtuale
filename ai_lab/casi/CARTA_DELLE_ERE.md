@@ -189,3 +189,33 @@ un'altra domanda**, e sembra a posto.
 
 Quindici casi nel 2026, contro i trenta della soglia. Il motore **si rifiuta di rispondere**,
 ed è la ragione per cui è stato costruito: un parametro avrebbe dato un numero comunque.
+
+---
+
+## In produzione — 01/08/2026: i casi accanto alla previsione
+
+`provenienza/esporta_esiti_per_caso.mjs` produce `data/modelli/esiti_per_caso.json`, e ogni
+risposta del prodotto porta un blocco `casi` accanto a quello che il motore prevede.
+
+**La carta delle ere è applicata dal file, non ricordata da chi legge:**
+
+| contesto | chi risponde | perché |
+|---|---|---|
+| **VERDE** | **2026** (219 soste, 11 gare) | fondo e 2026 **divergono**: vince il 2026, il fondo resta contesto |
+| **NEUTRA** | **fondo** (974 soste, 85 gare) | non sono distinguibili: risponde il fondo, che ha l'intervallo utilizzabile |
+
+Quello che l'utente legge, accanto a «rientri P8»:
+
+> *in verde* — su 219 soste vere in 11 gare, dieci giri dopo: ha guadagnato posizioni nel
+> **9,1%** dei casi, le ha perse nel **58,9%**, ed è rimasto dov'era nel 32,0%
+>
+> *sotto neutralizzazione* — su 974 soste vere in 85 gare: ha guadagnato nel **37,3%**, perso
+> nel 35,0%, invariato nel 27,7%
+
+**È la prima cosa che il prodotto dice senza simulare niente.** I duelli ci sono dentro
+perché sono successi; la reazione dei rivali pure. E dove i casi non bastano il campo dice
+**«non lo so»**, che nessun parametro sa fare.
+
+**Viaggia anche in diretta.** `contesto_live.json` porta la tabella, o il pannello live
+direbbe meno del replay sulla stessa situazione — la forma di E17 che il trasporto esiste
+per impedire. Ed è nel timbro delle viste: se la tabella cambia, `s29` lo vede.
