@@ -2,7 +2,7 @@
 # fonte import: tommyieri/muretto-box-virtuale @ 90d9a19c334eae84b806bd2f401c8ed4770a7169 (origin/main, 2026-07-29)
 # verifica: node provenienza/verifica_manifest.mjs   (esce 1 su corruzione/mancanza/intruso)
 # rigenerazione (solo su import deliberato): node provenienza/genera_manifest.mjs
-794b2d2bcf6e9e59a53682f2039646a9e9628ade014d41d26995104bbc24c0cd  data/INVENTARIO.md
+d456df096cf9eca568b0fd9ceeee50655ac3e22542d2d517e29036bfa4095358  data/INVENTARIO.md
 b0e24f11a21049359e143ce1aca7ba15ed911b494e8b9bb5b32d5ef05299164f  data/README.md
 18c1b95455dbf7ed64f1431c64001d42c64bb9b8ce7f906ad3d44bc3bc45b152  data/archivio/dal_futuro/README.md
 e008471494c623bda1763235dc719d6995ff0fdea741461b36673bc69cc174b2  data/archivio/dal_futuro/neutralizzazione.json
@@ -892,6 +892,7 @@ e50eaa63597c4007bbb05f194583c902da49e18ee0a61800b74d0d7b1da32432  data/priors/di
 1b4ba3e23d9a08bac251599f8a6577c177507611d5cb0bfd785d3edc483a5ea2  data/viste/bagnato_fondo.json
 5c2116084c0ace8f401c7a1c569616eab22669616c5b807f5b4ad227cc692e0c  data/viste/compressione_e_fattori_fondo.json
 201ad253335f570d3314e98565fa234e8d51f7b8c3db4c7bd28b903f59da8276  data/viste/soste_fondo.json
+ac6d925c8be937a247a2f97465415a036f007c624b013d216a08957fc1c4516a  data/viste/soste_sotto_sc.json
 0beb292843a945b37ea1cf81a302485b81199ba354f82fd7b0e8d1fc82c21b64  data/viste/stint_2026.json
 fdc4244983b54f6477faf4f8e27ba3734dc3e87f97716e85af79302e4852f7f2  data/viste/stint_fondo.json
 634acd2e40cdb6c7a90ab6b1d52a108cf098e09ca60afcfe00e31e4925e699bc  data/viste/vista_verde_2026.json

@@ -1,0 +1,305 @@
+{
+ "_targhetta": {
+  "tipo": "MISURATO sul fondo — chi entra ai box sotto neutralizzazione di campo",
+  "domanda": "dato il campo neutralizzato al giro L, questa auto entra ai box entro L+2?",
+  "criterio_campo": "almeno il 50% delle auto sotto regime al giro L (PREREG-6)",
+  "variabili": "tutte note al congelamento: eta gomma, stint, posizione, frazione di gara, circuito. Nessuna dal futuro (E14)",
+  "linea_di_base": "la regola di oggi (`stint !== 1`) azzecca 25 rivali su 148 = 16,9%",
+  "protocollo": "ai_lab/confronto/PREREG_chi_si_ferma.md",
+  "prodotto_da": "provenienza/esporta_soste_sotto_sc.mjs",
+  "non_promuove": "questa e' una VISTA. Il cancello per sostituire la regola sta nella prereg."
+ },
+ "n_occasioni": 9782,
+ "n_gare": 105,
+ "scarti": {
+  "eta gomma assente": 95,
+  "gara bagnata": 20
+ },
+ "tasso_complessivo": 7.7,
+ "per_eta": {
+  "0-4": {
+   "n": 3449,
+   "si_ferma": 4.2,
+   "n_gare": 99
+  },
+  "5-9": {
+   "n": 2858,
+   "si_ferma": 6.4,
+   "n_gare": 91
+  },
+  "10-14": {
+   "n": 1243,
+   "si_ferma": 10.5,
+   "n_gare": 77
+  },
+  "15-19": {
+   "n": 809,
+   "si_ferma": 10.6,
+   "n_gare": 61
+  },
+  "20-29": {
+   "n": 868,
+   "si_ferma": 13.4,
+   "n_gare": 57
+  },
+  "30+": {
+   "n": 555,
+   "si_ferma": 15.5,
+   "n_gare": 43
+  }
+ },
+ "per_stint": {
+  "1": {
+   "n": 3407,
+   "si_ferma": 8.3,
+   "n_gare": 83
+  },
+  "2": {
+   "n": 3420,
+   "si_ferma": 8.4,
+   "n_gare": 94
+  },
+  "3+": {
+   "n": 2955,
+   "si_ferma": 6.1,
+   "n_gare": 70
+  }
+ },
+ "per_posizione": {
+  "P1-P5": {
+   "n": 2761,
+   "si_ferma": 9.1,
+   "n_gare": 105
+  },
+  "P6-P10": {
+   "n": 2771,
+   "si_ferma": 7.5,
+   "n_gare": 105
+  },
+  "P11+": {
+   "n": 4250,
+   "si_ferma": 6.8,
+   "n_gare": 105
+  }
+ },
+ "per_frazione": {
+  "0-25%": {
+   "n": 3803,
+   "si_ferma": 6.4,
+   "n_gare": 62
+  },
+  "25-50%": {
+   "n": 1763,
+   "si_ferma": 9.2,
+   "n_gare": 31
+  },
+  "50-75%": {
+   "n": 2008,
+   "si_ferma": 9.2,
+   "n_gare": 33
+  },
+  "75-100%": {
+   "n": 2208,
+   "si_ferma": 7.1,
+   "n_gare": 40
+  }
+ },
+ "per_circuito": {
+  "Abu_Dhabi_Grand_Prix": {
+   "n": 330,
+   "si_ferma": 4.5,
+   "n_gare": 4
+  },
+  "Australian_Grand_Prix": {
+   "n": 448,
+   "si_ferma": 12.1,
+   "n_gare": 4
+  },
+  "Austrian_Grand_Prix": {
+   "n": 504,
+   "si_ferma": 8.5,
+   "n_gare": 7
+  },
+  "Azerbaijan_Grand_Prix": {
+   "n": 544,
+   "si_ferma": 7.2,
+   "n_gare": 6
+  },
+  "Bahrain_Grand_Prix": {
+   "n": 542,
+   "si_ferma": 1.5,
+   "n_gare": 7
+  },
+  "Belgian_Grand_Prix": {
+   "n": 246,
+   "si_ferma": 4.9,
+   "n_gare": 4
+  },
+  "British_Grand_Prix": {
+   "n": 643,
+   "si_ferma": 5.6,
+   "n_gare": 6
+  },
+  "Canadian_Grand_Prix": {
+   "n": 434,
+   "si_ferma": 11.5,
+   "n_gare": 4
+  },
+  "Chinese_Grand_Prix": {
+   "n": 325,
+   "si_ferma": 10.2,
+   "n_gare": 3
+  },
+  "French_Grand_Prix": {
+   "n": 177,
+   "si_ferma": 2.3,
+   "n_gare": 3
+  },
+  "Hungarian_Grand_Prix": {
+   "n": 150,
+   "si_ferma": 0,
+   "n_gare": 2
+  },
+  "Italian_Grand_Prix": {
+   "n": 376,
+   "si_ferma": 13.8,
+   "n_gare": 5
+  },
+  "Japanese_Grand_Prix": {
+   "n": 212,
+   "si_ferma": 5.2,
+   "n_gare": 2
+  },
+  "Mexican_Grand_Prix": {
+   "n": 89,
+   "si_ferma": 2.2,
+   "n_gare": 1
+  },
+  "Monaco_Grand_Prix": {
+   "n": 110,
+   "si_ferma": 0,
+   "n_gare": 3
+  },
+  "Singapore_Grand_Prix": {
+   "n": 162,
+   "si_ferma": 2.5,
+   "n_gare": 2
+  },
+  "Spanish_Grand_Prix": {
+   "n": 291,
+   "si_ferma": 5.2,
+   "n_gare": 3
+  },
+  "United_States_Grand_Prix": {
+   "n": 289,
+   "si_ferma": 2.8,
+   "n_gare": 5
+  },
+  "Brazilian_Grand_Prix": {
+   "n": 200,
+   "si_ferma": 1.5,
+   "n_gare": 1
+  },
+  "Eifel_Grand_Prix": {
+   "n": 109,
+   "si_ferma": 4.6,
+   "n_gare": 1
+  },
+  "Emilia_Romagna_Grand_Prix": {
+   "n": 345,
+   "si_ferma": 5.5,
+   "n_gare": 2
+  },
+  "Russian_Grand_Prix": {
+   "n": 90,
+   "si_ferma": 0,
+   "n_gare": 1
+  },
+  "Sakhir_Grand_Prix": {
+   "n": 260,
+   "si_ferma": 4.2,
+   "n_gare": 1
+  },
+  "Tuscan_Grand_Prix": {
+   "n": 156,
+   "si_ferma": 41,
+   "n_gare": 1
+  },
+  "Mexico_City_Grand_Prix": {
+   "n": 271,
+   "si_ferma": 6.6,
+   "n_gare": 5
+  },
+  "Portuguese_Grand_Prix": {
+   "n": 96,
+   "si_ferma": 19.8,
+   "n_gare": 1
+  },
+  "Qatar_Grand_Prix": {
+   "n": 352,
+   "si_ferma": 12.2,
+   "n_gare": 4
+  },
+  "Saudi_Arabian_Grand_Prix": {
+   "n": 514,
+   "si_ferma": 12.8,
+   "n_gare": 5
+  },
+  "São_Paulo_Grand_Prix": {
+   "n": 515,
+   "si_ferma": 10.3,
+   "n_gare": 4
+  },
+  "Dutch_Grand_Prix": {
+   "n": 439,
+   "si_ferma": 8.2,
+   "n_gare": 2
+  },
+  "Miami_Grand_Prix": {
+   "n": 316,
+   "si_ferma": 6.3,
+   "n_gare": 3
+  },
+  "Las_Vegas_Grand_Prix": {
+   "n": 209,
+   "si_ferma": 1.9,
+   "n_gare": 2
+  }
+ },
+ "eta_per_stint": {
+  "stint1": {
+   "eta 0-9": {
+    "n": 2520,
+    "si_ferma": 5.2,
+    "n_gare": 53
+   },
+   "eta 10-19": {
+    "n": 524,
+    "si_ferma": 16.2,
+    "n_gare": 30
+   },
+   "eta 20+": {
+    "n": 363,
+    "si_ferma": 18.5,
+    "n_gare": 29
+   }
+  },
+  "stint2plus": {
+   "eta 0-9": {
+    "n": 3787,
+    "si_ferma": 5.2,
+    "n_gare": 95
+   },
+   "eta 10-19": {
+    "n": 1528,
+    "si_ferma": 8.6,
+    "n_gare": 70
+   },
+   "eta 20+": {
+    "n": 1060,
+    "si_ferma": 12.7,
+    "n_gare": 53
+   }
+  }
+ }
+}
