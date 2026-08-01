@@ -22,8 +22,8 @@
       "asimmetrica": false,
       "bias_mediano_posizioni": 0,
       "n_casi": 314,
-      "copertura_fuori_campione": 0.879,
-      "copertura_dentro_campione": 0.879,
+      "copertura_fuori_campione": 0.8822,
+      "copertura_dentro_campione": 0.8822,
       "circuiti_sotto_livello": [
         {
           "gara": "Cina",
@@ -46,7 +46,7 @@
           "n_casi": 19
         }
       ],
-      "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 87.9% fuori campione"
+      "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione"
     },
     "NEUTRA": {
       "semi_ampiezza": 3,
@@ -57,17 +57,17 @@
       "asimmetrica": true,
       "bias_mediano_posizioni": 1,
       "n_casi": 84,
-      "copertura_fuori_campione": 0.7738,
-      "copertura_dentro_campione": 0.9167,
+      "copertura_fuori_campione": 0.7857,
+      "copertura_dentro_campione": 0.9405,
       "circuiti_sotto_livello": [
         {
           "gara": "Monaco",
-          "copertura": 0.678,
+          "copertura": 0.6949,
           "n_casi": 59
         }
       ],
-      "targhetta": "banda ±3 posizioni, misurata su 84 soste vere del 2026: copre il 77.4% fuori campione"
+      "targhetta": "banda ±3 posizioni, misurata su 84 soste vere del 2026: copre il 78.6% fuori campione"
     }
   },
-  "contesto_non_separa": "misurato: la vicinanza dei rivali NON separa l'errore in modo distinguibile dal caso (p = 0.74823 alla soglia dichiarata di 2 s). Una banda sola per contesto, non due: una distinzione senza differenza misurata non si tiene \"tanto per\""
+  "contesto_non_separa": "misurato: la vicinanza dei rivali NON separa l'errore in modo distinguibile dal caso (p = 0.75262 alla soglia dichiarata di 2 s). Una banda sola per contesto, non due: una distinzione senza differenza misurata non si tiene \"tanto per\""
 }

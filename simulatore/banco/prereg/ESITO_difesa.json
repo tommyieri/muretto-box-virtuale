@@ -15,9 +15,9 @@
       "n": 2,
       "n_casi": 398,
       "n_gare": 11,
-      "copertura_dentro_campione": 0.8543,
-      "copertura_fuori_campione": 0.8543,
-      "copertura_fuori_campione_n_meno_1": 0.7437,
+      "copertura_dentro_campione": 0.8593,
+      "copertura_fuori_campione": 0.8593,
+      "copertura_fuori_campione_n_meno_1": 0.7538,
       "copre": true,
       "minimale": true,
       "passa": true,
@@ -56,7 +56,7 @@
         "Giappone": {
           "n_casi": 29,
           "n_loo": 2,
-          "copertura": 0.8276
+          "copertura": 0.8621
         },
         "GranBretagna": {
           "n_casi": 49,
@@ -71,7 +71,7 @@
         "Monaco": {
           "n_casi": 78,
           "n_loo": 2,
-          "copertura": 0.7564
+          "copertura": 0.7692
         },
         "Spagna": {
           "n_casi": 48,
@@ -156,9 +156,9 @@
         "n": 2,
         "n_casi": 278,
         "n_gare": 11,
-        "copertura_dentro_campione": 0.8705,
-        "copertura_fuori_campione": 0.8705,
-        "copertura_fuori_campione_n_meno_1": 0.7518,
+        "copertura_dentro_campione": 0.8741,
+        "copertura_fuori_campione": 0.8741,
+        "copertura_fuori_campione_n_meno_1": 0.7626,
         "copre": true,
         "minimale": true,
         "passa": true,
@@ -197,7 +197,7 @@
           "Giappone": {
             "n_casi": 21,
             "n_loo": 2,
-            "copertura": 0.7619
+            "copertura": 0.8095
           },
           "GranBretagna": {
             "n_casi": 37,
@@ -231,9 +231,9 @@
         "n": 3,
         "n_casi": 84,
         "n_gare": 8,
-        "copertura_dentro_campione": 0.9167,
-        "copertura_fuori_campione": 0.7738,
-        "copertura_fuori_campione_n_meno_1": 0.6548,
+        "copertura_dentro_campione": 0.9405,
+        "copertura_fuori_campione": 0.7857,
+        "copertura_fuori_campione_n_meno_1": 0.6667,
         "copre": false,
         "minimale": true,
         "passa": false,
@@ -277,7 +277,7 @@
           "Monaco": {
             "n_casi": 59,
             "n_loo": 2,
-            "copertura": 0.678
+            "copertura": 0.6949
           },
           "Spagna": {
             "n_casi": 1,
@@ -293,9 +293,9 @@
         "n": 2,
         "n_casi": 314,
         "n_gare": 11,
-        "copertura_dentro_campione": 0.879,
-        "copertura_fuori_campione": 0.879,
-        "copertura_fuori_campione_n_meno_1": 0.7739,
+        "copertura_dentro_campione": 0.8822,
+        "copertura_fuori_campione": 0.8822,
+        "copertura_fuori_campione_n_meno_1": 0.7834,
         "copre": true,
         "minimale": true,
         "passa": true,
@@ -334,7 +334,7 @@
           "Giappone": {
             "n_casi": 26,
             "n_loo": 2,
-            "copertura": 0.8077
+            "copertura": 0.8462
           },
           "GranBretagna": {
             "n_casi": 39,
@@ -368,9 +368,9 @@
         "n": 3,
         "n_casi": 84,
         "n_gare": 8,
-        "copertura_dentro_campione": 0.9167,
-        "copertura_fuori_campione": 0.7738,
-        "copertura_fuori_campione_n_meno_1": 0.6548,
+        "copertura_dentro_campione": 0.9405,
+        "copertura_fuori_campione": 0.7857,
+        "copertura_fuori_campione_n_meno_1": 0.6667,
         "copre": false,
         "minimale": true,
         "passa": false,
@@ -414,7 +414,7 @@
           "Monaco": {
             "n_casi": 59,
             "n_loo": 2,
-            "copertura": 0.678
+            "copertura": 0.6949
           },
           "Spagna": {
             "n_casi": 1,
@@ -497,9 +497,9 @@
         "n": 3,
         "n_casi": 84,
         "n_gare": 8,
-        "copertura_dentro_campione": 0.9167,
-        "copertura_fuori_campione": 0.7738,
-        "copertura_fuori_campione_n_meno_1": 0.6548,
+        "copertura_dentro_campione": 0.9405,
+        "copertura_fuori_campione": 0.7857,
+        "copertura_fuori_campione_n_meno_1": 0.6667,
         "copre": false,
         "minimale": true,
         "passa": false,
@@ -543,7 +543,7 @@
           "Monaco": {
             "n_casi": 59,
             "n_loo": 2,
-            "copertura": 0.678
+            "copertura": 0.6949
           },
           "Spagna": {
             "n_casi": 1,
@@ -558,9 +558,9 @@
         "n": 3,
         "n_casi": 84,
         "n_gare": 8,
-        "copertura_dentro_campione": 0.9167,
-        "copertura_fuori_campione": 0.7738,
-        "copertura_fuori_campione_n_meno_1": 0.6548,
+        "copertura_dentro_campione": 0.9405,
+        "copertura_fuori_campione": 0.7857,
+        "copertura_fuori_campione_n_meno_1": 0.6667,
         "copre": false,
         "minimale": true,
         "passa": false,
@@ -604,7 +604,7 @@
           "Monaco": {
             "n_casi": 59,
             "n_loo": 2,
-            "copertura": 0.678
+            "copertura": 0.6949
           },
           "Spagna": {
             "n_casi": 1,
@@ -622,12 +622,12 @@
     "alla_soglia_dichiarata": {
       "eseguibile": true,
       "soglia": 2,
-      "n_contesi": 135,
-      "n_puliti": 263,
+      "n_contesi": 138,
+      "n_puliti": 260,
       "mediana_errore_contesi": 1,
       "mediana_errore_puliti": 0,
       "differenza_mediane": 1,
-      "p_permutazione": 0.74823,
+      "p_permutazione": 0.75262,
       "permutazioni_valide": 10000,
       "significativo": false,
       "attesa_direzionale_contesi_sbagliano_di_piu": true,
@@ -636,25 +636,25 @@
     "sensibilita": [
       {
         "soglia": 1,
-        "n_contesi": 76,
+        "n_contesi": 83,
         "differenza_mediane": 1,
-        "p": 0.62514,
+        "p": 0.80682,
         "separa": false,
         "dichiarata": false
       },
       {
         "soglia": 2,
-        "n_contesi": 135,
+        "n_contesi": 138,
         "differenza_mediane": 1,
-        "p": 0.74823,
+        "p": 0.75262,
         "separa": false,
         "dichiarata": true
       },
       {
         "soglia": 3,
-        "n_contesi": 192,
+        "n_contesi": 187,
         "differenza_mediane": 1,
-        "p": 0.68273,
+        "p": 0.84122,
         "separa": false,
         "dichiarata": false
       },
@@ -662,7 +662,7 @@
         "soglia": 5,
         "n_contesi": 238,
         "differenza_mediane": 1,
-        "p": 0.67923,
+        "p": 0.76512,
         "separa": false,
         "dichiarata": false
       }

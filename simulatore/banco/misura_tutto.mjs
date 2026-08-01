@@ -35,13 +35,21 @@ export function misuraTutto(radice) {
   if (typeof delta70 !== 'number') {
     throw new Error('il modello non ha un δ₇₀ scelto: il banco non misura su un modello non cablabile (vedi PREREG_delta.md)');
   }
+  // Il RODAGGIO viaggia con ρ e δ₇₀, e per la stessa ragione: le misure del banco
+  // che chiamano `creaPasso`/`stimaBasi` direttamente devono girare sulla STESSA
+  // fisica del prodotto. Se restasse fuori, il banco misurerebbe un motore che
+  // non esiste, e la prima volta che se ne accorgerebbe qualcuno sarebbe leggendo
+  // due numeri diversi per la stessa cosa (E12, la voce più cara del catalogo).
+  const rodaggio = modello.rodaggio?.attivo === true
+    ? { c: modello.rodaggio.c, tau: modello.rodaggio.tau }
+    : null;
   const prior = caricaPrior(radice);
   const gare = caricaGare2026(radice);
-  const opzioni = { rho, delta70, prior };
+  const opzioni = { rho, delta70, rodaggio, prior };
 
   const rientro = misuraRientro(gare, { ...opzioni, cancelli: cancelli.rientro });
   const g0 = misuraG0(gare, { ...opzioni, cancelli: cancelli.g0_secondo });
-  const bias = misuraBias(gare, { delta70Di: () => delta70, rho, cancelli: cancelli.bias });
+  const bias = misuraBias(gare, { delta70Di: () => delta70, rho, rodaggio, cancelli: cancelli.bias });
 
   // FASE MULTI-STINT (banco/prereg/PREREG_multistint.md)
   const contestoBase = { modello, prior, costantiDirector: caricaCostanti(radice) };
@@ -66,6 +74,7 @@ export function misuraTutto(radice) {
       modello: 'data/modelli/modello_v2.json',
       rho,
       delta_70: delta70,
+      rodaggio: rodaggio === null ? 'spento' : `w(età) = −${rodaggio.c}·exp(−età/${rodaggio.tau})`,
       pitloss: 'prior esterno data/priors/pitloss_priors.json — NON misurato sul nostro fondo',
       generato_da: 'banco/misura_tutto.mjs',
     },

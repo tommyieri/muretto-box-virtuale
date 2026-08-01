@@ -29,6 +29,7 @@ deciso niente. Questa è la cosa più importante che il confronto ha insegnato.
 | **F** | la hero gira sul motore della pagina-gara | stessa domanda → stessa risposta (P1 su 20, dietro ANT); «aspetta 3 giri» P4→**P6**, come la pagina |
 | **K.1** | il selettore mescola diventa informazione | era **rotto E inerte**: la pagina ascoltava `data-mesc`, il pannello emette `data-valore` |
 | **A** | sigillato il primo fuori campione vero | `PREREG_holdout_Olanda.md`, soglie assolute scritte il 01/08 per una gara del 23/08 |
+| **1** | il rodaggio della gomma nuova è in produzione (`c = 0,67 s`, `τ = 4,75 giri`) | M1 lettura B2 leave-one-race-out: esatti **45,29% → 46,64%**, troppo indietro **47,53% → 45,74%**, bias **+0,825 → +0,771**; giro raccomandato invariato in **1.505 curve su 1.505**. Referto: `ESITO_rodaggio.md` |
 
 **Correzione al piano degli agenti su A:** proponevano di mettere in pausa `autocalibra.py`.
 Quel file **non esiste più** (tolto nella ripulitura) e i modelli del simulatore sono pinnati
@@ -38,7 +39,38 @@ in `data/MANIFEST.sha256`, verificato in CI. Il rischio non è automatico: è um
 
 ## APERTO, in ordine di priorità
 
-### 1 · Il rodaggio della gomma nuova — `w(età) = −c·exp(−età/τ)`
+### ~~1 · Il rodaggio della gomma nuova~~ — **FATTO il 01/08**, referto in `ESITO_rodaggio.md`
+
+*Resta scritto qui com'era, perché due sue previsioni si sono rivelate sbagliate e la
+prossima persona deve poterle leggere accanto a ciò che è successo davvero.*
+
+**Cosa è successo:** `c = 0,67 s`, `τ = 4,75 giri`, stimati in aria libera con `δ₇₀` e `ρ`
+cablati. Cancello M1 lettura B2 leave-one-race-out: tutte e quattro le condizioni passano
+(mediana 1,0 · esatti 46,64% · troppo indietro 45,74% · bias +0,7713). Margine piccolo:
+10 casi meglio, 2 peggio, 211 identici su 223.
+
+**Due cose che questo piano diceva e che non erano vere:**
+
+1. **Il rischio E01 non esisteva.** «Con τ troppo grande il termine degenera in un vantaggio
+   quasi-perpetuo, cioè fermati subito» è **falso per costruzione**: l'ottimo a una sosta
+   cade dove l'età al pit eguaglia l'età alla bandiera (`a+k = R−k`), e lì
+   `w(a+k) − w(R−k) = 0` **per qualunque `w` additiva sull'età**. La derivata seconda cresce
+   da `2ρ` a `2ρ + (c/τ)[…]`: il minimo si stringe. Misurato sul prodotto: il giro
+   raccomandato non cambia in **nessuna** delle 1.505 curve. `s12` ora lo prova anche con
+   `τ = 200`.
+2. **Il cancello mescolava due letture.** Nominava la lettura B2 ma citava `49,8%` e `+0,96`,
+   che sono numeri della lettura A. Riscritto coi valori B2 (`47,53%` e `+0,8251`) misurati
+   prima di qualunque modifica.
+
+**Il prezzo, lasciato rosso e non nascosto:** `bias piatto` passa da 0,0041 a **0,1030**
+contro una soglia pre-registrata di 0,1 — fallisce di tre millesimi. È la faccia opposta
+della stessa proprietà che fa migliorare M1: la base ora è il passo su gomma matura, e in
+una proiezione senza soste le età solo crescono. La soglia **non** è stata toccata (E08).
+
+**E la risposta alla voce 3:** il rodaggio sposta D1 NEUTRA da 77,4% a **78,6%**. Non basta.
+
+<details><summary>Il testo originale della voce, per confronto</summary>
+
 **Perché, misurato:** in aria libera i giri a età 2-8 dopo una sosta girano **0,275 s/giro più
 veloci** di quanto il modello preveda (IC95 [−0,415; −0,037], n = 1.249, mediana negativa in
 8 gare su 10); a età 9-20 il residuo è 0,000. È la regione che il prodotto usa di più: ogni
@@ -61,6 +93,8 @@ all'80% e **allargarla non è la risposta** — togliere il bias dalla prevision
   sentinella analitica che l'ottimo a una sosta resti a `(giri rimasti − età)/2`.
 - **Nota:** M2 è un giudice debole qui (in una finestra senza soste tutte le età avanzano
   insieme e `w` si cancella nel distacco). **Il giudice è M1.**
+
+</details>
 
 ### 2 · Il pacchetto neutralizzazione — quattro voci, un solo cluster
 **Perché:** è dove **quattro metriche su cinque** puntano il dito, ed è l'unico ramo in cui il
@@ -100,6 +134,18 @@ o non va fatto.
   ammessa, o il prossimo vedrà il +54 di copertura e lo accenderà.
 
 ### 3 · D1 sotto neutralizzazione: decidere, non aggiustare **[decisione del PO]**
+
+> **01/08 — il PO ha scelto (c), aspettare la voce 1. La voce 1 è stata fatta e la
+> risposta è: non basta.** Col rodaggio acceso e la banda ricalibrata, D1 NEUTRA passa
+> da **77,4% a 78,6%** fuori campione (VERDE da 87,9% a 88,2%, complessiva da 85,4% a
+> 85,9%). La soglia pre-registrata è 80% e resta rossa.
+>
+> **Restano (a) e (b).** L'unico candidato ancora in piedi che potrebbe spostarla davvero
+> è il **pacchetto neutralizzazione della voce 2** — e va detto che anche lì il referto
+> avverte già: dei casi fuori banda, 70 su 84 partono in verde e finiscono neutralizzati,
+> e lì nessun fattore li recupera con l'informazione ammessa. Se anche la voce 2 non
+> bastasse, (a) e (b) non sono un ripiego: sono la risposta.
+
 Oggi **rosso**: 77,4% contro l'80% pre-registrato. Con l'informazione disponibile al
 congelamento quel livello **non è raggiungibile**, e le due scorciatoie sono già state provate
 e misurate:
@@ -144,13 +190,24 @@ giro raccomandato in **25 curve su 260**.
 - **Cosa:** un banco che ricalcola la curva perturbando **dentro l'incertezza che il modello
   dichiara di sé** (ρ e δ₇₀ agli estremi dell'IC95, pit-loss agli estremi già stampati in
   targhetta, fattore SC/VSC nella banda, L±1) e riporta la dispersione del giro raccomandato.
-- **Cancello, da scrivere prima:** il giro si pubblica come **giro secco** solo se sotto ogni
-  perturbazione si sposta di ≤ 2 giri nell'≥ 80% dei casi; altrove si pubblica una **finestra**.
-  **[decisione del PO: giro secco o finestra?]**
+- **DECISIONE DEL PO, 01/08: finestra sempre.** Il giro raccomandato non si pubblica più come
+  giro secco: si pubblica un intervallo, in ogni caso, senza cancello condizionale. Coerente
+  col fatto che il 29,0% delle raccomandazioni promette meno di 1 s e che il solo
+  arrotondamento al millesimo sposta il giro in 25 curve su 260. Il banco di perturbazione
+  serve ancora — non più per **decidere** fra secco e finestra, ma per dire **quanto larga**
+  deve essere la finestra, e la sonda obbligatoria a perturbazione nulla resta obbligatoria.
+- ~~**Cancello, da scrivere prima:** il giro si pubblica come **giro secco** solo se sotto ogni
+  perturbazione si sposta di ≤ 2 giri nell'≥ 80% dei casi; altrove si pubblica una
+  **finestra**.~~ *Superato dalla decisione qui sopra.*
 - **Sonda obbligatoria:** con perturbazione nulla il banco deve riprodurre i 4.241 minimi
   interni e la mediana di 2,770 s. Se non li riproduce, non sta misurando il prodotto.
 - **Perché adesso:** la voce C (già fatta) ha **moltiplicato per quattro** le curve pubblicate.
   Se sono rumore, le ha moltiplicate lo stesso.
+- **Materiale già pronto dalla voce 1:** `sonda_curva_rodaggio.mjs` ricalcola la curva sotto
+  due modelli e confronta l'argmin su 1.505 curve vere in ~5 minuti. È lo scheletro del banco
+  di perturbazione — cambia solo *cosa* si perturba. E porta già un numero utile: **il
+  rodaggio, che sposta il passo di mezzo secondo al giro dopo la sosta, non sposta il giro
+  raccomandato nemmeno una volta.** Se il giro è rumore, non è rumore del passo.
 
 ### 6 · L'errore alla bandiera, contro `data/arrivi_2026.csv`
 **Perché:** quel file contiene la classifica finale vera di tutte le 241 coppie pilota-gara e
@@ -164,6 +221,31 @@ cambi — nell'ultimo terzo di gara il nuovo passa M2 su tutti e tre gli orizzon
 - **Costo: grande.** È l'unico modo di sapere se «vince il nuovo» vale oltre due giri.
 
 ### 7 · Igiene del banco — nessun numero visibile, ma protegge le prossime misure
+
+> **Due voci di questa lista sono state chiuse dalla voce 1, perché le serviva.** Non
+> erano gentilezze: senza, il rodaggio non era misurabile.
+>
+> - **FATTO — il banco misurava un motore che non esiste.** `misure/rientro.mjs`,
+>   `misure/bias.mjs`, `misure/g0.mjs` e `misure_congelamento.mjs` chiamano
+>   `creaPasso`/`stimaBasi` da soli, senza passare dal costruttore: col rodaggio acceso in
+>   produzione avrebbero continuato a misurare il passo **senza**. È E12 nella sua forma
+>   silenziosa, e per un'ora è successo davvero — `s25` dava numeri identici al bit prima e
+>   dopo l'accensione, ed è così che l'ho scoperto. Chiuso facendo viaggiare `rodaggio`
+>   insieme a `ρ` e `δ₇₀` in `misura_tutto.mjs`, e stampato nella targhetta del riassunto.
+>   **`replay_g5.mjs` è stato lasciato fuori apposta:** è un esperimento chiuso con esito
+>   pre-registrato, e cambiargli la fisica sotto ne riscriverebbe il risultato (E22). Va
+>   rifatto con una prereg sua.
+> - **FATTO — il modello si può sostituire senza toccare il disco.** `contestoNuovo` e
+>   `rispostaNuovo` accettano un modello alternativo, che non finisce mai in cache. Serviva
+>   a valutare 11 varianti leave-one-race-out; serve a chiunque debba misurare una variante
+>   senza scrivere su `data/`.
+>
+> **Una voce nuova, scoperta qui:** `banco.mjs` consegna i casi col nome di SITO
+> («Gran Bretagna») mentre i modelli indicizzano col nome del SIMULATORE
+> («GranBretagna»). C'è già `garaSimDi` che traduce, ma niente lo impone: chi scrive una
+> misura nuova indicizza col campo che ha in mano e scopre l'errore solo se una gara manca.
+> È E24 che aspetta il prossimo. Costerebbe poco farlo dichiarare dal banco.
+
 - **`ai_lab/confronto/banco.mjs`:** `giro_di_rientro` è cablato a `caso.rientroLap` e non segue
   le opzioni — **mente** appena si varia l'orizzonte, cioè sul percorso di chi misura M2/M3.
 - **Esporre la ri-classificazione sulla popolazione comune** come funzione del banco: oggi due
@@ -204,6 +286,17 @@ misura/predizione, cosa da dichiarare e non da nascondere in una riga di stimato
 3. **Ho misurato la copertura della banda con tre convenzioni diverse** (46,6% · 73,9% · 81,2%)
    prima di accorgermi che il denominatore *era* il problema. Il numero pubblicato è quello
    dello script validato, con la convenzione dichiarata.
+4. **Nella voce 1 ho scritto una clausola di non-danno impossibile:** «la suite del banco
+   (s01…s27) deve restare verde», quando `s15` e `s25` erano **già rosse** quando l'ho scritta.
+   Una condizione insoddisfacibile dal primo minuto non è una tutela: è una riga che si può
+   interpretare come fa comodo il giorno in cui qualcosa si rompe. Andava scritta come
+   «nessuna asserzione oggi verde diventa rossa» — che è la cosa che intendevo, ed è la cosa
+   che poi è successa (`bias piatto`, di tre millesimi). Il difetto è mio e resta qui: la
+   regressione l'ho portata comunque al PO invece di risolverla con la clausola in mano.
+5. **La mia prima asserzione sulla magnitudine in `s28` era sbagliata:** avevo scritto che
+   cablare `w` da un lato solo sbaglia «di un ordine `c`». No: la base assorbe la **mediana**
+   di `w` sulle età osservate, quindi il difetto è un offset costante di 0,074 s, non 0,67.
+   La sentinella lo pretende ora al miliardesimo, invece che con una soglia comoda.
 
 ---
 

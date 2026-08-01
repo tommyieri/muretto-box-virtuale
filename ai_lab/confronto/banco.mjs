@@ -229,7 +229,7 @@ export function datiVecchio(nomeSito) {
  *                 che il costruttore pretende come INGRESSO dichiarato e non deduce.
  *                 Senza argomento `nGiriGara` e' null: e' il contesto condiviso.
  */
-export function contestoNuovo(nomeSito = null) {
+export function contestoNuovo(nomeSito = null, modelloOverride = null) {
   const c = cache();
   if (!c.contesto) {
     const gareSim = caricaGare2026(SIM);
@@ -240,10 +240,21 @@ export function contestoNuovo(nomeSito = null) {
     c.gareSim = gareSim;
     c.contesto = { gare: gareSim, modello, prior, costantiDirector, bandaRientro, nGiriGara: null };
   }
-  if (nomeSito === null) return c.contesto;
+  // Il MODELLO si può sostituire senza toccare il disco. Serve a chi misura una
+  // variante pre-registrata — per esempio i parametri leave-one-race-out del
+  // rodaggio, diversi per ogni gara — e NON cambia niente quando non si passa:
+  // il contesto memoizzato resta l'unico oggetto condiviso. Un override non
+  // finisce mai in cache, così due misure adiacenti non si contaminano.
+  const conModello = modelloOverride === null ? c.contesto : { ...c.contesto, modello: modelloOverride };
+  if (nomeSito === null) return conModello;
   const g = c.gareSim[garaSimDi(nomeSito)];
   if (!g) throw new Error(`gara assente dal simulatore: ${nomeSito}`);
-  return { ...c.contesto, nGiriGara: g.nGiri };
+  return { ...conModello, nGiriGara: g.nGiri };
+}
+
+/** Il modello v2 come sta su disco, copia fresca (per costruirne varianti). */
+export function modelloDaDisco() {
+  return JSON.parse(readFileSync(path.join(SIM, 'data', 'modelli', 'modello_v2.json'), 'utf8'));
 }
 
 /** La gara nel formato del simulatore (`{ righe, perPilota, nGiri, fonte }`). */
@@ -467,14 +478,14 @@ export function rispostaVecchio(caso, opzioni = {}) {
  *     ma non e' un numero;
  *   - il pilota non ha un passo base e il kernel lo lascia a `null` (regola 6).
  */
-export function rispostaNuovo(caso, { mescola = null } = {}) {
+export function rispostaNuovo(caso, { mescola = null, modello = null } = {}) {
   const gSim = garaNuova(caso.gara);
   const scelta = mescola ?? mescolaAlGiro(gSim, caso.freezeLap, caso.pilota);
   const base = { motore: 'nuovo', ok: false, muto: true, pos: null, su: null, banda: null, grezzo: null };
   if (scelta === null) {
     return { ...base, motivo: 'mescola al congelamento non nota o non slick: il motore non finge una gomma' };
   }
-  const contesto = contestoNuovo(caso.gara);
+  const contesto = contestoNuovo(caso.gara, modello);
   let r;
   try {
     r = doveRientri({ gara: caso.garaSim, freezeLap: caso.freezeLap, pilota: caso.pilota,

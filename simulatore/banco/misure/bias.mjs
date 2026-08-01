@@ -41,13 +41,13 @@ export function ammessiBias(gara, Lf, H, { minGiriBase }) {
   return dentro;
 }
 
-export function biasDiGara(gara, Lf, H, piloti, { delta70, rho, minGiriBase, minPiloti }) {
+export function biasDiGara(gara, Lf, H, piloti, { delta70, rho, rodaggio = null, minGiriBase, minPiloti }) {
   const basi = stimaBasi(osservazioniVerdi(gara.righe), {
-    delta70, rho, nGiri: gara.nGiri, finoA: Lf, minGiri: minGiriBase,
+    delta70, rho, nGiri: gara.nGiri, finoA: Lf, minGiri: minGiriBase, rodaggio,
   });
   const r = simulate({
     state: piloti.map((p) => ({ drv: p.drv, lap: Lf, cum_time: p.cum_time, tyre_age: p.tyre_age })),
-    pace: creaPasso({ delta70, rho, nGiri: gara.nGiri, basi }),
+    pace: creaPasso({ delta70, rho, nGiri: gara.nGiri, basi, rodaggio }),
     freezeLap: Lf,
     steps: H,
     pits: {},
@@ -66,7 +66,7 @@ export function biasDiGara(gara, Lf, H, piloti, { delta70, rho, minGiriBase, min
  *                   valore scelto). Passarlo come funzione permette il
  *                   leave-one-race-out senza una seconda implementazione.
  */
-export function misuraBias(gare, { delta70Di, rho, cancelli }) {
+export function misuraBias(gare, { delta70Di, rho, rodaggio = null, cancelli }) {
   const { congelamenti, orizzonti, min_giri_base: minGiriBase, min_piloti_gara: minPiloti, min_gare_orizzonte: minGare } = cancelli;
   const perOrizzonte = {};
   const dettaglio = [];
@@ -78,7 +78,7 @@ export function misuraBias(gare, { delta70Di, rho, cancelli }) {
         if (Lf + H > gara.nGiri) continue;
         const piloti = ammessiBias(gara, Lf, H, { minGiriBase });
         if (piloti.length < minPiloti) continue;
-        const b = biasDiGara(gara, Lf, H, piloti, { delta70: delta70Di(nome), rho, minGiriBase, minPiloti });
+        const b = biasDiGara(gara, Lf, H, piloti, { delta70: delta70Di(nome), rho, rodaggio, minGiriBase, minPiloti });
         if (b === null) continue;
         valori.push(b);
         gareUsate.add(nome);

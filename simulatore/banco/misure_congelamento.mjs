@@ -27,6 +27,13 @@ import { feedDaGara } from '../live/feed_archivio.mjs';
 // Contesto minimo per le funzioni di scenario: la gara si ricostruisce dalle
 // righe che la sentinella passa (intere o troncate), cosi' il troncamento
 // arriva davvero fino in fondo invece di essere aggirato da una rilettura.
+// Il rodaggio si legge dal MODELLO che il contesto porta gia': cosi' queste
+// misure girano sulla stessa fisica del prodotto senza un secondo interruttore
+// da tenere allineato a mano.
+const rodaggioDi = (ctx) => (ctx.modello?.rodaggio?.attivo === true
+  ? { c: ctx.modello.rodaggio.c, tau: ctx.modello.rodaggio.tau }
+  : null);
+
 const contestoDa = (righe, ctx) => ({
   gare: { [ctx.nomeGara]: indicizza(righe) },
   // la distanza di gara è nota al congelamento e NON si deduce dalle righe
@@ -51,7 +58,7 @@ export const MISURE_A_CONGELAMENTO = [
     modulo: 'engine/passo_v2.mjs',
     descrizione: 'la base per pilota, misurata togliendo δ e ρ ai giri ≤ Lf (regola 10)',
     esegui: (righe, Lf, ctx) => stimaBasi(osservazioniVerdi(righe), {
-      delta70: ctx.delta70, rho: ctx.rho, nGiri: ctx.nGiri, finoA: Lf, minGiri: 8,
+      delta70: ctx.delta70, rho: ctx.rho, nGiri: ctx.nGiri, finoA: Lf, minGiri: 8, rodaggio: rodaggioDi(ctx),
     }),
   },
   {
@@ -60,11 +67,11 @@ export const MISURE_A_CONGELAMENTO = [
     descrizione: 'la proiezione del kernel dal congelamento, base compresa',
     esegui: (righe, Lf, ctx) => {
       const basi = stimaBasi(osservazioniVerdi(righe), {
-        delta70: ctx.delta70, rho: ctx.rho, nGiri: ctx.nGiri, finoA: Lf, minGiri: 8,
+        delta70: ctx.delta70, rho: ctx.rho, nGiri: ctx.nGiri, finoA: Lf, minGiri: 8, rodaggio: rodaggioDi(ctx),
       });
       return simulate({
         state: statoAlCongelamento(righe, Lf),
-        pace: creaPasso({ delta70: ctx.delta70, rho: ctx.rho, nGiri: ctx.nGiri, basi }),
+        pace: creaPasso({ delta70: ctx.delta70, rho: ctx.rho, nGiri: ctx.nGiri, basi, rodaggio: rodaggioDi(ctx) }),
         freezeLap: Lf,
         steps: 10,
         pits: {},

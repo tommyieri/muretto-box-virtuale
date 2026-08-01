@@ -84,6 +84,13 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   const rho = modello.rho.valore;
   const delta70 = modello.delta_70.scelto;
   if (typeof delta70 !== 'number') throw new Error('il modello non ha un δ₇₀ scelto: nessuno scenario si costruisce su un modello non cablabile');
+  // Il RODAGGIO entra solo se il modello lo dichiara ACCESO. Un termine stimato
+  // ma non promosso resta nel file con i suoi numeri e la sua targhetta — così
+  // il prossimo lo trova invece di ri-stimarlo — ma non tocca nessuna risposta
+  // finché il cancello di PREREG_rodaggio.md non l'ha promosso.
+  const rodaggio = modello.rodaggio?.attivo === true
+    ? { c: modello.rodaggio.c, tau: modello.rodaggio.tau }
+    : null;
 
   const assunzioni = [];
   const dichiara = (codice, descrizione, conteggio, targhetta) => assunzioni.push({ codice, descrizione, conteggio, targhetta });
@@ -178,8 +185,13 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   }
 
   // ── passo: base misurata togliendo gli stessi termini che si ri-aggiungono ─
-  const basi = stimaBasi(osservazioniVerdi(g.righe), { delta70, rho, nGiri: nGiriGara, finoA: freezeLap, minGiri: MIN_GIRI_BASE });
-  const pace = creaPasso({ delta70, rho, nGiri: nGiriGara, basi });
+  const basi = stimaBasi(osservazioniVerdi(g.righe), { delta70, rho, nGiri: nGiriGara, finoA: freezeLap, minGiri: MIN_GIRI_BASE, rodaggio });
+  const pace = creaPasso({ delta70, rho, nGiri: nGiriGara, basi, rodaggio });
+  if (rodaggio !== null) {
+    dichiara('RODAGGIO_GOMMA_NUOVA',
+      `nei primi giri di vita la gomma è più veloce di quanto dica il degrado lineare: si applica w(età) = −${modello.rodaggio.c}·exp(−età/${modello.rodaggio.tau}) s/giro`,
+      1, modello.rodaggio.targhetta ?? 'misurato sul fondo 2026 in aria libera');
+  }
 
   // ── orizzonte legato al modello, non a un parametro morto (E20) ──────────
   const steps = giroFinale - freezeLap;

@@ -131,6 +131,18 @@ Home e pagina a un click di distanza si contraddicono su posizione, campo, rival
 - **Il tranello**: la regola ovvia («guarda il campo al giro L») recupera 36 casi e porta la banda dal 37,1% al 91,4%. **È futuro d'orologio**: delle celle di chi ha già chiuso il giro L prima di me, 0 su 265 sono neutralizzate; di chi lo chiude dopo, 402 su 713. La versione causale onesta (`cum_time <= il mio`) accende 9 casi, di cui 2 sbagliati. Va messo nella pre-registrazione che «indice di giro ≤ L» **non è** la definizione di informazione ammessa, o il prossimo che misura questa idea vedrà il +54 di copertura e la accenderà.
 
 ### H — Il rodaggio della gomma nuova: w(età) = −c·exp(−età/τ)
+
+> **ESEGUITA il 01/08/2026 — esito completo in `ESITO_rodaggio.md`.** `c = 0,67 s`,
+> `τ = 4,75 giri`, in produzione. Il cancello passa in lettura B2 leave-one-race-out su
+> tutte e quattro le condizioni (esatti 45,29% → **46,64%**, troppo indietro 47,53% →
+> **45,74%**, bias +0,825 → **+0,771**), al prezzo di `bias piatto` che passa da 0,0041 a
+> **0,1030** contro una soglia di 0,1 — lasciato rosso, soglia non toccata.
+>
+> **Due cose scritte qui sotto erano sbagliate, e restano scritte apposta.** (1) Il rischio
+> E01 non esisteva: l'ottimo a una sosta è invariante a qualunque `w` additiva sull'età, per
+> simmetria (`a+k = R−k`), e misurato sul prodotto il giro raccomandato non cambia in
+> nessuna delle 1.505 curve. (2) Il cancello mescolava lettura B2 e numeri della lettura A
+> (49,8% e +0,96): riscritto coi valori B2 misurati prima della modifica.
 In aria libera i giri a età 2-8 dopo una sosta girano **0,275 s/giro più veloci** di quanto il modello preveda (IC95 [−0,415; −0,037], n=1.249, mediana negativa in 8/10 gare), mentre a età 9-20 il residuo è 0,000. È la regione che il prodotto usa di più: ogni domanda "se fermo adesso" proietta un pilota che riparte da età 1 contro rivali a età alta. Sette giri × 0,275 s ≈ 1,9 s, l'ordine di grandezza di una posizione — ed è coerente col bias di +0,96 posizioni del nuovo.
 - **File**: `simulatore/engine/passo_v2.mjs` (`creaPasso` **e** `stimaBasi`: lo stesso w va sottratto misurando e ri-aggiunto simulando, nella stessa riga, o è il difetto del carburante daccapo), c e τ in `modello_v2.json` con targhetta.
 - **Cancello, pre-registrato**: M1 in lettura B2 — mediana ≤ 1,0 ed esatti ≥ 45,3%, **più** una condizione sul segno: la quota "troppo indietro" deve scendere dal 49,8% e il bias medio da +0,96 verso 0. Leave-one-race-out su (c, τ).

@@ -24,7 +24,7 @@ import { perditaBox } from '../../provenienza/pitloss.mjs';
 
 const EPS = 1e-9;
 
-export function misuraG0(gare, { rho, delta70, prior, cancelli }) {
+export function misuraG0(gare, { rho, delta70, rodaggio = null, prior, cancelli }) {
   const {
     congelamenti, min_giri_rimanenti: minRimanenti, min_giri_base: minGiriBase,
     tolleranza_bordo_giri: tolleranzaBordo,
@@ -39,8 +39,8 @@ export function misuraG0(gare, { rho, delta70, prior, cancelli }) {
     for (const Lf of congelamenti) {
       const R = gara.nGiri - Lf;
       if (R < minRimanenti) continue;
-      const basi = stimaBasi(osservazioni, { delta70, rho, nGiri: gara.nGiri, finoA: Lf, minGiri: minGiriBase });
-      const pace = creaPasso({ delta70, rho, nGiri: gara.nGiri, basi });
+      const basi = stimaBasi(osservazioni, { delta70, rho, nGiri: gara.nGiri, finoA: Lf, minGiri: minGiriBase, rodaggio });
+      const pace = creaPasso({ delta70, rho, nGiri: gara.nGiri, basi, rodaggio });
 
       for (const [drv, celle] of gara.perPilota) {
         const c = celle.get(Lf);

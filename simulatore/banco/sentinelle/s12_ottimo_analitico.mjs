@@ -21,7 +21,16 @@
 //  (c) su gomma più vecchia dei giri rimasti (a > R) l'ottimo non è "fermarsi
 //      subito";
 //  (d) il minimo non è stretto (due k a pari merito quando (R−a) è pari):
-//      segnalerebbe che il termine quadratico è sparito.
+//      segnalerebbe che il termine quadratico è sparito;
+//  (e) il RODAGGIO sposta l'ottimo. Non deve: la differenza prima in k vale
+//      ρ·(2k + a − R) + w(a+k) − w(R−k), e in k* = (R−a)/2 si ha a+k = R−k,
+//      quindi il termine in w si annulla PER QUALUNQUE w additiva sull'età. La
+//      derivata seconda passa da 2ρ a 2ρ + (c/τ)·[…] > 0: il minimo diventa più
+//      stretto, non più piatto. Qui si prova col kernel vero, e anche con un τ
+//      volutamente enorme — il caso che PIANO_CORREZIONE.md temeva come E01.
+//      Se un giorno l'ottimo si spostasse, il difetto è nel codice (età
+//      indicizzata male, w non additiva): questa soglia NON si allarga per far
+//      passare il rodaggio.
 
 import { banco } from '../asserzioni.mjs';
 import { readFileSync } from 'node:fs';
@@ -44,8 +53,8 @@ const N_GIRI = 70;
 
 // Sweep di k col kernel vero: k = quanti giri ancora sulla gomma attuale prima
 // di fermarsi. Restituisce il k che minimizza il cum a fine orizzonte.
-function argminSosta({ R, a, perdita, d70 }) {
-  const pace = creaPasso({ delta70: d70, rho, nGiri: N_GIRI, basi: { UNO: 90 } });
+function argminSosta({ R, a, perdita, d70, rodaggio = null }) {
+  const pace = creaPasso({ delta70: d70, rho, nGiri: N_GIRI, basi: { UNO: 90 }, rodaggio });
   const stato = [{ drv: 'UNO', lap: LF, cum_time: 0, tyre_age: a }];
   const totali = [];
   for (let k = 1; k <= R - 1; k += 1) {
@@ -85,5 +94,40 @@ const { totali } = argminSosta({ R: 20, a: 4, perdita: 21.0, d70: delta70 });
 const alK = (k) => totali.find((x) => x.k === k).cum;
 b.verifica('il minimo è strettamente più basso del vicino a sinistra', alK(8) < alK(7) - 1e-12);
 b.verifica('il minimo è strettamente più basso del vicino a destra', alK(8) < alK(9) - 1e-12);
+
+// (e) il rodaggio non sposta l'ottimo — nemmeno con τ enorme (il caso E01 temuto)
+// I parametri stimati si leggono dal modello se ci sono, ma la sentinella NON
+// dipende dal fatto che siano ACCESI: prova la proprietà della forma, che deve
+// valere anche mentre il termine è spento in produzione.
+const stimato = (typeof modello.rodaggio?.c === 'number' && typeof modello.rodaggio?.tau === 'number')
+  ? { c: modello.rodaggio.c, tau: modello.rodaggio.tau }
+  : { c: 0.67, tau: 4.75 };
+const RODAGGI = [
+  ['stimato sul fondo', stimato],
+  ['τ enorme (il caso E01 temuto)', { c: 1.0, tau: 200 }],
+  ['c grande, τ corto', { c: 3.0, tau: 1.5 }],
+  ['c = 0 (termine spento per valore)', { c: 0, tau: 5 }],
+];
+for (const [nome, rodaggio] of RODAGGI) {
+  for (const [R, a] of [[20, 4], [30, 10], [16, 2]]) {
+    const atteso = (R - a) / 2;
+    const { migliori } = argminSosta({ R, a, perdita: 21.0, d70: delta70, rodaggio });
+    b.uguale(`rodaggio ${nome} · R=${R} età=${a} → l'ottimo resta a ${atteso}`, migliori, [atteso]);
+  }
+}
+
+// ...e il rodaggio spento per assenza dà gli STESSI numeri di prima che esistesse
+b.uguale('rodaggio null ≡ rodaggio { c: 0 }: nessun percorso separato',
+  argminSosta({ R: 20, a: 4, perdita: 21.0, d70: delta70, rodaggio: null }).totali,
+  argminSosta({ R: 20, a: 4, perdita: 21.0, d70: delta70, rodaggio: { c: 0, tau: 5 } }).totali);
+
+// ...e con c > 0 il minimo è PIÙ stretto, non più piatto (la derivata seconda cresce)
+{
+  const senza = argminSosta({ R: 20, a: 4, perdita: 21.0, d70: delta70 }).totali;
+  const con = argminSosta({ R: 20, a: 4, perdita: 21.0, d70: delta70, rodaggio: stimato }).totali;
+  const curvatura = (t) => t.find((x) => x.k === 7).cum - 2 * t.find((x) => x.k === 8).cum + t.find((x) => x.k === 9).cum;
+  b.verifica(`con il rodaggio la curvatura nell'ottimo cresce (${curvatura(senza).toFixed(5)} → ${curvatura(con).toFixed(5)})`,
+    curvatura(con) > curvatura(senza) + 1e-12);
+}
 
 b.chiudi();

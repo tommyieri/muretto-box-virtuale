@@ -42,7 +42,7 @@ const rango = (elenco, chiave, drv) =>
 // copertura scende, e' la copertura vera che scende — prima era il metro a
 // essere generoso.
 
-export function misuraRientro(gare, { rho, delta70, prior, cancelli }) {
+export function misuraRientro(gare, { rho, delta70, rodaggio = null, prior, cancelli }) {
   const { min_giri_base: minGiriBase, min_piloti_confrontabili: minPiloti, orizzonte_giri: STEPS } = cancelli;
   const casi = [];
   const scarti = [];
@@ -78,7 +78,7 @@ export function misuraRientro(gare, { rho, delta70, prior, cancelli }) {
         if (!confrontabili.some((c) => c.drv === drv)) { scarta('il pilota stesso non è confrontabile'); continue; }
 
         if (!basiPerLf.has(Lf)) {
-          basiPerLf.set(Lf, stimaBasi(osservazioni, { delta70, rho, nGiri: gara.nGiri, finoA: Lf, minGiri: minGiriBase }));
+          basiPerLf.set(Lf, stimaBasi(osservazioni, { delta70, rho, nGiri: gara.nGiri, finoA: Lf, minGiri: minGiriBase, rodaggio }));
         }
         const basi = basiPerLf.get(Lf);
         const regime = regimeDiCella(alCongelamento);
@@ -87,7 +87,7 @@ export function misuraRientro(gare, { rho, delta70, prior, cancelli }) {
 
         const r = simulate({
           state: confrontabili.map(({ drv: d, cum_time, tyre_age }) => ({ drv: d, lap: Lf, cum_time, tyre_age })),
-          pace: creaPasso({ delta70, rho, nGiri: gara.nGiri, basi }),
+          pace: creaPasso({ delta70, rho, nGiri: gara.nGiri, basi, rodaggio }),
           freezeLap: Lf,
           steps: STEPS,
           pits: { [drv]: [{ lap: L, perdita: perdita.perdita }] },
