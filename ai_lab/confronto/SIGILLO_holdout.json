@@ -4,15 +4,21 @@
     "perche": "Dal 01/08/2026 il ciclo post-gara ri-stima rho, delta70, il rodaggio e la banda a ogni gara nuova (direttiva del PO). Un holdout sigillato vive esattamente della proprieta' opposta: i modelli NON devono aver visto la gara che li giudica. Se la domenica sera l'automazione ri-stimasse prima che qualcuno misuri l'holdout, il primo fuori campione vero del progetto si brucerebbe DA SOLO, in silenzio, e non si potrebbe rifare.",
     "come_funziona": "Finche' `stato` e' `aperto` e la gara sigillata compare fra quelle pubblicate, auto_gara.py SALTA il blocco di ri-stima del cuore del simulatore e lo grida nel log. Tutto il resto dell'ondata (pubblicazione, viste, classifiche, modelli lab) prosegue normale.",
     "come_si_chiude": "Si misura l'holdout coi modelli PRE-gara (e' il senso del sigillo), si scrive l'esito, si porta `stato` a `chiuso` con la data. Dal giro successivo la ri-stima riparte da sola e include l'Olanda.",
-    "data": "2026-08-01"
+    "data": "2026-08-01",
+    "secondo_sigillo": "01/08/2026: al sigillo del confronto motori si aggiunge quello della compressione dei distacchi. Sei ipotesi provate in casa sulle stesse 11 gare; Zandvoort e l unica gara che nessuna ha visto. Stessa regola: finche e aperto, auto_gara.py salta la ri-stima del cuore quando pubblica la gara sigillata."
   },
   "stato": "aperto",
   "gara": "Olanda",
   "data_gara": "2026-08-23",
-  "prereg": "ai_lab/confronto/PREREG_holdout_Olanda.md",
+  "prereg": [
+    "ai_lab/confronto/PREREG_holdout_Olanda.md",
+    "ai_lab/confronto/PREREG_holdout_neutralizzazione.md"
+  ],
   "modelli_sigillati": [
     "data/modelli/modello_v2.json",
-    "data/modelli/banda_rientro.json"
+    "data/modelli/banda_rientro.json",
+    "data/priors/pitloss_priors.json",
+    "data/viste/compressione_e_fattori_fondo.json"
   ],
   "nota_hash": "Gli hash del sigillo stanno nella prereg e sono stati RI-FIRMATI il 01/08 dopo la voce 1 (rodaggio): entrambi i file sono cambiati quel giorno, PRIMA della gara e per una ragione dichiarata. Ri-firmare prima della gara e' legittimo ed e' il contrario di ri-tarare dopo; ri-firmarli dopo il 23/08 sarebbe la fine dell'holdout.",
   "chiuso_il": null

@@ -203,33 +203,34 @@
    "forma": "gap(k+1) = gap(k) * kappa(regime), dentro la finestra di persistenza del regime osservato",
    "prodotto_da": "provenienza/esporta_compressione_fondo.mjs",
    "protocollo": "ai_lab/confronto/PREREG_neutralizzazione.md, PREREG-2 (scritta prima della misura)",
-   "perimetro": "fondo, gare asciutte, coppie (pilota, giro k->k+1) con gap(k) > 1,0 s, ne' pilota ne' leader in in-lap/out-lap, status per-auto presente",
+   "perimetro": "PREREG-6: solo le NEUTRALIZZAZIONI DI CAMPO (almeno meta del campo sotto regime al giro di arrivo). regimeDiCella legge lo status della singola auto, e un 4 su una macchina sola e una gialla di settore, non una Safety Car.",
    "controllo": "in VERDE kappa = 1,0312 (IC95 [1,0292; 1,0335]), dentro la banda 0,95-1,05 dichiarata prima: il metro regge. Il valore > 1 e' reale, non un difetto: in verde i distacchi CRESCONO.",
    "stato": "NON PROMOSSO. Serve una estensione dichiarata del kernel per applicarlo: vedi nota_meccanismo.",
    "nota_meccanismo": "Il kernel e' deliberatamente NON interagente (due auto possono attraversarsi; il duello non si simula). Una compressione del distacco NON va implementata come interazione a runtime: si precalcola nel costruttore dai gap noti AL CONGELAMENTO — per il pilota d con gap0 e regime persistente k giri, il credito sul giro L+k vale gap0 * kappa^(k-1) * (kappa-1), che e' negativo — e il kernel applica secondi dichiarati per giro. Cosi' il kernel resta non interagente e la compressione resta informazione <= L.",
    "avvertenza_dispersione": "sotto SC p25-p75 e' 0,36-1,01: in un quarto dei casi il distacco NON si comprime affatto. La mediana descrive il tipico, non il singolo.",
-   "data": "2026-08-01"
+   "data": "2026-08-01",
+   "effetto_della_restrizione": "SC praticamente invariato (0,6914 -> 0,6971, n 3597 -> 3582). VSC cambia molto: 0,9304 -> 0,9791, n 1511 -> 1107. Buona parte della compressione VSC misurata prima era artefatto di gialle locali, non un fenomeno di campo."
   },
   "SC": {
-   "n": 3597,
+   "n": 3582,
    "n_gare": 71,
-   "kappa_mediano": 0.6914,
-   "p25": 0.3593,
-   "p75": 1.0091,
+   "kappa_mediano": 0.6971,
+   "p25": 0.3626,
+   "p75": 1.01,
    "ic95_mediana_blocchi_gare": [
-    0.6141,
-    0.772
+    0.6151,
+    0.7735
    ]
   },
   "VSC": {
-   "n": 1511,
-   "n_gare": 51,
-   "kappa_mediano": 0.9304,
+   "n": 1107,
+   "n_gare": 44,
+   "kappa_mediano": 0.9791,
    "p25": 0.8053,
-   "p75": 1.1192,
+   "p75": 1.2676,
    "ic95_mediana_blocchi_gare": [
-    0.9007,
-    0.9523
+    0.9463,
+    0.9959
    ]
   },
   "controllo_verde": {
