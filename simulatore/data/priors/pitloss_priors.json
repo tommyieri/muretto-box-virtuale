@@ -244,5 +244,16 @@
     1.0335
    ]
   }
+ },
+ "soste_rivali_sotto_regime": "nessuna",
+ "soste_rivali_targhetta": {
+  "valore": "nessuna",
+  "cosa_sostituisce": "l'assunzione \"stint !== 1\" in scenario/costruttore.mjs: sotto neutralizzazione si assumeva che i rivali ancora al primo stint si fermassero allo stesso giro del pilota.",
+  "perche": "MISURATO su 105 gare del fondo (9.782 occasioni sotto neutralizzazione di campo): si ferma il 7,7% delle auto, e lo STINT NON SEPARA — 8,3% al primo, 8,4% al secondo, 6,1% dal terzo. La variabile su cui l assunzione si reggeva non ha potere predittivo: muoveva circa il 60% del campo per catturare un fenomeno che riguarda l 8%.",
+  "cancello": "ai_lab/confronto/PREREG_soste_rivali.md — decide M1 in lettura B2, perche l assunzione non tocca i tempi (nel kernel le auto non interagiscono) ma solo le posizioni. Passate tutte e quattro: esatti sui casi con regime 44,44% -> 55,56% (n=18), su tutti gli appaiati 44,68% -> 45,53%, 217/217 casi senza regime identici al bit, copertura invariata.",
+  "limite": "n=18 sui casi con regime, e la Gran Bretagna (n=6) pesa parecchio. La giustificazione viene dal fondo (105 gare), non da questi diciotto.",
+  "cosa_non_dice": "non dice che nessuno si ferma mai: dice che il 7,7% si ferma e che non sappiamo distinguerlo. La Safety Car al giro giusto per chi ha gomme vecchie resta il caso in cui il motore sbaglia — ora per omissione invece che per invenzione.",
+  "fonte": "data/viste/soste_sotto_sc.json",
+  "data": "2026-08-01"
  }
 }

@@ -118,8 +118,16 @@ const contesto = {
 // (d) l'assunzione sui rivali: dichiarata col conteggio, e solo sotto regime
 {
   const inVerde = costruisciScenario({ gara: GARA, freezeLap: LF, pilota: PILOTA, giroPit: GIRO_PIT, mescola: MESCOLA }, contesto);
-  b.verifica('in verde non si assumono soste dei rivali',
-    !inVerde.assunzioni.some((a) => a.codice === 'SOSTE_RIVALI_SC'));
+  // I DUE CODICI POSSIBILI. Il motore puo' assumere che i rivali al primo stint si
+  // fermino (SOSTE_RIVALI_SC) oppure che non si fermi nessuno
+  // (NESSUNA_SOSTA_ASSUNTA_AI_RIVALI). Quale delle due lo decide la regola in
+  // vigore; quello che questa sentinella pretende e' che UNA delle due sia sempre
+  // dichiarata sotto regime e NESSUNA delle due in verde. Cablarne una sola qui
+  // renderebbe la sentinella un test della regola di ieri invece che del motore:
+  // e' successo il 01/08, quando la regola e' cambiata dopo la misura sul fondo.
+  const CODICI_RIVALI = ['SOSTE_RIVALI_SC', 'NESSUNA_SOSTA_ASSUNTA_AI_RIVALI'];
+  b.verifica('in verde non si assume niente sui rivali',
+    !inVerde.assunzioni.some((a) => CODICI_RIVALI.includes(a.codice)));
   b.uguale('in verde la sosta è una sola: la mia', Object.keys(inVerde.pits), [PILOTA]);
 
   // un congelamento realmente sotto neutralizzazione, cercato nel grezzo
@@ -140,14 +148,23 @@ const contesto = {
       { gara: trovato.nomeGara, freezeLap: trovato.lap, pilota: trovato.drv, giroPit: trovato.lap + 1, mescola: MESCOLA },
       { ...contesto, nGiriGara: gare[trovato.nomeGara].nGiri },
     );
-    const assunzione = sotto.assunzioni.find((a) => a.codice === 'SOSTE_RIVALI_SC');
+    const assunzione = sotto.assunzioni.find((a) => CODICI_RIVALI.includes(a.codice));
     b.verifica(`${trovato.nomeGara}@${trovato.lap}: l'assunzione sui rivali è dichiarata`, assunzione !== undefined);
     if (assunzione) {
-      b.verifica('...col conteggio di quanti rivali coinvolge', Number.isInteger(assunzione.conteggio));
-      b.uguale('...e le soste generate sono tante quante il conteggio più la mia',
-        Object.keys(sotto.pits).length, assunzione.conteggio + 1);
-      b.verifica('...e ogni rivale assunto è ancora al primo stint',
-        Object.keys(sotto.pits).every((d) => d === trovato.drv || sotto._interno.celleAlCongelamento.get(d).stint === 1));
+      b.verifica('...col conteggio', Number.isInteger(assunzione.conteggio));
+      b.verifica('...e con la targhetta che dice da dove viene',
+        typeof assunzione.targhetta === 'string' && assunzione.targhetta.length > 0);
+      if (assunzione.codice === 'SOSTE_RIVALI_SC') {
+        b.uguale('...e le soste generate sono tante quante il conteggio più la mia',
+          Object.keys(sotto.pits).length, assunzione.conteggio + 1);
+        b.verifica('...e ogni rivale assunto è ancora al primo stint',
+          Object.keys(sotto.pits).every((d) => d === trovato.drv || sotto._interno.celleAlCongelamento.get(d).stint === 1));
+      } else {
+        // regola in vigore dal 01/08: nessuna sosta altrui. Misurato su 105 gare
+        // del fondo che lo stint non separa (8,3% contro 8,4%) e che sotto
+        // neutralizzazione di campo si ferma il 7,7% delle auto.
+        b.uguale('...e l\'unica sosta e\' la mia', Object.keys(sotto.pits), [trovato.drv]);
+      }
     }
     b.verifica('il fattore di neutralizzazione è dichiarato come prior CON BANDA',
       sotto.assunzioni.some((a) => a.codice === 'FATTORE_NEUTRALIZZAZIONE' && /BANDA/.test(a.targhetta)));

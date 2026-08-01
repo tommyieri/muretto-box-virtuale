@@ -77,7 +77,12 @@ function leggiPacchetto(contesto) {
   return {
     attivo,
     regimeInProiezionePura: attivo,
-    sosteRivali: attivo ? (p.soste_rivali ?? 'nessuna') : 'stint1',
+    // N4 E' SCORPORATO dal pacchetto: si accende da solo, con il suo cancello
+    // (PREREG_soste_rivali.md). Il pacchetto neutralizzazione resta NULL per i
+    // suoi motivi; questa voce ha i suoi, e vengono da 105 gare del fondo invece
+    // che dalle undici del banco.
+    sosteRivali: contesto.prior?.soste_rivali_sotto_regime
+      ?? (attivo ? (p.soste_rivali ?? 'nessuna') : 'stint1'),
     persistenzaDi: (regime) => persistenzaPacchetto(contesto, attivo, regime),
     // La COMPRESSIONE dei distacchi (PREREG-6: forma della PREREG-2, popolazione
     // ristretta). Due cose, e la seconda e' il punto:

@@ -187,12 +187,22 @@ export function scriviManifest(dove) {
 export function gareDaRigenerare(dove, timbroAtteso) {
   if (!existsSync(dove)) return [];
   const fuori = [];
-  for (const g of manifestDaDisco(dove).gare) {
+  // NON si parte da `manifestDaDisco`: quello elenca solo le cartelle che HANNO un
+  // `indice.json`, quindi una vista MONCA — cartella presente, indice assente —
+  // verrebbe SALTATA invece che rigenerata. E' lo stato in cui resta una gara se la
+  // rigenerazione si interrompe a meta': `generaVistaGara` svuota la cartella prima
+  // di riempirla. Successo davvero il 01/08 con l'Australia, e a prenderlo e' stata
+  // s27 e non questa funzione — che invece diceva serenamente «niente da fare».
+  //
+  // Una cartella senza indice non e' una gara assente: e' una gara ROTTA, ed e' il
+  // caso che ha piu' bisogno di essere rigenerato.
+  for (const v of readdirSync(dove, { withFileTypes: true })) {
+    if (!v.isDirectory()) continue;
     let m = null;
-    try { m = JSON.parse(readFileSync(path.join(dove, g, 'indice.json'), 'utf8')).modello ?? null; } catch { m = null; }
-    if (m === null || JSON.stringify(m) !== JSON.stringify(timbroAtteso)) fuori.push(g);
+    try { m = JSON.parse(readFileSync(path.join(dove, v.name, 'indice.json'), 'utf8')).modello ?? null; } catch { m = null; }
+    if (m === null || JSON.stringify(m) !== JSON.stringify(timbroAtteso)) fuori.push(v.name);
   }
-  return fuori;
+  return fuori.sort();
 }
 
 function main() {
@@ -239,6 +249,11 @@ function main() {
       // naso della sentinella che esiste apposta. Un timbro incompleto e' peggio
       // di nessun timbro: dice di no quando dovrebbe dire di si'.
       min_giri_base: typeof modello.min_giri_base?.valore === 'number' ? modello.min_giri_base.valore : null,
+      // La regola sulle soste dei rivali decide QUALI auto il motore muove sotto
+      // neutralizzazione, quindi le posizioni. Nel timbro dal primo minuto: la
+      // soglia di base c'e' finita solo dopo che `--sincronizza` aveva risposto
+      // «0 viste fuori passo» a un coefficiente appena cambiato.
+      soste_rivali: prior.soste_rivali_sotto_regime ?? 'stint1',
       banda_rientro_sha256: sha256Corto(path.join(RADICE, 'data', 'modelli', 'banda_rientro.json')),
       pitloss_sha256: sha256Corto(path.join(RADICE, 'data', 'priors', 'pitloss_priors.json')),
     },
@@ -257,8 +272,11 @@ function main() {
   // rigenera nulla, quel nulla deve essere leggibile nel log.
   if (sincronizza) {
     const fuori = gareDaRigenerare(dove, extra.modelloTarghetta);
-    const tutteSuDisco = manifestDaDisco(dove).gare;
-    console.log(`sincronizza: ${fuori.length} viste su ${tutteSuDisco.length} sono fuori passo col motore`
+    const conIndice = new Set(manifestDaDisco(dove).gare);
+    const monche = fuori.filter((g) => !conIndice.has(g));
+    if (monche.length) console.log(`sincronizza: ${monche.length} viste MONCHE (cartella senza indice, rigenerazione interrotta) -> ${monche.join(', ')}`);
+    const tutteSuDisco = readdirSync(dove, { withFileTypes: true }).filter((v) => v.isDirectory()).length;
+    console.log(`sincronizza: ${fuori.length} viste su ${tutteSuDisco} sono fuori passo col motore`
       + (fuori.length ? ` -> ${fuori.join(', ')}` : ' — niente da rigenerare'));
     if (soloQueste.length) {
       const chieste = new Set(soloQueste);
