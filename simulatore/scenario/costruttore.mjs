@@ -60,6 +60,17 @@ const MIN_GIRI_BASE_RIPIEGO = 8;
  * Spento = i numeri sono identici a prima, bit a bit. È la condizione C3 del
  * cancello, ed è la più facile da rompere.
  */
+// Una Safety Car neutralizza TUTTI. La maggioranza assoluta e' la soglia piu'
+// generosa che si possa chiamare «campo» senza inventare (PREREG-6).
+const QUOTA_CAMPO_NEUTRALIZZATO = 0.5;
+
+function persistenzaPacchetto(contesto, attivo, regime) {
+  if (!attivo) return PERSISTENZA_REGIME_GIRI;
+  const m = contesto.prior?.persistenza_regime_interna;
+  const g = m?.promosso === true ? m?.[regime]?.giri : null;
+  return typeof g === 'number' ? g : PERSISTENZA_REGIME_GIRI;
+}
+
 function leggiPacchetto(contesto) {
   const p = contesto.prior?.pacchetto_neutralizzazione;
   const attivo = p?.attivo === true;
@@ -67,62 +78,31 @@ function leggiPacchetto(contesto) {
     attivo,
     regimeInProiezionePura: attivo,
     sosteRivali: attivo ? (p.soste_rivali ?? 'nessuna') : 'stint1',
-    persistenzaDi: (regime) => {
-      if (!attivo) return PERSISTENZA_REGIME_GIRI;
-      const m = contesto.prior?.persistenza_regime_interna;
-      const g = m?.promosso === true ? m?.[regime]?.giri : null;
-      return typeof g === 'number' ? g : PERSISTENZA_REGIME_GIRI;
-    },
-    // La COMPRESSIONE dei distacchi, PESATA DALL'ATTESA (PREREG-4).
+    persistenzaDi: (regime) => persistenzaPacchetto(contesto, attivo, regime),
+    // La COMPRESSIONE dei distacchi (PREREG-6: forma della PREREG-2, popolazione
+    // ristretta). Due cose, e la seconda e' il punto:
     //
-    // La versione precedente comprimeva di κ per una finestra fissa, e trattava
-    // una durata ALEATORIA come certa: misurato, comprimeva del 28% a giro anche
-    // nel 43% dei casi in cui a L+2 la Safety Car era già rientrata. Era
-    // overcorrezione, e rovinava proprio le gare che partivano quasi giuste.
+    //  1. la forma e' `gap x kappa` sulla finestra di persistenza — la variante
+    //     migliore delle quattro provate. Le riformulazioni successive (media dei
+    //     rapporti, attesa corretta) peggioravano: piu' giri compressi, peggio.
+    //  2. si applica SOLO se al congelamento il CAMPO e' neutralizzato.
+    //     `regimeDiCella` legge lo status della singola auto, e un 4 su una
+    //     macchina sola non e' una Safety Car: e' una gialla di settore. La
+    //     compressione e' un fenomeno del campo intero. Misurato: il 23% dei
+    //     congelamenti con regime sul leader NON sono di campo.
     //
-    //     κ_eff(k) = p(k)·κ + (1 − p(k))·1
-    //
-    // Se il regime è in corso si comprime di κ; se è finito il distacco evolve dal
-    // passo. κ_eff è la media delle due, pesata da quanto ci si crede — e p(k) è
-    // già misurata sul fondo. Nessun parametro nuovo: anzi, sparisce la finestra.
-    compressionePerGiro: (regime, freezeLap, giroFinale) => {
+    // La stessa soglia vale nella stima su fondo: misurare su una popolazione e
+    // predire su un'altra e' la famiglia di E16.
+    compressionePerGiro: (regime, freezeLap, giroFinale, quotaCampo) => {
       if (!attivo || regime === null || regime === 'RED') return null;
+      if (!(quotaCampo >= QUOTA_CAMPO_NEUTRALIZZATO)) return null;
       const m = contesto.prior?.compressione_distacchi_interna;
       if (m?.promosso !== true) return null;
       const k = m?.[regime]?.kappa_mediano;
       if (typeof k !== 'number') return null;
-      const pers = contesto.prior?.persistenza_regime_interna;
-      const frazioni = pers?.[regime]?.frazioni;
-      if (!frazioni) return null;
-      // E(k) = p(k)·κ^k + Σ_{d<k} [p(d) − p(d+1)]·κ^d,  con p(0) = 1.
-      // Se il regime dura D giri il distacco dopo k vale gap·κ^min(k,D): questa è
-      // la sua attesa. La forma "media dei rapporti" (κ_eff = p·κ + (1−p)) è
-      // SBAGLIATA e la PREREG-4 l'ha pagata — E[Πκ] ≠ ΠE[κ] quando gli eventi
-      // sono correlati, e qui lo sono al massimo: se la Safety Car c'è al giro 3,
-      // c'era anche al 2. La durata è una variabile sola, non k monete.
-      const p = [1];
-      for (let i = 1; i <= 8; i += 1) {
-        const x = frazioni[`L+${i}`];
-        if (typeof x !== 'number') break;
-        p.push(x);
-      }
-      const E = [1];
-      for (let i = 1; i < p.length; i += 1) {
-        let acc = p[i] * (k ** i);
-        for (let d = 0; d < i; d += 1) acc += (p[d] - p[d + 1]) * (k ** d);
-        E.push(acc);
-      }
       const perGiro = {};
-      for (let i = 1; i < E.length; i += 1) {
-        // Oltre p(k) < 0,05 non si estrapola: sarebbe inventare la coda di una
-        // distribuzione che non si è guardata (la misura arriva a 8 giri).
-        if (p[i] < 0.05) break;
-        const giro = freezeLap + i;
-        if (giro > giroFinale) break;
-        const eff = E[i] / E[i - 1];
-        if (!(eff > 0) || eff > 1) break;   // sonda: κ_eff deve stare in (0, 1]
-        perGiro[giro] = eff;
-      }
+      const fino = Math.min(freezeLap + persistenzaPacchetto(contesto, attivo, regime), giroFinale);
+      for (let giro = freezeLap + 1; giro <= fino; giro += 1) perGiro[giro] = k;
       return Object.keys(perGiro).length ? perGiro : null;
     },
   };
@@ -312,7 +292,17 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   // viaggiare neutralizzato, anche per chi non si ferma affatto. E' la voce che
   // rende il regime finalmente CONSUMATO da qualcosa — prima alimentava solo il
   // prezzo della sosta, quindi in proiezione pura era un no-op misurato.
-  const perGiroCompressione = pacchetto.compressionePerGiro(regimeOsservato, freezeLap, giroFinale);
+  // la quota del campo neutralizzata AL CONGELAMENTO: informazione <= Lf
+  const quotaCampoNeutralizzato = (() => {
+    let n = 0; let tot = 0;
+    for (const [, c] of celleAlCongelamento) {
+      tot += 1;
+      let r = null; try { r = regimeAlCongelamento(c); } catch { r = null; }
+      if (r !== null) n += 1;
+    }
+    return tot === 0 ? 0 : n / tot;
+  })();
+  const perGiroCompressione = pacchetto.compressionePerGiro(regimeOsservato, freezeLap, giroFinale, quotaCampoNeutralizzato);
   const neutralizzazione = perGiroCompressione === null ? null : { perGiro: perGiroCompressione };
   if (neutralizzazione !== null) {
     const giri = Object.keys(perGiroCompressione).map(Number).sort((a, b) => a - b);
@@ -321,8 +311,9 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
       `al congelamento c'è ${regimeOsservato}: per ${giri.length} giri i distacchi dal leader si contraggono, `
       + `di ${giri.map((x) => perGiroCompressione[x].toFixed(3)).join(' poi ')} — sempre più vicino a 1 man mano che il regime probabilmente rientra`,
       giri.length,
-      `MISURATO sul fondo: κ = ${kBase} sotto ${regimeOsservato}, pesato dalla probabilità che il regime sia ancora in corso `
-      + `(κ_eff = p·κ + (1−p)). Oltre p < 0,05 non si estrapola: sarebbe inventare la coda di una distribuzione non guardata (E14)`);
+      `MISURATO sul fondo: κ = ${kBase} sotto ${regimeOsservato}, sulle sole neutralizzazioni DI CAMPO. `
+      + `Qui il ${(quotaCampoNeutralizzato * 100).toFixed(0)}% delle auto è sotto regime al congelamento (soglia 50%): `
+      + `sotto metà campo non è una Safety Car ma una gialla locale, e la compressione non si applica`);
   }
 
   // ── passo: base misurata togliendo gli stessi termini che si ri-aggiungono ─

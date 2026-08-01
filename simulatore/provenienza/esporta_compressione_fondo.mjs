@@ -55,6 +55,7 @@ import { perditaBox } from './pitloss.mjs';
 export const PERCORSO = 'data/viste/compressione_e_fattori_fondo.json';
 const MIN_RIFERIMENTI = 5;   // sotto questo, la mediana del campo e' un aneddoto
 const MAX_PERSISTENZA = 8;
+const QUOTA_CAMPO = 0.5;     // PREREG-6: sotto meta' del campo non e' una neutralizzazione di campo
 const SOGLIA_GAP = 1.0;      // sotto 1 s il rapporto gap(k+1)/gap(k) e' rumore di cronometraggio   // oltre 8 giri la domanda non interessa nessuno scenario
 const SEME = 20260801;
 const B_BOOT = 2000;
@@ -163,6 +164,21 @@ export function costruisci(radice) {
           try { reg = regimeDiCella(leadB.c); } catch { continue; }
           const eti = reg ?? (statusVerde(leadB.c) ? 'VERDE' : null);
           if (eti === null) continue;
+          // NEUTRALIZZAZIONE DI CAMPO (PREREG-6). `regimeDiCella` legge lo status
+          // della SINGOLA auto: un 4 su una macchina sola non e' una Safety Car,
+          // e' una gialla di settore. La compressione e' un fenomeno del campo
+          // intero, quindi si misura solo dove il campo era neutralizzato — e si
+          // applichera' solo li'. Misurare su una popolazione e predire su
+          // un'altra e' la stessa famiglia di E16.
+          if (reg !== null) {
+            let neutri = 0;
+            for (const { c: cc } of b) {
+              if (cc.status === null || cc.status === undefined) continue;
+              let rr = null; try { rr = regimeDiCella(cc); } catch { rr = null; }
+              if (rr !== null) neutri += 1;
+            }
+            if (neutri / b.length < QUOTA_CAMPO) continue;
+          }
           if (lead.c.in_lap === true || lead.c.out_lap === true || leadB.c.in_lap === true || leadB.c.out_lap === true) continue;
           for (const { drv, c } of a) {
             if (drv === lead.drv) continue;

@@ -717,3 +717,127 @@ prima dell'unica gara che potrebbe dire se è vero.
 sentinellato: `κ` per giro nel kernel, `s30` con quattro mutazioni provate, i tre blocchi
 misurati che si ri-stimano a ogni gara. Se dopo Zandvoort il fenomeno si vedrà anche fuori
 campione, non ci sarà niente da costruire — solo da accendere.
+
+---
+
+# PREREG-6 — la popolazione, non i parametri
+
+*Scritta il 01/08/2026 PRIMA di misurare qualunque cosa di questa ipotesi, e prima di
+guardare quali gare soddisfano il criterio. È l'unica sequenza che la rende una prova.*
+
+## L'ipotesi, e perché non è tuning
+
+Tre gare peggiorano in **tutte e quattro** le varianti provate: Belgio (bias 0,16), Canada
+(0,29), Gran Bretagna (0,17). Ritoccare κ finché smettono di peggiorare sarebbe pesca. Ma
+c'è un'altra spiegazione possibile, di natura diversa: **che quei congelamenti non siano
+neutralizzazioni del campo**.
+
+`regimeDiCella` legge lo status **della singola auto**. Uno status `4` o `6` su una macchina
+sola non è una Safety Car: può essere una gialla di settore, una bandiera locale, un
+artefatto del feed. La compressione dei distacchi è un fenomeno del **campo intero** — il
+campo si incolonna — e applicarla quando il campo non è neutralizzato è sbagliato per
+costruzione, non per taratura.
+
+**Se l'ipotesi è vera, non si cambia nessun parametro: si cambia dove il termine si
+applica.**
+
+## Il criterio, dichiarato adesso
+
+> Un congelamento al giro `L` è una **neutralizzazione di campo** se **almeno il 50%** delle
+> auto con una cella al giro `L` sono sotto regime.
+
+**Perché 50% e non un altro numero:** una Safety Car vera neutralizza *tutti*. La
+maggioranza assoluta è la soglia più generosa che si possa chiamare «campo» senza
+inventare, e non è stata scelta guardando dove cadono le tre gare — questo documento è
+scritto prima di misurarlo, ed è la ragione per cui esiste.
+
+**Si applica in DUE posti, non uno:**
+1. alla **stima di κ** sul fondo: le coppie entrano solo se il campo era neutralizzato;
+2. all'**applicazione** nel costruttore: si comprime solo se al congelamento il campo lo è.
+
+Misurare su una popolazione e predire su un'altra è la stessa famiglia di errore di E16.
+
+## Il cancello
+
+**Le stesse C1–C5.** Non si toccano, per la quinta volta.
+
+Il termine è quello della **PREREG-2** — `gap·κ` sulla finestra di persistenza — che è
+stata la variante migliore. Non si prova una forma nuova: si prova la **stessa forma su una
+popolazione diversa**.
+
+## Cosa fa dichiarare NULL
+
+- una fra C1–C5 non regge;
+- il criterio non separa: se ≥ 90% dei congelamenti con regime risultassero già «di campo»,
+  l'ipotesi non ha niente da spiegare e va scritto che non l'aveva;
+- κ ristretto al campo non è distinguibile da κ pieno (IC95 che si sovrappongono quasi del
+  tutto) **e** il cancello continua a fallire: allora la restrizione non era il problema.
+
+## La verifica che rende questa una prova, e non una storia
+
+Dopo aver misurato, si guarda **se Belgio, Canada e Gran Bretagna sono davvero quelle con
+la quota più bassa di campo neutralizzato**. Se lo sono, l'ipotesi ha predetto qualcosa che
+non sapeva. **Se non lo sono, l'ipotesi è sbagliata anche se il cancello passasse**, e va
+scritto — perché vorrebbe dire che il criterio ha aggiustato i numeri per una ragione
+diversa da quella dichiarata.
+
+## ESITO della PREREG-6 — 01/08/2026: **NULL per la lettera del cancello**, e il cancello è mal specificato
+
+```
+C1  |bias| scende su tutti e tre gli orizzonti          PASSA
+      3 giri  +1,7903 -> -0,0208    5 giri  +0,9113 -> -0,2048    10 giri  +0,5783 -> -0,0549
+C2  |bias| scende in >= 7 gare su 8                     FALLISCE (5 su 8)
+C3  congelamenti verdi identici AL BIT                  PASSA (12.921 su 12.921)
+C5  nessuna gara peggiora di oltre 0,5 s/giro           PASSA (nessuna peggiora affatto)
+```
+
+**Il bias aggregato va praticamente a zero** su tutti e tre gli orizzonti. Nessuna
+riformulazione precedente c'era arrivata vicino: la migliore (PREREG-2) ribaltava il segno
+a −0,79.
+
+### Le tre gare che «falliscono» C2 hanno numeri IDENTICI
+
+| gara | spento | acceso |
+|---|---|---|
+| Belgio | 0,1646 | 0,1646 |
+| Canada | 0,2915 | 0,2915 |
+| Gran Bretagna | 0,1715 | 0,1715 |
+
+Non peggiorano: **il termine non si applica**, perché quei congelamenti non sono
+neutralizzazioni di campo. C2 conta «scende» come *strettamente minore*, quindi una gara in
+cui il termine si astiene correttamente risulta un fallimento.
+
+**C2 è mal specificato**, ed è lo stesso difetto della condizione «sistematicamente» della
+voce 4: mescola «il termine funziona dove agisce» con «il termine agisce ovunque». Un
+termine che si astiene dove non deve applicarsi è un termine che funziona.
+
+**Ma non lo riscrivo adesso.** Un cancello riscritto dopo averne visto l'esito non misura
+più niente (E08), e questo è il quinto passaggio sullo stesso campione. Va a referto così
+com'è: **NULL per la lettera**.
+
+### La verifica dell'ipotesi: confermata a metà, e va detto
+
+La PREREG-6 imponeva di controllare **dopo** se Belgio, Canada e Gran Bretagna fossero
+davvero quelle con meno campo neutralizzato. Misurato, quota mediana del campo sotto regime:
+
+| Canada | Spagna | Ungheria | Gran Bretagna | Austria | Australia | **Belgio** | Cina | Giappone | Miami | Monaco |
+|---|---|---|---|---|---|---|---|---|---|---|
+| 33,3% | 38,9% | 45,7% | 46,3% | 75,6% | 94,4% | **100%** | 100% | 100% | 100% | 100% |
+
+**Canada e Gran Bretagna sì** — le due più basse, entrambe sotto soglia, previste prima di
+guardare. **Belgio no: è al 100%.** L'ipotesi ha predetto due gare su tre, e la terza la
+contraddice. Va scritto, perché la prereg diceva che se non fossero state quelle
+l'ipotesi sarebbe sbagliata anche a cancello passato.
+
+### Un risultato collaterale che vale da solo
+
+κ ristretto alle neutralizzazioni di campo: **SC 0,691 → 0,697** (invariato), ma
+**VSC 0,930 → 0,979** con n da 1.511 a 1.107. **Buona parte della «compressione VSC» era
+artefatto di gialle locali**, non un fenomeno di campo. È una correzione al numero
+depositato, indipendente da come finisce questa voce.
+
+### Cosa serve per chiudere
+
+Un **C2 scritto bene** — «il bias scende nelle gare in cui il termine si applica, e non
+peggiora in nessuna» — pre-registrato e valutato **fuori campione a Zandvoort**. Non su
+questi undici. Quello sì che sarebbe una prova.
