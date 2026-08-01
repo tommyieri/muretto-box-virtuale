@@ -30,6 +30,9 @@ deciso niente. Questa è la cosa più importante che il confronto ha insegnato.
 | **K.1** | il selettore mescola diventa informazione | era **rotto E inerte**: la pagina ascoltava `data-mesc`, il pannello emette `data-valore` |
 | **A** | sigillato il primo fuori campione vero | `PREREG_holdout_Olanda.md`, soglie assolute scritte il 01/08 per una gara del 23/08 |
 | **4** | `MIN_GIRI_BASE` da 8 a 4, e la soglia diventa dichiarata nel modello invece che cablata | risposte pre-calcolate **10.131 → 11.143** (+1.012, come previsto); soste vere con risposta 260 → **272 su 274**; esatti sulle risposte preesistenti −1,35 punti (limite 2). Referto: `PREREG_soglia_base.md` |
+| **5** | la finestra al posto del giro secco, su tutte le curve pubblicate | 11.143 curve: la finestra copre in mediana il **63,6%** della curva, ed è di un giro solo nel 9,6%. Il giro raccomandato è insensibile all'incertezza del modello (**1 curva su 1.153**): a muoverlo è dove si chiede. Referto: `PREREG_finestra.md` e `PREREG_finestra_pubblicata.md` |
+| **N4** | via l'assunzione `stint !== 1` sulle soste dei rivali sotto regime | misurato su 105 gare del fondo che lo stint **non separa** (8,3% · 8,4% · 6,1%); esatti sui casi con regime **44,4% → 55,6%**. Referto: `PREREG_soste_rivali.md` |
+| **pit-loss** | mappata tutta la stagione, non solo le gare già corse | mancava **mezza stagione**: Singapore avrebbe usato 22,10 s invece di **27,91**, Italia 22,10 invece di 25,34. Guardie: `s31` e un controllo in `auto_gara.py` |
 | **1** | il rodaggio della gomma nuova è in produzione (`c = 0,67 s`, `τ = 4,75 giri`) | M1 lettura B2 leave-one-race-out: esatti **45,29% → 46,64%**, troppo indietro **47,53% → 45,74%**, bias **+0,825 → +0,771**; giro raccomandato invariato in **1.505 curve su 1.505**. Referto: `ESITO_rodaggio.md` |
 
 **Correzione al piano degli agenti su A:** proponevano di mettere in pausa `autocalibra.py`.
