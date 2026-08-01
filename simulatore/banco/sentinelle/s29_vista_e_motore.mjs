@@ -26,6 +26,15 @@
 //  (d) una vista non porta affatto il timbro: senza, (a)-(c) non provano niente e
 //      la divergenza tornerebbe silenziosa;
 //  (e) il confronto e' vuoto — nessuna vista su disco — che passerebbe sempre (E09).
+//
+// COSA QUESTA SENTINELLA NON VEDE, e va saputo. Il timbro confronta COEFFICIENTI e
+// impronte di file dati. Se cambia la FORMA del record — un campo nuovo, un campo
+// che sparisce — il timbro resta identico e s29 dice «in passo» mentre le viste
+// pubblicate hanno una struttura vecchia. E' successo il 01/08 aggiungendo
+// `non_verificabili` al record. Non si chiude allargando il timbro al codice (un
+// commento cambiato scatenerebbe 45 minuti di rigenerazione): si chiude
+// ricordandosi che una modifica alla forma del record va seguita da una
+// rigenerazione, e che questa sentinella non lo ricordera' al posto tuo.
 
 import { banco } from '../asserzioni.mjs';
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
