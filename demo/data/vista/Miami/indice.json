@@ -1,0 +1,146 @@
+{
+ "gara": "Miami",
+ "n_giri": 57,
+ "primo_giro": 5,
+ "ultimo_giro": 54,
+ "piloti": {
+  "ALB": {
+   "giri": 50,
+   "con_risposta": 50
+  },
+  "ALO": {
+   "giri": 50,
+   "con_risposta": 50
+  },
+  "ANT": {
+   "giri": 50,
+   "con_risposta": 50
+  },
+  "BEA": {
+   "giri": 50,
+   "con_risposta": 50
+  },
+  "BOR": {
+   "giri": 50,
+   "con_risposta": 50
+  },
+  "BOT": {
+   "giri": 50,
+   "con_risposta": 50
+  },
+  "COL": {
+   "giri": 50,
+   "con_risposta": 50
+  },
+  "GAS": {
+   "giri": 1,
+   "con_risposta": 1
+  },
+  "HAM": {
+   "giri": 50,
+   "con_risposta": 50
+  },
+  "LAW": {
+   "giri": 2,
+   "con_risposta": 2
+  },
+  "LEC": {
+   "giri": 50,
+   "con_risposta": 50
+  },
+  "LIN": {
+   "giri": 50,
+   "con_risposta": 50
+  },
+  "NOR": {
+   "giri": 50,
+   "con_risposta": 50
+  },
+  "OCO": {
+   "giri": 50,
+   "con_risposta": 50
+  },
+  "PER": {
+   "giri": 50,
+   "con_risposta": 50
+  },
+  "PIA": {
+   "giri": 50,
+   "con_risposta": 50
+  },
+  "RUS": {
+   "giri": 50,
+   "con_risposta": 50
+  },
+  "SAI": {
+   "giri": 50,
+   "con_risposta": 50
+  },
+  "STR": {
+   "giri": 50,
+   "con_risposta": 50
+  },
+  "VER": {
+   "giri": 50,
+   "con_risposta": 50
+  }
+ },
+ "_targhetta": {
+  "tipo": "vista del sito — nessun numero calcolato dal browser",
+  "generata_da": "simulatore/web/genera_vista_gara.mjs",
+  "percorso": "provenienza → engine → scenario (Director compreso) → questo JSON → componenti",
+  "data": "2026-08-01"
+ },
+ "modello": {
+  "rho": 0.030776,
+  "rho_ic": [
+   0.010836,
+   0.052744
+  ],
+  "rho_n": 10269,
+  "rho_targhetta": "misurato, fondo 2026, bootstrap 2.000, blocchi = gare",
+  "delta_70": 2.2,
+  "delta_70_braccio": "A",
+  "orizzonti_validati": [
+   5,
+   10
+  ],
+  "data": "2026-08-01",
+  "rodaggio": {
+   "attivo": true,
+   "c": 0.67,
+   "tau": 4.75
+  },
+  "min_giri_base": 4,
+  "soste_rivali": "nessuna",
+  "banda_rientro_sha256": "689e5d8472c1c3aa",
+  "pitloss_sha256": "74a9ab69c79adbed"
+ },
+ "mescole": [
+  {
+   "codice": "SOFT",
+   "attiva": true,
+   "motivo": null
+  },
+  {
+   "codice": "MEDIUM",
+   "attiva": true,
+   "motivo": null
+  },
+  {
+   "codice": "HARD",
+   "attiva": true,
+   "motivo": null
+  },
+  {
+   "codice": "INTERMEDIATE",
+   "attiva": false,
+   "motivo": "modello del bagnato non ancora validato: il selettore resta spento"
+  },
+  {
+   "codice": "WET",
+   "attiva": false,
+   "motivo": "modello del bagnato non ancora validato: il selettore resta spento"
+  }
+ ]
+}

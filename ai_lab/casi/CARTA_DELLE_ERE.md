@@ -95,3 +95,49 @@ Gare del 2026. Non un metodo migliore: **gare**. Il confronto diventa utile into
 venticinque-trenta, cioè a stagione finita — oppure prima, se si ingeriscono le sessioni
 che oggi scartiamo. È la prima volta che il repo può dire **quante ne servono** invece di
 sperare che bastino.
+
+---
+
+## Seconda misura — 01/08/2026: cosa succede DAVVERO a chi si ferma
+
+`esiti_reali.mjs`. Nessun passo, nessun kernel, nessun Director: **4.283 soste vere** nel
+fondo e **371** nel 2026, con la posizione reale dieci giri dopo.
+Negativo = ha guadagnato posizioni.
+
+| situazione | fondo 2018-2025 | 2026 |
+|---|---|---|
+| **tutte** | mediana **+1** · guadagna 15,1% · perde **61,9%** | mediana +0 · guadagna 24,0% · perde 45,6% |
+| **in verde** | mediana **+2** · guadagna 8,6% · perde **69,8%** | mediana +1 · guadagna 9,1% · perde 58,9% |
+| **sotto neutralizzazione** | mediana **0** · guadagna **37,3%** · perde 35,0% | mediana 0 · guadagna **45,4%** · perde 26,3% |
+| ultimo terzo di gara | mediana +1 · guadagna 18,0% | mediana 0 · guadagna **47,9%** |
+
+### Tre cose che il motore a parametri non aveva mai detto
+
+**1 · Fermarsi in verde fa perdere posizioni, quasi sempre.** Mediana +2, e si perde nel
+**69,8%** dei casi contro l'8,6% che guadagna. Ovvio a posteriori — a dieci giri sei ancora
+dietro a chi non si è fermato — ma è la prima volta che il repo lo **misura**, e cambia il
+modo di leggere ogni «dove rientri».
+
+**2 · Sotto neutralizzazione è un altro gioco.** Da 70% di perdite si passa a **37% guadagna
+contro 35% perde**: quasi un lancio di moneta. È il valore della sosta sotto Safety Car
+quantificato direttamente, senza passare da nessun fattore da tarare.
+
+**3 · Il 2026 è sistematicamente diverso, in tutti e sette i tagli.** Si perde meno e si
+resta fermi di più (30,5% contro 23,0% di posizioni invariate). È esattamente ciò che ci si
+aspetta **togliendo il DRS**: le posizioni diventano appiccicose. Nell'ultimo terzo di gara
+lo scarto è enorme — guadagna il 47,9% contro il 18,0%.
+
+Nessuna di queste tre viene dal passo. Vengono dai **duelli e dalle reazioni dei rivali**,
+cioè le due cose che il kernel dichiara di non simulare.
+
+### Cosa manca perché diventi una risposta del prodotto
+
+Questi sono **tassi di base**: dicono cosa succede tipicamente, non cosa succede a *te*.
+Il passo successivo è il recupero per somiglianza — «le venti situazioni più simili alla
+tua, e come sono finite» — che è la stessa macchina con una query addosso.
+
+### Il limite, dichiarato
+
+Il 2026 ha da 71 a 219 casi per taglio, su undici gare. **Nessun singolo taglio è
+concludente.** Ciò che vale è che la direzione è la stessa in **tutti e sette**, e questo
+un taglio solo non lo direbbe.
