@@ -23,7 +23,7 @@ import { banco } from '../asserzioni.mjs';
 import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { GP_PER_GARA, perditaBox } from '../../provenienza/pitloss.mjs';
+import { GP_PER_GARA, RIPIEGO_DICHIARATO, perditaBox } from '../../provenienza/pitloss.mjs';
 import { caricaPrior } from '../../provenienza/pitloss_dati.mjs';
 
 const b = banco('s31');
@@ -51,12 +51,21 @@ for (const [gara, gp] of Object.entries(GP_PER_GARA)) {
   b.verifica(`${gara} -> ${gp}: il Gran Premio esiste nel fondo`, nelFondo.has(gp));
 }
 
-// (a) e (b): ogni gara del registro che il fondo misura deve USARE quella misura
-const registro = path.join(radice, '..', 'demo', 'data', 'vista', 'manifest.json');
-const gareSito = existsSync(registro)
-  ? Object.keys(JSON.parse(readFileSync(registro, 'utf8')).cartella_di ?? {})
+// (a) e (b): ogni gara DELLA STAGIONE che il fondo misura deve USARE quella misura.
+//
+// La prima versione partiva dalle gare PUBBLICATE, e per questo non avrebbe preso
+// l'Olanda — che il 01/08 non aveva ancora corso, ed era esattamente il caso per
+// cui questa sentinella e' stata scritta. Una sentinella che copre solo il passato
+// non protegge da una pista NUOVA, che e' l'unico momento in cui il buco si apre.
+//
+// `data/mappa_gare.json` elenca tutte e 22 le gare della stagione, comprese quelle
+// non ancora corse: e' il file giusto da cui partire, ed era gia' nel repo.
+const mappaStagione = path.join(radice, '..', 'data', 'mappa_gare.json');
+b.verifica('la mappa della stagione esiste', existsSync(mappaStagione));
+const gareSito = existsSync(mappaStagione)
+  ? Object.values(JSON.parse(readFileSync(mappaStagione, 'utf8'))).map((v) => v.nome).filter(Boolean)
   : [];
-b.verifica(`ci sono gare pubblicate da controllare (${gareSito.length})`, gareSito.length > 0);
+b.verifica(`ci sono gare della stagione da controllare (${gareSito.length})`, gareSito.length >= 20);
 
 for (const gara of gareSito) {
   const chiave = gara.replace(/\s/g, '');
@@ -70,9 +79,16 @@ for (const gara of gareSito) {
     b.uguale(`${gara}: usa la misura interna e non il ripiego`, x.fonte, 'misura_interna');
     b.verifica(`${gara}: non e' marcata fallback`, x.fallback === false);
   } else if (x.fallback === true) {
-    // cade nel ripiego: e' ammesso SOLO se il fondo davvero non lo misura
-    const candidati = [...promossi].filter((p) => p.toLowerCase().includes(chiave.slice(0, 4).toLowerCase()));
-    b.uguale(`${gara}: cade nel ripiego e il fondo davvero non lo misura`, candidati, []);
+    // cade nel ripiego: ammesso SOLO se e' dichiarato con un motivo, oppure se il
+    // fondo davvero non ha quel Gran Premio. «Sara' voluto» non e' un motivo: o sta
+    // in RIPIEGO_DICHIARATO con la sua ragione, o e' un buco.
+    const motivo = RIPIEGO_DICHIARATO[chiave] ?? RIPIEGO_DICHIARATO[gara];
+    if (motivo) {
+      b.verifica(`${gara}: cade nel ripiego PER SCELTA, col motivo scritto`, motivo.length > 20);
+    } else {
+      const candidati = [...promossi].filter((p) => p.toLowerCase().includes(chiave.slice(0, 4).toLowerCase()));
+      b.uguale(`${gara}: cade nel ripiego e il fondo davvero non lo misura`, candidati, []);
+    }
   }
 }
 

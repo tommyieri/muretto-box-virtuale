@@ -56,6 +56,35 @@ export const GP_PER_GARA = Object.freeze({
   Monaco: 'Monaco_Grand_Prix',
   Spagna: 'Spanish_Grand_Prix',
   Ungheria: 'Hungarian_Grand_Prix',
+  // ── il resto della stagione 2026, aggiunto il 01/08 ──────────────────────
+  // La sentinella s31, estesa a tutte e 22 le gare invece che alle sole
+  // pubblicate, ha mostrato che l'Olanda non era un caso isolato: OGNI gara
+  // ancora da correre cadeva nel ripiego pur avendo una misura promossa sul
+  // fondo.
+  Italia: 'Italian_Grand_Prix',
+  Azerbaigian: 'Azerbaijan_Grand_Prix',
+  Singapore: 'Singapore_Grand_Prix',
+  StatiUniti: 'United_States_Grand_Prix',
+  Messico: 'Mexico_City_Grand_Prix',
+  SanPaolo: 'São_Paulo_Grand_Prix',
+  Qatar: 'Qatar_Grand_Prix',
+  AbuDhabi: 'Abu_Dhabi_Grand_Prix',
+  LasVegas: 'Las_Vegas_Grand_Prix',
+  // MADRID NON C'E', ED E' UNA DECISIONE. Derivare la mappa dal nome dell'evento
+  // — la strada che sembra ovvia — darebbe `Madrid -> Spanish_Grand_Prix`, cioe'
+  // assegnerebbe a un circuito che non ha mai ospitato una gara la storia di
+  // BARCELLONA. Un pit-loss preso da un'altra pista non e' un'approssimazione: e'
+  // la famiglia di E13, un prior generico spacciato per misura di circuito.
+  // Madrid resta sul ripiego d'era, marcata `fallback: true`, ed e' la risposta
+  // giusta: di quel pit-lane non sappiamo niente, e va detto.
+});
+
+// Le gare che cadono nel ripiego PER SCELTA, non per dimenticanza. Ognuna con il
+// suo motivo: la sentinella s31 le ammette solo se sono qui, cosi' un buco vero
+// non puo' nascondersi dietro «sara' voluto».
+export const RIPIEGO_DICHIARATO = Object.freeze({
+  Madrid: 'circuito NUOVO nel 2026 (Madring): il fondo non ha nessuna gara su questo tracciato. '
+    + 'L\'evento si chiama Spanish Grand Prix, ma la storia con quel nome e\' di Barcellona, che e\' un\'altra pista.',
 });
 
 /**

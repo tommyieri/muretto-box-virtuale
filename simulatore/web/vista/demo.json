@@ -19,7 +19,7 @@
    5,
    10
   ],
-  "data": "2026-07-29"
+  "data": "2026-08-01"
  },
  "mescole": [
   {
@@ -67,24 +67,28 @@
     "giro_di_rientro": 34,
     "davanti": {
      "drv": "LAW",
-     "gap_s": 13.964015172413383,
+     "gap_s": 13.559996199976922,
      "motivo_soppressione": null
     },
     "dietro": {
      "drv": "COL",
-     "gap_s": 2.413916137930755,
+     "gap_s": 2.802272638426075,
      "motivo_soppressione": null
     },
     "gap_soppressi": null,
     "banda_posizione": {
      "contesto": "VERDE",
-     "da": 13,
-     "a": 15,
-     "semi_ampiezza": 1,
+     "da": 12,
+     "a": 16,
+     "semi_ampiezza": 2,
      "livello": 0.8,
-     "copertura_fuori_campione": 0.8852,
-     "targhetta": "banda ±1 posizioni, misurata su 209 soste vere del 2026: copre il 88.5% fuori campione",
-     "circuito_sotto_livello": null,
+     "copertura_fuori_campione": 0.8822,
+     "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
+     "circuito_sotto_livello": {
+      "gara": "Australia",
+      "copertura": 0.7143,
+      "n_casi": 28
+     },
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
     }
    },
@@ -101,12 +105,12 @@
    "curva": [
     {
      "giroPit": 33,
-     "delta_s": 0.123,
+     "delta_s": 0.127,
      "banda": null
     },
     {
      "giroPit": 34,
-     "delta_s": 0.031,
+     "delta_s": 0.032,
      "banda": null
     },
     {
@@ -116,112 +120,112 @@
     },
     {
      "giroPit": 36,
-     "delta_s": 0.031,
+     "delta_s": 0.032,
      "banda": null
     },
     {
      "giroPit": 37,
-     "delta_s": 0.123,
+     "delta_s": 0.127,
      "banda": null
     },
     {
      "giroPit": 38,
-     "delta_s": 0.277,
+     "delta_s": 0.286,
      "banda": null
     },
     {
      "giroPit": 39,
-     "delta_s": 0.492,
+     "delta_s": 0.509,
      "banda": null
     },
     {
      "giroPit": 40,
-     "delta_s": 0.769,
+     "delta_s": 0.797,
      "banda": null
     },
     {
      "giroPit": 41,
-     "delta_s": 1.108,
+     "delta_s": 1.149,
      "banda": null
     },
     {
      "giroPit": 42,
-     "delta_s": 1.508,
+     "delta_s": 1.567,
      "banda": null
     },
     {
      "giroPit": 43,
-     "delta_s": 1.97,
+     "delta_s": 2.05,
      "banda": null
     },
     {
      "giroPit": 44,
-     "delta_s": 2.493,
+     "delta_s": 2.601,
      "banda": null
     },
     {
      "giroPit": 45,
-     "delta_s": 3.078,
+     "delta_s": 3.22,
      "banda": null
     },
     {
      "giroPit": 46,
-     "delta_s": 3.724,
+     "delta_s": 3.91,
      "banda": null
     },
     {
      "giroPit": 47,
-     "delta_s": 4.432,
+     "delta_s": 4.671,
      "banda": null
     },
     {
      "giroPit": 48,
-     "delta_s": 5.201,
+     "delta_s": 5.506,
      "banda": null
     },
     {
      "giroPit": 49,
-     "delta_s": 6.032,
+     "delta_s": 6.418,
      "banda": null
     },
     {
      "giroPit": 50,
-     "delta_s": 6.925,
+     "delta_s": 7.411,
      "banda": null
     },
     {
      "giroPit": 51,
-     "delta_s": 7.879,
+     "delta_s": 8.489,
      "banda": null
     },
     {
      "giroPit": 52,
-     "delta_s": 8.894,
+     "delta_s": 9.658,
      "banda": null
     },
     {
      "giroPit": 53,
-     "delta_s": 9.971,
+     "delta_s": 10.925,
      "banda": null
     },
     {
      "giroPit": 54,
-     "delta_s": 11.11,
+     "delta_s": 12.297,
      "banda": null
     },
     {
      "giroPit": 55,
-     "delta_s": 12.31,
+     "delta_s": 13.786,
      "banda": null
     },
     {
      "giroPit": 56,
-     "delta_s": 13.572,
+     "delta_s": 15.404,
      "banda": null
     },
     {
      "giroPit": 57,
-     "delta_s": 14.896,
+     "delta_s": 17.167,
      "banda": null
     }
    ],
@@ -239,6 +243,12 @@
     "oltre_il_validato": true
    },
    "assunzioni": [
+    {
+     "codice": "RODAGGIO_GOMMA_NUOVA",
+     "descrizione": "nei primi giri di vita la gomma è più veloce di quanto dica il degrado lineare: si applica w(età) = −0.67·exp(−età/4.75) s/giro",
+     "conteggio": 1,
+     "targhetta": "misurato sul fondo 2026 (11 gare), 6.575 giri verdi in ARIA LIBERA (gap > 2,0 s o primo), delta70 e rho cablati e non ri-stimati; perdita L1 su griglia dichiarata, base = mediana per (gara,pilota) ricalcolata a ogni (c,tau)"
+    },
     {
      "codice": "MESCOLA_NON_SEPARA",
      "descrizione": "la mescola scelta (HARD) sono registrate ma NON cambiano il degrado: al giorno 1 le mescole non separano (p = 0,209)",
@@ -264,19 +274,19 @@
     "alternative": [
      {
       "k": 0,
-      "totale": 8848.660273931033,
+      "totale": 8851.842550977935,
       "soste": []
      },
      {
       "k": 1,
-      "totale": 8854.027769931034,
+      "totale": 8854.39574458087,
       "soste": [
        35
       ]
      },
      {
       "k": 2,
-      "totale": 8870.997817931036,
+      "totale": 8868.909609986855,
       "soste": [
        33,
        46
@@ -284,7 +294,7 @@
      },
      {
       "k": 3,
-      "totale": 8891.045465931034,
+      "totale": 8887.175410560065,
       "soste": [
        33,
        41,
@@ -425,23 +435,23 @@
        "VER": 6666.064
       },
       "fantasma": {
-       "ALB": 6732.151,
-       "ANT": 6642.27,
-       "BEA": 6681.689,
-       "BOR": 6684.882,
-       "COL": 6733.794,
-       "GAS": 6692.702,
+       "ALB": 6732.267,
+       "ANT": 6642.473,
+       "BEA": 6681.807,
+       "BOR": 6684.981,
+       "COL": 6733.836,
+       "GAS": 6692.76,
        "HAM": 6657.096,
-       "LAW": 6717.589,
-       "LEC": 6649.789,
-       "LIN": 6680.48,
-       "NOR": 6664.653,
-       "OCO": 6693.301,
-       "PER": 6780.702,
-       "RUS": 6636.584,
-       "SAI": 6713.36,
+       "LAW": 6717.639,
+       "LEC": 6649.879,
+       "LIN": 6680.519,
+       "NOR": 6664.668,
+       "OCO": 6693.392,
+       "PER": 6780.837,
+       "RUS": 6636.612,
+       "SAI": 6713.388,
        "STR": 6830.474,
-       "VER": 6665.831
+       "VER": 6666.018
       },
       "in_box": [
        "ALB"
@@ -470,23 +480,23 @@
        "VER": 6764.28
       },
       "fantasma": {
-       "ALB": 6817.117,
-       "ANT": 6725.458,
-       "BEA": 6766.353,
-       "BOR": 6769.37,
-       "COL": 6819.531,
-       "GAS": 6777.773,
-       "HAM": 6740.292,
-       "LAW": 6803.153,
-       "LEC": 6732.809,
-       "LIN": 6765.118,
-       "NOR": 6748.714,
-       "OCO": 6778.423,
-       "PER": 6868.051,
-       "RUS": 6720.017,
-       "SAI": 6799.417,
-       "STR": 6917.467,
-       "VER": 6749.521
+       "ALB": 6816.814,
+       "ANT": 6725.866,
+       "BEA": 6766.593,
+       "BOR": 6769.573,
+       "COL": 6819.617,
+       "GAS": 6777.89,
+       "HAM": 6740.336,
+       "LAW": 6803.254,
+       "LEC": 6733.013,
+       "LIN": 6765.2,
+       "NOR": 6748.745,
+       "OCO": 6778.606,
+       "PER": 6868.325,
+       "RUS": 6720.074,
+       "SAI": 6799.476,
+       "STR": 6917.497,
+       "VER": 6749.901
       },
       "in_box": [],
       "fuori_box": []
@@ -541,19 +551,19 @@
     "giro_di_rientro": 41,
     "davanti": {
      "drv": "ALO",
-     "gap_s": 4.664531154929136,
+     "gap_s": 3.83668514985402,
      "motivo_soppressione": null
     },
     "dietro": null,
     "gap_soppressi": null,
     "banda_posizione": {
      "contesto": "VERDE",
-     "da": 18,
+     "da": 17,
      "a": 19,
-     "semi_ampiezza": 1,
+     "semi_ampiezza": 2,
      "livello": 0.8,
-     "copertura_fuori_campione": 0.8852,
-     "targhetta": "banda ±1 posizioni, misurata su 209 soste vere del 2026: copre il 88.5% fuori campione",
+     "copertura_fuori_campione": 0.8822,
+     "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
      "circuito_sotto_livello": null,
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
     }
@@ -571,72 +581,72 @@
    "curva": [
     {
      "giroPit": 40,
-     "delta_s": 6.032,
+     "delta_s": 7.397,
      "banda": null
     },
     {
      "giroPit": 41,
-     "delta_s": 5.201,
+     "delta_s": 6.279,
      "banda": null
     },
     {
      "giroPit": 42,
-     "delta_s": 4.432,
+     "delta_s": 5.276,
      "banda": null
     },
     {
      "giroPit": 43,
-     "delta_s": 3.724,
+     "delta_s": 4.381,
      "banda": null
     },
     {
      "giroPit": 44,
-     "delta_s": 3.078,
+     "delta_s": 3.583,
      "banda": null
     },
     {
      "giroPit": 45,
-     "delta_s": 2.493,
+     "delta_s": 2.876,
      "banda": null
     },
     {
      "giroPit": 46,
-     "delta_s": 1.97,
+     "delta_s": 2.255,
      "banda": null
     },
     {
      "giroPit": 47,
-     "delta_s": 1.508,
+     "delta_s": 1.715,
      "banda": null
     },
     {
      "giroPit": 48,
-     "delta_s": 1.108,
+     "delta_s": 1.253,
      "banda": null
     },
     {
      "giroPit": 49,
-     "delta_s": 0.769,
+     "delta_s": 0.866,
      "banda": null
     },
     {
      "giroPit": 50,
-     "delta_s": 0.492,
+     "delta_s": 0.552,
      "banda": null
     },
     {
      "giroPit": 51,
-     "delta_s": 0.277,
+     "delta_s": 0.31,
      "banda": null
     },
     {
      "giroPit": 52,
-     "delta_s": 0.123,
+     "delta_s": 0.137,
      "banda": null
     },
     {
      "giroPit": 53,
-     "delta_s": 0.031,
+     "delta_s": 0.034,
      "banda": null
     },
     {
@@ -646,82 +656,82 @@
     },
     {
      "giroPit": 55,
-     "delta_s": 0.031,
+     "delta_s": 0.034,
      "banda": null
     },
     {
      "giroPit": 56,
-     "delta_s": 0.123,
+     "delta_s": 0.137,
      "banda": null
     },
     {
      "giroPit": 57,
-     "delta_s": 0.277,
+     "delta_s": 0.31,
      "banda": null
     },
     {
      "giroPit": 58,
-     "delta_s": 0.492,
+     "delta_s": 0.552,
      "banda": null
     },
     {
      "giroPit": 59,
-     "delta_s": 0.769,
+     "delta_s": 0.866,
      "banda": null
     },
     {
      "giroPit": 60,
-     "delta_s": 1.108,
+     "delta_s": 1.253,
      "banda": null
     },
     {
      "giroPit": 61,
-     "delta_s": 1.508,
+     "delta_s": 1.715,
      "banda": null
     },
     {
      "giroPit": 62,
-     "delta_s": 1.97,
+     "delta_s": 2.255,
      "banda": null
     },
     {
      "giroPit": 63,
-     "delta_s": 2.493,
+     "delta_s": 2.876,
      "banda": null
     },
     {
      "giroPit": 64,
-     "delta_s": 3.078,
+     "delta_s": 3.583,
      "banda": null
     },
     {
      "giroPit": 65,
-     "delta_s": 3.724,
+     "delta_s": 4.381,
      "banda": null
     },
     {
      "giroPit": 66,
-     "delta_s": 4.432,
+     "delta_s": 5.276,
      "banda": null
     },
     {
      "giroPit": 67,
-     "delta_s": 5.201,
+     "delta_s": 6.279,
      "banda": null
     },
     {
      "giroPit": 68,
-     "delta_s": 6.032,
+     "delta_s": 7.397,
      "banda": null
     },
     {
      "giroPit": 69,
-     "delta_s": 6.925,
+     "delta_s": 8.645,
      "banda": null
     },
     {
      "giroPit": 70,
-     "delta_s": 7.879,
+     "delta_s": 10.038,
      "banda": null
     }
    ],
@@ -739,6 +749,12 @@
     "oltre_il_validato": true
    },
    "assunzioni": [
+    {
+     "codice": "RODAGGIO_GOMMA_NUOVA",
+     "descrizione": "nei primi giri di vita la gomma è più veloce di quanto dica il degrado lineare: si applica w(età) = −0.67·exp(−età/4.75) s/giro",
+     "conteggio": 1,
+     "targhetta": "misurato sul fondo 2026 (11 gare), 6.575 giri verdi in ARIA LIBERA (gap > 2,0 s o primo), delta70 e rho cablati e non ri-stimati; perdita L1 su griglia dichiarata, base = mediana per (gara,pilota) ricalcolata a ogni (c,tau)"
+    },
     {
      "codice": "MESCOLA_NON_SEPARA",
      "descrizione": "la mescola scelta (HARD) sono registrate ma NON cambiano il degrado: al giorno 1 le mescole non separano (p = 0,209)",
@@ -764,19 +780,19 @@
     "alternative": [
      {
       "k": 0,
-      "totale": 8778.530031774646,
+      "totale": 8779.330178717573,
       "soste": []
      },
      {
       "k": 1,
-      "totale": 8790.987767774646,
+      "totale": 8789.086017359561,
       "soste": [
        54
       ]
      },
      {
       "k": 2,
-      "totale": 8809.385271774647,
+      "totale": 8805.257654076295,
       "soste": [
        48,
        60
@@ -784,7 +800,7 @@
      },
      {
       "k": 3,
-      "totale": 8829.260023774645,
+      "totale": 8823.401327388696,
       "soste": [
        46,
        54,
@@ -942,25 +958,25 @@
        "VER": 6383.215
       },
       "fantasma": {
-       "ALB": 6516.656,
-       "ALO": 6510.479,
-       "ANT": 6388.69,
-       "BEA": 6461.661,
-       "BOR": 6435.609,
-       "COL": 6469.301,
-       "GAS": 6466.477,
-       "HAD": 6403.404,
-       "HAM": 6398.796,
-       "HUL": 6450.038,
-       "LAW": 6431.577,
-       "LEC": 6418.478,
-       "LIN": 6429.633,
-       "NOR": 6404.647,
-       "OCO": 6485.808,
-       "PIA": 6398.057,
-       "RUS": 6381.49,
-       "STR": 6509.517,
-       "VER": 6382.777
+       "ALB": 6516.383,
+       "ALO": 6510.525,
+       "ANT": 6388.752,
+       "BEA": 6461.702,
+       "BOR": 6435.732,
+       "COL": 6469.362,
+       "GAS": 6466.236,
+       "HAD": 6403.459,
+       "HAM": 6398.902,
+       "HUL": 6450.344,
+       "LAW": 6431.651,
+       "LEC": 6418.22,
+       "LIN": 6429.815,
+       "NOR": 6404.762,
+       "OCO": 6485.929,
+       "PIA": 6398.176,
+       "RUS": 6381.566,
+       "STR": 6509.59,
+       "VER": 6382.974
       },
       "in_box": [
        "ALB"
@@ -991,25 +1007,25 @@
        "VER": 6455.107
       },
       "fantasma": {
-       "ALB": 6590.219,
-       "ALO": 6585.555,
-       "ANT": 6460.333,
-       "BEA": 6535.626,
-       "BOR": 6508.86,
-       "COL": 6543.291,
-       "GAS": 6539.17,
-       "HAD": 6475.739,
-       "HAM": 6470.623,
-       "HUL": 6523.411,
-       "LAW": 6504.562,
-       "LEC": 6490.014,
-       "LIN": 6502.636,
-       "NOR": 6476.933,
-       "OCO": 6559.041,
-       "PIA": 6470.134,
-       "RUS": 6453.413,
-       "STR": 6584.38,
-       "VER": 6454.471
+       "ALB": 6589.487,
+       "ALO": 6585.65,
+       "ANT": 6460.461,
+       "BEA": 6535.714,
+       "BOR": 6509.106,
+       "COL": 6543.414,
+       "GAS": 6538.772,
+       "HAD": 6475.851,
+       "HAM": 6470.838,
+       "HUL": 6524.024,
+       "LAW": 6504.71,
+       "LEC": 6489.567,
+       "LIN": 6503.002,
+       "NOR": 6477.166,
+       "OCO": 6559.313,
+       "PIA": 6470.374,
+       "RUS": 6453.565,
+       "STR": 6584.53,
+       "VER": 6454.865
       },
       "in_box": [],
       "fuori_box": []
@@ -1066,27 +1082,27 @@
     "giro_di_rientro": 26,
     "davanti": {
      "drv": "OCO",
-     "gap_s": 6.7633599999999205,
+     "gap_s": 6.283813878921137,
      "motivo_soppressione": null
     },
     "dietro": {
      "drv": "BOT",
-     "gap_s": 6.654536000000007,
+     "gap_s": 7.2754839276449275,
      "motivo_soppressione": null
     },
     "gap_soppressi": null,
     "banda_posizione": {
      "contesto": "VERDE",
-     "da": 16,
-     "a": 18,
-     "semi_ampiezza": 1,
+     "da": 15,
+     "a": 19,
+     "semi_ampiezza": 2,
      "livello": 0.8,
-     "copertura_fuori_campione": 0.8852,
-     "targhetta": "banda ±1 posizioni, misurata su 209 soste vere del 2026: copre il 88.5% fuori campione",
+     "copertura_fuori_campione": 0.8822,
+     "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
      "circuito_sotto_livello": {
       "gara": "Belgio",
-      "copertura": 0.75,
-      "n_casi": 8
+      "copertura": 0.7368,
+      "n_casi": 19
      },
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
     }
@@ -1104,32 +1120,32 @@
    "curva": [
     {
      "giroPit": 25,
-     "delta_s": 1.108,
+     "delta_s": 1.445,
      "banda": null
     },
     {
      "giroPit": 26,
-     "delta_s": 0.769,
+     "delta_s": 0.994,
      "banda": null
     },
     {
      "giroPit": 27,
-     "delta_s": 0.492,
+     "delta_s": 0.632,
      "banda": null
     },
     {
      "giroPit": 28,
-     "delta_s": 0.277,
+     "delta_s": 0.353,
      "banda": null
     },
     {
      "giroPit": 29,
-     "delta_s": 0.123,
+     "delta_s": 0.156,
      "banda": null
     },
     {
      "giroPit": 30,
-     "delta_s": 0.031,
+     "delta_s": 0.039,
      "banda": null
     },
     {
@@ -1139,62 +1155,62 @@
     },
     {
      "giroPit": 32,
-     "delta_s": 0.031,
+     "delta_s": 0.039,
      "banda": null
     },
     {
      "giroPit": 33,
-     "delta_s": 0.123,
+     "delta_s": 0.156,
      "banda": null
     },
     {
      "giroPit": 34,
-     "delta_s": 0.277,
+     "delta_s": 0.353,
      "banda": null
     },
     {
      "giroPit": 35,
-     "delta_s": 0.492,
+     "delta_s": 0.632,
      "banda": null
     },
     {
      "giroPit": 36,
-     "delta_s": 0.769,
+     "delta_s": 0.994,
      "banda": null
     },
     {
      "giroPit": 37,
-     "delta_s": 1.108,
+     "delta_s": 1.445,
      "banda": null
     },
     {
      "giroPit": 38,
-     "delta_s": 1.508,
+     "delta_s": 1.989,
      "banda": null
     },
     {
      "giroPit": 39,
-     "delta_s": 1.97,
+     "delta_s": 2.632,
      "banda": null
     },
     {
      "giroPit": 40,
-     "delta_s": 2.493,
+     "delta_s": 3.382,
      "banda": null
     },
     {
      "giroPit": 41,
-     "delta_s": 3.078,
+     "delta_s": 4.25,
      "banda": null
     },
     {
      "giroPit": 42,
-     "delta_s": 3.724,
+     "delta_s": 5.248,
      "banda": null
     },
     {
      "giroPit": 43,
-     "delta_s": 4.432,
+     "delta_s": 6.393,
      "banda": null
     }
    ],
@@ -1212,6 +1228,12 @@
     "oltre_il_validato": true
    },
    "assunzioni": [
+    {
+     "codice": "RODAGGIO_GOMMA_NUOVA",
+     "descrizione": "nei primi giri di vita la gomma è più veloce di quanto dica il degrado lineare: si applica w(età) = −0.67·exp(−età/4.75) s/giro",
+     "conteggio": 1,
+     "targhetta": "misurato sul fondo 2026 (11 gare), 6.575 giri verdi in ARIA LIBERA (gap > 2,0 s o primo), delta70 e rho cablati e non ri-stimati; perdita L1 su griglia dichiarata, base = mediana per (gara,pilota) ricalcolata a ogni (c,tau)"
+    },
     {
      "codice": "MESCOLA_NON_SEPARA",
      "descrizione": "la mescola scelta (HARD) sono registrate ma NON cambiano il degrado: al giorno 1 le mescole non separano (p = 0,209)",
@@ -1237,19 +1259,19 @@
     "alternative": [
      {
       "k": 0,
-      "totale": 8539.19592,
+      "totale": 8540.708141822433,
       "soste": []
      },
      {
       "k": 1,
-      "totale": 8552.394776000001,
+      "totale": 8551.406168297228,
       "soste": [
        31
       ]
      },
      {
       "k": 2,
-      "totale": 8569.071320000001,
+      "totale": 8566.2435240446,
       "soste": [
        27,
        35
@@ -1257,7 +1279,7 @@
      },
      {
       "k": 3,
-      "totale": 8586.609592,
+      "totale": 8582.459030607728,
       "soste": [
        25,
        31,
@@ -1413,26 +1435,26 @@
        "VER": 6357.072
       },
       "fantasma": {
-       "ALB": 6422.927,
-       "ALO": 6454.315,
-       "ANT": 6353.949,
-       "BEA": 6405.516,
-       "BOR": 6377.915,
-       "BOT": 6427.484,
-       "COL": 6391.445,
-       "GAS": 6390.642,
-       "HAD": 6372.818,
-       "HAM": 6365.37,
-       "HUL": 6389.909,
-       "LAW": 6389.313,
-       "LEC": 6351.214,
-       "LIN": 6381.727,
-       "NOR": 6354.344,
-       "OCO": 6415.902,
-       "PIA": 6359.203,
-       "SAI": 6414.696,
-       "STR": 6462.089,
-       "VER": 6357.549
+       "ALB": 6422.889,
+       "ALO": 6454.221,
+       "ANT": 6353.946,
+       "BEA": 6405.331,
+       "BOR": 6377.702,
+       "BOT": 6427.561,
+       "COL": 6391.498,
+       "GAS": 6390.676,
+       "HAD": 6372.767,
+       "HAM": 6365.253,
+       "HUL": 6389.737,
+       "LAW": 6389.295,
+       "LEC": 6351.046,
+       "LIN": 6381.746,
+       "NOR": 6354.394,
+       "OCO": 6415.9,
+       "PIA": 6359.114,
+       "SAI": 6415.064,
+       "STR": 6462.018,
+       "VER": 6357.52
       },
       "in_box": [
        "ALB"
@@ -1463,26 +1485,26 @@
        "VER": 6467.144
       },
       "fantasma": {
-       "ALB": 6535.236,
-       "ALO": 6569.195,
-       "ANT": 6464.176,
-       "BEA": 6517.781,
-       "BOR": 6489.467,
-       "BOT": 6541.89,
-       "COL": 6503.267,
-       "GAS": 6502.435,
-       "HAD": 6483.611,
-       "HAM": 6475.774,
-       "HUL": 6501.649,
-       "LAW": 6501.024,
-       "LEC": 6461.446,
-       "LIN": 6493.129,
-       "NOR": 6465.349,
-       "OCO": 6528.472,
-       "PIA": 6469.78,
-       "SAI": 6526.763,
-       "STR": 6577.324,
-       "VER": 6467.809
+       "ALB": 6534.77,
+       "ALO": 6569.045,
+       "ANT": 6464.185,
+       "BEA": 6517.457,
+       "BOR": 6489.085,
+       "BOT": 6542.046,
+       "COL": 6503.39,
+       "GAS": 6502.517,
+       "HAD": 6483.545,
+       "HAM": 6475.584,
+       "HUL": 6501.35,
+       "LAW": 6501.003,
+       "LEC": 6461.156,
+       "LIN": 6493.186,
+       "NOR": 6465.45,
+       "OCO": 6528.487,
+       "PIA": 6469.647,
+       "SAI": 6527.512,
+       "STR": 6577.206,
+       "VER": 6467.774
       },
       "in_box": [],
       "fuori_box": []
@@ -1539,24 +1561,28 @@
     "giro_di_rientro": 39,
     "davanti": {
      "drv": "HAD",
-     "gap_s": 1.0405684705892781,
+     "gap_s": 0.514140547425086,
      "motivo_soppressione": null
     },
     "dietro": {
      "drv": "COL",
-     "gap_s": 37.06627952941108,
+     "gap_s": 37.77099201632518,
      "motivo_soppressione": null
     },
     "gap_soppressi": null,
     "banda_posizione": {
      "contesto": "VERDE",
-     "da": 4,
-     "a": 6,
-     "semi_ampiezza": 1,
+     "da": 3,
+     "a": 7,
+     "semi_ampiezza": 2,
      "livello": 0.8,
-     "copertura_fuori_campione": 0.8852,
-     "targhetta": "banda ±1 posizioni, misurata su 209 soste vere del 2026: copre il 88.5% fuori campione",
-     "circuito_sotto_livello": null,
+     "copertura_fuori_campione": 0.8822,
+     "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
+     "circuito_sotto_livello": {
+      "gara": "Canada",
+      "copertura": 0.7,
+      "n_casi": 20
+     },
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
     }
    },
@@ -1573,57 +1599,57 @@
    "curva": [
     {
      "giroPit": 38,
-     "delta_s": 4.062,
+     "delta_s": 4.606,
      "banda": null
     },
     {
      "giroPit": 39,
-     "delta_s": 3.385,
+     "delta_s": 3.805,
      "banda": null
     },
     {
      "giroPit": 40,
-     "delta_s": 2.77,
+     "delta_s": 3.091,
      "banda": null
     },
     {
      "giroPit": 41,
-     "delta_s": 2.216,
+     "delta_s": 2.457,
      "banda": null
     },
     {
      "giroPit": 42,
-     "delta_s": 1.723,
+     "delta_s": 1.901,
      "banda": null
     },
     {
      "giroPit": 43,
-     "delta_s": 1.293,
+     "delta_s": 1.419,
      "banda": null
     },
     {
      "giroPit": 44,
-     "delta_s": 0.923,
+     "delta_s": 1.01,
      "banda": null
     },
     {
      "giroPit": 45,
-     "delta_s": 0.616,
+     "delta_s": 0.671,
      "banda": null
     },
     {
      "giroPit": 46,
-     "delta_s": 0.369,
+     "delta_s": 0.402,
      "banda": null
     },
     {
      "giroPit": 47,
-     "delta_s": 0.185,
+     "delta_s": 0.201,
      "banda": null
     },
     {
      "giroPit": 48,
-     "delta_s": 0.062,
+     "delta_s": 0.067,
      "banda": null
     },
     {
@@ -1638,87 +1664,87 @@
     },
     {
      "giroPit": 51,
-     "delta_s": 0.062,
+     "delta_s": 0.067,
      "banda": null
     },
     {
      "giroPit": 52,
-     "delta_s": 0.185,
+     "delta_s": 0.201,
      "banda": null
     },
     {
      "giroPit": 53,
-     "delta_s": 0.369,
+     "delta_s": 0.402,
      "banda": null
     },
     {
      "giroPit": 54,
-     "delta_s": 0.616,
+     "delta_s": 0.671,
      "banda": null
     },
     {
      "giroPit": 55,
-     "delta_s": 0.923,
+     "delta_s": 1.01,
      "banda": null
     },
     {
      "giroPit": 56,
-     "delta_s": 1.293,
+     "delta_s": 1.419,
      "banda": null
     },
     {
      "giroPit": 57,
-     "delta_s": 1.723,
+     "delta_s": 1.901,
      "banda": null
     },
     {
      "giroPit": 58,
-     "delta_s": 2.216,
+     "delta_s": 2.457,
      "banda": null
     },
     {
      "giroPit": 59,
-     "delta_s": 2.77,
+     "delta_s": 3.091,
      "banda": null
     },
     {
      "giroPit": 60,
-     "delta_s": 3.385,
+     "delta_s": 3.805,
      "banda": null
     },
     {
      "giroPit": 61,
-     "delta_s": 4.062,
+     "delta_s": 4.606,
      "banda": null
     },
     {
      "giroPit": 62,
-     "delta_s": 4.801,
+     "delta_s": 5.497,
      "banda": null
     },
     {
      "giroPit": 63,
-     "delta_s": 5.601,
+     "delta_s": 6.486,
      "banda": null
     },
     {
      "giroPit": 64,
-     "delta_s": 6.463,
+     "delta_s": 7.58,
      "banda": null
     },
     {
      "giroPit": 65,
-     "delta_s": 7.386,
+     "delta_s": 8.792,
      "banda": null
     },
     {
      "giroPit": 66,
-     "delta_s": 8.371,
+     "delta_s": 10.133,
      "banda": null
     },
     {
      "giroPit": 67,
-     "delta_s": 9.417,
+     "delta_s": 11.618,
      "banda": null
     }
    ],
@@ -1736,6 +1762,12 @@
     "oltre_il_validato": true
    },
    "assunzioni": [
+    {
+     "codice": "RODAGGIO_GOMMA_NUOVA",
+     "descrizione": "nei primi giri di vita la gomma è più veloce di quanto dica il degrado lineare: si applica w(età) = −0.67·exp(−età/4.75) s/giro",
+     "conteggio": 1,
+     "targhetta": "misurato sul fondo 2026 (11 gare), 6.575 giri verdi in ARIA LIBERA (gap > 2,0 s o primo), delta70 e rho cablati e non ri-stimati; perdita L1 su griglia dichiarata, base = mediana per (gara,pilota) ricalcolata a ogni (c,tau)"
+    },
     {
      "codice": "MESCOLA_NON_SEPARA",
      "descrizione": "la mescola scelta (HARD) sono registrate ma NON cambiano il degrado: al giorno 1 le mescole non separano (p = 0,209)",
@@ -1761,19 +1793,19 @@
     "alternative": [
      {
       "k": 0,
-      "totale": 8998.323910588235,
+      "totale": 8997.541256360873,
       "soste": []
      },
      {
       "k": 1,
-      "totale": 9007.125518588233,
+      "totale": 9003.599444020529,
       "soste": [
        50
       ]
      },
      {
       "k": 2,
-      "totale": 9022.944054588237,
+      "totale": 9017.084142219706,
       "soste": [
        43,
        56
@@ -1781,7 +1813,7 @@
      },
      {
       "k": 3,
-      "totale": 9040.516822588235,
+      "totale": 9032.793272870034,
       "soste": [
        40,
        50,
@@ -1934,24 +1966,24 @@
        "VER": 6745.82
       },
       "fantasma": {
-       "ANT": 6758.362,
-       "BEA": 6829.672,
-       "BOR": 6855.373,
-       "BOT": 6950.74,
-       "COL": 6793.693,
-       "GAS": 6807.791,
-       "HAD": 6756.857,
-       "HAM": 6750.776,
-       "HUL": 6847.716,
-       "LAW": 6805.215,
-       "LEC": 6756.968,
-       "NOR": 6806.612,
-       "OCO": 6888.865,
-       "PER": 6889.177,
-       "PIA": 6839.381,
-       "SAI": 6823.207,
-       "STR": 6921.876,
-       "VER": 6745.599
+       "ANT": 6758.209,
+       "BEA": 6829.596,
+       "BOR": 6855.501,
+       "BOT": 6950.873,
+       "COL": 6793.687,
+       "GAS": 6807.794,
+       "HAD": 6756.758,
+       "HAM": 6750.653,
+       "HUL": 6847.807,
+       "LAW": 6805.221,
+       "LEC": 6756.853,
+       "NOR": 6806.748,
+       "OCO": 6889.029,
+       "PER": 6889.14,
+       "PIA": 6839.447,
+       "SAI": 6823.1,
+       "STR": 6921.99,
+       "VER": 6745.494
       },
       "in_box": [
        "ANT"
@@ -1981,24 +2013,24 @@
        "VER": 6821.455
       },
       "fantasma": {
-       "ANT": 6833.479,
-       "BEA": 6906.679,
-       "BOR": 6933.06,
-       "BOT": 7029.972,
-       "COL": 6870.545,
-       "GAS": 6884.736,
-       "HAD": 6832.439,
-       "HAM": 6826.199,
-       "HUL": 6925.281,
-       "LAW": 6882.287,
-       "LEC": 6832.409,
-       "NOR": 6883.471,
-       "OCO": 6967.094,
-       "PER": 6967.205,
-       "PIA": 6916.686,
-       "SAI": 6899.627,
-       "STR": 7002.302,
-       "VER": 6821.066
+       "ANT": 6832.784,
+       "BEA": 6906.55,
+       "BOR": 6933.317,
+       "BOT": 7030.257,
+       "COL": 6870.555,
+       "GAS": 6884.765,
+       "HAD": 6832.27,
+       "HAM": 6825.982,
+       "HUL": 6925.467,
+       "LAW": 6882.322,
+       "LEC": 6832.208,
+       "NOR": 6883.743,
+       "OCO": 6967.446,
+       "PER": 6967.15,
+       "PIA": 6916.818,
+       "SAI": 6899.437,
+       "STR": 7002.53,
+       "VER": 6820.885
       },
       "in_box": [],
       "fuori_box": []
@@ -2052,20 +2084,24 @@
     "giro_di_rientro": 33,
     "davanti": {
      "drv": "PER",
-     "gap_s": 29.90325257142831,
+     "gap_s": 28.64697206092842,
      "motivo_soppressione": null
     },
     "dietro": null,
     "gap_soppressi": null,
     "banda_posizione": {
      "contesto": "VERDE",
-     "da": 16,
+     "da": 15,
      "a": 17,
-     "semi_ampiezza": 1,
+     "semi_ampiezza": 2,
      "livello": 0.8,
-     "copertura_fuori_campione": 0.8852,
-     "targhetta": "banda ±1 posizioni, misurata su 209 soste vere del 2026: copre il 88.5% fuori campione",
-     "circuito_sotto_livello": null,
+     "copertura_fuori_campione": 0.8822,
+     "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
+     "circuito_sotto_livello": {
+      "gara": "Cina",
+      "copertura": 0.4615,
+      "n_casi": 13
+     },
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
     }
    },
@@ -2082,57 +2118,57 @@
    "curva": [
     {
      "giroPit": 32,
-     "delta_s": 4.062,
+     "delta_s": 5.983,
      "banda": null
     },
     {
      "giroPit": 33,
-     "delta_s": 3.385,
+     "delta_s": 4.871,
      "banda": null
     },
     {
      "giroPit": 34,
-     "delta_s": 2.77,
+     "delta_s": 3.904,
      "banda": null
     },
     {
      "giroPit": 35,
-     "delta_s": 2.216,
+     "delta_s": 3.068,
      "banda": null
     },
     {
      "giroPit": 36,
-     "delta_s": 1.723,
+     "delta_s": 2.35,
      "banda": null
     },
     {
      "giroPit": 37,
-     "delta_s": 1.293,
+     "delta_s": 1.74,
      "banda": null
     },
     {
      "giroPit": 38,
-     "delta_s": 0.923,
+     "delta_s": 1.229,
      "banda": null
     },
     {
      "giroPit": 39,
-     "delta_s": 0.616,
+     "delta_s": 0.812,
      "banda": null
     },
     {
      "giroPit": 40,
-     "delta_s": 0.369,
+     "delta_s": 0.484,
      "banda": null
     },
     {
      "giroPit": 41,
-     "delta_s": 0.185,
+     "delta_s": 0.241,
      "banda": null
     },
     {
      "giroPit": 42,
-     "delta_s": 0.062,
+     "delta_s": 0.08,
      "banda": null
     },
     {
@@ -2147,57 +2183,57 @@
     },
     {
      "giroPit": 45,
-     "delta_s": 0.062,
+     "delta_s": 0.08,
      "banda": null
     },
     {
      "giroPit": 46,
-     "delta_s": 0.185,
+     "delta_s": 0.241,
      "banda": null
     },
     {
      "giroPit": 47,
-     "delta_s": 0.369,
+     "delta_s": 0.484,
      "banda": null
     },
     {
      "giroPit": 48,
-     "delta_s": 0.616,
+     "delta_s": 0.812,
      "banda": null
     },
     {
      "giroPit": 49,
-     "delta_s": 0.923,
+     "delta_s": 1.229,
      "banda": null
     },
     {
      "giroPit": 50,
-     "delta_s": 1.293,
+     "delta_s": 1.74,
      "banda": null
     },
     {
      "giroPit": 51,
-     "delta_s": 1.723,
+     "delta_s": 2.35,
      "banda": null
     },
     {
      "giroPit": 52,
-     "delta_s": 2.216,
+     "delta_s": 3.068,
      "banda": null
     },
     {
      "giroPit": 53,
-     "delta_s": 2.77,
+     "delta_s": 3.904,
      "banda": null
     },
     {
      "giroPit": 54,
-     "delta_s": 3.385,
+     "delta_s": 4.871,
      "banda": null
     },
     {
      "giroPit": 55,
-     "delta_s": 4.062,
+     "delta_s": 5.983,
      "banda": null
     }
    ],
@@ -2220,6 +2256,12 @@
      "descrizione": "1 pilota/i è entrato ai box proprio al giro 31: riparte da gomma nuova (età 0 al congelamento)",
      "conteggio": 1,
      "targhetta": "la MESCOLA che monteranno è informazione del futuro e non si conosce: si mantiene quella osservata, che al giorno 1 non cambia il degrado (p = 0,209)"
+    },
+    {
+     "codice": "RODAGGIO_GOMMA_NUOVA",
+     "descrizione": "nei primi giri di vita la gomma è più veloce di quanto dica il degrado lineare: si applica w(età) = −0.67·exp(−età/4.75) s/giro",
+     "conteggio": 1,
+     "targhetta": "misurato sul fondo 2026 (11 gare), 6.575 giri verdi in ARIA LIBERA (gap > 2,0 s o primo), delta70 e rho cablati e non ri-stimati; perdita L1 su griglia dichiarata, base = mediana per (gara,pilota) ricalcolata a ogni (c,tau)"
     },
     {
      "codice": "MESCOLA_NON_SEPARA",
@@ -2261,14 +2303,14 @@
     "alternative": [
      {
       "k": 1,
-      "totale": 9154.466901142858,
+      "totale": 9150.57141028963,
       "soste": [
        43
       ]
      },
      {
       "k": 2,
-      "totale": 9176.182549142859,
+      "totale": 9170.505210862844,
       "soste": [
        39,
        47
@@ -2276,7 +2318,7 @@
      },
      {
       "k": 3,
-      "totale": 9198.729149142859,
+      "totale": 9191.817754626682,
       "soste": [
        36,
        42,
@@ -2416,23 +2458,23 @@
        "VER": 6708.724
       },
       "fantasma": {
-       "ALO": 6778.981,
-       "ANT": 6678.7,
-       "BEA": 6706.947,
-       "BOT": 6745.394,
-       "COL": 6717.173,
-       "GAS": 6715.053,
-       "HAD": 6720.932,
-       "HAM": 6689.041,
-       "HUL": 6718.18,
-       "LAW": 6720.105,
-       "LEC": 6688.347,
-       "LIN": 6738.246,
-       "OCO": 6741.877,
-       "PER": 6748.333,
-       "RUS": 6686.902,
-       "SAI": 6727.972,
-       "VER": 6709.428
+       "ALO": 6778.495,
+       "ANT": 6678.8,
+       "BEA": 6707.094,
+       "BOT": 6745.469,
+       "COL": 6717.355,
+       "GAS": 6715.216,
+       "HAD": 6721.096,
+       "HAM": 6689.237,
+       "HUL": 6718.252,
+       "LAW": 6720.272,
+       "LEC": 6688.478,
+       "LIN": 6738.39,
+       "OCO": 6741.621,
+       "PER": 6748.474,
+       "RUS": 6687.016,
+       "SAI": 6728.067,
+       "VER": 6709.612
       },
       "in_box": [
        "ALO"
@@ -2460,23 +2502,23 @@
        "VER": 6806.105
       },
       "fantasma": {
-       "ALO": 6878.227,
-       "ANT": 6775.374,
-       "BEA": 6805.154,
-       "BOT": 6845.259,
-       "COL": 6815.845,
-       "GAS": 6813.215,
-       "HAD": 6819.247,
-       "HAM": 6786.078,
-       "HUL": 6816.944,
-       "LAW": 6818.811,
-       "LEC": 6785.584,
-       "LIN": 6837.391,
-       "OCO": 6839.798,
-       "PER": 6848.323,
-       "RUS": 6783.721,
-       "SAI": 6827.001,
-       "VER": 6807.883
+       "ALO": 6877.254,
+       "ANT": 6775.576,
+       "BEA": 6805.449,
+       "BOT": 6845.411,
+       "COL": 6816.209,
+       "GAS": 6813.542,
+       "HAD": 6819.577,
+       "HAM": 6786.47,
+       "HUL": 6817.088,
+       "LAW": 6819.147,
+       "LEC": 6785.847,
+       "LIN": 6837.679,
+       "OCO": 6839.355,
+       "PER": 6848.607,
+       "RUS": 6783.949,
+       "SAI": 6827.191,
+       "VER": 6808.253
       },
       "in_box": [],
       "fuori_box": []
@@ -2530,19 +2572,19 @@
     "giro_di_rientro": 31,
     "davanti": {
      "drv": "BOT",
-     "gap_s": 2.0190697358493708,
+     "gap_s": 1.416197603857654,
      "motivo_soppressione": null
     },
     "dietro": null,
     "gap_soppressi": null,
     "banda_posizione": {
      "contesto": "VERDE",
-     "da": 20,
+     "da": 19,
      "a": 21,
-     "semi_ampiezza": 1,
+     "semi_ampiezza": 2,
      "livello": 0.8,
-     "copertura_fuori_campione": 0.8852,
-     "targhetta": "banda ±1 posizioni, misurata su 209 soste vere del 2026: copre il 88.5% fuori campione",
+     "copertura_fuori_campione": 0.8822,
+     "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
      "circuito_sotto_livello": null,
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
     }
@@ -2560,37 +2602,37 @@
    "curva": [
     {
      "giroPit": 30,
-     "delta_s": 1.723,
+     "delta_s": 2.057,
      "banda": null
     },
     {
      "giroPit": 31,
-     "delta_s": 1.293,
+     "delta_s": 1.53,
      "banda": null
     },
     {
      "giroPit": 32,
-     "delta_s": 0.923,
+     "delta_s": 1.086,
      "banda": null
     },
     {
      "giroPit": 33,
-     "delta_s": 0.616,
+     "delta_s": 0.72,
      "banda": null
     },
     {
      "giroPit": 34,
-     "delta_s": 0.369,
+     "delta_s": 0.43,
      "banda": null
     },
     {
      "giroPit": 35,
-     "delta_s": 0.185,
+     "delta_s": 0.214,
      "banda": null
     },
     {
      "giroPit": 36,
-     "delta_s": 0.062,
+     "delta_s": 0.071,
      "banda": null
     },
     {
@@ -2605,72 +2647,72 @@
     },
     {
      "giroPit": 39,
-     "delta_s": 0.062,
+     "delta_s": 0.071,
      "banda": null
     },
     {
      "giroPit": 40,
-     "delta_s": 0.185,
+     "delta_s": 0.214,
      "banda": null
     },
     {
      "giroPit": 41,
-     "delta_s": 0.369,
+     "delta_s": 0.43,
      "banda": null
     },
     {
      "giroPit": 42,
-     "delta_s": 0.616,
+     "delta_s": 0.72,
      "banda": null
     },
     {
      "giroPit": 43,
-     "delta_s": 0.923,
+     "delta_s": 1.086,
      "banda": null
     },
     {
      "giroPit": 44,
-     "delta_s": 1.293,
+     "delta_s": 1.53,
      "banda": null
     },
     {
      "giroPit": 45,
-     "delta_s": 1.723,
+     "delta_s": 2.057,
      "banda": null
     },
     {
      "giroPit": 46,
-     "delta_s": 2.216,
+     "delta_s": 2.669,
      "banda": null
     },
     {
      "giroPit": 47,
-     "delta_s": 2.77,
+     "delta_s": 3.373,
      "banda": null
     },
     {
      "giroPit": 48,
-     "delta_s": 3.385,
+     "delta_s": 4.175,
      "banda": null
     },
     {
      "giroPit": 49,
-     "delta_s": 4.062,
+     "delta_s": 5.084,
      "banda": null
     },
     {
      "giroPit": 50,
-     "delta_s": 4.801,
+     "delta_s": 6.109,
      "banda": null
     },
     {
      "giroPit": 51,
-     "delta_s": 5.601,
+     "delta_s": 7.264,
      "banda": null
     },
     {
      "giroPit": 52,
-     "delta_s": 6.463,
+     "delta_s": 8.565,
      "banda": null
     }
    ],
@@ -2693,6 +2735,12 @@
      "descrizione": "Giappone non ha una misura di pit-loss di circuito: si usa la mediana d'era 22.1 s",
      "conteggio": 1,
      "targhetta": "prior esterno, mediana d'era 22,1 s — circuito NON misurato ne' dal prior ne' dal fondo, valore di ripiego dichiarato"
+    },
+    {
+     "codice": "RODAGGIO_GOMMA_NUOVA",
+     "descrizione": "nei primi giri di vita la gomma è più veloce di quanto dica il degrado lineare: si applica w(età) = −0.67·exp(−età/4.75) s/giro",
+     "conteggio": 1,
+     "targhetta": "misurato sul fondo 2026 (11 gare), 6.575 giri verdi in ARIA LIBERA (gap > 2,0 s o primo), delta70 e rho cablati e non ri-stimati; perdita L1 su griglia dichiarata, base = mediana per (gara,pilota) ricalcolata a ogni (c,tau)"
     },
     {
      "codice": "MESCOLA_NON_SEPARA",
@@ -2719,19 +2767,19 @@
     "alternative": [
      {
       "k": 0,
-      "totale": 9197.833603169813,
+      "totale": 9198.247536910627,
       "soste": []
      },
      {
       "k": 1,
-      "totale": 9212.547363169813,
+      "totale": 9210.317909213212,
       "soste": [
        38
       ]
      },
      {
       "k": 2,
-      "totale": 9232.185283169812,
+      "totale": 9227.855302469632,
       "soste": [
        32,
        43
@@ -2739,7 +2787,7 @@
      },
      {
       "k": 3,
-      "totale": 9253.054243169812,
+      "totale": 9247.133198481615,
       "soste": [
        30,
        38,
@@ -2900,27 +2948,27 @@
        "VER": 6978.733
       },
       "fantasma": {
-       "ALB": 7009.319,
-       "ALO": 6992.197,
-       "ANT": 6971.49,
-       "BOR": 6984.113,
-       "BOT": 7005.317,
-       "COL": 6986.547,
-       "GAS": 6978.605,
-       "HAD": 6984.7,
-       "HAM": 6974.254,
-       "HUL": 6984.871,
-       "LAW": 6981.294,
-       "LEC": 6975.72,
-       "LIN": 6985.23,
-       "NOR": 6976.735,
-       "OCO": 6982.018,
-       "PER": 6989.024,
-       "PIA": 6973.464,
-       "RUS": 6974.798,
-       "SAI": 6986.226,
-       "STR": 6991.267,
-       "VER": 6978.868
+       "ALB": 7009.239,
+       "ALO": 6992.258,
+       "ANT": 6971.509,
+       "BOR": 6984.049,
+       "BOT": 7005.323,
+       "COL": 6986.562,
+       "GAS": 6978.563,
+       "HAD": 6984.689,
+       "HAM": 6974.172,
+       "HUL": 6984.913,
+       "LAW": 6981.193,
+       "LEC": 6975.848,
+       "LIN": 6985.204,
+       "NOR": 6976.822,
+       "OCO": 6982.076,
+       "PER": 6989.027,
+       "PIA": 6973.541,
+       "RUS": 6974.781,
+       "SAI": 6986.128,
+       "STR": 6991.163,
+       "VER": 6978.796
       },
       "in_box": [
        "ALB"
@@ -2952,27 +3000,27 @@
        "VER": 7073.028
       },
       "fantasma": {
-       "ALB": 7105.305,
-       "ALO": 7089.758,
-       "ANT": 7065.636,
-       "BOR": 7080.005,
-       "BOT": 7103.286,
-       "COL": 7082.677,
-       "GAS": 7073.574,
-       "HAD": 7080.725,
-       "HAM": 7068.671,
-       "HUL": 7080.682,
-       "LAW": 7077.179,
-       "LEC": 7070.193,
-       "LIN": 7081.053,
-       "NOR": 7071.245,
-       "OCO": 7077.762,
-       "PER": 7086.138,
-       "PIA": 7067.745,
-       "RUS": 7068.978,
-       "SAI": 7082.355,
-       "STR": 7088.761,
-       "VER": 7073.745
+       "ALB": 7104.727,
+       "ALO": 7089.909,
+       "ANT": 7065.697,
+       "BOR": 7079.9,
+       "BOT": 7103.31,
+       "COL": 7082.716,
+       "GAS": 7073.512,
+       "HAD": 7080.715,
+       "HAM": 7068.53,
+       "HUL": 7080.796,
+       "LAW": 7077.001,
+       "LEC": 7070.459,
+       "LIN": 7081.01,
+       "NOR": 7071.426,
+       "OCO": 7077.891,
+       "PER": 7086.163,
+       "PIA": 7067.911,
+       "RUS": 7068.964,
+       "SAI": 7082.184,
+       "STR": 7088.587,
+       "VER": 7073.623
       },
       "in_box": [],
       "fuori_box": []
@@ -3031,19 +3079,19 @@
     "giro_di_rientro": 31,
     "davanti": {
      "drv": "STR",
-     "gap_s": 82.26838953846163,
+     "gap_s": 81.52526849687274,
      "motivo_soppressione": null
     },
     "dietro": null,
     "gap_soppressi": null,
     "banda_posizione": {
      "contesto": "VERDE",
-     "da": 21,
+     "da": 20,
      "a": 22,
-     "semi_ampiezza": 1,
+     "semi_ampiezza": 2,
      "livello": 0.8,
-     "copertura_fuori_campione": 0.8852,
-     "targhetta": "banda ±1 posizioni, misurata su 209 soste vere del 2026: copre il 88.5% fuori campione",
+     "copertura_fuori_campione": 0.8822,
+     "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
      "circuito_sotto_livello": null,
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
     }
@@ -3061,32 +3109,32 @@
    "curva": [
     {
      "giroPit": 30,
-     "delta_s": 1.293,
+     "delta_s": 1.53,
      "banda": null
     },
     {
      "giroPit": 31,
-     "delta_s": 0.923,
+     "delta_s": 1.086,
      "banda": null
     },
     {
      "giroPit": 32,
-     "delta_s": 0.616,
+     "delta_s": 0.72,
      "banda": null
     },
     {
      "giroPit": 33,
-     "delta_s": 0.369,
+     "delta_s": 0.43,
      "banda": null
     },
     {
      "giroPit": 34,
-     "delta_s": 0.185,
+     "delta_s": 0.214,
      "banda": null
     },
     {
      "giroPit": 35,
-     "delta_s": 0.062,
+     "delta_s": 0.071,
      "banda": null
     },
     {
@@ -3101,72 +3149,72 @@
     },
     {
      "giroPit": 38,
-     "delta_s": 0.062,
+     "delta_s": 0.071,
      "banda": null
     },
     {
      "giroPit": 39,
-     "delta_s": 0.185,
+     "delta_s": 0.214,
      "banda": null
     },
     {
      "giroPit": 40,
-     "delta_s": 0.369,
+     "delta_s": 0.43,
      "banda": null
     },
     {
      "giroPit": 41,
-     "delta_s": 0.616,
+     "delta_s": 0.72,
      "banda": null
     },
     {
      "giroPit": 42,
-     "delta_s": 0.923,
+     "delta_s": 1.086,
      "banda": null
     },
     {
      "giroPit": 43,
-     "delta_s": 1.293,
+     "delta_s": 1.53,
      "banda": null
     },
     {
      "giroPit": 44,
-     "delta_s": 1.723,
+     "delta_s": 2.057,
      "banda": null
     },
     {
      "giroPit": 45,
-     "delta_s": 2.216,
+     "delta_s": 2.669,
      "banda": null
     },
     {
      "giroPit": 46,
-     "delta_s": 2.77,
+     "delta_s": 3.373,
      "banda": null
     },
     {
      "giroPit": 47,
-     "delta_s": 3.385,
+     "delta_s": 4.175,
      "banda": null
     },
     {
      "giroPit": 48,
-     "delta_s": 4.062,
+     "delta_s": 5.084,
      "banda": null
     },
     {
      "giroPit": 49,
-     "delta_s": 4.801,
+     "delta_s": 6.109,
      "banda": null
     },
     {
      "giroPit": 50,
-     "delta_s": 5.601,
+     "delta_s": 7.264,
      "banda": null
     },
     {
      "giroPit": 51,
-     "delta_s": 6.463,
+     "delta_s": 8.565,
      "banda": null
     }
    ],
@@ -3189,6 +3237,12 @@
      "descrizione": "2 pilota/i è entrato ai box proprio al giro 29: riparte da gomma nuova (età 0 al congelamento)",
      "conteggio": 2,
      "targhetta": "la MESCOLA che monteranno è informazione del futuro e non si conosce: si mantiene quella osservata, che al giorno 1 non cambia il degrado (p = 0,209)"
+    },
+    {
+     "codice": "RODAGGIO_GOMMA_NUOVA",
+     "descrizione": "nei primi giri di vita la gomma è più veloce di quanto dica il degrado lineare: si applica w(età) = −0.67·exp(−età/4.75) s/giro",
+     "conteggio": 1,
+     "targhetta": "misurato sul fondo 2026 (11 gare), 6.575 giri verdi in ARIA LIBERA (gap > 2,0 s o primo), delta70 e rho cablati e non ri-stimati; perdita L1 su griglia dichiarata, base = mediana per (gara,pilota) ricalcolata a ogni (c,tau)"
     },
     {
      "codice": "MESCOLA_NON_SEPARA",
@@ -3215,19 +3269,19 @@
     "alternative": [
      {
       "k": 0,
-      "totale": 8519.735019384616,
+      "totale": 8521.305637969104,
       "soste": []
      },
      {
       "k": 1,
-      "totale": 8532.988779384616,
+      "totale": 8531.916010271689,
       "soste": [
        37
       ]
      },
      {
       "k": 2,
-      "totale": 8551.166699384617,
+      "totale": 8547.993403528102,
       "soste": [
        31,
        42
@@ -3235,7 +3289,7 @@
      },
      {
       "k": 3,
-      "totale": 8570.606435384616,
+      "totale": 8565.865681647108,
       "soste": [
        30,
        37,
@@ -3402,28 +3456,28 @@
        "VER": 6207.53
       },
       "fantasma": {
-       "ALB": 6431.964,
-       "ALO": 6341.053,
-       "ANT": 6180.311,
-       "BEA": 6272.802,
-       "BOR": 6251.234,
-       "BOT": 6298.658,
-       "COL": 6259.469,
-       "GAS": 6265.446,
-       "HAD": 6224.165,
-       "HAM": 6209.166,
-       "HUL": 6266.364,
-       "LAW": 6248.203,
-       "LEC": 6194.54,
-       "LIN": 6250.07,
-       "NOR": 6224.308,
-       "OCO": 6289.443,
+       "ALB": 6431.955,
+       "ALO": 6341.116,
+       "ANT": 6180.374,
+       "BEA": 6272.339,
+       "BOR": 6250.989,
+       "BOT": 6298.257,
+       "COL": 6259.411,
+       "GAS": 6265.37,
+       "HAD": 6224.237,
+       "HAM": 6209.145,
+       "HUL": 6266.561,
+       "LAW": 6247.801,
+       "LEC": 6194.369,
+       "LIN": 6249.758,
+       "NOR": 6224.022,
+       "OCO": 6289.447,
        "PER": 6291.986,
-       "PIA": 6271.32,
-       "RUS": 6208.404,
-       "SAI": 6270.676,
-       "STR": 6347.09,
-       "VER": 6207.567
+       "PIA": 6271.327,
+       "RUS": 6208.44,
+       "SAI": 6270.702,
+       "STR": 6347.226,
+       "VER": 6207.641
       },
       "in_box": [
        "ALB"
@@ -3457,28 +3511,28 @@
        "VER": 6301.488
       },
       "fantasma": {
-       "ALB": 6527.645,
-       "ALO": 6439.089,
-       "ANT": 6274.365,
-       "BEA": 6368.785,
-       "BOR": 6346.141,
-       "BOT": 6395.505,
-       "COL": 6354.831,
-       "GAS": 6360.704,
-       "HAD": 6318.591,
-       "HAM": 6302.915,
-       "HUL": 6361.74,
-       "LAW": 6342.983,
-       "LEC": 6287.915,
-       "LIN": 6344.934,
-       "NOR": 6318.256,
-       "OCO": 6385.467,
-       "PER": 6388.426,
-       "PIA": 6366.228,
-       "RUS": 6302.187,
-       "SAI": 6366.426,
-       "STR": 6445.377,
-       "VER": 6301.566
+       "ALB": 6527.184,
+       "ALO": 6439.23,
+       "ANT": 6274.491,
+       "BEA": 6367.962,
+       "BOR": 6345.704,
+       "BOT": 6394.807,
+       "COL": 6354.738,
+       "GAS": 6360.582,
+       "HAD": 6318.747,
+       "HAM": 6302.902,
+       "HUL": 6362.141,
+       "LAW": 6342.263,
+       "LEC": 6287.618,
+       "LIN": 6344.378,
+       "NOR": 6317.766,
+       "OCO": 6385.493,
+       "PER": 6388.446,
+       "PIA": 6366.241,
+       "RUS": 6302.287,
+       "SAI": 6366.493,
+       "STR": 6445.659,
+       "VER": 6301.722
       },
       "in_box": [],
       "fuori_box": []
@@ -3538,23 +3592,23 @@
     "giro_di_rientro": 33,
     "davanti": {
      "drv": "BEA",
-     "gap_s": 18.439618807016814,
+     "gap_s": 18.15337325220935,
      "motivo_soppressione": null
     },
     "dietro": {
-     "drv": "ALO",
-     "gap_s": 2.4030151578954246,
+     "drv": "LIN",
+     "gap_s": 2.6082468554923253,
      "motivo_soppressione": null
     },
     "gap_soppressi": null,
     "banda_posizione": {
      "contesto": "VERDE",
-     "da": 12,
-     "a": 14,
-     "semi_ampiezza": 1,
+     "da": 11,
+     "a": 15,
+     "semi_ampiezza": 2,
      "livello": 0.8,
-     "copertura_fuori_campione": 0.8852,
-     "targhetta": "banda ±1 posizioni, misurata su 209 soste vere del 2026: copre il 88.5% fuori campione",
+     "copertura_fuori_campione": 0.8822,
+     "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
      "circuito_sotto_livello": null,
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
     }
@@ -3572,52 +3626,52 @@
    "curva": [
     {
      "giroPit": 32,
-     "delta_s": 3.078,
+     "delta_s": 3.847,
      "banda": null
     },
     {
      "giroPit": 33,
-     "delta_s": 2.493,
+     "delta_s": 3.076,
      "banda": null
     },
     {
      "giroPit": 34,
-     "delta_s": 1.97,
+     "delta_s": 2.404,
      "banda": null
     },
     {
      "giroPit": 35,
-     "delta_s": 1.508,
+     "delta_s": 1.823,
      "banda": null
     },
     {
      "giroPit": 36,
-     "delta_s": 1.108,
+     "delta_s": 1.329,
      "banda": null
     },
     {
      "giroPit": 37,
-     "delta_s": 0.769,
+     "delta_s": 0.917,
      "banda": null
     },
     {
      "giroPit": 38,
-     "delta_s": 0.492,
+     "delta_s": 0.584,
      "banda": null
     },
     {
      "giroPit": 39,
-     "delta_s": 0.277,
+     "delta_s": 0.327,
      "banda": null
     },
     {
      "giroPit": 40,
-     "delta_s": 0.123,
+     "delta_s": 0.145,
      "banda": null
     },
     {
      "giroPit": 41,
-     "delta_s": 0.031,
+     "delta_s": 0.036,
      "banda": null
     },
     {
@@ -3627,72 +3681,72 @@
     },
     {
      "giroPit": 43,
-     "delta_s": 0.031,
+     "delta_s": 0.036,
      "banda": null
     },
     {
      "giroPit": 44,
-     "delta_s": 0.123,
+     "delta_s": 0.145,
      "banda": null
     },
     {
      "giroPit": 45,
-     "delta_s": 0.277,
+     "delta_s": 0.327,
      "banda": null
     },
     {
      "giroPit": 46,
-     "delta_s": 0.492,
+     "delta_s": 0.584,
      "banda": null
     },
     {
      "giroPit": 47,
-     "delta_s": 0.769,
+     "delta_s": 0.917,
      "banda": null
     },
     {
      "giroPit": 48,
-     "delta_s": 1.108,
+     "delta_s": 1.329,
      "banda": null
     },
     {
      "giroPit": 49,
-     "delta_s": 1.508,
+     "delta_s": 1.823,
      "banda": null
     },
     {
      "giroPit": 50,
-     "delta_s": 1.97,
+     "delta_s": 2.404,
      "banda": null
     },
     {
      "giroPit": 51,
-     "delta_s": 2.493,
+     "delta_s": 3.076,
      "banda": null
     },
     {
      "giroPit": 52,
-     "delta_s": 3.078,
+     "delta_s": 3.847,
      "banda": null
     },
     {
      "giroPit": 53,
-     "delta_s": 3.724,
+     "delta_s": 4.725,
      "banda": null
     },
     {
      "giroPit": 54,
-     "delta_s": 4.432,
+     "delta_s": 5.719,
      "banda": null
     },
     {
      "giroPit": 55,
-     "delta_s": 5.201,
+     "delta_s": 6.843,
      "banda": null
     },
     {
      "giroPit": 56,
-     "delta_s": 6.032,
+     "delta_s": 8.112,
      "banda": null
     }
    ],
@@ -3715,6 +3769,12 @@
      "descrizione": "2 pilota/i è entrato ai box proprio al giro 31: riparte da gomma nuova (età 0 al congelamento)",
      "conteggio": 2,
      "targhetta": "la MESCOLA che monteranno è informazione del futuro e non si conosce: si mantiene quella osservata, che al giorno 1 non cambia il degrado (p = 0,209)"
+    },
+    {
+     "codice": "RODAGGIO_GOMMA_NUOVA",
+     "descrizione": "nei primi giri di vita la gomma è più veloce di quanto dica il degrado lineare: si applica w(età) = −0.67·exp(−età/4.75) s/giro",
+     "conteggio": 1,
+     "targhetta": "misurato sul fondo 2026 (11 gare), 6.575 giri verdi in ARIA LIBERA (gap > 2,0 s o primo), delta70 e rho cablati e non ri-stimati; perdita L1 su griglia dichiarata, base = mediana per (gara,pilota) ricalcolata a ogni (c,tau)"
     },
     {
      "codice": "MESCOLA_NON_SEPARA",
@@ -3741,19 +3801,19 @@
     "alternative": [
      {
       "k": 0,
-      "totale": 9124.1045917193,
+      "totale": 9126.632447285272,
       "soste": []
      },
      {
       "k": 1,
-      "totale": 9137.677991719298,
+      "totale": 9137.584555912228,
       "soste": [
        42
       ]
      },
      {
       "k": 2,
-      "totale": 9155.867791719298,
+      "totale": 9153.716872824054,
       "soste": [
        37,
        47
@@ -3761,7 +3821,7 @@
      },
      {
       "k": 3,
-      "totale": 9175.2270797193,
+      "totale": 9171.543321612739,
       "soste": [
        35,
        42,
@@ -3907,24 +3967,24 @@
        "VER": 6737.436
       },
       "fantasma": {
-       "ALB": 6794.991,
-       "ALO": 6794.991,
-       "ANT": 6731.47,
-       "BEA": 6776.306,
-       "BOR": 6771.388,
-       "BOT": 6838.442,
-       "COL": 6749.559,
-       "HAM": 6753.767,
-       "LEC": 6745.278,
-       "LIN": 6796.549,
-       "NOR": 6732.529,
-       "OCO": 6771.156,
-       "PER": 6810.82,
-       "PIA": 6747.648,
-       "RUS": 6746.647,
-       "SAI": 6771.774,
-       "STR": 6814.12,
-       "VER": 6737.287
+       "ALB": 6794.902,
+       "ALO": 6795.037,
+       "ANT": 6731.384,
+       "BEA": 6776.187,
+       "BOR": 6771.41,
+       "BOT": 6838.543,
+       "COL": 6749.102,
+       "HAM": 6753.621,
+       "LEC": 6745.294,
+       "LIN": 6796.273,
+       "NOR": 6732.333,
+       "OCO": 6770.713,
+       "PER": 6810.474,
+       "PIA": 6747.473,
+       "RUS": 6746.713,
+       "SAI": 6771.558,
+       "STR": 6814.21,
+       "VER": 6737.371
       },
       "in_box": [
        "ALB"
@@ -3954,24 +4014,24 @@
        "VER": 6830.978
       },
       "fantasma": {
-       "ALB": 6888.916,
-       "ALO": 6891.319,
-       "ANT": 6823.667,
-       "BEA": 6870.476,
-       "BOR": 6866.74,
-       "BOT": 6934.649,
-       "COL": 6842.812,
-       "HAM": 6846.816,
-       "LEC": 6838.208,
-       "LIN": 6891.533,
-       "NOR": 6824.667,
-       "OCO": 6865.328,
-       "PER": 6906.337,
-       "PIA": 6840.394,
-       "RUS": 6839.795,
-       "SAI": 6865.611,
-       "STR": 6909.994,
-       "VER": 6830.712
+       "ALB": 6888.428,
+       "ALO": 6891.412,
+       "ANT": 6823.531,
+       "BEA": 6870.274,
+       "BOR": 6866.785,
+       "BOT": 6934.864,
+       "COL": 6842.002,
+       "HAM": 6846.569,
+       "LEC": 6838.251,
+       "LIN": 6891.036,
+       "NOR": 6824.32,
+       "OCO": 6864.544,
+       "PER": 6905.713,
+       "PIA": 6840.1,
+       "RUS": 6839.938,
+       "SAI": 6865.234,
+       "STR": 6910.18,
+       "VER": 6830.881
       },
       "in_box": [],
       "fuori_box": []
@@ -4026,23 +4086,23 @@
     "giro_di_rientro": 45,
     "davanti": {
      "drv": "ALO",
-     "gap_s": 6.053637538460862,
+     "gap_s": 4.946755298901735,
      "motivo_soppressione": null
     },
     "dietro": {
      "drv": "STR",
-     "gap_s": 2.284094564103725,
+     "gap_s": 3.4622970894752143,
      "motivo_soppressione": null
     },
     "gap_soppressi": null,
     "banda_posizione": {
      "contesto": "VERDE",
-     "da": 15,
-     "a": 17,
-     "semi_ampiezza": 1,
+     "da": 14,
+     "a": 18,
+     "semi_ampiezza": 2,
      "livello": 0.8,
-     "copertura_fuori_campione": 0.8852,
-     "targhetta": "banda ±1 posizioni, misurata su 209 soste vere del 2026: copre il 88.5% fuori campione",
+     "copertura_fuori_campione": 0.8822,
+     "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
      "circuito_sotto_livello": null,
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
     }
@@ -4060,82 +4120,82 @@
    "curva": [
     {
      "giroPit": 44,
-     "delta_s": 8.371,
+     "delta_s": 10.545,
      "banda": null
     },
     {
      "giroPit": 45,
-     "delta_s": 7.386,
+     "delta_s": 9.121,
      "banda": null
     },
     {
      "giroPit": 46,
-     "delta_s": 6.463,
+     "delta_s": 7.842,
      "banda": null
     },
     {
      "giroPit": 47,
-     "delta_s": 5.601,
+     "delta_s": 6.693,
      "banda": null
     },
     {
      "giroPit": 48,
-     "delta_s": 4.801,
+     "delta_s": 5.66,
      "banda": null
     },
     {
      "giroPit": 49,
-     "delta_s": 4.062,
+     "delta_s": 4.733,
      "banda": null
     },
     {
      "giroPit": 50,
-     "delta_s": 3.385,
+     "delta_s": 3.904,
      "banda": null
     },
     {
      "giroPit": 51,
-     "delta_s": 2.77,
+     "delta_s": 3.166,
      "banda": null
     },
     {
      "giroPit": 52,
-     "delta_s": 2.216,
+     "delta_s": 2.513,
      "banda": null
     },
     {
      "giroPit": 53,
-     "delta_s": 1.723,
+     "delta_s": 1.942,
      "banda": null
     },
     {
      "giroPit": 54,
-     "delta_s": 1.293,
+     "delta_s": 1.449,
      "banda": null
     },
     {
      "giroPit": 55,
-     "delta_s": 0.923,
+     "delta_s": 1.03,
      "banda": null
     },
     {
      "giroPit": 56,
-     "delta_s": 0.616,
+     "delta_s": 0.684,
      "banda": null
     },
     {
      "giroPit": 57,
-     "delta_s": 0.369,
+     "delta_s": 0.409,
      "banda": null
     },
     {
      "giroPit": 58,
-     "delta_s": 0.185,
+     "delta_s": 0.204,
      "banda": null
     },
     {
      "giroPit": 59,
-     "delta_s": 0.062,
+     "delta_s": 0.068,
      "banda": null
     },
     {
@@ -4150,82 +4210,82 @@
     },
     {
      "giroPit": 62,
-     "delta_s": 0.062,
+     "delta_s": 0.068,
      "banda": null
     },
     {
      "giroPit": 63,
-     "delta_s": 0.185,
+     "delta_s": 0.204,
      "banda": null
     },
     {
      "giroPit": 64,
-     "delta_s": 0.369,
+     "delta_s": 0.409,
      "banda": null
     },
     {
      "giroPit": 65,
-     "delta_s": 0.616,
+     "delta_s": 0.684,
      "banda": null
     },
     {
      "giroPit": 66,
-     "delta_s": 0.923,
+     "delta_s": 1.03,
      "banda": null
     },
     {
      "giroPit": 67,
-     "delta_s": 1.293,
+     "delta_s": 1.449,
      "banda": null
     },
     {
      "giroPit": 68,
-     "delta_s": 1.723,
+     "delta_s": 1.942,
      "banda": null
     },
     {
      "giroPit": 69,
-     "delta_s": 2.216,
+     "delta_s": 2.513,
      "banda": null
     },
     {
      "giroPit": 70,
-     "delta_s": 2.77,
+     "delta_s": 3.166,
      "banda": null
     },
     {
      "giroPit": 71,
-     "delta_s": 3.385,
+     "delta_s": 3.904,
      "banda": null
     },
     {
      "giroPit": 72,
-     "delta_s": 4.062,
+     "delta_s": 4.733,
      "banda": null
     },
     {
      "giroPit": 73,
-     "delta_s": 4.801,
+     "delta_s": 5.66,
      "banda": null
     },
     {
      "giroPit": 74,
-     "delta_s": 5.601,
+     "delta_s": 6.693,
      "banda": null
     },
     {
      "giroPit": 75,
-     "delta_s": 6.463,
+     "delta_s": 7.842,
      "banda": null
     },
     {
      "giroPit": 76,
-     "delta_s": 7.386,
+     "delta_s": 9.121,
      "banda": null
     },
     {
      "giroPit": 77,
-     "delta_s": 8.371,
+     "delta_s": 10.545,
      "banda": null
     }
    ],
@@ -4248,6 +4308,12 @@
      "descrizione": "2 pilota/i è entrato ai box proprio al giro 43: riparte da gomma nuova (età 0 al congelamento)",
      "conteggio": 2,
      "targhetta": "la MESCOLA che monteranno è informazione del futuro e non si conosce: si mantiene quella osservata, che al giorno 1 non cambia il degrado (p = 0,209)"
+    },
+    {
+     "codice": "RODAGGIO_GOMMA_NUOVA",
+     "descrizione": "nei primi giri di vita la gomma è più veloce di quanto dica il degrado lineare: si applica w(età) = −0.67·exp(−età/4.75) s/giro",
+     "conteggio": 1,
+     "targhetta": "misurato sul fondo 2026 (11 gare), 6.575 giri verdi in ARIA LIBERA (gap > 2,0 s o primo), delta70 e rho cablati e non ri-stimati; perdita L1 su griglia dichiarata, base = mediana per (gara,pilota) ricalcolata a ogni (c,tau)"
     },
     {
      "codice": "MESCOLA_NON_SEPARA",
@@ -4289,14 +4355,14 @@
     "alternative": [
      {
       "k": 1,
-      "totale": 9503.57895271795,
+      "totale": 9498.320628056612,
       "soste": [
        60
       ]
      },
      {
       "k": 2,
-      "totale": 9522.449800717935,
+      "totale": 9514.92718725835,
       "soste": [
        54,
        66
@@ -4304,7 +4370,7 @@
      },
      {
       "k": 3,
-      "totale": 9542.921000717946,
+      "totale": 9533.639261987737,
       "soste": [
        51,
        59,
@@ -4454,25 +4520,25 @@
        "STR": 6865.213
       },
       "fantasma": {
-       "ALB": 6864.269,
-       "ALO": 6856.783,
-       "ANT": 6726.703,
-       "BOR": 6899.207,
-       "COL": 6849.502,
-       "GAS": 6790.97,
-       "HAD": 6797.449,
-       "HAM": 6744.776,
-       "HUL": 6849.04,
-       "LAW": 6810.949,
-       "LEC": 6754.797,
-       "LIN": 6848.585,
-       "NOR": 6795.08,
-       "OCO": 6849.078,
-       "PER": 6882.043,
-       "PIA": 6781.73,
-       "RUS": 6794.908,
-       "SAI": 6847.742,
-       "STR": 6865.083
+       "ALB": 6863.735,
+       "ALO": 6856.802,
+       "ANT": 6726.564,
+       "BOR": 6898.665,
+       "COL": 6849.403,
+       "GAS": 6790.993,
+       "HAD": 6797.409,
+       "HAM": 6744.85,
+       "HUL": 6849.049,
+       "LAW": 6810.972,
+       "LEC": 6754.737,
+       "LIN": 6848.625,
+       "NOR": 6795.102,
+       "OCO": 6849.083,
+       "PER": 6882.055,
+       "PIA": 6781.782,
+       "RUS": 6795.039,
+       "SAI": 6847.784,
+       "STR": 6865.138
       },
       "in_box": [
        "ALB"
@@ -4502,25 +4568,25 @@
        "STR": 6944.45
       },
       "fantasma": {
-       "ALB": 6942.099,
-       "ALO": 6936.046,
-       "ANT": 6802.562,
-       "BOR": 6978.126,
-       "COL": 6927.651,
-       "GAS": 6869.521,
-       "HAD": 6875.203,
-       "HAM": 6821.341,
-       "HUL": 6928.412,
-       "LAW": 6889.918,
-       "LEC": 6831.295,
-       "LIN": 6927.898,
-       "NOR": 6873.588,
-       "OCO": 6927.903,
-       "PER": 6961.6,
-       "PIA": 6860.123,
-       "RUS": 6872.555,
-       "SAI": 6927.042,
-       "STR": 6944.383
+       "ALB": 6941.032,
+       "ALO": 6936.085,
+       "ANT": 6802.314,
+       "BOR": 6977.145,
+       "COL": 6927.473,
+       "GAS": 6869.567,
+       "HAD": 6875.133,
+       "HAM": 6821.493,
+       "HUL": 6928.431,
+       "LAW": 6889.962,
+       "LEC": 6831.194,
+       "LIN": 6927.978,
+       "NOR": 6873.632,
+       "OCO": 6927.913,
+       "PER": 6961.624,
+       "PIA": 6860.226,
+       "RUS": 6872.825,
+       "SAI": 6927.125,
+       "STR": 6944.494
       },
       "in_box": [],
       "fuori_box": []
@@ -4577,24 +4643,20 @@
     "giro_di_rientro": 38,
     "davanti": {
      "drv": "ALO",
-     "gap_s": 784.3620586666657,
+     "gap_s": 783.4612703039184,
      "motivo_soppressione": null
     },
     "dietro": null,
     "gap_soppressi": null,
     "banda_posizione": {
      "contesto": "VERDE",
-     "da": 18,
+     "da": 17,
      "a": 19,
-     "semi_ampiezza": 1,
+     "semi_ampiezza": 2,
      "livello": 0.8,
-     "copertura_fuori_campione": 0.8852,
-     "targhetta": "banda ±1 posizioni, misurata su 209 soste vere del 2026: copre il 88.5% fuori campione",
-     "circuito_sotto_livello": {
-      "gara": "Spagna",
-      "copertura": 0.775,
-      "n_casi": 40
-     },
+     "copertura_fuori_campione": 0.8822,
+     "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
+     "circuito_sotto_livello": null,
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
     }
    },
@@ -4611,67 +4673,67 @@
    "curva": [
     {
      "giroPit": 37,
-     "delta_s": 5.201,
+     "delta_s": 6.531,
      "banda": null
     },
     {
      "giroPit": 38,
-     "delta_s": 4.432,
+     "delta_s": 5.474,
      "banda": null
     },
     {
      "giroPit": 39,
-     "delta_s": 3.724,
+     "delta_s": 4.535,
      "banda": null
     },
     {
      "giroPit": 40,
-     "delta_s": 3.078,
+     "delta_s": 3.701,
      "banda": null
     },
     {
      "giroPit": 41,
-     "delta_s": 2.493,
+     "delta_s": 2.966,
      "banda": null
     },
     {
      "giroPit": 42,
-     "delta_s": 1.97,
+     "delta_s": 2.322,
      "banda": null
     },
     {
      "giroPit": 43,
-     "delta_s": 1.508,
+     "delta_s": 1.764,
      "banda": null
     },
     {
      "giroPit": 44,
-     "delta_s": 1.108,
+     "delta_s": 1.287,
      "banda": null
     },
     {
      "giroPit": 45,
-     "delta_s": 0.769,
+     "delta_s": 0.889,
      "banda": null
     },
     {
      "giroPit": 46,
-     "delta_s": 0.492,
+     "delta_s": 0.566,
      "banda": null
     },
     {
      "giroPit": 47,
-     "delta_s": 0.277,
+     "delta_s": 0.318,
      "banda": null
     },
     {
      "giroPit": 48,
-     "delta_s": 0.123,
+     "delta_s": 0.141,
      "banda": null
     },
     {
      "giroPit": 49,
-     "delta_s": 0.031,
+     "delta_s": 0.035,
      "banda": null
     },
     {
@@ -4681,77 +4743,77 @@
     },
     {
      "giroPit": 51,
-     "delta_s": 0.031,
+     "delta_s": 0.035,
      "banda": null
     },
     {
      "giroPit": 52,
-     "delta_s": 0.123,
+     "delta_s": 0.141,
      "banda": null
     },
     {
      "giroPit": 53,
-     "delta_s": 0.277,
+     "delta_s": 0.318,
      "banda": null
     },
     {
      "giroPit": 54,
-     "delta_s": 0.492,
+     "delta_s": 0.566,
      "banda": null
     },
     {
      "giroPit": 55,
-     "delta_s": 0.769,
+     "delta_s": 0.889,
      "banda": null
     },
     {
      "giroPit": 56,
-     "delta_s": 1.108,
+     "delta_s": 1.287,
      "banda": null
     },
     {
      "giroPit": 57,
-     "delta_s": 1.508,
+     "delta_s": 1.764,
      "banda": null
     },
     {
      "giroPit": 58,
-     "delta_s": 1.97,
+     "delta_s": 2.322,
      "banda": null
     },
     {
      "giroPit": 59,
-     "delta_s": 2.493,
+     "delta_s": 2.966,
      "banda": null
     },
     {
      "giroPit": 60,
-     "delta_s": 3.078,
+     "delta_s": 3.701,
      "banda": null
     },
     {
      "giroPit": 61,
-     "delta_s": 3.724,
+     "delta_s": 4.535,
      "banda": null
     },
     {
      "giroPit": 62,
-     "delta_s": 4.432,
+     "delta_s": 5.474,
      "banda": null
     },
     {
      "giroPit": 63,
-     "delta_s": 5.201,
+     "delta_s": 6.531,
      "banda": null
     },
     {
      "giroPit": 64,
-     "delta_s": 6.032,
+     "delta_s": 7.717,
      "banda": null
     },
     {
      "giroPit": 65,
-     "delta_s": 6.925,
+     "delta_s": 9.048,
      "banda": null
     }
    ],
@@ -4774,6 +4836,12 @@
      "descrizione": "2 pilota/i è entrato ai box proprio al giro 36: riparte da gomma nuova (età 0 al congelamento)",
      "conteggio": 2,
      "targhetta": "la MESCOLA che monteranno è informazione del futuro e non si conosce: si mantiene quella osservata, che al giorno 1 non cambia il degrado (p = 0,209)"
+    },
+    {
+     "codice": "RODAGGIO_GOMMA_NUOVA",
+     "descrizione": "nei primi giri di vita la gomma è più veloce di quanto dica il degrado lineare: si applica w(età) = −0.67·exp(−età/4.75) s/giro",
+     "conteggio": 1,
+     "targhetta": "misurato sul fondo 2026 (11 gare), 6.575 giri verdi in ARIA LIBERA (gap > 2,0 s o primo), delta70 e rho cablati e non ri-stimati; perdita L1 su griglia dichiarata, base = mediana per (gara,pilota) ricalcolata a ogni (c,tau)"
     },
     {
      "codice": "MESCOLA_NON_SEPARA",
@@ -4800,19 +4868,19 @@
     "alternative": [
      {
       "k": 0,
-      "totale": 9677.59644,
+      "totale": 9681.142436861643,
       "soste": []
      },
      {
       "k": 1,
-      "totale": 9692.548784000004,
+      "totale": 9693.429110577636,
       "soste": [
        50
       ]
      },
      {
       "k": 2,
-      "totale": 9712.763824,
+      "totale": 9711.500580178643,
       "soste": [
        45,
        55
@@ -4820,7 +4888,7 @@
      },
      {
       "k": 3,
-      "totale": 9734.271456,
+      "totale": 9731.358923413929,
       "soste": [
        42,
        50,
@@ -4972,25 +5040,25 @@
        "VER": 6335.561
       },
       "fantasma": {
-       "ALB": 7248.211,
-       "ALO": 6462.354,
-       "ANT": 6307.484,
-       "BEA": 6414.48,
-       "BOR": 6430.462,
-       "COL": 6408.172,
-       "GAS": 6388.001,
-       "HAD": 6372.442,
-       "HAM": 6311.347,
-       "LAW": 6410.243,
-       "LEC": 6323.088,
-       "LIN": 6405.306,
-       "NOR": 6332.376,
-       "OCO": 6445.912,
-       "PER": 6462.551,
-       "PIA": 6335.101,
-       "RUS": 6310.639,
-       "SAI": 6424.053,
-       "VER": 6335.86
+       "ALB": 7248.035,
+       "ALO": 6462.533,
+       "ANT": 6307.552,
+       "BEA": 6414.583,
+       "BOR": 6430.323,
+       "COL": 6407.913,
+       "GAS": 6388.06,
+       "HAD": 6372.27,
+       "HAM": 6311.478,
+       "LAW": 6409.904,
+       "LEC": 6323.156,
+       "LIN": 6405.381,
+       "NOR": 6332.008,
+       "OCO": 6445.644,
+       "PER": 6462.602,
+       "PIA": 6334.591,
+       "RUS": 6310.163,
+       "SAI": 6424.08,
+       "VER": 6335.843
       },
       "in_box": [
        "ALB"
@@ -5021,25 +5089,25 @@
        "VER": 6417.481
       },
       "fantasma": {
-       "ALB": 7332.713,
-       "ALO": 6548.351,
-       "ANT": 6390.076,
-       "BEA": 6499.674,
-       "BOR": 6514.799,
-       "COL": 6491.938,
-       "GAS": 6472.717,
-       "HAD": 6455.625,
-       "HAM": 6392.948,
-       "LAW": 6494.277,
-       "LEC": 6405.922,
-       "LIN": 6490.086,
-       "NOR": 6414.388,
-       "OCO": 6530.564,
-       "PER": 6547.916,
-       "PIA": 6417.411,
-       "RUS": 6392.655,
-       "SAI": 6508.451,
-       "VER": 6418.041
+       "ALB": 7332.175,
+       "ALO": 6548.714,
+       "ANT": 6390.213,
+       "BEA": 6499.882,
+       "BOR": 6514.576,
+       "COL": 6491.488,
+       "GAS": 6472.836,
+       "HAD": 6455.325,
+       "HAM": 6393.224,
+       "LAW": 6493.682,
+       "LEC": 6406.06,
+       "LIN": 6490.242,
+       "NOR": 6413.736,
+       "OCO": 6530.097,
+       "PER": 6548.053,
+       "PIA": 6416.495,
+       "RUS": 6391.805,
+       "SAI": 6508.534,
+       "VER": 6418.029
       },
       "in_box": [],
       "fuori_box": []
@@ -5095,19 +5163,19 @@
     "giro_di_rientro": 41,
     "davanti": {
      "drv": "BEA",
-     "gap_s": 24.695808000000397,
+     "gap_s": 24.170513467476667,
      "motivo_soppressione": null
     },
     "dietro": null,
     "gap_soppressi": null,
     "banda_posizione": {
      "contesto": "VERDE",
-     "da": 19,
+     "da": 18,
      "a": 20,
-     "semi_ampiezza": 1,
+     "semi_ampiezza": 2,
      "livello": 0.8,
-     "copertura_fuori_campione": 0.8852,
-     "targhetta": "banda ±1 posizioni, misurata su 209 soste vere del 2026: copre il 88.5% fuori campione",
+     "copertura_fuori_campione": 0.8822,
+     "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
      "circuito_sotto_livello": null,
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
     }
@@ -5125,42 +5193,42 @@
    "curva": [
     {
      "giroPit": 40,
-     "delta_s": 1.97,
+     "delta_s": 2.069,
      "banda": null
     },
     {
      "giroPit": 41,
-     "delta_s": 1.508,
+     "delta_s": 1.58,
      "banda": null
     },
     {
      "giroPit": 42,
-     "delta_s": 1.108,
+     "delta_s": 1.159,
      "banda": null
     },
     {
      "giroPit": 43,
-     "delta_s": 0.769,
+     "delta_s": 0.803,
      "banda": null
     },
     {
      "giroPit": 44,
-     "delta_s": 0.492,
+     "delta_s": 0.513,
      "banda": null
     },
     {
      "giroPit": 45,
-     "delta_s": 0.277,
+     "delta_s": 0.288,
      "banda": null
     },
     {
      "giroPit": 46,
-     "delta_s": 0.123,
+     "delta_s": 0.128,
      "banda": null
     },
     {
      "giroPit": 47,
-     "delta_s": 0.031,
+     "delta_s": 0.032,
      "banda": null
     },
     {
@@ -5170,107 +5238,107 @@
     },
     {
      "giroPit": 49,
-     "delta_s": 0.031,
+     "delta_s": 0.032,
      "banda": null
     },
     {
      "giroPit": 50,
-     "delta_s": 0.123,
+     "delta_s": 0.128,
      "banda": null
     },
     {
      "giroPit": 51,
-     "delta_s": 0.277,
+     "delta_s": 0.288,
      "banda": null
     },
     {
      "giroPit": 52,
-     "delta_s": 0.492,
+     "delta_s": 0.513,
      "banda": null
     },
     {
      "giroPit": 53,
-     "delta_s": 0.769,
+     "delta_s": 0.803,
      "banda": null
     },
     {
      "giroPit": 54,
-     "delta_s": 1.108,
+     "delta_s": 1.159,
      "banda": null
     },
     {
      "giroPit": 55,
-     "delta_s": 1.508,
+     "delta_s": 1.58,
      "banda": null
     },
     {
      "giroPit": 56,
-     "delta_s": 1.97,
+     "delta_s": 2.069,
      "banda": null
     },
     {
      "giroPit": 57,
-     "delta_s": 2.493,
+     "delta_s": 2.627,
      "banda": null
     },
     {
      "giroPit": 58,
-     "delta_s": 3.078,
+     "delta_s": 3.254,
      "banda": null
     },
     {
      "giroPit": 59,
-     "delta_s": 3.724,
+     "delta_s": 3.953,
      "banda": null
     },
     {
      "giroPit": 60,
-     "delta_s": 4.432,
+     "delta_s": 4.727,
      "banda": null
     },
     {
      "giroPit": 61,
-     "delta_s": 5.201,
+     "delta_s": 5.577,
      "banda": null
     },
     {
      "giroPit": 62,
-     "delta_s": 6.032,
+     "delta_s": 6.509,
      "banda": null
     },
     {
      "giroPit": 63,
-     "delta_s": 6.925,
+     "delta_s": 7.525,
      "banda": null
     },
     {
      "giroPit": 64,
-     "delta_s": 7.879,
+     "delta_s": 8.632,
      "banda": null
     },
     {
      "giroPit": 65,
-     "delta_s": 8.894,
+     "delta_s": 9.837,
      "banda": null
     },
     {
      "giroPit": 66,
-     "delta_s": 9.971,
+     "delta_s": 11.148,
      "banda": null
     },
     {
      "giroPit": 67,
-     "delta_s": 11.11,
+     "delta_s": 12.575,
      "banda": null
     },
     {
      "giroPit": 68,
-     "delta_s": 12.31,
+     "delta_s": 14.132,
      "banda": null
     },
     {
      "giroPit": 69,
-     "delta_s": 13.572,
+     "delta_s": 15.833,
      "banda": null
     }
    ],
@@ -5293,6 +5361,12 @@
      "descrizione": "3 pilota/i è entrato ai box proprio al giro 39: riparte da gomma nuova (età 0 al congelamento)",
      "conteggio": 3,
      "targhetta": "la MESCOLA che monteranno è informazione del futuro e non si conosce: si mantiene quella osservata, che al giorno 1 non cambia il degrado (p = 0,209)"
+    },
+    {
+     "codice": "RODAGGIO_GOMMA_NUOVA",
+     "descrizione": "nei primi giri di vita la gomma è più veloce di quanto dica il degrado lineare: si applica w(età) = −0.67·exp(−età/4.75) s/giro",
+     "conteggio": 1,
+     "targhetta": "misurato sul fondo 2026 (11 gare), 6.575 giri verdi in ARIA LIBERA (gap > 2,0 s o primo), delta70 e rho cablati e non ri-stimati; perdita L1 su griglia dichiarata, base = mediana per (gara,pilota) ricalcolata a ogni (c,tau)"
     },
     {
      "codice": "MESCOLA_NON_SEPARA",
@@ -5319,19 +5393,19 @@
     "alternative": [
      {
       "k": 0,
-      "totale": 9446.020592,
+      "totale": 9448.055199097042,
       "soste": []
      },
      {
       "k": 1,
-      "totale": 9452.285007999999,
+      "totale": 9451.515792668251,
       "soste": [
        48
       ]
      },
      {
       "k": 2,
-      "totale": 9468.490071999999,
+      "totale": 9465.199085412623,
       "soste": [
        41,
        55
@@ -5339,7 +5413,7 @@
      },
      {
       "k": 3,
-      "totale": 9487.372647999999,
+      "totale": 9482.039672323937,
       "soste": [
        40,
        49,
@@ -5500,26 +5574,26 @@
        "VER": 6694.912
       },
       "fantasma": {
-       "ALB": 6839.021,
-       "ALO": 6797.601,
-       "ANT": 6698.615,
-       "BEA": 6813.906,
-       "BOR": 6764.152,
-       "COL": 6808.772,
-       "GAS": 6772.413,
-       "HAD": 6725.166,
-       "HAM": 6709.023,
-       "HUL": 6756.448,
-       "LAW": 6748.465,
-       "LEC": 6718.721,
-       "LIN": 6752.529,
-       "NOR": 6686.833,
-       "OCO": 6814.534,
-       "PIA": 6706.936,
+       "ALB": 6839.058,
+       "ALO": 6797.53,
+       "ANT": 6698.75,
+       "BEA": 6813.95,
+       "BOR": 6764.093,
+       "COL": 6808.566,
+       "GAS": 6771.975,
+       "HAD": 6725.363,
+       "HAM": 6709.098,
+       "HUL": 6755.994,
+       "LAW": 6748.525,
+       "LEC": 6718.538,
+       "LIN": 6752.649,
+       "NOR": 6686.508,
+       "OCO": 6814.503,
+       "PIA": 6706.998,
        "RUS": 6727.155,
-       "SAI": 6805.744,
-       "STR": 6802.048,
-       "VER": 6694.566
+       "SAI": 6805.839,
+       "STR": 6801.726,
+       "VER": 6694.688
       },
       "in_box": [
        "ALB"
@@ -5552,26 +5626,26 @@
        "VER": 6783.326
       },
       "fantasma": {
-       "ALB": 6926.205,
-       "ALO": 6884.657,
-       "ANT": 6783.748,
-       "BEA": 6901.51,
-       "BOR": 6850.656,
-       "COL": 6895.508,
-       "GAS": 6858.597,
-       "HAD": 6810.825,
-       "HAM": 6793.739,
-       "HUL": 6842.341,
-       "LAW": 6834.719,
-       "LEC": 6803.308,
-       "LIN": 6838.942,
-       "NOR": 6770.959,
-       "OCO": 6901.413,
-       "PIA": 6791.359,
-       "RUS": 6812.563,
-       "SAI": 6893.457,
-       "STR": 6888.443,
-       "VER": 6779.849
+       "ALB": 6925.771,
+       "ALO": 6884.552,
+       "ANT": 6784.021,
+       "BEA": 6901.6,
+       "BOR": 6850.55,
+       "COL": 6895.163,
+       "GAS": 6857.824,
+       "HAD": 6811.219,
+       "HAM": 6793.903,
+       "HUL": 6841.536,
+       "LAW": 6834.841,
+       "LEC": 6802.998,
+       "LIN": 6839.184,
+       "NOR": 6770.411,
+       "OCO": 6901.397,
+       "PIA": 6791.513,
+       "RUS": 6812.571,
+       "SAI": 6893.649,
+       "STR": 6887.866,
+       "VER": 6780.094
       },
       "in_box": [],
       "fuori_box": []
@@ -5624,16 +5698,16 @@
    "approvato": true,
    "piano": null,
    "pannello": {
-    "posizione": 10,
+    "posizione": 12,
     "su_quanti": 20,
     "giro_di_rientro": 13,
     "davanti": {
-     "drv": "NOR",
+     "drv": "GAS",
      "gap_s": null,
      "motivo_soppressione": "gap non quantificabile: la sosta è sotto VSC e il campo è compattato dalla neutralizzazione — la differenza di cumulato non è il tempo da recuperare"
     },
     "dietro": {
-     "drv": "OCO",
+     "drv": "SAI",
      "gap_s": null,
      "motivo_soppressione": "gap non quantificabile: la sosta è sotto VSC e il campo è compattato dalla neutralizzazione — la differenza di cumulato non è il tempo da recuperare"
     },
@@ -5641,16 +5715,12 @@
     "banda_posizione": {
      "contesto": "NEUTRA",
      "da": 8,
-     "a": 12,
-     "semi_ampiezza": 2,
+     "a": 15,
+     "semi_ampiezza": 3,
      "livello": 0.8,
-     "copertura_fuori_campione": 0.8571,
-     "targhetta": "banda ±2 posizioni, misurata su 189 soste vere del 2026: copre il 85.7% fuori campione",
-     "circuito_sotto_livello": {
-      "gara": "Australia",
-      "copertura": 0.7727,
-      "n_casi": 22
-     },
+     "copertura_fuori_campione": 0.7857,
+     "targhetta": "banda ±3 posizioni, misurata su 84 soste vere del 2026: copre il 78.6% fuori campione",
+     "circuito_sotto_livello": null,
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
     }
    },
@@ -5683,10 +5753,16 @@
      "targhetta": "PRIOR ESTERNO CON BANDA (SC 0,40-0,60 · VSC 0,60-0,70): è una banda, non un punto"
     },
     {
-     "codice": "SOSTE_RIVALI_SC",
-     "descrizione": "sotto VSC si assume che i rivali ancora al primo stint si fermino allo stesso giro (12) — una sola sosta, la loro: al rivale non si attribuisce un PIANO che non ha dichiarato",
-     "conteggio": 18,
-     "targhetta": "ASSUNZIONE, non misura: sostituisce la vecchia SOSTE_RIVALI_SC del repo precedente. Non cambia i TEMPI (nel kernel le auto non interagiscono), cambia le POSIZIONI."
+     "codice": "NESSUNA_SOSTA_ASSUNTA_AI_RIVALI",
+     "descrizione": "sotto VSC non si assume nessuna sosta altrui: l'assunzione \"chi è al primo stint si ferma\" azzecca 25 rivali su 148 (16,9%) e a Monaco ne prevede zero mentre 360 entrano davvero",
+     "conteggio": 1,
+     "targhetta": "misurato sul fondo 2026 — pacchetto neutralizzazione, voce N4 di ai_lab/confronto/PREREG_neutralizzazione.md"
+    },
+    {
+     "codice": "RODAGGIO_GOMMA_NUOVA",
+     "descrizione": "nei primi giri di vita la gomma è più veloce di quanto dica il degrado lineare: si applica w(età) = −0.67·exp(−età/4.75) s/giro",
+     "conteggio": 1,
+     "targhetta": "misurato sul fondo 2026 (11 gare), 6.575 giri verdi in ARIA LIBERA (gap > 2,0 s o primo), delta70 e rho cablati e non ri-stimati; perdita L1 su griglia dichiarata, base = mediana per (gara,pilota) ricalcolata a ogni (c,tau)"
     },
     {
      "codice": "MESCOLA_NON_SEPARA",

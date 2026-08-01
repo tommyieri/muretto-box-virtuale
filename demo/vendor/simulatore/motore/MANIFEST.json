@@ -29,8 +29,8 @@
    "byte": 2546
   },
   "provenienza/pitloss.mjs": {
-   "sha256_sorgente": "be36b3e851e760366c964b63bba5c0686bb2ad39c3e0e5fe591461ae3729b3fa",
-   "byte": 6561
+   "sha256_sorgente": "7b4ed08caadbc285c8b56b388f987e7714899d0ae5a007aed465be5bf5b7e75c",
+   "byte": 8792
   },
   "provenienza/vocabolario.mjs": {
    "sha256_sorgente": "eea1343393aa85b3e488435814af27673a5ab9338d2cdcb01a3e2297d5a4d7ff",
@@ -41,8 +41,8 @@
    "byte": 3585
   },
   "scenario/costruttore.mjs": {
-   "sha256_sorgente": "78354342763c8c1d417058066bd9224199e5b1ec333a9eacfb05202c672d5762",
-   "byte": 36618
+   "sha256_sorgente": "d18d4c692ab5ef5b030444bf99d82db32ef774965b3a50af0673ec9df617c9aa",
+   "byte": 36690
   },
   "scenario/director.mjs": {
    "sha256_sorgente": "a305da62cf49576be92050910d7f9fe8a5abe1bedebb49334b8fcf0e016e4e9a",
@@ -57,8 +57,8 @@
    "byte": 8533
   },
   "contesto_live.json": {
-   "sha256_sorgente": "ea73b377548736f334d13ed4f801fdede620ac6d66c9f3e4d741cbaae94b27fa",
-   "byte": 49074,
+   "sha256_sorgente": "7a9b436c723b1f816375c53ee73cd121781fc8f065b5bcb1b50664713a7f41bc",
+   "byte": 50849,
    "data": "2026-08-01"
   }
  }
