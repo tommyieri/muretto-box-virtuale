@@ -46,6 +46,12 @@ const PERSISTENZA_REGIME_GIRI = 1;
 // Protocollo e cancello: ai_lab/confronto/PREREG_soglia_base.md.
 const MIN_GIRI_BASE_RIPIEGO = 8;
 
+// Il bias massimo che il modello dichiara di se' (banco/prereg/cancelli_banco.json,
+// `soglia_bias`), ed e' il limite entro cui delta70 e' stato validato. Serve alla
+// FINESTRA del «quando»: due giri che distano meno di questo, sull'orizzonte
+// proiettato, il motore non li distingue.
+const BIAS_DICHIARATO_S_GIRO = 0.17;
+
 /**
  * IL PACCHETTO NEUTRALIZZAZIONE (voce 2 del piano, `PREREG_neutralizzazione.md`).
  *
@@ -656,11 +662,42 @@ export function curvaDelQuando({ gara, freezeLap, pilota, mescola }, contesto) {
   });
 
   const minimo = curva.reduce((m, c) => (m === null || c.delta_s < m.delta_s ? c : m), null);
+
+  // ── LA FINESTRA: i giri che il motore non sa distinguere dall'ottimo ──────
+  //
+  // Decisione del PO (01/08): il giro raccomandato non si pubblica piu' come un
+  // numero secco. Restava da stabilire quanto larga, e la misura
+  // (ai_lab/confronto/PREREG_finestra.md) ha detto una cosa utile: l'incertezza
+  // del modello — rho, delta70 e pit-loss agli estremi dei loro IC95 — sposta il
+  // giro raccomandato in UNA curva su 1.153. A muoverlo e' dove si chiede.
+  //
+  // Quindi la finestra non si costruisce perturbando il modello (non muoverebbe
+  // niente al prezzo di cinque volte il tempo di calcolo) e NEMMENO dai
+  // congelamenti adiacenti: L+1 e' il futuro, e in diretta non esiste (E14).
+  //
+  // Si costruisce da cio' che il record ha gia': la curva. Sono i giri il cui
+  // `delta_s` sta sotto l'errore che il motore DICHIARA di avere — 0,17 s/giro,
+  // la soglia del cancello del banco — moltiplicato per quanto lontano sta
+  // proiettando. Se due giri distano meno di quello, il motore non li distingue,
+  // e dire il contrario sarebbe fingere una precisione che non ha.
+  const orizzonteGiri = Math.max(1, giroFinale - freezeLap);
+  const sogliaFinestra = BIAS_DICHIARATO_S_GIRO * orizzonteGiri;
+  const dentro = curva.filter((c) => c.delta_s <= sogliaFinestra).map((c) => c.giroPit);
+  const finestra = dentro.length ? {
+    da: Math.min(...dentro),
+    a: Math.max(...dentro),
+    n_giri: dentro.length,
+    soglia_s: Number(sogliaFinestra.toFixed(2)),
+    targhetta: `i giri che il motore non distingue dall'ottimo: entro ${sogliaFinestra.toFixed(2)} s, `
+      + `cioe' ${BIAS_DICHIARATO_S_GIRO} s/giro (il bias massimo che il modello dichiara di se') per ${orizzonteGiri} giri proiettati. `
+      + `NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro`,
+  } : null;
   const scenarioRif = validi[0].scenario;
   return {
     approvato: true,
     curva,
     minimo,
+    finestra,
     orizzonte: scenarioRif.orizzonte,
     assunzioni: scenarioRif.assunzioni,
     targhette: scenarioRif.targhette,

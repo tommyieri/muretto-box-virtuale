@@ -149,6 +149,9 @@ export function rispostaPer(nomeGara, gara, Lf, pilota, contesto, extra, data) {
     },
     curva: curva.curva,
     minimo: curva.minimo,
+    // La FINESTRA accanto al minimo, non al posto suo: l'ottimo resta l'ipotesi
+    // centrale, ma smette di essere LA risposta (decisione del PO, 01/08).
+    finestra: curva.finestra ?? null,
     banda_presente: curva.banda_presente,
     nota_banda: curva.nota_banda,
     orizzonte: curva.orizzonte,
@@ -167,5 +170,32 @@ export function rispostaPer(nomeGara, gara, Lf, pilota, contesto, extra, data) {
     fantasma,
     violazioni_director: rientro.direttore.violazioni.length,
     sospetti_director: rientro.direttore.riepilogo.sospetti,
+    // CIO' CHE IL DIRECTOR NON HA POTUTO VERIFICARE, e perche'.
+    //
+    // Il Director lo dichiara da sempre (`non_verificabili`), e questo record lo
+    // buttava via: arrivavano in pagina solo i CONTEGGI delle violazioni. Su una
+    // pista che il repo non ha mai visto — nessun pavimento misurato, nessun
+    // clean-stop — FIS01 e FIS04 semplicemente non girano, e l'utente vedeva un
+    // pannello identico a quello di una gara con tutti i guardrail accesi.
+    //
+    // «Un'assunzione che non si vede e' un'assunzione che nessuno puo'
+    // contestare» sta scritto in testa al costruttore. Vale anche per una
+    // VERIFICA che non e' stata fatta: tacerla e' peggio che non poterla fare.
+    // Compatto per CODICE, non la lista grezza: su una gara vera sono 23 righe,
+    // quasi tutte lo stesso messaggio ripetuto per pilota, e moltiplicate per
+    // 11.143 record diventerebbero peso senza informazione. Qui resta cio' che
+    // serve a chi legge: QUALE controllo non e' stato eseguito, su quante voci, e
+    // il primo motivo per esteso.
+    non_verificabili: (() => {
+      const righe = rientro.direttore.riepilogo.non_verificabili ?? [];
+      const perCodice = new Map();
+      for (const r of righe) {
+        const m = String(r).match(/\b((?:FIS|GEO|REG)\d{2}(?:\/(?:FIS|GEO|REG)?\d{2})*)\b/);
+        const codice = m ? m[1] : 'altro';
+        if (!perCodice.has(codice)) perCodice.set(codice, { codice, voci: 0, esempio: String(r) });
+        perCodice.get(codice).voci += 1;
+      }
+      return [...perCodice.values()];
+    })(),
   };
 }
