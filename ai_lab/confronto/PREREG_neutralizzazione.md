@@ -374,3 +374,150 @@ non c'e' niente da costruire.
    incidente che aspetta il prossimo lettore. Rinominato — e la sentinella vieta anche
    solo di NOMINARE quel materiale in un sorgente, il che ha reso interessante scrivere
    il commento che lo spiega.
+
+---
+
+# PREREG-3 — il distacco non va a zero, va a una coda
+
+*Scritta il 01/08/2026 DOPO il NULL della PREREG-2 e PRIMA di misurare qualunque
+variante nuova. Terzo documento, non una riscrittura del secondo: quello resta col suo
+NULL (E08).*
+
+## L'ipotesi, e perché nasce dal modo in cui il secondo è fallito
+
+`gap(k+1) = gap(k)·κ` manda ogni distacco a **zero** se il regime dura abbastanza. Non è
+quello che fa una Safety Car: le auto si incolonnano dietro di lei a una **distanza di
+coda** — un secondo abbondante, quanto serve a non tamponarsi — e lì si fermano. Il
+distacco non svanisce, **converge a un pavimento**.
+
+Ed è esattamente la forma del fallimento misurato: la compressione ha demolito il bias
+dove era grosso (Giappone 1,96 → 0,34) e l'ha **peggiorato dove era già quasi giusto**
+(Belgio 0,16 → 1,25, Canada 0,29 → 1,64, Gran Bretagna 0,17 → 2,29). Un κ moltiplicativo
+schiaccia i distacchi piccoli sotto il pavimento fisico, e i distacchi piccoli sono
+proprio quelli delle gare che partivano bene.
+
+**La forma nuova, a due parametri:**
+
+```
+gap(k+1) = g∞ + ( gap(k) − g∞ ) · κ
+```
+
+`g∞` è la distanza di coda a cui il campo converge; `κ` la velocità con cui ci arriva.
+Con `g∞ = 0` si ricade nella PREREG-2, che è la prova che questa la contiene. Con `κ = 1`
+il termine è spento — e resta la sonda obbligatoria.
+
+**Perché questa e non «κ per fascia di distacco»:** una tabella per fascia descriverebbe
+gli stessi dati con più parametri e nessuna fisica. Qui i due numeri hanno un significato
+che si può contestare — «le auto in coda stanno a `g∞` secondi» è un'affermazione sul
+mondo, non una curva.
+
+## Come si stimano g∞ e κ, dichiarato prima di stimarli
+
+**Popolazione:** identica alla PREREG-2, e non si tocca — fondo, gare asciutte, coppie
+(pilota, giro k→k+1), né pilota né leader in in-lap o out-lap, `status` per-auto presente.
+**Cade il filtro `gap > 1,0 s`**: serviva perché il rapporto esplodeva vicino allo zero, e
+qui non si misura più un rapporto. Toglierlo è obbligatorio, non facoltativo: i distacchi
+piccoli sono la regione che la PREREG-2 sbagliava, escluderli sarebbe misurare altrove.
+
+**Stimatore, robusto e trasparente:** si divide `gap(k)` in **dieci fasce a numerosità
+uguale**, si prende la **mediana di `gap(k+1)` dentro ogni fascia** contro la mediana di
+`gap(k)`, e si fa una retta ai minimi quadrati sui dieci punti. Da lì `κ = pendenza` e
+`g∞ = intercetta / (1 − κ)`. Le mediane per fascia reggono alle code; la retta sui dieci
+punti è verificabile a occhio, cosa che una regressione su 3.597 punti non è.
+
+**Incertezza:** bootstrap 2.000, blocchi = gare (E11), seme 20260801.
+
+**Il controllo che valida il metro:** in **verde** la retta deve dare `κ ≈ 1` e
+`intercetta ≈ 0` — i distacchi in verde evolvono dal passo, non convergono a niente. Se il
+verde desse un pavimento, il metro starebbe misurando un artefatto del binning.
+
+## Il cancello
+
+**Le stesse C1–C4 della PREREG-1 e della PREREG-2.** Il metro non cambia fra le ipotesi, o
+i tre esiti non sarebbero confrontabili.
+
+| | condizione |
+|---|---|
+| **C1** | `\|bias\|` scende su tutti e tre gli orizzonti, sui congelamenti con regime |
+| **C2** | `\|bias\|` scende in almeno 7 gare su 8 giudicabili (blocchi = gare) |
+| **C3** | i congelamenti **verdi** restano identici AL BIT |
+| **C4** | M5 sui casi con regime non cala di più di 2 punti |
+
+**Più una condizione che questa volta va scritta**, perché è il modo esatto in cui la
+PREREG-2 è morta:
+
+| **C5** | nessuna gara giudicabile deve **peggiorare di più di 0,5 s/giro**. Un pacchetto che aggiusta la media rovinando tre gare non è una correzione: è uno scambio, e va visto come tale |
+
+## Cosa fa dichiarare NULL
+
+- una fra C1–C5 non regge, o la sonda a `κ = 1` non riproduce il motore attuale;
+- il controllo in verde dà un pavimento `g∞` distinguibile da zero: metro rotto;
+- `g∞` stimato è **negativo** — un distacco di coda negativo non esiste, e vorrebbe dire
+  che la forma non descrive questi dati;
+- l'IC95 di `κ` contiene 1, cioè «nessuna convergenza» resta possibile.
+
+## Cosa NON dimostrerà
+
+- **Non risolve M5**, e resta vero che 70 casi su 84 fuori banda partono in verde e
+  finiscono neutralizzati.
+- **Il ramo Safety Car su M1 resta n = 17.**
+- Se passasse, sarebbe la **terza** ipotesi provata sullo stesso fenomeno con lo stesso
+  metro. Tre tentativi sullo stesso campione consumano gradi di libertà: il risultato va
+  letto come promettente, non come stabilito, e il fuori campione del 23 agosto conta
+  doppio.
+
+## ESITO della PREREG-3 — 01/08/2026: **NULL**, per una condizione che avevo scritto io
+
+`g∞` viene **negativo** in entrambi i regimi — SC **−5,38 s** (IC95 [−38,77; +1,84]),
+VSC **−10,51 s** — e la PREREG-3 dichiara: «`g∞` negativo vuol dire che la forma non
+descrive questi dati». Un distacco di coda negativo non esiste. **NULL**, senza nemmeno
+arrivare al cancello.
+
+E l'IC di SC va da −38,8 a +1,8: il pavimento non è solo negativo, **non è identificato**.
+
+### Le dieci fasce dicono perché — e correggono l'ipotesi
+
+| gap(k) → gap(k+1) sotto SC | rapporto |
+|---|---|
+| 1,80 → 1,33 | 0,737 |
+| 4,29 → 2,93 | 0,684 |
+| 7,01 → 5,45 | 0,777 |
+| 10,02 → 7,36 | 0,734 |
+| 13,00 → 9,28 | 0,714 |
+| 16,32 → 11,08 | 0,679 |
+| 19,96 → 14,86 | 0,744 |
+| 24,66 → 17,00 | 0,689 |
+| 42,56 → 18,85 | 0,443 |
+| 116,50 → 88,98 | 0,764 |
+
+**Il rapporto è costante.** Otto fasce su dieci stanno fra 0,68 e 0,78, e — la cosa che
+conta — **anche la fascia più piccola comprime**: 1,80 s diventa 1,33 s. Non c'è nessun
+pavimento a cui il campo converge, nell'intervallo che i dati coprono.
+
+**Quindi la forma moltiplicativa della PREREG-2 era GIUSTA**, e la mia ipotesi del
+pavimento era sbagliata. Averla scritta prima di misurarla è l'unica ragione per cui
+adesso lo so.
+
+### Allora perché la PREREG-2 aveva fallito C2?
+
+Non per la forma. **Per la finestra.** La compressione si applica per un numero di giri
+*deterministico* — la persistenza misurata, 2 giri sotto SC — ma la persistenza è una
+**distribuzione**: dato SC al giro L, il regime è ancora in corso al **57%** a L+2. Nel
+restante **43% dei casi si comprime un campo che era già ripartito**, e si comprime del
+28% a giro: è esattamente l'overcorrezione osservata, ed è più forte dove il bias era
+piccolo perché lì non c'era niente da correggere.
+
+Il difetto non è `κ`. È che una durata aleatoria viene trattata come una durata certa.
+
+### La quarta ipotesi, che NON si prova adesso
+
+La direzione che questi numeri indicano è comprimere **in attesa**: al giro L+k il regime
+è ancora in corso con probabilità `p(k)` (misurata: 78% a L+1, 57% a L+2, 38% a L+3), e il
+distacco atteso è `gap·[p(k)·κ + (1−p(k))·1]` invece di `gap·κ`. Nessun parametro nuovo —
+`p(k)` è già misurato in questa stessa vista.
+
+Ma è **la quarta ipotesi sullo stesso fenomeno con lo stesso metro e lo stesso campione**,
+e va detto forte: a questo punto i gradi di libertà spesi sono tanti. Va scritta la sua
+prereg, e soprattutto va deciso **se abbia ancora senso decidere in casa** o se questa
+voce debba aspettare il fuori campione del 23 agosto. Quella è una domanda per il PO, non
+per me.

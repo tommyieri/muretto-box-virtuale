@@ -108,6 +108,8 @@ export function costruisci(radice) {
   const durate = { SC: [], VSC: [] };
   const kappa = {};
   const kappaPerGara = {};
+  const coppie = {};
+  const coppiePerGara = {};
   for (const r of ['SC', 'VSC']) for (let k = 1; k <= MAX_PERSISTENZA; k += 1) persistenza[r][k] = 0;
   const scarta = (m) => { scarti[m] = (scarti[m] ?? 0) + 1; };
 
@@ -169,7 +171,14 @@ export function costruisci(radice) {
             if (c.in_lap === true || c.out_lap === true || cB.c.in_lap === true || cB.c.out_lap === true) continue;
             const g0 = c.cum_time - lead.c.cum_time;
             const g1 = cB.c.cum_time - leadB.c.cum_time;
-            if (!(g0 > SOGLIA_GAP)) continue;   // sotto 1 s il rapporto e' rumore
+            // Le COPPIE si raccolgono sempre: servono alla forma con pavimento
+            // (PREREG-3), dove i distacchi piccoli sono la regione che conta.
+            (coppie[eti] ??= []).push([g0, g1]);
+            (coppiePerGara[eti] ??= {});
+            (coppiePerGara[eti][chiave] ??= []).push([g0, g1]);
+            // Il RAPPORTO resta, ma solo sopra la soglia: vicino a zero esplode.
+            // E' la stima della PREREG-2, che ha dato NULL e resta a referto.
+            if (!(g0 > SOGLIA_GAP)) continue;
             (kappa[eti] ??= []).push(g1 / g0);
             (kappaPerGara[eti] ??= {});
             (kappaPerGara[eti][chiave] ??= []).push(g1 / g0);
@@ -289,6 +298,70 @@ export function costruisci(radice) {
     },
     n_gare: gareViste.length,
     n_soste: soste.length,
+    // ── PREREG-3: gap(k+1) = g_inf + (gap(k) - g_inf) * kappa ────────────────
+    // Dieci fasce a numerosita' uguale su gap(k), la mediana di gap(k+1) dentro
+    // ognuna, e una retta ai minimi quadrati sui dieci punti. Le mediane reggono
+    // alle code; dieci punti si guardano a occhio, 3.597 no.
+    convergenza_distacchi: (() => {
+      const retta = (punti) => {
+        const n = punti.length;
+        const mx = punti.reduce((a, p) => a + p[0], 0) / n;
+        const my = punti.reduce((a, p) => a + p[1], 0) / n;
+        let num = 0; let den = 0;
+        for (const [x, y] of punti) { num += (x - mx) * (y - my); den += (x - mx) ** 2; }
+        const b = den === 0 ? null : num / den;
+        return b === null ? null : { kappa: b, intercetta: my - b * mx };
+      };
+      const fasce = (v) => {
+        const s2 = [...v].sort((a, b) => a[0] - b[0]);
+        const out = [];
+        for (let i = 0; i < 10; i += 1) {
+          const a = Math.floor(i * s2.length / 10);
+          const b = Math.floor((i + 1) * s2.length / 10);
+          if (b - a < 5) continue;
+          const f2 = s2.slice(a, b);
+          out.push([mediana(f2.map((x) => x[0])), mediana(f2.map((x) => x[1]))]);
+        }
+        return out;
+      };
+      const stima = (v) => {
+        const punti = fasce(v);
+        if (punti.length < 5) return null;
+        const r = retta(punti);
+        if (r === null) return null;
+        const gInf = Math.abs(1 - r.kappa) < 1e-9 ? null : r.intercetta / (1 - r.kappa);
+        return { kappa: r.kappa, intercetta: r.intercetta, g_inf: gInf, punti };
+      };
+      const o = {};
+      for (const reg of ['VERDE', 'SC', 'VSC']) {
+        const v = coppie[reg];
+        if (!v || v.length < 200) continue;
+        const s3 = stima(v);
+        if (!s3) continue;
+        const perG = coppiePerGara[reg] ?? {};
+        const bootK = []; const bootG = [];
+        const chiavi = Object.keys(perG);
+        const r2 = rng(SEME);
+        for (let b = 0; b < 500; b += 1) {
+          const u = [];
+          for (let i = 0; i < chiavi.length; i += 1) u.push(...perG[chiavi[Math.floor(r2() * chiavi.length)]]);
+          const e = stima(u);
+          if (e && Number.isFinite(e.kappa)) { bootK.push(e.kappa); if (Number.isFinite(e.g_inf)) bootG.push(e.g_inf); }
+        }
+        const ic = (arr) => { if (arr.length < 20) return null; const q = [...arr].sort((a, b) => a - b); const at = (p) => q[Math.min(q.length - 1, Math.max(0, Math.floor(p * q.length)))]; return [Number(at(0.025).toFixed(4)), Number(at(0.975).toFixed(4))]; };
+        o[reg] = {
+          n: v.length,
+          n_gare: chiavi.length,
+          kappa: Number(s3.kappa.toFixed(4)),
+          g_inf: s3.g_inf === null ? null : Number(s3.g_inf.toFixed(3)),
+          intercetta: Number(s3.intercetta.toFixed(4)),
+          ic95_kappa: ic(bootK),
+          ic95_g_inf: ic(bootG),
+          punti_delle_fasce: s3.punti.map(([x, y]) => [Number(x.toFixed(3)), Number(y.toFixed(3))]),
+        };
+      }
+      return o;
+    })(),
     compressione_distacchi: (() => {
       const o = {};
       for (const reg of ['VERDE', 'SC', 'VSC']) {
