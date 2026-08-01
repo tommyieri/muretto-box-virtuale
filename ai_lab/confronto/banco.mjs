@@ -252,6 +252,46 @@ export function contestoNuovo(nomeSito = null, modelloOverride = null) {
   return { ...conModello, nGiriGara: g.nGiri };
 }
 
+/**
+ * LA RI-CLASSIFICAZIONE SULLA POPOLAZIONE COMUNE, esposta dal banco.
+ *
+ * `pos` e' un RANGO dentro una popolazione, e le popolazioni dei due motori non
+ * coincidono: al vecchio manca il passo di ~3 auto, quasi tutte davanti. Percio'
+ * confrontare i due `pos` grezzi (lettura A) e confrontarli dopo averli
+ * ri-classificati sulla stessa popolazione (letture B e B2) da' risultati che
+ * differiscono di SEI punti — e nessuna delle due sbaglia un conto.
+ *
+ * Finche' ogni misura se la ri-scriveva in casa, due agenti potevano riportare due
+ * numeri diversi dello stesso M1 senza che nessuno avesse torto. Da qui in poi la
+ * ri-classificazione e' UNA, e sta nel banco insieme al metro.
+ *
+ * @param ordine  l'ordine previsto dal motore (sigle, o coppie [sigla, tempo])
+ * @param vero    l'ordine vero al giro di rientro
+ * @param pilota  di chi si vuole il rango
+ * @param altro   l'ordine dell'ALTRO motore: se c'e', la popolazione e' la TERNA
+ *                comune (lettura B2, il confronto piu' stretto); se no e' la
+ *                coppia motore-verita' (lettura B).
+ * @returns `{ pos, posVera, errore, su }` oppure null se il pilota non e' dentro.
+ */
+export function riclassifica(ordine, vero, pilota, altro = null) {
+  const sigle = (o) => (o ? o.map((x) => (Array.isArray(x) ? x[0] : x)) : null);
+  const sN = sigle(ordine);
+  const sA = sigle(altro);
+  if (!sN || !vero) return null;
+  const inN = new Set(sN);
+  const inA = sA ? new Set(sA) : null;
+  const dentro = new Set(vero.filter((d) => inN.has(d) && (inA === null || inA.has(d))));
+  const rango = (elenco) => {
+    const f = elenco.filter((d) => dentro.has(d));
+    const i = f.indexOf(pilota);
+    return i < 0 ? null : i + 1;
+  };
+  const pos = rango(sN);
+  const posVera = rango(vero);
+  if (pos === null || posVera === null) return null;
+  return { pos, posVera, errore: pos - posVera, su: dentro.size };
+}
+
 /** Il modello v2 come sta su disco, copia fresca (per costruirne varianti). */
 export function modelloDaDisco() {
   return JSON.parse(readFileSync(path.join(SIM, 'data', 'modelli', 'modello_v2.json'), 'utf8'));
@@ -458,7 +498,15 @@ export function rispostaVecchio(caso, opzioni = {}) {
     gap_behind: r.gap_behind,
     sotto_neutralizzazione: r.sotto_neutralizzazione,
     soste_rivali_assunte: r.soste_rivali_assunte,
-    giro_di_rientro: caso.rientroLap,   // con orizzonte 0 la simulazione finisce qui
+    // IL GIRO IN CUI LA SIMULAZIONE FINISCE DAVVERO, non quello del caso.
+    //
+    // Era cablato a `caso.rientroLap`, e con l'orizzonte di default (0) coincide —
+    // la simulazione finisce al giro di rientro. Ma chi misura M2 o M3 varia
+    // l'orizzonte, e da quel momento questo campo MENTIVA: diceva il giro del caso
+    // mentre la simulazione era finita altrove. Un banco che mente proprio sul
+    // percorso di chi lo interroga per un'altra domanda e' peggio di un banco che
+    // tace: il numero sbagliato non si vede, si usa.
+    giro_di_rientro: ing.argomenti.pitLap + 1 + ing.argomenti.orizzonte,
     gradino: ing.gradino,
     n_gradino: ing.n_gradino,
     troncato: ing.troncato,
