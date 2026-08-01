@@ -39,14 +39,16 @@ const corri = (extra = {}) => simulate({ state: stato, pace, freezeLap: LF, step
 // ────────────────────────────────── (a) spento e' spento — la sonda obbligatoria
 const senza = corri();
 b.uguale('neutralizzazione assente ≡ null', corri({ neutralizzazione: null }).cum, senza.cum);
-b.uguale('kappa = 1 ≡ spento', corri({ neutralizzazione: { kappa: 1, fino: LF + 4 } }).cum, senza.cum);
-b.uguale('finestra vuota (fino ≤ freezeLap) ≡ spento', corri({ neutralizzazione: { kappa: 0.5, fino: LF } }).cum, senza.cum);
+b.uguale('kappa = 1 su ogni giro ≡ spento',
+  corri({ neutralizzazione: { perGiro: { [LF + 1]: 1, [LF + 2]: 1 } } }).cum, senza.cum);
+b.uguale('mappa vuota ≡ spento', corri({ neutralizzazione: { perGiro: {} } }).cum, senza.cum);
 
 // ──────────────────────────── (b)(c)(d) la forma, dentro e fuori dalla finestra
 {
   const KAPPA = 0.7;
   const FINO = LF + 3;
-  const conT = corri({ neutralizzazione: { kappa: KAPPA, fino: FINO }, traccia: true });
+  const finestra = {}; for (let l = LF + 1; l <= FINO; l += 1) finestra[l] = KAPPA;
+  const conT = corri({ neutralizzazione: { perGiro: finestra }, traccia: true });
   const senzaT = corri({ traccia: true });
   const cumA = (r, drv, lap) => r.traccia[drv].find((x) => x.lap === lap).cum_time;
 
@@ -92,7 +94,7 @@ b.uguale('finestra vuota (fino ≤ freezeLap) ≡ spento', corri({ neutralizzazi
   const conSosta = simulate({
     state: stato, pace, freezeLap: LF, steps: 4, traccia: true,
     pits: { TRE: [{ lap: LF + 2, perdita: 20 }] },
-    neutralizzazione: { kappa: KAPPA, fino: LF + 3 },
+    neutralizzazione: { perGiro: { [LF + 1]: KAPPA, [LF + 2]: KAPPA, [LF + 3]: KAPPA } },
   });
   const senzaComp = simulate({
     state: stato, pace, freezeLap: LF, steps: 4, traccia: true,
@@ -109,10 +111,33 @@ b.uguale('finestra vuota (fino ≤ freezeLap) ≡ spento', corri({ neutralizzazi
 }
 
 // ──────────────────────────────── (f) i parametri malformati fanno rumore
-for (const cattivo of [{ kappa: 0, fino: LF + 2 }, { kappa: -0.5, fino: LF + 2 }, { kappa: 'mezzo', fino: LF + 2 },
-  { kappa: 0.7 }, { kappa: 0.7, fino: 3.5 }, { kappa: 0.7, fino: LF + 99 }, 'comprimi']) {
+for (const cattivo of [{ perGiro: { [LF + 1]: 0 } }, { perGiro: { [LF + 1]: -0.5 } }, { perGiro: { [LF + 1]: 'mezzo' } },
+  { perGiro: null }, {}, { perGiro: { [LF + 99]: 0.7 } }, { perGiro: { [LF]: 0.7 } }, 'comprimi']) {
   b.esplode(`neutralizzazione malformata rifiutata: ${JSON.stringify(cattivo)}`,
     () => corri({ neutralizzazione: cattivo }));
+}
+
+// ───────── (h) kappa DIVERSO per giro: è la forma che serve alla PREREG-4
+// Comprimere "in attesa" vuol dire κ_eff(k) = p(k)·κ + (1−p(k)): un numero
+// diverso a ogni giro, che tende a 1 man mano che la Safety Car probabilmente
+// rientra. Se il kernel applicasse lo stesso κ a tutta la finestra, quella
+// ipotesi non sarebbe nemmeno esprimibile.
+{
+  const perGiro = { [LF + 1]: 0.8, [LF + 2]: 0.9, [LF + 3]: 0.97 };
+  const r = corri({ neutralizzazione: { perGiro }, traccia: true });
+  const at = (drv, lap) => r.traccia[drv].find((x) => x.lap === lap).cum_time;
+  let gapPrec = stato.find((s) => s.drv === 'DUE').cum_time - stato.find((s) => s.drv === 'UNO').cum_time;
+  for (const lap of [LF + 1, LF + 2, LF + 3]) {
+    const atteso = gapPrec * perGiro[lap];
+    const reale = at('DUE', lap) - at('UNO', lap);
+    b.verifica(`giro ${lap}: comprime del suo κ (${perGiro[lap]}), non di quello del giro prima`,
+      Math.abs(reale - atteso) < 1e-9);
+    gapPrec = reale;
+  }
+  // e un giro SENZA voce nella mappa non si comprime affatto
+  const gap3 = at('DUE', LF + 3) - at('UNO', LF + 3);
+  const gap4 = at('DUE', LF + 4) - at('UNO', LF + 4);
+  b.verifica('un giro fuori dalla mappa non viene compresso', Math.abs(gap4 - gap3 * 0.97) > 1e-6);
 }
 
 // ────────────────────── (g) la traccia conserva l'ordine delle chiavi di sempre

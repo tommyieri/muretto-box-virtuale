@@ -521,3 +521,199 @@ e va detto forte: a questo punto i gradi di libertà spesi sono tanti. Va scritt
 prereg, e soprattutto va deciso **se abbia ancora senso decidere in casa** o se questa
 voce debba aspettare il fuori campione del 23 agosto. Quella è una domanda per il PO, non
 per me.
+
+---
+
+# PREREG-4 — comprimere in ATTESA, non con certezza
+
+*Scritta il 01/08/2026 PRIMA di implementare e misurare. Quarta ipotesi sullo stesso
+fenomeno.*
+
+## Prima di tutto: quanti tentativi sono, e cosa vuol dire
+
+Questa è la **quarta** ipotesi sullo stesso fenomeno, con lo stesso metro, sullo stesso
+campione di 11 gare. Va scritto in cima e non in fondo, perché è il fatto che più
+condiziona come si legge l'esito.
+
+**Il PO ha deciso di provarla** (01/08): serve qualcosa online prima di Zandvoort. La
+decisione è legittima e sta scritta. Ma la conseguenza va scritta con la stessa forza:
+**se questa passa, non è «stabilita» — è promettente.** Quattro tentativi consumano gradi
+di libertà, e nessun cancello in casa può restituirli. Il fuori campione del 23 agosto non
+è un di più: è l'unica cosa che potrà dire se questo termine è vero.
+
+## L'ipotesi
+
+La PREREG-2 ha fallito perché tratta una durata **aleatoria** come certa: comprime per 2
+giri sotto SC, mentre a L+2 il regime è ancora in corso solo nel **57%** dei casi. Nel
+restante 43% comprime del 28% a giro un campo che era già ripartito.
+
+La correzione non ha parametri nuovi: si comprime **per quanto ci si aspetta**.
+
+```
+κ_eff(k) = p(k)·κ + (1 − p(k))·1        applicato al giro L+k
+```
+
+`p(k)` è la probabilità che il regime osservato al giro L sia **ancora in corso** a L+k, ed
+è già misurata su questa stessa vista: sotto SC **0,777 · 0,572 · 0,384 · …**, sotto VSC
+**0,518 · 0,187 · …**. `κ` è quello della PREREG-2, misurato e invariato.
+
+Se il regime è in corso si comprime di `κ`; se è finito il distacco evolve dal passo
+(`κ = 1`). `κ_eff` è la media delle due, pesata da quanto ci si crede.
+
+**Non è un parametro in più: è un parametro in meno.** Sparisce la finestra `fino`, che era
+una soglia scelta con una regola («finché ≥ 50%»). Qui non c'è nessuna soglia: la
+compressione si spegne da sola man mano che `p(k)` scende.
+
+**Regola dichiarata per l'orizzonte:** si applica finché `p(k) ≥ 0,05`, con un tetto di 8
+giri — che è il limite entro cui `p(k)` è stata misurata. Oltre non si estrapola: sarebbe
+inventare la coda di una distribuzione che non si è guardata.
+
+## Il cancello
+
+**Le stesse C1–C5**, e non si toccano: sono ciò che rende confrontabili quattro esiti.
+
+| | condizione |
+|---|---|
+| **C1** | `\|bias\|` scende su tutti e tre gli orizzonti, sui congelamenti con regime |
+| **C2** | `\|bias\|` scende in almeno 7 gare su 8 giudicabili (blocchi = gare) |
+| **C3** | i congelamenti **verdi** restano identici AL BIT |
+| **C4** | M5 sui casi con regime non cala di più di 2 punti |
+| **C5** | nessuna gara giudicabile peggiora di più di **0,5 s/giro** |
+
+**Sonda obbligatoria:** con `p(k) = 0` per ogni `k` — cioè «il regime è sempre già finito»
+— il motore deve riprodurre **esattamente** i numeri di oggi. È la stessa sonda di κ = 1,
+espressa nella grammatica nuova.
+
+## Cosa fa dichiarare NULL
+
+- una fra C1–C5 non regge, o la sonda non riproduce il motore attuale;
+- il bias aggregato **cambia segno** su un orizzonte: sarebbe di nuovo overcorrezione, solo
+  più piccola, e vorrebbe dire che la pesatura non basta;
+- `κ_eff` esce dall'intervallo `[κ, 1]` per qualche `k`: sarebbe un errore di codice, non
+  un'ipotesi sbagliata.
+
+## Cosa NON dimostrerà, comunque vada
+
+- Non risolve M5; i 70 casi su 84 che partono in verde e finiscono neutralizzati restano
+  fuori portata dell'informazione ammessa.
+- Il ramo Safety Car su M1 resta **n = 17**.
+- **E soprattutto: non sarà fuori campione.** Vedi la prima sezione.
+
+## ESITO della PREREG-4 — 01/08/2026: **NULL**, e l'errore è mio
+
+```
+C1  |bias| scende su tutti e tre gli orizzonti     FALLISCE (scende solo a 3 giri)
+      3 giri  +1,6213 -> -1,2535    5 giri  +0,7528 -> -1,7292    10 giri  +0,4418 -> -1,2865
+C2  scende in >= 7 gare su 8                       FALLISCE (1 su 7)
+C3  congelamenti verdi identici AL BIT             PASSA
+```
+
+Peggiore della PREREG-2 su ogni riga. E non perché l'idea fosse sbagliata: **perché la
+formula che ho pre-registrato è matematicamente sbagliata.**
+
+### L'errore, per esteso
+
+Avevo scritto `κ_eff(k) = p(k)·κ + (1 − p(k))`. È l'attesa del **rapporto di un singolo
+giro**. Ma il distacco dopo `k` giri è il **prodotto** dei rapporti, e
+
+```
+E[ κ₁ · κ₂ · … · κₖ ]  ≠  E[κ₁] · E[κ₂] · … · E[κₖ]
+```
+
+quando gli eventi sono correlati — e qui lo sono al massimo grado possibile: **se la Safety
+Car c'è al giro 3, c'era anche al 2**. La durata è una variabile sola, non `k` monete
+indipendenti.
+
+La conseguenza si vede nei numeri: moltiplicando otto κ_eff che tendono a 1 si continua a
+comprimere (0,95 · 0,96 · 0,97 …) molto dopo che il regime è rientrato. La compressione
+totale su 8 giri arriva a **0,42**, più forte dei 2 giri secchi della PREREG-2 (0,478) —
+esattamente il contrario di quello che l'ipotesi voleva fare.
+
+### La forma corretta, che esce dagli stessi numeri
+
+Se il regime dura `D` giri, il distacco dopo `k` è `gap · κ^min(k,D)`. L'attesa è
+
+```
+E(k) = p(k)·κᵏ + Σ_{d<k} [ p(d) − p(d+1) ] · κᵈ        con p(0) = 1
+```
+
+e il rapporto da applicare al giro `k` è `κ_eff(k) = E(k) / E(k−1)`. Nessun parametro
+nuovo: `p(k)` e `κ` sono gli stessi, già misurati. Quando `p → 0`, `E(k)` si ferma e
+`κ_eff → 1` **esattamente**: la compressione smette invece di proseguire smorzata.
+
+Compressione totale con la forma corretta: **~0,58**, contro 0,42 (mia, sbagliata) e 0,478
+(PREREG-2). È *meno* compressione di tutte e due — che è la direzione in cui il difetto
+misurato chiedeva di andare.
+
+---
+
+# PREREG-5 — la stessa ipotesi, con l'algebra giusta
+
+*Scritta il 01/08/2026 subito dopo l'esito della PREREG-4 e PRIMA di misurare.*
+
+**Questa non è un'ipotesi nuova: è la PREREG-4 con l'errore corretto.** La distinzione è
+importante e non è un cavillo — ritoccare `κ` finché un cancello passa è pescare; correggere
+`E[Πκ] ≠ ΠE[κ]` è riparare un conto sbagliato. Se il risultato migliorasse per una ragione
+diversa da questa, si vedrebbe: la forma corretta comprime **meno** ovunque, in modo
+prevedibile e verificabile prima di guardare il bias.
+
+**Forma:** `κ_eff(k) = E(k)/E(k−1)` con `E(k)` come sopra.
+**Parametri:** nessuno di nuovo — `κ` dalla PREREG-2, `p(k)` dalla stessa vista.
+**Cancello:** le stesse **C1–C5**. Non si toccano.
+**Sonde obbligatorie, entrambe verificabili senza guardare il bias:**
+1. `κ_eff(k) ∈ [κ, 1]` per ogni `k` — fuori da lì è un errore di codice;
+2. `κ_eff(k) → 1` quando `p(k) → 0`, e la compressione **cumulata** deve convergere a un
+   valore finito invece di continuare a scendere.
+
+**NULL se:** una fra C1–C5 non regge; una delle due sonde fallisce; oppure il bias cambia
+segno su un orizzonte.
+
+**E resta scritto:** è il **quinto** passaggio sullo stesso campione. Comunque vada, il
+23 agosto conta più di tutto quello che c'è qui sopra.
+
+## ESITO della PREREG-5 — 01/08/2026: **NULL**. E qui la voce si ferma.
+
+```
+C1  FALLISCE (scende solo a 3 giri)   3g +1,6213 -> -1,1972 · 5g +0,7528 -> -1,6480 · 10g +0,4418 -> -1,2129
+C2  FALLISCE (1 gara su 7)
+C3  PASSA (12.237/12.237)
+```
+
+Correggere l'algebra ha spostato i numeri di pochi centesimi. **L'errore matematico non
+era la causa del fallimento** — era un errore vero, ed è giusto averlo corretto, ma la
+voce non moriva di quello.
+
+### I quattro tentativi, in fila
+
+| ipotesi | forma | gare in cui il bias scende |
+|---|---|---|
+| PREREG-1 | slegare il regime dalle soste | **no-op**: 0 differenze su 821 righe |
+| PREREG-2 | `gap·κ`, finestra 2 giri | **4 su 7** — la migliore |
+| PREREG-3 | `g∞ + (gap−g∞)·κ` | NULL prima del cancello: `g∞` negativo |
+| PREREG-4 | media dei rapporti (formula sbagliata) | 1 su 7 |
+| PREREG-5 | attesa corretta `E(k)/E(k−1)` | 1 su 7 |
+
+**Il segnale è coerente e va nella direzione opposta a ogni raffinamento:** la variante
+migliore è quella che comprime **meno giri** (PREREG-2, due). Ogni versione che allunga la
+finestra — anche smorzandola correttamente — peggiora.
+
+**E tre gare peggiorano SEMPRE, in tutte le varianti:** Belgio (0,16), Canada (0,29), Gran
+Bretagna (0,17). Sono quelle che partivano quasi giuste. Qualunque compressione le rovina,
+e il bias aggregato cambia segno in ogni variante: il modello **sovracorregge di sistema**,
+non per una scelta di finestra.
+
+### Cosa dice questo, onestamente
+
+La compressione è un fenomeno **reale e grande** — misurato su 71 gare, IC95 che esclude 1,
+e dove il bias è grosso lo dimezza. Ma applicarla con un κ misurato sul fondo, uniforme per
+regime, **sbaglia il bersaglio del prodotto** su questo campione. Quattro riformulazioni non
+l'hanno spostato.
+
+Continuare vorrebbe dire cercare la quinta forma finché una passa. A quel punto il cancello
+non misurerebbe più niente — e sarebbe passato con il rumore di undici gare, tre settimane
+prima dell'unica gara che potrebbe dire se è vero.
+
+**La voce 2 si ferma qui.** Tutto spento in produzione. Il meccanismo resta costruito e
+sentinellato: `κ` per giro nel kernel, `s30` con quattro mutazioni provate, i tre blocchi
+misurati che si ri-stimano a ogni gara. Se dopo Zandvoort il fenomeno si vedrà anche fuori
+campione, non ci sarà niente da costruire — solo da accendere.

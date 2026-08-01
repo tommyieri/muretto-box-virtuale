@@ -49,21 +49,36 @@ const interoNonNegativo = (v) => Number.isInteger(v) && v >= 0;
 // sbaglia il distacco di tutto cio' che la Safety Car ha compattato: e' il
 // difetto da 1,964 s/giro sotto regime contro 0,033 in verde.
 //
-// `null` o kappa = 1 -> termine spento, e i numeri sono identici al bit a prima
+// KAPPA E' PER GIRO, non una costante con una finestra. Non e' una complicazione:
+// e' un parametro IN MENO. La finestra era una soglia scelta con una regola
+// («finche' il regime dura in almeno meta' dei casi»), e trattava una durata
+// ALEATORIA come certa — misurato: comprimeva del 28% a giro anche nel 43% dei
+// casi in cui a L+2 la Safety Car era gia' rientrata. Con kappa per giro chi
+// costruisce lo scenario puo' pesarlo per la probabilita' che il regime sia
+// ancora in corso, e la compressione si spegne da sola.
+//
+// `null` o mappa vuota -> termine spento, e i numeri sono identici al bit a prima
 // che esistesse. Protocollo e cancello: ai_lab/confronto/PREREG_neutralizzazione.md.
 function normalizzaNeutralizzazione(neutralizzazione, freezeLap, steps) {
   if (neutralizzazione === null || neutralizzazione === undefined) return null;
   if (typeof neutralizzazione !== 'object') throw new Error(`neutralizzazione non utilizzabile: ${JSON.stringify(neutralizzazione)}`);
-  const { kappa, fino } = neutralizzazione;
-  if (typeof kappa !== 'number' || !Number.isFinite(kappa) || kappa <= 0) {
-    throw new Error(`neutralizzazione.kappa non utilizzabile (serve un numero > 0): ${JSON.stringify(kappa)}`);
+  const { perGiro } = neutralizzazione;
+  if (perGiro === null || typeof perGiro !== 'object') {
+    throw new Error(`neutralizzazione.perGiro deve essere una mappa giro -> kappa: ${JSON.stringify(perGiro)}`);
   }
-  if (!Number.isInteger(fino)) throw new Error(`neutralizzazione.fino deve essere intero: ${JSON.stringify(fino)}`);
-  if (fino > freezeLap + steps) {
-    throw new Error(`neutralizzazione fino al giro ${fino}, oltre l'orizzonte ${freezeLap + steps}: una finestra che non succede e' un no-op silenzioso`);
+  const mappa = new Map();
+  for (const [chiave, k] of Object.entries(perGiro)) {
+    const lap = Number(chiave);
+    if (!Number.isInteger(lap)) throw new Error(`neutralizzazione: giro non intero ${JSON.stringify(chiave)}`);
+    if (typeof k !== 'number' || !Number.isFinite(k) || k <= 0) {
+      throw new Error(`neutralizzazione: kappa al giro ${lap} non utilizzabile (serve un numero > 0): ${JSON.stringify(k)}`);
+    }
+    if (lap <= freezeLap || lap > freezeLap + steps) {
+      throw new Error(`neutralizzazione al giro ${lap}, fuori dall'orizzonte [${freezeLap + 1}, ${freezeLap + steps}]: una compressione che non succede e' un no-op silenzioso`);
+    }
+    if (k !== 1) mappa.set(lap, k);   // kappa = 1 non e' compressione: non crea un percorso
   }
-  if (kappa === 1 || fino <= freezeLap) return null;   // nessuna compressione: nessun percorso separato
-  return { kappa, fino };
+  return mappa.size === 0 ? null : mappa;
 }
 
 // Perdita applicata INTERA sul giro della sosta. È la stessa convenzione con
@@ -191,7 +206,8 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
     // Il leader e i distacchi PRIMA di avanzare: la compressione è definita
     // come gap(k+1) = gap(k)·κ, cioè sul distacco di fine giro precedente. È
     // la stessa costruzione con cui κ è stato misurato sul fondo.
-    const comprime = neutra !== null && giro <= neutra.fino;
+    const kappaDelGiro = neutra === null ? undefined : neutra.get(giro);
+    const comprime = kappaDelGiro !== undefined;
     let capofila = null;
     const gapPrima = new Map();
     if (comprime) {
@@ -241,7 +257,7 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
         if (fermiQuestoGiro.has(m.drv)) continue;
         const g = gapPrima.get(m.drv);
         if (g === undefined) continue;
-        m.c = capofila.c + g * neutra.kappa;
+        m.c = capofila.c + g * kappaDelGiro;
       }
     }
 
