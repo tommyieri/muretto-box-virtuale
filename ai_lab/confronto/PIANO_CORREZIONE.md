@@ -32,8 +32,55 @@ deciso niente. Questa è la cosa più importante che il confronto ha insegnato.
 | **1** | il rodaggio della gomma nuova è in produzione (`c = 0,67 s`, `τ = 4,75 giri`) | M1 lettura B2 leave-one-race-out: esatti **45,29% → 46,64%**, troppo indietro **47,53% → 45,74%**, bias **+0,825 → +0,771**; giro raccomandato invariato in **1.505 curve su 1.505**. Referto: `ESITO_rodaggio.md` |
 
 **Correzione al piano degli agenti su A:** proponevano di mettere in pausa `autocalibra.py`.
-Quel file **non esiste più** (tolto nella ripulitura) e i modelli del simulatore sono pinnati
-in `data/MANIFEST.sha256`, verificato in CI. Il rischio non è automatico: è umano.
+I modelli del simulatore sono pinnati in `data/MANIFEST.sha256`, verificato in CI, e nessuna
+automazione li tocca: il rischio non è automatico, è umano.
+
+> **Correzione alla correzione, 01/08:** avevo scritto che `autocalibra.py` «non esiste più».
+> **Esiste**, in `ai_lab/scienziato/autocalibra.py`, ed è vivo — `gen_modelli_lab.py` lo
+> chiama a ogni gara da `auto_gara.py`. La conclusione regge (non tocca i modelli del
+> simulatore, solo `modello_traffico_2026` e `modello_degrado_2026`), ma la ragione che avevo
+> dato era falsa. Verificato, non ricordato.
+
+---
+
+## ⚠ VOCE 0 · La dodicesima gara oggi non migliora quasi niente **[direttiva del PO, 01/08]**
+
+> «Adesso noi stiamo facendo tutto su 11 gare. La logica è che quando se ne aggiunge una
+> nuova si deve aggiornare tutto e renderlo più preciso. **Questo vale per tutto il
+> progetto.**»
+
+**Sta prima di ogni altra voce perché le contiene tutte:** ogni numero misurato qui sotto —
+e ogni numero che le voci aperte produrranno — vive sulle stesse 11 gare, e oggi ci resta.
+
+**Misurato il 01/08 su `auto_gara.py`, `gen_modelli_lab.py` e `.github/workflows/banco.yml`:**
+
+| artefatto | si ri-stima quando entra una gara? |
+|---|---|
+| `modello_traffico_2026.json` · `modello_degrado_2026.json` | **sì** — `gen_modelli_lab.py` → `autocalibra.py`, ondata 1 |
+| vista della gara nuova | **sì** — `genera_vista_gara.mjs <nome>` |
+| classifiche, race control, UI, arrivi, classifica-giro | **sì** |
+| **`ρ` e `δ₇₀`** (`fisica/stima_v2.py`) | **NO** — zero riferimenti in tutto il repo |
+| **`banda_rientro.json`** (`banco/scrivi_banda_rientro.mjs`) | **NO** |
+| **`c`, `τ` del rodaggio** (`ai_lab/confronto/stima_rodaggio.mjs`) | **NO** |
+| **viste delle altre 10 gare** | **NO** — il generatore è per-gara |
+
+Le ultime quattro righe sono il debito. **E le prime tre e le ultime sono accoppiate:** il
+giorno in cui `ρ`, `δ₇₀`, `c` o `τ` si ri-stimassero, le viste già pubblicate diventerebbero
+incoerenti col motore **in silenzio** — nessuna sentinella confronta i coefficienti con cui
+una vista è stata generata contro quelli cablati oggi.
+
+- **Cosa serve, in ordine:** (1) una sentinella che leghi ogni vista ai coefficienti che
+  l'hanno prodotta e diventi rossa quando divergono — senza quella, automatizzare la
+  ri-stima è *pericoloso*, non utile; (2) i tre stimatori dentro l'ondata post-gara, con
+  `check=False` come tutto il blocco laboratorio; (3) la rigenerazione di **tutte** le viste
+  quando un coefficiente si muove, non solo di quella nuova.
+- **Cosa NON va automatizzato, e va scritto perché qualcuno ci proverà:** i **cancelli**. Si
+  ri-stima il DATO a ogni gara; il VERDETTO di un KPI pre-registrato resta una decisione con
+  prereg. È la regola che il blocco laboratorio di `auto_gara.py` già dichiara, e vale anche
+  per `PREREG_rodaggio.md` e `PREREG_difesa.md`.
+- **Il primo banco di prova è già fissato:** l'Olanda del **23/08** (`PREREG_holdout_Olanda.md`)
+  è la dodicesima gara. Se arriva e il cuore del simulatore resta a 11, quel fuori campione
+  si sarà speso per misurare un motore fermo.
 
 ---
 
