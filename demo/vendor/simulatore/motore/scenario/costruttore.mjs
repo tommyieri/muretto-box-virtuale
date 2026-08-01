@@ -24,7 +24,7 @@
 // volte è stata applicata. Un'assunzione che non si vede è un'assunzione che
 // nessuno può contestare.
 
-import { regimeNeutralizzato, passoUtilizzabile } from '../provenienza/definizioni.mjs';
+import { regimeNeutralizzato, passoUtilizzabile, regimeDiCella } from '../provenienza/definizioni.mjs';
 import { simboliStatus, MESCOLE_SLICK } from '../provenienza/vocabolario.mjs';
 import { osservazioniVerdi } from '../provenienza/gare_indice.mjs';
 import { perditaBox } from '../provenienza/pitloss.mjs';
@@ -39,10 +39,9 @@ import { validaSimulazione } from './director.mjs';
 const PERSISTENZA_REGIME_GIRI = 1;
 const MIN_GIRI_BASE = 8;
 
-const regimeAlCongelamento = (cella) => {
-  if (cella.status === null || !regimeNeutralizzato(cella)) return null;
-  return simboliStatus(cella.status).has('4') ? 'SC' : 'VSC';
-};
+// `regimeAlCongelamento` non vive piu' qui: e' `regimeDiCella` in
+// provenienza/definizioni.mjs, l'unico proprietario delle definizioni derivate.
+const regimeAlCongelamento = regimeDiCella;
 
 /**
  * Costruisce l'ingresso COMPLETO del kernel per uno scenario.

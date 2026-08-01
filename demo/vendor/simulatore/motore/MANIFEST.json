@@ -1,6 +1,6 @@
 {
  "_nota": "GENERATO da simulatore/web/trasporta_motore.mjs. Le copie in questa cartella sono artefatti: si modifica l'originale in simulatore/ e si ri-trasporta. `--verifica` esce 1 sulla deriva. Il motore gira in pagina SOLO per live.html, dove il pre-calcolo non puo' esistere: gara.html continua a non calcolare.",
- "generato_il": "2026-07-31",
+ "generato_il": "2026-08-01",
  "ingressi": [
   "scenario/risposta.mjs",
   "provenienza/gare_indice.mjs",
@@ -21,8 +21,8 @@
    "byte": 4257
   },
   "provenienza/definizioni.mjs": {
-   "sha256_sorgente": "50384b18365cd42621c1b51588db8ce435bf2a349de37be5556449d20a68b22c",
-   "byte": 5062
+   "sha256_sorgente": "704fb67310142d339c45566ed49c6809a59d29e27895a2b33bae488711d456ff",
+   "byte": 6010
   },
   "provenienza/gare_indice.mjs": {
    "sha256_sorgente": "dd70fcf9df546225b11f4160fdc9065d3713e688626421cf559f1029ee5e9ecc",
@@ -41,25 +41,25 @@
    "byte": 3585
   },
   "scenario/costruttore.mjs": {
-   "sha256_sorgente": "ad9d58496a9e44ba500d0b17250eeaa4ab3cbc6098ce14020347b1c1a403ed8e",
-   "byte": 25870
+   "sha256_sorgente": "e70e93bc14b5a3ea93577174e30363fdfdb6a89aa11c9f7f3dfbb081d810881a",
+   "byte": 25897
   },
   "scenario/director.mjs": {
    "sha256_sorgente": "a305da62cf49576be92050910d7f9fe8a5abe1bedebb49334b8fcf0e016e4e9a",
    "byte": 16577
   },
   "scenario/piano.mjs": {
-   "sha256_sorgente": "a6a5d0b82329891fa46147a2627d5a4922044d7edff2390fe65b8cbb79b2c17b",
-   "byte": 15055
+   "sha256_sorgente": "84f5ed8714e2b5c75bcef7d1ef80e1bef118458065ae8e01e4b7505062ed9459",
+   "byte": 15428
   },
   "scenario/risposta.mjs": {
-   "sha256_sorgente": "31cbeed4344789adbb1c89f4b37de15ae1f377ee191719bd7819e57ec213edbf",
-   "byte": 7459
+   "sha256_sorgente": "3086e557359fcc6f260748151dafec1d48702bc043af2f8e604e64083d4f9b13",
+   "byte": 8533
   },
   "contesto_live.json": {
-   "sha256_sorgente": "45bc4eec01bf0f2b5f470ddb8fb638e63c915a3f4c78141350983bddc5250c6c",
-   "byte": 39401,
-   "data": "2026-07-31"
+   "sha256_sorgente": "d396cc8c5472e94f54676523db77884c6b7af9f1799477e51ee6155b1b748269",
+   "byte": 39443,
+   "data": "2026-08-01"
   }
  }
 }

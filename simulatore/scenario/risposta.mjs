@@ -19,7 +19,7 @@
 import { MESCOLE_SLICK, simboliStatus } from '../provenienza/vocabolario.mjs';
 import { regimeDiCella } from '../provenienza/definizioni.mjs';
 import { doveRientri, curvaDelQuando } from './costruttore.mjs';
-import { pianoOttimo } from './piano.mjs';
+import { pianoOttimo, mescolePerSoste } from './piano.mjs';
 import { allarmiPiano } from './allarmi.mjs';
 
 /** La mescola su cui il pilota sta girando al congelamento, o null. */
@@ -71,9 +71,27 @@ export function rispostaPer(nomeGara, gara, Lf, pilota, contesto, extra, data) {
   if (!rientro || rientro.posizione === null || rientro.posizione === undefined) {
     return { freeze_lap: Lf, senza_risposta: 'il motore non ha una risposta a questo giro' };
   }
-  const curva = curvaDelQuando({ gara: nomeGara, freezeLap: Lf, pilota, mescola }, contesto);
   const ottimo = pianoOttimo(
     { gara: nomeGara, freezeLap: Lf, pilota, giroFinale: gara.nGiri, kMax: 3 }, contesto);
+
+  // LA CURVA MONTA LA GOMMA CHE IL REGOLAMENTO PERMETTE, non quella che il pilota
+  // ha su. Sembra un dettaglio e valeva il 26,4% dei pannelli: rimontare la stessa
+  // mescola lascia il pilota con UNA sola slick alla bandiera, e il Director boccia
+  // — giustamente — con REG01. La curva usciva vuota su 2.678 risposte su 10.131 e
+  // sembrava un difetto del motore, mentre il motore aveva ragione: era la domanda
+  // a essere illegale.
+  //
+  // La scelta non si ricalcola qui: si legge da `pianoOttimo`, che le mescole gia'
+  // usate le ha gia' derivate (informazione <= Lf, E14). Una seconda derivazione
+  // sarebbe una seconda regola, e il giorno che una delle due imparasse a leggere
+  // il bagnato non sarebbero piu' d'accordo.
+  //
+  // MISURATO prima di accendere: cambiando la mescola dello scenario la POSIZIONE
+  // di rientro non si muove in nessuno dei 4.943 casi in cui la gomma differisce —
+  // nel 2026 le mescole non separano il degrado (p = 0,209). Quindi questa riga non
+  // sposta una risposta gia' pubblicata: riempie una curva che era vuota.
+  const mescolaCurva = mescolePerSoste(1, ottimo.mescole_gia_usate ?? [])[0] ?? mescola;
+  const curva = curvaDelQuando({ gara: nomeGara, freezeLap: Lf, pilota, mescola: mescolaCurva }, contesto);
 
   // IL FANTASMA, e solo lui: la proiezione del pilota instradato giro per giro. Il reale
   // sta gia' in demo/data/<gara>.json e non si duplica.

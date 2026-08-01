@@ -25,6 +25,6 @@
   "Spagna": "Spagna",
   "Ungheria": "Ungheria"
  },
- "generato_il": "2026-07-31",
- "nota": "cartella_di mappa il nome del sito (con spazi) su quello della cartella (senza)"
+ "generato_il": "2026-08-01",
+ "nota": "cartella_di mappa il nome del sito (con spazi) su quello della cartella (senza). L'elenco viene dalle cartelle presenti su disco, NON dalle gare rigenerate nell'ultima esecuzione: il generatore gira anche su una gara sola."
 }

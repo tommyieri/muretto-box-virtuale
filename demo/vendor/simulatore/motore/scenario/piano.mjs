@@ -170,6 +170,20 @@ export function kOttimoContinuo({ R, a, rho, perdita }) {
  * il pilota non ha già due mescole, il che è una proprietà del piano, non un
  * problema da nascondere qui.
  */
+/**
+ * Le mescole slick che il pilota ha GIA' usato fino al congelamento.
+ * Informazione <= Lf, mai oltre (E14). INTERNA di proposito: chi sta fuori la
+ * riceve gia' calcolata in `pianoOttimo().mescole_gia_usate`, cosi' esiste una
+ * sola derivazione e non serve una seconda porta da sorvegliare.
+ */
+function mescoleSlickUsate(gara, pilota, freezeLap) {
+  const usate = new Set();
+  for (const [lap, c] of gara.perPilota.get(pilota) ?? []) {
+    if (lap <= freezeLap && c.compound !== null && MESCOLE_SLICK_ATTUALI.has(c.compound)) usate.add(c.compound);
+  }
+  return usate;
+}
+
 export function mescolePerSoste(k, mescoleGiaUsate) {
   const usate = new Set(mescoleGiaUsate);
   const scelte = [];
@@ -223,11 +237,7 @@ export function pianoOttimo({ gara, freezeLap, pilota, giroFinale, kMax = 3 }, c
   const fine = giroFinale ?? contesto.nGiriGara;
   const R = fine - freezeLap;
   const a = cella.tyre_age;
-  // mescola e mescole già usate: informazione ≤ Lf, mai oltre (E14)
-  const usate = new Set();
-  for (const [lap, c] of g.perPilota.get(pilota)) {
-    if (lap <= freezeLap && c.compound !== null && MESCOLE_SLICK_ATTUALI.has(c.compound)) usate.add(c.compound);
-  }
+  const usate = mescoleSlickUsate(g, pilota, freezeLap);
 
   // ── il REGOLAMENTO è un vincolo sullo spazio dei piani, non una preferenza ──
   // Nel 2026 chi completa una gara asciutta deve aver usato due mescole slick.
