@@ -195,5 +195,53 @@
     "L+8": 0.0831
    }
   }
+ },
+ "compressione_distacchi_interna": {
+  "promosso": false,
+  "_targhetta": {
+   "tipo": "MISURATO sul fondo — contrazione del distacco dal leader per giro neutralizzato",
+   "forma": "gap(k+1) = gap(k) * kappa(regime), dentro la finestra di persistenza del regime osservato",
+   "prodotto_da": "provenienza/esporta_neutralizzazione_fondo.mjs",
+   "protocollo": "ai_lab/confronto/PREREG_neutralizzazione.md, PREREG-2 (scritta prima della misura)",
+   "perimetro": "fondo, gare asciutte, coppie (pilota, giro k->k+1) con gap(k) > 1,0 s, ne' pilota ne' leader in in-lap/out-lap, status per-auto presente",
+   "controllo": "in VERDE kappa = 1,0312 (IC95 [1,0292; 1,0335]), dentro la banda 0,95-1,05 dichiarata prima: il metro regge. Il valore > 1 e' reale, non un difetto: in verde i distacchi CRESCONO.",
+   "stato": "NON PROMOSSO. Serve una estensione dichiarata del kernel per applicarlo: vedi nota_meccanismo.",
+   "nota_meccanismo": "Il kernel e' deliberatamente NON interagente (due auto possono attraversarsi; il duello non si simula). Una compressione del distacco NON va implementata come interazione a runtime: si precalcola nel costruttore dai gap noti AL CONGELAMENTO — per il pilota d con gap0 e regime persistente k giri, il credito sul giro L+k vale gap0 * kappa^(k-1) * (kappa-1), che e' negativo — e il kernel applica secondi dichiarati per giro. Cosi' il kernel resta non interagente e la compressione resta informazione <= L.",
+   "avvertenza_dispersione": "sotto SC p25-p75 e' 0,36-1,01: in un quarto dei casi il distacco NON si comprime affatto. La mediana descrive il tipico, non il singolo.",
+   "data": "2026-08-01"
+  },
+  "SC": {
+   "n": 3597,
+   "n_gare": 71,
+   "kappa_mediano": 0.6914,
+   "p25": 0.3593,
+   "p75": 1.0091,
+   "ic95_mediana_blocchi_gare": [
+    0.6141,
+    0.772
+   ]
+  },
+  "VSC": {
+   "n": 1511,
+   "n_gare": 51,
+   "kappa_mediano": 0.9304,
+   "p25": 0.8053,
+   "p75": 1.1192,
+   "ic95_mediana_blocchi_gare": [
+    0.9007,
+    0.9523
+   ]
+  },
+  "controllo_verde": {
+   "n": 115366,
+   "n_gare": 146,
+   "kappa_mediano": 1.0312,
+   "p25": 1.0136,
+   "p75": 1.0701,
+   "ic95_mediana_blocchi_gare": [
+    1.0292,
+    1.0335
+   ]
+  }
  }
 }

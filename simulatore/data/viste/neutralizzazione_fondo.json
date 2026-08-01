@@ -12,6 +12,41 @@
  },
  "n_gare": 147,
  "n_soste": 3911,
+ "compressione_distacchi": {
+  "VERDE": {
+   "n": 115366,
+   "n_gare": 146,
+   "kappa_mediano": 1.0312,
+   "p25": 1.0136,
+   "p75": 1.0701,
+   "ic95_mediana_blocchi_gare": [
+    1.0292,
+    1.0335
+   ]
+  },
+  "SC": {
+   "n": 3597,
+   "n_gare": 71,
+   "kappa_mediano": 0.6914,
+   "p25": 0.3593,
+   "p75": 1.0091,
+   "ic95_mediana_blocchi_gare": [
+    0.6141,
+    0.772
+   ]
+  },
+  "VSC": {
+   "n": 1511,
+   "n_gare": 51,
+   "kappa_mediano": 0.9304,
+   "p25": 0.8053,
+   "p75": 1.1192,
+   "ic95_mediana_blocchi_gare": [
+    0.9007,
+    0.9523
+   ]
+  }
+ },
  "persistenza_regime": {
   "SC": {
    "n_osservazioni": 8095,

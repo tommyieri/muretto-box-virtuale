@@ -46,7 +46,8 @@ import { perditaBox } from './pitloss.mjs';
 
 export const PERCORSO = 'data/viste/neutralizzazione_fondo.json';
 const MIN_RIFERIMENTI = 5;   // sotto questo, la mediana del campo e' un aneddoto
-const MAX_PERSISTENZA = 8;   // oltre 8 giri la domanda non interessa nessuno scenario
+const MAX_PERSISTENZA = 8;
+const SOGLIA_GAP = 1.0;      // sotto 1 s il rapporto gap(k+1)/gap(k) e' rumore di cronometraggio   // oltre 8 giri la domanda non interessa nessuno scenario
 const SEME = 20260801;
 const B_BOOT = 2000;
 
@@ -97,6 +98,8 @@ export function costruisci(radice) {
   const persistenza = { SC: {}, VSC: {} };
   const osservazioniRegime = { SC: 0, VSC: 0 };
   const durate = { SC: [], VSC: [] };
+  const kappa = {};
+  const kappaPerGara = {};
   for (const r of ['SC', 'VSC']) for (let k = 1; k <= MAX_PERSISTENZA; k += 1) persistenza[r][k] = 0;
   const scarta = (m) => { scarti[m] = (scarti[m] ?? 0) + 1; };
 
@@ -121,6 +124,50 @@ export function costruisci(radice) {
       const perPilota = indicizza(righe);
       const chiave = `${anno}/${gara}`;
       gareViste.push(chiave);
+
+      // ── COMPRESSIONE DEI DISTACCHI (kappa), sullo stesso passaggio ────────
+      // gap(k+1) / gap(k) rispetto al leader di quel giro. Sotto SC il campo si
+      // compatta e i distacchi si contraggono: e' il fenomeno che il motore NON
+      // ha, e che vale 1,964 s/giro di bias sotto regime contro 0,033 in verde.
+      // Protocollo: PREREG_neutralizzazione.md, PREREG-2.
+      {
+        const perGiro = new Map();
+        for (const [drv, celle] of perPilota) {
+          for (const [lap, c] of celle) {
+            if (typeof c.cum_time !== 'number') continue;
+            if (!perGiro.has(lap)) perGiro.set(lap, []);
+            perGiro.get(lap).push({ drv, c });
+          }
+        }
+        const giri = [...perGiro.keys()].sort((a, b) => a - b);
+        for (const k of giri) {
+          const a = perGiro.get(k); const b = perGiro.get(k + 1);
+          if (!a || !b) continue;
+          a.sort((x, y) => x.c.cum_time - y.c.cum_time);
+          const lead = a[0];
+          const leadB = b.find((x) => x.drv === lead.drv);
+          if (!leadB) continue;
+          // il regime si legge sul giro di ARRIVO: e' li' che la compressione avviene
+          if (leadB.c.status === null || leadB.c.status === undefined) continue;
+          let reg;
+          try { reg = regimeDiCella(leadB.c); } catch { continue; }
+          const eti = reg ?? (statusVerde(leadB.c) ? 'VERDE' : null);
+          if (eti === null) continue;
+          if (lead.c.in_lap === true || lead.c.out_lap === true || leadB.c.in_lap === true || leadB.c.out_lap === true) continue;
+          for (const { drv, c } of a) {
+            if (drv === lead.drv) continue;
+            const cB = b.find((x) => x.drv === drv);
+            if (!cB) continue;
+            if (c.in_lap === true || c.out_lap === true || cB.c.in_lap === true || cB.c.out_lap === true) continue;
+            const g0 = c.cum_time - lead.c.cum_time;
+            const g1 = cB.c.cum_time - leadB.c.cum_time;
+            if (!(g0 > SOGLIA_GAP)) continue;   // sotto 1 s il rapporto e' rumore
+            (kappa[eti] ??= []).push(g1 / g0);
+            (kappaPerGara[eti] ??= {});
+            (kappaPerGara[eti][chiave] ??= []).push(g1 / g0);
+          }
+        }
+      }
 
       // ── PERSISTENZA del regime, sullo stesso passaggio ────────────────────
       // Dato un regime osservato al giro L (informazione <= L, cioe' cio' che si
@@ -234,6 +281,22 @@ export function costruisci(radice) {
     },
     n_gare: gareViste.length,
     n_soste: soste.length,
+    compressione_distacchi: (() => {
+      const o = {};
+      for (const reg of ['VERDE', 'SC', 'VSC']) {
+        const v = kappa[reg];
+        if (!v || v.length < 50) continue;
+        o[reg] = {
+          n: v.length,
+          n_gare: Object.keys(kappaPerGara[reg] ?? {}).length,
+          kappa_mediano: Number(mediana(v).toFixed(4)),
+          p25: Number(quant(v, 0.25).toFixed(4)),
+          p75: Number(quant(v, 0.75).toFixed(4)),
+          ic95_mediana_blocchi_gare: icBlocchi(kappaPerGara[reg], mediana)?.map((x) => Number(x.toFixed(4))) ?? null,
+        };
+      }
+      return o;
+    })(),
     persistenza_regime: (() => {
       const o = {};
       for (const r of ['SC', 'VSC']) {

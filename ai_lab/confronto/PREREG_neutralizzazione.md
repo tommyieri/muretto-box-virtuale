@@ -181,3 +181,130 @@ il cancello del pacchetto — pre-registrato sul bias — direbbe giustamente di
 
 **Il pacchetto resta SPENTO** (`pacchetto_neutralizzazione` assente dal prior, quindi
 inerte), e `C3` è verde: i 12.237 congelamenti in verde sono **identici al bit**.
+
+---
+
+# PREREG-2 — la compressione dei distacchi
+
+*Scritto il 01/08/2026 DOPO l'esito parziale qui sopra e PRIMA di misurare la
+compressione e prima di scrivere il codice. È una pre-registrazione nuova, non una
+riscrittura della precedente: quella resta con il suo NULL (E08).*
+
+## Cosa si è capito, e perché serve un documento nuovo
+
+N1 come era formulato — «slegare il regime dalle soste» — è un **no-op misurato**: acceso e
+spento danno lo stesso numero su tutte e 821 le righe con regime. Il regime non ha
+consumatori fuori dalle soste, e il passo non sa cosa sia.
+
+Il fenomeno vero è un altro: **sotto neutralizzazione i distacchi non evolvono come in
+verde**. Il campo si compatta, e un modello che proietta passo verde durante una Safety Car
+sbaglia il distacco di tutto ciò che la Safety Car ha compattato. È il difetto da
+**1,964 s/giro contro 0,033 in verde**.
+
+## La forma
+
+Per ogni giro proiettato che cade **dentro la finestra di persistenza del regime osservato
+al congelamento**, il distacco dal leader si contrae di un fattore dichiarato:
+
+```
+gap(L + k + 1) = gap(L + k) · κ(regime)        per k < persistenza(regime)
+gap evolve dal passo                            per k ≥ persistenza(regime)
+```
+
+`κ = 1` è «nessuna compressione» e riproduce esattamente il motore di oggi — la sonda
+obbligatoria. `κ = 0` è il campo perfettamente incolonnato.
+
+**Perché moltiplicativo e non additivo:** sotto Safety Car chi è staccato di 20 s recupera
+molto più di chi è staccato di 2 s, perché il limite è la velocità della vettura di
+sicurezza, non un delta costante. Una contrazione additiva darebbe distacchi negativi sui
+piccoli. Se la misura dicesse che la forma additiva descrive meglio i dati, si scrive che il
+modello moltiplicativo era sbagliato e si ri-registra — non si aggiusta a posteriori.
+
+## Come si misura κ, dichiarato prima
+
+**Popolazione:** fondo, gare asciutte. Per ogni coppia (pilota, giro k → k+1) in cui:
+- il pilota e il leader hanno `cum_time` a entrambi i giri;
+- **nessuno dei due** è in in-lap o out-lap fra k e k+1 (una sosta non è compressione);
+- lo `status` per-auto è presente su entrambi (E13: ignoto non è verde).
+
+**Stima:** `κ = mediana( gap(k+1) / gap(k) )` per regime, sui giri con `gap(k) > 1,0 s` —
+sotto il secondo il rapporto esplode per rumore di cronometraggio e non descrive niente.
+Blocchi = gare (E11), bootstrap 2.000, seme 20260801.
+
+**Il controllo che valida il metodo, e senza il quale i numeri non si guardano:** in
+**verde** `κ` deve venire ≈ 1. Se non viene, il metro è rotto e i κ neutralizzati non
+significano niente — è lo stesso controllo che ha validato il fattore di neutralizzazione
+(1,011).
+
+## Il cancello
+
+**Identico a quello della PREREG-1**, e non è pigrizia: la metrica giusta non è cambiata,
+è cambiata l'ipotesi su *cosa* la muove. Riusare il metro rende i due esiti confrontabili.
+
+| | condizione |
+|---|---|
+| **C1** | `\|bias\|` scende su tutti e tre gli orizzonti (3, 5, 10 giri), sui congelamenti con regime |
+| **C2** | `\|bias\|` scende in almeno 7 gare su 8 giudicabili (blocchi = gare) |
+| **C3** | i congelamenti **verdi** restano identici AL BIT |
+| **C4** | M5 sui casi con regime non cala di più di 2 punti |
+
+**Sonda obbligatoria, in più:** con `κ = 1` il motore deve riprodurre **esattamente** i
+numeri di oggi. Se non li riproduce, il termine non fa ciò che questo documento descrive e
+l'esito è NULL comunque vada il resto.
+
+## Cosa fa dichiarare NULL
+
+- una fra C1–C4 non regge, o la sonda a `κ = 1` non riproduce il motore attuale;
+- il controllo in verde non dà `κ ≈ 1` (fuori da 0,95-1,05): metro rotto;
+- `κ` stimato per SC non è stabile fra gare — IC95 a blocchi che contiene 1, cioè
+  «nessuna compressione» resta possibile;
+- il termine richiede di conoscere il regime **oltre** la finestra di persistenza misurata:
+  quello sarebbe prevedere una Safety Car futura (E14), e non si fa per nessun guadagno.
+
+## Cosa NON dimostrerà
+
+- **Non risolve M5.** Resta vero che 70 casi su 84 fuori banda partono in verde e finiscono
+  neutralizzati: lì il regime non è conoscibile al congelamento.
+- **N2 e N3 entrano nel pacchetto**, quindi un miglioramento non si può attribuire alla sola
+  compressione. Le tre voci si misurano anche una per una, per il referto, ma **decide il
+  pacchetto**.
+- Il ramo Safety Car su M1 resta **n = 17**.
+
+## κ misurato — 01/08/2026
+
+| regime | κ | IC95 (blocchi = gare) | n | gare |
+|---|---|---|---|---|
+| VERDE (controllo) | **1,0312** | [1,0292; 1,0335] | 115.366 | 146 |
+| **SC** | **0,6914** | [0,6141; 0,7720] | 3.597 | 71 |
+| **VSC** | **0,9304** | [0,9007; 0,9523] | 1.511 | 51 |
+
+**Il controllo regge:** in verde κ = 1,031, dentro la banda 0,95-1,05 dichiarata prima. Il
+valore sopra 1 è reale e non un difetto del metro: in verde i distacchi **crescono**, ed è
+il passo a produrlo.
+
+**Entrambi gli IC95 escludono 1**: la compressione esiste. Forte sotto SC (−31% di distacco
+per giro), mite sotto VSC (−7%).
+
+**La dispersione va letta:** sotto SC p25-p75 è 0,36-1,01. In un quarto dei casi il
+distacco **non si comprime affatto** — la mediana descrive il tipico, non il singolo.
+
+Depositato in `pitloss_priors.json` come `compressione_distacchi_interna`, `promosso: false`.
+
+## Il meccanismo, deciso e non ancora costruito
+
+La compressione **non si implementa come interazione a runtime**: il kernel è
+deliberatamente non interagente, e quella proprietà non si baratta. Ma la non-interazione
+riguarda i **duelli** — chi passa chi — non un vincolo esterno imposto a tutto il campo
+insieme, che è esattamente cosa è una Safety Car. Quindi il termine può entrare, dichiarato.
+
+**Come:** il ciclo del kernel è per-pilota e poi per-giro; comprimere un distacco richiede
+di guardare tutto il campo allo stesso giro, quindi la finestra neutralizzata va percorsa
+**per giro**. Applicare invece uno spostamento costante calcolato dai soli gap al
+congelamento sarebbe una contrazione «sopra» l'evoluzione del modello, non «al posto» —
+e su una finestra di 2-3 giri con distacchi da 20 s la differenza vale qualche decimo, cioè
+abbastanza da cambiare il verdetto di un cancello che si gioca sui centesimi.
+
+**Non è stato costruito in questa sessione**, e non per mancanza di tempo: è una modifica al
+pezzo più delicato del repo e merita di essere fatta all'inizio di una sessione, non alla
+fine. Ciò che serve è tutto qui: la forma, il protocollo, κ misurato con il suo controllo,
+il cancello (le stesse C1–C4) e la sonda obbligatoria a κ = 1.
