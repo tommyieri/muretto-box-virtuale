@@ -89,6 +89,19 @@
       "gare": 11,
       "noto": true,
       "nota": "conflitto GIA' dichiarato dalla decisione pre-registrata: la stima entro-blocco e il replay non misurano la stessa cosa, e il cablato e' quello che vince sul bersaglio del prodotto (E16). Nessuna azione."
+    },
+    "E21_chiuso": {
+      "domanda": "perche la stima entro-blocco (3,11) e il replay (2,2) non concordano, con IC disgiunti",
+      "risposta": "CONTAMINAZIONE DA TRAFFICO, non evoluzione della pista.",
+      "misurato": {
+        "pendenza_su_tutti_i_giri_verdi": "delta70 implicato 3,08",
+        "pendenza_in_ARIA_LIBERA": "delta70 implicato 2,43, con IC della correzione che contiene lo zero",
+        "lettura": "togliendo i giri passati in scia, la pendenza residua sul giro CROLLA verso il valore del replay. Il 3,11 non misurava carburante piu evoluzione pista: misurava carburante piu TRAFFICO, e il traffico cresce con la densita del gruppo, che a sua volta cambia lungo la gara."
+      },
+      "conseguenza": "IL VALORE CABLATO NON SI TOCCA. delta70 resta 2,2, il braccio A dell esperimento pre-registrato. La stima libera resta a referto come perdente (E21: una misura non si cancella perche ha perso), e adesso ha anche la SPIEGAZIONE di perche perdeva.",
+      "stessa_cosa_per_rho": "rho misurato in aria libera da 0,0359 contro 0,030776 cablato, ma l IC della correzione contiene lo zero: NON si tocca.",
+      "fonte": "ai_lab/confronto/fisica_deriva_mescola.mjs (pendenza residua per fascia di gap)",
+      "data": "2026-08-01"
     }
   },
   "guardie": {
