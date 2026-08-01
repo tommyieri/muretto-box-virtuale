@@ -232,6 +232,13 @@ function main() {
       // s29 la confronta col motore di oggi. Senza questo timbro, attaccare gli
       // stimatori all'automazione sarebbe pericoloso prima che utile.
       rodaggio: impronteRodaggio(modello),
+      // LA SOGLIA DI BASE decide CHI ha una risposta: cambiarla riempie o svuota
+      // caselle. E' finita nel timbro il 01/08 perche' la prima volta che si e'
+      // mossa `--sincronizza` ha risposto «0 viste fuori passo» — il timbro
+      // registrava rho, delta70 e il rodaggio, e la soglia era passata sotto il
+      // naso della sentinella che esiste apposta. Un timbro incompleto e' peggio
+      // di nessun timbro: dice di no quando dovrebbe dire di si'.
+      min_giri_base: typeof modello.min_giri_base?.valore === 'number' ? modello.min_giri_base.valore : null,
       banda_rientro_sha256: sha256Corto(path.join(RADICE, 'data', 'modelli', 'banda_rientro.json')),
       pitloss_sha256: sha256Corto(path.join(RADICE, 'data', 'priors', 'pitloss_priors.json')),
     },

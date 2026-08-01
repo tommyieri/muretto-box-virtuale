@@ -6,91 +6,91 @@
  "piloti": {
   "ALB": {
    "giri": 63,
-   "con_risposta": 59
+   "con_risposta": 63
   },
   "ALO": {
    "giri": 63,
-   "con_risposta": 59
+   "con_risposta": 63
   },
   "ANT": {
    "giri": 63,
-   "con_risposta": 59
+   "con_risposta": 63
   },
   "BEA": {
    "giri": 63,
-   "con_risposta": 59
+   "con_risposta": 63
   },
   "BOR": {
    "giri": 63,
-   "con_risposta": 59
+   "con_risposta": 63
   },
   "BOT": {
    "giri": 10,
-   "con_risposta": 6
+   "con_risposta": 10
   },
   "COL": {
    "giri": 63,
-   "con_risposta": 59
+   "con_risposta": 63
   },
   "GAS": {
    "giri": 63,
-   "con_risposta": 59
+   "con_risposta": 63
   },
   "HAD": {
    "giri": 63,
-   "con_risposta": 59
+   "con_risposta": 63
   },
   "HAM": {
    "giri": 63,
-   "con_risposta": 59
+   "con_risposta": 63
   },
   "HUL": {
    "giri": 63,
-   "con_risposta": 59
+   "con_risposta": 63
   },
   "LAW": {
    "giri": 63,
-   "con_risposta": 59
+   "con_risposta": 63
   },
   "LEC": {
    "giri": 63,
-   "con_risposta": 59
+   "con_risposta": 63
   },
   "LIN": {
    "giri": 63,
-   "con_risposta": 59
+   "con_risposta": 63
   },
   "NOR": {
    "giri": 63,
-   "con_risposta": 59
+   "con_risposta": 63
   },
   "OCO": {
    "giri": 63,
-   "con_risposta": 59
+   "con_risposta": 63
   },
   "PER": {
    "giri": 19,
-   "con_risposta": 15
+   "con_risposta": 19
   },
   "PIA": {
    "giri": 52,
-   "con_risposta": 48
+   "con_risposta": 52
   },
   "RUS": {
    "giri": 63,
-   "con_risposta": 59
+   "con_risposta": 63
   },
   "SAI": {
    "giri": 63,
-   "con_risposta": 59
+   "con_risposta": 63
   },
   "STR": {
    "giri": 63,
-   "con_risposta": 57
+   "con_risposta": 63
   },
   "VER": {
    "giri": 63,
-   "con_risposta": 59
+   "con_risposta": 63
   }
  },
  "_targhetta": {
@@ -119,6 +119,7 @@
    "c": 0.67,
    "tau": 4.75
   },
+  "min_giri_base": 4,
   "banda_rientro_sha256": "689e5d8472c1c3aa",
   "pitloss_sha256": "9e77544e6aa33702"
  },

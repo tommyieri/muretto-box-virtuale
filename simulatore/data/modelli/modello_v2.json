@@ -193,5 +193,20 @@
     "avvertenza_eta_1": "w(1) = -0,543 s e' ESTRAPOLAZIONE: a eta 1 il fondo ha 5 giri utilizzabili in tutto (l'out-lap e' escluso dal filtro verde). Ed e' proprio il giro su cui M1 misura, perche' il kernel assegna eta 1 al giro dopo la sosta. Si aggiunge che il prior di pit-loss e' definito come (in-lap + out-lap) meno due giri di passo pulito: una parte del beneficio della gomma nuova sull'out-lap potrebbe gia' essere dentro la perdita.",
     "gare": 11,
     "giri_in_aria_libera": 6575
+  },
+  "min_giri_base": {
+    "valore": 4,
+    "unita": "giri verdi utilizzabili prima del congelamento",
+    "targhetta": "MISURATO e PROMOSSO il 01/08/2026: era 8, una costante muta ereditata dal criterio di AMMISSIONE del banco e mai giudicata come soglia di qualita. Le tre condizioni pre-registrate passano.",
+    "protocollo": "ai_lab/confronto/PREREG_soglia_base.md",
+    "cancello": {
+      "A_copertura": "soste vere con risposta 260 -> 272 su 274",
+      "B_esatti_preesistenti": "46,64% -> 45,29% in lettura B2 su 223 casi (limite: non oltre 2 punti sotto). Il campo cresce in 15 casi, la posizione cambia in 5 — tutte e cinque in peggio.",
+      "C_qualita_base": "errore mediano 4-7 giri 0,485 s/giro contro 0,407 su 8+; scarto 0,078 con IC95 a blocchi=gare [-0,100; +0,375], che contiene lo zero",
+      "eseguito_da": "ai_lab/confronto/cancello_soglia_base.mjs"
+    },
+    "avvertenza": "Le 12 risposte NUOVE con verita hanno 33,3% di esatti contro il 45,29% delle preesistenti. La prereg elencava fra i NULL le risposte nuove SISTEMATICAMENTE peggiori di oltre 5 punti: la stima puntuale supera quel numero, ma con n=12 il test binomiale esatto da p=0,30 e la sistematicita NON e stabilita. La condizione e stata scritta in modo ambiguo (mescolava una soglia numerica e una parola che richiede significativita) ed e un difetto della prereg, messo a referto: chi rimisurera con piu casi deve guardare di nuovo questo numero.",
+    "nota": "il min_giri_base di banco/prereg/cancelli_banco.json e un ALTRO numero e resta a 8: quello e il criterio del banco, ed e giusto che resti severo.",
+    "data": "2026-08-01"
   }
 }

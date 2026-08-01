@@ -6,75 +6,83 @@
  "piloti": {
   "ALB": {
    "giri": 50,
-   "con_risposta": 40
+   "con_risposta": 50
   },
   "ALO": {
    "giri": 50,
-   "con_risposta": 39
+   "con_risposta": 50
   },
   "ANT": {
    "giri": 50,
-   "con_risposta": 40
+   "con_risposta": 50
   },
   "BEA": {
    "giri": 50,
-   "con_risposta": 40
+   "con_risposta": 50
   },
   "BOR": {
    "giri": 50,
-   "con_risposta": 39
+   "con_risposta": 50
   },
   "BOT": {
    "giri": 50,
-   "con_risposta": 39
+   "con_risposta": 50
   },
   "COL": {
    "giri": 50,
-   "con_risposta": 40
+   "con_risposta": 50
+  },
+  "GAS": {
+   "giri": 1,
+   "con_risposta": 1
   },
   "HAM": {
    "giri": 50,
-   "con_risposta": 40
+   "con_risposta": 50
+  },
+  "LAW": {
+   "giri": 2,
+   "con_risposta": 2
   },
   "LEC": {
    "giri": 50,
-   "con_risposta": 40
+   "con_risposta": 50
   },
   "LIN": {
    "giri": 50,
-   "con_risposta": 38
+   "con_risposta": 50
   },
   "NOR": {
    "giri": 50,
-   "con_risposta": 40
+   "con_risposta": 50
   },
   "OCO": {
    "giri": 50,
-   "con_risposta": 40
+   "con_risposta": 50
   },
   "PER": {
    "giri": 50,
-   "con_risposta": 38
+   "con_risposta": 50
   },
   "PIA": {
    "giri": 50,
-   "con_risposta": 40
+   "con_risposta": 50
   },
   "RUS": {
    "giri": 50,
-   "con_risposta": 40
+   "con_risposta": 50
   },
   "SAI": {
    "giri": 50,
-   "con_risposta": 40
+   "con_risposta": 50
   },
   "STR": {
    "giri": 50,
-   "con_risposta": 39
+   "con_risposta": 50
   },
   "VER": {
    "giri": 50,
-   "con_risposta": 40
+   "con_risposta": 50
   }
  },
  "_targhetta": {
@@ -103,6 +111,7 @@
    "c": 0.67,
    "tau": 4.75
   },
+  "min_giri_base": 4,
   "banda_rientro_sha256": "689e5d8472c1c3aa",
   "pitloss_sha256": "9e77544e6aa33702"
  },

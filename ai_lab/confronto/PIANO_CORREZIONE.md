@@ -29,6 +29,7 @@ deciso niente. Questa è la cosa più importante che il confronto ha insegnato.
 | **F** | la hero gira sul motore della pagina-gara | stessa domanda → stessa risposta (P1 su 20, dietro ANT); «aspetta 3 giri» P4→**P6**, come la pagina |
 | **K.1** | il selettore mescola diventa informazione | era **rotto E inerte**: la pagina ascoltava `data-mesc`, il pannello emette `data-valore` |
 | **A** | sigillato il primo fuori campione vero | `PREREG_holdout_Olanda.md`, soglie assolute scritte il 01/08 per una gara del 23/08 |
+| **4** | `MIN_GIRI_BASE` da 8 a 4, e la soglia diventa dichiarata nel modello invece che cablata | risposte pre-calcolate **10.131 → 11.143** (+1.012, come previsto); soste vere con risposta 260 → **272 su 274**; esatti sulle risposte preesistenti −1,35 punti (limite 2). Referto: `PREREG_soglia_base.md` |
 | **1** | il rodaggio della gomma nuova è in produzione (`c = 0,67 s`, `τ = 4,75 giri`) | M1 lettura B2 leave-one-race-out: esatti **45,29% → 46,64%**, troppo indietro **47,53% → 45,74%**, bias **+0,825 → +0,771**; giro raccomandato invariato in **1.505 curve su 1.505**. Referto: `ESITO_rodaggio.md` |
 
 **Correzione al piano degli agenti su A:** proponevano di mettere in pausa `autocalibra.py`.

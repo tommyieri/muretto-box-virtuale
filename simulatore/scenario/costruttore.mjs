@@ -28,7 +28,14 @@ import { validaSimulazione } from './director.mjs';
 // ancora in corso. Oltre, il regime NON si estrapola: prevedere una Safety Car
 // futura sarebbe informazione che al congelamento non esiste (E14).
 const PERSISTENZA_REGIME_GIRI = 1;
-const MIN_GIRI_BASE = 8;
+
+// Quanti giri verdi servono per dichiarare un passo base. Il valore vive nel
+// MODELLO con la sua targhetta, non qui: era una costante muta, ereditata dal
+// criterio di ammissione del banco («sotto otto giri non ti misuro») e migrata nel
+// motore senza che nessuno l'avesse mai giudicata come soglia di QUALITA'. Il
+// numero qui sotto e' solo il ripiego per un modello che non la dichiara.
+// Protocollo e cancello: ai_lab/confronto/PREREG_soglia_base.md.
+const MIN_GIRI_BASE_RIPIEGO = 8;
 
 /**
  * IL PACCHETTO NEUTRALIZZAZIONE (voce 2 del piano, `PREREG_neutralizzazione.md`).
@@ -319,7 +326,9 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   }
 
   // ── passo: base misurata togliendo gli stessi termini che si ri-aggiungono ─
-  const basi = stimaBasi(osservazioniVerdi(g.righe), { delta70, rho, nGiri: nGiriGara, finoA: freezeLap, minGiri: MIN_GIRI_BASE, rodaggio });
+  const minGiriBase = typeof modello.min_giri_base?.valore === 'number'
+    ? modello.min_giri_base.valore : MIN_GIRI_BASE_RIPIEGO;
+  const basi = stimaBasi(osservazioniVerdi(g.righe), { delta70, rho, nGiri: nGiriGara, finoA: freezeLap, minGiri: minGiriBase, rodaggio });
   const pace = creaPasso({ delta70, rho, nGiri: nGiriGara, basi, rodaggio });
   if (rodaggio !== null) {
     dichiara('RODAGGIO_GOMMA_NUOVA',
