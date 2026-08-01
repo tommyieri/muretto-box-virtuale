@@ -273,6 +273,7 @@ nella loro targhetta. Restano pinnati nel manifest come tutto il resto di
 - `viste/stint_fondo.json` — vista dei giri con passo utilizzabile (`provenienza/esporta_vista_verde.mjs`)
 - `viste/vista_verde_2026.json` — vista dei giri con passo utilizzabile (`provenienza/esporta_vista_verde.mjs`)
 - `modelli/banda_rientro.json` — coefficienti con targhetta (`fisica/stima_v2.py`, δ deciso da `banco/replay_delta.mjs`)
+- `modelli/esiti_per_caso.json` — coefficienti con targhetta (`fisica/stima_v2.py`, δ deciso da `banco/replay_delta.mjs`)
 - `modelli/modello_v2.json` — coefficienti con targhetta (`fisica/stima_v2.py`, δ deciso da `banco/replay_delta.mjs`)
 - `modelli/pavimenti_2026.json` — coefficienti con targhetta (`fisica/stima_v2.py`, δ deciso da `banco/replay_delta.mjs`)
 - `modelli/pitloss_interno.json` — coefficienti con targhetta (`fisica/stima_v2.py`, δ deciso da `banco/replay_delta.mjs`)
