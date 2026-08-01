@@ -106,3 +106,78 @@ Un cancello mal specificato si mette a referto e se ne pre-registra uno nuovo: n
 riscrive dopo aver visto il risultato (E08). Se il pacchetto non passa, resta spento e si
 scrive che non passa — come i cinque cancelli dell'arco degrado e come sarebbe successo al
 rodaggio se M1 non avesse retto.
+
+---
+
+# ESITO PARZIALE — 01/08/2026
+
+**Il cancello NON passa, e il motivo è più interessante del verdetto.**
+
+## Quello che è stato misurato, e che resta
+
+**N3 · il fattore, misurato in casa sul FONDO** (`esporta_neutralizzazione_fondo.mjs`,
+147 gare asciutte, 3.911 soste). Il controllo che valida il metodo regge: le soste in
+verde danno **1,011** con IC95 [0,990; 1,030].
+
+| | prior esterno | referto §G3 (11 gare 2026) | **fondo (50 e 45 gare)** |
+|---|---|---|---|
+| SC | 0,50 (banda 0,40-0,60) | 0,758 | **0,623** IC95 [0,515; 0,727] |
+| VSC | 0,65 (banda 0,60-0,70) | 0,867 | **0,719** IC95 [0,634; 0,845] |
+
+**Correzione al referto:** «entrambi ben sopra la banda dichiarata» era un artefatto
+delle sole 11 gare. Sul campione vero stanno appena sopra il bordo.
+
+**E la dispersione è la notizia vera:** sotto SC il fattore ha p25-p75 **0,21-1,05**, e le
+mediane *per gara* vanno da **−0,54 a +1,31**. Un fattore negativo significa che fermarsi
+sotto SC ha fatto **guadagnare** tempo sul campo. Un singolo numero per «SC» descrive male
+il fenomeno, e va detto prima di sostituirlo a un altro singolo numero.
+
+**N2 · la persistenza, misurata sul fondo** (8.095 osservazioni SC, 2.697 VSC), con la
+regola dichiarata prima: si estrapola finché il regime è ancora in corso in almeno metà dei
+casi.
+
+| | costante attuale | referto §G2 (11 gare) | **fondo** |
+|---|---|---|---|
+| SC | 1 | «sbagliata di un fattore 3» → 3 | **2** (57% a L+2, 38% a L+3) |
+| VSC | 1 | 1 | **1** — già giusta |
+
+Entrambe le misure sono depositate in `pitloss_priors.json` con `promosso: false`: i numeri
+ci sono, non toccano nessuna risposta.
+
+## Perché il cancello non passa: N1 è un no-op
+
+**Acceso e spento danno lo stesso identico numero su tutte e 821 le righe con regime**, su
+tutti e tre gli orizzonti e tutte e sette le gare giudicabili.
+
+Non è un difetto del banco. In **proiezione pura** il regime non ha nessun consumatore:
+
+- nel costruttore `regime` alimenta solo `perditaBox` (la perdita ai box) e le soste assunte
+  ai rivali — **entrambe legate alle soste**, che in proiezione pura non ci sono;
+- il passo non sa cosa sia un regime: **zero occorrenze** di `regime` in
+  `engine/passo_v2.mjs` e `engine/kernel.mjs`.
+
+Quindi «slegare il regime dalle soste» rende il regime **disponibile**, e nient'altro.
+
+**Il controfattuale del referto misurava un'altra cosa.** «Distacchi congelati per P giri:
+bias 1,068 → 0,699 (3 giri)» non è l'effetto di slegare il regime: è l'effetto di
+**congelare i distacchi**, cioè di una fisica — sotto neutralizzazione il campo si compatta
+e i distacchi smettono di evolvere — che **non esiste in nessun modulo del repo**.
+
+## Cosa diventa la voce 2
+
+La voce va riscritta, e non è un dettaglio di formulazione:
+
+> **N1 non è «slegare il regime dalle soste». È «insegnare al motore che sotto
+> neutralizzazione i distacchi non evolvono come in verde».**
+
+È un termine nuovo nella fisica, non un `if` spostato, e ha bisogno di due cose che oggi non
+ha: **la misura di quanto i distacchi si comprimono davvero** sotto SC e sotto VSC (il dato
+c'è — `fisica_residui.mjs` §7 misura già `d(gap)` per regime) e un **cancello suo**, perché
+tocca il passo e non il prezzo della sosta.
+
+Finché quella misura non c'è, N2 e N3 restano depositati e non promossi: promuoverli da soli
+significherebbe cambiare il prezzo della sosta senza toccare il difetto da 1,964 s/giro, e
+il cancello del pacchetto — pre-registrato sul bias — direbbe giustamente di no.
+
+**Il pacchetto resta SPENTO** (`pacchetto_neutralizzazione` assente dal prior, quindi
+inerte), e `C3` è verde: i 12.237 congelamenti in verde sono **identici al bit**.

@@ -1,109 +1,199 @@
 {
-  "_targhetta": {
-    "tipo": "PRIOR ESTERNO DICHIARATO — non misurato sul fondo del repo",
-    "raccolto_il": "2026-07-29",
-    "metodologia_fonte": "perdita totale = (in-lap + out-lap) − 2 × mediana del passo pulito del pilota adiacente allo stop; solo stop green-flag su gara asciutta; robusta a finestre di baseline 2/3/5 giri (nessuna mediana si sposta oltre 0,3 s)",
-    "fonte_principale": "F1 Chronicle, 'The Two-Second Pit Stop Is a Myth' (lug 2026) — 2.106 stop misurati 2022-2026, https://f1chronicle.com/f1-pit-stop-time-loss-data/",
-    "fonti_fattori_neutralizzazione": [
-      "Race Sundays (set 2025): sotto VSC si risparmia ~30-40% della perdita green, sotto SC ~40-60%",
-      "F1 Briefing (2026): esempio tipico 20-22s green che scende a ~12s sotto SC",
-      "Cross-check Spa: VSC ~11-12s contro mediana green 18,4s -> fattore 0,60-0,65, coerente"
-    ],
-    "validazione_proposta": "rifare la stessa misura sul fondo 2018-2025 (173 gare) con banco dedicato e pre-registrazione; se la misura interna passa, questo file decade a cross-check; se contraddice, vince la misura interna",
-    "uso_previsto": "rapporto pit-loss/rho per il numero di soste (Fase 4); economia della sosta sotto SC/VSC per sostituire l'assunzione SOSTE_RIVALI_SC con un modello dichiarato; bound del Director",
-    "stato": "DECADUTO A CROSS-CHECK il 2026-07-29: la misura interna sul fondo 2018-2025 ha superato il cancello pre-registrato (banco/prereg/PREREG_pitloss.md) su 26 Gran Premi. Questo file resta in vigore SOLO sui circuiti non promossi, con la sua targhetta di prior esterno, e come termine di paragone in data/modelli/pitloss_interno.json.",
-    "esito_validazione": "la validazione che questo file proponeva e stata eseguita: su tutti e 9 i circuiti con valore misurato, la misura interna concorda entro 1,06 s sull era 2022-2025 e in cinque casi su nove entro 0,1 s. Zero discordanze oltre la soglia dichiarata di 2,0 s."
+ "_targhetta": {
+  "tipo": "PRIOR ESTERNO DICHIARATO — non misurato sul fondo del repo",
+  "raccolto_il": "2026-07-29",
+  "metodologia_fonte": "perdita totale = (in-lap + out-lap) − 2 × mediana del passo pulito del pilota adiacente allo stop; solo stop green-flag su gara asciutta; robusta a finestre di baseline 2/3/5 giri (nessuna mediana si sposta oltre 0,3 s)",
+  "fonte_principale": "F1 Chronicle, 'The Two-Second Pit Stop Is a Myth' (lug 2026) — 2.106 stop misurati 2022-2026, https://f1chronicle.com/f1-pit-stop-time-loss-data/",
+  "fonti_fattori_neutralizzazione": [
+   "Race Sundays (set 2025): sotto VSC si risparmia ~30-40% della perdita green, sotto SC ~40-60%",
+   "F1 Briefing (2026): esempio tipico 20-22s green che scende a ~12s sotto SC",
+   "Cross-check Spa: VSC ~11-12s contro mediana green 18,4s -> fattore 0,60-0,65, coerente"
+  ],
+  "validazione_proposta": "rifare la stessa misura sul fondo 2018-2025 (173 gare) con banco dedicato e pre-registrazione; se la misura interna passa, questo file decade a cross-check; se contraddice, vince la misura interna",
+  "uso_previsto": "rapporto pit-loss/rho per il numero di soste (Fase 4); economia della sosta sotto SC/VSC per sostituire l'assunzione SOSTE_RIVALI_SC con un modello dichiarato; bound del Director",
+  "stato": "DECADUTO A CROSS-CHECK il 2026-07-29: la misura interna sul fondo 2018-2025 ha superato il cancello pre-registrato (banco/prereg/PREREG_pitloss.md) su 26 Gran Premi. Questo file resta in vigore SOLO sui circuiti non promossi, con la sua targhetta di prior esterno, e come termine di paragone in data/modelli/pitloss_interno.json.",
+  "esito_validazione": "la validazione che questo file proponeva e stata eseguita: su tutti e 9 i circuiti con valore misurato, la misura interna concorda entro 1,06 s sull era 2022-2025 e in cinque casi su nove entro 0,1 s. Zero discordanze oltre la soglia dichiarata di 2,0 s."
+ },
+ "mediana_era_2022_2026_s": 22.1,
+ "nota_stagionale": "mediana globale per stagione: 22,58 (2022) / 22,58 (2023) / 22,52 (2024) / 22,14 (2025) / 22,07 (2026) — la costante strategica piu' stabile del regolamento",
+ "stazionario_tipico_s": 2.5,
+ "stazionario_minimo_fisico_s": 1.8,
+ "circuiti": {
+  "miami": {
+   "mediana_green_s": 19.74,
+   "clean_10pct_s": 17.66,
+   "qualita": "MISURATO_2026",
+   "n_stop": 19,
+   "limite_pit_kmh": 80
   },
-  "mediana_era_2022_2026_s": 22.1,
-  "nota_stagionale": "mediana globale per stagione: 22,58 (2022) / 22,58 (2023) / 22,52 (2024) / 22,14 (2025) / 22,07 (2026) — la costante strategica piu' stabile del regolamento",
-  "stazionario_tipico_s": 2.5,
-  "stazionario_minimo_fisico_s": 1.8,
-  "circuiti": {
-    "miami": {
-      "mediana_green_s": 19.74,
-      "clean_10pct_s": 17.66,
-      "qualita": "MISURATO_2026",
-      "n_stop": 19,
-      "limite_pit_kmh": 80
-    },
-    "silverstone": {
-      "mediana_green_s": 20.95,
-      "clean_10pct_s": 19.63,
-      "qualita": "MISURATO_2026",
-      "n_stop": 20,
-      "limite_pit_kmh": 80,
-      "nota": "transito piu' lungo del 2026 (29,1s) ma costo totale mid-pack: la corsia bypassa un lungo tratto di pista"
-    },
-    "spielberg": {
-      "mediana_green_s": 21.48,
-      "clean_10pct_s": 19.97,
-      "qualita": "MISURATO_2026",
-      "n_stop": 33,
-      "limite_pit_kmh": 80
-    },
-    "monaco": {
-      "mediana_green_s": 22.01,
-      "clean_10pct_s": 18.51,
-      "qualita": "MISURATO_2026",
-      "n_stop": 19,
-      "limite_pit_kmh": 60,
-      "nota": "gap clean-tipico 3,5s, il piu' alto del calendario: tassa da traffico; stop singolo piu' economico dell'era misurato qui (14,1s)"
-    },
-    "barcelona": {
-      "mediana_green_s": 23.83,
-      "clean_10pct_s": 22.05,
-      "qualita": "MISURATO_2026",
-      "n_stop": 40,
-      "limite_pit_kmh": 80,
-      "nota": "pit piu' caro del calendario misurato E gara con piu' undercut 2026: il costo del pit non decide la strategia, la decide la gomma"
-    },
-    "spa": {
-      "mediana_green_s": 18.4,
-      "clean_10pct_s": null,
-      "qualita": "MISURATO_ERA_2022_2026",
-      "n_stop": 104,
-      "limite_pit_kmh": 80,
-      "nota": "pit piu' economico dell'era: la corsia taglia il complesso La Source; 11 dei 15 stop piu' economici del dataset"
-    },
-    "imola": {
-      "mediana_green_s": 28.1,
-      "clean_10pct_s": null,
-      "qualita": "MISURATO_ERA_2022_2026",
-      "limite_pit_kmh": 80,
-      "nota": "pit piu' caro dell'era"
-    },
-    "singapore": {
-      "mediana_green_s": 27.9,
-      "clean_10pct_s": null,
-      "qualita": "MISURATO_ERA_2022_2026",
-      "limite_pit_kmh": 60
-    },
-    "lusail": {
-      "mediana_green_s": 27.7,
-      "clean_10pct_s": null,
-      "qualita": "MISURATO_ERA_2022_2026",
-      "limite_pit_kmh": 80
-    },
-    "_fallback": {
-      "mediana_green_s": 22.1,
-      "clean_10pct_s": 20.1,
-      "qualita": "STIMATO_mediana_era",
-      "nota": "per circuiti senza misura (incl. Monza, Montreal 2026 = zero stop green puliti): usare finche' la misura interna sul fondo non li copre"
-    }
+  "silverstone": {
+   "mediana_green_s": 20.95,
+   "clean_10pct_s": 19.63,
+   "qualita": "MISURATO_2026",
+   "n_stop": 20,
+   "limite_pit_kmh": 80,
+   "nota": "transito piu' lungo del 2026 (29,1s) ma costo totale mid-pack: la corsia bypassa un lungo tratto di pista"
   },
-  "fattori_neutralizzazione": {
-    "descrizione": "frazione della perdita green PAGATA pittando sotto quel regime",
-    "SC": 0.5,
-    "VSC": 0.65,
-    "RED": 0.0,
-    "incertezza": "SC nel range 0,40-0,60; VSC nel range 0,60-0,70 — da trattare come banda, non come punto"
+  "spielberg": {
+   "mediana_green_s": 21.48,
+   "clean_10pct_s": 19.97,
+   "qualita": "MISURATO_2026",
+   "n_stop": 33,
+   "limite_pit_kmh": 80
   },
-  "note_api_openf1": {
-    "rilevanza": "solo per l'harness di provenienza e per l'indagine bandiere per-auto; NON fonte primaria del repo",
-    "pit_duration": "DEPRECATO, rimosso a fine stagione 2026 -> usare lane_duration (tempo in corsia) e stop_duration (stazionario)",
-    "stop_duration": "disponibile solo dal GP USA 2024 in poi",
-    "segments_sector": "NON disponibili durante le gare: nessuna scorciatoia per le bandiere per-auto da li'",
-    "race_control": "scope Track/Sector/Driver con indice di settore: evidenza aggiuntiva per l'esposizione per-auto, ma track-wide di natura",
-    "storico": "2023+ gratuito senza auth; real-time a pagamento (token OAuth2, scadenza 3600s)"
+  "monaco": {
+   "mediana_green_s": 22.01,
+   "clean_10pct_s": 18.51,
+   "qualita": "MISURATO_2026",
+   "n_stop": 19,
+   "limite_pit_kmh": 60,
+   "nota": "gap clean-tipico 3,5s, il piu' alto del calendario: tassa da traffico; stop singolo piu' economico dell'era misurato qui (14,1s)"
+  },
+  "barcelona": {
+   "mediana_green_s": 23.83,
+   "clean_10pct_s": 22.05,
+   "qualita": "MISURATO_2026",
+   "n_stop": 40,
+   "limite_pit_kmh": 80,
+   "nota": "pit piu' caro del calendario misurato E gara con piu' undercut 2026: il costo del pit non decide la strategia, la decide la gomma"
+  },
+  "spa": {
+   "mediana_green_s": 18.4,
+   "clean_10pct_s": null,
+   "qualita": "MISURATO_ERA_2022_2026",
+   "n_stop": 104,
+   "limite_pit_kmh": 80,
+   "nota": "pit piu' economico dell'era: la corsia taglia il complesso La Source; 11 dei 15 stop piu' economici del dataset"
+  },
+  "imola": {
+   "mediana_green_s": 28.1,
+   "clean_10pct_s": null,
+   "qualita": "MISURATO_ERA_2022_2026",
+   "limite_pit_kmh": 80,
+   "nota": "pit piu' caro dell'era"
+  },
+  "singapore": {
+   "mediana_green_s": 27.9,
+   "clean_10pct_s": null,
+   "qualita": "MISURATO_ERA_2022_2026",
+   "limite_pit_kmh": 60
+  },
+  "lusail": {
+   "mediana_green_s": 27.7,
+   "clean_10pct_s": null,
+   "qualita": "MISURATO_ERA_2022_2026",
+   "limite_pit_kmh": 80
+  },
+  "_fallback": {
+   "mediana_green_s": 22.1,
+   "clean_10pct_s": 20.1,
+   "qualita": "STIMATO_mediana_era",
+   "nota": "per circuiti senza misura (incl. Monza, Montreal 2026 = zero stop green puliti): usare finche' la misura interna sul fondo non li copre"
   }
+ },
+ "fattori_neutralizzazione": {
+  "descrizione": "frazione della perdita green PAGATA pittando sotto quel regime",
+  "SC": 0.5,
+  "VSC": 0.65,
+  "RED": 0,
+  "incertezza": "SC nel range 0,40-0,60; VSC nel range 0,60-0,70 — da trattare come banda, non come punto"
+ },
+ "note_api_openf1": {
+  "rilevanza": "solo per l'harness di provenienza e per l'indagine bandiere per-auto; NON fonte primaria del repo",
+  "pit_duration": "DEPRECATO, rimosso a fine stagione 2026 -> usare lane_duration (tempo in corsia) e stop_duration (stazionario)",
+  "stop_duration": "disponibile solo dal GP USA 2024 in poi",
+  "segments_sector": "NON disponibili durante le gare: nessuna scorciatoia per le bandiere per-auto da li'",
+  "race_control": "scope Track/Sector/Driver con indice di settore: evidenza aggiuntiva per l'esposizione per-auto, ma track-wide di natura",
+  "storico": "2023+ gratuito senza auth; real-time a pagamento (token OAuth2, scadenza 3600s)"
+ },
+ "fattori_neutralizzazione_interni": {
+  "promosso": false,
+  "_targhetta": {
+   "tipo": "MISURATO sul fondo (147 gare asciutte, 3.911 soste) — fattore di neutralizzazione della sosta",
+   "prodotto_da": "provenienza/esporta_neutralizzazione_fondo.mjs",
+   "fonte": "data/viste/neutralizzazione_fondo.json",
+   "metodo": "perdita realizzata rispetto al CAMPO / perdita verde del circuito; solo cum_time, nessun modello",
+   "controllo": "le soste in VERDE danno 1,011 con IC95 [0,990; 1,030] — il metodo e' validato",
+   "stato": "NON PROMOSSO: finche' promosso e' false questi numeri non toccano nessuna risposta. La promozione e' il cancello N3 di ai_lab/confronto/PREREG_neutralizzazione.md.",
+   "avvertenza_dispersione": "il fattore SC ha p25-p75 0,21-1,05 e mediane PER GARA da -0,54 a +1,31: un valore negativo significa che fermarsi sotto SC ha fatto GUADAGNARE tempo sul campo. La mediana e' un punto in una distribuzione larghissima, non una costante fisica.",
+   "correzione_al_referto": "REFERTO_confronto_motori.md §G3 riporta SC 0,758 e VSC 0,867 misurati sulle sole 11 gare 2026, e ne conclude che entrambi stanno BEN SOPRA la banda del prior. Sul fondo (50 e 45 gare) i valori sono 0,623 e 0,719: appena sopra il bordo delle bande dichiarate (0,40-0,60 e 0,60-0,70). Il campione 2026 sovrastimava.",
+   "data": "2026-08-01"
+  },
+  "SC": {
+   "mediana": 0.6227,
+   "n": 288,
+   "n_gare": 50,
+   "ic95": [
+    0.515,
+    0.7272
+   ],
+   "p25": 0.2092,
+   "p75": 1.0455
+  },
+  "VSC": {
+   "mediana": 0.7188,
+   "n": 206,
+   "n_gare": 45,
+   "ic95": [
+    0.6342,
+    0.8447
+   ],
+   "p25": 0.5437,
+   "p75": 0.9891
+  },
+  "controllo_verde": {
+   "mediana": 1.0108,
+   "n": 3312,
+   "n_gare": 146,
+   "ic95": [
+    0.9899,
+    1.0299
+   ],
+   "p25": 0.9043,
+   "p75": 1.1336
+  }
+ },
+ "persistenza_regime_interna": {
+  "promosso": false,
+  "_targhetta": {
+   "tipo": "MISURATO sul fondo — per quanti giri un regime osservato al giro L e' ancora in corso",
+   "prodotto_da": "provenienza/esporta_neutralizzazione_fondo.mjs",
+   "fonte": "data/viste/neutralizzazione_fondo.json",
+   "regola": "si estrapola fino al piu' grande k per cui il regime e' ancora in corso in almeno META' dei casi. Dichiarata PRIMA di guardare la tabella.",
+   "stato": "NON PROMOSSO: finche' promosso e' false il costruttore usa PERSISTENZA_REGIME_GIRI = 1 per entrambi. La promozione e' il cancello N2 di ai_lab/confronto/PREREG_neutralizzazione.md.",
+   "limite": "e' un prior MISURATO SUL FONDO, non informazione su QUESTA gara: dice quanto durano tipicamente i regimi, non quanto durera' questo. Va dichiarato nelle assunzioni dello scenario.",
+   "correzione_al_referto": "REFERTO §G2 dice che la costante 1 e' \"sbagliata per la SC di un fattore 3\" sulla base delle sole 11 gare 2026 (72% a L+2, 58% a L+3, mediana 3). Sul fondo, con 8.095 osservazioni, la SC e' ancora in corso al 57% a L+2 e al 38% a L+3: la regola della meta' da 2, non 3. E il VSC a 1 e' gia' GIUSTO.",
+   "data": "2026-08-01"
+  },
+  "SC": {
+   "giri": 2,
+   "n": 8095,
+   "mediana_residua": 2,
+   "frazioni": {
+    "L+1": 0.7774,
+    "L+2": 0.5715,
+    "L+3": 0.3839,
+    "L+4": 0.2336,
+    "L+5": 0.1477,
+    "L+6": 0.0872,
+    "L+7": 0.05,
+    "L+8": 0.0313
+   }
+  },
+  "VSC": {
+   "giri": 1,
+   "n": 2697,
+   "mediana_residua": 1,
+   "frazioni": {
+    "L+1": 0.5184,
+    "L+2": 0.1872,
+    "L+3": 0.112,
+    "L+4": 0.1098,
+    "L+5": 0.1053,
+    "L+6": 0.0975,
+    "L+7": 0.0812,
+    "L+8": 0.0831
+   }
+  }
+ }
 }

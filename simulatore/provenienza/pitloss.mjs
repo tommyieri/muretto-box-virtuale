@@ -51,13 +51,44 @@ export const GP_PER_GARA = Object.freeze({
 });
 
 /**
+ * Il FATTORE di neutralizzazione, con la stessa gerarchia della perdita verde:
+ * misura interna se promossa, altrimenti prior esterno.
+ *
+ * La parte verde è stata promossa a misura interna su 26 GP mentre questa metà
+ * è rimasta un prior esterno mai validato in casa: `esporta_neutralizzazione_fondo.mjs`
+ * chiude quell'asimmetria. Il fattore promosso vive in
+ * `prior.fattori_neutralizzazione_interni`, e finché `promosso` non è `true` non
+ * tocca nessuna risposta — la promozione è il cancello N3 di
+ * `ai_lab/confronto/PREREG_neutralizzazione.md`, non un valore che compare in un file.
+ */
+export function fattoreDi(prior, regime) {
+  if (regime === null) return { fattore: 1, fattore_fonte: 'verde', fattore_targhetta: 'sosta in verde: si paga la perdita intera' };
+  const interni = prior.fattori_neutralizzazione_interni;
+  const x = interni?.[regime];
+  if (x && interni.promosso === true && typeof x.mediana === 'number') {
+    return {
+      fattore: x.mediana,
+      fattore_fonte: 'misura_interna',
+      fattore_targhetta: `MISURATO sul fondo: mediana di ${x.n} soste sotto ${regime} su ${x.n_gare} gare `
+        + `(IC95 ${x.ic95 ? `${x.ic95[0]}–${x.ic95[1]}` : 'non calcolabile'}); `
+        + `dispersione dichiarata p25-p75 ${x.p25}–${x.p75}: il fattore è una MEDIANA, non una costante`,
+    };
+  }
+  const f = prior.fattori_neutralizzazione[regime];
+  return {
+    fattore: f,
+    fattore_fonte: 'prior_esterno',
+    fattore_targhetta: `PRIOR ESTERNO CON BANDA (SC 0,40-0,60 · VSC 0,60-0,70), usato al valore centrale ${f}`,
+  };
+}
+
+/**
  * Perdita in secondi per una sosta in quella gara, sotto quel regime.
  * `regime` ∈ {null, 'SC', 'VSC'}: sotto neutralizzazione si paga solo una
- * frazione della perdita verde — anch'essa un prior CON BANDA (SC 0,40-0,60 ·
- * VSC 0,60-0,70), qui usata al suo valore centrale e dichiarata come tale.
+ * frazione della perdita verde — vedi `fattoreDi` per la provenienza del fattore.
  */
 export function perditaBox(prior, gara, regime = null) {
-  const fattore = regime === null ? 1 : prior.fattori_neutralizzazione[regime];
+  const { fattore, fattore_fonte, fattore_targhetta } = fattoreDi(prior, regime);
   if (typeof fattore !== 'number') throw new Error(`regime senza fattore dichiarato: ${regime}`);
 
   // 1. la misura interna, se questo Gran Premio è stato PROMOSSO
@@ -73,6 +104,8 @@ export function perditaBox(prior, gara, regime = null) {
       fallback: false,
       regime,
       fattore,
+      fattore_fonte,
+      fattore_targhetta,
       targhetta: `misurato sul fondo 2018-2025: mediana di ${interna.n_soste} soste verdi su asciutto a ${gp} (IC95 ${interna.ic95_mediana ? `${interna.ic95_mediana[0]}–${interna.ic95_mediana[1]}` : 'non calcolabile'} s)`,
     };
   }
@@ -90,6 +123,8 @@ export function perditaBox(prior, gara, regime = null) {
     fallback: !cid,
     regime,
     fattore,
+    fattore_fonte,
+    fattore_targhetta,
     targhetta: cid
       ? `prior esterno, mediana green misurata a ${cid} (${misura.qualita}) — il fondo non ha promosso questo circuito`
       : 'prior esterno, mediana d\'era 22,1 s — circuito NON misurato ne\' dal prior ne\' dal fondo, valore di ripiego dichiarato',
