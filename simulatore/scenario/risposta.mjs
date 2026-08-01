@@ -140,6 +140,9 @@ export function rispostaPer(nomeGara, gara, Lf, pilota, contesto, extra, data) {
     },
     curva: curva.curva,
     minimo: curva.minimo,
+    // La FINESTRA accanto al minimo, non al posto suo: l'ottimo resta l'ipotesi
+    // centrale, ma smette di essere LA risposta (decisione del PO, 01/08).
+    finestra: curva.finestra ?? null,
     banda_presente: curva.banda_presente,
     nota_banda: curva.nota_banda,
     orizzonte: curva.orizzonte,
