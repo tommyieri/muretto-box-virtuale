@@ -141,3 +141,51 @@ tua, e come sono finite» — che è la stessa macchina con una query addosso.
 Il 2026 ha da 71 a 219 casi per taglio, su undici gare. **Nessun singolo taglio è
 concludente.** Ciò che vale è che la direzione è la stessa in **tutti e sette**, e questo
 un taglio solo non lo direbbe.
+
+---
+
+## Terza misura — 01/08/2026: la carta aveva fatto due previsioni. Una regge, una no.
+
+`domande.mjs`. Stesso schema: fondo, 2026, compatibilità e **potere** del confronto.
+
+| domanda | fondo 2018-2025 | 2026 | verdetto |
+|---|---|---|---|
+| **dopo un restart** cambia posizione nei 3 giri? | **36,6%** (2.196 casi, 95 gare) | 39,7% (277, 11 gare) | **compatibili**, potere **utile** |
+| **undercut** riuscito, quando si ferma anche il rivale | **30,7%** (2.459 casi, 146 gare) | **20,6%** (218, 11 gare) | **DIVERGONO**, potere **utile** |
+| **bandiera rossa**: cambia posizione? | 76,1% (130 casi, 7 gare) | **non lo so** (15 casi) | non giudicabile |
+
+### La previsione smentita: il restart
+
+La carta diceva «per i sorpassi il fondo **non** vale, nel 2026 il DRS non esiste». Misurato:
+36,6% contro 39,7%, **compatibili e con potere utile** — cioè il confronto *avrebbe potuto*
+vedere una differenza, e non l'ha vista.
+
+**Togliere il DRS non ha cambiato quanto si rimescola dopo un restart**, almeno non
+abbastanza da vedersi. Il fondo può rispondere a questa domanda, contro quello che avevo
+scritto.
+
+### La previsione confermata: l'undercut
+
+Qui i due mondi **divergono davvero**: 30,7% contro **20,6%**, dieci punti di meno, con IC
+che non si sovrappongono. **Nel 2026 l'undercut rende un terzo in meno.**
+
+Per questa domanda il fondo è **contesto, non evidenza** — esattamente come la carta
+dichiarava. E adesso non è più un'ipotesi sul regolamento: è una misura.
+
+### Il difetto che ho corretto prima di pubblicare
+
+La prima definizione di undercut guardava la posizione **cinque giri dopo la mia sosta**, e
+dava il 3,4%. Ovvio: lì io avevo pagato la perdita ai box e il rivale no. Non misurava
+l'undercut — misurava «ho già scontato la sosta mentre lui deve ancora farla».
+
+Il vantaggio dell'undercut esiste solo **quando anche lui è rientrato**. Corretta la
+definizione (tre giri dopo la sosta del rivale, entrambi su gomme nuove), il numero passa da
+3,4% a 30,7% — e il verdetto sulle ere si ribalta da «compatibili» a «divergono».
+
+**Una definizione sbagliata non dà un numero sbagliato: dà un numero che risponde a
+un'altra domanda**, e sembra a posto.
+
+### E la bandiera rossa dice «non lo so»
+
+Quindici casi nel 2026, contro i trenta della soglia. Il motore **si rifiuta di rispondere**,
+ed è la ragione per cui è stato costruito: un parametro avrebbe dato un numero comunque.
