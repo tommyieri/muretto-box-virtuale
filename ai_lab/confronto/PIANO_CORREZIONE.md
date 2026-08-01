@@ -43,6 +43,52 @@ automazione li tocca: il rischio non è automatico, è umano.
 
 ---
 
+## ~~VOCE 0~~ · La dodicesima gara ora migliora tutto — **FATTA il 01/08**
+
+> **Direttiva del PO, e ora è un meccanismo e non una frase.** Nel blocco laboratorio
+> dell'ondata 1 di `auto_gara.py` entrano, in quest'ordine (e l'ordine è vincolante):
+>
+> 1. `fisica/stima_v2.py --data <oggi>` → `ρ` e `δ₇₀` dal fondo aggiornato;
+> 2. `stima_rodaggio.mjs --scrivi` → `c` e `τ`, che si stimano **con** `ρ` e `δ₇₀` cablati;
+> 3. `banco/scrivi_banda_rientro.mjs` → la banda, misurata sul motore risultante;
+> 4. `provenienza/ripinna.mjs` → i due hash che sono cambiati;
+> 5. `web/genera_vista_gara.mjs --sincronizza` → **solo** le viste fuori passo;
+> 6. `web/trasporta_motore.mjs` → il motore nel browser, o diretta e replay divergono;
+> 7. `cancello_rodaggio.mjs` → sorveglianza che **conta e non spegne**.
+>
+> **Le quattro trappole che ho trovato strada facendo, perché nessuna era ovvia:**
+>
+> - **`stima_v2.py` riscriveva il modello da zero con `scelto: None`.** Automatizzarlo
+>   così avrebbe cancellato la decisione pre-registrata su δ₇₀ e tutto il blocco
+>   rodaggio, e il costruttore rifiuta di partire senza `scelto`: **il sito sarebbe morto
+>   la domenica notte, da solo**. Ora fonde: ciò che misura si sovrascrive, ciò che una
+>   prereg ha deciso si conserva.
+> - **Aveva la data cablata** (`"2026-07-29"`): avrebbe prodotto numeri nuovi con la data
+>   vecchia, che è E22 alla lettera. Ora è `--data`.
+> - **`genera_manifest.mjs` non si può mettere nel ciclo.** È dichiarato «atto deliberato,
+>   mai in CI» e ha ragione: rigenera *ogni* riga, quindi benedirebbe in silenzio
+>   qualunque cosa cambi sotto `data/`, archivio grezzo compreso. Da qui `ripinna.mjs`,
+>   che aggiorna solo i file indicati e **si rifiuta di scrivere** se qualunque altro file
+>   pinnato è cambiato.
+> - **Un allarme che suona sempre non è un allarme.** Il conflitto fra δ₇₀ cablato (2,2) e
+>   la stima libera (IC95 [2,74; 3,51]) è noto e deliberato: ora è marcato `noto: true` e
+>   la sorveglianza griderebbe solo su un conflitto *nuovo*.
+>
+> **La sicurezza viene prima, ed è `s29`:** ogni vista porta un timbro coi coefficienti
+> che l'hanno generata (ρ, δ₇₀, rodaggio con l'interruttore, sha256 di banda e pit-loss),
+> e la sentinella diventa rossa se divergono da quelli cablati. Senza, automatizzare la
+> ri-stima avrebbe reso le viste incoerenti col motore **in silenzio** — il generatore
+> gira una gara alla volta. `--sincronizza` è la metà costruttiva della stessa idea:
+> rigenera le tre gare che servono, non le undici che non servono.
+>
+> **Cosa resta fuori dal ciclo, deliberatamente:** i **cancelli**. Il dato si ri-stima a
+> ogni gara, il verdetto di un KPI pre-registrato no. `attivo` del rodaggio non si tocca
+> mai da script; `stima_rodaggio --scrivi` si rifiuta perfino di scrivere se scattano le
+> condizioni di NULL della prereg (minimo sul bordo, `τ` instabile). E `replay_g5.mjs`
+> resta fuori: è un esperimento chiuso, cambiargli la fisica sotto è E22.
+
+<details><summary>Com'era la voce quando l'ho scritta (il debito, prima che fosse pagato)</summary>
+
 ## ⚠ VOCE 0 · La dodicesima gara oggi non migliora quasi niente **[direttiva del PO, 01/08]**
 
 > «Adesso noi stiamo facendo tutto su 11 gare. La logica è che quando se ne aggiunge una
@@ -81,6 +127,17 @@ una vista è stata generata contro quelli cablati oggi.
 - **Il primo banco di prova è già fissato:** l'Olanda del **23/08** (`PREREG_holdout_Olanda.md`)
   è la dodicesima gara. Se arriva e il cuore del simulatore resta a 11, quel fuori campione
   si sarà speso per misurare un motore fermo.
+
+</details>
+
+> **Nota per l'Olanda, che nasce da questa voce e va letta prima del 23/08.** Adesso che il
+> ciclo ri-stima da solo, la dodicesima gara **cambierà `ρ`, `δ₇₀`, `c`, `τ` e la banda
+> prima** che qualcuno misuri l'holdout. `PREREG_holdout_Olanda.md` fissa soglie assolute
+> scritte il 01/08 su un motore tarato su 11 gare: va deciso — **prima** del 23/08 — se
+> l'holdout si misura col motore *pre*-Olanda (fuori campione vero, e allora la ri-stima va
+> fatta *dopo* la misura) o col motore *post*-Olanda (che avrebbe visto la gara che sta
+> giudicando, e non sarebbe più fuori campione). **È una decisione, e va presa da sveglio,
+> non scoperta la domenica sera.**
 
 ---
 

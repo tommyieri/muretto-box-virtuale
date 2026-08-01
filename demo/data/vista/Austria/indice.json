@@ -105,7 +105,14 @@
    5,
    10
   ],
-  "data": "2026-07-29"
+  "data": "2026-08-01",
+  "rodaggio": {
+   "attivo": true,
+   "c": 0.67,
+   "tau": 4.75
+  },
+  "banda_rientro_sha256": "689e5d8472c1c3aa",
+  "pitloss_sha256": "b12f1d7ebe47de14"
  },
  "mescole": [
   {

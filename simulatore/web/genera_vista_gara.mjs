@@ -27,6 +27,7 @@
 // seconda copia della stessa verita' — l'errore che questo progetto paga da sempre. Il
 // FANTASMA invece resta: quello e' proiezione, non dato, e senza non c'e' l'animazione.
 import { mkdirSync, readFileSync, writeFileSync, rmSync, readdirSync, existsSync } from 'node:fs';
+import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { caricaGare2026 } from '../provenienza/gare_2026.mjs';
@@ -51,6 +52,24 @@ const PRIMO_CONGELAMENTO = 5;
 // sa se e' stato rimisurato dopo l'ultimo fix — e' l'errore E22 del catalogo.
 const DATA = new Date().toISOString().slice(0, 10);
 const GIRI_MINIMI_DOPO = 3;
+
+/**
+ * L'impronta di un artefatto che la vista consuma ma che non e' un coefficiente
+ * scalare (la banda di rientro, il prior di pit-loss): il contenuto, non la data.
+ * Una data si puo' aggiornare senza che il file cambi, e viceversa.
+ */
+export function sha256Corto(percorso) {
+  if (!existsSync(percorso)) return null;
+  return createHash('sha256').update(readFileSync(percorso)).digest('hex').slice(0, 16);
+}
+
+/** Il rodaggio come lo vede la vista: i due parametri E se era acceso. Spento e
+ *  acceso con gli stessi (c, τ) sono due motori diversi, e il timbro deve dirlo. */
+export function impronteRodaggio(modello) {
+  const r = modello.rodaggio;
+  if (!r) return { attivo: false, c: null, tau: null };
+  return { attivo: r.attivo === true, c: r.attivo === true ? r.c : null, tau: r.attivo === true ? r.tau : null };
+}
 
 /** Perche' il selettore Wet e' spento, detto dall'ESITO della fase e non da una frase
  *  cablata (E22): se un domani quel cancello passasse, questa funzione si rifiuta di
@@ -152,6 +171,30 @@ export function scriviManifest(dove) {
   return m;
 }
 
+/**
+ * Le gare su disco la cui vista NON e' stata generata col motore di adesso.
+ *
+ * Serve a `--sincronizza`, ed e' la meta' costruttiva di quello che la sentinella
+ * s29 verifica: lei dice CHE c'e' una divergenza, questa dice DOVE, cosi'
+ * `auto_gara.py` rigenera le tre gare che servono invece delle undici che non
+ * servono. Rigenerare tutto costa ~45 minuti; senza questa funzione l'unica
+ * automazione corretta sarebbe anche quella che nessuno terrebbe accesa.
+ *
+ * Il confronto e' sul TIMBRO, non sulla data: una vista rigenerata ieri con
+ * coefficienti vecchi e' vecchia, una di un mese fa con gli stessi coefficienti
+ * e' buona.
+ */
+export function gareDaRigenerare(dove, timbroAtteso) {
+  if (!existsSync(dove)) return [];
+  const fuori = [];
+  for (const g of manifestDaDisco(dove).gare) {
+    let m = null;
+    try { m = JSON.parse(readFileSync(path.join(dove, g, 'indice.json'), 'utf8')).modello ?? null; } catch { m = null; }
+    if (m === null || JSON.stringify(m) !== JSON.stringify(timbroAtteso)) fuori.push(g);
+  }
+  return fuori;
+}
+
 function main() {
   const argv = process.argv.slice(2);
   const iDove = argv.indexOf('--dove');
@@ -159,7 +202,8 @@ function main() {
   // il VALORE di --dove non e' un nome di gara. Quando --dove manca, iDove vale -1 e
   // iDove+1 vale 0: senza questa guardia si scarterebbe il PRIMO argomento posizionale,
   // e chiedere una gara sola ne farebbe girare undici.
-  const soloQueste = argv.filter((a, i) => !a.startsWith('--') && (iDove < 0 || i !== iDove + 1));
+  let soloQueste = argv.filter((a, i) => !a.startsWith('--') && (iDove < 0 || i !== iDove + 1));
+  const sincronizza = argv.includes('--sincronizza');
 
   const gare = caricaGare2026(RADICE);
   const modello = JSON.parse(readFileSync(path.join(RADICE, 'data', 'modelli', 'modello_v2.json'), 'utf8'));
@@ -179,6 +223,17 @@ function main() {
       delta_70_braccio: modello.delta_70.decisione.braccio_vincente,
       orizzonti_validati: modello.delta_70.decisione.orizzonti_validati,
       data: modello._targhetta.data,
+      // ── IL TIMBRO, ed e' quello che rende automatizzabile la ri-stima ──────
+      // Il generatore gira UNA GARA ALLA VOLTA (auto_gara.py lo chiama cosi'). Il
+      // giorno in cui un coefficiente si muove, le viste delle altre gare restano
+      // calcolate col vecchio e nessuno se ne accorge: e' una divergenza silenziosa
+      // fra il motore e cio' che il sito mostra, cioe' E12 su scala di prodotto.
+      // Da qui in poi ogni vista dichiara con COSA e' stata fatta, e la sentinella
+      // s29 la confronta col motore di oggi. Senza questo timbro, attaccare gli
+      // stimatori all'automazione sarebbe pericoloso prima che utile.
+      rodaggio: impronteRodaggio(modello),
+      banda_rientro_sha256: sha256Corto(path.join(RADICE, 'data', 'modelli', 'banda_rientro.json')),
+      pitloss_sha256: sha256Corto(path.join(RADICE, 'data', 'priors', 'pitloss_priors.json')),
     },
     // ATTUALI, non MESCOLE_SLICK: quest'ultimo porta anche SUPERSOFT/ULTRASOFT/HYPERSOFT,
     // che servono a LEGGERE il fondo 2018 e nel 2026 non esistono. Il selettore e' del
@@ -189,6 +244,26 @@ function main() {
     ],
   };
   mkdirSync(dove, { recursive: true });
+
+  // --sincronizza: rigenera SOLO le gare il cui timbro non e' quello di adesso, e
+  // dice quali salta. Non "niente da fare" in silenzio: se una domenica non
+  // rigenera nulla, quel nulla deve essere leggibile nel log.
+  if (sincronizza) {
+    const fuori = gareDaRigenerare(dove, extra.modelloTarghetta);
+    const tutteSuDisco = manifestDaDisco(dove).gare;
+    console.log(`sincronizza: ${fuori.length} viste su ${tutteSuDisco.length} sono fuori passo col motore`
+      + (fuori.length ? ` -> ${fuori.join(', ')}` : ' — niente da rigenerare'));
+    if (soloQueste.length) {
+      const chieste = new Set(soloQueste);
+      soloQueste = [...new Set([...fuori, ...soloQueste])];
+      console.log(`  (piu' le ${chieste.size} chieste esplicitamente)`);
+    } else if (fuori.length === 0) {
+      scriviManifest(dove);
+      return;
+    } else {
+      soloQueste = fuori;
+    }
+  }
 
   console.log(`vista del sito -> ${path.relative(process.cwd(), dove)}`);
   let totScen = 0;

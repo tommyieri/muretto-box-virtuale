@@ -1,7 +1,8 @@
 // stima_rodaggio.mjs — c e tau del termine di rodaggio, come li descrive la PREREG.
 //
-//     node ai_lab/confronto/stima_rodaggio.mjs           referto a schermo
-//     node ai_lab/confronto/stima_rodaggio.mjs --json    lo stesso, in JSON
+//     node ai_lab/confronto/stima_rodaggio.mjs             referto a schermo
+//     node ai_lab/confronto/stima_rodaggio.mjs --json      lo stesso, in JSON
+//     node ai_lab/confronto/stima_rodaggio.mjs --scrivi    aggiorna c e tau nel modello
 //
 // Stima  w(eta) = -c * exp(-eta/tau)  sui giri verdi IN ARIA LIBERA, con delta e rho
 // CABLATI (non ri-stimati): il rodaggio e' una forma, non una nuova taratura del modello.
@@ -24,10 +25,14 @@
 // pieno, gli 11 leave-one-race-out e le 2.000 ripetizioni bootstrap escono ESATTI, senza
 // ri-approssimare niente. Blocchi = gare (E11).
 //
-// NON SCRIVE NIENTE su disco. Non tocca demo/, simulatore/, data/.
+// COSA SCRIVE. Niente, a meno di `--scrivi`. Con quel modo aggiorna UN SOLO blocco
+// di data/modelli/modello_v2.json — c, tau, IC, leave-one-race-out, data — e non
+// tocca mai `attivo`, che e' l'esito di un cancello pre-registrato. E' la forma in
+// codice della regola del blocco laboratorio: il DATO si ri-stima a ogni gara, il
+// VERDETTO no. Non tocca mai demo/.
 
 import path from 'node:path';
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 import { caricaGare2026 } from '../../simulatore/provenienza/gare_2026.mjs';
@@ -257,7 +262,50 @@ const esito = {
   residuo_per_eta: { prima, dopo },
 };
 
-if (process.argv.includes('--json')) {
+// ══════════════════════════════════════════════ 7 · --scrivi, per l'automazione
+// Il DATO si ri-stima a ogni gara, il VERDETTO no. Qui prende forma di codice:
+// si aggiornano c, tau, IC, LORO e data — cioe' cio' che questo script misura —
+// e NON si tocca mai `attivo`, che e' l'esito di un cancello pre-registrato
+// (PREREG_rodaggio.md §6). Se domani i dati nuovi rendessero il termine dannoso,
+// a spegnerlo dev'essere una persona che ha riletto il cancello, non uno script
+// che gira di notte.
+//
+// Non scrive se il minimo cade sul bordo della griglia o se tau e' instabile fra
+// i LORO: sono le condizioni di NULL della prereg, e un dato che le viola non e'
+// un aggiornamento — e' un guasto da guardare.
+if (process.argv.includes('--scrivi')) {
+  const percorso = path.join(SIM, 'data', 'modelli', 'modello_v2.json');
+  const modello = JSON.parse(readFileSync(percorso, 'utf8'));
+  const prima = modello.rodaggio ?? {};
+  if (sulBordo || fattoreTau > 3) {
+    console.error('RODAGGIO NON SCRITTO: '
+      + (sulBordo ? 'il minimo cade sul bordo della griglia' : `tau instabile fra i LORO (fattore ${fattoreTau.toFixed(2)} > 3)`)
+      + ' — sono condizioni di NULL della prereg, non un aggiornamento (PREREG_rodaggio.md §7).');
+    process.exit(1);
+  }
+  modello.rodaggio = {
+    ...prima,
+    attivo: prima.attivo === true,          // MAI deciso qui
+    c: pieno.c,
+    tau: pieno.tau,
+    ic95: {
+      c: ic(cBoot), tau: ic(tBoot),
+      quartili_c: [quant(cBoot, 0.25), quant(cBoot, 0.5), quant(cBoot, 0.75)],
+      quartili_tau: [quant(tBoot, 0.25), quant(tBoot, 0.5), quant(tBoot, 0.75)],
+      avvertenza: prima.ic95?.avvertenza ?? null,
+      quota_ripetizioni_collassate: quotaCollasso,
+    },
+    leave_one_race_out: Object.fromEntries(NOMI.map((n) => [n, { c: loro[n].c, tau: loro[n].tau }])),
+    gare: N_GARE,
+    giri_in_aria_libera: ammessi.length,
+    data: process.argv.includes('--data') ? process.argv[process.argv.indexOf('--data') + 1] : esito.targhetta.data,
+  };
+  writeFileSync(percorso, `${JSON.stringify(modello, null, 2)}\n`);
+  const mosso = prima.c !== pieno.c || prima.tau !== pieno.tau;
+  console.log(`rodaggio scritto in data/modelli/modello_v2.json: c ${prima.c ?? '—'} -> ${pieno.c}, tau ${prima.tau ?? '—'} -> ${pieno.tau}`
+    + `  (attivo resta ${modello.rodaggio.attivo}, il cancello non si rigira qui)`);
+  if (mosso) console.log('  i parametri SI SONO MOSSI: le viste vanno risincronizzate (web/genera_vista_gara.mjs --sincronizza)');
+} else if (process.argv.includes('--json')) {
   console.log(JSON.stringify(esito, null, 2));
 } else {
   console.log('STIMA DEL RODAGGIO — w(eta) = -c * exp(-eta/tau)');

@@ -21,19 +21,41 @@ Al momento della firma i modelli sono questi, e sono **pinnati** in `data/MANIFE
 (`node provenienza/verifica_manifest.mjs` in CI li controlla a ogni push):
 
 ```
-banda_rientro.json  6f5394c3f478aab97ea5b7b097fe653bde12baf296307d89dd5067fa38f5343c
-modello_v2.json     2bc7141eea2b53c9c2933fed1ed7a46b687be7e5b50b51778469e5038b24b8d3
+banda_rientro.json  689e5d8472c1c3aa8e1512d3221cc264c9403c8f7b5ec6524dbbc1cbb2daabb3
+modello_v2.json     e87a0c6eeb9e36697d996637e042168a9130b6cf41f594761e50227f07e8d114
 ```
 
-**Il rischio che il ciclo post-gara li ricalibri da solo NON esiste** — verificato:
-`auto_gara.py` chiama solo `web/genera_vista_gara.mjs`, che *legge* i modelli e non li
-scrive; gli unici script che li scrivono (`banco/scrivi_banda_rientro.mjs`,
-`banco/scrivi_esito_multistint.mjs`, `banco/replay_*.mjs`) sono manuali. `autocalibra.py`,
-citato in una nota vecchia, non esiste più nel repo.
+> **RI-FIRMATO il 01/08/2026, poche ore dopo la prima firma, e va detto perché.** Gli hash
+> originali (`6f5394c3…` e `2bc7141e…`) sono stati firmati la mattina; nel pomeriggio la
+> **voce 1 del piano** ha acceso il rodaggio della gomma nuova e ricalibrato la banda sul
+> motore risultante, quindi entrambi i file sono cambiati. **Ri-firmare PRIMA della gara è
+> legittimo ed è l'opposto di ri-tarare dopo:** l'Olanda resta una gara che nessuno di
+> questi numeri ha mai visto. Ri-firmarli dopo il 23/08 sarebbe la fine dell'holdout, e
+> nessuna spiegazione lo renderebbe accettabile.
 
-**Il rischio che resta è umano**: qualcuno rilancia uno di quegli script dopo il 23/08 e
-l'Olanda entra nella calibrazione. Il sigillo è quindi una consegna, non un lucchetto:
-*fino a misura avvenuta, quei due file non si rigenerano.*
+> **⚠ CORREZIONE, 01/08 — la frase qui sotto era vera quando l'ho scritta e l'ho resa falsa
+> io stesso lo stesso giorno.** Il paragrafo diceva che «il rischio che il ciclo post-gara
+> li ricalibri da solo NON esiste». Dalla **voce 0** del piano, `auto_gara.py` ri-stima
+> `ρ`, `δ₇₀`, `c`, `τ` e la banda a ogni gara nuova — quindi la domenica sera di Zandvoort
+> quel rischio sarebbe stato *certezza*, e l'holdout si sarebbe bruciato da solo, in
+> silenzio, prima che qualcuno lo misurasse.
+>
+> **Ora c'è un lucchetto, non una promessa:** `ai_lab/confronto/SIGILLO_holdout.json`.
+> Finché è `aperto` e la gara pubblicata è quella sigillata, `auto_gara.py` **salta** il
+> blocco di ri-stima del cuore e lo grida nel log; il resto dell'ondata prosegue normale.
+> Si chiude misurando l'holdout coi modelli pre-gara e portando `stato` a `chiuso`: dal
+> giro dopo la ri-stima riparte da sola e l'Olanda entra nella calibrazione, che è
+> esattamente quello che deve succedere — ma **dopo** aver dato il suo verdetto.
+>
+> Correzione minore nella stessa frase: `autocalibra.py` **non è stato tolto**, vive in
+> `ai_lab/scienziato/` ed è chiamato a ogni gara da `gen_modelli_lab.py`. Non tocca i
+> modelli del simulatore (solo traffico e degrado del lab), quindi la conclusione reggeva —
+> ma la ragione che avevo dato era falsa.
+
+**Il rischio che resta è umano**, e non è cambiato: qualcuno rilancia a mano uno di quegli
+script dopo il 23/08, o porta il sigillo a `chiuso` senza aver misurato niente. Contro
+l'automazione ora c'è un lucchetto; contro una persona decisa, no.
+*Fino a misura avvenuta, quei due file non si rigenerano.*
 
 ## Cosa si misura, e con quale metro
 

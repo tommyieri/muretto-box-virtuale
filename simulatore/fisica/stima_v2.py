@@ -28,6 +28,7 @@ numero di condizionamento e correlazione dei regressori dopo la
 trasformazione entro-blocco; se il disegno e' degenere la stima si ferma.
 """
 
+import datetime
 import hashlib
 import json
 import os
@@ -142,7 +143,20 @@ def stima_su(dati, gare_scelte=None, ripetizioni_gara=None):
     return stima(np.vstack(pezzi_X), np.concatenate(pezzi_y), np.concatenate(pezzi_c))
 
 
+def _data_argomento():
+    """La data della targhetta: `--data AAAA-MM-GG`, altrimenti oggi.
+
+    E' un ARGOMENTO e non `date.today()` cablato dentro, per la stessa ragione per
+    cui `rispostaPer` prende la data dal chiamante: due esecuzioni che devono
+    produrre lo stesso file devono poterlo fare. `auto_gara.py` la passa esplicita.
+    """
+    if "--data" in sys.argv:
+        return sys.argv[sys.argv.index("--data") + 1]
+    return datetime.date.today().isoformat()
+
+
 def main():
+    data_targhetta = _data_argomento()
     dati = carica()
     nomi = dati["nomi_gare"]
     n_blocchi = len(dati["stint_per_blocco"])
@@ -174,13 +188,17 @@ def main():
 
     modello = {
         "_targhetta": {
-            "tipo": "misurato sul fondo 2026 (11 gare) — modello v2",
+            "tipo": f"misurato sul fondo 2026 ({len(nomi)} gare) — modello v2",
             "modello": "t(pilota,giro) = base(pilota) + delta*(giro-1) + rho*eta_gomma ; delta = -delta70/N_giri",
             "delta70": "carburante totale in secondi su 70 kg (a bordo al giro L: 70-(70/N)(L-1) kg, a delta70/70 s/kg)",
             "stimatore": "minimi quadrati entro-blocco, effetti fissi per (gara, pilota)",
             "identificazione": "eta e giro separati dall'azzeramento dell'eta alla sosta; guardia di rango esplicita, niente pinv (E10)",
             "incertezza": f"bootstrap {RIPETIZIONI} ripetizioni, blocchi = gare (E11), seme {SEME}",
-            "data": "2026-07-29",
+            # La data era CABLATA a "2026-07-29". Rieseguire lo stimatore avrebbe
+            # prodotto numeri nuovi con la data vecchia: e' E22 alla lettera, un
+            # numero che non dice se e' stato rimisurato. Ora e' il giorno in cui
+            # gira, e `--data` la fissa per chi vuole un output riproducibile.
+            "data": data_targhetta,
             "fonte": "data/viste/vista_verde_2026.json",
             "sha256_vista": dati["sha256_vista"],
             "prodotto_da": "fisica/stima_v2.py",
@@ -203,6 +221,75 @@ def main():
         },
         "guardie": guardie,
     }
+
+    # ─────────────────────────────────────────────── FONDERE, NON SOVRASCRIVERE
+    #
+    # Questo script scriveva il modello DA ZERO, con "scelto": None. Finche' si
+    # eseguiva a mano una volta sola andava bene. Dal momento in cui entra nel
+    # ciclo post-gara (direttiva PO 01/08: ogni gara nuova ri-stima tutto), quel
+    # comportamento cancellerebbe:
+    #   - `delta_70.scelto` e tutto il blocco `decisione`, cioe' l'esito di un
+    #     esperimento PRE-REGISTRATO (PREREG_delta.md, braccio A). Il costruttore
+    #     rifiuta di partire senza `scelto`: il sito sarebbe morto la domenica
+    #     notte, da solo, senza che nessuno avesse toccato niente;
+    #   - il blocco `rodaggio` col suo cancello passato (PREREG_rodaggio.md).
+    #
+    # La regola e' quella del blocco laboratorio di auto_gara.py: si ri-stima il
+    # DATO a ogni gara, il VERDETTO di un cancello pre-registrato no. Qui prende
+    # forma di codice: cio' che questo script MISURA si sovrascrive, cio' che una
+    # prereg ha DECISO si conserva.
+    DECISO = [
+        ("delta_70", "scelto"),
+        ("delta_70", "nota"),
+        ("delta_70", "decisione"),
+    ]
+    precedente = {}
+    if os.path.exists(USCITA):
+        with open(USCITA, encoding="utf-8") as f:
+            precedente = json.load(f)
+    for sezione, campo in DECISO:
+        if sezione in precedente and campo in precedente[sezione]:
+            modello[sezione][campo] = precedente[sezione][campo]
+    # I blocchi interi che questo script non misura affatto passano di peso.
+    for sezione in ("rodaggio",):
+        if sezione in precedente:
+            modello[sezione] = precedente[sezione]
+
+    # E21 NON DEVE RIENTRARE DALLA FINESTRA. Se la stima libera si sposta al punto
+    # che il valore CABLATO esce dal suo IC95, siamo di nuovo con due misure in
+    # conflitto — e la risposta non e' che questo script scelga da solo. Lo grida,
+    # scrive comunque il dato aggiornato, e lascia la decisione a un esperimento.
+    #
+    # Ma un allarme che suona a OGNI gara non e' un allarme: e' rumore che tutti
+    # imparano a ignorare, e il giorno che conta nessuno lo guarda. Qui il
+    # conflitto delta70 e' GIA' noto e dichiarato (`decisione.avvertenza_stima_libera`:
+    # la regressione entro-blocco non separa carburante ed evoluzione pista, il
+    # replay misura la deriva che serve a proiettare, e il cablato e' quello che
+    # vince sul bersaglio del prodotto — E16). Quindi il campo si scrive sempre,
+    # ma si marca `noto` quando la decisione lo prevedeva: la sorveglianza grida
+    # solo sul NUOVO.
+    scelto = modello["delta_70"].get("scelto")
+    lo, hi = modello["delta_70"]["ic95"]
+    noto = bool(modello["delta_70"].get("decisione", {}).get("avvertenza_stima_libera"))
+    if isinstance(scelto, (int, float)) and not (lo <= scelto <= hi):
+        modello["delta_70"]["conflitto_col_cablato"] = {
+            "cablato": scelto,
+            "ic95_stima_libera": [lo, hi],
+            "gare": len(nomi),
+            "noto": noto,
+            "nota": (
+                "conflitto GIA' dichiarato dalla decisione pre-registrata: la stima entro-blocco "
+                "e il replay non misurano la stessa cosa, e il cablato e' quello che vince sul "
+                "bersaglio del prodotto (E16). Nessuna azione." if noto else
+                "conflitto NUOVO: il valore cablato non e' piu' dentro l'IC95 della stima libera e "
+                "nessuna decisione lo prevedeva. Il valore NON e' stato cambiato — serve un "
+                "esperimento pre-registrato, non una scelta silenziosa (E21)."
+            ),
+        }
+    else:
+        modello["delta_70"].pop("conflitto_col_cablato", None)
+    modello["delta_70"].pop("avviso_conflitto", None)
+
     os.makedirs(os.path.dirname(USCITA), exist_ok=True)
     with open(USCITA, "w", encoding="utf-8") as f:
         json.dump(modello, f, indent=2, ensure_ascii=False)

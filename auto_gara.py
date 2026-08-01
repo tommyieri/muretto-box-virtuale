@@ -143,6 +143,55 @@ def registro_committato():
         return None
 
 
+def _holdout_aperto(nome_gara):
+    """Vero se esiste un sigillo APERTO proprio sulla gara appena pubblicata.
+
+    Un sigillo su un'ALTRA gara non ferma niente: se il sigillo e' su Zandvoort e
+    corre Monza, ri-stimare e' giusto e Zandvoort resta comunque fuori campione
+    perche' e' gia' stata misurata (o perche' il suo sigillo e' ancora chiuso a
+    quella gara). La guardia deve essere stretta, o diventa un blocco permanente
+    che qualcuno togliera' per fastidio.
+    """
+    percorso = os.path.join(ROOT, 'ai_lab', 'confronto', 'SIGILLO_holdout.json')
+    if not os.path.exists(percorso):
+        return False
+    try:
+        with open(percorso, encoding='utf-8') as f:
+            s = json.load(f)
+    except Exception as e:                       # un sigillo illeggibile non e' un via libera
+        log(f'SIGILLO illeggibile ({e}): mi comporto come se fosse APERTO.')
+        return True
+    if s.get('stato') != 'aperto':
+        return False
+    sigillata = (s.get('gara') or '').replace(' ', '').lower()
+    return sigillata == (nome_gara or '').replace(' ', '').lower()
+
+
+def _ristima_il_cuore():
+    """Il cuore del simulatore, ri-stimato sul fondo aggiornato. Vedi il commento
+    lungo nel chiamante per l'ordine, che e' vincolante."""
+    sim = os.path.join(ROOT, 'simulatore')
+    sh([PY, os.path.join('fisica', 'stima_v2.py'), '--data', _oggi()], cwd=sim, check=False)
+    sh(['node', os.path.join('ai_lab', 'confronto', 'stima_rodaggio.mjs'), '--scrivi',
+        '--data', _oggi()], check=False)
+    sh(['node', 'banco/scrivi_banda_rientro.mjs'], cwd=sim, check=False)
+    # NON genera_manifest.mjs: quello rigenera OGNI riga e benedirebbe in silenzio
+    # qualunque cosa sia cambiata sotto data/, archivio grezzo compreso — e'
+    # dichiarato "atto deliberato, mai in CI" e ha ragione. `ripinna` aggiorna i
+    # due file che questo blocco ha appena riscritto ed ESCE 1 se qualunque altro
+    # file pinnato e' cambiato.
+    sh(['node', 'provenienza/ripinna.mjs',
+        'data/modelli/modello_v2.json', 'data/modelli/banda_rientro.json'],
+       cwd=sim, check=False)
+    sh(['node', 'web/genera_vista_gara.mjs', '--sincronizza'], cwd=sim, check=False)
+    sh(['node', 'web/trasporta_motore.mjs'], cwd=sim, check=False)
+    # SORVEGLIANZA DEL RODAGGIO: rimisura il cancello coi parametri appena
+    # ri-stimati. NON spegne niente — se una condizione pre-registrata cade, lo
+    # grida nel log e la decisione resta di una persona che ha riletto
+    # PREREG_rodaggio.md. Un cancello che si rigira da solo smette di esserlo.
+    sh(['node', os.path.join('ai_lab', 'confronto', 'cancello_rodaggio.mjs')], check=False)
+
+
 def wave_nuove():
     mappa = json.load(open(os.path.join(ROOT, MAPPA)))
     reg_disco = json.load(open(os.path.join(ROOT, REGISTRO)))
@@ -208,6 +257,50 @@ def wave_nuove():
         #
         # modelli vivi: si ricalibrano da soli sul fondo aggiornato, con targhetta.
         sh([PY, 'gen_modelli_lab.py', '--data', _oggi()], check=False)   # la ricerca non ferma la gara
+        # IL CUORE DEL SIMULATORE, dentro il ciclo (01/08/2026, direttiva del PO:
+        # «quando si aggiunge una gara si deve aggiornare tutto e renderlo piu'
+        # preciso, e vale per tutto il progetto»). Fino a oggi rho, delta70, la
+        # banda di rientro e il rodaggio si stimavano A MANO: il motore restava
+        # fermo alle 11 gare mentre tutto il resto cresceva.
+        #
+        # L'ORDINE NON E' CASUALE, e cambiarlo rompe cose:
+        #   1. stima_v2      -> rho e delta70 dal fondo aggiornato. FONDE, non
+        #                       sovrascrive: conserva delta_70.scelto, la decisione
+        #                       pre-registrata e il blocco rodaggio. (Prima del
+        #                       01/08 riscriveva con scelto=None e avrebbe ucciso
+        #                       il costruttore la domenica notte.)
+        #   2. stima_rodaggio-> c e tau, che si stimano CON rho e delta70 cablati:
+        #                       quindi dopo il punto 1, mai prima. Non tocca
+        #                       `attivo`: il dato si ri-stima, il verdetto no.
+        #   3. banda_rientro -> si misura sul motore risultante, quindi dopo 1 e 2.
+        #   4. viste         -> --sincronizza rigenera SOLO quelle il cui timbro non
+        #                       e' piu' quello del motore. Se nessun coefficiente si
+        #                       e' mosso costa secondi; se si e' mosso costa i ~45
+        #                       minuti che ci vogliono, e li deve costare: la
+        #                       sentinella s29 diventa rossa se non lo fa.
+        #   5. trasporto     -> il motore nel browser porta le costanti: se il
+        #                       modello cambia e il trasporto no, diretta e replay
+        #                       divergono (E12).
+        #
+        # check=False su tutti, come il resto del blocco: la ricerca non ferma MAI
+        # la pubblicazione di una gara. Se uno di questi fallisce, i golden e le
+        # sentinelle lo gridano prima del commit.
+        # ...MA NON MENTRE UN HOLDOUT E' SIGILLATO. Un fuori campione vive della
+        # proprieta' opposta a questo blocco: i modelli non devono aver visto la
+        # gara che li giudica. Senza questa guardia, la domenica sera in cui corre
+        # Zandvoort l'automazione ri-stimerebbe PRIMA che qualcuno misuri
+        # l'holdout, e il primo fuori campione vero del progetto si brucerebbe da
+        # solo, in silenzio, e non si potrebbe rifare.
+        # Il resto dell'ondata prosegue normale: si salta solo il cuore.
+        if _holdout_aperto(nome):
+            log(f'RI-STIMA SALTATA: {nome} e\' la gara sigillata di un holdout aperto '
+                f'(ai_lab/confronto/SIGILLO_holdout.json). Prima si misura il fuori campione '
+                f'coi modelli PRE-gara, poi si porta il sigillo a "chiuso" e dal giro dopo '
+                f'la ri-stima riparte da sola.')
+        else:
+            _ristima_il_cuore()
+
+
         # IL BANCO DEL MOTORE, dentro il ciclo (22/07/2026). Era l'unico artefatto che
         # misura l'errore del PRODOTTO contro il reale, e stava FUORI: nessuno ricalcolava
         # a ogni gara quanto sbaglia il motore che il cliente usa. Ora il suo perimetro
