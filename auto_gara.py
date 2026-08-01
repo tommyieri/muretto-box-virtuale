@@ -143,6 +143,35 @@ def registro_committato():
         return None
 
 
+def _controlla_pista_nuova(nome):
+    """Una pista che il motore non ha mai visto ha bisogno di UNA riga in una mappa
+    scritta a mano (provenienza/pitloss.mjs, GP_PER_GARA). Se manca, il motore NON
+    si lamenta: usa il pit-loss di ripiego e dichiara all'utente «circuito non
+    misurato ne' dal prior ne' dal fondo» — una frase che e' FALSA ogni volta che
+    il fondo quel Gran Premio lo misura davvero.
+
+    E' successo con l'Olanda il 01/08/2026: Zandvoort era misurato sul fondo (22,382
+    s su 85 soste verdi) e promosso, e sarebbe stato ignorato per una riga mancante.
+
+    Qui non si indovina la traduzione — inventarla sarebbe peggio del buco. Si
+    GRIDA, perche' questo e' l'unico momento in cui qualcuno sta guardando.
+    """
+    fonte = os.path.join(ROOT, 'simulatore', 'provenienza', 'pitloss.mjs')
+    try:
+        with open(fonte, encoding='utf-8') as f:
+            mappa = f.read()
+    except Exception:
+        return
+    chiave = nome.replace(' ', '')
+    if f'{chiave}:' in mappa or f"'{chiave}'" in mappa:
+        return
+    log(f'ATTENZIONE — PISTA NUOVA SENZA TRADUZIONE: "{nome}" non compare in '
+        f'simulatore/provenienza/pitloss.mjs (GP_PER_GARA). Il motore usera\' il '
+        f'pit-loss di RIPIEGO e dichiarera\' di non conoscere il circuito. Se il fondo '
+        f'ha quel Gran Premio, quella frase e\' falsa e il dato buono si sta buttando '
+        f'via: aggiungere la riga PRIMA che la gara vada online.')
+
+
 def _holdout_aperto(nome_gara):
     """Vero se esiste un sigillo APERTO proprio sulla gara appena pubblicata.
 
@@ -226,6 +255,7 @@ def wave_nuove():
     log(f'ondata 1: gare nuove -> {[n for _, n, _ in nuove]}')
     for ti, nome, cid in nuove:
         log(f'== {nome} ({ti}) ==')
+        _controlla_pista_nuova(nome)
         sh([PY, 'pipeline_gara.py', 'auto', nome, ti, cid])   # guardrail=bandiere
         # check=False su TUTTI i passi dopo la pubblicazione. Motivo: pipeline_gara ha
         # gia' scritto la gara nel registro, quindi un sys.exit qui lasciava una gara

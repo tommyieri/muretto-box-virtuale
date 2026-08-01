@@ -1,92 +1,92 @@
 {
- "gara": "Monaco",
- "n_giri": 78,
+ "gara": "Belgio",
+ "n_giri": 44,
  "primo_giro": 5,
- "ultimo_giro": 75,
+ "ultimo_giro": 41,
  "piloti": {
   "ALB": {
-   "giri": 71,
-   "con_risposta": 71
+   "giri": 37,
+   "con_risposta": 33
   },
   "ALO": {
-   "giri": 71,
-   "con_risposta": 69
+   "giri": 37,
+   "con_risposta": 33
   },
   "ANT": {
-   "giri": 71,
-   "con_risposta": 71
+   "giri": 37,
+   "con_risposta": 33
   },
   "BEA": {
-   "giri": 24,
-   "con_risposta": 23
+   "giri": 37,
+   "con_risposta": 33
   },
   "BOR": {
-   "giri": 71,
-   "con_risposta": 70
+   "giri": 37,
+   "con_risposta": 33
   },
   "BOT": {
-   "giri": 12,
-   "con_risposta": 11
+   "giri": 37,
+   "con_risposta": 33
   },
   "COL": {
-   "giri": 71,
-   "con_risposta": 71
+   "giri": 37,
+   "con_risposta": 33
   },
   "GAS": {
-   "giri": 71,
-   "con_risposta": 71
+   "giri": 37,
+   "con_risposta": 33
   },
   "HAD": {
-   "giri": 71,
-   "con_risposta": 71
+   "giri": 37,
+   "con_risposta": 33
   },
   "HAM": {
-   "giri": 71,
-   "con_risposta": 71
+   "giri": 37,
+   "con_risposta": 33
   },
   "HUL": {
-   "giri": 71,
-   "con_risposta": 71
+   "giri": 37,
+   "con_risposta": 33
   },
   "LAW": {
-   "giri": 71,
-   "con_risposta": 71
+   "giri": 37,
+   "con_risposta": 33
   },
   "LEC": {
-   "giri": 61,
-   "con_risposta": 61
+   "giri": 37,
+   "con_risposta": 33
   },
   "LIN": {
-   "giri": 71,
-   "con_risposta": 71
+   "giri": 37,
+   "con_risposta": 33
   },
   "NOR": {
-   "giri": 40,
-   "con_risposta": 40
+   "giri": 37,
+   "con_risposta": 33
   },
   "OCO": {
-   "giri": 71,
-   "con_risposta": 71
+   "giri": 37,
+   "con_risposta": 33
   },
   "PER": {
-   "giri": 71,
-   "con_risposta": 69
+   "giri": 9,
+   "con_risposta": 4
   },
   "PIA": {
-   "giri": 71,
-   "con_risposta": 71
-  },
-  "RUS": {
-   "giri": 71,
-   "con_risposta": 71
+   "giri": 37,
+   "con_risposta": 33
   },
   "SAI": {
-   "giri": 67,
-   "con_risposta": 67
+   "giri": 37,
+   "con_risposta": 32
   },
   "STR": {
-   "giri": 53,
-   "con_risposta": 51
+   "giri": 21,
+   "con_risposta": 17
+  },
+  "VER": {
+   "giri": 37,
+   "con_risposta": 33
   }
  },
  "_targhetta": {
@@ -116,8 +116,9 @@
    "tau": 4.75
   },
   "min_giri_base": 4,
+  "soste_rivali": "nessuna",
   "banda_rientro_sha256": "689e5d8472c1c3aa",
-  "pitloss_sha256": "6fb2cc580a2d5635"
+  "pitloss_sha256": "74a9ab69c79adbed"
  },
  "mescole": [
   {

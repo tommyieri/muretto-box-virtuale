@@ -5,7 +5,8 @@
     "come_funziona": "Finche' `stato` e' `aperto` e la gara sigillata compare fra quelle pubblicate, auto_gara.py SALTA il blocco di ri-stima del cuore del simulatore e lo grida nel log. Tutto il resto dell'ondata (pubblicazione, viste, classifiche, modelli lab) prosegue normale.",
     "come_si_chiude": "Si misura l'holdout coi modelli PRE-gara (e' il senso del sigillo), si scrive l'esito, si porta `stato` a `chiuso` con la data. Dal giro successivo la ri-stima riparte da sola e include l'Olanda.",
     "data": "2026-08-01",
-    "secondo_sigillo": "01/08/2026: al sigillo del confronto motori si aggiunge quello della compressione dei distacchi. Sei ipotesi provate in casa sulle stesse 11 gare; Zandvoort e l unica gara che nessuna ha visto. Stessa regola: finche e aperto, auto_gara.py salta la ri-stima del cuore quando pubblica la gara sigillata."
+    "secondo_sigillo": "01/08/2026: al sigillo del confronto motori si aggiunge quello della compressione dei distacchi. Sei ipotesi provate in casa sulle stesse 11 gare; Zandvoort e l unica gara che nessuna ha visto. Stessa regola: finche e aperto, auto_gara.py salta la ri-stima del cuore quando pubblica la gara sigillata.",
+    "modifica_prima_della_gara": "01/08/2026, 22 giorni prima: aggiunta la traduzione Olanda -> Dutch_Grand_Prix in provenienza/pitloss.mjs. NON e una taratura sull holdout: la misura interna di Zandvoort (22,382 s su 85 soste verdi, IC95 21,788-22,984) viene dalle gare 2021-2025 del fondo, che il 23 agosto non ha mai visto. Senza quella riga il motore avrebbe usato il ripiego d era (22,1 s) dichiarando circuito NON misurato — una frase falsa. Correggere un dato mancante PRIMA della gara e legittimo; farlo dopo sarebbe la fine dell holdout."
   },
   "stato": "aperto",
   "gara": "Olanda",

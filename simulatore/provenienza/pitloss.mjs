@@ -38,6 +38,14 @@ export const CIRCUITO_PER_GARA = Object.freeze({
 // dichiarato nella targhetta della misura interna).
 export const GP_PER_GARA = Object.freeze({
   Australia: 'Australian_Grand_Prix',
+  // Olanda aggiunta il 01/08/2026, VENTIDUE GIORNI PRIMA della gara. Non e' una
+  // taratura sull'holdout: la misura interna di Zandvoort (22,382 s su 85 soste
+  // verdi) viene dalle gare 2021-2025, che il 23 agosto non ha mai visto. Senza
+  // questa riga il motore avrebbe usato il ripiego d'era (22,1 s) dichiarando
+  // «circuito NON misurato ne' dal prior ne' dal fondo» — una frase falsa, perche'
+  // il fondo lo misura e lo ha promosso. La sentinella s31 impedisce che succeda
+  // di nuovo alla prossima pista nuova.
+  Olanda: 'Dutch_Grand_Prix',
   Austria: 'Austrian_Grand_Prix',
   Belgio: 'Belgian_Grand_Prix',
   Canada: 'Canadian_Grand_Prix',
