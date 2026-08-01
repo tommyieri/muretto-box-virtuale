@@ -66,6 +66,17 @@ function leggiPacchetto(contesto) {
       const g = m?.promosso === true ? m?.[regime]?.giri : null;
       return typeof g === 'number' ? g : PERSISTENZA_REGIME_GIRI;
     },
+    // La COMPRESSIONE dei distacchi: κ misurato sul fondo, applicato solo dentro
+    // la finestra di persistenza del regime OSSERVATO al congelamento. Fuori da
+    // lì il regime non si estrapola — prevedere una Safety Car futura è E14, e
+    // nessun guadagno la rende ammissibile.
+    kappaDi: (regime) => {
+      if (!attivo || regime === null || regime === 'RED') return null;
+      const m = contesto.prior?.compressione_distacchi_interna;
+      if (m?.promosso !== true) return null;
+      const k = m?.[regime]?.kappa_mediano;
+      return typeof k === 'number' ? k : null;
+    },
   };
 }
 
@@ -248,6 +259,24 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
     }
   }
 
+  // ── la COMPRESSIONE DEI DISTACCHI, dal regime osservato al congelamento ───
+  // Vale sul regime OSSERVATO, non su quello della sosta: e' il campo intero a
+  // viaggiare neutralizzato, anche di chi non si ferma affatto. E' la voce che
+  // rende il regime finalmente CONSUMATO da qualcosa — prima alimentava solo il
+  // prezzo della sosta, quindi in proiezione pura era un no-op misurato.
+  const kappa = pacchetto.kappaDi(regimeOsservato);
+  const neutralizzazione = kappa === null ? null
+    : { kappa, fino: Math.min(freezeLap + pacchetto.persistenzaDi(regimeOsservato), giroFinale) };
+  if (neutralizzazione !== null) {
+    const m = prior.compressione_distacchi_interna?.[regimeOsservato];
+    dichiara('DISTACCHI_COMPRESSI',
+      `al congelamento c'è ${regimeOsservato}: per ${neutralizzazione.fino - freezeLap} giri i distacchi dal leader si contraggono di ${kappa} a giro, invece di evolvere dal passo`,
+      neutralizzazione.fino - freezeLap,
+      `MISURATO sul fondo: mediana di ${m?.n ?? '—'} coppie su ${m?.n_gare ?? '—'} gare`
+      + `${m?.ic95_mediana_blocchi_gare ? ` (IC95 ${m.ic95_mediana_blocchi_gare[0]}–${m.ic95_mediana_blocchi_gare[1]})` : ''}`
+      + ` — oltre la finestra il regime NON si estrapola (E14)`);
+  }
+
   // ── passo: base misurata togliendo gli stessi termini che si ri-aggiungono ─
   const basi = stimaBasi(osservazioniVerdi(g.righe), { delta70, rho, nGiri: nGiriGara, finoA: freezeLap, minGiri: MIN_GIRI_BASE, rodaggio });
   const pace = creaPasso({ delta70, rho, nGiri: nGiriGara, basi, rodaggio });
@@ -282,7 +311,7 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   }
 
   return {
-    state, pace, freezeLap, steps, pits,
+    state, pace, freezeLap, steps, pits, neutralizzazione,
     assunzioni,
     perdita,
     orizzonte: { giroFinale, steps, orizzonte_validato: orizzonteValidato, oltre_il_validato: orizzonteValidato !== null && steps > orizzonteValidato },
@@ -388,7 +417,8 @@ function materializzaPerDirector(scenario, risultato) {
 export function eseguiEValida(scenario, costantiDirector) {
   const risultato = simulate({
     state: scenario.state, pace: scenario.pace, freezeLap: scenario.freezeLap,
-    steps: scenario.steps, pits: scenario.pits, traccia: true,
+    steps: scenario.steps, pits: scenario.pits,
+    neutralizzazione: scenario.neutralizzazione ?? null, traccia: true,
   });
   const direttore = validaSimulazione(materializzaPerDirector(scenario, risultato), costantiDirector);
   return { risultato, direttore };

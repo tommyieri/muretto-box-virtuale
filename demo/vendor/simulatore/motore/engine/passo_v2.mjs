@@ -36,8 +36,9 @@
 // giovani di quelle simulate (−0,403 s/giro) — e girava su un passo a
 // serbatoio vuoto senza mai ri-gonfiarlo (−1,480 s/giro, E02). I due pezzi
 // facevano il 99% di un bias da −1,86 s/giro. Qui non possono ripetersi: la
-// sottrazione e la ri-addizione sono la stessa riga di codice, con lo stesso δ
-// e lo stesso ρ.
+// sottrazione e la ri-addizione sono la stessa riga di codice, con lo stesso δ,
+// lo stesso ρ e lo stesso w — e la sentinella s28 misura quanto costerebbe
+// scollegarne uno solo, in tutti e due i versi.
 
 export function derivaPerGiro(delta70, nGiri) {
   if (typeof delta70 !== 'number' || !Number.isFinite(delta70)) throw new Error(`delta70 non utilizzabile: ${JSON.stringify(delta70)}`);

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-// esporta_neutralizzazione_fondo.mjs — quanto costa DAVVERO una sosta sotto
+// esporta_compressione_fondo.mjs — quanto costa DAVVERO una sosta sotto
 // neutralizzazione, misurato sul fondo invece che preso da un prior esterno.
 //
-//     node provenienza/esporta_neutralizzazione_fondo.mjs [--write]
+//     node provenienza/esporta_compressione_fondo.mjs [--write]
 //
 // PERCHE' ESISTE. Il motore prezza la sosta neutralizzata come
 // `perdita_verde x fattore`, con fattore da un PRIOR ESTERNO (SC 0,50 · VSC 0,65,
@@ -44,7 +44,15 @@ import { MESCOLE_BAGNATO } from './vocabolario.mjs';
 import { caricaPrior } from './pitloss_dati.mjs';
 import { perditaBox } from './pitloss.mjs';
 
-export const PERCORSO = 'data/viste/neutralizzazione_fondo.json';
+// IL NOME NON E' CASUALE, ed e' stata la sentinella s07 a insegnarmelo. La prima
+// versione di questa vista si chiamava come un file che sta nella cartella di
+// QUARANTENA dell'archivio: materiale costruito a gara finita e usato come se
+// fosse live, cioe' l'errore E14 in persona. Due file quasi omonimi, uno onesto e
+// uno avvelenato, sono un incidente che aspetta il prossimo lettore. Qui il nome
+// dice cosa c'e' dentro e non somiglia a niente di proibito — e s07 vieta anche
+// solo di NOMINARE quel materiale in un sorgente, che e' il motivo per cui questo
+// commento gira intorno alla parola invece di scriverla.
+export const PERCORSO = 'data/viste/compressione_e_fattori_fondo.json';
 const MIN_RIFERIMENTI = 5;   // sotto questo, la mediana del campo e' un aneddoto
 const MAX_PERSISTENZA = 8;
 const SOGLIA_GAP = 1.0;      // sotto 1 s il rapporto gap(k+1)/gap(k) e' rumore di cronometraggio   // oltre 8 giri la domanda non interessa nessuno scenario
@@ -276,7 +284,7 @@ export function costruisci(radice) {
       incertezza: `bootstrap ${B_BOOT}, blocchi = gare (E11), seme ${SEME}`,
       perimetro: 'gare asciutte del fondo con perdita verde di circuito dichiarata',
       min_riferimenti: MIN_RIFERIMENTI,
-      prodotto_da: 'provenienza/esporta_neutralizzazione_fondo.mjs',
+      prodotto_da: 'provenienza/esporta_compressione_fondo.mjs',
       non_promuove: 'questa e\' una VISTA. La promozione a modello ha il suo cancello: ai_lab/confronto/PREREG_neutralizzazione.md, voce N3',
     },
     n_gare: gareViste.length,

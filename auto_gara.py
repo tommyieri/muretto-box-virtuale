@@ -175,13 +175,20 @@ def _ristima_il_cuore():
     sh(['node', os.path.join('ai_lab', 'confronto', 'stima_rodaggio.mjs'), '--scrivi',
         '--data', _oggi()], check=False)
     sh(['node', 'banco/scrivi_banda_rientro.mjs'], cwd=sim, check=False)
+    # I fattori di neutralizzazione, la persistenza del regime e la compressione
+    # dei distacchi: misurati sul fondo, NON promossi (il loro cancello e' NULL,
+    # vedi PREREG_neutralizzazione.md). Si ri-stimano lo stesso a ogni gara — e'
+    # la regola: il DATO vive, il VERDETTO no. Il giorno in cui il cancello
+    # passera', i numeri saranno gia' quelli della stagione in corso.
+    sh(['node', 'provenienza/esporta_compressione_fondo.mjs', '--write'], cwd=sim, check=False)
     # NON genera_manifest.mjs: quello rigenera OGNI riga e benedirebbe in silenzio
     # qualunque cosa sia cambiata sotto data/, archivio grezzo compreso — e'
     # dichiarato "atto deliberato, mai in CI" e ha ragione. `ripinna` aggiorna i
     # due file che questo blocco ha appena riscritto ed ESCE 1 se qualunque altro
     # file pinnato e' cambiato.
     sh(['node', 'provenienza/ripinna.mjs',
-        'data/modelli/modello_v2.json', 'data/modelli/banda_rientro.json'],
+        'data/modelli/modello_v2.json', 'data/modelli/banda_rientro.json',
+        'data/viste/compressione_e_fattori_fondo.json'],
        cwd=sim, check=False)
     sh(['node', 'web/genera_vista_gara.mjs', '--sincronizza'], cwd=sim, check=False)
     sh(['node', 'web/trasporta_motore.mjs'], cwd=sim, check=False)

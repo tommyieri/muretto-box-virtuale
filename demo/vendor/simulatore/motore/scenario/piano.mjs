@@ -208,7 +208,10 @@ export function valutaPiano({ gara, freezeLap, pilota, piano }, contesto) {
   );
   const risultato = simulate({
     state: scenario.state, pace: scenario.pace, freezeLap: scenario.freezeLap,
-    steps: scenario.steps, pits: scenario.pits,
+    // `neutralizzazione` viaggia con lo scenario come `pits` e `pace`: se questa
+    // riga mancasse, "quando fermarti" girerebbe su una fisica e "dove rientri"
+    // su un'altra — E17 nella forma esatta in cui il vecchio repo l'ha pagata.
+    steps: scenario.steps, pits: scenario.pits, neutralizzazione: scenario.neutralizzazione ?? null,
   });
   return { totale: risultato.cum[pilota] ?? null, scenario };
 }

@@ -9,12 +9,12 @@
  ],
  "file": {
   "engine/kernel.mjs": {
-   "sha256_sorgente": "ad64a1438c3a499e59023f2cc3bb078f8d5c892d56ab8179383a2c09db19a1f8",
-   "byte": 11768
+   "sha256_sorgente": "330b414ad2ddcc61dbe5d736cdeef691ab06dd935b4abe81f16ec31355407dc1",
+   "byte": 16284
   },
   "engine/passo_v2.mjs": {
-   "sha256_sorgente": "dcb8a0ce0dee7ca246eec1dcf81cbd9e41131700c6c107b2f6ce30decda438d6",
-   "byte": 6195
+   "sha256_sorgente": "2c3fdaeaa9f7bfdc2072429601ada28f09baaee298ba3b3dff00ad643e2953e3",
+   "byte": 6303
   },
   "provenienza/contratto.mjs": {
    "sha256_sorgente": "b1e8c76b289535985249358a70b98e052d687839ac8d96668a97fb4a30f071c5",
@@ -29,8 +29,8 @@
    "byte": 2546
   },
   "provenienza/pitloss.mjs": {
-   "sha256_sorgente": "f3b9a65565eb8f337698ff855eae27b732ce7ab93718228ce8e40df16d864a7a",
-   "byte": 4980
+   "sha256_sorgente": "be36b3e851e760366c964b63bba5c0686bb2ad39c3e0e5fe591461ae3729b3fa",
+   "byte": 6561
   },
   "provenienza/vocabolario.mjs": {
    "sha256_sorgente": "eea1343393aa85b3e488435814af27673a5ab9338d2cdcb01a3e2297d5a4d7ff",
@@ -41,24 +41,24 @@
    "byte": 3585
   },
   "scenario/costruttore.mjs": {
-   "sha256_sorgente": "23ddcda6af6c83fba2e42dbb7f9582618f368f4d2ed905339a7cb5efd63f320d",
-   "byte": 28490
+   "sha256_sorgente": "9475b4f4ef8085f860857307c5772e3308fbf45c9b34e63a8a482c9e5266fb84",
+   "byte": 33895
   },
   "scenario/director.mjs": {
    "sha256_sorgente": "a305da62cf49576be92050910d7f9fe8a5abe1bedebb49334b8fcf0e016e4e9a",
    "byte": 16577
   },
   "scenario/piano.mjs": {
-   "sha256_sorgente": "84f5ed8714e2b5c75bcef7d1ef80e1bef118458065ae8e01e4b7505062ed9459",
-   "byte": 15428
+   "sha256_sorgente": "5a7c93c46612917aaa9dd833556bb0c28444e2942c3370fe4f859576c384f223",
+   "byte": 15724
   },
   "scenario/risposta.mjs": {
    "sha256_sorgente": "3086e557359fcc6f260748151dafec1d48702bc043af2f8e604e64083d4f9b13",
    "byte": 8533
   },
   "contesto_live.json": {
-   "sha256_sorgente": "323b6420088062d17b6f7fe22831d4d24af5f7ad23116ef51db2164aed07d287",
-   "byte": 42142,
+   "sha256_sorgente": "c3c6b52acc4816a61dcc84f0611f4593f7282fe1e6848d80f93361bfdc0d4e99",
+   "byte": 47538,
    "data": "2026-08-01"
   }
  }

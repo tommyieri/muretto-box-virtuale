@@ -266,6 +266,7 @@ nella loro targhetta. Restano pinnati nel manifest come tutto il resto di
 `data/`, quindi una modifica non dichiarata si vede.
 
 - `viste/bagnato_fondo.json` — vista dei giri con passo utilizzabile (`provenienza/esporta_vista_verde.mjs`)
+- `viste/compressione_e_fattori_fondo.json` — vista dei giri con passo utilizzabile (`provenienza/esporta_vista_verde.mjs`)
 - `viste/soste_fondo.json` — vista dei giri con passo utilizzabile (`provenienza/esporta_vista_verde.mjs`)
 - `viste/stint_2026.json` — vista dei giri con passo utilizzabile (`provenienza/esporta_vista_verde.mjs`)
 - `viste/stint_fondo.json` — vista dei giri con passo utilizzabile (`provenienza/esporta_vista_verde.mjs`)

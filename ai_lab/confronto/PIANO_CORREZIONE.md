@@ -200,6 +200,33 @@ all'80% e **allargarla non è la risposta** — togliere il bias dalla prevision
 
 </details>
 
+### 2 · Il pacchetto neutralizzazione — **NULL il 01/08**, referto in `PREREG_neutralizzazione.md`
+
+> **Due pre-registrazioni, due NULL, e in mezzo il fenomeno vero.**
+>
+> **PREREG-1 → NULL per no-op.** «Slegare il regime dalle soste» non fa niente: acceso e
+> spento danno lo stesso numero su tutte e 821 le righe con regime. Il regime alimenta solo
+> `perditaBox` e le soste dei rivali — entrambe legate alle soste — e il passo non sa cosa
+> sia (zero occorrenze in `passo_v2.mjs` e `kernel.mjs`).
+>
+> **PREREG-2 → NULL per overcorrezione.** Il fenomeno vero è la **compressione dei
+> distacchi**, misurata sul fondo: κ = **0,691** sotto SC (IC95 [0,614; 0,772], 71 gare) e
+> **0,930** sotto VSC, col controllo in verde a 1,031 che valida il metro. È grande: dove il
+> bias era grosso lo demolisce (Giappone 1,96 → 0,34, Austria 0,96 → 0,17). **Ma un κ solo
+> overcorregge**: il segno del bias aggregato si ribalta da +1,62 a −0,79, e le tre gare che
+> peggiorano sono quelle che partivano quasi giuste. C1 passa, **C2 fallisce (4 gare su 7)**.
+>
+> Era leggibile nella dispersione, ed era già scritto: sotto SC κ ha p25-p75 **0,36-1,01**.
+> In un quarto dei casi il distacco non si comprime affatto.
+>
+> **Cosa resta costruito:** il kernel sa comprimere i distacchi (ciclo per giro, `s30` con
+> tre mutazioni provate, golden identici a termine spento), e i tre blocchi misurati stanno
+> nel prior con `promosso: false` e si ri-stimano a ogni gara. Il giorno in cui κ avrà la
+> forma giusta — condizionato a qualcosa di noto al congelamento, con una prereg nuova — non
+> c'è niente da costruire.
+
+<details><summary>Il testo originale della voce</summary>
+
 ### 2 · Il pacchetto neutralizzazione — quattro voci, un solo cluster
 **Perché:** è dove **quattro metriche su cinque** puntano il dito, ed è l'unico ramo in cui il
 motore nuovo **perde** contro il vecchio (n = 17, esatti 35,3% contro 41,2%). Va fatto insieme
@@ -236,6 +263,8 @@ o non va fatto.
   dopo, **402 su 713**. La versione causale onesta (`cum_time <= il mio`) accende 9 casi, di cui
   2 sbagliati. Va scritto che «indice di giro ≤ L» **non è** la definizione di informazione
   ammessa, o il prossimo vedrà il +54 di copertura e lo accenderà.
+
+</details>
 
 ### 3 · D1 sotto neutralizzazione: decidere, non aggiustare **[decisione del PO]**
 

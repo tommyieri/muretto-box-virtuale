@@ -110,8 +110,8 @@
   "promosso": false,
   "_targhetta": {
    "tipo": "MISURATO sul fondo (147 gare asciutte, 3.911 soste) — fattore di neutralizzazione della sosta",
-   "prodotto_da": "provenienza/esporta_neutralizzazione_fondo.mjs",
-   "fonte": "data/viste/neutralizzazione_fondo.json",
+   "prodotto_da": "provenienza/esporta_compressione_fondo.mjs",
+   "fonte": "data/viste/compressione_e_fattori_fondo.json",
    "metodo": "perdita realizzata rispetto al CAMPO / perdita verde del circuito; solo cum_time, nessun modello",
    "controllo": "le soste in VERDE danno 1,011 con IC95 [0,990; 1,030] — il metodo e' validato",
    "stato": "NON PROMOSSO: finche' promosso e' false questi numeri non toccano nessuna risposta. La promozione e' il cancello N3 di ai_lab/confronto/PREREG_neutralizzazione.md.",
@@ -157,8 +157,8 @@
   "promosso": false,
   "_targhetta": {
    "tipo": "MISURATO sul fondo — per quanti giri un regime osservato al giro L e' ancora in corso",
-   "prodotto_da": "provenienza/esporta_neutralizzazione_fondo.mjs",
-   "fonte": "data/viste/neutralizzazione_fondo.json",
+   "prodotto_da": "provenienza/esporta_compressione_fondo.mjs",
+   "fonte": "data/viste/compressione_e_fattori_fondo.json",
    "regola": "si estrapola fino al piu' grande k per cui il regime e' ancora in corso in almeno META' dei casi. Dichiarata PRIMA di guardare la tabella.",
    "stato": "NON PROMOSSO: finche' promosso e' false il costruttore usa PERSISTENZA_REGIME_GIRI = 1 per entrambi. La promozione e' il cancello N2 di ai_lab/confronto/PREREG_neutralizzazione.md.",
    "limite": "e' un prior MISURATO SUL FONDO, non informazione su QUESTA gara: dice quanto durano tipicamente i regimi, non quanto durera' questo. Va dichiarato nelle assunzioni dello scenario.",
@@ -201,7 +201,7 @@
   "_targhetta": {
    "tipo": "MISURATO sul fondo — contrazione del distacco dal leader per giro neutralizzato",
    "forma": "gap(k+1) = gap(k) * kappa(regime), dentro la finestra di persistenza del regime osservato",
-   "prodotto_da": "provenienza/esporta_neutralizzazione_fondo.mjs",
+   "prodotto_da": "provenienza/esporta_compressione_fondo.mjs",
    "protocollo": "ai_lab/confronto/PREREG_neutralizzazione.md, PREREG-2 (scritta prima della misura)",
    "perimetro": "fondo, gare asciutte, coppie (pilota, giro k->k+1) con gap(k) > 1,0 s, ne' pilota ne' leader in in-lap/out-lap, status per-auto presente",
    "controllo": "in VERDE kappa = 1,0312 (IC95 [1,0292; 1,0335]), dentro la banda 0,95-1,05 dichiarata prima: il metro regge. Il valore > 1 e' reale, non un difetto: in verde i distacchi CRESCONO.",

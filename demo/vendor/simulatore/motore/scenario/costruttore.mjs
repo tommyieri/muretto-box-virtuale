@@ -39,6 +39,56 @@ import { validaSimulazione } from './director.mjs';
 const PERSISTENZA_REGIME_GIRI = 1;
 const MIN_GIRI_BASE = 8;
 
+/**
+ * IL PACCHETTO NEUTRALIZZAZIONE (voce 2 del piano, `PREREG_neutralizzazione.md`).
+ *
+ * Quattro correzioni allo stesso meccanismo, dietro UN interruttore solo. Non è
+ * pigrizia: se si accendessero una alla volta, ognuna verrebbe misurata mentre le
+ * altre tre sono ancora sbagliate, e il numero non direbbe niente su nessuna. Il
+ * cancello è pre-registrato sul PACCHETTO.
+ *
+ *   N1 · il regime vale anche in PROIEZIONE PURA (senza soste nel piano). Oggi
+ *        `soste.length ? … : null` lo rende inerte proprio dove il bias è 1,964
+ *        s/giro contro 0,033 in verde.
+ *   N2 · la persistenza è MISURATA e DISTINTA per regime, invece di valere 1 per
+ *        entrambi senza targhetta.
+ *   N4 · i rivali assunti in sosta sotto neutralizzazione: l'assunzione
+ *        `stint !== 1` azzecca 25 rivali su 148 e a Monaco ne assume zero mentre
+ *        360 entrano davvero.
+ *
+ * (N3, il fattore misurato in casa, non passa da qui: vive in `pitloss.mjs`
+ * accanto alla perdita verde, che è dove sta la stessa domanda per il verde.)
+ *
+ * Spento = i numeri sono identici a prima, bit a bit. È la condizione C3 del
+ * cancello, ed è la più facile da rompere.
+ */
+function leggiPacchetto(contesto) {
+  const p = contesto.prior?.pacchetto_neutralizzazione;
+  const attivo = p?.attivo === true;
+  return {
+    attivo,
+    regimeInProiezionePura: attivo,
+    sosteRivali: attivo ? (p.soste_rivali ?? 'nessuna') : 'stint1',
+    persistenzaDi: (regime) => {
+      if (!attivo) return PERSISTENZA_REGIME_GIRI;
+      const m = contesto.prior?.persistenza_regime_interna;
+      const g = m?.promosso === true ? m?.[regime]?.giri : null;
+      return typeof g === 'number' ? g : PERSISTENZA_REGIME_GIRI;
+    },
+    // La COMPRESSIONE dei distacchi: κ misurato sul fondo, applicato solo dentro
+    // la finestra di persistenza del regime OSSERVATO al congelamento. Fuori da
+    // lì il regime non si estrapola — prevedere una Safety Car futura è E14, e
+    // nessun guadagno la rende ammissibile.
+    kappaDi: (regime) => {
+      if (!attivo || regime === null || regime === 'RED') return null;
+      const m = contesto.prior?.compressione_distacchi_interna;
+      if (m?.promosso !== true) return null;
+      const k = m?.[regime]?.kappa_mediano;
+      return typeof k === 'number' ? k : null;
+    },
+  };
+}
+
 // `regimeAlCongelamento` non vive piu' qui: e' `regimeDiCella` in
 // provenienza/definizioni.mjs, l'unico proprietario delle definizioni derivate.
 const regimeAlCongelamento = regimeDiCella;
@@ -143,11 +193,23 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   // 'RED' non entra qui come regime: entra come STATO DI PREZZO, ed e' l'unico
   // posto in cui la rossa tocca la fisica.
   const regimeOsservato = garaSospesa(mia) ? 'RED' : regimeAlCongelamento(mia);
+  const pacchetto = leggiPacchetto(contesto);
+  // N2 — la finestra di persistenza è misurata e distinta per regime quando il
+  // pacchetto è acceso; altrimenti resta la costante 1 di sempre.
+  const persistenza = pacchetto.persistenzaDi(regimeOsservato);
   const regimeDi = (sosta, indice) => (
-    regimeOsservato !== null && indice === 0 && sosta.giro - freezeLap <= PERSISTENZA_REGIME_GIRI
+    regimeOsservato !== null && indice === 0 && sosta.giro - freezeLap <= persistenza
       ? regimeOsservato : null
   );
-  const regime = soste.length ? regimeDi(soste[0], 0) : null;
+  // N1 — IL REGIME VALE ANCHE IN PROIEZIONE PURA. Senza soste nel piano il
+  // meccanismo era inerte: `soste.length ? … : null`. Ma "non mi fermo" sotto
+  // Safety Car non è uno scenario in verde — è uno scenario in cui il CAMPO
+  // viaggia neutralizzato, ed è il ramo dove il bias del motore vale 1,964
+  // s/giro contro 0,033 in verde. Con il pacchetto spento il comportamento è
+  // identico al bit (la condizione C3 del cancello).
+  const regime = soste.length
+    ? regimeDi(soste[0], 0)
+    : (pacchetto.regimeInProiezionePura ? regimeOsservato : null);
   const giroPrimaSosta = soste.length ? soste[0].giro : null;
   if (regimeOsservato !== null && regime === null && giroPrimaSosta !== null) {
     dichiara('REGIME_NON_ESTRAPOLATO',
@@ -181,16 +243,47 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
     : {};
   let rivaliAssunti = 0;
   if (regime !== null) {
-    for (const [drv, c] of celleAlCongelamento) {
-      if (drv === pilota) continue;
-      if (c.stint !== 1) continue; // solo chi è ancora al primo stint: non si è ancora fermato
-      pits[drv] = [{ lap: giroPrimaSosta, perdita: perditaBox(prior, gara, regime).perdita }];
-      rivaliAssunti += 1;
+    // N4 — LE SOSTE DEI RIVALI. `stint !== 1` ferma 148 rivali e ne azzecca 25
+    // (16,9%), e a Monaco ne assume ZERO mentre 360 entrano davvero: l'assunzione
+    // non è conservativa, è semplicemente sbagliata in due versi diversi a
+    // seconda del circuito. Con il pacchetto acceso non si assume nessuna sosta
+    // altrui — un rivale che non ha dichiarato un piano non ne ha uno.
+    // Le due letture di questa voce NON concordano (esatti su, bias giù):
+    // il cancello pre-registrato decide sul BIAS, e sta scritto prima.
+    if (pacchetto.sosteRivali === 'stint1' && giroPrimaSosta !== null) {
+      for (const [drv, c] of celleAlCongelamento) {
+        if (drv === pilota) continue;
+        if (c.stint !== 1) continue; // solo chi è ancora al primo stint: non si è ancora fermato
+        pits[drv] = [{ lap: giroPrimaSosta, perdita: perditaBox(prior, gara, regime).perdita }];
+        rivaliAssunti += 1;
+      }
+      dichiara('SOSTE_RIVALI_SC',
+        `sotto ${regime} si assume che i rivali ancora al primo stint si fermino allo stesso giro (${giroPrimaSosta}) — una sola sosta, la loro: al rivale non si attribuisce un PIANO che non ha dichiarato`,
+        rivaliAssunti,
+        'ASSUNZIONE, non misura: sostituisce la vecchia SOSTE_RIVALI_SC del repo precedente. Non cambia i TEMPI (nel kernel le auto non interagiscono), cambia le POSIZIONI.');
+    } else {
+      dichiara('NESSUNA_SOSTA_ASSUNTA_AI_RIVALI',
+        `sotto ${regime} non si assume nessuna sosta altrui: l'assunzione "chi è al primo stint si ferma" azzecca 25 rivali su 148 (16,9%) e a Monaco ne prevede zero mentre 360 entrano davvero`,
+        1, 'misurato sul fondo 2026 — pacchetto neutralizzazione, voce N4 di ai_lab/confronto/PREREG_neutralizzazione.md');
     }
-    dichiara('SOSTE_RIVALI_SC',
-      `sotto ${regime} si assume che i rivali ancora al primo stint si fermino allo stesso giro (${giroPrimaSosta}) — una sola sosta, la loro: al rivale non si attribuisce un PIANO che non ha dichiarato`,
-      rivaliAssunti,
-      'ASSUNZIONE, non misura: sostituisce la vecchia SOSTE_RIVALI_SC del repo precedente. Non cambia i TEMPI (nel kernel le auto non interagiscono), cambia le POSIZIONI.');
+  }
+
+  // ── la COMPRESSIONE DEI DISTACCHI, dal regime osservato al congelamento ───
+  // Vale sul regime OSSERVATO, non su quello della sosta: e' il campo intero a
+  // viaggiare neutralizzato, anche di chi non si ferma affatto. E' la voce che
+  // rende il regime finalmente CONSUMATO da qualcosa — prima alimentava solo il
+  // prezzo della sosta, quindi in proiezione pura era un no-op misurato.
+  const kappa = pacchetto.kappaDi(regimeOsservato);
+  const neutralizzazione = kappa === null ? null
+    : { kappa, fino: Math.min(freezeLap + pacchetto.persistenzaDi(regimeOsservato), giroFinale) };
+  if (neutralizzazione !== null) {
+    const m = prior.compressione_distacchi_interna?.[regimeOsservato];
+    dichiara('DISTACCHI_COMPRESSI',
+      `al congelamento c'è ${regimeOsservato}: per ${neutralizzazione.fino - freezeLap} giri i distacchi dal leader si contraggono di ${kappa} a giro, invece di evolvere dal passo`,
+      neutralizzazione.fino - freezeLap,
+      `MISURATO sul fondo: mediana di ${m?.n ?? '—'} coppie su ${m?.n_gare ?? '—'} gare`
+      + `${m?.ic95_mediana_blocchi_gare ? ` (IC95 ${m.ic95_mediana_blocchi_gare[0]}–${m.ic95_mediana_blocchi_gare[1]})` : ''}`
+      + ` — oltre la finestra il regime NON si estrapola (E14)`);
   }
 
   // ── passo: base misurata togliendo gli stessi termini che si ri-aggiungono ─
@@ -227,7 +320,7 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   }
 
   return {
-    state, pace, freezeLap, steps, pits,
+    state, pace, freezeLap, steps, pits, neutralizzazione,
     assunzioni,
     perdita,
     orizzonte: { giroFinale, steps, orizzonte_validato: orizzonteValidato, oltre_il_validato: orizzonteValidato !== null && steps > orizzonteValidato },
@@ -333,7 +426,8 @@ function materializzaPerDirector(scenario, risultato) {
 export function eseguiEValida(scenario, costantiDirector) {
   const risultato = simulate({
     state: scenario.state, pace: scenario.pace, freezeLap: scenario.freezeLap,
-    steps: scenario.steps, pits: scenario.pits, traccia: true,
+    steps: scenario.steps, pits: scenario.pits,
+    neutralizzazione: scenario.neutralizzazione ?? null, traccia: true,
   });
   const direttore = validaSimulazione(materializzaPerDirector(scenario, risultato), costantiDirector);
   return { risultato, direttore };

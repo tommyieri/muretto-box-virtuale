@@ -49,6 +49,7 @@ function contestoCon(nomeSito, acceso) {
       // N2 e N3 sono promossi INSIEME al pacchetto: e' un pacchetto, non un menu.
       persistenza_regime_interna: { ...base.prior.persistenza_regime_interna, promosso: acceso },
       fattori_neutralizzazione_interni: { ...base.prior.fattori_neutralizzazione_interni, promosso: acceso },
+      compressione_distacchi_interna: { ...base.prior.compressione_distacchi_interna, promosso: acceso },
     },
   };
 }
@@ -60,8 +61,17 @@ function proietta(garaSim, g, L, H, contesto, pilota) {
     sc = costruisciScenario({ gara: garaSim, freezeLap: L, pilota, piano: [] },
       { ...contesto, nGiriGara: g.nGiri, giroFinale: Math.min(L + H, g.nGiri) });
   } catch { return null; }
-  const r = simulate({ state: sc.state, pace: sc.pace, freezeLap: L, steps: H, pits: sc.pits });
-  return { cum: r.cum, regime: sc._interno?.regime ?? null };
+  // `neutralizzazione` viaggia con lo scenario come `pits` e `pace`. Dimenticarla
+  // qui e' l'errore che questo banco esiste per misurare: la prima versione di
+  // questo file la ometteva, e il cancello misurava diligentemente un motore
+  // senza il termine che doveva giudicare — dando "identico" e sembrando una
+  // scoperta. E17 non e' un errore di chi scrisse il vecchio repo: e' una forma
+  // che si ripresenta a chiunque chiami il kernel da un secondo posto.
+  const r = simulate({
+    state: sc.state, pace: sc.pace, freezeLap: L, steps: H, pits: sc.pits,
+    neutralizzazione: sc.neutralizzazione ?? null,
+  });
+  return { cum: r.cum, regime: sc._interno?.regime ?? null, neutra: sc.neutralizzazione ?? null };
 }
 
 const righe = [];   // una per (gara, L, H, pilota)

@@ -115,7 +115,7 @@ rodaggio se M1 non avesse retto.
 
 ## Quello che è stato misurato, e che resta
 
-**N3 · il fattore, misurato in casa sul FONDO** (`esporta_neutralizzazione_fondo.mjs`,
+**N3 · il fattore, misurato in casa sul FONDO** (`esporta_compressione_fondo.mjs`,
 147 gare asciutte, 3.911 soste). Il controllo che valida il metodo regge: le soste in
 verde danno **1,011** con IC95 [0,990; 1,030].
 
@@ -308,3 +308,69 @@ abbastanza da cambiare il verdetto di un cancello che si gioca sui centesimi.
 pezzo più delicato del repo e merita di essere fatta all'inizio di una sessione, non alla
 fine. Ciò che serve è tutto qui: la forma, il protocollo, κ misurato con il suo controllo,
 il cancello (le stesse C1–C4) e la sonda obbligatoria a κ = 1.
+
+## ESITO della PREREG-2 — 01/08/2026: **NULL**, e il perche' e' netto
+
+Il termine e' costruito, misurato e **non passa**. Resta spento.
+
+```
+C1  |bias| scende su tutti e tre gli orizzonti          PASSA
+      3 giri   +1,6213  ->  -0,7869
+      5 giri   +0,7528  ->  -0,7004
+     10 giri   +0,4418  ->  -0,3359
+C2  |bias| scende in >= 7 gare su 8 giudicabili         FALLISCE (4 su 7)
+C3  congelamenti verdi identici AL BIT                  PASSA (12.237 su 12.237)
+C4  M5 sui casi con regime                              non misurata: il verdetto
+                                                        era gia' deciso da C2
+```
+
+### Cosa dicono i numeri, oltre al verdetto
+
+**Il fenomeno e' vero e grande.** Dove il bias era grosso, la compressione lo
+demolisce: Giappone **1,9649 -> 0,3368**, Austria **0,9576 -> 0,1651**, Cina
+1,0244 -> 0,3949. Non e' un effetto marginale.
+
+**Ma un κ solo overcorregge.** Il segno del bias aggregato si **ribalta**, da +1,62 a
+−0,79: il motore passa dal mettere i piloti troppo indietro al metterli troppo avanti.
+E le tre gare che peggiorano sono esattamente quelle che partivano quasi giuste —
+Belgio 0,1646 -> 1,2483, Canada 0,2915 -> 1,6377, Gran Bretagna 0,1715 -> 2,2867.
+
+**Era prevedibile dalla dispersione, ed era gia' scritto:** sotto SC il κ misurato ha
+p25-p75 **0,36-1,01**, con mediane per gara da −0,54 a +1,31. In un quarto dei casi il
+distacco non si comprime affatto. Applicare la mediana a tutti significa comprimere
+forte anche dove non succedeva niente.
+
+### La strada che questo esito indica — e che NON si prende adesso
+
+κ non e' una costante del regime: e' una distribuzione. La direzione sensata e'
+condizionarlo a qualcosa di **noto al congelamento** — da quanti giri dura il regime,
+oppure l'ampiezza del distacco stesso, dato che comprimere 20 s e comprimere 2 s non
+sono lo stesso fenomeno fisico.
+
+Ma quella e' **un'ipotesi nuova con una prereg nuova**. Ritoccare κ adesso, con le
+tabelle sotto gli occhi, finche' C2 non passa, sarebbe E08 nella sua forma piu' comoda:
+il termine passerebbe, e nessuno saprebbe piu' se e' vero.
+
+### Cosa resta acceso, cosa resta spento
+
+**Spento tutto**: `pacchetto_neutralizzazione` non esiste nel prior di produzione, e i
+tre blocchi misurati (`fattori_neutralizzazione_interni`, `persistenza_regime_interna`,
+`compressione_distacchi_interna`) hanno `promosso: false`.
+
+**Resta in piedi il meccanismo**, e non e' poco: il kernel sa comprimere i distacchi, la
+sentinella `s30` lo verifica in cinque modi con tre mutazioni provate, il ciclo per giro
+e' scritto e i golden lo attraversano identici. Il giorno in cui κ avra' la forma giusta,
+non c'e' niente da costruire.
+
+### Due difetti miei, in questo giro
+
+1. **Il banco chiamava `simulate` da se' e non passava `neutralizzazione`.** Il cancello
+   ha misurato diligentemente un motore senza il termine che doveva giudicare, e ha
+   detto «identico» — sembrando una scoperta. E' la forma esatta di E17, e mi e'
+   capitata **mentre stavo correggendo la stessa cosa in `piano.mjs`**. Un secondo posto
+   che chiama il kernel e' sempre un secondo posto che puo' dimenticare un pezzo.
+2. **Avevo chiamato la vista con il nome di un file in quarantena.** `s07` l'ha preso
+   subito: due file quasi omonimi, uno onesto e uno costruito dal futuro, sono un
+   incidente che aspetta il prossimo lettore. Rinominato — e la sentinella vieta anche
+   solo di NOMINARE quel materiale in un sorgente, il che ha reso interessante scrivere
+   il commento che lo spiega.

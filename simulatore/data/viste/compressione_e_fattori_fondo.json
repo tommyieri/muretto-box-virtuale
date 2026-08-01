@@ -7,7 +7,7 @@
   "incertezza": "bootstrap 2000, blocchi = gare (E11), seme 20260801",
   "perimetro": "gare asciutte del fondo con perdita verde di circuito dichiarata",
   "min_riferimenti": 5,
-  "prodotto_da": "provenienza/esporta_neutralizzazione_fondo.mjs",
+  "prodotto_da": "provenienza/esporta_compressione_fondo.mjs",
   "non_promuove": "questa e' una VISTA. La promozione a modello ha il suo cancello: ai_lab/confronto/PREREG_neutralizzazione.md, voce N3"
  },
  "n_gare": 147,

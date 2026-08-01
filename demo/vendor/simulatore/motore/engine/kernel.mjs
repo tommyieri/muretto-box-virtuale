@@ -41,6 +41,40 @@
 
 const interoNonNegativo = (v) => Number.isInteger(v) && v >= 0;
 
+// LA NEUTRALIZZAZIONE, ed e' l'unica cosa in questo file che guarda due auto
+// insieme. Va spiegata, perche' sembra contraddire la riga piu' importante qui
+// sopra.
+//
+// «Le auto non interagiscono» riguarda i DUELLI: chi passa chi, la difesa, la
+// scia. Quelli non si simulano, e continuano a non simularsi. Una Safety Car non
+// e' un duello: e' un vincolo ESTERNO imposto a tutto il campo insieme, che
+// nessuna auto sceglie e nessuna puo' rifiutare. Misurato sul fondo: sotto SC il
+// distacco dal leader si contrae del 31% a ogni giro (kappa 0,691, IC95
+// [0,614; 0,772] su 71 gare), sotto VSC del 7% (kappa 0,930). In verde CRESCE
+// dell'1-3%, ed e' il passo a produrlo — per questo la compressione sostituisce
+// l'evoluzione da passo dentro la finestra, invece di sommarcisi.
+//
+// Senza questo termine il motore proietta passo verde durante una Safety Car e
+// sbaglia il distacco di tutto cio' che la Safety Car ha compattato: e' il
+// difetto da 1,964 s/giro sotto regime contro 0,033 in verde.
+//
+// `null` o kappa = 1 -> termine spento, e i numeri sono identici al bit a prima
+// che esistesse. Protocollo e cancello: ai_lab/confronto/PREREG_neutralizzazione.md.
+function normalizzaNeutralizzazione(neutralizzazione, freezeLap, steps) {
+  if (neutralizzazione === null || neutralizzazione === undefined) return null;
+  if (typeof neutralizzazione !== 'object') throw new Error(`neutralizzazione non utilizzabile: ${JSON.stringify(neutralizzazione)}`);
+  const { kappa, fino } = neutralizzazione;
+  if (typeof kappa !== 'number' || !Number.isFinite(kappa) || kappa <= 0) {
+    throw new Error(`neutralizzazione.kappa non utilizzabile (serve un numero > 0): ${JSON.stringify(kappa)}`);
+  }
+  if (!Number.isInteger(fino)) throw new Error(`neutralizzazione.fino deve essere intero: ${JSON.stringify(fino)}`);
+  if (fino > freezeLap + steps) {
+    throw new Error(`neutralizzazione fino al giro ${fino}, oltre l'orizzonte ${freezeLap + steps}: una finestra che non succede e' un no-op silenzioso`);
+  }
+  if (kappa === 1 || fino <= freezeLap) return null;   // nessuna compressione: nessun percorso separato
+  return { kappa, fino };
+}
+
 // Perdita applicata INTERA sul giro della sosta. È la stessa convenzione con
 // cui il prior la misura — (in-lap + out-lap) meno due giri di passo pulito —
 // quindi NON va ri-applicata una seconda quota sull'out-lap: sarebbe il doppio
@@ -82,7 +116,7 @@ function normalizzaSoste(pits, pilotiNoti) {
  *          inventato per chi non aveva passo (E06 — errori da 480 s), mai una
  *          somma parziale spacciata per cum a fine orizzonte.
  */
-export function simulate({ state, pace, freezeLap, steps, pits = {}, traccia = false }) {
+export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizzazione = null, traccia = false }) {
   if (!interoNonNegativo(freezeLap)) throw new Error(`freezeLap deve essere intero ≥ 0: ${JSON.stringify(freezeLap)}`);
   if (!Number.isInteger(steps) || steps < 1) throw new Error(`steps deve essere intero ≥ 1: ${JSON.stringify(steps)}`);
   if (typeof pace !== 'function') throw new Error('pace deve essere una funzione (pilota, giro, età) → secondi | null');
@@ -101,6 +135,7 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, traccia = f
   }
 
   const soste = normalizzaSoste(pits, piloti);
+  const neutra = normalizzaNeutralizzazione(neutralizzazione, freezeLap, steps);
   const orizzonte = [];
   for (let i = 1; i <= steps; i += 1) orizzonte.push(freezeLap + i);
   for (const [drv, perGiro] of soste) {
@@ -125,6 +160,12 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, traccia = f
     esclusi.push({ drv, motivo });
   };
 
+  // ── validazione dello stato, e lo stato di marcia di ogni pilota ──────────
+  // Il ciclo è PER GIRO e poi per pilota, non il contrario. Ci è voluto per la
+  // neutralizzazione — comprimere un distacco richiede tutto il campo allo
+  // stesso giro — e a termine spento produce esattamente gli stessi numeri:
+  // ogni pilota accumula il suo cum indipendentemente, come prima.
+  const marcia = [];
   for (const voce of state) {
     const { drv, cum_time, tyre_age } = voce;
     if (voce.lap < freezeLap) {
@@ -145,50 +186,92 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, traccia = f
     if (typeof tyre_age !== 'number' || !Number.isFinite(tyre_age) || tyre_age < 0) {
       throw new Error(`tyre_age di ${drv} non utilizzabile: ${JSON.stringify(tyre_age)}`);
     }
+    marcia.push({
+      drv,
+      c: cum_time,
+      e: tyre_age,            // età alla FINE del giro precedente
+      attivo: true,
+      passi: tracce ? [] : null,
+      perGiro: soste.get(drv),
+    });
+  }
 
-    const perGiro = soste.get(drv);
-    let c = cum_time;
-    let e = tyre_age; // età alla FINE del giro precedente
-    let completo = true;
-    const passi = tracce ? [] : null;
+  for (const giro of orizzonte) {
+    // Il leader e i distacchi PRIMA di avanzare: la compressione è definita
+    // come gap(k+1) = gap(k)·κ, cioè sul distacco di fine giro precedente. È
+    // la stessa costruzione con cui κ è stato misurato sul fondo.
+    const comprime = neutra !== null && giro <= neutra.fino;
+    let capofila = null;
+    const gapPrima = new Map();
+    if (comprime) {
+      for (const m of marcia) {
+        if (!m.attivo) continue;
+        if (capofila === null || m.c < capofila.c) capofila = m;
+      }
+      if (capofila) for (const m of marcia) if (m.attivo) gapPrima.set(m.drv, m.c - capofila.c);
+    }
 
-    for (const giro of orizzonte) {
-      const etaDelGiro = e + 1;
-      const t = pace(drv, giro, etaDelGiro);
+    const fermiQuestoGiro = new Set();
+    for (const m of marcia) {
+      if (!m.attivo) continue;
+      const etaDelGiro = m.e + 1;
+      const t = pace(m.drv, giro, etaDelGiro);
       if (t === null || t === undefined) {
         // Regola 6: qui finisce la corsa di questo pilota. Il cum accumulato
         // fin qui NON diventa il suo risultato: sarebbe un numero che sembra
         // vero (E06).
-        escludi(drv, `passo assente al giro ${giro}`);
-        completo = false;
-        break;
+        escludi(m.drv, `passo assente al giro ${giro}`);
+        m.attivo = false;
+        continue;
       }
       if (typeof t !== 'number' || !Number.isFinite(t)) {
-        throw new Error(`pace(${drv}, ${giro}, ${etaDelGiro}) ha restituito ${JSON.stringify(t)}: né secondi né null`);
+        throw new Error(`pace(${m.drv}, ${giro}, ${etaDelGiro}) ha restituito ${JSON.stringify(t)}: né secondi né null`);
       }
-      c += t;
-      const perdita = perGiro?.get(giro);
+      m.c += t;
+      const perdita = m.perGiro?.get(giro);
       const inLap = perdita !== undefined;
       if (inLap) {
-        c += perdita;
-        e = 0; // la sosta monta il set nuovo: al giro dopo l'età è 1
+        m.c += perdita;
+        m.e = 0; // la sosta monta il set nuovo: al giro dopo l'età è 1
+        fermiQuestoGiro.add(m.drv);
       } else {
-        e = etaDelGiro;
+        m.e = etaDelGiro;
       }
-      // La traccia riporta ciò che il kernel SA: `out_lap` non c'è, perché
-      // dipende anche dallo stato al congelamento (un pilota può essere entrato
-      // ai box proprio al giro Lf) e quello lo conosce chi ha costruito lo
-      // scenario, non il kernel.
-      if (passi) {
-        passi.push({ lap: giro, lap_time: inLap ? t + perdita : t, cum_time: c, tyre_age: etaDelGiro, in_lap: inLap });
+      m.ultimoGiro = { lap: giro, lap_time: inLap ? t + perdita : t, cum_time: null, tyre_age: etaDelGiro, in_lap: inLap };
+    }
+
+    // ── la compressione, dopo che tutti hanno percorso il giro ──────────────
+    // Chi è ENTRATO AI BOX in questo giro non si comprime: il suo distacco lo
+    // decide la sosta, non la vettura di sicurezza — ed è esattamente il caso
+    // che la misura di κ escludeva (né pilota né leader in in-lap o out-lap).
+    if (comprime && capofila !== null && capofila.attivo && !fermiQuestoGiro.has(capofila.drv)) {
+      for (const m of marcia) {
+        if (!m.attivo || m.drv === capofila.drv) continue;
+        if (fermiQuestoGiro.has(m.drv)) continue;
+        const g = gapPrima.get(m.drv);
+        if (g === undefined) continue;
+        m.c = capofila.c + g * neutra.kappa;
       }
     }
 
-    if (completo) {
-      cum[drv] = c;
-      eta[drv] = e;
-      if (tracce) tracce[drv] = passi;
+    // La traccia riporta ciò che il kernel SA: `out_lap` non c'è, perché
+    // dipende anche dallo stato al congelamento (un pilota può essere entrato
+    // ai box proprio al giro Lf) e quello lo conosce chi ha costruito lo
+    // scenario, non il kernel. Il `cum_time` si scrive QUI, dopo l'eventuale
+    // compressione, così la traccia è ciò che il pilota ha davvero.
+    if (tracce) {
+      for (const m of marcia) {
+        if (!m.attivo || !m.ultimoGiro) continue;
+        m.passi.push({ ...m.ultimoGiro, cum_time: m.c });   // l'ordine delle chiavi resta quello di sempre: i golden confrontano JSON
+      }
     }
+  }
+
+  for (const m of marcia) {
+    if (!m.attivo) continue;
+    cum[m.drv] = m.c;
+    eta[m.drv] = m.e;
+    if (tracce) tracce[m.drv] = m.passi;
   }
 
   // Un pari merito non è una risposta: l'ordine alfabetico a parità di cum è
