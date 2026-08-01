@@ -41,8 +41,8 @@
    "byte": 3585
   },
   "scenario/costruttore.mjs": {
-   "sha256_sorgente": "dc941566e73d7fc3cc18be82d4c271dff29eb2fc8ed9d1953e9677908c3cdb7f",
-   "byte": 38892
+   "sha256_sorgente": "95c3def66f2cf0d6aa280a60fe91a648d9ba49dd27af2491178284ca2ac9efd2",
+   "byte": 40308
   },
   "scenario/director.mjs": {
    "sha256_sorgente": "a305da62cf49576be92050910d7f9fe8a5abe1bedebb49334b8fcf0e016e4e9a",
@@ -57,8 +57,8 @@
    "byte": 10293
   },
   "contesto_live.json": {
-   "sha256_sorgente": "7a9b436c723b1f816375c53ee73cd121781fc8f065b5bcb1b50664713a7f41bc",
-   "byte": 50849,
+   "sha256_sorgente": "2d01bdc4b0a76bd22ba828693a28c9c1aad5f54127c04629e54e20f6ca886f0a",
+   "byte": 52000,
    "data": "2026-08-01"
   }
  }

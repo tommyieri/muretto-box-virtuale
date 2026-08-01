@@ -270,6 +270,30 @@ o non va fatto.
 
 </details>
 
+### ~~3 · D1 sotto neutralizzazione~~ — **DECISA il 01/08**, e non con (a) né con (b)
+
+> **Il PO ha delegato la scelta.** Prima di decidere sono andato a vedere cosa la pagina
+> dice **oggi**, e la risposta ha cambiato la domanda: il record pubblica già
+> `livello: 0.8` **accanto a** `copertura: 0.7857`, con la targhetta «copre il 78,6% fuori
+> campione». Non si stava pubblicando niente di falso.
+>
+> Il difetto era un altro, e più sottile: **i due numeri stavano affiancati e toccava al
+> lettore accorgersi che non coincidono.**
+>
+> **Quindi né (a) né (b).** Non si ri-registra il livello — sarebbe riscrivere un cancello
+> dopo averne visto l'esito (E08), e il piano stesso lo diceva. Non si smette di pubblicare
+> la banda — toglierebbe informazione proprio dove la decisione è più difficile. Il record
+> ora porta `livello_raggiunto: false` e un avviso che dice *perché*: che quel livello non è
+> attingibile con l'informazione al congelamento, che allargare la banda **peggiora**
+> (77,4% → 58,3% fuori campione), e che togliere il bias dalla previsione ha reso **+1,2
+> punti** e non è bastato.
+>
+> **`D1` resta rosso**, ed è giusto così: è la registrazione onesta del fatto che il modello
+> non arriva dove speravamo. Un cancello rosso che dice la verità vale più di un cancello
+> verde riscritto.
+
+<details><summary>Il testo originale della voce</summary>
+
 ### 3 · D1 sotto neutralizzazione: decidere, non aggiustare **[decisione del PO]**
 
 > **01/08 — il PO ha scelto (c), aspettare la voce 1. La voce 1 è stata fatta e la
@@ -296,6 +320,8 @@ dichiarando che 0,8 non è attingibile; (b) non pubblicare banda sotto neutraliz
 (c) aspettare la voce 1, che è l'unica che può spostare il numero davvero.
 **Ri-registrare adesso, dopo aver visto il risultato, sarebbe E08** — per questo la voce è
 qui e non è stata eseguita.
+
+</details>
 
 ### 4 · `MIN_GIRI_BASE` da 8 a 4, e dichiarare il «non ancora»
 **Perché:** la soglia nasce come criterio di **ammissione del banco** ed è migrata nel motore

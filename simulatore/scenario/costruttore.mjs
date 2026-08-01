@@ -500,6 +500,23 @@ export function bandaDiRientro({ banda, gara, regime, posizione, suQuanti }) {
     semi_ampiezza: c.semi_ampiezza,
     livello: banda.livello,
     copertura_fuori_campione: c.copertura_fuori_campione,
+    // IL LIVELLO PROMESSO E QUELLO RAGGIUNTO, DETTI INSIEME.
+    //
+    // Prima stavano affiancati — `livello: 0.8` accanto a `copertura: 0.7857` — e
+    // toccava al lettore accorgersi che non coincidono. Sotto neutralizzazione NON
+    // coincidono: la banda copre il 78,6% contro l'80% pre-registrato, e il
+    // cancello D1 e' rosso per questo. E' una decisione presa il 01/08 al posto
+    // delle due che il piano proponeva: non si ri-registra il livello (sarebbe
+    // riscrivere un cancello dopo averne visto l'esito, E08) e non si smette di
+    // pubblicare la banda (toglierebbe informazione dove la decisione e' piu'
+    // difficile). Si dice che il livello non e' stato raggiunto, dove si vede.
+    livello_raggiunto: c.copertura_fuori_campione >= banda.livello,
+    avviso_livello: c.copertura_fuori_campione >= banda.livello ? null
+      : `questa banda NON raggiunge il livello dichiarato: copre il ${(100 * c.copertura_fuori_campione).toFixed(1)}% `
+        + `contro il ${(100 * banda.livello).toFixed(0)}% pre-registrato. Con l'informazione disponibile al congelamento `
+        + `quel livello non e' attingibile sotto neutralizzazione, ed e' misurato: allargare la banda peggiora `
+        + `(77,4% -> 58,3% fuori campione con due gradi di liberta'), e togliere il bias dalla previsione ha reso `
+        + `solo +1,2 punti. Resta un cancello rosso e visibile, non un numero aggiustato`,
     targhetta: c.targhetta,
     // l'avviso di circuito viaggia col numero, non in un README
     circuito_sotto_livello: debole,

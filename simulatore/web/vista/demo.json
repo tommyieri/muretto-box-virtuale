@@ -83,6 +83,8 @@
      "semi_ampiezza": 2,
      "livello": 0.8,
      "copertura_fuori_campione": 0.8822,
+     "livello_raggiunto": true,
+     "avviso_livello": null,
      "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
      "circuito_sotto_livello": {
       "gara": "Australia",
@@ -563,6 +565,8 @@
      "semi_ampiezza": 2,
      "livello": 0.8,
      "copertura_fuori_campione": 0.8822,
+     "livello_raggiunto": true,
+     "avviso_livello": null,
      "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
      "circuito_sotto_livello": null,
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
@@ -1098,6 +1102,8 @@
      "semi_ampiezza": 2,
      "livello": 0.8,
      "copertura_fuori_campione": 0.8822,
+     "livello_raggiunto": true,
+     "avviso_livello": null,
      "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
      "circuito_sotto_livello": {
       "gara": "Belgio",
@@ -1577,6 +1583,8 @@
      "semi_ampiezza": 2,
      "livello": 0.8,
      "copertura_fuori_campione": 0.8822,
+     "livello_raggiunto": true,
+     "avviso_livello": null,
      "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
      "circuito_sotto_livello": {
       "gara": "Canada",
@@ -2096,6 +2104,8 @@
      "semi_ampiezza": 2,
      "livello": 0.8,
      "copertura_fuori_campione": 0.8822,
+     "livello_raggiunto": true,
+     "avviso_livello": null,
      "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
      "circuito_sotto_livello": {
       "gara": "Cina",
@@ -2584,6 +2594,8 @@
      "semi_ampiezza": 2,
      "livello": 0.8,
      "copertura_fuori_campione": 0.8822,
+     "livello_raggiunto": true,
+     "avviso_livello": null,
      "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
      "circuito_sotto_livello": null,
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
@@ -3091,6 +3103,8 @@
      "semi_ampiezza": 2,
      "livello": 0.8,
      "copertura_fuori_campione": 0.8822,
+     "livello_raggiunto": true,
+     "avviso_livello": null,
      "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
      "circuito_sotto_livello": null,
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
@@ -3608,6 +3622,8 @@
      "semi_ampiezza": 2,
      "livello": 0.8,
      "copertura_fuori_campione": 0.8822,
+     "livello_raggiunto": true,
+     "avviso_livello": null,
      "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
      "circuito_sotto_livello": null,
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
@@ -4102,6 +4118,8 @@
      "semi_ampiezza": 2,
      "livello": 0.8,
      "copertura_fuori_campione": 0.8822,
+     "livello_raggiunto": true,
+     "avviso_livello": null,
      "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
      "circuito_sotto_livello": null,
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
@@ -4655,6 +4673,8 @@
      "semi_ampiezza": 2,
      "livello": 0.8,
      "copertura_fuori_campione": 0.8822,
+     "livello_raggiunto": true,
+     "avviso_livello": null,
      "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
      "circuito_sotto_livello": null,
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
@@ -5175,6 +5195,8 @@
      "semi_ampiezza": 2,
      "livello": 0.8,
      "copertura_fuori_campione": 0.8822,
+     "livello_raggiunto": true,
+     "avviso_livello": null,
      "targhetta": "banda ±2 posizioni, misurata su 314 soste vere del 2026: copre il 88.2% fuori campione",
      "circuito_sotto_livello": null,
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
@@ -5719,6 +5741,8 @@
      "semi_ampiezza": 3,
      "livello": 0.8,
      "copertura_fuori_campione": 0.7857,
+     "livello_raggiunto": false,
+     "avviso_livello": "questa banda NON raggiunge il livello dichiarato: copre il 78.6% contro il 80% pre-registrato. Con l'informazione disponibile al congelamento quel livello non e' attingibile sotto neutralizzazione, ed e' misurato: allargare la banda peggiora (77,4% -> 58,3% fuori campione con due gradi di liberta'), e togliere il bias dalla previsione ha reso solo +1,2 punti. Resta un cancello rosso e visibile, non un numero aggiustato",
      "targhetta": "banda ±3 posizioni, misurata su 84 soste vere del 2026: copre il 78.6% fuori campione",
      "circuito_sotto_livello": null,
      "cosa_non_e": "NON è una probabilità di sorpasso. Il duello non si simula: due auto possono attraversarsi nel kernel, e questa banda è il modo onesto di dirlo. Nessun campo qui dentro dice CHI supera CHI, e nel 2026 il DRS non esiste"
