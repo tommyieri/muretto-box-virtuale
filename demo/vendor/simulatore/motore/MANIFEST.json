@@ -21,8 +21,8 @@
    "byte": 4257
   },
   "provenienza/definizioni.mjs": {
-   "sha256_sorgente": "704fb67310142d339c45566ed49c6809a59d29e27895a2b33bae488711d456ff",
-   "byte": 6010
+   "sha256_sorgente": "c5196421cf85e62b5267be18f7def476e4fea83415efe6987c4345ed653b8ab1",
+   "byte": 6888
   },
   "provenienza/gare_indice.mjs": {
    "sha256_sorgente": "dd70fcf9df546225b11f4160fdc9065d3713e688626421cf559f1029ee5e9ecc",
@@ -41,8 +41,8 @@
    "byte": 3585
   },
   "scenario/costruttore.mjs": {
-   "sha256_sorgente": "e70e93bc14b5a3ea93577174e30363fdfdb6a89aa11c9f7f3dfbb081d810881a",
-   "byte": 25897
+   "sha256_sorgente": "0a9a1920ae4e2a21a9ae8cd40dec34cbfb8ddad25ea4c8b73114a284597e7b13",
+   "byte": 27717
   },
   "scenario/director.mjs": {
    "sha256_sorgente": "a305da62cf49576be92050910d7f9fe8a5abe1bedebb49334b8fcf0e016e4e9a",

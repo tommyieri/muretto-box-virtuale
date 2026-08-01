@@ -37,6 +37,9 @@ line-height:1.4;text-align:left;box-shadow:0 8px 24px #0009}
 border-radius:999px;padding:.35rem .8rem;font:inherit;font-size:.85rem;cursor:pointer}
 .mescola.scelta{border-color:var(--misurato-fondo);color:var(--misurato-fondo)}
 .mescola.spenta{opacity:.4;cursor:not-allowed;text-decoration:line-through}
+/* le mescole si mostrano e non si scelgono: niente cursore da comando, niente
+   evidenza al passaggio del mouse. Sono un'informazione, e devono sembrarlo. */
+.mescola.sola-lettura{cursor:default}
 details.perche{margin-top:.6rem;border-top:1px solid var(--linea);padding-top:.5rem}
 summary{cursor:pointer;color:var(--tenue);font-size:.85rem}
 .voce{display:flex;flex-wrap:wrap;gap:.5rem;align-items:baseline;

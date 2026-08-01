@@ -24,7 +24,7 @@
 // volte è stata applicata. Un'assunzione che non si vede è un'assunzione che
 // nessuno può contestare.
 
-import { regimeNeutralizzato, passoUtilizzabile, regimeDiCella } from '../provenienza/definizioni.mjs';
+import { garaSospesa, passoUtilizzabile, regimeDiCella, regimeNeutralizzato } from '../provenienza/definizioni.mjs';
 import { simboliStatus, MESCOLE_SLICK } from '../provenienza/vocabolario.mjs';
 import { osservazioniVerdi } from '../provenienza/gare_indice.mjs';
 import { perditaBox } from '../provenienza/pitloss.mjs';
@@ -128,7 +128,14 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   // congelamento. Le successive sono in verde per costruzione: prevedere una
   // Safety Car futura sarebbe informazione che al congelamento non esiste
   // (E14). Un piano non è un'eccezione a questo — semmai è la sua prova.
-  const regimeOsservato = regimeAlCongelamento(mia);
+  // LA SOSPENSIONE PRIMA DEL REGIME. Sotto bandiera rossa le auto incolonnano in
+  // corsia box: la sosta non costa posizioni, e il prior lo dichiara da sempre
+  // (RED = 0,0). Nessun percorso ci arrivava, perche' la rossa non e' un regime
+  // — giustamente — e quindi `regimeDiCella` restituisce null. Il risultato era
+  // che il motore prezzava a pit-loss pieno una sosta fatta a gara ferma.
+  // 'RED' non entra qui come regime: entra come STATO DI PREZZO, ed e' l'unico
+  // posto in cui la rossa tocca la fisica.
+  const regimeOsservato = garaSospesa(mia) ? 'RED' : regimeAlCongelamento(mia);
   const regimeDi = (sosta, indice) => (
     regimeOsservato !== null && indice === 0 && sosta.giro - freezeLap <= PERSISTENZA_REGIME_GIRI
       ? regimeOsservato : null
@@ -151,7 +158,11 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   if (perdita.fallback) {
     dichiara('PITLOSS_DI_RIPIEGO', `${gara} non ha una misura di pit-loss di circuito: si usa la mediana d'era ${perdita.perdita_verde} s`, 1, perdita.targhetta);
   }
-  if (regime !== null) {
+  if (regime === 'RED') {
+    dichiara('GARA_SOSPESA',
+      `bandiera rossa al congelamento: la gara è ferma e le auto incolonnano in corsia box, quindi la sosta non costa posizioni (${perdita.perdita_verde} s → ${perdita.perdita.toFixed(2)} s)`,
+      1, 'PRIOR ESTERNO dichiarato (RED = 0,0): sotto sospensione l\'ordine si conserva — è la ragione per cui i muretti si fermano proprio lì');
+  } else if (regime !== null) {
     dichiara('FATTORE_NEUTRALIZZAZIONE',
       `sosta sotto ${regime}: si paga ${perdita.fattore} della perdita verde (${perdita.perdita_verde} s → ${perdita.perdita.toFixed(2)} s)`,
       1, 'PRIOR ESTERNO CON BANDA (SC 0,40-0,60 · VSC 0,60-0,70): è una banda, non un punto');
@@ -459,12 +470,23 @@ export function curvaDelQuando({ gara, freezeLap, pilota, mescola }, contesto) {
   }
   const minimoTotale = Math.min(...validi.map((c) => c.totale));
 
-  // banda: solo dove il fattore di neutralizzazione entra davvero in gioco
-  const conRegime = centrale.some((c) => c.scenario._interno.regime !== null);
+  // banda: solo dove il fattore di neutralizzazione entra davvero in gioco E ha
+  // un'incertezza dichiarata.
+  //
+  // SOTTO BANDIERA ROSSA NON C'E' BANDA, e non e' una dimenticanza: il fattore
+  // RED vale 0 per DICHIARAZIONE (a gara sospesa le auto incolonnano e la sosta
+  // non costa posizioni), non per stima, quindi non ha un intervallo attorno.
+  // SC e VSC ce l'hanno perche' sono prior misurati con banda (0,40-0,60 e
+  // 0,60-0,70). Inventare qui un [0,0] per far tornare il codice sarebbe
+  // fabbricare una precisione che nessuno ha dichiarato; l'assenza si dichiara
+  // (regola 6) e la nota sotto lo dice.
+  const regimeCurva = centrale.find((c) => c.scenario._interno.regime !== null)?.scenario._interno.regime ?? null;
+  const bandaDelRegime = regimeCurva === null
+    ? null : (contesto.costantiDirector.limiti.bande_neutralizzazione[regimeCurva] ?? null);
+  const conRegime = bandaDelRegime !== null;
   const bande = { basso: null, alto: null };
   if (conRegime) {
-    const regime = centrale.find((c) => c.scenario._interno.regime !== null).scenario._interno.regime;
-    const [b, a] = contesto.costantiDirector.limiti.bande_neutralizzazione[regime];
+    const [b, a] = bandaDelRegime;
     bande.basso = valuta(b);
     bande.alto = valuta(a);
   }
@@ -493,7 +515,9 @@ export function curvaDelQuando({ gara, freezeLap, pilota, mescola }, contesto) {
     banda_presente: conRegime,
     nota_banda: conRegime
       ? 'la banda viene dal fattore di neutralizzazione, che è un PRIOR con banda dichiarata'
-      : 'nessuna banda: tutti i candidati sono in verde e la perdita ai box, uguale per tutti, si cancella nella differenza — la forma della curva non dipende da quel prior',
+      : (regimeCurva === null
+        ? 'nessuna banda: tutti i candidati sono in verde e la perdita ai box, uguale per tutti, si cancella nella differenza — la forma della curva non dipende da quel prior'
+        : `nessuna banda: sotto ${regimeCurva} la sosta non costa posizioni per DICHIARAZIONE (la gara è sospesa e le auto incolonnano), non per stima — e una dichiarazione non ha un intervallo attorno`),
     respinti_dal_director: respinti.length,
   };
 }

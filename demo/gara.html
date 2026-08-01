@@ -169,9 +169,9 @@ const ROW_H = 44;
 let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams={}, pitloss={}, plMeta={}, neutral={}, teamCol={}, calendario=null;
 let pitstops=null, stopsGara={}, etichettaStop='pit lane';   // durate per-stop f1db (semantica verificata dal generatore)
 // boxGiro = il giro in cui l'utente ha chiamato il box (null = non ancora chiamato).
-// mescolaScelta = la gomma che monterebbe. Sono l'unico stato dell'esplorazione: il giro
+// boxGiro = il giro della sosta chiesta. E' l'unico stato dell'esplorazione: il giro
 // non si sceglie piu' a parte, e' quello dove sta il cursore quando si preme BOX.
-let boxGiro=null, mescolaScelta=null;
+let boxGiro=null;
 let curLap=1, selDrv=null, rowEls={}, leaderMemo={}, finestre=null, teamWarned=new Set(), pitLaps={};
 let pista=null, leadCum=null, cumPil=null, teamOfR=null;   // vista pallini (gare con pista_<gara>.json)
 // race control LIVELLO 1 (decisione PO su MOCKUP_RACE_CONTROL_UI.md): le penalita' si
@@ -725,7 +725,7 @@ function openPit(){
   // l'esplorazione ("e se aspetto fino al giro N?"), ma non e' richiesto per avere la
   // risposta. Il freeze e' l'ultimo giro COMPLETATO visibile (curLap-1): pittare al giro
   // IN CORSO (in-lap = curLap) e' quindi sempre possibile. Al giro 1 freeze clampato a 1.
-  boxGiro=null; mescolaScelta=null;   // ogni pilota riparte dalla sua domanda
+  boxGiro=null;   // ogni pilota riparte dalla sua domanda
   updatePit();
 }
 function chiudiPit(){ if(simMode) esciSimulazione(); selDrv=null; el('pit').classList.add('hidden');
@@ -904,13 +904,11 @@ el('boxBtn').addEventListener('click', ()=>{
 el('simBtn').addEventListener('click', avviaSimulazione);
 el('simEsci').addEventListener('click', esciSimulazione);
 el('simCont').addEventListener('click', continuaSim);
-// i tre bottoni della mescola vivono dentro l'HTML del pannello, che si riscrive a ogni
-// giro: la delega sul contenitore sopravvive alle riscritture, un listener sul bottone no
-el('pitKv').addEventListener('click', e=>{
-  const b=e.target.closest('[data-mesc]'); if(!b) return;
-  mescolaScelta = mescolaScelta===b.dataset.mesc ? null : b.dataset.mesc;
-  updatePit();
-});
+// IL LISTENER DELLA MESCOLA E' STATO TOLTO, e prima ancora era MORTO: cercava
+// `data-mesc` mentre il pannello del simulatore emette `data-valore`, quindi il
+// click non arrivava. Collegarlo non avrebbe cambiato niente — misurato: mescola
+// diversa in 4.943 casi, posizione di rientro cambiata in 0. Le mescole ora si
+// mostrano e non si scelgono (selettoreMescole in simulatore/web/pannello.mjs).
 el('pitChiudi').addEventListener('click', chiudiPit);
 // (rimossi con la ripulitura gara: i listener dei tab Classifica/Strategia/Ufficiale — resta solo la torre.)
 el('plBadge').addEventListener('click', ()=>el('plTip').classList.toggle('on'));

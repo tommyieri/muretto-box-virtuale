@@ -174,13 +174,35 @@ function pianoGomme(s) {
     el('p', { classe: 'nota limite' }, txt(p.limite)));
 }
 
-/** Il selettore mescola: Wet VISIBILE ma spento, con targhetta. */
+/**
+ * Le mescole: si MOSTRANO, non si scelgono. Non e' una rinuncia, e' una misura.
+ *
+ * Erano bottoni, e sembravano un comando. Misurato sul motore precedente:
+ * cambiando la mescola dello scenario la risposta cambiava in 0 casi su 24.
+ * Misurato di nuovo sul motore nuovo, su tutte le viste: mescola diversa in
+ * 4.943 casi, posizione di rientro cambiata in 0. Il motivo sta nel modello —
+ * nel 2026 le mescole NON separano il degrado (SOFT-HARD p = 0,209) — quindi non
+ * c'era niente da far cambiare. Un bottone che si illumina e risponde sempre la
+ * stessa cosa e' peggio di un bottone che non c'e': promette una leva che non esiste.
+ *
+ * (C'era anche un difetto piu' banale: la pagina ascoltava `data-mesc` mentre il
+ * pannello emette `data-valore`, quindi il click non arrivava nemmeno. Il
+ * selettore era rotto E inerte, e la seconda cosa rendeva invisibile la prima.)
+ *
+ * Restano tutte e cinque, con la gomma attuale evidenziata: dire su cosa sta
+ * girando un pilota e' informazione vera. Torneranno bottoni quando la Fase 3
+ * avra' qualcosa da dire — e allora saranno bottoni sul serio, non prima.
+ */
 function selettoreMescole(vista, s) {
-  return el('div', { classe: 'mescole', ruolo: 'group', etichetta: 'mescola da montare' },
-    ...vista.mescole.map((m) => el('button', {
-      classe: `mescola ${m.codice === s.mescola_scelta ? 'scelta' : ''} ${m.attiva ? '' : 'spenta'}`,
+  return el('div', { classe: 'mescole', ruolo: 'group', etichetta: 'mescole della gara' },
+    ...vista.mescole.map((m) => el('span', {
+      classe: `mescola sola-lettura ${m.codice === s.mescola_scelta ? 'scelta' : ''} ${m.attiva ? '' : 'spenta'}`,
       disabilitato: !m.attiva,
-      titolo: m.attiva ? null : m.motivo,
+      titolo: m.attiva
+        ? (m.codice === s.mescola_scelta
+          ? 'gomma montata adesso. Nel 2026 le mescole non separano il degrado (p = 0,209): cambiarla non sposterebbe la risposta, quindi qui si mostra e non si sceglie'
+          : 'mescola della stagione — non selezionabile: nel 2026 le mescole non separano il degrado (p = 0,209)')
+        : m.motivo,
       valore: m.codice,
     }, txt(m.codice))));
 }

@@ -127,7 +127,7 @@
 .hero-mesc-b {
   position: relative; flex: 1 1 0; min-height: 44px;
   display: flex; align-items: center; justify-content: center; gap: 7px;
-  padding: 9px 6px; cursor: pointer;
+  padding: 9px 6px; cursor: default;   /* si mostrano, non si scelgono */
   border: 1px solid var(--line); border-radius: 8px;
   background: #12161d; color: var(--dim);
   font: 700 11px/1 var(--mono); letter-spacing: 1.2px;
@@ -145,9 +145,10 @@
   border: 1px solid currentColor; opacity: 0; transform: scale(.6);
   transition: opacity .22s, transform .22s;
 }
-.hero-mesc-b:hover, .hero-mesc-b:focus-visible { border-color: var(--line2); color: var(--txt); background: #161d27; }
-.hero-mesc-b:hover i::after, .hero-mesc-b:focus-visible i::after { opacity: .85; transform: scale(1); }
-.hero-mesc-b:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+/* NIENTE STATO HOVER/FOCUS: erano risposte a un tocco che non esiste piu'.
+   Resta evidenziata la gomma MONTATA, che e' l'informazione vera. */
+.hero-mesc-on { border-color: var(--line2); color: var(--txt); background: #161d27; }
+.hero-mesc-on i::after { opacity: .85; transform: scale(1); }
 .hero-mesc-b[aria-pressed="true"] { border-color: var(--line2); color: var(--txt); background: #1b222d; }
 .hero-mesc-n { margin: 7px 0 0; color: #8b93a5; font-size: 11.5px; line-height: 1.5; }
 .hero-mesc-n b { color: #aab2c0; font-weight: 600; }

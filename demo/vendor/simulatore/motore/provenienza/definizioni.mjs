@@ -96,6 +96,26 @@ export function regimeDiCella(cella) {
   return simboliStatus(cella.status).has('4') ? 'SC' : 'VSC';
 }
 
+/**
+ * GARA SOSPESA: lo status contiene la bandiera rossa (5).
+ *
+ * NON e' un regime, ed e' esattamente per questo che ha una funzione sua.
+ * `regimeNeutralizzato` (SC, VSC) descrive una gara che CORRE piano; la rossa
+ * descrive una gara che non corre affatto, e CLAUDE.md tiene apposta i due
+ * concetti separati. Confonderli farebbe rientrare la rossa nel filtro del
+ * passo dalla porta di servizio.
+ *
+ * Serve a una cosa sola, e concreta: sotto sospensione le auto incolonnano in
+ * corsia box e una sosta non costa posizioni. Il prior lo dichiara da sempre
+ * (`fattori_neutralizzazione.RED = 0.0`) e nessun percorso del codice ci
+ * arrivava — il motore prezzava quelle soste a pit-loss pieno e rispondeva un
+ * numero sbagliato mentre la gara era ferma.
+ */
+export function garaSospesa(cella) {
+  validaCella(cella);
+  return simboliStatus(cella.status).has('5');
+}
+
 export function verde(cella) {
   return passoPulitoDi(cella, MESCOLE_SLICK);
 }

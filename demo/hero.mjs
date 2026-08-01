@@ -17,10 +17,16 @@
 // width/height/top/left, mai filtri, mai box-shadow in tween: tutto resta sul
 // compositor, quindi fuori dal CLS e dentro i 60 fps.
 //
-// ONESTA' — la mescola NON muove nessun numero, ed e' misurato (p=0,24/0,58/0,25
-// su gradino, warm-up e degrado, fondo 2026): i tre bottoni gomma ci sono perche'
-// sono il gesto vero del muretto, e portano la stessa nota del pannello. Cio' che
-// muove la risposta e' il MOMENTO della sosta, ed e' quello che la hero fa scegliere.
+// ONESTA' — la mescola NON muove nessun numero, ed e' misurato due volte: sul
+// motore vecchio 0 casi su 24, sul motore nuovo 0 posizioni cambiate su 4.943
+// scenari con mescola diversa (nel 2026 le mescole non separano il degrado,
+// p = 0,209). Cio' che muove la risposta e' il MOMENTO della sosta, ed e' quello
+// che la hero fa scegliere — l'unica leva vera, e infatti l'unica interattiva.
+//
+// DAL 01/08/2026 I NUMERI VENGONO DALLO STESSO MOTORE DELLA PAGINA-GARA. Prima no,
+// e le due si contraddicevano: la hero diceva "P4 su 10" dove la pagina diceva
+// "P6 su 20" — la hero non vedeva meta' schieramento perche' filtrava su un passo
+// che a meta' gara mancava a dieci piloti.
 // ============================================================================
 
 const FONTE = 'data/hero.json';
@@ -131,17 +137,21 @@ function costruisci(root, H) {
 
   // ---- M8 le gomme
   const M = H.mescole;
+  // LE GOMME SI MOSTRANO, NON SI SCELGONO — come nel pannello, e per la stessa
+  // ragione misurata: cambiando mescola la risposta non si muove (0 casi su 24 sul
+  // motore vecchio, 0 posizioni su 4.943 su quello nuovo). Erano bottoni con
+  // `aria-pressed`, cioe' si annunciavano come un comando anche a chi usa uno
+  // screen reader, e l'unica cosa che facevano era illuminarsi a vicenda.
   q(root, '.hero-mesc-r').innerHTML = ['SOFT', 'MEDIUM', 'HARD'].map(m => `
-    <button type="button" class="hero-mesc-b" data-m="${m}" aria-pressed="${m === M.monta}"
-            aria-label="Monta gomma ${m.toLowerCase()} — durata massima oggi ${M.durata_max_oggi[m] ?? 'non misurata'} giri. Non cambia la risposta."
-            title="Durata massima di questa mescola oggi: ${M.durata_max_oggi[m] ?? '—'} giri">
+    <span class="hero-mesc-b${m === M.monta ? ' hero-mesc-on' : ''}" data-m="${m}"
+          title="${m === M.monta ? 'gomma montata adesso. ' : ''}Durata massima di questa mescola oggi: ${M.durata_max_oggi[m] ?? '—'} giri — la mescola non cambia la risposta (nel 2026 non separa il degrado)">
       <i></i>${m}
-    </button>`).join('');
+    </span>`).join('');
 
   // ---- la nota di provenienza: il pit-loss e il gradino, con la loro origine
   q(root, '.hero-fonte').innerHTML =
     `Pit-loss <b>${num(H.pitloss.s)} s</b> &mdash; ${esc(H.pitloss.provenienza)}. `
-    + (H.gradino ? `Gomma nuova <b>${num(H.gradino.s_giro)} s/giro</b>, misurato oggi su ${H.gradino.n} soste. ` : '')
+    + (H.degrado ? `Degrado <b>${num(H.degrado.rho_s_giro, 3)} s/giro</b> per ogni giro di gomma, misurato sul fondo 2026. ` : '')
     + `Pista dal giro GPS di ${esc(H.pista.sorgente.pilota)} (${esc(H.pista.sorgente.evento)}).`;
 }
 
@@ -666,9 +676,8 @@ function statico(root, H) {
     c.removeAttribute('data-attesa');
     c.addEventListener('click', () => applica(c.dataset.scelta));
   });
-  root.querySelectorAll('.hero-mesc-b').forEach(b => b.addEventListener('click', () =>
-    root.querySelectorAll('.hero-mesc-b').forEach(x =>
-      x.setAttribute('aria-pressed', String(x === b)))));
+  // (il listener delle gomme e' stato tolto: erano bottoni che si illuminavano a
+  // vicenda e basta — vedi la nota su .hero-mesc-r)
   q(root, '.hero-rivedi').hidden = true;
   applica(scelto);
 }

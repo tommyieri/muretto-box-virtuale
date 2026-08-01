@@ -47,8 +47,14 @@ const QUI = path.dirname(fileURLToPath(import.meta.url));
 const DEMO = path.join(QUI, 'demo');
 const DATI = path.join(DEMO, 'data');
 
-const { evaluatePit } = await import(path.join(DEMO, 'pitscenario.mjs'));
-const { misura: misuraSoste } = await import(path.join(DEMO, 'gradino.mjs'));
+// IL MOTORE E' QUELLO DELLA PAGINA-GARA. Questo generatore gira in Node alla
+// radice del repo, quindi puo' importare da simulatore/ direttamente: non ha i
+// vincoli del browser, e non deve passare dagli artefatti trasportati.
+const SIM = path.join(QUI, 'simulatore');
+const { caricaGare2026 } = await import(path.join(SIM, 'provenienza/gare_2026.mjs'));
+const { caricaPrior } = await import(path.join(SIM, 'provenienza/pitloss_dati.mjs'));
+const { caricaCostanti } = await import(path.join(SIM, 'scenario/director_dati.mjs'));
+const { doveRientri } = await import(path.join(SIM, 'scenario/costruttore.mjs'));
 
 // ---------------------------------------------------------------- il caso
 const CASO = {
@@ -56,8 +62,12 @@ const CASO = {
   circuito: 'Spa-Francorchamps',
   driver: 'LEC',
   freezeLap: 20,
-  pitOra: 20,        // la sosta sotto neutralizzazione
-  pitDopo: 23,       // la stessa sosta, tre giri dopo, in verde
+  // LA SOSTA E' AL GIRO DOPO IL CONGELAMENTO, non sullo stesso giro. Il motore
+  // nuovo rifiuta una sosta nel passato o nell'istante congelato — e ha ragione:
+  // al giro 20 la macchina il giro 20 lo ha gia' fatto. E' anche la convenzione
+  // della pagina-gara, quindi le due ora rispondono alla stessa domanda.
+  pitOra: 21,        // la sosta sotto la neutralizzazione osservata al giro 20
+  pitDopo: 24,       // la stessa sosta, tre giri dopo
   righeTorre: 6,     // quante righe mostra la torre della hero
 };
 
@@ -81,8 +91,25 @@ const pace = G.pace[L] || {};
 const present = G.drivers.filter(d => typeof byLap[L]?.[d]?.cum_time === 'number' && pace[d] != null);
 if (!present.includes(CASO.driver)) throw new Error(`${CASO.driver} non simulabile al giro ${L}`);
 
-const viva = misuraSoste(byLap, nLaps, L);
-const gradino = (viva.gradino != null && viva.n_gradino >= MIN_SOSTE_UI) ? viva.gradino : null;
+// il contesto del motore nuovo: gli STESSI oggetti che passa
+// simulatore/web/genera_vista_gara.mjs, cosi' hero e pagina-gara non possono
+// rispondere con due tarature diverse
+const RAD_SIM = SIM;
+const gareSim = caricaGare2026(RAD_SIM);
+const nomeSim = CASO.gara.replace(/\s+/g, '');
+const garaSim = gareSim[nomeSim];
+if (!garaSim) throw new Error(`il simulatore non conosce la gara ${nomeSim}`);
+const modelloSim = JSON.parse(fs.readFileSync(path.join(RAD_SIM, 'data/modelli/modello_v2.json'), 'utf8'));
+const CONTESTO = {
+  gare: gareSim,
+  modello: modelloSim,
+  prior: caricaPrior(RAD_SIM),
+  costantiDirector: caricaCostanti(RAD_SIM),
+  bandaRientro: JSON.parse(fs.readFileSync(path.join(RAD_SIM, 'data/modelli/banda_rientro.json'), 'utf8')),
+  nGiriGara: garaSim.nGiri,
+};
+const mescolaMia = garaSim.perPilota.get(CASO.driver)?.get(L)?.compound ?? null;
+if (mescolaMia === null) throw new Error(`${CASO.driver} non ha mescola nota al giro ${L}`);
 
 // ------------------------------------------------------- torre al congelamento
 const ordFreeze = present
@@ -100,26 +127,41 @@ const torrePartenza = ordFreeze
 
 // ------------------------------------------------------------ le due scelte
 function scelta({ id, etichetta, pitLap }) {
-  const r = evaluatePit({ byLap, nLaps, pace, driver: CASO.driver, freezeLap: L, pitLap, pitLoss,
-                          present, gara: CASO.gara, laps: G.laps, ZONE,
-                          orizzonte: gradino != null ? ORIZZONTE : 0, gradino });
-  if (!r.ok) throw new Error(`evaluatePit ${id}: ${r.reason}`);
-  // la torre di arrivo: stesso ordine del motore, tagliata alle righe che la hero mostra,
-  // ma sempre includendo il pilota instradato (se cadesse fuori dal taglio).
-  const ord = r.ordine_previsto;
+  const r = doveRientri({ gara: nomeSim, freezeLap: L, pilota: CASO.driver, giroPit: pitLap,
+                          mescola: mescolaMia }, CONTESTO);
+  if (r.approvato === false) {
+    throw new Error(`il Director rifiuta lo scenario ${id}: `
+      + r.direttore.violazioni.filter((v) => v.severita === 'FATAL').map((v) => v.messaggio ?? v.codice).join(' · '));
+  }
+  if (r.posizione === null || r.posizione === undefined) throw new Error(`nessuna posizione per ${id}`);
+
+  // LA TORRE DI ARRIVO dalla TRACCIA del motore: i cumulati previsti al giro di
+  // rientro, ordinati. Non e' un secondo calcolo — e' lo stesso oggetto da cui il
+  // motore ha ricavato la posizione, riletto per mostrarlo.
+  const G_ = r.giro_di_rientro;
+  const ord = [];
+  for (const [drv, passi] of Object.entries(r.traccia ?? {})) {
+    const p = (passi ?? []).find((x) => x.lap === G_);
+    if (p && typeof p.cum_time === 'number') ord.push([drv, p.cum_time]);
+  }
+  ord.sort((a, b) => a[1] - b[1] || (a[0] < b[0] ? -1 : 1));
   const mio = ord.findIndex(([d]) => d === CASO.driver);
   const inizio = Math.max(0, Math.min(mio - Math.floor(CASO.righeTorre / 2), ord.length - CASO.righeTorre));
   const fetta = ord.slice(inizio, inizio + CASO.righeTorre);
-  const tt0 = fetta[0][1];
+  const tt0 = fetta.length ? fetta[0][1] : 0;
+  const gapDi = (v) => (v && typeof v.gap_s === 'number' ? +v.gap_s.toFixed(2) : null);
   return {
     id, etichetta, giro: pitLap,
-    sotto_sc: r.sotto_neutralizzazione,
-    giro_neutralizzato: r.giro_neutralizzato,
-    soste_rivali_assunte: r.soste_rivali_assunte,
-    pos: r.rientro_pos, su: r.su_totale,
-    davanti: r.davanti_ho, gap_davanti: r.gap_ahead == null ? null : +r.gap_ahead.toFixed(2),
-    dietro: r.dietro_esco, gap_dietro: r.gap_behind == null ? null : +r.gap_behind.toFixed(2),
-    nota_gap: r.nota_gap,
+    sotto_sc: r.perdita.fattore !== 1,
+    giro_neutralizzato: r.perdita.fattore !== 1,
+    // il motore nuovo NON assume soste dei rivali: e' un'assunzione in meno, e va
+    // detta invece di lasciare il campo a zero come se non fosse mai esistita
+    soste_rivali_assunte: 0,
+    pos: r.posizione, su: r.su_quanti,
+    davanti: r.davanti?.drv ?? null, gap_davanti: gapDi(r.davanti),
+    dietro: r.dietro?.drv ?? null, gap_dietro: gapDi(r.dietro),
+    nota_gap: r.gap_soppressi ?? null,
+    banda: r.banda_posizione ? { da: r.banda_posizione.da, a: r.banda_posizione.a } : null,
     torre: fetta.map(([d, t], i) => {
       const c = byLap[L][d] || {};
       return { sig: d, pos: inizio + i + 1, team: c.team || null,
@@ -164,13 +206,10 @@ for (const c of ['SOFT', 'MEDIUM', 'HARD']) {
 
 const OUT = {
   _nota: 'GENERATO da gen_hero.mjs — non modificare a mano. I numeri vengono da '
-       + 'demo/pitscenario.mjs::evaluatePit. ATTENZIONE (31/07/2026): NON e\' piu\' il '
-       + 'motore della pagina-gara, che dal 31/07/2026 legge le risposte pre-calcolate '
-       + 'del simulatore (data/vista/). Le due non dicono sempre lo stesso: su '
-       + 'Belgio/LEC concordano al congelamento del giro 20 (P1), ma il caso "aspetta '
-       + 'tre giri" qui da\' P4 e la pagina-gara, congelata al giro 23, da\' P6. '
-       + 'La hero va ricostruita sul motore nuovo: finche\' non succede, questa nota e\' '
-       + 'il posto in cui la differenza e\' dichiarata invece che nascosta.',
+       + 'simulatore/scenario/costruttore.mjs::doveRientri, LO STESSO MOTORE della '
+       + 'pagina-gara (dal 01/08/2026), con lo stesso contesto e le stesse costanti. '
+       + 'La sosta "BOX ORA" e\' al giro dopo il congelamento, come in pagina-gara: il '
+       + 'motore rifiuta una sosta nell\'istante congelato, e ha ragione.',
   gara: CASO.gara, circuito: CASO.circuito, n_laps: nLaps,
   giro: L,
   pilota: {
@@ -179,7 +218,16 @@ const OUT = {
     pos: ordFreeze.findIndex(([d]) => d === CASO.driver) + 1,
   },
   pitloss: { s: pitLoss, provenienza: 'misurato su questa gara (FastF1)' },
-  gradino: gradino == null ? null : { s_giro: +gradino.toFixed(3), n: viva.n_gradino },
+  // IL GRADINO NON ESISTE PIU', ed e' la differenza fra i due modelli. Il vecchio
+  // dava alla gomma nuova uno sconto COSTANTE per sempre — ed e' l'errore E01 del
+  // catalogo, quello che produceva "fermati subito" nel 100% dei casi. Il modello
+  // nuovo non ha uno sconto: ha un DEGRADO che la sosta azzera. La riga di
+  // provenienza della hero mostra percio' quello, che e' la grandezza vera.
+  degrado: {
+    rho_s_giro: modelloSim.rho.valore,
+    n_giri: modelloSim._targhetta.n_giri_verdi,
+    targhetta: modelloSim.rho.targhetta,
+  },
   neutralizzazione: {
     attiva: ora.giro_neutralizzato,
     vetture: Object.values(byLap[L]).filter(c => c.neutralized).length,
@@ -209,5 +257,5 @@ if (process.argv.includes('--stdout')) {
   console.log(`  ${CASO.gara} giro ${L} · ${CASO.driver} P${OUT.pilota.pos} ${cellaMia.compound}/${cellaMia.tyre_age}g`);
   console.log(`  ${ora.etichetta} (giro ${ora.giro}${ora.sotto_sc ? ', sotto SC' : ''}) -> P${ora.pos}/${ora.su}`);
   console.log(`  ${dopo.etichetta} (giro ${dopo.giro}) -> P${dopo.pos}/${dopo.su}, dietro ${dopo.davanti} di ${dopo.gap_davanti}s`);
-  console.log(`  delta = ${OUT.delta_posizioni} posizioni · pit-loss ${pitLoss}s · gradino ${gradino?.toFixed(3)} (n=${viva.n_gradino})`);
+  console.log(`  delta = ${OUT.delta_posizioni} posizioni · pit-loss ${pitLoss}s · degrado ${OUT.degrado.rho_s_giro} s/giro per giro`);
 }
