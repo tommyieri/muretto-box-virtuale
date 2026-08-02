@@ -1,26 +1,26 @@
 {
  "_nota": "GENERATO da simulatore/web/trasporta_formattatori.mjs. Le copie in questa cartella sono artefatti: si modifica l'originale in simulatore/web/ e si ri-trasporta. `--verifica` esce 1 sulla deriva.",
- "generato_il": "2026-08-01",
+ "generato_il": "2026-08-02",
  "file": {
   "targhette.mjs": {
    "sha256_sorgente": "136b4151d4ce76601cca4090971a013cb5be5997db12e3ff919492311d3dbd08",
    "byte": 7039
   },
   "pannello.mjs": {
-   "sha256_sorgente": "1529e339533573224d72a6a068c81cea0b15c7a472f6ebac8fd9e80906275791",
-   "byte": 14450
+   "sha256_sorgente": "c6830be2d1ec285e76a931da4b02e340dea7242adb025ac47d39520d5f31e0a1",
+   "byte": 15373
   },
   "curva.mjs": {
-   "sha256_sorgente": "7b30ca0fab54021cfcafa6d2c82cbb4a36d0195d06bbba178f28dc51dd8a4f3f",
-   "byte": 4880
+   "sha256_sorgente": "97ff3a5682819a27830a0e6966fb2136eed933b40e28465993485194a50b3620",
+   "byte": 7129
   },
   "render.mjs": {
    "sha256_sorgente": "d1d73b4c86d549e711f9e3ded16e9e7c1e3ed56a55bc5de6e0d95ac3fc50d387",
    "byte": 3685
   },
   "stile.css": {
-   "sha256_sorgente": "193c936eb54bbf14fb64e3a74ca195d9a73708d91ebc91c69fcacf3527ad647e",
-   "byte": 5374,
+   "sha256_sorgente": "882ecc2ad1860a0f2b53fde6c7e82abfb22a9fc2ecfebb1ec1be7f5386b9946f",
+   "byte": 6681,
    "ambito": ".sim-pannello"
   }
  }

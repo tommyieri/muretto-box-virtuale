@@ -172,6 +172,13 @@ export function costruisciVistaDemo(radice) {
       stazionario_pavimento_s: prior.stazionario_minimo_fisico_s,
       curva: curva.curva,
       minimo: curva.minimo,
+      // LA FINESTRA viaggia fino alla vista demo, e non è un dettaglio di
+      // trasporto: questo oggetto è ciò che l'audit P08 cammina. Finché il campo
+      // non c'era, nessuna sentinella poteva accorgersi che la pagina pubblicava
+      // ancora il giro secco che la decisione del 01/08 aveva abolito — il
+      // costruttore la calcolava (su 11.143 risposte in produzione) e qui la
+      // proiezione campo-per-campo la lasciava indietro in silenzio.
+      finestra: curva.finestra,
       banda_presente: curva.banda_presente,
       nota_banda: curva.nota_banda,
       orizzonte: curva.orizzonte,
@@ -241,7 +248,7 @@ export function costruisciVistaDemo(radice) {
         },
         stazionario_prior_s: prior.stazionario_tipico_s,
         stazionario_pavimento_s: prior.stazionario_minimo_fisico_s,
-        curva: null, minimo: null, banda_presente: null, nota_banda: null, orizzonte: null,
+        curva: null, minimo: null, finestra: null, banda_presente: null, nota_banda: null, orizzonte: null,
         assunzioni: rientro.assunzioni,
         mappa: { giri: [] },
         pavimento_s: pavimenti.gare[nomeGara]?.pavimento_s ?? null,

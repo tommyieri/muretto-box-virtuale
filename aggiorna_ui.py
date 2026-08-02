@@ -15,7 +15,8 @@ due volte non cambia nulla la seconda. Ogni passo riporta esito e "aggiornato_al
 Uso:  python3 aggiorna_ui.py [--gara <nome>]     (python3 utente, NON venv: serve
       la rete verso f1db; gen_pista_svg richiede fastf1)
 """
-import argparse, json, os, subprocess, sys
+import argparse, hashlib, json, os, subprocess, sys
+from datetime import datetime, timezone
 import f1db_zip
 
 VERDE, ROSSO, FINE = '\033[32m', '\033[31m', '\033[0m'
@@ -37,6 +38,63 @@ def aggiornato_al(path):
         return None
     except Exception:
         return None
+
+
+SIGILLI = [
+    os.path.join('simulatore', 'data', 'modelli', 'modello_v2.json'),
+    os.path.join('simulatore', 'banco', 'ROSSE_DICHIARATE.json'),
+    os.path.join('simulatore', 'data', 'modelli', 'banda_rientro.json'),
+]
+VERSIONE = os.path.join('demo', 'data', 'versione.json')
+
+
+def scrivi_versione():
+    """LA TARGHETTA DEL DEPLOY: cosa c'e' davvero online.
+
+    Nessun controllo attraversava la catena Mac -> push -> VPS -> push -> Vercel:
+    ogni pezzo si verificava da solo, e il guasto «la macchina che pubblica esegue
+    un main vecchio» si scopriva solo entrando in ssh. Qui il sito porta addosso
+    il commit con cui e' stato costruito e l'impronta dei sigilli del motore, cosi'
+    `scheduling/sonda_deploy.sh` puo' chiedere DA FUORI se l'online e' il main.
+
+    Il file e' un artefatto generato: se un hash cambia senza che nessuno abbia
+    ri-pubblicato, la sonda lo dice. Se git non c'e' (o la cartella non e' un
+    repo) si scrive `null` e lo si dichiara: regola 6, l'assenza non si traveste.
+    """
+    def git(*a):
+        try:
+            r = subprocess.run(['git', *a], capture_output=True, text=True)
+            return r.stdout.strip() if r.returncode == 0 else None
+        except Exception:
+            return None
+
+    sigilli = {}
+    for rel in SIGILLI:
+        try:
+            with open(rel, 'rb') as fh:
+                sigilli[rel] = hashlib.sha256(fh.read()).hexdigest()[:16]
+        except OSError:
+            sigilli[rel] = None          # assente: la sonda lo segnala, non lo inventa
+
+    d = {
+        '_nota': 'GENERATO da aggiorna_ui.py — la targhetta di cosa e\' online. '
+                 'Confrontala con `git ls-remote origin main`: se divergono, la macchina '
+                 'che pubblica non sta eseguendo il main. Sonda: scheduling/sonda_deploy.sh',
+        'commit': git('rev-parse', 'HEAD'),
+        'commit_breve': git('rev-parse', '--short', 'HEAD'),
+        'ramo': git('rev-parse', '--abbrev-ref', 'HEAD'),
+        'data_commit': git('log', '-1', '--format=%cI'),
+        'costruito_il': datetime.now(timezone.utc).isoformat(timespec='seconds'),
+        'sigilli_sha256_16': sigilli,
+    }
+    os.makedirs(os.path.dirname(VERSIONE), exist_ok=True)
+    with open(VERSIONE, 'w') as fh:
+        json.dump(d, fh, ensure_ascii=False, indent=1)
+        fh.write('\n')
+    mancanti = [k for k, v in sigilli.items() if v is None]
+    nota = f' — SIGILLI MANCANTI: {", ".join(mancanti)}' if mancanti else ''
+    print(f'[{VERDE}OK{FINE}] versione     {d["commit_breve"] or "senza git"} '
+          f'({d["ramo"] or "?"}){nota}')
 
 
 def main():
@@ -77,6 +135,7 @@ def main():
             errori += 1
             for riga in (r.stdout + r.stderr).strip().splitlines()[-4:]:
                 print('       ', riga)
+    scrivi_versione()
     if errori:
         sys.exit(f'{errori} passi falliti — vedi sopra.')
     print('aggiorna_ui: tutti i passi completati.')

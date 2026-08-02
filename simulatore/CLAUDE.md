@@ -79,16 +79,35 @@ la SOSTA azzera età_gomma (e monta il set nuovo)
 
 ## I numeri che si ereditano (con targhetta)
 
+I numeri che vengono da un SIGILLO stanno nel blocco generato qui sotto: li scrive
+`gen_numeri_ereditati.py` leggendo i file del motore, e la CI esce 1 se il documento
+diverge. Il 02/08/2026 quattro di essi erano sbagliati — trascritti a mano quando erano
+giusti, e mai rimisurati dopo che il modello lo era stato (E22). Non si toccano a mano.
+
+<!-- NUMERI:INIZIO — generati da gen_numeri_ereditati.py, non scrivere a mano -->
+
 | grandezza | valore | targhetta |
 |---|---|---|
-| ρ degrado comune 2026 | 0,0389 s/giro·giro · IC95 [0,0220; 0,0629] | misurato, fondo 2026, bootstrap 2.000, blocchi=gare |
-| ρ per mescola | NON separano (SOFT−HARD p = 0,209) | misurato 2026 → ipotesi Fase 3 sul fondo |
-| deriva δ | **CONFLITTO APERTO**: storico 3,111 [2,926; 3,254] vs 2026 implicato 2,468 [1,693; 2,908] su 70 kg | i due IC NON si sovrappongono → esperimento decisivo nel PROMPT 03, prima di cablare |
-| mediane stint 2026 | SOFT 14 · MEDIUM 19 · HARD 22 giri | misurato — sono DECISIONI dei team, non fisica: in live sono ALLARMI, mai stime |
-| bias bersaglio del kernel | ≤ −0,17 s/giro, piatto sugli orizzonti | riprodotto dal vecchio v2: è l'asticella minima |
-| pit-loss per circuito | Miami 19,74 · Silverstone 20,95 · Austria 21,48 · Monaco 22,01 · Barcellona 23,83 · Spa 18,4 · Imola 28,1 · Singapore 27,9 · Qatar 27,7 · mediana era 22,1 | prior esterno misurato (2.106 stop 2022-26) — file `data/priors/pitloss_priors.json`; da promuovere a misura interna sul fondo |
-| fattori neutralizzazione | pittando sotto SC si paga ~0,50 della perdita verde; sotto VSC ~0,65 | prior esterno con banda (SC 0,40-0,60 · VSC 0,60-0,70) |
+| ρ degrado comune 2026 | 0,030776 s/giro·giro · IC95 [0,0108; 0,0527] | misurato, fondo 2026, bootstrap 2.000, blocchi = gare |
+| deriva δ (carburante su 70 kg) | in uso 2,2 s · stima libera 3,107505 s (IC95 [2,736; 3,515]) | DECISO dall'esperimento pre-registrato: il valore in uso è quello scelto, non la stima libera — la differenza è dichiarata, non un conflitto aperto |
+| rodaggio gomma nuova | ATTIVO · c = 0,67 s/giro · τ = 4,75 giri | misurato sul fondo 2026 (11 gare), 6.575 giri verdi in ARIA LIBERA (gap > 2,0 s o primo), delta70 e rho cablati e non ri-stimati; perdita L1 su griglia dichiarata, base = mediana per (gara,pilota) ricalcolata a ogni (c,tau) |
+| giri verdi minimi prima del congelamento | 4 | MISURATO e PROMOSSO il 01/08/2026: era 8, una costante muta ereditata dal criterio di AMMISSIONE del banco e mai giudicata come soglia di qualita. Le tre condizioni pre-registrate passano. |
+| pit-loss per circuito | MISURA INTERNA promossa su 26 Gran Premi (mediana green, cancello A) — 70th Anniversary 19,20 · Canadian 19,33 · Miami 20,50 … Portuguese 27,73 · Singapore 27,91 · Emilia Romagna 28,16; fuori da questi, prior esterno (mediana era 22,1 s) | sorgente: data/modelli/pitloss_interno.json + data/priors/pitloss_priors.json — il motore usa perditaBox(), che sceglie fra i due e lo dichiara nella targhetta |
+| fattori neutralizzazione | SC 0,50 · VSC 0,65 · RED 0,00 (frazione della perdita green pagata pittando sotto quel regime) | SC nel range 0,40-0,60; VSC nel range 0,60-0,70 — da trattare come banda, non come punto |
 | stazionario | tipico 2,5 s · pavimento fisico 1,8 s | prior esterno → Director |
+
+> Questa tabella è GENERATA da `gen_numeri_ereditati.py` leggendo i sigilli. Non modificarla a mano: `--verifica` esce 1 sulla deriva, e la CI lo esegue. Se un numero qui è sbagliato, è sbagliato nel sigillo.
+
+<!-- NUMERI:FINE -->
+
+Gli altri — misure che non hanno un sigillo, limiti dichiarati, fatti esterni — restano
+scritti a mano, e la loro data è la loro garanzia:
+
+| grandezza | valore | targhetta |
+|---|---|---|
+| ρ per mescola | NON separano (SOFT−HARD p = 0,209) | misurato 2026 → ipotesi Fase 3 sul fondo |
+| mediane stint 2026 | SOFT 14 · MEDIUM 19 · HARD 22 giri | misurato — sono DECISIONI dei team, non fisica: in live sono ALLARMI, mai stime |
+| bias bersaglio del kernel | ≤ −0,17 s/giro, piatto sugli orizzonti | riprodotto dal vecchio v2: è l'asticella minima. È anche il bias che il modello dichiara di sé, e da cui il costruttore ricava la finestra dei giri indistinguibili |
 | live, ricostruzione verde track-wide | 84,8% accordo · 65 falsi verdi · 34,1% celle passo oltre 0,10 s | misurato: LIMITE DICHIARATO del live finché non esistono bandiere per-auto |
 | OpenF1 | storico 2023+ gratis; realtime a pagamento; `pit_duration` DEPRECATO → `lane_duration`+`stop_duration`; `segments` non in gara | verificato 29/07/2026 su openf1.org/docs |
 | regole 2026 | obbligo 2 mescole slick su asciutto; il DRS non esiste più (Manual Override Mode) | regolamento — il Director le codifica |

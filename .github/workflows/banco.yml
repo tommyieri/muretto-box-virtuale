@@ -55,6 +55,15 @@ jobs:
       - name: Manifest dei dati integro (regola 7)
         run: node provenienza/verifica_manifest.mjs
 
+      # LA COSTITUZIONE NON PUO' PIU' MENTIRE. CLAUDE.md e' il primo file che ogni
+      # sessione legge, e il 02/08/2026 dichiarava rho = 0,0389 mentre il sigillo diceva
+      # 0,030776 — piu' altri tre numeri sbagliati: trascritti a mano quando erano
+      # giusti, mai rimisurati dopo che il modello lo era stato (E22). Ora la tabella e'
+      # GENERATA dai sigilli e questo passo esce 1 sulla deriva, come gia' fanno i due
+      # trasporti qui sotto per il codice. Stessa regola, applicata alla prosa.
+      - name: I numeri di CLAUDE.md non sono alla deriva dai sigilli
+        run: python3 gen_numeri_ereditati.py --verifica
+
       # I formattatori serviti dal sito (demo/vendor/simulatore/) sono COPIE generate da
       # simulatore/web/. Se qualcuno modifica la copia invece dell'originale — o cambia
       # l'originale senza ri-trasportare — nascono due sorgenti della stessa cosa, che e'
@@ -96,3 +105,11 @@ jobs:
 
       - name: Diretta e replay rispondono con lo stesso motore
         run: node demo/test_parita_live.mjs
+
+      # IL DEBITO DEL PERIMETRO PUBBLICATO resta uno specchio. Gli scenari accesi dal PO
+      # (PR #64) hanno smesso di essere renderizzati con la migrazione al motore nuovo, e
+      # nessun documento lo diceva: una decisione revocata di fatto, in silenzio. Ora e' a
+      # registro, e questo passo esce 1 sia se il registro descrive un guasto che non c'e'
+      # piu', sia se l'accensione cambia senza che nessuno decida.
+      - name: Il registro del debito pubblicato descrive ancora la realtà
+        run: node demo/test_debito_demo.mjs
