@@ -447,6 +447,19 @@ cambi — nell'ultimo terzo di gara il nuovo passa M2 su tutti e tre gli orizzon
 
 </details>
 
+### ~~SORPASSI~~ · **RAMO CHIUSO il 02/08 — decisione del PO**
+Nato dalla misura «gara intera» (voce 6): il motore perde contro «non cambia niente»
+solo nel terzo di casi in cui **inventa movimento** (13-28, p = 0,027), quindi serviva
+un tetto al movimento. Tre tentativi, tre referti: NO-GO fra stagioni (06/07), S1
+fallito dentro la gara (02/08, conclusione poi confutata da 5 lenti su 5), **F1
+fallito fuori campione su 78 gare mai viste** — ρ = +0,3976 contro 0,40, mancato per
+**0,0024**, con l'associazione reale (p = 0,0003) ma la magnitudine non certificata.
+Referto completo: `data/SORPASSO_NOTA.txt` §CHIUSURA e `PREREG_sorpassi_fuoricampione.md`.
+**Resta in piedi, e vale per il prodotto:** la sorpassabilità **non è conoscibile
+presto** (X ≤ 40% fallisce dentro e fuori campione, previsione dichiarata prima),
+quindi **la banda di rientro non si condiziona al congelamento**. Nessun quarto
+tentativo su questa metrica.
+
 ### PARCHEGGIATA · il traffico come penalità sul passo
 Il fenomeno è il più regolare trovato (residuo **+0,576 s/giro** sotto 0,5 s di gap, positivo
 in 11 gare su 11, riguarda il 19,6% dei giri), **ma il controfattuale sul bersaglio è

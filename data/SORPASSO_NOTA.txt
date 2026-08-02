@@ -82,3 +82,51 @@ Monaco inchiodato al 4.4%) — cio' che fallisce e' la VALIDAZIONE al livello pr
 DRS dentro l'indice per scelta dichiarata; censura totale dei pit assottiglia il
 campione (Spa e altri sotto n=20 -> n.d.); una gara/stagione = risoluzione massima
 possibile coi dati esistenti; nessun numero del documento di terzi.
+
+════════════════════════════════════════════════════════════════════════════════
+== CHIUSURA DEL RAMO — 2026-08-02, decisione del PO ==
+
+La STRADA v2 (a) proposta qui sopra e' stata percorsa e il ramo e' CHIUSO. Il PO ha
+deciso la chiusura dopo aver visto tutti i numeri, compreso il fatto che il cancello
+e' stato mancato per due millesimi.
+
+Tre tentativi, tre referti, nessuno riscritto:
+  1. 2026-07-06  indice per circuito, fra stagioni ............. NO-GO (2 gate su 4)
+  2. 2026-08-02  la stessa metrica dentro la gara .............. S1 FALLITO
+                 ai_lab/confronto/PREREG_sorpassi_intragara.md
+                 (conclusione poi CONFUTATA da 5 lenti avversariali su 5: lo
+                 strumento aveva 50% di potenza alla propria soglia, l'ammissione
+                 buttava il 58% degli episodi, e il giro 4 e' un artefatto del dedup)
+  3. 2026-08-02  fuori campione su 78 gare mai viste (2018-2022) . F1 FALLITO
+                 ai_lab/confronto/PREREG_sorpassi_fuoricampione.md
+                 prereg committata (7a5f423) PRIMA che lo strumento esistesse
+
+IL NUMERO FINALE: rho = +0,3976 contro la soglia 0,40. Mancato per 0,0024.
+  IC95 bootstrap [+0,193; +0,569] · nullo p = 0,0003 · n = 70 gare
+  99,99% dei ricampionamenti sopra lo zero, 48,2% sopra la soglia.
+
+LE DUE FRASI VERE, che non sono la stessa frase:
+  - l'ASSOCIAZIONE presto->tardi esiste fuori campione oltre ogni dubbio ragionevole;
+  - la sua MAGNITUDINE non e' certificata sopra la barra dichiarata.
+Il cancello chiedeva la seconda. Si chiude sulla seconda.
+
+E NON E' COSTANTE FRA LE ERE, che e' lo stesso difetto del tentativo n.1 ricomparso
+a un altro livello: 2019 +0,810 e 2022 +0,530 passano; 2018 +0,220, 2020 +0,137,
+2021 +0,145 no.
+
+== COSA RESTA IN PIEDI, e vale per il prodotto ==
+LA SORPASSABILITA' NON E' CONOSCIBILE PRESTO. X <= 40% della distanza di gara
+fallisce dentro campione E fuori campione, con la previsione dichiarata in anticipo
+nella prereg. Conseguenza operativa: LA BANDA DI RIENTRO NON SI PUO' CONDIZIONARE A
+UN INDICATORE DI SORPASSABILITA' AL CONGELAMENTO. Fuori campione passa solo X=60%
+(+0,436, p=0,0003); X=50% manca per 0,001.
+
+== COSA NON SI FA PIU' ==
+Nessun quarto tentativo su questa metrica. Il Cancello B di
+simulatore/banco/prereg/PREREG_difesa_II.md resta NON ESEGUITO e senza indicatore:
+la sua Domanda B presupponeva un indicatore di sorpassabilita' utilizzabile al
+congelamento, e quell'indicatore non esiste. Se un giorno si riaprisse, va rifatto
+con dati o metrica NUOVI, non con una quarta variante di questa.
+
+Lo strumento resta in repo e funziona: gen_difficolta_sorpasso.py (recuperato da
+8c4eaec^), ai_lab/confronto/sorpassi_intragara.py, ai_lab/confronto/sorpassi_fuoricampione.py.
