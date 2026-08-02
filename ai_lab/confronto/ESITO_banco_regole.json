@@ -1,0 +1,229 @@
+{
+ "_targhetta": {
+  "cosa_e": "Il banco unico delle regole di reazione dei rivali, con la sua taratura.",
+  "metro": "DUE GIRI: caso di sosta, nuovo vs vecchio-pannello, verita' = cum_time al rientro. BANDIERA: pilota-gara, motore vs nullo, verita' = pos_finale da arrivi_2026.csv. Le due verita' restano DISTINTE di proposito.",
+  "taratura": "con la regola-identita' il banco riproduce i numeri pubblicati; se non li riproduce esce 1",
+  "limite": "la regola entra solo nella metrica alla bandiera: evaluatePit e rispostaNuovo non hanno pianiRivali in firma, e in verde il costruttore non ha punto d'innesto per una reazione",
+  "generato_da": "ai_lab/confronto/banco_regole.mjs"
+ },
+ "taratura": {
+  "verde": true,
+  "esiti": [
+   {
+    "testo": "perimetro n = 235",
+    "ok": true,
+    "misurato": 235,
+    "atteso": 235
+   },
+   {
+    "testo": "nuovo 36 · vecchio 12 · pari 187",
+    "ok": true,
+    "misurato": {
+     "nuovo": 36,
+     "vecchio": 12,
+     "pari": 187
+    },
+    "atteso": {
+     "fonte": "PREREG_voce6_bandiera.md §M1 + M1a_errore_posizione.mjs (lettura B, V-pannello)",
+     "n": 235,
+     "vinceA": 36,
+     "vinceB": 12,
+     "pari": 187,
+     "p": 0.0007
+    }
+   },
+   {
+    "testo": "p = 0.0007 (test dei segni bilaterale)",
+    "ok": true,
+    "misurato": 0.00072,
+    "atteso": 0.0007
+   },
+   {
+    "testo": "perimetro n = 193",
+    "ok": true,
+    "misurato": 193,
+    "atteso": 193
+   },
+   {
+    "testo": "terzile «ne inventa MENO del vero»  n=65  appaiato 20-13",
+    "ok": true,
+    "misurato": {
+     "n": 65,
+     "vince": 20,
+     "perde": 13
+    },
+    "atteso": {
+     "nome": "ne inventa MENO del vero",
+     "n": 65,
+     "vince": 20,
+     "perde": 13
+    }
+   },
+   {
+    "testo": "terzile «circa il giusto»  n=65  appaiato 24-14",
+    "ok": true,
+    "misurato": {
+     "n": 65,
+     "vince": 24,
+     "perde": 14
+    },
+    "atteso": {
+     "nome": "circa il giusto",
+     "n": 65,
+     "vince": 24,
+     "perde": 14
+    }
+   },
+   {
+    "testo": "terzile «ne inventa PIU' del vero»  n=63  appaiato 13-28",
+    "ok": true,
+    "misurato": {
+     "n": 63,
+     "vince": 13,
+     "perde": 28
+    },
+    "atteso": {
+     "nome": "ne inventa PIU' del vero",
+     "n": 63,
+     "vince": 13,
+     "perde": 28
+    }
+   },
+   {
+    "testo": "aggregato basso+medio  n=130  44-27  (mai stampato da nessuno script prima d'ora)",
+    "ok": true,
+    "misurato": {
+     "n": 130,
+     "vince": 44,
+     "perde": 27,
+     "p": 0.05681467793283805
+    },
+    "atteso": {
+     "n": 130,
+     "vince": 44,
+     "perde": 27
+    }
+   }
+  ]
+ },
+ "identita": {
+  "due_giri": {
+   "n": 235,
+   "vinceA": 36,
+   "vinceB": 12,
+   "pari": 187,
+   "p": 0.0007172696733945875
+  }
+ },
+ "oracolo": {
+  "bandiera": {
+   "n": 193,
+   "fasce": [
+    {
+     "nome": "ne inventa MENO del vero",
+     "n": 65,
+     "vince": 20,
+     "perde": 13,
+     "pari": 32,
+     "p": 0.29620636859909055,
+     "eccesso_medio": -5.415384615384616,
+     "err_motore": 1.7076923076923076,
+     "err_nullo": 1.876923076923077
+    },
+    {
+     "nome": "circa il giusto",
+     "n": 65,
+     "vince": 24,
+     "perde": 14,
+     "pari": 27,
+     "p": 0.14330665429588402,
+     "eccesso_medio": -2.230769230769231,
+     "err_motore": 1.4,
+     "err_nullo": 1.8
+    },
+    {
+     "nome": "ne inventa PIU' del vero",
+     "n": 63,
+     "vince": 13,
+     "perde": 28,
+     "pari": 22,
+     "p": 0.02753315582958754,
+     "eccesso_medio": 1.8412698412698412,
+     "err_motore": 1.7936507936507937,
+     "err_nullo": 1.4603174603174602
+    }
+   ],
+   "aggregato_basso_medio": {
+    "n": 130,
+    "vince": 44,
+    "perde": 27,
+    "p": 0.05681467793283805
+   }
+  }
+ },
+ "regola_provata": {
+  "regola": "oracolo",
+  "n": 193,
+  "scarti": {
+   "non classificato (RIT)": 41,
+   "non classificato (NP)": 7
+  },
+  "globale": {
+   "n": 193,
+   "vinceA": 57,
+   "vinceB": 55,
+   "pari": 81,
+   "discordanti": 112,
+   "p": 0.9247750936573578
+  },
+  "fasce": [
+   {
+    "nome": "ne inventa MENO del vero",
+    "n": 65,
+    "vince": 20,
+    "perde": 13,
+    "pari": 32,
+    "p": 0.29620636859909055,
+    "eccesso_medio": -5.415384615384616,
+    "err_motore": 1.7076923076923076,
+    "err_nullo": 1.876923076923077
+   },
+   {
+    "nome": "circa il giusto",
+    "n": 65,
+    "vince": 24,
+    "perde": 14,
+    "pari": 27,
+    "p": 0.14330665429588402,
+    "eccesso_medio": -2.230769230769231,
+    "err_motore": 1.4,
+    "err_nullo": 1.8
+   },
+   {
+    "nome": "ne inventa PIU' del vero",
+    "n": 63,
+    "vince": 13,
+    "perde": 28,
+    "pari": 22,
+    "p": 0.02753315582958754,
+    "eccesso_medio": 1.8412698412698412,
+    "err_motore": 1.7936507936507937,
+    "err_nullo": 1.4603174603174602
+   }
+  ],
+  "aggregato_basso_medio": {
+   "n": 130,
+   "vince": 44,
+   "perde": 27,
+   "p": 0.05681467793283805
+  },
+  "err_motore_mediana": 1,
+  "err_nullo_mediana": 1,
+  "posizionamento": {
+   "identita": -14,
+   "regola": 2,
+   "oracolo": 2,
+   "quota": 1
+  }
+ }
+}

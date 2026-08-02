@@ -102,48 +102,10 @@ function istogramma(errori) {
 }
 
 // ——————————————————————————————————— la ri-classificazione sulla popolazione comune
-/**
- * LETTURA B. Prende l'ordine previsto dai due motori e l'ordine vero, tiene solo le sigle
- * presenti in TUTTI E TRE, e ri-conta il rango del pilota dentro quell'insieme.
- * Nessun numero viene inventato: si riusa l'ordinamento che ogni motore ha gia' prodotto.
- */
-function letturaComune(caso, ordVecchio, ordNuovo) {
-  if (!ordVecchio || !ordNuovo) return null;
-  const sv = new Set(ordVecchio.map((x) => x[0]));
-  const sn = new Set(ordNuovo.map((x) => x[0]));
-  const comune = caso.ordineVero.filter((d) => sv.has(d) && sn.has(d));
-  if (!comune.includes(caso.pilota)) return null;
-  const S = new Set(comune);
-  const rango = (lista) => lista.filter((d) => S.has(d)).indexOf(caso.pilota) + 1;
-  return {
-    su: comune.length,
-    vero: rango(caso.ordineVero),
-    vecchio: rango(ordVecchio.map((x) => x[0])),
-    nuovo: rango(ordNuovo.map((x) => x[0])),
-  };
-}
-
-// ————————————————————————————————————————————————————————— il modello di passo v2
-import { readFileSync } from 'node:fs';
-import path from 'node:path';
-import { RADICE } from './banco.mjs';
-const MP = JSON.parse(readFileSync(path.join(RADICE, 'demo', 'data', 'modello_passo_2026.json'), 'utf8'));
-const PASSO_V2 = { delta: MP.deriva.delta_gara_s, rho: MP.degrado.rho_s_giro };
-
-// `rispostaVecchio` non espone `passo`: lo si passa costruendo gli argomenti con
-// `ingressiVecchio` (che e' proprio la porta che il banco apre per questo) e chiamando
-// `evaluatePit` con gli stessi identici ingressi piu' `passo`.
-import { ingressiVecchio } from './banco.mjs';
-import { evaluatePit } from '../../demo/pitscenario.mjs';
-function vecchioConPasso(caso, { troncato = true, orizzonte = 0, passo = null } = {}) {
-  const ing = ingressiVecchio(caso, { troncato, orizzonte });
-  // col passo v2 il pannello SPEGNE il gradino (altrimenti lo conta due volte)
-  const arg = { ...ing.argomenti, passo, gradino: passo ? null : ing.argomenti.gradino };
-  let r;
-  try { r = evaluatePit(arg); } catch (e) { return { ok: false, muto: true, motivo: `eccezione: ${e.message}`, pos: null, su: null, ordine: null }; }
-  if (!r || r.ok !== true) return { ok: false, muto: true, motivo: r?.reason ?? 'nessuna risposta', pos: null, su: null, ordine: null };
-  return { ok: true, muto: false, motivo: null, pos: r.rientro_pos, su: r.su_totale, ordine: r.ordine_previsto };
-}
+// LETTURA B e la configurazione V-pannello vivono in bandiera.mjs dal 03/08/2026:
+// erano copie in casa, e PREREG_voce6_bandiera.md le dichiarava debito aperto.
+import { letturaComune, vecchioConPasso, passoV2 } from './bandiera.mjs';
+const PASSO_V2 = passoV2();
 
 // ————————————————————————————————————————————————————————————————————— la misura
 const elenco = casi();
