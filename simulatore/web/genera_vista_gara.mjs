@@ -32,6 +32,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { caricaGare2026 } from '../provenienza/gare_2026.mjs';
 import { caricaPrior } from '../provenienza/pitloss_dati.mjs';
+import { perditaBox } from '../provenienza/pitloss.mjs';
 import { MESCOLE_SLICK_ATTUALI, MESCOLE_BAGNATO } from '../provenienza/vocabolario.mjs';
 import { caricaCostanti } from '../scenario/director_dati.mjs';
 import { caricaDurate2026 } from '../scenario/allarmi_dati.mjs';
@@ -103,6 +104,22 @@ export function generaVistaGara(radice, nomeGara, gara, contesto, extra, dove) {
     },
     modello: extra.modelloTarghetta,
     mescole: extra.mescole,
+    // LA PERDITA CHE IL MOTORE USA DAVVERO, con la sua targhetta.
+    //
+    // Stava solo dentro ogni singola risposta, mentre il badge in intestazione mostrava
+    // un ALTRO numero — quello di demo/data/pitloss.json — e su Canada i due divergevano
+    // di 5,04 s. Non era un difetto del calcolo: sono due grandezze diverse (il
+    // «realizzato» e' la media delle soste di QUELLA gara, che al congelamento nessuno
+    // conosce), ma la home dichiarava che la risposta era calcolata col primo. Decisione
+    // del PO del 02/08: il badge mostra il numero del motore, e il realizzato resta una
+    // nota. Qui sopra c'e' la stessa `perditaBox` che il costruttore chiama: una
+    // definizione, un posto (regola 1). E' costante per gara — la sosta in verde non
+    // dipende dal pilota ne' dal giro.
+    perdita: (() => {
+      const p = perditaBox(contesto.prior, nomeGara, null);
+      return { verde: p.perdita_verde, circuito: p.circuito, fonte: p.fonte,
+               fallback: p.fallback, targhetta: p.targhetta };
+    })(),
   };
   for (const pilota of [...gara.perPilota.keys()].sort()) {
     const giri = [];

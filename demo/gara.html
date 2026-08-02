@@ -72,7 +72,7 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
       pit-loss <span class="v" id="plVal"></span> <span class="prov" id="plProv"></span>
     </span>
   </div>
-  <div class="pltip" id="plTip">Provenienza del pit-loss: <b>realizzato</b> = misurato su questa gara · <b>tipico</b> = stima di circuito · <b>non misurato</b> = valore ereditato, non verificato.</div>
+  <div class="pltip" id="plTip">Il pit-loss che <b>il motore usa</b> per rispondere: <b>usato dal motore</b> = misurato sul fondo delle stagioni passate su questo circuito · <b>non misurato</b> = nessuna misura per questa pista, valore di ripiego dichiarato. Dove il badge dice anche <b>in gara</b>, quello è quanto sono costate davvero le soste di questa domenica: è un fatto post-gara, e proprio per questo non entra nel calcolo.</div>
 
   <div class="glayout">
     <div class="col-pista">
@@ -257,14 +257,33 @@ function header(gara){
     if (c==='INTERMEDIATE'||c==='WET'){ intwet=true; break; } } if(intwet) break; }
   el('hMeteo').textContent = intwet ? 'bagnata/mista' : 'asciutta';
   // niente spoiler-vincitore nell'intestazione: qui si SIMULA, non si racconta il risultato.
-  // badge pit-loss: valore da pitloss.json, provenienza da pitloss_meta.json
-  // (gara assente dal meta = appena pubblicata dallo staging => tipico, come da README del file)
-  const loss = pitloss[gara];
+  // BADGE PIT-LOSS: il numero che il MOTORE USA, non un altro.
+  //
+  // Fino al 02/08/2026 mostrava il valore di data/pitloss.json, che e' il pit-loss
+  // REALIZZATO in quella gara (la media delle soste avvenute). Il motore risponde invece
+  // con la perdita TIPICA del circuito, misurata sul fondo. Sono due grandezze diverse per
+  // costruzione e nessuna delle due era sbagliata — ma su Canada divergevano di 5,04 s e
+  // la home dichiarava che la risposta era calcolata col primo. Peggio: nove badge su
+  // undici portavano provenienza «non misurato», cioe' un valore ereditato e non
+  // verificato, mentre il motore usava una misura con IC95 promossa da un cancello: in
+  // intestazione stava il numero PIU' DEBOLE dei due.
+  //
+  // Il realizzato NON puo' entrare nel calcolo: al congelamento nessuno sa quanto
+  // costeranno le soste di quella gara (E14). Resta come nota, dove esiste.
+  // Decisione del PO, 02/08/2026.
+  const pm = indiceVista?.perdita;
+  const loss = pm?.verde ?? pitloss[gara];
   if (typeof loss === 'number'){
-    const prov = plMeta[gara]?.provenienza || 'tipico';
+    const prov = pm ? (pm.fallback ? 'non_misurato' : 'motore') : (plMeta[gara]?.provenienza || 'tipico');
     el('plVal').textContent = loss.toFixed(2).replace('.',',')+' s';
-    el('plProv').textContent = prov.replace('_',' ');
+    el('plProv').textContent = prov === 'motore' ? 'usato dal motore' : prov.replace('_',' ');
     el('plProv').className = 'prov '+prov;
+    // il realizzato di questa gara, se c'e', come nota: e' un fatto vero e post-gara
+    const real = pitloss[gara];
+    const nota = pm && typeof real === 'number' && Math.abs(real - loss) >= 0.05
+      ? ` · in gara ${real.toFixed(2).replace('.',',')} s`
+      : '';
+    el('plBadge').title = (pm?.targhetta || '') + nota;
     el('plBadge').style.display = 'inline-flex';
   } else el('plBadge').style.display = 'none';
 }

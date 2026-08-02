@@ -310,6 +310,11 @@ a.gpcard:hover::after { right: 0; }
 .plbadge .prov { font: 700 9.5px/1 var(--mono); letter-spacing: .8px; text-transform: uppercase;
   padding: 3px 7px; border-radius: 999px; }
 .plbadge .prov.realizzato { color: var(--accent-ink); background: var(--ok); }
+/* `motore` = la perdita che il motore USA per rispondere, misurata sul fondo di quel
+   circuito. Dal 02/08/2026 e' quella in intestazione: prende il rilievo che aveva
+   `realizzato`, perche' e' il numero da cui dipende la risposta. `non_misurato` resta
+   tratteggiato e spento — un ripiego non deve sembrare una misura. */
+.plbadge .prov.motore { color: var(--accent-ink); background: var(--ok); }
 .plbadge .prov.tipico { color: var(--txt); background: var(--panel2); border: 1px solid var(--line2); }
 .plbadge .prov.non_misurato { color: var(--dim); background: transparent; border: 1px dashed var(--line2); }
 .pltip { display: none; color: var(--dim); font-size: 12.5px; margin: -6px 2px 12px; max-width: 70ch; }

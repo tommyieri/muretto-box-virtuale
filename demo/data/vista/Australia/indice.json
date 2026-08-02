@@ -89,7 +89,7 @@
   "tipo": "vista del sito — nessun numero calcolato dal browser",
   "generata_da": "simulatore/web/genera_vista_gara.mjs",
   "percorso": "provenienza → engine → scenario (Director compreso) → questo JSON → componenti",
-  "data": "2026-08-01"
+  "data": "2026-08-02"
  },
  "modello": {
   "rho": 0.030776,
@@ -143,5 +143,12 @@
    "attiva": false,
    "motivo": "modello del bagnato non ancora validato: il selettore resta spento"
   }
- ]
+ ],
+ "perdita": {
+  "verde": 21.648,
+  "circuito": "Australian_Grand_Prix",
+  "fonte": "misura_interna",
+  "fallback": false,
+  "targhetta": "misurato sul fondo 2018-2025: mediana di 59 soste verdi su asciutto a Australian_Grand_Prix (IC95 20.591–23.551 s)"
+ }
 }

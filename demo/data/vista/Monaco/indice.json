@@ -93,7 +93,7 @@
   "tipo": "vista del sito — nessun numero calcolato dal browser",
   "generata_da": "simulatore/web/genera_vista_gara.mjs",
   "percorso": "provenienza → engine → scenario (Director compreso) → questo JSON → componenti",
-  "data": "2026-08-01"
+  "data": "2026-08-02"
  },
  "modello": {
   "rho": 0.030776,
@@ -147,5 +147,12 @@
    "attiva": false,
    "motivo": "modello del bagnato non ancora validato: il selettore resta spento"
   }
- ]
+ ],
+ "perdita": {
+  "verde": 22.01,
+  "circuito": "monaco",
+  "fonte": "prior_esterno",
+  "fallback": false,
+  "targhetta": "prior esterno, mediana green misurata a monaco (MISURATO_2026) — il fondo non ha promosso questo circuito"
+ }
 }
