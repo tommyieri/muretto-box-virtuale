@@ -6,7 +6,10 @@
     "come_si_chiude": "Si misura l'holdout coi modelli PRE-gara (e' il senso del sigillo), si scrive l'esito, si porta `stato` a `chiuso` con la data. Dal giro successivo la ri-stima riparte da sola e include l'Olanda.",
     "data": "2026-08-01",
     "secondo_sigillo": "01/08/2026: al sigillo del confronto motori si aggiunge quello della compressione dei distacchi. Sei ipotesi provate in casa sulle stesse 11 gare; Zandvoort e l unica gara che nessuna ha visto. Stessa regola: finche e aperto, auto_gara.py salta la ri-stima del cuore quando pubblica la gara sigillata.",
-    "modifica_prima_della_gara": "01/08/2026, 22 giorni prima: aggiunta la traduzione Olanda -> Dutch_Grand_Prix in provenienza/pitloss.mjs. NON e una taratura sull holdout: la misura interna di Zandvoort (22,382 s su 85 soste verdi, IC95 21,788-22,984) viene dalle gare 2021-2025 del fondo, che il 23 agosto non ha mai visto. Senza quella riga il motore avrebbe usato il ripiego d era (22,1 s) dichiarando circuito NON misurato — una frase falsa. Correggere un dato mancante PRIMA della gara e legittimo; farlo dopo sarebbe la fine dell holdout."
+    "modifica_prima_della_gara": "01/08/2026, 22 giorni prima: aggiunta la traduzione Olanda -> Dutch_Grand_Prix in provenienza/pitloss.mjs. NON e una taratura sull holdout: la misura interna di Zandvoort (22,382 s su 85 soste verdi, IC95 21,788-22,984) viene dalle gare 2021-2025 del fondo, che il 23 agosto non ha mai visto. Senza quella riga il motore avrebbe usato il ripiego d era (22,1 s) dichiarando circuito NON misurato — una frase falsa. Correggere un dato mancante PRIMA della gara e legittimo; farlo dopo sarebbe la fine dell holdout.",
+    "ri_firma_02_08": "RI-FIRMA del 02/08/2026, VENTUNO GIORNI PRIMA della gara, e va detto per esteso. La prereg impone (regola 4) di verificare gli sha256 prima di misurare, e di dichiarare NON GIUDICABILE se sono cambiati. Erano cambiati: modello_v2.json e' passato da e87a0c6e... a 4058e490... perche' DOPO la ri-firma del 01/08 due voci del piano lo hanno toccato — bfada38 (voce 4: min_giri_base da 8 a 4) e 0952a2d (E21 chiuso). Senza questa ri-firma il 23 agosto l'holdout sarebbe stato annullato per contabilita' invece che per scienza. Ri-firmare PRIMA della gara e' legittimo ed e' il contrario di ri-tarare dopo: l'Olanda resta una gara che nessuno di questi numeri ha mai visto, e le due modifiche sono del 01/08. Ri-firmare dopo il 23/08 sarebbe la fine dell'holdout.",
+    "pitloss_interno_aggiunto": "02/08/2026: data/modelli/pitloss_interno.json entra nel sigillo. E' il file che da' a Zandvoort il suo pit-loss (22,382 s, promosso dal cancello A su 85 soste verdi 2021-2025) e NON era sigillato: il file piu' direttamente responsabile del numero fuori campione era l'unico che nessuno sorvegliava. Aggiunto anche pitloss_priors.json, che lo accompagna.",
+    "guardiano": "Gli hash ora vivono QUI, in forma leggibile da un programma, e non solo nella prosa delle prereg. La sentinella s32_sigillo_holdout li verifica a ogni giro della suite: se un file sigillato cambia, la suite diventa rossa IL GIORNO STESSO, non la domenica della gara."
   },
   "stato": "aperto",
   "gara": "Olanda",
@@ -18,9 +21,17 @@
   "modelli_sigillati": [
     "data/modelli/modello_v2.json",
     "data/modelli/banda_rientro.json",
+    "data/modelli/pitloss_interno.json",
     "data/priors/pitloss_priors.json",
     "data/viste/compressione_e_fattori_fondo.json"
   ],
   "nota_hash": "Gli hash del sigillo stanno nella prereg e sono stati RI-FIRMATI il 01/08 dopo la voce 1 (rodaggio): entrambi i file sono cambiati quel giorno, PRIMA della gara e per una ragione dichiarata. Ri-firmare prima della gara e' legittimo ed e' il contrario di ri-tarare dopo; ri-firmarli dopo il 23/08 sarebbe la fine dell'holdout.",
-  "chiuso_il": null
+  "chiuso_il": null,
+  "hash_sigillati": {
+    "data/modelli/modello_v2.json": "4058e4909e8a7311924bcad6badcc68222ffa02bc603e62a2ef800448c7af3f9",
+    "data/modelli/banda_rientro.json": "689e5d8472c1c3aa8e1512d3221cc264c9403c8f7b5ec6524dbbc1cbb2daabb3",
+    "data/modelli/pitloss_interno.json": "c000c7df3ba11245a40ae65693fd840efe568ce95d9ddeeeba901e1c18abbe3e",
+    "data/priors/pitloss_priors.json": "74a9ab69c79adbed451283babe1f6143f844bdfad935c777562aa9bce3de67ff",
+    "data/viste/compressione_e_fattori_fondo.json": "5c2116084c0ace8f401c7a1c569616eab22669616c5b807f5b4ad227cc692e0c"
+  }
 }

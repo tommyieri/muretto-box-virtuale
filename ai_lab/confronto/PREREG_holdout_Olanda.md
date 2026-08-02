@@ -22,8 +22,30 @@ Al momento della firma i modelli sono questi, e sono **pinnati** in `data/MANIFE
 
 ```
 banda_rientro.json  689e5d8472c1c3aa8e1512d3221cc264c9403c8f7b5ec6524dbbc1cbb2daabb3
-modello_v2.json     e87a0c6eeb9e36697d996637e042168a9130b6cf41f594761e50227f07e8d114
+modello_v2.json     e87a0c6eeb9e36697d996637e042168a9130b6cf41f594761e50227f07e8d114   ⟵ SCADUTO, vedi sotto
 ```
+
+> **⚠ RI-FIRMATO IL 02/08/2026, VENTUNO GIORNI PRIMA DELLA GARA — e questa volta il
+> controllo l'ha fatto un programma, non la buona memoria.**
+>
+> Applicando la **regola 4** di questo documento *prima* della gara invece che il giorno
+> della gara, `modello_v2.json` **era già cambiato**: da `e87a0c6e…` a `4058e490…`. Due
+> commit del 01/08, entrambi successivi alla ri-firma di quel giorno:
+> `bfada38` (voce 4 del piano: `min_giri_base` da 8 a 4) e `0952a2d` (E21 chiuso).
+>
+> **Così com'era, il 23 agosto l'esito sarebbe stato NON GIUDICABILE** — il primo fuori
+> campione vero del progetto annullato per contabilità invece che per scienza. Le due
+> modifiche sono legittime, sono del 01/08, e l'Olanda resta una gara che nessuno di
+> questi numeri ha mai visto.
+>
+> Gli hash vivono ora in `SIGILLO_holdout.json` in forma **leggibile da un programma**, e
+> la sentinella **`s32_sigillo_holdout`** li verifica a ogni giro della suite: dal 02/08 un
+> file sigillato che cambia rende la suite rossa **lo stesso giorno**, quando ri-firmare è
+> ancora legittimo — non la domenica, quando non lo è più.
+>
+> Sigillati anche **`pitloss_interno.json`** (è il file che dà a Zandvoort il suo pit-loss:
+> 22,382 s, promosso dal cancello A su 85 soste verdi 2021-2025, e **non era sorvegliato da
+> nessuno**), `pitloss_priors.json` e `compressione_e_fattori_fondo.json`.
 
 > **RI-FIRMATO il 01/08/2026, poche ore dopo la prima firma, e va detto perché.** Gli hash
 > originali (`6f5394c3…` e `2bc7141e…`) sono stati firmati la mattina; nel pomeriggio la
@@ -78,12 +100,20 @@ fissate e non si scelgono dopo:
 | **H1** | esatti M1-B2 del nuovo ≥ **40,0%** | 45,3% |
 | **H2** | mediana \|errore\| M1-B2 del nuovo ≤ **1,0** | 1,0 |
 | **H3** | il nuovo ≥ il vecchio sugli esatti M1-B2 | +2,3 punti |
-| **H4** | copertura della banda ≥ **67,3%** — cioè *almeno quanto ha misurato in campione*, non l'88,5% dichiarato | 67,3% |
+| **H4** | copertura della banda ≥ **67,3%** — cioè *almeno quanto ha misurato in campione*, non l'88,5% dichiarato | 67,3% ⟵ **il riferimento si è mosso: oggi in campione è 83,1%** |
 | **H5** | copertura (casi con risposta) ≥ **90%** | 94,9% |
 
 **H1, H2, H4 sono soglie assolute**: se una cade, il motore fuori campione è peggio di come
 si è misurato in casa, e va detto senza attenuanti. **H3 è relativo**: se cade, il vecchio
 regge meglio il fuori campione, ed è la notizia più importante che questa gara possa dare.
+
+> **⚠ IL RIFERIMENTO DI H4 È SCADUTO, e la soglia NON si tocca.** H4 fu scritta perché
+> valesse «almeno quanto in campione», e in campione M5 valeva 67,3%. Oggi M5 vale
+> **83,1%** (rimisurato il 02/08). La soglia resta **67,3%**, perché è pre-registrata e
+> spostarla dopo aver visto muovere il riferimento sarebbe E08 — ma va letta sapendo che
+> **superarla oggi è un'affermazione più debole di quella che H4 voleva fare**. Se il 23
+> agosto H4 passa a 70%, il motore fuori campione sarà *peggio* di come si misura in casa,
+> pur avendo superato il cancello. Questo va scritto nel referto, non dedotto.
 
 ## Le regole che impediscono di barare dopo
 
