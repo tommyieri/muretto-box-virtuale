@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <!--
-  PAGINA-GARA (ui-v2). Consumatore puro: legge demo/data/*, engine.mjs, pitscenario.mjs,
-  timeline.mjs — non li modifica. La logica di simulazione/valutazione e' IDENTICA alla
-  vista precedente (index v1): qui cambia solo la presentazione.
+  PAGINA-GARA (ui-v2). Consumatore puro, e dal 31/07/2026 nel senso pieno: questa pagina
+  NON CALCOLA PIU'. Le risposte del muretto sono pre-calcolate in Node dal simulatore
+  nuovo (simulatore/web/genera_vista_gara.mjs, che passa dal Director) e scritte in
+  data/vista/<gara>/<pilota>.json; qui si formatta e basta, com'e' giusto per una pagina.
+  Quello che importa sono i formattatori trasportati (vendor/simulatore/render, pannello,
+  curva) piu' timeline.mjs e pista.mjs. Il motore vecchio — engine.mjs, pitscenario.mjs —
+  in questa pagina non entra piu': vive ancora nel repo, ma solo per banchi e strumenti.
   Gerarchia: la pista e' la protagonista; la timeline eventi sostituisce lo slider;
   l'esplorazione pit ("se pitto al giro L") resta il prodotto.
 -->
@@ -711,7 +715,8 @@ function buildUfficiale(){
     <span class="pb">penalit&agrave;</span><span class="pu">ufficiale</span><span class="fr"></span></div>` + righe;
 }
 
-// --- esplorazione pit: logica identica alla v1 (evaluatePit invariato), veste nuova ---
+// --- esplorazione pit: la risposta non si calcola qui, si LEGGE dalla vista
+//     pre-calcolata del simulatore (vistaDi -> mostraRisposta) ---
 function openPit(){
   if(!selDrv){ el('pit').classList.add('hidden'); return; }
   conta('valutazione_pit');

@@ -2,7 +2,8 @@
 // hero.mjs — LA HERO DELLA LANDING COME DEMO INTERATTIVA
 //
 // Progetto: NOTA_HERO.md. Dati: demo/data/hero.json, scritto da gen_hero.mjs
-// chiamando lo STESSO motore della pagina-gara (demo/pitscenario.mjs).
+// chiamando lo STESSO motore della pagina-gara — dal 01/08/2026 il simulatore nuovo,
+// simulatore/scenario/costruttore.mjs::doveRientri.
 // Nessun numero di questo file e' scritto a mano.
 //
 // ARCHITETTURA — undici moduli indipendenti, un solo direttore.

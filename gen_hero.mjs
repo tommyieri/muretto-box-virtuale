@@ -3,20 +3,23 @@
 // La hero della landing e' una demo interattiva: mostra una domanda vera del muretto
 // («mi fermo adesso o fra tre giri?») e la risposta del MOTORE DI PRODUZIONE. Perche'
 // quella risposta sia un dato e non una scenografia, questo generatore chiama un motore
-// vero — demo/pitscenario.mjs::evaluatePit e ::traiettoriaPit, demo/gradino.mjs::misura —
-// e congela l'esito in demo/data/hero.json.
+// vero — simulatore/scenario/costruttore.mjs::doveRientri — e congela l'esito in
+// demo/data/hero.json.
 //
-// ATTENZIONE, DAL 31/07/2026 NON E' PIU' IL MOTORE DELLA PAGINA-GARA. gara.html e'
-// passata al simulatore nuovo, che pre-calcola le risposte (demo/data/vista/). Questo
-// generatore usa ancora il motore precedente, e le due cose NON dicono sempre lo stesso:
-// misurato su Belgio/LEC, al congelamento del giro 20 concordano (P1), ma il caso
-// "aspetta tre giri" della hero da' P4 mentre la pagina-gara, congelata al giro 23,
-// da' P6 — sono due domande vicine e non identiche, e il visitatore non ha modo di
-// saperlo. La hero conta anche su 10 vetture dove il simulatore ne conta 20.
+// ED E' LO STESSO MOTORE DELLA PAGINA-GARA, dal 01/08/2026. Per quattro giorni non lo
+// e' stato: il 31/07 gara.html era passata al simulatore nuovo (risposte pre-calcolate
+// in demo/data/vista/) mentre questa hero girava ancora sul motore precedente, e le due
+// rispondevano vicino ma non uguale — al congelamento del giro 20 su Belgio/LEC
+// concordavano (P1), ma il caso "aspetta tre giri" dava P4 di qua e P6 di la', e il
+// visitatore non aveva modo di saperlo. Quella divergenza e' CHIUSA alla radice: non e'
+// stata dichiarata meglio, e' stato cambiato il motore. Qui sotto si carica lo stesso
+// contesto e le stesse costanti che passa simulatore/web/genera_vista_gara.mjs, e la
+// targhetta scritta in hero.json (campo `_nota`) lo dice per esteso.
 //
-// Finche' la hero non viene ricostruita sul motore nuovo, la sua targhetta lo DICE
-// invece di promettere una parita' che non c'e' piu' (E22: un numero pubblicato con una
-// targhetta che non e' stata rimisurata dopo un cambio e' peggio di un numero senza).
+// Chi tocca questo file tenga il patto E22 in mente al contrario di come si e' abituati:
+// non basta che il numero sia giusto oggi: se il motore cambia ancora, cambiano INSIEME
+// questa chiamata e quella riga di targhetta, altrimenti torna un numero pubblicato che
+// promette una parita' che nessuno ha piu' rimisurato.
 //
 // REGOLA DELLA CASA: nessun file dati senza generatore. hero.json non si scrive a mano;
 // se cambia il motore, si rilancia questo e la hero cambia con lui.
@@ -28,11 +31,23 @@
 // caso in cui la lezione del muretto si vede a occhio nudo in cinque secondi.
 //   - al giro 20 il campo e' neutralizzato (20 vetture su 22 col flag): la sosta costa meno
 //     e i rivali a pari giro ancora al 1° stint si fermano con te (assunzione dichiarata);
-//   - fermarsi LI' -> si rientra P1, davanti a tutti;
-//   - aspettare tre giri e fermarsi in verde -> si rientra P4, dietro PIA di 5,35 s.
-// Tre posizioni di differenza a parita' di pilota, di gomma e di pit-loss: la variabile e'
-// il MOMENTO. E' esattamente quello che il prodotto sa dire, e l'unica cosa che promette:
-// dove rientri, non se conviene.
+//   - fermarsi LI' e aspettare tre giri danno due posizioni di rientro DIVERSE, ed e'
+//     tutto qui: stesso pilota, stessa gomma, stesso pit-loss — la variabile e' il MOMENTO.
+// E' esattamente quello che il prodotto sa dire, e l'unica cosa che promette: dove rientri,
+// non se conviene.
+//
+// I NUMERI DI QUEL CONFRONTO NON STANNO PIU' IN QUESTO COMMENTO, e non e' pignoleria:
+// ci stavano, dicevano «P1 contro P4, tre posizioni», e sono invecchiati in silenzio senza
+// che nessuno se ne accorgesse. Il posto dei numeri e' demo/data/hero.json, che e' generato:
+// chi li vuole li legge di li'.
+//
+// DERIVA MISURATA IL 02/08/2026, APERTA. `node gen_hero.mjs --stdout` oggi NON riproduce il
+// hero.json committato: pubblicato P1 -> P6 (delta 5), rigenerato P4 -> P6 (delta 2). Il
+// motore e' lo stesso — a muoversi sono stati i dati sotto, che si ri-stimano a ogni gara —
+// ma il hero.json in pagina porta gia' la targhetta del motore nuovo, quindi e' un numero
+// pubblicato che nessuno ha piu' rimisurato dopo un cambio: E22, di nuovo e per altra via.
+// Rigenerarlo cambia la landing pubblica: e' una decisione del PO, non l'effetto collaterale
+// di una correzione ai commenti. Percio' qui resta SCRITTO, non fatto.
 //
 // COSA NON C'E' E PERCHE'. Nessun numero cambia con la MESCOLA. Sul fondo 2026 la
 // differenza fra mescole su gradino, warm-up e degrado non si distingue dal caso
@@ -71,9 +86,14 @@ const CASO = {
   righeTorre: 6,     // quante righe mostra la torre della hero
 };
 
-const MIN_SOSTE_UI = 3;      // stessa soglia del pannello (demo/muretto.mjs)
-const ZONE = 0;              // CAP_TRAFFICO = false in produzione
-const ORIZZONTE = 5;         // stesso orizzonte del pannello quando il gradino c'e'
+// RESIDUI DEL MOTORE VECCHIO, non piu' letti da nessuno. Erano i parametri che si
+// passavano a evaluatePit; doveRientri prende le sue costanti dal contesto caricato
+// sopra (caricaCostanti / modello_v2.json), quindi questi tre non entrano piu' in
+// nessuna chiamata. Restano qui solo perche' toglierli e' codice, non commento: vanno
+// rimossi, ma in un cambio che si dichiara tale.
+const MIN_SOSTE_UI = 3;      // era: soglia soste del pannello vecchio — NON USATA
+const ZONE = 0;              // era: CAP_TRAFFICO = false — NON USATA
+const ORIZZONTE = 5;         // era: orizzonte del pannello vecchio — NON USATA
 
 const leggi = (f) => JSON.parse(fs.readFileSync(path.join(DATI, f), 'utf8'));
 const G = leggi(`${CASO.gara}.json`);

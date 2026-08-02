@@ -1,11 +1,20 @@
-// ghostplay.mjs — la SOSTA MESSA IN SCENA, condivisa. Consuma la traiettoria di
-// traiettoriaPit (l'oggetto `sim` che pannelloMuretto restituisce) e la anima: il pallino
-// del pilota entra ai box al giro scelto, monta gomma nuova e risale seguendo la strategia,
-// sorpassando i rivali — su mappa (pista.aggiorna) e su una torre (callback onTower).
+// ghostplay.mjs — la SOSTA MESSA IN SCENA, condivisa. Consuma un oggetto `sim`
+// {laps, cumByLap, present, freezeLap} e lo anima: il pallino del pilota entra ai box al
+// giro scelto, monta gomma nuova e risale seguendo la strategia, sorpassando i rivali —
+// su mappa (pista.aggiorna) e su una torre (callback onTower).
 //
-// NON calcola nulla di nuovo. La fisica e' gia' nel cum di ogni giro; qui c'e' solo la messa
-// in scena. Al giro-risposta il cum coincide con evaluatePit (garantito da traiettoriaPit),
-// quindi l'animazione non puo' contraddire il numero del pannello.
+// DA DOVE ARRIVA QUEL `sim`, dal 31/07/2026: in produzione dalla traccia del simulatore
+// nuovo, passata per l'adattatore fantasma_sim.mjs::simDaFantasma — cosi' in gara.html
+// (traccia pre-calcolata, letta col resto della vista) come in live.html (traccia che il
+// motore produce sul momento). Prima arrivava da traiettoriaPit: e' cambiata la SORGENTE,
+// non la forma, ed e' il motivo per cui questo modulo non ha dovuto muoversi. Il banco
+// (test_ghostplay.mjs) lo esercita ancora anche contro traiettoriaPit, che la stessa
+// forma la produce.
+//
+// NON calcola nulla di nuovo. La fisica e' gia' nel cum di ogni giro; qui c'e' solo la
+// messa in scena. Al giro-risposta il cum coincide con quello del pannello — perche' la
+// traccia e la risposta escono dalla STESSA generazione, non perche' qualcuno le
+// riallinei — quindi l'animazione non puo' contraddire il numero mostrato.
 //
 // Le funzioni pure (costruisciCum / tempoReale / statoAl / righeTorre) sono testabili in
 // Node senza DOM (test_ghostplay.mjs). creaGhostPlay aggiunge solo il loop rAF + il rendering.

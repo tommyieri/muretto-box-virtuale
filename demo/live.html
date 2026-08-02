@@ -92,10 +92,13 @@
     <a id="live-invito" class="live-invito" href="gara.html?g=Belgio" hidden>&#9654; Nessuna gara in diretta adesso &mdash; prova il simulatore su una gara gi&agrave; corsa</a>
   </section>
 
-  <!-- IL MURETTO IN DIRETTA. La stessa domanda di gara.html, ma dal 31/07/2026 NON piu'
-       lo stesso pannello: qui resta demo/muretto.mjs (calcola nel browser), mentre la
-       pagina-gara legge le risposte pre-calcolate del simulatore nuovo. Vedi la nota in
-       testa al file: e' una divergenza dichiarata, non un residuo.
+  <!-- IL MURETTO IN DIRETTA. La stessa domanda di gara.html, e dal 31/07/2026 lo STESSO
+       motore: il simulatore nuovo. Non e' una divergenza, e' una strada diversa per la
+       stessa risposta — la pagina-gara legge le viste pre-calcolate (data/vista/), qui
+       il motore gira in pagina attraverso demo/ponte_live.mjs e vendor/simulatore/,
+       perche' in diretta una risposta pre-calcolata su un giro non ancora percorso non
+       esiste. Vedi la nota in testa al file: la parita' e' MISURATA
+       (demo/test_parita_live.mjs), non promessa.
        Scegli un pilota e la pagina risponde: se lo fermo adesso, dove rientra. -->
   <div class="sez-tit">Il muretto</div>
   <section class="panel" id="mu-panel">
@@ -406,9 +409,12 @@ async function bootMappa(g){
 // ============================================================ IL MURETTO IN DIRETTA
 //
 // La stessa domanda del pannello di gara.html, sulla gara che sta succedendo. E' LO
-// STESSO CODICE (demo/muretto.mjs): cambia solo da dove arrivano i dati — dal flusso del
-// collettore invece che dal JSON di una gara finita. Il traduttore e' live_bylap.mjs, ed
-// e' provato contro la gara vera di Spa (demo/test_live_bylap.mjs).
+// STESSO CODICE — il motore del simulatore, trasportato in vendor/simulatore/ con
+// manifest di hash: cambia solo da dove arrivano i dati, dal flusso del collettore
+// invece che dalla vista pre-calcolata di una gara finita. Due traduttori, nessuna
+// fisica: live_bylap.mjs porta il flusso alla struttura per-giro (provato contro la
+// gara vera di Spa, demo/test_live_bylap.mjs), ponte_live.mjs porta quella struttura
+// al contratto del simulatore (parita' misurata, demo/test_parita_live.mjs).
 //
 // SOLO IN GARA, e il cancello e' un fatto non una preferenza: la distanza di gara arriva
 // dal messaggio LapCount, che il feed manda soltanto in gara. Nelle libere e in qualifica

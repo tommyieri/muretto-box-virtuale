@@ -1,9 +1,18 @@
 // live_bylap.mjs — DAL FLUSSO LIVE ALLA STESSA STRUTTURA CHE IL MOTORE GIA' SA LEGGERE.
 //
-// Il pannello del muretto (pitscenario.mjs, gradino.mjs, grossi.mjs) parla una lingua
-// sola: byLap[giro][sigla] = {cum_time, lap_time, team, compound, tyre_age, stint,
-// in_lap, out_lap, neutralized, lap}. Le gare gia' svolte quella struttura ce l'hanno
-// gia' pronta nel JSON. La gara IN CORSO no: arriva un flusso di eventi.
+// Il muretto parla una lingua sola: byLap[giro][sigla] = {cum_time, lap_time, team,
+// compound, tyre_age, stint, in_lap, out_lap, neutralized, lap}. Le gare gia' svolte
+// quella struttura ce l'hanno gia' pronta nel JSON. La gara IN CORSO no: arriva un
+// flusso di eventi.
+//
+// CHI LEGGE QUESTA STRUTTURA, dal 31/07/2026 (prima era il pannello vecchio, e basta):
+//   - in PRODUZIONE, ponte_live.mjs, che la traduce nel contratto del simulatore nuovo
+//     (vendor/simulatore/) — la strada che live.html percorre davvero;
+//   - nel BANCO, anche il pannello vecchio (muretto.mjs -> pitscenario.mjs, con
+//     gradino.mjs e grossi.mjs), che la stessa struttura la legge ancora: e' quello che
+//     test_live_bylap.mjs usa come sentinella del cavo.
+// Il formato non e' cambiato con il motore, ed e' il motivo per cui il cambio non ha
+// richiesto di riscrivere questo file.
 //
 // Questo modulo e' il traduttore, e non tocca il motore. Se traduce bene, il pannello
 // live e il pannello sulle gare vecchie sono LO STESSO CODICE — che e' l'unico modo
