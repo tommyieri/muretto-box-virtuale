@@ -32,7 +32,7 @@
 //      pubblicato ha dovuto essere rimisurato.
 
 import { banco } from '../asserzioni.mjs';
-import { readFileSync, readdirSync, statSync } from 'node:fs';
+import { readFileSync, readdirSync, statSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { calibraBanda, conteso, separaIlContesto, creaGeneratore } from '../misure/difesa.mjs';
@@ -44,6 +44,16 @@ import { caricaPrior } from '../../provenienza/pitloss_dati.mjs';
 import { costruisci } from '../scrivi_banda_rientro.mjs';
 
 const b = banco('s25');
+
+/** Tutti i .mjs sotto una cartella, ricorsivo. Cartella assente = elenco vuoto. */
+function elencaFile(dir) {
+  if (!existsSync(dir)) return [];
+  return readdirSync(dir, { withFileTypes: true }).flatMap((v) => {
+    const f = path.join(dir, v.name);
+    if (v.isDirectory()) return v.name === 'node_modules' ? [] : elencaFile(f);
+    return v.name.endsWith('.mjs') ? [f] : [];
+  });
+}
 const radice = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const cancelli = leggiCancelli(radice).difesa;
 const banda = JSON.parse(readFileSync(path.join(radice, 'data', 'modelli', 'banda_rientro.json'), 'utf8'));
@@ -372,6 +382,33 @@ const d = riassunto.difesa;
     esito.D2.alla_soglia_dichiarata.p_permutazione, d.contesto.p_permutazione);
   b.verifica('...e l\'esito tiene a referto anche quello ottenuto col generatore storto (E22)',
     /0,29527/.test(esito.D2.generatore_corretto));
+}
+
+// ── (k) LE SOSTE VERE DEI RIVALI restano un ingresso di LABORATORIO ────────
+//
+// `costruisciScenario` accetta `pianiRivali`: dai a ogni rivale le SUE soste vere.
+// Serve a una domanda diagnostica sola (ai_lab/confronto/PREREG_sorpassi.md), ed e'
+// informazione dal futuro in piena regola — al congelamento non si sa quando si
+// fermeranno gli altri. Misurare la fisica a strategia nota e' lecito; PUBBLICARE
+// una risposta nata da li' sarebbe E14 alla scala del prodotto.
+//
+// COSA FA FALLIRE QUESTO BLOCCO: qualcuno passa `pianiRivali` da un percorso che
+// finisce in pagina (web/, demo/, o le risposte in scenario/). Il banco e ai_lab
+// possono: e' il loro mestiere.
+{
+  const vietate = [
+    ...elencaFile(path.join(radice, 'web')),
+    ...elencaFile(path.join(radice, 'scenario')).filter((f) => !/costruttore\.mjs$/.test(f)),
+    ...elencaFile(path.join(radice, '..', 'demo')).filter((f) => !/\/data\//.test(f)),
+  ];
+  const colpevoli = vietate.filter((f) => /pianiRivali/.test(readFileSync(f, 'utf8')));
+  b.uguale('nessun percorso di produzione passa le soste vere dei rivali (E14)',
+    colpevoli.map((f) => path.relative(radice, f)).sort(), []);
+
+  // ...e il costruttore la dichiara come assunzione, invece di applicarla in silenzio
+  const cost = readFileSync(path.join(radice, 'scenario', 'costruttore.mjs'), 'utf8');
+  b.verifica('il costruttore mette a referto SOSTE_VERE_DEI_RIVALI', /SOSTE_VERE_DEI_RIVALI/.test(cost));
+  b.verifica('...e la dichiara informazione dal futuro', /INFORMAZIONE DAL FUTURO/.test(cost));
 }
 
 b.chiudi();

@@ -27,7 +27,14 @@
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { costruisciScenario, eseguiEValida } from '../../simulatore/scenario/costruttore.mjs';
+import { cambiDiPosizione } from '../../simulatore/engine/kernel.mjs';
 import { RADICE, gare, garaNuova, garaSimDi, contestoNuovo, riclassifica } from './banco.mjs';
+
+// --rivali: ogni pilota riceve le SUE soste vere, non solo il soggetto. E' l'ingresso
+// di laboratorio della Domanda B di PREREG_sorpassi.md, e rende SIMMETRICA
+// l'informazione dal futuro. Spento, il costruttore non fa fermare nessun rivale in
+// verde — che e' giusto in diretta e distorsivo qui.
+const RIVALI = process.argv.includes('--rivali');
 
 // Il congelamento NON e' una costante. La prima prereg diceva «il primo possibile» e
 // poi lo scriveva come 5, dando per scontato che al giro 5 esistano quattro giri
@@ -107,6 +114,13 @@ function ordinePrevisto(traccia, giroFinale) {
   };
 }
 
+/** Le soste vere di TUTTI in quella gara, nel formato del costruttore. */
+function pianiVeriDi(nomeSito) {
+  const m = {};
+  for (const r of perGara(nomeSito)) if (r.soste_piano.length) m[r.pilota] = r.soste_piano;
+  return m;
+}
+
 // ── un caso: congela, dagli la SUA strategia vera, corri fino alla bandiera ──
 function corri(nomeSito, pilota) {
   const r = riga(nomeSito, pilota);
@@ -127,7 +141,10 @@ function corri(nomeSito, pilota) {
     if (!futuro.length) { ultimoMotivo = `nessuna sosta oltre il giro ${lf}`; break; }
     let s2; let e2;
     try {
-      s2 = costruisciScenario({ gara: garaSimDi(nomeSito), freezeLap: lf, pilota, piano: futuro }, contesto);
+      s2 = costruisciScenario({
+        gara: garaSimDi(nomeSito), freezeLap: lf, pilota, piano: futuro,
+        pianiRivali: RIVALI ? pianiVeriDi(nomeSito) : undefined,
+      }, contesto);
       e2 = eseguiEValida(s2, contesto.costantiDirector);
     } catch (e) { ultimoMotivo = `eccezione: ${e.message}`; continue; }
     const p2 = ordinePrevisto(e2.risultato.traccia, gSim.nGiri);
@@ -148,8 +165,19 @@ function corri(nomeSito, pilota) {
   const n = riclassifica(nullo, vero, pilota, prev.ordine);
   if (!m) return { saltato: 'il pilota non e\' nella popolazione comune motore/nullo/verita\'' };
 
+  // ── DOMANDA A · quanto movimento produce il motore, contro quanto ne avviene ──
+  // `cambiDiPosizione` e' la definizione del kernel (QUANTI, non QUALI): conta quanti
+  // piloti NON sono piu' dove stavano. Si applica due volte allo stesso ordine di
+  // partenza, cosi' i due conteggi sono confrontabili.
+  const comuni = new Set(nullo.filter((d) => vero.includes(d) && prev.ordine.includes(d)));
+  const soloComuni = (o) => o.filter((d) => comuni.has(d));
+  const lf0 = soloComuni(nullo);
+  const cambiReali = cambiDiPosizione(lf0, soloComuni(vero));
+  const cambiMotore = cambiDiPosizione(lf0, soloComuni(prev.ordine));
+
   const fatal = (esito.direttore?.violazioni ?? []).filter((v) => v.severita === 'FATAL');
   return {
+    cambi_reali: cambiReali, cambi_motore: cambiMotore, campo: comuni.size,
     n_giri: gSim.nGiri,
     congelamento,
     proiettati: gSim.nGiri - congelamento,
@@ -193,7 +221,17 @@ function cancelli(buoni, titolo, prereg) {
   const perse = paia.filter((e) => Math.abs(e.errore) > Math.abs(e.errore_nullo)).length;
   console.log(`    appaiato: il motore vince ${vinte}, perde ${perse}, pari ${paia.length - vinte - perse} su ${paia.length}`);
   console.log(`    congelamento mediano al giro ${mediana(buoni.map((e) => e.congelamento))} · giri proiettati mediana ${mediana(buoni.map((e) => e.proiettati))} — il modello e' validato a 10`);
-  return { g1, g2, g3, g4, n: A.length, vinte, perse };
+
+  // ── DOMANDA A · il censimento del movimento (PREREG_sorpassi.md) ──────────
+  const cr = buoni.map((e) => e.cambi_reali);
+  const cm = buoni.map((e) => e.cambi_motore);
+  const resa = media(cr) > 0 ? media(cm) / media(cr) : null;
+  console.log('');
+  console.log(`    DOMANDA A · movimento: reali ${media(cr).toFixed(2)} cambi per caso (mediana ${mediana(cr)}) `
+    + `su un campo di ${mediana(buoni.map((e) => e.campo))} auto`);
+  console.log(`                           motore ${media(cm).toFixed(2)} (mediana ${mediana(cm)}) `
+    + `→ RESA ${resa === null ? '—' : (resa * 100).toFixed(1) + '%'} ${resa !== null && resa < 0.5 ? '(bassa: sotto la soglia 50% dichiarata)' : '(alta: sopra la soglia 50% dichiarata)'}`);
+  return { g1, g2, g3, g4, n: A.length, vinte, perse, resa };
 }
 
 // ── R2a: i dieci del PO ──────────────────────────────────────────────────────
@@ -220,7 +258,9 @@ if (process.argv.includes('--json')) { console.log(JSON.stringify(esiti, null, 2
 
 console.log('LA GARA INTERA COL NOSTRO MOTORE — dieci team, dieci piloti, dieci gare');
 console.log('  congelamento ADATTIVO: il primo giro ≥ 5 in cui il motore ha davvero un passo base');
-console.log('  strategia VERA in ingresso (soste e mescole reali): si misura la FISICA, non la previsione');
+console.log(RIVALI
+  ? '  soste vere di TUTTI (--rivali): informazione dal futuro SIMMETRICA — strumento di laboratorio'
+  : '  soste vere del solo soggetto: informazione dal futuro ASIMMETRICA (i rivali non si fermano)');
 console.log('  prereg: PREREG_gara_intera.md + PREREG_gara_intera_2.md');
 console.log('');
 console.log('  team              pilota gara          Lf  giri  strategia vera        prev  vero  err  nullo');
@@ -255,16 +295,43 @@ if (TUTTO) {
   for (const [k, v] of Object.entries(scarti).sort((a, b) => b[1] - a[1])) console.log(`    ${String(v).padStart(4)} scartati — ${k}`);
   if (tutti.length) {
     cancelli(tutti, 'R2b, tutto il perimetro', 'PREREG_gara_intera_2.md');
+    // MUOVERE LA QUANTITA' SBAGLIATA COSTA? Terzili sull'ECCESSO di movimento
+    // (cambi del motore meno cambi veri): se il motore che inventa movimento
+    // sbaglia di piu' di quello che ne inventa poco, il difetto non e' la
+    // quantita' di sorpassi ma il fatto che nel kernel le auto si attraversano.
+    console.log('');
+    console.log('  L\'ECCESSO DI MOVIMENTO COSTA? (terzili su cambi_motore − cambi_reali)');
+    const ord = [...tutti].sort((a, b) => (a.cambi_motore - a.cambi_reali) - (b.cambi_motore - b.cambi_reali));
+    const t = Math.ceil(ord.length / 3);
+    const fasce = [['ne inventa MENO del vero', ord.slice(0, t)],
+      ['circa il giusto', ord.slice(t, 2 * t)],
+      ['ne inventa PIU\' del vero', ord.slice(2 * t)]];
+    for (const [nome, q] of fasce) {
+      if (!q.length) continue;
+      const ecc = media(q.map((x) => x.cambi_motore - x.cambi_reali));
+      const em = media(q.map((x) => Math.abs(x.errore)));
+      const en = media(q.map((x) => Math.abs(x.errore_nullo)));
+      const v = q.filter((x) => Math.abs(x.errore) < Math.abs(x.errore_nullo)).length;
+      const pz = q.filter((x) => Math.abs(x.errore) > Math.abs(x.errore_nullo)).length;
+      console.log(`    ${nome.padEnd(26)} n=${String(q.length).padStart(3)}  eccesso medio ${((ecc >= 0 ? '+' : '') + ecc.toFixed(1)).padStart(5)}`
+        + `   |errore| medio: motore ${em.toFixed(2)}  nullo ${en.toFixed(2)}   appaiato ${v}-${pz}`);
+    }
+
     // BLOCCHI = GARE (E11): un verdetto medio puo' nascere da due gare estreme.
     console.log('');
-    console.log('  G4 GARA PER GARA (blocchi = gare, E11)');
-    console.log('    gara            n   motore  nullo   chi vince');
+    console.log('  G4 E MOVIMENTO, GARA PER GARA (blocchi = gare, E11)');
+    console.log('    gara            n   motore  nullo   chi vince   cambi reali  motore   resa');
     for (const g of gare()) {
       const q = tutti.filter((x) => x.gara === g && x.errore_nullo !== null);
       if (!q.length) { console.log(`    ${g.padEnd(15)} —   nessun caso utilizzabile`); continue; }
       const m = mediana(q.map((x) => Math.abs(x.errore)));
       const n = mediana(q.map((x) => Math.abs(x.errore_nullo)));
-      console.log(`    ${g.padEnd(15)} ${String(q.length).padStart(2)}   ${String(m).padStart(6)}  ${String(n).padStart(5)}   ${m < n ? 'MOTORE' : m > n ? 'nullo' : 'pari'}`);
+      const cr = media(q.map((x) => x.cambi_reali));
+      const cm = media(q.map((x) => x.cambi_motore));
+      const rr = cr > 0 ? cm / cr : null;
+      console.log(`    ${g.padEnd(15)} ${String(q.length).padStart(2)}   ${String(m).padStart(6)}  ${String(n).padStart(5)}   `
+        + `${(m < n ? 'MOTORE' : m > n ? 'nullo' : 'pari').padEnd(9)}   ${cr.toFixed(1).padStart(11)}  ${cm.toFixed(1).padStart(6)}   `
+        + `${rr === null ? '—' : (rr * 100).toFixed(0) + '%'}`);
     }
   }
 }
