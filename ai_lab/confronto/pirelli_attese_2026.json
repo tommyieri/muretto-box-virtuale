@@ -1,0 +1,148 @@
+{
+ "_targhetta": {
+  "cosa_e": "Le attese di soste pubblicate da Pirelli per le 11 gare 2026 gia' corse. FONTE ESTERNA: non e' una misura del progetto e non viene dai nostri dati.",
+  "come_e_stata_raccolta": "Ricerca web del 03/08/2026 in quattro gruppi indipendenti; OGNI citazione e' stata poi ri-aperta alla fonte da un verificatore diverso da chi l'aveva trovata, con verdetto esplicito (CONFERMATO / CITAZIONE_NON_TROVATA / ANNO_SBAGLIATO / URL_NON_RAGGIUNGIBILE / CONTENUTO_DIVERSO).",
+  "esito_della_verifica": "11 righe su 11 CONFERMATE. Zero scartate, zero non verificate.",
+  "cosa_NON_e": "Non e' un dato misurato da noi e non entra in nessun modello: e' l'ARBITRO ESTERNO contro cui si legge il KPI F4. Le correzioni del verificatore (delta di prestazione != delta di passo gara, inferenze sulle mescole) viaggiano nelle note di ogni riga.",
+  "data": "2026-08-03",
+  "generato_da": "workflow pirelli-attese-2026 (ai_lab), assemblato a mano in questo file"
+ },
+ "gare": [
+  {
+   "gara": "Australia",
+   "soste_attese": "1 sosta (finestra giri 20-26 per Medium-Hard); due soste dichiarate ancora possibili come alternativa",
+   "affidabilita": "VERIFICATA",
+   "citazione": "a one-stop approach is feasible for the teams, with the Medium-Hard combination",
+   "url": "https://press.pirelli.com/mercedes-dominates-the-first-qualifying-session-of-the-season/",
+   "mescole": "C3 (Hard) / C4 (Medium) / C5 (Soft) — la pagina nomina con la sigla solo C5 e C3; C4=Medium e' inferenza, non citazione",
+   "delta_mescole_s_giro": "NON PUBBLICATO da Pirelli",
+   "soste_reali_prevalenti": "1 sosta — i primi quattro classificati tutti a una sosta (Medium->Hard); Norris e Verstappen a due. Gara neutralizzata da VSC ravvicinate",
+   "perche": "Verdetto CONFERMATO: pagina raggiungibile, datata 7 marzo 2026 (apertura stagione, Albert Park), citazione presente alla lettera con la finestra giri 20-26; verificate anche le frasi di contorno (two-stop 'remains real', 'all three compounds could play a role'). Unica precisazione del verificatore: l'assegnazione C4=Medium e' un'inferenza ragionevole, non scritta nella pagina. Il numero atteso viene dalla nota del sabato: la preview del 2 marzo non da' alcun numero di soste."
+  },
+  {
+   "gara": "Cina",
+   "soste_attese": "1 sosta (passaggio alla Hard giri 17-23 da Medium, 15-21 da Soft)",
+   "affidabilita": "VERIFICATA",
+   "citazione": "A one-stop strategy is clearly the fastest for tomorrow.",
+   "url": "https://press.pirelli.com/mercedes-strike-twice-as-antonelli-breaks-record/",
+   "mescole": "C2 (Hard) / C3 (Medium) / C4 (Soft) — la pagina nomina con la sigla solo C2 e C4; C3=Medium e' inferenza",
+   "delta_mescole_s_giro": "NON PUBBLICATO da Pirelli",
+   "soste_reali_prevalenti": "1 sosta — primi sette classificati tutti a una sosta Medium->Hard. Safety car al giro 10 ha fatto da finestra: gara neutralizzata",
+   "perche": "Verdetto CONFERMATO: pagina datata 14 marzo 2026, Shanghai, NON la pagina 2025 che il ricercatore aveva scartato; citazione verbatim; confermate le finestre e il dubbio dichiarato sul C4 a pieno carico. RIMOSSO dalla riga per correzione del verificatore: la parola 'negligible' sulla differenza fra partenza Medium e Soft NON e' nel testo — la pagina lega la scelta a posizione in griglia e aggressivita', non a una differenza prestazionale dichiarata trascurabile. Weekend Sprint."
+  },
+  {
+   "gara": "Giappone",
+   "soste_attese": "1 sosta (Medium-Hard finestra 15-21, oppure Soft-Hard finestra 13-19; Soft-Medium data ~10 s piu' lenta)",
+   "affidabilita": "VERIFICATA",
+   "citazione": "The fastest strategies for tomorrow's race involve a single pit stop",
+   "url": "https://press.pirelli.com/antonelli-claims-pole-in-japan-russell-completes-mercedes-front-row-lockout/",
+   "mescole": "C1 (Hard) / C2 (Medium) / C3 (Soft) — assegnazioni confermate dalla pagina",
+   "delta_mescole_s_giro": "0,5-0,6 s/giro fra C2 e C3 — unico delta fra mescole attribuibile a Pirelli in tutta la tabella. ATTENZIONE: emerge da run di PRESTAZIONE (giro secco), NON dal passo gara: usarlo come delta di passo e' un'estensione non sostenuta dalla fonte",
+   "soste_reali_prevalenti": "1 sosta — quasi tutti partiti su Medium (C2) e passati a Hard (C1); il C3 disponibile ma non usato dai primi. Safety car ha favorito chi non aveva ancora sostato",
+   "perche": "Verdetto CONFERMATO: pagina datata 28 marzo 2026, Suzuka, non uno degli articoli omonimi di altre stagioni; citazione verbatim; confermate finestre e terza opzione a ~10 s. Correzioni del verificatore recepite: (a) il delta 0,5-0,6 s e' di prestazione, non di passo gara; (b) il 'debutto stagionale del C1' NON e' nella fonte ed e' stato tolto; (c) la frase sugli outsider che anticipano il cambio dalla Soft esiste ed e' presentata come opzione a due soste, ma il testo esatto 'which would require stopping twice' e la parte sulla safety car restano non verificati e non sono usati."
+  },
+  {
+   "gara": "Miami",
+   "soste_attese": "1 sosta",
+   "affidabilita": "VERIFICATA",
+   "citazione": "allowing drivers to extend their stints and make just a single pit stop",
+   "url": "https://press.pirelli.com/formula-1-returns-to-the-track-in-miami/",
+   "mescole": "C3 (Hard) / C4 (Medium) / C5 (Soft) — confermate dalla pagina",
+   "delta_mescole_s_giro": "~0,5 s/giro per gradino di mescola — NON attribuibile a press.pirelli (la preview non pubblica alcun delta): fonte coffeecornermotorsport, non verificata in questo giro",
+   "soste_reali_prevalenti": "1 sosta quasi universale (Medium->Hard); eccezioni Stroll e Bottas a 2 soste. Safety car al giro 6 ha anticipato molte soste",
+   "perche": "Verdetto CONFERMATO: press.pirelli datata 27 aprile 2026, stagione 2026 confermata da un dettaglio interno non ambiguo (la pagina cita la cancellazione dei GP di Bahrain e Arabia Saudita, evento specifico del 2026); citazione presente alla lettera; mescole e formato Sprint confermati; test di controllo anti-compiacenza superato. Precisazione del verificatore: la preview NON pubblica ne' delta in s/giro ne' finestra di sosta in numeri di giro — la finestra giri 22-28 e il delta 0,5 s restano appoggiati alla sola fonte secondaria e sono etichettati come tali."
+  },
+  {
+   "gara": "Canada",
+   "soste_attese": "1 sosta (Medium-Hard indicata come la piu' veloce sulla carta)",
+   "affidabilita": "VERIFICATA",
+   "citazione": "a one-stop strategy could again be preferred this year",
+   "url": "https://press.pirelli.com/the-first-sprint-in-montreal/",
+   "mescole": "C3 (Hard) / C4 (Medium) / C5 (Soft) — confermate testualmente dalla pagina",
+   "delta_mescole_s_giro": "NON PUBBLICATO da Pirelli",
+   "soste_reali_prevalenti": "1 sosta — 'For the majority of drivers, a one-stop strategy proved to be the right call'. I primi quattro sostarono sotto VSC al giro 31: gara neutralizzata nel momento della sosta",
+   "perche": "Verdetto CONFERMATO: dateline verificata 'Milan, 18 May 2026', citazione verbatim, mescole scritte per esteso nella pagina, formato Sprint (primo a Montreal) confermato. Verificate anche le due pagine di appoggio 2026 (post-qualifica 24 maggio: 'the one-stop strategy is clearly the best option'; post-gara 25 maggio). Avvertenza minore del verificatore: i 70 giri e la dotazione di 12 set non sono riscontrabili su quella pagina (il calendario interno del progetto da' 68 giri per Montreal) — dettaglio di contorno, non portante per l'attesa."
+  },
+  {
+   "gara": "Monaco",
+   "soste_attese": "1 sosta (Soft->Medium la piu' veloce, finestra giri 31-37; Medium->Hard alternativa, 33-39). La regola sperimentale delle 2 soste obbligatorie del 2025 e' abolita nel 2026",
+   "affidabilita": "VERIFICATA",
+   "citazione": "pit window laps 31 to 37. Pirelli confirm this as the quickest route",
+   "url": "https://coffeecornermotorsport.com/f1-monaco-grand-prix-2026-tyre-strategy/",
+   "mescole": "C3 (Hard) / C4 (Medium) / C5 (Soft)",
+   "delta_mescole_s_giro": "In condizioni gara, rispetto alla Soft: Medium +0,30 s/giro, Hard +0,51 s/giro (in qualifica +0,38 e +0,64). Fonte di rango 2, non press.pirelli",
+   "soste_reali_prevalenti": "1 sosta per quasi tutto il gruppo; bandiera rossa al giro 66 con cambio gomme gratuito, da NON contare come sosta strategica. NOTA: questa colonna deriva dal race-report, url diverso da quello citato e non verificato in questo giro",
+   "perche": "Verdetto CONFERMATO ma su FONTE DI RANGO 2: nessun articolo press.pirelli 2026 di Monaco e' stato isolato. La pagina coffeecornermotorsport e' datata 7 giugno 2026 (coerente col calendario reale, Monaco 5-7 giugno), porta la stagione nel titolo, contiene la citazione alla lettera e trascrive la grafica strategica Pirelli; confermati delta, mescole e l'abolizione della regola 2025 ('a mandatory two-stop regulation that no longer exists'). Test anti-compiacenza superato. La trappola segnalata e' reale: press.pirelli espone in cima 'Two pit stops mandatory in Monaco' (2025) e una pagina Monaco che si e' rivelata del 2011 — nessuna delle due usata."
+  },
+  {
+   "gara": "Spagna",
+   "soste_attese": "2 soste come minimo, terza non esclusa",
+   "affidabilita": "VERIFICATA",
+   "citazione": "Pirelli confirm at least two stops for Sunday, with a third not ruled out",
+   "url": "https://coffeecornermotorsport.com/f1-barcelona-grand-prix-2026-tyre-strategy/",
+   "mescole": "C2 (Hard) / C3 (Medium) / C4 (Soft) — un gradino piu' morbido del solito per Barcellona",
+   "delta_mescole_s_giro": "Medium e Soft separate da 5-6 decimi, con degrado quasi identico in condizioni gara. Fonte di rango 2, non press.pirelli",
+   "soste_reali_prevalenti": "2 soste prevalenti; Hamilton vince con 3 (Soft-Hard-Medium-Hard). La review Pirelli del 14 giugno 2026: 'Strategies ranging from two to four stops were seen'",
+   "perche": "Verdetto CONFERMATO, ed e' la riga controllata piu' a fondo perche' e' l'unica con attesa >=2 soste insieme all'Austria. Pagina datata 14 giugno 2026 (calendario reale Barcellona 12-14 giugno), stagione e attesa nel titolo, citazione alla lettera, ribadita indipendentemente nel corpo ('Sunday's Spanish Grand Prix needs at least two pit stops'); mescole e delta confermati; test anti-compiacenza superato. La preview press.pirelli del 9 giugno 2026 esiste e attribuisce a Pirelli la volonta' esplicita di aumentare le soste ('the aim is to encourage a greater number of pit stops') ma NON pubblica un numero. RISCHIO DI IDENTITA' SCIOLTO A MONTE, non dal verificatore: nel calendario del progetto (data/calendario_2026.json) il round 7 'Spagna' e' barcelona-catalunya/catalunya del 14 giugno 2026, mentre Madrid e' il round 14, gara distinta. L'url verificato e' Barcellona: la riga vale."
+  },
+  {
+   "gara": "Austria",
+   "soste_attese": "2 soste (previsione operativa del sabato). La preview del 23/06 aveva invece scommesso su una tendenza verso 1 sosta: attesa in due tempi, entrambe di Pirelli",
+   "affidabilita": "VERIFICATA",
+   "citazione": "According to our simulations, two-stop strategies are the competitive options.",
+   "url": "https://press.pirelli.com/george-russell-on-pole-at-spielberg/",
+   "mescole": "C3 (Hard) / C4 (Medium) / C5 (Soft) — confermate dalla preview 2026",
+   "delta_mescole_s_giro": "NON PUBBLICATO fra mescole. L'unico numero scritto e' fra strategie: la tre-soste e' 'around a couple of seconds slower when factoring in traffic', ma in aria pulita e' piu' veloce della due-soste",
+   "soste_reali_prevalenti": "2 soste — 'Only Charles Leclerc, Lewis Hamilton and Pierre Gasly opted for a three-stop approach, while all the other drivers stopped twice'. ZERO piloti a una sosta: 'a one-stop strategy was not viable due to the high level of thermal degradation' (36 C aria, 55 C asfalto)",
+   "perche": "Verdetto CONFERMATO senza correzioni: dateline 'Spielberg, 27 June 2026', citazione verbatim, delta fra strategie verbatim, e verificate entrambe le pagine di appoggio 2026 (preview 23 giugno con la frase opposta 'a stronger trend towards a one-stop strategy could be expected'; review 28 giugno). L'attesa in due tempi e' quindi reale e correttamente attribuita. Precisazione: nella review l'\"As expected\" si riferisce all'aggiornamento del sabato, non alla preview. Questa e' la gara piu' informativa della tabella: Pirelli stessa ha corretto il tiro col venerdi' in mano, e il campo le ha dato ragione."
+  },
+  {
+   "gara": "Gran Bretagna",
+   "soste_attese": "1 sosta, sulle due mescole con piu' grip (C2 e C3). Il sabato: 'the one-stop strategy is around 13 seconds quicker than a two-stop'",
+   "affidabilita": "VERIFICATA",
+   "citazione": "we expect teams to attempt to complete Sunday's race with a one-stop strategy",
+   "url": "https://press.pirelli.com/the-challenges-of-silverstone-the-cradle-of-motorsport/",
+   "mescole": "C1 (Hard) / C2 (Medium) / C3 (Soft) — le tre piu' dure della gamma, 'chosen due to the high severity of the circuit'",
+   "delta_mescole_s_giro": "NON PUBBLICATO fra mescole. Pubblicato solo fra strategie, sull'intera distanza: una sosta ~13 s piu' veloce di due (nota del sabato 04/07)",
+   "soste_reali_prevalenti": "CASO CONTAMINATO, da non usare come misura pulita: il piano era 1 sosta ma 'two neutralisations in the closing stages forced all drivers to make at least two pit stops'. Contare GB come 1 sosta pianificata contaminata, non come 2 soste fisiologiche",
+   "perche": "Verdetto CONFERMATO: dateline 'Milan, 30 June 2026', citazione verbatim comprensiva della precisazione su C2 e C3, mescole e formato Sprint confermati; verificate anche la nota del sabato (13 s) e la review del 5 luglio, che conferma la convergenza su un unico piano ('All teams converged today on a single strategy, the same one our simulations had identified as the quickest'). Due pagine Silverstone quasi omonime del 2024 sono state aperte e scartate dal ricercatore, e il verificatore lo conferma. Dettagli NON riscontrati sulla preview e quindi non attribuiti a quell'url: i 52 giri e il 'primo Sprint a Silverstone dal 2021'."
+  },
+  {
+   "gara": "Belgio",
+   "soste_attese": "1 sosta (ultima parola Pirelli, sabato 18/07). La preview del 15/07 inclinava invece verso 2 soste: attesa cambiata durante il weekend",
+   "affidabilita": "VERIFICATA",
+   "citazione": "Everything suggests that tomorrow's race will be a one-stop",
+   "url": "https://press.pirelli.com/antonelli-on-pole-at-spa-francorchamps/",
+   "mescole": "C2 (Hard) / C3 (Medium) / C4 (Soft) — presenti nella pagina",
+   "delta_mescole_s_giro": "Medium-Soft 4-5 decimi ('The delta between Medium and Soft is between four and five tenths, in line with simulations', Simone Berra, nota del venerdi 17/07). Nessun delta pubblicato per Medium-Hard. CORREZIONE DEL VERIFICATORE: esiste anche un delta fra strategie di prima mano Pirelli, nella nota del sabato — 'Two-stop strategies are approximately eight to ten seconds slower.'",
+   "soste_reali_prevalenti": "1 sosta, prevalentemente Medium->Hard. ATTENZIONE: il resoconto post-gara Pirelli NON conta le soste del gruppo; dice che le strategie sono state 'all broadly within the scenarios already anticipated yesterday' e che il podio parti' su Medium passando a Hard. Il conteggio prevalente e' quindi un'inferenza, dichiarata. VSC al giro 21 sfruttata da Ferrari con doppio pit-stop",
+   "perche": "Verdetto CONFERMATO: pagina del 18 luglio 2026, citazione verbatim e anzi piu' lunga di quella riportata; verificate tutte e tre le fonti di appoggio 2026 (preview 15/07 pro-due-soste, venerdi 17/07 pro-una-sosta, post-gara 19/07). UN PUNTO DELLA RICERCA ERA SBAGLIATO ED E' STATO CORRETTO: il ricercatore aveva scartato il numero '8-10 secondi di svantaggio della due-soste' credendolo analisi di un blog; il verificatore lo ha ritrovato verbatim nella nota Pirelli del sabato. Il numero e' quindi di prima mano e rafforza l'attesa di 1 sosta. Da non usare come attesa finale: Wikipedia riporta l'aspettativa di due soste, ma si riferisce alla sola preview del 15/07."
+  },
+  {
+   "gara": "Ungheria",
+   "soste_attese": "1 e 2 soste ALLA PARI — 'no difference in overall race time'. CASO LIMITE per il KPI: non e' un'attesa di due soste ne' di una",
+   "affidabilita": "VERIFICATA",
+   "citazione": "no difference in overall race time between a one-stop and a two-stop strategy",
+   "url": "https://press.pirelli.com/norris-on-pole-in-hungary-tyre-sets-will-shape-tomorrows-strategies/",
+   "mescole": "C3 (Hard) / C4 (Medium) / C5 (Soft) — dalla preview 21/07 e dalla nota 25/07",
+   "delta_mescole_s_giro": "Soft-Medium ~8 decimi ('The performance gap between the Soft and Medium compounds was around eight tenths of a second, in line with pre-event simulations', nota del venerdi 24/07). Nessun delta per Medium-Hard",
+   "soste_reali_prevalenti": "2 soste — numeri DICHIARATI dalla fonte, non inferiti: 'Twelve drivers opted for a two-stop strategy', 'Five drivers... finished the race with a three-stop strategy', 'Bortoleto and Lindblad were the only two drivers to make a one-stop strategy work'",
+   "perche": "Verdetto CONFERMATO senza alcuna correzione: ogni frase attribuita e' stata ritrovata nella pagina indicata e ogni pagina e' del 2026. Confermate le finestre (una sosta: pit 26-32; due soste: 16-22 e 40-46) e la motivazione del pareggio (degrado piu' alto del previsto che ha allineato le due opzioni). Confermato anche l'avvertimento sul numero facile da fraintendere: i '10 secondi' della nota del sabato sono il costo delle combinazioni ALTERNATIVE (Soft-Hard-Medium, Medium-Hard-Soft), NON il divario una-vs-due soste, che e' zero. La trappola d'anno segnalata e' reale: /tyre-news-and-nominations-for-hungary-and-belgium/ e' del 2023 e da' numeri quasi identici; non usata."
+  }
+ ],
+ "fuori_perimetro": [
+  "Nessuna delle 11 gare gia' corse nel 2026 e' mancante: la ricerca copre esattamente i round 1-11, che sono anche le uniche 11 gare presenti in data/arrivi_2026.csv. Zero righe SCARTATE, zero NON_VERIFICATA.",
+  "Olanda (round 12, 23/08/2026) — gara non ancora corsa alla data di assemblaggio: nessuna attesa Pirelli pubblicabile e nessuna gara nel dataset con cui confrontarla",
+  "Italia (round 13, 06/09/2026) — non ancora corsa",
+  "Madrid (round 14, 13/09/2026) — non ancora corsa. E' la SECONDA gara spagnola del 2026 e va tenuta distinta da 'Spagna' (round 7, Barcellona-Catalunya): la riga Spagna della tabella NON vale per Madrid",
+  "Azerbaigian (round 15, 26/09/2026) — non ancora corsa",
+  "Singapore (round 16, 11/10/2026) — non ancora corsa",
+  "Stati Uniti (round 17, 25/10/2026) — non ancora corsa",
+  "Messico (round 18, 01/11/2026) — non ancora corsa",
+  "San Paolo (round 19, 08/11/2026) — non ancora corsa",
+  "Las Vegas (round 20, 22/11/2026) — non ancora corsa",
+  "Qatar (round 21, 29/11/2026) — non ancora corsa",
+  "Abu Dhabi (round 22, 06/12/2026) — non ancora corsa"
+ ],
+ "note_di_assemblaggio": "COSA HO DECISO.\n\n1) REGOLA DI ASSEMBLAGGIO APPLICATA. Tutti e 11 i verdetti sono CONFERMATO, quindi tutte e 11 le righe entrano come VERIFICATA. Nessuna CITAZIONE_NON_TROVATA, nessun ANNO_SBAGLIATO, nessun URL_NON_RAGGIUNGIBILE: la lista \"mancanti\" non contiene nessuna gara scartata. Dove il verificatore ha corretto o precisato dentro un verdetto CONFERMATO ho modificato la riga e l'ho scritto nel campo \"perche\" — i casi sono cinque: Cina (tolto \"negligible\", non nel testo), Giappone (delta 0,5-0,6 s riclassificato come prestazione e non passo gara; tolto il \"debutto stagionale del C1\"), Miami (delta e finestra staccati da press.pirelli e attribuiti alla sola fonte secondaria), Monaco (colonna soste reali staccata dall'url citato), Belgio (RECUPERATO un numero Pirelli di prima mano che il ricercatore aveva erroneamente scartato: la due-soste e' data 8-10 s piu' lenta nella nota del sabato).\n\n2) QUALE \"ATTESA\" HO MESSO IN COLONNA. Regola unica per tutte le righe: l'ULTIMA PAROLA PIRELLI PRIMA DELLA GARA, cioe' la nota del sabato post-qualifica. Non e' una scelta di comodo, e' l'unica omogenea: per Australia, Cina e Giappone le preview NON pubblicano alcun numero di soste (danno solo lo storico dell'anno prima), quindi il numero atteso nasce comunque dal sabato. Su due gare la regola cambia il risultato e va detto forte: AUSTRIA (preview 23/06 tendente a 1 sosta -> sabato 27/06 due soste; il campo ha dato ragione al sabato, 17 piloti a 2 soste e ZERO a 1) e BELGIO (preview 15/07 pro-due-soste -> venerdi e sabato una sosta; anche qui il sabato ha avuto ragione). Se il progetto preferisse la preview come attesa, Austria e Belgio si invertirebbero entrambe: e' l'ambiguita' piu' pesante che resta ed e' una decisione di prodotto, non di ricerca.\n\n3) IL KPI \"GARE IN CUI LA FONTE SI ASPETTAVA DUE SOSTE\". Con la regola sopra l'insieme e' di DUE gare soltanto: Spagna (>=2, terza non esclusa) e Austria (2). Ungheria e' un CASO LIMITE che non ho voluto forzare: Pirelli scrive esplicitamente che una e due soste sono pari in tempo gara complessivo, quindi non e' un'attesa di due soste — ma nemmeno di una, e il campo poi ha fatto due soste (12 piloti su 19 classificati). La decisione se includerla o escluderla dal denominatore la lascio a monte; se inclusa, va dichiarata come inclusione di un pareggio, non di un'attesa. Con n=2 (o 3) il KPI ha un denominatore piccolissimo: e' un fatto strutturale della stagione 2026, non un difetto della ricerca — nel 2026 Pirelli si e' aspettata una sosta quasi ovunque.\n\n4) RANGO DELLE FONTI. Nove righe su undici poggiano su press.pirelli.com (primo rango). DUE NO: Monaco e Spagna poggiano su coffeecornermotorsport.com, che trascrive la grafica strategica Pirelli ma non e' Pirelli. Il verificatore le ha controllate con lo stesso rigore (data nel titolo, citazione alla lettera, test anti-compiacenza superato) e reggono, ma il rango va dichiarato — e pesa, perche' Spagna e' una delle due gare che portano il KPI. Per Monaco nessun articolo press.pirelli 2026 e' stato isolato; la ricerca ha invece incontrato due trappole d'anno (una pagina Monaco del 2011 e una del 2025 sulle due soste obbligatorie), entrambe scartate.\n\n5) DELTA FRA MESCOLE: QUASI TUTTO ASSENTE. Pirelli non pubblica quasi mai un delta in s/giro fra mescole. Gli unici attribuiti a Pirelli per una coppia di mescole in condizioni di passo sono Belgio (Medium-Soft 4-5 decimi) e Ungheria (Soft-Medium ~8 decimi), entrambi dalle note del venerdi. Quello del Giappone (0,5-0,6 s fra C2 e C3) e' di PRESTAZIONE su giro secco e non va usato come delta di passo. Miami, Monaco e Spagna hanno delta solo da fonte secondaria. Australia, Cina, Canada, Austria e Gran Bretagna non hanno delta di alcun tipo. Quando Pirelli pubblica un numero e' quasi sempre fra STRATEGIE e non fra mescole (GB: una sosta ~13 s piu' veloce; Belgio: due soste 8-10 s piu' lente; Austria: tre soste ~2 s piu' lente col traffico).\n\n6) LA COLONNA \"SOSTE REALI\" E' LARGAMENTE CONTAMINATA. Sette gare su undici hanno la sosta prevalente caduta in regime di neutralizzazione o modificata da essa: Australia (VSC ravvicinate), Cina (SC giro 10), Miami (SC giro 6), Canada (VSC giro 31), Monaco (bandiera rossa giro 66, cambio gomme gratuito da NON contare), Gran Bretagna (due neutralizzazioni tardive che hanno FORZATO >=2 soste a tutti, contro un piano unanime da 1 sosta), Belgio (VSC giro 21). Solo Austria, Spagna e Ungheria sono confronti atteso-vs-reale ragionevolmente puliti — e sono, non a caso, le tre gare con attesa >=2 o pari.\n\n7) CONTROLLO INCROCIATO COL DATO INTERNO (fatto da me, non dalle fonti). Ho confrontato la colonna \"soste reali\" con la moda di n_soste fra i classificati in data/arrivi_2026.csv: coincide su 10 gare su 11, e l'Ungheria coincide esattamente anche nella distribuzione (12 a due soste, 5 a tre, 2 a una — identico ai numeri dichiarati da Pirelli). L'unica divergenza e' MONACO, dove il dato interno da' moda 5 soste per pilota (distribuzione 4-7) contro l'unica sosta strategica descritta da tutte le fonti: guardando le righe, i cambi gomme si accalcano ai giri 58-68, cioe' nella finestra della bandiera rossa. E' quasi certamente un difetto del campo n_soste su Monaco (eventi della neutralizzazione contati come soste), non un fatto di gara. Non tocca il KPI (Monaco non e' fra le gare con attesa >=2) ma va segnalato a chi usa quel campo.\n\n8) IDENTITA' SPAGNA: SCIOLTA, NON RESTATA APERTA. Il verificatore aveva lasciato il verdetto di Spagna condizionato all'identita' Barcellona-vs-Madrid. Ho controllato il calendario del progetto (data/calendario_2026.json): il round 7 \"Spagna\" e' barcelona-catalunya, circuito catalunya, 14 giugno 2026, 66 giri; Madrid e' una gara separata, round 14, circuito madring, 13 settembre 2026. L'url verificato e' Barcellona del 12-14 giugno: la condizione e' soddisfatta e la riga vale. Madrid resta senza attesa perche' non e' ancora stata corsa.\n\n9) COSA RESTA AMBIGUO. (a) La scelta preview-vs-sabato come definizione di \"attesa\" (punto 2): ribalta Austria e Belgio. (b) Ungheria dentro o fuori dal denominatore del KPI (punto 3). (c) Il rango 2 delle fonti di Monaco e Spagna (punto 4). (d) Le sigle C4=Medium (Australia) e C3=Medium (Cina) sono inferenze, non citazioni. (e) Dettagli di contorno non riscontrati sulle pagine e quindi non attribuiti: 70 giri e 12 set per il Canada (il calendario interno da' 68 giri per Montreal), 52 giri e \"primo Sprint dal 2021\" per Silverstone, finestra giri 22-28 per Miami."
+}
