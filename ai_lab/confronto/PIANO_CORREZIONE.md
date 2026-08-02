@@ -323,7 +323,13 @@ qui e non è stata eseguita.
 
 </details>
 
-### 4 · `MIN_GIRI_BASE` da 8 a 4, e dichiarare il «non ancora»
+### ~~4 · `MIN_GIRI_BASE` da 8 a 4~~ — **FATTA il 01/08**, referto in `PREREG_soglia_base.md`
+Verificato in produzione: `modello_v2.json` porta `min_giri_base = 4` con targhetta
+«MISURATO e PROMOSSO il 01/08/2026: era 8, una costante muta ereditata dal criterio di
+ammissione del banco». +1.012 risposte pre-calcolate (10.131 → 11.143), e i muti del nuovo
+da 14 a 2 — che è la ragione per cui i numeri di M1 di questo piano erano scaduti.
+
+### 4bis · il testo originale della voce 4
 **Perché:** la soglia nasce come criterio di **ammissione del banco** ed è migrata nel motore
 come costante muta, cablata in 5 punti. Come soglia di qualità non regge: una base su 4-7 giri
 sbaglia **0,314 s/giro** contro **0,386** delle basi su 8+ giri, e per secchio l'errore non è
@@ -344,7 +350,12 @@ ordinato dal numero di giri.
   prima risposta è al giro N». Farlo *al posto* dell'abbassamento è un cartello educato davanti
   a 1.012 caselle che potevano essere piene.
 
-### 5 · Il pavimento di rumore della curva del «quando»
+### ~~5 · Il pavimento di rumore della curva del «quando»~~ — **FATTA il 01/08**, referto in `PREREG_finestra.md` e `PREREG_finestra_pubblicata.md`
+Verificato in pagina: ogni risposta porta il campo `finestra`, per esempio
+`{da: 17, a: 54, n_giri: 38, soglia_s: 11.22}` con la targhetta «i giri che il motore non
+distingue dall'ottimo». Il giro secco è diventato una finestra dichiarata.
+
+### 5bis · il testo originale della voce 5
 **Perché:** sulle viste pubblicate **4.241 raccomandazioni** (56,9% delle curve) hanno un
 minimo interno, e il guadagno promesso è **sotto 1 s nel 29,0%** dei casi e sotto 3,3 s nel
 55,4% — mentre l'unico errore mai misurato di questo motore vale ~3,2 s cumulati a 10 giri, e
