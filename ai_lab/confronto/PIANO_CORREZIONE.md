@@ -372,7 +372,20 @@ giro raccomandato in **25 curve su 260**.
   rodaggio, che sposta il passo di mezzo secondo al giro dopo la sosta, non sposta il giro
   raccomandato nemmeno una volta.** Se il giro è rumore, non è rumore del passo.
 
-### 6 · L'errore alla bandiera, contro `data/arrivi_2026.csv`
+### ~~6 · L'errore alla bandiera~~ — **FATTA il 02/08**, referto in `PREREG_voce6_bandiera.md`
+**Risposta:** «vince il nuovo» **regge al suo orizzonte** (2 giri: 36-12, p = 0,0007 contro il
+vecchio nella configurazione SPEDITA — non era un fantoccio), e **alla bandiera la domanda non
+è rispondibile**: nessuno dei due motori batte il non-fare-niente (nullo 24/79 esatti, nuovo 23,
+vecchio 22; appaiati il nullo vince). E16, un ottimo misurato dove il fenomeno non c'è — seconda
+conferma indipendente dopo `PREREG_gara_intera_2.md`.
+**Corretti anche i numeri scaduti di questo piano** (E22): non 223 casi ma **235**, non 5 di
+margine ma **7**, e oggi è significativo (segni 35-13, p = 0,0021). M5 è passato da FALLITO 67,3%
+a **PASSA 83,1%**; M4 è **vuoto** (zero casi persi).
+**Cieco dichiarato:** il perimetro (piloti a una sosta, perché il vecchio non ne fa due) non
+copre 4 gare su 11 — le più ricche di soste — e sul regime ad alto degrado il verdetto non è mai
+stato misurato.
+
+### ~~6bis~~ · quello che la voce 6 diceva prima
 **Perché:** quel file contiene la classifica finale vera di tutte le 241 coppie pilota-gara e
 ha **zero riferimenti in tutto il repo**. Nessuno l'ha mai usato. Intanto M1 misura a **2 giri**
 dal congelamento e M2 si ferma a 10, mentre la curva integra fino a ~58: **fra i 10 giri
@@ -381,7 +394,7 @@ cambi — nell'ultimo terzo di gara il nuovo passa M2 su tutti e tre gli orizzon
 - **Da pre-registrare:** solo 114 delle 241 coppie hanno una cella al giro finale; la regola per
   doppiati (45) e ritirati (41) va fissata prima. Usare le soste reali di tutti è informazione
   dal futuro — legittima perché identica per i due motori, ma va etichettata a caratteri cubitali.
-- **Costo: grande.** È l'unico modo di sapere se «vince il nuovo» vale oltre due giri.
+- **Costo: grande.** È l'unico modo di sapere se «vince il nuovo» vale oltre due giri. **[FATTO — vedi sopra]**
 
 ### ~~7 · Igiene del banco~~ — **CINQUE VOCI SU CINQUE FATTE il 01/08**
 
