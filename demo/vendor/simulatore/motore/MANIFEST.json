@@ -1,6 +1,6 @@
 {
  "_nota": "GENERATO da simulatore/web/trasporta_motore.mjs. Le copie in questa cartella sono artefatti: si modifica l'originale in simulatore/ e si ri-trasporta. `--verifica` esce 1 sulla deriva. Il motore gira in pagina SOLO per live.html, dove il pre-calcolo non puo' esistere: gara.html continua a non calcolare.",
- "generato_il": "2026-08-01",
+ "generato_il": "2026-08-02",
  "ingressi": [
   "scenario/risposta.mjs",
   "provenienza/gare_indice.mjs",
@@ -41,8 +41,8 @@
    "byte": 3585
   },
   "scenario/costruttore.mjs": {
-   "sha256_sorgente": "95c3def66f2cf0d6aa280a60fe91a648d9ba49dd27af2491178284ca2ac9efd2",
-   "byte": 40308
+   "sha256_sorgente": "063234a93e090d26c46eb7fdc62cc82f33b50f45f42b2c3fcafe13d49865b4ab",
+   "byte": 42994
   },
   "scenario/director.mjs": {
    "sha256_sorgente": "a305da62cf49576be92050910d7f9fe8a5abe1bedebb49334b8fcf0e016e4e9a",
@@ -57,9 +57,9 @@
    "byte": 12182
   },
   "contesto_live.json": {
-   "sha256_sorgente": "c09a4b32d9fc68de3e39ed9a686b3a078361b48eb4b53035aa7b4a384d5e0af8",
+   "sha256_sorgente": "ed2025d02dbf8e682539e532868d4df0fea40d220d11fe24a20706f447914c5b",
    "byte": 53696,
-   "data": "2026-08-01"
+   "data": "2026-08-02"
   }
  }
 }

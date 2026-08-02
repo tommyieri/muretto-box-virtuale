@@ -139,7 +139,7 @@ const regimeAlCongelamento = regimeDiCella;
  *          orizzonte, perdita }` — `pits` è ciò che le due risposte devono
  *          condividere, ed è la cosa che il cancello P06 confronta.
  */
-export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, piano }, contesto) {
+export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, piano, pianiRivali }, contesto) {
   const { gare, modello, prior } = contesto;
   const g = gare[gara];
   if (!g) throw new Error(`gara sconosciuta: ${gara}`);
@@ -280,6 +280,50 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   const pits = soste.length
     ? { [pilota]: soste.map((s, i) => ({ lap: s.giro, perdita: perditaBox(prior, gara, regimeDi(s, i)).perdita })) }
     : {};
+  // ── LE SOSTE VERE DEI RIVALI: ingresso DI LABORATORIO, spento in produzione ──
+  //
+  // Il prodotto non puo' usarlo e non lo usa: in diretta, al congelamento, non si sa
+  // quando si fermeranno gli altri, e attribuirglielo sarebbe E14 in piena regola.
+  // Nessun percorso del sito lo passa, ed e' `undefined` ovunque tranne che nel banco.
+  //
+  // Esiste per una domanda diagnostica sola (ai_lab/confronto/PREREG_sorpassi.md).
+  // La misura «gara intera» del 01/08 dava al soggetto le sue soste vere e a nessun
+  // altro le loro: con i rivali che non si fermano mai e tutti che degradano con lo
+  // stesso rho, l'ordine fra loro si conserva per 53 giri e il motore assomiglia al
+  // modello nullo PER COSTRUZIONE. L'informazione dal futuro era asimmetrica, e
+  // l'asimmetria spingeva verso il pareggio che poi si e' letto come un risultato.
+  // Questo ingresso la rende simmetrica, cosi' il pareggio (o la sua fine) significa
+  // qualcosa.
+  //
+  // Sta QUI e non nel banco perche' le soste si costruiscono in un posto solo
+  // (regola 1): un secondo modo di riempire `pits` sarebbe la porta di E17.
+  let rivaliVeri = 0;
+  let rivaliScartati = 0;
+  if (pianiRivali) {
+    for (const [drv, sosteDrv] of Object.entries(pianiRivali)) {
+      if (drv === pilota) continue;
+      const nel = (sosteDrv ?? []).filter((s) => Number.isInteger(s?.giro) && s.giro > freezeLap && s.giro < giroFinale);
+      // Il letterale "None" si LAVA alla frontiera, non fa esplodere il caso (E05). Una
+      // prima scrittura tirava un'eccezione: bastava un rivale con la mescola non nota
+      // per perdere l'intero caso — 19 casi e tutta l'Ungheria — e la perdita non
+      // c'entrava niente col fenomeno misurato. Il rivale con la sosta illeggibile
+      // semplicemente non la riceve, e il conteggio lo dichiara.
+      const future = nel.filter((s) => MESCOLE_SLICK.has(s.mescola));
+      rivaliScartati += nel.length - future.length;
+      if (!future.length) continue;
+      pits[drv] = future.map((s, i) => ({ lap: s.giro, perdita: perditaBox(prior, gara, regimeDi(s, i)).perdita }));
+      rivaliVeri += 1;
+    }
+    if (rivaliVeri > 0) {
+      dichiara('SOSTE_VERE_DEI_RIVALI',
+        `a ${rivaliVeri} rivali sono state date le LORO soste vere: e' INFORMAZIONE DAL FUTURO, `
+        + 'lecita solo per misurare la fisica a strategia nota. Nessuna risposta del prodotto puo\' nascere da qui'
+        + (rivaliScartati ? ` — ${rivaliScartati} soste altrui scartate perche' la mescola non e' slick nota (E05)` : ''),
+        rivaliVeri,
+        'INGRESSO DI LABORATORIO (E14 consapevole e dichiarato): in diretta le soste dei rivali non si conoscono');
+    }
+  }
+
   let rivaliAssunti = 0;
   if (regime !== null) {
     // N4 — LE SOSTE DEI RIVALI. `stint !== 1` ferma 148 rivali e ne azzecca 25

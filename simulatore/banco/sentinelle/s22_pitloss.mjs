@@ -26,7 +26,7 @@
 import { banco } from '../asserzioni.mjs';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { perditaBox, GP_PER_GARA } from '../../provenienza/pitloss.mjs';
@@ -130,11 +130,28 @@ const prior = caricaPrior(radice);
   }
 }
 
-// (f) riproducibilità
+// (f) riproducibilità — SENZA lasciare il file diverso da come lo si e' trovato.
+//
+// Questo blocco rilancia lo stimatore, che RISCRIVE data/modelli/pitloss_interno.json.
+// Finche' l'output era identico il danno era invisibile; dal 02/08/2026 quel file e' un
+// MODELLO SIGILLATO per l'holdout di Zandvoort (e' quello che gli da' i suoi 22,382 s),
+// e un banco che riscrive cio' che deve sorvegliare e' un guardiano che sposta la prova.
+// Basterebbe un aggiornamento di numpy, o una riga in piu' in soste_fondo.json, perche'
+// far girare la suite — o la CI, che parte a ogni push — rompa il sigillo in silenzio.
+//
+// Percio': si fotografano i byte PRIMA, si rilancia, si confronta, e si RIMETTONO i byte
+// originali. La verifica conserva tutto il suo potere (se lo stimatore producesse numeri
+// diversi, le asserzioni qui sotto diventerebbero rosse) e non lascia traccia.
 {
+  const dovInterno = path.join(radice, 'data', 'modelli', 'pitloss_interno.json');
+  const prima = readFileSync(dovInterno);
   const r = spawnSync('python3', [path.join(radice, 'fisica', 'stima_pitloss.py')], { encoding: 'utf8' });
   b.uguale('lo stimatore rigira senza errori', r.status, 0);
-  const rifatto = JSON.parse(readFileSync(path.join(radice, 'data', 'modelli', 'pitloss_interno.json'), 'utf8'));
+  const rifatto = JSON.parse(readFileSync(dovInterno, 'utf8'));
+  writeFileSync(dovInterno, prima);   // il banco non lascia il modello diverso da come l'ha trovato
+  b.uguale('...e il file sorvegliato e\' tornato esattamente com\'era',
+    createHash('sha256').update(readFileSync(dovInterno)).digest('hex'),
+    createHash('sha256').update(prima).digest('hex'));
   b.uguale('i promossi si riproducono', rifatto.cancello_A.promossi, interno.cancello_A.promossi);
   for (const gp of rifatto.cancello_A.promossi) {
     b.uguale(`${gp}: la mediana si riproduce`, rifatto.circuiti[gp].mediana_green_s, interno.circuiti[gp].mediana_green_s);
