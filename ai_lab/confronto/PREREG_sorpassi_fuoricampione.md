@@ -135,3 +135,104 @@ scritto come tale.
 - **Non si riapre il NO-GO del 06/07** sull'indice per circuito.
 - **Il CSV orfano `data/difficolta_sorpasso.csv` non si usa.**
 - **Nessun coefficiente si tocca** in base a questi numeri.
+
+---
+
+# ESITO — misurato il 02/08/2026
+
+`python3 ai_lab/confronto/sorpassi_fuoricampione.py`
+
+## F0 · il porting — PASSA, ed è esatto
+
+Sulle 59 gare che i due archivi hanno in comune:
+
+| | gz (`simulatore/data/fondo`) | ti_archive |
+|---|---|---|
+| episodi risolti | **1.379** | **1.379** |
+| conversioni | **771** | **771** |
+| ρ | **+0,507** (n = 55) | **+0,507** (n = 55) |
+
+Scarto sugli episodi **0**, scarto su ρ **0,0000**. Il porting non è «abbastanza
+vicino»: è **identico**. Le funzioni ratificate hanno girato invariate, come
+dichiarato.
+
+## F1 · il verdetto fuori campione — **FALLITO per 0,0024**
+
+**78 gare asciutte del 2018-2022, mai aperte da questa linea di lavoro.**
+Scartate 6 mutilate (2019, tre colonne) e 19 non asciutte dal dry-check ratificato.
+
+> **ρ = +0,3976 · nullo p = 0,0003 · n = 70 gare ammesse**
+> soglia **ρ ≥ 0,40** → **FALLITO**, mancato di **0,0024**.
+
+IC95 bootstrap (20.000 ricampionamenti): **[+0,193; +0,569]**.
+- **99,99%** dei ricampionamenti sopra lo zero;
+- **48,2%** sopra la soglia 0,40.
+
+Sensibilità e scomposizioni **dichiarate prima**:
+
+| | n | ρ | p | |
+|---|---|---|---|---|
+| senza 2020 (dichiarata in prereg) | 58 | +0,467 | 0,0001 | passa |
+| solo 2018 | 14 | +0,220 | 0,228 | no |
+| solo 2019 | 13 | +0,810 | 0,0004 | passa |
+| solo 2020 | 12 | +0,137 | 0,335 | no |
+| solo 2021 | 14 | +0,145 | 0,311 | no |
+| solo 2022 | 17 | +0,530 | 0,015 | passa |
+
+## F2 · la domanda del prodotto, fuori campione
+
+| X | n | ρ | p | | previsione della prereg |
+|---|---|---|---|---|---|
+| 20% | 56 | +0,300 | 0,014 | no | prevista fallita ✓ |
+| 30% | 66 | +0,306 | 0,005 | no | prevista fallita ✓ |
+| 40% | 71 | +0,359 | 0,0015 | no | prevista fallita ✓ |
+| 50% | 71 | +0,399 | 0,0002 | no (per 0,001) | — |
+| **60%** | 68 | **+0,436** | **0,0003** | **passa** | — |
+
+Le tre previsioni dichiarate prima si sono avverate.
+
+*Dentro campione, per completezza e senza valore di prova: 2023-2025 dà +0,507.*
+
+## Verdetto
+
+**F1 è fallito. Il ramo si chiude, come pre-registrato. Nessun quarto tentativo
+su questa metrica.**
+
+E va detto con precisione che cosa è fallito, perché due frasi vere qui non sono
+la stessa frase:
+
+1. **L'associazione presto→tardi ESISTE, fuori campione, oltre ogni dubbio
+   ragionevole.** p = 0,0003 su 78 gare mai viste; il 99,99% dei ricampionamenti
+   sta sopra lo zero. L'ipotesi «non c'è nessuna relazione» è **respinta**.
+2. **La sua MAGNITUDINE non è certificata sopra 0,40.** Il punto stimato è +0,3976
+   e l'IC95 contiene la soglia: sopra o sotto è quasi un lancio di moneta (48,2%).
+
+Il cancello chiedeva la seconda, e la seconda non c'è. Che manchi per 0,0024 non
+lo rende meno fallito: una soglia che si allarga davanti al risultato non è una
+soglia, ed è la ragione per cui l'avevo scritta prima e committata prima dello
+strumento (commit `7a5f423`).
+
+## Che cosa resta in mano, di solido
+
+- Il 2020 (stagione COVID) è la stagione che tira giù la stima: senza, +0,467.
+  Era una sensibilità **dichiarata prima**, quindi è informazione onesta — ma
+  **non è il verdetto**, e non la uso come tale.
+- Il tre stagioni su cinque in cui la stima è debole (2018, 2020, 2021) contro le
+  due in cui è forte (2019 +0,810, 2022 +0,530) dicono che la proprietà, se c'è,
+  **non è costante fra le ere**. È lo stesso difetto che aveva affossato l'indice
+  per circuito il 06/07 (G2, stabilità fra stagioni), ricomparso a un altro livello.
+- **La sorpassabilità non è conoscibile presto**: X ≤ 40% fallisce dentro e fuori
+  campione, con la previsione dichiarata in anticipo. Questo è il risultato più
+  solido dell'intero arco, ed è quello che serve al prodotto: **la banda di rientro
+  non si può condizionare a un indicatore di sorpassabilità al congelamento.**
+
+## Cosa NON faccio
+
+Non riapro con una quarta variante, non cambio statistica, non sposto la soglia,
+non promuovo la sensibilità «senza 2020» a verdetto. La prereg lo vieta e ha
+ragione a vietarlo.
+
+Se il PO decide di riaprire sapendo tutto questo — che l'associazione è reale ma la
+magnitudine è indeterminata attorno alla barra — quella è una **decisione sua, presa
+alla luce del sole**, e va scritta come tale. Non è una cosa che posso concedermi io
+leggendo un numero mancato per due millesimi.
