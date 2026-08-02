@@ -35,6 +35,20 @@ jobs:
         with:
           node-version-file: simulatore/.nvmrc
 
+      # PYTHON SERVE DAVVERO, e per due giorni non si e' visto che mancava.
+      # Tre sentinelle (s21 mescola, s22 pit-loss, s23 bagnato) provano la
+      # RIPRODUCIBILITA' rilanciando gli stimatori — che sono in Python e usano numpy.
+      # Senza questo passo `spawnSync('python3', ...)` falliva e quelle tre erano rosse a
+      # ogni giro: quattro asserzioni, invisibili perche' la CI era comunque rossa per le
+      # due rosse decise. Il 02/08, appena il runner ha imparato a distinguere le rosse
+      # dichiarate dalle nuove, sono saltate fuori al primo push. Erano li' da giorni.
+      - name: Python per gli stimatori (le sentinelle di riproducibilita' li rilanciano)
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: numpy
+        run: pip install --quiet numpy
+
       - name: Suite delle sentinelle
         run: node banco/run_suite.mjs
 
