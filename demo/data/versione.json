@@ -1,0 +1,13 @@
+{
+ "_nota": "GENERATO da aggiorna_ui.py — la targhetta di cosa e' online. Confrontala con `git ls-remote origin main`: se divergono, la macchina che pubblica non sta eseguendo il main. Sonda: scheduling/sonda_deploy.sh",
+ "commit": "12c99f8a53006de2e1a7be1e79b815f8d9aaf6a9",
+ "commit_breve": "12c99f8",
+ "ramo": "claude/improve-engine-infrastructure-11cc86",
+ "data_commit": "2026-08-02T14:42:45+02:00",
+ "costruito_il": "2026-08-02T18:46:12+00:00",
+ "sigilli_sha256_16": {
+  "simulatore/data/modelli/modello_v2.json": "4058e4909e8a7311",
+  "simulatore/banco/ROSSE_DICHIARATE.json": "449a1ce1437b0035",
+  "simulatore/data/modelli/banda_rientro.json": "689e5d8472c1c3aa"
+ }
+}

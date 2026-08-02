@@ -70,6 +70,9 @@ const { caricaGare2026 } = await import(path.join(SIM, 'provenienza/gare_2026.mj
 const { caricaPrior } = await import(path.join(SIM, 'provenienza/pitloss_dati.mjs'));
 const { caricaCostanti } = await import(path.join(SIM, 'scenario/director_dati.mjs'));
 const { doveRientri } = await import(path.join(SIM, 'scenario/costruttore.mjs'));
+// LA PERDITA AI BOX dalla stessa funzione che chiama il costruttore: una
+// definizione, un posto (regola 1). Vedi la nota al campo `pitloss` più sotto.
+const { perditaBox } = await import(path.join(SIM, 'provenienza/pitloss.mjs'));
 
 // ---------------------------------------------------------------- il caso
 const CASO = {
@@ -237,7 +240,32 @@ const OUT = {
     compound: cellaMia.compound, tyre_age: cellaMia.tyre_age,
     pos: ordFreeze.findIndex(([d]) => d === CASO.driver) + 1,
   },
-  pitloss: { s: pitLoss, provenienza: 'misurato su questa gara (FastF1)' },
+  // IL PIT-LOSS CHE IL MOTORE USA, non un altro.
+  //
+  // Qui stava `pitLoss` — cioè demo/data/pitloss.json, il costo REALIZZATO dalle
+  // soste di quella domenica — con sopra la frase «misurato su questa gara
+  // (FastF1)», accanto a una risposta che il motore calcola con la perdita
+  // TIPICA del circuito misurata sul fondo. È lo stesso difetto corretto nel
+  // badge della pagina-gara il 02/08 (12c99f8), sopravvissuto sulla PRIMA
+  // schermata del sito perché il generatore della hero è un altro file.
+  //
+  // Il realizzato non può entrare nel calcolo: al giro del congelamento quanto
+  // costeranno le soste di oggi nessuno lo sa (E14). Resta come nota, dove
+  // esiste ed è diverso.
+  pitloss: (() => {
+    const p = perditaBox(CONTESTO.prior, nomeSim, null);
+    const nota = typeof pitLoss === 'number' && Math.abs(pitLoss - p.perdita_verde) >= 0.05
+      ? pitLoss : null;
+    return {
+      s: p.perdita_verde,
+      provenienza: p.fallback ? 'non misurato: valore di ripiego dichiarato' : 'usato dal motore',
+      targhetta: p.targhetta,
+      circuito: p.circuito,
+      fallback: p.fallback,
+      // fatto vero e POST-GARA: si mostra, non si calcola
+      realizzato_in_gara_s: nota,
+    };
+  })(),
   // IL GRADINO NON ESISTE PIU', ed e' la differenza fra i due modelli. Il vecchio
   // dava alla gomma nuova uno sconto COSTANTE per sempre — ed e' l'errore E01 del
   // catalogo, quello che produceva "fermati subito" nel 100% dei casi. Il modello
@@ -277,5 +305,7 @@ if (process.argv.includes('--stdout')) {
   console.log(`  ${CASO.gara} giro ${L} · ${CASO.driver} P${OUT.pilota.pos} ${cellaMia.compound}/${cellaMia.tyre_age}g`);
   console.log(`  ${ora.etichetta} (giro ${ora.giro}${ora.sotto_sc ? ', sotto SC' : ''}) -> P${ora.pos}/${ora.su}`);
   console.log(`  ${dopo.etichetta} (giro ${dopo.giro}) -> P${dopo.pos}/${dopo.su}, dietro ${dopo.davanti} di ${dopo.gap_davanti}s`);
-  console.log(`  delta = ${OUT.delta_posizioni} posizioni · pit-loss ${pitLoss}s · degrado ${OUT.degrado.rho_s_giro} s/giro per giro`);
+  console.log(`  delta = ${OUT.delta_posizioni} posizioni · pit-loss ${OUT.pitloss.s}s (${OUT.pitloss.provenienza})`
+    + `${OUT.pitloss.realizzato_in_gara_s != null ? ` · in gara ${OUT.pitloss.realizzato_in_gara_s}s` : ''}`
+    + ` · degrado ${OUT.degrado.rho_s_giro} s/giro per giro`);
 }

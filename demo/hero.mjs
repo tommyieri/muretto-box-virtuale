@@ -150,8 +150,16 @@ function costruisci(root, H) {
     </span>`).join('');
 
   // ---- la nota di provenienza: il pit-loss e il gradino, con la loro origine
+  //
+  // Il numero è quello che il MOTORE usa (perdita tipica del circuito, misurata
+  // sul fondo). Il costo realizzato dalle soste di quella domenica, quando c'è ed
+  // è diverso, viaggia come nota dichiarata post-gara: è un fatto vero, ma al
+  // congelamento non esiste ancora e quindi non entra nel calcolo (E14).
   q(root, '.hero-fonte').innerHTML =
-    `Pit-loss <b>${num(H.pitloss.s)} s</b> &mdash; ${esc(H.pitloss.provenienza)}. `
+    `Pit-loss <b title="${esc(H.pitloss.targhetta ?? '')}">${num(H.pitloss.s)} s</b> &mdash; ${esc(H.pitloss.provenienza)}`
+    + (H.pitloss.realizzato_in_gara_s != null
+      ? ` <span title="costo realizzato dalle soste di questa gara: fatto post-gara, non entra nel calcolo">(in gara ${num(H.pitloss.realizzato_in_gara_s)} s)</span>. `
+      : '. ')
     + (H.degrado ? `Degrado <b>${num(H.degrado.rho_s_giro, 3)} s/giro</b> per ogni giro di gomma, misurato sul fondo 2026. ` : '')
     + `Pista dal giro GPS di ${esc(H.pista.sorgente.pilota)} (${esc(H.pista.sorgente.evento)}).`;
 }

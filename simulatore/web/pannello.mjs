@@ -118,6 +118,20 @@ function bandaDiRientro(s) {
       txt('Banda sulla posizione: non disponibile per questo scenario.'));
   }
   return el('div', { classe: 'banda' },
+    // L'AVVISO PRIMA DEI NUMERI, quando c'è.
+    //
+    // `avviso_livello` è valorizzato in 1.118 pannelli e nessuno lo leggeva: la
+    // banda mostrava «copre il 78,6%» senza dire che il livello pre-registrato
+    // era l'80% e che il cancello è ROSSO. Il posto non è una nota in fondo:
+    // quando l'intervallo da solo inganna, l'avviso deve precederlo, altrimenti
+    // il lettore ha già preso il numero per buono prima di arrivare alla
+    // riserva. È lo stesso motivo per cui la nota `circuito_sotto_livello` qui
+    // sotto esiste — questa è la sua metà mancante, sul cancello generale.
+    b.avviso_livello
+      ? el('p', { classe: 'nota allarme avviso-livello' }, txt(b.avviso_livello, {
+        cifre_dichiarate: 'avviso del cancello: le percentuali citate sono quelle del referto che spiega perché la banda non raggiunge il livello, non quantità calcolate per questo scenario',
+      }))
+      : null,
     el('p', { classe: 'nota' },
       txt(`Incertezza sulla posizione, misurata sulle soste vere del 2026 (contesto ${b.contesto}): `,
         { cifre_dichiarate: 'il 2026 è la stagione da cui viene la calibrazione, non una quantità mostrata come risultato' }),

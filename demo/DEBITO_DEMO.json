@@ -1,0 +1,25 @@
+{
+  "_targhetta": {
+    "cosa_e": "Il debito DICHIARATO del perimetro pubblicato (demo/). Cose che nel sito sono in uno stato diverso da quello che qualcuno aveva deciso, e che restano cosi' finche' non c'e' una decisione nuova. Ogni voce porta il suo referto.",
+    "perche_esiste": "Il 02/08/2026 si e' scoperto che gli scenari-degrado accesi dal PO con la PR #64 — l'unica accensione di fisica mai concessa — non erano piu' renderizzati da nessuna pagina: vivevano in demo/muretto.mjs, che con la migrazione al motore nuovo non viene piu' importato da gara.html ne' da live.html. Nessuno l'aveva deciso e nessuno l'aveva scritto: una decisione del PO era stata revocata DI FATTO, in silenzio, da un cambio che riguardava altro. Un registro serve a rendere impossibile che succeda di nuovo senza che si veda.",
+    "cosa_NON_e": "Non e' un elenco di buone intenzioni. Ogni voce ha una `guardia`: una condizione verificata da demo/test_debito_demo.mjs, che esce 1 sia se la voce non descrive piu' la realta' (il debito e' stato saldato e nessuno ha aggiornato il registro) sia se il registro elenca qualcosa che non esiste piu'. Il registro e' uno specchio, non un desiderio.",
+    "data": "2026-08-02"
+  },
+  "voci": [
+    {
+      "id": "scenari-64-non-renderizzati",
+      "titolo": "Gli scenari-degrado accesi con la PR #64 non sono renderizzati da nessuna pagina",
+      "natura": "accensione del PO revocata di fatto",
+      "cosa_e_successo": "demo/muretto.mjs dichiara SCENARI_ATTIVI = true e chiama treScenariPit() da demo/pitbande.mjs: e' l'accensione decisa dal PO nella PR #64, dopo che la Fase B aveva corretto la magnitudine (adapter M1, BIAS +0,05) e la Fase B2 aveva misurato la copertura (43,1% >= 40%). Con il passaggio delle pagine al motore nuovo (vista pre-calcolata + vendor/simulatore), gara.html e live.html hanno smesso di importare muretto.mjs. Il codice degli scenari e' vivo e la sua accensione e' vera, ma non raggiunge piu' il browser: in pagina gli scenari non ci sono.",
+      "perche_resta_aperto": "Riaccenderli sul motore nuovo NON e' un ripristino: l'aggancio degli scenari nasceva su pace_base del motore vecchio, e la correzione del doppio conteggio (M1: rate*(A-A0)) e' stata misurata li'. Rifarlo sul kernel nuovo e' un cambio di fisica in produzione, quindi una decisione del PO, non una riparazione da fare di nascosto mentre si sistema altro.",
+      "referto": "memoria di progetto: fase-b-magnitudine, fase-b-copertura, ui-v2-struttura (PR #64); accertamento del 02/08/2026",
+      "guardia": {
+        "descrizione": "vera finche' l'accensione esiste nel codice E nessuna pagina pubblicata importa quel modulo",
+        "file_accensione": "demo/muretto.mjs",
+        "deve_contenere": "SCENARI_ATTIVI = true",
+        "pagine_che_non_devono_importarlo": ["demo/gara.html", "demo/live.html"],
+        "import_atteso": "muretto.mjs"
+      }
+    }
+  ]
+}

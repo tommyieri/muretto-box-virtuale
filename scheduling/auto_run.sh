@@ -73,4 +73,21 @@ trap 'rmdir "$LOCK" 2>/dev/null' EXIT
 
 echo "==== $(date '+%F %T') avvio auto_gara --push (python: $PY) ====" >> "$REPO/data/auto_gara.log"
 "$PY" auto_gara.py --push >> "$REPO/data/auto_gara.log" 2>&1
-echo "==== $(date '+%F %T') fine (exit $?) ====" >> "$REPO/data/auto_gara.log"
+ESITO=$?
+echo "==== $(date '+%F %T') fine (exit $ESITO) ====" >> "$REPO/data/auto_gara.log"
+
+# ------------------------------------------------- CIO' CHE E' ONLINE E' CIO' CHE E' SU MAIN?
+# La sonda guarda la catena DA FUORI (curl al sito) e la confronta con origin/main. E' l'unico
+# controllo che attraversa Mac -> push -> VPS -> push -> Vercel: senza, il guasto «la macchina
+# che pubblica esegue un main vecchio» resta invisibile finche' qualcuno non entra in ssh.
+#
+# NON FATALE DI PROPOSITO, e il `|| true` non e' pigrizia: questo passo osserva, non pubblica.
+# Se facesse fallire auto_run, un problema di rete verso il sito diventerebbe un giro di
+# pubblicazione perso — cioe' la sonda causerebbe il danno che sorveglia. L'esito sta nel log.
+if [ -x "$REPO/scheduling/sonda_deploy.sh" ]; then
+  {
+    echo "---- $(date '+%F %T') sonda deploy"
+    "$REPO/scheduling/sonda_deploy.sh" 2>&1 | sed 's/^/     /'
+  } >> "$REPO/data/auto_gara.log" 2>&1 || true
+fi
+exit $ESITO

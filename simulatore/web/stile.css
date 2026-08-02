@@ -19,6 +19,14 @@ h3{margin:.8rem 0 .3rem;font-size:.85rem;color:var(--tenue)}
 .soppressione{color:var(--allarme);font-size:.85rem;margin:.2rem 0}
 .nota{color:var(--tenue);font-size:.82rem;display:block;margin-top:.2rem}
 .nota.allarme{color:var(--allarme)}
+/* L'AVVISO DEL CANCELLO precede i numeri della banda e ne ha il peso visivo:
+   quando l'intervallo da solo inganna, la riserva non può essere una nota a
+   piè di pagina — chi legge ha già preso il numero per buono. */
+.nota.avviso-livello{border-left:3px solid var(--allarme);padding:.4rem .6rem;
+margin:.1rem 0 .5rem;background:color-mix(in srgb,var(--allarme) 10%,transparent);
+border-radius:0 6px 6px 0;font-size:.84rem}
+/* la targhetta della finestra: spiega perché non è un intervallo di confidenza */
+.nota.finestra{border-left:3px solid var(--modello);padding:.3rem .6rem;margin-top:.4rem}
 /* le quantità: ogni numero è un bottone che apre la sua targhetta */
 .quantita{position:relative;background:none;border:none;border-bottom:1px dashed currentColor;
 color:inherit;font:inherit;padding:0 .05em;cursor:pointer;font-variant-numeric:tabular-nums}
@@ -47,7 +55,15 @@ padding:.35rem 0;border-bottom:1px dotted var(--linea);font-size:.9rem}
 .assunzioni{margin-top:.6rem}
 .assunzione{display:flex;gap:.5rem;align-items:baseline;font-size:.82rem;color:var(--tenue);padding:.2rem 0}
 .grafico,.pista-svg{width:100%;height:auto;display:block;overflow:visible}
-.banda{fill:var(--prior);opacity:.18}
+/* la banda del GRAFICO. Il selettore era `.banda` senza ambito, e `banda` è
+   anche il nome del blocco di testo del pannello: l'opacità pensata per un
+   riempimento SVG cadeva su tutte le riserve della banda di posizione — la
+   copertura, il circuito sotto livello, il «non è una probabilità di sorpasso»
+   — rendendole fantasmi al 18%. Le cautele erano scritte e illeggibili. */
+.grafico .banda{fill:var(--prior);opacity:.18}
+/* LA FINESTRA: i giri che il motore non distingue dall'ottimo. Sta sotto la
+   curva e non deve competere con la linea: colore del modello, molto tenue. */
+.grafico .finestra{fill:var(--modello);opacity:.13}
 .linea{fill:none;stroke:var(--modello);stroke-width:2.5}
 .minimo circle{fill:var(--misurato-fondo)}
 .minimo line{stroke:var(--misurato-fondo);stroke-dasharray:3 3}

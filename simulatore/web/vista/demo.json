@@ -236,6 +236,13 @@
     "delta_s": 0,
     "banda": null
    },
+   "finestra": {
+    "da": 33,
+    "a": 46,
+    "n_giri": 14,
+    "soglia_s": 4.42,
+    "targhetta": "i giri che il motore non distingue dall'ottimo: entro 4.42 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 26 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
+   },
    "banda_presente": false,
    "nota_banda": "nessuna banda: tutti i candidati sono in verde e la perdita ai box, uguale per tutti, si cancella nella differenza — la forma della curva non dipende da quel prior",
    "orizzonte": {
@@ -744,6 +751,13 @@
     "delta_s": 0,
     "banda": null
    },
+   "finestra": {
+    "da": 42,
+    "a": 66,
+    "n_giri": 25,
+    "soglia_s": 5.44,
+    "targhetta": "i giri che il motore non distingue dall'ottimo: entro 5.44 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 32 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
+   },
    "banda_presente": false,
    "nota_banda": "nessuna banda: tutti i candidati sono in verde e la perdita ai box, uguale per tutti, si cancella nella differenza — la forma della curva non dipende da quel prior",
    "orizzonte": {
@@ -1224,6 +1238,13 @@
     "giroPit": 31,
     "delta_s": 0,
     "banda": null
+   },
+   "finestra": {
+    "da": 25,
+    "a": 40,
+    "n_giri": 16,
+    "soglia_s": 3.4,
+    "targhetta": "i giri che il motore non distingue dall'ottimo: entro 3.40 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 20 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
    },
    "banda_presente": false,
    "nota_banda": "nessuna banda: tutti i candidati sono in verde e la perdita ai box, uguale per tutti, si cancella nella differenza — la forma della curva non dipende da quel prior",
@@ -1761,6 +1782,13 @@
     "delta_s": 0,
     "banda": null
    },
+   "finestra": {
+    "da": 38,
+    "a": 61,
+    "n_giri": 24,
+    "soglia_s": 5.27,
+    "targhetta": "i giri che il motore non distingue dall'ottimo: entro 5.27 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 31 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
+   },
    "banda_presente": false,
    "nota_banda": "nessuna banda: tutti i candidati sono in verde e la perdita ai box, uguale per tutti, si cancella nella differenza — la forma della curva non dipende da quel prior",
    "orizzonte": {
@@ -2252,6 +2280,13 @@
     "delta_s": 0,
     "banda": null
    },
+   "finestra": {
+    "da": 34,
+    "a": 53,
+    "n_giri": 20,
+    "soglia_s": 4.25,
+    "targhetta": "i giri che il motore non distingue dall'ottimo: entro 4.25 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 25 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
+   },
    "banda_presente": false,
    "nota_banda": "nessuna banda: tutti i candidati sono in verde e la perdita ai box, uguale per tutti, si cancella nella differenza — la forma della curva non dipende da quel prior",
    "orizzonte": {
@@ -2732,6 +2767,13 @@
     "giroPit": 37,
     "delta_s": 0,
     "banda": null
+   },
+   "finestra": {
+    "da": 30,
+    "a": 47,
+    "n_giri": 18,
+    "soglia_s": 4.08,
+    "targhetta": "i giri che il motore non distingue dall'ottimo: entro 4.08 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 24 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
    },
    "banda_presente": false,
    "nota_banda": "nessuna banda: tutti i candidati sono in verde e la perdita ai box, uguale per tutti, si cancella nella differenza — la forma della curva non dipende da quel prior",
@@ -3236,6 +3278,13 @@
     "giroPit": 36,
     "delta_s": 0,
     "banda": null
+   },
+   "finestra": {
+    "da": 30,
+    "a": 46,
+    "n_giri": 17,
+    "soglia_s": 3.91,
+    "targhetta": "i giri che il motore non distingue dall'ottimo: entro 3.91 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 23 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
    },
    "banda_presente": false,
    "nota_banda": "nessuna banda: tutti i candidati sono in verde e la perdita ai box, uguale per tutti, si cancella nella differenza — la forma della curva non dipende da quel prior",
@@ -3770,6 +3819,13 @@
     "giroPit": 42,
     "delta_s": 0,
     "banda": null
+   },
+   "finestra": {
+    "da": 32,
+    "a": 52,
+    "n_giri": 21,
+    "soglia_s": 4.42,
+    "targhetta": "i giri che il motore non distingue dall'ottimo: entro 4.42 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 26 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
    },
    "banda_presente": false,
    "nota_banda": "nessuna banda: tutti i candidati sono in verde e la perdita ai box, uguale per tutti, si cancella nella differenza — la forma della curva non dipende da quel prior",
@@ -4312,6 +4368,13 @@
     "delta_s": 0,
     "banda": null
    },
+   "finestra": {
+    "da": 48,
+    "a": 73,
+    "n_giri": 26,
+    "soglia_s": 5.95,
+    "targhetta": "i giri che il motore non distingue dall'ottimo: entro 5.95 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 35 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
+   },
    "banda_presente": false,
    "nota_banda": "nessuna banda: tutti i candidati sono in verde e la perdita ai box, uguale per tutti, si cancella nella differenza — la forma della curva non dipende da quel prior",
    "orizzonte": {
@@ -4842,6 +4905,13 @@
     "delta_s": 0,
     "banda": null
    },
+   "finestra": {
+    "da": 39,
+    "a": 61,
+    "n_giri": 23,
+    "soglia_s": 5.1,
+    "targhetta": "i giri che il motore non distingue dall'ottimo: entro 5.10 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 30 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
+   },
    "banda_presente": false,
    "nota_banda": "nessuna banda: tutti i candidati sono in verde e la perdita ai box, uguale per tutti, si cancella nella differenza — la forma della curva non dipende da quel prior",
    "orizzonte": {
@@ -5369,6 +5439,13 @@
     "delta_s": 0,
     "banda": null
    },
+   "finestra": {
+    "da": 40,
+    "a": 60,
+    "n_giri": 21,
+    "soglia_s": 5.27,
+    "targhetta": "i giri che il motore non distingue dall'ottimo: entro 5.27 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 31 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
+   },
    "banda_presente": false,
    "nota_banda": "nessuna banda: tutti i candidati sono in verde e la perdita ai box, uguale per tutti, si cancella nella differenza — la forma della curva non dipende da quel prior",
    "orizzonte": {
@@ -5760,6 +5837,7 @@
    "stazionario_pavimento_s": 1.8,
    "curva": null,
    "minimo": null,
+   "finestra": null,
    "banda_presente": null,
    "nota_banda": null,
    "orizzonte": null,

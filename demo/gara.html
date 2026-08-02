@@ -182,20 +182,17 @@ let pista=null, leadCum=null, cumPil=null, teamOfR=null;   // vista pallini (gar
 // MOSTRANO (feed + badge + doppia vista), non entrano nella simulazione ne' nei gap
 let rcmAll=null, ufficAll=null, rcmGara=null, ufficGara=null, penPil={};
 let numDi={};   // sigla -> numero di gara (da schede_2026.json, fonte f1db)
-let bandeClim=null;   // FASE A: bande climatologiche per circuito (demo/data/climatologia_bande.json)
-// PASSO v2: deriva di gara + degrado (demo/data/modello_passo_2026.json, con targhetta).
-// Assente -> il pannello torna da solo al passo piatto: nessun numero inventato.
-let modelloPasso=null;
 // LA VISTA DEL SIMULATORE. indiceVista fa da `vista` per i componenti (porta targhetta,
 // modello e mescole); vistaPilota e' la cache per-pilota, scaricata al primo tocco.
 let vistaMap=null, vistaCartella=null, indiceVista=null;
 const vistaPilota={}, fantasmaPilota={};
-// probabilita di neutralizzazione e quanto costa fermarsi sotto, per circuito, dal fondo
-// 2018-2026 (gen_neutralizzazione_fondo.py). Assente -> la riga Safety Car non compare.
-let neutroFondo=null;
-// come la Safety Car rimescola (gen_raggruppamento.py, fondo 2018-2026): compressione dei
-// distacchi ed ESITO OSSERVATO di "io mi fermo in verde, lui si ferma sotto SC".
-let ragg=null;
+// QUATTRO SCARICHI MORTI, tolti il 02/08/2026: climatologia_bande, modello_passo_2026,
+// neutralizzazione_fondo e raggruppamento venivano scaricati a ogni apertura della pagina
+// e non li leggeva piu' nessuno — erano ingressi del motore VECCHIO, rimasti orfani
+// quando la pagina e' passata alla vista pre-calcolata. Un fetch che nessuno legge non e'
+// inerte: e' una promessa di funzionalita' per chi legge il codice, e quattro richieste
+// pagate da ogni visitatore. I generatori restano (gli artefatti servono altrove): qui
+// spariscono solo i consumatori inesistenti.
 // SIMULAZIONE FANTASMA — ora sul motore condiviso ghostplay.mjs (niente più copia inline).
 // La scena ha un loop suo; il `clock` resta solo per il replay reale (in pausa durante la sim).
 let simMode=false, simGp=null, simDriver=null, simRientroPos=null, simSuTotale=null, lastPitRes=null;
@@ -226,13 +223,9 @@ async function boot() {
   try { neutral = await (await fetch('neutralizzazione.json')).json(); } catch(e){ neutral={}; }
   try { teamCol = await (await fetch('team_colori.json')).json(); } catch(e){ teamCol={}; }
   try { calendario = await (await fetch('data/calendario_2026.json')).json(); } catch(e){ calendario=null; }
-  try { bandeClim = await (await fetch('data/climatologia_bande.json')).json(); } catch(e){ bandeClim=null; }
-  try { modelloPasso = await (await fetch('data/modello_passo_2026.json')).json(); } catch(e){ modelloPasso=null; }
   // la mappa nome-sito -> cartella sta nel DATO, non in un if: il simulatore scrive
   // "GranBretagna" senza spazio (E24: lo spazio spezza i glob), il sito dice "Gran Bretagna"
   try { vistaMap = await (await fetch('data/vista/manifest.json')).json(); } catch(e){ vistaMap=null; }
-  try { neutroFondo = await (await fetch('data/neutralizzazione_fondo.json')).json(); } catch(e){ neutroFondo=null; }
-  try { ragg = await (await fetch('data/raggruppamento.json')).json(); } catch(e){ ragg=null; }
   try { pitstops = await (await fetch('data/pitstops_2026.json')).json(); } catch(e){ pitstops=null; }
   try { rcmAll = await (await fetch('data/race_control_2026.json')).json(); } catch(e){ rcmAll=null; }
   try { ufficAll = await (await fetch('data/ufficiali_2026.json')).json(); } catch(e){ ufficAll=null; }
