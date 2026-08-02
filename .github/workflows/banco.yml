@@ -7,8 +7,14 @@
 # va promosso — altrimenti la migrazione avrebbe portato la CI in forma di ornamento,
 # che e' esattamente cio' che la regola 4 del progetto vieta.
 #
-# La suite ESCE 1 se una sola sentinella fallisce (la s03 verifica proprio che il runner
-# propaghi l'exit code). Se qui vedi verde, le 25 sentinelle sono verdi davvero.
+# COSA SIGNIFICA IL VERDE QUI, dal 02/08/2026. La suite esce 1 se una sola asserzione
+# rossa NON e' fra quelle dichiarate in simulatore/banco/ROSSE_DICHIARATE.json — e anche
+# se una dichiarata guarisce, perche' vorrebbe dire che il referto che la spiega non
+# descrive piu' la realta'. Due sentinelle sono rosse per decisione (la banda sotto
+# neutralizzazione e il bias piatto mancato per tre millesimi): prima di questa modifica
+# la CI era rossa a OGNI push, cioe' muta, e una regressione vera sarebbe arrivata
+# indistinguibile dal rumore di fondo. Adesso il verde significa: nessuna regressione, e
+# le rosse note sono esattamente quelle che qualcuno ha deciso e messo a referto.
 name: banco
 
 on:

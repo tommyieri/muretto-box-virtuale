@@ -399,7 +399,14 @@ const d = riassunto.difesa;
   const vietate = [
     ...elencaFile(path.join(radice, 'web')),
     ...elencaFile(path.join(radice, 'scenario')).filter((f) => !/costruttore\.mjs$/.test(f)),
-    ...elencaFile(path.join(radice, '..', 'demo')).filter((f) => !/\/data\//.test(f)),
+    // demo/vendor/ e' fuori: e' la COPIA byte-derivata di simulatore/, prodotta da
+    // trasporta_motore.mjs e sorvegliata da `--verifica` in CI. Contiene il costruttore
+    // per intero, quindi contiene anche il PARAMETRO `pianiRivali` — ma contenerlo non
+    // e' passarlo, ed e' esattamente la distinzione che questo blocco deve fare. Vietare
+    // alla copia cio' che si permette all'originale renderebbe rossa la sentinella ogni
+    // volta che il motore viene ri-trasportato, cioe' proprio quando le cose sono a posto.
+    ...elencaFile(path.join(radice, '..', 'demo'))
+      .filter((f) => !/\/data\//.test(f) && !/\/vendor\//.test(f)),
   ];
   const colpevoli = vietate.filter((f) => /pianiRivali/.test(readFileSync(f, 'utf8')));
   b.uguale('nessun percorso di produzione passa le soste vere dei rivali (E14)',

@@ -328,6 +328,29 @@ def wave_nuove():
         # Zandvoort l'automazione ri-stimerebbe PRIMA che qualcuno misuri
         # l'holdout, e il primo fuori campione vero del progetto si brucerebbe da
         # solo, in silenzio, e non si potrebbe rifare.
+        # IL PONTE, e viene PRIMA di tutto il resto del laboratorio (02/08/2026).
+        #
+        # Fino a oggi questo blocco era costruito a META', e nessuno se ne accorgeva
+        # perche' usciva verde: `pipeline_gara.py` scrive il grezzo in
+        # data/ti_archive/2026/<cartella TI>/Race.json, mentre il motore legge
+        # simulatore/data/gare_2026/ — e NESSUNO SCRIVEVA LI'. L'Ungheria ci era entrata
+        # a mano. Quindi la ri-stima qui sotto girava ogni domenica su un ingresso
+        # CONGELATO A UNDICI GARE: ricalcolava con diligenza sempre lo stesso numero.
+        #
+        # Due passi, in quest'ordine:
+        #   1. il grezzo entra nel simulatore (rifiuta un file che il contratto-cella non
+        #      accetta, e non sovrascrive di nascosto una gara gia' presente);
+        #   2. la VISTA VERDE si rigenera: e' la porta da cui la statistica Python riceve
+        #      i dati, e senza questo passo stima_v2 leggerebbe la vista vecchia.
+        #
+        # check=True sul ponte, ed e' l'unica eccezione del blocco laboratorio: se la gara
+        # nuova non entra nel motore, tutto cio' che segue e' una ri-stima che finge. Meglio
+        # fermarsi e gridarlo che pubblicare un modello che dichiara di aver visto dodici
+        # gare e ne ha viste undici.
+        sim = os.path.join(ROOT, 'simulatore')
+        sh(['node', 'provenienza/aggiorna_gara_2026.mjs', nome], cwd=sim)
+        sh(['node', 'provenienza/esporta_vista_verde.mjs'], cwd=sim, check=False)
+
         # Il resto dell'ondata prosegue normale: si salta solo il cuore.
         if _holdout_aperto(nome):
             log(f'RI-STIMA SALTATA: {nome} e\' la gara sigillata di un holdout aperto '
