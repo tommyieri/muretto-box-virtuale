@@ -24,11 +24,14 @@
 //
 // NON SCRIVE NIENTE su disco.
 
-import { readFileSync } from 'node:fs';
-import path from 'node:path';
-import { costruisciScenario, eseguiEValida } from '../../simulatore/scenario/costruttore.mjs';
-import { cambiDiPosizione } from '../../simulatore/engine/kernel.mjs';
-import { RADICE, gare, garaNuova, garaSimDi, contestoNuovo, riclassifica } from './banco.mjs';
+import { gare } from './banco.mjs';
+// LA LOGICA CONDIVISA sta in bandiera.mjs dal 03/08/2026: la verita' d'arrivo, gli
+// ordini, il caso fino alla bandiera e il metro statistico erano duplicati fra questo
+// script e voce6_bandiera.mjs (il caricamento di arrivi_2026.csv era identico byte per
+// byte). Qui resta il PERIMETRO e la stampa; il come si misura sta in un posto solo.
+import {
+  mediana, media, arrivi, perGara, ordineVero, pianiVeriDi, corri as corriCaso,
+} from './bandiera.mjs';
 
 // --rivali: ogni pilota riceve le SUE soste vere, non solo il soggetto. E' l'ingresso
 // di laboratorio della Domanda B di PREREG_sorpassi.md, e rende SIMMETRICA
@@ -49,149 +52,12 @@ const CONGELAMENTO_MAX = 15;  // oltre, la proiezione non sarebbe piu' «la gara
 const TEAM = ['Alpine', 'Aston Martin', 'Audi', 'Cadillac', 'Ferrari',
   'Haas F1 Team', 'McLaren', 'Mercedes', 'Racing Bulls', 'Red Bull Racing'];
 
-const mediana = (v) => { if (!v.length) return null; const s = [...v].sort((a, b) => a - b); const m = s.length >> 1; return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2; };
-const media = (v) => (v.length ? v.reduce((a, b) => a + b, 0) / v.length : null);
-
-// ── la verita' d'arrivo, da una fonte DIVERSA dal byLap che il motore legge ──
-const arrivi = [];
-{
-  const righe = readFileSync(path.join(RADICE, 'data', 'arrivi_2026.csv'), 'utf8').trim().split('\n');
-  const h = righe[0].split(',');
-  for (const l of righe.slice(1)) {
-    const c = l.split(',');
-    const o = Object.fromEntries(h.map((k, i) => [k, c[i]]));
-    o.classificato = o.classificato === 'True';
-    o.pos_finale = Number(o.pos_finale);
-    o.soste_piano = (o.soste || '').split(';').filter(Boolean)
-      .map((s) => { const [giro, mescola] = s.split(':'); return { giro: Number(giro), mescola }; })
-      .sort((a, b) => a.giro - b.giro);
-    arrivi.push(o);
-  }
-}
-const perGara = (g) => arrivi.filter((x) => x.gara === g);
-const riga = (g, p) => arrivi.find((x) => x.gara === g && x.pilota === p) ?? null;
-
-/** L'ordine d'arrivo VERO: i classificati per posizione finale crescente. */
-function ordineVero(g) {
-  return perGara(g).filter((x) => x.classificato && Number.isFinite(x.pos_finale))
-    .sort((a, b) => a.pos_finale - b.pos_finale).map((x) => x.pilota);
-}
-
-/**
- * L'ordine al giro del congelamento, per cum_time: e' il MODELLO NULLO (prereg §6).
- *
- * `perPilota` e' una Map di Map (pilota -> giro -> cella) e le celle NON portano il
- * numero di giro dentro di se': la prima scrittura di questa funzione la trattava
- * come un oggetto di array e restituiva sempre l'insieme vuoto, cioe' il modello
- * nullo non esisteva e G4 non era misurabile. Era un difetto dello strumento, non
- * un esito: corretto e rimisurato prima di leggere qualunque numero (E22).
- */
-function ordineAlGiro(gSim, lap) {
-  const cum = {};
-  for (const [drv, celle] of gSim.perPilota) {
-    const c = celle.get(lap);
-    if (c && Number.isFinite(c.cum_time)) cum[drv] = c.cum_time;
-  }
-  return Object.keys(cum).sort((a, b) => (cum[a] - cum[b]) || (a < b ? -1 : 1));
-}
-
-/** L'ordine finale PREVISTO: per cum_time all'ultimo giro presente nella traccia. */
-function ordinePrevisto(traccia, giroFinale) {
-  if (!traccia) return null;
-  const cum = {};
-  for (const [drv, passi] of Object.entries(traccia)) {
-    if (!passi || !passi.length) continue;
-    // l'ultimo giro <= giroFinale che il motore ha davvero prodotto per lui
-    let ultimo = null;
-    for (const p of passi) if (p.lap <= giroFinale && (ultimo === null || p.lap > ultimo.lap)) ultimo = p;
-    if (ultimo && Number.isFinite(ultimo.cum_time)) cum[drv] = { cum: ultimo.cum_time, lap: ultimo.lap };
-  }
-  const giri = Object.values(cum).map((x) => x.lap);
-  return {
-    ordine: Object.keys(cum).sort((a, b) => (cum[a].cum - cum[b].cum) || (a < b ? -1 : 1)),
-    giro_min: giri.length ? Math.min(...giri) : null,
-    giro_max: giri.length ? Math.max(...giri) : null,
-  };
-}
-
-/** Le soste vere di TUTTI in quella gara, nel formato del costruttore. */
-function pianiVeriDi(nomeSito) {
-  const m = {};
-  for (const r of perGara(nomeSito)) if (r.soste_piano.length) m[r.pilota] = r.soste_piano;
-  return m;
-}
-
 // ── un caso: congela, dagli la SUA strategia vera, corri fino alla bandiera ──
+// Il corpo sta in bandiera.mjs. `--rivali` diventa cio' che era gia' nei fatti: il
+// valore di `pianiRivali`, cioe' la REGOLA con cui si comportano gli avversari.
+// Spento = regola-identita' («il rivale non reagisce mai»).
 function corri(nomeSito, pilota) {
-  const r = riga(nomeSito, pilota);
-  if (!r) return { saltato: 'nessuna riga in arrivi_2026.csv' };
-  if (!r.classificato) return { saltato: `non classificato (${r.tipo_arrivo})`, tipo_arrivo: r.tipo_arrivo };
-  if (!r.soste_piano.length) return { saltato: 'nessuna sosta registrata: non c\'e\' pit-loss ne\' mescola da simulare' };
-
-  const gSim = garaNuova(nomeSito);
-  const contesto = contestoNuovo(nomeSito);
-
-  // Si scende il congelamento finche' il motore non ha un passo base per lui. Le soste
-  // gia' avvenute NON si rimettono nel piano: il costruttore legge lo stato vero fino al
-  // congelamento, quindi il pilota ci arriva gia' con la gomma che aveva davvero e la sua
-  // eta'. Rimetterle sarebbe farlo fermare due volte. Toglierle non toglie strategia.
-  let sc = null; let esito = null; let prev = null; let congelamento = null; let ultimoMotivo = null;
-  for (let lf = CONGELAMENTO_MIN; lf <= CONGELAMENTO_MAX; lf += 1) {
-    const futuro = r.soste_piano.filter((s) => s.giro > lf);
-    if (!futuro.length) { ultimoMotivo = `nessuna sosta oltre il giro ${lf}`; break; }
-    let s2; let e2;
-    try {
-      s2 = costruisciScenario({
-        gara: garaSimDi(nomeSito), freezeLap: lf, pilota, piano: futuro,
-        pianiRivali: RIVALI ? pianiVeriDi(nomeSito) : undefined,
-      }, contesto);
-      e2 = eseguiEValida(s2, contesto.costantiDirector);
-    } catch (e) { ultimoMotivo = `eccezione: ${e.message}`; continue; }
-    const p2 = ordinePrevisto(e2.risultato.traccia, gSim.nGiri);
-    if (!p2 || !p2.ordine.includes(pilota)) { ultimoMotivo = `nessun passo base al giro ${lf} (regola 6)`; continue; }
-    sc = s2; esito = e2; prev = p2; congelamento = lf; break;
-  }
-  if (!prev) return { saltato: ultimoMotivo ?? `nessun passo base fra i giri ${CONGELAMENTO_MIN}-${CONGELAMENTO_MAX}` };
-
-  const vero = ordineVero(nomeSito);
-  const nullo = ordineAlGiro(gSim, congelamento);
-
-  // STESSO METRO E STESSA POPOLAZIONE per il motore e per il modello nullo. Passando
-  // l'uno come `altro` dell'altro, la ri-classificazione del banco restringe entrambi
-  // alla TERNA comune (motore ∩ nullo ∩ verita'): i due errori hanno lo stesso
-  // denominatore e G4 confronta due numeri confrontabili. Con popolazioni diverse il
-  // concorrente piu' fortunato vincerebbe per il perimetro, non per il merito.
-  const m = riclassifica(prev.ordine, vero, pilota, nullo);
-  const n = riclassifica(nullo, vero, pilota, prev.ordine);
-  if (!m) return { saltato: 'il pilota non e\' nella popolazione comune motore/nullo/verita\'' };
-
-  // ── DOMANDA A · quanto movimento produce il motore, contro quanto ne avviene ──
-  // `cambiDiPosizione` e' la definizione del kernel (QUANTI, non QUALI): conta quanti
-  // piloti NON sono piu' dove stavano. Si applica due volte allo stesso ordine di
-  // partenza, cosi' i due conteggi sono confrontabili.
-  const comuni = new Set(nullo.filter((d) => vero.includes(d) && prev.ordine.includes(d)));
-  const soloComuni = (o) => o.filter((d) => comuni.has(d));
-  const lf0 = soloComuni(nullo);
-  const cambiReali = cambiDiPosizione(lf0, soloComuni(vero));
-  const cambiMotore = cambiDiPosizione(lf0, soloComuni(prev.ordine));
-
-  const fatal = (esito.direttore?.violazioni ?? []).filter((v) => v.severita === 'FATAL');
-  return {
-    cambi_reali: cambiReali, cambi_motore: cambiMotore, campo: comuni.size,
-    n_giri: gSim.nGiri,
-    congelamento,
-    proiettati: gSim.nGiri - congelamento,
-    strategia: r.soste_piano.map((s) => `${s.giro}:${s.mescola}`).join(' '),
-    soste_ereditate: r.soste_piano.filter((s) => s.giro <= congelamento).length,
-    partenza: r.partenza,
-    previsto: m.pos, vero: m.posVera, errore: m.errore, su: m.su,
-    nullo: n ? n.pos : null, errore_nullo: n ? n.errore : null,
-    tipo_arrivo: r.tipo_arrivo,
-    pit_loss_s: sc.perdita ?? sc.pitLoss ?? null,
-    oltre_orizzonte: (sc.assunzioni ?? []).some((a) => (a.codice ?? a) === 'OLTRE_ORIZZONTE_VALIDATO'),
-    director_fatal: fatal.length,
-    traccia_fino_a: prev.giro_max,
-  };
+  return corriCaso(nomeSito, pilota, { pianiRivali: RIVALI ? pianiVeriDi(nomeSito) : undefined });
 }
 
 // ── esecuzione ───────────────────────────────────────────────────────────────
@@ -291,7 +157,7 @@ if (TUTTO) {
     }
   }
   console.log('');
-  console.log(`  ${tutti.length} casi utilizzabili su ${arrivi.length} coppie pilota-gara`);
+  console.log(`  ${tutti.length} casi utilizzabili su ${arrivi().length} coppie pilota-gara`);
   for (const [k, v] of Object.entries(scarti).sort((a, b) => b[1] - a[1])) console.log(`    ${String(v).padStart(4)} scartati — ${k}`);
   if (tutti.length) {
     cancelli(tutti, 'R2b, tutto il perimetro', 'PREREG_gara_intera_2.md');
