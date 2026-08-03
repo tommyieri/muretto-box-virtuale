@@ -1,87 +1,99 @@
 {
- "gara": "Cina",
- "n_giri": 56,
+ "gara": "Canada",
+ "n_giri": 68,
  "primo_giro": 5,
- "ultimo_giro": 53,
+ "ultimo_giro": 65,
  "piloti": {
+  "ALB": {
+   "giri": 8,
+   "con_risposta": 8
+  },
   "ALO": {
-   "giri": 28,
-   "con_risposta": 28
+   "giri": 20,
+   "con_risposta": 20
   },
   "ANT": {
-   "giri": 49,
-   "con_risposta": 49
+   "giri": 61,
+   "con_risposta": 61
   },
   "BEA": {
-   "giri": 49,
-   "con_risposta": 49
+   "giri": 61,
+   "con_risposta": 61
+  },
+  "BOR": {
+   "giri": 61,
+   "con_risposta": 58
   },
   "BOT": {
-   "giri": 49,
-   "con_risposta": 49
+   "giri": 60,
+   "con_risposta": 57
   },
   "COL": {
-   "giri": 49,
-   "con_risposta": 49
+   "giri": 61,
+   "con_risposta": 61
   },
   "GAS": {
-   "giri": 49,
-   "con_risposta": 49
+   "giri": 61,
+   "con_risposta": 61
   },
   "HAD": {
-   "giri": 49,
-   "con_risposta": 48
+   "giri": 61,
+   "con_risposta": 61
   },
   "HAM": {
-   "giri": 49,
-   "con_risposta": 49
+   "giri": 61,
+   "con_risposta": 61
   },
   "HUL": {
-   "giri": 49,
-   "con_risposta": 49
+   "giri": 61,
+   "con_risposta": 57
   },
   "LAW": {
-   "giri": 49,
-   "con_risposta": 49
+   "giri": 61,
+   "con_risposta": 61
   },
   "LEC": {
-   "giri": 49,
-   "con_risposta": 49
+   "giri": 61,
+   "con_risposta": 61
   },
-  "LIN": {
-   "giri": 49,
-   "con_risposta": 49
+  "NOR": {
+   "giri": 35,
+   "con_risposta": 32
   },
   "OCO": {
-   "giri": 49,
-   "con_risposta": 49
+   "giri": 61,
+   "con_risposta": 61
   },
   "PER": {
-   "giri": 49,
-   "con_risposta": 49
+   "giri": 36,
+   "con_risposta": 34
+  },
+  "PIA": {
+   "giri": 61,
+   "con_risposta": 60
   },
   "RUS": {
-   "giri": 49,
-   "con_risposta": 49
+   "giri": 26,
+   "con_risposta": 26
   },
   "SAI": {
-   "giri": 49,
-   "con_risposta": 49
+   "giri": 61,
+   "con_risposta": 59
   },
   "STR": {
-   "giri": 6,
-   "con_risposta": 6
+   "giri": 60,
+   "con_risposta": 60
   },
   "VER": {
-   "giri": 41,
-   "con_risposta": 40
+   "giri": 61,
+   "con_risposta": 61
   }
  },
  "_targhetta": {
   "tipo": "vista del sito — nessun numero calcolato dal browser",
   "generata_da": "simulatore/web/genera_vista_gara.mjs",
   "percorso": "provenienza → engine → scenario (Director compreso) → questo JSON → componenti",
-  "data": "2026-08-02"
+  "data": "2026-08-03"
  },
  "modello": {
   "rho": 0.030776,
@@ -137,10 +149,10 @@
   }
  ],
  "perdita": {
-  "verde": 23.316,
-  "circuito": "Chinese_Grand_Prix",
+  "verde": 19.327,
+  "circuito": "Canadian_Grand_Prix",
   "fonte": "misura_interna",
   "fallback": false,
-  "targhetta": "misurato sul fondo 2018-2025: mediana di 80 soste verdi su asciutto a Chinese_Grand_Prix (IC95 22.683–24.102 s)"
+  "targhetta": "misurato sul fondo 2018-2025: mediana di 68 soste verdi su asciutto a Canadian_Grand_Prix (IC95 18.995–19.9 s)"
  }
 }

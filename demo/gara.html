@@ -888,7 +888,13 @@ function mostraRientroSim(){
 }
 function continuaSim(){
   el('simCont').hidden = true;
-  el('simTag').innerHTML = 'Proiezione fino alla bandiera · i rivali non reagiscono';
+  // L'ETICHETTA DICEVA MEZZA VERITA'. «I rivali non reagiscono» e' vero e dichiarato;
+  // cio' che taceva e' che OLTRE 6 GIRI la proiezione non e' validata affatto — F1 e'
+  // stato registrato RAGGIUNTO a 6 giri (ai_lab/REGISTRO_F1.md) e oltre quella soglia
+  // nessun motore batte il non-fare-niente. Promettere una proiezione «fino alla
+  // bandiera» senza dirlo e' la voce P2 dei KPI: una promessa su un ramo che il
+  // progetto ha misurato e chiuso. Corretto il 03/08/2026.
+  el('simTag').innerHTML = 'Proiezione fino alla bandiera · validata solo fino a 6 giri · i rivali non reagiscono';
   if(simGp) simGp.continua(); setPlayIcon(true);
 }
 function esciSimulazione(){
