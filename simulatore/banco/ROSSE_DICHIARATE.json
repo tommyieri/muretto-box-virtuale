@@ -10,7 +10,7 @@
   ],
   "chiave": "Il confronto avviene sulla descrizione dell'asserzione con le CIFRE RIMOSSE. Cosi' un numero che si muove dentro una rossa gia' nota (0,7857 -> 0,7912) non finge una regressione, ma viene stampato accanto alla voce perche' si veda che si e' mosso.",
   "data": "2026-08-02",
-  "guarite": "03/08/2026: D4 CHIUSO. Il verificatore era implementato al rovescio della sua prereg (pretendeva zero secchi asimmetrici, cioe' diventava rosso quando il modello faceva la cosa giusta). PREREG_difesa.md §D4 chiede che l'asimmetria, quando c'e', sia DICHIARATA e la banda mostrata come tale. Adesso il cancello sorveglia la COERENZA fra bias e banda traslata, in entrambi i versi, e passa. Il modello non e' stato toccato."
+  "guarite": "03/08/2026: D4 CHIUSO. Il verificatore era implementato al rovescio della sua prereg (pretendeva zero secchi asimmetrici, cioe' diventava rosso quando il modello faceva la cosa giusta). PREREG_difesa.md §D4 chiede che l'asimmetria, quando c'e', sia DICHIARATA e la banda mostrata come tale. Adesso il cancello sorveglia la COERENZA fra bias e banda traslata, in entrambi i versi, e passa. Il modello non e' stato toccato. · 03/08/2026: PROVA ALIAS LORO rifatta e VIVA. La versione vecchia chiedeva ai due numeri di divergere sui dati veri ed era morta perche' coincidevano per costruzione (la banda LOO e' la stessa su ogni blocco). La nuova e' un ESPERIMENTO, pre-registrato in banco/prereg/PREREG_alias_loro.md: si perturba di +4 posizioni la gara con piu' casi e si pretende che il fuori campione se ne accorga piu' del dentro campione. Monaco, 78 casi: dentro 0,8618 contro fuori 0,7814, separazione 0,0804 (serve 0,05). L1 e L2 passano."
  },
  "dichiarate": [
   {
@@ -40,20 +40,6 @@
    "natura": "decisione",
    "perche": "La cifra esatta dello scarto della voce sopra: 78,6% contro l'80% pre-registrato.",
    "referto": "ai_lab/confronto/PIANO_CORREZIONE.md, voce 3"
-  },
-  {
-   "sentinella": "s25",
-   "asserzione": "sulla banda complessiva dentro e fuori campione DIVERGONO (0.8593 contro 0.8593): il leave-one-race-out non è un alias",
-   "natura": "difetto noto",
-   "perche": "E' l'UNICA prova che il leave-one-race-out non sia un alias del dentro campione, e oggi e' MORTA: i due numeri coincidono. La causa e' benigna (con la ricalibrazione i due valori sono venuti uguali), ma l'effetto no — a ventun giorni dal primo fuori campione vero, niente nella suite prova piu' quella distinzione. Va rifatta l'asserzione su una quantita' che possa davvero divergere.",
-   "referto": "accertamento del 02/08/2026, riportato in questo file"
-  },
-  {
-   "sentinella": "s25",
-   "asserzione": "...e il fuori campione è il più severo dei due",
-   "natura": "difetto noto",
-   "perche": "Conseguenza diretta della voce sopra: se i due numeri sono identici, nessuno dei due e' piu' severo.",
-   "referto": "accertamento del 02/08/2026, riportato in questo file"
   }
  ]
 }

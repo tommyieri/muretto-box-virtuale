@@ -166,10 +166,57 @@ const d = riassunto.difesa;
   // dà la stessa banda su ogni blocco), quindi qui non si distinguono. La prova
   // che la macchina del fuori campione non è un alias di quella dentro sta sulla
   // banda COMPLESSIVA, dove i due numeri divergono davvero.
-  b.verifica(`sulla banda complessiva dentro e fuori campione DIVERGONO (${d.complessiva.copertura_dentro_campione} contro ${d.complessiva.copertura_fuori_campione}): il leave-one-race-out non è un alias`,
-    d.complessiva.copertura_dentro_campione !== d.complessiva.copertura_fuori_campione);
-  b.verifica('...e il fuori campione è il più severo dei due',
-    d.complessiva.copertura_fuori_campione < d.complessiva.copertura_dentro_campione);
+  // ── LA PROVA ALIAS, RIFATTA COME UN ESPERIMENTO ────────────────────────────
+  //
+  // Prereg: banco/prereg/PREREG_alias_loro.md, sigillata il 03/08/2026.
+  //
+  // La versione vecchia chiedeva ai due numeri di divergere sui dati VERI, e dal 02/08
+  // era morta: coincidevano (0,8593 contro 0,8593) perche' il leave-one-race-out da' la
+  // stessa larghezza su ogni blocco, e con la stessa banda sugli stessi casi le due
+  // coperture vengono uguali PER COSTRUZIONE. Causa benigna, effetto no: se qualcuno
+  // scrivesse per sbaglio `copertura_fuori = copertura_dentro`, nessuno se ne
+  // accorgerebbe.
+  //
+  // La forma nuova e' quella che KPI_5_4_4.md §I4 aveva gia' scritto — «una perturbazione
+  // la muove» — e non chiede alla realta' di essere meno robusta di quanto e': chiede
+  // alla MACCHINA di sapersi accorgere di uno spostamento che solo il fuori campione puo'
+  // vedere. La banda leave-one-race-out di una gara si calibra sulle ALTRE, quindi e'
+  // cieca a cio' che succede dentro quella gara; la banda dentro campione lo vede.
+  {
+    const perGara = {};
+    for (const c of rientroCasi.casi) (perGara[c.gara] ??= []).push(c);
+    const [garaPiuCasi] = Object.entries(perGara)
+      .sort((x, y) => (y[1].length - x[1].length) || (x[0] < y[0] ? -1 : 1))[0];
+    const PERTURBAZIONE = 4;   // prereg §3: piu' larga della banda vera (2-3 posizioni)
+    const perturbati = rientroCasi.casi.map((c) => (c.gara === garaPiuCasi
+      ? { ...c, errore: c.errore + PERTURBAZIONE } : c));
+    const p = calibraBanda(perturbati, {
+      q: cancelli.livello_banda, minGare: cancelli.min_gare, minCasi: cancelli.min_casi_secco,
+    });
+    const dentro = p.copertura_dentro_campione;
+    const fuori = p.copertura_fuori_campione;
+    const separazione = Math.abs(dentro - fuori);
+    console.log(`    s25 L1/L2 — perturbata ${garaPiuCasi} (${perGara[garaPiuCasi].length} casi, +${PERTURBAZIONE}):`
+      + ` dentro ${dentro} · fuori ${fuori} · separazione ${separazione.toFixed(4)}`);
+    b.verifica(
+      `L1 · perturbando ${garaPiuCasi} (+${PERTURBAZIONE} posizioni, ${perGara[garaPiuCasi].length} casi)`
+      + ` dentro e fuori campione si separano: ${dentro} contro ${fuori}`
+      + ` (separazione ${separazione.toFixed(4)}, serve >= 0,05)`
+      + ' — se non si separano, il fuori campione non sta guardando fuori',
+      p.sufficiente === true && separazione >= 0.05,
+    );
+    b.verifica(
+      `L2 · ...ed e' il FUORI campione il piu' severo (${fuori} < ${dentro}): la banda`
+      + ' leave-one-race-out e\' cieca allo spostamento, quindi deve coprire di meno',
+      p.sufficiente === true && fuori < dentro,
+    );
+    // L3 e' un CONTROLLO DI POTENZA dichiarato non-cancello (prereg §4): sui dati veri i
+    // due numeri possono coincidere, e coincidere non e' un fallimento.
+    console.log(`    s25 L3 (non e' un cancello) — sui dati veri: dentro ${d.complessiva.copertura_dentro_campione}`
+      + ` · fuori ${d.complessiva.copertura_fuori_campione}`
+      + (d.complessiva.copertura_dentro_campione === d.complessiva.copertura_fuori_campione
+        ? ' — coincidono, ed e\' corretto: la banda LOO e\' la stessa su ogni blocco' : ''));
+  }
   // la minimalità morde: una banda più larga di uno non passerebbe il cancello.
   // Si prova sui dati veri, non si afferma.
   const errori = rientroCasi.casi.map((c) => c.errore);

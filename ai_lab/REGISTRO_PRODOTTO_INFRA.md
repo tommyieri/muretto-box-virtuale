@@ -17,7 +17,7 @@ riferimenti sbagliati della pagina firmata.
 | **I1** | **RAGGIUNTO** | `auto_run.sh` chiama la sonda a fine giro e ne riversa l'esito nel log |
 | **I2** | **RAGGIUNTO** | `gen_numeri_ereditati.py --verifica` in CI + `s36_report_notte_fresco` |
 | **I3** | **RAGGIUNTO** | i due duplicati di `demo/` sono a registro, e uno è sorvegliato byte per byte |
-| **I4** | **META** | D4 chiuso; la prova alias LORO **resta aperta** |
+| **I4** | **RAGGIUNTO** | D4 riallineato alla sua prereg; prova alias LORO **rifatta come esperimento e viva** |
 | **I5** | **RAGGIUNTO** | ruleset `20247004`, attivo, contesti `suite` + `parita`, verificato via `gh api` |
 
 ## P1 — il censimento che mancava, e cosa ha trovato al primo giro
@@ -121,13 +121,36 @@ E12 su un file di dati: una gara nuova poteva aggiornarne una copia sola, e il m
 avrebbe letto una tabella diversa da quella che il sito mostra. Ora il registro confronta
 byte per byte.
 
-**I4 a metà.** **D4 è chiuso**: il verificatore era implementato al rovescio della sua
-prereg — pretendeva zero secchi asimmetrici, cioè diventava rosso *esattamente quando il
-modello faceva la cosa giusta*. Ora sorveglia la coerenza fra bias e banda traslata, in
-entrambi i versi, e passa; il modello non è stato toccato. **Resta aperta la prova alias
-LORO**: i due numeri coincidono (0,8593 contro 0,8593), quindi nessuna perturbazione la
-muove. Non si chiude correggendo un verificatore — serve rifare l'asserzione su una
-quantità che possa davvero divergere, ed è una **scelta**, non una riparazione.
+**I4 raggiunto**, e i due difetti si sono chiusi in due modi diversi.
+
+**D4** era implementato **al rovescio della sua prereg**: pretendeva zero secchi
+asimmetrici, cioè diventava rosso *esattamente quando il modello faceva la cosa giusta*
+(`PREREG_difesa.md` §D4 chiede che l'asimmetria, quando c'è, sia **dichiarata** e la banda
+mostrata come tale). Ora sorveglia la **coerenza** fra bias e banda traslata, in entrambi i
+versi. Il modello non è stato toccato di una riga.
+
+**La prova alias LORO** non si poteva chiudere correggendo un verificatore: chiedeva ai due
+numeri di divergere *sui dati veri*, e coincidevano (0,8593 contro 0,8593) **per
+costruzione** — la banda leave-one-race-out è la stessa su ogni blocco, quindi le due
+coperture si calcolano con lo stesso intervallo sugli stessi casi. Causa benigna, effetto
+no: se qualcuno avesse scritto per sbaglio `copertura_fuori = copertura_dentro`, nessuna
+sentinella se ne sarebbe accorta.
+
+È stata **rifatta come esperimento**, nella forma che `KPI_5_4_4.md` §I4 aveva già scritto —
+*«una perturbazione la muove»* — e pre-registrata in `banco/prereg/PREREG_alias_loro.md`
+prima di produrre un numero. Non si chiede alla realtà di essere meno robusta di quanto è:
+si chiede alla **macchina** di sapersi accorgere di uno spostamento che solo il fuori
+campione può vedere, perché la banda LOO di una gara si calibra **sulle altre**.
+
+| | | |
+|---|---|---|
+| sui dati veri *(L3, non è un cancello)* | dentro **0,8593** · fuori **0,8593** | coincidono, ed è corretto |
+| perturbando **Monaco** (+4 posizioni, 78 casi) | dentro **0,8618** · fuori **0,7814** | **separazione 0,0804** (serve ≥ 0,05) |
+
+**L1 e L2 passano.** E la prova ha potere di fallire: azzerando la perturbazione i due
+numeri tornano identici (0,8543 contro 0,8543) ed **entrambi i cancelli diventano rossi** —
+che è esattamente ciò che si vedrebbe se il fuori campione fosse un alias. Le due voci
+`s25` escono da `ROSSE_DICHIARATE.json`.
 
 **I5 raggiunto**, verificato con `gh api` e non con la pagina: ruleset `20247004`,
 enforcement **active**, contesti richiesti **`suite`** e **`parita`**.
@@ -158,5 +181,5 @@ concluso che I3 era coperto, e avrebbe controllato una sentinella che parla d'al
 |---|---|
 | **F1** raggiunto · **F2** raggiunto alla lettera · **F3** mancato · **F4** mancato · **F5** applicato | `REGISTRO_F1.md`, `REGISTRO_F2_F3.md`, `REGISTRO_F4.md`, `confronto/ESITO_F5_bis.md` |
 | **P1 · P2 · P3 · P4** raggiunti | questa pagina |
-| **I1** raggiunto · **I2** raggiunto · **I3** raggiunto · **I4** a metà · **I5** raggiunto | questa pagina |
+| **I1 · I2 · I3 · I4 · I5** raggiunti | questa pagina |
 | **Z1 · Z2** | si misurano il 23/08 a Zandvoort |
