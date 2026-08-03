@@ -27,13 +27,42 @@ anche a Mac spento. Configurato e verificato:
   Mac), golden JS 449/449 e 11/11, `gen_classifiche_ufficiali` byte-identico -> pace e
   FastF1 bit-riproducibili;
 - git push via **deploy key SSH** (write), identita' `muretto-vps`;
-- cron ogni 30 min con `flock` anti-overlap:
+- cron ogni 30 min, che invoca **`auto_run.sh`** (non il python direttamente):
 ```cron
 PATH=/usr/local/bin:/usr/bin:/bin
-*/30 * * * * flock -n /home/muretto/muretto/data/.auto_gara.lock /home/muretto/muretto/.venv-auto/bin/python /home/muretto/muretto/auto_gara.py --push >> /home/muretto/muretto/data/auto_gara.log 2>&1
+*/30 * * * * /home/muretto/muretto/scheduling/auto_run.sh
 ```
 Gestione: `ssh muretto@167.233.236.186` poi `crontab -l` (vedi) · `crontab -r` (ferma) ·
 `tail -f ~/muretto/data/auto_gara.log` (guarda). Prima gara che lo esercita: Ungheria.
+
+> **RETTIFICA del 03/08/2026.** Fino a oggi questo blocco mostrava la riga VECCHIA, quella
+> che invocava `.venv-auto/bin/python auto_gara.py --push` dentro un `flock`. Quella riga
+> saltava `auto_run.sh`, cioe' saltava l'aggiornamento del codice — ed e' il guasto per cui
+> `auto_run.sh` era stato scritto. La crontab sul VPS **e' gia' quella giusta**, verificata
+> con `crontab -l` il 03/08; era il documento a essere rimasto indietro.
+>
+> Non e' un dettaglio di forma: il 03/08 questo README e' stato letto come stato del mondo
+> e ha prodotto una diagnosi di rischio sbagliata nella premessa (E22 applicato a
+> un'affermazione invece che a un numero). **Lo stato di una macchina si legge sulla
+> macchina.** Le due verifiche che contano davvero — perche' guardano il comportamento e
+> non la configurazione — sono qui sotto.
+
+### Verificare che lo scheduler faccia il suo mestiere
+
+Che la riga esista non prova che funzioni. Queste due lo provano:
+
+```bash
+ssh muretto@167.233.236.186 'cd ~/muretto && git rev-parse --short HEAD && git fetch -q origin && git rev-list --count HEAD..origin/main'
+```
+Il secondo numero e' quanti commit il VPS ha di ritardo su `origin/main`. Deve essere **0**
+entro mezz'ora da un push: se resta > 0 per ore, l'aggiornamento del codice non sta girando.
+
+```bash
+ssh muretto@167.233.236.186 'grep -c "aggiornato a" ~/muretto/data/auto_gara.log; tail -25 ~/muretto/data/auto_gara.log'
+```
+Nel log devono comparire le righe `aggiornato a <sha>` (le scrive `auto_run.sh`, non
+`auto_gara.py`: se non ci sono, la crontab non sta passando da li') e, in coda a ogni giro,
+il blocco `sonda deploy` con i suoi due VERDE.
 
 ## C) GitHub Actions (cron) — sempre acceso, zero macchine tue
 Gira sui runner GitHub, push col token integrato. Nessun Mac/VPS da tenere su.
