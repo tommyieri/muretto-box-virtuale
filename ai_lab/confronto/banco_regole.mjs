@@ -48,10 +48,18 @@ const nomeRegola = (() => { const i = ARGV.indexOf('--regola'); return i >= 0 ? 
 
 // ═══════════════════════════════════════════════════════════ LE REGOLE
 //
-// UNA REGOLA E' UNA FUNZIONE DA GARA A COMPORTAMENTO DEI RIVALI. Niente di piu': non
-// vede il futuro del soggetto, non tocca il kernel, non cambia il passo. L'unica
-// cucitura che il motore espone e' `pianiRivali` (ingresso di laboratorio del
+// UNA REGOLA E' UNA FUNZIONE DA (GARA, CONGELAMENTO) A COMPORTAMENTO DEI RIVALI. Niente
+// di piu': non vede il futuro del soggetto, non tocca il kernel, non cambia il passo.
+// L'unica cucitura che il motore espone e' `pianiRivali` (ingresso di laboratorio del
 // costruttore), quindi una regola qui e' cio' che produce quel piano.
+//
+// IL CONGELAMENTO E' NELLA FIRMA DAL 03/08/2026, e non e' un abbellimento. Prima la
+// regola veniva interrogata UNA volta per gara, implicitamente al giro 5, mentre `corri`
+// sceglie il congelamento caso per caso e lo porta oltre il 5 in 49 casi su 193 (25,4%).
+// Le soste proposte per un congelamento piu' basso vengono scartate in silenzio dal
+// costruttore: una regola giudicata cosi' girava come REGOLA-IDENTITA' su un quarto del
+// perimetro, con l'etichetta della regola nuova addosso. Diagnosticato in
+// REFERTO_mirrorplay_degenere.md §(a) prima di spendere l'esperimento.
 //
 // LIMITE DICHIARATO, e va letto prima di aggiungere regole: in VERDE il costruttore non
 // ha alcun punto d'innesto per una reazione — la regola vive solo dentro il ramo
@@ -63,7 +71,7 @@ const REGOLE = {
     nome: 'identita',
     descrizione: 'il rivale non reagisce mai — la configurazione con cui girano tutte le misure pubblicate',
     targhetta: 'REGOLA NULLA: nessun piano ai rivali, nessuna patch al prior. E\' il metro, non un candidato.',
-    pianiRivali: () => undefined,
+    pianiRivali: (_gara, _freezeLap) => undefined,
   },
   // LA REGOLA-ORACOLO: non e' una regola di reazione, e' l'ingresso di laboratorio che
   // da' a ogni rivale le sue soste VERE. Serve come estremo superiore — quanto si
@@ -73,7 +81,9 @@ const REGOLE = {
     nome: 'oracolo',
     descrizione: 'ogni rivale riceve le sue soste vere (informazione dal futuro)',
     targhetta: 'NON E\' UNA CANDIDATA: legge il futuro (E14). E\' il tetto superiore contro cui misurare una regola vera.',
-    pianiRivali: (nomeSito) => pianiVeriDi(nomeSito),
+    // non dipende dal congelamento: le soste vere sono quelle a qualunque giro si congeli.
+    // E' anche la ragione per cui la riparazione della cucitura lascia i numeri identici.
+    pianiRivali: (nomeSito, _freezeLap) => pianiVeriDi(nomeSito),
   },
 };
 
@@ -137,11 +147,22 @@ function metricaBandiera(regola) {
   const scarti = {};
   for (const g of gare()) {
     for (const r of perGara(g)) {
-      const e = corri(g, r.pilota, { pianiRivali: regola.pianiRivali(g) });
+      const e = corri(g, r.pilota, { pianiRivali: (lf) => regola.pianiRivali(g, lf) });
       if (e.saltato) { const k = e.saltato.replace(/\d+/g, 'N'); scarti[k] = (scarti[k] ?? 0) + 1; continue; }
       tutti.push({ gara: g, pilota: r.pilota, ...e });
     }
   }
+  // LA SONDA DELLA CUCITURA: quanto della regola e' davvero arrivato al motore. Il
+  // costruttore scarta le soste con giro <= freezeLap in silenzio, quindi «proposti» e
+  // «arrivati» possono divergere — ed e' esattamente il modo in cui una regola gira come
+  // identita' senza che nessuno lo veda. Si stampa sempre, anche quando tornano.
+  const sonda = {
+    casi: tutti.length,
+    proposti: tutti.reduce((a, x) => a + (x.rivali_con_piano_proposto ?? 0), 0),
+    arrivati: tutti.reduce((a, x) => a + (x.rivali_con_sosta_nel_motore ?? 0), 0),
+    casi_senza_nessuna_reazione: tutti.filter((x) => !(x.rivali_con_sosta_nel_motore > 0)).length,
+  };
+
   const utili = tutti.filter((x) => x.errore_nullo !== null);
   const coppie = utili.map((x) => ({ gara: x.gara, a: x.errore, b: x.errore_nullo }));
   const globale = testSegni(coppie);
@@ -167,7 +188,7 @@ function metricaBandiera(regola) {
   const bassoMedio = testSegni(ord.slice(0, 2 * t).map((x) => ({ gara: x.gara, a: x.errore, b: x.errore_nullo })));
 
   return {
-    n: utili.length, scarti, globale, fasce,
+    n: utili.length, scarti, sonda, globale, fasce,
     aggregato_basso_medio: { n: bassoMedio.n, vince: bassoMedio.vinceA, perde: bassoMedio.vinceB, p: bassoMedio.p },
     err_motore_mediana: mediana(utili.map((x) => Math.abs(x.errore))),
     err_nullo_mediana: mediana(utili.map((x) => Math.abs(x.errore_nullo))),
@@ -261,6 +282,9 @@ if (nomeRegola) {
   console.log(`   alla bandiera, contro il nullo:  n=${m.n}  ${m.globale.vinceA}-${m.globale.vinceB} `
     + `(pari ${m.globale.pari})  p=${m.globale.p.toFixed(4)}`);
   console.log(`   |errore| mediano:  motore ${m.err_motore_mediana}   nullo ${m.err_nullo_mediana}`);
+  console.log(`   cucitura:  soste proposte ai rivali ${m.sonda.proposti}  ·  ARRIVATE AL MOTORE ${m.sonda.arrivati}`
+    + `  ·  casi in cui nessun rivale reagisce ${m.sonda.casi_senza_nessuna_reazione}/${m.sonda.casi}`
+    + (m.sonda.proposti !== m.sonda.arrivati ? '   ⚠ il costruttore ne ha scartate' : ''));
   for (const f of m.fasce) {
     console.log(`     ${f.nome.padEnd(26)} n=${String(f.n).padStart(3)}  appaiato ${f.vince}-${f.perde}  p=${f.p.toFixed(4)}`);
   }

@@ -113,6 +113,19 @@ export function pianiVeriDi(nomeSito) {
  * `undefined` e' la regola-identita' — «il rivale non reagisce mai» — cioe' esattamente
  * la configurazione con cui girano le misure gia' pubblicate.
  *
+ * PUO' ESSERE UNA FUNZIONE DEL CONGELAMENTO, e dal 03/08/2026 per le regole lo DEVE
+ * essere. Il congelamento non e' 5: si sceglie qui dentro, per singolo caso, ed e' oltre
+ * il 5 in 49 casi su 193 (25,4%; distribuzione {5:144, 6:23, 7:4, 8:2, 9:19, 10:1}).
+ * Un piano costruito per un congelamento piu' basso viene poi scartato in silenzio dal
+ * costruttore (`s.giro > freezeLap`), quindi una regola valutata cosi' girerebbe come
+ * REGOLA-IDENTITA' su un quarto del perimetro, con l'etichetta della regola nuova.
+ * Il difetto era stato diagnosticato in REFERTO_mirrorplay_degenere.md prima di
+ * spendere l'esperimento; qui e' chiuso.
+ *
+ * Un valore semplice resta accettato e vale per ogni congelamento: e' il caso
+ * dell'oracolo, le cui soste vere non dipendono da quando si congela — ed e' la ragione
+ * per cui questa riparazione lascia i numeri pubblicati bit-identici.
+ *
  * ATTENZIONE al perimetro: s25_difesa fa fallire la suite se `pianiRivali` compare in un
  * percorso di web/, demo/ o scenario/. E' un ingresso di LABORATORIO e deve restare qui.
  */
@@ -131,19 +144,22 @@ export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = nul
   // congelamento, quindi il pilota ci arriva gia' con la gomma che aveva davvero e la
   // sua eta'. Rimetterle sarebbe farlo fermare due volte.
   let sc = null; let esito = null; let prev = null; let congelamento = null; let ultimoMotivo = null;
+  let pianiUsati = null;
   for (let lf = CONGELAMENTO_MIN; lf <= CONGELAMENTO_MAX; lf += 1) {
     const futuro = r.soste_piano.filter((s) => s.giro > lf);
     if (!futuro.length) { ultimoMotivo = `nessuna sosta oltre il giro ${lf}`; break; }
+    // la regola si interroga AL CONGELAMENTO DI QUESTO TENTATIVO, non a 5 per tutti
+    const piani = typeof pianiRivali === 'function' ? pianiRivali(lf) : pianiRivali;
     let s2; let e2;
     try {
       s2 = costruisciScenario({
-        gara: garaSimDi(nomeSito), freezeLap: lf, pilota, piano: futuro, pianiRivali,
+        gara: garaSimDi(nomeSito), freezeLap: lf, pilota, piano: futuro, pianiRivali: piani,
       }, contesto);
       e2 = eseguiEValida(s2, contesto.costantiDirector);
     } catch (e) { ultimoMotivo = `eccezione: ${e.message}`; continue; }
     const p2 = ordinePrevisto(e2.risultato.traccia, gSim.nGiri);
     if (!p2 || !p2.ordine.includes(pilota)) { ultimoMotivo = `nessun passo base al giro ${lf} (regola 6)`; continue; }
-    sc = s2; esito = e2; prev = p2; congelamento = lf; break;
+    sc = s2; esito = e2; prev = p2; congelamento = lf; pianiUsati = piani; break;
   }
   if (!prev) return { saltato: ultimoMotivo ?? `nessun passo base fra i giri ${CONGELAMENTO_MIN}-${CONGELAMENTO_MAX}` };
 
@@ -167,7 +183,19 @@ export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = nul
   const cambiMotore = cambiDiPosizione(lf0, soloComuni(prev.ordine));
 
   const fatal = (esito.direttore?.violazioni ?? []).filter((v) => v.severita === 'FATAL');
+
+  // LA SONDA DELLA CUCITURA. Non basta che la regola PROPONGA un piano: il costruttore
+  // scarta le soste con `giro <= freezeLap` e quelle con mescola non slick, e lo fa in
+  // silenzio. Queste due righe dicono quanto della regola e' davvero arrivato al motore.
+  // Se divergono, la regola sta girando in parte come identita' — che e' il difetto che
+  // ha reso il mirror-play non solo debole ma SBAGLIATO, e che nessuno avrebbe visto
+  // senza guardare il piano dopo il filtro invece che prima.
+  const propostiA = pianiUsati ? Object.keys(pianiUsati).filter((d) => d !== pilota && pianiUsati[d]?.length).length : 0;
+  const arrivatiA = Object.entries(sc.pits ?? {}).filter(([d, v]) => d !== pilota && v?.length).length;
+
   return {
+    rivali_con_piano_proposto: propostiA,
+    rivali_con_sosta_nel_motore: arrivatiA,
     cambi_reali: cambiReali, cambi_motore: cambiMotore, campo: comuni.size,
     n_giri: gSim.nGiri,
     congelamento,
