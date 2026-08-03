@@ -134,10 +134,14 @@ export function controfiguraLivello(piani, { freezeLap, giroFinale, rnd }) {
  * a una da 78 giri soste tutte nel primo terzo, e la controfigura perderebbe per un motivo
  * geometrico invece che informativo.
  */
-export function controfiguraPosizione(piani, prestati, { freezeLap, giroFinale, giroFinaleAltra, freezeLapAltra }) {
+export function controfiguraPosizione(piani, prestati, { freezeLap, giroFinale, giroFinaleAltra }) {
   const out = {};
   const daPrestare = Object.values(prestati ?? {}).filter((v) => Array.isArray(v) && v.length);
   if (!daPrestare.length) return out;
+  // fl_altra = fl: si riscala la porzione di gara DOPO il congelamento, che e' l'unica in
+  // cui una sosta puo' cadere. Vale per entrambe le gare, quindi non serve un secondo
+  // congelamento in ingresso.
+  const freezeLapAltra = freezeLap;
   const spanQui = giroFinale - freezeLap;
   const spanLa = Math.max(1, giroFinaleAltra - freezeLapAltra);
   const scala = (giro) => {
