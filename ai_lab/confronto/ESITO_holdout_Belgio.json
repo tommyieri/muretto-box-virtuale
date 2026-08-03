@@ -1,0 +1,76 @@
+{
+ "_targhetta": {
+  "cosa_e": "Misura dell'holdout su Belgio, protocollo PREREG_holdout_Olanda.md.",
+  "prova_a_secco": true,
+  "avvertenza": "PROVA A SECCO: i modelli hanno gia' visto questa gara. I numeri sono IN CAMPIONE e collaudano la procedura, non giudicano il motore.",
+  "soglie": "copiate da PREREG_holdout_Olanda.md, non toccate",
+  "avvertimento_H4": "soglia 67,3% pre-registrata; riferimento in campione salito a 83,1% il 02/08. Superarla fra i due valori significa essere peggio che in casa.",
+  "data": "2026-08-03"
+ },
+ "gara": "Belgio",
+ "sigillo": {
+  "gara": "Olanda",
+  "stato": "aperto",
+  "integro": true
+ },
+ "perimetro": {
+  "casi_ammessi": 20,
+  "min_richiesto": 15,
+  "con_risposta": 20
+ },
+ "M1": {
+  "n": 20,
+  "esatti_nuovo": 0.35,
+  "esatti_vecchio": 0.4,
+  "mediana_abs_nuovo": 1,
+  "mediana_abs_vecchio": 2
+ },
+ "M5": {
+  "n": 20,
+  "copertura": 0.75
+ },
+ "copertura_risposta": 1,
+ "cancelli": [
+  {
+   "id": "H1",
+   "valore": 0.35,
+   "descrizione": "esatti M1-B2 del nuovo",
+   "soglia": 0.4,
+   "verso": ">=",
+   "passa": false
+  },
+  {
+   "id": "H2",
+   "valore": 1,
+   "descrizione": "mediana |errore| M1-B2 del nuovo",
+   "soglia": 1,
+   "verso": "<=",
+   "passa": true
+  },
+  {
+   "id": "H3",
+   "valore": -0.050000000000000044,
+   "descrizione": "il nuovo >= il vecchio sugli esatti M1-B2",
+   "soglia": 0,
+   "verso": ">=",
+   "passa": false
+  },
+  {
+   "id": "H4",
+   "valore": 0.75,
+   "descrizione": "copertura della banda (metro del prodotto)",
+   "soglia": 0.673,
+   "verso": ">=",
+   "passa": true
+  },
+  {
+   "id": "H5",
+   "valore": 1,
+   "descrizione": "copertura: casi con risposta",
+   "soglia": 0.9,
+   "verso": ">=",
+   "passa": true
+  }
+ ],
+ "tutti": false
+}
