@@ -1,0 +1,225 @@
+{
+  "_targhetta": {
+    "tipo": "misurato sul fondo 2026 (11 gare) — modello v2",
+    "modello": "t(pilota,giro) = base(pilota) + delta*(giro-1) + rho*eta_gomma ; delta = -delta70/N_giri",
+    "delta70": "carburante totale in secondi su 70 kg (a bordo al giro L: 70-(70/N)(L-1) kg, a delta70/70 s/kg)",
+    "stimatore": "minimi quadrati entro-blocco, effetti fissi per (gara, pilota)",
+    "identificazione": "eta e giro separati dall'azzeramento dell'eta alla sosta; guardia di rango esplicita, niente pinv (E10)",
+    "incertezza": "bootstrap 2000 ripetizioni, blocchi = gare (E11), seme 20260729",
+    "data": "2026-08-01",
+    "fonte": "data/viste/vista_verde_2026.json",
+    "sha256_vista": "634acd2e40cdb6c7a90ab6b1d52a108cf098e09ca60afcfe00e31e4925e699bc",
+    "prodotto_da": "fisica/stima_v2.py",
+    "n_giri_verdi": 10269,
+    "avvertenza": "niente curve per mescola e niente cliff: al giorno 1 le mescole non separano il degrado (p=0,209). Fase 3, con cancello fuori campione."
+  },
+  "rho": {
+    "valore": 0.030776,
+    "ic95": [
+      0.010836,
+      0.052744
+    ],
+    "unita": "s/giro per giro di eta gomma",
+    "targhetta": "misurato, fondo 2026, bootstrap 2.000, blocchi = gare"
+  },
+  "delta_70": {
+    "stimato_libero": 3.107505,
+    "ic95": [
+      2.735848,
+      3.514718
+    ],
+    "unita": "s su 70 kg",
+    "leave_one_race_out": {
+      "Australia": 3.02806,
+      "Austria": 3.204617,
+      "Belgio": 3.14473,
+      "Canada": 3.126934,
+      "Cina": 3.097858,
+      "Giappone": 3.01447,
+      "GranBretagna": 3.099266,
+      "Miami": 3.143009,
+      "Monaco": 3.225571,
+      "Spagna": 3.03688,
+      "Ungheria": 3.063439
+    },
+    "scelto": 2.2,
+    "nota": "il valore da usare lo decide l'esperimento pre-registrato (banco/prereg/PREREG_delta.md); finche' 'scelto' e' null, il modello NON e' cablabile",
+    "decisione": {
+      "esperimento": "banco/prereg/PREREG_delta.md",
+      "esito": "banco/prereg/ESITO_delta.json",
+      "braccio_vincente": "A",
+      "regola_usata": "1 — maggioranza degli orizzonti",
+      "motivo": "|bias| mediano più piccolo su 2 orizzonti giudicabili su 2",
+      "perdenti_a_referto": [
+        {
+          "braccio": "B",
+          "valore": "δ₇₀ = 3,0 (vecchio kernel)",
+          "max_bias_assoluto": 0.294837,
+          "targhetta": "misurato su questo banco 2026 — perdente dell'esperimento pre-registrato, resta a referto (E21: non si cancella una misura perché ha perso)"
+        },
+        {
+          "braccio": "C",
+          "valore": "δ₇₀ stimato libero, leave-one-race-out",
+          "max_bias_assoluto": 0.317818,
+          "targhetta": "misurato su questo banco 2026 — perdente dell'esperimento pre-registrato, resta a referto (E21: non si cancella una misura perché ha perso)"
+        }
+      ],
+      "avvertenza_stima_libera": "la stima entro-blocco e il replay NON concordano: la regressione sul giro di gara non separa carburante ed evoluzione della pista, il replay misura la deriva che serve davvero a proiettare. Il valore cablato è quello che vince sul bersaglio del prodotto (E16).",
+      "limiti_dichiarati": [
+        {
+          "orizzonte": 20,
+          "stato": "NON giudicabile",
+          "gare_disponibili": 3,
+          "gare_richieste": 5,
+          "bias_vincitore": -0.292759,
+          "avvertenza": "il modello NON è validato a 20 giri: su questo campione ridotto il bias del vincitore supera il cancello 0.17. Una finestra di 20 giri tutta verde è rara (mediane stint 2026: SOFT 14 · MEDIUM 19 · HARD 22), quindi il campione seleziona stint lunghi ed è poco rappresentativo. Non usare il modello oltre l'orizzonte validato senza un nuovo banco."
+        }
+      ],
+      "orizzonti_validati": [
+        5,
+        10
+      ]
+    },
+    "conflitto_col_cablato": {
+      "cablato": 2.2,
+      "ic95_stima_libera": [
+        2.735848,
+        3.514718
+      ],
+      "gare": 11,
+      "noto": true,
+      "nota": "conflitto GIA' dichiarato dalla decisione pre-registrata: la stima entro-blocco e il replay non misurano la stessa cosa, e il cablato e' quello che vince sul bersaglio del prodotto (E16). Nessuna azione."
+    },
+    "E21_chiuso": {
+      "domanda": "perche la stima entro-blocco (3,11) e il replay (2,2) non concordano, con IC disgiunti",
+      "risposta": "CONTAMINAZIONE DA TRAFFICO, non evoluzione della pista.",
+      "misurato": {
+        "pendenza_su_tutti_i_giri_verdi": "delta70 implicato 3,08",
+        "pendenza_in_ARIA_LIBERA": "delta70 implicato 2,43, con IC della correzione che contiene lo zero",
+        "lettura": "togliendo i giri passati in scia, la pendenza residua sul giro CROLLA verso il valore del replay. Il 3,11 non misurava carburante piu evoluzione pista: misurava carburante piu TRAFFICO, e il traffico cresce con la densita del gruppo, che a sua volta cambia lungo la gara."
+      },
+      "conseguenza": "IL VALORE CABLATO NON SI TOCCA. delta70 resta 2,2, il braccio A dell esperimento pre-registrato. La stima libera resta a referto come perdente (E21: una misura non si cancella perche ha perso), e adesso ha anche la SPIEGAZIONE di perche perdeva.",
+      "stessa_cosa_per_rho": "rho misurato in aria libera da 0,0359 contro 0,030776 cablato, ma l IC della correzione contiene lo zero: NON si tocca.",
+      "fonte": "ai_lab/confronto/fisica_deriva_mescola.mjs (pendenza residua per fascia di gap)",
+      "data": "2026-08-01"
+    }
+  },
+  "guardie": {
+    "rango": 2,
+    "autovalori_XtX": [
+      536.9330710987834,
+      806386.6811734879
+    ],
+    "condizionamento": 38.75355927822538,
+    "correlazione_giro_eta_entro_blocco": 0.5490482295317911,
+    "nota": "il condizionamento e la correlazione misurano quanto l'azzeramento alla sosta separa davvero eta e giro; niente pinv, niente lstsq: solve esplicita su matrice verificata (E10)",
+    "blocchi_gara_pilota": 232,
+    "blocchi_con_almeno_due_stint": 214,
+    "frazione_blocchi_identificanti": 0.9224
+  },
+  "rodaggio": {
+    "attivo": true,
+    "c": 0.67,
+    "tau": 4.75,
+    "unita": "c in s/giro · tau in giri",
+    "forma": "w(eta) = -c * exp(-eta/tau), sommato a t: nei primi giri la gomma nuova e' PIU' VELOCE del degrado lineare",
+    "targhetta": "misurato sul fondo 2026 (11 gare), 6.575 giri verdi in ARIA LIBERA (gap > 2,0 s o primo), delta70 e rho cablati e non ri-stimati; perdita L1 su griglia dichiarata, base = mediana per (gara,pilota) ricalcolata a ogni (c,tau)",
+    "ic95": {
+      "c": [
+        0,
+        1.3
+      ],
+      "tau": [
+        0.25,
+        15
+      ],
+      "quartili_c": [
+        0.45,
+        0.73,
+        0.92
+      ],
+      "quartili_tau": [
+        3.25,
+        4.75,
+        6.75
+      ],
+      "avvertenza": "con 11 blocchi il bootstrap ri-ottimizza su griglia e salta agli estremi: l'8,0% delle ripetizioni collassa a c <= 0,05, e per questo l'IC95 e' l'intera griglia. I quartili sono la lettura utile.",
+      "quota_ripetizioni_collassate": 0.08
+    },
+    "leave_one_race_out": {
+      "Australia": {
+        "c": 0.76,
+        "tau": 4.25
+      },
+      "Austria": {
+        "c": 0.81,
+        "tau": 3.25
+      },
+      "Belgio": {
+        "c": 0.64,
+        "tau": 4.5
+      },
+      "Canada": {
+        "c": 0.83,
+        "tau": 5.5
+      },
+      "Cina": {
+        "c": 0.68,
+        "tau": 5.5
+      },
+      "Giappone": {
+        "c": 0.69,
+        "tau": 5.25
+      },
+      "GranBretagna": {
+        "c": 0.58,
+        "tau": 5.25
+      },
+      "Miami": {
+        "c": 0.65,
+        "tau": 5
+      },
+      "Monaco": {
+        "c": 0.84,
+        "tau": 4.25
+      },
+      "Spagna": {
+        "c": 0.48,
+        "tau": 4.5
+      },
+      "Ungheria": {
+        "c": 0.55,
+        "tau": 4.5
+      }
+    },
+    "stima_prodotta_da": "ai_lab/confronto/stima_rodaggio.mjs",
+    "protocollo": "ai_lab/confronto/PREREG_rodaggio.md",
+    "data": "2026-08-01",
+    "stato": "PROMOSSO il 01/08/2026: cancello M1 lettura B2 passato in leave-one-race-out su tutte e quattro le condizioni pre-registrate — mediana 1,0 <= 1,0 · esatti 46,64% >= 45,29% · troppo indietro 45,74% < 47,53% · |bias| 0,7713 < 0,8251. Nessuna condizione di NULL scattata (minimo non sul bordo, tau LORO stabile a fattore 1,69, s11/s12/s14 verdi, giro raccomandato invariato in 1.505 curve su 1.505).",
+    "cancello": {
+      "protocollo": "ai_lab/confronto/PREREG_rodaggio.md",
+      "eseguito_da": "ai_lab/confronto/cancello_rodaggio.mjs",
+      "sonda_curva": "ai_lab/confronto/sonda_curva_rodaggio.mjs",
+      "margine": "10 casi migliorano, 2 peggiorano, 211 identici su 223 (test dei segni p = 0,0386); Δesatti +1,35 punti IC95 [0,00; +3,32]; Δmedia|err| -0,0448 IC95 [-0,0922; -0,0107]",
+      "avvertenza": "il margine e' piccolo e resta DENTRO CAMPIONE: (c, tau) vivono sulle stesse 11 gare di rho, delta70 e della banda di rientro. Il leave-one-race-out e' dentro quelle 11. Primo fuori campione vero: PREREG_holdout_Olanda.md, 23/08/2026."
+    },
+    "avvertenza_eta_1": "w(1) = -0,543 s e' ESTRAPOLAZIONE: a eta 1 il fondo ha 5 giri utilizzabili in tutto (l'out-lap e' escluso dal filtro verde). Ed e' proprio il giro su cui M1 misura, perche' il kernel assegna eta 1 al giro dopo la sosta. Si aggiunge che il prior di pit-loss e' definito come (in-lap + out-lap) meno due giri di passo pulito: una parte del beneficio della gomma nuova sull'out-lap potrebbe gia' essere dentro la perdita.",
+    "gare": 11,
+    "giri_in_aria_libera": 6575
+  },
+  "min_giri_base": {
+    "valore": 4,
+    "unita": "giri verdi utilizzabili prima del congelamento",
+    "targhetta": "MISURATO e PROMOSSO il 01/08/2026: era 8, una costante muta ereditata dal criterio di AMMISSIONE del banco e mai giudicata come soglia di qualita. Le tre condizioni pre-registrate passano.",
+    "protocollo": "ai_lab/confronto/PREREG_soglia_base.md",
+    "cancello": {
+      "A_copertura": "soste vere con risposta 260 -> 272 su 274",
+      "B_esatti_preesistenti": "46,64% -> 45,29% in lettura B2 su 223 casi (limite: non oltre 2 punti sotto). Il campo cresce in 15 casi, la posizione cambia in 5 — tutte e cinque in peggio.",
+      "C_qualita_base": "errore mediano 4-7 giri 0,485 s/giro contro 0,407 su 8+; scarto 0,078 con IC95 a blocchi=gare [-0,100; +0,375], che contiene lo zero",
+      "eseguito_da": "ai_lab/confronto/cancello_soglia_base.mjs"
+    },
+    "avvertenza": "Le 12 risposte NUOVE con verita hanno 33,3% di esatti contro il 45,29% delle preesistenti. La prereg elencava fra i NULL le risposte nuove SISTEMATICAMENTE peggiori di oltre 5 punti: la stima puntuale supera quel numero, ma con n=12 il test binomiale esatto da p=0,30 e la sistematicita NON e stabilita. La condizione e stata scritta in modo ambiguo (mescolava una soglia numerica e una parola che richiede significativita) ed e un difetto della prereg, messo a referto: chi rimisurera con piu casi deve guardare di nuovo questo numero.",
+    "nota": "il min_giri_base di banco/prereg/cancelli_banco.json e un ALTRO numero e resta a 8: quello e il criterio del banco, ed e giusto che resti severo.",
+    "data": "2026-08-01"
+  }
+}

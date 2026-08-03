@@ -101,3 +101,15 @@ danneggiarla.
 **Non la riscrivo** (regola 3, E08). Nel merito non cambia l'esito: il danno misurato è
 reale e grande (+11 → −3), quindi T2 fallisce anche nell'intenzione con cui era stato
 scritto. Ma la svista va scritta, perché la prossima soglia si scriva sul perimetro giusto.
+
+---
+
+## Nota aggiunta il 03/08 — la linea di base di F3 non è significativa
+
+Rileggendo `ESITO_banco_regole.json` per preparare il passo successivo: la linea di base
+del KPI **F3** — il 44-27 dei due terzili bassi — ha **p = 0,0568**. Non è significativa.
+
+Va scritto adesso e non quando servirà come scusa: **chiunque proponga una regola potrà
+«non peggiorare» un riferimento che non era significativo**, e chiamarlo un successo.
+F3 come è firmato resta valido (non si riscrive), ma il suo superamento va letto sapendo
+che la barra è appoggiata su un risultato al limite della soglia.
