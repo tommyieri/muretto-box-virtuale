@@ -45,6 +45,19 @@ Il principio del laboratorio resta: **Python calcola tutti i numeri, la prosa no
 introduce un numero che non sia nei fatti.** Quello che è cambiato il 3/8/2026 è che
 la prosa non è più un template: è scritta, e il controllo su di essa è aritmetico.
 
+### Che cosa il lettore vede, e che cosa resta nel dato
+
+La tabella «Provenienza dei numeri» **non si stampa più** in fondo agli articoli
+(4/8/2026): chiudeva ogni pezzo con dieci righe di metodo, e da lettore ci arrivavi
+dopo la chiusa. Il dato non si tocca — `provenienza[]` e `fonti[]` restano nel JSON,
+restano validati contro `base.STATI`, restano l'insieme su cui la guardia dei numeri
+decide che cosa la prosa può scrivere. È sparita la resa, non la tracciabilità, e il
+limite che conta adesso va detto **nel corpo** (VOCE.md O1 e O2).
+
+Le due funzioni che la rendevano restano al loro posto, vuote e gemelle
+(`statico.py::_provenienza` e la `provenienza()` di `demo/articolo.html`):
+riaccenderla è cancellare una riga, in due file che devono cambiare insieme.
+
 ## I file
 
 ### Il sistema editoriale
@@ -103,13 +116,6 @@ python3 ai_lab/redazione/test_redazione.py
 
 Non tutte le violazioni pesano uguale, e la distinzione è dichiarata in
 `voce/lessico.json` sotto `cancello_pubblicazione`:
-
-> **La tabella «Provenienza dei numeri» non si stampa più in fondo agli articoli**
-> (decisione di Tommi, 4/8/2026). Chiudeva ogni pezzo con dieci righe di metodo, e da
-> lettore ci arrivavi dopo la chiusa. Il dato non si tocca: `provenienza[]` e `fonti[]`
-> restano nel JSON, restano validati, restano l'insieme su cui la guardia dei numeri
-> decide che cosa la prosa può scrivere. È sparita la resa, non la tracciabilità — e
-> il limite che conta adesso va detto nel corpo (VOCE.md O1, O2).
 
 - **Bugie** — un numero non tracciabile, un termine fuori epoca, una formula da
   testo generato, un cliché, un superlativo senza misura, una frase ripetuta
