@@ -1,0 +1,869 @@
+{
+  "_targhetta": {
+    "tipo": "MISURATO sul fondo 2018-2025 — perdita ai box per Gran Premio",
+    "prereg": "banco/prereg/PREREG_pitloss.md",
+    "metodologia": "(in-lap + out-lap) − 2 × mediana del passo pulito del pilota adiacente alla sosta; solo soste verdi su gara asciutta; baseline W=3 giri per lato",
+    "fonte": "data/viste/soste_fondo.json",
+    "sha256_vista": "201ad253335f570d3314e98565fa234e8d51f7b8c3db4c7bd28b903f59da8276",
+    "prodotto_da": "fisica/stima_pitloss.py",
+    "data": "2026-07-29",
+    "incertezza": "bootstrap 5000 ripetizioni, blocchi = gare (E11), seme 20260729",
+    "uso": "provenienza/pitloss.mjs usa questi valori sui GP PROMOSSI; sugli altri resta il prior esterno, con la sua targhetta. Nessun valore misto (PREREG_pitloss.md).",
+    "limite_dichiarato": "raggruppamento per Gran Premio, non per tracciato: si assume che nel 2018-2025 lo stesso GP si sia corso sullo stesso circuito"
+  },
+  "cancello_A": {
+    "min_soste": 20,
+    "max_spostamento_finestra_s": 0.3,
+    "banda_plausibilita_s": [
+      10.0,
+      45.0
+    ],
+    "n_promossi": 26,
+    "promossi": [
+      "70th_Anniversary_Grand_Prix",
+      "Abu_Dhabi_Grand_Prix",
+      "Australian_Grand_Prix",
+      "Austrian_Grand_Prix",
+      "Azerbaijan_Grand_Prix",
+      "Bahrain_Grand_Prix",
+      "British_Grand_Prix",
+      "Canadian_Grand_Prix",
+      "Chinese_Grand_Prix",
+      "Dutch_Grand_Prix",
+      "Emilia_Romagna_Grand_Prix",
+      "French_Grand_Prix",
+      "Hungarian_Grand_Prix",
+      "Italian_Grand_Prix",
+      "Mexican_Grand_Prix",
+      "Mexico_City_Grand_Prix",
+      "Miami_Grand_Prix",
+      "Portuguese_Grand_Prix",
+      "Qatar_Grand_Prix",
+      "Russian_Grand_Prix",
+      "Saudi_Arabian_Grand_Prix",
+      "Singapore_Grand_Prix",
+      "Spanish_Grand_Prix",
+      "Styrian_Grand_Prix",
+      "São_Paulo_Grand_Prix",
+      "United_States_Grand_Prix"
+    ],
+    "sufficiente": true
+  },
+  "cross_check_prior": {
+    "era": [
+      2022,
+      2025
+    ],
+    "soglia_discordanza_s": 2.0,
+    "nota": "riportato, NON decisivo: il prior dichiara di cedere alla misura interna in caso di contraddizione",
+    "per_circuito": {
+      "miami": {
+        "gp": "Miami_Grand_Prix",
+        "prior_s": 19.74,
+        "interna_era_s": 20.498,
+        "n_soste_era": 43,
+        "differenza_s": 0.758,
+        "discordanza": false
+      },
+      "silverstone": {
+        "gp": "British_Grand_Prix",
+        "prior_s": 20.95,
+        "interna_era_s": 22.014,
+        "n_soste_era": 25,
+        "differenza_s": 1.064,
+        "discordanza": false
+      },
+      "spielberg": {
+        "gp": "Austrian_Grand_Prix",
+        "prior_s": 21.48,
+        "interna_era_s": 21.535,
+        "n_soste_era": 117,
+        "differenza_s": 0.055,
+        "discordanza": false
+      },
+      "monaco": {
+        "gp": "Monaco_Grand_Prix",
+        "prior_s": 22.01,
+        "interna_era_s": 21.134,
+        "n_soste_era": 35,
+        "differenza_s": -0.876,
+        "discordanza": false
+      },
+      "barcelona": {
+        "gp": "Spanish_Grand_Prix",
+        "prior_s": 23.83,
+        "interna_era_s": 22.883,
+        "n_soste_era": 166,
+        "differenza_s": -0.947,
+        "discordanza": false
+      },
+      "spa": {
+        "gp": "Belgian_Grand_Prix",
+        "prior_s": 18.4,
+        "interna_era_s": 18.354,
+        "n_soste_era": 97,
+        "differenza_s": -0.046,
+        "discordanza": false
+      },
+      "imola": {
+        "gp": "Emilia_Romagna_Grand_Prix",
+        "prior_s": 28.1,
+        "interna_era_s": 28.129,
+        "n_soste_era": 37,
+        "differenza_s": 0.029,
+        "discordanza": false
+      },
+      "singapore": {
+        "gp": "Singapore_Grand_Prix",
+        "prior_s": 27.9,
+        "interna_era_s": 27.866,
+        "n_soste_era": 43,
+        "differenza_s": -0.034,
+        "discordanza": false
+      },
+      "lusail": {
+        "gp": "Qatar_Grand_Prix",
+        "prior_s": 27.7,
+        "interna_era_s": 27.738,
+        "n_soste_era": 66,
+        "differenza_s": 0.038,
+        "discordanza": false
+      }
+    }
+  },
+  "circuiti": {
+    "70th_Anniversary_Grand_Prix": {
+      "n_soste": 36,
+      "n_gare": 1,
+      "mediana_green_s": 19.197,
+      "clean_10pct_s": 18.096,
+      "ic95_mediana": null,
+      "mediane_per_finestra": {
+        "2": 19.354,
+        "3": 19.197,
+        "5": 19.123
+      },
+      "spostamento_finestra_2_5": 0.231,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Abu_Dhabi_Grand_Prix": {
+      "n_soste": 167,
+      "n_gare": 8,
+      "mediana_green_s": 22.596,
+      "clean_10pct_s": 21.178,
+      "ic95_mediana": [
+        22.437,
+        22.89
+      ],
+      "mediane_per_finestra": {
+        "2": 22.526,
+        "3": 22.596,
+        "5": 22.524
+      },
+      "spostamento_finestra_2_5": 0.002,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Australian_Grand_Prix": {
+      "n_soste": 59,
+      "n_gare": 5,
+      "mediana_green_s": 21.648,
+      "clean_10pct_s": 19.424,
+      "ic95_mediana": [
+        20.591,
+        23.551
+      ],
+      "mediane_per_finestra": {
+        "2": 21.576,
+        "3": 21.648,
+        "5": 21.551
+      },
+      "spostamento_finestra_2_5": 0.025,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Austrian_Grand_Prix": {
+      "n_soste": 170,
+      "n_gare": 7,
+      "mediana_green_s": 21.352,
+      "clean_10pct_s": 19.872,
+      "ic95_mediana": [
+        20.892,
+        21.703
+      ],
+      "mediane_per_finestra": {
+        "2": 21.312,
+        "3": 21.352,
+        "5": 21.151
+      },
+      "spostamento_finestra_2_5": 0.162,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Azerbaijan_Grand_Prix": {
+      "n_soste": 75,
+      "n_gare": 7,
+      "mediana_green_s": 22.388,
+      "clean_10pct_s": 19.977,
+      "ic95_mediana": [
+        21.567,
+        22.634
+      ],
+      "mediane_per_finestra": {
+        "2": 22.007,
+        "3": 22.388,
+        "5": 22.209
+      },
+      "spostamento_finestra_2_5": 0.202,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Bahrain_Grand_Prix": {
+      "n_soste": 238,
+      "n_gare": 8,
+      "mediana_green_s": 23.959,
+      "clean_10pct_s": 21.978,
+      "ic95_mediana": [
+        23.409,
+        24.315
+      ],
+      "mediane_per_finestra": {
+        "2": 23.968,
+        "3": 23.959,
+        "5": 23.949
+      },
+      "spostamento_finestra_2_5": 0.019,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Belgian_Grand_Prix": {
+      "n_soste": 137,
+      "n_gare": 6,
+      "mediana_green_s": 18.448,
+      "clean_10pct_s": 16.898,
+      "ic95_mediana": [
+        18.221,
+        19.042
+      ],
+      "mediane_per_finestra": {
+        "2": 18.691,
+        "3": 18.448,
+        "5": 18.347
+      },
+      "spostamento_finestra_2_5": 0.344,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": false,
+        "plausibilita_fisica": true,
+        "promosso": false
+      }
+    },
+    "Brazilian_Grand_Prix": {
+      "n_soste": 53,
+      "n_gare": 2,
+      "mediana_green_s": 21.651,
+      "clean_10pct_s": 20.069,
+      "ic95_mediana": [
+        21.453,
+        21.676
+      ],
+      "mediane_per_finestra": {
+        "2": 22.057,
+        "3": 21.651,
+        "5": 21.413
+      },
+      "spostamento_finestra_2_5": 0.645,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": false,
+        "plausibilita_fisica": true,
+        "promosso": false
+      }
+    },
+    "British_Grand_Prix": {
+      "n_soste": 68,
+      "n_gare": 6,
+      "mediana_green_s": 20.64,
+      "clean_10pct_s": 18.647,
+      "ic95_mediana": [
+        19.797,
+        22.139
+      ],
+      "mediane_per_finestra": {
+        "2": 20.523,
+        "3": 20.64,
+        "5": 20.248
+      },
+      "spostamento_finestra_2_5": 0.275,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Canadian_Grand_Prix": {
+      "n_soste": 68,
+      "n_gare": 5,
+      "mediana_green_s": 19.327,
+      "clean_10pct_s": 18.258,
+      "ic95_mediana": [
+        18.995,
+        19.9
+      ],
+      "mediane_per_finestra": {
+        "2": 19.36,
+        "3": 19.327,
+        "5": 19.308
+      },
+      "spostamento_finestra_2_5": 0.052,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Chinese_Grand_Prix": {
+      "n_soste": 80,
+      "n_gare": 4,
+      "mediana_green_s": 23.316,
+      "clean_10pct_s": 21.513,
+      "ic95_mediana": [
+        22.683,
+        24.102
+      ],
+      "mediane_per_finestra": {
+        "2": 23.449,
+        "3": 23.316,
+        "5": 23.17
+      },
+      "spostamento_finestra_2_5": 0.279,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Dutch_Grand_Prix": {
+      "n_soste": 85,
+      "n_gare": 4,
+      "mediana_green_s": 22.382,
+      "clean_10pct_s": 20.303,
+      "ic95_mediana": [
+        21.788,
+        22.984
+      ],
+      "mediane_per_finestra": {
+        "2": 22.477,
+        "3": 22.382,
+        "5": 22.428
+      },
+      "spostamento_finestra_2_5": 0.049,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Eifel_Grand_Prix": {
+      "n_soste": 12,
+      "n_gare": 1,
+      "mediana_green_s": 24.309,
+      "clean_10pct_s": 21.664,
+      "ic95_mediana": null,
+      "mediane_per_finestra": {
+        "2": 24.128,
+        "3": 24.309,
+        "5": 23.674
+      },
+      "spostamento_finestra_2_5": 0.454,
+      "cancello_A": {
+        "numerosita": false,
+        "robustezza_finestra": false,
+        "plausibilita_fisica": true,
+        "promosso": false
+      }
+    },
+    "Emilia_Romagna_Grand_Prix": {
+      "n_soste": 51,
+      "n_gare": 3,
+      "mediana_green_s": 28.164,
+      "clean_10pct_s": 26.385,
+      "ic95_mediana": [
+        28.025,
+        28.258
+      ],
+      "mediane_per_finestra": {
+        "2": 28.185,
+        "3": 28.164,
+        "5": 28.226
+      },
+      "spostamento_finestra_2_5": 0.041,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "French_Grand_Prix": {
+      "n_soste": 57,
+      "n_gare": 4,
+      "mediana_green_s": 24.641,
+      "clean_10pct_s": 22.317,
+      "ic95_mediana": [
+        23.383,
+        27.991
+      ],
+      "mediane_per_finestra": {
+        "2": 24.669,
+        "3": 24.641,
+        "5": 24.447
+      },
+      "spostamento_finestra_2_5": 0.222,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Hungarian_Grand_Prix": {
+      "n_soste": 170,
+      "n_gare": 6,
+      "mediana_green_s": 21.16,
+      "clean_10pct_s": 19.4,
+      "ic95_mediana": [
+        20.621,
+        22.221
+      ],
+      "mediane_per_finestra": {
+        "2": 21.145,
+        "3": 21.16,
+        "5": 21.078
+      },
+      "spostamento_finestra_2_5": 0.067,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Italian_Grand_Prix": {
+      "n_soste": 118,
+      "n_gare": 8,
+      "mediana_green_s": 25.339,
+      "clean_10pct_s": 23.634,
+      "ic95_mediana": [
+        25.065,
+        25.555
+      ],
+      "mediane_per_finestra": {
+        "2": 25.287,
+        "3": 25.339,
+        "5": 25.41
+      },
+      "spostamento_finestra_2_5": 0.123,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Japanese_Grand_Prix": {
+      "n_soste": 120,
+      "n_gare": 5,
+      "mediana_green_s": 22.638,
+      "clean_10pct_s": 20.645,
+      "ic95_mediana": [
+        21.983,
+        23.291
+      ],
+      "mediane_per_finestra": {
+        "2": 22.735,
+        "3": 22.638,
+        "5": 22.416
+      },
+      "spostamento_finestra_2_5": 0.318,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": false,
+        "plausibilita_fisica": true,
+        "promosso": false
+      }
+    },
+    "Las_Vegas_Grand_Prix": {
+      "n_soste": 60,
+      "n_gare": 3,
+      "mediana_green_s": 22.359,
+      "clean_10pct_s": 20.069,
+      "ic95_mediana": [
+        21.942,
+        23.667
+      ],
+      "mediane_per_finestra": {
+        "2": 21.913,
+        "3": 22.359,
+        "5": 22.391
+      },
+      "spostamento_finestra_2_5": 0.478,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": false,
+        "plausibilita_fisica": true,
+        "promosso": false
+      }
+    },
+    "Mexican_Grand_Prix": {
+      "n_soste": 21,
+      "n_gare": 1,
+      "mediana_green_s": 22.798,
+      "clean_10pct_s": 20.85,
+      "ic95_mediana": null,
+      "mediane_per_finestra": {
+        "2": 22.706,
+        "3": 22.798,
+        "5": 22.433
+      },
+      "spostamento_finestra_2_5": 0.273,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Mexico_City_Grand_Prix": {
+      "n_soste": 98,
+      "n_gare": 5,
+      "mediana_green_s": 23.045,
+      "clean_10pct_s": 21.312,
+      "ic95_mediana": [
+        22.376,
+        23.314
+      ],
+      "mediane_per_finestra": {
+        "2": 23.042,
+        "3": 23.045,
+        "5": 23.001
+      },
+      "spostamento_finestra_2_5": 0.041,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Miami_Grand_Prix": {
+      "n_soste": 43,
+      "n_gare": 4,
+      "mediana_green_s": 20.498,
+      "clean_10pct_s": 18.976,
+      "ic95_mediana": [
+        19.904,
+        21.158
+      ],
+      "mediane_per_finestra": {
+        "2": 20.316,
+        "3": 20.498,
+        "5": 20.157
+      },
+      "spostamento_finestra_2_5": 0.159,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Monaco_Grand_Prix": {
+      "n_soste": 75,
+      "n_gare": 4,
+      "mediana_green_s": 21.164,
+      "clean_10pct_s": 17.987,
+      "ic95_mediana": [
+        21.034,
+        21.447
+      ],
+      "mediane_per_finestra": {
+        "2": 21.017,
+        "3": 21.164,
+        "5": 20.704
+      },
+      "spostamento_finestra_2_5": 0.313,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": false,
+        "plausibilita_fisica": true,
+        "promosso": false
+      }
+    },
+    "Portuguese_Grand_Prix": {
+      "n_soste": 43,
+      "n_gare": 2,
+      "mediana_green_s": 27.734,
+      "clean_10pct_s": 25.503,
+      "ic95_mediana": [
+        26.82,
+        28.101
+      ],
+      "mediane_per_finestra": {
+        "2": 27.779,
+        "3": 27.734,
+        "5": 27.721
+      },
+      "spostamento_finestra_2_5": 0.058,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Qatar_Grand_Prix": {
+      "n_soste": 88,
+      "n_gare": 4,
+      "mediana_green_s": 27.323,
+      "clean_10pct_s": 25.017,
+      "ic95_mediana": [
+        26.201,
+        28.257
+      ],
+      "mediane_per_finestra": {
+        "2": 27.269,
+        "3": 27.323,
+        "5": 27.1
+      },
+      "spostamento_finestra_2_5": 0.169,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Russian_Grand_Prix": {
+      "n_soste": 37,
+      "n_gare": 2,
+      "mediana_green_s": 25.553,
+      "clean_10pct_s": 23.021,
+      "ic95_mediana": [
+        24.816,
+        25.933
+      ],
+      "mediane_per_finestra": {
+        "2": 25.335,
+        "3": 25.553,
+        "5": 25.17
+      },
+      "spostamento_finestra_2_5": 0.165,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Sakhir_Grand_Prix": {
+      "n_soste": 18,
+      "n_gare": 1,
+      "mediana_green_s": 24.13,
+      "clean_10pct_s": 22.84,
+      "ic95_mediana": null,
+      "mediane_per_finestra": {
+        "2": 24.115,
+        "3": 24.13,
+        "5": 23.534
+      },
+      "spostamento_finestra_2_5": 0.581,
+      "cancello_A": {
+        "numerosita": false,
+        "robustezza_finestra": false,
+        "plausibilita_fisica": true,
+        "promosso": false
+      }
+    },
+    "Saudi_Arabian_Grand_Prix": {
+      "n_soste": 30,
+      "n_gare": 5,
+      "mediana_green_s": 20.992,
+      "clean_10pct_s": 18.895,
+      "ic95_mediana": [
+        20.847,
+        22.019
+      ],
+      "mediane_per_finestra": {
+        "2": 21.152,
+        "3": 20.992,
+        "5": 21.026
+      },
+      "spostamento_finestra_2_5": 0.126,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Singapore_Grand_Prix": {
+      "n_soste": 67,
+      "n_gare": 3,
+      "mediana_green_s": 27.908,
+      "clean_10pct_s": 22.531,
+      "ic95_mediana": [
+        23.617,
+        29.658
+      ],
+      "mediane_per_finestra": {
+        "2": 28.03,
+        "3": 27.908,
+        "5": 27.789
+      },
+      "spostamento_finestra_2_5": 0.241,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Spanish_Grand_Prix": {
+      "n_soste": 245,
+      "n_gare": 7,
+      "mediana_green_s": 22.831,
+      "clean_10pct_s": 20.98,
+      "ic95_mediana": [
+        22.415,
+        23.463
+      ],
+      "mediane_per_finestra": {
+        "2": 22.92,
+        "3": 22.831,
+        "5": 22.713
+      },
+      "spostamento_finestra_2_5": 0.207,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Styrian_Grand_Prix": {
+      "n_soste": 39,
+      "n_gare": 2,
+      "mediana_green_s": 20.928,
+      "clean_10pct_s": 19.776,
+      "ic95_mediana": [
+        20.373,
+        21.356
+      ],
+      "mediane_per_finestra": {
+        "2": 20.928,
+        "3": 20.928,
+        "5": 20.972
+      },
+      "spostamento_finestra_2_5": 0.044,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "São_Paulo_Grand_Prix": {
+      "n_soste": 123,
+      "n_gare": 4,
+      "mediana_green_s": 21.814,
+      "clean_10pct_s": 20.439,
+      "ic95_mediana": [
+        21.423,
+        22.102
+      ],
+      "mediane_per_finestra": {
+        "2": 22.02,
+        "3": 21.814,
+        "5": 21.729
+      },
+      "spostamento_finestra_2_5": 0.291,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    },
+    "Tuscan_Grand_Prix": {
+      "n_soste": 14,
+      "n_gare": 1,
+      "mediana_green_s": 24.84,
+      "clean_10pct_s": 22.492,
+      "ic95_mediana": null,
+      "mediane_per_finestra": {
+        "2": 24.824,
+        "3": 24.84,
+        "5": 24.303
+      },
+      "spostamento_finestra_2_5": 0.521,
+      "cancello_A": {
+        "numerosita": false,
+        "robustezza_finestra": false,
+        "plausibilita_fisica": true,
+        "promosso": false
+      }
+    },
+    "United_States_Grand_Prix": {
+      "n_soste": 132,
+      "n_gare": 6,
+      "mediana_green_s": 20.875,
+      "clean_10pct_s": 18.974,
+      "ic95_mediana": [
+        20.501,
+        21.171
+      ],
+      "mediane_per_finestra": {
+        "2": 20.825,
+        "3": 20.875,
+        "5": 20.93
+      },
+      "spostamento_finestra_2_5": 0.105,
+      "cancello_A": {
+        "numerosita": true,
+        "robustezza_finestra": true,
+        "plausibilita_fisica": true,
+        "promosso": true
+      }
+    }
+  }
+}

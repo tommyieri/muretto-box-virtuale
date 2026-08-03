@@ -20,6 +20,20 @@ name: banco
 on:
   push:
   pull_request:
+  # IL GUARDIANO NON PUO' STARE A VALLE DEL GUASTO.
+  #
+  # Fino al 03/08/2026 questa CI girava SOLO su push e su pull_request. In una pausa fra
+  # due gare — e fra oggi e Zandvoort ce ne sono venti giorni — nessuno pusha, quindi s32
+  # (che sorveglia gli hash del sigillo dell'holdout) non verifica niente per settimane, e
+  # la sonda di deploy vive solo dentro auto_run.sh, cioe' dentro lo script che la macchina
+  # che pubblica non sta eseguendo. Il periodo in cui un guasto silenzioso e' PIU' probabile
+  # era esattamente quello in cui nessun controllo girava.
+  #
+  # Ogni mattina alle 6:15 UTC, quindi, anche a repo fermo. Caveat noto di GitHub: i
+  # workflow schedulati vengono DISATTIVATI dopo 60 giorni di inattivita' del repo — qui
+  # non e' un rischio, ma se un giorno il repo dormisse, la ripartenza va fatta a mano.
+  schedule:
+    - cron: '15 6 * * *'
 
 jobs:
   suite:
