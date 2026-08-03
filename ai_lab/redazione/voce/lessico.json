@@ -4,26 +4,39 @@
   "_data": "2026-08-03",
 
   "vietati_2026": {
-    "_perche": "Grandezze o componenti che nel regolamento 2026 non esistono, oppure che il nostro feed non misura. Nominarli come cio' che NON si misura e' lecito solo nella tabella di provenienza; quantificarli in prosa non lo e' mai.",
+    "_perche": "Componenti e regole che nel 2026 NON ESISTONO. Nominarli e' un errore di fatto e basta: non c'e' contesto in cui siano corretti. Sono un'altra cosa rispetto alle grandezze energetiche, che nel 2026 esistono eccome — vedi 'energia_non_misurata'.",
     "termini": [
-      {"re": "\\bDRS\\b", "msg": "il DRS non esiste nel 2026: l'aero attiva e' Straight Mode / Corner Mode, il boost di prossimita' e' Overtake"},
+      {"re": "\\bDRS\\b", "msg": "il DRS non esiste nel 2026: l'aero attiva e' Straight Mode / Corner Mode, il boost di prossimita' e' Overtake",
+       "salvo": "(canale|campo|colonna|segnale|dato|flag)\\s+DRS|DRS\\s+(del|nel)\\s+feed",
+       "_salvo_perche": "In FastF1 esiste ancora una COLONNA chiamata DRS, che nel 2026 vale zero su tutti i giri. Dire che quel canale e' degenere e' un'osservazione corretta e utile sul nostro feed, non un errore di regolamento: e' l'unico contesto in cui la sigla si scrive."},
       {"re": "\\bMGU-?H\\b", "msg": "l'MGU-H e' stato abolito nel 2026"},
       {"re": "\\bbeam ?wing\\b", "msg": "la beam wing e' stata rimossa nel 2026"},
       {"re": "\\b[XZ]-?mode\\b", "msg": "i nomi provvisori X-mode/Z-mode sono stati sostituiti da Straight Mode e Corner Mode (dicembre 2025)"},
       {"re": "\\bManual Override\\b", "msg": "il nome ufficiale e' Overtake"},
-      {"re": "\\bclipping\\b", "msg": "grandezza energetica non nel nostro feed: non quantificabile"},
-      {"re": "\\bdeployment\\b", "msg": "grandezza energetica non nel nostro feed: non quantificabile"},
-      {"re": "\\bharvest\\w*\\b", "msg": "grandezza energetica non nel nostro feed: non quantificabile"},
-      {"re": "\\bSoC\\b|\\bstato di carica\\b", "msg": "lo stato di carica non e' nel nostro feed"},
-      {"re": "\\bMGU-?K\\b", "msg": "l'MGU-K esiste nel 2026 ma la sua erogazione non e' nel nostro feed: nominarlo solo come variabile latente"},
-      {"re": "\\bmappa energetica\\b|\\brecupero energetico\\b", "msg": "grandezza energetica non nel nostro feed"},
-      {"re": "\\bbatteria\\b", "msg": "l'accumulatore non e' nel nostro feed: non se ne descrive lo stato"},
-      {"re": "\\bERS\\b", "msg": "i canali ERS non sono nel feed pubblico 2026"},
       {"re": "\\bcontrollo di trazione\\b", "msg": "vietato dal 2008"},
       {"re": "\\brifornimento\\b", "msg": "vietato dal 2010"},
       {"re": "\\bsospensioni attive\\b", "msg": "vietate"},
       {"re": "\\bbargeboard\\b", "msg": "fuori regolamento dal 2022"}
     ]
+  },
+
+  "energia_non_misurata": {
+    "_perche": "L'ENERGIA SI RACCONTA, NON SI MISURA. Nel 2026 batteria, erogazione, recupero e clipping sono meta' del campionato e meta' dei discorsi: un sito di analisi che non ne parla non sta facendo analisi, sta facendo il pignolo. Ma nel nostro feed quei canali non ci sono. Quindi la regola non e' sul VOCABOLO — e' sul VERBO: si puo' nominare, spiegare, ipotizzare, attribuire un comportamento osservato a una scelta energetica dichiarandola come lettura; non si puo' quantificare, ne' presentare come misura nostra. Il correttore lo controlla nel modo piu' semplice che esista: se nella stessa frase c'e' il termine E un numero, e quel numero non e' un dato di regolamento, e' una quantificazione. NOTA: fino al 3/8/2026 questi termini erano vietati e basta (redattore.py::_VIETATI), e cinque articoli online li violavano. La regola sbagliata era la vecchia: correzione decisa da Tommi.",
+    "termini": [
+      {"re": "\\bbatteri[ae]\\b", "misura": "carica, capacita', energia immagazzinata"},
+      {"re": "\\baccumulator[ei]\\b", "misura": "carica, capacita'"},
+      {"re": "\\bstato di carica\\b|\\bSoC\\b", "misura": "percentuale o joule di carica"},
+      {"re": "\\bdeployment\\b|\\berogazione elettrica\\b", "misura": "kW o MJ erogati"},
+      {"re": "\\brecuper\\w+\\b(?=[^.;:]{0,40}(energ|elettric|frenat))", "misura": "MJ recuperati"},
+      {"re": "\\bharvest\\w*\\b", "misura": "MJ recuperati"},
+      {"re": "\\bclipping\\b|\\bsuperclipping\\b", "misura": "quanto dura o quanto costa"},
+      {"re": "\\bMGU-?K\\b", "misura": "potenza erogata o recuperata"},
+      {"re": "\\bERS\\b", "misura": "energia disponibile o spesa"},
+      {"re": "\\bmappa energetica\\b", "misura": "come e' impostata"},
+      {"re": "\\blift and coast\\b|\\blift-and-coast\\b", "misura": "energia risparmiata"}
+    ],
+    "numeri_di_regolamento_ammessi": [350, 290, 337, 355, 3000, 8.5, 8.0, 7.0, 0.5, 150, 250, 50, 768, 1.6, 2026, 2025],
+    "_numeri_ammessi_perche": "Sono i valori pubblici del regolamento (kW, km/h di soglia, MJ per giro, peso). Citarli e' informazione, non una nostra misura; vanno pero' con la data, perche' nel 2026 sono stati ritoccati in corso di stagione."
   },
 
   "falsi_amici": {

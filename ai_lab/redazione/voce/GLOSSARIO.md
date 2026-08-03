@@ -85,9 +85,11 @@ La power unit non è «il motore»: comprende il termico, l'MGU-K, l'accumulator
 l'elettronica di controllo e il turbo. L'**MGU-H non esiste più**.
 
 Le grandezze di questa famiglia — erogazione, recupero, stato di carica, clipping —
-**non sono nel nostro feed**. Si possono nominare come ciò che non misuriamo, e in
-quel caso vanno nella tabella di provenienza con stato `NON_MISURABILE`. Non si
-quantificano, non si insinuano, non si usano come spiegazione implicita.
+**non sono nel nostro feed**, ma sono il cuore del 2026 e se ne parla eccome. La
+regola sta in VOCE.md L4-bis e si riassume così: si nomina, si spiega, si dichiara
+come lettura; non si quantifica. Un comportamento in pista può essere «compatibile
+con una gestione dell'energia» — non può «costare 0,4 MJ». La grandezza che regge
+l'argomento va in provenienza con stato `NON_MISURABILE`.
 
 Due errori che smascherano subito:
 

@@ -396,9 +396,15 @@ def controlla(articolo, facts=None, memoria=None):
     # --- 2. lessico vietato 2026 (L4) ---------------------------------------
     piano_norm = _norm(corpo)
     for reg in L["vietati_2026"]["termini"]:
-        if re.search(reg["re"], corpo, re.I):
-            m = re.search(reg["re"], corpo, re.I)
+        for m in re.finditer(reg["re"], corpo, re.I):
+            ctx = corpo[max(0, m.start() - 30):m.end() + 30]
+            if reg.get("salvo") and re.search(reg["salvo"], ctx, re.I):
+                continue          # il termine e' usato per parlare del nostro feed
             vs.append(_v("L4", BLOCCANTE, reg["msg"], _contesto(corpo, m.group(0))))
+            break
+
+    # --- 2-bis. l'energia si racconta, non si misura (L2) --------------------
+    vs += _energia(tutte_frasi)
 
     for reg in L["falsi_amici"]["coppie"]:
         m = re.search(reg["re"], corpo, re.I)
@@ -465,6 +471,39 @@ def _contesto_norm(t, pos_norm, largo=60):
 
 
 # ------------------------------------------------------------- sotto-regole ----
+
+def _energia(fr):
+    """L'energia si nomina, si spiega, si ipotizza. Non si QUANTIFICA.
+
+    Nel 2026 batteria, erogazione, recupero e clipping sono meta' dei discorsi: un
+    sito di analisi che non ne parla non e' rigoroso, e' muto. Ma quei canali nel
+    nostro feed non ci sono, quindi la riga da non passare non e' il vocabolo — e'
+    il numero. «La Mercedes sta comprando carica per il giro dopo» e' una lettura
+    dichiarata; «recupera 0,4 MJ» e' una misura che non abbiamo fatto.
+
+    Il controllo e' volutamente grossolano: termine + numero nella stessa frase,
+    tolti i valori di regolamento (350 kW, 290 km/h, 8,5 MJ...) che sono pubblici e
+    citabili. Un numero che si riferisce ad altro nella stessa frase produce un
+    falso positivo: e' il prezzo di un controllo che non interpreta, ed e' il verso
+    giusto in cui sbagliare."""
+    L = lessico()
+    ammessi = set(L["energia_non_misurata"]["numeri_di_regolamento_ammessi"])
+    vs = []
+    for f in fr:
+        for reg in L["energia_non_misurata"]["termini"]:
+            m = re.search(reg["re"], f, re.I)
+            if not m:
+                continue
+            nums = [_val_prosa(x) for x in _RE_NUM_PROSA.findall(f)]
+            estranei = [n for n in nums if n is not None and n not in ammessi]
+            if estranei:
+                vs.append(_v("L2", BLOCCANTE,
+                             f"«{m.group(0)}» con un numero nella stessa frase: la "
+                             f"{reg['misura']} non e' nel nostro feed. Il fenomeno si "
+                             f"racconta e si dichiara come lettura, non si quantifica", f))
+                break
+    return vs
+
 
 def _tipografia(t):
     vs = []

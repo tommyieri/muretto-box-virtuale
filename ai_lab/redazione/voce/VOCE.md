@@ -69,14 +69,32 @@ sul punto esatto dell'anomalia.
 *Perché:* un grafico che illustra è decorazione; un grafico che prova è giornalismo.
 
 **L4. Il vocabolario 2026 è quello del 2026.**
-Non esistono più DRS, MGU-H, beam wing. Non si scrive «X-mode/Z-mode» (i nomi
-ufficiali sono Straight Mode, Corner Mode, Overtake). I limiti energetici sono stati
-ritoccati in corso di stagione: un numero di regolamento senza data è un numero
-sbagliato. Le grandezze dell'unità di potenza (deployment, recupero, stato di carica)
-**non sono nel nostro feed**: si possono nominare come ciò che non si misura, mai
-quantificare.
+Non esistono più DRS, MGU-H, beam wing, bargeboard. Non si scrive «X-mode/Z-mode»: i
+nomi ufficiali sono Straight Mode, Corner Mode, Overtake. I limiti energetici sono
+stati ritoccati in corso di stagione, quindi un numero di regolamento senza data è un
+numero sbagliato.
 *Perché:* un solo termine fuori epoca dice al lettore esperto che non sappiamo di cosa
 parliamo, e cancella la credibilità di tutto il resto del pezzo.
+
+**L4-bis. L'energia si racconta. Non si misura.**
+Batteria, erogazione, recupero, clipping, superclipping: nel 2026 sono metà del
+campionato e metà dei discorsi, e un sito di analisi che non ne parla non è rigoroso,
+è muto. **Se ne parla, allora.** Si nomina il fenomeno, si spiega la fisica, si dice
+che una scelta in pista è compatibile con una gestione dell'energia.
+
+Quello che non si fa è **quantificare**: nel nostro feed quei canali non ci sono.
+«Le due Mercedes stanno comprando carica per il giro dopo» è una lettura dichiarata e
+va benissimo. «Recuperano 0,4 MJ» è una misura che non abbiamo fatto. La riga da non
+passare non è il vocabolo: è il numero.
+
+I valori pubblici del regolamento (i 350 kW, la soglia dei 290 km/h, i megajoule per
+giro) si possono citare, con la data, perché sono informazione e non nostra misura.
+E la grandezza che porta il peso dell'argomento va comunque dichiarata
+`NON_MISURABILE` nella tabella di provenienza.
+
+*Storia di questa regola:* fino al 3 agosto 2026 quei termini erano vietati e basta.
+Era una regola sbagliata — cinque articoli online la violavano, e la violavano perché
+avevano ragione loro.
 
 **L5. Il confine è sacro.**
 Gli agenti producono bozze. Portare un pezzo in `demo/` è un atto tracciato; portarlo

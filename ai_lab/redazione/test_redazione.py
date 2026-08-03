@@ -157,6 +157,26 @@ def t_2026():
                for v in e["violazioni"])
 
 
+@prova("dell'energia si PUO' parlare, non si puo' quantificare",
+       "si torna a vietare il vocabolo invece del numero: e' la regola sbagliata "
+       "che cinque articoli online violavano avendo ragione loro. Oppure il "
+       "contrario: passa una quantificazione di una grandezza che non misuriamo")
+def t_energia():
+    ok = stile.controlla(art([("A", "<p>Il gesto e' compatibile con una gestione "
+                                    "della carica: la Mercedes sta comprando "
+                                    "margine per il giro dopo.</p>")]))
+    assert not any(v["regola"] in ("L2", "L4") for v in ok["violazioni"]), \
+        "parlare di carica senza numeri deve essere ammesso"
+    ko = stile.controlla(art([("A", "<p>Alzando il piede la batteria recupera "
+                                    "0,4 MJ in piu' rispetto al giro prima.</p>")]))
+    assert any(v["regola"] == "L2" for v in ko["violazioni"]), "0,4 MJ non lo misuriamo"
+    reg = stile.controlla(art([("A", "<p>Sopra i 290 km/h l'erogazione decade fino "
+                                     "ad annullarsi, ed e' li' che nasce il "
+                                     "clipping che si vede in fondo al rettilineo.</p>")]))
+    assert not any(v["regola"] == "L2" for v in reg["violazioni"]), \
+        "i valori pubblici del regolamento si possono citare"
+
+
 @prova("una frase con quattro numeri e' una riga di CSV",
        "si allarga N2 e tornano i periodi-tabella (dieci numeri in una frase, "
        "nel corpus storico)")

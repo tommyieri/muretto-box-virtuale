@@ -384,8 +384,11 @@ Cerchi sei cose, e solo quelle:
    conversioni di unita', anni, conteggi;
 2. una causa spacciata per misura: la telemetria dice DOVE cambia il tempo, non
    PERCHE'. «Ha piu' carico» non e' misurato, «all'apice porta 7 km/h in piu'» si';
-3. grandezze che non stanno nel nostro feed usate come se le misurassimo: energia,
-   erogazione elettrica, stato di carica, mescola, carburante a bordo, temperature;
+3. grandezze che non stanno nel nostro feed QUANTIFICATE come se le misurassimo:
+   energia, erogazione elettrica, stato di carica, mescola, carburante a bordo,
+   temperature. Attenzione al verso: parlarne e' lecito e anzi doveroso — «e'
+   compatibile con una gestione dell'energia» va bene, «recupera 0,4 MJ» no. Segnala
+   il numero, non il vocabolo;
 4. superlativi e assoluti non dimostrati («il piu' veloce di sempre», «nessuno lo
    fa»), a meno che il fatto sia nei dati;
 5. contraddizioni interne, e caveat mancanti dove il confronto e' sporco: tempi di
