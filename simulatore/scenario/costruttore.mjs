@@ -405,6 +405,9 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   const steps = giroFinale - freezeLap;
   const validati = modello.delta_70.decisione?.orizzonti_validati ?? [];
   const orizzonteValidato = validati.length ? Math.max(...validati) : null;
+  // fin dove la RISPOSTA e' validata: dal contesto, mai una costante (vedi sotto)
+  const orizzonteRisposta = typeof contesto.orizzonteRisposta?.giri === 'number'
+    ? contesto.orizzonteRisposta.giri : null;
   if (orizzonteValidato !== null && steps > orizzonteValidato) {
     dichiara('OLTRE_ORIZZONTE_VALIDATO',
       `lo scenario proietta ${steps} giri, il modello è validato fino a ${orizzonteValidato}`,
@@ -429,7 +432,30 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
     state, pace, freezeLap, steps, pits, neutralizzazione, tetto,
     assunzioni,
     perdita,
-    orizzonte: { giroFinale, steps, orizzonte_validato: orizzonteValidato, oltre_il_validato: orizzonteValidato !== null && steps > orizzonteValidato },
+    // DUE ORIZZONTI, e fino al 03/08/2026 ne veniva pubblicato uno solo — quello sbagliato
+    // per la domanda che il pannello fa.
+    //
+    //  · `orizzonte_validato` e' quello del PASSO: fin dove e' validato il coefficiente del
+    //    carburante (delta_70.decisione.orizzonti_validati -> 10). Resta dov'era, e s17
+    //    continua a sorvegliarlo: e' un fatto vero sul modello del tempo sul giro.
+    //  · `orizzonte_risposta` e' fin dove la RISPOSTA batte il non-fare-niente: SEI giri,
+    //    misurato il 03/08 e registrato in ai_lab/REGISTRO_F1.md. E' la domanda a cui
+    //    l'utente sta guardando la risposta, ed e' un numero piu' basso.
+    //
+    // Il pannello mostrava il primo. Con 10 sovra-dichiarava: fra 7 e 10 giri la risposta
+    // NON e' validata e non lo diceva — 774 pannelli su 11.143 (6,9%).
+    //
+    // Il numero vive nei DATI con la sua targhetta (data/modelli/orizzonte_risposta.json,
+    // pinnato nel manifest), non come costante qui: e' la regola che s17 difende, ed e' la
+    // lezione di E20. Assente ⇒ null ⇒ il campo non compare e niente cambia.
+    orizzonte: {
+      giroFinale,
+      steps,
+      orizzonte_validato: orizzonteValidato,
+      oltre_il_validato: orizzonteValidato !== null && steps > orizzonteValidato,
+      orizzonte_risposta: orizzonteRisposta,
+      oltre_la_risposta: orizzonteRisposta !== null && steps > orizzonteRisposta,
+    },
     targhette: {
       rho: modello.rho.targhetta,
       delta_70: `misurato — deciso dall'esperimento pre-registrato (${modello.delta_70.decisione?.braccio_vincente})`,

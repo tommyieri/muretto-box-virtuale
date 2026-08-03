@@ -1,0 +1,17 @@
+{
+ "_targhetta": {
+  "cosa_e": "Fin dove la RISPOSTA del motore e' validata: l'ultimo orizzonte, in giri dal congelamento, in cui batte il non-fare-niente.",
+  "cosa_NON_e": "Non e' l'orizzonte del PASSO. Quello vive in modello_v2.json (delta_70.decisione.orizzonti_validati = [5,10] -> 10) e dice fin dove e' validato il coefficiente del carburante: una domanda diversa, e un numero piu' alto.",
+  "misurato_come": "il motore deve battere ENTRAMBI i nulli: quello letterale («l'ordine al congelamento non cambia») e quello informato («+ la perdita ai box al soggetto, poi fermo»). I due sbagliano in verso opposto, quindi batterne uno solo significherebbe sfruttarne la debolezza strutturale.",
+  "referto": "ai_lab/REGISTRO_F1.md (registrazione dell'esito di F1, decisione del PO del 03/08/2026)",
+  "prereg": "ai_lab/confronto/PREREG_curva_orizzonte.md + ai_lab/confronto/PREREG_nullo_informato.md",
+  "asterischi": "margine sul nullo letterale sottile (p = 0,0368); frontiera vera in [6,8) perche' il 7 non e' stato misurato; il 6 stava nella griglia perche' il KPI F1 diceva 6",
+  "data": "2026-08-03"
+ },
+ "giri": 6,
+ "misure": {
+  "nullo_letterale": { "vince": 119, "perde": 88, "p": 0.0368 },
+  "nullo_informato": { "vince": 127, "perde": 16, "p": 0.0000 },
+  "primo_orizzonte_che_fallisce": 8
+ }
+}
