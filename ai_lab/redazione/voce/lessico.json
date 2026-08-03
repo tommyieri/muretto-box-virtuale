@@ -1,0 +1,206 @@
+{
+  "_nota": "Fonte UNICA delle liste controllabili a macchina della voce editoriale. La legge in prosa sta in VOCE.md, la spiegazione dei termini in GLOSSARIO.md; qui stanno solo le liste che il correttore (stile.py) applica e che i prompt degli agenti ricevono. Una definizione, un posto: se un termine va aggiunto, si aggiunge QUI.",
+  "_versione": "1.0",
+  "_data": "2026-08-03",
+
+  "vietati_2026": {
+    "_perche": "Grandezze o componenti che nel regolamento 2026 non esistono, oppure che il nostro feed non misura. Nominarli come cio' che NON si misura e' lecito solo nella tabella di provenienza; quantificarli in prosa non lo e' mai.",
+    "termini": [
+      {"re": "\\bDRS\\b", "msg": "il DRS non esiste nel 2026: l'aero attiva e' Straight Mode / Corner Mode, il boost di prossimita' e' Overtake"},
+      {"re": "\\bMGU-?H\\b", "msg": "l'MGU-H e' stato abolito nel 2026"},
+      {"re": "\\bbeam ?wing\\b", "msg": "la beam wing e' stata rimossa nel 2026"},
+      {"re": "\\b[XZ]-?mode\\b", "msg": "i nomi provvisori X-mode/Z-mode sono stati sostituiti da Straight Mode e Corner Mode (dicembre 2025)"},
+      {"re": "\\bManual Override\\b", "msg": "il nome ufficiale e' Overtake"},
+      {"re": "\\bclipping\\b", "msg": "grandezza energetica non nel nostro feed: non quantificabile"},
+      {"re": "\\bdeployment\\b", "msg": "grandezza energetica non nel nostro feed: non quantificabile"},
+      {"re": "\\bharvest\\w*\\b", "msg": "grandezza energetica non nel nostro feed: non quantificabile"},
+      {"re": "\\bSoC\\b|\\bstato di carica\\b", "msg": "lo stato di carica non e' nel nostro feed"},
+      {"re": "\\bMGU-?K\\b", "msg": "l'MGU-K esiste nel 2026 ma la sua erogazione non e' nel nostro feed: nominarlo solo come variabile latente"},
+      {"re": "\\bmappa energetica\\b|\\brecupero energetico\\b", "msg": "grandezza energetica non nel nostro feed"},
+      {"re": "\\bbatteria\\b", "msg": "l'accumulatore non e' nel nostro feed: non se ne descrive lo stato"},
+      {"re": "\\bERS\\b", "msg": "i canali ERS non sono nel feed pubblico 2026"},
+      {"re": "\\bcontrollo di trazione\\b", "msg": "vietato dal 2008"},
+      {"re": "\\brifornimento\\b", "msg": "vietato dal 2010"},
+      {"re": "\\bsospensioni attive\\b", "msg": "vietate"},
+      {"re": "\\bbargeboard\\b", "msg": "fuori regolamento dal 2022"}
+    ]
+  },
+
+  "falsi_amici": {
+    "_perche": "Termini che, usati male, dicono al lettore esperto che non sappiamo di cosa parliamo. Il correttore li segnala come warning perche' in qualche contesto la forma sbagliata puo' essere corretta (es. 'portanza' in una citazione).",
+    "coppie": [
+      {"re": "\\bportanza\\b", "msg": "downforce si dice carico aerodinamico o deportanza; la portanza e' la forza opposta"},
+      {"re": "\\bcomposto\\b(?!\\s+da)", "msg": "compound si dice mescola"},
+      {"re": "\\busura (della gomma|delle gomme)\\b", "msg": "attenzione: usura = consumo di battistrada, degrado = calo di prestazione. Non sono sinonimi"},
+      {"re": "\\bil motore\\b(?![ -]?(termico|elettrico))", "msg": "se si intende tutta la power unit, dire 'unita' di potenza' o 'power unit': il motore e' il solo termico"},
+      {"re": "\\bbenzina\\b", "msg": "nel 2026 e' carburante 100% sostenibile, e il limite e' energetico (MJ/h) non di massa"},
+      {"re": "\\bvetture a effetto suolo\\b", "msg": "i tunnel Venturi sono stati ridimensionati nel 2026: la formula non e' quella del 2022"},
+      {"re": "\\bspeed ?trap\\b", "msg": "il rilevamento di velocita' non e' una misura di potenza: dipende da trim, scia e rapporti"},
+      {"re": "\\bmicrosettor\\w+\\b", "msg": "in FastF1 i settori sono S1/S2/S3: non chiamarli microsettori"},
+      {"re": "\\bha spinto di piu\\b", "msg": "la telemetria dice dove cambia il tempo, non perche'"},
+      {"re": "\\bsfrutta meglio le gomme\\b", "msg": "dire quale fenomeno: graining, surriscaldamento, degrado termico, blistering"}
+    ]
+  },
+
+  "anglicismi": {
+    "_perche": "Prestiti con una resa italiana consolidata: si usa l'italiano. La lista dei prestiti da TENERE sta in 'prestiti_ammessi'.",
+    "sostituzioni": {
+      "setup": "assetto",
+      "downforce": "carico aerodinamico",
+      "slipstream": "scia",
+      "compound": "mescola",
+      "understeer": "sottosterzo",
+      "oversteer": "sovrasterzo",
+      "apex": "apice",
+      "lock-up": "bloccaggio",
+      "wheelspin": "pattinamento",
+      "top speed": "velocita' di punta",
+      "race pace": "passo gara",
+      "gap": "distacco",
+      "wear": "usura",
+      "kerb": "cordolo",
+      "grip": "aderenza",
+      "performance": "prestazione",
+      "target": "obiettivo",
+      "timing": "cronometraggio"
+    },
+    "prestiti_ammessi": [
+      "undercut", "overcut", "graining", "blistering", "stint", "safety car",
+      "virtual safety car", "pit lane", "pit-loss", "trail braking", "power unit",
+      "lift and coast", "long run", "flat spot", "porpoising", "rake", "sidepod",
+      "endplate", "outwash", "inwash", "halo", "slick", "camber", "toe",
+      "track limits", "cliff", "power band", "drag"
+    ]
+  },
+
+  "formule_ia": {
+    "_perche": "Formule la cui presenza tradisce un testo generato. Non sono prove forensi: sono difetti da non commettere. Bloccanti perche' hanno falsi positivi quasi nulli in un pezzo tecnico.",
+    "espressioni": [
+      "in conclusione", "in sintesi", "in definitiva", "riassumendo",
+      "tirando le somme", "per concludere", "nel complesso", "tutto sommato",
+      "e' importante sottolineare che", "e' importante notare che",
+      "vale la pena notare", "vale la pena sottolineare", "degno di nota",
+      "non si puo' non menzionare", "come abbiamo visto", "in questa sezione",
+      "nel panorama attuale", "nell'era digitale", "quando si parla di",
+      "immagina di", "immaginate di", "scopriamo insieme", "entriamo nel vivo",
+      "a 360 gradi", "un vero e proprio", "in un'ottica di", "preziosi spunti",
+      "intuizioni preziose", "punto di svolta", "pietra miliare",
+      "cambio di paradigma", "solo il tempo lo dira", "staremo a vedere",
+      "non resta che", "una cosa e' certa", "non e' un caso",
+      "ma andiamo con ordine", "partiamo dall'inizio", "detto questo",
+      "in poche parole", "per farla breve", "sfide e prospettive",
+      "prospettive future", "considerazioni finali"
+    ],
+    "titoli_vietati": [
+      "conclusione", "conclusioni", "in sintesi", "sintesi", "sfide",
+      "prospettive", "prospettive future", "considerazioni finali", "il futuro",
+      "riepilogo", "takeaway", "punti chiave"
+    ]
+  },
+
+  "cliche_f1": {
+    "_perche": "La retorica logora della stampa italiana di settore: e' esattamente cio' da cui ci distinguiamo. Bloccanti.",
+    "espressioni": [
+      "cavallino rampante", "la rossa", "le frecce d'argento", "il circus",
+      "duello all'ultimo sangue", "battaglia campale", "assalto finale",
+      "sinfonia", "magia", "predestinato", "dominio assoluto",
+      "ha tirato fuori il coniglio dal cilindro", "manca il feeling",
+      "la macchina non gli da' fiducia", "devono lavorare sui dati",
+      "il weekend e' iniziato in salita", "sulla carta", "senza storia",
+      "a mani basse", "in cassaforte", "ha fatto la differenza il pilota"
+    ]
+  },
+
+  "metafore_firma": {
+    "_perche": "Immagini buone e per questo logorabili: la memoria editoriale conta quante volte sono uscite negli ultimi articoli e ne vieta il riuso ravvicinato (VOCE.md X5).",
+    "lemmi": ["mappa", "firma", "fotografia", "sintomo", "nudo", "finanziare",
+              "baratto", "ritratto", "impronta", "cartina", "termometro", "specchio"]
+  },
+
+  "aggettivi_valutativi": {
+    "_perche": "Ammessi solo se nella stessa frase c'e' una misura (VOCE.md X6).",
+    "lemmi": ["impressionante", "clamoroso", "notevole", "straordinario",
+              "eccezionale", "spettacolare", "incredibile", "enorme", "abissale",
+              "netto", "nettissimo", "sorprendente", "drammatico", "devastante"]
+  },
+
+  "connettivi": {
+    "_perche": "Colla di chi non ha costruito la sequenza. Densita' massima uno ogni 150 parole (VOCE.md R10).",
+    "lemmi": ["inoltre", "pertanto", "di conseguenza", "in definitiva", "dunque",
+              "quindi", "perciò", "percio", "altresì", "altresi", "difatti",
+              "in aggiunta", "oltre a cio", "oltre a ciò"]
+  },
+
+  "soggetti_vietati_incipit": {
+    "_perche": "La prima frase non ha come soggetto lo strumento di misura (VOCE.md A1).",
+    "lemmi": ["la telemetria", "il dato", "i dati", "il confronto", "la misura",
+              "il grafico", "il passo", "la classifica", "l'analisi", "lo studio",
+              "per ogni gara", "per ogni pilota", "abbiamo misurato", "abbiamo preso",
+              "in una marcia fissa", "il nostro", "la nostra"]
+  },
+
+  "sigle_note": {
+    "_perche": "Sigle che il lettore ha gia': non si sciolgono. Tutte le altre vanno sciolte alla prima occorrenza (VOCE.md X1).",
+    "lemmi": ["FIA", "GP", "FP1", "FP2", "FP3", "SQ", "Q1", "Q2", "Q3", "VSC",
+              "SC", "PU", "IQR", "GPS", "SVG", "km/h", "MJ", "kW", "CV", "RPM"]
+  },
+
+  "forme": {
+    "_perche": "Le forme ammesse dell'articolo (VOCE.md F1). 'sezioni' e' il default dei tag: si possono riscrivere, non si possono ridurre di numero.",
+    "anomalia": {"sezioni": ["Evidenza", "Causa", "Effetto"], "quando": "un fatto strano nei nostri dati"},
+    "contro-narrazione": {"sezioni": ["Quello che si e' letto", "Quello che dicono i dati", "Quello che resta in piedi"], "quando": "la lettura corrente e' sbagliata o parziale"},
+    "duello": {"sezioni": ["Il confronto", "Dove si separano", "Chi paga cosa"], "quando": "due protagonisti, stessa vettura o stesso punto"},
+    "ritratto-di-un-numero": {"sezioni": ["Il numero", "Da dove viene", "Che cosa vale"], "quando": "un solo numero merita tutto il pezzo"},
+    "verifica": {"sezioni": ["La tesi", "La prova", "L'esito"], "quando": "Canale A: una tesi altrui messa alla prova"},
+    "nulla-di-fatto": {"sezioni": ["Che cosa cercavamo", "Che cosa abbiamo trovato", "Quanto grande doveva essere"], "quando": "l'effetto cercato non c'e'"}
+  },
+
+  "attacchi": {
+    "_perche": "I tipi di lede ammessi (VOCE.md A5).",
+    "lemmi": ["aspettativa-incrinata", "numero-solitario", "due-macchine-identiche",
+              "assenza", "paradosso", "regola-come-personaggio", "contro-narrazione",
+              "domanda-del-lettore"]
+  },
+
+  "chiuse": {
+    "_perche": "I tipi di kicker ammessi (VOCE.md C7).",
+    "lemmi": ["ritorno", "conseguenza", "verifica", "limite", "scena"]
+  },
+
+  "pesi": {
+    "_perche": "La lunghezza segue l'importanza (VOCE.md F3). Intervalli in parole del corpo.",
+    "breve": [250, 380],
+    "standard": [430, 680],
+    "lungo": [850, 1450]
+  },
+
+  "cancello_pubblicazione": {
+    "_perche": "Non tutte le violazioni bloccanti hanno lo stesso peso davanti al pubblico. Un numero inventato o un termine fuori epoca sono BUGIE: tengono il pezzo offline. Una frase troppo lunga o uno spazio prima di una virgola sono DIFETTI: fanno fallire il giro di revisione (cosi' chi scrive li corregge) ma non meritano di trattenere offline un articolo vero. La distinzione e' una scelta editoriale, ed e' scritta qui perche' si possa discutere.",
+    "regole": ["L1", "L4", "D-IA", "X3", "X6", "11.3", "T2"]
+  },
+
+  "soglie": {
+    "_perche": "Numeri del correttore. Derivati dai percentili misurati sul corpus delle 18 bozze, non scelti a occhio. Cambiarli e' un atto editoriale: si fa qui, in un commit, con la ragione.",
+    "frase_max_parole": 55,
+    "numeri_per_frase": 3,
+    "numeri_per_100_parole": 4.0,
+    "numeri_minimi_articolo": 3,
+    "emdash_per_articolo": 2,
+    "cv_ritmo_min": 0.45,
+    "pct_frasi_corte_min": 15.0,
+    "frase_corta_parole": 10,
+    "gulpease_min": 45,
+    "paragrafo_max_frasi": 4,
+    "paragrafo_max_parole": 90,
+    "ngramma_len": 5,
+    "sovrapposizione_sommario_max": 0.25,
+    "pct_incipit_copula_max": 10.0,
+    "connettivi_per_100_parole": 0.7,
+    "caveat_max": 1,
+    "negazione_correttiva_max": 1,
+    "sentenza_max": 1,
+    "sigle_su_nomi_max": 1.0,
+    "lede_max_parole": 35,
+    "similitudine_incipit_max": 0.6
+  }
+}

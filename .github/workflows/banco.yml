@@ -120,6 +120,16 @@ jobs:
       - name: Diretta e replay rispondono con lo stesso motore
         run: node demo/test_parita_live.mjs
 
+      # LA VOCE EDITORIALE HA LE SUE SENTINELLE, e girano qui perche' il correttore
+      # (ai_lab/redazione/stile.py) e' aritmetica pura: nessun LLM, nessuna chiave,
+      # nessuna rete. Il caso che vale piu' di tutti e' l'ultimo della suite — il
+      # correttore deve conservare il POTERE di bocciare il corpus storico. Il modo
+      # naturale di rompere un controllo di stile non e' cancellarlo: e' allargarne
+      # le soglie finche' tutto passa, e allora diventa un ornamento. Quella
+      # sentinella esce 1 esattamente su quel gesto.
+      - name: Le sentinelle della redazione (correttore, memoria, guardia dei numeri)
+        run: python3 ai_lab/redazione/test_redazione.py
+
       # IL DEBITO DEL PERIMETRO PUBBLICATO resta uno specchio. Gli scenari accesi dal PO
       # (PR #64) hanno smesso di essere renderizzati con la migrazione al motore nuovo, e
       # nessun documento lo diceva: una decisione revocata di fatto, in silenzio. Ora e' a

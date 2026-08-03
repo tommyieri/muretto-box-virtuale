@@ -39,3 +39,9 @@ data/auto_tele.log
 data/.auto_articoli.log
 data/.auto_articoli_stato.json
 data/.auto_articoli.lockdir/
+
+# DIARIO DELLA REDAZIONE: una riga per chiamata al modello (ruolo, token, cache,
+# secondi, esito, impronta della voce). E' un log per-macchina, non una nota: serve
+# a capire perche' un articolo e' uscito cosi', non a raccontare che cosa sappiamo.
+# La chiave non ci finisce mai — si scrivono solo i conteggi.
+ai_lab/redazione/diario/
