@@ -188,6 +188,12 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   const cliff = modello.cliff?.attivo === true
     ? { kappa: modello.cliff.kappa }
     : null;
+  // IL TETTO AL MOVIMENTO arriva dal CONTESTO, non dal modello: non e' fisica del passo
+  // ma un vincolo di pista, e il suo parametro portante (la soglia di sorpasso) e' per
+  // CIRCUITO. Assente ⇒ null ⇒ il kernel si comporta come da sempre. Chi non lo mette nel
+  // contesto non lo ha acceso: la produzione non lo vede finche' il PO non lo decide.
+  // Parametri e cancelli: ai_lab/confronto/PREREG_tetto_movimento.md.
+  const tetto = contesto.tetto ?? null;
 
   const assunzioni = [];
   const dichiara = (codice, descrizione, conteggio, targhetta) => assunzioni.push({ codice, descrizione, conteggio, targhetta });
@@ -420,7 +426,7 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   }
 
   return {
-    state, pace, freezeLap, steps, pits, neutralizzazione,
+    state, pace, freezeLap, steps, pits, neutralizzazione, tetto,
     assunzioni,
     perdita,
     orizzonte: { giroFinale, steps, orizzonte_validato: orizzonteValidato, oltre_il_validato: orizzonteValidato !== null && steps > orizzonteValidato },
@@ -527,7 +533,10 @@ export function eseguiEValida(scenario, costantiDirector) {
   const risultato = simulate({
     state: scenario.state, pace: scenario.pace, freezeLap: scenario.freezeLap,
     steps: scenario.steps, pits: scenario.pits,
-    neutralizzazione: scenario.neutralizzazione ?? null, traccia: true,
+    neutralizzazione: scenario.neutralizzazione ?? null,
+    // il tetto viaggia con lo scenario come pace e pits: se questa riga mancasse,
+    // "dove rientri" girerebbe con il vincolo e "quando fermarti" senza — E17.
+    tetto: scenario.tetto ?? null, traccia: true,
   });
   const direttore = validaSimulazione(materializzaPerDirector(scenario, risultato), costantiDirector);
   return { risultato, direttore };
