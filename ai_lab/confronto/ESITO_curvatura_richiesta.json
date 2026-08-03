@@ -1,0 +1,218 @@
+{
+ "_targhetta": {
+  "cosa_e": "Quanta curvatura quadratica servirebbe perche' il piano a due soste vinca. Conto di fattibilita', descrittivo.",
+  "cosa_NON_e": "Non e' un cancello, non promuove nessun modello, non e' fra i cancelli di PREREG_cliff_importato.md. Non e' una stima: e' un'inversione della forma chiusa sui deficit gia' misurati.",
+  "approssimazione": "stint uguali e somma sostituita da integrale: kappa* e' un limite superiore grossolano, la curvatura davvero necessaria e' minore o uguale.",
+  "fonte_deficit": "ai_lab/confronto/ESITO_censimento_soste.json",
+  "fonte_confronto": {
+   "fonte": "TUMFTM/race-simulation, k_2_quad nei file pars_<Circuito>_<Anno>.ini",
+   "mediana": 0.0001,
+   "p95_basso": 0.0035,
+   "p95_alto": 0.0115,
+   "nota": "presente nei file ma MAI usato: tire_deg_model = \"lin\" in 2.479 voci su 2.479"
+  },
+  "data": "2026-08-03",
+  "generato_da": "ai_lab/confronto/curvatura_richiesta.mjs"
+ },
+ "coefficiente": 0.046296296296296294,
+ "richieste": [
+  {
+   "gara": "Australia",
+   "orizzonte": 40,
+   "deficit_s": 17.35475175430929,
+   "kappa_richiesto": 0.005857228717079386
+  },
+  {
+   "gara": "Australia",
+   "orizzonte": 50,
+   "deficit_s": 17.35475175430929,
+   "kappa_richiesto": 0.0029989011031446456
+  },
+  {
+   "gara": "Australia",
+   "orizzonte": 60,
+   "deficit_s": 17.35475175430929,
+   "kappa_richiesto": 0.0017354751754309291
+  },
+  {
+   "gara": "Austria",
+   "orizzonte": 40,
+   "deficit_s": 12.632429285191392,
+   "kappa_richiesto": 0.004263444883752096
+  },
+  {
+   "gara": "Austria",
+   "orizzonte": 50,
+   "deficit_s": 12.632429285191392,
+   "kappa_richiesto": 0.0021828837804810726
+  },
+  {
+   "gara": "Austria",
+   "orizzonte": 60,
+   "deficit_s": 12.632429285191392,
+   "kappa_richiesto": 0.0012632429285191393
+  },
+  {
+   "gara": "Belgio",
+   "orizzonte": 40,
+   "deficit_s": 24.88295190527242,
+   "kappa_richiesto": 0.008397996268029444
+  },
+  {
+   "gara": "Belgio",
+   "orizzonte": 50,
+   "deficit_s": 24.88295190527242,
+   "kappa_richiesto": 0.004299774089231075
+  },
+  {
+   "gara": "Belgio",
+   "orizzonte": 60,
+   "deficit_s": 24.88295190527242,
+   "kappa_richiesto": 0.002488295190527242
+  },
+  {
+   "gara": "Canada",
+   "orizzonte": 40,
+   "deficit_s": 10.817658297946764,
+   "kappa_richiesto": 0.003650959675557033
+  },
+  {
+   "gara": "Canada",
+   "orizzonte": 50,
+   "deficit_s": 10.817658297946764,
+   "kappa_richiesto": 0.001869291353885201
+  },
+  {
+   "gara": "Canada",
+   "orizzonte": 60,
+   "deficit_s": 10.817658297946764,
+   "kappa_richiesto": 0.0010817658297946765
+  },
+  {
+   "gara": "Cina",
+   "orizzonte": 40,
+   "deficit_s": 19.629197662728984,
+   "kappa_richiesto": 0.006624854211171033
+  },
+  {
+   "gara": "Cina",
+   "orizzonte": 50,
+   "deficit_s": 19.629197662728984,
+   "kappa_richiesto": 0.003391925356119569
+  },
+  {
+   "gara": "Cina",
+   "orizzonte": 60,
+   "deficit_s": 19.629197662728984,
+   "kappa_richiesto": 0.0019629197662728985
+  },
+  {
+   "gara": "Giappone",
+   "orizzonte": 40,
+   "deficit_s": 27.423475358724318,
+   "kappa_richiesto": 0.009255422933569459
+  },
+  {
+   "gara": "Giappone",
+   "orizzonte": 50,
+   "deficit_s": 27.423475358724318,
+   "kappa_richiesto": 0.004738776541987563
+  },
+  {
+   "gara": "Giappone",
+   "orizzonte": 60,
+   "deficit_s": 27.423475358724318,
+   "kappa_richiesto": 0.002742347535872432
+  },
+  {
+   "gara": "Gran Bretagna",
+   "orizzonte": 40,
+   "deficit_s": 24.503475358722426,
+   "kappa_richiesto": 0.00826992293356882
+  },
+  {
+   "gara": "Gran Bretagna",
+   "orizzonte": 50,
+   "deficit_s": 24.503475358722426,
+   "kappa_richiesto": 0.004234200541987236
+  },
+  {
+   "gara": "Gran Bretagna",
+   "orizzonte": 60,
+   "deficit_s": 24.503475358722426,
+   "kappa_richiesto": 0.0024503475358722427
+  },
+  {
+   "gara": "Miami",
+   "orizzonte": 40,
+   "deficit_s": 21.25321051445644,
+   "kappa_richiesto": 0.007172958548629049
+  },
+  {
+   "gara": "Miami",
+   "orizzonte": 50,
+   "deficit_s": 21.25321051445644,
+   "kappa_richiesto": 0.0036725547768980734
+  },
+  {
+   "gara": "Miami",
+   "orizzonte": 60,
+   "deficit_s": 21.25321051445644,
+   "kappa_richiesto": 0.002125321051445644
+  },
+  {
+   "gara": "Monaco",
+   "orizzonte": 40,
+   "deficit_s": 8.741187659654315,
+   "kappa_richiesto": 0.0029501508351333318
+  },
+  {
+   "gara": "Monaco",
+   "orizzonte": 50,
+   "deficit_s": 8.741187659654315,
+   "kappa_richiesto": 0.0015104772275882658
+  },
+  {
+   "gara": "Monaco",
+   "orizzonte": 60,
+   "deficit_s": 8.741187659654315,
+   "kappa_richiesto": 0.0008741187659654315
+  },
+  {
+   "gara": "Spagna",
+   "orizzonte": 40,
+   "deficit_s": 15.084886177028238,
+   "kappa_richiesto": 0.005091149084747031
+  },
+  {
+   "gara": "Spagna",
+   "orizzonte": 50,
+   "deficit_s": 15.084886177028238,
+   "kappa_richiesto": 0.0026066683313904796
+  },
+  {
+   "gara": "Spagna",
+   "orizzonte": 60,
+   "deficit_s": 15.084886177028238,
+   "kappa_richiesto": 0.0015084886177028239
+  },
+  {
+   "gara": "Ungheria",
+   "orizzonte": 40,
+   "deficit_s": 13.260875138941628,
+   "kappa_richiesto": 0.0044755453593928
+  },
+  {
+   "gara": "Ungheria",
+   "orizzonte": 50,
+   "deficit_s": 13.260875138941628,
+   "kappa_richiesto": 0.0022914792240091137
+  },
+  {
+   "gara": "Ungheria",
+   "orizzonte": 60,
+   "deficit_s": 13.260875138941628,
+   "kappa_richiesto": 0.0013260875138941628
+  }
+ ]
+}
