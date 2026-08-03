@@ -693,8 +693,11 @@ def _chiusa(sezioni):
     if not fr:
         return vs
     ultima = fr[-1]
-    n = _norm(ultima).strip()
-    if re.match(r"^(e|non e|e la|e il|e una|e un)\b", n):
+    # ATTENZIONE ALL'ACCENTO. Qui NON si puo' normalizzare: «È» (copula) e «E»
+    # (congiunzione) diventano lo stesso carattere, e una chiusa che comincia con
+    # «E se una volta salta…» verrebbe accusata di essere una sentenza copulativa.
+    # Sono due mosse retoriche opposte: una definisce, l'altra continua il discorso.
+    if re.match(r"^(È|E')\s", ultima):
         vs.append(_v("C3", BLOCCANTE, "la chiusa comincia con la copula", ultima))
     if ultima.rstrip().endswith("?"):
         vs.append(_v("C6", BLOCCANTE, "nessun punto interrogativo come ultima frase", ultima))
@@ -763,9 +766,10 @@ def _tic(corpo, fr, piano_norm):
                      f"{len(neg)} negazioni correttive («non e' X: e' Y»): il massimo e' "
                      f"{soglia('negazione_correttiva_max')}. Finge profondita': le due "
                      f"proposizioni dicono la stessa cosa"))
-    # incipit di frase con copula o negazione
+    # incipit di frase con copula o negazione — sull'originale, non sul
+    # normalizzato: «È» e «E» sono la stessa lettera senza accento e mosse opposte
     if fr:
-        cop = sum(1 for f in fr if re.match(r"^(e|non)\b", _norm(f).strip()))
+        cop = sum(1 for f in fr if re.match(r"^(È\s|E'\s|Non\b|non\b)", f.strip()))
         pct = 100 * cop / len(fr)
         if pct > soglia("pct_incipit_copula_max"):
             vs.append(_v("R11", AVVISO,

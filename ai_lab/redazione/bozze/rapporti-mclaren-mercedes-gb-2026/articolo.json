@@ -15,14 +15,14 @@
     "cambio",
     "qualifiche"
   ],
-  "occhiello": "Telemetria · Qualifiche Gran Bretagna 2026",
-  "titolo": "Stesso motore, cambio opposto: la McLaren è la più corta della griglia",
-  "sommario": "McLaren, Mercedes e Williams montano lo stesso motore Mercedes. Eppure in ottava marcia la McLaren gira quasi seicento giri più su a 300 all'ora, e rinuncia a qualche km/h di velocità di punta. È una scelta di rapporti — e ha una logica precisa.",
+  "occhiello": "Silverstone · qualifiche · lo stesso motore, due cambi opposti",
+  "titolo": "McLaren e Mercedes hanno lo stesso motore. Sul dritto ne escono sei km/h di differenza",
+  "sommario": "Fra tutte le grandezze che si possono tirare fuori da una qualifica, ce n’è una che nessuno può contestare, perché non dipende né dal traffico né da come è venuto il giro. Dice che due squadre con lo stesso propulsore hanno risolto lo stesso problema in modo opposto.",
   "sezioni": [
     {
-      "tag": "Evidenza",
-      "titolo": "La stessa power unit, un'ottava più corta",
-      "html": "<p>In una marcia fissa il regime del motore cresce con la velocità secondo una costante: quella costante <i>è</i> il rapporto. Misurata sui giri lanciati delle qualifiche di Silverstone, in ottava vale <b>36,40</b> giri/min per km/h sulle due McLaren, contro <b>34,46</b> sulle Mercedes e <b>34,44</b> sulle Williams — tutte e tre a motore Mercedes. È una misura pulita: il rapporto è geometria del cambio, non lo tocca né lo slipstream né il giro.</p><p>Tradotto a 300 km/h: la McLaren gira a <b>10920</b> giri, la Mercedes a <b>10337</b> — <b>583 in più</b>. È l'ottava più corta di tutta la griglia; quella della Mercedes ufficiale, con lo stesso motore, è tra le più lunghe. E la velocità di punta segue: la McLaren si ferma a <b>313 km/h</b>, la Mercedes arriva a <b>319</b>.</p>",
+      "tag": "Il confronto",
+      "titolo": "Stessa unità di potenza, sei km/h di distanza",
+      "html": "<p>McLaren, Mercedes e Williams portano in pista lo stesso motore. In fondo al rettilineo di Silverstone la Mercedes di Russell tocca <b>319 km/h</b>, la McLaren di Norris si ferma a <b>313</b>.</p><p>La spiegazione non è nel motore, ed è l’unica cosa che si può escludere con certezza: è lo stesso. È nel cambio.</p>",
       "figura": {
         "svg": "<svg viewBox=\"0 0 760 380\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"'JetBrains Mono',ui-monospace,Menlo,monospace\" class=\"art-svg\"><style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}.art-svg .grid{stroke:var(--line);stroke-width:1}</style><text x=\"60\" y=\"17\" class=\"lbl\" font-size=\"14\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\" letter-spacing=\"0.5\">Regime in 8ª marcia — stesso motore Mercedes</text><text x=\"60\" y=\"33\" font-size=\"10.5\">McLaren, Mercedes, Williams · Qualifiche GB 2026</text><line x1=\"60\" y1=\"316.6\" x2=\"744\" y2=\"316.6\" class=\"grid\"/><text x=\"54\" y=\"319.6\" font-size=\"9.5\" text-anchor=\"end\">9000</text><line x1=\"60\" y1=\"267.9\" x2=\"744\" y2=\"267.9\" class=\"grid\"/><text x=\"54\" y=\"270.9\" font-size=\"9.5\" text-anchor=\"end\">9500</text><line x1=\"60\" y1=\"219.3\" x2=\"744\" y2=\"219.3\" class=\"grid\"/><text x=\"54\" y=\"222.3\" font-size=\"9.5\" text-anchor=\"end\">10000</text><line x1=\"60\" y1=\"170.7\" x2=\"744\" y2=\"170.7\" class=\"grid\"/><text x=\"54\" y=\"173.7\" font-size=\"9.5\" text-anchor=\"end\">10500</text><line x1=\"60\" y1=\"122.1\" x2=\"744\" y2=\"122.1\" class=\"grid\"/><text x=\"54\" y=\"125.1\" font-size=\"9.5\" text-anchor=\"end\">11000</text><line x1=\"60\" y1=\"73.4\" x2=\"744\" y2=\"73.4\" class=\"grid\"/><text x=\"54\" y=\"76.4\" font-size=\"9.5\" text-anchor=\"end\">11500</text><text x=\"54\" y=\"46\" font-size=\"9\" text-anchor=\"end\" fill=\"var(--accent)\">giri/min</text><line x1=\"82.8\" y1=\"336\" x2=\"82.8\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"82.8\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">260</text><line x1=\"310.8\" y1=\"336\" x2=\"310.8\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"310.8\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">280</text><line x1=\"538.8\" y1=\"336\" x2=\"538.8\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"538.8\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">300</text><line x1=\"709.8\" y1=\"336\" x2=\"709.8\" y2=\"340\" stroke=\"var(--line2)\"/><text x=\"709.8\" y=\"352\" font-size=\"9.5\" text-anchor=\"middle\">315</text><text x=\"402\" y=\"374\" font-size=\"9.5\" text-anchor=\"middle\">velocità (km/h)</text><line x1=\"538.8\" y1=\"54\" x2=\"538.8\" y2=\"336\" stroke=\"var(--accent)\" stroke-width=\"1\" stroke-dasharray=\"3 3\" opacity=\"0.8\"/><text x=\"538.8\" y=\"48\" font-size=\"10.5\" text-anchor=\"middle\" class=\"lbl\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\">a 300 km/h: +583 giri</text><path d=\"M105.60 265.60 L196.80 239.68 L242.40 219.55 L288.00 206.28 L333.60 194.03 L379.20 180.17 L424.80 166.46 L470.40 153.09 L516.00 138.31 L561.60 124.55 L607.20 113.32 L652.80 98.05 L698.40 89.93\" fill=\"none\" stroke=\"#FF8000\" stroke-width=\"2.2\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M379.20 231.08 L424.80 219.60 L561.60 182.94 L607.20 163.98 L652.80 156.88 L698.40 139.67 L744.00 132.23\" fill=\"none\" stroke=\"#27F4D2\" stroke-width=\"2.2\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><path d=\"M242.40 270.26 L288.00 253.05 L333.60 247.51 L379.20 242.02 L424.80 224.56 L470.40 212.80 L516.00 195.97 L561.60 180.51 L607.20 165.73 L652.80 155.62 L698.40 139.67 L744.00 134.71\" fill=\"none\" stroke=\"#1868DB\" stroke-width=\"2.2\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/><rect x=\"64\" y=\"58\" width=\"14\" height=\"3\" rx=\"1.5\" fill=\"#FF8000\"/><text x=\"84\" y=\"62\" font-size=\"10.5\" class=\"lbl\">NOR · McLaren</text><rect x=\"247\" y=\"58\" width=\"14\" height=\"3\" rx=\"1.5\" fill=\"#27F4D2\"/><text x=\"267\" y=\"62\" font-size=\"10.5\" class=\"lbl\">RUS · Mercedes</text><rect x=\"441\" y=\"58\" width=\"14\" height=\"3\" rx=\"1.5\" fill=\"#1868DB\"/><text x=\"461\" y=\"62\" font-size=\"10.5\" class=\"lbl\">SAI · Williams</text></svg>",
         "didascalia": "In 8ª il regime cresce con la velocità secondo il rapporto: la linea McLaren è più ripida (rapporto più corto). A 300 km/h la McLaren gira 583 giri più su della Mercedes, con lo stesso motore.",
@@ -30,9 +30,9 @@
       }
     },
     {
-      "tag": "Causa",
-      "titolo": "Rinunciare alla punta per stare su di giri",
-      "html": "<p>Il rapporto decide, a ogni velocità, dove sta il motore nella sua curva. Un'ottava più corta tiene il regime più alto dappertutto: la McLaren rinuncia alla velocità massima assoluta per restare su di giri. Nell'era ibrida 2026 questo ha due conseguenze.</p><p>La prima non la vediamo direttamente: più regime significa più finestra per la MGU-K di recuperare energia. <b>Quanta</b>, non è misurabile — i canali ERS e batteria non sono nel feed pubblico 2026, e restano una variabile latente che dichiariamo invece di stimare. La seconda, invece, si vede eccome: un'ottava corta protegge dal <i>clipping</i>. Sui lunghi rettilinei, quando l'energia elettrica finisce, chi ha l'ottava lunga scende sotto la power band del termico e deve scalare in settima a gas pieno per rimettere il motore in giri; chi ce l'ha corta resta abbastanza su di giri da non doverlo fare. Ai nostri dati di Spa — dove metà griglia scala marcia in pieno rettilineo e la McLaren no — dedicheremo il prossimo pezzo.</p>",
+      "tag": "Dove si separano",
+      "titolo": "Il rapporto è geometria, e si legge senza ambiguità",
+      "html": "<p>Dentro una marcia sola, velocità e giri del motore stanno legati da un unico numero, che è il rapporto scelto per quella marcia. Si legge dalla telemetria senza ambiguità: non lo sporca la scia, non lo sposta il traffico, non dipende da quanto bene sia venuto il giro.</p><p>In ottava, sui giri lanciati delle qualifiche, la McLaren vale <b>36,40</b> giri al minuto per ogni km/h. La Mercedes vale <b>34,46</b>, la Williams <b>34,44</b>. Tradotto: a trecento all’ora la McLaren gira a <b>10.920</b>, la Mercedes a <b>10.337</b>.</p><p>Sono <b>583</b> giri di differenza, un’ottava più corta del <b>5,6%</b>. Sulla griglia 2026 nessuno ce l’ha più corta della McLaren, e chi monta lo stesso motore ce l’ha fra le più lunghe.</p>",
       "figura": {
         "svg": "<svg viewBox=\"0 0 760 238\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"'JetBrains Mono',ui-monospace,Menlo,monospace\" class=\"art-svg\"><style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}</style><text x=\"104\" y=\"18\" class=\"lbl\" font-size=\"14\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\" letter-spacing=\"0.5\">Quanto è corta l&#x27;8ª: giri/min a 300 km/h, per team</text><line x1=\"104\" y1=\"36\" x2=\"104\" y2=\"220\" stroke=\"var(--line2)\" stroke-width=\"1\"/><text x=\"96\" y=\"53.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">McLaren</text><rect x=\"104\" y=\"43.0\" width=\"505.4\" height=\"12\" rx=\"2\" fill=\"#FF8000\" opacity=\"1\"/><text x=\"615.4\" y=\"53.0\" font-size=\"10\" class=\"lbl\">10918.7</text><text x=\"96\" y=\"73.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">Racing Bulls</text><rect x=\"104\" y=\"63.0\" width=\"375.9\" height=\"12\" rx=\"2\" fill=\"#6692FF\" opacity=\"0.32\"/><text x=\"485.9\" y=\"73.0\" font-size=\"10\" class=\"\">10734.7</text><text x=\"96\" y=\"93.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">Red Bull Racing</text><rect x=\"104\" y=\"83.0\" width=\"369.5\" height=\"12\" rx=\"2\" fill=\"#2B478F\" opacity=\"0.32\"/><text x=\"479.5\" y=\"93.0\" font-size=\"10\" class=\"\">10725.4</text><text x=\"96\" y=\"113.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">Haas F1 Team</text><rect x=\"104\" y=\"103.0\" width=\"208.2\" height=\"12\" rx=\"2\" fill=\"#B6BABD\" opacity=\"0.32\"/><text x=\"318.2\" y=\"113.0\" font-size=\"10\" class=\"\">10496.0</text><text x=\"96\" y=\"133.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">Cadillac</text><rect x=\"104\" y=\"123.0\" width=\"200.0\" height=\"12\" rx=\"2\" fill=\"#D4A537\" opacity=\"0.32\"/><text x=\"310.0\" y=\"133.0\" font-size=\"10\" class=\"\">10484.4</text><text x=\"96\" y=\"153.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">Ferrari</text><rect x=\"104\" y=\"143.0\" width=\"193.0\" height=\"12\" rx=\"2\" fill=\"#E8002D\" opacity=\"0.32\"/><text x=\"303.0\" y=\"153.0\" font-size=\"10\" class=\"\">10474.5</text><text x=\"96\" y=\"173.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">Williams</text><rect x=\"104\" y=\"163.0\" width=\"93.9\" height=\"12\" rx=\"2\" fill=\"#1868DB\" opacity=\"0.32\"/><text x=\"203.9\" y=\"173.0\" font-size=\"10\" class=\"\">10333.6</text><text x=\"96\" y=\"193.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">Alpine</text><rect x=\"104\" y=\"183.0\" width=\"90.5\" height=\"12\" rx=\"2\" fill=\"#FF87BC\" opacity=\"0.32\"/><text x=\"200.5\" y=\"193.0\" font-size=\"10\" class=\"\">10328.7</text><text x=\"96\" y=\"213.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">Mercedes</text><rect x=\"104\" y=\"203.0\" width=\"87.2\" height=\"12\" rx=\"2\" fill=\"#27F4D2\" opacity=\"0.32\"/><text x=\"197.2\" y=\"213.0\" font-size=\"10\" class=\"\">10324.0</text><text x=\"670\" y=\"234\" font-size=\"9.5\" text-anchor=\"end\">giri/min a 300 km/h in 8ª · asse da 10.200 (più alto = più corto)</text></svg>",
         "didascalia": "Giri/min a 300 km/h in 8ª, per team (asse troncato da 10.200 per leggere le differenze). Più alto = 8ª più corta. La McLaren è staccata in cima.",
@@ -40,10 +40,9 @@
       }
     },
     {
-      "tag": "Effetto",
-      "titolo": "Il baratto dei rapporti, portato all'estremo",
-      "html": "<p>Il conto è <b>583 giri/min in più a 300 km/h</b>, un'ottava più corta del <b>5,6%</b> rispetto alla Mercedes che monta lo stesso motore, e <b>6 km/h</b> di velocità di punta in meno. In cambio il motore resta più in coppia in uscita dalle curve e più al riparo dal clipping sui lunghi. È il classico compromesso dei rapporti — velocità di punta contro regime — portato all'estremo: sulla griglia 2026, nessuno è più corto della McLaren.</p>",
-      "figura": null
+      "tag": "Chi paga cosa",
+      "titolo": "Il baratto, e la parte che non vediamo",
+      "html": "<p>Un rapporto corto tiene il motore più in alto ovunque. Guadagni coppia in uscita dalle curve, perdi allungo: la vettura arriva prima al limite di regime e la velocità massima si ferma più in basso. È il compromesso classico, portato qui a un estremo che sulla griglia non ha pari.</p><p>C’è poi una parte che il nostro feed non vede, e che nel 2026 pesa. Girare più su di giri cambia la finestra in cui il motogeneratore lavora, sia quando spinge sia quando recupera, e cambia quanto presto la spinta elettrica comincia a mancare in fondo a un rettilineo. Se la McLaren abbia accorciato l’ottava per questo, o per la trazione, o per tutt’e due, con quello che riceviamo non si separa: l’energia non la misuriamo, e non la stimiamo.</p><p>Quello che si misura è il prezzo, ed è pagato in fondo agli allunghi. Su un tracciato disegnato attorno alle curve lente è un affare; su uno disegnato attorno ai rettilinei è un debito, e la prossima qualifica su una pista veloce dirà se la McLaren è disposta a portarselo dietro o se il cambio si allunga.</p>"
     }
   ],
   "provenienza": [
@@ -85,5 +84,33 @@
       "tipo": "metodo",
       "testo": "ai_lab/redazione/genera_rapporti.py — rapporto = mediana RPM/velocità in 8ª marcia (Speed>200) sui giri lanciati; immune a slipstream e giro. La mediana del rapporto è preferita alla regressione RPM–velocità, instabile su una finestra di velocità stretta; ristretta alla sola banda 300–313 km/h la differenza McLaren–Mercedes resta 5,5% (nessun bias da distribuzione di velocità)."
     }
-  ]
+  ],
+  "tesi": "La McLaren ha scelto deliberatamente il rapporto più corto della griglia, rinunciando a velocità di punta per tenere il motore più in alto di giri, e la rinuncia è quantificabile: sei km/h rispetto alla Mercedes che monta lo stesso motore.",
+  "confutabile_da": "Lo stesso rapporto misurato su un tracciato da alta velocità: se la McLaren allunga l’ottava dove i rettilinei contano, non è una filosofia di progetto ma una scelta per Silverstone.",
+  "conseguenza": "Su un circuito dove il giro si fa nelle curve lente la scelta della McLaren è un vantaggio; dove si fa in fondo agli allunghi è un debito, e il numero dice quanto grande.",
+  "forma": "duello",
+  "peso": "breve",
+  "attacco": "paradosso",
+  "chiusa": "conseguenza",
+  "scrittura": "mano (redazione, 2026-08-03)",
+  "qualita": {
+    "parole": 359,
+    "sezioni": 3,
+    "gulpease": 61.3,
+    "ritmo": {
+      "frasi": 19,
+      "media": 18.9,
+      "sd": 10.0,
+      "cv": 0.527,
+      "max": 43,
+      "min": 3,
+      "pct_corte": 10.5,
+      "pct_lunghe": 5.3
+    },
+    "mtld": 84.7,
+    "numeri_100": 3.1,
+    "emdash": 0,
+    "bloccanti": 3,
+    "avvisi": 2
+  }
 }

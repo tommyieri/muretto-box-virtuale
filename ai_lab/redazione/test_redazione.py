@@ -196,15 +196,23 @@ def t_formule():
 
 # ----------------------------------------------------------------- memoria ----
 
-@prova("la memoria vede il corpus e trova le ripetizioni fra articoli",
+@prova("la memoria vede il corpus e riconosce una frase gia' uscita",
        "la memoria smette di leggere bozze/ o demo/data/analisi/, e il sistema "
        "puo' ripubblicare le stesse frasi")
 def t_memoria():
     m = memoria.Memoria()
     assert len(m.articoli) >= 10, f"solo {len(m.articoli)} articoli in memoria"
-    assert m.gia_scritto("cambia la mano del pilota"), \
-        "la frase ripetuta in due articoli non viene piu' riconosciuta"
-    assert "anomalia" in m.forme(), m.forme()
+    # una frase presa da un articolo vero, in questo momento: se la memoria
+    # funziona, la riconosce come gia' uscita. Il testo cambia nel tempo, il
+    # meccanismo no — per questo la frase si pesca dal corpus invece di essere
+    # scritta qui dentro, dove invecchierebbe a ogni riscrittura.
+    a = m.usciti()[0]
+    _t, sez, _s = stile.prosa_articolo(a)
+    tok = stile.token_norm(sez[0][1]) if sez else []
+    assert len(tok) > 10, "primo articolo senza prosa"
+    g = " ".join(tok[3:3 + stile.soglia("ngramma_len")])
+    assert m.gia_scritto(g), f"la memoria non riconosce «{g}», che ha appena letto"
+    assert m.forme(), "nessuna forma censita"
 
 
 @prova("la memoria non accusa un articolo di copiare se stesso",
@@ -287,20 +295,24 @@ def t_raccordo():
 
 # -------------------------------------------------- il corpus storico non passa --
 
-@prova("il correttore ha il potere di bocciare il corpus esistente",
+@prova("il correttore ha il potere di bocciare",
        "le soglie vengono allargate finche' tutto passa: il correttore diventa un "
-       "ornamento e questa e' l'unica prova che se ne accorge")
+       "ornamento e questa e' l'unica prova che se ne accorge. Il campione e' "
+       "CONGELATO (prove/corpus_storico.json) proprio perche' non guarisca da solo "
+       "quando gli articoli veri vengono riscritti")
 def t_corpus():
-    d = os.path.join(stile.REPO, "demo", "data", "analisi")
-    bocciati = 0
-    for f in sorted(os.listdir(d)):
-        if not f.endswith(".json") or f[:-5] in ("forza_macchina", "stagione_dati"):
-            continue
-        a = json.load(open(os.path.join(d, f), encoding="utf-8"))
-        if not stile.controlla(a)["ok"]:
-            bocciati += 1
-    assert bocciati >= 8, (f"solo {bocciati} articoli storici bocciati: le soglie "
-                           f"sono state allargate")
+    p = os.path.join(_QUI, "prove", "corpus_storico.json")
+    d = json.load(open(p, encoding="utf-8"))
+    tot, regole = 0, set()
+    for a in d["articoli"]:
+        e = stile.controlla(a)
+        assert not e["ok"], f"{a['id']} non viene piu' bocciato"
+        tot += e["profilo"]["bloccanti"]
+        regole |= {v["regola"] for v in e["violazioni"]
+                   if v["gravita"] == stile.BLOCCANTE}
+    assert tot >= 20, f"solo {tot} violazioni sul campione congelato (attese >= 20)"
+    for r in ("R3", "N2", "11.3"):
+        assert r in regole, f"la regola {r} non morde piu' sul campione congelato"
 
 
 def main():

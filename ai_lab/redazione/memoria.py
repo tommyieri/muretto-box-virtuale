@@ -76,8 +76,14 @@ class Memoria:
 
     def escludi(self, id_):
         """Toglie un articolo dalla memoria: serve quando si controlla un pezzo che
-        e' gia' su disco, altrimenti si trova da solo e si accusa di plagio."""
+        e' gia' su disco, altrimenti si trova da solo e si accusa di plagio.
+
+        Invalida l'indice: senza questa riga, chi riusa la stessa memoria per
+        controllare dodici articoli di fila esclude solo il primo, perche' l'indice
+        e' costruito una volta sola e se lo tiene. E' il tipo di guasto che non
+        stampa niente e dice una cosa falsa sul mondo."""
         self._escl.add(id_)
+        self._ng = None
         return self
 
     def _vivi(self):
@@ -110,12 +116,21 @@ class Memoria:
         return sorted(usate)
 
     # ------------------------------------------------------------ ripetizioni --
+    def usciti(self):
+        """Gli articoli che sono davvero arrivati a un lettore, o che ci stanno
+        andando. Un RESPINTO non e' mai uscito: le sue frasi non sono «gia' state
+        scritte», sono state scartate, e vietarne il riuso significherebbe punire
+        un pezzo perche' un altro, mai pubblicato, ha detto la stessa cosa. Serve
+        solo all'indice delle ripetizioni: per il conteggio delle forme restano
+        tutti, perche' quello misura che cosa la redazione ha provato a fare."""
+        return [a for a in self._vivi() if _stato(a.get("id")) != "respinto"]
+
     def _indice_ngrammi(self):
         if getattr(self, "_ng", None) is None:
             self._ng = {}
             tecn = set(stile.token_norm(
                 " ".join(stile.lessico()["anglicismi"]["prestiti_ammessi"])))
-            for a in self._vivi():
+            for a in self.usciti():
                 t, _, _ = stile.prosa_articolo(a)
                 for g, _n in stile.ngrammi(t, minimo=1):
                     if set(g.split()) & tecn:
@@ -129,7 +144,7 @@ class Memoria:
 
     def incipit(self):
         fuori = []
-        for a in self._vivi():
+        for a in self.usciti():
             _, sez, _ = stile.prosa_articolo(a)
             if not sez:
                 continue
@@ -181,6 +196,14 @@ class Memoria:
         for titolo, lede in self.incipit()[:5]:
             righe.append(f"  · {lede[:150]}")
         return "\n".join(righe)
+
+
+def _stato(id_):
+    p = os.path.join(BOZZE, id_ or "", "stato.json")
+    try:
+        return json.load(open(p, encoding="utf-8")).get("stato")
+    except Exception:
+        return "pubblicato"          # sta in demo/ e non ha bozza: e' uscito
 
 
 def _forma_implicita(a):

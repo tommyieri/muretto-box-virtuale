@@ -45,7 +45,7 @@
       {"re": "\\bportanza\\b", "msg": "downforce si dice carico aerodinamico o deportanza; la portanza e' la forza opposta"},
       {"re": "\\bcomposto\\b(?!\\s+da)", "msg": "compound si dice mescola"},
       {"re": "\\busura (della gomma|delle gomme)\\b", "msg": "attenzione: usura = consumo di battistrada, degrado = calo di prestazione. Non sono sinonimi"},
-      {"re": "\\bil motore\\b(?![ -]?(termico|elettrico))", "msg": "se si intende tutta la power unit, dire 'unita' di potenza' o 'power unit': il motore e' il solo termico"},
+      {"re": "\\b(rotto|cambiato|sostituito|guasto al|sostituzione del|penalita' per il|quarto|quinto) (il )?motore\\b", "msg": "un guasto o una sostituzione riguardano la power unit, non 'il motore': il motore e' il solo termico, e nel 2026 si rompono anche accumulatore, elettronica e turbo"},
       {"re": "\\bbenzina\\b", "msg": "nel 2026 e' carburante 100% sostenibile, e il limite e' energetico (MJ/h) non di massa"},
       {"re": "\\bvetture a effetto suolo\\b", "msg": "i tunnel Venturi sono stati ridimensionati nel 2026: la formula non e' quella del 2022"},
       {"re": "\\bspeed ?trap\\b", "msg": "il rilevamento di velocita' non e' una misura di potenza: dipende da trim, scia e rapporti"},
