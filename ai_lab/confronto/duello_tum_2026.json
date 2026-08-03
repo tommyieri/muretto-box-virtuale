@@ -1,0 +1,104 @@
+{
+ "_targhetta": {
+  "cosa_e": "I parametri del DUELLO importati da TUMFTM/race-simulation: soglia di sorpasso per circuito e costi in tempo. Fonte esterna, trascritti — non derivati, non stimati.",
+  "fonte": "github.com/TUMFTM/race-simulation, racesim/input/parameters/pars_<Circuito>_<Anno>.ini, blocco race_pars",
+  "differenza_dal_cliff": "qui i valori sono TRASCRITTI: esistono nei file, sono scelti dagli autori e usati dal loro simulatore. Il k_2_quad del cliff era invece un fit mai attivato (tire_deg_model='lin' in 2.479 voci su 2.479).",
+  "costanti_su_tutti_i_121_file": {
+   "min_t_dist_s": 0.5,
+   "t_duel_s": 0.3,
+   "t_overtake_loser_s": 0.3
+  },
+  "per_circuito": "t_gap_overtake varia davvero: mediana 2,025 s, da 1,26 (Suzuka) a 3,75 (MonteCarlo e Montreal), 19 valori distinti sui 121 file",
+  "copertura": "10 circuiti su 11 del 2026. Miami NON esiste in TUM (non correva nel 2014-2019): dichiarato, non sostituito.",
+  "anno_scelto": "per ogni circuito il file piu' recente disponibile (2019)",
+  "estratto_il": "2026-08-03"
+ },
+ "costanti": {
+  "min_t_dist_s": 0.5,
+  "t_duel_s": 0.3,
+  "t_overtake_loser_s": 0.3
+ },
+ "per_circuito": {
+  "Australia": {
+   "file_tum": "pars_Melbourne_2019.ini",
+   "t_gap_overtake": 2.7,
+   "t_gap_overtake_vel": -0.036,
+   "t_overtake_loser": 0.3,
+   "t_duel": 0.3,
+   "min_t_dist": 0.5
+  },
+  "Cina": {
+   "file_tum": "pars_Shanghai_2019.ini",
+   "t_gap_overtake": 1.5,
+   "t_gap_overtake_vel": -0.037,
+   "t_overtake_loser": 0.3,
+   "t_duel": 0.3,
+   "min_t_dist": 0.5
+  },
+  "Giappone": {
+   "file_tum": "pars_Suzuka_2019.ini",
+   "t_gap_overtake": 1.26,
+   "t_gap_overtake_vel": -0.035,
+   "t_overtake_loser": 0.3,
+   "t_duel": 0.3,
+   "min_t_dist": 0.5
+  },
+  "Miami": null,
+  "Monaco": {
+   "file_tum": "pars_MonteCarlo_2019.ini",
+   "t_gap_overtake": 3.75,
+   "t_gap_overtake_vel": -0.015,
+   "t_overtake_loser": 0.3,
+   "t_duel": 0.3,
+   "min_t_dist": 0.5
+  },
+  "Spagna": {
+   "file_tum": "pars_Catalunya_2019.ini",
+   "t_gap_overtake": 2.31,
+   "t_gap_overtake_vel": -0.05,
+   "t_overtake_loser": 0.3,
+   "t_duel": 0.3,
+   "min_t_dist": 0.5
+  },
+  "Canada": {
+   "file_tum": "pars_Montreal_2019.ini",
+   "t_gap_overtake": 3.75,
+   "t_gap_overtake_vel": -0.009,
+   "t_overtake_loser": 0.3,
+   "t_duel": 0.3,
+   "min_t_dist": 0.5
+  },
+  "Austria": {
+   "file_tum": "pars_Spielberg_2019.ini",
+   "t_gap_overtake": 2.01,
+   "t_gap_overtake_vel": -0.022,
+   "t_overtake_loser": 0.3,
+   "t_duel": 0.3,
+   "min_t_dist": 0.5
+  },
+  "Gran Bretagna": {
+   "file_tum": "pars_Silverstone_2019.ini",
+   "t_gap_overtake": 1.35,
+   "t_gap_overtake_vel": -0.032,
+   "t_overtake_loser": 0.3,
+   "t_duel": 0.3,
+   "min_t_dist": 0.5
+  },
+  "Belgio": {
+   "file_tum": "pars_Spa_2019.ini",
+   "t_gap_overtake": 1.83,
+   "t_gap_overtake_vel": -0.038,
+   "t_overtake_loser": 0.3,
+   "t_duel": 0.3,
+   "min_t_dist": 0.5
+  },
+  "Ungheria": {
+   "file_tum": "pars_Budapest_2019.ini",
+   "t_gap_overtake": 2.415,
+   "t_gap_overtake_vel": -0.036,
+   "t_overtake_loser": 0.3,
+   "t_duel": 0.3,
+   "min_t_dist": 0.5
+  }
+ }
+}
