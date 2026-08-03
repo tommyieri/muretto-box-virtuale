@@ -1,0 +1,327 @@
+{
+ "_targhetta": {
+  "cosa_e": "Esito dei quattro cancelli di PREREG_cliff_derivato.md sui tre κ dichiarati.",
+  "prereg": "ai_lab/confronto/PREREG_cliff_derivato.md",
+  "kappa": "ai_lab/confronto/kappa_derivato_tum.json",
+  "modo": "completo",
+  "data": "2026-08-03"
+ },
+ "riferimento_senza_cliff": {
+  "due_giri_n": 235,
+  "bandiera": {
+   "n": 193,
+   "vince": 57,
+   "perde": 55,
+   "saldo": 2,
+   "p": 0.9247750936573578
+  }
+ },
+ "esiti": [
+  {
+   "nome": "p25",
+   "kappa": 0.0005,
+   "C1": {
+    "passa": false,
+    "per_gara": [
+     {
+      "gara": "Austria",
+      "pannelli": 1211,
+      "k2": 272,
+      "quota": 0.22460776218001652,
+      "errori": 0
+     },
+     {
+      "gara": "Spagna",
+      "pannelli": 1099,
+      "k2": 0,
+      "quota": 0,
+      "errori": 0
+     }
+    ]
+   },
+   "C2": {
+    "passa": false,
+    "per_gara": [
+     {
+      "gara": "Australia",
+      "pannelli": 892,
+      "k2": 11,
+      "quota": 0.01233183856502242,
+      "errori": 0
+     },
+     {
+      "gara": "Cina",
+      "pannelli": 808,
+      "k2": 0,
+      "quota": 0,
+      "errori": 0
+     },
+     {
+      "gara": "Giappone",
+      "pannelli": 963,
+      "k2": 0,
+      "quota": 0,
+      "errori": 0
+     },
+     {
+      "gara": "Miami",
+      "pannelli": 903,
+      "k2": 0,
+      "quota": 0,
+      "errori": 0
+     },
+     {
+      "gara": "Canada",
+      "pannelli": 1081,
+      "k2": 373,
+      "quota": 0.3450508788159112,
+      "errori": 0
+     },
+     {
+      "gara": "Monaco",
+      "pannelli": 1313,
+      "k2": 602,
+      "quota": 0.4584920030464585,
+      "errori": 0
+     },
+     {
+      "gara": "Gran Bretagna",
+      "pannelli": 947,
+      "k2": 0,
+      "quota": 0,
+      "errori": 0
+     },
+     {
+      "gara": "Belgio",
+      "pannelli": 647,
+      "k2": 0,
+      "quota": 0,
+      "errori": 0
+     }
+    ]
+   },
+   "C3": {
+    "passa": true,
+    "n": 235,
+    "vinceA": 14,
+    "vinceB": 22,
+    "pari": 199,
+    "discordanti": 36,
+    "p": 0.24298495403491163
+   },
+   "C4": {
+    "passa": true,
+    "n": 193,
+    "vince": 58,
+    "perde": 56,
+    "saldo": 2,
+    "p": 0.9254349612568051
+   },
+   "tutti": false
+  },
+  {
+   "nome": "mediana",
+   "kappa": 0.0011,
+   "C1": {
+    "passa": false,
+    "per_gara": [
+     {
+      "gara": "Austria",
+      "pannelli": 1211,
+      "k2": 327,
+      "quota": 0.2700247729149463,
+      "errori": 0
+     },
+     {
+      "gara": "Spagna",
+      "pannelli": 1099,
+      "k2": 195,
+      "quota": 0.17743403093721566,
+      "errori": 0
+     }
+    ]
+   },
+   "C2": {
+    "passa": false,
+    "per_gara": [
+     {
+      "gara": "Australia",
+      "pannelli": 892,
+      "k2": 11,
+      "quota": 0.01233183856502242,
+      "errori": 0
+     },
+     {
+      "gara": "Cina",
+      "pannelli": 808,
+      "k2": 0,
+      "quota": 0,
+      "errori": 0
+     },
+     {
+      "gara": "Giappone",
+      "pannelli": 963,
+      "k2": 0,
+      "quota": 0,
+      "errori": 0
+     },
+     {
+      "gara": "Miami",
+      "pannelli": 903,
+      "k2": 259,
+      "quota": 0.2868217054263566,
+      "errori": 0
+     },
+     {
+      "gara": "Canada",
+      "pannelli": 1081,
+      "k2": 433,
+      "quota": 0.4005550416281221,
+      "errori": 0
+     },
+     {
+      "gara": "Monaco",
+      "pannelli": 1313,
+      "k2": 699,
+      "quota": 0.5323686214775324,
+      "errori": 0
+     },
+     {
+      "gara": "Gran Bretagna",
+      "pannelli": 947,
+      "k2": 1,
+      "quota": 0.0010559662090813093,
+      "errori": 0
+     },
+     {
+      "gara": "Belgio",
+      "pannelli": 647,
+      "k2": 0,
+      "quota": 0,
+      "errori": 0
+     }
+    ]
+   },
+   "C3": {
+    "passa": true,
+    "n": 235,
+    "vinceA": 19,
+    "vinceB": 24,
+    "pari": 192,
+    "discordanti": 43,
+    "p": 0.5423840118564823
+   },
+   "C4": {
+    "passa": false,
+    "n": 193,
+    "vince": 49,
+    "perde": 56,
+    "saldo": -7,
+    "p": 0.5583942911656821
+   },
+   "tutti": false
+  },
+  {
+   "nome": "p75",
+   "kappa": 0.0028,
+   "C1": {
+    "passa": true,
+    "per_gara": [
+     {
+      "gara": "Austria",
+      "pannelli": 1211,
+      "k2": 710,
+      "quota": 0.5862923203963666,
+      "errori": 0
+     },
+     {
+      "gara": "Spagna",
+      "pannelli": 1099,
+      "k2": 555,
+      "quota": 0.5050045495905369,
+      "errori": 0
+     }
+    ]
+   },
+   "C2": {
+    "passa": false,
+    "per_gara": [
+     {
+      "gara": "Australia",
+      "pannelli": 892,
+      "k2": 331,
+      "quota": 0.3710762331838565,
+      "errori": 0
+     },
+     {
+      "gara": "Cina",
+      "pannelli": 808,
+      "k2": 177,
+      "quota": 0.21905940594059406,
+      "errori": 0
+     },
+     {
+      "gara": "Giappone",
+      "pannelli": 963,
+      "k2": 343,
+      "quota": 0.3561786085150571,
+      "errori": 0
+     },
+     {
+      "gara": "Miami",
+      "pannelli": 903,
+      "k2": 392,
+      "quota": 0.43410852713178294,
+      "errori": 0
+     },
+     {
+      "gara": "Canada",
+      "pannelli": 1081,
+      "k2": 547,
+      "quota": 0.5060129509713228,
+      "errori": 0
+     },
+     {
+      "gara": "Monaco",
+      "pannelli": 1313,
+      "k2": 793,
+      "quota": 0.6039603960396039,
+      "errori": 0
+     },
+     {
+      "gara": "Gran Bretagna",
+      "pannelli": 947,
+      "k2": 351,
+      "quota": 0.3706441393875396,
+      "errori": 0
+     },
+     {
+      "gara": "Belgio",
+      "pannelli": 647,
+      "k2": 127,
+      "quota": 0.19629057187017002,
+      "errori": 0
+     }
+    ]
+   },
+   "C3": {
+    "passa": true,
+    "n": 235,
+    "vinceA": 31,
+    "vinceB": 28,
+    "pari": 176,
+    "discordanti": 59,
+    "p": 0.7948436539828662
+   },
+   "C4": {
+    "passa": false,
+    "n": 193,
+    "vince": 48,
+    "perde": 69,
+    "saldo": -21,
+    "p": 0.06399591064680205
+   },
+   "tutti": false
+  }
+ ]
+}
