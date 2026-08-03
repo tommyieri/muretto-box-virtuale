@@ -54,7 +54,14 @@ const CANCELLI = {
   H4: { descrizione: 'copertura della banda (metro del prodotto)', soglia: 0.673, verso: '>=' },
   H5: { descrizione: 'copertura: casi con risposta', soglia: 0.900, verso: '>=' },
 };
-const MIN_CASI = 15;   // prereg regola 3
+const MIN_CASI = 15;   // prereg regola 3, applicata alla popolazione della METRICA (vedi sotto)
+
+// LA DISTRIBUZIONE DI RIFERIMENTO, congelata il 03/08/2026 in
+// PREREG_holdout_H1primo.md §2. Nove gare in campione con >= 15 casi nella lettura B2.
+// Non si ricalcola qui: e' un numero pre-registrato, e ricalcolarlo dal codice significherebbe
+// lasciarlo scivolare il giorno in cui le gare in campione diventano dodici.
+const RIFERIMENTO = [0.200, 0.273, 0.333, 0.350, 0.414, 0.536, 0.556, 0.571, 0.677];
+const H1PRIMO = { descrizione: 'esatti M1-B2 non sotto il minimo in campione', soglia: Math.min(...RIFERIMENTO) };
 
 const sha = (rel) => createHash('sha256').update(readFileSync(path.join(SIM, rel))).digest('hex');
 
@@ -94,11 +101,12 @@ if (!eLaGaraSigillata) {
 const elenco = casi().filter((c) => c.gara === GARA);
 console.log('');
 console.log(`   casi ammessi dal banco per ${GARA}: ${elenco.length}`);
-if (elenco.length < MIN_CASI) {
-  console.log(`   ✗ NON GIUDICABILE — meno di ${MIN_CASI} casi (prereg, regola 3).`);
-  console.log('     Non si allarga il perimetro per avere numeri: si aspetta la gara dopo.');
-  process.exit(1);
-}
+// IL PAVIMENTO SI CONTROLLA DOPO, sulla popolazione che la METRICA usa davvero.
+// La regola 3 lo metteva sui «casi ammessi», e la prova a secco ha mostrato che e' il
+// numero sbagliato: Monaco ha 47 ammessi e 12 in lettura B2 — il 74% cade perche' uno dei
+// due motori non risponde o la terna comune non contiene il pilota — quindi il protocollo
+// lo dichiarava giudicabile mentre la metrica girava sotto il pavimento. Correzione
+// pre-registrata il 03/08 in PREREG_holdout_H1primo.md §4, prima della gara.
 
 // ── 2 · M1 in lettura B2, e M5 col metro del prodotto ───────────────────────
 const PASSO_V2 = passoV2();
@@ -123,6 +131,14 @@ for (const c of elenco) {
 }
 
 const conB = righe.filter((r) => !r.muto && r.errNuovo !== null);
+if (conB.length < MIN_CASI) {
+  console.log('');
+  console.log(`   ✗ NON GIUDICABILE — la lettura M1-B2 ha ${conB.length} casi, meno di ${MIN_CASI}`);
+  console.log(`     (i casi ammessi erano ${elenco.length}: ${elenco.length - conB.length} cadono perche' un motore`);
+  console.log('     non risponde o la terna comune non contiene il pilota). Prereg regola 3, come');
+  console.log('     corretta il 03/08: il pavimento sta sulla popolazione della metrica.');
+  process.exit(1);
+}
 const esatti = (k) => conB.filter((r) => r[k] === 0).length / conB.length;
 const M1 = {
   n: conB.length,
@@ -142,7 +158,14 @@ const esiti = [
   { id: 'H3', valore: M1.esatti_nuovo - M1.esatti_vecchio, ...CANCELLI.H3, passa: M1.esatti_nuovo >= M1.esatti_vecchio },
   { id: 'H4', valore: M5.copertura, ...CANCELLI.H4, passa: M5.copertura !== null && M5.copertura >= CANCELLI.H4.soglia },
   { id: 'H5', valore: coperturaRisposta, ...CANCELLI.H5, passa: coperturaRisposta >= CANCELLI.H5.soglia },
+  { id: "H1'", valore: M1.esatti_nuovo, ...H1PRIMO, verso: '>=', passa: M1.esatti_nuovo >= H1PRIMO.soglia },
 ];
+
+// IL PERCENTILE SI RIPORTA SEMPRE, anche quando H1' passa: e' li' che sta l'informazione.
+// Un valore che supera il minimo ma cade al 10 percentile significa che il motore fuori
+// campione e' peggiore di nove gare su dieci viste in casa (PREREG_holdout_H1primo.md §2).
+const sotto = RIFERIMENTO.filter((x) => x < M1.esatti_nuovo).length;
+const percentile = 100 * sotto / RIFERIMENTO.length;
 
 const pct = (x) => (x === null ? '—' : `${(100 * x).toFixed(1)}%`);
 console.log('');
@@ -156,6 +179,13 @@ for (const e of esiti) {
   const s = e.id === 'H2' ? String(e.soglia) : (e.id === 'H3' ? 'nuovo >= vecchio' : pct(e.soglia));
   console.log(`   ${e.id}  ${e.descrizione.padEnd(42)} ${String(v).padStart(12)}  (serve ${e.verso} ${s})   ${e.passa ? 'PASSA' : 'NON PASSA'}`);
 }
+
+console.log('');
+console.log(`   H1' · percentile nella distribuzione in campione: ${percentile.toFixed(0)}°`
+  + ` (batte ${sotto} gare su ${RIFERIMENTO.length})`);
+console.log("     H1' e' un cancello INDULGENTE: le gare di riferimento sono quelle su cui i modelli");
+console.log('     sono stati tarati, quindi un fuori campione onesto tende a stare piu\' in basso.');
+console.log('     Superarlo e\' un\'affermazione debole: l\'informazione sta nel percentile.');
 
 // L'AVVERTIMENTO DI H4 non e' opzionale: la prereg impone che sia scritto nel referto,
 // non dedotto. La soglia e' pre-registrata a 67,3%, ma il riferimento in campione e'
@@ -190,6 +220,7 @@ if (JSON_OUT) {
     perimetro: { casi_ammessi: elenco.length, min_richiesto: MIN_CASI, con_risposta: conRisposta },
     M1, M5, copertura_risposta: coperturaRisposta,
     cancelli: esiti, tutti,
+    H1primo: { riferimento: RIFERIMENTO, soglia: H1PRIMO.soglia, percentile, batte_gare: sotto, su: RIFERIMENTO.length },
   };
   const dove = path.join(RADICE, 'ai_lab', 'confronto', `ESITO_holdout_${GARA.replace(/\s+/g, '')}.json`);
   writeFileSync(dove, JSON.stringify(doc, null, 1) + '\n');
