@@ -13,7 +13,7 @@ riferimenti sbagliati della pagina firmata.
 | **P1** | **RAGGIUNTO** | `censimento_vista.mjs --verifica` verde: 0 campi orfani non dichiarati |
 | **P2** | **RAGGIUNTO** | 5 violazioni trovate e tolte; 0 promesse su rami chiusi o sezioni inesistenti |
 | **P3** | **RAGGIUNTO** | la banda porta «circa 1 sosta su 8 finisce fuori»; l'orizzonte è etichettato **anche in produzione** |
-| **P4** | **APERTO — serve il PO** | lo strumento che il KPI si è imposto è «mock approvato dal PO», e la firma è un atto umano |
+| **P4** | **RAGGIUNTO** | mock **approvato dal PO il 03/08/2026** (proposta B), e le due correzioni sono applicate |
 | **I1** | **RAGGIUNTO** | `auto_run.sh` chiama la sonda a fine giro e ne riversa l'esito nel log |
 | **I2** | **RAGGIUNTO** | `gen_numeri_ereditati.py --verifica` in CI + `s36_report_notte_fresco` |
 | **I3** | **RAGGIUNTO** | i due duplicati di `demo/` sono a registro, e uno è sorvegliato byte per byte |
@@ -77,18 +77,29 @@ l'orizzonte del *passo* (10) e ne deduceva che fino a lì la risposta fosse buon
 pezzi della stessa decisione, spenti uno solo.** Riparato e verificato: Monaco 1313 risposte
 su 1322 portano l'etichetta, contro 0 prima.
 
-## P4 — resta aperto, e la ragione è nel KPI stesso
+## P4 — raggiunto, e la firma è arrivata su un mock che dichiarava le sue riserve
 
 La misura tipografica è stata fatta, leggendo il CSS riga per riga e rendendo il DOM: la
 risposta è **21,6 px** contro i 16 px della curva e i 13,6 px del piano, ed è prima nel DOM
-in entrambe le catene. **Ma lo strumento che P4 si è imposto è «mock approvato dal PO»**, e
-non esiste. Dichiarare P4 raggiunto sulla base della tipografia sarebbe esattamente il «KPI
-valutato a occhio» che la regola 1 della pagina firmata vieta.
+in entrambe le catene. Ma lo strumento che P4 si è imposto è **«mock approvato dal PO»**, e
+la tipografia da sola non lo sostituisce: dichiararlo sulla misura sarebbe il «KPI valutato
+a occhio» che la regola 1 della pagina firmata vieta.
 
-Due riserve, misurate e da mettere davanti al PO quando deciderà: la risposta è la più
-**grande** ma non la più **pesante** (peso 400, mentre «BOX NOW» e «Pit» sono 700), e la
-riga non dice mai «a 2 giri» — il fatto che sia una risposta a due giri sta nella targhetta
-e nel contesto, non nella riga.
+**Il mock è stato costruito con le sue due riserve dichiarate — non nascoste — e il PO ha
+firmato la proposta che le accoglie entrambe.** Applicate:
+
+| | prima | dopo |
+|---|---|---|
+| peso della risposta | **400**: la più grande della pagina e non la più pesante, con «BOX NOW» e «Pit» a 700. La dominanza era solo dimensionale | **700** |
+| «a 2 giri» | **non compariva mai nella riga**: stava nella targhetta del numero e nel contesto, due posti dove bisogna già sapere di doverlo cercare | occhiello **«se ti fermi ora, fra 2 giri»** sopra la riga |
+
+I giri dell'occhiello si **contano** (giro di rientro meno congelamento), non si cablano: un
+2 scritto a mano smetterebbe di essere vero il giorno che il rientro cambia. E passa da
+`num()` come ogni quantità — `s20` lo avrebbe bocciato, e avrebbe avuto ragione una terza
+volta nella stessa giornata.
+
+> **P4 · RAGGIUNTO.** La risposta a 2 giri è prima di curva, piano e scenari nel DOM e nella
+> dimensione, **e ora anche nel peso**; e la riga dice finalmente di cosa è la risposta.
 
 ## I1…I5 — e due riferimenti sbagliati della pagina firmata
 
@@ -146,6 +157,6 @@ concluso che I3 era coperto, e avrebbe controllato una sentinella che parla d'al
 | | esito |
 |---|---|
 | **F1** raggiunto · **F2** raggiunto alla lettera · **F3** mancato · **F4** mancato · **F5** applicato | `REGISTRO_F1.md`, `REGISTRO_F2_F3.md`, `REGISTRO_F4.md`, `confronto/ESITO_F5_bis.md` |
-| **P1** raggiunto · **P2** raggiunto · **P3** raggiunto · **P4** aperto (serve il PO) | questa pagina |
+| **P1 · P2 · P3 · P4** raggiunti | questa pagina |
 | **I1** raggiunto · **I2** raggiunto · **I3** raggiunto · **I4** a metà · **I5** raggiunto | questa pagina |
 | **Z1 · Z2** | si misurano il 23/08 a Zandvoort |
