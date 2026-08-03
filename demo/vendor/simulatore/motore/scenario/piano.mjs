@@ -212,6 +212,7 @@ export function valutaPiano({ gara, freezeLap, pilota, piano }, contesto) {
     // riga mancasse, "quando fermarti" girerebbe su una fisica e "dove rientri"
     // su un'altra — E17 nella forma esatta in cui il vecchio repo l'ha pagata.
     steps: scenario.steps, pits: scenario.pits, neutralizzazione: scenario.neutralizzazione ?? null,
+    tetto: scenario.tetto ?? null,
   });
   return { totale: risultato.cum[pilota] ?? null, scenario };
 }
