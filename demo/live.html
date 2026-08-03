@@ -679,7 +679,9 @@ async function creaMurettoLive(g, deps = {}){
   }
   function continuaSim(){
     el('mu-simcont').hidden = true;
-    el('mu-simtag').innerHTML = 'Proiezione fino alla bandiera &middot; i rivali non reagiscono';
+    // stessa correzione di gara.html: oltre 6 giri la proiezione non e' validata
+    // (ai_lab/REGISTRO_F1.md), e l'etichetta non lo diceva.
+    el('mu-simtag').innerHTML = 'Proiezione fino alla bandiera &middot; validata solo fino a 6 giri &middot; i rivali non reagiscono';
     if (gp) gp.continua();
   }
   function renderSimTorre(righe){

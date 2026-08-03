@@ -43,6 +43,42 @@ for (const v of reg.voci ?? []) {
   if (!v.guardia) continue;
   const g = v.guardia;
 
+  // GUARDIA DELEGATA. Alcune voci non si verificano leggendo una stringa in un file: i
+  // campi orfani della vista si verificano RENDENDO la pagina, e quel lavoro lo fa
+  // `simulatore/web/censimento_vista.mjs --verifica` (KPI P1), che esce 1 in entrambi i
+  // versi. Qui si controlla che la delega sia esplicita e che il verificatore esista
+  // davvero — una delega a uno strumento che non c'e' sarebbe una voce senza guardia con
+  // l'aria di averne una.
+  // GUARDIA SUI DUPLICATI. «Ogni duplicato in demo/ e' a registro con referto» (KPI I3)
+  // non basta come frase: se il registro nomina due file che devono restare uguali, questo
+  // test li confronta BYTE PER BYTE. Cosi' una gara nuova che aggiorni una copia sola
+  // diventa rossa qui, invece di diventare due verita' diverse mesi dopo.
+  if (Array.isArray(g.duplicati_byte_identici)) {
+    for (const [a, bb] of g.duplicati_byte_identici) {
+      const pa = path.join(RADICE, a); const pb = path.join(RADICE, bb);
+      if (!existsSync(pa) || !existsSync(pb)) {
+        esito(false, `${eti} un lato del duplicato non esiste: ${a} / ${bb}`);
+        continue;
+      }
+      esito(readFileSync(pa).equals(readFileSync(pb)),
+        `${eti} ${a} e ${bb} sono ancora byte-identici `
+        + '— se divergono, il motore e il sito leggono due tabelle diverse (E12)');
+    }
+    continue;
+  }
+
+  if (g.verificata_da) {
+    for (const chiave of ['verificata_da', 'verificata_anche_da']) {
+      if (!g[chiave]) continue;
+      const file = g[chiave].split(' ')[0];
+      esito(existsSync(path.join(RADICE, file)),
+        `${eti} il verificatore delegato esiste: ${file}`);
+    }
+    esito(Array.isArray(g.campi) && g.campi.length > 0,
+      `${eti} la delega elenca i campi che sorveglia (${g.campi?.length ?? 0})`);
+    continue;
+  }
+
   // (a) l'accensione dichiarata esiste ancora nel codice
   const acc = path.join(RADICE, g.file_accensione);
   if (!existsSync(acc)) {

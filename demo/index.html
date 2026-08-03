@@ -148,14 +148,27 @@
     </div>
     <div class="feat"><div class="fn">03</div>
       <h3>Strategia gomme</h3>
-      <p>Una barra per pilota, lunga quanto la gara: <b>stint e mescole</b> segmento per
-      segmento, tacche dei pit stop con durata e cambio gomma, evidenza di intermedie e wet.</p>
+      <!-- NON PROMETTERE LA STRISCIA: non &egrave; renderizzata da nessuna pagina.
+           buildStrat() esiste in gara.html ma scrive in un id (#stratRighe) che il
+           markup non contiene pi&ugrave; dopo la ripulitura della pagina gara, e non
+           viene mai chiamata. La funzione &egrave; viva, il suo esito non arriva in
+           pagina: promettere qui ci&ograve; che l&igrave; non si vede &egrave;
+           esattamente la voce P2 dei KPI. Riscritto il 03/08/2026 su ci&ograve; che
+           la pagina mostra davvero. -->
+      <p>Le <b>soste</b> di ogni pilota sulla timeline della gara, con durata e mescola
+      montata, e le mescole disponibili nel pannello pit.</p>
     </div>
     <div class="feat"><div class="fn">04</div>
       <h3>Race control</h3>
+      <!-- LA DOPPIA CLASSIFICA NON C'&Egrave;: buildUfficiale() scrive in #uffTab e
+           tocca #tabUff/#vistaUff, tre id che il markup di gara.html non contiene, e
+           non viene mai chiamata. data/ufficiali_2026.json si scarica ancora ma il suo
+           unico consumatore &egrave; codice morto. Il feed di race control e i badge
+           delle penalit&agrave;, invece, sono in pagina davvero (PR #40). Tolta la
+           met&agrave; che non esiste il 03/08/2026. -->
       <p>Safety car, virtual safety car, bandiere rosse e gialle sulla timeline. Le
-      <b>penalit&agrave;</b> compaiono col badge dal giro dell'annuncio, e a fine gara la doppia
-      classifica <b>&laquo;in pista | ufficiale&raquo;</b> mostra cosa hanno cambiato.</p>
+      <b>penalit&agrave;</b> compaiono col badge dal giro dell'annuncio, accanto al feed
+      dei messaggi di race control.</p>
     </div>
     <div class="feat"><div class="fn">05</div>
       <h3>Classifiche &amp; schede</h3>
@@ -201,9 +214,16 @@
              0,0024. Il progetto ha deciso di non fare un quarto tentativo, e una
              pagina che continua a prometterla promette ci&ograve; che &egrave; stato
              deciso di non consegnare. -->
-        <p>Telemetrie di gara, prestazioni dei team nel tempo e caratterizzazione dei circuiti:
-        <b>degrado gomme</b> e <b>pit-loss per pista</b>. Come tutto
-        il resto: solo da dati misurati, col protocollo di misura esteso a ogni gara.</p>
+        <!-- E IL DEGRADO PER-CIRCUITO NEMMENO: stessa ragione, stesso giorno.
+             Falsificato 0 circuiti su 8 (ai_lab/scienziato/esito_degrado.json,
+             C2_percircuito.veri = []), e la prereg lo scrive a chiare lettere: il
+             degrado &egrave; una propriet&agrave; della mescola, non della pista.
+             Restava promesso qui due righe sotto il commento che toglieva la
+             sorpassabilit&agrave; per lo stesso motivo. Tolto il 03/08/2026. -->
+        <p>Telemetrie di gara, prestazioni dei team nel tempo e <b>pit-loss per pista</b>,
+        che &egrave; l'unica caratterizzazione del circuito che il progetto ha misurato e
+        promosso. Come tutto il resto: solo da dati misurati, col protocollo di misura
+        esteso a ogni gara.</p>
       </div>
     </div>
   </div>

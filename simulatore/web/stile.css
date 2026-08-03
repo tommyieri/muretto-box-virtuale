@@ -14,7 +14,13 @@ padding:16px;margin:16px 0}
 h2{margin:0 0 .6rem;font-size:1rem;text-transform:uppercase;letter-spacing:.08em;color:var(--tenue)}
 h3{margin:.8rem 0 .3rem;font-size:.85rem;color:var(--tenue)}
 .contesto{color:var(--tenue);margin:.2rem 0 .6rem;font-size:.9rem}
-.risposta{font-size:1.35rem;line-height:1.45;margin:.2rem 0 .6rem}
+/* LA RISPOSTA E' LA COSA PIU' PESANTE DELLA PAGINA, non solo la piu' grande.
+   Fino al 03/08/2026 era 1,35rem con peso 400, mentre «BOX NOW» e «Pit» erano a 700:
+   dominava per dimensione e perdeva per peso. KPI P4, mock approvato dal PO. */
+.risposta{font-size:1.35rem;line-height:1.45;margin:.2rem 0 .6rem;font-weight:700}
+/* L'occhiello dice COSA si sta guardando: e' la sola risposta che il motore da' bene,
+   validata a +/-2 posizioni, e la riga non lo diceva da nessuna parte. */
+.occhiello{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--tenue);margin:.4rem 0 0}
 .pannello.respinto .risposta{color:var(--allarme);font-size:1.05rem}
 .soppressione{color:var(--allarme);font-size:.85rem;margin:.2rem 0}
 .nota{color:var(--tenue);font-size:.82rem;display:block;margin-top:.2rem}
@@ -80,3 +86,17 @@ padding:.35rem 0;border-bottom:1px dotted var(--linea);font-size:.9rem}
 .lettura{font-size:.9rem;margin:.4rem 0 0}
 footer p{color:var(--tenue);font-size:.8rem}
 code{background:#0b0e13;padding:.1rem .3rem;border-radius:4px}
+
+/* ── perche' quel numero di soste: il confronto che il motore fa ─────────────
+   Sta in un <details> CHIUSO e in corpo piccolo di proposito: e' una
+   spiegazione, e KPI P4 chiede che la risposta a due giri resti l'elemento
+   dominante. Un blocco che compete con la risposta sposterebbe l'attenzione
+   sulla cosa su cui il motore e' meno validato. */
+.perche-soste { margin-top: .6rem; font-size: .82rem; }
+.perche-soste summary { cursor: pointer; color: var(--tenue); }
+.perche-soste .alternative { border-collapse: collapse; margin: .4rem 0; }
+.perche-soste .alternative th,
+.perche-soste .alternative td { padding: .1rem .6rem .1rem 0; text-align: left; font-weight: 400; }
+.perche-soste .alternative th { color: var(--tenue); font-size: .78rem; }
+.perche-soste .alternative tr.scelta td { font-weight: 700; }
+.perche-soste .limite-perche { margin-top: .4rem; }

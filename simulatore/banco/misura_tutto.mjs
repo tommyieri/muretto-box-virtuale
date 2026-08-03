@@ -167,8 +167,9 @@ export function verificaCancelli(riassunto, cancelli, golden) {
       d.d2_separa === false,
       `contesto ${d.d2_separa ? 'separa' : 'NON separa'} (p = ${d.contesto.p_permutazione}) → ${d.d2_separa ? 'due bande' : 'una banda per contesto di regime'}`);
     dichiara('D4 nessuna banda simmetrica nasconde un bias ≥ 1 posizione',
-      d.d4_asimmetrici.length === 0,
-      `asimmetrici: ${d.d4_asimmetrici.join(', ') || 'nessuno'}`);
+      d.d4_non_dichiarati.length === 0,
+      `asimmetrici e dichiarati tali: ${d.d4_asimmetrici.join(', ') || 'nessuno'}`
+      + (d.d4_non_dichiarati.length ? ` · INCOERENTI: ${d.d4_non_dichiarati.join(' · ')}` : ''));
   }
 
   // BIAS — cancelli ereditati, solo sugli orizzonti giudicabili

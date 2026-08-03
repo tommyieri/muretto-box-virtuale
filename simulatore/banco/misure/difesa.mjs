@@ -316,5 +316,24 @@ export function misuraDifesa(rientro, { cancelli, secchi }) {
     d2_separa: contesto.separa === true,
     // D4: i secchi con bias mediano ≥ 1 posizione devono essere dichiarati asimmetrici
     d4_asimmetrici: Object.entries(perSecco).filter(([, b]) => b.sufficiente && b.asimmetrica).map(([n]) => n),
+    // D4, LETTO COME LA SUA PREREG LO SCRIVE. Il verificatore precedente pretendeva
+    // ZERO secchi asimmetrici, cioe' diventava rosso esattamente quando il modello
+    // faceva la cosa giusta — PREREG_difesa.md §D4 non chiede che l'asimmetria non
+    // esista, chiede che quando c'e' «la banda di quel secco viene dichiarata
+    // asimmetrica e mostrata come tale, non centrata su un numero che si sa spostato».
+    // Il difetto era a registro in ROSSE_DICHIARATE.json dal 02/08 con la sua diagnosi
+    // («va corretto il verificatore, non il modello») e qui viene chiuso.
+    //
+    // Cio' che si sorveglia adesso e' la COERENZA fra le due cose: chi ha il bias ha la
+    // banda traslata, chi non ce l'ha non ce l'ha. Ha potere di fallire in entrambi i
+    // versi — una banda spostata senza bias sarebbe un adattamento al campione, un bias
+    // senza banda spostata sarebbe esattamente la banda che mente.
+    d4_non_dichiarati: Object.entries(perSecco)
+      .filter(([, b]) => b.sufficiente)
+      .filter(([, b]) => {
+        const traslata = b.banda_dichiarata && b.banda_dichiarata.sotto !== b.banda_dichiarata.sopra;
+        return b.asimmetrica !== traslata;
+      })
+      .map(([n, b]) => `${n} (bias ${b.bias_mediano_posizioni}, banda ${b.banda_dichiarata?.sotto}/${b.banda_dichiarata?.sopra})`),
   };
 }

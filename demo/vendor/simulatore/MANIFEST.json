@@ -3,12 +3,12 @@
  "generato_il": "2026-08-03",
  "file": {
   "targhette.mjs": {
-   "sha256_sorgente": "136b4151d4ce76601cca4090971a013cb5be5997db12e3ff919492311d3dbd08",
-   "byte": 7039
+   "sha256_sorgente": "a0d790ff85e0a679b9a5ac02800b256e116a5c1033ed22a2e4678b11a6a74050",
+   "byte": 7493
   },
   "pannello.mjs": {
-   "sha256_sorgente": "a555de158e2f2dce1d013cc936fd22d32dc917e9ddc06df0c3b7ce063236557f",
-   "byte": 16807
+   "sha256_sorgente": "ba1788362431dacd5627252cc9c54bc387deef53cf12a592ef8f5b95c54cf99d",
+   "byte": 22564
   },
   "curva.mjs": {
    "sha256_sorgente": "97ff3a5682819a27830a0e6966fb2136eed933b40e28465993485194a50b3620",
@@ -19,8 +19,8 @@
    "byte": 3685
   },
   "stile.css": {
-   "sha256_sorgente": "882ecc2ad1860a0f2b53fde6c7e82abfb22a9fc2ecfebb1ec1be7f5386b9946f",
-   "byte": 6681,
+   "sha256_sorgente": "15bb48b20867a1c4cababeb59a806747a88a6b31fc721c4b8c8dd7c4a54b1f0d",
+   "byte": 8283,
    "ambito": ".sim-pannello"
   }
  }
