@@ -249,7 +249,9 @@
     "giroFinale": 58,
     "steps": 26,
     "orizzonte_validato": 10,
-    "oltre_il_validato": true
+    "oltre_il_validato": true,
+    "orizzonte_risposta": 6,
+    "oltre_la_risposta": true
    },
    "assunzioni": [
     {
@@ -764,7 +766,9 @@
     "giroFinale": 71,
     "steps": 32,
     "orizzonte_validato": 10,
-    "oltre_il_validato": true
+    "oltre_il_validato": true,
+    "orizzonte_risposta": 6,
+    "oltre_la_risposta": true
    },
    "assunzioni": [
     {
@@ -1252,7 +1256,9 @@
     "giroFinale": 44,
     "steps": 20,
     "orizzonte_validato": 10,
-    "oltre_il_validato": true
+    "oltre_il_validato": true,
+    "orizzonte_risposta": 6,
+    "oltre_la_risposta": true
    },
    "assunzioni": [
     {
@@ -1795,7 +1801,9 @@
     "giroFinale": 68,
     "steps": 31,
     "orizzonte_validato": 10,
-    "oltre_il_validato": true
+    "oltre_il_validato": true,
+    "orizzonte_risposta": 6,
+    "oltre_la_risposta": true
    },
    "assunzioni": [
     {
@@ -2293,7 +2301,9 @@
     "giroFinale": 56,
     "steps": 25,
     "orizzonte_validato": 10,
-    "oltre_il_validato": true
+    "oltre_il_validato": true,
+    "orizzonte_risposta": 6,
+    "oltre_la_risposta": true
    },
    "assunzioni": [
     {
@@ -2781,7 +2791,9 @@
     "giroFinale": 53,
     "steps": 24,
     "orizzonte_validato": 10,
-    "oltre_il_validato": true
+    "oltre_il_validato": true,
+    "orizzonte_risposta": 6,
+    "oltre_la_risposta": true
    },
    "assunzioni": [
     {
@@ -3292,7 +3304,9 @@
     "giroFinale": 52,
     "steps": 23,
     "orizzonte_validato": 10,
-    "oltre_il_validato": true
+    "oltre_il_validato": true,
+    "orizzonte_risposta": 6,
+    "oltre_la_risposta": true
    },
    "assunzioni": [
     {
@@ -3833,7 +3847,9 @@
     "giroFinale": 57,
     "steps": 26,
     "orizzonte_validato": 10,
-    "oltre_il_validato": true
+    "oltre_il_validato": true,
+    "orizzonte_risposta": 6,
+    "oltre_la_risposta": true
    },
    "assunzioni": [
     {
@@ -4381,7 +4397,9 @@
     "giroFinale": 78,
     "steps": 35,
     "orizzonte_validato": 10,
-    "oltre_il_validato": true
+    "oltre_il_validato": true,
+    "orizzonte_risposta": 6,
+    "oltre_la_risposta": true
    },
    "assunzioni": [
     {
@@ -4918,7 +4936,9 @@
     "giroFinale": 66,
     "steps": 30,
     "orizzonte_validato": 10,
-    "oltre_il_validato": true
+    "oltre_il_validato": true,
+    "orizzonte_risposta": 6,
+    "oltre_la_risposta": true
    },
    "assunzioni": [
     {
@@ -5452,7 +5472,9 @@
     "giroFinale": 70,
     "steps": 31,
     "orizzonte_validato": 10,
-    "oltre_il_validato": true
+    "oltre_il_validato": true,
+    "orizzonte_risposta": 6,
+    "oltre_la_risposta": true
    },
    "assunzioni": [
     {

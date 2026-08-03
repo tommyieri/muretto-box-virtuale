@@ -75,9 +75,14 @@ const T = {
     testo: 'stint PIANIFICATO, non misurato: un tratto di gara che non è ancora successo (da_dati = false)',
     data: s._data,
   }),
+  orizzonteRisposta: (v) => creaTarghetta({
+    natura: 'MISURATO_FONDO',
+    testo: 'oltre questo orizzonte la RISPOSTA del motore non è validata: è l\'ultimo punto in cui batte SIA il «non cambia niente» SIA il «sei ai box, e ci resti» — i due sbagliano in verso opposto, quindi batterne uno solo non basterebbe. Margine sottile sul primo (p = 0,0368); referto ai_lab/REGISTRO_F1.md',
+    data: v.modello.data,
+  }),
   orizzonte: (v) => creaTarghetta({
     natura: 'MODELLO_DICHIARATO',
-    testo: 'orizzonte oltre il quale il modello NON è validato: il bias resta sotto la soglia solo fino a qui',
+    testo: 'orizzonte oltre il quale il MODELLO DEL PASSO non è validato: il bias del carburante resta sotto la soglia solo fino a qui',
     data: v.modello.data,
   }),
 };
@@ -254,8 +259,25 @@ function perche(vista, s) {
     num(vista.modello.delta_70, { unita: 's', formato: 'secondi', targhetta: T.delta(vista) })));
 
   if (s.orizzonte) {
+    // DUE ORIZZONTI, e l'ordine non è estetico: viene PRIMA quello della RISPOSTA,
+    // perché è la domanda a cui l'utente sta guardando la risposta.
+    //
+    // Fino al 03/08/2026 il pannello mostrava solo quello del PASSO (10 giri, da δ₇₀), e
+    // chi leggeva ne deduceva che fino a lì la risposta fosse buona. È falso fra 7 e 10
+    // giri: lì il motore non batte più il non-fare-niente. Referto ai_lab/REGISTRO_F1.md.
+    if (typeof s.orizzonte.orizzonte_risposta === 'number') {
+      voci.push(el('div', { classe: 'voce' },
+        txt('Fin dove la risposta è validata'),
+        num(s.orizzonte.orizzonte_risposta, { unita: 'giri', formato: 'intero', targhetta: T.orizzonteRisposta(vista) }),
+        s.orizzonte.oltre_la_risposta
+          ? el('span', { classe: 'nota allarme' },
+            txt('questa proiezione va più lontano: '),
+            num(s.orizzonte.steps, { unita: 'giri', formato: 'intero', targhetta: T.orizzonteRisposta(vista) }))
+          : null));
+    }
+
     voci.push(el('div', { classe: 'voce' },
-      txt('Orizzonte validato del modello'),
+      txt('Orizzonte validato del passo'),
       num(s.orizzonte.orizzonte_validato, { unita: 'giri', formato: 'intero', targhetta: T.orizzonte(vista) }),
       s.orizzonte.oltre_il_validato
         ? el('span', { classe: 'nota allarme' },
