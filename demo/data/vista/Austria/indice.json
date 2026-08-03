@@ -1,99 +1,95 @@
 {
- "gara": "Canada",
- "n_giri": 68,
+ "gara": "Austria",
+ "n_giri": 71,
  "primo_giro": 5,
- "ultimo_giro": 65,
+ "ultimo_giro": 68,
  "piloti": {
   "ALB": {
-   "giri": 8,
-   "con_risposta": 8
+   "giri": 64,
+   "con_risposta": 64
   },
   "ALO": {
+   "giri": 64,
+   "con_risposta": 64
+  },
+  "ANT": {
+   "giri": 64,
+   "con_risposta": 63
+  },
+  "BEA": {
+   "giri": 64,
+   "con_risposta": 64
+  },
+  "BOR": {
+   "giri": 64,
+   "con_risposta": 64
+  },
+  "COL": {
+   "giri": 64,
+   "con_risposta": 64
+  },
+  "GAS": {
+   "giri": 64,
+   "con_risposta": 64
+  },
+  "HAD": {
+   "giri": 64,
+   "con_risposta": 64
+  },
+  "HAM": {
+   "giri": 64,
+   "con_risposta": 64
+  },
+  "HUL": {
+   "giri": 64,
+   "con_risposta": 64
+  },
+  "LAW": {
+   "giri": 64,
+   "con_risposta": 64
+  },
+  "LEC": {
+   "giri": 64,
+   "con_risposta": 63
+  },
+  "LIN": {
+   "giri": 64,
+   "con_risposta": 64
+  },
+  "NOR": {
+   "giri": 64,
+   "con_risposta": 64
+  },
+  "OCO": {
+   "giri": 64,
+   "con_risposta": 64
+  },
+  "PIA": {
+   "giri": 64,
+   "con_risposta": 64
+  },
+  "RUS": {
+   "giri": 64,
+   "con_risposta": 64
+  },
+  "SAI": {
    "giri": 20,
    "con_risposta": 20
   },
-  "ANT": {
-   "giri": 61,
-   "con_risposta": 61
-  },
-  "BEA": {
-   "giri": 61,
-   "con_risposta": 61
-  },
-  "BOR": {
-   "giri": 61,
-   "con_risposta": 58
-  },
-  "BOT": {
-   "giri": 60,
-   "con_risposta": 57
-  },
-  "COL": {
-   "giri": 61,
-   "con_risposta": 61
-  },
-  "GAS": {
-   "giri": 61,
-   "con_risposta": 61
-  },
-  "HAD": {
-   "giri": 61,
-   "con_risposta": 61
-  },
-  "HAM": {
-   "giri": 61,
-   "con_risposta": 61
-  },
-  "HUL": {
-   "giri": 61,
-   "con_risposta": 57
-  },
-  "LAW": {
-   "giri": 61,
-   "con_risposta": 61
-  },
-  "LEC": {
-   "giri": 61,
-   "con_risposta": 61
-  },
-  "NOR": {
-   "giri": 35,
-   "con_risposta": 32
-  },
-  "OCO": {
-   "giri": 61,
-   "con_risposta": 61
-  },
-  "PER": {
-   "giri": 36,
-   "con_risposta": 34
-  },
-  "PIA": {
-   "giri": 61,
-   "con_risposta": 60
-  },
-  "RUS": {
-   "giri": 26,
-   "con_risposta": 26
-  },
-  "SAI": {
-   "giri": 61,
-   "con_risposta": 59
-  },
   "STR": {
-   "giri": 60,
-   "con_risposta": 60
+   "giri": 41,
+   "con_risposta": 41
   },
   "VER": {
-   "giri": 61,
-   "con_risposta": 61
+   "giri": 64,
+   "con_risposta": 64
   }
  },
  "_targhetta": {
   "tipo": "vista del sito — nessun numero calcolato dal browser",
   "generata_da": "simulatore/web/genera_vista_gara.mjs",
   "percorso": "provenienza → engine → scenario (Director compreso) → questo JSON → componenti",
-  "data": "2026-08-02"
+  "data": "2026-08-03"
  },
  "modello": {
   "rho": 0.030776,
@@ -149,10 +145,10 @@
   }
  ],
  "perdita": {
-  "verde": 19.327,
-  "circuito": "Canadian_Grand_Prix",
+  "verde": 21.352,
+  "circuito": "Austrian_Grand_Prix",
   "fonte": "misura_interna",
   "fallback": false,
-  "targhetta": "misurato sul fondo 2018-2025: mediana di 68 soste verdi su asciutto a Canadian_Grand_Prix (IC95 18.995–19.9 s)"
+  "targhetta": "misurato sul fondo 2018-2025: mediana di 170 soste verdi su asciutto a Austrian_Grand_Prix (IC95 20.892–21.703 s)"
  }
 }

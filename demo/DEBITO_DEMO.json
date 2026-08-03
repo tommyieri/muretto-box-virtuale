@@ -184,6 +184,39 @@
           "scenari[].violazioni_director"
         ]
       }
+    },
+    {
+      "id": "duplicato-vendor-motore",
+      "titolo": "demo/vendor/simulatore/ e' una copia byte-derivata di simulatore/",
+      "natura": "duplicato NECESSARIO, gia' sorvegliato",
+      "cosa_e_successo": "Sedici file (dodici moduli del motore, quattro formattatori, il CSS e il contesto live) esistono due volte: l'originale in simulatore/ e la copia servita al browser in demo/vendor/simulatore/. La copia serve perche' Vercel pubblica demo/ come statico, senza build: il browser deve trovare i moduli sotto la radice pubblicata.",
+      "perche_resta_aperto": "Non e' un debito da saldare — e' il prezzo dichiarato di non avere un build step. E' a registro perche' 'ogni duplicato in demo/ e' a registro con referto' (KPI I3) non ammette eccezioni implicite: un duplicato coperto da un guardiano che nessun registro nomina e' coperto per caso, e il giorno che il guardiano sparisce nessuno se ne accorge.",
+      "referto": "KPI I3 di ai_lab/KPI_5_4_4.md; censimento dei duplicati del 03/08/2026",
+      "guardia": {
+        "descrizione": "vera finche' i due trasportatori verificano l'identita' byte per byte, ed entrambi girano nella CI (job `suite`). Se uno dei due sparisse, il duplicato resterebbe senza sorveglianza.",
+        "verificata_da": "simulatore/web/trasporta_motore.mjs --verifica",
+        "verificata_anche_da": "simulatore/web/trasporta_formattatori.mjs --verifica",
+        "campi": [
+          "demo/vendor/simulatore/"
+        ]
+      }
+    },
+    {
+      "id": "duplicato-neutralizzazione-json",
+      "titolo": "demo/neutralizzazione.json e' byte-identico a simulatore/data/archivio/dal_futuro/neutralizzazione.json, e NIENTE lo sorvegliava",
+      "natura": "duplicato scoperto, non coperto da nessun guardiano",
+      "cosa_e_successo": "2.074 byte, identici. La SORGENTE e' demo/: la scrive gen_neutralizzazione.py e la riscrive pipeline_gara.py a ogni gara nuova; la copia in simulatore/ e' importata dalla provenienza. Fino al 03/08/2026 nessun trasportatore, nessuna sentinella e nessun test verificava che le due restassero uguali: una gara nuova poteva aggiornarne una e lasciare l'altra indietro, e il motore avrebbe letto una tabella di neutralizzazione diversa da quella che il sito mostra. E' la forma esatta di E12 — due definizioni della stessa cosa — su un file di dati invece che su una funzione.",
+      "perche_resta_aperto": "Unificarle significa decidere QUALE delle due e' la verita' e far leggere l'altra da li'. E' una scelta sull'inventario dei dati, non una riparazione da fare di passaggio: il file sta nel perimetro pinnato del motore (data/MANIFEST.sha256) da un lato e nel perimetro pubblicato dall'altro, e i due hanno regole diverse. Finche' resta doppio, la guardia qui sotto pretende almeno che le due copie non divergano in silenzio.",
+      "referto": "KPI I3; censimento dei duplicati del 03/08/2026",
+      "guardia": {
+        "descrizione": "vera finche' i due file esistono e sono byte-identici. Esce 1 se divergono — cioe' se una gara nuova ne ha aggiornato uno solo — e anche se uno dei due sparisce.",
+        "duplicati_byte_identici": [
+          [
+            "demo/neutralizzazione.json",
+            "simulatore/data/archivio/dal_futuro/neutralizzazione.json"
+          ]
+        ]
+      }
     }
   ]
 }
