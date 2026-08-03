@@ -312,13 +312,20 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
         if (dietro.c - avanti.c >= tetto.minGap) continue;      // non sono in contatto
         // il vantaggio di PASSO su questo giro, non il distacco accumulato
         const vantaggio = avanti.ultimoGiro.lap_time - dietro.ultimoGiro.lap_time;
+        // IL TEMPO PERSO E' TEMPO SUL GIRO, non solo cumulato. La prima scrittura
+        // muoveva `c` e lasciava intatto `lap_time`: il Director l'ha respinta subito
+        // — «il cumulato non corrisponde alla somma dei tempi sul giro» — su 183 casi
+        // su 223. Aveva ragione due volte: rompeva l'invariante, ed era falsa anche
+        // fisicamente. Restare imbottigliato dietro qualcuno E' un giro piu' lento, e
+        // deve comparire nel giro, non solo nel totale.
+        const applica = (m, delta) => { m.c += delta; m.ultimoGiro.lap_time += delta; };
         if (vantaggio > tetto.sogliaSorpasso) {
-          avanti.c += tetto.costoSubito;      // il sorpasso avviene: chi lo subisce paga
+          applica(avanti, tetto.costoSubito);              // il sorpasso avviene: chi lo subisce paga
         } else {
-          dietro.c = avanti.c + tetto.minGap; // niente passo per passare: resta dietro
+          applica(dietro, (avanti.c + tetto.minGap) - dietro.c);  // niente passo per passare: resta dietro
         }
-        avanti.c += tetto.costoDuello;        // il contatto costa a entrambi
-        dietro.c += tetto.costoDuello;
+        applica(avanti, tetto.costoDuello);                // il contatto costa a entrambi
+        applica(dietro, tetto.costoDuello);
       }
     }
 

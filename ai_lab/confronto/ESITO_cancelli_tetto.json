@@ -1,0 +1,72 @@
+{
+ "_targhetta": {
+  "cosa_e": "Esito dei cancelli di PREREG_tetto_movimento.md.",
+  "prereg": "ai_lab/confronto/PREREG_tetto_movimento.md",
+  "parametri": "ai_lab/confronto/duello_tum_2026.json",
+  "fuori_perimetro": [
+   "Miami"
+  ],
+  "data": "2026-08-03"
+ },
+ "senza_tetto": {
+  "n": 175,
+  "alto": {
+   "n": 57,
+   "vince": 10,
+   "perde": 25,
+   "saldo": -15,
+   "p": 0.016673847800120822,
+   "eccesso": 2.0350877192982457
+  },
+  "bassoMedio": {
+   "n": 118,
+   "vince": 38,
+   "perde": 27,
+   "saldo": 11
+  }
+ },
+ "con_tetto": {
+  "n": 175,
+  "alto": {
+   "n": 57,
+   "vince": 21,
+   "perde": 17,
+   "saldo": 4,
+   "p": 0.6271025701571527,
+   "eccesso": 0.3157894736842105
+  },
+  "bassoMedio": {
+   "n": 118,
+   "vince": 25,
+   "perde": 28,
+   "saldo": -3
+  }
+ },
+ "T1": {
+  "passa": true,
+  "da": -15,
+  "a": 4,
+  "serve": -9
+ },
+ "T2": {
+  "passa": false,
+  "saldo": -3,
+  "serve": 13
+ },
+ "T3": {
+  "si_riduce": true,
+  "da": 2.0350877192982457,
+  "a": 0.3157894736842105
+ },
+ "T4": {
+  "passa": false,
+  "n": 217,
+  "vinceA": 16,
+  "vinceB": 33,
+  "pari": 168,
+  "discordanti": 49,
+  "p": 0.02129411414138703
+ },
+ "T5": null,
+ "tutti": false
+}

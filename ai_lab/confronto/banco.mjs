@@ -526,14 +526,15 @@ export function rispostaVecchio(caso, opzioni = {}) {
  *     ma non e' un numero;
  *   - il pilota non ha un passo base e il kernel lo lascia a `null` (regola 6).
  */
-export function rispostaNuovo(caso, { mescola = null, modello = null } = {}) {
+export function rispostaNuovo(caso, { mescola = null, modello = null, tetto = null } = {}) {
   const gSim = garaNuova(caso.gara);
   const scelta = mescola ?? mescolaAlGiro(gSim, caso.freezeLap, caso.pilota);
   const base = { motore: 'nuovo', ok: false, muto: true, pos: null, su: null, banda: null, grezzo: null };
   if (scelta === null) {
     return { ...base, motivo: 'mescola al congelamento non nota o non slick: il motore non finge una gomma' };
   }
-  const contesto = contestoNuovo(caso.gara, modello);
+  const contesto = tetto === null ? contestoNuovo(caso.gara, modello)
+    : { ...contestoNuovo(caso.gara, modello), tetto };
   let r;
   try {
     r = doveRientri({ gara: caso.garaSim, freezeLap: caso.freezeLap, pilota: caso.pilota,
