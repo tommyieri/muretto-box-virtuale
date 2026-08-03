@@ -1,0 +1,37 @@
+{
+ "_targhetta": {
+  "cosa_e": "I tre valori di kappa (curvatura quadratica del degrado) derivati dall'insieme pubblicato TUMFTM, secondo la regola dichiarata in PREREG_cliff_derivato.md §3.",
+  "fonte": "github.com/TUMFTM/race-simulation, racesim/input/parameters/pars_*.ini (121 file, 2014-2019), campo k_2_quad",
+  "regola_di_derivazione": "tutte le voci k_2_quad delle mescole A1-A7; scartate quelle al pavimento numerico (<= 0.0001, fit non convergenti); p25/mediana/p75 dei convergenti; UNO kappa per tutte le mescole",
+  "cosa_NON_e": "Non e' una misura del progetto e non e' stimato dai nostri dati. E' una statistica dichiarata di coefficienti pubblicati da altri, calcolata PRIMA di far girare il motore.",
+  "avvertenza_della_fonte": "il simulatore TUM non usa mai questi coefficienti: dichiara tire_deg_model='lin' in 2.479 voci su 2.479",
+  "calcolato_il": "2026-08-03",
+  "unita": "s/giro^2"
+ },
+ "conteggi": {
+  "voci_totali": 6206,
+  "al_pavimento": 3456,
+  "quota_al_pavimento": 0.557,
+  "convergenti": 2750
+ },
+ "kappa": {
+  "p25": 0.0005,
+  "mediana": 0.0011,
+  "p75": 0.0028
+ },
+ "per_mescola_convergenti_mediana": {
+  "A1": 0.00235,
+  "A2": 0.0011,
+  "A3": 0.0012,
+  "A4": 0.0011,
+  "A5": 0.0007,
+  "A6": 0.00075,
+  "A7": 0.0048
+ },
+ "nota_per_mescola": "non ordinano: e' rumore, non una scala. Per questo si usa UN solo kappa (e il progetto ha gia' un NULL sulla separazione per mescola).",
+ "curvatura_richiesta_per_confronto": {
+  "Austria": 0.00126,
+  "Spagna": 0.00151,
+  "fonte": "ESITO_curvatura_richiesta.json"
+ }
+}
