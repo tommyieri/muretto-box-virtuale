@@ -14,7 +14,13 @@ padding:16px;margin:16px 0}
 h2{margin:0 0 .6rem;font-size:1rem;text-transform:uppercase;letter-spacing:.08em;color:var(--tenue)}
 h3{margin:.8rem 0 .3rem;font-size:.85rem;color:var(--tenue)}
 .contesto{color:var(--tenue);margin:.2rem 0 .6rem;font-size:.9rem}
-.risposta{font-size:1.35rem;line-height:1.45;margin:.2rem 0 .6rem}
+/* LA RISPOSTA E' LA COSA PIU' PESANTE DELLA PAGINA, non solo la piu' grande.
+   Fino al 03/08/2026 era 1,35rem con peso 400, mentre «BOX NOW» e «Pit» erano a 700:
+   dominava per dimensione e perdeva per peso. KPI P4, mock approvato dal PO. */
+.risposta{font-size:1.35rem;line-height:1.45;margin:.2rem 0 .6rem;font-weight:700}
+/* L'occhiello dice COSA si sta guardando: e' la sola risposta che il motore da' bene,
+   validata a +/-2 posizioni, e la riga non lo diceva da nessuna parte. */
+.occhiello{font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--tenue);margin:.4rem 0 0}
 .pannello.respinto .risposta{color:var(--allarme);font-size:1.05rem}
 .soppressione{color:var(--allarme);font-size:.85rem;margin:.2rem 0}
 .nota{color:var(--tenue);font-size:.82rem;display:block;margin-top:.2rem}

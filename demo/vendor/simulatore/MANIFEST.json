@@ -7,8 +7,8 @@
    "byte": 7493
   },
   "pannello.mjs": {
-   "sha256_sorgente": "24889305755052a603e6138519522cb4bb8c50830ab565c3cbf38e86c4a3c7b5",
-   "byte": 21552
+   "sha256_sorgente": "ba1788362431dacd5627252cc9c54bc387deef53cf12a592ef8f5b95c54cf99d",
+   "byte": 22564
   },
   "curva.mjs": {
    "sha256_sorgente": "97ff3a5682819a27830a0e6966fb2136eed933b40e28465993485194a50b3620",
@@ -19,8 +19,8 @@
    "byte": 3685
   },
   "stile.css": {
-   "sha256_sorgente": "b1d4c7d9db7b40c9d01f57cb06a54e291c6765b0f2acfbbebadd0ee5dbe19476",
-   "byte": 7660,
+   "sha256_sorgente": "15bb48b20867a1c4cababeb59a806747a88a6b31fc721c4b8c8dd7c4a54b1f0d",
+   "byte": 8283,
    "ambito": ".sim-pannello"
   }
  }

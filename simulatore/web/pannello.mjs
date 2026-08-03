@@ -86,6 +86,26 @@ const T = {
   }),
 };
 
+/**
+ * L'OCCHIELLO — cosa si sta guardando, sopra la riga che lo risponde.
+ *
+ * La riga dice «Rientri P14…» e non ha mai detto che quella e' una risposta A DUE GIRI.
+ * Il fatto stava dentro la targhetta del numero e dentro il contesto: due posti dove
+ * bisogna gia' sapere di doverlo cercare. Ed e' l'unica cosa che il motore fa bene —
+ * validata a +/-2 posizioni, copertura 88,2% fuori campione — quindi e' anche l'unica
+ * che valga la pena mettere in cima. KPI P4, mock approvato dal PO il 03/08/2026.
+ *
+ * I giri si CONTANO, non si cablano: giro di rientro meno congelamento. Cablare un 2
+ * sarebbe un numero che smette di essere vero il giorno che il rientro cambia.
+ */
+function occhiello(s) {
+  const n = s.pannello.giro_di_rientro - s.freeze_lap;
+  if (!Number.isFinite(n) || n <= 0) return null;
+  return el('p', { classe: 'occhiello' },
+    txt('se ti fermi ora, fra '),
+    num(n, { unita: n === 1 ? 'giro' : 'giri', formato: 'intero', targhetta: T.posizione(s) }));
+}
+
 /** La riga unica: dove esci, e fra chi. */
 function riga(s) {
   const pezzi = [txt('Rientri '), num(s.pannello.posizione, { formato: 'posizione', targhetta: T.posizione(s) })];
@@ -390,6 +410,7 @@ export function pannello(vista, s) {
       num(scenario.freeze_lap, { formato: 'intero', targhetta: T.giro(scenario) }),
       txt(' di '),
       num(scenario.n_giri, { formato: 'intero', targhetta: T.giro(scenario) })),
+    occhiello(scenario),
     riga(scenario),
     scenario.pannello.gap_soppressi
       ? el('p', { classe: 'soppressione' }, txt(scenario.pannello.gap_soppressi))
