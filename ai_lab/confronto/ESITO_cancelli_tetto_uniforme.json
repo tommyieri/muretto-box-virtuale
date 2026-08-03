@@ -1,0 +1,130 @@
+{
+ "_targhetta": {
+  "cosa_e": "Esito dei cancelli di PREREG_tetto_uniforme.md — il tetto a parametri tutti costanti.",
+  "prereg": "ai_lab/confronto/PREREG_tetto_uniforme.md",
+  "parametri": {
+   "minGap": 0.5,
+   "sogliaSorpasso": 2.025,
+   "costoDuello": 0.3,
+   "costoSubito": 0.3,
+   "fonte": "duello_tum_2026.json — costanti sui 121 file; soglia = mediana della fonte intera"
+  },
+  "strati": "CONGELATI sul braccio senza vincolo: i due bracci si leggono sugli stessi casi",
+  "perimetro": "11 gare, configurazione oracolo (la stessa in cui F2 e F3 sono firmati)",
+  "limite": "nessun placebo nuovo (prereg §5): puo' concludere NON DANNEGGIA, mai IL MECCANISMO E' REALE",
+  "data": "2026-08-03"
+ },
+ "taratura": {
+  "verde": true,
+  "esiti": [
+   {
+    "testo": "perimetro n = 193",
+    "ok": true,
+    "misurato": 193,
+    "atteso": 193
+   },
+   {
+    "testo": "terzile alto 13-28",
+    "ok": true,
+    "misurato": {
+     "vince": 13,
+     "perde": 28
+    },
+    "atteso": {
+     "vince": 13,
+     "perde": 28
+    }
+   },
+   {
+    "testo": "basso+medio 44-27",
+    "ok": true,
+    "misurato": {
+     "vince": 44,
+     "perde": 27
+    },
+    "atteso": {
+     "vince": 44,
+     "perde": 27
+    }
+   }
+  ]
+ },
+ "appaiamento": {
+  "comuni": 193,
+  "totale": 193,
+  "persi": 0
+ },
+ "senza_vincolo": {
+  "alto": {
+   "n": 63,
+   "vince": 13,
+   "perde": 28,
+   "pari": 22,
+   "saldo": -15,
+   "p": 0.02753315582958754,
+   "eccesso": 1.8412698412698412
+  },
+  "basso_medio": {
+   "n": 130,
+   "vince": 44,
+   "perde": 27,
+   "pari": 59,
+   "saldo": 17,
+   "p": 0.05681467793283805,
+   "eccesso": -3.8230769230769233
+  }
+ },
+ "con_vincolo": {
+  "alto": {
+   "n": 63,
+   "vince": 10,
+   "perde": 21,
+   "pari": 32,
+   "saldo": -11,
+   "p": 0.07075554598122863,
+   "eccesso": -1.4126984126984128
+  },
+  "basso_medio": {
+   "n": 130,
+   "vince": 31,
+   "perde": 28,
+   "pari": 71,
+   "saldo": 3,
+   "p": 0.7948436539828662,
+   "eccesso": -5.130769230769231
+  }
+ },
+ "U1": {
+  "passa": true,
+  "p": 0.07075554598122863,
+  "saldo": -11,
+  "serve": "p ≥ 0,05 e saldo ≥ −15"
+ },
+ "U2": {
+  "passa": false,
+  "p": 0.7948436539828662,
+  "saldo": 3,
+  "serve": "saldo ≥ +17 e p ≤ 0,0568"
+ },
+ "U3": {
+  "passa": true,
+  "n": 178,
+  "vinceA": 5,
+  "vinceB": 13,
+  "pari": 160,
+  "discordanti": 18,
+  "p": 0.09625244140624975
+ },
+ "U4": {
+  "da": 1.8412698412698412,
+  "a": -1.4126984126984128
+ },
+ "F2": {
+  "raggiunto": true,
+  "regola": "U1 E U3"
+ },
+ "F3": {
+  "raggiunto": false,
+  "regola": "U2"
+ }
+}

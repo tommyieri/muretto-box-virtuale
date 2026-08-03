@@ -1,0 +1,144 @@
+{
+ "_targhetta": {
+  "cosa_e": "Esito di PREREG_F5_controfigure.md — il placebo di F5 applicato al SOFFITTO della famiglia.",
+  "prereg": "ai_lab/confronto/PREREG_F5_controfigure.md",
+  "statistica": "saldo (vince − perde) alla bandiera contro il nullo, 193 casi, perimetro appaiato",
+  "strati": "CONGELATI sulla configurazione identita' (nessuna regola puo' muoverli)",
+  "limite": "l'oracolo non e' un ottimizzatore: da' le soste VERE, non quelle che massimizzano la metrica",
+  "data": "2026-08-03"
+ },
+ "taratura": {
+  "verde": true,
+  "esiti": [
+   {
+    "testo": "identita' 48-62",
+    "ok": true,
+    "misurato": {
+     "vince": 48,
+     "perde": 62
+    },
+    "atteso": {
+     "vince": 48,
+     "perde": 62
+    }
+   },
+   {
+    "testo": "oracolo 57-55",
+    "ok": true,
+    "misurato": {
+     "vince": 57,
+     "perde": 55
+    },
+    "atteso": {
+     "vince": 57,
+     "perde": 55
+    }
+   }
+  ]
+ },
+ "estremi": {
+  "identita": {
+   "n": 193,
+   "vinceA": 48,
+   "vinceB": 62,
+   "pari": 83,
+   "discordanti": 110,
+   "p": 0.2149765377433276,
+   "saldo": -14
+  },
+  "oracolo": {
+   "n": 193,
+   "vinceA": 57,
+   "vinceB": 55,
+   "pari": 81,
+   "discordanti": 112,
+   "p": 0.9247750936573578,
+   "saldo": 2
+  },
+  "divario": 16
+ },
+ "per_terzile_congelato": {
+  "basso": {
+   "identita": -4,
+   "oracolo": 4
+  },
+  "medio": {
+   "identita": 8,
+   "oracolo": 14
+  },
+  "alto": {
+   "identita": -18,
+   "oracolo": -16
+  }
+ },
+ "controfigure": {
+  "livello": {
+   "nome": "C-LIVELLO   (giri a caso)",
+   "seme": 20260803,
+   "estrazioni": 500,
+   "mediana": -7,
+   "p95": 3,
+   "min": -16,
+   "max": 3,
+   "per_terzile": {
+    "basso": {
+     "mediana": 5,
+     "p95": 9
+    },
+    "medio": {
+     "mediana": 11,
+     "p95": 15
+    },
+    "alto": {
+     "mediana": -21,
+     "p95": -18
+    }
+   },
+   "sonda": {
+    "proposte_medie": 3705,
+    "arrivate_medie": 3705
+   }
+  },
+  "posizione": {
+   "nome": "C-POSIZIONE (giri di un'altra gara)",
+   "seme": 20260804,
+   "estrazioni": 500,
+   "mediana": -12,
+   "p95": -5,
+   "min": -27,
+   "max": 6,
+   "per_terzile": {
+    "basso": {
+     "mediana": -4,
+     "p95": 1
+    },
+    "medio": {
+     "mediana": 9,
+     "p95": 13
+    },
+    "alto": {
+     "mediana": -18,
+     "p95": -13
+    }
+   },
+   "sonda": {
+    "proposte_medie": 3705,
+    "arrivate_medie": 3696.492
+   }
+  }
+ },
+ "P1": {
+  "passa": false,
+  "vero": 2,
+  "p95": 3
+ },
+ "P2": {
+  "passa": true,
+  "vero": 2,
+  "p95": -5
+ },
+ "P3": {
+  "quota_livello": 0.5625,
+  "quota_posizione": 0.875
+ }
+}
