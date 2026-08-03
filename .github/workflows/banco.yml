@@ -94,6 +94,15 @@ jobs:
       - name: Il motore servito alla diretta non e' derivato
         run: node web/trasporta_motore.mjs --verifica
 
+      # KPI P1: nessun campo calcolato resta invisibile senza essere dichiarato.
+      # Il generatore proietta la vista campo per campo: un campo che smette di essere
+      # copiato, o che nessuno legge, non fa rumore — la pagina si disegna lo stesso,
+      # senza quella cosa. E' cosi' che `finestra` e' rimasto invisibile per un mese.
+      # Il censimento rende la pagina con la vista avvolta in un Proxy e confronta cio'
+      # che il generatore emette con cio' che i componenti leggono davvero.
+      - name: Nessun campo della vista resta invisibile senza essere dichiarato (P1)
+        run: node web/censimento_vista.mjs --verifica
+
   # LA PARITA' FRA DIRETTA E REPLAY. Gira fuori da simulatore/ perche' mette insieme i
   # due lati: il flusso live registrato (live/fixture/) e la vista pre-calcolata
   # (demo/data/vista/). E' il cancello che impedisce alle due pagine di tornare a

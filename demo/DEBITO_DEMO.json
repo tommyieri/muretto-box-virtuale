@@ -3,7 +3,8 @@
     "cosa_e": "Il debito DICHIARATO del perimetro pubblicato (demo/). Cose che nel sito sono in uno stato diverso da quello che qualcuno aveva deciso, e che restano cosi' finche' non c'e' una decisione nuova. Ogni voce porta il suo referto.",
     "perche_esiste": "Il 02/08/2026 si e' scoperto che gli scenari-degrado accesi dal PO con la PR #64 — l'unica accensione di fisica mai concessa — non erano piu' renderizzati da nessuna pagina: vivevano in demo/muretto.mjs, che con la migrazione al motore nuovo non viene piu' importato da gara.html ne' da live.html. Nessuno l'aveva deciso e nessuno l'aveva scritto: una decisione del PO era stata revocata DI FATTO, in silenzio, da un cambio che riguardava altro. Un registro serve a rendere impossibile che succeda di nuovo senza che si veda.",
     "cosa_NON_e": "Non e' un elenco di buone intenzioni. Ogni voce ha una `guardia`: una condizione verificata da demo/test_debito_demo.mjs, che esce 1 sia se la voce non descrive piu' la realta' (il debito e' stato saldato e nessuno ha aggiornato il registro) sia se il registro elenca qualcosa che non esiste piu'. Il registro e' uno specchio, non un desiderio.",
-    "data": "2026-08-02"
+    "data": "2026-08-02",
+    "aggiornato": "2026-08-03: aggiunte le voci del CENSIMENTO DEI CAMPI DELLA VISTA (KPI P1). Guardia: simulatore/web/censimento_vista.mjs --verifica, che esce 1 sia su un campo orfano non dichiarato qui, sia su una voce che elenca un campo NON piu' orfano."
   },
   "voci": [
     {
@@ -17,8 +18,131 @@
         "descrizione": "vera finche' l'accensione esiste nel codice E nessuna pagina pubblicata importa quel modulo",
         "file_accensione": "demo/muretto.mjs",
         "deve_contenere": "SCENARI_ATTIVI = true",
-        "pagine_che_non_devono_importarlo": ["demo/gara.html", "demo/live.html"],
+        "pagine_che_non_devono_importarlo": [
+          "demo/gara.html",
+          "demo/live.html"
+        ],
         "import_atteso": "muretto.mjs"
+      }
+    },
+    {
+      "id": "campi-vista-targhetta-artefatto",
+      "titolo": "I campi della targhetta dell'artefatto non sono destinati alla pagina",
+      "natura": "orfano legittimo, permanente",
+      "cosa_e_successo": "La vista porta in testa una targhetta che dice cosa e', chi l'ha generata e da quale percorso. Serve a chi legge il file, non a chi legge la pagina: nessun componente la rende, e non deve renderla.",
+      "perche_resta_aperto": "Non e' un debito da saldare: e' un orfano per costruzione. Sta a registro perche' il censimento non possa distinguerlo da un campo dimenticato — un guardiano che ammette eccezioni non dichiarate non e' un guardiano.",
+      "referto": "KPI P1 di ai_lab/KPI_5_4_4.md; censimento del 03/08/2026",
+      "campi_vista_orfani": [
+        "_targhetta.tipo",
+        "_targhetta.generata_da",
+        "_targhetta.percorso"
+      ],
+      "guardia": {
+        "descrizione": "vera finche' i campi elencati restano EMESSI dalla vista e NON letti da nessun componente. La verifica non e' testuale: e' il censimento, che rende davvero la pagina con la vista avvolta in un Proxy. Esce 1 in entrambi i versi — se un campo elencato viene reso (debito saldato e registro non aggiornato) e se un campo orfano non e' elencato qui.",
+        "verificata_da": "simulatore/web/censimento_vista.mjs --verifica",
+        "campi": [
+          "_targhetta.tipo",
+          "_targhetta.generata_da",
+          "_targhetta.percorso"
+        ]
+      }
+    },
+    {
+      "id": "campi-vista-doppioni-di-provenienza",
+      "titolo": "Campi duplicati: la stessa informazione vive gia' altrove nella vista, e la pagina legge quell'altra",
+      "natura": "doppione, rischio E12",
+      "cosa_e_successo": "Quattro gruppi di campi ripetono cose che la pagina prende gia' da un'altra chiave. `modello.orizzonti_validati` ([5,10]) e' il doppione globale di `scenari[].orizzonte.orizzonte_validato`, che e' quello che il pannello legge davvero — e ATTENZIONE: non e' l'orizzonte della RISPOSTA, che vale 6 (orizzonte_risposta.json) ed e' un'altra grandezza. `piano.mescole_gia_usate` duplica `scenari[].mescole_gia_usate`. `perdita.verde` e `perdita.circuito` sono gia' dentro `perdita.targhetta`, che il pannello rende per intero. `banda_posizione.circuito_sotto_livello.gara` ripete `scenari[].gara`.",
+      "perche_resta_aperto": "Toglierli dal generatore significa rigenerare le undici viste di produzione, che e' un'operazione a se' con il suo rischio: la vista del sito e' l'artefatto che serve le pagine, e la si tocca quando si e' deciso di toccarla, non di passaggio mentre si costruisce un censimento. Finche' restano, il rischio dichiarato e' E12: due posti per la stessa cosa, e nessuno garantisce che restino d'accordo.",
+      "referto": "KPI P1; censimento del 03/08/2026",
+      "campi_vista_orfani": [
+        "modello.orizzonti_validati",
+        "modello.orizzonti_validati[]",
+        "scenari[].piano.mescole_gia_usate",
+        "scenari[].piano.mescole_gia_usate[]",
+        "scenari[].mescole_gia_usate[]",
+        "scenari[].perdita.verde",
+        "scenari[].perdita.circuito",
+        "scenari[].pannello.banda_posizione.circuito_sotto_livello.gara"
+      ],
+      "guardia": {
+        "descrizione": "vera finche' i campi elencati restano EMESSI dalla vista e NON letti da nessun componente. La verifica non e' testuale: e' il censimento, che rende davvero la pagina con la vista avvolta in un Proxy. Esce 1 in entrambi i versi — se un campo elencato viene reso (debito saldato e registro non aggiornato) e se un campo orfano non e' elencato qui.",
+        "verificata_da": "simulatore/web/censimento_vista.mjs --verifica",
+        "campi": [
+          "modello.orizzonti_validati",
+          "modello.orizzonti_validati[]",
+          "scenari[].piano.mescole_gia_usate",
+          "scenari[].piano.mescole_gia_usate[]",
+          "scenari[].mescole_gia_usate[]",
+          "scenari[].perdita.verde",
+          "scenari[].perdita.circuito",
+          "scenari[].pannello.banda_posizione.circuito_sotto_livello.gara"
+        ]
+      }
+    },
+    {
+      "id": "campi-vista-ingressi-di-una-decisione",
+      "titolo": "Campi che sono l'INGRESSO di una decisione gia' resa, non un'informazione da mostrare",
+      "natura": "orfano legittimo, con una riserva",
+      "cosa_e_successo": "`banda_posizione.livello` (0,8) e `livello_raggiunto` sono cio' che il generatore usa per decidere se emettere `avviso_livello`, che il pannello rende. `perdita.fallback` decide quale targhetta scrivere. `piano.allarmi[].codice` e `.stint` sono la forma macchina di `descrizione`, che viene resa. `piano.stint[].indice`, `.eta_iniziale`, `.eta_finale` sono l'aritmetica da cui esce la riga di stint gia' mostrata. `orizzonte.giroFinale` e `finestra.n_giri` sono derivabili dai numeri gia' resi.",
+      "perche_resta_aperto": "RISERVA DICHIARATA su uno solo di essi: `livello` e' l'80% pre-registrato, ed e' il numero che serve a interpretare l'88,2% che la pagina mostra. Chi legge «copre l'88,2%» non sa contro quale asticella. Renderlo e' un miglioramento vero, ed e' una decisione di prodotto — sta qui perche' non venga dimenticata, non perche' sia risolta.",
+      "referto": "KPI P1 e P3; censimento del 03/08/2026",
+      "campi_vista_orfani": [
+        "scenari[].pannello.banda_posizione.livello",
+        "scenari[].pannello.banda_posizione.livello_raggiunto",
+        "scenari[].perdita.fallback",
+        "scenari[].piano.allarmi[].codice",
+        "scenari[].piano.allarmi[].stint",
+        "scenari[].piano.stint[].indice",
+        "scenari[].piano.stint[].eta_iniziale",
+        "scenari[].piano.stint[].eta_finale",
+        "scenari[].orizzonte.giroFinale",
+        "scenari[].finestra.n_giri"
+      ],
+      "guardia": {
+        "descrizione": "vera finche' i campi elencati restano EMESSI dalla vista e NON letti da nessun componente. La verifica non e' testuale: e' il censimento, che rende davvero la pagina con la vista avvolta in un Proxy. Esce 1 in entrambi i versi — se un campo elencato viene reso (debito saldato e registro non aggiornato) e se un campo orfano non e' elencato qui.",
+        "verificata_da": "simulatore/web/censimento_vista.mjs --verifica",
+        "campi": [
+          "scenari[].pannello.banda_posizione.livello",
+          "scenari[].pannello.banda_posizione.livello_raggiunto",
+          "scenari[].perdita.fallback",
+          "scenari[].piano.allarmi[].codice",
+          "scenari[].piano.allarmi[].stint",
+          "scenari[].piano.stint[].indice",
+          "scenari[].piano.stint[].eta_iniziale",
+          "scenari[].piano.stint[].eta_finale",
+          "scenari[].orizzonte.giroFinale",
+          "scenari[].finestra.n_giri"
+        ]
+      }
+    },
+    {
+      "id": "campi-vista-sempre-nulli-o-vuoti",
+      "titolo": "Campi che negli scenari committati sono sempre nulli o vuoti: il censimento non puo' sapere se sarebbero letti",
+      "natura": "limite dello strumento, dichiarato",
+      "cosa_e_successo": "`curva[].banda` e `minimo.banda` valgono null in tutti e dodici gli scenari; `mappa.giri[].in_box[]` e' un array vuoto ovunque; `piano.soste` e' vuoto negli scenari a zero soste e i suoi sotto-campi non compaiono mai. Il censimento osserva le LETTURE, quindi su un campo che non ha mai un valore da leggere non puo' pronunciarsi: potrebbe essere reso benissimo su uno scenario che non c'e'.",
+      "perche_resta_aperto": "E' un limite reale del metodo, e sta a registro invece che nascosto in un commento. Si chiude allargando gli scenari committati a casi che valorizzino questi campi — cioe' aggiungendo alla vista del demo uno scenario con banda non nulla e uno con soste in corso. Finche' non c'e', questi quattro campi NON sono dichiarati morti: sono dichiarati non giudicabili.",
+      "referto": "KPI P1; censimento del 03/08/2026",
+      "campi_vista_orfani": [
+        "scenari[].curva[].banda",
+        "scenari[].minimo.banda",
+        "scenari[].mappa.giri[].in_box[]",
+        "scenari[].piano.soste",
+        "scenari[].piano.soste[]",
+        "scenari[].piano.soste[].giro",
+        "scenari[].piano.soste[].mescola"
+      ],
+      "guardia": {
+        "descrizione": "vera finche' i campi elencati restano EMESSI dalla vista e NON letti da nessun componente. La verifica non e' testuale: e' il censimento, che rende davvero la pagina con la vista avvolta in un Proxy. Esce 1 in entrambi i versi — se un campo elencato viene reso (debito saldato e registro non aggiornato) e se un campo orfano non e' elencato qui.",
+        "verificata_da": "simulatore/web/censimento_vista.mjs --verifica",
+        "campi": [
+          "scenari[].curva[].banda",
+          "scenari[].minimo.banda",
+          "scenari[].mappa.giri[].in_box[]",
+          "scenari[].piano.soste",
+          "scenari[].piano.soste[]",
+          "scenari[].piano.soste[].giro",
+          "scenari[].piano.soste[].mescola"
+        ]
       }
     }
   ]

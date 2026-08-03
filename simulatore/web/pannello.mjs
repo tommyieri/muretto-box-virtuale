@@ -62,6 +62,13 @@ const T = {
     testo: `piano gomme fino alla bandiera: la ricerca confronta 0…3 soste col kernel e sceglie il totale minore. ${s.piano.limite}`,
     data: s._data,
   }),
+  alternative: (s) => creaTarghetta({
+    natura: 'MODELLO_DICHIARATO',
+    testo: 'quanto costerebbe in piu\' quel numero di soste, secondo lo stesso kernel che ha scelto il piano: '
+      + 'stessa equazione per la scelta e per il confronto (regola 10). NON e\' una misura sulla gara vera, '
+      + 'e non tiene conto della reazione degli avversari — nel motore i rivali non si fermano mai.',
+    data: s._data,
+  }),
   stint: (s) => creaTarghetta({
     natura: 'MODELLO_DICHIARATO',
     testo: 'stint PIANIFICATO, non misurato: un tratto di gara che non è ancora successo (da_dati = false)',
@@ -190,7 +197,59 @@ function pianoGomme(s) {
     // gli ALLARMI: dichiarati come tali, mai come limiti fisici
     ...p.allarmi.map((a) => el('p', { classe: 'nota allarme', titolo: a.targhetta },
       txt(a.descrizione, { cifre_dichiarate: 'allarme: i numeri sono quelli del confronto col 2026, riportati nel testo dell\'allarme e spiegati dalla targhetta' }))),
-    el('p', { classe: 'nota limite' }, txt(p.limite)));
+    el('p', { classe: 'nota limite' }, txt(p.limite)),
+    percheSoste(s));
+}
+
+/**
+ * PERCHE' QUEL NUMERO DI SOSTE — il confronto che il motore fa e non mostrava.
+ *
+ * Il censimento dei campi della vista (KPI P1) ha trovato che `piano.alternative` e
+ * `piano.limite_perche` erano EMESSI e letti da nessuno: il motore confronta 0, 1, 2 e 3
+ * soste col kernel, ne stampa i totali, e la pagina diceva soltanto il vincitore. La
+ * domanda piu' ovvia che un utente si fa davanti a «soste previste 1» — *e due?* — aveva
+ * gia' la sua risposta calcolata, a un campo di distanza.
+ *
+ * E' anche la faccia leggibile di un esito registrato: F4 e' MANCATO perche' il piano non
+ * propone mai due soste (0 gare su 2 fra quelle in cui Pirelli se le aspettava), e
+ * `limite_perche` e' la ragione aritmetica per cui non le propone. Mostrare il confronto e
+ * la ragione insieme e' l'unico modo onesto di dire «una sosta» a chi si aspettava due.
+ *
+ * STA DENTRO UN <details> CHIUSO, e non e' pigrizia: la risposta a due giri deve restare
+ * l'elemento dominante del pannello (KPI P4). Questo blocco e' una spiegazione, e una
+ * spiegazione che compete tipograficamente con la risposta sposta l'attenzione sulla cosa
+ * su cui il motore e' meno validato.
+ */
+function percheSoste(s) {
+  const p = s.piano;
+  const alt = Array.isArray(p.alternative) ? [...p.alternative].filter((a) => Number.isFinite(a?.totale)) : [];
+  if (!alt.length && !p.limite_perche) return null;
+  const migliore = alt.length ? Math.min(...alt.map((a) => a.totale)) : null;
+  return el('details', { classe: 'perche-soste' },
+    el('summary', {}, txt('Perché questo numero di soste, e non un altro')),
+    alt.length
+      ? el('table', { classe: 'alternative' },
+        el('tr', {},
+          el('th', {}, txt('soste')), el('th', {}, txt('quando')), el('th', {}, txt('costo in più')))
+        , ...alt.sort((a, b) => a.k - b.k).map((a) => el('tr', { classe: a.totale === migliore ? 'scelta' : null },
+          el('td', {}, num(a.k, { formato: 'intero', targhetta: T.piano(s) })),
+          // OGNI GIRO PASSA DA num(): «giro 48» come stringa e' una quantita' travestita
+          // da parola, e s20 la boccia — a ragione. La targhetta e' quella del piano,
+          // perche' quei giri escono dalla stessa ricerca che ha scelto il vincitore.
+          el('td', {}, ...(a.soste?.length
+            ? a.soste.flatMap((g, j) => [
+              txt(j === 0 ? 'giro ' : ', '),
+              num(g, { formato: 'intero', targhetta: T.piano(s) }),
+            ])
+            : [txt('nessuna')])),
+          el('td', {}, a.totale === migliore
+            ? txt('— la scelta')
+            : num(a.totale - migliore, { unita: 's', formato: 'secondi', targhetta: T.alternative(s) })))))
+      : null,
+    p.limite_perche
+      ? el('p', { classe: 'nota limite-perche' },
+        txt(p.limite_perche, { cifre_dichiarate: 'spiegazione della forma chiusa: i numeri fanno parte del ragionamento, non sono quantità mostrate come risultato' }))
+      : null);
 }
 
 /**

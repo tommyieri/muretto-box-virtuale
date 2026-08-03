@@ -43,6 +43,21 @@ for (const v of reg.voci ?? []) {
   if (!v.guardia) continue;
   const g = v.guardia;
 
+  // GUARDIA DELEGATA. Alcune voci non si verificano leggendo una stringa in un file: i
+  // campi orfani della vista si verificano RENDENDO la pagina, e quel lavoro lo fa
+  // `simulatore/web/censimento_vista.mjs --verifica` (KPI P1), che esce 1 in entrambi i
+  // versi. Qui si controlla che la delega sia esplicita e che il verificatore esista
+  // davvero — una delega a uno strumento che non c'e' sarebbe una voce senza guardia con
+  // l'aria di averne una.
+  if (g.verificata_da) {
+    const file = g.verificata_da.split(' ')[0];
+    esito(existsSync(path.join(RADICE, file)),
+      `${eti} il verificatore delegato esiste: ${file}`);
+    esito(Array.isArray(g.campi) && g.campi.length > 0,
+      `${eti} la delega elenca i campi che sorveglia (${g.campi?.length ?? 0})`);
+    continue;
+  }
+
   // (a) l'accensione dichiarata esiste ancora nel codice
   const acc = path.join(RADICE, g.file_accensione);
   if (!existsSync(acc)) {
