@@ -86,10 +86,27 @@ export const REGOLE = {
 // vuole sapere se porta informazione — il GIRO. Stessi rivali, stesso numero di soste,
 // stesse mescole: se la controfigura vale quanto la regola, la regola non sapeva quando.
 
-/** Quanti rivali, e quante soste ciascuno: la «forma» del piano, che si conserva. */
-const forma = (piani) => Object.entries(piani ?? {})
-  .filter(([, v]) => Array.isArray(v) && v.length)
-  .map(([drv, v]) => [drv, v.length]);
+/**
+ * Quanti rivali, e quante soste ciascuno: la «forma» del piano, che si conserva.
+ *
+ * SI CONTA SU CIO' CHE ARRIVA AL MOTORE, non su cio' che la regola propone: il
+ * costruttore scarta le soste con `giro <= freezeLap`, e contarle darebbe alla
+ * controfigura piu' soste di quante ne abbia la regola. Misurato: 3705 contro 3639,
+ * l'1,8% regalato al caso — e il primo cancello di F5 e' fallito per UN punto mentre quel
+ * vantaggio era in campo. Difetto a referto in ESITO_controfigure_f5.md, corretto qui
+ * dalla pagina nuova PREREG_F5_bis.md. Con questa definizione proposte e arrivate
+ * coincidono nei due bracci per costruzione, ed e' il cancello B0.
+ */
+const forma = (piani, freezeLap) => Object.entries(piani ?? {})
+  .map(([drv, v]) => [drv, (Array.isArray(v) ? v : []).filter((s) => Number.isInteger(s?.giro) && s.giro > freezeLap)])
+  .filter(([, v]) => v.length);
+
+// Le mescole si conservano DALLE STESSE soste che la forma conta. Prima si indicizzava il
+// piano dall'inizio, quindi una sosta scartata perche' pre-congelamento prestava comunque
+// la sua mescola: e' la stessa incoerenza della forma, sullo stesso oggetto. Sui tempi non
+// puo' cambiare niente — il motore dichiara MESCOLA_NON_SEPARA, la mescola non entra nel
+// degrado — ma entra nel filtro slick del costruttore, e li' deve essere quella giusta.
+const mescolaDi = (soste, i) => soste[Math.min(i, soste.length - 1)].mescola;
 
 /**
  * CONTROFIGURA DI LIVELLO — gli stessi rivali si fermano lo stesso numero di volte, a
@@ -103,7 +120,8 @@ const forma = (piani) => Object.entries(piani ?? {})
  */
 export function controfiguraLivello(piani, { freezeLap, giroFinale, rnd }) {
   const out = {};
-  for (const [drv, quante] of forma(piani)) {
+  for (const [drv, soste] of forma(piani, freezeLap)) {
+    const quante = soste.length;
     const basso = freezeLap + 1;
     const alto = giroFinale - 1;
     if (alto < basso) continue;
@@ -115,7 +133,7 @@ export function controfiguraLivello(piani, { freezeLap, giroFinale, rnd }) {
       tentativi += 1;
     }
     const ordinati = [...giri].sort((a, b) => a - b);
-    out[drv] = ordinati.map((giro, i) => ({ giro, mescola: piani[drv][i]?.mescola ?? piani[drv][0].mescola }));
+    out[drv] = ordinati.map((giro, i) => ({ giro, mescola: mescolaDi(soste, i) }));
   }
   return out;
 }
@@ -149,12 +167,37 @@ export function controfiguraPosizione(piani, prestati, { freezeLap, giroFinale, 
     return Math.min(giroFinale - 1, Math.max(freezeLap + 1, g));
   };
   let i = 0;
-  for (const [drv, quante] of forma(piani)) {
-    const presi = daPrestare[i % daPrestare.length];
+  for (const [drv, soste] of forma(piani, freezeLap)) {
+    const quante = soste.length;
     i += 1;
-    const giri = [...new Set(presi.slice(0, quante).map((s) => scala(s.giro)))].sort((a, b) => a - b);
+    // LE COLLISIONI SI RISOLVONO, NON SI SCARTANO. Due giri prestati diversi possono
+    // ricadere sullo stesso giro dopo il riscalamento: buttarne uno farebbe fermare il
+    // rivale MENO volte della regola, che e' esattamente lo squilibrio che B0 sorveglia
+    // (misurato: 5 soste perse su 3639). Si sposta in avanti al primo giro libero, e se
+    // non ce n'e' si torna indietro.
+    // SE CHI PRESTA HA MENO SOSTE DI QUANTE NE SERVONO, si scorre ai prestatori
+    // successivi finche' il conto torna. Fermarsi al primo farebbe fermare il rivale meno
+    // volte della regola — 5 soste perse su 3639, viste da B0 — e sarebbe una controfigura
+    // piu' debole per un motivo che non c'entra col caso.
+    const grezzi = [];
+    for (let k = 0; k < daPrestare.length && grezzi.length < quante; k += 1) {
+      for (const s of daPrestare[(i + k) % daPrestare.length]) {
+        if (grezzi.length >= quante) break;
+        grezzi.push(s.giro);
+      }
+    }
+    const presa = grezzi.map((g) => scala(g)).sort((a, b) => a - b);
+    const usati = new Set(); const giri = [];
+    for (const g0 of presa) {
+      let g = g0;
+      while (usati.has(g) && g < giroFinale - 1) g += 1;
+      while (usati.has(g) && g > freezeLap + 1) g -= 1;
+      if (usati.has(g)) continue;          // intervallo saturo: dichiarato, non nascosto
+      usati.add(g); giri.push(g);
+    }
+    giri.sort((a, b) => a - b);
     if (!giri.length) continue;
-    out[drv] = giri.map((giro, k) => ({ giro, mescola: piani[drv][k]?.mescola ?? piani[drv][0].mescola }));
+    out[drv] = giri.map((giro, k) => ({ giro, mescola: mescolaDi(soste, k) }));
   }
   return out;
 }

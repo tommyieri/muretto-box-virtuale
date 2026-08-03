@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// controfigure_f5.mjs — i cancelli di PREREG_F5_controfigure.md.
+// controfigure_f5.mjs — i cancelli di PREREG_F5_controfigure.md e di PREREG_F5_bis.md.
 //
 //     node ai_lab/confronto/controfigure_f5.mjs [--json] [--estrazioni N]
 //
@@ -160,6 +160,15 @@ const CP = giraControfigura('C-POSIZIONE (giri di un\'altra gara)', SEME_POSIZIO
   });
 
 // ── i cancelli ──────────────────────────────────────────────────────────────
+// ── B0: IL CANCELLO DI VALIDITA', e viene PRIMA ─────────────────────────────
+//
+// PREREG_F5_bis.md §3. Alla prima prereg questa clausola era a SENSO UNICO: prevedeva
+// solo il verso che avrebbe favorito la regola, e il verso osservato fu l'opposto — le
+// controfigure facevano arrivare al motore 3705 soste contro le 3639 dell'oracolo, l'1,8%
+// in piu', e P1 fallì per UN punto. Adesso e' BILATERALE: se i due bracci non fanno
+// arrivare al motore lo stesso numero di soste, i cancelli non si leggono.
+const B0 = Math.round(CL.sonda.arrivate_medie) === orac.sonda.arrivati
+  && Math.round(CP.sonda.arrivate_medie) === orac.sonda.arrivati;
 const P1 = SALDO_ORAC > CL.p95;
 const P2 = SALDO_ORAC > CP.p95;
 const quota = (c) => (DIVARIO === 0 ? null : (SALDO_ORAC - c.mediana) / DIVARIO);
@@ -173,13 +182,18 @@ for (const [c, esito] of [[CL, P1], [CP, P2]]) {
     + (Math.abs(c.sonda.arrivate_medie - orac.sonda.arrivati) > 0.05 * orac.sonda.arrivati ? '   ⚠ PREREG §6(a): il confronto e\' sbilanciato' : ''));
 }
 console.log('');
+console.log(`   B0 (validita': stesse soste arrivate al motore nei due bracci)   ${B0 ? 'PASSA' : 'NON PASSA'}`
+  + `   — oracolo ${orac.sonda.arrivati} · livello ${CL.sonda.arrivate_medie.toFixed(0)} · posizione ${CP.sonda.arrivate_medie.toFixed(0)}`);
+if (!B0) console.log('       B0 VIENE PRIMA: i cancelli sotto NON si leggono (PREREG_F5_bis.md §3).');
 console.log(`   P1 (C-LIVELLO)    ${P1 ? 'PASSA' : 'NON PASSA'}`);
 console.log(`   P2 (C-POSIZIONE)  ${P2 ? 'PASSA' : 'NON PASSA'}`);
 console.log(`   P3 quota del divario che sopravvive al placebo:  livello ${quota(CL) === null ? '—' : (100 * quota(CL)).toFixed(0) + '%'}`
   + `  ·  posizione ${quota(CP) === null ? '—' : (100 * quota(CP)).toFixed(0) + '%'}   (diagnostico)`);
 
 console.log('');
-if (P1 && P2) {
+if (!B0) {
+  console.log('   ESITO NON VALIDO: B0 non passa. Non si legge altro (PREREG_F5_bis.md §3).');
+} else if (P1 && P2) {
   console.log('   LETTURA OBBLIGATA DALLA PREREG §4: esiste informazione strategica catturabile.');
   console.log('   Si dichiara la quota residua e SOLO ALLORA si apre la prereg di un candidato.');
 } else {
@@ -196,7 +210,7 @@ if (JSON_OUT) {
   const doc = {
     _targhetta: {
       cosa_e: 'Esito di PREREG_F5_controfigure.md — il placebo di F5 applicato al SOFFITTO della famiglia.',
-      prereg: 'ai_lab/confronto/PREREG_F5_controfigure.md',
+      prereg: 'ai_lab/confronto/PREREG_F5_bis.md (corregge PREREG_F5_controfigure.md)',
       statistica: 'saldo (vince − perde) alla bandiera contro il nullo, 193 casi, perimetro appaiato',
       strati: 'CONGELATI sulla configurazione identita\' (nessuna regola puo\' muoverli)',
       limite: 'l\'oracolo non e\' un ottimizzatore: da\' le soste VERE, non quelle che massimizzano la metrica',
@@ -208,11 +222,12 @@ if (JSON_OUT) {
       identita: saldoDi(perStrato(ident.m, s)), oracolo: saldoDi(perStrato(orac.m, s)),
     }])),
     controfigure: { livello: CL, posizione: CP },
+    B0: { passa: B0, oracolo: orac.sonda.arrivati, livello: CL.sonda.arrivate_medie, posizione: CP.sonda.arrivate_medie },
     P1: { passa: P1, vero: SALDO_ORAC, p95: CL.p95 },
     P2: { passa: P2, vero: SALDO_ORAC, p95: CP.p95 },
     P3: { quota_livello: quota(CL), quota_posizione: quota(CP) },
   };
-  const dove = path.join(RADICE, 'ai_lab', 'confronto', 'ESITO_controfigure_f5.json');
+  const dove = path.join(RADICE, 'ai_lab', 'confronto', 'ESITO_controfigure_f5_bis.json');
   writeFileSync(dove, JSON.stringify(doc, null, 1) + '\n');
   console.log(`\n   scritto ${path.relative(RADICE, dove)}`);
 }
