@@ -237,8 +237,9 @@ export function contestoNuovo(nomeSito = null, modelloOverride = null) {
     const prior = caricaPrior(SIM);
     const costantiDirector = caricaCostanti(SIM);
     const bandaRientro = JSON.parse(readFileSync(path.join(SIM, 'data', 'modelli', 'banda_rientro.json'), 'utf8'));
+    const orizzonteRisposta = JSON.parse(readFileSync(path.join(SIM, 'data', 'modelli', 'orizzonte_risposta.json'), 'utf8'));
     c.gareSim = gareSim;
-    c.contesto = { gare: gareSim, modello, prior, costantiDirector, bandaRientro, nGiriGara: null };
+    c.contesto = { gare: gareSim, modello, prior, costantiDirector, bandaRientro, orizzonteRisposta, nGiriGara: null };
   }
   // Il MODELLO si può sostituire senza toccare il disco. Serve a chi misura una
   // variante pre-registrata — per esempio i parametri leave-one-race-out del

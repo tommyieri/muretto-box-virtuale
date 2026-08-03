@@ -81,10 +81,17 @@ diagnosi del 02/08, e non la bandiera.
 E c'è un numero da correggere, trovato registrando questo esito:
 
 > Il motore dichiara **`orizzonte_validato = 10`** — `Math.max(...)` di
-> `delta_70.decisione.orizzonti_validati = [5, 10]` — e con esso marca «oltre il validato»
-> solo il **13,8%** dei pannelli. Ma quel 10 viene dall'esperimento su **δ₇₀**, che è una
-> domanda diversa: fin dove è validato il coefficiente del carburante, non fin dove è
-> validata la risposta del motore.
+> `delta_70.decisione.orizzonti_validati = [5, 10]`. Ma quel 10 viene dall'esperimento su
+> **δ₇₀**, che è una domanda diversa: fin dove è validato il coefficiente del carburante,
+> non fin dove è validata la risposta del motore.
+
+**RETTIFICA del 03/08, poche ore dopo.** La prima stesura di questo paragrafo diceva che
+con quella soglia il motore marca «oltre il validato» *«solo il 13,8% dei pannelli»*.
+**È il numero rovesciato**: la misura dice **86,2%** (9.606 pannelli su 11.143), e il 13,8%
+è la quota che resta *dentro*. L'errore non cambia la conclusione — anzi la indebolisce di
+poco, perché il pannello già avvertiva sulla grande maggioranza dei casi — ma un numero
+invertito in un referto è un numero falso, e va corretto dove è stato scritto.
+Portando la soglia da 10 a 6 passano «oltre» **altri 774 pannelli, il 6,9%**.
 
 Da oggi quel numero **sovra-dichiara**: a 8 e 10 giri il motore non batte più il nullo
 letterale, quindi la sua risposta non è validata lì. La correzione **non si fa toccando

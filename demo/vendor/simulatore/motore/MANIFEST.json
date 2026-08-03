@@ -41,8 +41,8 @@
    "byte": 3585
   },
   "scenario/costruttore.mjs": {
-   "sha256_sorgente": "2ce64d07a7fa39c3f46ad77ca63edbf309d143e25e70eadad90bceb7f4a0c318",
-   "byte": 44456
+   "sha256_sorgente": "4e005cba460262dbb31f91f8c7f5687c5bf4c73bcdde80079019a7bc9a0ce3a3",
+   "byte": 45919
   },
   "scenario/director.mjs": {
    "sha256_sorgente": "a305da62cf49576be92050910d7f9fe8a5abe1bedebb49334b8fcf0e016e4e9a",

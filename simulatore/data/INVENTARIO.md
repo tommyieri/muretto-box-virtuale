@@ -275,6 +275,7 @@ nella loro targhetta. Restano pinnati nel manifest come tutto il resto di
 - `modelli/banda_rientro.json` — coefficienti con targhetta (`fisica/stima_v2.py`, δ deciso da `banco/replay_delta.mjs`)
 - `modelli/esiti_per_caso.json` — coefficienti con targhetta (`fisica/stima_v2.py`, δ deciso da `banco/replay_delta.mjs`)
 - `modelli/modello_v2.json` — coefficienti con targhetta (`fisica/stima_v2.py`, δ deciso da `banco/replay_delta.mjs`)
+- `modelli/orizzonte_risposta.json` — coefficienti con targhetta (`fisica/stima_v2.py`, δ deciso da `banco/replay_delta.mjs`)
 - `modelli/pavimenti_2026.json` — coefficienti con targhetta (`fisica/stima_v2.py`, δ deciso da `banco/replay_delta.mjs`)
 - `modelli/pitloss_interno.json` — coefficienti con targhetta (`fisica/stima_v2.py`, δ deciso da `banco/replay_delta.mjs`)
 
