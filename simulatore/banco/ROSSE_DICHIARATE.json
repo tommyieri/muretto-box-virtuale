@@ -1,65 +1,59 @@
 {
-  "_targhetta": {
-    "cosa_e": "L'elenco delle asserzioni che oggi sono ROSSE PER DECISIONE, non per difetto ignoto. run_suite.mjs esce 0 se e solo se le rosse osservate coincidono ESATTAMENTE con queste.",
-    "perche_esiste": "Dal giorno in cui due sentinelle sono diventate rosse per decisione dichiarata, la CI e' rossa a ogni push. Una CI sempre rossa non e' severa: e' MUTA. Il PO riceveva un'email di fallimento per ogni commit e non poteva piu' distinguere una regressione nuova dal rumore di fondo — che e' esattamente il modo in cui un banco smette di essere un arbitro (regola 4: un test che stampa FALLITO ed esce 0 e' un ornamento; una CI che stampa sempre FALLITO e' lo stesso ornamento al contrario).",
-    "cosa_NON_e": "Non e' un modo di spegnere una sentinella. Ogni voce qui dentro resta ROSSA e viene stampata a ogni giro: cambia solo che il runner sa distinguerla da una regressione. Una voce senza `referto` non e' ammessa — se nessun documento la dichiara, non e' una decisione, e' un difetto che qualcuno ha smesso di guardare.",
-    "come_fallisce_lo_stesso": [
-      "una rossa NUOVA, che qui non c'e': la suite esce 1 (e' la regressione che si voleva vedere)",
-      "una rossa dichiarata che DIVENTA VERDE: la suite esce 1. Non e' una buona notizia da ignorare — significa che la decisione scritta nel referto non descrive piu' la realta', e va riletta",
-      "una sentinella che muore senza stampare nessuna asserzione (crash, segnale): la suite esce 1 sempre"
-    ],
-    "chiave": "Il confronto avviene sulla descrizione dell'asserzione con le CIFRE RIMOSSE. Cosi' un numero che si muove dentro una rossa gia' nota (0,7857 -> 0,7912) non finge una regressione, ma viene stampato accanto alla voce perche' si veda che si e' mosso.",
-    "data": "2026-08-02"
+ "_targhetta": {
+  "cosa_e": "L'elenco delle asserzioni che oggi sono ROSSE PER DECISIONE, non per difetto ignoto. run_suite.mjs esce 0 se e solo se le rosse osservate coincidono ESATTAMENTE con queste.",
+  "perche_esiste": "Dal giorno in cui due sentinelle sono diventate rosse per decisione dichiarata, la CI e' rossa a ogni push. Una CI sempre rossa non e' severa: e' MUTA. Il PO riceveva un'email di fallimento per ogni commit e non poteva piu' distinguere una regressione nuova dal rumore di fondo — che e' esattamente il modo in cui un banco smette di essere un arbitro (regola 4: un test che stampa FALLITO ed esce 0 e' un ornamento; una CI che stampa sempre FALLITO e' lo stesso ornamento al contrario).",
+  "cosa_NON_e": "Non e' un modo di spegnere una sentinella. Ogni voce qui dentro resta ROSSA e viene stampata a ogni giro: cambia solo che il runner sa distinguerla da una regressione. Una voce senza `referto` non e' ammessa — se nessun documento la dichiara, non e' una decisione, e' un difetto che qualcuno ha smesso di guardare.",
+  "come_fallisce_lo_stesso": [
+   "una rossa NUOVA, che qui non c'e': la suite esce 1 (e' la regressione che si voleva vedere)",
+   "una rossa dichiarata che DIVENTA VERDE: la suite esce 1. Non e' una buona notizia da ignorare — significa che la decisione scritta nel referto non descrive piu' la realta', e va riletta",
+   "una sentinella che muore senza stampare nessuna asserzione (crash, segnale): la suite esce 1 sempre"
+  ],
+  "chiave": "Il confronto avviene sulla descrizione dell'asserzione con le CIFRE RIMOSSE. Cosi' un numero che si muove dentro una rossa gia' nota (0,7857 -> 0,7912) non finge una regressione, ma viene stampato accanto alla voce perche' si veda che si e' mosso.",
+  "data": "2026-08-02",
+  "guarite": "03/08/2026: D4 CHIUSO. Il verificatore era implementato al rovescio della sua prereg (pretendeva zero secchi asimmetrici, cioe' diventava rosso quando il modello faceva la cosa giusta). PREREG_difesa.md §D4 chiede che l'asimmetria, quando c'e', sia DICHIARATA e la banda mostrata come tale. Adesso il cancello sorveglia la COERENZA fra bias e banda traslata, in entrambi i versi, e passa. Il modello non e' stato toccato."
+ },
+ "dichiarate": [
+  {
+   "sentinella": "s15",
+   "asserzione": "cancello — D1 la banda di rientro copre ed è minimale (leave-one-race-out) · 398 soste su 11 gare; falliti: PULITA, NEUTRA, PRODOTTO/NEUTRA",
+   "natura": "decisione",
+   "perche": "Sotto neutralizzazione la banda copre il 78,6% contro l'80% pre-registrato, e ALLARGARLA PEGGIORA (77,4% -> 58,3%). Il 01/08 il PO ha deciso di non ri-registrare il livello (sarebbe E08) e di non togliere la banda, ma di dichiarare lo scarto dove si vede: il record porta `livello_raggiunto: false` e `avviso_livello`. Il cancello resta rosso APPOSTA.",
+   "referto": "ai_lab/confronto/PIANO_CORREZIONE.md, voce 3"
   },
-  "dichiarate": [
-    {
-      "sentinella": "s15",
-      "asserzione": "cancello — D1 la banda di rientro copre ed è minimale (leave-one-race-out) · 398 soste su 11 gare; falliti: PULITA, NEUTRA, PRODOTTO/NEUTRA",
-      "natura": "decisione",
-      "perche": "Sotto neutralizzazione la banda copre il 78,6% contro l'80% pre-registrato, e ALLARGARLA PEGGIORA (77,4% -> 58,3%). Il 01/08 il PO ha deciso di non ri-registrare il livello (sarebbe E08) e di non togliere la banda, ma di dichiarare lo scarto dove si vede: il record porta `livello_raggiunto: false` e `avviso_livello`. Il cancello resta rosso APPOSTA.",
-      "referto": "ai_lab/confronto/PIANO_CORREZIONE.md, voce 3"
-    },
-    {
-      "sentinella": "s15",
-      "asserzione": "cancello — D4 nessuna banda simmetrica nasconde un bias ≥ 1 posizione · asimmetrici: NEUTRA",
-      "natura": "difetto noto",
-      "perche": "Il verificatore e' implementato AL ROVESCIO della sua prereg: PREREG_difesa dice che un secco con bias mediano >= 1 «viene dichiarata asimmetrica e mostrata come tale», mentre il codice pretende zero secchi asimmetrici — quindi diventa rosso esattamente quando il modello fa la cosa giusta. NEUTRA e' asimmetrica per decisione (sotto 4, sopra 3). Va corretto il verificatore, non il modello.",
-      "referto": "simulatore/banco/prereg/PREREG_difesa.md + accertamento del 02/08/2026"
-    },
-    {
-      "sentinella": "s15",
-      "asserzione": "cancello — bias piatto entro 0.1 · 0.103028",
-      "natura": "decisione",
-      "perche": "0,103 contro una soglia di 0,10: mancato per tre millesimi dopo l'accensione del rodaggio (voce 1). Direttiva del PO del 01/08: in live va la miglior versione riproducibile, le regressioni piccole si DICHIARANO rosse e non bloccano, e le soglie non si allargano.",
-      "referto": "ai_lab/confronto/ESITO_rodaggio.md"
-    },
-    {
-      "sentinella": "s25",
-      "asserzione": "D1 passa (398 soste, 11 gare)",
-      "natura": "decisione",
-      "perche": "E' la stessa cosa della prima voce di s15, vista dall'altra sentinella. Il progetto la dichiara due volte di proposito: una nel cancello, una nella sorveglianza della difesa.",
-      "referto": "ai_lab/confronto/PIANO_CORREZIONE.md, voce 3"
-    },
-    {
-      "sentinella": "s25",
-      "asserzione": "NEUTRA: copre almeno 0.8 fuori campione (0.7857)",
-      "natura": "decisione",
-      "perche": "La cifra esatta dello scarto della voce sopra: 78,6% contro l'80% pre-registrato.",
-      "referto": "ai_lab/confronto/PIANO_CORREZIONE.md, voce 3"
-    },
-    {
-      "sentinella": "s25",
-      "asserzione": "sulla banda complessiva dentro e fuori campione DIVERGONO (0.8593 contro 0.8593): il leave-one-race-out non è un alias",
-      "natura": "difetto noto",
-      "perche": "E' l'UNICA prova che il leave-one-race-out non sia un alias del dentro campione, e oggi e' MORTA: i due numeri coincidono. La causa e' benigna (con la ricalibrazione i due valori sono venuti uguali), ma l'effetto no — a ventun giorni dal primo fuori campione vero, niente nella suite prova piu' quella distinzione. Va rifatta l'asserzione su una quantita' che possa davvero divergere.",
-      "referto": "accertamento del 02/08/2026, riportato in questo file"
-    },
-    {
-      "sentinella": "s25",
-      "asserzione": "...e il fuori campione è il più severo dei due",
-      "natura": "difetto noto",
-      "perche": "Conseguenza diretta della voce sopra: se i due numeri sono identici, nessuno dei due e' piu' severo.",
-      "referto": "accertamento del 02/08/2026, riportato in questo file"
-    }
-  ]
+  {
+   "sentinella": "s15",
+   "asserzione": "cancello — bias piatto entro 0.1 · 0.103028",
+   "natura": "decisione",
+   "perche": "0,103 contro una soglia di 0,10: mancato per tre millesimi dopo l'accensione del rodaggio (voce 1). Direttiva del PO del 01/08: in live va la miglior versione riproducibile, le regressioni piccole si DICHIARANO rosse e non bloccano, e le soglie non si allargano.",
+   "referto": "ai_lab/confronto/ESITO_rodaggio.md"
+  },
+  {
+   "sentinella": "s25",
+   "asserzione": "D1 passa (398 soste, 11 gare)",
+   "natura": "decisione",
+   "perche": "E' la stessa cosa della prima voce di s15, vista dall'altra sentinella. Il progetto la dichiara due volte di proposito: una nel cancello, una nella sorveglianza della difesa.",
+   "referto": "ai_lab/confronto/PIANO_CORREZIONE.md, voce 3"
+  },
+  {
+   "sentinella": "s25",
+   "asserzione": "NEUTRA: copre almeno 0.8 fuori campione (0.7857)",
+   "natura": "decisione",
+   "perche": "La cifra esatta dello scarto della voce sopra: 78,6% contro l'80% pre-registrato.",
+   "referto": "ai_lab/confronto/PIANO_CORREZIONE.md, voce 3"
+  },
+  {
+   "sentinella": "s25",
+   "asserzione": "sulla banda complessiva dentro e fuori campione DIVERGONO (0.8593 contro 0.8593): il leave-one-race-out non è un alias",
+   "natura": "difetto noto",
+   "perche": "E' l'UNICA prova che il leave-one-race-out non sia un alias del dentro campione, e oggi e' MORTA: i due numeri coincidono. La causa e' benigna (con la ricalibrazione i due valori sono venuti uguali), ma l'effetto no — a ventun giorni dal primo fuori campione vero, niente nella suite prova piu' quella distinzione. Va rifatta l'asserzione su una quantita' che possa davvero divergere.",
+   "referto": "accertamento del 02/08/2026, riportato in questo file"
+  },
+  {
+   "sentinella": "s25",
+   "asserzione": "...e il fuori campione è il più severo dei due",
+   "natura": "difetto noto",
+   "perche": "Conseguenza diretta della voce sopra: se i due numeri sono identici, nessuno dei due e' piu' severo.",
+   "referto": "accertamento del 02/08/2026, riportato in questo file"
+  }
+ ]
 }
