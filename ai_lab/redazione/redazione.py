@@ -72,9 +72,33 @@ _RE_TAG_OK = re.compile(r"</?(p|b|i|em|strong)>", re.I)
 _RE_TAG = re.compile(r"</?[a-zA-Z][^>]*>")
 
 
+MANDATO = os.path.join(_QUI, "mandato.json")
+
+
+def accesa():
+    """Il cancello di accensione, e sta nel MANDATO — il documento del PO — non in
+    una variabile d'ambiente.
+
+    E' lo stesso pattern dei modelli vivi del laboratorio: un modello calibrato
+    resta `ACCENDIBILE:false` e la decisione di accenderlo e' umana. Qui vale
+    uguale: il sistema e' costruito, collaudato e agganciato, ma finche' `mandato
+    .scrittura.attiva` e' falso i generatori continuano a consegnare la loro prosa
+    a template — e lo dichiarano.
+
+    L'ambiente puo' forzare l'accensione (MURETTO_REDAZIONE=1) per una prova a
+    mano, mai per la produzione: il cron non esporta quella variabile."""
+    if os.environ.get("MURETTO_REDAZIONE") == "1":
+        return True
+    try:
+        with open(MANDATO, encoding="utf-8") as f:
+            return bool(json.load(f).get("scrittura", {}).get("attiva"))
+    except Exception:
+        return False
+
+
 def attiva():
-    """Il sistema editoriale puo' lavorare?"""
-    return agenti.disponibile()
+    """Il sistema editoriale puo' lavorare? Cancello del PO piu' credenziali."""
+    return accesa() and agenti.disponibile()
 
 
 # --------------------------------------------------------------- la catena ----
@@ -88,7 +112,10 @@ def riscrivi(articolo, facts=None, verboso=True):
     orig = articolo
     id_ = articolo.get("id") or ""
     try:
-        if not attiva():
+        if not accesa():
+            return _targhetta(orig, "template: spento dal mandato "
+                                    "(mandato.json::scrittura.attiva)")
+        if not agenti.disponibile():
             return _targhetta(orig, "template: nessuna credenziale Anthropic")
 
         mem = _memoria.Memoria(escludi=[id_])

@@ -219,22 +219,41 @@ def t_voce_stabile():
 
 # ------------------------------------------------------------- fail-safe ----
 
-@prova("senza credenziali la catena torna al template e lo DICE",
+@prova("ogni ritorno al template dichiara il MOTIVO, e sono due motivi diversi",
        "torna il fallimento muto: la riscrittura non riesce e nessuno se ne accorge "
-       "(e' successo da luglio a oggi, su 18 bozze)")
+       "(e' successo da luglio a oggi, su 18 bozze); oppure i due cancelli — "
+       "il mandato del PO e le credenziali — si confondono in un messaggio solo")
 def t_failsafe():
-    vecchia = os.environ.pop("ANTHROPIC_API_KEY", None)
+    import agenti
+    vera_disp, vera_acc = agenti.disponibile, redazione.accesa
+    vecchia = os.environ.pop("MURETTO_REDAZIONE", None)
     try:
-        import agenti
-        vera = agenti.disponibile
-        agenti.disponibile = lambda: False
+        # 1. cancello del PO chiuso: si torna al template anche con le credenziali
+        redazione.accesa = lambda: False
+        agenti.disponibile = lambda: True
         a = redazione.riscrivi(art([("A", "<p>Testo.</p>")]), {}, verboso=False)
-        agenti.disponibile = vera
-        assert a.get("scrittura", "").startswith("template:"), a.get("scrittura")
-        assert "credenzial" in a["scrittura"]
+        assert "mandato" in a.get("scrittura", ""), a.get("scrittura")
+        # 2. cancello aperto ma senza credenziali: motivo DIVERSO
+        redazione.accesa = lambda: True
+        agenti.disponibile = lambda: False
+        b = redazione.riscrivi(art([("A", "<p>Testo.</p>")]), {}, verboso=False)
+        assert "credenzial" in b.get("scrittura", ""), b.get("scrittura")
+        assert a["scrittura"] != b["scrittura"]
     finally:
+        agenti.disponibile, redazione.accesa = vera_disp, vera_acc
         if vecchia:
-            os.environ["ANTHROPIC_API_KEY"] = vecchia
+            os.environ["MURETTO_REDAZIONE"] = vecchia
+
+
+@prova("il sistema editoriale nasce SPENTO",
+       "qualcuno accende la scrittura nel mandato senza che il PO lo decida: da quel "
+       "momento ogni gara pubblica prosa scritta dal modello")
+def t_spento():
+    m = json.load(open(os.path.join(_QUI, "mandato.json"), encoding="utf-8"))
+    assert "scrittura" in m, "il mandato non ha piu' il cancello di accensione"
+    if m["scrittura"].get("attiva"):
+        assert m["scrittura"].get("acceso_da"), \
+            "acceso senza dire da chi: il mandato e' un atto, non un flag"
 
 
 @prova("il raccordo storico regge", "qualcuno rimuove redattore.verifica, che "

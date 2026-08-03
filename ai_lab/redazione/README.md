@@ -111,6 +111,20 @@ Non tutte le violazioni pesano uguale, e la distinzione è dichiarata in
   trattini: fanno fallire il **giro di revisione**, così chi scrive li corregge, ma
   non meritano di trattenere offline un articolo vero.
 
+## Il cancello di accensione
+
+**Il sistema nasce spento.** `mandato.json::scrittura.attiva` è `false`: i generatori
+consegnano la loro prosa a template esattamente come prima, e ogni articolo lo
+dichiara (`"scrittura": "template: spento dal mandato"`). È lo stesso pattern dei
+modelli vivi del laboratorio — un modello calibrato resta `ACCENDIBILE:false` e la
+decisione di accenderlo è del PO, non del codice.
+
+Per provarlo senza accenderlo: `MURETTO_REDAZIONE=1 python3 …/redazione.py --id <id>
+--prova`. Il cron non esporta quella variabile, quindi non può accendersi da solo.
+
+Ad accensione avvenuta, `acceso_da` e `acceso_il` vanno compilati: una sentinella
+esce 1 se il sistema risulta acceso senza che nessuno abbia messo la firma.
+
 ## Il costo, misurato
 
 Un articolo costa **tre chiamate** quando esce pulito, **cinque** nel caso peggiore
