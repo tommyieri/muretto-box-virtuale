@@ -231,6 +231,26 @@ def aggiorna(id_, attore=None, nota=None):
     if not attore:
         raise SystemExit("[coda] --attore obbligatorio: riscrivere un pezzo "
                          "pubblicato e' un atto umano")
+    # NIENTE PERDITE SILENZIOSE. La bozza e la copia pubblicata possono divergere:
+    # certi campi (gp, round) sono stati aggiunti a mano nel pubblicato e non
+    # esistono nella bozza. Ripubblicare dalla bozza li cancellerebbe senza dire
+    # niente, e il solo effetto visibile sarebbe un articolo finito nel gruppo
+    # sbagliato dell'indice — successo davvero il 4/8/2026 su cinque articoli.
+    # Quello che c'era e non c'e' piu' si riporta indietro, e si dice.
+    pubb = os.path.join(ANALISI_DIR, id_ + ".json")
+    if os.path.exists(pubb):
+        try:
+            vecchio = json.load(open(pubb))
+        except Exception:
+            vecchio = {}
+        recuperati = [k for k, v in vecchio.items()
+                      if v not in (None, "", [], {}) and art.get(k) in (None, "", [], {})
+                      and k not in ("sezioni", "sommario", "titolo", "occhiello")]
+        for k in recuperati:
+            art[k] = vecchio[k]
+        if recuperati:
+            print(f"[coda] {id_}: campi presi dalla versione online e non presenti "
+                  f"nella bozza: {', '.join(sorted(recuperati))}")
     st.setdefault("storico", []).append(
         {"stato": "pubblicato", "attore": attore, "quando": _oggi(),
          "nota": nota or "riscritto e ripubblicato"})

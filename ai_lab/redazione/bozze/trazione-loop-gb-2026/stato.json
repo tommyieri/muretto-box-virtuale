@@ -33,6 +33,12 @@
       "attore": "Tommi",
       "quando": "2026-08-03",
       "nota": "riscritto a mano"
+    },
+    {
+      "stato": "pubblicato",
+      "attore": "Tommi",
+      "quando": "2026-08-04",
+      "nota": "ripristino gp/round"
     }
   ]
 }

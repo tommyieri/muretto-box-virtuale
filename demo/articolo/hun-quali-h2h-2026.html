@@ -121,41 +121,7 @@
     <div class="art-prosa"><p>La pole va a Norris in <b>1:17,207</b>. Lewis Hamilton la manca per dodici millesimi, e anche lui perde tre posizioni: dal secondo posto al quinto.</p><p>Sono due misure diverse di due cose diverse, e conviene tenerle separate. Il giro secco dice quanto vale il passo di ciascuno su un tentativo pulito. La griglia dice da dove si parte domenica, e ci mette dentro le decisioni della direzione gara.</p><p>Per la domenica conta la seconda. Per capire chi sta andando forte conta la prima, e la prima dice che nelle due squadre davanti il compagno più giovane e quello più anziano hanno chiuso il pomeriggio con mezzo secondo di distanza fra loro.</p></div>
     
   </section>
-  <section class="art-sez">
-    <div class="sez-tit"><span class="art-tag">Dati</span> Provenienza dei numeri</div>
-    <div class="panel art-prov"><table>
-      <thead><tr><th>grandezza</th><th>valore</th><th>stato</th><th>da dove</th></tr></thead>
-      <tbody><tr>
-    <td class="g">distacco fra compagni sul giro secco</td>
-    <td class="v">ANT›RUS +0,281 (Mercedes) · NOR›PIA +0,477 (McLaren) · 11 coppie, spread +0,037–+0,851</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">FastF1 pick_fastest per pilota; gap = miglior giro più lento − più veloce</td></tr><tr>
-    <td class="g">decomposizione per settore (coppie in evidenza)</td>
-    <td class="v">RUS: S1 +0,014 / S2 +0,068 / S3 +0,199 · PIA: S1 +0,208 / S2 +0,025 / S3 +0,244</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">tempi per settore del miglior giro (FastF1 Sector1/2/3Time)</td></tr><tr>
-    <td class="g">deficit di Hamilton dalla pole (al cronometro)</td>
-    <td class="v">+0,012 da NOR</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">differenza fra i migliori giri di HAM e della pole</td></tr><tr>
-    <td class="g">giro di riferimento e stato del run finale</td>
-    <td class="v">ANT giro 19 (best = ultimo lanciato completato) · RUS giro 16 (best NON finale; ultimo lanciato +1,8 s) · NOR giro 15 (best = ultimo lanciato completato) · PIA giro 12 (best = ultimo lanciato completato)</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">numero del giro veloce (pick_fastest) e confronto con l’ultimo giro lanciato accurato completato: distingue chi ha migliorato fino all’ultimo (ANT, NOR) da chi ha il riferimento su un giro precedente (RUS)</td></tr><tr>
-    <td class="g">posizioni di griglia dopo le penalità</td>
-    <td class="v">ANT P7 (da P4, −3) dietro RUS P6 · HAM P5 (da P2, −3)</td>
-    <td><span class="st st-NON_MISURABILE">NON_MISURABILE</span></td>
-    <td class="da">decisione dei commissari (fatto ufficiale), non ricavabile dalla telemetria</td></tr><tr>
-    <td class="g">passo puro depurato dai confonditori (guasto RUS, impeding PIA)</td>
-    <td class="v">non isolabile</td>
-    <td><span class="st st-NON_MISURABILE">NON_MISURABILE</span></td>
-    <td class="da">il run finale di RUS (perdita d’acqua) e di PIA (impeding, giro abortito) li ha privati di un possibile miglioramento su pista in evoluzione; il tempo che avrebbero fatto non è stimabile. NB: i settori-distacco sono misurati su giri PULITI precedenti, non su quelli compromessi</td></tr><tr>
-    <td class="g">assetto, carico e mappe motore (che spiegherebbero il residuo)</td>
-    <td class="v">non pubblici</td>
-    <td><span class="st st-NON_MISURABILE">NON_MISURABILE</span></td>
-    <td class="da">dati di regolazione della vettura non nel feed pubblico 2026</td></tr></tbody></table></div>
-    <div class="art-fonti"><div><b>dati</b> — FastF1 3.8.3 — tempi sul giro e per settore, giri di qualifica del Gran Premio d’Ungheria 2026 (round 11, Hungaroring), cache locale</div><div><b>contesto</b> — Penalità di griglia e cronaca della sessione (prima pole non-Mercedes della stagione; Hamilton a 12 millesimi dal decimo giro-record all’Hungaroring; citazione Norris «I'm very, very happy - very happy to be back on top. A tough, tough Quali.») — F1.com/stampa specializzata: contesto giornalistico, non nostri dati</div><div><b>metodo</b> — ai_lab/redazione/genera_hun_quali_h2h_2026.py — H2H = miglior giro di sessione per pilota (FastF1 pick_fastest), gap fra compagni identificati per nome-team; decomposizione per settore dal medesimo giro. Il gap Antonelli–Russell «0,035 s» che circola su motorsport.com è incoerente con la Q3 e viene scartato: valgono i nostri +0,281. Confonditori dichiarati e NON corretti: il giro secco di ciascuno è un giro pulito (i settori-distacco sono passo vero, non eventi), ma il run finale di Russell (perdita d’acqua) e di Piastri (impeding, giro abortito) è andato perso — su pista in evoluzione il margine misurato può sovrastimare il divario reale.</div></div>
-  </section>
+  
 </article>
 
 <footer class="footer">

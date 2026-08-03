@@ -124,49 +124,7 @@
       <span class="fonte">Fonte: FastF1 · laps Gara Ungheria 2026 — mediana per fase, giri verdi puliti</span></figcaption>
   </figure>
   </section>
-  <section class="art-sez">
-    <div class="sez-tit"><span class="art-tag">Dati</span> Provenienza dei numeri</div>
-    <div class="panel art-prov"><table>
-      <thead><tr><th>grandezza</th><th>valore</th><th>stato</th><th>da dove</th></tr></thead>
-      <tbody><tr>
-    <td class="g">passo più rapido (NOR, McLaren)</td>
-    <td class="v">1:24,507 · IQR 1,70 s, 59 giri-core</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">mediana dei giri verdi puliti (TrackStatus «1», senza out/in-lap, cancellati, primo giro di stint) — FastF1 laps Gara</td></tr><tr>
-    <td class="g">ampiezza dei primi 10</td>
-    <td class="v">~1,9 s/giro (dal più rapido al 10º)</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">differenza fra le mediane-passo dei piloti leggibili in classifica</td></tr><tr>
-    <td class="g">traffico del leader (NOR)</td>
-    <td class="v">44% giri in aria sporca · aria pulita 1:23,780</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">quota di giri entro 1,5 s dalla macchina davanti; la mediana grezza è una lettura «in scia»</td></tr><tr>
-    <td class="g">piloti col passo «in scia» (≥35%)</td>
-    <td class="v">HAM 48%, HUL 45%, NOR 44%, LEC 38%, BOR 36%, BEA 35%</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">marcati con ▲ nel grafico-eroe: mediana non rappresentativa del passo libero</td></tr><tr>
-    <td class="g">consistenza (IQR) più stretta / più larga</td>
-    <td class="v">ANT 1,09 s ↔ ALO 2,50 s</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">intervallo interquartile dei giri verdi puliti fra i piloti arrivati</td></tr><tr>
-    <td class="g">guadagno di passo dopo la 1ª neutralizzazione</td>
-    <td class="v">~1,45 s/giro (mediano sulla griglia)</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">mediana Fase 2 − Fase 1 (spartiacque giro 37); giri verdi puliti</td></tr><tr>
-    <td class="g">tipi di neutralizzazione occorsi</td>
-    <td class="v">bandiera gialla e Virtual Safety Car · giri 37–39, 48–50, 54–57</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">TrackStatus FastF1 (2 giallo, 4 Safety Car, 5 rossa, 6/7 VSC) — dichiarati solo quelli realmente presenti</td></tr><tr>
-    <td class="g">peso della benzina sul passo</td>
-    <td class="v">non separato dall’evoluzione pista</td>
-    <td><span class="st st-NON_MISURABILE">NON_MISURABILE</span></td>
-    <td class="da">il carico di carburante per giro non è nel feed FastF1: il drift di fase li somma</td></tr><tr>
-    <td class="g">mappe motore / modalità</td>
-    <td class="v">gestione vs spinta non distinguibili</td>
-    <td><span class="st st-NON_MISURABILE">NON_MISURABILE</span></td>
-    <td class="da">nessun canale di mappa/modalità motore nei dati</td></tr></tbody></table></div>
-    <div class="art-fonti"><div><b>dati</b> — FastF1 3.8.3 — laps + TrackStatus/Compound/Stint/tempi-sessione, Gara Hungarian Grand Prix 2026 (round 11, Hungaroring)</div><div><b>metodo</b> — ai_lab/redazione/genera_passo_reale.py — passo = mediana dei giri VERDI puliti (TrackStatus «1», senza out/in-lap, giri cancellati, NaT e primo giro di ogni stint); consistenza = IQR + baffi di Tukey; traffico = gap alla macchina davanti per giro (aria sporca ≤1,5 s, passo con riserva se ≥35% dei giri); split di fase prima/dopo la 1ª neutralizzazione. Confronto solo entro i dati; carburante e mappe motore ignoti (passo indicativo).</div></div>
-  </section>
+  
 </article>
 
 <footer class="footer">

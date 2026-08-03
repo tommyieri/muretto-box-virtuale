@@ -807,8 +807,8 @@ def _tic(corpo, fr, piano_norm):
                          r"con le dovute cautele)\b", piano_norm))
     if cav > soglia("caveat_max"):
         vs.append(_v("O2", AVVISO,
-                     f"{cav} caveat in linea (massimo {soglia('caveat_max')}): il resto "
-                     f"sta nella tabella di provenienza, che e' il posto giusto"))
+                     f"{cav} caveat in linea (massimo {soglia('caveat_max')}): "
+                     f"uno detto bene vale piu' di tre ripetuti con la stessa formula"))
     # sigle contro nomi
     sigle = [s for s in re.findall(r"\b[A-Z]{3}\b", corpo)
              if s not in set(L["sigle_note"]["lemmi"])]

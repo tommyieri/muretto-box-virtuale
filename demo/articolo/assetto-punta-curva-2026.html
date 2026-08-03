@@ -119,25 +119,7 @@
     <div class="art-prosa"><p>Il vertice non è un distacco: togliendo una gara qualsiasi dal conto, la Ferrari resta in testa al combinato in tutti e dieci i casi, ma con margini che dipendono da quali circuiti restano dentro. Chi sia primo, insomma, lo decide il calendario almeno quanto la vettura.</p><p>In fondo c’è l’unico caso in cui la mappa non racconta una scelta ma una difficoltà: l’Aston Martin sta <b>18</b> sul dritto e <b>39</b> in curva, ed è dietro da entrambe le parti. Non è un compromesso: è un ritardo.</p><p>Per tutte le altre la lettura è un’altra. Nessuna di queste posizioni è un limite della fisica: sono decisioni prese al muretto, una gara alla volta, e la mappa dice quanto sono state radicali.</p></div>
     
   </section>
-  <section class="art-sez">
-    <div class="sez-tit"><span class="art-tag">Dati</span> Provenienza dei numeri</div>
-    <div class="panel art-prov"><table>
-      <thead><tr><th>grandezza</th><th>valore</th><th>stato</th><th>da dove</th></tr></thead>
-      <tbody><tr>
-    <td class="g">posizione sul piano (percentile rettilineo · curva)</td>
-    <td class="v">McLaren 39·71 (carica) · Haas 66·37 (scarica) · Ferrari 60·70</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">vmax (mediana sui giri) e velocità mediana all’apice (curve &lt;235 km/h), percentile per-gara, media su ≤9 gare</td></tr><tr>
-    <td class="g">vertice del combinato (robustezza)</td>
-    <td class="v">testa a testa Ferrari — #1 cambia togliendo una gara (leave-one-out: 10/10 vs 0)</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">leave-one-out sulle 9 gare</td></tr><tr>
-    <td class="g">efficienza aerodinamica pura (L/D)</td>
-    <td class="v">non isolabile</td>
-    <td><span class="st st-NON_MISURABILE">NON_MISURABILE</span></td>
-    <td class="da">la punta include la potenza PU e la curva il grip meccanico</td></tr></tbody></table></div>
-    <div class="art-fonti"><div><b>spunto</b> — Analisi di configurazione aerodinamica (mappa punta-vs-curva) della stampa tecnica — Canale A, riprodotta sui nostri dati</div><div><b>dati</b> — FastF1 3.8.3 — telemetria vettura (Speed) di 10 gare 2026, sessione di gara, giri lanciati per pilota (Monaco esclusa: telemetria lacunosa)</div><div><b>metodo</b> — ai_lab/redazione/multigara.py + genera_efficienza.py — vmax = mediana della velocità massima sui giri lanciati (robusta alla scia); cornering = mediana velocità all’apice delle curve &lt;235 km/h; percentile per-gara fra i team, media su ≥6 gare; vertice validato in leave-one-out</div></div>
-  </section>
+  
 </article>
 
 <footer class="footer">

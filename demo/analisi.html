@@ -233,27 +233,31 @@
   <main>
     <section class="panel" id="panel-articoli" role="tabpanel" aria-labelledby="t-art">
       <div id="rev" hidden></div>
-      <!-- STRUMENTI DI STAGIONE: i due pezzi di punta, calcolati dai nostri dati e
-           aggiornati a ogni gara. In cima, non sepolti: valgono tutta la stagione. -->
-      <div class="strumenti">
-        <a class="strum" href="forza.html">
-          <span class="strum-tag">Interattivo · si aggiorna a ogni gara</span>
-          <b>Forza-macchina, gara per gara</b>
-          <span class="strum-d">Quanto è forte ogni vettura in ogni gara — dal potenziale, non dal piazzamento. Lo slider sceglie l'intervallo e mostra come cambia la gerarchia.</span>
-          <span class="strum-go">Apri →</span>
-        </a>
-        <a class="strum" href="dati.html">
-          <span class="strum-tag">Interattivo · si aggiorna a ogni gara</span>
-          <b>Assetto e DNA dei circuiti</b>
-          <span class="strum-d">Assetto dei team (punta vs curva) e carattere dei tracciati (motore vs carico), gara per gara. Scegli la vista e le tabelle si ricalcolano.</span>
-          <span class="strum-go">Apri →</span>
-        </a>
-      </div>
       <!-- ELENCO CRAWLABILE: contenuto INIZIALE di #grid, non <noscript>.
            Sono i link veri agli articoli (Google segue solo <a href>); il JS
            qui sotto lo sostituisce con la vista raggruppata per Gran Premio.
            Rigenerato da ai_lab/redazione/statico.py fra i due marcatori. -->
       <div id="grid">
+        <!-- STRUMENTI DI STAGIONE, versione crawlabile. Sono due link veri, perche'
+             Google segue <a href> e non il JS. Il JS qui sotto sostituisce tutto il
+             contenuto di #grid e li ridisegna DENTRO «Valgono tutta la stagione»,
+             che e' il loro posto: non invecchiano, si ricalcolano a ogni gara.
+             Testo e destinazioni stanno in UN posto solo, la costante STRUMENTI
+             del JS; questo blocco e' la sua copia statica per i crawler. -->
+        <div class="strumenti">
+          <a class="strum" href="forza.html">
+            <span class="strum-tag">Interattivo · si aggiorna a ogni gara</span>
+            <b>Forza-macchina, gara per gara</b>
+            <span class="strum-d">Quanto è forte ogni vettura in ogni gara — dal potenziale, non dal piazzamento. Lo slider sceglie l'intervallo e mostra come cambia la gerarchia.</span>
+            <span class="strum-go">Apri →</span>
+          </a>
+          <a class="strum" href="dati.html">
+            <span class="strum-tag">Interattivo · si aggiorna a ogni gara</span>
+            <b>Assetto e DNA dei circuiti</b>
+            <span class="strum-d">Assetto dei team (punta vs curva) e carattere dei tracciati (motore vs carico), gara per gara. Scegli la vista e le tabelle si ricalcolano.</span>
+            <span class="strum-go">Apri →</span>
+          </a>
+        </div>
         <!-- ELENCO:INIZIO — generato da ai_lab/redazione/statico.py, non modificare a mano -->
         <div class="grid">
           <a class="card" href="articolo/recap-weekend-hungaroring-2026.html" style="--ac:#FF8000"><div class="eyebrow">Hungaroring · il weekend · round 11</div><h3>Dodici millesimi, e nascono quasi tutti in centottanta metri</h3><p>La pole più stretta della stagione non si decide su un tratto solo, dicono i minisettori. Guardando dove il cronometro corre più in fretta, invece, si decide eccome: in una curva sola, e il resto del giro serve a restituirla quasi tutta.</p><div class="foot"><span class="meta">Hungaroring · Weekend · 26 luglio 2026</span><span class="go">Leggi →</span></div><div class="chips"><span class="chip">telemetria</span><span class="chip">recap</span><span class="chip">weekend</span></div></a>
@@ -365,15 +369,54 @@ function gruppaPerGp(arts){
   }).sort((a,b)=> (b.round-a.round) || String(b.data).localeCompare(String(a.data)));
   return { gruppi, trasv };
 }
-function sezione(eyebrow, nome, meta, arts, extra){
+function sezione(eyebrow, nome, meta, arts, extra, prima){
   const n = arts.length;
   return `<section class="gp-grp ${extra||''}">
     <header class="gp-head"><span class="gp-eyebrow">${esc(eyebrow)}</span>
       <h2 class="gp-name">${esc(nome)}</h2>
       ${meta ? `<span class="gp-meta">${esc(meta)}</span>` : ''}
-      <span class="gp-count">${n} ${n===1?'articolo':'articoli'}</span></header>
+      ${n ? `<span class="gp-count">${n} ${n===1?'articolo':'articoli'}</span>` : ''}</header>
+    ${prima||''}
     <div class="grid">${arts.map(card).join('')}</div>
   </section>`;
+}
+
+// GLI STRUMENTI DI STAGIONE. Stanno dentro «Valgono tutta la stagione» perche' e'
+// esattamente cio' che sono: non raccontano un weekend, si ricalcolano dopo ogni
+// weekend. Chi li rigenera e' il giro post-gara della redazione
+// (ai_lab/redazione/genera.py::aggiorna_dati_stagione -> pubblica_dati.pubblica e
+// forza_macchina.pubblica), che riscrive demo/data/analisi/stagione_dati.json e
+// forza_macchina.json.
+//
+// La riga «aggiornato a …» NON e' una promessa scritta a mano: la leggiamo dal
+// JSON che quei due generatori producono. Se un giro post-gara salta, la data
+// resta indietro e si vede — che e' il punto: una promessa di freschezza che non
+// si puo' controllare e' peggio di nessuna promessa.
+const STRUMENTI = [
+  { href:'forza.html', dati:'data/analisi/forza_macchina.json',
+    nome:'Forza-macchina, gara per gara',
+    d:"Quanto è forte ogni vettura in ogni gara — dal potenziale, non dal piazzamento. Lo slider sceglie l'intervallo e mostra come cambia la gerarchia." },
+  { href:'dati.html', dati:'data/analisi/stagione_dati.json',
+    nome:'Assetto e DNA dei circuiti',
+    d:'Assetto dei team (punta vs curva) e carattere dei tracciati (motore vs carico), gara per gara. Scegli la vista e le tabelle si ricalcolano.' },
+];
+
+async function strumentiHtml(){
+  const stato = await Promise.all(STRUMENTI.map(async s => {
+    try {
+      const d = await (await fetch(s.dati)).json();
+      return d && d.aggiornato
+        ? `Aggiornato al ${dataIt(d.aggiornato)} · ${d.n_gare} gare`
+        : 'Interattivo · si aggiorna a ogni gara';
+    } catch(e){ return 'Interattivo · si aggiorna a ogni gara'; }
+  }));
+  return `<div class="strumenti">` + STRUMENTI.map((s,i) => `
+    <a class="strum" href="${s.href}">
+      <span class="strum-tag">${esc(stato[i])}</span>
+      <b>${esc(s.nome)}</b>
+      <span class="strum-d">${esc(s.d)}</span>
+      <span class="strum-go">Apri →</span>
+    </a>`).join('') + `</div>`;
 }
 async function bootArticoli(){
   const revisore = new URLSearchParams(location.search).get('bozze') === '1';
@@ -387,17 +430,21 @@ async function bootArticoli(){
       La pubblicazione avviene con <code>coda.py --approva &lt;id&gt; --attore "Tommi"</code>.</div>`;
   }
   if (!mostra.length){
-    el('grid').innerHTML = `<div class="empty">I primi articoli della redazione tecnica sono in lavorazione: telemetria, degrado, strategia e pit-loss, un fatto per volta.</div>`;
+    el('grid').innerHTML = await strumentiHtml() +
+      `<div class="empty">I primi articoli della redazione tecnica sono in lavorazione: telemetria, degrado, strategia e pit-loss, un fatto per volta.</div>`;
     return;
   }
   const { gruppi, trasv } = gruppaPerGp(mostra);
 
   // 1) SEMPRE VALIDI in cima: non invecchiano, valgono tutta la stagione.
   //    (prima stavano in fondo, dove non li vedeva nessuno.)
-  const testa = trasv.length
-    ? sezione('Sempre validi', 'Valgono tutta la stagione',
-        'Analisi che attraversano più gare: restano vere anche dopo il prossimo weekend', trasv, 'trasv')
-    : '';
+  //    Dentro ci stanno anche i due strumenti interattivi: sono la stessa cosa
+  //    degli articoli trasversali (non raccontano un weekend, si ricalcolano dopo
+  //    ogni weekend) e prima stavano fuori, sopra a tutto, senza un titolo che
+  //    dicesse che cosa fossero.
+  const testa = sezione('Sempre validi', 'Valgono tutta la stagione',
+      'Si ricalcolano a ogni gara: restano veri anche dopo il prossimo weekend',
+      trasv, 'trasv', await strumentiHtml());
 
   // 2) POI, GRAN PREMIO PER GRAN PREMIO: si sceglie col selettore (piu' recente
   //    di default), cosi' la pagina non e' un muro di articoli.

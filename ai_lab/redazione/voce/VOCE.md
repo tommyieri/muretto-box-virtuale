@@ -90,7 +90,8 @@ passare non è il vocabolo: è il numero.
 I valori pubblici del regolamento (i 350 kW, la soglia dei 290 km/h, i megajoule per
 giro) si possono citare, con la data, perché sono informazione e non nostra misura.
 E la grandezza che porta il peso dell'argomento va comunque dichiarata
-`NON_MISURABILE` nella tabella di provenienza.
+`NON_MISURABILE` nel campo `provenienza[]` — che dal 4 agosto non si stampa più in
+pagina, ma resta il posto dove il dato dice la verità su se stesso.
 
 *Storia di questa regola:* fino al 3 agosto 2026 quei termini erano vietati e basta.
 Era una regola sbagliata — cinque articoli online la violavano, e la violavano perché
@@ -489,11 +490,16 @@ Le ricerche dicono che i caveat non abbassano l'interesse del lettore. Non c'è 
 per nasconderli in coda.
 
 **O2. Un solo caveat in linea per articolo, e formulato in modo nuovo.**
-Il resto sta nella tabella di provenienza, che è già il posto giusto e che nessun'altra
-testata offre.
 *Perché:* dieci disclaimer in otto articoli, sempre in coda di sezione, sempre con la
 stessa cadenza: «restano ignoti», «non è un verdetto», «non lo stimiamo di nascosto».
 L'onestà ripetuta con la stessa formula smette di essere onestà e diventa liturgia.
+
+E attenzione, perché dal 4 agosto 2026 questa regola pesa di più: la tabella
+«Provenienza dei numeri» non si stampa più in fondo all'articolo. Il dato resta —
+`provenienza[]` e `fonti[]` sono ancora nel JSON, sono ancora validati, sono ancora
+l'insieme su cui la guardia decide che cosa la prosa può scrivere — ma il lettore non
+la vede. Quindi **il limite che conta va detto nel corpo**, una volta, con parole tue:
+non c'è più una tabella in coda a cui delegarlo.
 
 **O3. L'incertezza è informazione, e si dà in scala.**
 Tre livelli, in ordine di forza: nominare il dato mancante («servirebbe X, che non

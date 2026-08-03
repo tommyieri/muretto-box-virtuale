@@ -127,57 +127,7 @@
       <span class="fonte">Fonte: FastF1 · car telemetry (Speed/RPM/nGear) FP2 GP Ungheria 2026 · mediane sui giri lanciati</span></figcaption>
   </figure>
   </section>
-  <section class="art-sez">
-    <div class="sez-tit"><span class="art-tag">Dati</span> Provenienza dei numeri</div>
-    <div class="panel art-prov"><table>
-      <thead><tr><th>grandezza</th><th>valore</th><th>stato</th><th>da dove</th></tr></thead>
-      <tbody><tr>
-    <td class="g">giro secco FP2 (miglior giro valido, soft)</td>
-    <td class="v">HAM 1:18,729 · LEC +0,148 · NOR +0,499</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">min dei giri lanciati per pilota (tele.giri_validi, FastF1)</td></tr><tr>
-    <td class="g">copertura giro secco Mercedes</td>
-    <td class="v">ANT 13º (+1,964), miglior giro su medium (nessun soft rappresentativo)</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">posizione e mescola del miglior giro valido di Antonelli (FastF1)</td></tr><tr>
-    <td class="g">passo long-run gomma medium (mediana giri-core)</td>
-    <td class="v">RUS 1:24,733 · VER +0,023 · NOR +0,235 · HAM (P4) +0,422</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">mediana dei giri-core (entro 1.07x best pulito) dello stint medium più lungo per pilota</td></tr><tr>
-    <td class="g">passo Ferrari confrontabile sul medium</td>
-    <td class="v">solo HAM (il long-run di LEC è su soft, non comparabile)</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">mescola degli stint long-run Ferrari (FastF1)</td></tr><tr>
-    <td class="g">de-confuso età-gomma (medium, finestra 11-16 giri)</td>
-    <td class="v">RUS 1:24,152 · NOR 1:24,969 · HAM 1:25,155</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">mediana dei giri-core nella finestra comune di età-gomma (toglie il consumo, non il carburante)</td></tr><tr>
-    <td class="g">velocità di punta (mediana dei picchi per-giro)</td>
-    <td class="v">HAM 324 · VER 318 · NOR 310 · RUS 306 · ANT 306 km/h (spread griglia 20)</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">mediana di max(Speed) sui giri lanciati (FastF1 car-data)</td></tr><tr>
-    <td class="g">rapporto in 7ª (geometria del cambio)</td>
-    <td class="v">McLaren 42,08-42,02 (più corti) · Mercedes 38,81-38,65 (più lunghi)</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">mediana RPM/velocità in 7ª (Speed&gt;250) sui giri lanciati</td></tr><tr>
-    <td class="g">il rapporto spiega la velocità di punta?</td>
-    <td class="v">no — Spearman(rapporto, punta) = -0,03 (quasi nullo)</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">correlazione di rango rapporto-7ª vs punta mediana sulla griglia</td></tr><tr>
-    <td class="g">attivazione DRS / aerodinamica attiva</td>
-    <td class="v">canale DRS degenere: solo [0] su 174 giri lanciati</td>
-    <td><span class="st st-NON_MISURABILE">NON_MISURABILE</span></td>
-    <td class="da">feed FastF1 2026 · DRS costante a 0 → active-aero non riproducibile</td></tr><tr>
-    <td class="g">causa del deficit di punta (aero / mappa / carburante)</td>
-    <td class="v">non attribuibile (il cambio è escluso; DRS assente; carburante e mappe ignoti)</td>
-    <td><span class="st st-NON_MISURABILE">NON_MISURABILE</span></td>
-    <td class="da">regola prove libere + DRS degenere; la punta mediana mescola giri qual-sim e long-run</td></tr><tr>
-    <td class="g">carburante e mappe motore (FP)</td>
-    <td class="v">ignoti → passo indicativo, non verdetto</td>
-    <td><span class="st st-NON_MISURABILE">NON_MISURABILE</span></td>
-    <td class="da">non esposti dal feed nelle prove libere</td></tr></tbody></table></div>
-    <div class="art-fonti"><div><b>spunto</b> — The Race — «F1 2026 Hungarian GP practice results»: FP2 Hamilton 1:18.729 (soft), Leclerc 2° +0.148, Ferrari 1-2 sul giro secco (Canale A: titolo di partenza).</div><div><b>spunto</b> — Autosport — «What we learned from Friday practice…»: tabella long-run FP2 con Verstappen davanti su medium e la Ferrari indietro; Antonelli senza giro soft rappresentativo.</div><div><b>spunto</b> — Formula1.com — FP1 Leclerc davanti a Verstappen prima della rottura all'upshift; McLaren prova un'ala posteriore ad aerodinamica attiva.</div><div><b>dati</b> — FastF1 3.8.3 — laps + car telemetry (Speed/Throttle/Brake/nGear/RPM/DRS), FP2 Gran Premio d'Ungheria 2026 (cache locale).</div><div><b>metodo</b> — ai_lab/redazione/genera_hun_web_canale_a.py — giro secco = min dei giri lanciati per pilota; passo = mediana dei giri-core (out/in-lap, 1° giro, deleted e non-verde esclusi; core entro 1.07x il best pulito dello stint), confronto solo entro-mescola e con controllo a parità di età-gomma; velocità di punta = mediana dei picchi per-giro; rapporto = mediana RPM/velocità in 7ª. Confronto Ferrari-rivali limitato al medium (long-run Leclerc su soft escluso). Carburante/mappe ignoti, DRS degenere: passo indicativo, causa della punta non attribuibile.</div></div>
-  </section>
+  
 </article>
 
 <footer class="footer">

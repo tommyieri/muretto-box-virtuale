@@ -119,33 +119,7 @@
     <div class="art-prosa"><p>Abbiamo rifatto la scansione su ogni curva di Silverstone e su ogni squadra con due piloti in pista. I disaccordi di marcia fra compagni sono <b>tredici</b> su tutta la griglia, e la Ferrari ne mette uno solo: questo.</p><p>Perché lo faccia, non lo sappiamo, e non fingiamo di saperlo. Le letture possibili sono almeno due: la quinta cercata per far ruotare il retrotreno in appoggio, oppure la quinta imposta da un ingresso già più lento. Per separarle servirebbe un canale di imbardata, o l’angolo di sterzo. Il nostro feed porta marcia, velocità e regime; di come si muove la vettura attorno al proprio asse non ha niente.</p><p>Con quello che abbiamo in mano, la scelta si vede e il motivo no. Vale la pena tenerle separate: qui sotto c’è il grafico di quello che succede, non di quello che ne pensiamo.</p></div>
     
   </section>
-  <section class="art-sez">
-    <div class="sez-tit"><span class="art-tag">Dati</span> Provenienza dei numeri</div>
-    <div class="panel art-prov"><table>
-      <thead><tr><th>grandezza</th><th>valore</th><th>stato</th><th>da dove</th></tr></thead>
-      <tbody><tr>
-    <td class="g">marcia all’apice</td>
-    <td class="v">LEC 6ª (tutti e 6), HAM 5ª (4 dei 5)</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">moda della marcia all’apice sui giri lanciati (FastF1 + mappa-curve circuit_info)</td></tr><tr>
-    <td class="g">velocità all’apice</td>
-    <td class="v">225 vs 220 km/h (HAM non più veloce scalando)</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">mediana della velocità minima all’apice sui giri lanciati</td></tr><tr>
-    <td class="g">giri/min all’apice</td>
-    <td class="v">Δ 1368 (più alti per HAM)</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">mediana RPM all’apice</td></tr><tr>
-    <td class="g">disaccordi di marcia tra compagni</td>
-    <td class="v">1 (Ferrari), 13 sulla griglia</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">scansione di tutte le curve, tutti i team con 2 piloti</td></tr><tr>
-    <td class="g">comportamento del retrotreno (stabilità vs rotazione)</td>
-    <td class="v">interpretazione fisica</td>
-    <td><span class="st st-NON_MISURABILE">NON_MISURABILE</span></td>
-    <td class="da">nessun canale di assetto/imbardata; è la lettura della scelta, non un dato</td></tr></tbody></table></div>
-    <div class="art-fonti"><div><b>dati</b> — FastF1 3.8.3 — telemetria vettura (nGear/Speed/RPM) + mappa curve (circuit_info), Qualifiche Gran Premio di Gran Bretagna 2026</div><div><b>metodo</b> — ai_lab/redazione/genera_stowe.py su curve.py — marcia modale all’apice (finestra −25/+75 m attorno al riferimento circuit_info, dove cade il vero minimo di velocità) su ≥3 giri lanciati per curva; disaccordo = moda diversa con consistenza ≥60% per entrambi. Curva-firma scelta = la più veloce (apice 150–260 km/h) tra i disaccordi, non la più veloce in assoluto</div></div>
-  </section>
+  
 </article>
 
 <footer class="footer">

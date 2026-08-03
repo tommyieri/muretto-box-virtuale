@@ -125,61 +125,7 @@
       <span class="fonte">Fonte: FastF1 · Speed/Throttle/Brake, giri veloci Q Ungheria 2026</span></figcaption>
   </figure>
   </section>
-  <section class="art-sez">
-    <div class="sez-tit"><span class="art-tag">Dati</span> Provenienza dei numeri</div>
-    <div class="panel art-prov"><table>
-      <thead><tr><th>grandezza</th><th>valore</th><th>stato</th><th>da dove</th></tr></thead>
-      <tbody><tr>
-    <td class="g">margine di pole (cronometro)</td>
-    <td class="v">NOR 1:17,207 · HAM 1:17,219 · 0,012 s</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">giri veloci veri (pick_fastest per pilota), classifica per tempo sul giro — FastF1 Q</td></tr><tr>
-    <td class="g">mappa di dominanza (24 minisettori)</td>
-    <td class="v">NOR vince 14 tratti (+450 ms), HAM 10 (+438 ms); somma = 0,012 s</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">guadagno-tempo per tratto = differenza del Δt cumulato ai bordi del minisettore (coerente con delta_time)</td></tr><tr>
-    <td class="g">vantaggio cumulato lungo il giro</td>
-    <td class="v">HAM avanti fino a 0,047 s (T1); NOR fino a +0,19 s (T12); alla linea +0,012 s</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">fastf1.utils.delta_time sui due giri veloci; endpoint coincide col margine reale</td></tr><tr>
-    <td class="g">tratto di massima pendenza (dove nasce il decimo)</td>
-    <td class="v">T7: +100 ms in un minisettore (~2351–2532 m)</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">minisettore col massimo guadagno-tempo per il dominante (dal Δt cumulato)</td></tr><tr>
-    <td class="g">minime all'apice (16 curve)</td>
-    <td class="v">NOR più veloce in T7 +7, T10 +5, T4 +3, T2 +1; HAM in T11 -6, T3 -3, T14 -3 km/h</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">velocità minima all'apice (finestra −25/+75 m) sul giro veloce di ciascuno</td></tr><tr>
-    <td class="g">velocità di punta (vmax)</td>
-    <td class="v">NOR 331 · HAM 333 km/h — il rivale non è più lento in rettilineo: il vantaggio è in curva</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">massimo del canale Speed sul giro veloce</td></tr><tr>
-    <td class="g">curve di misura poco affidabile</td>
-    <td class="v">T1A, T12A: curve-complesso (lettera) o divario estremo su singolo giro — non usate come tesi</td>
-    <td><span class="st st-STIMATO">STIMATO</span></td>
-    <td class="da">finestra d'apice ambigua (due apici) o outlier robusto (&gt;mediana+3·MAD)</td></tr><tr>
-    <td class="g">curve a apice condiviso (anti-doppio-conteggio)</td>
-    <td class="v">T6: riferimento circuit_info a pochi metri da una curva adiacente, stesso apice fisico — contate una volta sola nelle tesi (nel grafico restano, annotate)</td>
-    <td><span class="st st-STIMATO">STIMATO</span></td>
-    <td class="da">stesso minimo di velocità entro 12 m fra curve vicine sul giro del dominante</td></tr><tr>
-    <td class="g">frenata e trazione a T7</td>
-    <td class="v">frenata NOR 87 / HAM 84 m dall'apice; gas pieno NOR 64 / HAM 80 m dopo; apice 111 / 104 km/h</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">canale Brake (prima riga frenata) e Throttle≥95% (prima ripresa piena) attorno all'apice</td></tr><tr>
-    <td class="g">passo gara del dominante (mediana giri-core verdi)</td>
-    <td class="v">NOR 1:24,501 (IQR 1,88 s); +0,247 s/giro sul miglior rivale (HAM); campo top-10 ~1,8 s</td>
-    <td><span class="st st-MISURATO">MISURATO</span></td>
-    <td class="da">mediana + IQR dei giri-core (entro 1,07× il best) verdi, out/in-lap e cancellati esclusi — FastF1 Race</td></tr><tr>
-    <td class="g">carburante / mescola / mappa motore (passo)</td>
-    <td class="v">carico benzina, gestione gomma e modalità motore non separati: passo indicativo, non assoluto</td>
-    <td><span class="st st-NON_MISURABILE">NON_MISURABILE</span></td>
-    <td class="da">nessun canale di carburante/mescola/mappa nel feed FastF1</td></tr><tr>
-    <td class="g">causa del vantaggio (carico aero, grip meccanico, assetto, gomma)</td>
-    <td class="v">il SINTOMO è misurato (dove la velocità è più alta); la CAUSA non ha canale nel feed</td>
-    <td><span class="st st-NON_MISURABILE">NON_MISURABILE</span></td>
-    <td class="da">nessun canale di carico/temperatura/mescola/mappa: attribuire a un componente sarebbe interpretazione</td></tr></tbody></table></div>
-    <div class="art-fonti"><div><b>dati</b> — FastF1 3.8.3 — telemetria vettura (Speed/Throttle/Brake/nGear + X/Y) e laps, qualifica e gara del Gran Premio Ungheria 2026 (Hungaroring)</div><div><b>metodo</b> — ai_lab/redazione/genera_recap_weekend.py su tele.py/curve.py/svg.py — dominante e rivale scelti dai dati (pick_fastest, classifica per tempo); mappa di dominanza a minisettori sulla pianta GPS in scala reale; vantaggio cumulato con fastf1.utils.delta_time (calibrato al giro, non 1/v grezzo); minime all'apice (finestra −25/+75 m) con curve-complesso segnalate; frenata dal canale Brake e riapertura gas da Throttle≥95%; passo gara = mediana + IQR dei giri-core verdi. La telemetria misura il sintomo (DOVE); la causa (carico aero, grip, assetto, gomma) è dichiarata NON_MISURABILE</div></div>
-  </section>
+  
 </article>
 
 <footer class="footer">
