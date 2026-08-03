@@ -124,3 +124,25 @@ secondo tentativo.
 - Non autorizza a **stimare** né a ricentrare `t_gap_overtake` sui nostri dati.
 - Non autorizza a **inventare un valore per Miami**: la gara esce dal perimetro.
 - Non autorizza l'**accensione in produzione**: è una decisione del PO, dopo i cancelli.
+
+---
+
+## RETTIFICA 1 — 03/08/2026, prima di scrivere una riga di codice
+
+Il §3 di questa prereg dice **«Il kernel non si tocca»**. È falso, e lo dichiaro qui invece
+di correggerlo sopra (regola 3: una prereg non si riscrive).
+
+**Cosa ho verificato.** Il cum evolve giro per giro *dentro* il ciclo del kernel, e
+l'ordine finale nasce da lì (`kernel.mjs`, `ordine: Object.keys(cum).sort(perCum(cum))`).
+Un vincolo che alza il cum di un inseguitore **cambia lo stato del giro successivo**:
+applicarlo a valle, sull'ordine già prodotto, darebbe un ordine diverso da qualunque
+traiettoria che il motore possa aver percorso — cioè un numero senza una gara dietro.
+
+**Cosa cambia davvero, e cosa no.** Il vincolo entra nel kernel come **parametro
+opzionale**, con lo stesso identico contratto che il kernel usa già per la
+neutralizzazione: **assente o null ⇒ bit-identico**, verificato da una sentinella e non
+promesso da un commento. Non è un'eccezione al kernel congelato: è il pattern che il
+kernel ha già, usato una seconda volta.
+
+**Cosa NON cambia**: nessun cancello, nessuna soglia, nessun parametro, nessun perimetro.
+Cambia solo *dove* vive il codice — e quella riga del §3 era sbagliata.
