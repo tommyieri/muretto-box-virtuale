@@ -73,18 +73,51 @@ function emessi(o, base, out) {
   return out;
 }
 
-/** La vista avvolta: ogni lettura di campo finisce in `visti`. */
-function spia(o, base, visti) {
+/**
+ * La vista avvolta: ogni lettura di campo finisce in `visti`.
+ *
+ * IL PUNTO CIECO CHE QUESTA FUNZIONE HA DOVUTO CHIUDERE, e va scritto perche' un
+ * censimento che sotto-conta e' peggio di nessun censimento — dice «tutto a posto» sui
+ * campi che non sa vedere.
+ *
+ * `pannello.mjs` comincia con `const scenario = { ...s, _data: ... }`. Lo spread chiede
+ * TUTTE le chiavi di primo livello dello scenario, quindi con un Proxy ingenuo ognuna
+ * risulta «letta» anche se nessuno la usa: `pavimento_s`, `violazioni_director`,
+ * `sospetti_director`, `sotto_neutralizzazione` sparivano dall'elenco degli orfani. Il
+ * difetto e' emerso incrociando questo strumento con un censimento indipendente fatto per
+ * grep, che ne trovava di piu' — e la differenza era tutta li'.
+ *
+ * COME SI DISTINGUE UNO SPREAD DA UNA LETTURA VERA. L'algoritmo di copia delle proprieta'
+ * chiama, per ogni chiave, `[[GetOwnProperty]]` (per sapere se e' enumerabile) e SOLO POI
+ * `[[Get]]`. Un accesso normale `oggetto.campo` non passa mai da `[[GetOwnProperty]]`.
+ * Quindi: si marca la chiave nel trap `getOwnPropertyDescriptor` e, se il `get` che segue
+ * la trova marcata, non lo si conta. Non e' un'euristica sui nomi: e' la differenza fra
+ * due operazioni del linguaggio.
+ */
+function spia(o, base, visti, copiati) {
   if (o === null || typeof o !== 'object') return o;
+  const enumerate = new Set();
   return new Proxy(o, {
+    getOwnPropertyDescriptor(t, k) { enumerate.add(k); return Reflect.getOwnPropertyDescriptor(t, k); },
     get(t, k, r) {
       const v = Reflect.get(t, k, r);
       if (typeof k === 'symbol' || typeof v === 'function') return v;
       const dentroArray = Array.isArray(t) && /^\d+$/.test(k);
       if (Array.isArray(t) && !dentroArray) return v;        // .length, .map, ...
       const p = chiave(base, k, dentroArray);
-      visti.add(p);
-      return spia(v, p, visti);
+      if (enumerate.has(k)) {
+        enumerate.delete(k);
+        // COPIA, NON LETTURA. Un valore-oggetto resta osservabile: la copia contiene il
+        // Proxy, quindi ogni lettura successiva si vede lo stesso. Un PRIMITIVO no: dopo
+        // lo spread vive in un oggetto normale e nessuno puo' piu' sapere se qualcuno lo
+        // usa. Quel campo non e' orfano e non e' letto: e' NON GIUDICABILE, e va detto —
+        // contarlo come letto farebbe sotto-contare gli orfani, contarlo come orfano
+        // accuserebbe campi che la pagina rende davvero (gara, freeze_lap, approvato).
+        if (v === null || typeof v !== 'object') copiati.add(p);
+      } else {
+        visti.add(p);
+      }
+      return spia(v, p, visti, copiati);
     },
   });
 }
@@ -94,7 +127,8 @@ const TUTTI = emessi(vista, '', new Set());
 
 // ── si RENDE la pagina, scenario per scenario, e si guarda cosa e' stato letto ──
 const visti = new Set();
-const spiata = spia(vista, '', visti);
+const copiati = new Set();
+const spiata = spia(vista, '', visti, copiati);
 const errori = [];
 for (let i = 0; i < vista.scenari.length; i += 1) {
   const s = spiata.scenari[i];
@@ -103,7 +137,35 @@ for (let i = 0; i < vista.scenari.length; i += 1) {
   }
 }
 
-const orfani = [...TUTTI].filter((p) => !visti.has(p)).sort();
+// LEGGERE `a.b` SIGNIFICA AVER RAGGIUNTO `a`. Senza questa regola un ramo intero
+// risultava non letto solo perche' i componenti ne leggono i figli e mai il nodo: e' il
+// caso di `scenari[].orizzonte`, di cui il pannello legge `orizzonte_risposta`, e di
+// `scenari[].perdita`, di cui rende `targhetta`. Il conto giusto e' sul RAGGIUNTO.
+const raggiunti = new Set(visti);
+for (const p of visti) {
+  const pezzi = p.split(/(?=\.)|(?=\[\])/);
+  let acc = '';
+  for (const pz of pezzi) { acc += pz; raggiunti.add(acc); }
+}
+const nonGiudicabili = [...TUTTI].filter((p) => !raggiunti.has(p) && copiati.has(p)).sort();
+const orfani = [...TUTTI].filter((p) => !raggiunti.has(p) && !copiati.has(p)).sort();
+
+// ── L'ALTRO VERSO: campi LETTI e mai EMESSI ─────────────────────────────────
+//
+// Un componente che legge un campo che il generatore non produce non esplode: riceve
+// `undefined` e disegna qualcosa di vuoto. E' lo stesso guasto del campo orfano, visto dal
+// lato opposto, e fa piu' male — perche' il ramo che lo legge di solito e' quello raro.
+// Esempio vivo trovato costruendo questo censimento: `pannello.motivi_rifiuto`, letto dal
+// pannello quando la risposta e' rifiutata e mai emesso dal generatore. Oggi non si vede
+// perche' tutti gli scenari committati hanno `approvato = true`; il giorno che uno non lo
+// e', la pagina scrive «Risposta non disponibile» con l'elenco dei motivi vuoto.
+//
+// Si escludono i percorsi che sono un PREFISSO di qualcosa di emesso (leggere `a` per
+// arrivare ad `a.b` non e' leggere un campo che non c'e') e quelli su cui il componente
+// fa una guardia di esistenza, che sono legittimi e restano invisibili qui: per questo il
+// verdetto elenca i percorsi, non li conta e basta.
+const emessoOPrefisso = (p) => TUTTI.has(p) || [...TUTTI].some((t) => t.startsWith(`${p}.`) || t.startsWith(`${p}[`));
+const lettiNonEmessi = [...visti].filter((p) => !emessoOPrefisso(p)).sort();
 
 // ── il registro del debito: quali orfani sono gia' dichiarati ────────────────
 const reg = JSON.parse(readFileSync(REGISTRO, 'utf8'));
@@ -112,7 +174,9 @@ for (const v of reg.voci ?? []) {
   for (const c of v.campi_vista_orfani ?? []) dichiarati.set(c, v.id);
 }
 const nonDichiarati = orfani.filter((p) => !dichiarati.has(p));
-const dichiaratiFantasma = [...dichiarati.keys()].filter((c) => !orfani.includes(c)).sort();
+const nonGiudicabiliNonDichiarati = nonGiudicabili.filter((p) => !dichiarati.has(p));
+const lettiNonEmessiNonDichiarati = lettiNonEmessi.filter((p) => !dichiarati.has(p));
+const dichiaratiFantasma = [...dichiarati.keys()].filter((c) => !orfani.includes(c) && !nonGiudicabili.includes(c)).sort();
 
 console.log('');
 console.log('══ CENSIMENTO DEI CAMPI DELLA VISTA — KPI P1 ══════════════════════════════');
@@ -123,14 +187,22 @@ if (errori.length) {
   for (const e of errori.slice(0, 5)) console.log(`       ${e}`);
 }
 console.log('');
-console.log(`   campi emessi ${TUTTI.size}  ·  letti da almeno un componente ${TUTTI.size - orfani.length}`
-  + `  ·  ORFANI ${orfani.length}`);
+console.log(`   campi emessi ${TUTTI.size}  ·  raggiunti da almeno un componente ${TUTTI.size - orfani.length - nonGiudicabili.length}`
+  + `  ·  ORFANI ${orfani.length}  ·  letti e MAI emessi ${lettiNonEmessi.length}`);
+console.log(`   NON GIUDICABILI ${nonGiudicabili.length} — primitivi copiati da uno spread, invisibili dopo`
+  + (nonGiudicabili.length ? `: ${nonGiudicabili.join(', ')}` : ''));
 console.log(`   orfani DICHIARATI nel registro ${orfani.length - nonDichiarati.length}  ·  NON dichiarati ${nonDichiarati.length}`);
 
 if (nonDichiarati.length) {
   console.log('');
   console.log('   NON DICHIARATI — o li legge qualcuno, o vanno a registro con la ragione:');
   for (const p of nonDichiarati) console.log(`     · ${p}`);
+}
+if (lettiNonEmessiNonDichiarati.length) {
+  console.log('');
+  console.log('   LETTI E MAI EMESSI — il verso opposto, e fa piu\' male: chi legge riceve');
+  console.log('   `undefined` e disegna il vuoto, di solito nel ramo raro che nessuno guarda:');
+  for (const p of lettiNonEmessiNonDichiarati) console.log(`     · ${p}`);
 }
 if (dichiaratiFantasma.length) {
   console.log('');
@@ -151,8 +223,11 @@ if (JSON_OUT) {
     emessi: TUTTI.size,
     letti: TUTTI.size - orfani.length,
     orfani,
+    non_giudicabili_per_spread: nonGiudicabili,
     orfani_dichiarati: Object.fromEntries([...dichiarati].filter(([c]) => orfani.includes(c))),
     orfani_non_dichiarati: nonDichiarati,
+    letti_non_emessi: lettiNonEmessi,
+    letti_non_emessi_non_dichiarati: lettiNonEmessiNonDichiarati,
     registro_fantasma: dichiaratiFantasma,
     errori_di_rendering: errori,
   };
@@ -162,7 +237,8 @@ if (JSON_OUT) {
 }
 
 if (VERIFICA) {
-  const rosso = nonDichiarati.length || dichiaratiFantasma.length || errori.length;
+  const rosso = nonDichiarati.length || nonGiudicabiliNonDichiarati.length || lettiNonEmessiNonDichiarati.length
+    || dichiaratiFantasma.length || errori.length;
   console.log('');
   if (rosso) {
     console.log('   CENSIMENTO ROSSO. Un campo calcolato e mai reso e\' lavoro buttato che sembra fatto:');

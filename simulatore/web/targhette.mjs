@@ -72,7 +72,12 @@ export function num(valore, { unita = null, formato = 'decimale', targhetta, mot
 export function formatta(nodo) {
   if (nodo.numero === null) return '—';
   const v = nodo.numero;
-  if (nodo.formato === 'intero') return String(Math.round(v));
+  // L'UNITA' VALE ANCHE PER GLI INTERI. Fino al 03/08/2026 questo ramo la buttava via:
+  // la semi-ampiezza della banda arrivava in pagina come «2» nudo, accanto a «Incertezza
+  // sulla posizione», e chi non e' tecnico non poteva sapere se fossero secondi, giri o
+  // posizioni. Un numero senza unita' non e' piu' leggibile di un numero senza targhetta —
+  // e' lo stesso difetto, un piano piu' in basso. (KPI P3.)
+  if (nodo.formato === 'intero') return `${Math.round(v)}${nodo.unita ? ` ${nodo.unita}` : ''}`;
   if (nodo.formato === 'posizione') return `P${Math.round(v)}`;
   const decimali = nodo.formato === 'secondi' ? 1 : nodo.formato === 'preciso' ? 3 : 2;
   const segno = nodo.formato === 'delta' && v > 0 ? '+' : '';

@@ -55,6 +55,7 @@
       "perche_resta_aperto": "Toglierli dal generatore significa rigenerare le undici viste di produzione, che e' un'operazione a se' con il suo rischio: la vista del sito e' l'artefatto che serve le pagine, e la si tocca quando si e' deciso di toccarla, non di passaggio mentre si costruisce un censimento. Finche' restano, il rischio dichiarato e' E12: due posti per la stessa cosa, e nessuno garantisce che restino d'accordo.",
       "referto": "KPI P1; censimento del 03/08/2026",
       "campi_vista_orfani": [
+        "scenari[].mescole_gia_usate",
         "modello.orizzonti_validati",
         "modello.orizzonti_validati[]",
         "scenari[].piano.mescole_gia_usate",
@@ -68,6 +69,7 @@
         "descrizione": "vera finche' i campi elencati restano EMESSI dalla vista e NON letti da nessun componente. La verifica non e' testuale: e' il censimento, che rende davvero la pagina con la vista avvolta in un Proxy. Esce 1 in entrambi i versi — se un campo elencato viene reso (debito saldato e registro non aggiornato) e se un campo orfano non e' elencato qui.",
         "verificata_da": "simulatore/web/censimento_vista.mjs --verifica",
         "campi": [
+          "scenari[].mescole_gia_usate",
           "modello.orizzonti_validati",
           "modello.orizzonti_validati[]",
           "scenari[].piano.mescole_gia_usate",
@@ -142,6 +144,44 @@
           "scenari[].piano.soste[]",
           "scenari[].piano.soste[].giro",
           "scenari[].piano.soste[].mescola"
+        ]
+      }
+    },
+    {
+      "id": "campi-vista-non-giudicabili-per-spread",
+      "titolo": "Undici campi di primo livello che il censimento non puo' giudicare, perche' il pannello li copia con uno spread",
+      "natura": "limite dello strumento, dichiarato e con rimedio noto",
+      "cosa_e_successo": "pannello.mjs apre con `const scenario = { ...s, _data: ... }`. Lo spread copia i valori in un oggetto NUOVO: i valori-oggetto restano osservabili (la copia contiene il Proxy del censimento), i PRIMITIVI no — dopo la copia vivono in un oggetto normale e nessuno puo' piu' sapere se qualcuno li usa. Per questi undici campi il censimento non dice ne' letto ne' orfano: dice NON GIUDICABILE.",
+      "perche_resta_aperto": "Il rimedio e' noto e non e' urgente: togliere lo spread dal pannello e passare `_data` come secondo argomento. E' una modifica al componente fatta per far funzionare uno strumento, quindi va decisa, non infilata. NEL FRATTEMPO, un censimento indipendente fatto per grep il 03/08 dice che cinque di questi — pavimento_s, pavimento_n_verdi, violazioni_director, sospetti_director, sotto_neutralizzazione — non sono letti da NESSUNO, e sono quindi orfani molto probabili; gli altri sei (gara, freeze_lap, approvato, mescola_scelta, n_giri, regime) sono resi in pagina e si vedono a occhio. Nessuna delle due cose e' una prova prodotta da questo strumento, ed e' per questo che stanno qui.",
+      "referto": "KPI P1; censimento del 03/08/2026, sezione «il punto cieco»",
+      "campi_vista_orfani": [
+        "scenari[].approvato",
+        "scenari[].freeze_lap",
+        "scenari[].gara",
+        "scenari[].mescola_scelta",
+        "scenari[].n_giri",
+        "scenari[].pavimento_n_verdi",
+        "scenari[].pavimento_s",
+        "scenari[].regime",
+        "scenari[].sospetti_director",
+        "scenari[].sotto_neutralizzazione",
+        "scenari[].violazioni_director"
+      ],
+      "guardia": {
+        "descrizione": "vera finche' il pannello copia lo scenario con uno spread e questi campi restano primitivi. Se il censimento smettesse di elencarli fra i NON GIUDICABILI, o li dichiarasse orfani, questa voce andrebbe rifatta.",
+        "verificata_da": "simulatore/web/censimento_vista.mjs --verifica",
+        "campi": [
+          "scenari[].approvato",
+          "scenari[].freeze_lap",
+          "scenari[].gara",
+          "scenari[].mescola_scelta",
+          "scenari[].n_giri",
+          "scenari[].pavimento_n_verdi",
+          "scenari[].pavimento_s",
+          "scenari[].regime",
+          "scenari[].sospetti_director",
+          "scenari[].sotto_neutralizzazione",
+          "scenari[].violazioni_director"
         ]
       }
     }

@@ -3,12 +3,12 @@
  "generato_il": "2026-08-03",
  "file": {
   "targhette.mjs": {
-   "sha256_sorgente": "136b4151d4ce76601cca4090971a013cb5be5997db12e3ff919492311d3dbd08",
-   "byte": 7039
+   "sha256_sorgente": "a0d790ff85e0a679b9a5ac02800b256e116a5c1033ed22a2e4678b11a6a74050",
+   "byte": 7493
   },
   "pannello.mjs": {
-   "sha256_sorgente": "8838327b4c82d51287f5b06b7ce2a42a7b311f64966be49e65dfd907b71317ba",
-   "byte": 20182
+   "sha256_sorgente": "24889305755052a603e6138519522cb4bb8c50830ab565c3cbf38e86c4a3c7b5",
+   "byte": 21552
   },
   "curva.mjs": {
    "sha256_sorgente": "97ff3a5682819a27830a0e6966fb2136eed933b40e28465993485194a50b3620",

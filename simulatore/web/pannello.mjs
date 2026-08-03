@@ -151,6 +151,26 @@ function bandaDiRientro(s) {
       txt(' — copre il '),
       num(b.copertura_fuori_campione * 100, { unita: '%', formato: 'secondi', targhetta: T.banda(s) }),
       txt(' dei casi fuori campione')),
+    // LA FREQUENZA NATURALE, accanto alla percentuale e non al posto suo.
+    //
+    // «Copre l'88,2%» e' vero e non dice niente a chi non fa questo mestiere: non si sa
+    // se sia tanto, e soprattutto non si sa quante volte capitera' di sbagliare. «Circa
+    // una sosta su otto finisce fuori» e' la stessa identica informazione nella forma in
+    // cui una persona la puo' usare — e' la lettura che KPI_5_4_4.md §P3 chiede.
+    // La percentuale resta perche' e' quella confrontabile col livello pre-registrato.
+    Number.isFinite(b.copertura_fuori_campione) && b.copertura_fuori_campione < 1
+      ? el('p', { classe: 'nota frequenza' },
+        // ANCHE L'«1» E' UNA QUANTITA'. s20 ha bocciato la prima scrittura, che lo teneva
+        // dentro il testo: «circa 1 sosta su » conteneva una cifra travestita da parola.
+        // Aveva ragione — in una frequenza naturale il numeratore e' un numero quanto il
+        // denominatore, e nasconderne uno dei due e' esattamente il modo in cui un numero
+        // sfugge alla targhetta.
+        txt('In altre parole: circa '),
+        num(1, { unita: null, formato: 'intero', targhetta: T.banda(s) }),
+        txt(' sosta su '),
+        num(Math.round(1 / (1 - b.copertura_fuori_campione)), { unita: null, formato: 'intero', targhetta: T.banda(s) }),
+        txt(' finisce FUORI da questa banda.'))
+      : null,
     b.circuito_sotto_livello
       ? el('p', { classe: 'nota allarme' },
         txt(`Su questo circuito la banda copre MENO del livello dichiarato: `),
