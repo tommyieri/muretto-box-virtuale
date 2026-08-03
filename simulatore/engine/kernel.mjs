@@ -122,7 +122,14 @@ function normalizzaSoste(pits, pilotiNoti) {
  *          inventato per chi non aveva passo (E06 — errori da 480 s), mai una
  *          somma parziale spacciata per cum a fine orizzonte.
  */
-export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizzazione = null, traccia = false }) {
+export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizzazione = null, tetto = null, traccia = false }) {
+  if (tetto !== null) {
+    if (typeof tetto !== 'object') throw new Error(`tetto non utilizzabile: ${JSON.stringify(tetto)}`);
+    for (const k of ['minGap', 'sogliaSorpasso', 'costoDuello', 'costoSubito']) {
+      const v = tetto[k];
+      if (typeof v !== 'number' || !Number.isFinite(v) || v < 0) throw new Error(`tetto.${k} non utilizzabile (serve un numero ≥ 0): ${JSON.stringify(v)}`);
+    }
+  }
   if (!interoNonNegativo(freezeLap)) throw new Error(`freezeLap deve essere intero ≥ 0: ${JSON.stringify(freezeLap)}`);
   if (!Number.isInteger(steps) || steps < 1) throw new Error(`steps deve essere intero ≥ 1: ${JSON.stringify(steps)}`);
   if (typeof pace !== 'function') throw new Error('pace deve essere una funzione (pilota, giro, età) → secondi | null');
@@ -218,6 +225,12 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
       if (capofila) for (const m of marcia) if (m.attivo) gapPrima.set(m.drv, m.c - capofila.c);
     }
 
+    // L'ordine a INIZIO giro, catturato prima che qualcuno percorra il giro: serve al
+    // tetto al movimento, che deve sapere chi era davanti a chi PRIMA (vedi sotto).
+    // Costa una copia ordinata per giro solo quando il tetto e' acceso.
+    const ordineInizioGiro = tetto === null ? null
+      : marcia.filter((m) => m.attivo).sort((a, d) => (a.c - d.c) || (a.drv < d.drv ? -1 : a.drv > d.drv ? 1 : 0));
+
     const fermiQuestoGiro = new Set();
     for (const m of marcia) {
       if (!m.attivo) continue;
@@ -258,6 +271,54 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
         const g = gapPrima.get(m.drv);
         if (g === undefined) continue;
         m.c = capofila.c + g * kappaDelGiro;
+      }
+    }
+
+    // ── IL TETTO AL MOVIMENTO: le auto smettono di attraversarsi ───────────
+    //
+    // Senza questo vincolo due cum possono scavalcarsi liberamente, e il campo si
+    // rimescola più di quanto la pista consenta. È la causa dichiarata della
+    // popolazione che perde 13-28 contro il non-fare-niente: dove il motore inventa
+    // movimento, sbaglia. Il referto gara-intera indica questa — un TETTO, non una
+    // probabilità di sorpasso — come unica strada permessa.
+    //
+    // NON SOTTO NEUTRALIZZAZIONE, ed è una scelta dichiarata: lì la spaziatura la
+    // detta la vettura di sicurezza, e il fattore di compressione è una MISURA sul
+    // fondo. Un pavimento importato che scavalcasse quella misura sostituirebbe un
+    // dato con un'assunzione.
+    //
+    // Chi è entrato ai box in questo giro resta fuori: non sta duellando, e il suo
+    // distacco lo decide la sosta. È lo stesso perimetro della compressione.
+    //
+    // Parametri e cancelli: ai_lab/confronto/PREREG_tetto_movimento.md.
+    // `tetto` null ⇒ questo blocco non esiste e i numeri sono bit-identici.
+    if (tetto !== null && !comprime) {
+      // L'ORDINE DA GUARDARE È QUELLO DI INIZIO GIRO, non quello di fine.
+      //
+      // La prima scrittura di questo blocco ordinava per cum DOPO il giro, e la
+      // sentinella s34 l'ha bocciata subito: a fine giro il sorpasso è già avvenuto,
+      // quindi la coppia arriva rovesciata e il pavimento veniva applicato al
+      // contrario — spingeva indietro chi era davanti. Un vincolo che impedisce i
+      // sorpassi non può leggere lo stato in cui i sorpassi sono già successi.
+      //
+      // Chi può passare chi lo decide la posizione a INIZIO giro: si è superati solo
+      // da chi era dietro.
+      const inGara = ordineInizioGiro.filter((m) => m.attivo && m.ultimoGiro && !fermiQuestoGiro.has(m.drv));
+      // UNA passata sola, dal primo all'ultimo, sull'ordine di inizio passata: è la
+      // discretizzazione per giro dichiarata, non un'approssimazione nascosta.
+      for (let i = 1; i < inGara.length; i += 1) {
+        const avanti = inGara[i - 1];
+        const dietro = inGara[i];
+        if (dietro.c - avanti.c >= tetto.minGap) continue;      // non sono in contatto
+        // il vantaggio di PASSO su questo giro, non il distacco accumulato
+        const vantaggio = avanti.ultimoGiro.lap_time - dietro.ultimoGiro.lap_time;
+        if (vantaggio > tetto.sogliaSorpasso) {
+          avanti.c += tetto.costoSubito;      // il sorpasso avviene: chi lo subisce paga
+        } else {
+          dietro.c = avanti.c + tetto.minGap; // niente passo per passare: resta dietro
+        }
+        avanti.c += tetto.costoDuello;        // il contatto costa a entrambi
+        dietro.c += tetto.costoDuello;
       }
     }
 
