@@ -1,0 +1,106 @@
+{
+ "_targhetta": {
+  "cosa_e": "La curva dell'orizzonte: a che distanza dal congelamento il motore batte ancora il non-fare-niente.",
+  "prereg": "ai_lab/confronto/PREREG_curva_orizzonte.md",
+  "verita": "rango per cum_time al giro Lf+h nel byLap pinnato, ri-classificato sulla popolazione comune motore/nullo/verita",
+  "limite_dichiarato": "oltre ~4 giri le soste vere dei rivali entrano nella finestra: i punti con mediana >= 1 sono marcati CONTAMINATO e restano pubblicati",
+  "cosa_NON_e": "non promuove e non boccia niente; F1 resta come firmato il 03/08",
+  "data": "2026-08-03"
+ },
+ "controllo_2_giri": {
+  "n": 235,
+  "vinceA": 36,
+  "vinceB": 12,
+  "pari": 187,
+  "discordanti": 48,
+  "p": 0.0007172696733945875,
+  "riproduce_36_12": true
+ },
+ "punti": [
+  {
+   "orizzonte": 2,
+   "n": 272,
+   "vince": 161,
+   "perde": 69,
+   "pari": 42,
+   "saldo": 92,
+   "p": 1.1932833606790184e-9,
+   "scartati": 2,
+   "soste_rivali_mediana": 3,
+   "contaminato": true
+  },
+  {
+   "orizzonte": 3,
+   "n": 271,
+   "vince": 146,
+   "perde": 72,
+   "pari": 53,
+   "saldo": 74,
+   "p": 6.025454612906932e-7,
+   "scartati": 3,
+   "soste_rivali_mediana": 5,
+   "contaminato": true
+  },
+  {
+   "orizzonte": 4,
+   "n": 271,
+   "vince": 136,
+   "perde": 80,
+   "pari": 55,
+   "saldo": 56,
+   "p": 0.00016889396076874102,
+   "scartati": 3,
+   "soste_rivali_mediana": 6,
+   "contaminato": true
+  },
+  {
+   "orizzonte": 5,
+   "n": 270,
+   "vince": 129,
+   "perde": 83,
+   "pari": 58,
+   "saldo": 46,
+   "p": 0.0019275612405549665,
+   "scartati": 4,
+   "soste_rivali_mediana": 8,
+   "contaminato": true
+  },
+  {
+   "orizzonte": 6,
+   "n": 264,
+   "vince": 119,
+   "perde": 88,
+   "pari": 57,
+   "saldo": 31,
+   "p": 0.036800350011993006,
+   "scartati": 10,
+   "soste_rivali_mediana": 8,
+   "contaminato": true
+  },
+  {
+   "orizzonte": 8,
+   "n": 254,
+   "vince": 102,
+   "perde": 86,
+   "pari": 66,
+   "saldo": 16,
+   "p": 0.2739199868726715,
+   "scartati": 20,
+   "soste_rivali_mediana": 10,
+   "contaminato": true
+  },
+  {
+   "orizzonte": 10,
+   "n": 253,
+   "vince": 101,
+   "perde": 84,
+   "pari": 68,
+   "saldo": 17,
+   "p": 0.23937768210627092,
+   "scartati": 21,
+   "soste_rivali_mediana": 11,
+   "contaminato": true
+  }
+ ],
+ "frontiera": null
+}
