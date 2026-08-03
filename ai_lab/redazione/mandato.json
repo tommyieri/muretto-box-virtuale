@@ -1,12 +1,13 @@
 {
   "_nota": "Mandato editoriale — COSA scrive la redazione. Deciso da Tommi il 2026-07-24 dopo il menu editoriale (65 tipi, artefatto). Scout e cacciatori si tarano su questo; ogni tipo attivo diventa un generatore in registro.py.",
   "scrittura": {
-    "attiva": false,
+    "attiva": true,
     "_perche": "IL CANCELLO DI ACCENSIONE. Il sistema editoriale (ai_lab/redazione/redazione.py) e' costruito, collaudato e agganciato, ma resta SPENTO finche' il PO non lo accende qui — come per i modelli vivi del laboratorio, dove ACCENDIBILE:false tiene fermo un modello calibrato e la decisione di accendere resta umana. Da spento, i generatori producono la loro prosa a template esattamente come prima, e ogni articolo dichiara 'scrittura: template: spento dal mandato'.",
     "_come_si_accende": "Si mette attiva:true in un commit, con la ragione. Prima conviene guardare un pezzo scritto a mano: python3 ai_lab/redazione/redazione.py --id <bozza> --prova",
     "_cosa_cambia": "Ogni bozza nuova passa da caposervizio, firma, correttore e (alla pubblicazione) censore. Costo misurato: 3-5 chiamate per articolo, 15-105 s ciascuna, dentro il tick di 30 minuti del cron.",
-    "acceso_da": null,
-    "acceso_il": null
+    "acceso_da": "Tommi",
+    "acceso_il": "2026-08-04",
+    "_nota_accensione": "Acceso dopo la prova su quattro bozze vere (compagni-marce-stowe, lift-mercedes, recap-weekend-hungaroring, trazione-loop) e dopo la riscrittura a mano dei dodici pubblicati, che ha collaudato il correttore contro un avversario umano. Da qui in poi ogni bozza nuova passa da caposervizio, firma e correttore; il censore gira al momento di pubblicare. Il primo weekend sotto questa regola e' Zandvoort (round 12, 21-23 agosto), che e' uno sprint: le sessioni con innesco sono FIA, SQ, S, Q, R. Per spegnerlo: attiva:false, in un commit, con la ragione."
   },
   "politica": {
     "dati": "solo_si",
