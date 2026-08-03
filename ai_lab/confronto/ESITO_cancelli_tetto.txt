@@ -1,0 +1,29 @@
+
+══ CANCELLI DEL TETTO AL MOVIMENTO — PREREG_tetto_movimento.md ════════════
+   parametri costanti: minGap 0.5 s · duello 0.3 s · subito 0.3 s
+   soglie per circuito: 10 gare  ·  FUORI PERIMETRO: Miami (nessun parametro nella fonte)
+
+   SENZA tetto:  terzile alto 10-25 (saldo -15, eccesso 2.04)  ·  basso+medio 38-27 (saldo +11)
+   CON tetto:    terzile alto 21-17 (saldo 4, eccesso 0.32)  ·  basso+medio 25-28 (saldo -3)
+
+   T1  saldo terzile alto -15 -> 4 (serve +6, cioe' >= -9)   PASSA
+   T2  saldo basso+medio -3 (serve >= +13)   NON PASSA
+   T3  eccesso di movimento |2.04| -> |0.32|   si riduce  (diagnostico)
+   T4  due giri appaiato: 16-33 (n=217, p=0.0213)   NON PASSA
+
+   T5  placebo: 200 permutazioni delle soglie fra i circuiti, seme 20260803
+       20/200 permutazioni
+       40/200 permutazioni
+       60/200 permutazioni
+       80/200 permutazioni
+       100/200 permutazioni
+       120/200 permutazioni
+       140/200 permutazioni
+       160/200 permutazioni
+       180/200 permutazioni
+       200/200 permutazioni
+       saldo vero 4  ·  finti: mediana 2, 95° percentile 8   NON PASSA
+
+   ESITO: NON PASSA
+
+   scritto ai_lab/confronto/ESITO_cancelli_tetto.json
