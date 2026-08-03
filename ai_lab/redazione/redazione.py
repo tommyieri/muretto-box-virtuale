@@ -189,6 +189,15 @@ def verifica(articolo, facts=None, verboso=True):
     minori = []
     try:
         blocca = set(stile.lessico()["cancello_pubblicazione"]["regole"])
+        if not accesa():
+            # A SISTEMA SPENTO NON SI CAMBIA CHI VA ONLINE. I generatori consegnano
+            # la loro prosa a template, che non e' stata scritta sotto questa voce
+            # e violerebbe regole nate dopo di lei: applicargliele bloccherebbe una
+            # gara intera di articoli senza che nessuno l'abbia deciso. Restano i
+            # controlli storici (termini fuori epoca) piu' la guardia dei numeri;
+            # tutto il resto viene REGISTRATO come minore, cosi' si vede che cosa
+            # succederebbe ad accensione avvenuta.
+            blocca &= {"L1", "L4"}
         e = stile.controlla(articolo, dos, mem)
         for v in e["violazioni"]:
             if v["gravita"] != stile.BLOCCANTE:
