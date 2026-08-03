@@ -1,95 +1,103 @@
 {
- "gara": "Miami",
- "n_giri": 57,
+ "gara": "GranBretagna",
+ "n_giri": 52,
  "primo_giro": 5,
- "ultimo_giro": 54,
+ "ultimo_giro": 49,
  "piloti": {
   "ALB": {
-   "giri": 50,
-   "con_risposta": 50
+   "giri": 39,
+   "con_risposta": 38
   },
   "ALO": {
-   "giri": 50,
-   "con_risposta": 50
+   "giri": 45,
+   "con_risposta": 44
   },
   "ANT": {
-   "giri": 50,
-   "con_risposta": 50
+   "giri": 45,
+   "con_risposta": 44
   },
   "BEA": {
-   "giri": 50,
-   "con_risposta": 50
+   "giri": 45,
+   "con_risposta": 44
   },
   "BOR": {
-   "giri": 50,
-   "con_risposta": 50
+   "giri": 45,
+   "con_risposta": 44
   },
   "BOT": {
-   "giri": 50,
-   "con_risposta": 50
+   "giri": 45,
+   "con_risposta": 44
   },
   "COL": {
-   "giri": 50,
-   "con_risposta": 50
+   "giri": 45,
+   "con_risposta": 44
   },
   "GAS": {
-   "giri": 1,
-   "con_risposta": 1
+   "giri": 45,
+   "con_risposta": 44
+  },
+  "HAD": {
+   "giri": 45,
+   "con_risposta": 44
   },
   "HAM": {
-   "giri": 50,
-   "con_risposta": 50
+   "giri": 45,
+   "con_risposta": 44
+  },
+  "HUL": {
+   "giri": 33,
+   "con_risposta": 32
   },
   "LAW": {
-   "giri": 2,
-   "con_risposta": 2
+   "giri": 45,
+   "con_risposta": 44
   },
   "LEC": {
-   "giri": 50,
-   "con_risposta": 50
+   "giri": 45,
+   "con_risposta": 44
   },
   "LIN": {
-   "giri": 50,
-   "con_risposta": 50
+   "giri": 45,
+   "con_risposta": 44
   },
   "NOR": {
-   "giri": 50,
-   "con_risposta": 50
+   "giri": 45,
+   "con_risposta": 44
   },
   "OCO": {
-   "giri": 50,
-   "con_risposta": 50
+   "giri": 45,
+   "con_risposta": 44
   },
   "PER": {
-   "giri": 50,
-   "con_risposta": 50
+   "giri": 45,
+   "con_risposta": 44
   },
   "PIA": {
-   "giri": 50,
-   "con_risposta": 50
+   "giri": 45,
+   "con_risposta": 43
   },
   "RUS": {
-   "giri": 50,
-   "con_risposta": 50
+   "giri": 45,
+   "con_risposta": 44
   },
   "SAI": {
-   "giri": 50,
-   "con_risposta": 50
+   "giri": 45,
+   "con_risposta": 44
   },
   "STR": {
-   "giri": 50,
-   "con_risposta": 50
+   "giri": 45,
+   "con_risposta": 44
   },
   "VER": {
-   "giri": 50,
-   "con_risposta": 50
+   "giri": 43,
+   "con_risposta": 42
   }
  },
  "_targhetta": {
   "tipo": "vista del sito — nessun numero calcolato dal browser",
   "generata_da": "simulatore/web/genera_vista_gara.mjs",
   "percorso": "provenienza → engine → scenario (Director compreso) → questo JSON → componenti",
-  "data": "2026-08-02"
+  "data": "2026-08-03"
  },
  "modello": {
   "rho": 0.030776,
@@ -145,10 +153,10 @@
   }
  ],
  "perdita": {
-  "verde": 20.498,
-  "circuito": "Miami_Grand_Prix",
+  "verde": 20.64,
+  "circuito": "British_Grand_Prix",
   "fonte": "misura_interna",
   "fallback": false,
-  "targhetta": "misurato sul fondo 2018-2025: mediana di 43 soste verdi su asciutto a Miami_Grand_Prix (IC95 19.904–21.158 s)"
+  "targhetta": "misurato sul fondo 2018-2025: mediana di 68 soste verdi su asciutto a British_Grand_Prix (IC95 19.797–22.139 s)"
  }
 }
