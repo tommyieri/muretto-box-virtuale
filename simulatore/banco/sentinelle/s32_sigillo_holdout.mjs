@@ -52,6 +52,43 @@ const sigillo = JSON.parse(readFileSync(dovSigillo, 'utf8'));
 b.verifica('il sigillo dichiara uno stato', sigillo.stato === 'aperto' || sigillo.stato === 'chiuso');
 b.verifica('il sigillo dichiara quale gara protegge', typeof sigillo.gara === 'string' && sigillo.gara.length > 0);
 b.verifica('il sigillo dichiara la data della gara', /^\d{4}-\d{2}-\d{2}$/.test(sigillo.data_gara ?? ''));
+
+// IL NOME DELLA GARA DEVE ESISTERE DAVVERO, e questa asserzione nasce da un collaudo.
+//
+// Il lucchetto in auto_gara.py (`_holdout_aperto`) confronta `sigillo.gara` con il nome che
+// il ciclo post-gara riceve — che viene da `data/mappa_gare.json`, campo `nome`. Il
+// confronto tollera maiuscole e spazi ma NON sinonimi: verificato a caldo il 03/08/2026,
+// 'Olanda' -> True mentre 'Dutch Grand Prix', 'Dutch_Grand_Prix' e 'Paesi Bassi' -> False.
+//
+// Finora qui si chiedeva solo che `gara` fosse «una stringa non vuota»: un REFUSO sarebbe
+// passato VERDE, e la domenica della gara il lucchetto avrebbe fallito APERTO — la
+// ri-stima sarebbe partita e l'holdout si sarebbe bruciato da solo, in silenzio. Un
+// guardiano che non confronta il nome col mondo reale non sta guardando niente.
+{
+  const mappa = JSON.parse(readFileSync(path.join(radice, '..', 'data', 'mappa_gare.json'), 'utf8'));
+  const nomiNoti = new Set(Object.values(mappa).map((m) => m?.nome).filter(Boolean));
+  b.verifica(
+    `la gara del sigillo (${JSON.stringify(sigillo.gara)}) e' un nome che data/mappa_gare.json conosce`
+    + ` — altrimenti il lucchetto fallisce APERTO il giorno della gara`,
+    nomiNoti.has(sigillo.gara),
+  );
+}
+
+// (e) IL SIGILLO APERTO CON LA GARA GIA' PASSATA. Il commento in testa a questo file
+// prometteva questo controllo dal 02/08; nel codice non c'era — `data_gara` veniva
+// validata solo come formato. Un sigillo che resta `aperto` dopo la gara significa che
+// nessuno ha misurato l'holdout e che la ri-stima e' ferma: silenzioso e costoso.
+// Tolleranza di due giorni: la misura si fa il giorno dopo, non la sera stessa.
+{
+  const oggi = new Date();
+  const gara = new Date(`${sigillo.data_gara}T00:00:00Z`);
+  const giorniDopo = Math.floor((oggi - gara) / 86400000);
+  b.verifica(
+    `il sigillo non e' rimasto APERTO con la gara gia' passata (gara ${sigillo.data_gara}, ${giorniDopo} giorni fa)`
+    + ' — se e\' rosso: o si misura l\'holdout e si chiude, o si dichiara perche\' no',
+    sigillo.stato !== 'aperto' || giorniDopo <= 2,
+  );
+}
 if (sigillo.stato === 'chiuso') {
   b.verifica('un sigillo chiuso porta la data di chiusura', /^\d{4}-\d{2}-\d{2}$/.test(sigillo.chiuso_il ?? ''));
 }
