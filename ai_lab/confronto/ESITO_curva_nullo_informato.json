@@ -1,0 +1,106 @@
+{
+ "_targhetta": {
+  "cosa_e": "La fisica del motore aggiunge qualcosa oltre l'aritmetica della sosta? Nullo = ordine al congelamento + pit-loss al soggetto.",
+  "prereg": "ai_lab/confronto/PREREG_nullo_informato.md",
+  "verita": "rango per cum_time al giro Lf+h nel byLap pinnato, ri-classificato sulla popolazione comune motore/nullo/verita",
+  "limite_dichiarato": "oltre ~4 giri le soste vere dei rivali entrano nella finestra: i punti con mediana >= 1 sono marcati CONTAMINATO e restano pubblicati",
+  "cosa_NON_e": "non promuove e non boccia niente; F1 resta come firmato il 03/08",
+  "data": "2026-08-03"
+ },
+ "controllo_2_giri": {
+  "n": 235,
+  "vinceA": 36,
+  "vinceB": 12,
+  "pari": 187,
+  "discordanti": 48,
+  "p": 0.0007172696733945875,
+  "riproduce_36_12": true
+ },
+ "punti": [
+  {
+   "orizzonte": 2,
+   "n": 272,
+   "vince": 62,
+   "perde": 17,
+   "pari": 193,
+   "saldo": 45,
+   "p": 3.588358881586525e-7,
+   "scartati": 2,
+   "soste_rivali_mediana": 3,
+   "contaminato": true
+  },
+  {
+   "orizzonte": 3,
+   "n": 271,
+   "vince": 92,
+   "perde": 17,
+   "pari": 162,
+   "saldo": 75,
+   "p": 1.2265535543319633e-13,
+   "scartati": 3,
+   "soste_rivali_mediana": 5,
+   "contaminato": true
+  },
+  {
+   "orizzonte": 4,
+   "n": 271,
+   "vince": 105,
+   "perde": 15,
+   "pari": 151,
+   "saldo": 90,
+   "p": 8.27450916064879e-18,
+   "scartati": 3,
+   "soste_rivali_mediana": 6,
+   "contaminato": true
+  },
+  {
+   "orizzonte": 5,
+   "n": 270,
+   "vince": 114,
+   "perde": 17,
+   "pari": 139,
+   "saldo": 97,
+   "p": 8.057074155764762e-19,
+   "scartati": 4,
+   "soste_rivali_mediana": 8,
+   "contaminato": true
+  },
+  {
+   "orizzonte": 6,
+   "n": 264,
+   "vince": 127,
+   "perde": 16,
+   "pari": 121,
+   "saldo": 111,
+   "p": 1.2517370976449335e-22,
+   "scartati": 10,
+   "soste_rivali_mediana": 8,
+   "contaminato": true
+  },
+  {
+   "orizzonte": 8,
+   "n": 254,
+   "vince": 150,
+   "perde": 9,
+   "pari": 95,
+   "saldo": 141,
+   "p": 4.134551281995271e-34,
+   "scartati": 20,
+   "soste_rivali_mediana": 10,
+   "contaminato": true
+  },
+  {
+   "orizzonte": 10,
+   "n": 253,
+   "vince": 158,
+   "perde": 14,
+   "pari": 81,
+   "saldo": 144,
+   "p": 4.836727992409508e-32,
+   "scartati": 21,
+   "soste_rivali_mediana": 11,
+   "contaminato": true
+  }
+ ],
+ "frontiera": null
+}
