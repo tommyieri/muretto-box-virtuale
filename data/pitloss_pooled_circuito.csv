@@ -1,0 +1,10 @@
+circuito,cid,pit_lane_time,n_dur,pit_loss_verde_K5,n_verde,track_time_K5,track_K3,track_K7,fragile,ben_campionato,pit_loss_SC_oss,sc_lo,sc_hi,n_sc_stop,n_blocchi_sc
+Australia,albert_park,18.15,164,20.75,42,-2.59,-2.20,-2.59,0,1,-12.27,,,7,2
+Austria,red_bull_ring,21.63,180,20.66,135,0.97,1.18,0.80,0,1,-9.31,,,1,1
+Canada,villeneuve,24.03,189,20.89,79,3.14,3.58,3.29,0,1,15.67,,,19,1
+Cina,shanghai,22.97,83,22.23,52,0.75,0.81,0.55,0,1,22.50,,,5,2
+Giappone,suzuka,23.70,128,21.66,93,2.04,2.36,1.94,0,1,17.62,13.01,17.62,13,2
+Gran Bretagna,silverstone,29.19,154,21.12,102,8.07,7.86,8.22,0,1,11.10,-0.93,14.66,14,3
+Miami,miami,22.62,88,19.35,50,3.28,3.38,3.08,0,1,2.42,,,5,2
+Monaco,monaco,24.40,145,21.13,86,3.27,2.87,3.40,0,1,29.93,,,6,1
+Spagna,catalunya,22.38,186,22.24,164,0.13,0.43,-0.05,1,1,-22.21,,,10,1
