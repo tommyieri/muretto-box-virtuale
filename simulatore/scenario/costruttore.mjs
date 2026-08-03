@@ -180,6 +180,14 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   const rodaggio = modello.rodaggio?.attivo === true
     ? { c: modello.rodaggio.c, tau: modello.rodaggio.tau }
     : null;
+  // Il CLIFF entra con la STESSA regola del rodaggio, e non è una comodità: un
+  // termine che sta nel file ma non è promosso deve restare inerte, altrimenti
+  // «misurato» e «acceso» diventano la stessa cosa e nessuno può più leggere il
+  // modello per sapere cosa il motore usa davvero. Cancelli e provenienza del
+  // parametro: ai_lab/confronto/PREREG_cliff_derivato.md.
+  const cliff = modello.cliff?.attivo === true
+    ? { kappa: modello.cliff.kappa }
+    : null;
 
   const assunzioni = [];
   const dichiara = (codice, descrizione, conteggio, targhetta) => assunzioni.push({ codice, descrizione, conteggio, targhetta });
@@ -374,12 +382,17 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   // ── passo: base misurata togliendo gli stessi termini che si ri-aggiungono ─
   const minGiriBase = typeof modello.min_giri_base?.valore === 'number'
     ? modello.min_giri_base.valore : MIN_GIRI_BASE_RIPIEGO;
-  const basi = stimaBasi(osservazioniVerdi(g.righe), { delta70, rho, nGiri: nGiriGara, finoA: freezeLap, minGiri: minGiriBase, rodaggio });
-  const pace = creaPasso({ delta70, rho, nGiri: nGiriGara, basi, rodaggio });
+  const basi = stimaBasi(osservazioniVerdi(g.righe), { delta70, rho, nGiri: nGiriGara, finoA: freezeLap, minGiri: minGiriBase, rodaggio, cliff });
+  const pace = creaPasso({ delta70, rho, nGiri: nGiriGara, basi, rodaggio, cliff });
   if (rodaggio !== null) {
     dichiara('RODAGGIO_GOMMA_NUOVA',
       `nei primi giri di vita la gomma è più veloce di quanto dica il degrado lineare: si applica w(età) = −${modello.rodaggio.c}·exp(−età/${modello.rodaggio.tau}) s/giro`,
       1, modello.rodaggio.targhetta ?? 'misurato sul fondo 2026 in aria libera');
+  }
+  if (cliff !== null) {
+    dichiara('CLIFF_FINE_VITA',
+      `oltre i primi giri la gomma peggiora più in fretta del degrado lineare: si applica q(età) = ${modello.cliff.kappa}·età² s/giro`,
+      1, modello.cliff.targhetta ?? 'parametro DERIVATO da fonte esterna, non misurato sui nostri dati');
   }
 
   // ── orizzonte legato al modello, non a un parametro morto (E20) ──────────

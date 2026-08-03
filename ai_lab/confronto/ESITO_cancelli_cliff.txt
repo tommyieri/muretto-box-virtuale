@@ -1,0 +1,35 @@
+
+══ CANCELLI DEL CLIFF — PREREG_cliff_derivato.md ══════════════════════════
+   Bersaglio (Pirelli: 2 soste): Austria, Spagna
+   Una sosta attesa (8 gare): Australia, Cina, Giappone, Miami, Canada, Monaco, Gran Bretagna, Belgio
+
+   riferimento senza cliff:  due giri n=235  ·  bandiera saldo +2 (57-55)
+
+── κ = 0.0005 (p25) ────────────────────────────────────────────────
+   C1  Austria         k>=2 in 272/1211 pannelli  (22.5%)
+   C1  Spagna          k>=2 in 0/1099 pannelli  (0.0%)
+   C1  NON PASSA — serve >50% in almeno una
+   C2  quota k>=2 piu' alta fra le otto: Monaco 45.8%  ->  NON PASSA (serve <10% ovunque)
+   C3  due giri, appaiato col motore senza cliff: 14-22 (n=235, p=0.2430)  ->  PASSA
+   C4  bandiera (oracolo): saldo +2 (58-56, n=193)  ->  PASSA (serve >= +1)
+   ESITO κ=0.0005: NON PASSA
+
+── κ = 0.0011 (mediana) ────────────────────────────────────────────────
+   C1  Austria         k>=2 in 327/1211 pannelli  (27.0%)
+   C1  Spagna          k>=2 in 195/1099 pannelli  (17.7%)
+   C1  NON PASSA — serve >50% in almeno una
+   C2  quota k>=2 piu' alta fra le otto: Monaco 53.2%  ->  NON PASSA (serve <10% ovunque)
+   C3  due giri, appaiato col motore senza cliff: 19-24 (n=235, p=0.5424)  ->  PASSA
+   C4  bandiera (oracolo): saldo -7 (49-56, n=193)  ->  NON PASSA (serve >= +1)
+   ESITO κ=0.0011: NON PASSA
+
+── κ = 0.0028 (p75) ────────────────────────────────────────────────
+   C1  Austria         k>=2 in 710/1211 pannelli  (58.6%)
+   C1  Spagna          k>=2 in 555/1099 pannelli  (50.5%)
+   C1  PASSA — serve >50% in almeno una
+   C2  quota k>=2 piu' alta fra le otto: Monaco 60.4%  ->  NON PASSA (serve <10% ovunque)
+   C3  due giri, appaiato col motore senza cliff: 31-28 (n=235, p=0.7948)  ->  PASSA
+   C4  bandiera (oracolo): saldo -21 (48-69, n=193)  ->  NON PASSA (serve >= +1)
+   ESITO κ=0.0028: NON PASSA
+
+   scritto ai_lab/confronto/ESITO_cancelli_cliff.json

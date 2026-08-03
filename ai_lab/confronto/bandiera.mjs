@@ -116,14 +116,14 @@ export function pianiVeriDi(nomeSito) {
  * ATTENZIONE al perimetro: s25_difesa fa fallire la suite se `pianiRivali` compare in un
  * percorso di web/, demo/ o scenario/. E' un ingresso di LABORATORIO e deve restare qui.
  */
-export function corri(nomeSito, pilota, { pianiRivali = undefined } = {}) {
+export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = null } = {}) {
   const r = riga(nomeSito, pilota);
   if (!r) return { saltato: 'nessuna riga in arrivi_2026.csv' };
   if (!r.classificato) return { saltato: `non classificato (${r.tipo_arrivo})`, tipo_arrivo: r.tipo_arrivo };
   if (!r.soste_piano.length) return { saltato: 'nessuna sosta registrata: non c\'e\' pit-loss ne\' mescola da simulare' };
 
   const gSim = garaNuova(nomeSito);
-  const contesto = contestoNuovo(nomeSito);
+  const contesto = contestoNuovo(nomeSito, modello);
 
   // Si scende il congelamento finche' il motore non ha un passo base per lui. Le soste
   // gia' avvenute NON si rimettono nel piano: il costruttore legge lo stato vero fino al
