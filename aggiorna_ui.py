@@ -80,9 +80,15 @@ def scrivi_versione():
         '_nota': 'GENERATO da aggiorna_ui.py — la targhetta di cosa e\' online. '
                  'Confrontala con `git ls-remote origin main`: se divergono, la macchina '
                  'che pubblica non sta eseguendo il main. Sonda: scheduling/sonda_deploy.sh',
+        '_ritardo_strutturale': 'Questo file non puo\' contenere il commit che lo include, e si '
+                 'rigenera solo quando gira aggiorna_ui.py (cioe\' dopo una gara). Fra due gare il '
+                 'ritardo su origin/main CRESCE di un commit per commit, ed e\' normale: non e\' la '
+                 'catena rotta. Si azzera con `python3 -c "import aggiorna_ui; aggiorna_ui.scrivi_versione()"`. '
+                 'Il rimedio strutturale sarebbe scriverlo a ogni deploy, che richiede un build step '
+                 'su Vercel — impostazione del progetto, non codice.',
+        'ramo_alla_generazione': git('rev-parse', '--abbrev-ref', 'HEAD'),
         'commit': git('rev-parse', 'HEAD'),
         'commit_breve': git('rev-parse', '--short', 'HEAD'),
-        'ramo': git('rev-parse', '--abbrev-ref', 'HEAD'),
         'data_commit': git('log', '-1', '--format=%cI'),
         'costruito_il': datetime.now(timezone.utc).isoformat(timespec='seconds'),
         'sigilli_sha256_16': sigilli,
@@ -94,7 +100,7 @@ def scrivi_versione():
     mancanti = [k for k, v in sigilli.items() if v is None]
     nota = f' — SIGILLI MANCANTI: {", ".join(mancanti)}' if mancanti else ''
     print(f'[{VERDE}OK{FINE}] versione     {d["commit_breve"] or "senza git"} '
-          f'({d["ramo"] or "?"}){nota}')
+          f'({d["ramo_alla_generazione"] or "?"}){nota}')
 
 
 def main():

@@ -74,7 +74,13 @@ else
   fi
   DIETRO="$(git rev-list --count "$ONLINE..$ATTESO" 2>/dev/null || echo '?')"
   if [[ "$DIETRO" == "?" ]] || (( DIETRO > GRAZIA_COMMIT )); then
-    rosso "il sito e' indietro di $DIETRO commit su origin/main (grazia: $GRAZIA_COMMIT) — la macchina che pubblica non sta eseguendo il main"
+    rosso "il sito e' indietro di $DIETRO commit su origin/main (grazia: $GRAZIA_COMMIT)"
+    echo "       PRIMA DI ALLARMARSI: quasi sempre non e' la catena rotta, e' versione.json vecchio."
+    echo "       Quel file si rigenera solo quando gira aggiorna_ui.py, cioe' dopo una gara: fra due"
+    echo "       gare il ritardo cresce di un commit per commit. Si azzera con"
+    echo "         python3 -c \"import aggiorna_ui; aggiorna_ui.scrivi_versione()\""
+    echo "       Se DOPO averlo rigenerato e pubblicato il ritardo resta alto, ALLORA e' la macchina"
+    echo "       che pubblica a non eseguire il main: si guarda il log del VPS (righe «aggiornato a»)."
     exit 1
   fi
   verde "il sito e' indietro di $DIETRO commit, entro la grazia di $GRAZIA_COMMIT"
