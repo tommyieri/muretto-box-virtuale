@@ -147,7 +147,7 @@ function metricaBandiera(regola) {
   const scarti = {};
   for (const g of gare()) {
     for (const r of perGara(g)) {
-      const e = corri(g, r.pilota, { pianiRivali: (lf) => regola.pianiRivali(g, lf) });
+      const e = corri(g, r.pilota, { pianiRivali: (lf, ctx) => regola.pianiRivali(g, lf, ctx) });
       if (e.saltato) { const k = e.saltato.replace(/\d+/g, 'N'); scarti[k] = (scarti[k] ?? 0) + 1; continue; }
       tutti.push({ gara: g, pilota: r.pilota, ...e });
     }

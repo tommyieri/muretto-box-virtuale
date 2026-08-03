@@ -45,7 +45,7 @@ function passata(fabbrica) {
   let proposti = 0; let arrivati = 0;
   for (const g of GARE) {
     for (const r of perGara(g)) {
-      const e = corri(g, r.pilota, { pianiRivali: fabbrica ? (lf) => fabbrica(g, lf) : undefined });
+      const e = corri(g, r.pilota, { pianiRivali: fabbrica ? (lf, ctx) => fabbrica(g, lf, ctx) : undefined });
       if (e.saltato || e.errore_nullo === null) continue;
       proposti += e.rivali_con_piano_proposto ?? 0;
       arrivati += e.rivali_con_sosta_nel_motore ?? 0;

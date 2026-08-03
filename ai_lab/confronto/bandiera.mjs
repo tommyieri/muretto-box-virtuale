@@ -148,8 +148,13 @@ export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = nul
   for (let lf = CONGELAMENTO_MIN; lf <= CONGELAMENTO_MAX; lf += 1) {
     const futuro = r.soste_piano.filter((s) => s.giro > lf);
     if (!futuro.length) { ultimoMotivo = `nessuna sosta oltre il giro ${lf}`; break; }
-    // la regola si interroga AL CONGELAMENTO DI QUESTO TENTATIVO, non a 5 per tutti
-    const piani = typeof pianiRivali === 'function' ? pianiRivali(lf) : pianiRivali;
+    // La regola si interroga AL CONGELAMENTO DI QUESTO TENTATIVO, non a 5 per tutti, e
+    // riceve anche CHI e' il soggetto e COSA fara': una regola di reazione deve poter
+    // reagire a qualcuno. Il piano del soggetto e' informazione ammessa — e' la premessa
+    // della metrica, il soggetto riceve la sua strategia vera — mentre le soste dei
+    // RIVALI non lo sono mai (E14). La distinzione e' la linea su cui vive tutta la
+    // famiglia, e per questo il contesto porta `futuro` (il soggetto) e nient'altro.
+    const piani = typeof pianiRivali === 'function' ? pianiRivali(lf, { pilota, futuro }) : pianiRivali;
     let s2; let e2;
     try {
       s2 = costruisciScenario({

@@ -7,7 +7,7 @@
 //
 // ── COS'E' UNA REGOLA ──────────────────────────────────────────────────────────
 //
-// Una funzione da (gara, congelamento) al comportamento dei rivali. Niente di piu': non
+// Una funzione da (gara, congelamento, {pilota, futuro}) al comportamento dei rivali. Niente di piu': non
 // vede il futuro del soggetto, non tocca il kernel, non cambia il passo. L'unica
 // cucitura che il motore espone e' `pianiRivali`, quindi una regola qui e' cio' che
 // produce quel piano.
@@ -62,7 +62,7 @@ export const REGOLE = {
     descrizione: 'il rivale non reagisce mai — la configurazione con cui girano tutte le misure pubblicate',
     targhetta: 'REGOLA NULLA: nessun piano ai rivali, nessuna patch al prior. E\' il metro, non un candidato.',
     candidata: false,
-    pianiRivali: (_gara, _freezeLap) => undefined,
+    pianiRivali: (_gara, _freezeLap, _ctx) => undefined,
   },
   // LA REGOLA-ORACOLO: non e' una regola di reazione, e' l'ingresso di laboratorio che
   // da' a ogni rivale le sue soste VERE. Serve come estremo superiore — quanto si
@@ -75,7 +75,7 @@ export const REGOLE = {
     candidata: false,
     // non dipende dal congelamento: le soste vere sono quelle a qualunque giro si congeli.
     // E' anche la ragione per cui la riparazione della cucitura ha lasciato i numeri identici.
-    pianiRivali: (nomeSito, _freezeLap) => pianiVeriDi(nomeSito),
+    pianiRivali: (nomeSito, _freezeLap, _ctx) => pianiVeriDi(nomeSito),
   },
 };
 
