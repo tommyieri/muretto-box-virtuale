@@ -2,7 +2,7 @@
  "_nota": "GENERATO da gen_stat_feed.py: scarica l'archivio pubblico F1 e conta i canali che trasmette. Non modificare a mano.",
  "_generatore": "gen_stat_feed.py",
  "schema": 1,
- "calcolato_il": "2026-08-04T10:16:13+00:00",
+ "calcolato_il": "2026-08-04T12:54:56+00:00",
  "provenienza": {
   "fonte": "livetiming.formula1.com/static — archivio pubblico ufficiale F1",
   "come": "decodifica DEFLATE dei record di CarData.z.jsonStream ed enumerazione delle chiavi di Cars[pilota].Channels; elenco dei feed da Index.json di sessione.",

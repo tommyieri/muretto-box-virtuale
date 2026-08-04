@@ -2,7 +2,7 @@
  "_nota": "GENERATO da gen_stat_piloti.py (i due moduli «compagni di squadra»: qualifica e gara). Non modificare a mano: si rigenera da f1db + demo/data/ufficiali_2026.json.",
  "_generatore": "gen_stat_piloti.py",
  "schema": 1,
- "calcolato_il": "2026-08-04T10:15:47Z",
+ "calcolato_il": "2026-08-04T12:54:50Z",
  "provenienza": {
   "f1db_release_pinnata": "v2026.11.0",
   "f1db_release_letta": "v2026.11.0",

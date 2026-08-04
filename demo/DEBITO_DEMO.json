@@ -149,9 +149,9 @@
     },
     {
       "id": "campi-vista-non-giudicabili-per-spread",
-      "titolo": "Undici campi di primo livello che il censimento non puo' giudicare, perche' il pannello li copia con uno spread",
+      "titolo": "Tredici campi di primo livello che il censimento non puo' giudicare, perche' il pannello li copia con uno spread",
       "natura": "limite dello strumento, dichiarato e con rimedio noto",
-      "cosa_e_successo": "pannello.mjs apre con `const scenario = { ...s, _data: ... }`. Lo spread copia i valori in un oggetto NUOVO: i valori-oggetto restano osservabili (la copia contiene il Proxy del censimento), i PRIMITIVI no — dopo la copia vivono in un oggetto normale e nessuno puo' piu' sapere se qualcuno li usa. Per questi undici campi il censimento non dice ne' letto ne' orfano: dice NON GIUDICABILE.",
+      "cosa_e_successo": "pannello.mjs apre con `const scenario = { ...s, _data: ... }`. Lo spread copia i valori in un oggetto NUOVO: i valori-oggetto restano osservabili (la copia contiene il Proxy del censimento), i PRIMITIVI no — dopo la copia vivono in un oggetto normale e nessuno puo' piu' sapere se qualcuno li usa. Per questi undici campi il censimento non dice ne' letto ne' orfano: dice NON GIUDICABILE. Dal 04/08/2026 il gruppo comprende anche `scenari[].orizzonte`: il pannello non rende piu' i due orizzonti di validazione, quindi l'oggetto arriva ormai solo dallo spread e il censimento non puo' piu' distinguerlo dagli altri primitivi copiati. Stessa cosa per `scenari[].nota_banda`, da quando la curva non rende piu' la nota sulla banda.",
       "perche_resta_aperto": "Il rimedio e' noto e non e' urgente: togliere lo spread dal pannello e passare `_data` come secondo argomento. E' una modifica al componente fatta per far funzionare uno strumento, quindi va decisa, non infilata. NEL FRATTEMPO, un censimento indipendente fatto per grep il 03/08 dice che cinque di questi — pavimento_s, pavimento_n_verdi, violazioni_director, sospetti_director, sotto_neutralizzazione — non sono letti da NESSUNO, e sono quindi orfani molto probabili; gli altri sei (gara, freeze_lap, approvato, mescola_scelta, n_giri, regime) sono resi in pagina e si vedono a occhio. Nessuna delle due cose e' una prova prodotta da questo strumento, ed e' per questo che stanno qui.",
       "referto": "KPI P1; censimento del 03/08/2026, sezione «il punto cieco»",
       "campi_vista_orfani": [
@@ -160,6 +160,8 @@
         "scenari[].gara",
         "scenari[].mescola_scelta",
         "scenari[].n_giri",
+        "scenari[].nota_banda",
+        "scenari[].orizzonte",
         "scenari[].pavimento_n_verdi",
         "scenari[].pavimento_s",
         "scenari[].regime",
@@ -176,6 +178,8 @@
           "scenari[].gara",
           "scenari[].mescola_scelta",
           "scenari[].n_giri",
+          "scenari[].nota_banda",
+          "scenari[].orizzonte",
           "scenari[].pavimento_n_verdi",
           "scenari[].pavimento_s",
           "scenari[].regime",
@@ -215,6 +219,64 @@
             "demo/neutralizzazione.json",
             "simulatore/data/archivio/dal_futuro/neutralizzazione.json"
           ]
+        ]
+      }
+    },
+    {
+      "id": "campi-vista-metodo-non-piu-reso",
+      "titolo": "Il metodo dichiarato non si rende piu' in pagina: assunzioni, orizzonti di validazione, avvisi della banda e forma chiusa",
+      "natura": "decisione editoriale, non difetto",
+      "cosa_e_successo": "Il 04/08/2026 Tommi ha deciso che il sito non mostra piu' al lettore da dove viene un numero ne' fin dove vale: via le targhette di fonte, i muri di copertura, le sezioni «cosa questa pagina non dice» e — nel pannello pit — il blocco «Assunzioni dichiarate», i due orizzonti di validazione, gli allarmi del piano gomme, gli avvisi della banda e il paragrafo sulla forma chiusa. La ragione e' il cliente finale: quella prosa e' un referto interno, e in pagina leggeva come un sito incompleto invece che come un sito onesto. Il pannello continua a mostrare la risposta, il margine, il piano gomme, il confronto fra 0/1/2/3 soste e i parametri del modello (perdita ai box, fermo, degrado, carburante).",
+      "perche_resta_aperto": "Il DATO non si tocca: il motore continua a calcolare assunzioni, orizzonti e allarmi, e restano nella vista, nel JSON e nelle targhette dei numeri. E' sparita la RESA, non la misura — e' la stessa scelta gia' fatta per la tabella «Dati · Provenienza dei numeri» in fondo agli articoli. Toglierli dal generatore vorrebbe dire cambiare cio' che il motore calcola per una ragione di impaginazione, che e' il verso sbagliato: se un giorno servisse una vista tecnica, i campi sono ancora tutti li'.",
+      "referto": "decisione di Tommi del 04/08/2026 (branch claude/remove-sources-metadata); censimento KPI P1",
+      "campi_vista_orfani": [
+        "scenari[].assunzioni",
+        "scenari[].assunzioni[]",
+        "scenari[].assunzioni[].codice",
+        "scenari[].assunzioni[].conteggio",
+        "scenari[].assunzioni[].descrizione",
+        "scenari[].assunzioni[].targhetta",
+        "scenari[].orizzonte.oltre_il_validato",
+        "scenari[].orizzonte.oltre_la_risposta",
+        "scenari[].orizzonte.orizzonte_risposta",
+        "scenari[].orizzonte.orizzonte_validato",
+        "scenari[].orizzonte.steps",
+        "scenari[].pannello.banda_posizione.avviso_livello",
+        "scenari[].pannello.banda_posizione.circuito_sotto_livello",
+        "scenari[].pannello.banda_posizione.circuito_sotto_livello.copertura",
+        "scenari[].pannello.banda_posizione.circuito_sotto_livello.n_casi",
+        "scenari[].pannello.banda_posizione.contesto",
+        "scenari[].piano.allarmi",
+        "scenari[].piano.allarmi[]",
+        "scenari[].piano.allarmi[].descrizione",
+        "scenari[].piano.allarmi[].targhetta",
+        "scenari[].piano.limite_perche"
+      ],
+      "guardia": {
+        "descrizione": "vera finche' i campi elencati restano EMESSI dalla vista e NON letti da nessun componente. Esce 1 in entrambi i versi: se uno di questi torna in pagina (decisione rientrata e registro non aggiornato) e se un campo orfano non e' elencato qui.",
+        "verificata_da": "simulatore/web/censimento_vista.mjs --verifica",
+        "campi": [
+          "scenari[].assunzioni",
+          "scenari[].assunzioni[]",
+          "scenari[].assunzioni[].codice",
+          "scenari[].assunzioni[].conteggio",
+          "scenari[].assunzioni[].descrizione",
+          "scenari[].assunzioni[].targhetta",
+          "scenari[].orizzonte.oltre_il_validato",
+          "scenari[].orizzonte.oltre_la_risposta",
+          "scenari[].orizzonte.orizzonte_risposta",
+          "scenari[].orizzonte.orizzonte_validato",
+          "scenari[].orizzonte.steps",
+          "scenari[].pannello.banda_posizione.avviso_livello",
+          "scenari[].pannello.banda_posizione.circuito_sotto_livello",
+          "scenari[].pannello.banda_posizione.circuito_sotto_livello.copertura",
+          "scenari[].pannello.banda_posizione.circuito_sotto_livello.n_casi",
+          "scenari[].pannello.banda_posizione.contesto",
+          "scenari[].piano.allarmi",
+          "scenari[].piano.allarmi[]",
+          "scenari[].piano.allarmi[].descrizione",
+          "scenari[].piano.allarmi[].targhetta",
+          "scenari[].piano.limite_perche"
         ]
       }
     }

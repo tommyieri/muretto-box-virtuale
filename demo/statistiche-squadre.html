@@ -21,7 +21,7 @@
 <title>Squadre e vetture 2026 — Muretto Box Virtuale</title>
 <meta name="description" content="Quanto e' forte ogni vettura gara per gara, e dove ogni squadra ha scelto di essere lenta: velocita' di punta contro velocita' in curva, sul DNA di ogni circuito.">
 <link rel="canonical" href="https://murettobox.com/statistiche-squadre.html">
-<link rel="stylesheet" href="stile.css?v=040826a">
+<link rel="stylesheet" href="stile.css?v=040826b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>
@@ -53,9 +53,6 @@
     <a href="statistiche-confronti.html">Confronti fra stagioni</a>
   </nav>
 
-  <div id="targhetta"></div>
-  <div id="copertura"></div>
-
   <section class="stat-sez" id="team">
     <div class="sez-tit">Forza-vettura, gara per gara</div>
     <div class="stat-regola"><span class="k">Come nasce l'indice</span>
@@ -66,9 +63,7 @@
       <b>relativo alla gara</b>, quindi si legge in verticale, non in orizzontale: 100 a
       Budapest e 100 a Spa non sono la stessa velocità.
     </div>
-    <p class="stat-sub">Media dell'indice su tutte le gare coperte. La colonna <b>passo</b> porta
-      un avviso quando in qualche gara il passo pulito non era misurabile: lì l'indice si appoggia
-      di più al giro secco, e la cella lo dice invece di far finta di niente.</p>
+    <p class="stat-sub">Media dell'indice sulle gare della stagione.</p>
     <div id="tab-forza"></div>
     <a class="sk-vai" href="forza.html" style="display:inline-block;margin-top:14px">
       Vedi l'evoluzione gara per gara, con lo slider &rarr;</a>
@@ -83,12 +78,6 @@
       mediana della propria gara</b>, e solo dopo si aggrega. Negativo = più rapidi dei rivali
       di quel weekend.
     </div>
-    <div class="stat-assente"><b>E anche così non è la prestazione dei meccanici</b>
-      La grandezza misurata è il <b>transito in pit lane</b> &mdash; ingresso, corsia a velocità
-      limitata, uscita &mdash; e l'auto ferma ne è solo una frazione, che con questi dati
-      <b>non è separabile</b>. Un box lento e una corsia percorsa male producono lo stesso
-      numero. È un indizio, non un cronometro sui meccanici.
-    </div>
     <div id="tab-pit"></div>
   </section>
 
@@ -102,8 +91,7 @@
       verticale = forte in curva.
     </div>
     <p class="stat-sub">La velocità di punta include la <b>potenza del motore</b>, non solo l'ala;
-      la velocità in curva include il <b>grip meccanico</b>. È una firma d'assetto, non una misura
-      di aerodinamica.</p>
+      la velocità in curva include il <b>grip meccanico</b>. È una firma d'assetto.</p>
     <div class="stat-chart" id="scatter"></div>
     <div class="stat-legend" id="leg-scatter"></div>
     <div id="tab-assetto" style="margin-top:18px"></div>
@@ -111,17 +99,6 @@
       Vedi il cruscotto per gara, col DNA di ogni circuito &rarr;</a>
   </section>
 
-  <section class="stat-sez" id="osservabilita">
-    <div class="sez-tit">Il muro dell'osservabilità</div>
-    <p class="stat-sub">In una pagina sulle vetture 2026 non c'è <b>una sola riga sull'ibrido</b>.
-      Non è una dimenticanza, e da oggi non è nemmeno un'affermazione: è una <b>misura</b>, e si
-      rifà a ogni gara.</p>
-    <div id="feed-ufficiale"></div>
-    <div id="tab-canali"></div>
-    <div id="regolamento" style="margin-top:26px"></div>
-    <div class="panel stat-elenco" style="padding:4px 20px 10px;margin-top:16px" id="assenti"></div>
-    <div class="stat-assente" style="margin-top:14px" id="limite-tele"></div>
-  </section>
 </div>
 
 <footer class="footer">
@@ -136,8 +113,8 @@
 </footer>
 
 <script type="module">
-import { prendiJSON, mostraErrore, scheletro, esc, dataIt, tabellaOrdinabile, barra, coloriTeam,
-         normalizzaTeam } from './stat.mjs?v=040826a';
+import { prendiJSON, mostraErrore, scheletro, esc, tabellaOrdinabile, barra, coloriTeam,
+         normalizzaTeam } from './stat.mjs?v=040826b';
 const el = id => document.getElementById(id);
 let colori = {};
 const col = t => colori[normalizzaTeam(t)] || colori[t] || 'var(--dim)';
@@ -165,20 +142,19 @@ function forza(f, calendario){
   const per = {};
   for (const g of f.gare) {
     for (const [team, d] of Object.entries(g.team)) {
-      const q = (per[team] ??= { team, indice: [], secco: [], passo: [], gap: [], deboli: [], gare: 0 });
+      const q = (per[team] ??= { team, indice: [], secco: [], passo: [], gap: [], gare: 0 });
       q.gare++;
       if (d.indice != null) q.indice.push(d.indice);
       if (d.potenziale_pct != null) q.secco.push(d.potenziale_pct);
       if (d.passo_pct != null && d.passo_affidabile) q.passo.push(d.passo_pct);
       if (d.gap != null) q.gap.push(d.gap);
-      if (!d.passo_affidabile) q.deboli.push(g.circuito ?? g.gp);
     }
   }
   const righe = Object.values(per).map(q => ({
     team: q.team, gare: q.gare,
     indice: media(q.indice), secco: media(q.secco),
     passo: q.passo.length ? media(q.passo) : null,
-    passoDeboli: q.deboli, gap: media(q.gap),
+    gap: media(q.gap),
   }));
   tabellaOrdinabile(el('tab-forza'), righe, [
     { k: 'team', testo: 'squadra',
@@ -187,10 +163,7 @@ function forza(f, calendario){
       cella: r => barra(r.indice ?? 0, 100, col(r.team), (r.indice ?? 0).toFixed(0)) },
     { k: 'secco', testo: 'giro secco', num: true, cella: r => (r.secco ?? 0).toFixed(0) },
     { k: 'passo', testo: 'passo', num: true,
-      cella: r => r.passo == null
-        ? '<span class="dim">non misurabile</span>'
-        : `${r.passo.toFixed(0)}${r.passoDeboli.length
-            ? ` <span class="dim" title="Passo non affidabile a: ${esc(r.passoDeboli.join(', '))}. In quelle gare l'indice pesa di più il giro secco.">· ${r.passoDeboli.length}/${r.gare}</span>` : ''}` },
+      cella: r => r.passo == null ? '<span class="dim">&ndash;</span>' : r.passo.toFixed(0) },
     { k: 'gap', testo: 'gap medio (s)', num: true, cella: r => (r.gap ?? 0).toFixed(2) },
     { k: 'gare', testo: 'gare', num: true },
   ], { ordina: 'indice' });
@@ -282,139 +255,6 @@ function pitLane(g){
   ], { ordina: 'scarto_mediano_s', discendente: false });
 }
 
-// V3 — il censimento dei canali: la parte MISURATA del muro. Prima era prosa, e una prosa
-// non si aggiorna: se il collettore cominciasse a esportare un canale nuovo, la frase
-// resterebbe li' a mentire. Questo si rifa' a ogni gara insieme al resto.
-// IL CENSIMENTO DEL FEED. Prima questa pagina diceva «l'energia non e' osservabile» citando il
-// manutentore di FastF1: vero, ma di seconda mano, e un'affermazione non si aggiorna. Adesso
-// gen_stat_feed.py scarica l'archivio ufficiale a ogni gara e CONTA i canali. Se F1 riaprisse il
-// rubinetto, la sentinella lo direbbe invece di lasciare che questa riga invecchi.
-function feedUfficiale(f){
-  const box = el('feed-ufficiale');
-  if (!f?.per_anno){ box.innerHTML = ''; return; }
-  const anni = Object.keys(f.per_anno).sort().reverse();
-  const nomi = a => Object.values(f.per_anno[a].canali).map(c => c.nome);
-  const cur = anni[0];
-  const tutti = [...new Set(anni.flatMap(nomi))];
-
-  box.innerHTML = `
-    <div class="stat-regola"><span class="k">Non ce lo dicono: l'abbiamo contato</span>
-      Il feed pubblico di F1 trasmette <b>${f.per_anno[cur].n_canali} canali</b> per vettura, e
-      nessuno riguarda l'energia. Nel ${anni[1] ?? '—'} erano
-      <b>${f.per_anno[anni[1]]?.n_canali ?? '—'}</b>: la differenza è il <b>DRS</b>, che nel
-      ${cur} <b>non c'è più</b>. E gli stream dell'archivio sono
-      <b>${f.per_anno[cur].n_feed}</b>, gli stessi identici dell'anno prima: nessun canale nuovo
-      è comparso per l'ibrido.
-    </div>
-    <table class="dtbl" style="margin-bottom:14px">
-      <thead><tr><th>canale</th>${anni.map(a => `<th style="text-align:center">${esc(a)}</th>`).join('')}</tr></thead>
-      <tbody>${tutti.map(c => `<tr>
-        <td><span class="nome">${esc(c)}</span></td>
-        ${anni.map(a => `<td style="text-align:center">${nomi(a).includes(c)
-          ? '<span style="color:var(--ok)">●</span>'
-          : '<span style="color:var(--brand)">—</span>'}</td>`).join('')}</tr>`).join('')}
-        <tr><td><span class="dim">stato di carica, MJ, mappe motore, Overtake Mode</span></td>
-          ${anni.map(() => '<td style="text-align:center"><span style="color:var(--brand)">—</span></td>').join('')}</tr>
-      </tbody></table>
-    <p class="stat-sub">Verificato su <b>${f.provenienza.sessioni_controllate.map(x =>
-        `${esc(x.gara)} ${esc(x.anno)}`).join('</b> e <b>')}</b>, il ${dataIt(f.calcolato_il)}.
-      ${f.sentinella.allarme
-        ? `<b style="color:var(--brand)">ATTENZIONE: il censimento è cambiato.</b>`
-        : 'Nessun canale nuovo, nessuno sparito dall\'ultimo controllo.'}</p>
-    <div class="stat-assente"><b>Quello che questo conteggio non dimostra</b>
-      ${esc(f.cosa_NON_dimostra)}
-      <div style="margin-top:8px">E sul DRS: ${esc(f.il_caso_DRS)}</div>
-    </div>`;
-}
-
-// I LIMITI DEL REGOLAMENTO. L'energia della vettura non si legge, ma quanto sia PERMESSO sta
-// scritto, ed e' pubblico. I numeri stanno in un file firmato a mano (data/regolamento_2026.json):
-// finche' nessuno ha firmato, qui non compare NESSUN numero — compare cosa manca.
-function regolamento(r){
-  const box = el('regolamento');
-  if (!r){ box.innerHTML = ''; return; }
-
-  if (!r.firma?.firmato){
-    box.innerHTML = `<div class="stat-assente">
-      <b>I limiti del regolamento non sono ancora firmati, quindi qui non c'è nessun numero</b>
-      ${esc(r.firma?.perche_grezzo ?? '')}
-      <div style="margin-top:10px">Sono <b>${(r.da_firmare ?? []).length} voci</b>, ognuna con il
-        suo articolo già indicato: ${(r.da_firmare ?? []).map(v =>
-          `<span style="color:var(--txt)">${esc(v.articolo)}</span>`).join(', ')}.
-        Si firma in <code>data/regolamento_2026.json</code>.</div>
-    </div>`;
-    return;
-  }
-
-  const voci = r.voci ?? [];
-  box.innerHTML = `
-    <div class="stat-regola"><span class="k">Quanto è permesso</span>
-      L'energia della vettura non si legge, ma <b>quanto se ne possa usare sta scritto</b>. Ogni
-      riga porta l'<b>articolo</b> da cui viene e l'<b>Issue</b> del documento: la Sezione C ha
-      avuto diciannove revisioni in una stagione, e un numero di regolamento senza la sua
-      revisione non vuol dire niente.
-    </div>
-    <table class="dtbl">
-      <thead><tr><th>limite</th><th style="text-align:right">valore</th><th>articolo</th></tr></thead>
-      <tbody>${voci.map(v => `<tr>
-        <td><span class="nome">${esc(v.cosa)}</span>${v.nota
-          ? `<div class="dim" style="font:12px/1.5 var(--sans);white-space:normal;max-width:52ch;padding-top:4px">${esc(v.nota)}</div>` : ''}</td>
-        <td class="num">${v.formula
-          ? v.formula.map(t => `<div><span class="dim">${t.da == null ? `fino a ${t.a} km/h`
-              : t.a == null ? `da ${t.da} km/h` : `${t.da}–${t.a} km/h`}</span> <b>${esc(String(t.P))}</b></div>`).join('')
-            + (v.soglie_derivate ?? []).map(sd =>
-              `<div style="color:var(--accent);padding-top:4px">${esc(sd.significato)}
-                <b>${sd.a_km_h} km/h</b> <span class="dim">· derivata</span></div>`).join('')
-          : `<b>${esc(String(v.valore))}</b> <span class="dim">${esc(v.unita ?? '')}</span>`
-            + (v.riducibile_a != null ? `<div class="dim">riducibile a ${v.riducibile_a}, mai sotto ${v.pavimento}</div>` : '')}
-        </td>
-        <td><span class="dim">${esc(v.articolo)}</span><br>
-          <span class="dim" style="font-size:10px">Issue ${esc(String(v.issue))} · ${esc(v.data ?? '')}</span></td>
-      </tr>`).join('')}</tbody></table>
-    <p class="stat-sub" style="margin-top:10px">Firmato da <b>${esc(r.firma.firmato_da ?? '?')}</b>
-      il ${dataIt(r.firma.firmato_il)}. Le soglie in <span style="color:var(--accent)">accento</span>
-      sono <b>derivate dalla formula</b>, non lette: è il motivo per cui qui non troverai il
-      «288 contro 290 km/h» su cui le sintesi litigano — con la formula il conto è uno solo.</p>
-    ${(r.da_firmare ?? []).length ? `<div class="stat-assente"><b>${r.da_firmare.length === 1
-      ? 'Una voce non è firmata' : `${r.da_firmare.length} voci non sono firmate`}</b>
-      ${r.da_firmare.map(v => `<b style="display:inline">${esc(v.articolo)}</b> — ${esc(v.nota ?? '')}`).join('<br>')}</div>` : ''}
-    <details class="stat-metodo"><summary>Cosa NON entra in questa tabella</summary>
-      <div class="in">${Object.entries(r.cosa_non_entra ?? {}).map(([k, v]) =>
-        `<p><b>${esc(k.replace(/_/g, ' '))}</b> — ${esc(v)}</p>`).join('')}</div></details>`;
-}
-
-function osservabilita(g){
-  const o = g?.osservabilita;
-  if (!o){ document.getElementById('osservabilita')?.remove(); return; }
-  const nome = { t:'tempo', velocita:'velocità', throttle:'gas', freno:'freno', marcia:'marcia' };
-  el('tab-canali').innerHTML = `<table class="dtbl">
-    <thead><tr><th>canale pubblicato</th><th>cosa permette di misurare</th></tr></thead>
-    <tbody>${o.canali_pubblicati.map(c => `<tr>
-      <td><span class="nome"><span class="cbar" style="background:var(--ok)"></span>
-        <b>${esc(nome[c] ?? c)}</b> <span class="dim">${esc(c)}</span></span></td>
-      <td class="dim">${esc({
-        t: 'la posizione nel giro, e quindi i settori',
-        velocita: 'velocità di punta e velocità minima in curva',
-        throttle: 'la quota di giro a pieno gas',
-        freno: 'dove e per quanto si frena',
-        marcia: 'i rapporti, e da lì la scelta di trasmissione',
-      }[c] ?? '—')}</td></tr>`).join('')}</tbody></table>
-    <p class="stat-sub" style="margin-top:10px"><b>${o.n_canali} canali</b>, su
-      <b>${o.sessioni_con_telemetria} sessioni</b> di ${o.gare_con_telemetria.length} gare
-      (${o.gare_con_telemetria.map(esc).join(', ')}).</p>`;
-
-  el('assenti').innerHTML = Object.entries(o.assenti_e_perche).map(([k, v]) =>
-    `<div><span class="k">${esc(({
-       drs: 'DRS',
-       ers_stato_di_carica: 'Stato di carica',
-       aerodinamica_attiva: 'Aerodinamica attiva',
-       mj_recuperati_schierati: 'MJ recuperati',
-       carico_carburante: 'Carico carburante',
-     })[k] ?? k)}</span><span class="v">${esc(v)}</span></div>`).join('');
-
-  el('limite-tele').innerHTML = `<b>E un limite che vale per tutto quello che c'è</b>${esc(o.limite)}`;
-}
-
 async function boot(){
   scheletro(el('tab-forza'), 8);
   let f, s, cal;
@@ -424,39 +264,11 @@ async function boot(){
     cal = await prendiJSON('data/calendario_2026.json');
   } catch(e){ mostraErrore(el('tab-forza'), boot); return; }
   colori = await coloriTeam();
-  let gara = null, feed = null;
+  let gara = null;
   try { gara = await prendiJSON('data/stat/gara_2026.json'); } catch(e){}
-  try { feed = await prendiJSON('data/stat/feed.json'); } catch(e){}
-  let reg = null;
-  try { reg = await prendiJSON('data/stat/regolamento.json'); } catch(e){}
-
-  // LA COPERTURA SI CALCOLA, NON SI COPIA DAL FILE. I due artefatti dichiarano n_gare=10 e
-  // non dicono quale manca: qui si confronta il loro elenco di round col calendario e si
-  // nomina l'assente. Finche' il generatore non scrivera' anche il MOTIVO, quello resta
-  // l'unica parte scritta a mano di questa pagina — ed e' dichiarato che lo e'.
-  const round = Object.fromEntries(cal.gare.filter(g => g.gara_demo).map(g => [g.round, g.gara_demo]));
-  const coperti = new Set(f.gare.map(g => g.round));
-  const mancanti = Object.entries(round).filter(([r]) => !coperti.has(Number(r))).map(([, n]) => n);
-  const MOTIVO = { Monaco: 'telemetria lacunosa: il tracciato non produce un passo pulito misurabile' };
-
-  el('targhetta').innerHTML = `<div class="stat-targhetta">
-    <div><span class="k">perimetro</span><span class="v">${f.gare.length} gare su ${Object.keys(round).length} corse</span></div>
-    <div><span class="k">ultima</span><span class="v">${esc(f.ultima ?? '')}</span></div>
-    <div><span class="k">aggiornato</span><span class="v">${dataIt(f.aggiornato)}</span></div>
-    <div><span class="k">fonte</span><span class="v">forza_macchina · stagione_dati</span></div>
-  </div>`;
-  el('copertura').innerHTML = mancanti.length
-    ? `<div class="stat-assente"><b>Questa pagina non copre tutta la stagione</b>${mancanti
-        .map(m => `<div>&mdash; <b style="display:inline">${esc(m)}</b>: ${esc(MOTIVO[m] ?? 'motivo non dichiarato dal file')}</div>`).join('')
-      }<div style="margin-top:8px;opacity:.75">Il motivo è scritto qui e non nel dato: finché il
-        generatore non lo esporterà, questa riga è l'unica parte a mano della pagina.</div></div>`
-    : '';
 
   forza(f, cal);
   pitLane(gara);
-  feedUfficiale(feed);
-  osservabilita(gara);
-  regolamento(reg);
   assetto(s);
 }
 boot();

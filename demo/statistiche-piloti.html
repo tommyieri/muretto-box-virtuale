@@ -16,9 +16,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Piloti 2026 — Muretto Box Virtuale</title>
-<meta name="description" content="Chi recupera posizioni e chi le consuma, dalla griglia post-penalita' all'arrivo ufficiale, con il numero di gare su cui il confronto esiste davvero.">
+<meta name="description" content="Chi recupera posizioni e chi le consuma, dalla griglia post-penalita' all'arrivo, piu' il confronto fra compagni di squadra.">
 <link rel="canonical" href="https://murettobox.com/statistiche-piloti.html">
-<link rel="stylesheet" href="stile.css?v=040826a">
+<link rel="stylesheet" href="stile.css?v=040826b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>
@@ -50,30 +50,15 @@
     <a href="statistiche-confronti.html">Confronti fra stagioni</a>
   </nav>
 
-  <div id="targhetta"></div>
-
   <section class="stat-sez">
     <div class="sez-tit">Dalla griglia all'arrivo</div>
     <div class="stat-regola"><span class="k">La regola</span>
-      Si contano solo le gare in cui il pilota ha <b>sia una griglia sia un arrivo
-      classificato</b>. La griglia è quella <b>dopo le penalità</b>; l'arrivo è quello della
-      <b>classifica ufficiale FIA</b>. Ritiri, squalifiche e mancate partenze <b>non producono
-      un guadagno</b> e non entrano nella media: sono contati a parte, perché escluderli in
-      silenzio farebbe sembrare più regolare chi rompe spesso.
-    </div>
-    <div class="stat-assente"><b>Due cose che gonfiano questa classifica, e non sono merito</b>
-      <div>&mdash; <b style="display:inline">Chi parte in fondo ha più spazio davanti.</b> Le vetture
-        più lente partono ultime e raccolgono le posizioni di chi si ritira: una parte del guadagno
-        è aritmetica della griglia, non sorpassi.</div>
-      <div>&mdash; <b style="display:inline">Le partenze dalla pit lane contano come ultima piazza.</b>
-        La griglia pubblicata è un elenco ordinato di ventidue sigle e non porta nessuna bandiera che
-        distingua chi è partito dai box: quel pilota risulta ventiduesimo e ogni posizione che
-        recupera viene contata. Finché la fonte non espone quel campo, il numero resta gonfiato
-        e questo riquadro è l'unico posto in cui lo si dice.</div>
+      Si contano le gare in cui il pilota ha <b>sia una griglia sia un arrivo classificato</b>.
+      La griglia è quella <b>dopo le penalità</b>. Ritiri, squalifiche e mancate partenze
+      <b>non producono un guadagno</b> e sono contati a parte.
     </div>
     <p class="stat-sub">Barre <b>verdi</b> verso destra per chi guadagna, <b>rosse</b> verso
-      sinistra per chi perde. Accanto a ogni pilota, <b>su quante gare</b> il confronto esiste:
-      non è undici per tutti, e con tre o quattro gare una media non significa granché.</p>
+      sinistra per chi perde. Accanto a ogni pilota, su quante gare vale il confronto.</p>
     <div id="barre"></div>
   </section>
 
@@ -81,21 +66,17 @@
 
   <section class="stat-sez" id="compagni">
     <div class="sez-tit">Compagni di squadra</div>
-    <div class="stat-regola"><span class="k">Perché questo confronto e non un voto</span>
-      È l'unico in cui la vettura è <b>costante</b>: stessa monoposto, cambia la mano. Un voto
-      sintetico ai piloti non è identificabile su undici gare &mdash; circa l'88% della varianza
-      dei risultati è del costruttore &mdash; e qui un NULL prevedibile si registra prima, non
-      si spiega dopo.
+    <div class="stat-regola"><span class="k">Perché questo confronto</span>
+      È l'unico in cui la vettura è <b>costante</b>: stessa monoposto, cambia la mano.
     </div>
 
     <div class="stat-sez" style="margin-top:22px">
       <div class="sez-tit">Il sabato</div>
       <div class="stat-regola"><span class="k">La regola del segmento</span>
-        <span id="regola-quali">Si confronta <b>l'ultimo segmento in cui entrambi hanno un tempo
-        valido</b>.</span> Confrontare il Q3 di uno col Q1 dell'altro gonfia sistematicamente chi
-        arriva più avanti: è l'errore più diffuso del settore. <b>Il delta è di segmento</b>, e
-        per questo non si somma né si media fra segmenti diversi &mdash; la mediana qui sotto è
-        sulla distribuzione dei confronti, non su una grandezza continua.
+        Si confronta <b>l'ultimo segmento in cui entrambi hanno un tempo valido</b>: Q3 se
+        ci sono tutti e due, altrimenti Q2, altrimenti Q1. Confrontare il Q3 di uno col Q1 dell'altro gonfia sistematicamente chi
+        arriva più avanti. <b>Il delta è di segmento</b>: non si somma né si media fra segmenti
+        diversi, e la mediana qui sotto è sulla distribuzione dei confronti.
       </div>
       <div id="tab-quali"></div>
     </div>
@@ -104,10 +85,7 @@
       <div class="sez-tit">La domenica</div>
       <div class="stat-regola"><span class="k">Due colonne, mai una</span>
         <b>Tutte le gare</b> conta come sconfitta anche il ritiro: misura anche l'affidabilità.
-        <b>Entrambi classificati</b> toglie quelle gare, ma il filtro ha un verso &mdash; toglie
-        anche gli incidenti <i>causati</i> dal pilota, quindi ripulisce a favore di chi sbaglia.
-        Il bias si dichiara, non si elimina: per questo ci sono <b>tutte e due</b>, e le gare
-        cadute fra l'una e l'altra sono contate.
+        <b>Entrambi classificati</b> toglie quelle gare e confronta solo il passo.
       </div>
       <div id="tab-gara"></div>
     </div>
@@ -115,14 +93,6 @@
 
   <section class="stat-sez" id="giri-testa">
     <div class="sez-tit">Chi ha condotto la corsa</div>
-    <div class="stat-regola"><span class="k">Da dove viene il leader</span>
-      Dalla <b>posizione in pista giro per giro</b>, non dedotta dal tempo cumulato. È una
-      distinzione che cambia il risultato: quando un giro manca, il feed copia il tempo del
-      leader nella riga e nascono <b>pareggi al millesimo</b> &mdash; a Cina, al primo giro,
-      cinque piloti hanno esattamente lo stesso tempo, e a vincere il pareggio è l'ordine
-      alfabetico. Dedotto così, il leader del primo giro sarebbe sbagliato in <b>tre gare su
-      undici</b>. Col campo giusto sono <b>673 giri su 673</b>, nessuno buttato.
-    </div>
     <p class="stat-sub">In <b>verde</b> i giri condotti a gara piena, in <b>arancio</b> quelli
       dietro una neutralizzazione: la domanda è chi ha <i>guidato</i> la corsa, e un giro dietro
       la safety car non è guidare. Sono <span id="quanti-neutri">–</span> giri su 673.</p>
@@ -132,29 +102,10 @@
   <section class="stat-sez">
     <div class="sez-tit">Gara per gara</div>
     <p class="stat-sub">Clicca un'intestazione per riordinare. <b>Media</b> è il guadagno diviso
-      le gare utili, non le gare del calendario.</p>
+      le gare utili.</p>
     <div id="tabella"></div>
   </section>
 
-  <details class="stat-metodo">
-    <summary>Come si legge, e cosa manca ancora</summary>
-    <div class="in">
-      <p><b>Chi parte davanti ha poco da guadagnare e molto da perdere.</b> Un pilota che
-        conquista spesso la prima fila può stare in rosso pur vincendo gare: la metrica misura
-        il movimento, non il valore. Va letta accanto alla classifica, mai al posto suo.</p>
-      <p><b>Perché non c'è un voto ai piloti.</b> Separare il pilota dalla macchina non è
-        identificabile su undici gare: circa l'88% della varianza dei risultati è del
-        costruttore. Il confronto che azzera davvero la vettura è quello fra <b>compagni di
-        squadra</b> — stessa monoposto, cambia la mano — e arriva con l'ondata successiva,
-        con la sua regola stampata sopra: l'ultimo segmento di qualifica in cui <i>entrambi</i>
-        hanno segnato un tempo valido.</p>
-      <p><b>Una cosa che questo modulo non sa ancora dire.</b> Quanto del guadagno è il rimbalzo
-        di una partenza sbagliata, e quanto è recupero vero: servirebbe la posizione al primo
-        giro, che i dati di gara pubblicati non espongono in modo affidabile — il tempo
-        cumulato del primo giro produce dei pareggi al millesimo, e l'ordine che se ne ricava
-        è sbagliato in tre gare su undici.</p>
-    </div>
-  </details>
 </div>
 
 <footer class="footer">
@@ -170,17 +121,16 @@
 
 <script type="module">
 import { prendiJSON, mostraErrore, scheletro, esc, tabellaOrdinabile, coloriTeam,
-         normalizzaTeam } from './stat.mjs?v=040826a';
+         normalizzaTeam } from './stat.mjs?v=040826b';
 
 // P1/P2 — i compagni di squadra, da demo/data/stat/piloti_2026.json (gen_stat_piloti.py).
 function compagni(d, colori){
   if (!d?.qualifica?.coppie?.length){
     for (const id of ['tab-quali','tab-gara'])
-      document.getElementById(id).innerHTML = `<div class="stat-assente"><b>Non ancora disponibile</b>
-        L'artefatto dei compagni di squadra non e' stato trovato.</div>`;
+      document.getElementById(id).innerHTML =
+        `<div class="stat-assente"><b>Non ancora disponibile</b></div>`;
     return;
   }
-  document.getElementById('regola-quali').innerHTML = esc(d.qualifica.regola);
   // I DUE ARTEFATTI PARLANO ALFABETI DIVERSI: piloti_2026.json dice «Haas» e «Red Bull»,
   // team_colori.json e gara_2026.json dicono «Haas F1 Team» e «Red Bull Racing». Senza
   // normalizzare, quelle due squadre perderebbero la livrea e diventerebbero grigie — e un
@@ -242,8 +192,7 @@ function giriTesta(g, colori, perSigla){
   const t = g?.giri_testa;
   const box = document.getElementById('testa');
   if (!t?.piloti?.length){
-    box.innerHTML = `<div class="stat-assente"><b>Non ancora disponibile</b>
-      L'artefatto delle statistiche di gara non e' stato trovato.</div>`;
+    box.innerHTML = `<div class="stat-assente"><b>Non ancora disponibile</b></div>`;
     return;
   }
   const tot = t.giri_totali || 1;
@@ -364,19 +313,6 @@ async function boot(){
       cella: r => r.nonArrivate ? `<span class="dim">${r.nonArrivate}</span>` : '<span class="dim">–</span>' },
   ], { ordina: 'somma' });
 
-  // la targhetta dice il perimetro CONTATO, non quello sperato
-  const utili = righe.reduce((a, r) => a + r.n, 0);
-  const perse = righe.reduce((a, r) => a + r.nonArrivate, 0);
-  // `senzaGriglia` resta contato nel modello ma non si stampa: oggi vale zero per tutti,
-  // perche' grids.json elenca sempre ventidue sigle e mette le partenze dai box in coda
-  // invece di ometterle. Il giorno in cui la fonte esponesse quel campo, il contatore
-  // diventerebbe diverso da zero e la riga andrebbe rimessa nella targhetta.
-  el('targhetta').innerHTML = `<div class="stat-targhetta">
-    <div><span class="k">perimetro</span><span class="v">${gare.length} gare · ${righe.length} piloti</span></div>
-    <div><span class="k">confronti utili</span><span class="v">${utili}</span></div>
-    <div><span class="k">senza arrivo</span><span class="v">${perse}<span style="color:var(--dim)"> · ritiri, doppiati, non partiti</span></span></div>
-    <div><span class="k">fonti</span><span class="v">griglia f1db · arrivo FIA</span></div>
-  </div>`;
 }
 boot();
 </script>

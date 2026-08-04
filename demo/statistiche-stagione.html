@@ -14,7 +14,7 @@
 <title>Stagione 2026 — Muretto Box Virtuale</title>
 <meta name="description" content="Quanto della stagione 2026 si e' corso davvero a gara piena, e con quali gomme: neutralizzazioni in tre metriche separate, mescole e durata degli stint.">
 <link rel="canonical" href="https://murettobox.com/statistiche-stagione.html">
-<link rel="stylesheet" href="stile.css?v=040826a">
+<link rel="stylesheet" href="stile.css?v=040826b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>
@@ -47,45 +47,28 @@
     <a href="statistiche-confronti.html">Confronti fra stagioni</a>
   </nav>
 
-  <div id="targhetta"></div>
-
   <section class="stat-sez" id="neutralizzazioni">
     <div class="sez-tit">Quanto si è corso a gara piena</div>
     <div class="stat-regola"><span class="k">Tre metriche, non una</span>
       <b>Quante volte è uscita</b>, <b>quanti giri di gara</b> sono stati neutralizzati e
       <b>che quota dei giri-auto</b> è stata corsa così sono tre grandezze diverse, e danno
-      tre classifiche di circuito diverse. I siti le pubblicano indistintamente sotto
-      «safety car stats»: qui ci sono tutte e tre, e chi ne cita una sola sta rispondendo a
-      un'altra domanda.
+      tre classifiche di circuito diverse. Qui ci sono tutte e tre.
     </div>
-    <p class="stat-sub">Dai digit del campo <code>status</code> di ogni giro-auto:
-      <b>4</b> safety car, <b>6</b> virtual safety car, <b>5</b> bandiera rossa. Il giallo di
-      settore <b>non</b> conta: nel vocabolario di questo progetto è un'ipotesi sul codice FIA,
-      non una neutralizzazione accertata.</p>
+    <p class="stat-sub">Safety car, virtual safety car e bandiera rossa. Il giallo di settore
+      <b>non</b> conta come neutralizzazione.</p>
     <div class="stat-chart" id="chart-neu"></div>
     <div id="tab-neu"></div>
-    <div class="stat-assente" style="margin-top:14px"><b>Dove queste NON stanno</b>
-      Il file del race control non contiene le safety car: il suo vocabolario ha solo
-      giallo, info e penalità. Chi le cercasse lì ne troverebbe due in tutta la stagione.
-    </div>
   </section>
 
   <section class="stat-sez" id="gomme">
     <div class="sez-tit">Gomme e stint</div>
-    <div class="stat-regola"><span class="k">Cosa questo modulo non è</span>
-      <b>Non è una stima del degrado.</b> I modelli di degrado e traffico di questo progetto
-      sono spenti per verdetto proprio, e l'arco si è chiuso con cinque cancelli NULL. Qui ci
-      sono <b>durate osservate e conteggi, con il loro N</b>: descrizione, non curve.
-    </div>
-    <p class="stat-sub">È il dato più pieno che il sito possiede: <b>11 gare su 11</b>, mentre
-      gli aggregati vettura ne coprono 10. Uno stint interrotto da un ritiro è corto e resta
-      nel conto: la mediana è una durata <b>osservata</b>, non una durata voluta.</p>
+    <p class="stat-sub">Durate e conteggi osservati. Uno stint interrotto da un ritiro è corto
+      e resta nel conto: la mediana è una durata <b>osservata</b>.</p>
     <div id="tab-mescole"></div>
     <div class="stat-sez" style="margin-top:26px">
       <div class="sez-tit">Come si è partiti, e quante volte ci si è fermati</div>
       <p class="stat-sub">A sinistra la mescola di partenza, a destra la distribuzione del
-        numero di soste. Le soste vengono dal file che il suo generatore rimisura a ogni
-        esecuzione, e che <b>coincide con la fonte canonica su tutte le coppie confrontabili</b>.</p>
+        numero di soste.</p>
       <div id="tab-gare"></div>
     </div>
   </section>
@@ -93,44 +76,17 @@
 
   <section class="stat-sez" id="ritiri">
     <div class="sez-tit">Chi non è arrivato, e per cosa</div>
-    <div class="stat-regola"><span class="k">Due fonti, due ruoli</span>
-      <b>Chi</b> non è arrivato lo dice la <b>classifica ufficiale FIA</b>, dal campo
-      <i>classificato</i> &mdash; non dallo stato scritto accanto: fra gli ufficiali ci sono
-      «Retired» che risultano <b>classificati</b> e «Lapped» che <b>non</b> lo sono, e leggere
-      lo stato al posto del campo sbaglierebbe il verdetto. <b>Per cosa</b> lo dice f1db, ed è
-      l'unica fonte che ce l'ha.
-    </div>
-    <div id="ritiri-firma"></div>
     <div id="tab-famiglie"></div>
     <div class="stat-sez" style="margin-top:24px">
       <div class="sez-tit">Per squadra</div>
       <div id="tab-ritiri"></div>
     </div>
     <div class="stat-sez" style="margin-top:24px">
-      <div class="sez-tit">Le cause, come le scrive la fonte</div>
-      <p class="stat-sub">Testo libero, così com'è. Nessuna famiglia, nessuna percentuale per
-        famiglia: raggrupparle è una scelta che cambia il numero, e va firmata prima.</p>
+      <div class="sez-tit">Le cause</div>
       <div id="tab-cause"></div>
     </div>
   </section>
 
-  <details class="stat-metodo">
-    <summary>Come si legge, e i tre modi di contare una sosta</summary>
-    <div class="in">
-      <p><b>«Durata sosta» non è «transito pit lane» e non è «pit-loss».</b> Sono tre grandezze
-        con nomi simili: il tempo con l'auto ferma, il tempo per attraversare la corsia
-        (circa ventidue secondi) e i secondi persi rispetto a chi resta in pista. Il numero
-        che questo sito pubblica è il <b>transito</b>, ed è dichiarato nel dato.</p>
-      <p><b>Contare le soste si può sbagliare in due modi</b>, e li abbiamo misurati entrambi.
-        Dedurle dal numero di stint sbaglia in <b id="err-b">–</b> casi su <b id="tot-b">–</b>,
-        perché uno stint può non chiudersi. Contare le righe col flag di pit <b>non è affatto
-        un conteggio di soste</b>: quel flag segna sia il giro d'ingresso sia quello d'uscita
-        e vale circa il doppio — coincide solo in <b id="err-c">–</b> casi.</p>
-      <p><b>La numerazione della fonte salta dei numeri.</b> In Australia un pilota ha le soste
-        numerate 1, 2 e <b>4</b>. Contarle col numero più alto invece che per righe darebbe una
-        sosta in più in cinque casi: si contano le righe.</p>
-    </div>
-  </details>
 </div>
 
 <footer class="footer">
@@ -145,8 +101,8 @@
 </footer>
 
 <script type="module">
-import { prendiJSON, mostraErrore, scheletro, esc, dataIt, targhetta, copertura,
-         tabellaOrdinabile, barra } from './stat.mjs?v=040826a';
+import { prendiJSON, mostraErrore, scheletro, esc,
+         tabellaOrdinabile, barra } from './stat.mjs?v=040826b';
 const el = id => document.getElementById(id);
 
 const TINTA = { HARD: '#d8d8d8', MEDIUM: '#e0c341', SOFT: '#e8384f', INTERMEDIATE: '#3fb950' };
@@ -240,25 +196,6 @@ function ritiri(d){
   if (!r){ document.getElementById('ritiri')?.remove(); return; }
   const g = r.raggruppamento;
 
-  document.getElementById('ritiri-firma').innerHTML = g.firmato
-    ? `<div class="stat-targhetta">
-         <div><span class="k">raggruppamento</span><span class="v">firmato da
-           <b>${esc(g.firmato_da ?? '?')}</b>${g.firmato_il ? ` il ${dataIt(g.firmato_il)}` : ''}</span></div>
-       </div>`
-      + (g.cause_senza_famiglia?.length
-         ? `<div class="stat-assente" style="border-color:var(--brand)">
-              <b>${g.cause_senza_famiglia.length} caus${g.cause_senza_famiglia.length === 1 ? 'a' : 'e'} senza famiglia</b>
-              ${g.cause_senza_famiglia.map(esc).join(', ')} &mdash; compars${g.cause_senza_famiglia.length === 1 ? 'a' : 'e'}
-              dopo la firma e <b>non attribuit${g.cause_senza_famiglia.length === 1 ? 'a' : 'e'} a nessuna famiglia</b>:
-              restano fuori dai totali qui sotto e visibili nel grezzo, invece di sparire in un
-              «altro» che nasconderebbe la scelta non fatta. Si assegnano in
-              <code>${esc(g.file)}</code>.</div>`
-         : '')
-    : `<div class="stat-assente"><b>Le famiglie non sono firmate, quindi qui c'è il testo grezzo</b>
-       ${esc(g.perche_grezzo ?? '')}
-       <div style="margin-top:8px;opacity:.8">Si firma in <code>${esc(g.file)}</code>. Le tre
-       domande da sciogliere sono scritte lì dentro &mdash; per esempio se «Battery» ed
-       «Electrical» stiano nella power unit o in una famiglia elettrica a sé.</div></div>`;
 
   // LE FAMIGLIE, solo se firmate. Il testo grezzo resta pubblicato qui sotto in ogni caso:
   // un raggruppamento che nascondesse il dato da cui viene sarebbe peggio di nessun
@@ -280,14 +217,10 @@ function ritiri(d){
         cella: x => barra(x.n, Math.max(...Object.values(fam)),
                           TF[x.famiglia] ?? 'var(--dim)', (x.quota * 100).toFixed(1) + '%') },
     ], { ordina: 'n' });
-    const senza = r.non_arrivati_totali - r.con_causa_dichiarata;
     el('tab-famiglie').insertAdjacentHTML('beforeend',
       `<p class="stat-sub" style="margin-top:10px">${tot} ritiri su
-       <b>${r.non_arrivati_totali}</b> non arrivati${senza > 0
-         ? ` &mdash; per ${senza} la fonte non dichiara nessuna causa, e non vengono attribuiti a nessuna famiglia`
-         : ''}.
-       <b>«Incidente» non vuol dire errore del pilota</b>: un'uscita di pista può avere origine
-       meccanica e la fonte non lo dice.</p>`);
+       <b>${r.non_arrivati_totali}</b> non arrivati. <b>«Incidente» non vuol dire errore del
+       pilota</b>: un'uscita di pista può avere origine meccanica.</p>`);
   }
 
   const sq = r.per_squadra.filter(x => x.squadra && x.squadra !== '?');
@@ -303,7 +236,7 @@ function ritiri(d){
   const cause = Object.entries(r.cause_grezze).map(([c, n]) => ({ causa: c, n }));
   const maxn = Math.max(...cause.map(x => x.n), 1);
   tabellaOrdinabile(document.getElementById('tab-cause'), cause, [
-    { k: 'causa', testo: 'come la scrive la fonte' },
+    { k: 'causa', testo: 'causa' },
     { k: 'n', testo: 'volte', num: true,
       cella: x => barra(x.n, maxn, 'var(--dim)', x.n) },
   ], { ordina: 'n' });
@@ -314,15 +247,6 @@ async function boot(){
   let d;
   try { d = await prendiJSON('data/stat/gara_2026.json'); }
   catch(e){ mostraErrore(el('chart-neu'), boot); return; }
-
-  const tre = d.soste.i_tre_conteggi;
-  el('targhetta').innerHTML = targhetta(d, [
-    ['giri', `${d.giri_testa.giri_attribuiti}/${d.giri_testa.giri_totali} attribuiti`],
-    ['stint', String(d.gomme.stint_totali)],
-  ]) + copertura(d);
-  el('err-b').textContent = tre.coppie - tre.accordo_A_B;
-  el('tot-b').textContent = tre.coppie;
-  el('err-c').textContent = tre.accordo_A_C;
 
   neutralizzazioni(d);
   ritiri(d);

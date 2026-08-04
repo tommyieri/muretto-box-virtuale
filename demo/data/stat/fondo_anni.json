@@ -2,7 +2,7 @@
  "_nota": "GENERATO da gen_stat_fondo.py. Non modificare a mano: si rigenera a ogni gara con `python3 aggiorna_stat.py`.",
  "_generatore": "gen_stat_fondo.py",
  "schema": 1,
- "calcolato_il": "2026-08-04T10:15:50+00:00",
+ "calcolato_il": "2026-08-04T12:54:53+00:00",
  "provenienza": {
   "porta": "lab/fondo.py — l'unico modulo autorizzato a sapere dove sta il grezzo",
   "radici": {

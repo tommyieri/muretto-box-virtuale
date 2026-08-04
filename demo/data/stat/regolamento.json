@@ -2,7 +2,7 @@
  "_nota": "GENERATO da gen_stat_regolamento.py da data/regolamento_2026.json, che e' firmato a mano. Non modificare a mano ne' l'uno ne' l'altro senza firmare.",
  "_generatore": "gen_stat_regolamento.py",
  "schema": 1,
- "calcolato_il": "2026-08-04T12:44:01+00:00",
+ "calcolato_il": "2026-08-04T12:54:59+00:00",
  "provenienza": {
   "sorgente": "data/regolamento_2026.json",
   "sorgente_sha256_12": "793c4875f542",
@@ -43,8 +43,11 @@
    "sezione_C": 19,
    "sezione_B": 7
   },
-  "issue_pubblicati": null,
-  "errore_rete": "saltato (--senza-rete)",
+  "issue_pubblicati": {
+   "sezione_B": 7,
+   "sezione_C": 19
+  },
+  "errore_rete": null,
   "piu_recenti_di_quello_firmato": {},
   "allarme": false,
   "cosa_significherebbe": "la Sezione C ha avuto diciannove revisioni in una stagione. Se la FIA ne pubblica una piu' recente di quella firmata, i numeri in pagina potrebbero non essere piu' quelli in vigore e la firma va rifatta sull'Issue nuovo."

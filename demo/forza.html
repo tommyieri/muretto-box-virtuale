@@ -20,7 +20,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Forza-macchina — Muretto Box Virtuale</title>
 <link rel="canonical" href="https://murettobox.com/forza.html">
-<link rel="stylesheet" href="stile.css?v=040826a">
+<link rel="stylesheet" href="stile.css?v=040826b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 <style>
 /* ---- barra controlli ---- */
@@ -186,16 +186,11 @@
   <!-- CLASSIFICA intervallo -->
   <div class="dsez">
     <div class="sez-tit">Classifica <em>//</em> media dell'intervallo</div>
-    <p class="dsub">Media dell'indice di forza sulle gare scelte. Clicca un'intestazione per riordinare, o un team per isolarne la linea. <b style="color:var(--vsc)">PASSO n/N</b> = in n gare su N il passo pulito non era affidabile (traffico o gara sporca): lì l'indice si appoggia di più al giro secco.</p>
+    <p class="dsub">Media dell'indice di forza sulle gare scelte. Clicca un'intestazione per riordinare, o un team per isolarne la linea.</p>
     <div style="overflow-x:auto"><table class="dtbl" id="tbl"></table></div>
     <div id="note"></div>
   </div>
 
-  <!-- METODO -->
-  <details class="metodo" id="metodo">
-    <summary>Come si legge — i segnali e i pesi</summary>
-    <div class="body" id="metodo-body"></div>
-  </details>
 </div>
 
 <footer class="footer">
@@ -346,9 +341,7 @@ function renderTabella(){
     cols.map(([k,l])=>`<th data-k="${k}" class="num${k==='gap'?' hide-s':''}${k==='trend'?' hide-xs':''}">${l}${SORT===k?`<span class="ar">${DIR<0?'▾':'▴'}</span>`:''}</th>`).join('');
   const tr = rows.map((r,i)=>{
     const c=col(r.team);
-    const passo = r.nUnrel>0
-      ? `<div class="passocell">${bar(r.passo_pct,c)}<span class="pill warn" title="${r.nUnrel} gare su ${r.n} col passo non affidabile">passo ${r.nUnrel}/${r.n}</span></div>`
-      : `<div class="passocell">${bar(r.passo_pct,c)}</div>`;
+    const passo = `<div class="passocell">${bar(r.passo_pct,c)}</div>`;
     return `<tr class="${F===r.team?'foc':''}" data-team="${esc(r.team)}">
       <td class="rank">${i+1}</td>
       <td><span class="nome" data-team="${esc(r.team)}"><span class="cbar" style="background:${c}"></span>${esc(nm(r.team))}</span></td>
@@ -362,30 +355,6 @@ function renderTabella(){
   }).join('');
   el('tbl').innerHTML = `<thead><tr>${th}</tr></thead><tbody>${tr}</tbody>`;
 
-  // nota affidabilita' sull'intervallo
-  const deboli = rows.filter(r=>r.nUnrel>0).sort((a,b)=>b.nUnrel-a.nUnrel);
-  if (deboli.length){
-    const lista = deboli.map(r=>`<b>${esc(nm(r.team))}</b> ${r.nUnrel}/${r.n}`).join(' · ');
-    el('note').innerHTML = `<div class="notewarn">Passo <b>NON_AFFIDABILE</b> in questo intervallo (traffico o gara SC/VSC-dominata): ${lista}. Per questi team l'indice pesa di più il giro secco — il passo entra ridotto o è escluso, ed è dichiarato.</div>`;
-  } else {
-    el('note').innerHTML = `<div class="noteok">Passo pulito affidabile per tutti i team in questo intervallo.</div>`;
-  }
-}
-
-/* ------- METODO (dal JSON) ------- */
-function renderMetodo(){
-  const m = DATI.metodo; if(!m){ el('metodo').style.display='none'; return; }
-  const s = m.segnali||{}, so = m.soglie||{};
-  el('metodo-body').innerHTML =
-    `<p>${esc(m.titolo||'')}. Ogni segnale è già <b>normalizzato per gara</b> (${esc(m.normalizzazione||'percentile 0–100 fra i team')}), così le gare sono confrontabili fra loro.</p>
-     <ul>
-       <li><b>Potenziale (giro secco).</b> ${esc(s.potenziale||'')}</li>
-       <li><b>Passo (gara pulita).</b> ${esc(s.passo||'')}</li>
-       <li><b>Gap.</b> ${esc(s.gap||'')}</li>
-     </ul>
-     <p style="margin-top:10px"><span class="w">Indice.</span> ${esc(m.indice||'')}</p>
-     ${so.traffico_s?`<p style="margin-top:8px">Soglie: traffico entro <code>${so.traffico_s} s</code> per ≥<code>${so.run_traffico_giri}</code> giri di fila; passo affidabile con ≥<code>${so.giri_affidabile}</code> giri puliti (debole ${so.giri_minimi}–${so.giri_affidabile-1}, assente &lt;${so.giri_minimi}).</p>`:''}
-     ${(m.confonditori||[]).length?`<p style="margin-top:8px"><b>Confonditori dichiarati:</b></p><ul>${m.confonditori.map(c=>`<li>${esc(c)}</li>`).join('')}</ul>`:''}`;
 }
 
 /* ------- render orchestrazione ------- */
@@ -397,7 +366,7 @@ function aggiornaTeste(){
   el('chart-sub').textContent = gare.length===1
     ? `${gare[0].circuito}: una sola gara selezionata — allarga l'intervallo per vedere l'andamento. 100 = migliore della gara, 0 = ultimo.`
     : `${gare.length} gare, da ${gare[0].circuito} a ${gare[gare.length-1].circuito}. Ogni linea è un team; 100 = migliore della gara, 0 = ultimo. Passa sui punti per il dettaglio.`;
-  el('info').textContent = `aggiornato ${DATI.aggiornato} · ${DATI.n_gare} gare · Monaco esclusa (telemetria lacunosa)`;
+  el('info').textContent = `aggiornato ${DATI.aggiornato} · ${DATI.n_gare} gare`;
 }
 
 /* ------- slider intervallo ------- */
@@ -422,7 +391,7 @@ function boot2(){
   el('rmin').value=0; el('rmax').value=n-1; LO=0; HI=n-1;
   el('ticks').innerHTML = g.map((x,i)=>`<span class="tk" data-i="${i}"><b>${esc(c3(x))}</b><small>R${x.round}</small></span>`).join('');
   pittSlider();
-  renderTut(); renderMetodo();
+  renderTut();
 
   el('rmin').addEventListener('input', onSlider);
   el('rmax').addEventListener('input', onSlider);
