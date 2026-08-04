@@ -334,10 +334,12 @@ def _figura(f) -> str:
     if not f:
         return ""
     svg = _titola(f.get("svg") or "", f.get("didascalia"))
+    # La riga «Fonte: ...» sotto ogni grafico non si rende piu' (decisione di Tommi,
+    # 4/8/2026, stessa ragione della tabella di provenienza qui sotto). `fonte` resta
+    # nel JSON dell'articolo: e' sparita la resa, non la tracciabilita'.
     return (f'<figure class="art-fig">\n'
             f'    <div class="art-svg-wrap">{svg}</div>\n'
-            f'    <figcaption><span class="cap">{esc(f.get("didascalia"))}</span>\n'
-            f'      <span class="fonte">Fonte: {esc(f.get("fonte"))}</span></figcaption>\n'
+            f'    <figcaption><span class="cap">{esc(f.get("didascalia"))}</span></figcaption>\n'
             f'  </figure>')
 
 
@@ -770,7 +772,7 @@ def scrivi_404() -> bool:
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pagina non trovata — Muretto Box Virtuale</title>
 <meta name="robots" content="noindex, follow">
-<link rel="stylesheet" href="/stile.css?v=040826a">
+<link rel="stylesheet" href="/stile.css?v=040826b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>

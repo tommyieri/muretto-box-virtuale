@@ -15,7 +15,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gara — Muretto Box Virtuale</title>
-<link rel="stylesheet" href="stile.css?v=040826a">
+<link rel="stylesheet" href="stile.css?v=040826b">
 <!-- Lo stile del pannello nuovo, TRASPORTATO da simulatore/web/stile.css e scopato sotto
      #pitKv: le sue regole non possono ridipingere il resto della pagina. Artefatto
      generato, con manifest di hash — `trasporta_formattatori.mjs --verifica` esce 1
@@ -68,11 +68,10 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
       <span><b id="hGiri">–</b> giri</span>
       <span id="hMeteo"></span>
     </div>
-    <span class="plbadge" id="plBadge" role="button" tabindex="0" aria-describedby="plTip" style="display:none">
-      pit-loss <span class="v" id="plVal"></span> <span class="prov" id="plProv"></span>
+    <span class="plbadge" id="plBadge" style="display:none">
+      pit-loss <span class="v" id="plVal"></span>
     </span>
   </div>
-  <div class="pltip" id="plTip">Il pit-loss che <b>il motore usa</b> per rispondere: <b>usato dal motore</b> = misurato sul fondo delle stagioni passate su questo circuito · <b>non misurato</b> = nessuna misura per questa pista, valore di ripiego dichiarato. Dove il badge dice anche <b>in gara</b>, quello è quanto sono costate davvero le soste di questa domenica: è un fatto post-gara, e proprio per questo non entra nel calcolo.</div>
 
   <div class="glayout">
     <div class="col-pista">
@@ -170,7 +169,7 @@ import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.
 const BUILD = '250724c-sim';
 const el = id => document.getElementById(id);
 const ROW_H = 44;
-let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams={}, pitloss={}, plMeta={}, neutral={}, teamCol={}, calendario=null;
+let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams={}, pitloss={}, neutral={}, teamCol={}, calendario=null;
 let pitstops=null, stopsGara={}, etichettaStop='pit lane';   // durate per-stop f1db (semantica verificata dal generatore)
 // boxGiro = il giro in cui l'utente ha chiamato il box (null = non ancora chiamato).
 // boxGiro = il giro della sosta chiesta. E' l'unico stato dell'esplorazione: il giro
@@ -219,7 +218,6 @@ async function boot() {
   try { grids = await (await fetch('data/grids.json')).json(); } catch(e){ grids={}; }
   try { teams = await (await fetch('data/teams.json')).json(); } catch(e){ teams={}; }
   try { pitloss = await (await fetch('data/pitloss.json')).json(); } catch(e){ pitloss={}; }
-  try { plMeta = await (await fetch('data/pitloss_meta.json')).json(); } catch(e){ plMeta={}; }
   try { neutral = await (await fetch('neutralizzazione.json')).json(); } catch(e){ neutral={}; }
   try { teamCol = await (await fetch('team_colori.json')).json(); } catch(e){ teamCol={}; }
   try { calendario = await (await fetch('data/calendario_2026.json')).json(); } catch(e){ calendario=null; }
@@ -267,16 +265,7 @@ function header(gara){
   const pm = indiceVista?.perdita;
   const loss = pm?.verde ?? pitloss[gara];
   if (typeof loss === 'number'){
-    const prov = pm ? (pm.fallback ? 'non_misurato' : 'motore') : (plMeta[gara]?.provenienza || 'tipico');
     el('plVal').textContent = loss.toFixed(2).replace('.',',')+' s';
-    el('plProv').textContent = prov === 'motore' ? 'usato dal motore' : prov.replace('_',' ');
-    el('plProv').className = 'prov '+prov;
-    // il realizzato di questa gara, se c'e', come nota: e' un fatto vero e post-gara
-    const real = pitloss[gara];
-    const nota = pm && typeof real === 'number' && Math.abs(real - loss) >= 0.05
-      ? ` · in gara ${real.toFixed(2).replace('.',',')} s`
-      : '';
-    el('plBadge').title = (pm?.targhetta || '') + nota;
     el('plBadge').style.display = 'inline-flex';
   } else el('plBadge').style.display = 'none';
 }
@@ -934,8 +923,6 @@ el('simCont').addEventListener('click', continuaSim);
 // mostrano e non si scelgono (selettoreMescole in simulatore/web/pannello.mjs).
 el('pitChiudi').addEventListener('click', chiudiPit);
 // (rimossi con la ripulitura gara: i listener dei tab Classifica/Strategia/Ufficiale — resta solo la torre.)
-el('plBadge').addEventListener('click', ()=>el('plTip').classList.toggle('on'));
-el('plBadge').addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); el('plTip').classList.toggle('on'); } });
 conta('apertura');
 boot();
 </script>

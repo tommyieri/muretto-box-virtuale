@@ -19,7 +19,7 @@
 <title>Confronti fra stagioni — Muretto Box Virtuale</title>
 <meta name="description" content="Come si e' deciso il campionato, dal 2018 al 2026: vantaggio del leader round per round, quota dei punti, quante squadre restano in gioco. In unita' relative, le uniche che sopravvivono al cambio di regolamento.">
 <link rel="canonical" href="https://murettobox.com/statistiche-confronti.html">
-<link rel="stylesheet" href="stile.css?v=040826a">
+<link rel="stylesheet" href="stile.css?v=040826b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>
@@ -51,8 +51,6 @@
     <a href="statistiche-stagione.html">Stagione 2026</a>
     <a href="statistiche-confronti.html" class="on">Confronti fra stagioni</a>
   </nav>
-
-  <div id="targhetta"></div>
 
   <div class="stat-regola"><span class="k">La regola di questa pagina</span>
     <b>Solo unità relative.</b> Il sistema di punteggio, il numero di gare e le sprint sono
@@ -91,19 +89,15 @@
 
   <section class="stat-sez" id="dispersione">
     <div class="sez-tit">Il gruppo si è stretto?</div>
-    <div class="stat-regola"><span class="k">Tre vincoli, e servono tutti e tre</span>
-      <b>Solo il Q1</b>, perché è l'unico segmento in cui c'è tutto il campo: Q2 e Q3 sono
-      sottoinsiemi già selezionati, e la loro dispersione misurerebbe la selezione invece del
-      gruppo. <b>In percentuale dal migliore della stessa sessione</b>, mai in secondi.
-      <b>Solo i circuiti corsi in tutti gli anni</b> &mdash; <span id="c-elenco">…</span> &mdash;
-      perché confrontare calendari diversi somma il cambiamento delle vetture a quello delle piste.
+    <div class="stat-regola"><span class="k">Come si misura</span>
+      <b>Solo il Q1</b>, l'unico segmento in cui c'è tutto il campo. <b>In percentuale dal
+      migliore della stessa sessione</b>, mai in secondi. <b>Solo i circuiti corsi in tutti gli
+      anni</b> &mdash; <span id="c-elenco">…</span> &mdash; perché confrontare calendari diversi
+      somma il cambiamento delle vetture a quello delle piste.
     </div>
-    <div class="stat-assente"><b>E un quarto, che non avevo previsto: il campo non è lo stesso</b>
-      Con più vetture in pista la dispersione cresce da sola, senza che nessuno sia più lento.
-      Per questo c'è anche la vista <b>a campo pari</b>: si confrontano i
-      <b id="c-k">–</b> più veloci di ogni sessione, cioè il campo più piccolo del perimetro.
-      È la differenza fra dire «il gruppo si è allargato» e «ci sono due macchine in più».
-    </div>
+    <p class="stat-sub">Con più vetture in pista la dispersione cresce da sola, senza che
+      nessuno sia più lento: per questo c'è anche la vista <b>a campo pari</b>, che confronta i
+      <b id="c-k">–</b> più veloci di ogni sessione.</p>
     <div style="margin:14px 0 4px">
       <span class="seg" id="c-vista" role="tablist">
         <button class="on" data-v="tutto">Tutto il campo</button>
@@ -118,46 +112,7 @@
   </section>
 
 
-  <section class="stat-sez" id="ponte">
-    <div class="sez-tit">Quante gare sono davvero usabili</div>
-    <div class="stat-regola"><span class="k">Perché questa tabella viene prima di ogni confronto</span>
-      Il grezzo storico contiene nove stagioni di giri, e sembra il posto ovvio da cui
-      confrontarle. Non lo è: <b>una stagione può avere ventuno gare nel calendario e quindici
-      utilizzabili</b>, e la differenza non si vede finché non la si conta. Questa è la mappa di
-      cosa è confrontabile &mdash; ed è la ragione per cui i due moduli qui sopra passano dalla
-      fonte canonica e non da qui.
-    </div>
-    <div id="p-tab"></div>
-    <div class="stat-sez" style="margin-top:26px">
-      <div class="sez-tit">Le trappole, verificate una per una</div>
-      <p class="stat-sub">Non sono avvertenze generiche: ognuna è stata <b>misurata sui dati</b>,
-        e il verdetto dice se ha retto. Tre non erano nell'elenco di partenza: le ha trovate
-        il conteggio.</p>
-      <div id="p-trappole"></div>
-    </div>
-  </section>
 
-  <details class="stat-metodo">
-    <summary>Come si legge, e cosa questa pagina non dice</summary>
-    <div class="in">
-      <p><b>Da dove viene.</b> Le tabelle <code>races-driver-standings</code> e
-        <code>races-constructor-standings</code> di f1db: la classifica <b>dopo ogni singolo
-        round</b>, non solo a fine anno. Nessun numero è ricalcolato qui.</p>
-      <p><b>La quota, e perché due denominatori diversi.</b> Quota = punti del leader diviso i
-        punti assegnati fino a quel round <i>nella sua tabella</i>. Piloti e costruttori non
-        hanno lo stesso totale: nel 2018 sono 2121 contro 2062, perché una squadra perse punti
-        come costruttore e i suoi piloti li tennero. Mescolare i due denominatori darebbe una
-        quota falsa, quindi ogni serie usa il proprio.</p>
-      <p><b>Il 2026 è in corso</b> e la sua linea si ferma dove si ferma la stagione: il round
-        finale non è un finale, ed è dichiarato tale nel dato (<code>in_corso</code>).</p>
-      <p><b>Cosa questa pagina NON confronta, e non lo farà.</b> Tempi sul giro fra ere:
-        cambiano regolamento, gomme, lunghezza dei tracciati e punti di misura. Mescole a
-        cavallo del 2018-2019: fino al 2018 i nomi erano sette e assoluti, dal 2019 sono tre e
-        riassegnati a ogni gara, quindi «SOFT» non indica la stessa gomma. Giri cancellati
-        prima del 2020: la serie racconterebbe quando la fonte ha iniziato a registrarli, non
-        un fenomeno.</p>
-    </div>
-  </details>
 </div>
 
 <footer class="footer">
@@ -172,7 +127,7 @@
 </footer>
 
 <script type="module">
-import { prendiJSON, mostraErrore, scheletro, esc, targhetta, tabellaOrdinabile } from './stat.mjs?v=040826a';
+import { prendiJSON, mostraErrore, scheletro, esc, tabellaOrdinabile } from './stat.mjs?v=040826b';
 const el = id => document.getElementById(id);
 let dati = null, vista = 'piloti', isolata = null;
 
@@ -341,68 +296,16 @@ function dispersione(d){
   disegna();
 }
 
-// C3 — il ponte anno: quante gare di ogni stagione sono davvero usabili.
-function ponte(f){
-  if (!f?.anni?.length){ document.getElementById('ponte')?.remove(); return; }
-  const maxg = Math.max(...f.anni.map(a => a.gare_in_calendario), 1);
-  tabellaOrdinabile(document.getElementById('p-tab'), f.anni.map(a => ({
-    anno: a.anno,
-    catena: a.catena,
-    calendario: a.gare_in_calendario,
-    fondo: a.gare_nel_fondo,
-    piene: a.gare_piene,
-    micro: a.con_microsettori.gare,
-    sprint: (a.sessioni_per_tipo || {}).Sprint ?? 0,
-    sprint_attese: a.sprint_in_calendario ?? 0,
-    giri: a.giri_totali,
-  })), [
-    { k: 'anno', testo: 'stagione',
-      cella: r => `${r.anno}${/fondo storico/.test(r.catena) ? ''
-        : ` <span class="dim" title="${esc(r.catena)}">· altra catena</span>`}` },
-    { k: 'calendario', testo: 'in calendario', num: true },
-    { k: 'fondo', testo: 'nel grezzo', num: true,
-      cella: r => r.fondo < r.calendario
-        ? `<span style="color:var(--brand)">${r.fondo}</span>` : String(r.fondo) },
-    { k: 'piene', testo: 'usabili', num: true,
-      cella: r => `<span style="display:inline-flex;align-items:center;gap:8px;width:100%">
-        <span style="position:relative;flex:1;height:13px;min-width:70px;background:var(--panel2);
-          border-radius:3px;overflow:hidden">
-          <i style="position:absolute;left:0;top:0;bottom:0;width:${(r.piene / maxg * 100).toFixed(1)}%;
-             background:${r.piene < r.fondo ? 'var(--brand)' : 'var(--ok)'}"></i></span>
-        <b style="min-width:26px;text-align:right">${r.piene}</b></span>` },
-    { k: 'micro', testo: 'con microsettori', num: true,
-      cella: r => r.micro < r.piene
-        ? `<span style="color:var(--sc)">${r.micro}</span>` : String(r.micro) },
-    { k: 'sprint', testo: 'sprint', num: true,
-      cella: r => r.sprint_attese
-        ? `${r.sprint}<span class="dim"> / ${r.sprint_attese}</span>` : '<span class="dim">–</span>' },
-    { k: 'giri', testo: 'giri nel grezzo', num: true,
-      cella: r => r.giri.toLocaleString('it-IT') },
-  ], { ordina: 'anno', discendente: false });
-
-  const box = document.getElementById('p-trappole');
-  box.innerHTML = `<div class="panel stat-elenco" style="padding:4px 20px 10px">` +
-    Object.entries(f.trappole).map(([k, t]) => {
-      const nuova = /TROVATA QUI/i.test(t.verdetto || '');
-      return `<div><span class="k" style="${nuova ? 'color:var(--accent)' : ''}">${
-        esc((t.verdetto || '').split(',')[0].split(' — ')[0])}</span>
-        <span class="v"><b>${esc(k.replace(/_/g, ' '))}</b><br>${esc(t.cosa_dice ?? '')}</span></div>`;
-    }).join('') + `</div>`;
-}
-
 async function boot(){
   scheletro(el('chart'), 6);
   try { dati = await prendiJSON('data/stat/confronti.json'); }
   catch(e){ mostraErrore(el('chart'), boot); return; }
-  el('targhetta').innerHTML = targhetta(dati);
   el('chi').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
     el('chi').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
     vista = b.dataset.v; isolata = null; disegna();
   }));
   disegna();
   dispersione(dati);
-  try { ponte(await prendiJSON('data/stat/fondo_anni.json')); }
-  catch(e){ document.getElementById('ponte')?.remove(); }
 }
 boot();
 </script>
