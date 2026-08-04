@@ -1118,6 +1118,10 @@ body.embed .wrap-gara { padding-top: 4px; }
 .stat-nav a:hover{ color:var(--txt); border-color:var(--line2); }
 .stat-nav a.on{ color:var(--accent-ink); background:var(--accent); border-color:var(--accent); }
 
+/* ---- le pagine-sessione dall'hub: una riga di link, non una tabella ---- */
+.stat-sessioni{ display:flex; flex-wrap:wrap; gap:8px 22px; margin-top:12px; }
+.stat-sessioni .sk-vai{ margin-top:0; }
+
 /* ---- targhetta: da dove viene il numero, e quando e' stato calcolato ---- */
 .stat-targhetta{ display:flex; flex-wrap:wrap; gap:8px 18px; align-items:baseline;
   background:var(--panel); border:1px solid var(--line); border-radius:var(--r);

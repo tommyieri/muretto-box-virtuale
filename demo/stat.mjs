@@ -27,39 +27,17 @@ export function dataIt(iso) {
   return isNaN(d) ? String(iso) : `${d.getDate()} ${MESI[d.getMonth()]} ${d.getFullYear()}`;
 }
 
-/**
- * LA TARGHETTA. Ogni tabella della sezione porta addosso da dove viene e quando e' stata
- * calcolata. Non e' decorazione: se le viste si ri-aggiornano a ogni gara e nessuna porta
- * la data, un articolo di maggio cita un numero che oggi non esiste piu' e nessuno se ne
- * accorge. `calcolato_il` e' l'ora di CALCOLO — mai la data della gara, che e' un'altra cosa.
- */
-export function targhetta(dati, extra = []) {
-  const p = dati?.provenienza ?? {};
-  const per = dati?.perimetro ?? {};
-  const voci = [];
-  if (dati?.calcolato_il) voci.push(['calcolato il', dataIt(dati.calcolato_il)]);
-  if (p.f1db_release_letta) {
-    const disallineata = p.f1db_release_pinnata && p.f1db_release_pinnata !== p.f1db_release_letta;
-    voci.push(['fonte', `f1db ${esc(p.f1db_release_letta)}`
-      + (disallineata ? ` <span title="Il pin in data/f1db_release.txt dice ${esc(p.f1db_release_pinnata)}: questo artefatto e' stato costruito da un'altra release, e lo dichiara invece di nasconderlo.">(pin: ${esc(p.f1db_release_pinnata)})</span>` : '')]);
-  }
-  if (per.gare?.length) voci.push(['perimetro', `${per.gare.length} gare`]);
-  if (per.anni?.length) voci.push(['anni', `${per.anni[0]}–${per.anni[per.anni.length - 1]}`]);
-  if (dati?._generatore) voci.push(['generatore', esc(dati._generatore)]);
-  for (const [k, v] of extra) voci.push([k, v]);
-  return `<div class="stat-targhetta">${voci
-    .map(([k, v]) => `<div><span class="k">${esc(k)}</span><span class="v">${v}</span></div>`)
-    .join('')}</div>`;
-}
-
-/** La copertura DICHIARATA: cosa manca, e per quale motivo. Vuoto se non manca niente. */
-export function copertura(dati) {
-  const assenti = dati?.perimetro?.assenti ?? [];
-  if (!assenti.length) return '';
-  return `<div class="stat-assente"><b>Questa vista non copre tutta la stagione</b>${assenti
-    .map(a => `<div>&mdash; <b style="display:inline">${esc(a.gara ?? a.anno ?? '?')}</b>: ${esc(a.motivo)}</div>`)
-    .join('')}</div>`;
-}
+// LA TARGHETTA E LA COPERTURA NON SI RENDONO PIU' (decisione di Tommi, 04/08/2026).
+//
+// `targhetta()` stampava sopra ogni tabella «calcolato il · fonte f1db 2026.x · perimetro
+// 10 gare · generatore ...», e `copertura()` elencava sotto le gare mancanti col loro
+// motivo. Erano vere e nessuna delle due parlava al lettore del sito: dicevano da dove
+// viene un numero a chi voleva solo leggerlo. Sono state tolte dalle pagine e da qui,
+// invece di restare esportate e mai chiamate.
+//
+// I DATI NON SI TOCCANO: `provenienza`, `perimetro` e `calcolato_il` restano dentro gli
+// artefatti in demo/data/stat/, li scrivono ancora i generatori, e chi apre il JSON li
+// trova. E' sparita la resa.
 
 /** Assenza dichiarata. Distinta da mostraErrore(): vedi la nota in testa al file. */
 export function assente(el, titolo, motivo) {
