@@ -194,6 +194,14 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   // contesto non lo ha acceso: la produzione non lo vede finche' il PO non lo decide.
   // Parametri e cancelli: ai_lab/confronto/PREREG_tetto_movimento.md.
   const tetto = contesto.tetto ?? null;
+  // LA VITA DELLA MESCOLA arriva dal MODELLO, come il cliff e per la stessa ragione: e'
+  // fisica del passo, e va letta dal sigillo che dichiara se e' accesa. `attivo !== true`
+  // ⇒ null ⇒ numeri bit-identici a prima (sentinella s37). Natura del parametro:
+  // PRIOR_COMPORTAMENTALE — vedi simulatore/DEROGA_prior_comportamentale.md; cancelli:
+  // ai_lab/degrado/PREREG_vita_mescola.md.
+  const vita = modello.vita_mescola?.attivo === true
+    ? modello.vita_mescola.giri
+    : null;
 
   const assunzioni = [];
   const dichiara = (codice, descrizione, conteggio, targhetta) => assunzioni.push({ codice, descrizione, conteggio, targhetta });
@@ -213,7 +221,11 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
     // (FIS07) — non un dettaglio cosmetico.
     const appenaFermato = c.in_lap === true;
     if (appenaFermato) sosteAlCongelamento += 1;
-    state.push({ drv, lap: freezeLap, cum_time: c.cum_time, tyre_age: appenaFermato ? 0 : c.tyre_age });
+    // `mescola` entra nello stato dal 04/08/2026: e' la gomma che il pilota ha ADDOSSO al
+    // congelamento, e senza di essa il kernel non potrebbe sapere quale vita applicare.
+    // Chi si e' appena fermato monta il set nuovo, e la sua mescola e' quella della cella
+    // (il grezzo la riporta gia' aggiornata all'in-lap).
+    state.push({ drv, lap: freezeLap, cum_time: c.cum_time, tyre_age: appenaFermato ? 0 : c.tyre_age, mescola: c.compound ?? null });
   }
   if (sosteAlCongelamento > 0) {
     dichiara('SOSTA_AL_CONGELAMENTO',
@@ -283,7 +295,7 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
 
   // ── soste: le mie, più quelle ASSUNTE dei rivali sotto neutralizzazione ──
   const pits = soste.length
-    ? { [pilota]: soste.map((s, i) => ({ lap: s.giro, perdita: perditaBox(prior, gara, regimeDi(s, i)).perdita })) }
+    ? { [pilota]: soste.map((s, i) => ({ lap: s.giro, perdita: perditaBox(prior, gara, regimeDi(s, i)).perdita, mescola: s.mescola ?? null })) }
     : {};
   // ── LE SOSTE VERE DEI RIVALI: ingresso DI LABORATORIO, spento in produzione ──
   //
@@ -316,7 +328,7 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
       const future = nel.filter((s) => MESCOLE_SLICK.has(s.mescola));
       rivaliScartati += nel.length - future.length;
       if (!future.length) continue;
-      pits[drv] = future.map((s, i) => ({ lap: s.giro, perdita: perditaBox(prior, gara, regimeDi(s, i)).perdita }));
+      pits[drv] = future.map((s, i) => ({ lap: s.giro, perdita: perditaBox(prior, gara, regimeDi(s, i)).perdita, mescola: s.mescola ?? null }));
       rivaliVeri += 1;
     }
     if (rivaliVeri > 0) {
@@ -388,8 +400,10 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   // ── passo: base misurata togliendo gli stessi termini che si ri-aggiungono ─
   const minGiriBase = typeof modello.min_giri_base?.valore === 'number'
     ? modello.min_giri_base.valore : MIN_GIRI_BASE_RIPIEGO;
-  const basi = stimaBasi(osservazioniVerdi(g.righe), { delta70, rho, nGiri: nGiriGara, finoA: freezeLap, minGiri: minGiriBase, rodaggio, cliff });
-  const pace = creaPasso({ delta70, rho, nGiri: nGiriGara, basi, rodaggio, cliff });
+  // `vita` arriva dal CONTESTO e va data a tutti e due — a chi misura la base e a chi
+  // simula — o si conta due volte (regola 10, E02). Assente = spenta = numeri di prima.
+  const basi = stimaBasi(osservazioniVerdi(g.righe), { delta70, rho, nGiri: nGiriGara, finoA: freezeLap, minGiri: minGiriBase, rodaggio, cliff, vita });
+  const pace = creaPasso({ delta70, rho, nGiri: nGiriGara, basi, rodaggio, cliff, vita });
   if (rodaggio !== null) {
     dichiara('RODAGGIO_GOMMA_NUOVA',
       `nei primi giri di vita la gomma è più veloce di quanto dica il degrado lineare: si applica w(età) = −${modello.rodaggio.c}·exp(−età/${modello.rodaggio.tau}) s/giro`,

@@ -104,19 +104,68 @@ export function creaCliff(cliff) {
 }
 
 /**
+ * LA VITA DELLA MESCOLA — il degrado come budget di giri, non come pendenza.
+ *
+ * Prereg: ai_lab/degrado/PREREG_vita_mescola.md · deroga firmata:
+ * simulatore/DEROGA_prior_comportamentale.md (natura PRIOR_COMPORTAMENTALE).
+ *
+ * PERCHE' ESISTE. Fino al 04/08/2026 la mescola non entrava nel passo: la firma era
+ * `(pilota, giro, eta)` e la gomma montata non compariva da nessuna parte. Non era una
+ * svista — era la conseguenza corretta di aver cercato l'effetto della mescola dentro rho,
+ * dove non c'e' (SOFT-HARD p = 0,209). Ma il segnale c'e', ed e' nelle DECISIONI: su 427
+ * stint conclusi da una sosta, SOFT dura 12 giri, MEDIUM 19, HARD 22, e gli interquartili
+ * di soft e hard non si sovrappongono. I team si fermano PRIMA che la gomma mostri la
+ * differenza nei tempi: cercarla li' significa cercarla dove e' stata rimossa.
+ *
+ * LA FORMA: dentro la vita non succede niente, oltre la vita ogni giro costa il DOPPIO.
+ * Zero parametri liberi oltre `vita`: il fattore due e' la scelta piu' semplice possibile,
+ * dichiarata nella prereg e non tarata.
+ *
+ * E NON E' IL CLIFF, chiuso NULL il 03/08. La diagnosi di quel NULL era «un termine della
+ * sola eta' premia le gare lunghe invece delle gare dove servono due soste»: qui il termine
+ * e' di `eta - vita(MESCOLA)`, cioe' relativo alla gomma montata. Su una gara lunga con la
+ * hard resta zero fino al giro 22; su una corta con la soft morde dal 12. E' esattamente il
+ * difetto strutturale che aveva ucciso il cliff, e questa forma non ce l'ha.
+ *
+ * ATTENZIONE, ed e' il contratto che la sentinella s37 verifica: `null`/`undefined` e una
+ * mappa vuota devono dare numeri BIT-IDENTICI a non passare il parametro affatto. Il
+ * termine si spegne anche quando la mescola e' ignota o non e' nella mappa — un'assenza
+ * non diventa mai una vita di riserva (regola 6).
+ */
+export function creaVita(vita) {
+  if (vita === null || vita === undefined) return () => 0;
+  if (typeof vita !== 'object') throw new Error(`vita non utilizzabile: ${JSON.stringify(vita)}`);
+  const voci = Object.entries(vita);
+  for (const [m, v] of voci) {
+    if (typeof v !== 'number' || !Number.isFinite(v) || v <= 0) {
+      throw new Error(`vita.${m} non utilizzabile (serve un numero > 0): ${JSON.stringify(v)}`);
+    }
+  }
+  if (!voci.length) return () => 0;
+  return (eta, mescola) => {
+    const v = vita[mescola];
+    if (typeof v !== 'number') return 0;      // mescola ignota: il termine non esiste
+    return eta > v ? (eta - v) : 0;           // il moltiplicatore rho lo applica creaPasso
+  };
+}
+
+/**
  * Passo del modello v2. Un pilota senza base esce con **null** (regola 6): il
  * kernel lo escluderà con motivo, invece di riceverne un numero inventato.
  */
-export function creaPasso({ delta70, rho, nGiri, basi, rodaggio = null, cliff = null }) {
+export function creaPasso({ delta70, rho, nGiri, basi, rodaggio = null, cliff = null, vita = null }) {
   const deriva = derivaPerGiro(delta70, nGiri);
   if (typeof rho !== 'number' || !Number.isFinite(rho)) throw new Error(`rho non utilizzabile: ${JSON.stringify(rho)}`);
   if (basi === null || typeof basi !== 'object') throw new Error('basi mancanti');
   const w = creaRodaggio(rodaggio);
   const q = creaCliff(cliff);
-  return (pilota, giro, eta) => {
+  const oltre = creaVita(vita);
+  // `mescola` e' il QUARTO argomento e resta opzionale: chi non lo passa ottiene gli stessi
+  // numeri di prima, perche' con `vita` spento il termine e' costante 0 comunque.
+  return (pilota, giro, eta, mescola) => {
     const base = basi[pilota];
     if (base === null || base === undefined) return null;
-    return base + deriva * (giro - 1) + rho * eta + w(eta) + q(eta);
+    return base + deriva * (giro - 1) + rho * eta + w(eta) + q(eta) + rho * oltre(eta, mescola);
   };
 }
 
@@ -140,17 +189,22 @@ const mediana = (v) => {
  * Legge solo giri ≤ finoA: invariante al troncamento per costruzione
  * (regola 5).
  */
-export function stimaBasi(osservazioni, { delta70, rho, nGiri, finoA, minGiri, rodaggio = null, cliff = null }) {
+export function stimaBasi(osservazioni, { delta70, rho, nGiri, finoA, minGiri, rodaggio = null, cliff = null, vita = null }) {
   if (!Number.isInteger(finoA)) throw new Error(`finoA deve essere intero: ${JSON.stringify(finoA)}`);
   if (!Number.isInteger(minGiri) || minGiri < 1) throw new Error(`minGiri deve essere intero ≥ 1: ${JSON.stringify(minGiri)}`);
   const deriva = derivaPerGiro(delta70, nGiri);
   const w = creaRodaggio(rodaggio);
   const q = creaCliff(cliff);
+  // REGOLA 10, e qui non e' un formalismo: il termine di vita che `creaPasso` ri-aggiunge
+  // simulando va SOTTRATTO misurando, altrimenti la base assorbe il degrado oltre-vita dei
+  // giri gia' corsi e il modello lo conta due volte. E' E02 sotto un altro nome, ed e'
+  // costato -1,48 s/giro di bias l'ultima volta che e' successo.
+  const oltre = creaVita(vita);
   const perPilota = new Map();
-  for (const { drv, lap, eta, t } of osservazioni) {
+  for (const { drv, lap, eta, t, mescola } of osservazioni) {
     if (lap > finoA) continue;
     if (!perPilota.has(drv)) perPilota.set(drv, []);
-    perPilota.get(drv).push(t - deriva * (lap - 1) - rho * eta - w(eta) - q(eta));
+    perPilota.get(drv).push(t - deriva * (lap - 1) - rho * eta - w(eta) - q(eta) - rho * oltre(eta, mescola));
   }
   const basi = {};
   for (const [drv, valori] of perPilota) basi[drv] = valori.length >= minGiri ? mediana(valori) : null;
