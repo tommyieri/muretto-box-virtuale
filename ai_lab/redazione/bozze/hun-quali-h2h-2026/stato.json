@@ -1,7 +1,7 @@
 {
   "id": "hun-quali-h2h-2026",
   "stato": "pubblicato",
-  "attore": "auto",
+  "attore": "Tommi",
   "creato": "2026-07-26",
   "storico": [
     {
@@ -21,6 +21,18 @@
       "attore": "auto",
       "quando": "2026-07-26",
       "nota": "pubblicato all'approvazione"
+    },
+    {
+      "stato": "pubblicato",
+      "attore": "Tommi",
+      "quando": "2026-08-03",
+      "nota": "riscritto a mano sotto la nuova voce editoriale"
+    },
+    {
+      "stato": "pubblicato",
+      "attore": "Tommi",
+      "quando": "2026-08-03",
+      "nota": "riscritto a mano"
     }
   ]
 }

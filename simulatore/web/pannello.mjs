@@ -74,16 +74,6 @@ const T = {
     testo: 'stint PIANIFICATO, non misurato: un tratto di gara che non è ancora successo (da_dati = false)',
     data: s._data,
   }),
-  orizzonteRisposta: (v) => creaTarghetta({
-    natura: 'MISURATO_FONDO',
-    testo: 'oltre questo orizzonte la RISPOSTA del motore non è validata: è l\'ultimo punto in cui batte SIA il «non cambia niente» SIA il «sei ai box, e ci resti» — i due sbagliano in verso opposto, quindi batterne uno solo non basterebbe. Margine sottile sul primo (p = 0,0368); referto ai_lab/REGISTRO_F1.md',
-    data: v.modello.data,
-  }),
-  orizzonte: (v) => creaTarghetta({
-    natura: 'MODELLO_DICHIARATO',
-    testo: 'orizzonte oltre il quale il MODELLO DEL PASSO non è validato: il bias del carburante resta sotto la soglia solo fino a qui',
-    data: v.modello.data,
-  }),
 };
 
 /**
@@ -138,69 +128,20 @@ function riga(s) {
 }
 
 /**
- * La banda sulla posizione, spiegata. Dice due cose, e la seconda conta quanto
- * la prima: quanto può sbagliare il numero, e che NON è una previsione su chi
- * supererà chi. Se il circuito è fra quelli dove la banda copre meno del livello
- * dichiarato, lo si dice qui — non in un README.
+ * La banda sulla posizione: l'intervallo, e basta.
+ *
+ * Fino al 04/08/2026 sotto l'intervallo c'erano quattro paragrafi — copertura fuori
+ * campione, frequenza naturale, avviso del cancello, «cosa non e'». Sono spariti per
+ * decisione di Tommi: al lettore del sito arriva il margine (P12–P16), non il referto
+ * che lo calibra. I campi restano nella vista e sono dichiarati orfani nel registro.
  */
 function bandaDiRientro(s) {
   const b = s.pannello.banda_posizione;
-  if (!b) {
-    return el('p', { classe: 'nota banda assente' },
-      txt('Banda sulla posizione: non disponibile per questo scenario.'));
-  }
+  if (!b) return null;
   return el('div', { classe: 'banda' },
-    // L'AVVISO PRIMA DEI NUMERI, quando c'è.
-    //
-    // `avviso_livello` è valorizzato in 1.118 pannelli e nessuno lo leggeva: la
-    // banda mostrava «copre il 78,6%» senza dire che il livello pre-registrato
-    // era l'80% e che il cancello è ROSSO. Il posto non è una nota in fondo:
-    // quando l'intervallo da solo inganna, l'avviso deve precederlo, altrimenti
-    // il lettore ha già preso il numero per buono prima di arrivare alla
-    // riserva. È lo stesso motivo per cui la nota `circuito_sotto_livello` qui
-    // sotto esiste — questa è la sua metà mancante, sul cancello generale.
-    b.avviso_livello
-      ? el('p', { classe: 'nota allarme avviso-livello' }, txt(b.avviso_livello, {
-        cifre_dichiarate: 'avviso del cancello: le percentuali citate sono quelle del referto che spiega perché la banda non raggiunge il livello, non quantità calcolate per questo scenario',
-      }))
-      : null,
     el('p', { classe: 'nota' },
-      txt(`Incertezza sulla posizione, misurata sulle soste vere del 2026 (contesto ${b.contesto}): `,
-        { cifre_dichiarate: 'il 2026 è la stagione da cui viene la calibrazione, non una quantità mostrata come risultato' }),
-      num(b.semi_ampiezza, { unita: 'posizioni', formato: 'intero', targhetta: T.banda(s) }),
-      txt(' — copre il '),
-      num(b.copertura_fuori_campione * 100, { unita: '%', formato: 'secondi', targhetta: T.banda(s) }),
-      txt(' dei casi fuori campione')),
-    // LA FREQUENZA NATURALE, accanto alla percentuale e non al posto suo.
-    //
-    // «Copre l'88,2%» e' vero e non dice niente a chi non fa questo mestiere: non si sa
-    // se sia tanto, e soprattutto non si sa quante volte capitera' di sbagliare. «Circa
-    // una sosta su otto finisce fuori» e' la stessa identica informazione nella forma in
-    // cui una persona la puo' usare — e' la lettura che KPI_5_4_4.md §P3 chiede.
-    // La percentuale resta perche' e' quella confrontabile col livello pre-registrato.
-    Number.isFinite(b.copertura_fuori_campione) && b.copertura_fuori_campione < 1
-      ? el('p', { classe: 'nota frequenza' },
-        // ANCHE L'«1» E' UNA QUANTITA'. s20 ha bocciato la prima scrittura, che lo teneva
-        // dentro il testo: «circa 1 sosta su » conteneva una cifra travestita da parola.
-        // Aveva ragione — in una frequenza naturale il numeratore e' un numero quanto il
-        // denominatore, e nasconderne uno dei due e' esattamente il modo in cui un numero
-        // sfugge alla targhetta.
-        txt('In altre parole: circa '),
-        num(1, { unita: null, formato: 'intero', targhetta: T.banda(s) }),
-        txt(' sosta su '),
-        num(Math.round(1 / (1 - b.copertura_fuori_campione)), { unita: null, formato: 'intero', targhetta: T.banda(s) }),
-        txt(' finisce FUORI da questa banda.'))
-      : null,
-    b.circuito_sotto_livello
-      ? el('p', { classe: 'nota allarme' },
-        txt(`Su questo circuito la banda copre MENO del livello dichiarato: `),
-        num(b.circuito_sotto_livello.copertura * 100, { unita: '%', formato: 'secondi', targhetta: T.banda(s) }),
-        txt(' su '),
-        num(b.circuito_sotto_livello.n_casi, { unita: 'soste', formato: 'intero', targhetta: T.banda(s) }),
-        txt(' — dove non si sorpassa, le posizioni reali sono più appiccicate di quanto un motore in cui le auto si attraversano possa prevedere'))
-      : null,
-    el('p', { classe: 'nota limite' }, txt(b.cosa_non_e,
-      { cifre_dichiarate: 'il 2026 è la stagione in cui il DRS non esiste (regolamento), non una quantità mostrata come risultato' })));
+      txt('Margine sulla posizione di rientro: '),
+      num(b.semi_ampiezza, { unita: 'posizioni', formato: 'intero', targhetta: T.banda(s) })));
 }
 
 /**
@@ -234,10 +175,6 @@ function pianoGomme(s) {
     p.vincolo_regolamento
       ? el('p', { classe: 'nota vincolo' }, txt(p.vincolo_regolamento, { cifre_dichiarate: 'testo del vincolo: i numeri fanno parte della spiegazione, non sono quantità mostrate come risultato' }))
       : null,
-    // gli ALLARMI: dichiarati come tali, mai come limiti fisici
-    ...p.allarmi.map((a) => el('p', { classe: 'nota allarme', titolo: a.targhetta },
-      txt(a.descrizione, { cifre_dichiarate: 'allarme: i numeri sono quelli del confronto col 2026, riportati nel testo dell\'allarme e spiegati dalla targhetta' }))),
-    el('p', { classe: 'nota limite' }, txt(p.limite)),
     percheSoste(s));
 }
 
@@ -263,7 +200,7 @@ function pianoGomme(s) {
 function percheSoste(s) {
   const p = s.piano;
   const alt = Array.isArray(p.alternative) ? [...p.alternative].filter((a) => Number.isFinite(a?.totale)) : [];
-  if (!alt.length && !p.limite_perche) return null;
+  if (!alt.length) return null;
   const migliore = alt.length ? Math.min(...alt.map((a) => a.totale)) : null;
   return el('details', { classe: 'perche-soste' },
     el('summary', {}, txt('Perché questo numero di soste, e non un altro')),
@@ -285,10 +222,6 @@ function percheSoste(s) {
           el('td', {}, a.totale === migliore
             ? txt('— la scelta')
             : num(a.totale - migliore, { unita: 's', formato: 'secondi', targhetta: T.alternative(s) })))))
-      : null,
-    p.limite_perche
-      ? el('p', { classe: 'nota limite-perche' },
-        txt(p.limite_perche, { cifre_dichiarate: 'spiegazione della forma chiusa: i numeri fanno parte del ragionamento, non sono quantità mostrate come risultato' }))
       : null);
 }
 
@@ -322,12 +255,10 @@ function selettoreMescole(vista, s) {
       classe: `mescola sola-lettura ${m.codice === s.mescola_scelta ? 'scelta' : ''} ${m.attiva ? '' : 'spenta'}`,
       disabilitato: !m.attiva,
       titolo: m.attiva
-        ? (m.codice === s.mescola_scelta
-          ? 'la gomma che stai montando in questo scenario'
-          : 'monta questa: cambia la vita della gomma, non il suo passo. L\'effetto e\' misurato '
-            + '(0,0158 s per giro d\'eta\' fra la piu\' dura e la piu\' morbida) ed e\' piu\' piccolo del '
-            + 'rumore di un giro finche\' la gomma non arriva a 22 giri. Le vite vengono dalle 427 '
-            + 'soste vere del 2026, non dalla fisica: sono decisioni dei team.')
+        // Il titolo resta CORTO come la decisione del 04/08 su tutto il pannello: al
+        // lettore arriva la cosa, non il referto che la calibra. Dice solo che si puo'
+        // montare — cosa cambia e quanto vale sta nel sigillo vita_mescola.json, non qui.
+        ? (m.codice === s.mescola_scelta ? 'la gomma che stai montando' : 'monta questa gomma')
         : m.motivo,
       valore: m.codice,
     }, txt(m.codice))));
@@ -356,47 +287,6 @@ function perche(vista, s) {
   voci.push(el('div', { classe: 'voce' },
     txt('Carburante δ su 70 kg', { cifre_dichiarate: 'il 70 fa parte del NOME dell\'unità (δ₇₀ = secondi per 70 kg di carburante), non è una quantità riportata' }),
     num(vista.modello.delta_70, { unita: 's', formato: 'secondi', targhetta: T.delta(vista) })));
-
-  if (s.orizzonte) {
-    // DUE ORIZZONTI, e l'ordine non è estetico: viene PRIMA quello della RISPOSTA,
-    // perché è la domanda a cui l'utente sta guardando la risposta.
-    //
-    // Fino al 03/08/2026 il pannello mostrava solo quello del PASSO (10 giri, da δ₇₀), e
-    // chi leggeva ne deduceva che fino a lì la risposta fosse buona. È falso fra 7 e 10
-    // giri: lì il motore non batte più il non-fare-niente. Referto ai_lab/REGISTRO_F1.md.
-    if (typeof s.orizzonte.orizzonte_risposta === 'number') {
-      voci.push(el('div', { classe: 'voce' },
-        txt('Fin dove la risposta è validata'),
-        num(s.orizzonte.orizzonte_risposta, { unita: 'giri', formato: 'intero', targhetta: T.orizzonteRisposta(vista) }),
-        s.orizzonte.oltre_la_risposta
-          ? el('span', { classe: 'nota allarme' },
-            txt('questa proiezione va più lontano: '),
-            num(s.orizzonte.steps, { unita: 'giri', formato: 'intero', targhetta: T.orizzonteRisposta(vista) }))
-          : null));
-    }
-
-    voci.push(el('div', { classe: 'voce' },
-      txt('Orizzonte validato del passo'),
-      num(s.orizzonte.orizzonte_validato, { unita: 'giri', formato: 'intero', targhetta: T.orizzonte(vista) }),
-      s.orizzonte.oltre_il_validato
-        ? el('span', { classe: 'nota allarme' },
-          txt('questa curva proietta oltre: '),
-          num(s.orizzonte.steps, { unita: 'giri', formato: 'intero', targhetta: T.orizzonte(vista) }))
-        : null));
-  }
-
-  // ASSUNZIONI: dichiarate, col conteggio. Un'assunzione che non si vede è
-  // un'assunzione che nessuno può contestare.
-  if (s.assunzioni.length > 0) {
-    voci.push(el('div', { classe: 'assunzioni' },
-      el('h3', {}, txt('Assunzioni dichiarate')),
-      ...s.assunzioni.map((a) => el('div', { classe: 'assunzione', titolo: a.targhetta },
-        txt(`${a.codice}: ${a.descrizione.replace(/\d+/g, '·')}`, { cifre_dichiarate: 'i numeri della descrizione sono sostituiti: il conteggio esce come quantità con targhetta' }),
-        num(a.conteggio, {
-          formato: 'intero',
-          targhetta: creaTarghetta({ natura: 'MODELLO_DICHIARATO', testo: `quante volte questa assunzione è stata applicata — ${a.targhetta}`, data: s._data }),
-        })))));
-  }
 
   return el('details', { classe: 'perche' }, el('summary', {}, txt('perché')), ...voci.filter(Boolean));
 }

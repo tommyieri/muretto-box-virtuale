@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<!--
+  STATISTICHE / STAGIONE 2026. Consumatore puro: legge demo/data/stat/gara_2026.json,
+  scritto da gen_stat_gara.py.
+
+  Le undici gare come sono state CORSE, non come stanno in classifica: quanto si e' corso a
+  gara piena, e con che gomme. Il nome del file e' volutamente distinto da stagione.html,
+  che resta la pagina del calendario e del prossimo weekend.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stagione 2026 — Muretto Box Virtuale</title>
+<meta name="description" content="Quanto della stagione 2026 si e' corso davvero a gara piena, e con quali gomme: neutralizzazioni in tre metriche separate, mescole e durata degli stint.">
+<link rel="canonical" href="https://murettobox.com/statistiche-stagione.html">
+<link rel="stylesheet" href="stile.css?v=040826b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
+    <span class="brand-mark"><span>M</span></span>
+    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+  </a>
+  <nav class="nav" aria-label="Sezioni">
+    <a href="stagione.html">Stagione</a>
+    <a href="live.html"><span class="dot-live"></span>Live</a>
+    <a href="analisi.html">Analisi</a>
+    <a href="statistiche.html" class="on">Statistiche</a>
+  </nav>
+</header>
+
+<div class="stat-wrap">
+  <div class="page-testa">
+    <h1>Stagione 2026 <em>//</em> come si è corsa</h1>
+    <div class="sotto">Undici gare, undici corse diverse. Quanto si è corso a gara piena,
+      e con che gomme.</div>
+  </div>
+
+  <nav class="stat-nav" aria-label="Statistiche">
+    <a href="statistiche.html">Il banco</a>
+    <a href="classifiche.html">Classifiche</a>
+    <a href="statistiche-piloti.html">Piloti</a>
+    <a href="statistiche-squadre.html">Squadre e vetture</a>
+    <a href="statistiche-stagione.html" class="on">Stagione 2026</a>
+    <a href="statistiche-confronti.html">Confronti fra stagioni</a>
+  </nav>
+
+  <section class="stat-sez" id="neutralizzazioni">
+    <div class="sez-tit">Quanto si è corso a gara piena</div>
+    <div class="stat-regola"><span class="k">Tre metriche, non una</span>
+      <b>Quante volte è uscita</b>, <b>quanti giri di gara</b> sono stati neutralizzati e
+      <b>che quota dei giri-auto</b> è stata corsa così sono tre grandezze diverse, e danno
+      tre classifiche di circuito diverse. Qui ci sono tutte e tre.
+    </div>
+    <p class="stat-sub">Safety car, virtual safety car e bandiera rossa. Il giallo di settore
+      <b>non</b> conta come neutralizzazione.</p>
+    <div class="stat-chart" id="chart-neu"></div>
+    <div id="tab-neu"></div>
+  </section>
+
+  <section class="stat-sez" id="gomme">
+    <div class="sez-tit">Gomme e stint</div>
+    <p class="stat-sub">Durate e conteggi osservati. Uno stint interrotto da un ritiro è corto
+      e resta nel conto: la mediana è una durata <b>osservata</b>.</p>
+    <div id="tab-mescole"></div>
+    <div class="stat-sez" style="margin-top:26px">
+      <div class="sez-tit">Come si è partiti, e quante volte ci si è fermati</div>
+      <p class="stat-sub">A sinistra la mescola di partenza, a destra la distribuzione del
+        numero di soste.</p>
+      <div id="tab-gare"></div>
+    </div>
+  </section>
+
+
+  <section class="stat-sez" id="ritiri">
+    <div class="sez-tit">Chi non è arrivato, e per cosa</div>
+    <div id="tab-famiglie"></div>
+    <div class="stat-sez" style="margin-top:24px">
+      <div class="sez-tit">Per squadra</div>
+      <div id="tab-ritiri"></div>
+    </div>
+    <div class="stat-sez" style="margin-top:24px">
+      <div class="sez-tit">Le cause</div>
+      <div id="tab-cause"></div>
+    </div>
+  </section>
+
+</div>
+
+<footer class="footer">
+  <div class="footer-in">
+    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
+    <nav>
+      <a href="stagione.html">Stagione</a>
+      <a href="live.html">Live</a>
+      <a href="analisi.html">Analisi</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="module">
+import { prendiJSON, mostraErrore, scheletro, esc,
+         tabellaOrdinabile, barra } from './stat.mjs?v=040826b';
+const el = id => document.getElementById(id);
+
+const TINTA = { HARD: '#d8d8d8', MEDIUM: '#e0c341', SOFT: '#e8384f', INTERMEDIATE: '#3fb950' };
+const REG = { sc: ['var(--sc)', 'safety car'], vsc: ['var(--vsc)', 'virtual safety car'],
+              rosso: ['var(--brand)', 'bandiera rossa'] };
+
+function neutralizzazioni(d){
+  const gare = Object.entries(d.neutralizzazioni.per_gara);
+  const max = Math.max(...gare.map(([, v]) => v.quota_neutralizzata ?? 0), 0.01);
+
+  // barra per gara sulla QUOTA di giri-auto, con i dispiegamenti scritti accanto:
+  // la quota risponde a «quanta gara», il conteggio a «quante volte». Sono due domande.
+  el('chart-neu').innerHTML = `<div style="padding:8px 6px">` + gare.map(([g, v]) => {
+    const w = (v.quota_neutralizzata ?? 0) / max * 100;
+    const disp = Object.entries(v.dispiegamenti).filter(([, n]) => n > 0)
+      .map(([k, n]) => `<span style="color:${REG[k][0]}">${n}&nbsp;${k === 'rosso' ? 'rossa' : k.toUpperCase()}</span>`)
+      .join(' · ') || '<span style="opacity:.5">nessuna</span>';
+    return `<div style="display:grid;grid-template-columns:120px 1fr 58px 190px;gap:12px;
+        align-items:center;padding:5px 0;font:12px/1.3 var(--mono)">
+      <span style="color:var(--txt)">${esc(g)}</span>
+      <span style="position:relative;height:14px;background:var(--panel2);border-radius:3px">
+        <i style="position:absolute;left:0;top:0;bottom:0;width:${w.toFixed(1)}%;
+           background:var(--sc);border-radius:3px"></i></span>
+      <span style="text-align:right;color:var(--txt)">${((v.quota_neutralizzata ?? 0) * 100).toFixed(1)}%</span>
+      <span style="color:var(--dim);font-size:11px">${disp}</span>
+    </div>`;
+  }).join('') + `</div>`;
+
+  tabellaOrdinabile(el('tab-neu'), gare.map(([g, v]) => ({
+    gara: g, giri: v.n_giri,
+    sc: v.dispiegamenti.sc, vsc: v.dispiegamenti.vsc, rosso: v.dispiegamenti.rosso,
+    giri_sc: v.giri_di_gara_per_regime.sc, giri_vsc: v.giri_di_gara_per_regime.vsc,
+    quota: v.quota_neutralizzata ?? 0,
+  })), [
+    { k: 'gara', testo: 'gara' },
+    { k: 'giri', testo: 'giri', num: true },
+    { k: 'sc', testo: 'SC uscite', num: true },
+    { k: 'vsc', testo: 'VSC', num: true },
+    { k: 'rosso', testo: 'rosse', num: true },
+    { k: 'giri_sc', testo: 'giri sotto SC', num: true },
+    { k: 'giri_vsc', testo: 'giri sotto VSC', num: true },
+    { k: 'quota', testo: 'quota giri-auto', num: true,
+      cella: r => barra(r.quota, max, 'var(--sc)', (r.quota * 100).toFixed(1) + '%') },
+  ], { ordina: 'quota' });
+}
+
+function gomme(d){
+  const m = d.gomme.lunghezza_per_mescola;
+  const maxMed = Math.max(...Object.values(m).map(v => v?.massimo ?? 0), 1);
+  tabellaOrdinabile(el('tab-mescole'), Object.entries(m).map(([c, v]) => ({
+    mescola: c, n: v.n, mediana: v.mediana, q1: v.q1, q3: v.q3,
+    minimo: v.minimo, massimo: v.massimo,
+  })), [
+    { k: 'mescola', testo: 'mescola',
+      cella: r => `<span class="nome"><span class="cbar" style="background:${TINTA[r.mescola] ?? 'var(--dim)'}"></span>${esc(r.mescola)}</span>` },
+    { k: 'n', testo: 'stint', num: true },
+    { k: 'mediana', testo: 'giri (mediana)', num: true,
+      cella: r => barra(r.mediana, maxMed, TINTA[r.mescola] ?? 'var(--dim)', r.mediana) },
+    { k: 'q1', testo: 'q1', num: true },
+    { k: 'q3', testo: 'q3', num: true },
+    { k: 'minimo', testo: 'min', num: true },
+    { k: 'massimo', testo: 'max', num: true },
+  ], { ordina: 'n' });
+
+  const part = d.gomme.mescola_di_partenza, soste = d.soste.per_gara;
+  const righe = Object.keys(soste).map(g => ({
+    gara: g,
+    partenza: part[g] ?? {},
+    totali: soste[g].soste_totali,
+    mediana: soste[g].per_pilota_mediana,
+    dist: soste[g].distribuzione,
+  }));
+  const pill = (t, n) => `<span style="display:inline-flex;align-items:center;gap:4px;
+    margin-right:8px"><i style="width:8px;height:8px;border-radius:50%;display:inline-block;
+    background:${TINTA[t] ?? 'var(--dim)'}"></i>${n}</span>`;
+  tabellaOrdinabile(el('tab-gare'), righe, [
+    { k: 'gara', testo: 'gara' },
+    { k: 'partenza', testo: 'mescola di partenza',
+      val: r => Object.entries(r.partenza).map(([, n]) => n).reduce((a, b) => a + b, 0),
+      cella: r => Object.entries(r.partenza).sort().map(([t, n]) => pill(t, n)).join('') },
+    { k: 'totali', testo: 'soste', num: true },
+    { k: 'mediana', testo: 'per pilota (mediana)', num: true },
+    { k: 'dist', testo: 'distribuzione', val: r => r.mediana ?? 0,
+      cella: r => Object.entries(r.dist).map(([k, n]) =>
+        `<span style="color:var(--dim)">${k}:</span>${n}`).join('&nbsp;&nbsp;') },
+  ], { ordina: 'totali' });
+}
+
+function ritiri(d){
+  const r = d.ritiri;
+  if (!r){ document.getElementById('ritiri')?.remove(); return; }
+  const g = r.raggruppamento;
+
+
+  // LE FAMIGLIE, solo se firmate. Il testo grezzo resta pubblicato qui sotto in ogni caso:
+  // un raggruppamento che nascondesse il dato da cui viene sarebbe peggio di nessun
+  // raggruppamento.
+  const fam = r.famiglie;
+  if (fam && g.firmato){
+    const tot = Object.values(fam).reduce((a, b) => a + b, 0) || 1;
+    const TF = { 'power unit':'var(--brand)', 'trasmissione':'var(--sc)',
+                 'telaio e sospensioni':'var(--lead)', 'elettrico':'var(--vsc)',
+                 'contatto':'var(--accent)', 'danno da contatto':'var(--accent)',
+                 'incidente':'var(--dim)', 'non specificato':'var(--panel2)' };
+    tabellaOrdinabile(el('tab-famiglie'),
+      Object.entries(fam).map(([f, n]) => ({ famiglia: f, n, quota: n / tot })), [
+      { k: 'famiglia', testo: 'famiglia',
+        cella: x => `<span class="nome"><span class="cbar"
+          style="background:${TF[x.famiglia] ?? 'var(--dim)'}"></span>${esc(x.famiglia)}</span>` },
+      { k: 'n', testo: 'ritiri', num: true },
+      { k: 'quota', testo: 'quota', num: true,
+        cella: x => barra(x.n, Math.max(...Object.values(fam)),
+                          TF[x.famiglia] ?? 'var(--dim)', (x.quota * 100).toFixed(1) + '%') },
+    ], { ordina: 'n' });
+    el('tab-famiglie').insertAdjacentHTML('beforeend',
+      `<p class="stat-sub" style="margin-top:10px">${tot} ritiri su
+       <b>${r.non_arrivati_totali}</b> non arrivati. <b>«Incidente» non vuol dire errore del
+       pilota</b>: un'uscita di pista può avere origine meccanica.</p>`);
+  }
+
+  const sq = r.per_squadra.filter(x => x.squadra && x.squadra !== '?');
+  const maxq = Math.max(...sq.map(x => x.quota ?? 0), 0.01);
+  tabellaOrdinabile(document.getElementById('tab-ritiri'), sq, [
+    { k: 'squadra', testo: 'squadra' },
+    { k: 'non_arrivati', testo: 'non arrivati', num: true },
+    { k: 'partenze', testo: 'su partenze', num: true },
+    { k: 'quota', testo: 'quota', num: true,
+      cella: x => barra(x.quota ?? 0, maxq, 'var(--brand)', ((x.quota ?? 0) * 100).toFixed(1) + '%') },
+  ], { ordina: 'quota' });
+
+  const cause = Object.entries(r.cause_grezze).map(([c, n]) => ({ causa: c, n }));
+  const maxn = Math.max(...cause.map(x => x.n), 1);
+  tabellaOrdinabile(document.getElementById('tab-cause'), cause, [
+    { k: 'causa', testo: 'causa' },
+    { k: 'n', testo: 'volte', num: true,
+      cella: x => barra(x.n, maxn, 'var(--dim)', x.n) },
+  ], { ordina: 'n' });
+}
+
+async function boot(){
+  scheletro(el('chart-neu'), 8);
+  let d;
+  try { d = await prendiJSON('data/stat/gara_2026.json'); }
+  catch(e){ mostraErrore(el('chart-neu'), boot); return; }
+
+  neutralizzazioni(d);
+  ritiri(d);
+  gomme(d);
+}
+boot();
+</script>
+</body>
+</html>

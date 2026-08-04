@@ -404,6 +404,17 @@ def wave_nuove():
         # i rilevatori telemetrici si auto-saltano se fastf1 non c'e' (es. VPS) o la
         # sessione non e' in cache. La redazione non ferma MAI la gara.
         sh([PY, os.path.join('ai_lab', 'redazione', 'genera.py'), '--gara', nome], check=False)
+        # SEZIONE STATISTICHE — i suoi artefatti si rifanno da zero a ogni gara.
+        # Va DOPO aggiorna_ui e dopo il race control, perche' legge quello che loro hanno
+        # appena scritto (classifica_giro, pitstops, ufficiali, schede) piu' il grezzo.
+        # check=False come gli altri passi di laboratorio: la sezione non ferma la gara.
+        # A sorvegliare che abbia davvero girato NON e' questa riga ma demo/test_stat.mjs,
+        # che confronta il perimetro dichiarato dagli artefatti con le gare pubblicate ed
+        # esce 1 se la sezione e' rimasta indietro. Un aggancio senza guardia e' esattamente
+        # il modo in cui una sezione si fossilizza mostrando una data fresca.
+        if sh([PY, 'aggiorna_stat.py'], check=False) != 0:
+            log('ondata 1: aggiorna_stat fallito — la sezione Statistiche resta alla gara '
+                'precedente. test_stat.mjs lo dira\' in CI.')
         # targhetta: ultima, cosi' vede tutto quello che e' stato appena rigenerato.
         sh([PY, 'gen_targhetta_lab.py'], check=False)
     if not golden():
@@ -754,6 +765,13 @@ def wave_f1db():
         _scrivi_pin(prima)
         log(f'ondata 2: aggiorna_ui fallito — pin riavvolto a {pinnata}, riprovo al prossimo giro.')
         return False
+    # LA SEZIONE STATISTICHE DIPENDE DALLA RELEASE, non solo dalla gara. Tre dei suoi
+    # artefatti leggono f1db (classifiche per round, qualifiche, soste): quando il pin
+    # avanza cambiano anche loro, e senza questa riga la sezione resterebbe alla release
+    # precedente mentre le classifiche sono gia' avanti — due verita' nello stesso sito.
+    if sh([PY, 'aggiorna_stat.py'], check=False) != 0:
+        log('ondata 2: aggiorna_stat fallito — la sezione Statistiche resta alla release '
+            'precedente. test_stat.mjs lo dira\' in CI.')
     if not golden():
         _scrivi_pin(prima)
         sys.exit('[auto] FERMO: golden falliti dopo l\'ondata 2 — pin riavvolto, niente commit, indagare.')

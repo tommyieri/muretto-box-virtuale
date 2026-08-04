@@ -7,12 +7,12 @@
    "byte": 7493
   },
   "pannello.mjs": {
-   "sha256_sorgente": "a2fc6be304089ef5f19c463a91e9f36eabc53d6421490f727d1ac25d4d95a296",
-   "byte": 22988
+   "sha256_sorgente": "47fbedd32cdd8d2da18fabd5f434eb15ac341a2642cf901129359828f5e127d6",
+   "byte": 15913
   },
   "curva.mjs": {
-   "sha256_sorgente": "97ff3a5682819a27830a0e6966fb2136eed933b40e28465993485194a50b3620",
-   "byte": 7129
+   "sha256_sorgente": "7f4c19064478493cb89bbd013c02b0059189d89ee10eefdcacfc7dbaab6d0473",
+   "byte": 7056
   },
   "render.mjs": {
    "sha256_sorgente": "d1d73b4c86d549e711f9e3ded16e9e7c1e3ed56a55bc5de6e0d95ac3fc50d387",

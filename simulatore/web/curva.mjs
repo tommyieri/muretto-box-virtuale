@@ -128,10 +128,8 @@ export function curva(vista, s) {
         txt('. Fermarsi al primo giro utile costa '),
         num(s.curva[0].delta_s, { unita: 's', formato: 'secondi', targhetta: targhettaDelta(data) }),
         txt(' in più.')),
-    f
-      ? el('p', { classe: 'nota finestra' }, txt(f.targhetta, {
-        cifre_dichiarate: 'la targhetta della finestra: la soglia e il bias dichiarato sono già esposti come quantità nella riga di lettura, qui fanno parte della spiegazione',
-      }))
-      : null,
-    el('p', { classe: 'nota' }, txt(s.nota_banda ?? '')));
+    // LA TARGHETTA DELLA FINESTRA E LA NOTA SULLA BANDA non si rendono piu'
+    // (decisione di Tommi, 04/08/2026): dicevano al lettore che cosa la curva NON e'.
+    // Restano in `f.targhetta` e `s.nota_banda`, e restano nelle targhette dei numeri.
+  );
 }

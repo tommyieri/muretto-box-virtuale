@@ -14,7 +14,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Analisi — Muretto Box Virtuale</title>
 <meta name="robots" content="noindex, follow">
-<link rel="stylesheet" href="stile.css">
+<link rel="stylesheet" href="stile.css?v=040826b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>
@@ -26,8 +26,8 @@
   <nav class="nav" aria-label="Sezioni">
     <a href="stagione.html">Stagione</a>
     <a href="live.html"><span class="dot-live"></span>Live</a>
-    <a href="analisi.html" class="on">Analisi</a>
-    <a href="classifiche.html">Classifiche</a>
+    <a href="analisi.html">Analisi</a>
+    <a href="statistiche.html">Statistiche</a>
   </nav>
 </header>
 
@@ -44,7 +44,7 @@
       <a href="stagione.html">Stagione</a>
       <a href="live.html">Live</a>
       <a href="analisi.html">Analisi</a>
-      <a href="classifiche.html">Classifiche</a>
+      <a href="statistiche.html">Statistiche</a>
     </nav>
   </div>
 </footer>
@@ -74,10 +74,12 @@ function titolaSvg(svg, didascalia){
 
 function figura(f){
   if (!f) return '';
+  // Gemella di statico.py::_figura — le due rese devono restare allineate.
+  // La riga «Fonte: ...» non si rende piu' (decisione di Tommi, 4/8/2026): il campo
+  // `fonte` resta nel JSON dell'articolo, e' sparita la resa.
   return `<figure class="art-fig">
     <div class="art-svg-wrap">${titolaSvg(f.svg, f.didascalia)}</div>
-    <figcaption><span class="cap">${esc(f.didascalia)}</span>
-      <span class="fonte">Fonte: ${esc(f.fonte)}</span></figcaption>
+    <figcaption><span class="cap">${esc(f.didascalia)}</span></figcaption>
   </figure>`;
 }
 
@@ -89,21 +91,17 @@ function sezione(s){
   </section>`;
 }
 
-function provenienza(art){
-  if (!art.provenienza?.length) return '';
-  const righe = art.provenienza.map(p => `<tr>
-    <td class="g">${esc(p.grandezza)}</td>
-    <td class="v">${esc(p.valore)}</td>
-    <td><span class="st st-${esc(p.stato)}">${esc(p.stato)}</span></td>
-    <td class="da">${esc(p.da)}</td></tr>`).join('');
-  return `<section class="art-sez">
-    <div class="sez-tit"><span class="art-tag">Dati</span> Provenienza dei numeri</div>
-    <div class="panel art-prov"><table>
-      <thead><tr><th>grandezza</th><th>valore</th><th>stato</th><th>da dove</th></tr></thead>
-      <tbody>${righe}</tbody></table></div>
-    ${art.fonti?.length ? `<div class="art-fonti">${art.fonti.map(f=>`<div><b>${esc(f.tipo)}</b> — ${esc(f.testo)}</div>`).join('')}</div>` : ''}
-  </section>`;
-}
+// NON SI RENDE PIU' (decisione di Tommi, 4/8/2026). La tabella «Dati ·
+// Provenienza dei numeri» chiudeva ogni articolo con dieci righe di metodo, e da
+// lettore ci arrivavi dopo la chiusa: la coda pesava quanto il corpo.
+//
+// Il DATO NON SI TOCCA: provenienza[] e fonti[] restano in demo/data/analisi/<id>.json,
+// restano l'insieme su cui la guardia dei numeri decide che cosa la prosa puo'
+// scrivere, e restano leggibili a chi apre il JSON. E' sparita la resa, non la
+// tracciabilita'.
+//
+// Gemella di statico.py::_provenienza — le due rese devono restare allineate.
+function provenienza(art){ return ''; }
 
 async function boot(){
   const id = new URLSearchParams(location.search).get('id');

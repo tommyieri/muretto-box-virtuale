@@ -63,11 +63,137 @@ PAGINE_FISSE = [
     ("index.html", "1.0"),
     ("analisi.html", "0.9"),
     ("stagione.html", "0.8"),
+    ("statistiche.html", "0.8"),
     ("classifiche.html", "0.7"),
     ("live.html", "0.6"),
     ("forza.html", "0.7"),
     ("dati.html", "0.7"),
+    ("statistiche-piloti.html", "0.6"),
+    ("statistiche-squadre.html", "0.6"),
+    ("statistiche-stagione.html", "0.6"),
+    ("statistiche-confronti.html", "0.6"),
+    # le quattro pagine-sessione, adottate il 04/08/2026 (decisione di Tommi). Erano vive,
+    # funzionanti e linkate da nessuno: ora le punta il muro delle coperture, che pubblica
+    # una riga per ognuno degli artefatti che mostrano.
+    ("quali.html", "0.5"),
+    ("sprint.html", "0.5"),
+    ("libere.html", "0.5"),
+    ("tele.html", "0.5"),
 ]
+# REGOLA DI STOP, decisa il 04/08/2026: una pagina entra qui — e una voce entra nella
+# sotto-barra della sezione — solo quando il suo artefatto esiste davvero. Altrimenti
+# sitemap e feed pubblicherebbero un indirizzo vuoto, che e' il modo classico in cui questo
+# lavoro non finisce: cinque pagine promesse, tre finite, due in sitemap e vuote.
+# `statistiche-stagione.html` e' entrata con l'ondata 2, il 04/08/2026, quando gen_stat_gara.py
+# ha scritto demo/data/stat/gara_2026.json. Prima non c'era, e non era in questo elenco.
+
+# ------------------------------------------------------------- la nav, in un posto solo
+#
+# PERCHE' STA QUI. La nav era ripetuta A MANO in quindici file HTML, e i footer avevano
+# gia' cinque elenchi diversi fra loro senza che nessuno l'avesse deciso. Nessun test la
+# sorvegliava: una voce dimenticata sarebbe rimasta invisibile per sempre. Il meccanismo
+# per scrivere la nav da un punto solo pero' esisteva GIA' qui — questo modulo scrive per
+# intero l'intestazione di 404.html e dei dodici articoli — e quindi tredici file su
+# ventotto erano gia' a sorgente unica. Erano i quindici restanti il problema.
+#
+# Cambiare una voce adesso e' una riga qui piu' `python3 ai_lab/redazione/statico.py --nav`.
+#
+# NIENTE MARCATORI, e non e' pigrizia: inserire <!-- NAV:INIZIO --> in quindici file e' un
+# passaggio a mano che alla prima esecuzione puo' cancellare markup buono se finisce nel
+# punto sbagliato. La struttura e' gia' regolare (un solo <nav> dentro <header class="topbar">,
+# un solo <nav> dentro <footer>), quindi la si riconosce e la si sostituisce. La funzione
+# e' idempotente: rilanciarla due volte non cambia niente la seconda.
+NAV = [
+    ("Stagione", "stagione.html"),
+    ("Live", "live.html"),
+    ("Analisi", "analisi.html"),
+    ("Statistiche", "statistiche.html"),
+]
+
+# a quale voce di nav "appartiene" ogni pagina: decide chi porta class="on" e chi sparisce
+# dal footer. Le pagine che non compaiono qui non sono in nessuna sezione (index, scheda,
+# gara, weekend, 404...) e mostrano tutte e quattro le voci.
+SEZIONE_DI = {
+    "stagione.html": "stagione.html",
+    "live.html": "live.html",
+    "analisi.html": "analisi.html",
+    "classifiche.html": "statistiche.html",
+    "statistiche.html": "statistiche.html",
+    "statistiche-piloti.html": "statistiche.html",
+    "statistiche-squadre.html": "statistiche.html",
+    "statistiche-stagione.html": "statistiche.html",
+    "statistiche-confronti.html": "statistiche.html",
+    "forza.html": "statistiche.html",
+    "dati.html": "statistiche.html",
+}
+
+
+def blocco_nav(attiva=None, prefisso="", classe="nav", rientro="  ") -> str:
+    """Il blocco <nav> dell'intestazione. `classe` resta quella trovata in pagina:
+    analisi.html usa <nav class="site"> col suo CSS, ed e' un'eccezione a registro
+    (demo/REGISTRO_SEZIONE.json, voce S4), non una deriva da correggere qui."""
+    punto = '<span class="dot"></span>' if classe == "site" else '<span class="dot-live"></span>'
+    righe = [f'{rientro}<nav class="{classe}" aria-label="Sezioni">']
+    for etichetta, file in NAV:
+        deco = punto if file == "live.html" else ""
+        on = ' class="on"' if file == attiva else ""
+        righe.append(f'{rientro}  <a href="{prefisso}{file}"{on}>{deco}{etichetta}</a>')
+    righe.append(f"{rientro}</nav>")
+    return "\n".join(righe)
+
+
+def blocco_footer_voci(escludi=None, prefisso="", rientro="      ") -> str:
+    """Le voci dentro il <nav> del footer: tutte quelle in cui NON sei gia'.
+
+    Prima del 04/08/2026 questa regola era rispettata da sei pagine e violata da cinque
+    (libere, quali, sprint, tele, weekend lasciavano fuori Live invece della propria
+    sezione; dati e forza elencavano tutte e quattro in un ordine loro). Nessuna di quelle
+    differenze era stata decisa: erano il residuo di copie successive. Qui la regola
+    diventa una sola, e quelle cinque pagine riprendono la voce che avevano perso."""
+    return "\n".join(f'{rientro}<a href="{prefisso}{f}">{e}</a>'
+                     for e, f in NAV if f != escludi)
+
+
+_RE_NAV = re.compile(r'([ \t]*)<nav class="(nav|site)" aria-label="Sezioni">[\s\S]*?</nav>')
+# NON pretendere un a capo dopo <nav>. La prima versione di questa regex era
+# `<nav>\n(...)` e falliva in silenzio su dati.html e forza.html, che hanno il footer
+# tutto su una riga: quelle due pagine sono rimaste con la voce vecchia mentre le altre
+# quattordici erano state timbrate, e nessun test se ne e' accorto perche' la sentinella
+# guarda la nav dell'intestazione e non il footer. Ora si accetta l'una e l'altra forma,
+# e si RESTITUISCE quella trovata: una pagina compatta resta compatta.
+_RE_FOOT = re.compile(r'(<footer[^>]*>[\s\S]*?<nav>)([\s\S]*?)(</nav>)')
+
+
+def stampa_nav_pagine(files=None) -> list:
+    """Riscrive nav e footer di ogni pagina in demo/ dalla costante NAV. Torna l'elenco
+    dei file davvero cambiati (idempotente: la seconda esecuzione torna vuoto)."""
+    cambiati = []
+    elenco = files or sorted(f for f in os.listdir(DEMO) if f.endswith(".html"))
+    for nome in elenco:
+        percorso = os.path.join(DEMO, nome)
+        testo = vecchio = open(percorso, encoding="utf-8").read()
+        attiva = SEZIONE_DI.get(nome)
+        prefisso = "/" if nome == "404.html" else ""
+
+        def _nav(m):
+            return blocco_nav(attiva, prefisso, classe=m.group(2), rientro=m.group(1))
+        testo = _RE_NAV.sub(_nav, testo, count=1)
+
+        def _foot(m):
+            interno = m.group(2)
+            if "\n" not in interno:                       # footer compatto (dati, forza)
+                voci = "".join(f'<a href="{prefisso}{f}">{e}</a>'
+                               for e, f in NAV if f != attiva)
+                return m.group(1) + voci + m.group(3)
+            rientro = re.match(r"[\n]*([ \t]*)", interno).group(1) or "      "
+            return (m.group(1) + "\n" + blocco_footer_voci(attiva, prefisso, rientro)
+                    + "\n" + rientro[:-2] + m.group(3))
+        testo = _RE_FOOT.sub(_foot, testo, count=1)
+
+        if testo != vecchio:
+            open(percorso, "w", encoding="utf-8").write(testo)
+            cambiati.append(nome)
+    return cambiati
 
 MESI = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio",
         "agosto", "settembre", "ottobre", "novembre", "dicembre"]
@@ -208,10 +334,12 @@ def _figura(f) -> str:
     if not f:
         return ""
     svg = _titola(f.get("svg") or "", f.get("didascalia"))
+    # La riga «Fonte: ...» sotto ogni grafico non si rende piu' (decisione di Tommi,
+    # 4/8/2026, stessa ragione della tabella di provenienza qui sotto). `fonte` resta
+    # nel JSON dell'articolo: e' sparita la resa, non la tracciabilita'.
     return (f'<figure class="art-fig">\n'
             f'    <div class="art-svg-wrap">{svg}</div>\n'
-            f'    <figcaption><span class="cap">{esc(f.get("didascalia"))}</span>\n'
-            f'      <span class="fonte">Fonte: {esc(f.get("fonte"))}</span></figcaption>\n'
+            f'    <figcaption><span class="cap">{esc(f.get("didascalia"))}</span></figcaption>\n'
             f'  </figure>')
 
 
@@ -225,29 +353,26 @@ def _sezione(s) -> str:
 
 
 def _provenienza(art) -> str:
-    prov = art.get("provenienza") or []
-    if not prov:
-        return ""
-    righe = "".join(
-        f'<tr>\n    <td class="g">{esc(p.get("grandezza"))}</td>\n'
-        f'    <td class="v">{esc(p.get("valore"))}</td>\n'
-        f'    <td><span class="st st-{esc(p.get("stato"))}">{esc(p.get("stato"))}</span></td>\n'
-        f'    <td class="da">{esc(p.get("da"))}</td></tr>' for p in prov)
-    fonti = art.get("fonti") or []
-    blocco_fonti = ""
-    if fonti:
-        blocco_fonti = ('<div class="art-fonti">' + "".join(
-            f'<div><b>{esc(f.get("tipo"))}</b> — {esc(f.get("testo"))}</div>'
-            for f in fonti) + "</div>")
-    return (f'<section class="art-sez">\n'
-            f'    <div class="sez-tit"><span class="art-tag">Dati</span> '
-            f'Provenienza dei numeri</div>\n'
-            f'    <div class="panel art-prov"><table>\n'
-            f'      <thead><tr><th>grandezza</th><th>valore</th><th>stato</th>'
-            f'<th>da dove</th></tr></thead>\n'
-            f'      <tbody>{righe}</tbody></table></div>\n'
-            f'    {blocco_fonti}\n'
-            f'  </section>')
+    """NON SI RENDE PIU' (decisione di Tommi, 4/8/2026).
+
+    La tabella «Dati · Provenienza dei numeri» chiudeva ogni articolo con dieci
+    righe di metodo. Restava in fondo a un pezzo di quattrocento parole, e da
+    lettore ci arrivavi dopo la chiusa: la coda pesava quanto il corpo.
+
+    Il DATO NON SI TOCCA. `provenienza[]` e `fonti[]` restano in articolo.json,
+    restano validati (`base.STATI`), restano l'insieme su cui la guardia dei
+    numeri decide che cosa la prosa puo' scrivere, e restano leggibili a chi apre
+    il JSON. E' sparita la resa in pagina, non la tracciabilita': un numero senza
+    provenienza continua a non poter esistere.
+
+    Il patto di trasparenza si sposta cosi' dentro la prosa, dov'era gia' scritto
+    che dovesse stare (VOCE.md O1: il caveat sta nel corpo, non in fondo).
+
+    La funzione resta al suo posto, vuota, per due ragioni: e' la gemella di
+    quella JS in demo/articolo.html (le due rese devono restare allineate, ed e'
+    piu' facile vederlo se hanno gli stessi nomi), e riaccenderla e' cancellare
+    una riga."""
+    return ""
 
 
 def _corpo(art) -> str:
@@ -379,12 +504,7 @@ def rendi_html(art) -> str:
     <span class="brand-mark"><span>M</span></span>
     <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
   </a>
-  <nav class="nav" aria-label="Sezioni">
-    <a href="../stagione.html">Stagione</a>
-    <a href="../live.html"><span class="dot-live"></span>Live</a>
-    <a href="../analisi.html" class="on">Analisi</a>
-    <a href="../classifiche.html">Classifiche</a>
-  </nav>
+{blocco_nav('analisi.html', '../')}
 </header>
 
 <div class="wrap-scheda" style="padding-bottom:0">
@@ -399,10 +519,7 @@ def rendi_html(art) -> str:
   <div class="footer-in">
     <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
     <nav>
-      <a href="../stagione.html">Stagione</a>
-      <a href="../live.html">Live</a>
-      <a href="../analisi.html">Analisi</a>
-      <a href="../classifiche.html">Classifiche</a>
+{blocco_footer_voci('analisi.html', '../')}
     </nav>
   </div>
 </footer>
@@ -655,7 +772,7 @@ def scrivi_404() -> bool:
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pagina non trovata — Muretto Box Virtuale</title>
 <meta name="robots" content="noindex, follow">
-<link rel="stylesheet" href="/stile.css">
+<link rel="stylesheet" href="/stile.css?v=040826b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>
@@ -664,12 +781,7 @@ def scrivi_404() -> bool:
     <span class="brand-mark"><span>M</span></span>
     <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
   </a>
-  <nav class="nav" aria-label="Sezioni">
-    <a href="/stagione.html">Stagione</a>
-    <a href="/live.html"><span class="dot-live"></span>Live</a>
-    <a href="/analisi.html">Analisi</a>
-    <a href="/classifiche.html">Classifiche</a>
-  </nav>
+@@NAV@@
 </header>
 
 <main class="wrap-scheda art">
@@ -686,7 +798,7 @@ def scrivi_404() -> bool:
         <li><a href="/analisi.html">Analisi</a> — gli articoli della redazione tecnica.</li>
         <li><a href="/stagione.html">Stagione 2026</a> — tutti i weekend, gara per gara.</li>
         <li><a href="/live.html">Live</a> — il muretto in diretta.</li>
-        <li><a href="/classifiche.html">Classifiche</a> — piloti e costruttori.</li>
+        <li><a href="/statistiche.html">Statistiche</a> — classifiche, piloti, squadre e confronti fra stagioni.</li>
         <li><a href="/index.html">Home</a></li>
       </ul>
     </div>
@@ -697,16 +809,17 @@ def scrivi_404() -> bool:
   <div class="footer-in">
     <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
     <nav>
-      <a href="/stagione.html">Stagione</a>
-      <a href="/live.html">Live</a>
-      <a href="/analisi.html">Analisi</a>
-      <a href="/classifiche.html">Classifiche</a>
+@@FOOT@@
     </nav>
   </div>
 </footer>
 </body>
 </html>
 """
+    # il template e' una stringa SEMPLICE, non una f-string: contiene una graffa in un
+    # attributo e trasformarlo sarebbe fragile. I due blocchi si sciolgono qui.
+    testo = testo.replace("@@NAV@@", blocco_nav(None, "/"))\
+                 .replace("@@FOOT@@", blocco_footer_voci(None, "/"))
     return _scrivi(os.path.join(DEMO, "404.html"), testo)
 
 
@@ -801,10 +914,16 @@ if __name__ == "__main__":
     ap.add_argument("--tutto", action="store_true", help="rigenera ogni articolo e gli indici")
     ap.add_argument("--articolo", metavar="ID", help="rigenera un solo articolo + indici")
     ap.add_argument("--indici", action="store_true", help="solo robots/sitemap/feed/404/elenco")
+    ap.add_argument("--nav", action="store_true",
+                    help="ristampa nav e footer di tutte le pagine dalla costante NAV")
     ap.add_argument("--senza-og", action="store_true", help="salta le immagini social")
     a = ap.parse_args()
     og = not a.senza_og
-    if a.tutto:
+    if a.nav:
+        cambiati = stampa_nav_pagine()
+        print(f"[statico] nav e footer ristampati: {len(cambiati)} pagine cambiate"
+              + (f" ({', '.join(cambiati)})" if cambiati else " — erano gia' allineate"))
+    elif a.tutto:
         e = rigenera_tutto(con_og=og)
         print(f"[statico] {len(e['articoli'])} articoli resi in demo/articolo/")
         if e["saltati"]:

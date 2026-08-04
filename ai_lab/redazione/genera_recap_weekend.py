@@ -464,7 +464,9 @@ def costruisci(gara, data_bozza=None):
         serieV, md["trace"], corners_b, dist_max=dmax, v_range=(50, 350),
         col_prot=colP, col_riv=colR,
         titolo=f"Dove nasce il decimo: velocità e vantaggio cumulato, {PROT} vs {RIVAL}",
-        sub=f"overlay Speed + Δt cumulato (fastf1.delta_time) · giri veloci Q · {paese} {anno}",
+        # NIENTE NOMI DI LIBRERIA NEL SOTTOTITOLO (04/08/2026): il sottotitolo di un grafico
+        # dice al lettore che cosa sta guardando, non con che modulo e' stato calcolato.
+        sub=f"velocità e vantaggio cumulato · giri veloci Q · {paese} {anno}",
         slope={"d0": sp["d0"], "d1": sp["d1"],
                "txt": f"max pendenza · {sp['curva']} +{it(sp['diff']*1000,0)} ms"},
         peak={"dist": md["peak"]["dist"], "val": md["peak"]["val"],

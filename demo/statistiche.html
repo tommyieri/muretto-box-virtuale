@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!--
+  STATISTICHE — l'hub della sezione. Consumatore puro: legge i manifest che gia' esistono
+  in demo/data/ e non calcola nessun numero di gara. Porta il campionato in tre righe e la
+  navigazione verso le viste vere.
+
+  IL MURO DELLE COPERTURE E' STATO RIMOSSO il 04/08/2026 (decisione di Tommi): un lettore
+  che entra dalle statistiche non deve incontrare per prima cosa una tabella su quanto e'
+  incompleto il sito. La copertura resta un fatto dei dati — i manifest la portano — ma non
+  e' piu' un contenuto della pagina.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Statistiche 2026 — Muretto Box Virtuale</title>
+<meta name="description" content="Le statistiche della stagione 2026: classifiche, piloti, squadre e vetture, confronti fra stagioni.">
+<link rel="canonical" href="https://murettobox.com/statistiche.html">
+<link rel="stylesheet" href="stile.css?v=040826b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
+    <span class="brand-mark"><span>M</span></span>
+    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+  </a>
+  <nav class="nav" aria-label="Sezioni">
+    <a href="stagione.html">Stagione</a>
+    <a href="live.html"><span class="dot-live"></span>Live</a>
+    <a href="analisi.html">Analisi</a>
+    <a href="statistiche.html" class="on">Statistiche</a>
+  </nav>
+</header>
+
+<div class="stat-wrap">
+  <div class="page-testa">
+    <h1>Statistiche <em>//</em> il banco</h1>
+    <div class="sotto">Le classifiche restano il cuore. Accanto, quello che la stagione 2026
+      dice davvero: piloti, squadre e vetture, e il confronto con le stagioni passate.</div>
+  </div>
+
+  <nav class="stat-nav" aria-label="Statistiche">
+    <a href="statistiche.html" class="on">Il banco</a>
+    <a href="classifiche.html">Classifiche</a>
+    <a href="statistiche-piloti.html">Piloti</a>
+    <a href="statistiche-squadre.html">Squadre e vetture</a>
+    <a href="statistiche-stagione.html">Stagione 2026</a>
+    <a href="statistiche-confronti.html">Confronti fra stagioni</a>
+  </nav>
+
+  <section class="stat-sez">
+    <div class="sez-tit">Il campionato, in tre righe</div>
+    <div class="champ panel" id="champ" hidden></div>
+  </section>
+
+  <!-- LE QUATTRO PAGINE-SESSIONE ENTRANO DA QUI. Prima ci si arrivava dalle righe del
+       muro delle coperture: tolto il muro, quali/libere/sprint/tele restavano senza
+       nessuno che le puntasse — orfane, e la sentinella S3 di test_stat.mjs lo vede. -->
+  <section class="stat-sez">
+    <div class="sez-tit">Il weekend, sessione per sessione</div>
+    <div class="stat-sessioni">
+      <a class="sk-vai" href="quali.html">Qualifiche &rarr;</a>
+      <a class="sk-vai" href="libere.html">Prove libere &rarr;</a>
+      <a class="sk-vai" href="sprint.html">Sprint &rarr;</a>
+      <a class="sk-vai" href="tele.html">Telemetria &rarr;</a>
+    </div>
+  </section>
+
+  <div class="aggiornato" id="agg"></div>
+</div>
+
+<footer class="footer">
+  <div class="footer-in">
+    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
+    <nav>
+      <a href="stagione.html">Stagione</a>
+      <a href="live.html">Live</a>
+      <a href="analisi.html">Analisi</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="module">
+import { prendiJSON, esc, dataIt, coloriTeam } from './stat.mjs?v=040826b';
+const el = id => document.getElementById(id);
+
+async function boot(){
+  // il campionato in tre righe: nessun ricalcolo, si legge la classifica gia' pubblicata
+  try {
+    const clas = await prendiJSON('data/classifiche_2026.json');
+    const col = await coloriTeam();
+    let numeri = {};
+    try { const sk = await prendiJSON('data/schede_2026.json');
+          numeri = Object.fromEntries(Object.entries(sk.piloti).map(([id,s])=>[id, s.numero])); } catch(e){}
+    el('champ').innerHTML = `<div class="champ-tit">Piloti</div>` +
+      clas.piloti.slice(0,3).map(p=>`<a class="champ-p" href="scheda.html?tipo=pilota&id=${encodeURIComponent(p.id)}">
+        <i style="background:${col[p.team_demo]||'var(--dim)'}"></i>
+        <span class="pp num">P${p.pos}</span><span class="rnum" style="color:${col[p.team_demo]||'var(--dim)'}">${numeri[p.id] ?? ''}</span><b>${esc(p.sigla)}</b><span class="pt num">${p.punti}</span></a>`).join('') +
+      `<a class="champ-tutta" href="classifiche.html">classifica completa &rarr;</a>`;
+    el('champ').hidden = false;
+    const a = clas.aggiornato_al;
+    el('agg').innerHTML = `aggiornato al <b>${esc(a.titolo || a.nome || ('round '+a.round))}</b>`
+      + (a.data ? ` &middot; ${dataIt(a.data)}` : '');
+  } catch(e){}
+}
+boot();
+</script>
+</body>
+</html>

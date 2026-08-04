@@ -1,0 +1,4163 @@
+{
+ "_nota": "GENERATO da gen_stat_piloti.py (i due moduli «compagni di squadra»: qualifica e gara). Non modificare a mano: si rigenera da f1db + demo/data/ufficiali_2026.json.",
+ "_generatore": "gen_stat_piloti.py",
+ "schema": 1,
+ "calcolato_il": "2026-08-04T12:54:50Z",
+ "provenienza": {
+  "f1db_release_pinnata": "v2026.11.0",
+  "f1db_release_letta": "v2026.11.0",
+  "f1db_fallback_default": "v2026.10.0",
+  "come": "zip esplicito (--zip)",
+  "zip": "f1db-csv-v2026.11.0.zip",
+  "zip_sha256_12": "d5461cd30c57",
+  "tabelle": [
+   "races-qualifying-results",
+   "races-race-results",
+   "races",
+   "grands-prix",
+   "drivers",
+   "constructors"
+  ],
+  "fonti_locali": [
+   {
+    "file": "demo/data/ufficiali_2026.json",
+    "sha256_12": "4bdda5a89fdf",
+    "ruolo": "arbitro dei risultati di gara (classifica FIA da FastF1)"
+   },
+   {
+    "file": "demo/data/calendario_2026.json",
+    "sha256_12": "5616068d662a",
+    "ruolo": "ponte round -> nome italiano della gara, la chiave degli ufficiali"
+   }
+  ]
+ },
+ "perimetro": {
+  "anno": 2026,
+  "anno_perche": "il file e' l'artefatto della stagione in corso del sito (demo/data/*_2026): l'anno e' il soggetto, non un risultato. Tutto il resto del perimetro — quali gare, quali coppie, quali sessioni cadono — e' contato dai dati.",
+  "gare": [
+   {
+    "round": 1,
+    "gara": "Australia",
+    "data": "2026-03-08",
+    "qualifica_f1db": true,
+    "gara_f1db": true,
+    "ufficiali_fia": true
+   },
+   {
+    "round": 2,
+    "gara": "Cina",
+    "data": "2026-03-15",
+    "qualifica_f1db": true,
+    "gara_f1db": true,
+    "ufficiali_fia": true
+   },
+   {
+    "round": 3,
+    "gara": "Giappone",
+    "data": "2026-03-29",
+    "qualifica_f1db": true,
+    "gara_f1db": true,
+    "ufficiali_fia": true
+   },
+   {
+    "round": 4,
+    "gara": "Miami",
+    "data": "2026-05-03",
+    "qualifica_f1db": true,
+    "gara_f1db": true,
+    "ufficiali_fia": true
+   },
+   {
+    "round": 5,
+    "gara": "Canada",
+    "data": "2026-05-24",
+    "qualifica_f1db": true,
+    "gara_f1db": true,
+    "ufficiali_fia": true
+   },
+   {
+    "round": 6,
+    "gara": "Monaco",
+    "data": "2026-06-07",
+    "qualifica_f1db": true,
+    "gara_f1db": true,
+    "ufficiali_fia": true
+   },
+   {
+    "round": 7,
+    "gara": "Spagna",
+    "data": "2026-06-14",
+    "qualifica_f1db": true,
+    "gara_f1db": true,
+    "ufficiali_fia": true
+   },
+   {
+    "round": 8,
+    "gara": "Austria",
+    "data": "2026-06-28",
+    "qualifica_f1db": true,
+    "gara_f1db": true,
+    "ufficiali_fia": true
+   },
+   {
+    "round": 9,
+    "gara": "Gran Bretagna",
+    "data": "2026-07-05",
+    "qualifica_f1db": true,
+    "gara_f1db": true,
+    "ufficiali_fia": true
+   },
+   {
+    "round": 10,
+    "gara": "Belgio",
+    "data": "2026-07-19",
+    "qualifica_f1db": true,
+    "gara_f1db": true,
+    "ufficiali_fia": true
+   },
+   {
+    "round": 11,
+    "gara": "Ungheria",
+    "data": "2026-07-26",
+    "qualifica_f1db": true,
+    "gara_f1db": true,
+    "ufficiali_fia": true
+   }
+  ],
+  "assenti": [
+   {
+    "gara": "Olanda",
+    "motivo": "round 12 in calendario ma senza risultati in races-race-results / races-qualifying-results della release letta (v2026.11.0): non ancora disputata"
+   },
+   {
+    "gara": "Italia",
+    "motivo": "round 13 in calendario ma senza risultati in races-race-results / races-qualifying-results della release letta (v2026.11.0): non ancora disputata"
+   },
+   {
+    "gara": "Madrid",
+    "motivo": "round 14 in calendario ma senza risultati in races-race-results / races-qualifying-results della release letta (v2026.11.0): non ancora disputata"
+   },
+   {
+    "gara": "Azerbaigian",
+    "motivo": "round 15 in calendario ma senza risultati in races-race-results / races-qualifying-results della release letta (v2026.11.0): non ancora disputata"
+   },
+   {
+    "gara": "Singapore",
+    "motivo": "round 16 in calendario ma senza risultati in races-race-results / races-qualifying-results della release letta (v2026.11.0): non ancora disputata"
+   },
+   {
+    "gara": "Stati Uniti",
+    "motivo": "round 17 in calendario ma senza risultati in races-race-results / races-qualifying-results della release letta (v2026.11.0): non ancora disputata"
+   },
+   {
+    "gara": "Messico",
+    "motivo": "round 18 in calendario ma senza risultati in races-race-results / races-qualifying-results della release letta (v2026.11.0): non ancora disputata"
+   },
+   {
+    "gara": "San Paolo",
+    "motivo": "round 19 in calendario ma senza risultati in races-race-results / races-qualifying-results della release letta (v2026.11.0): non ancora disputata"
+   },
+   {
+    "gara": "Las Vegas",
+    "motivo": "round 20 in calendario ma senza risultati in races-race-results / races-qualifying-results della release letta (v2026.11.0): non ancora disputata"
+   },
+   {
+    "gara": "Qatar",
+    "motivo": "round 21 in calendario ma senza risultati in races-race-results / races-qualifying-results della release letta (v2026.11.0): non ancora disputata"
+   },
+   {
+    "gara": "Abu Dhabi",
+    "motivo": "round 22 in calendario ma senza risultati in races-race-results / races-qualifying-results della release letta (v2026.11.0): non ancora disputata"
+   }
+  ],
+  "coppie": 11,
+  "note": [
+   "Perimetro contato dai dati: 11 round con risultati nella release letta (v2026.11.0) su 22 in calendario. Nessun numero di gare e' scritto a mano nel generatore.",
+   "11 coppie derivate da (constructorId, i due driverId di quel round). Se un team cambiasse pilota uscirebbero due duo distinti per lo stesso constructorId, ciascuno col suo perimetro: nella release letta non succede.",
+   "QUALIFICA: si confronta l'ULTIMO SEGMENTO in cui entrambi hanno un tempo valido (Q3, se no Q2, se no Q1). Confrontare segmenti diversi fra i due compagni gonfia sistematicamente chi arriva piu' avanti, perche' i tempi di Q3 sono piu' veloci di quelli di Q1 per costruzione: non e' rumore, e' un bias con un verso solo.",
+   "QUALIFICA, LIMITE DEL DELTA: il delta e' DI SEGMENTO. Mediana, media e IQR qui sono calcolate su una lista che mescola sessioni decise in Q3, Q2 e Q1, e i tre segmenti non hanno la stessa scala (gomma, benzina, evoluzione della pista). Il delta non si somma e non si media FRA segmenti diversi: `per_segmento` tiene i tre conti separati, ed e' li' che si guarda quando la coppia ha sessioni in segmenti misti.",
+   "QUALIFICA, campo `time`: vuoto in tutte le righe 2026 di f1db, mai usato. I millesimi vengono da q1Millis/q2Millis/q3Millis.",
+   "QUALIFICA, perimetro: solo la qualifica del GP (races-qualifying-results). La qualifica sprint e' un'altra sessione e un'altra tabella (races-sprint-qualifying-results): fuori.",
+   "GARA, due colonne: (a) tutte le gare, il ritiro conta come sconfitta; (b) solo le gare in cui entrambi sono classificati. Si pubblicano accanto, mai una sola. `cadute_fra_a_e_b` elenca per nome le gare che la (b) toglie, con il motivo.",
+   "GARA, IL BIAS DELLA COLONNA (b), dichiarato e non eliminato: «solo classificati» non toglie solo la sfortuna meccanica, toglie anche gli incidenti CAUSATI dal pilota. Ripulisce cioe' a favore di chi sbaglia. Nessuna delle due colonne e' quella giusta: la (a) punisce la sfortuna, la (b) perdona l'errore.",
+   "GARA, chi e' davanti lo dice demo/data/ufficiali_2026.json (classifica FIA riportata da FastF1), che questo progetto ha stabilito essere l'arbitro dei risultati; l'accoppiamento pilota-team lo dice f1db. `classificato` e' il campo degli ufficiali, non lo `status`: nella stagione letta ci sono 5 «Retired» classificati e 2 «Lapped» non classificati, e prendere lo status per il verdetto sbaglierebbe 7 volte.",
+   "GARA, entrambi non classificati: il duello lo decide comunque l'ordine della classifica FIA (chi e' andato piu' lontano). E' un confronto debole e viene contato a parte in `entrambi_non_classificati`.",
+   "GARA, sprint escluse: il modulo guarda il GP. Gli ufficiali portano anche la sprint per 4 gare del 2026, e non entra in nessuna delle due colonne.",
+   "NON usa data/driver_profile_2026.csv, che pure contiene un delta fra compagni e una colonna `significativo`: e' un file senza generatore e senza metodo scritto, quindi un debito e non una fonte. Non e' stato aperto nemmeno per confronto.",
+   "Cross-check f1db vs ufficiali FIA su chi era davanti: 0 divergenze sui duelli del perimetro. Dove divergono vince l'arbitro (gli ufficiali) e la divergenza resta scritta in `divergenze_f1db_vs_ufficiali`."
+  ]
+ },
+ "qualifica": {
+  "regola": "ultimo segmento in cui ENTRAMBI i compagni hanno un tempo valido: Q3 se q3Millis c'e' per tutti e due, altrimenti Q2, altrimenti Q1. Nessun segmento in comune = nessun confronto, e la sessione finisce in `sessioni_cadute` col motivo.",
+  "unita": "millesimi di secondo",
+  "coppie": [
+   {
+    "constructorId": "alpine",
+    "team": "Alpine",
+    "piloti": [
+     {
+      "driverId": "franco-colapinto",
+      "sigla": "COL",
+      "nome": "Franco Colapinto"
+     },
+     {
+      "driverId": "pierre-gasly",
+      "sigla": "GAS",
+      "nome": "Pierre Gasly"
+     }
+    ],
+    "verso": "delta_ms = tempo(COL) - tempo(GAS); negativo = COL piu' veloce",
+    "gare_del_duo": 11,
+    "n": 11,
+    "duelli": {
+     "COL": 3,
+     "GAS": 8
+    },
+    "pari": 0,
+    "delta_ms": {
+     "mediano": 233,
+     "medio": 348.1,
+     "iqr": [
+      6.5,
+      761.0
+     ],
+     "min": -330,
+     "max": 976
+    },
+    "per_segmento": {
+     "Q1": {
+      "n": 1,
+      "mediano_ms": 976
+     },
+     "Q2": {
+      "n": 9,
+      "mediano_ms": 233
+     },
+     "Q3": {
+      "n": 1,
+      "mediano_ms": -48
+     }
+    },
+    "segmenti_usati": {
+     "Q1": 1,
+     "Q2": 9,
+     "Q3": 1
+    },
+    "sessioni_cadute": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "segmento": "Q2",
+      "tempo_a_ms": 81270,
+      "tempo_b_ms": 80501,
+      "tempo_a": "1:21.270",
+      "tempo_b": "1:20.501",
+      "delta_ms": 769,
+      "davanti": "GAS"
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "segmento": "Q2",
+      "tempo_a_ms": 93357,
+      "tempo_b_ms": 93003,
+      "tempo_a": "1:33.357",
+      "tempo_b": "1:33.003",
+      "delta_ms": 354,
+      "davanti": "GAS"
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "segmento": "Q2",
+      "tempo_a_ms": 90627,
+      "tempo_b_ms": 89874,
+      "tempo_a": "1:30.627",
+      "tempo_b": "1:29.874",
+      "delta_ms": 753,
+      "davanti": "GAS"
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "segmento": "Q3",
+      "tempo_a_ms": 88762,
+      "tempo_b_ms": 88810,
+      "tempo_a": "1:28.762",
+      "tempo_b": "1:28.810",
+      "delta_ms": -48,
+      "davanti": "COL"
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "segmento": "Q2",
+      "tempo_a_ms": 73857,
+      "tempo_b_ms": 74187,
+      "tempo_a": "1:13.857",
+      "tempo_b": "1:14.187",
+      "delta_ms": -330,
+      "davanti": "COL"
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "segmento": "Q2",
+      "tempo_a_ms": 73995,
+      "tempo_b_ms": 73762,
+      "tempo_a": "1:13.995",
+      "tempo_b": "1:13.762",
+      "delta_ms": 233,
+      "davanti": "GAS"
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "segmento": "Q2",
+      "tempo_a_ms": 76191,
+      "tempo_b_ms": 76261,
+      "tempo_a": "1:16.191",
+      "tempo_b": "1:16.261",
+      "delta_ms": -70,
+      "davanti": "COL"
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "segmento": "Q2",
+      "tempo_a_ms": 68171,
+      "tempo_b_ms": 67223,
+      "tempo_a": "1:08.171",
+      "tempo_b": "1:07.223",
+      "delta_ms": 948,
+      "davanti": "GAS"
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "segmento": "Q1",
+      "tempo_a_ms": 91321,
+      "tempo_b_ms": 90345,
+      "tempo_a": "1:31.321",
+      "tempo_b": "1:30.345",
+      "delta_ms": 976,
+      "davanti": "GAS"
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "segmento": "Q2",
+      "tempo_a_ms": 106392,
+      "tempo_b_ms": 106331,
+      "tempo_a": "1:46.392",
+      "tempo_b": "1:46.331",
+      "delta_ms": 61,
+      "davanti": "GAS"
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "segmento": "Q2",
+      "tempo_a_ms": 79027,
+      "tempo_b_ms": 78844,
+      "tempo_a": "1:19.027",
+      "tempo_b": "1:18.844",
+      "delta_ms": 183,
+      "davanti": "GAS"
+     }
+    ]
+   },
+   {
+    "constructorId": "aston-martin",
+    "team": "Aston Martin",
+    "piloti": [
+     {
+      "driverId": "fernando-alonso",
+      "sigla": "ALO",
+      "nome": "Fernando Alonso"
+     },
+     {
+      "driverId": "lance-stroll",
+      "sigla": "STR",
+      "nome": "Lance Stroll"
+     }
+    ],
+    "verso": "delta_ms = tempo(ALO) - tempo(STR); negativo = ALO piu' veloce",
+    "gare_del_duo": 11,
+    "n": 10,
+    "duelli": {
+     "ALO": 8,
+     "STR": 2
+    },
+    "pari": 0,
+    "delta_ms": {
+     "mediano": -347.5,
+     "medio": -375.3,
+     "iqr": [
+      -667.2,
+      -93.2
+     ],
+     "min": -999,
+     "max": 162
+    },
+    "per_segmento": {
+     "Q1": {
+      "n": 10,
+      "mediano_ms": -347.5
+     }
+    },
+    "segmenti_usati": {
+     "Q1": 10
+    },
+    "sessioni_cadute": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "motivo": "nessuna riga in qualifica per STR"
+     }
+    ],
+    "gare": [
+     {
+      "round": 2,
+      "gara": "Cina",
+      "segmento": "Q1",
+      "tempo_a_ms": 95203,
+      "tempo_b_ms": 95995,
+      "tempo_a": "1:35.203",
+      "tempo_b": "1:35.995",
+      "delta_ms": -792,
+      "davanti": "ALO"
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "segmento": "Q1",
+      "tempo_a_ms": 92646,
+      "tempo_b_ms": 92920,
+      "tempo_a": "1:32.646",
+      "tempo_b": "1:32.920",
+      "delta_ms": -274,
+      "davanti": "ALO"
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "segmento": "Q1",
+      "tempo_a_ms": 91098,
+      "tempo_b_ms": 91164,
+      "tempo_a": "1:31.098",
+      "tempo_b": "1:31.164",
+      "delta_ms": -66,
+      "davanti": "ALO"
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "segmento": "Q1",
+      "tempo_a_ms": 75196,
+      "tempo_b_ms": 76195,
+      "tempo_a": "1:15.196",
+      "tempo_b": "1:16.195",
+      "delta_ms": -999,
+      "davanti": "ALO"
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "segmento": "Q1",
+      "tempo_a_ms": 75349,
+      "tempo_b_ms": 76061,
+      "tempo_a": "1:15.349",
+      "tempo_b": "1:16.061",
+      "delta_ms": -712,
+      "davanti": "ALO"
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "segmento": "Q1",
+      "tempo_a_ms": 78815,
+      "tempo_b_ms": 78758,
+      "tempo_a": "1:18.815",
+      "tempo_b": "1:18.758",
+      "delta_ms": 57,
+      "davanti": "STR"
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "segmento": "Q1",
+      "tempo_a_ms": 69942,
+      "tempo_b_ms": 70363,
+      "tempo_a": "1:09.942",
+      "tempo_b": "1:10.363",
+      "delta_ms": -421,
+      "davanti": "ALO"
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "segmento": "Q1",
+      "tempo_a_ms": 93025,
+      "tempo_b_ms": 92863,
+      "tempo_a": "1:33.025",
+      "tempo_b": "1:32.863",
+      "delta_ms": 162,
+      "davanti": "STR"
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "segmento": "Q1",
+      "tempo_a_ms": 110002,
+      "tempo_b_ms": 110177,
+      "tempo_a": "1:50.002",
+      "tempo_b": "1:50.177",
+      "delta_ms": -175,
+      "davanti": "ALO"
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "segmento": "Q1",
+      "tempo_a_ms": 80126,
+      "tempo_b_ms": 80659,
+      "tempo_a": "1:20.126",
+      "tempo_b": "1:20.659",
+      "delta_ms": -533,
+      "davanti": "ALO"
+     }
+    ]
+   },
+   {
+    "constructorId": "audi",
+    "team": "Audi",
+    "piloti": [
+     {
+      "driverId": "gabriel-bortoleto",
+      "sigla": "BOR",
+      "nome": "Gabriel Bortoleto"
+     },
+     {
+      "driverId": "nico-hulkenberg",
+      "sigla": "HUL",
+      "nome": "Nico Hülkenberg"
+     }
+    ],
+    "verso": "delta_ms = tempo(BOR) - tempo(HUL); negativo = BOR piu' veloce",
+    "gare_del_duo": 11,
+    "n": 11,
+    "duelli": {
+     "BOR": 5,
+     "HUL": 6
+    },
+    "pari": 0,
+    "delta_ms": {
+     "mediano": 185,
+     "medio": 395.1,
+     "iqr": [
+      -357.5,
+      538.5
+     ],
+     "min": -615,
+     "max": 4092
+    },
+    "per_segmento": {
+     "Q1": {
+      "n": 2,
+      "mediano_ms": 2426.0
+     },
+     "Q2": {
+      "n": 9,
+      "mediano_ms": -82
+     }
+    },
+    "segmenti_usati": {
+     "Q1": 2,
+     "Q2": 9
+    },
+    "sessioni_cadute": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "segmento": "Q2",
+      "tempo_a_ms": 80221,
+      "tempo_b_ms": 80303,
+      "tempo_a": "1:20.221",
+      "tempo_b": "1:20.303",
+      "delta_ms": -82,
+      "davanti": "BOR"
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "segmento": "Q2",
+      "tempo_a_ms": 93965,
+      "tempo_b_ms": 93354,
+      "tempo_a": "1:33.965",
+      "tempo_b": "1:33.354",
+      "delta_ms": 611,
+      "davanti": "HUL"
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "segmento": "Q2",
+      "tempo_a_ms": 89990,
+      "tempo_b_ms": 90387,
+      "tempo_a": "1:29.990",
+      "tempo_b": "1:30.387",
+      "delta_ms": -397,
+      "davanti": "BOR"
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "segmento": "Q1",
+      "tempo_a_ms": 93737,
+      "tempo_b_ms": 89645,
+      "tempo_a": "1:33.737",
+      "tempo_b": "1:29.645",
+      "delta_ms": 4092,
+      "davanti": "HUL"
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "segmento": "Q2",
+      "tempo_a_ms": 74071,
+      "tempo_b_ms": 73886,
+      "tempo_a": "1:14.071",
+      "tempo_b": "1:13.886",
+      "delta_ms": 185,
+      "davanti": "HUL"
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "segmento": "Q1",
+      "tempo_a_ms": 74683,
+      "tempo_b_ms": 73923,
+      "tempo_a": "1:14.683",
+      "tempo_b": "1:13.923",
+      "delta_ms": 760,
+      "davanti": "HUL"
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "segmento": "Q2",
+      "tempo_a_ms": 76001,
+      "tempo_b_ms": 75768,
+      "tempo_a": "1:16.001",
+      "tempo_b": "1:15.768",
+      "delta_ms": 233,
+      "davanti": "HUL"
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "segmento": "Q2",
+      "tempo_a_ms": 67293,
+      "tempo_b_ms": 67611,
+      "tempo_a": "1:07.293",
+      "tempo_b": "1:07.611",
+      "delta_ms": -318,
+      "davanti": "BOR"
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "segmento": "Q2",
+      "tempo_a_ms": 89461,
+      "tempo_b_ms": 90076,
+      "tempo_a": "1:29.461",
+      "tempo_b": "1:30.076",
+      "delta_ms": -615,
+      "davanti": "BOR"
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "segmento": "Q2",
+      "tempo_a_ms": 106082,
+      "tempo_b_ms": 106671,
+      "tempo_a": "1:46.082",
+      "tempo_b": "1:46.671",
+      "delta_ms": -589,
+      "davanti": "BOR"
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "segmento": "Q2",
+      "tempo_a_ms": 79105,
+      "tempo_b_ms": 78639,
+      "tempo_a": "1:19.105",
+      "tempo_b": "1:18.639",
+      "delta_ms": 466,
+      "davanti": "HUL"
+     }
+    ]
+   },
+   {
+    "constructorId": "cadillac",
+    "team": "Cadillac",
+    "piloti": [
+     {
+      "driverId": "sergio-perez",
+      "sigla": "PER",
+      "nome": "Sergio Pérez"
+     },
+     {
+      "driverId": "valtteri-bottas",
+      "sigla": "BOT",
+      "nome": "Valtteri Bottas"
+     }
+    ],
+    "verso": "delta_ms = tempo(PER) - tempo(BOT); negativo = PER piu' veloce",
+    "gare_del_duo": 11,
+    "n": 11,
+    "duelli": {
+     "PER": 6,
+     "BOT": 5
+    },
+    "pari": 0,
+    "delta_ms": {
+     "mediano": -85,
+     "medio": 16.1,
+     "iqr": [
+      -374.0,
+      281.0
+     ],
+     "min": -843,
+     "max": 1470
+    },
+    "per_segmento": {
+     "Q1": {
+      "n": 11,
+      "mediano_ms": -85
+     }
+    },
+    "segmenti_usati": {
+     "Q1": 11
+    },
+    "sessioni_cadute": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "segmento": "Q1",
+      "tempo_a_ms": 82605,
+      "tempo_b_ms": 83244,
+      "tempo_a": "1:22.605",
+      "tempo_b": "1:23.244",
+      "delta_ms": -639,
+      "davanti": "PER"
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "segmento": "Q1",
+      "tempo_a_ms": 96906,
+      "tempo_b_ms": 95436,
+      "tempo_a": "1:36.906",
+      "tempo_b": "1:35.436",
+      "delta_ms": 1470,
+      "davanti": "BOT"
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "segmento": "Q1",
+      "tempo_a_ms": 92206,
+      "tempo_b_ms": 92330,
+      "tempo_a": "1:32.206",
+      "tempo_b": "1:32.330",
+      "delta_ms": -124,
+      "davanti": "PER"
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "segmento": "Q1",
+      "tempo_a_ms": 91967,
+      "tempo_b_ms": 91629,
+      "tempo_a": "1:31.967",
+      "tempo_b": "1:31.629",
+      "delta_ms": 338,
+      "davanti": "BOT"
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "segmento": "Q1",
+      "tempo_a_ms": 75429,
+      "tempo_b_ms": 76272,
+      "tempo_a": "1:15.429",
+      "tempo_b": "1:16.272",
+      "delta_ms": -843,
+      "davanti": "PER"
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "segmento": "Q1",
+      "tempo_a_ms": 74747,
+      "tempo_b_ms": 75283,
+      "tempo_a": "1:14.747",
+      "tempo_b": "1:15.283",
+      "delta_ms": -536,
+      "davanti": "PER"
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "segmento": "Q1",
+      "tempo_a_ms": 77545,
+      "tempo_b_ms": 77757,
+      "tempo_a": "1:17.545",
+      "tempo_b": "1:17.757",
+      "delta_ms": -212,
+      "davanti": "PER"
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "segmento": "Q1",
+      "tempo_a_ms": 68945,
+      "tempo_b_ms": 69030,
+      "tempo_a": "1:08.945",
+      "tempo_b": "1:09.030",
+      "delta_ms": -85,
+      "davanti": "PER"
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "segmento": "Q1",
+      "tempo_a_ms": 91451,
+      "tempo_b_ms": 91227,
+      "tempo_a": "1:31.451",
+      "tempo_b": "1:31.227",
+      "delta_ms": 224,
+      "davanti": "BOT"
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "segmento": "Q1",
+      "tempo_a_ms": 107971,
+      "tempo_b_ms": 107823,
+      "tempo_a": "1:47.971",
+      "tempo_b": "1:47.823",
+      "delta_ms": 148,
+      "davanti": "BOT"
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "segmento": "Q1",
+      "tempo_a_ms": 81322,
+      "tempo_b_ms": 80886,
+      "tempo_a": "1:21.322",
+      "tempo_b": "1:20.886",
+      "delta_ms": 436,
+      "davanti": "BOT"
+     }
+    ]
+   },
+   {
+    "constructorId": "ferrari",
+    "team": "Ferrari",
+    "piloti": [
+     {
+      "driverId": "charles-leclerc",
+      "sigla": "LEC",
+      "nome": "Charles Leclerc"
+     },
+     {
+      "driverId": "lewis-hamilton",
+      "sigla": "HAM",
+      "nome": "Lewis Hamilton"
+     }
+    ],
+    "verso": "delta_ms = tempo(LEC) - tempo(HAM); negativo = LEC piu' veloce",
+    "gare_del_duo": 11,
+    "n": 11,
+    "duelli": {
+     "LEC": 7,
+     "HAM": 4
+    },
+    "pari": 0,
+    "delta_ms": {
+     "mediano": -59,
+     "medio": -40.0,
+     "iqr": [
+      -156.5,
+      42.5
+     ],
+     "min": -176,
+     "max": 226
+    },
+    "per_segmento": {
+     "Q2": {
+      "n": 1,
+      "mediano_ms": -137
+     },
+     "Q3": {
+      "n": 10,
+      "mediano_ms": -30.5
+     }
+    },
+    "segmenti_usati": {
+     "Q2": 1,
+     "Q3": 10
+    },
+    "sessioni_cadute": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "segmento": "Q3",
+      "tempo_a_ms": 79327,
+      "tempo_b_ms": 79478,
+      "tempo_a": "1:19.327",
+      "tempo_b": "1:19.478",
+      "delta_ms": -151,
+      "davanti": "LEC"
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "segmento": "Q3",
+      "tempo_a_ms": 92428,
+      "tempo_b_ms": 92415,
+      "tempo_a": "1:32.428",
+      "tempo_b": "1:32.415",
+      "delta_ms": 13,
+      "davanti": "HAM"
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "segmento": "Q3",
+      "tempo_a_ms": 89405,
+      "tempo_b_ms": 89567,
+      "tempo_a": "1:29.405",
+      "tempo_b": "1:29.567",
+      "delta_ms": -162,
+      "davanti": "LEC"
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "segmento": "Q3",
+      "tempo_a_ms": 88143,
+      "tempo_b_ms": 88319,
+      "tempo_a": "1:28.143",
+      "tempo_b": "1:28.319",
+      "delta_ms": -176,
+      "davanti": "LEC"
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "segmento": "Q3",
+      "tempo_a_ms": 72976,
+      "tempo_b_ms": 72868,
+      "tempo_a": "1:12.976",
+      "tempo_b": "1:12.868",
+      "delta_ms": 108,
+      "davanti": "HAM"
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "segmento": "Q3",
+      "tempo_a_ms": 72351,
+      "tempo_b_ms": 72279,
+      "tempo_a": "1:12.351",
+      "tempo_b": "1:12.279",
+      "delta_ms": 72,
+      "davanti": "HAM"
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "segmento": "Q2",
+      "tempo_a_ms": 75281,
+      "tempo_b_ms": 75418,
+      "tempo_a": "1:15.281",
+      "tempo_b": "1:15.418",
+      "delta_ms": -137,
+      "davanti": "LEC"
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "segmento": "Q3",
+      "tempo_a_ms": 66349,
+      "tempo_b_ms": 66408,
+      "tempo_a": "1:06.349",
+      "tempo_b": "1:06.408",
+      "delta_ms": -59,
+      "davanti": "LEC"
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "segmento": "Q3",
+      "tempo_a_ms": 88286,
+      "tempo_b_ms": 88458,
+      "tempo_a": "1:28.286",
+      "tempo_b": "1:28.458",
+      "delta_ms": -172,
+      "davanti": "LEC"
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "segmento": "Q3",
+      "tempo_a_ms": 104893,
+      "tempo_b_ms": 104895,
+      "tempo_a": "1:44.893",
+      "tempo_b": "1:44.895",
+      "delta_ms": -2,
+      "davanti": "LEC"
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "segmento": "Q3",
+      "tempo_a_ms": 77445,
+      "tempo_b_ms": 77219,
+      "tempo_a": "1:17.445",
+      "tempo_b": "1:17.219",
+      "delta_ms": 226,
+      "davanti": "HAM"
+     }
+    ]
+   },
+   {
+    "constructorId": "haas",
+    "team": "Haas",
+    "piloti": [
+     {
+      "driverId": "esteban-ocon",
+      "sigla": "OCO",
+      "nome": "Esteban Ocon"
+     },
+     {
+      "driverId": "oliver-bearman",
+      "sigla": "BEA",
+      "nome": "Oliver Bearman"
+     }
+    ],
+    "verso": "delta_ms = tempo(OCO) - tempo(BEA); negativo = OCO piu' veloce",
+    "gare_del_duo": 11,
+    "n": 11,
+    "duelli": {
+     "OCO": 3,
+     "BEA": 8
+    },
+    "pari": 0,
+    "delta_ms": {
+     "mediano": 205,
+     "medio": 202.4,
+     "iqr": [
+      9.0,
+      368.5
+     ],
+     "min": -223,
+     "max": 688
+    },
+    "per_segmento": {
+     "Q1": {
+      "n": 7,
+      "mediano_ms": 110
+     },
+     "Q2": {
+      "n": 4,
+      "mediano_ms": 249.5
+     }
+    },
+    "segmenti_usati": {
+     "Q1": 7,
+     "Q2": 4
+    },
+    "sessioni_cadute": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "segmento": "Q2",
+      "tempo_a_ms": 80491,
+      "tempo_b_ms": 80311,
+      "tempo_a": "1:20.491",
+      "tempo_b": "1:20.311",
+      "delta_ms": 180,
+      "davanti": "BEA"
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "segmento": "Q2",
+      "tempo_a_ms": 93538,
+      "tempo_b_ms": 93197,
+      "tempo_a": "1:33.538",
+      "tempo_b": "1:33.197",
+      "delta_ms": 341,
+      "davanti": "BEA"
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "segmento": "Q1",
+      "tempo_a_ms": 90915,
+      "tempo_b_ms": 91090,
+      "tempo_a": "1:30.915",
+      "tempo_b": "1:31.090",
+      "delta_ms": -175,
+      "davanti": "OCO"
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "segmento": "Q2",
+      "tempo_a_ms": 89772,
+      "tempo_b_ms": 89567,
+      "tempo_a": "1:29.772",
+      "tempo_b": "1:29.567",
+      "delta_ms": 205,
+      "davanti": "BEA"
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "segmento": "Q1",
+      "tempo_a_ms": 74845,
+      "tempo_b_ms": 74449,
+      "tempo_a": "1:14.845",
+      "tempo_b": "1:14.449",
+      "delta_ms": 396,
+      "davanti": "BEA"
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "segmento": "Q1",
+      "tempo_a_ms": 74722,
+      "tempo_b_ms": 74814,
+      "tempo_a": "1:14.722",
+      "tempo_b": "1:14.814",
+      "delta_ms": -92,
+      "davanti": "OCO"
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "segmento": "Q1",
+      "tempo_a_ms": 77073,
+      "tempo_b_ms": 76571,
+      "tempo_a": "1:17.073",
+      "tempo_b": "1:16.571",
+      "delta_ms": 502,
+      "davanti": "BEA"
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "segmento": "Q2",
+      "tempo_a_ms": 67817,
+      "tempo_b_ms": 67523,
+      "tempo_a": "1:07.817",
+      "tempo_b": "1:07.523",
+      "delta_ms": 294,
+      "davanti": "BEA"
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "segmento": "Q1",
+      "tempo_a_ms": 90680,
+      "tempo_b_ms": 90570,
+      "tempo_a": "1:30.680",
+      "tempo_b": "1:30.570",
+      "delta_ms": 110,
+      "davanti": "BEA"
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "segmento": "Q1",
+      "tempo_a_ms": 107801,
+      "tempo_b_ms": 107113,
+      "tempo_a": "1:47.801",
+      "tempo_b": "1:47.113",
+      "delta_ms": 688,
+      "davanti": "BEA"
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "segmento": "Q1",
+      "tempo_a_ms": 80010,
+      "tempo_b_ms": 80233,
+      "tempo_a": "1:20.010",
+      "tempo_b": "1:20.233",
+      "delta_ms": -223,
+      "davanti": "OCO"
+     }
+    ]
+   },
+   {
+    "constructorId": "mclaren",
+    "team": "McLaren",
+    "piloti": [
+     {
+      "driverId": "lando-norris",
+      "sigla": "NOR",
+      "nome": "Lando Norris"
+     },
+     {
+      "driverId": "oscar-piastri",
+      "sigla": "PIA",
+      "nome": "Oscar Piastri"
+     }
+    ],
+    "verso": "delta_ms = tempo(NOR) - tempo(PIA); negativo = NOR piu' veloce",
+    "gare_del_duo": 11,
+    "n": 11,
+    "duelli": {
+     "NOR": 7,
+     "PIA": 4
+    },
+    "pari": 0,
+    "delta_ms": {
+     "mediano": -52,
+     "medio": -67.5,
+     "iqr": [
+      -185.0,
+      76.5
+     ],
+     "min": -477,
+     "max": 277
+    },
+    "per_segmento": {
+     "Q3": {
+      "n": 11,
+      "mediano_ms": -52
+     }
+    },
+    "segmenti_usati": {
+     "Q3": 11
+    },
+    "sessioni_cadute": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "segmento": "Q3",
+      "tempo_a_ms": 79475,
+      "tempo_b_ms": 79380,
+      "tempo_a": "1:19.475",
+      "tempo_b": "1:19.380",
+      "delta_ms": 95,
+      "davanti": "PIA"
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "segmento": "Q3",
+      "tempo_a_ms": 92608,
+      "tempo_b_ms": 92550,
+      "tempo_a": "1:32.608",
+      "tempo_b": "1:32.550",
+      "delta_ms": 58,
+      "davanti": "PIA"
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "segmento": "Q3",
+      "tempo_a_ms": 89409,
+      "tempo_b_ms": 89132,
+      "tempo_a": "1:29.409",
+      "tempo_b": "1:29.132",
+      "delta_ms": 277,
+      "davanti": "PIA"
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "segmento": "Q3",
+      "tempo_a_ms": 88183,
+      "tempo_b_ms": 88500,
+      "tempo_a": "1:28.183",
+      "tempo_b": "1:28.500",
+      "delta_ms": -317,
+      "davanti": "NOR"
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "segmento": "Q3",
+      "tempo_a_ms": 72729,
+      "tempo_b_ms": 72781,
+      "tempo_a": "1:12.729",
+      "tempo_b": "1:12.781",
+      "delta_ms": -52,
+      "davanti": "NOR"
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "segmento": "Q3",
+      "tempo_a_ms": 72765,
+      "tempo_b_ms": 72624,
+      "tempo_a": "1:12.765",
+      "tempo_b": "1:12.624",
+      "delta_ms": 141,
+      "davanti": "PIA"
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "segmento": "Q3",
+      "tempo_a_ms": 75001,
+      "tempo_b_ms": 75090,
+      "tempo_a": "1:15.001",
+      "tempo_b": "1:15.090",
+      "delta_ms": -89,
+      "davanti": "NOR"
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "segmento": "Q3",
+      "tempo_a_ms": 66502,
+      "tempo_b_ms": 66511,
+      "tempo_a": "1:06.502",
+      "tempo_b": "1:06.511",
+      "delta_ms": -9,
+      "davanti": "NOR"
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "segmento": "Q3",
+      "tempo_a_ms": 88877,
+      "tempo_b_ms": 89032,
+      "tempo_a": "1:28.877",
+      "tempo_b": "1:29.032",
+      "delta_ms": -155,
+      "davanti": "NOR"
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "segmento": "Q3",
+      "tempo_a_ms": 104801,
+      "tempo_b_ms": 105016,
+      "tempo_a": "1:44.801",
+      "tempo_b": "1:45.016",
+      "delta_ms": -215,
+      "davanti": "NOR"
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "segmento": "Q3",
+      "tempo_a_ms": 77207,
+      "tempo_b_ms": 77684,
+      "tempo_a": "1:17.207",
+      "tempo_b": "1:17.684",
+      "delta_ms": -477,
+      "davanti": "NOR"
+     }
+    ]
+   },
+   {
+    "constructorId": "mercedes",
+    "team": "Mercedes",
+    "piloti": [
+     {
+      "driverId": "george-russell",
+      "sigla": "RUS",
+      "nome": "George Russell"
+     },
+     {
+      "driverId": "kimi-antonelli",
+      "sigla": "ANT",
+      "nome": "Kimi Antonelli"
+     }
+    ],
+    "verso": "delta_ms = tempo(RUS) - tempo(ANT); negativo = RUS piu' veloce",
+    "gare_del_duo": 11,
+    "n": 11,
+    "duelli": {
+     "RUS": 4,
+     "ANT": 7
+    },
+    "pari": 0,
+    "delta_ms": {
+     "mediano": 281,
+     "medio": 135.5,
+     "iqr": [
+      -180.5,
+      382.0
+     ],
+     "min": -319,
+     "max": 508
+    },
+    "per_segmento": {
+     "Q3": {
+      "n": 11,
+      "mediano_ms": 281
+     }
+    },
+    "segmenti_usati": {
+     "Q3": 11
+    },
+    "sessioni_cadute": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "segmento": "Q3",
+      "tempo_a_ms": 78518,
+      "tempo_b_ms": 78811,
+      "tempo_a": "1:18.518",
+      "tempo_b": "1:18.811",
+      "delta_ms": -293,
+      "davanti": "RUS"
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "segmento": "Q3",
+      "tempo_a_ms": 92286,
+      "tempo_b_ms": 92064,
+      "tempo_a": "1:32.286",
+      "tempo_b": "1:32.064",
+      "delta_ms": 222,
+      "davanti": "ANT"
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "segmento": "Q3",
+      "tempo_a_ms": 89076,
+      "tempo_b_ms": 88778,
+      "tempo_a": "1:29.076",
+      "tempo_b": "1:28.778",
+      "delta_ms": 298,
+      "davanti": "ANT"
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "segmento": "Q3",
+      "tempo_a_ms": 88197,
+      "tempo_b_ms": 87798,
+      "tempo_a": "1:28.197",
+      "tempo_b": "1:27.798",
+      "delta_ms": 399,
+      "davanti": "ANT"
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "segmento": "Q3",
+      "tempo_a_ms": 72578,
+      "tempo_b_ms": 72646,
+      "tempo_a": "1:12.578",
+      "tempo_b": "1:12.646",
+      "delta_ms": -68,
+      "davanti": "RUS"
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "segmento": "Q3",
+      "tempo_a_ms": 72445,
+      "tempo_b_ms": 72051,
+      "tempo_a": "1:12.445",
+      "tempo_b": "1:12.051",
+      "delta_ms": 394,
+      "davanti": "ANT"
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "segmento": "Q3",
+      "tempo_a_ms": 74679,
+      "tempo_b_ms": 74998,
+      "tempo_a": "1:14.679",
+      "tempo_b": "1:14.998",
+      "delta_ms": -319,
+      "davanti": "RUS"
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "segmento": "Q3",
+      "tempo_a_ms": 66113,
+      "tempo_b_ms": 66414,
+      "tempo_a": "1:06.113",
+      "tempo_b": "1:06.414",
+      "delta_ms": -301,
+      "davanti": "RUS"
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "segmento": "Q3",
+      "tempo_a_ms": 88481,
+      "tempo_b_ms": 88111,
+      "tempo_a": "1:28.481",
+      "tempo_b": "1:28.111",
+      "delta_ms": 370,
+      "davanti": "ANT"
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "segmento": "Q3",
+      "tempo_a_ms": 104869,
+      "tempo_b_ms": 104361,
+      "tempo_a": "1:44.869",
+      "tempo_b": "1:44.361",
+      "delta_ms": 508,
+      "davanti": "ANT"
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "segmento": "Q3",
+      "tempo_a_ms": 77760,
+      "tempo_b_ms": 77479,
+      "tempo_a": "1:17.760",
+      "tempo_b": "1:17.479",
+      "delta_ms": 281,
+      "davanti": "ANT"
+     }
+    ]
+   },
+   {
+    "constructorId": "racing-bulls",
+    "team": "Racing Bulls",
+    "piloti": [
+     {
+      "driverId": "arvid-lindblad",
+      "sigla": "LIN",
+      "nome": "Arvid Lindblad"
+     },
+     {
+      "driverId": "liam-lawson",
+      "sigla": "LAW",
+      "nome": "Liam Lawson"
+     }
+    ],
+    "verso": "delta_ms = tempo(LIN) - tempo(LAW); negativo = LIN piu' veloce",
+    "gare_del_duo": 11,
+    "n": 11,
+    "duelli": {
+     "LIN": 5,
+     "LAW": 6
+    },
+    "pari": 0,
+    "delta_ms": {
+     "mediano": 19,
+     "medio": 77.5,
+     "iqr": [
+      -395.5,
+      396.5
+     ],
+     "min": -491,
+     "max": 1253
+    },
+    "per_segmento": {
+     "Q1": {
+      "n": 1,
+      "mediano_ms": 538
+     },
+     "Q2": {
+      "n": 7,
+      "mediano_ms": -349
+     },
+     "Q3": {
+      "n": 3,
+      "mediano_ms": 52
+     }
+    },
+    "segmenti_usati": {
+     "Q1": 1,
+     "Q2": 7,
+     "Q3": 3
+    },
+    "sessioni_cadute": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "segmento": "Q3",
+      "tempo_a_ms": 81247,
+      "tempo_b_ms": 79994,
+      "tempo_a": "1:21.247",
+      "tempo_b": "1:19.994",
+      "delta_ms": 1253,
+      "davanti": "LAW"
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "segmento": "Q2",
+      "tempo_a_ms": 93784,
+      "tempo_b_ms": 93765,
+      "tempo_a": "1:33.784",
+      "tempo_b": "1:33.765",
+      "delta_ms": 19,
+      "davanti": "LAW"
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "segmento": "Q2",
+      "tempo_a_ms": 90109,
+      "tempo_b_ms": 90495,
+      "tempo_a": "1:30.109",
+      "tempo_b": "1:30.495",
+      "delta_ms": -386,
+      "davanti": "LIN"
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "segmento": "Q1",
+      "tempo_a_ms": 90133,
+      "tempo_b_ms": 89595,
+      "tempo_a": "1:30.133",
+      "tempo_b": "1:29.595",
+      "delta_ms": 538,
+      "davanti": "LAW"
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "segmento": "Q2",
+      "tempo_a_ms": 73548,
+      "tempo_b_ms": 73897,
+      "tempo_a": "1:13.548",
+      "tempo_b": "1:13.897",
+      "delta_ms": -349,
+      "davanti": "LIN"
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "segmento": "Q2",
+      "tempo_a_ms": 74248,
+      "tempo_b_ms": 73471,
+      "tempo_a": "1:14.248",
+      "tempo_b": "1:13.471",
+      "delta_ms": 777,
+      "davanti": "LAW"
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "segmento": "Q2",
+      "tempo_a_ms": 75840,
+      "tempo_b_ms": 75585,
+      "tempo_a": "1:15.840",
+      "tempo_b": "1:15.585",
+      "delta_ms": 255,
+      "davanti": "LAW"
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "segmento": "Q3",
+      "tempo_a_ms": 67007,
+      "tempo_b_ms": 66955,
+      "tempo_a": "1:07.007",
+      "tempo_b": "1:06.955",
+      "delta_ms": 52,
+      "davanti": "LAW"
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "segmento": "Q3",
+      "tempo_a_ms": 89305,
+      "tempo_b_ms": 89716,
+      "tempo_a": "1:29.305",
+      "tempo_b": "1:29.716",
+      "delta_ms": -411,
+      "davanti": "LIN"
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "segmento": "Q2",
+      "tempo_a_ms": 105629,
+      "tempo_b_ms": 106120,
+      "tempo_a": "1:45.629",
+      "tempo_b": "1:46.120",
+      "delta_ms": -491,
+      "davanti": "LIN"
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "segmento": "Q2",
+      "tempo_a_ms": 78360,
+      "tempo_b_ms": 78765,
+      "tempo_a": "1:18.360",
+      "tempo_b": "1:18.765",
+      "delta_ms": -405,
+      "davanti": "LIN"
+     }
+    ]
+   },
+   {
+    "constructorId": "red-bull",
+    "team": "Red Bull",
+    "piloti": [
+     {
+      "driverId": "isack-hadjar",
+      "sigla": "HAD",
+      "nome": "Isack Hadjar"
+     },
+     {
+      "driverId": "max-verstappen",
+      "sigla": "VER",
+      "nome": "Max Verstappen"
+     }
+    ],
+    "verso": "delta_ms = tempo(HAD) - tempo(VER); negativo = HAD piu' veloce",
+    "gare_del_duo": 11,
+    "n": 10,
+    "duelli": {
+     "HAD": 2,
+     "VER": 8
+    },
+    "pari": 0,
+    "delta_ms": {
+     "mediano": 125.0,
+     "medio": 158.5,
+     "iqr": [
+      35.0,
+      214.8
+     ],
+     "min": -158,
+     "max": 825
+    },
+    "per_segmento": {
+     "Q2": {
+      "n": 2,
+      "mediano_ms": 38.0
+     },
+     "Q3": {
+      "n": 8,
+      "mediano_ms": 125.0
+     }
+    },
+    "segmenti_usati": {
+     "Q2": 2,
+     "Q3": 8
+    },
+    "sessioni_cadute": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "motivo": "nessuna riga in qualifica per VER"
+     }
+    ],
+    "gare": [
+     {
+      "round": 2,
+      "gara": "Cina",
+      "segmento": "Q3",
+      "tempo_a_ms": 93121,
+      "tempo_b_ms": 93002,
+      "tempo_a": "1:33.121",
+      "tempo_b": "1:33.002",
+      "delta_ms": 119,
+      "davanti": "VER"
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "segmento": "Q2",
+      "tempo_a_ms": 90104,
+      "tempo_b_ms": 90262,
+      "tempo_a": "1:30.104",
+      "tempo_b": "1:30.262",
+      "delta_ms": -158,
+      "davanti": "HAD"
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "segmento": "Q3",
+      "tempo_a_ms": 88789,
+      "tempo_b_ms": 87964,
+      "tempo_a": "1:28.789",
+      "tempo_b": "1:27.964",
+      "delta_ms": 825,
+      "davanti": "VER"
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "segmento": "Q3",
+      "tempo_a_ms": 72935,
+      "tempo_b_ms": 72907,
+      "tempo_a": "1:12.935",
+      "tempo_b": "1:12.907",
+      "delta_ms": 28,
+      "davanti": "VER"
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "segmento": "Q3",
+      "tempo_a_ms": 72434,
+      "tempo_b_ms": 72094,
+      "tempo_a": "1:12.434",
+      "tempo_b": "1:12.094",
+      "delta_ms": 340,
+      "davanti": "VER"
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "segmento": "Q3",
+      "tempo_a_ms": 75077,
+      "tempo_b_ms": 75021,
+      "tempo_a": "1:15.077",
+      "tempo_b": "1:15.021",
+      "delta_ms": 56,
+      "davanti": "VER"
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "segmento": "Q3",
+      "tempo_a_ms": 66632,
+      "tempo_b_ms": 66475,
+      "tempo_a": "1:06.632",
+      "tempo_b": "1:06.475",
+      "delta_ms": 157,
+      "davanti": "VER"
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "segmento": "Q3",
+      "tempo_a_ms": 88746,
+      "tempo_b_ms": 88893,
+      "tempo_a": "1:28.746",
+      "tempo_b": "1:28.893",
+      "delta_ms": -147,
+      "davanti": "HAD"
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "segmento": "Q2",
+      "tempo_a_ms": 105823,
+      "tempo_b_ms": 105589,
+      "tempo_a": "1:45.823",
+      "tempo_b": "1:45.589",
+      "delta_ms": 234,
+      "davanti": "VER"
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "segmento": "Q3",
+      "tempo_a_ms": 77856,
+      "tempo_b_ms": 77725,
+      "tempo_a": "1:17.856",
+      "tempo_b": "1:17.725",
+      "delta_ms": 131,
+      "davanti": "VER"
+     }
+    ]
+   },
+   {
+    "constructorId": "williams",
+    "team": "Williams",
+    "piloti": [
+     {
+      "driverId": "alexander-albon",
+      "sigla": "ALB",
+      "nome": "Alexander Albon"
+     },
+     {
+      "driverId": "carlos-sainz-jr",
+      "sigla": "SAI",
+      "nome": "Carlos Sainz Jr."
+     }
+    ],
+    "verso": "delta_ms = tempo(ALB) - tempo(SAI); negativo = ALB piu' veloce",
+    "gare_del_duo": 11,
+    "n": 10,
+    "duelli": {
+     "ALB": 1,
+     "SAI": 9
+    },
+    "pari": 0,
+    "delta_ms": {
+     "mediano": 317.5,
+     "medio": 313.6,
+     "iqr": [
+      70.2,
+      521.0
+     ],
+     "min": -28,
+     "max": 718
+    },
+    "per_segmento": {
+     "Q1": {
+      "n": 7,
+      "mediano_ms": 257
+     },
+     "Q2": {
+      "n": 3,
+      "mediano_ms": 378
+     }
+    },
+    "segmenti_usati": {
+     "Q1": 7,
+     "Q2": 3
+    },
+    "sessioni_cadute": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "motivo": "nessuna riga in qualifica per SAI"
+     }
+    ],
+    "gare": [
+     {
+      "round": 2,
+      "gara": "Cina",
+      "segmento": "Q1",
+      "tempo_a_ms": 94772,
+      "tempo_b_ms": 94317,
+      "tempo_a": "1:34.772",
+      "tempo_b": "1:34.317",
+      "delta_ms": 455,
+      "davanti": "SAI"
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "segmento": "Q1",
+      "tempo_a_ms": 91088,
+      "tempo_b_ms": 90927,
+      "tempo_a": "1:31.088",
+      "tempo_b": "1:30.927",
+      "delta_ms": 161,
+      "davanti": "SAI"
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "segmento": "Q2",
+      "tempo_a_ms": 89946,
+      "tempo_b_ms": 89568,
+      "tempo_a": "1:29.946",
+      "tempo_b": "1:29.568",
+      "delta_ms": 378,
+      "davanti": "SAI"
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "segmento": "Q1",
+      "tempo_a_ms": 74851,
+      "tempo_b_ms": 74276,
+      "tempo_a": "1:14.851",
+      "tempo_b": "1:14.276",
+      "delta_ms": 575,
+      "davanti": "SAI"
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "segmento": "Q2",
+      "tempo_a_ms": 73787,
+      "tempo_b_ms": 73815,
+      "tempo_a": "1:13.787",
+      "tempo_b": "1:13.815",
+      "delta_ms": -28,
+      "davanti": "ALB"
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "segmento": "Q1",
+      "tempo_a_ms": 77424,
+      "tempo_b_ms": 76881,
+      "tempo_a": "1:17.424",
+      "tempo_b": "1:16.881",
+      "delta_ms": 543,
+      "davanti": "SAI"
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "segmento": "Q1",
+      "tempo_a_ms": 68509,
+      "tempo_b_ms": 68252,
+      "tempo_a": "1:08.509",
+      "tempo_b": "1:08.252",
+      "delta_ms": 257,
+      "davanti": "SAI"
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "segmento": "Q2",
+      "tempo_a_ms": 91341,
+      "tempo_b_ms": 90623,
+      "tempo_a": "1:31.341",
+      "tempo_b": "1:30.623",
+      "delta_ms": 718,
+      "davanti": "SAI"
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "segmento": "Q1",
+      "tempo_a_ms": 107120,
+      "tempo_b_ms": 107080,
+      "tempo_a": "1:47.120",
+      "tempo_b": "1:47.080",
+      "delta_ms": 40,
+      "davanti": "SAI"
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "segmento": "Q1",
+      "tempo_a_ms": 80658,
+      "tempo_b_ms": 80621,
+      "tempo_a": "1:20.658",
+      "tempo_b": "1:20.621",
+      "delta_ms": 37,
+      "davanti": "SAI"
+     }
+    ]
+   }
+  ]
+ },
+ "gara": {
+  "regola": {
+   "a_tutte_le_gare": "chi e' arrivato davanti nella classifica FIA; il ritiro conta come sconfitta",
+   "b_entrambi_classificati": "solo le gare in cui entrambi hanno un arrivo classificato (campo `classificato` degli ufficiali)"
+  },
+  "bias_dichiarato": "il filtro «solo classificati» toglie anche gli incidenti CAUSATI dal pilota: ripulisce a favore di chi sbaglia. Si dichiara, non si elimina — per questo le colonne restano due.",
+  "coppie": [
+   {
+    "constructorId": "alpine",
+    "team": "Alpine",
+    "piloti": [
+     {
+      "driverId": "franco-colapinto",
+      "sigla": "COL",
+      "nome": "Franco Colapinto"
+     },
+     {
+      "driverId": "pierre-gasly",
+      "sigla": "GAS",
+      "nome": "Pierre Gasly"
+     }
+    ],
+    "gare_del_duo": 11,
+    "gare_con_risultato": 11,
+    "tutte_le_gare": {
+     "n": 11,
+     "duelli": {
+      "COL": 4,
+      "GAS": 7
+     },
+     "entrambi_non_classificati": 0
+    },
+    "entrambi_classificati": {
+     "n": 10,
+     "duelli": {
+      "COL": 3,
+      "GAS": 7
+     }
+    },
+    "cadute_prima_di_a": [],
+    "cadute_fra_a_e_b": [
+     {
+      "round": 4,
+      "gara": "Miami",
+      "motivo": "non classificato: GAS Retired"
+     }
+    ],
+    "divergenze_f1db_vs_ufficiali": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "pos_a": 14,
+      "pos_b": 10,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "GAS",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "pos_a": 10,
+      "pos_b": 6,
+      "stato_a": "Lapped",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "GAS",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "pos_a": 16,
+      "pos_b": 7,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "GAS",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "pos_a": 7,
+      "pos_b": 21,
+      "stato_a": "Finished",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "COL",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "pos_a": 6,
+      "pos_b": 8,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "COL",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "pos_a": 14,
+      "pos_b": 3,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "GAS",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "pos_a": 10,
+      "pos_b": 7,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "GAS",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "pos_a": 15,
+      "pos_b": 13,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "GAS",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "pos_a": 9,
+      "pos_b": 10,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "COL",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "pos_a": 10,
+      "pos_b": 11,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "COL",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "pos_a": 15,
+      "pos_b": 12,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "GAS",
+      "in_entrambi_classificati": true
+     }
+    ]
+   },
+   {
+    "constructorId": "aston-martin",
+    "team": "Aston Martin",
+    "piloti": [
+     {
+      "driverId": "fernando-alonso",
+      "sigla": "ALO",
+      "nome": "Fernando Alonso"
+     },
+     {
+      "driverId": "lance-stroll",
+      "sigla": "STR",
+      "nome": "Lance Stroll"
+     }
+    ],
+    "gare_del_duo": 11,
+    "gare_con_risultato": 11,
+    "tutte_le_gare": {
+     "n": 11,
+     "duelli": {
+      "ALO": 8,
+      "STR": 3
+     },
+     "entrambi_non_classificati": 3
+    },
+    "entrambi_classificati": {
+     "n": 3,
+     "duelli": {
+      "ALO": 2,
+      "STR": 1
+     }
+    },
+    "cadute_prima_di_a": [],
+    "cadute_fra_a_e_b": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "motivo": "non classificato: ALO Retired; STR Lapped"
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "motivo": "non classificato: ALO Retired; STR Retired"
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "motivo": "non classificato: STR Retired"
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "motivo": "non classificato: ALO Retired"
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "motivo": "non classificato: STR Retired"
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "motivo": "non classificato: ALO Retired; STR Retired"
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "motivo": "non classificato: STR Retired"
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "motivo": "non classificato: STR Retired"
+     }
+    ],
+    "divergenze_f1db_vs_ufficiali": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "pos_a": 18,
+      "pos_b": 17,
+      "stato_a": "Retired",
+      "stato_b": "Lapped",
+      "classificato_a": false,
+      "classificato_b": false,
+      "davanti": "STR",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "pos_a": 17,
+      "pos_b": 18,
+      "stato_a": "Retired",
+      "stato_b": "Retired",
+      "classificato_a": false,
+      "classificato_b": false,
+      "davanti": "ALO",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "pos_a": 18,
+      "pos_b": 21,
+      "stato_a": "Lapped",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "ALO",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "pos_a": 15,
+      "pos_b": 17,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "ALO",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "pos_a": 20,
+      "pos_b": 15,
+      "stato_a": "Retired",
+      "stato_b": "Lapped",
+      "classificato_a": false,
+      "classificato_b": true,
+      "davanti": "STR",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "pos_a": 10,
+      "pos_b": 18,
+      "stato_a": "Finished",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "ALO",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "pos_a": 19,
+      "pos_b": 22,
+      "stato_a": "Retired",
+      "stato_b": "Retired",
+      "classificato_a": false,
+      "classificato_b": false,
+      "davanti": "ALO",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "pos_a": 18,
+      "pos_b": 19,
+      "stato_a": "Lapped",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "ALO",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "pos_a": 18,
+      "pos_b": 19,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "ALO",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "pos_a": 19,
+      "pos_b": 20,
+      "stato_a": "Lapped",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "ALO",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "pos_a": 14,
+      "pos_b": 13,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "STR",
+      "in_entrambi_classificati": true
+     }
+    ]
+   },
+   {
+    "constructorId": "audi",
+    "team": "Audi",
+    "piloti": [
+     {
+      "driverId": "gabriel-bortoleto",
+      "sigla": "BOR",
+      "nome": "Gabriel Bortoleto"
+     },
+     {
+      "driverId": "nico-hulkenberg",
+      "sigla": "HUL",
+      "nome": "Nico Hülkenberg"
+     }
+    ],
+    "gare_del_duo": 11,
+    "gare_con_risultato": 11,
+    "tutte_le_gare": {
+     "n": 11,
+     "duelli": {
+      "BOR": 7,
+      "HUL": 4
+     },
+     "entrambi_non_classificati": 0
+    },
+    "entrambi_classificati": {
+     "n": 6,
+     "duelli": {
+      "BOR": 3,
+      "HUL": 3
+     }
+    },
+    "cadute_prima_di_a": [],
+    "cadute_fra_a_e_b": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "motivo": "non classificato: HUL Did not start"
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "motivo": "non classificato: BOR Did not start"
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "motivo": "non classificato: HUL Retired"
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "motivo": "non classificato: HUL Retired"
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "motivo": "non classificato: HUL Retired"
+     }
+    ],
+    "divergenze_f1db_vs_ufficiali": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "pos_a": 9,
+      "pos_b": 22,
+      "stato_a": "Lapped",
+      "stato_b": "Did not start",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "BOR",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "pos_a": 21,
+      "pos_b": 11,
+      "stato_a": "Did not start",
+      "stato_b": "Lapped",
+      "classificato_a": false,
+      "classificato_b": true,
+      "davanti": "HUL",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "pos_a": 13,
+      "pos_b": 11,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "HUL",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "pos_a": 12,
+      "pos_b": 19,
+      "stato_a": "Lapped",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "BOR",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "pos_a": 13,
+      "pos_b": 12,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "HUL",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "pos_a": 11,
+      "pos_b": 13,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "BOR",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "pos_a": 11,
+      "pos_b": 20,
+      "stato_a": "Lapped",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "BOR",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "pos_a": 11,
+      "pos_b": 12,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "BOR",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "pos_a": 8,
+      "pos_b": 22,
+      "stato_a": "Finished",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "BOR",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "pos_a": 8,
+      "pos_b": 13,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "BOR",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "pos_a": 11,
+      "pos_b": 9,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "HUL",
+      "in_entrambi_classificati": true
+     }
+    ]
+   },
+   {
+    "constructorId": "cadillac",
+    "team": "Cadillac",
+    "piloti": [
+     {
+      "driverId": "sergio-perez",
+      "sigla": "PER",
+      "nome": "Sergio Pérez"
+     },
+     {
+      "driverId": "valtteri-bottas",
+      "sigla": "BOT",
+      "nome": "Valtteri Bottas"
+     }
+    ],
+    "gare_del_duo": 11,
+    "gare_con_risultato": 11,
+    "tutte_le_gare": {
+     "n": 11,
+     "duelli": {
+      "PER": 8,
+      "BOT": 3
+     },
+     "entrambi_non_classificati": 2
+    },
+    "entrambi_classificati": {
+     "n": 4,
+     "duelli": {
+      "PER": 3,
+      "BOT": 1
+     }
+    },
+    "cadute_prima_di_a": [],
+    "cadute_fra_a_e_b": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "motivo": "non classificato: BOT Retired"
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "motivo": "non classificato: PER Retired"
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "motivo": "non classificato: BOT Retired"
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "motivo": "non classificato: BOT Retired"
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "motivo": "non classificato: PER Retired; BOT Retired"
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "motivo": "non classificato: PER Retired"
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "motivo": "non classificato: PER Retired; BOT Retired"
+     }
+    ],
+    "divergenze_f1db_vs_ufficiali": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "pos_a": 16,
+      "pos_b": 19,
+      "stato_a": "Lapped",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "PER",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "pos_a": 15,
+      "pos_b": 13,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "BOT",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "pos_a": 17,
+      "pos_b": 19,
+      "stato_a": "Finished",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "PER",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "pos_a": 16,
+      "pos_b": 18,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "PER",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "pos_a": 17,
+      "pos_b": 16,
+      "stato_a": "Retired",
+      "stato_b": "Lapped",
+      "classificato_a": false,
+      "classificato_b": true,
+      "davanti": "BOT",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "pos_a": 15,
+      "pos_b": 21,
+      "stato_a": "Finished",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "PER",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "pos_a": 14,
+      "pos_b": 21,
+      "stato_a": "Lapped",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "PER",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "pos_a": 21,
+      "pos_b": 22,
+      "stato_a": "Retired",
+      "stato_b": "Retired",
+      "classificato_a": false,
+      "classificato_b": false,
+      "davanti": "PER",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "pos_a": 14,
+      "pos_b": 16,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "PER",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "pos_a": 21,
+      "pos_b": 18,
+      "stato_a": "Retired",
+      "stato_b": "Lapped",
+      "classificato_a": false,
+      "classificato_b": true,
+      "davanti": "BOT",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "pos_a": 21,
+      "pos_b": 22,
+      "stato_a": "Retired",
+      "stato_b": "Retired",
+      "classificato_a": false,
+      "classificato_b": false,
+      "davanti": "PER",
+      "in_entrambi_classificati": false
+     }
+    ]
+   },
+   {
+    "constructorId": "ferrari",
+    "team": "Ferrari",
+    "piloti": [
+     {
+      "driverId": "charles-leclerc",
+      "sigla": "LEC",
+      "nome": "Charles Leclerc"
+     },
+     {
+      "driverId": "lewis-hamilton",
+      "sigla": "HAM",
+      "nome": "Lewis Hamilton"
+     }
+    ],
+    "gare_del_duo": 11,
+    "gare_con_risultato": 11,
+    "tutte_le_gare": {
+     "n": 11,
+     "duelli": {
+      "LEC": 5,
+      "HAM": 6
+     },
+     "entrambi_non_classificati": 0
+    },
+    "entrambi_classificati": {
+     "n": 10,
+     "duelli": {
+      "LEC": 5,
+      "HAM": 5
+     }
+    },
+    "cadute_prima_di_a": [],
+    "cadute_fra_a_e_b": [
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "motivo": "non classificato: LEC Retired"
+     }
+    ],
+    "divergenze_f1db_vs_ufficiali": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "pos_a": 3,
+      "pos_b": 4,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "LEC",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "pos_a": 4,
+      "pos_b": 3,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "HAM",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "pos_a": 3,
+      "pos_b": 6,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "LEC",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "pos_a": 8,
+      "pos_b": 6,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "HAM",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "pos_a": 4,
+      "pos_b": 2,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "HAM",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "pos_a": 17,
+      "pos_b": 2,
+      "stato_a": "Retired",
+      "stato_b": "Finished",
+      "classificato_a": false,
+      "classificato_b": true,
+      "davanti": "HAM",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "pos_a": 15,
+      "pos_b": 1,
+      "stato_a": "Retired",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "HAM",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "pos_a": 8,
+      "pos_b": 5,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "HAM",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "pos_a": 1,
+      "pos_b": 3,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "LEC",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "pos_a": 2,
+      "pos_b": 4,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "LEC",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "pos_a": 4,
+      "pos_b": 5,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "LEC",
+      "in_entrambi_classificati": true
+     }
+    ]
+   },
+   {
+    "constructorId": "haas",
+    "team": "Haas",
+    "piloti": [
+     {
+      "driverId": "esteban-ocon",
+      "sigla": "OCO",
+      "nome": "Esteban Ocon"
+     },
+     {
+      "driverId": "oliver-bearman",
+      "sigla": "BEA",
+      "nome": "Oliver Bearman"
+     }
+    ],
+    "gare_del_duo": 11,
+    "gare_con_risultato": 11,
+    "tutte_le_gare": {
+     "n": 11,
+     "duelli": {
+      "OCO": 4,
+      "BEA": 7
+     },
+     "entrambi_non_classificati": 0
+    },
+    "entrambi_classificati": {
+     "n": 9,
+     "duelli": {
+      "OCO": 2,
+      "BEA": 7
+     }
+    },
+    "cadute_prima_di_a": [],
+    "cadute_fra_a_e_b": [
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "motivo": "non classificato: BEA Retired"
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "motivo": "non classificato: BEA Retired"
+     }
+    ],
+    "divergenze_f1db_vs_ufficiali": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "pos_a": 11,
+      "pos_b": 7,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "BEA",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "pos_a": 14,
+      "pos_b": 5,
+      "stato_a": "Lapped",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "BEA",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "pos_a": 10,
+      "pos_b": 22,
+      "stato_a": "Finished",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "OCO",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "pos_a": 13,
+      "pos_b": 11,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "BEA",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "pos_a": 14,
+      "pos_b": 10,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "BEA",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "pos_a": 9,
+      "pos_b": 20,
+      "stato_a": "Finished",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "OCO",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "pos_a": 13,
+      "pos_b": 17,
+      "stato_a": "Lapped",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "OCO",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "pos_a": 16,
+      "pos_b": 14,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "BEA",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "pos_a": 13,
+      "pos_b": 12,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "BEA",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "pos_a": 17,
+      "pos_b": 14,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "BEA",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "pos_a": 16,
+      "pos_b": 19,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "OCO",
+      "in_entrambi_classificati": true
+     }
+    ]
+   },
+   {
+    "constructorId": "mclaren",
+    "team": "McLaren",
+    "piloti": [
+     {
+      "driverId": "lando-norris",
+      "sigla": "NOR",
+      "nome": "Lando Norris"
+     },
+     {
+      "driverId": "oscar-piastri",
+      "sigla": "PIA",
+      "nome": "Oscar Piastri"
+     }
+    ],
+    "gare_del_duo": 11,
+    "gare_con_risultato": 11,
+    "tutte_le_gare": {
+     "n": 11,
+     "duelli": {
+      "NOR": 5,
+      "PIA": 6
+     },
+     "entrambi_non_classificati": 1
+    },
+    "entrambi_classificati": {
+     "n": 6,
+     "duelli": {
+      "NOR": 3,
+      "PIA": 3
+     }
+    },
+    "cadute_prima_di_a": [],
+    "cadute_fra_a_e_b": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "motivo": "non classificato: PIA Did not start"
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "motivo": "non classificato: NOR Did not start; PIA Did not start"
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "motivo": "non classificato: NOR Retired"
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "motivo": "non classificato: NOR Retired"
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "motivo": "non classificato: PIA Retired"
+     }
+    ],
+    "divergenze_f1db_vs_ufficiali": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "pos_a": 5,
+      "pos_b": 21,
+      "stato_a": "Finished",
+      "stato_b": "Did not start",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "NOR",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "pos_a": 20,
+      "pos_b": 19,
+      "stato_a": "Did not start",
+      "stato_b": "Did not start",
+      "classificato_a": false,
+      "classificato_b": false,
+      "davanti": "PIA",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "pos_a": 5,
+      "pos_b": 2,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "PIA",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "pos_a": 2,
+      "pos_b": 3,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "NOR",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "pos_a": 18,
+      "pos_b": 11,
+      "stato_a": "Retired",
+      "stato_b": "Lapped",
+      "classificato_a": false,
+      "classificato_b": true,
+      "davanti": "PIA",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "pos_a": 19,
+      "pos_b": 5,
+      "stato_a": "Retired",
+      "stato_b": "Finished",
+      "classificato_a": false,
+      "classificato_b": true,
+      "davanti": "PIA",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "pos_a": 3,
+      "pos_b": 5,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "NOR",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "pos_a": 7,
+      "pos_b": 4,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "PIA",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "pos_a": 4,
+      "pos_b": 11,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "NOR",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "pos_a": 7,
+      "pos_b": 5,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "PIA",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "pos_a": 1,
+      "pos_b": 20,
+      "stato_a": "Finished",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "NOR",
+      "in_entrambi_classificati": false
+     }
+    ]
+   },
+   {
+    "constructorId": "mercedes",
+    "team": "Mercedes",
+    "piloti": [
+     {
+      "driverId": "george-russell",
+      "sigla": "RUS",
+      "nome": "George Russell"
+     },
+     {
+      "driverId": "kimi-antonelli",
+      "sigla": "ANT",
+      "nome": "Kimi Antonelli"
+     }
+    ],
+    "gare_del_duo": 11,
+    "gare_con_risultato": 11,
+    "tutte_le_gare": {
+     "n": 11,
+     "duelli": {
+      "RUS": 4,
+      "ANT": 7
+     },
+     "entrambi_non_classificati": 0
+    },
+    "entrambi_classificati": {
+     "n": 9,
+     "duelli": {
+      "RUS": 4,
+      "ANT": 5
+     }
+    },
+    "cadute_prima_di_a": [],
+    "cadute_fra_a_e_b": [
+     {
+      "round": 5,
+      "gara": "Canada",
+      "motivo": "non classificato: RUS Retired"
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "motivo": "non classificato: RUS Retired"
+     }
+    ],
+    "divergenze_f1db_vs_ufficiali": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "pos_a": 1,
+      "pos_b": 2,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "RUS",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "pos_a": 2,
+      "pos_b": 1,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "ANT",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "pos_a": 4,
+      "pos_b": 1,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "ANT",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "pos_a": 4,
+      "pos_b": 1,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "ANT",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "pos_a": 19,
+      "pos_b": 1,
+      "stato_a": "Retired",
+      "stato_b": "Finished",
+      "classificato_a": false,
+      "classificato_b": true,
+      "davanti": "ANT",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "pos_a": 12,
+      "pos_b": 1,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "ANT",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "pos_a": 2,
+      "pos_b": 16,
+      "stato_a": "Finished",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "RUS",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "pos_a": 1,
+      "pos_b": 3,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "RUS",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "pos_a": 2,
+      "pos_b": 15,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "RUS",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "pos_a": 22,
+      "pos_b": 1,
+      "stato_a": "Retired",
+      "stato_b": "Finished",
+      "classificato_a": false,
+      "classificato_b": true,
+      "davanti": "ANT",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "pos_a": 7,
+      "pos_b": 3,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "ANT",
+      "in_entrambi_classificati": true
+     }
+    ]
+   },
+   {
+    "constructorId": "racing-bulls",
+    "team": "Racing Bulls",
+    "piloti": [
+     {
+      "driverId": "arvid-lindblad",
+      "sigla": "LIN",
+      "nome": "Arvid Lindblad"
+     },
+     {
+      "driverId": "liam-lawson",
+      "sigla": "LAW",
+      "nome": "Liam Lawson"
+     }
+    ],
+    "gare_del_duo": 11,
+    "gare_con_risultato": 11,
+    "tutte_le_gare": {
+     "n": 11,
+     "duelli": {
+      "LIN": 3,
+      "LAW": 8
+     },
+     "entrambi_non_classificati": 0
+    },
+    "entrambi_classificati": {
+     "n": 9,
+     "duelli": {
+      "LIN": 2,
+      "LAW": 7
+     }
+    },
+    "cadute_prima_di_a": [],
+    "cadute_fra_a_e_b": [
+     {
+      "round": 4,
+      "gara": "Miami",
+      "motivo": "non classificato: LAW Retired"
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "motivo": "non classificato: LIN Did not start"
+     }
+    ],
+    "divergenze_f1db_vs_ufficiali": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "pos_a": 8,
+      "pos_b": 13,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "LIN",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "pos_a": 12,
+      "pos_b": 7,
+      "stato_a": "Lapped",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "LAW",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "pos_a": 14,
+      "pos_b": 9,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "LAW",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "pos_a": 14,
+      "pos_b": 20,
+      "stato_a": "Lapped",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "LIN",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "pos_a": 22,
+      "pos_b": 7,
+      "stato_a": "Did not start",
+      "stato_b": "Lapped",
+      "classificato_a": false,
+      "classificato_b": true,
+      "davanti": "LAW",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "pos_a": 7,
+      "pos_b": 6,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "LAW",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "pos_a": 9,
+      "pos_b": 8,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "LAW",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "pos_a": 10,
+      "pos_b": 9,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "LAW",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "pos_a": 7,
+      "pos_b": 6,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "LAW",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "pos_a": 9,
+      "pos_b": 12,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "LIN",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "pos_a": 10,
+      "pos_b": 8,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "LAW",
+      "in_entrambi_classificati": true
+     }
+    ]
+   },
+   {
+    "constructorId": "red-bull",
+    "team": "Red Bull",
+    "piloti": [
+     {
+      "driverId": "isack-hadjar",
+      "sigla": "HAD",
+      "nome": "Isack Hadjar"
+     },
+     {
+      "driverId": "max-verstappen",
+      "sigla": "VER",
+      "nome": "Max Verstappen"
+     }
+    ],
+    "gare_del_duo": 11,
+    "gare_con_risultato": 11,
+    "tutte_le_gare": {
+     "n": 11,
+     "duelli": {
+      "HAD": 3,
+      "VER": 8
+     },
+     "entrambi_non_classificati": 0
+    },
+    "entrambi_classificati": {
+     "n": 7,
+     "duelli": {
+      "HAD": 1,
+      "VER": 6
+     }
+    },
+    "cadute_prima_di_a": [],
+    "cadute_fra_a_e_b": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "motivo": "non classificato: HAD Retired"
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "motivo": "non classificato: VER Retired"
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "motivo": "non classificato: HAD Retired"
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "motivo": "non classificato: VER Retired"
+     }
+    ],
+    "divergenze_f1db_vs_ufficiali": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "pos_a": 20,
+      "pos_b": 6,
+      "stato_a": "Retired",
+      "stato_b": "Finished",
+      "classificato_a": false,
+      "classificato_b": true,
+      "davanti": "VER",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "pos_a": 8,
+      "pos_b": 16,
+      "stato_a": "Finished",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "HAD",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "pos_a": 12,
+      "pos_b": 8,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "VER",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "pos_a": 22,
+      "pos_b": 5,
+      "stato_a": "Retired",
+      "stato_b": "Finished",
+      "classificato_a": false,
+      "classificato_b": true,
+      "davanti": "VER",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "pos_a": 5,
+      "pos_b": 3,
+      "stato_a": "Lapped",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "VER",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "pos_a": 4,
+      "pos_b": 22,
+      "stato_a": "Finished",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "HAD",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "pos_a": 6,
+      "pos_b": 4,
+      "stato_a": "Lapped",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "VER",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "pos_a": 6,
+      "pos_b": 2,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "VER",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "pos_a": 5,
+      "pos_b": 20,
+      "stato_a": "Finished",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "HAD",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "pos_a": 6,
+      "pos_b": 3,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "VER",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "pos_a": 6,
+      "pos_b": 2,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "VER",
+      "in_entrambi_classificati": true
+     }
+    ]
+   },
+   {
+    "constructorId": "williams",
+    "team": "Williams",
+    "piloti": [
+     {
+      "driverId": "alexander-albon",
+      "sigla": "ALB",
+      "nome": "Alexander Albon"
+     },
+     {
+      "driverId": "carlos-sainz-jr",
+      "sigla": "SAI",
+      "nome": "Carlos Sainz Jr."
+     }
+    ],
+    "gare_del_duo": 11,
+    "gare_con_risultato": 11,
+    "tutte_le_gare": {
+     "n": 11,
+     "duelli": {
+      "ALB": 5,
+      "SAI": 6
+     },
+     "entrambi_non_classificati": 0
+    },
+    "entrambi_classificati": {
+     "n": 6,
+     "duelli": {
+      "ALB": 4,
+      "SAI": 2
+     }
+    },
+    "cadute_prima_di_a": [],
+    "cadute_fra_a_e_b": [
+     {
+      "round": 2,
+      "gara": "Cina",
+      "motivo": "non classificato: ALB Did not start"
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "motivo": "non classificato: ALB Retired"
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "motivo": "non classificato: ALB Lapped"
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "motivo": "non classificato: SAI Retired"
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "motivo": "non classificato: ALB Retired"
+     }
+    ],
+    "divergenze_f1db_vs_ufficiali": [],
+    "gare": [
+     {
+      "round": 1,
+      "gara": "Australia",
+      "pos_a": 12,
+      "pos_b": 15,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "ALB",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 2,
+      "gara": "Cina",
+      "pos_a": 22,
+      "pos_b": 9,
+      "stato_a": "Did not start",
+      "stato_b": "Lapped",
+      "classificato_a": false,
+      "classificato_b": true,
+      "davanti": "SAI",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 3,
+      "gara": "Giappone",
+      "pos_a": 20,
+      "pos_b": 15,
+      "stato_a": "Lapped",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "SAI",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 4,
+      "gara": "Miami",
+      "pos_a": 10,
+      "pos_b": 9,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "SAI",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 5,
+      "gara": "Canada",
+      "pos_a": 21,
+      "pos_b": 9,
+      "stato_a": "Retired",
+      "stato_b": "Lapped",
+      "classificato_a": false,
+      "classificato_b": true,
+      "davanti": "SAI",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 6,
+      "gara": "Monaco",
+      "pos_a": 8,
+      "pos_b": 16,
+      "stato_a": "Finished",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "ALB",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 7,
+      "gara": "Spagna",
+      "pos_a": 18,
+      "pos_b": 12,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": false,
+      "classificato_b": true,
+      "davanti": "SAI",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 8,
+      "gara": "Austria",
+      "pos_a": 17,
+      "pos_b": 20,
+      "stato_a": "Lapped",
+      "stato_b": "Retired",
+      "classificato_a": true,
+      "classificato_b": false,
+      "davanti": "ALB",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 9,
+      "gara": "Gran Bretagna",
+      "pos_a": 21,
+      "pos_b": 17,
+      "stato_a": "Retired",
+      "stato_b": "Lapped",
+      "classificato_a": false,
+      "classificato_b": true,
+      "davanti": "SAI",
+      "in_entrambi_classificati": false
+     },
+     {
+      "round": 10,
+      "gara": "Belgio",
+      "pos_a": 15,
+      "pos_b": 16,
+      "stato_a": "Finished",
+      "stato_b": "Finished",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "ALB",
+      "in_entrambi_classificati": true
+     },
+     {
+      "round": 11,
+      "gara": "Ungheria",
+      "pos_a": 17,
+      "pos_b": 18,
+      "stato_a": "Lapped",
+      "stato_b": "Lapped",
+      "classificato_a": true,
+      "classificato_b": true,
+      "davanti": "ALB",
+      "in_entrambi_classificati": true
+     }
+    ]
+   }
+  ]
+ }
+}

@@ -1,9 +1,9 @@
 [
   {
     "id": "recap-weekend-hungaroring-2026",
-    "titolo": "Dove ha vinto NOR in Ungheria: la pole per 0,012 s (12 millesimi), il dominio nel passo gara",
-    "occhiello": "Recap tecnico · Weekend Ungheria 2026 · round 11",
-    "sommario": "Non chi ha vinto, ma DOVE nasce il vantaggio. NOR in pole per 0,012 s (12 millesimi) su HAM: minisettore per minisettore è un duello (14–10), e il vantaggio del giro è in curva, non in rettilineo. In gara il passo di NOR è 0,247 s/giro davanti al miglior rivale. Ogni numero è un sintomo misurato; la causa (aero, grip, assetto) resta NON_MISURABILE.",
+    "titolo": "Dodici millesimi, e nascono quasi tutti in centottanta metri",
+    "occhiello": "Hungaroring · il weekend · round 11",
+    "sommario": "La pole più stretta della stagione non si decide su un tratto solo, dicono i minisettori. Guardando dove il cronometro corre più in fretta, invece, si decide eccome: in una curva sola, e il resto del giro serve a restituirla quasi tutta.",
     "data": "2026-07-26",
     "stato": "pubblicato",
     "tag": [
@@ -18,13 +18,14 @@
     "sessione": "Weekend",
     "accent": "#FF8000",
     "gp": "Ungheria",
-    "round": 11
+    "round": 11,
+    "pagina": true
   },
   {
     "id": "passo-reale-ungheria-2026",
-    "titolo": "Il vero passo di Hungaroring: NOR il più rapido (1:24,507), primi 10 in 1,9 s",
-    "occhiello": "Passo-gara · Gara Ungheria 2026",
-    "sommario": "Il passo di gara letto come va letto: per ogni pilota la mediana dei giri verdi puliti (non il giro veloce, non tutti i giri), con la dispersione a fianco. NOR fissa il riferimento a 1:24,507; i primi 10 stanno in 1,9 s. Ma la classifica grezza va corretta: 6 piloti hanno girato per oltre un terzo del tempo in aria sporca, e la benzina che cala rende l’intera griglia ~1,5 s più rapida nella seconda metà. Passo indicativo: carburante e mappe motore restano ignoti.",
+    "titolo": "Il passo vero di Norris non è quello che dice il cronometro: è sette decimi più basso",
+    "occhiello": "Hungaroring · gara · settanta giri, e quali contano",
+    "sommario": "Su settanta giri, quelli che descrivono davvero la velocità di una vettura sono molti meno. Tolti i giri sporcati dal traffico e dalle neutralizzazioni, la gara d’Ungheria racconta una gerarchia più stretta di quella che si vede in classifica.",
     "data": "2026-07-26",
     "stato": "pubblicato",
     "tag": [
@@ -38,13 +39,14 @@
     "sessione": "Gara",
     "accent": "#FF8000",
     "gp": "Ungheria",
-    "round": 11
+    "round": 11,
+    "pagina": true
   },
   {
     "id": "hun-quali-h2h-2026",
-    "titolo": "Antonelli mette 281 millesimi su Russell. Poi la griglia ribalta tutto.",
-    "occhiello": "Cronometro delle qualifiche · Ungheria 2026 · round 11",
-    "sommario": "Il duello più pulito è quello interno: stessa monoposto, due piloti. Sul giro secco delle qualifiche d’Ungheria il rookie Antonelli batte Russell di <b>+0,281</b> (Mercedes) e Norris batte Piastri di <b>+0,477</b> (McLaren). Ma sono numeri del CRONOMETRO, non della griglia: con la penalità Antonelli scatterà P7, dietro il compagno che ha appena battuto. E su entrambi i confronti pesa un asterisco.",
+    "titolo": "Antonelli batte Russell di 281 millesimi. In griglia parte dietro di lui",
+    "occhiello": "Hungaroring · qualifiche · il duello interno",
+    "sommario": "Il confronto fra compagni è l’unico che azzera la vettura: stessa monoposto, cambia la mano. All’Hungaroring il cronometro premia due piloti che poi, sullo schieramento, si ritrovano dietro a quelli che avevano battuto.",
     "data": "2026-07-26",
     "stato": "pubblicato",
     "tag": [
@@ -59,13 +61,14 @@
     "sessione": "Qualifiche",
     "accent": "#27F4D2",
     "gp": "Ungheria",
-    "round": 11
+    "round": 11,
+    "pagina": true
   },
   {
     "id": "dna-circuiti-2026",
-    "titolo": "Il DNA dei circuiti 2026: chi chiede motore e chi chiede carico",
-    "occhiello": "Telemetria · 10 circuiti 2026",
-    "sommario": "La percentuale di giro a tutto gas è la firma più pulita di un tracciato. Sui 10 circuiti con telemetria va dal 72% di Spa-Francorchamps — oltre due terzi di giro flat-out — al 50% di Barcelona, il più esigente. In mezzo, chi è veloce e flowing e chi è potente ma stop-and-go.",
+    "titolo": "A Budapest si sta a gas pieno per metà giro. E si va più forte che a Silverstone",
+    "occhiello": "Dieci circuiti 2026 · quanta parte del giro si passa a tutto gas",
+    "sommario": "Una sola cifra dice quanto un tracciato chieda motore e quanto chieda ala. Su dieci circuiti va dal settantadue per cento a poco meno di metà giro, e nel mezzo c’è una coppia di numeri che sembra sbagliata.",
     "data": "2026-07-26",
     "stato": "pubblicato",
     "tag": [
@@ -78,13 +81,14 @@
     "sessione": "Gara",
     "accent": "var(--sc)",
     "gp": null,
-    "round": null
+    "round": null,
+    "pagina": true
   },
   {
     "id": "assetto-punta-curva-2026",
-    "titolo": "La mappa dell’assetto 2026: chi corre carico e chi scarico",
-    "occhiello": "Telemetria · 10 gare 2026",
-    "sommario": "Incrociando velocità di punta e velocità in curva su 10 gare — con la punta ripulita dalla scia — si legge come ogni team ha risolto il compromesso carico-resistenza. In cima, vicine, Ferrari e Red Bull; ai lati chi carica l’ala e chi corre scarico.",
+    "titolo": "La McLaren è la più forte in curva della griglia e la quartultima sul dritto",
+    "occhiello": "Dieci gare 2026 · velocità di punta contro velocità in curva",
+    "sommario": "Chi guarda le classifiche vede chi va forte. Incrociando la velocità di punta con quella in curva su dieci gare si vede una cosa diversa: dove ogni squadra ha deciso di essere lenta.",
     "data": "2026-07-26",
     "stato": "pubblicato",
     "tag": [
@@ -97,13 +101,14 @@
     "sessione": "Gara",
     "accent": "#E8002D",
     "gp": null,
-    "round": null
+    "round": null,
+    "pagina": true
   },
   {
     "id": "hun-web-canale-a-2026",
-    "titolo": "Ferrari 1-2 sul giro secco, quarta sul passo: le due letture del venerdì",
-    "occhiello": "Prove libere · Venerdì · GP d'Ungheria 2026",
-    "sommario": "Il titolo del venerdì all'Hungaroring è uno solo: «Ferrari domina», 1-2 in FP2 sul giro secco. È vero — e i nostri dati lo confermano al millesimo. Ma è la fotografia di un solo giro con gomma soft. Sul passo dei long-run in gomma medium la classifica si rimescola: davanti ci sono Russell e Verstappen, la Ferrari più veloce scivola quarta. E c'è una lettura in rettilineo che nessuno ha pubblicato: i due Mercedes sono gli ultimi della griglia per velocità di punta.",
+    "titolo": "«Ferrari domina» è vero. Sul passo, davanti, ci sono altri due",
+    "occhiello": "Hungaroring · prove libere del venerdì · quello che i titoli non dicono",
+    "sommario": "Il titolo del venerdì è uno solo, e i numeri lo confermano al millesimo. Poi però ci sono due classifiche, non una, e la seconda nessuno l’ha scritta.",
     "data": "2026-07-25",
     "stato": "pubblicato",
     "tag": [
@@ -120,13 +125,14 @@
     "sessione": "FP2",
     "accent": "#E8002D",
     "gp": "Ungheria",
-    "round": 11
+    "round": 11,
+    "pagina": true
   },
   {
     "id": "hun-rapporti-punta-2026",
-    "titolo": "Il cambio più corto della griglia, sulla pista che meno lo ripaga",
-    "occhiello": "Telemetria · Prove libere 2 · Ungheria 2026",
-    "sommario": "All’Hungaroring — una delle piste dove si sta meno a tutto gas (mediana 39,4% del giro) — la McLaren gira col cambio più corto dello schieramento: entrambe le vetture, con margine netto sull’Audi, la più lunga. È geometria pura del cambio, immune a carburante, mappa motore e scia. Ma la tentazione «corto uguale lento in fondo» in prove libere non regge: il rapporto lo misuriamo, la velocità di punta resta indicativa e non la spieghiamo col cambio.",
+    "titolo": "La McLaren ha il cambio più corto della griglia. Non è per questo che è lenta sul dritto",
+    "occhiello": "Hungaroring · prove libere · il rapporto della settima",
+    "sommario": "La spiegazione comoda esiste, è elegante e la fa qualunque appassionato: cambio corto, poca velocità di punta. Su ventuno vetture non regge, e la cosa interessante è quanto non regge.",
     "data": "2026-07-25",
     "stato": "pubblicato",
     "tag": [
@@ -141,13 +147,14 @@
     "sessione": "FP2",
     "accent": "#FF8000",
     "gp": "Ungheria",
-    "round": 11
+    "round": 11,
+    "pagina": true
   },
   {
     "id": "trazione-loop-gb-2026",
-    "titolo": "The Loop, stessa Red Bull Racing: VER rimette il gas prima del compagno HAD",
-    "occhiello": "Telemetria · Qualifiche Gran Bretagna 2026",
-    "sommario": "Fuori dalla curva più lenta di Silverstone, con la stessa Red Bull Racing, VER torna a gas pieno 8 metri prima del compagno HAD — ed è tra i più pronti dello schieramento. Trazione, o fiducia sull’anteriore.",
+    "titolo": "Alla curva più lenta di Silverstone Verstappen riapre il gas otto metri prima di Hadjar",
+    "occhiello": "Silverstone · qualifiche · curva 4",
+    "sommario": "Nelle curve lente spalancare prima l’acceleratore fa accelerare di meno, perché le gomme pattinano. Chi riesce a farlo davvero prima ha trovato il confine, e in casa Red Bull il confine è a otto metri di distanza.",
     "data": "2026-07-24",
     "stato": "pubblicato",
     "tag": [
@@ -160,13 +167,14 @@
     "sessione": "Qualifiche",
     "accent": "#2B478F",
     "gp": "Gran Bretagna",
-    "round": 9
+    "round": 9,
+    "pagina": true
   },
   {
     "id": "rapporti-mclaren-mercedes-gb-2026",
-    "titolo": "Stesso motore, cambio opposto: la McLaren è la più corta della griglia",
-    "occhiello": "Telemetria · Qualifiche Gran Bretagna 2026",
-    "sommario": "McLaren, Mercedes e Williams montano lo stesso motore Mercedes. Eppure in ottava marcia la McLaren gira quasi seicento giri più su a 300 all'ora, e rinuncia a qualche km/h di velocità di punta. È una scelta di rapporti — e ha una logica precisa.",
+    "titolo": "McLaren e Mercedes hanno lo stesso motore. Sul dritto ne escono sei km/h di differenza",
+    "occhiello": "Silverstone · qualifiche · lo stesso motore, due cambi opposti",
+    "sommario": "Fra tutte le grandezze che si possono tirare fuori da una qualifica, ce n’è una che nessuno può contestare, perché non dipende né dal traffico né da come è venuto il giro. Dice che due squadre con lo stesso propulsore hanno risolto lo stesso problema in modo opposto.",
     "data": "2026-07-24",
     "stato": "pubblicato",
     "tag": [
@@ -180,13 +188,14 @@
     "sessione": "Qualifiche",
     "accent": "#FF8000",
     "gp": "Gran Bretagna",
-    "round": 9
+    "round": 9,
+    "pagina": true
   },
   {
     "id": "lift-mercedes-gb-2026",
-    "titolo": "Il lift Mercedes prima del traguardo",
-    "occhiello": "Telemetria · Qualifiche Gran Bretagna 2026",
-    "sommario": "Sul giro lanciato a Silverstone entrambe le Mercedes staccano il piede dall'acceleratore poche decine di metri prima della linea. Nessun altro lo fa. Sul cronometro costa quasi nulla — ed è proprio questo il punto.",
+    "titolo": "Le due Mercedes alzano il piede prima della linea. Le altre venti no",
+    "occhiello": "Silverstone · qualifiche · l’ultimo tratto del rettilineo",
+    "sommario": "Sul traguardo di Silverstone ci sono due modi di tagliare la linea, e uno lo usano in due soltanto. Quanto costa si può calcolare, e la risposta spiega perché nessuno dei due smetta di farlo.",
     "data": "2026-07-24",
     "stato": "pubblicato",
     "tag": [
@@ -199,13 +208,14 @@
     "sessione": "Qualifiche",
     "accent": "#27F4D2",
     "gp": "Gran Bretagna",
-    "round": 9
+    "round": 9,
+    "pagina": true
   },
   {
     "id": "frenata-village-gb-2026",
-    "titolo": "Village: HAM è il più tardivo della griglia sui freni",
-    "occhiello": "Telemetria · Qualifiche Gran Bretagna 2026",
-    "sommario": "In una delle staccate più dure di Silverstone HAM attacca i freni più tardi di chiunque sulla griglia: a 100 metri dall’apice, 14 in meno del primo inseguitore, 18 sotto la mediana. Il più tardivo di tutti.",
+    "titolo": "Cento metri: nessuno frena più tardi di Hamilton a Village",
+    "occhiello": "Silverstone · qualifiche · curva 3",
+    "sommario": "Village è la staccata più dura del giro, e c’è un pilota che ci arriva più a fondo di tutti gli altri ventuno. Non è un decimo che si vede sul cronometro: è un margine che si toglie.",
     "data": "2026-07-24",
     "stato": "pubblicato",
     "tag": [
@@ -218,13 +228,14 @@
     "sessione": "Qualifiche",
     "accent": "#E8002D",
     "gp": "Gran Bretagna",
-    "round": 9
+    "round": 9,
+    "pagina": true
   },
   {
     "id": "compagni-marce-stowe-gb-2026",
-    "titolo": "Stowe, stessa Ferrari: LEC in 6ª dove HAM scala in 5ª",
-    "occhiello": "Telemetria · Qualifiche Gran Bretagna 2026",
-    "sommario": "In una curva veloce di Silverstone le due Ferrari passano l’apice a velocità vicina, ma con una marcia di differenza: LEC in 6ª, HAM in 5ª. E scalare non rende HAM più veloce — gli alza il regime. Non è un caso: è una scelta, e si ripete.",
+    "titolo": "A Stowe una Ferrari scala di marcia, l’altra no. E chi lo fa passa più piano",
+    "occhiello": "Silverstone · qualifiche · curva 15",
+    "sommario": "Nella curva più veloce del giro le due Ferrari fanno una cosa diversa, e la rifanno ogni volta. Sulla griglia, di disaccordi così fra compagni di squadra ce ne sono in tutto tredici.",
     "data": "2026-07-24",
     "stato": "pubblicato",
     "tag": [
@@ -237,6 +248,7 @@
     "sessione": "Qualifiche",
     "accent": "#E8002D",
     "gp": "Gran Bretagna",
-    "round": 9
+    "round": 9,
+    "pagina": true
   }
 ]

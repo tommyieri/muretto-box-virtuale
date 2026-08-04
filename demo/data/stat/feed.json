@@ -1,0 +1,187 @@
+{
+ "_nota": "GENERATO da gen_stat_feed.py: scarica l'archivio pubblico F1 e conta i canali che trasmette. Non modificare a mano.",
+ "_generatore": "gen_stat_feed.py",
+ "schema": 1,
+ "calcolato_il": "2026-08-04T12:54:56+00:00",
+ "provenienza": {
+  "fonte": "livetiming.formula1.com/static — archivio pubblico ufficiale F1",
+  "come": "decodifica DEFLATE dei record di CarData.z.jsonStream ed enumerazione delle chiavi di Cars[pilota].Channels; elenco dei feed da Index.json di sessione.",
+  "sessioni_controllate": [
+   {
+    "anno": "2025",
+    "gara": "Abu Dhabi Grand Prix",
+    "percorso": "2025/2025-12-07_Abu_Dhabi_Grand_Prix/2025-12-07_Race/",
+    "record_letti": 400
+   },
+   {
+    "anno": "2026",
+    "gara": "Hungarian Grand Prix",
+    "percorso": "2026/2026-07-26_Hungarian_Grand_Prix/2026-07-26_Race/",
+    "record_letti": 400
+   }
+  ]
+ },
+ "perimetro": {
+  "anni": [
+   2025,
+   2026
+  ],
+  "sessioni": 2,
+  "note": [
+   "una sessione di GARA per anno: l'ultima archiviata, trovata dall'indice di stagione e mai scritta a mano.",
+   "i canali sono gli stessi in ogni record dello stream, quindi qualche centinaio di record basta a stabilirne l'insieme — il numero letto e' dichiarato.",
+   "il censimento riguarda IL FEED, non quello che il sito esporta: quello lo conta gen_stat_gara.py, ed e' un'altra domanda."
+  ]
+ },
+ "per_anno": {
+  "2026": {
+   "feed": [
+    "ArchiveStatus",
+    "AudioStreams",
+    "CarData.z",
+    "ChampionshipPrediction",
+    "ContentStreams",
+    "CurrentTyres",
+    "DriverList",
+    "DriverRaceInfo",
+    "DriverTracker",
+    "ExtrapolatedClock",
+    "Heartbeat",
+    "LapCount",
+    "LapSeries",
+    "OvertakeSeries",
+    "PitLaneTimeCollection",
+    "PitStop",
+    "PitStopSeries",
+    "Position.z",
+    "RaceControlMessages",
+    "SessionData",
+    "SessionInfo",
+    "SessionStatus",
+    "TeamRadio",
+    "TimingAppData",
+    "TimingData",
+    "TimingDataF1",
+    "TimingStats",
+    "TlaRcm",
+    "TopThree",
+    "TrackStatus",
+    "TyreStintSeries",
+    "WeatherData",
+    "WeatherDataSeries"
+   ],
+   "n_feed": 33,
+   "canali": {
+    "0": {
+     "nome": "RPM",
+     "campioni": 32120
+    },
+    "2": {
+     "nome": "velocita",
+     "campioni": 32120
+    },
+    "3": {
+     "nome": "marcia",
+     "campioni": 32120
+    },
+    "4": {
+     "nome": "gas",
+     "campioni": 32120
+    },
+    "5": {
+     "nome": "freno",
+     "campioni": 32120
+    }
+   },
+   "n_canali": 5,
+   "record_letti": 400,
+   "gara": "Hungarian Grand Prix",
+   "percorso": "2026/2026-07-26_Hungarian_Grand_Prix/2026-07-26_Race/"
+  },
+  "2025": {
+   "feed": [
+    "ArchiveStatus",
+    "AudioStreams",
+    "CarData.z",
+    "ChampionshipPrediction",
+    "ContentStreams",
+    "CurrentTyres",
+    "DriverList",
+    "DriverRaceInfo",
+    "DriverTracker",
+    "ExtrapolatedClock",
+    "Heartbeat",
+    "LapCount",
+    "LapSeries",
+    "OvertakeSeries",
+    "PitLaneTimeCollection",
+    "PitStop",
+    "PitStopSeries",
+    "Position.z",
+    "RaceControlMessages",
+    "SessionData",
+    "SessionInfo",
+    "SessionStatus",
+    "TeamRadio",
+    "TimingAppData",
+    "TimingData",
+    "TimingDataF1",
+    "TimingStats",
+    "TlaRcm",
+    "TopThree",
+    "TrackStatus",
+    "TyreStintSeries",
+    "WeatherData",
+    "WeatherDataSeries"
+   ],
+   "n_feed": 33,
+   "canali": {
+    "0": {
+     "nome": "RPM",
+     "campioni": 29760
+    },
+    "2": {
+     "nome": "velocita",
+     "campioni": 29760
+    },
+    "3": {
+     "nome": "marcia",
+     "campioni": 29760
+    },
+    "4": {
+     "nome": "gas",
+     "campioni": 29760
+    },
+    "5": {
+     "nome": "freno",
+     "campioni": 29760
+    },
+    "45": {
+     "nome": "DRS",
+     "campioni": 29760
+    }
+   },
+   "n_canali": 6,
+   "record_letti": 400,
+   "gara": "Abu Dhabi Grand Prix",
+   "percorso": "2025/2025-12-07_Abu_Dhabi_Grand_Prix/2025-12-07_Race/"
+  }
+ },
+ "sentinella": {
+  "canali_attesi_2026": [
+   "0",
+   "2",
+   "3",
+   "4",
+   "5"
+  ],
+  "canali_nuovi": [],
+  "canali_spariti": [],
+  "allarme": false,
+  "cosa_significherebbe": "un canale NUOVO sarebbe la notizia: vorrebbe dire che F1 ha riaperto il rubinetto, e la riga sul sito che dichiara l'energia non osservabile andrebbe riscritta. Un canale SPARITO sarebbe l'opposto, e andrebbe dichiarato anche quello."
+ },
+ "cosa_dimostra": "che lo stato di carica, i MJ recuperati e schierati, le mappe motore e l'Overtake Mode non passano da questo feed — che e' quello pubblico.",
+ "cosa_NON_dimostra": "che il dato non esista da nessuna parte. Una barra di carica e' comparsa nel world feed televisivo dal GP d'Australia 2026 ed e' stata poi progressivamente tolta: era una GRAFICA, non un canale interrogabile. Sono due cose diverse.",
+ "il_caso_DRS": "il canale 45 c'era nel 2025 e nel 2026 NON C'E'. Non e' «a zero»: la colonna DRS che si vede in FastF1 e' sintetizzata dal parser con un default, non letta dal feed. Chi ci filtrasse sopra otterrebbe un risultato vuoto invece di un errore.",
+ "errori": []
+}

@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<!--
+  STATISTICHE / CONFRONTI FRA STAGIONI. Consumatore puro: legge demo/data/stat/confronti.json,
+  scritto da gen_stat_confronti.py (f1db races-driver-standings / races-constructor-standings,
+  per round, 1950-2026 — qui dal 2018).
+
+  PERCHE' QUESTA PAGINA NON PASSA DAL FONDO STORICO. Il fondo (data/fondo/, 2018-2025) e' la
+  strada che sembra ovvia e non lo e': le mescole del 2018 hanno un altro alfabeto, sei gare
+  del 2019 sono gusci vuoti senza nemmeno il pilota, il Belgio 2021 e' durato tre giri, Sakhir
+  2020 e' una pista diversa dal Bahrain, e il campo `team` spacca le squadre anche dentro una
+  stagione. f1db invece tratta ogni anno allo stesso modo, ha la classifica DOPO OGNI ROUND
+  dal 1950, e non richiede nessuna mappa di continuita' da decidere. Il ponte sul fondo resta
+  da fare — serve per altre domande, non per questa.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Confronti fra stagioni — Muretto Box Virtuale</title>
+<meta name="description" content="Come si e' deciso il campionato, dal 2018 al 2026: vantaggio del leader round per round, quota dei punti, quante squadre restano in gioco. In unita' relative, le uniche che sopravvivono al cambio di regolamento.">
+<link rel="canonical" href="https://murettobox.com/statistiche-confronti.html">
+<link rel="stylesheet" href="stile.css?v=040826b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
+    <span class="brand-mark"><span>M</span></span>
+    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+  </a>
+  <nav class="nav" aria-label="Sezioni">
+    <a href="stagione.html">Stagione</a>
+    <a href="live.html"><span class="dot-live"></span>Live</a>
+    <a href="analisi.html">Analisi</a>
+    <a href="statistiche.html" class="on">Statistiche</a>
+  </nav>
+</header>
+
+<div class="stat-wrap">
+  <div class="page-testa">
+    <h1>Confronti <em>//</em> fra stagioni</h1>
+    <div class="sotto">Nove stagioni, dal 2018 a oggi. Non i tempi &mdash; quelli fra ere non
+      si confrontano &mdash; ma la forma con cui un campionato si decide.</div>
+  </div>
+
+  <nav class="stat-nav" aria-label="Statistiche">
+    <a href="statistiche.html">Il banco</a>
+    <a href="classifiche.html">Classifiche</a>
+    <a href="statistiche-piloti.html">Piloti</a>
+    <a href="statistiche-squadre.html">Squadre e vetture</a>
+    <a href="statistiche-stagione.html">Stagione 2026</a>
+    <a href="statistiche-confronti.html" class="on">Confronti fra stagioni</a>
+  </nav>
+
+  <div class="stat-regola"><span class="k">La regola di questa pagina</span>
+    <b>Solo unità relative.</b> Il sistema di punteggio, il numero di gare e le sprint sono
+    cambiati più volte in nove anni: un vantaggio di 88 punti nel 2018 e uno di 63 nel 2024
+    non sono confrontabili in punti. Lo sono come <b>quota</b> &mdash; quanti punti del totale
+    assegnato fino a quel momento ha in mano il leader &mdash; e come <b>conteggio di chi è
+    ancora in gioco</b>. I punti assoluti restano visibili in tabella, ma non è su quelli che
+    si legge il grafico.
+  </div>
+
+  <section class="stat-sez">
+    <div class="sez-tit">Quanto era chiusa, round per round</div>
+    <p class="stat-sub">Ogni linea è una stagione. Sull'asse verticale la <b>quota dei punti in
+      mano al leader</b>: più la linea sale, più il campionato era già scritto. Sull'asse
+      orizzontale il round, in <b>percentuale di stagione corsa</b> &mdash; senza questa
+      normalizzazione un 2020 da 17 gare e un 2024 da 24 non starebbero sullo stesso grafico.
+      Tocca una stagione nella legenda per isolarla.</p>
+    <div class="stat-wrap" style="padding:0">
+      <span class="seg" id="chi" role="tablist">
+        <button class="on" data-v="piloti">Piloti</button>
+        <button data-v="costruttori">Costruttori</button>
+      </span>
+    </div>
+    <div class="stat-chart" id="chart" style="margin-top:12px"></div>
+    <div class="stat-legend" id="legenda"></div>
+  </section>
+
+  <section class="stat-sez">
+    <div class="sez-tit">Come si è chiusa</div>
+    <p class="stat-sub">Clicca un'intestazione per riordinare. <b>Quota finale</b> è la stessa
+      grandezza del grafico all'ultimo round; <b>entro il 20%</b> conta quanti erano ancora
+      a meno di un quinto dal leader alla fine.</p>
+    <div id="tabella"></div>
+  </section>
+
+
+  <section class="stat-sez" id="dispersione">
+    <div class="sez-tit">Il gruppo si è stretto?</div>
+    <div class="stat-regola"><span class="k">Come si misura</span>
+      <b>Solo il Q1</b>, l'unico segmento in cui c'è tutto il campo. <b>In percentuale dal
+      migliore della stessa sessione</b>, mai in secondi. <b>Solo i circuiti corsi in tutti gli
+      anni</b> &mdash; <span id="c-elenco">…</span> &mdash; perché confrontare calendari diversi
+      somma il cambiamento delle vetture a quello delle piste.
+    </div>
+    <p class="stat-sub">Con più vetture in pista la dispersione cresce da sola, senza che
+      nessuno sia più lento: per questo c'è anche la vista <b>a campo pari</b>, che confronta i
+      <b id="c-k">–</b> più veloci di ogni sessione.</p>
+    <div style="margin:14px 0 4px">
+      <span class="seg" id="c-vista" role="tablist">
+        <button class="on" data-v="tutto">Tutto il campo</button>
+        <button data-v="pari">A campo pari</button>
+      </span>
+    </div>
+    <div class="stat-chart" id="c-chart"></div>
+    <p class="stat-sub"><b>Mediana</b>: il pilota di mezzo, quanto è lontano dal più veloce.
+      <b>p90</b>: la coda &mdash; quanto è lontano chi sta dietro. Sono due domande diverse: un
+      gruppo può stringersi davanti e restare largo in fondo.</p>
+    <div id="c-tab"></div>
+  </section>
+
+
+
+</div>
+
+<footer class="footer">
+  <div class="footer-in">
+    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
+    <nav>
+      <a href="stagione.html">Stagione</a>
+      <a href="live.html">Live</a>
+      <a href="analisi.html">Analisi</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="module">
+import { prendiJSON, mostraErrore, scheletro, esc, tabellaOrdinabile } from './stat.mjs?v=040826b';
+const el = id => document.getElementById(id);
+let dati = null, vista = 'piloti', isolata = null;
+
+// UNA TINTA PER STAGIONE, dal blu (2018) al rosso (2026), passando per viola e magenta.
+// La rampa EVITA IL VERDE apposta: interpolando 205->10 in modo lineare quattro stagioni
+// consecutive finivano tutte in una fascia di verdi indistinguibili, che su nove linee
+// sovrapposte rendeva la legenda inutile.
+const tinta = (i, n) => `hsl(${222 + (i / Math.max(1, n - 1)) * 138} 68% ${58 + (i / Math.max(1, n - 1)) * 4}%)`;
+
+function disegna(){
+  const serie = dati[vista];
+  const anni = Object.keys(serie).sort();
+  const W = 900, H = 380, ML = 46, MR = 14, MT = 14, MB = 34;
+
+  // LA SCALA VERTICALE SI CALCOLA DAI DATI, e non e' un dettaglio: la quota dei piloti sta
+  // fra il 16% e il 25%, quella dei costruttori fra il 25% e il 43%. Un asse fisso 0-50%
+  // schiaccerebbe le linee dei piloti in un quinto dell'altezza e taglierebbe i costruttori.
+  const tutti = anni.flatMap(a => serie[a].quota_leader).filter(v => v != null);
+  const lo = Math.max(0, Math.floor((Math.min(...tutti) - 0.01) * 50) / 50);
+  const hi = Math.ceil((Math.max(...tutti) + 0.01) * 50) / 50;
+  const x = q => ML + q * (W - ML - MR);                       // q = frazione di stagione
+  const y = v => MT + (1 - (v - lo) / (hi - lo)) * (H - MT - MB);
+
+  const linee = anni.map((a, i) => {
+    const s = serie[a];
+    const n = s.round.length;
+    const pts = s.round.map((r, k) => {
+      // NORMALIZZAZIONE DELL'ASSE: la frazione e' sul numero di round CORSI in quell'anno.
+      // Per il 2026, che e' in corso, la linea si ferma dove si e' fermata la stagione.
+      const q = n > 1 ? k / (n - 1) : 0;
+      return `${x(q).toFixed(1)},${y(Math.min(0.5, s.quota_leader[k] ?? 0)).toFixed(1)}`;
+    }).join(' ');
+    const spenta = isolata && isolata !== a;
+    // la stagione in corso e' piu' spessa: e' l'unica linea che domani sara' diversa
+    const grossa = isolata === a ? 3.2 : (s.in_corso ? 2.6 : 1.7);
+    return `<polyline points="${pts}" fill="none" stroke="${tinta(i, anni.length)}"
+      stroke-width="${grossa}" stroke-linejoin="round" stroke-linecap="round"
+      ${s.in_corso && isolata !== a ? 'stroke-dasharray="7 3"' : ''}
+      opacity="${spenta ? 0.1 : 1}"><title>${esc(a)}</title></polyline>`;
+  }).join('');
+
+  const passo = (hi - lo) / 4;
+  const griglia = [0, 1, 2, 3, 4].map(k => lo + k * passo).map(v =>
+    `<line x1="${ML}" x2="${W - MR}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/>
+     <text x="${ML - 8}" y="${y(v) + 4}" text-anchor="end" fill="var(--dim)"
+       font-family="var(--mono)" font-size="10">${(v * 100).toFixed(0)}%</text>`).join('');
+  const assex = [0, 0.25, 0.5, 0.75, 1].map(q =>
+    `<text x="${x(q)}" y="${H - 12}" text-anchor="middle" fill="var(--dim)"
+       font-family="var(--mono)" font-size="10">${(q * 100).toFixed(0)}%</text>`).join('');
+
+  el('chart').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img"
+    aria-label="Quota dei punti in mano al leader, round per round, dal 2018 al 2026">
+    ${griglia}${assex}${linee}
+    <text x="${ML}" y="${H - 12}" text-anchor="start" fill="var(--dim)"
+      font-family="var(--mono)" font-size="9" opacity="0">stagione corsa</text>
+    <text transform="translate(13,${MT + (H - MT - MB) / 2}) rotate(-90)" text-anchor="middle"
+      fill="var(--dim)" font-family="var(--mono)" font-size="10">quota punti del leader</text>
+    <text x="${(ML + W - MR) / 2}" y="${H - 1}" text-anchor="middle" fill="var(--dim)"
+      font-family="var(--mono)" font-size="10">stagione corsa</text>
+  </svg>`;
+
+  el('legenda').innerHTML = anni.map((a, i) =>
+    `<span class="chip${isolata === a ? ' on' : ''}" data-a="${esc(a)}">
+       <i style="background:${tinta(i, anni.length)}"></i>${esc(a)}${serie[a].in_corso ? ' · in corso' : ''}</span>`).join('')
+    + (isolata ? `<span class="chip" data-a="">tutte</span>` : '');
+  el('legenda').querySelectorAll('.chip').forEach(c => c.addEventListener('click', () => {
+    isolata = c.dataset.a && c.dataset.a !== isolata ? c.dataset.a : null;
+    disegna();
+  }));
+
+  // i nomi leggibili stanno nel dato: nel campo `campione` c'e' l'id f1db
+  // (`max-verstappen`), che non e' una cosa da mostrare a un lettore.
+  const nome = id => dati.nomi?.[vista]?.[id] ?? id ?? '–';
+  const righe = anni.map(a => {
+    const s = serie[a], u = s.round.length - 1;
+    return {
+      anno: a,
+      campione: s.campione ? nome(s.campione)
+        : (s.in_corso ? `${nome(s.capoclassifica[u])} · in testa` : '–'),
+      round: s.round_totali,
+      quota: s.quota_leader[u],
+      vantaggio: s.vantaggio_leader[u],
+      entro: s.entro_20pct[u],
+      cambi: s.cambi_leader,
+      deciso: s.titolo_deciso_al_round,
+    };
+  });
+  tabellaOrdinabile(el('tabella'), righe, [
+    { k: 'anno', testo: 'stagione' },
+    { k: 'campione', testo: vista === 'piloti' ? 'campione' : 'campione costruttori' },
+    { k: 'round', testo: 'round', num: true },
+    { k: 'quota', testo: 'quota finale', num: true,
+      cella: r => `${(r.quota * 100).toFixed(1)}%` },
+    { k: 'vantaggio', testo: 'vantaggio (pt)', num: true },
+    { k: 'entro', testo: 'entro il 20%', num: true },
+    { k: 'cambi', testo: 'cambi al comando', num: true },
+    { k: 'deciso', testo: 'titolo deciso al round', num: true,
+      cella: r => r.deciso == null
+        ? '<span class="dim">non ancora</span>'
+        : `${r.deciso} <span class="dim">di ${r.round}</span>` },
+  ], { ordina: 'anno', discendente: false });
+}
+
+// C2 — la dispersione in qualifica, anno per anno, sui circuiti comuni.
+function dispersione(d){
+  const s = d.dispersione_quali;
+  if (!s?.anni){ document.getElementById('dispersione')?.remove(); return; }
+  const anni = Object.keys(s.anni).sort();
+  document.getElementById('c-elenco').textContent =
+    s.circuiti_comuni.elenco.map(c => s.nomi_circuiti?.[c] ?? c).join(', ');
+  document.getElementById('c-k').textContent = s.campo_pari.k;
+
+  let vista = 'tutto';
+  const key = (a, q) => vista === 'pari' ? s.anni[a][q + '_pct_campo_pari'] : s.anni[a][q + '_pct'];
+
+  const disegna = () => {
+    const W = 900, H = 340, ML = 46, MR = 16, MT = 16, MB = 34;
+    const vals = anni.flatMap(a => [key(a, 'mediana'), key(a, 'p90')]).filter(v => v != null);
+    const hi = Math.ceil(Math.max(...vals) * 2) / 2;
+    const x = i => ML + (i / Math.max(1, anni.length - 1)) * (W - ML - MR);
+    const y = v => MT + (1 - v / hi) * (H - MT - MB);
+    const linea = (q, colore, tratteggio) => `<polyline fill="none" stroke="${colore}"
+      stroke-width="2.4" stroke-linejoin="round" ${tratteggio}
+      points="${anni.map((a, i) => `${x(i).toFixed(1)},${y(key(a, q)).toFixed(1)}`).join(' ')}"/>`
+      + anni.map((a, i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(key(a, q)).toFixed(1)}" r="3.5"
+          fill="${colore}"><title>${a} — ${q} ${key(a, q).toFixed(3)}%</title></circle>`).join('');
+    const griglia = [0, .25, .5, .75, 1].map(f => hi * f).map(v =>
+      `<line x1="${ML}" x2="${W - MR}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/>
+       <text x="${ML - 8}" y="${y(v) + 4}" text-anchor="end" fill="var(--dim)"
+         font-family="var(--mono)" font-size="10">${v.toFixed(1)}%</text>`).join('');
+    document.getElementById('c-chart').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img"
+      aria-label="Distacco percentuale dal migliore in Q1, per anno">
+      ${griglia}
+      ${anni.map((a, i) => `<text x="${x(i)}" y="${H - 12}" text-anchor="middle"
+        fill="${s.anni[a].stagione_in_corso ? 'var(--accent)' : 'var(--dim)'}"
+        font-family="var(--mono)" font-size="10">${a}</text>`).join('')}
+      ${linea('p90', 'var(--sc)', 'stroke-dasharray="6 3"')}
+      ${linea('mediana', 'var(--accent)', '')}
+      <text x="${ML + 6}" y="${MT + 12}" fill="var(--accent)" font-family="var(--mono)"
+        font-size="10">mediana</text>
+      <text x="${ML + 66}" y="${MT + 12}" fill="var(--sc)" font-family="var(--mono)"
+        font-size="10">p90</text>
+    </svg>`;
+
+    tabellaOrdinabile(document.getElementById('c-tab'), anni.map(a => ({
+      anno: a, mediana: key(a, 'mediana'), p90: key(a, 'p90'),
+      piloti: s.anni[a].n_piloti, gare: s.anni[a].n_gare, oss: s.anni[a].n_osservazioni,
+      corso: s.anni[a].stagione_in_corso,
+    })), [
+      { k: 'anno', testo: 'stagione',
+        cella: r => r.corso ? `${esc(r.anno)} <span class="dim">· in corso</span>` : esc(r.anno) },
+      { k: 'mediana', testo: 'mediana', num: true, cella: r => r.mediana.toFixed(3) + '%' },
+      { k: 'p90', testo: 'p90 (la coda)', num: true, cella: r => r.p90.toFixed(3) + '%' },
+      { k: 'piloti', testo: 'piloti', num: true },
+      { k: 'gare', testo: 'gare', num: true },
+      { k: 'oss', testo: 'confronti', num: true },
+    ], { ordina: 'anno', discendente: false });
+  };
+
+  document.getElementById('c-vista').querySelectorAll('button').forEach(b =>
+    b.addEventListener('click', () => {
+      document.getElementById('c-vista').querySelectorAll('button')
+        .forEach(x => x.classList.toggle('on', x === b));
+      vista = b.dataset.v; disegna();
+    }));
+  disegna();
+}
+
+async function boot(){
+  scheletro(el('chart'), 6);
+  try { dati = await prendiJSON('data/stat/confronti.json'); }
+  catch(e){ mostraErrore(el('chart'), boot); return; }
+  el('chi').querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+    el('chi').querySelectorAll('button').forEach(x => x.classList.toggle('on', x === b));
+    vista = b.dataset.v; isolata = null; disegna();
+  }));
+  disegna();
+  dispersione(dati);
+}
+boot();
+</script>
+</body>
+</html>

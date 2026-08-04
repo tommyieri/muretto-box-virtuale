@@ -1,0 +1,65 @@
+{
+ "_cos_e": "LA MAPPA DELLE CAUSE DI RITIRO — un file FIRMATO A MANO, non un artefatto generato.",
+
+ "_perche_esiste": "Le cause di ritiro esistono in una sola fonte, f1db `races-race-results.reasonRetired`, e sono TESTO LIBERO. Raggrupparle in famiglie non e' un calcolo: e' una decisione editoriale, e cambia il numero che il sito pubblica. «Battery» sta nella power unit o nell'elettronica? «Collision damage» e' un incidente o la conseguenza dell'incidente di un altro? Non c'e' una risposta giusta nei dati, e un generatore che scegliesse da solo starebbe pubblicando l'opinione di chi l'ha scritto travestita da misura.",
+
+ "firmato": true,
+ "firmato_da": "Tommi",
+ "firmato_il": "2026-08-04",
+ "_come_e_stata_presa": "Decisione di Tommi del 04/08/2026 («firma il raggruppamento dei ritiri»), su proposta dell'assistente. Le tre scelte contestabili sono sciolte qui sotto in `_le_tre_scelte`, ognuna col suo perche' e con l'alternativa che e' stata scartata: revocarne una e' cambiare una riga di questo file e rilanciare `python3 aggiorna_stat.py`. Il testo grezzo di ogni causa resta pubblicato accanto alle famiglie, quindi nessun raggruppamento nasconde il dato da cui viene.",
+
+ "_le_tre_scelte": {
+  "battery_ed_electrical": {
+   "scelta": "«Battery» va nella POWER UNIT. «Electrical» e «Safety switch» vanno in una famiglia ELETTRICA a se'.",
+   "perche": "Nel regolamento 2026 la batteria e' un componente della power unit a pieno titolo — la parte elettrica vale circa meta' della potenza — quindi metterla altrove sarebbe una scelta contro il regolamento. «Electrical» invece e' un'etichetta ambigua: puo' essere elettronica di potenza o cablaggio di telaio, e la fonte non lo distingue. Infilarla nella power unit gonfierebbe quella famiglia con casi che potrebbero non appartenerle.",
+   "scartata": "mettere tutto («Battery», «Electrical», «Safety switch») nella power unit: piu' compatto, ma trasforma cinque casi ambigui in cinque casi di power unit senza che nessuno lo abbia verificato."
+  },
+  "collision_e_collision_damage": {
+   "scelta": "SEPARATE. «Collision» e' CONTATTO, «Collision damage» e' DANNO DA CONTATTO.",
+   "perche": "Il secondo e' quasi sempre la conseguenza, su un'altra vettura, del primo. Unirli fa sparire la distinzione fra chi ha causato e chi ha subito — e per una tabella per squadra e' proprio quella la differenza che interessa. Restano due famiglie piccole, e va bene: una famiglia piccola che dice una cosa vera batte una famiglia grande che ne nasconde due.",
+   "scartata": "una sola famiglia «incidenti di contatto»: piu' leggibile, ma il numero per squadra diventerebbe indistinguibile fra colpa e sfortuna."
+  },
+  "spun_off_e_accident": {
+   "scelta": "INSIEME, in INCIDENTE.",
+   "perche": "Sono la stessa cosa dal punto di vista dei dati: un'uscita di pista senza contatto dichiarato. Separare un'etichetta che oggi vale zero casi fra i non classificati produrrebbe una famiglia vuota e nessuna informazione.",
+   "caveat_da_dichiarare": "un testacoda PUO' avere origine meccanica, e la fonte non lo dice. Questa famiglia quindi NON e' «errori del pilota»: si chiama INCIDENTE apposta. Chi la leggesse come misura di errore starebbe attribuendo una colpa che i dati non assegnano.",
+   "scartata": "una famiglia «errore di guida»: sarebbe un'attribuzione di responsabilita' che questa fonte non permette."
+  }
+ },
+
+ "_come_si_revoca_o_si_estende": "Le cause DAVVERO presenti stanno in demo/data/stat/gara_2026.json sotto `ritiri.cause_grezze`, riscritte a ogni gara dal generatore, e sono visibili in fondo a statistiche-stagione.html. QUESTO FILE NON VIENE MAI RISCRITTO DA UN GENERATORE, ed e' voluto: un generatore che scrivesse qui potrebbe cancellare una firma. Se dopo una gara compare una causa nuova, il generatore NON la infila in un «altro» che nasconde la scelta non fatta: la lascia senza famiglia e la elenca in `raggruppamento.cause_senza_famiglia`, dove si vede — e la pagina la mostra.",
+
+ "famiglie": {
+  "Engine": "power unit",
+  "Battery": "power unit",
+  "Fuel system": "power unit",
+  "Coolant leak": "power unit",
+  "Overheating": "power unit",
+
+  "Electrical": "elettrico",
+  "Safety switch": "elettrico",
+
+  "Gearbox": "trasmissione",
+  "Hydraulics": "trasmissione",
+
+  "Brakes": "telaio e sospensioni",
+  "Suspension": "telaio e sospensioni",
+  "Vibrations": "telaio e sospensioni",
+  "Broken seat": "telaio e sospensioni",
+
+  "Collision": "contatto",
+  "Collision damage": "danno da contatto",
+
+  "Accident": "incidente",
+  "Spun off": "incidente",
+
+  "Mechanical": "non specificato"
+ },
+
+ "_note_sulle_assegnazioni_meno_ovvie": {
+  "Hydraulics": "in trasmissione e non in un idraulica a se': in una monoposto l'impianto idraulico serve cambio, frizione e comandi, e la sua rottura si manifesta come un guasto di trasmissione. Se un giorno la fonte distinguesse l'idraulica dello sterzo, la riga andrebbe rivista.",
+  "Overheating e Coolant leak": "in power unit perche' il raffreddamento esiste per la power unit. E' una scelta, non un fatto: un surriscaldamento puo' venire da un radiatore danneggiato in un contatto, e la fonte non lo dice.",
+  "Brakes": "in telaio e non in una famiglia propria: sono cinque casi e una famiglia «freni» da sola direbbe meno di quanto sembri, visto che un guasto ai freni puo' seguire un contatto.",
+  "Mechanical": "resta «non specificato» e NON viene spalmato sulle altre famiglie. E' l'etichetta che la fonte usa quando non sa: farla sparire in una famiglia precisa sarebbe inventare una precisione che non c'e'."
+ }
+}
