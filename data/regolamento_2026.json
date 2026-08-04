@@ -1,14 +1,10 @@
 {
  "_cos_e": "I LIMITI ENERGETICI DEL REGOLAMENTO 2026 — un file DA FIRMARE, non un artefatto generato.",
-
  "_perche_esiste": "La sezione Statistiche dichiara che l'energia della vettura non e' osservabile, e lo dimostra contando i canali del feed. Resta pero' una cosa sull'energia che si puo' dire con certezza: quanto e' PERMESSO. Quello sta scritto nel regolamento, ed e' pubblico.\n\nQuesta tabella era stata SCARTATA il 04/08/2026 con la motivazione «le fonti discordano» (peso 768 contro 770 kg, taper a 288 contro 290 km/h). La motivazione era sbagliata, e vale la pena scrivere perche': a discordare non sono le fonti primarie, sono le sintesi giornalistiche che arrotondano una DERIVAZIONE. Il testo FIA non dice «350 kW fino a 290 km/h»: dice P = 1800 - 5v. Da li' 350 kW si esauriscono a 290 km/h esatti, e la discordanza sparisce da sola.\n\nDa qui la regola di questo file: SI PUBBLICA LA FORMULA, NON LA SOGLIA. La soglia si deriva in pagina, dove chiunque puo' rifare il conto.",
-
- "firmato": false,
- "firmato_da": null,
- "firmato_il": null,
-
+ "firmato": true,
+ "firmato_da": "Tommi",
+ "firmato_il": "2026-08-04",
  "_come_si_firma": "Ogni voce porta `valore_proposto` e `articolo`. Il lavoro della firma NON e' trascrivere numeri: e' aprire il documento all'articolo indicato e confermare (o correggere) il valore proposto, spostandolo in `valore`. Una voce senza `valore` NON viene pubblicata — resta visibile qui come lavoro da fare, e la pagina non la mostra.\n\nI valori proposti vengono da una lettura del testo primario fatta il 04/08/2026 durante la ricerca sulla batteria. Sono attribuibili articolo per articolo, ma NON sono stati riletti da chi firma: e' esattamente per questo che il file nasce con firmato = false.\n\nQuando `firmato` diventa true, `gen_stat_regolamento.py` proietta in demo/data/stat/regolamento.json solo le voci con `valore`, e la pagina le mostra con l'articolo accanto a ognuna.",
-
  "documenti": {
   "sezione_C": {
    "titolo": "2026 Formula 1 Regulations — Section C [Technical]",
@@ -24,7 +20,6 @@
    "url": "https://www.fia.com/system/files/documents/fia_2026_f1_regulations_-_section_b_sporting_-_iss_07_-_2026-06-25.pdf"
   }
  },
-
  "voci": [
   {
    "id": "potenza-ers-k",
@@ -33,7 +28,7 @@
    "documento": "sezione_C",
    "unita": "kW",
    "valore_proposto": 350,
-   "valore": null,
+   "valore": 350,
    "nota": "e' il tetto assoluto, non la potenza sempre disponibile: quanta se ne possa schierare a una data velocita' lo dicono le curve di C5.2.8."
   },
   {
@@ -43,11 +38,39 @@
    "documento": "sezione_C",
    "unita": "kW in funzione di v (km/h)",
    "formula_proposta": [
-    {"da": null, "a": 340, "P": "1800 - 5*v"},
-    {"da": 340, "a": 345, "P": "6900 - 20*v"},
-    {"da": 345, "a": null, "P": "0"}
+    {
+     "da": null,
+     "a": 340,
+     "P": "1800 - 5*v"
+    },
+    {
+     "da": 340,
+     "a": 345,
+     "P": "6900 - 20*v"
+    },
+    {
+     "da": 345,
+     "a": null,
+     "P": "0"
+    }
    ],
-   "formula": null,
+   "formula": [
+    {
+     "da": null,
+     "a": 340,
+     "P": "1800 - 5*v"
+    },
+    {
+     "da": 340,
+     "a": 345,
+     "P": "6900 - 20*v"
+    },
+    {
+     "da": 345,
+     "a": null,
+     "P": "0"
+    }
+   ],
    "nota": "E' LA VOCE PIU' IMPORTANTE DEL FILE. Da 1800 - 5v si ricava che i 350 kW si esauriscono a 290 km/h ESATTI, e che il deployment e' zero da 345. Le sintesi che scrivono «288» o «355» stanno arrotondando questa derivazione o citando la curva dell'Overtake. Pubblicare la formula rende la discordanza inesistente invece che dichiarata."
   },
   {
@@ -57,10 +80,29 @@
    "documento": "sezione_C",
    "unita": "kW in funzione di v (km/h)",
    "formula_proposta": [
-    {"da": null, "a": 355, "P": "7100 - 20*v"},
-    {"da": 355, "a": null, "P": "0"}
+    {
+     "da": null,
+     "a": 355,
+     "P": "7100 - 20*v"
+    },
+    {
+     "da": 355,
+     "a": null,
+     "P": "0"
+    }
    ],
-   "formula": null,
+   "formula": [
+    {
+     "da": null,
+     "a": 355,
+     "P": "7100 - 20*v"
+    },
+    {
+     "da": 355,
+     "a": null,
+     "P": "0"
+    }
+   ],
    "nota": "e' da QUESTA curva che viene il numero «355 km/h» che circola: e' la soglia con Overtake attivo, non quella normale. Confonderle e' l'errore piu' comune."
   },
   {
@@ -70,10 +112,29 @@
    "documento": "sezione_C",
    "unita": "kW in funzione di v (km/h)",
    "formula_proposta": [
-    {"da": null, "a": 310, "P": "250"},
-    {"da": 310, "a": null, "P": "raccordo alla curva normale"}
+    {
+     "da": null,
+     "a": 310,
+     "P": "250"
+    },
+    {
+     "da": 310,
+     "a": null,
+     "P": "raccordo alla curva normale"
+    }
    ],
-   "formula": null,
+   "formula": [
+    {
+     "da": null,
+     "a": 310,
+     "P": "250"
+    },
+    {
+     "da": 310,
+     "a": null,
+     "P": "raccordo alla curva normale"
+    }
+   ],
    "nota": "introdotta IN CORSO DI STAGIONE. Quali settori lo decide la FIA gara per gara (B7.2.1.b), quindi questa voce non e' completa senza la comunicazione del singolo evento."
   },
   {
@@ -83,7 +144,7 @@
    "documento": "sezione_C",
    "unita": "MJ",
    "valore_proposto": 4,
-   "valore": null,
+   "valore": 4,
    "nota": "e' la finestra utilizzabile della batteria, non la sua capacita'."
   },
   {
@@ -93,7 +154,7 @@
    "documento": "sezione_C",
    "unita": "MJ",
    "valore_proposto": 8.5,
-   "valore": null,
+   "valore": 8.5,
    "riducibile_a": 7,
    "pavimento": 5,
    "addizionale": 0.5,
@@ -106,7 +167,7 @@
    "documento": "sezione_C",
    "unita": "numero",
    "valore_proposto": 2,
-   "valore": null,
+   "valore": 2,
    "nota": "vale la pena pubblicarlo accanto al muro dell'osservabilita': l'energia E' misurata a bordo, da sensori obbligatori. Non e' che non esista il dato — non e' pubblico."
   },
   {
@@ -116,7 +177,7 @@
    "documento": "sezione_B",
    "unita": "settimane",
    "valore_proposto": 4,
-   "valore": null,
+   "valore": 4,
    "nota": "i valori comunicati comprendono recharge massimo, Detection Gap, posizione di Detection e Activation Line, e i settori con la curva ridotta. E' la prova che NON esiste un solo valore per la stagione."
   },
   {
@@ -126,7 +187,7 @@
    "documento": "sezione_B",
    "unita": "gare",
    "valore_proposto": 12,
-   "valore": null,
+   "valore": 12,
    "nota": "serve a dichiarare che qualunque cronologia dei cambi in corsa e' PARZIALE finche' non si sono viste tutte le comunicazioni."
   },
   {
@@ -140,10 +201,10 @@
    "nota": "VOCE SENZA VALORE, ED E' IL PUNTO. «Entro un secondo» NON e' una costante di regolamento: il Detection Gap e' un valore che la FIA fissa gara per gara. Questa voce resta senza numero apposta, e la pagina la mostra come tale — e' l'esempio migliore di quanto sia facile pubblicare una costante che non esiste."
   }
  ],
-
  "_cosa_NON_entra_in_questo_file": {
   "tabella_MJ_per_circuito": "I valori per circuito che circolano (Monza 5 ... Monaco, Ungheria e Singapore 9 MJ) vengono da The Race, e l'articolo stesso li presenta come «current FORECASTS»: previsioni giornalistiche, non un documento FIA. Non entrano, e la pagina dice perche'.",
   "cronologia_dei_cambi": "I tre cambi noti (Melbourne, il pacchetto di Miami, il chiarimento sul recharge) sono documentati da testate, non dal testo. Possono stare in un articolo, non in una tabella di regolamento — e comunque sarebbero parziali, visto che B7.2.1.c ne consente fino a dodici.",
   "peso_minimo": "768 contro 770 kg: e' la discordanza citata quando la tabella fu scartata. Non riguarda l'energia e non serve a questa sezione; se un giorno servisse, va cercato il suo articolo nella Sezione C come tutti gli altri."
- }
+ },
+ "_come_e_stata_presa": "Decisione di Tommi del 04/08/2026 («ok firmo»). I valori accettati sono quelli PROPOSTI, che vengono da una lettura del testo primario FIA fatta durante la ricerca sulla batteria dello stesso giorno — NON da una rilettura indipendente del PDF da parte di chi firma. La distinzione va tenuta: la firma qui vale «accetto questi valori e me ne assumo la responsabilita'», non «ho riaperto il documento articolo per articolo». Se un numero risultasse sbagliato, il difetto e' nella lettura del 04/08, ed e' correggibile cambiando la riga e rilanciando aggiorna_stat.\n\nLa sentinella sull'Issue resta il presidio: se la FIA pubblica una revisione piu' recente della 19 (Sezione C) o della 07 (Sezione B), la CI diventa rossa e questa firma va rifatta."
 }

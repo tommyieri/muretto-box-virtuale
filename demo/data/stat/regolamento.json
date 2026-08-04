@@ -2,10 +2,10 @@
  "_nota": "GENERATO da gen_stat_regolamento.py da data/regolamento_2026.json, che e' firmato a mano. Non modificare a mano ne' l'uno ne' l'altro senza firmare.",
  "_generatore": "gen_stat_regolamento.py",
  "schema": 1,
- "calcolato_il": "2026-08-04T12:11:30+00:00",
+ "calcolato_il": "2026-08-04T12:44:01+00:00",
  "provenienza": {
   "sorgente": "data/regolamento_2026.json",
-  "sorgente_sha256_12": "f369e66f73ce",
+  "sorgente_sha256_12": "793c4875f542",
   "documenti": {
    "sezione_C": {
     "titolo": "2026 Formula 1 Regulations — Section C [Technical]",
@@ -25,18 +25,18 @@
  },
  "perimetro": {
   "anno": 2026,
-  "voci_pubblicate": 0,
-  "voci_da_firmare": 10,
+  "voci_pubblicate": 9,
+  "voci_da_firmare": 1,
   "note": [
    "si pubblica la FORMULA, non la soglia: le soglie qui sotto sono DERIVATE e marcate come tali, cosi' chiunque puo' rifare il conto.",
    "una voce senza valore confermato non si pubblica: resta in `da_firmare`."
   ]
  },
  "firma": {
-  "firmato": false,
-  "firmato_da": null,
-  "firmato_il": null,
-  "perche_grezzo": "il file non e' firmato: nessun numero di regolamento viene pubblicato. I valori proposti stanno in `da_firmare` e aspettano che qualcuno apra il documento all'articolo indicato e confermi."
+  "firmato": true,
+  "firmato_da": "Tommi",
+  "firmato_il": "2026-08-04",
+  "perche_grezzo": null
  },
  "sentinella_issue": {
   "issue_firmati": {
@@ -49,8 +49,7 @@
   "allarme": false,
   "cosa_significherebbe": "la Sezione C ha avuto diciannove revisioni in una stagione. Se la FIA ne pubblica una piu' recente di quella firmata, i numeri in pagina potrebbero non essere piu' quelli in vigore e la firma va rifatta sull'Issue nuovo."
  },
- "voci": [],
- "da_firmare": [
+ "voci": [
   {
    "id": "potenza-ers-k",
    "cosa": "Potenza elettrica DC assoluta dell'ERS-K",
@@ -60,8 +59,8 @@
    "data": "2026-06-25",
    "unita": "kW",
    "nota": "e' il tetto assoluto, non la potenza sempre disponibile: quanta se ne possa schierare a una data velocita' lo dicono le curve di C5.2.8.",
-   "valore_proposto": 350,
-   "formula_proposta": null
+   "valore": 350,
+   "formula": null
   },
   {
    "id": "curva-deployment-normale",
@@ -72,8 +71,8 @@
    "data": "2026-06-25",
    "unita": "kW in funzione di v (km/h)",
    "nota": "E' LA VOCE PIU' IMPORTANTE DEL FILE. Da 1800 - 5v si ricava che i 350 kW si esauriscono a 290 km/h ESATTI, e che il deployment e' zero da 345. Le sintesi che scrivono «288» o «355» stanno arrotondando questa derivazione o citando la curva dell'Overtake. Pubblicare la formula rende la discordanza inesistente invece che dichiarata.",
-   "valore_proposto": null,
-   "formula_proposta": [
+   "valore": null,
+   "formula": [
     {
      "da": null,
      "a": 340,
@@ -89,6 +88,20 @@
      "a": null,
      "P": "0"
     }
+   ],
+   "soglie_derivate": [
+    {
+     "a_km_h": 290.0,
+     "significato": "i 350 kW si esauriscono a",
+     "da_formula": "1800 - 5*v",
+     "derivata": true
+    },
+    {
+     "a_km_h": 345.0,
+     "significato": "il deployment e' zero da",
+     "da_formula": "6900 - 20*v",
+     "derivata": true
+    }
    ]
   },
   {
@@ -100,8 +113,8 @@
    "data": "2026-06-25",
    "unita": "kW in funzione di v (km/h)",
    "nota": "e' da QUESTA curva che viene il numero «355 km/h» che circola: e' la soglia con Overtake attivo, non quella normale. Confonderle e' l'errore piu' comune.",
-   "valore_proposto": null,
-   "formula_proposta": [
+   "valore": null,
+   "formula": [
     {
      "da": null,
      "a": 355,
@@ -111,6 +124,20 @@
      "da": 355,
      "a": null,
      "P": "0"
+    }
+   ],
+   "soglie_derivate": [
+    {
+     "a_km_h": 337.5,
+     "significato": "i 350 kW si esauriscono a",
+     "da_formula": "7100 - 20*v",
+     "derivata": true
+    },
+    {
+     "a_km_h": 355.0,
+     "significato": "il deployment e' zero da",
+     "da_formula": "7100 - 20*v",
+     "derivata": true
     }
    ]
   },
@@ -123,8 +150,8 @@
    "data": "2026-06-25",
    "unita": "kW in funzione di v (km/h)",
    "nota": "introdotta IN CORSO DI STAGIONE. Quali settori lo decide la FIA gara per gara (B7.2.1.b), quindi questa voce non e' completa senza la comunicazione del singolo evento.",
-   "valore_proposto": null,
-   "formula_proposta": [
+   "valore": null,
+   "formula": [
     {
      "da": null,
      "a": 310,
@@ -135,7 +162,8 @@
      "a": null,
      "P": "raccordo alla curva normale"
     }
-   ]
+   ],
+   "soglie_derivate": []
   },
   {
    "id": "finestra-soc",
@@ -146,8 +174,8 @@
    "data": "2026-06-25",
    "unita": "MJ",
    "nota": "e' la finestra utilizzabile della batteria, non la sua capacita'.",
-   "valore_proposto": 4,
-   "formula_proposta": null
+   "valore": 4,
+   "formula": null
   },
   {
    "id": "recharge-per-giro",
@@ -158,8 +186,11 @@
    "data": "2026-06-25",
    "unita": "MJ",
    "nota": "IL NUMERO PIU' FRAINTESO DELLA STAGIONE, e la ragione per cui le fonti sembrano litigare. 8,5 e' il tetto; (i) consente di scendere a 7; (ii) consente di scendere ulteriormente per Qualifica e Sprint Qualifica ma NON sotto 5; (iii) aggiunge fino a 0,5 MJ, da cui il 9 che si legge in giro. Nessuno di questi e' «il valore in vigore»: il valore in vigore lo comunica la FIA quattro settimane prima di ogni gara (B7.2.1.b).",
-   "valore_proposto": 8.5,
-   "formula_proposta": null
+   "valore": 8.5,
+   "formula": null,
+   "riducibile_a": 7,
+   "pavimento": 5,
+   "addizionale": 0.5
   },
   {
    "id": "sensori",
@@ -170,8 +201,8 @@
    "data": "2026-06-25",
    "unita": "numero",
    "nota": "vale la pena pubblicarlo accanto al muro dell'osservabilita': l'energia E' misurata a bordo, da sensori obbligatori. Non e' che non esista il dato — non e' pubblico.",
-   "valore_proposto": 2,
-   "formula_proposta": null
+   "valore": 2,
+   "formula": null
   },
   {
    "id": "comunicazione-preventiva",
@@ -182,8 +213,8 @@
    "data": "2026-06-25",
    "unita": "settimane",
    "nota": "i valori comunicati comprendono recharge massimo, Detection Gap, posizione di Detection e Activation Line, e i settori con la curva ridotta. E' la prova che NON esiste un solo valore per la stagione.",
-   "valore_proposto": 4,
-   "formula_proposta": null
+   "valore": 4,
+   "formula": null
   },
   {
    "id": "gare-con-limite-alternativo",
@@ -194,9 +225,11 @@
    "data": "2026-06-25",
    "unita": "gare",
    "nota": "serve a dichiarare che qualunque cronologia dei cambi in corsa e' PARZIALE finche' non si sono viste tutte le comunicazioni.",
-   "valore_proposto": 12,
-   "formula_proposta": null
-  },
+   "valore": 12,
+   "formula": null
+  }
+ ],
+ "da_firmare": [
   {
    "id": "detection-gap",
    "cosa": "Distacco entro cui si attiva l'Overtake",
