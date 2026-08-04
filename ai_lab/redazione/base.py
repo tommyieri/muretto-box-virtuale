@@ -56,7 +56,12 @@ def _md(articolo):
           "", f"> {articolo.get('sommario','')}", ""]
     for s in articolo.get("sezioni", []):
         md.append(f"## {s.get('tag','')} — {s.get('titolo','')}")
-        md.append(re.sub("<[^>]+>", "", s.get("html", "")).replace("</p>", "\n\n"))
+        # L'ORDINE CONTA: prima si traducono i </p> in interruzioni di paragrafo,
+        # POI si tolgono i tag. Al contrario (com'era) re.sub cancella anche i </p>
+        # e il replace successivo non trova piu' niente: i paragrafi si fondono e
+        # nascono 41 finte "frasi fuse" (zero.Non, batteria.E) che sembrano un
+        # difetto di scrittura e sono un difetto di questa riga.
+        md.append(re.sub("<[^>]+>", "", s.get("html", "").replace("</p>", "\n\n")))
         if s.get("figura"):
             md.append(f"*[figura] {s['figura'].get('didascalia','')} — "
                       f"fonte: {s['figura'].get('fonte','')}*")
@@ -69,50 +74,31 @@ def _md(articolo):
 
 
 def _riscrivi_con_llm(articolo, facts):
-    """Se il redattore LLM e' disponibile (pacchetto anthropic + chiave), riscrive
-    la PROSA delle sezioni (html + titolo) con la voce della redazione, MANTENENDO
-    grafici (figura), struttura (stessi tag, stesso ordine) e numeri (la guardia di
-    redattore.py rifiuta qualsiasi numero non tracciabile nei fatti).
+    """Passa l'articolo alla REDAZIONE (ai_lab/redazione/redazione.py): dossier ->
+    caposervizio -> firma -> correttore -> revisione guidata. I generatori non
+    sanno nulla di tutto questo: continuano a produrre il loro articolo a template,
+    che resta la rete di sicurezza.
 
-    Fallisce SEMPRE in sicurezza: senza chiave, senza pacchetto, con un mismatch o un
-    qualsiasi errore -> ritorna l'articolo INVARIATO (prosa a template). Cosi' il path
-    LLM non puo' rompere la generazione: al peggio resta il template gia' collaudato."""
+    Fallisce SEMPRE in sicurezza — senza credenziali, senza pacchetto, con un
+    guasto qualsiasi torna l'articolo di partenza — ma NON in silenzio: il campo
+    `scrittura` dice sempre che cosa e' successo ("llm", "llm+revisione(2)",
+    "template: <motivo>"). Il silenzio era il difetto vero del sistema precedente:
+    la riscrittura non riusciva mai e non c'era modo di accorgersene.
+
+    Storia: fino al 3/8/2026 questa funzione chiamava redattore.scrivi_prosa con un
+    breve che ordinava «STESSO ordine, STESSI tag, migliore stile». Non ha mai
+    prodotto una riga andata online — la guardia sui numeri respingeva la prosa
+    legittima confrontando "10191.0" dei fatti con "10.191" della pagina — e
+    anche se avesse funzionato avrebbe consegnato lo stesso articolo di prima con
+    parole diverse: la freddezza stava nel prompt, non nel modello."""
     try:
-        import redattore
-        if not redattore.disponibile():
-            return articolo
-        sez = articolo.get("sezioni", [])
-        if not sez:
-            return articolo
-        # numeri ammessi = tutti i numeri gia' presenti (fatti + provenienza + prosa template)
-        blob = json.dumps(facts or {}, ensure_ascii=False)
-        blob += " " + json.dumps(articolo.get("provenienza", []), ensure_ascii=False)
-        for s in sez:
-            blob += " " + (s.get("html") or "") + " " + (s.get("titolo") or "")
-        ammessi = redattore._numeri(blob)
-        breve = (f"Occhiello: {articolo.get('occhiello','')}\n"
-                 f"Titolo: {articolo.get('titolo','')}\n"
-                 f"Sommario: {articolo.get('sommario','')}\n\n"
-                 "Riscrivi la PROSA di queste sezioni con voce da redazione tecnica: "
-                 "STESSO ordine, STESSI tag, migliore stile e chiarezza, NESSUN numero "
-                 "nuovo o diverso da quelli gia' presenti. Struttura di riferimento "
-                 "(indice | tag | titolo | prosa attuale):\n" +
-                 "\n".join(f"[{i}] {s.get('tag','')} | {s.get('titolo','')} | {s.get('html','')}"
-                           for i, s in enumerate(sez)))
-        nuove = redattore.scrivi_prosa(facts or {}, breve, ammessi)
-        if not nuove or len(nuove) != len(sez):
-            return articolo  # mismatch o guardia non passata -> template
-        # merge: prosa/titolo dall'LLM, ma grafico (figura) e resto dal template
-        for i, s in enumerate(sez):
-            n = nuove[i] if isinstance(nuove[i], dict) else {}
-            if n.get("html"):
-                s["html"] = n["html"]
-            if n.get("titolo"):
-                s["titolo"] = n["titolo"]
-        articolo["scrittura"] = "llm"   # traccia: prosa LLM (default: template)
-        return articolo
-    except Exception:
-        return articolo  # fail-safe assoluto
+        import redazione
+        return redazione.riscrivi(articolo, facts)
+    except Exception as e:
+        a = dict(articolo)
+        a["scrittura"] = f"template: redazione non importabile ({e})"
+        print(f"  [redazione] non importabile: {e}")
+        return a
 
 
 def scrivi_bozza(id_, articolo, facts=None):

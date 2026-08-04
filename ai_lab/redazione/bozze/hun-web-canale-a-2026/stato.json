@@ -21,6 +21,24 @@
       "attore": "Tommi",
       "quando": "2026-07-25",
       "nota": "pubblicato all'approvazione"
+    },
+    {
+      "stato": "pubblicato",
+      "attore": "Tommi",
+      "quando": "2026-08-03",
+      "nota": "riscritto a mano sotto la nuova voce editoriale"
+    },
+    {
+      "stato": "pubblicato",
+      "attore": "Tommi",
+      "quando": "2026-08-03",
+      "nota": "riscritto a mano"
+    },
+    {
+      "stato": "pubblicato",
+      "attore": "Tommi",
+      "quando": "2026-08-03",
+      "nota": "riscritto a mano"
     }
   ]
 }

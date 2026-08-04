@@ -225,29 +225,26 @@ def _sezione(s) -> str:
 
 
 def _provenienza(art) -> str:
-    prov = art.get("provenienza") or []
-    if not prov:
-        return ""
-    righe = "".join(
-        f'<tr>\n    <td class="g">{esc(p.get("grandezza"))}</td>\n'
-        f'    <td class="v">{esc(p.get("valore"))}</td>\n'
-        f'    <td><span class="st st-{esc(p.get("stato"))}">{esc(p.get("stato"))}</span></td>\n'
-        f'    <td class="da">{esc(p.get("da"))}</td></tr>' for p in prov)
-    fonti = art.get("fonti") or []
-    blocco_fonti = ""
-    if fonti:
-        blocco_fonti = ('<div class="art-fonti">' + "".join(
-            f'<div><b>{esc(f.get("tipo"))}</b> — {esc(f.get("testo"))}</div>'
-            for f in fonti) + "</div>")
-    return (f'<section class="art-sez">\n'
-            f'    <div class="sez-tit"><span class="art-tag">Dati</span> '
-            f'Provenienza dei numeri</div>\n'
-            f'    <div class="panel art-prov"><table>\n'
-            f'      <thead><tr><th>grandezza</th><th>valore</th><th>stato</th>'
-            f'<th>da dove</th></tr></thead>\n'
-            f'      <tbody>{righe}</tbody></table></div>\n'
-            f'    {blocco_fonti}\n'
-            f'  </section>')
+    """NON SI RENDE PIU' (decisione di Tommi, 4/8/2026).
+
+    La tabella «Dati · Provenienza dei numeri» chiudeva ogni articolo con dieci
+    righe di metodo. Restava in fondo a un pezzo di quattrocento parole, e da
+    lettore ci arrivavi dopo la chiusa: la coda pesava quanto il corpo.
+
+    Il DATO NON SI TOCCA. `provenienza[]` e `fonti[]` restano in articolo.json,
+    restano validati (`base.STATI`), restano l'insieme su cui la guardia dei
+    numeri decide che cosa la prosa puo' scrivere, e restano leggibili a chi apre
+    il JSON. E' sparita la resa in pagina, non la tracciabilita': un numero senza
+    provenienza continua a non poter esistere.
+
+    Il patto di trasparenza si sposta cosi' dentro la prosa, dov'era gia' scritto
+    che dovesse stare (VOCE.md O1: il caveat sta nel corpo, non in fondo).
+
+    La funzione resta al suo posto, vuota, per due ragioni: e' la gemella di
+    quella JS in demo/articolo.html (le due rese devono restare allineate, ed e'
+    piu' facile vederlo se hanno gli stessi nomi), e riaccenderla e' cancellare
+    una riga."""
+    return ""
 
 
 def _corpo(art) -> str:

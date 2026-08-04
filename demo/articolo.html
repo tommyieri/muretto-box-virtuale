@@ -89,21 +89,17 @@ function sezione(s){
   </section>`;
 }
 
-function provenienza(art){
-  if (!art.provenienza?.length) return '';
-  const righe = art.provenienza.map(p => `<tr>
-    <td class="g">${esc(p.grandezza)}</td>
-    <td class="v">${esc(p.valore)}</td>
-    <td><span class="st st-${esc(p.stato)}">${esc(p.stato)}</span></td>
-    <td class="da">${esc(p.da)}</td></tr>`).join('');
-  return `<section class="art-sez">
-    <div class="sez-tit"><span class="art-tag">Dati</span> Provenienza dei numeri</div>
-    <div class="panel art-prov"><table>
-      <thead><tr><th>grandezza</th><th>valore</th><th>stato</th><th>da dove</th></tr></thead>
-      <tbody>${righe}</tbody></table></div>
-    ${art.fonti?.length ? `<div class="art-fonti">${art.fonti.map(f=>`<div><b>${esc(f.tipo)}</b> — ${esc(f.testo)}</div>`).join('')}</div>` : ''}
-  </section>`;
-}
+// NON SI RENDE PIU' (decisione di Tommi, 4/8/2026). La tabella «Dati ·
+// Provenienza dei numeri» chiudeva ogni articolo con dieci righe di metodo, e da
+// lettore ci arrivavi dopo la chiusa: la coda pesava quanto il corpo.
+//
+// Il DATO NON SI TOCCA: provenienza[] e fonti[] restano in demo/data/analisi/<id>.json,
+// restano l'insieme su cui la guardia dei numeri decide che cosa la prosa puo'
+// scrivere, e restano leggibili a chi apre il JSON. E' sparita la resa, non la
+// tracciabilita'.
+//
+// Gemella di statico.py::_provenienza — le due rese devono restare allineate.
+function provenienza(art){ return ''; }
 
 async function boot(){
   const id = new URLSearchParams(location.search).get('id');

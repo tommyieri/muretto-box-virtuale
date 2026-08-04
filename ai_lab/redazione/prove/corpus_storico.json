@@ -1,0 +1,77 @@
+{
+ "_nota": "Campione CONGELATO della prosa a template, com'era prima della riscrittura del 3/8/2026 (commit a09934a). Serve a una sola sentinella: il correttore deve conservare il POTERE di bocciare. Il modo naturale di rompere un controllo di stile non e' cancellarlo, e' allargarne le soglie finche' tutto passa — e allora questo file torna verde e la sentinella lo dice. NON e' un esempio da imitare: e' il metro.",
+ "preso_da": "git show a09934a:demo/data/analisi/<id>.json",
+ "articoli": [
+  {
+   "id": "lift-mercedes-gb-2026",
+   "titolo": "Il lift Mercedes prima del traguardo",
+   "sommario": "Sul giro lanciato a Silverstone entrambe le Mercedes staccano il piede dall'acceleratore poche decine di metri prima della linea. Nessun altro lo fa. Sul cronometro costa quasi nulla — ed è proprio questo il punto.",
+   "sezioni": [
+    {
+     "tag": "Evidenza",
+     "titolo": "Due auto, un gesto che nessun altro fa",
+     "html": "<p>La telemetria delle qualifiche del Gran Premio di Gran Bretagna mostra un gesto ripetuto e isolato: <b>ANT</b> e <b>RUS</b>, le due Mercedes, rilasciano l'acceleratore da pieno a chiuso nell'ultimo tratto del rettilineo del traguardo. Toccano il picco del rettilineo — <b>253 km/h</b> ANT, <b>247</b> RUS — e da lì alzano il piede fino a tagliare la linea con il pedale a zero. Sul suo giro più veloce (1:28,111) ANT è ancora a pieno gas a <b>45 metri</b> dalla linea, RUS a <b>51 metri</b>: da lì il pedale va a zero.</p><p>Non è un episodio isolato di un giro: ANT lo ripete in tutti e 6 i suoi giri lanciati, RUS in tutti e 5 i suoi giri lanciati. Gli altri venti piloti in pista — Ferrari, McLaren, Red Bull, Williams e tutto il resto dello schieramento — tagliano la linea con l'acceleratore ancora spalancato: su <b>85 giri lanciati misurati, zero lift</b>.</p>"
+    },
+    {
+     "tag": "Causa",
+     "titolo": "Non è il giro in corso: è la batteria per il prossimo",
+     "html": "<p>Il motivo non sta nel giro che si sta chiudendo, ma nel bilancio energetico dell'ibrido. L'unità di potenza recupera energia in due fasi — sotto frenata e in rilascio. Alzando il piede a qualche decina di metri dalla linea, la Mercedes trasforma per un istante la coda del rettilineo in una zona di recupero: il termico smette di spingere e parte dell'energia cinetica, che verrebbe altrimenti dissipata, rientra nella batteria.</p><p>È una scelta di gestione del <b>SOC</b> (state of charge) in vista del giro successivo. La potenza elettrica in F1 è a budget di energia per giro: chi arriva a fine giro con più carica ha più <i>deployment</i> da spendere dove pesa di più — in uscita dalle curve lente, all'imbocco dei rettilinei. Il lift prima della linea è il modo di finanziare quel margine nel punto in cui costa meno.</p><p>Quello che i nostri canali <b>non</b> vedono è la contropartita: lo stato di carica e il flusso dell'MGU-K non sono nella telemetria disponibile. Il recupero resta perciò una <b>variabile latente</b> — coerente con la fisica e con la sistematicità del gesto, ma non quantificabile in joule dai dati che abbiamo. Lo dichiariamo, invece di stimarlo di nascosto.</p>"
+    },
+    {
+     "tag": "Effetto",
+     "titolo": "Quasi gratis sul cronometro, ed è per questo che conviene",
+     "html": "<p>Sul tempo del giro che si sta chiudendo il lift costa pochissimo, ed è esattamente ciò che lo rende conveniente. Il tratto interessato è la coda del rettilineo, dove il giro è ormai fatto: tenendo la velocità del picco fino alla linea, ANT e RUS recupererebbero appena qualche millesimo — sull'ordine del millesimo di secondo, dentro il rumore di un giro cronometrato.</p><p>Il prezzo pagato in pista è tutto qui: qualche km/h in meno alla linea (<b>3,0 km/h</b> per ANT, <b>7,0</b> per RUS) e una manciata di millesimi che non spostano la posizione in griglia. In cambio, la batteria arriva al giro dopo con più margine. È un baratto quasi gratuito sul giro in corso per un vantaggio che si scarica altrove — la ragione per cui, per ora, conviene solo a chi ha scelto di gestire così l'energia: le due Mercedes.</p>"
+    }
+   ]
+  },
+  {
+   "id": "recap-weekend-hungaroring-2026",
+   "titolo": "Dove ha vinto NOR in Ungheria: la pole per 0,012 s (12 millesimi), il dominio nel passo gara",
+   "sommario": "Non chi ha vinto, ma DOVE nasce il vantaggio. NOR in pole per 0,012 s (12 millesimi) su HAM: minisettore per minisettore è un duello (14–10), e il vantaggio del giro è in curva, non in rettilineo. In gara il passo di NOR è 0,247 s/giro davanti al miglior rivale. Ogni numero è un sintomo misurato; la causa (aero, grip, assetto) resta NON_MISURABILE.",
+   "sezioni": [
+    {
+     "tag": "Evidenza",
+     "titolo": "Pole per 0,012 s (12 millesimi): un duello deciso sull'equilibrio",
+     "html": "<p>A <b>Hungaroring</b> la pole è di <b>NOR</b> (McLaren) in <b>1:17,207</b>, davanti a <b>HAM</b> (Ferrari) in <b>1:17,219</b>: <b>0,012 s (12 millesimi)</b> — circa <b>0,9 metri</b> di luce a fine giro. La pole è l'ordine del cronometro: in griglia le penalità possono spostare le posizioni, ma qui NOR è partito e ha vinto dalla pole. NOR firma pole e miglior passo gara: è il dominatore del weekend. Ma il come è più interessante del chi. Sul giro secco la pole è di appena 0,012 s (12 millesimi) su HAM (Ferrari); il vantaggio vero, largo, si vede in gara sul passo.</p><p>La mappa di dominanza spezza il giro in 24 minisettori e colora ciascuno del più veloce lì. Sul giro, HAM arriva a 0,047 s di vantaggio (a ~719 m, T1), poi NOR ribalta e tocca +0,19 s a T12; alla linea restano 0,012 s (12 millesimi). Minisettore per minisettore è un duello: NOR ne vince 14 su 24, HAM 10 — la pole si decide sull'equilibrio, non su un tratto solo.</p>"
+    },
+    {
+     "tag": "Evidenza",
+     "titolo": "Dove nasce il decimo: il vantaggio cumulato lungo il giro",
+     "html": "<p>La stessa storia sull'asse-distanza: sopra le due velocità, sotto il vantaggio cumulato calcolato con <code>delta_time</code> (l'endpoint coincide col margine reale, 0,012 s (12 millesimi)). Minisettore per minisettore è un duello: NOR ne vince 14 su 24, HAM 10 — la pole si decide sull'equilibrio, non su un tratto solo. Il tratto di massima pendenza — dove il cronometro corre più in fretta a favore di NOR — è attorno a <b>T7</b>: <b>100 ms</b> in un solo minisettore.</p><p>Attenzione al metodo: il vantaggio cumulato NON è l'integrazione grezza di 1/velocità (che non torna al tempo sul giro), ma il delta calibrato di FastF1. Il grafico mostra il SINTOMO — dove NOR guadagna tempo — non ancora il perché.</p>"
+    },
+    {
+     "tag": "Causa",
+     "titolo": "Il vantaggio è in curva, non in rettilineo",
+     "html": "<p>Il vantaggio di NOR sul giro non è in rettilineo — la punta più alta è di <b>HAM</b> (<b>333</b> vs <b>331 km/h</b>) — ma <b>in curva</b>. All'apice porta più velocità minima nelle curve di medio raggio: T7 +7, T10 +5, T4 +3 km/h. Il tratto dove il cronometro gira più in fretta a suo favore è attorno a <b>T7</b> (100 ms in un solo minisettore). A <b>T7</b> si vede il come: <b>NOR</b> stacca a 87 m dall'apice, <b>HAM</b> 3 m più tardi a 84 m; NOR <b>riapre il gas 16 m prima</b> (64 vs 80 m dopo l'apice). All'apice NOR tiene <b>111</b> contro <b>104 km/h</b> (+7).</p><p>È il sintomo, misurato metro per metro. La <b>causa</b> di quella velocità minima più alta — più carico aerodinamico, più grip meccanico, un assetto o una preparazione-gomma diversi — <b>non è misurabile</b> dalla telemetria: nel feed non c'è un canale di carico, mescola o temperatura. La registriamo come <code>NON_MISURABILE</code> e non la attribuiamo a un componente che non vediamo.</p>"
+    },
+    {
+     "tag": "Effetto",
+     "titolo": "Il dominio vero è il passo gara",
+     "html": "<p>In gara il quadro è più netto: sul passo — mediana dei giri-core verdi — <b>NOR</b> gira <b>1:24,501</b>, <b>0,247 s/giro</b> davanti al miglior rivale sul passo (<b>HAM</b>), e il gruppo si allarga fino a ~1,8 s nella top-10. Non è la costanza a fare la differenza — l'IQR di NOR è 1,88 s, più largo di HAM (1,29 s): a pesare è la mediana, non la dispersione.</p><p>Il giro secco è un duello di millesimi; il passo gara è dove il vantaggio diventa margine. Anche qui vale l'onestà d'obbligo: carburante, mescola e mappe motore non sono nei dati, quindi il passo è un riferimento robusto all'età-gomma solo entro-mescola, non un verdetto assoluto. Ma la direzione è chiara, e la telemetria l'ha localizzata: in curva sul giro secco, e nel passo in gara.</p>"
+    }
+   ]
+  },
+  {
+   "id": "compagni-marce-stowe-gb-2026",
+   "titolo": "Stowe, stessa Ferrari: LEC in 6ª dove HAM scala in 5ª",
+   "sommario": "In una curva veloce di Silverstone le due Ferrari passano l’apice a velocità vicina, ma con una marcia di differenza: LEC in 6ª, HAM in 5ª. E scalare non rende HAM più veloce — gli alza il regime. Non è un caso: è una scelta, e si ripete.",
+   "sezioni": [
+    {
+     "tag": "Evidenza",
+     "titolo": "Due Ferrari identiche, guidate in modo diverso",
+     "html": "<p>A Stowe — curva 15, l’apice si passa a circa 225 km/h in appoggio — la telemetria delle qualifiche mostra due Ferrari guidate in modo diverso. <b>LEC</b> passa l’apice in <b>6ª</b> su tutti e 6 i suoi giri lanciati; <b>HAM</b> scala in <b>5ª</b> in 4 dei 5.</p><p>All’apice le due Ferrari passano a velocità vicina — <b>225</b> contro <b>220 km/h</b> — e scalare non rende HAM più veloce: gli alza soltanto il regime, <b>1368 giri/min</b> più su. La differenza è tutta nella marcia. Non è nemmeno un caso isolato del singolo circuito: su tutto lo schieramento i compagni di squadra scelgono marce diverse all’apice in <b>13</b> punti del giro.</p>"
+    },
+    {
+     "tag": "Causa",
+     "titolo": "In una curva veloce la marcia non fa velocità: fa il retrotreno",
+     "html": "<p>La scelta della marcia in una curva veloce non serve a fare velocità di percorrenza — quella la decidono aerodinamica e gomme — ma a decidere come si comporta il retrotreno all’uscita. In <b>6ª</b> il motore gira più basso, vicino al regime di potenza, e ha poca coppia residua da scaricare a terra: la vettura è più stabile e prevedibile in appoggio. È la scelta di LEC.</p><p>In <b>5ª</b> il motore gira più su di giri, ha più coppia disponibile e fa ruotare di più la vettura all’uscita — più trazione e rotazione, al prezzo di un retrotreno più nervoso da gestire. È la scelta di HAM. È la stessa monoposto: cambia la mano del pilota. Il comportamento del retrotreno che ne segue lo interpretiamo dalla fisica; non è un canale che misuriamo.</p>"
+    },
+    {
+     "tag": "Effetto",
+     "titolo": "A parità di velocità, mille e quattrocento giri di distanza",
+     "html": "<p>A velocità di percorrenza vicina, <b>1368 giri/min</b> separano le due Ferrari: 6ª contro 5ª, stabilità contro rotazione. E scalare non compra velocità — HAM passa l’apice se mai un filo più piano. Non è un dettaglio di un solo punto: su tutta la griglia i compagni dissentono sulla marcia in <b>13</b> apici diversi. È la firma di due stili di guida che convivono nella stessa vettura.</p>"
+    }
+   ]
+  }
+ ]
+}
