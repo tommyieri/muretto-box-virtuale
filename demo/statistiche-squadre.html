@@ -360,8 +360,8 @@ function regolamento(r){
         <td><span class="nome">${esc(v.cosa)}</span>${v.nota
           ? `<div class="dim" style="font:12px/1.5 var(--sans);white-space:normal;max-width:52ch;padding-top:4px">${esc(v.nota)}</div>` : ''}</td>
         <td class="num">${v.formula
-          ? v.formula.map(t => `<div><span class="dim">${t.da != null ? `${t.da}–` : ''}${
-              t.a != null ? `${t.a} km/h` : 'oltre'}</span> <b>${esc(String(t.P))}</b></div>`).join('')
+          ? v.formula.map(t => `<div><span class="dim">${t.da == null ? `fino a ${t.a} km/h`
+              : t.a == null ? `da ${t.da} km/h` : `${t.da}–${t.a} km/h`}</span> <b>${esc(String(t.P))}</b></div>`).join('')
             + (v.soglie_derivate ?? []).map(sd =>
               `<div style="color:var(--accent);padding-top:4px">${esc(sd.significato)}
                 <b>${sd.a_km_h} km/h</b> <span class="dim">· derivata</span></div>`).join('')
@@ -375,9 +375,9 @@ function regolamento(r){
       il ${dataIt(r.firma.firmato_il)}. Le soglie in <span style="color:var(--accent)">accento</span>
       sono <b>derivate dalla formula</b>, non lette: è il motivo per cui qui non troverai il
       «288 contro 290 km/h» su cui le sintesi litigano — con la formula il conto è uno solo.</p>
-    ${(r.da_firmare ?? []).length ? `<div class="stat-assente"><b>${r.da_firmare.length} voci
-      non ancora firmate</b>${r.da_firmare.map(v => esc(v.articolo)).join(', ')} — non sono
-      pubblicate.</div>` : ''}
+    ${(r.da_firmare ?? []).length ? `<div class="stat-assente"><b>${r.da_firmare.length === 1
+      ? 'Una voce non è firmata' : `${r.da_firmare.length} voci non sono firmate`}</b>
+      ${r.da_firmare.map(v => `<b style="display:inline">${esc(v.articolo)}</b> — ${esc(v.nota ?? '')}`).join('<br>')}</div>` : ''}
     <details class="stat-metodo"><summary>Cosa NON entra in questa tabella</summary>
       <div class="in">${Object.entries(r.cosa_non_entra ?? {}).map(([k, v]) =>
         `<p><b>${esc(k.replace(/_/g, ' '))}</b> — ${esc(v)}</p>`).join('')}</div></details>`;
