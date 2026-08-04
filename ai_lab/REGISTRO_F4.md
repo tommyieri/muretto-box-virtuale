@@ -86,3 +86,39 @@ ricavabile dai nostri dati.
 | **F1** | raggiunto a 6 giri, strumento e margine dichiarati | `REGISTRO_F1.md` |
 | **F4** | **MANCATO** — 0 su 2, nessun meccanismo noto | questa pagina |
 | F2 · F3 · F5 | aperti | — |
+
+---
+
+## Aggiunta del 04/08/2026 — sotto l'accensione della vita mescola, F4 si muove
+
+**Questa sezione non riscrive la registrazione del 03/08**, che resta valida per la
+configurazione in cui è stata fatta. Registra una **misura nuova sotto una configurazione
+nuova**: il PO ha acceso `vita_mescola` il 04/08 (sigillo
+`simulatore/data/modelli/vita_mescola.json`).
+
+| gara | attesa Pirelli | pannelli con k ≥ 2, **03/08** | pannelli con k ≥ 2, **04/08** |
+|---|---|---|---|
+| **Spagna** | 2 soste come minimo | **0** su 1.099 | **52** su 1.099 · 4,7 % |
+| **Austria** | 2 soste | **0** su 1.211 | **21** su 1.211 · 1,7 % |
+
+Su tutta la stagione: **994 pannelli su 10.630 (9,4 %)** propongono due o più soste, contro
+**zero su 11.142**. Il massimo è **Monaco al 45,2 %** — che è la gara con l'**obbligo
+regolamentare delle due soste**, e dove quindi il motore ha cominciato a dire la cosa vera.
+
+### Come va letto, e i tre limiti
+
+1. **Non è una rimisura di F4 con lo stesso metro.** F4 è stato registrato su un motore in
+   cui la mescola era inerte; qui la mescola fa qualcosa. Le due righe della tabella non
+   sono confrontabili come «prima e dopo un fix»: sono due configurazioni diverse.
+2. **Il meccanismo che le produce è registrato NULL sulla previsione**
+   (`ai_lab/degrado/ESITO_vita_mescola.md`): il termine di vita **non** prevede la durata
+   di uno stint meglio di una mediana. È acceso per far esistere la scelta della mescola,
+   non perché predica meglio.
+3. **Due soste in una minoranza di pannelli non è «il piano propone due soste».** In Spagna
+   sono 52 su 1.099: il piano tipico resta a una sosta. Chi volesse dichiarare F4 raggiunto
+   dovrebbe prima decidere se la soglia si legge sul singolo pannello o sul pannello tipico
+   — e quella decisione va presa **prima** di guardare questi numeri, non dopo.
+
+**Non dichiaro F4 raggiunto.** La registrazione del 03/08 resta, e questa aggiunta dice
+soltanto che la configurazione accesa il 04/08 fa una cosa che quella vecchia non faceva
+mai.
