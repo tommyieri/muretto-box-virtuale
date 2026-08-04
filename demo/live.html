@@ -493,7 +493,7 @@ async function creaMurettoLive(g, deps = {}){
     mescole: contestoLive.mescole,
   };
 
-  let scelto = null, boxAperto = false, ridisegna = null;
+  let scelto = null, boxAperto = false, ridisegna = null, mescolaScelta = null;
   let lastRes = null, gp = null;   // ultima risposta del pannello + la messa in scena in corso
 
   // LA GRIGLIA DI SCELTA. Non una tendina: le sigle in chiaro, con la posizione, come una
@@ -585,7 +585,7 @@ async function creaMurettoLive(g, deps = {}){
     // traduce le celle del flusso nel contratto e chiama lo stesso montaggio del replay.
     const s = rispostaLive({
       byLap: bl, nGiriGara: nLaps, nomeGara: g.nome,
-      pilota: scelto, freezeLap: L, contestoLive,
+      pilota: scelto, freezeLap: L, contestoLive, mescolaScelta,
     });
     if (!s) {
       kv.innerHTML = `<div class="pitmsg">A questo giro non si sa su che gomma sta ${scelto}.
@@ -625,18 +625,35 @@ async function creaMurettoLive(g, deps = {}){
     scelto = b.dataset.drv; boxAperto = false; ridisegna();
   });
   el('mu-cambia').addEventListener('click', () => {
-    scelto = null; boxAperto = false; ridisegna();
+    scelto = null; boxAperto = false; mescolaScelta = null; ridisegna();
   });
   el('mu-box').addEventListener('click', () => { boxAperto = !boxAperto; ridisegna(); });
-  // IL SELETTORE MESCOLA NON E' PIU' AGGANCIATO, ed e' una perdita solo apparente.
-  // Misurato il 31/07/2026 sul pannello vecchio, su Spa: cambiando la mescola scelta la
-  // risposta cambiava in 0 casi su 24 (stessa posizione, stesso giro di rientro). Il
-  // motivo sta nel modello: nel 2026 le mescole NON separano il degrado (SOFT-HARD
-  // p = 0,209), quindi non c'e' niente da far cambiare. Il bottone restava vivo e
-  // rispondeva sempre la stessa cosa, che e' peggio di un bottone spento.
-  // Il selettore resta VISIBILE — mostra su che gomma si sta — e tornera' a decidere
-  // quando la Fase 3 (delta per mescola sul fondo, col suo cancello fuori campione)
-  // avra' qualcosa da dire. Fino ad allora e' un'informazione, non un comando.
+  // IL SELETTORE MESCOLA E' TORNATO UN COMANDO, il 04/08/2026.
+  //
+  // Era stato staccato il 31/07 per una ragione giusta: misurato su Spa, cambiando la
+  // mescola la risposta cambiava in 0 casi su 24, perche' nel motore la gomma non faceva
+  // niente. Un bottone che risponde sempre la stessa cosa e' peggio di un bottone spento.
+  //
+  // Adesso fa qualcosa: `vita_mescola` e' accesa (decisione del PO) e la scelta cambia la
+  // vita della gomma, quindi il piano e la curva. Misurato: a Monaco montare la soft invece
+  // della hard costa 10,9 s sull'intera gara, in Belgio 2,6.
+  //
+  // COSA NON FA, e sta scritto nel titolo di ogni pastiglia: non cambia il PASSO. L'effetto
+  // per mescola e' 0,0158 s per giro d'eta' fra la piu' dura e la piu' morbida, e resta
+  // sotto il rumore di un giro finche' la gomma non arriva a 22 giri d'eta'. E le vite
+  // vengono dalle 427 soste vere del 2026: sono decisioni dei team, non fisica.
+  //
+  // Funziona SOLO in diretta, e non e' una scelta: qui il motore gira in pagina e puo'
+  // rispondere: nel replay la vista e' pre-calcolata su una gomma sola.
+  el('mu-kv').addEventListener('click', (e) => {
+    const p = e.target.closest('.mescole [data-valore]');
+    if (!p || p.hasAttribute('disabled')) return;
+    const scelta = p.dataset.valore;
+    // ri-cliccare la gomma gia' scelta torna a quella vera: la scelta si annulla, non si
+    // incastra. Senza, chi ha provato una mescola non avrebbe piu' modo di tornare al vero.
+    mescolaScelta = (mescolaScelta === scelta) ? null : scelta;
+    ridisegna();
+  });
   // la torre resta un secondo modo di scegliere, ma SOLO prima di aver scelto: dopo, un
   // click distratto sulla classifica non deve cambiare il pilota di cui sei il muretto
   el('tw-list').addEventListener('click', e => {

@@ -1,0 +1,36 @@
+{
+ "_targhetta": {
+  "cosa_e": "La VITA della mescola in giri, per circuito: quanti giri una gomma resta dentro prima che il motore le faccia costare il doppio.",
+  "natura": "PRIOR_COMPORTAMENTALE",
+  "cosa_significa_la_natura": "Ricavato dalle DECISIONI osservate dei team, non dalla fisica misurata e non da una fonte esterna. Deroga firmata dal PO il 04/08/2026: simulatore/DEROGA_prior_comportamentale.md",
+  "cosa_NON_e": "NON e' la durata fisica del pneumatico. E' la durata che i team scelgono. Se sbagliano tutti allo stesso modo, il motore sbaglia con loro.",
+  "da_quante_decisioni": 427,
+  "perimetro": "stint 2026 conclusi da una sosta (esclusi quelli che finiscono con la bandiera: non sono decisioni sulla gomma), mescola slick, durata > 0",
+  "come_si_usa": "il passo aggiunge rho * max(0, eta - vita(mescola, circuito)); dentro la vita non succede niente",
+  "ESITO_DEI_CANCELLI": "NULL. ai_lab/degrado/ESITO_vita_mescola.md: V1 PASSA (batte il motore di oggi, errore mediano 8 giri contro 11) ma V2 NON PASSA (perde contro la mediana per mescola, 8 contro 5). Il termine NON migliora la previsione. E' acceso per DECISIONE DEL PO del 04/08/2026: serve a far esistere la scelta della mescola nel simulatore, non a predire meglio.",
+  "quanto_vale_leffetto": "Misurato dal campo (ai_lab/degrado/ESITO_degrado_dal_campo.md): il divario fra la mescola che degrada di piu' e quella che degrada di meno vale 0,01578 s per giro d'eta', e raggiunge il rumore di un singolo giro (0,346 s) solo a 21,9 giri d'eta' — cioe' quando i team la gomma la tolgono. L'effetto e' REALE (placebo su 200 rimescolamenti superato) e piu' piccolo del rumore per tutta la vita utile del pneumatico.",
+  "data": "2026-08-04",
+  "generato_da": "ai_lab/degrado/decisioni.mjs, mediane sulle 427 decisioni"
+ },
+ "attivo": true,
+ "giri": {
+  "SOFT": 12,
+  "MEDIUM": 19,
+  "HARD": 22
+ },
+ "_nota_fattore": "Il fattore moltiplica la vita di TUTTE le mescole su quel circuito. Si stima su tutte le mescole insieme (19-86 decisioni per circuito) perche' le celle circuito x mescola sono troppo magre: Canada e Miami hanno ZERO stint hard conclusi. ATTENZIONE: il fattore NON e' fisica della pista. Misurato: la vita e' piu' costante in GIRI (24,9% di variazione fra circuiti) che in CHILOMETRI (32,1%) o in frazione di gara (29,7%) — cioe' l'intuizione «pista corta, stint piu' lungo in giri» e' SMENTITA dai dati. Monaco fa stint di 15 giri e Spa di 16,5, benche' il giro di Monaco sia meta'. Il fattore basso di Monaco (0,789) viene dal regolamento — 4,30 soste per pilota, l'obbligo delle due soste — non dalle gomme.",
+ "fattore_circuito": {
+  "Australia": 0.711,
+  "Austria": 1.105,
+  "Belgio": 0.868,
+  "Canada": 1.105,
+  "Cina": 0.526,
+  "Giappone": 1.0,
+  "GranBretagna": 1.105,
+  "Miami": 1.395,
+  "Monaco": 0.789,
+  "Spagna": 0.842,
+  "Ungheria": 1.053
+ },
+ "_nota_circuito_ignoto": "Un circuito che non compare qui usa fattore 1: la vita globale, senza inventare un adattamento che non e' stato misurato (regola 6). Vale per Zandvoort il 23/08."
+}

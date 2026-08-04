@@ -199,9 +199,15 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   // ⇒ null ⇒ numeri bit-identici a prima (sentinella s37). Natura del parametro:
   // PRIOR_COMPORTAMENTALE — vedi simulatore/DEROGA_prior_comportamentale.md; cancelli:
   // ai_lab/degrado/PREREG_vita_mescola.md.
-  const vita = modello.vita_mescola?.attivo === true
-    ? modello.vita_mescola.giri
-    : null;
+  // Il FATTORE PER CIRCUITO moltiplica la vita di tutte le mescole. Un circuito che non
+  // compare nel sigillo usa fattore 1 — la vita globale, senza inventare un adattamento
+  // che non e' stato misurato (regola 6). Vale per Zandvoort il 23/08.
+  const vita = (() => {
+    const vm = contesto.vitaMescola ?? modello.vita_mescola;
+    if (vm?.attivo !== true || !vm.giri) return null;
+    const f = vm.fattore_circuito?.[gara] ?? 1;
+    return Object.fromEntries(Object.entries(vm.giri).map(([m, g]) => [m, g * f]));
+  })();
 
   const assunzioni = [];
   const dichiara = (codice, descrizione, conteggio, targhetta) => assunzioni.push({ codice, descrizione, conteggio, targhetta });

@@ -238,6 +238,7 @@ function main() {
   const costantiDirector = caricaCostanti(RADICE);
   const bandaRientro = JSON.parse(readFileSync(path.join(RADICE, 'data', 'modelli', 'banda_rientro.json'), 'utf8'));
   const orizzonteRisposta = JSON.parse(readFileSync(path.join(RADICE, 'data', 'modelli', 'orizzonte_risposta.json'), 'utf8'));
+  const vitaMescola = JSON.parse(readFileSync(path.join(RADICE, 'data', 'modelli', 'vita_mescola.json'), 'utf8'));
   const pEsiti = path.join(RADICE, 'data', 'modelli', 'esiti_per_caso.json');
   const esitiPerCaso = existsSync(pEsiti) ? JSON.parse(readFileSync(pEsiti, 'utf8')) : null;
   const extra = {
@@ -325,7 +326,7 @@ function main() {
     // leggeva vedeva solo l'orizzonte del PASSO (10) — deducendone che fino a li' la
     // risposta fosse buona, che REGISTRO_F1.md dice essere falso fra 7 e 10 giri.
     // E' E20 nella sua forma tipica: due pezzi della stessa decisione, spenti uno solo.
-    const contesto = { gare, modello, prior, costantiDirector, bandaRientro, esitiPerCaso, orizzonteRisposta, nGiriGara: gara.nGiri };
+    const contesto = { gare, modello, prior, costantiDirector, bandaRientro, esitiPerCaso, orizzonteRisposta, vitaMescola, nGiriGara: gara.nGiri };
     const ind = generaVistaGara(RADICE, nomeGara, gara, contesto, extra, dove);
     const n = Object.values(ind.piloti).reduce((s, x) => s + x.con_risposta, 0);
     totScen += n;

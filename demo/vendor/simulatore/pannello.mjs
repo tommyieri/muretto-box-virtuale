@@ -301,7 +301,12 @@ function percheSoste(s) {
 }
 
 /**
- * Le mescole: si MOSTRANO, non si scelgono. Non e' una rinuncia, e' una misura.
+ * Le mescole: dal 04/08/2026 si SCELGONO davvero — in diretta, dove il motore gira in
+ * pagina e puo' rispondere alla scelta. Nel replay restano un'informazione, perche' la
+ * vista e' pre-calcolata su una gomma sola.
+ *
+ * QUELLO CHE SEGUE E' LA STORIA DI PERCHE' NON SI SCEGLIEVANO, e resta perche' spiega cosa
+ * e' cambiato e cosa NO.
  *
  * Erano bottoni, e sembravano un comando. Misurato sul motore precedente:
  * cambiando la mescola dello scenario la risposta cambiava in 0 casi su 24.
@@ -326,8 +331,11 @@ function selettoreMescole(vista, s) {
       disabilitato: !m.attiva,
       titolo: m.attiva
         ? (m.codice === s.mescola_scelta
-          ? 'gomma montata adesso. Nel 2026 le mescole non separano il degrado (p = 0,209): cambiarla non sposterebbe la risposta, quindi qui si mostra e non si sceglie'
-          : 'mescola della stagione — non selezionabile: nel 2026 le mescole non separano il degrado (p = 0,209)')
+          ? 'la gomma che stai montando in questo scenario'
+          : 'monta questa: cambia la vita della gomma, non il suo passo. L\'effetto e\' misurato '
+            + '(0,0158 s per giro d\'eta\' fra la piu\' dura e la piu\' morbida) ed e\' piu\' piccolo del '
+            + 'rumore di un giro finche\' la gomma non arriva a 22 giri. Le vite vengono dalle 427 '
+            + 'soste vere del 2026, non dalla fisica: sono decisioni dei team.')
         : m.motivo,
       valore: m.codice,
     }, txt(m.codice))));
