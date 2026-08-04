@@ -215,7 +215,7 @@
         <a href="stagione.html">Stagione</a>
         <a href="live.html"><span class="dot"></span>Live</a>
         <a href="analisi.html" class="on">Analisi</a>
-        <a href="classifiche.html">Classifiche</a>
+        <a href="statistiche.html">Statistiche</a>
       </nav>
     </div>
 
@@ -238,26 +238,15 @@
            qui sotto lo sostituisce con la vista raggruppata per Gran Premio.
            Rigenerato da ai_lab/redazione/statico.py fra i due marcatori. -->
       <div id="grid">
-        <!-- STRUMENTI DI STAGIONE, versione crawlabile. Sono due link veri, perche'
-             Google segue <a href> e non il JS. Il JS qui sotto sostituisce tutto il
-             contenuto di #grid e li ridisegna DENTRO «Valgono tutta la stagione»,
-             che e' il loro posto: non invecchiano, si ricalcolano a ogni gara.
-             Testo e destinazioni stanno in UN posto solo, la costante STRUMENTI
-             del JS; questo blocco e' la sua copia statica per i crawler. -->
-        <div class="strumenti">
-          <a class="strum" href="forza.html">
-            <span class="strum-tag">Interattivo · si aggiorna a ogni gara</span>
-            <b>Forza-macchina, gara per gara</b>
-            <span class="strum-d">Quanto è forte ogni vettura in ogni gara — dal potenziale, non dal piazzamento. Lo slider sceglie l'intervallo e mostra come cambia la gerarchia.</span>
-            <span class="strum-go">Apri →</span>
-          </a>
-          <a class="strum" href="dati.html">
-            <span class="strum-tag">Interattivo · si aggiorna a ogni gara</span>
-            <b>Assetto e DNA dei circuiti</b>
-            <span class="strum-d">Assetto dei team (punta vs curva) e carattere dei tracciati (motore vs carico), gara per gara. Scegli la vista e le tabelle si ricalcolano.</span>
-            <span class="strum-go">Apri →</span>
-          </a>
-        </div>
+        <!-- GLI STRUMENTI DI STAGIONE SONO USCITI DA QUI il 04/08/2026.
+             forza.html e dati.html non invecchiano e si ricalcolano a ogni gara: sono
+             materiale di STATISTICHE, non articoli. Hanno conservato il loro indirizzo e
+             la loro voce di sitemap; e' cambiata solo la porta da cui ci si arriva, che
+             adesso e' statistiche-squadre.html (#team e #vetture). Analisi torna a essere
+             quello che dice di essere: gli articoli della redazione.
+             La rimozione e i link nuovi stanno nello STESSO commit — separarli avrebbe
+             lasciato due pagine vive e irraggiungibili, che e' il difetto che questa
+             sezione nasce per curare. -->
         <!-- ELENCO:INIZIO — generato da ai_lab/redazione/statico.py, non modificare a mano -->
         <div class="grid">
           <a class="card" href="articolo/recap-weekend-hungaroring-2026.html" style="--ac:#FF8000"><div class="eyebrow">Hungaroring · il weekend · round 11</div><h3>Dodici millesimi, e nascono quasi tutti in centottanta metri</h3><p>La pole più stretta della stagione non si decide su un tratto solo, dicono i minisettori. Guardando dove il cronometro corre più in fretta, invece, si decide eccome: in una curva sola, e il resto del giro serve a restituirla quasi tutta.</p><div class="foot"><span class="meta">Hungaroring · Weekend · 26 luglio 2026</span><span class="go">Leggi →</span></div><div class="chips"><span class="chip">telemetria</span><span class="chip">recap</span><span class="chip">weekend</span></div></a>
@@ -316,7 +305,7 @@
       <nav>
         <a href="stagione.html">Stagione</a>
         <a href="live.html">Live</a>
-        <a href="classifiche.html">Classifiche</a>
+        <a href="statistiche.html">Statistiche</a>
       </nav>
     </div>
   </footer>
@@ -392,31 +381,25 @@ function sezione(eyebrow, nome, meta, arts, extra, prima){
 // JSON che quei due generatori producono. Se un giro post-gara salta, la data
 // resta indietro e si vede — che e' il punto: una promessa di freschezza che non
 // si puo' controllare e' peggio di nessuna promessa.
-const STRUMENTI = [
-  { href:'forza.html', dati:'data/analisi/forza_macchina.json',
-    nome:'Forza-macchina, gara per gara',
-    d:"Quanto è forte ogni vettura in ogni gara — dal potenziale, non dal piazzamento. Lo slider sceglie l'intervallo e mostra come cambia la gerarchia." },
-  { href:'dati.html', dati:'data/analisi/stagione_dati.json',
-    nome:'Assetto e DNA dei circuiti',
-    d:'Assetto dei team (punta vs curva) e carattere dei tracciati (motore vs carico), gara per gara. Scegli la vista e le tabelle si ricalcolano.' },
-];
-
+// IL PONTE VERSO STATISTICHE. Dal 04/08/2026 forza.html e dati.html non sono piu' due
+// tessere di questa pagina: sono le viste estese di due moduli di Statistiche, e i loro
+// indirizzi non sono cambiati. Qui resta UNA tessera che dice dove sono andati — chi le
+// conosceva da qui deve poterle ritrovare, altrimenti spostarle equivale a nasconderle.
+// La riga di freschezza continua a essere LETTA dal JSON, non promessa a mano: se un giro
+// post-gara salta, la data resta indietro e si vede.
 async function strumentiHtml(){
-  const stato = await Promise.all(STRUMENTI.map(async s => {
-    try {
-      const d = await (await fetch(s.dati)).json();
-      return d && d.aggiornato
-        ? `Aggiornato al ${dataIt(d.aggiornato)} · ${d.n_gare} gare`
-        : 'Interattivo · si aggiorna a ogni gara';
-    } catch(e){ return 'Interattivo · si aggiorna a ogni gara'; }
-  }));
-  return `<div class="strumenti">` + STRUMENTI.map((s,i) => `
-    <a class="strum" href="${s.href}">
-      <span class="strum-tag">${esc(stato[i])}</span>
-      <b>${esc(s.nome)}</b>
-      <span class="strum-d">${esc(s.d)}</span>
-      <span class="strum-go">Apri →</span>
-    </a>`).join('') + `</div>`;
+  let quando = 'Si ricalcolano a ogni gara';
+  try {
+    const d = await (await fetch('data/analisi/forza_macchina.json')).json();
+    if (d && d.aggiornato) quando = `Aggiornati al ${dataIt(d.aggiornato)} · ${d.n_gare} gare`;
+  } catch(e){}
+  return `<div class="strumenti">
+    <a class="strum" href="statistiche-squadre.html">
+      <span class="strum-tag">${esc(quando)}</span>
+      <b>Gli strumenti di stagione sono in Statistiche</b>
+      <span class="strum-d">Forza-macchina gara per gara e assetto punta-vs-curva col DNA dei circuiti: non raccontano un weekend, si ricalcolano dopo ognuno. La loro casa è la sezione Statistiche, insieme alle classifiche e ai confronti fra stagioni.</span>
+      <span class="strum-go">Vai a Squadre e vetture →</span>
+    </a></div>`;
 }
 async function bootArticoli(){
   const revisore = new URLSearchParams(location.search).get('bozze') === '1';

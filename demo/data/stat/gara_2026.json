@@ -1,0 +1,3807 @@
+{
+ "_nota": "GENERATO da gen_stat_gara.py. Non modificare a mano: si rigenera a ogni gara con `python3 aggiorna_stat.py`.",
+ "_generatore": "gen_stat_gara.py",
+ "schema": 1,
+ "calcolato_il": "2026-08-04T09:24:42+00:00",
+ "provenienza": {
+  "f1db_release_pinnata": "v2026.11.0",
+  "f1db_release_letta": "v2026.11.0",
+  "f1db_fallback_default": "v2026.10.0",
+  "come": "zip esplicito (--zip)",
+  "zip": "f1db-csv-v2026.11.0.zip",
+  "zip_sha256_12": "d5461cd30c57",
+  "tabelle": [
+   "races-pit-stops",
+   "races-race-results"
+  ],
+  "artefatti_letti": [
+   {
+    "path": "data/ritiri_raggruppamento.json",
+    "sha256_12": "3b14b76f0803"
+   },
+   {
+    "path": "data/classifica_giro_2026.csv",
+    "sha256_12": "1971e8318031"
+   },
+   {
+    "path": "demo/data/pitstops_2026.json",
+    "sha256_12": "0417bfa8b614"
+   },
+   {
+    "path": "demo/data/ufficiali_2026.json",
+    "sha256_12": "4bdda5a89fdf"
+   },
+   {
+    "path": "data/status_vocabolario.csv",
+    "sha256_12": "60d1486c0dbe"
+   }
+  ]
+ },
+ "perimetro": {
+  "anno": 2026,
+  "gare": [
+   "Australia",
+   "Cina",
+   "Giappone",
+   "Miami",
+   "Canada",
+   "Monaco",
+   "Spagna",
+   "Austria",
+   "Gran Bretagna",
+   "Belgio",
+   "Ungheria"
+  ],
+  "assenti": [],
+  "note": [
+   "11 gare con dati per-giro, su 11 corse e pubblicate.",
+   "il perimetro e' derivato: le gare vengono dal calendario incrociato con le righe davvero presenti nel per-giro, mai da un elenco scritto nel sorgente."
+  ]
+ },
+ "giri_testa": {
+  "metodo": "leader = la riga con pos == 1 in data/classifica_giro_2026.csv. NON dedotto dal tempo cumulato: quando un giro manca il feed copia il tempo-sessione del leader e nascono pareggi al millesimo (a Cina, giro 1, cinque piloti hanno lo stesso 3483,760). Col cum_time il leader del giro 1 e' sbagliato in 3 gare su 11.",
+  "verde_vs_neutralizzato": "un giro condotto dietro la safety car conta, ma separatamente: la domanda e' chi ha guidato la corsa, non chi era davanti.",
+  "giri_totali": 673,
+  "giri_attribuiti": 673,
+  "giri_senza_leader": [],
+  "piloti": [
+   {
+    "pilota": "ANT",
+    "verdi": 272,
+    "neutralizzati": 31,
+    "totale": 303
+   },
+   {
+    "pilota": "RUS",
+    "verdi": 141,
+    "neutralizzati": 5,
+    "totale": 146
+   },
+   {
+    "pilota": "LEC",
+    "verdi": 70,
+    "neutralizzati": 20,
+    "totale": 90
+   },
+   {
+    "pilota": "NOR",
+    "verdi": 49,
+    "neutralizzati": 3,
+    "totale": 52
+   },
+   {
+    "pilota": "PIA",
+    "verdi": 41,
+    "neutralizzati": 0,
+    "totale": 41
+   },
+   {
+    "pilota": "HAM",
+    "verdi": 28,
+    "neutralizzati": 5,
+    "totale": 33
+   },
+   {
+    "pilota": "VER",
+    "verdi": 8,
+    "neutralizzati": 0,
+    "totale": 8
+   }
+  ],
+  "per_gara": {
+   "Australia": {
+    "n_giri": 58,
+    "attribuiti": 58,
+    "sequenza": [
+     "LEC",
+     "RUS",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "HAM",
+     "HAM",
+     "HAM",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS"
+    ],
+    "cambi_al_comando": 4
+   },
+   "Cina": {
+    "n_giri": 56,
+    "attribuiti": 56,
+    "sequenza": [
+     "HAM",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT"
+    ],
+    "cambi_al_comando": 1
+   },
+   "Giappone": {
+    "n_giri": 53,
+    "attribuiti": 53,
+    "sequenza": [
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "RUS",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "RUS",
+     "RUS",
+     "RUS",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT"
+    ],
+    "cambi_al_comando": 4
+   },
+   "Miami": {
+    "n_giri": 57,
+    "attribuiti": 57,
+    "sequenza": [
+     "LEC",
+     "LEC",
+     "LEC",
+     "ANT",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "VER",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT"
+    ],
+    "cambi_al_comando": 5
+   },
+   "Canada": {
+    "n_giri": 68,
+    "attribuiti": 68,
+    "sequenza": [
+     "NOR",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "ANT",
+     "ANT",
+     "ANT",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT"
+    ],
+    "cambi_al_comando": 5
+   },
+   "Monaco": {
+    "n_giri": 78,
+    "attribuiti": 78,
+    "sequenza": [
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT"
+    ],
+    "cambi_al_comando": 0
+   },
+   "Spagna": {
+    "n_giri": 66,
+    "attribuiti": 66,
+    "sequenza": [
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "ANT",
+     "ANT",
+     "LEC",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "ANT",
+     "ANT",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM",
+     "HAM"
+    ],
+    "cambi_al_comando": 5
+   },
+   "Austria": {
+    "n_giri": 71,
+    "attribuiti": 71,
+    "sequenza": [
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "VER",
+     "VER",
+     "VER",
+     "VER",
+     "VER",
+     "VER",
+     "ANT",
+     "ANT",
+     "ANT",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS",
+     "RUS"
+    ],
+    "cambi_al_comando": 5
+   },
+   "Gran Bretagna": {
+    "n_giri": 52,
+    "attribuiti": 52,
+    "sequenza": [
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC"
+    ],
+    "cambi_al_comando": 2
+   },
+   "Belgio": {
+    "n_giri": 44,
+    "attribuiti": 44,
+    "sequenza": [
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "LEC",
+     "LEC",
+     "NOR",
+     "NOR",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "LEC",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT"
+    ],
+    "cambi_al_comando": 4
+   },
+   "Ungheria": {
+    "n_giri": 70,
+    "attribuiti": 70,
+    "sequenza": [
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "NOR",
+     "NOR",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "PIA",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "VER",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "ANT",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR",
+     "NOR"
+    ],
+    "cambi_al_comando": 7
+   }
+  }
+ },
+ "neutralizzazioni": {
+  "metodo": "i digit del campo `status` di ogni giro-auto, secondo data/status_vocabolario.csv (4 = safety car, 6 = virtual safety car, 5 = bandiera rossa). Il regime di un giro e' l'unione dei digit visti su tutte le auto di quel giro: una singola auto ai box puo' non vedere la bandiera.",
+  "perche_tre_metriche": "dispiegamenti, giri di gara neutralizzati e quota di giri-auto sono tre grandezze diverse e danno classifiche diverse. Sono pubblicate tutte e tre.",
+  "non_neutralizzazioni": "il digit 2 (giallo di settore) e il 7 (VSC in chiusura) sono IPOTESI sul vocabolario FIA, non committate dal progetto: non contano come neutralizzazione.",
+  "dove_NON_stanno": "demo/data/race_control_2026.json non contiene le safety car: il suo vocabolario ha solo giallo/info/penalita. Chi le cerca li' ne trova due in tutta la stagione invece di tutte quelle che ci sono.",
+  "per_gara": {
+   "Australia": {
+    "n_giri": 58,
+    "dispiegamenti": {
+     "sc": 0,
+     "vsc": 4,
+     "rosso": 0
+    },
+    "giri_di_gara_per_regime": {
+     "sc": 0,
+     "vsc": 13,
+     "rosso": 0
+    },
+    "giri_auto_totali": 1007,
+    "giri_auto_neutralizzati": 120,
+    "quota_neutralizzata": 0.1192
+   },
+   "Cina": {
+    "n_giri": 56,
+    "dispiegamenti": {
+     "sc": 1,
+     "vsc": 0,
+     "rosso": 0
+    },
+    "giri_di_gara_per_regime": {
+     "sc": 4,
+     "vsc": 0,
+     "rosso": 0
+    },
+    "giri_auto_totali": 924,
+    "giri_auto_neutralizzati": 69,
+    "quota_neutralizzata": 0.0747
+   },
+   "Giappone": {
+    "n_giri": 53,
+    "dispiegamenti": {
+     "sc": 1,
+     "vsc": 0,
+     "rosso": 0
+    },
+    "giri_di_gara_per_regime": {
+     "sc": 7,
+     "vsc": 0,
+     "rosso": 0
+    },
+    "giri_auto_totali": 1107,
+    "giri_auto_neutralizzati": 135,
+    "quota_neutralizzata": 0.122
+   },
+   "Miami": {
+    "n_giri": 57,
+    "dispiegamenti": {
+     "sc": 1,
+     "vsc": 0,
+     "rosso": 0
+    },
+    "giri_di_gara_per_regime": {
+     "sc": 7,
+     "vsc": 0,
+     "rosso": 0
+    },
+    "giri_auto_totali": 1040,
+    "giri_auto_neutralizzati": 121,
+    "quota_neutralizzata": 0.1163
+   },
+   "Canada": {
+    "n_giri": 68,
+    "dispiegamenti": {
+     "sc": 0,
+     "vsc": 3,
+     "rosso": 0
+    },
+    "giri_di_gara_per_regime": {
+     "sc": 0,
+     "vsc": 15,
+     "rosso": 0
+    },
+    "giri_auto_totali": 1212,
+    "giri_auto_neutralizzati": 100,
+    "quota_neutralizzata": 0.0825
+   },
+   "Monaco": {
+    "n_giri": 78,
+    "dispiegamenti": {
+     "sc": 1,
+     "vsc": 0,
+     "rosso": 1
+    },
+    "giri_di_gara_per_regime": {
+     "sc": 14,
+     "vsc": 0,
+     "rosso": 2
+    },
+    "giri_auto_totali": 1452,
+    "giri_auto_neutralizzati": 208,
+    "quota_neutralizzata": 0.1433
+   },
+   "Spagna": {
+    "n_giri": 66,
+    "dispiegamenti": {
+     "sc": 0,
+     "vsc": 4,
+     "rosso": 0
+    },
+    "giri_di_gara_per_regime": {
+     "sc": 0,
+     "vsc": 15,
+     "rosso": 0
+    },
+    "giri_auto_totali": 1236,
+    "giri_auto_neutralizzati": 91,
+    "quota_neutralizzata": 0.0736
+   },
+   "Austria": {
+    "n_giri": 71,
+    "dispiegamenti": {
+     "sc": 0,
+     "vsc": 2,
+     "rosso": 0
+    },
+    "giri_di_gara_per_regime": {
+     "sc": 0,
+     "vsc": 7,
+     "rosso": 0
+    },
+    "giri_auto_totali": 1339,
+    "giri_auto_neutralizzati": 76,
+    "quota_neutralizzata": 0.0568
+   },
+   "Gran Bretagna": {
+    "n_giri": 52,
+    "dispiegamenti": {
+     "sc": 1,
+     "vsc": 2,
+     "rosso": 0
+    },
+    "giri_di_gara_per_regime": {
+     "sc": 8,
+     "vsc": 7,
+     "rosso": 0
+    },
+    "giri_auto_totali": 1113,
+    "giri_auto_neutralizzati": 177,
+    "quota_neutralizzata": 0.159
+   },
+   "Belgio": {
+    "n_giri": 44,
+    "dispiegamenti": {
+     "sc": 1,
+     "vsc": 1,
+     "rosso": 0
+    },
+    "giri_di_gara_per_regime": {
+     "sc": 4,
+     "vsc": 5,
+     "rosso": 0
+    },
+    "giri_auto_totali": 872,
+    "giri_auto_neutralizzati": 139,
+    "quota_neutralizzata": 0.1594
+   },
+   "Ungheria": {
+    "n_giri": 70,
+    "dispiegamenti": {
+     "sc": 0,
+     "vsc": 1,
+     "rosso": 0
+    },
+    "giri_di_gara_per_regime": {
+     "sc": 0,
+     "vsc": 4,
+     "rosso": 0
+    },
+    "giri_auto_totali": 1431,
+    "giri_auto_neutralizzati": 35,
+    "quota_neutralizzata": 0.0245
+   }
+  }
+ },
+ "soste": {
+  "metodo": "il conteggio pubblicato viene da demo/data/pitstops_2026.json, che il suo generatore rimisura a ogni esecuzione contro il censimento FastF1 e che qui e' confrontato con f1db races-pit-stops.",
+  "attenzione_semantica": "la DURATA in pitstops_2026.json e' il TRANSITO IN PIT LANE (circa 22 s), non l'auto ferma e non i secondi persi contro chi resta in pista. Sono tre grandezze diverse con nomi simili: «durata sosta», «transito pit lane» e «pit-loss».",
+  "arbitro": {
+   "fonte": "f1db races-pit-stops",
+   "coppie_confrontate": 219,
+   "concordi": 219,
+   "discordi": [],
+   "nota_numerazione": "il campo `stop` di f1db SALTA dei numeri (Australia STR: 1, 2, 4). Le soste si contano per RIGHE, non col numero di sosta piu' alto: con max(stop) si conterebbe una sosta in piu' in 5 casi su 219."
+  },
+  "i_tre_conteggi": {
+   "A_file_soste": "righe di pitstops_2026.json — confermato dall'arbitro",
+   "B_da_stint": "massimo stint meno uno — sbaglia dove uno stint non si chiude",
+   "C_righe_pit": "NON e' un conteggio di soste: il flag segna sia il giro d'ingresso sia quello d'uscita, e vale circa il doppio",
+   "accordo_A_B": 214,
+   "accordo_A_C": 13,
+   "coppie": 241
+  },
+  "per_gara": {
+   "Australia": {
+    "soste_totali": 30,
+    "per_pilota_mediana": 1,
+    "distribuzione": {
+     "0": 2,
+     "1": 10,
+     "2": 7,
+     "3": 2
+    }
+   },
+   "Cina": {
+    "soste_totali": 19,
+    "per_pilota_mediana": 1,
+    "distribuzione": {
+     "0": 5,
+     "1": 15,
+     "2": 2
+    }
+   },
+   "Giappone": {
+    "soste_totali": 26,
+    "per_pilota_mediana": 1,
+    "distribuzione": {
+     "1": 19,
+     "2": 2,
+     "3": 1
+    }
+   },
+   "Miami": {
+    "soste_totali": 21,
+    "per_pilota_mediana": 1,
+    "distribuzione": {
+     "0": 3,
+     "1": 17,
+     "2": 2
+    }
+   },
+   "Canada": {
+    "soste_totali": 30,
+    "per_pilota_mediana": 1,
+    "distribuzione": {
+     "0": 4,
+     "1": 10,
+     "2": 5,
+     "3": 2,
+     "4": 1
+    }
+   },
+   "Monaco": {
+    "soste_totali": 28,
+    "per_pilota_mediana": 1,
+    "distribuzione": {
+     "0": 3,
+     "1": 11,
+     "2": 7,
+     "3": 1
+    }
+   },
+   "Spagna": {
+    "soste_totali": 47,
+    "per_pilota_mediana": 2,
+    "distribuzione": {
+     "0": 1,
+     "1": 3,
+     "2": 10,
+     "3": 8
+    }
+   },
+   "Austria": {
+    "soste_totali": 41,
+    "per_pilota_mediana": 2,
+    "distribuzione": {
+     "0": 2,
+     "1": 2,
+     "2": 15,
+     "3": 3
+    }
+   },
+   "Gran Bretagna": {
+    "soste_totali": 50,
+    "per_pilota_mediana": 2,
+    "distribuzione": {
+     "2": 18,
+     "3": 3,
+     "5": 1
+    }
+   },
+   "Belgio": {
+    "soste_totali": 28,
+    "per_pilota_mediana": 1,
+    "distribuzione": {
+     "0": 1,
+     "1": 15,
+     "2": 5,
+     "3": 1
+    }
+   },
+   "Ungheria": {
+    "soste_totali": 44,
+    "per_pilota_mediana": 2,
+    "distribuzione": {
+     "0": 1,
+     "1": 3,
+     "2": 13,
+     "3": 5
+    }
+   }
+  },
+  "per_pilota": [
+   {
+    "gara": "Australia",
+    "pilota": "ALB",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Australia",
+    "pilota": "ALO",
+    "soste": 1,
+    "da_stint": 2,
+    "righe_pit": 5
+   },
+   {
+    "gara": "Australia",
+    "pilota": "ANT",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Australia",
+    "pilota": "BEA",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Australia",
+    "pilota": "BOR",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Australia",
+    "pilota": "BOT",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Australia",
+    "pilota": "COL",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Australia",
+    "pilota": "GAS",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Australia",
+    "pilota": "HAD",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 0
+   },
+   {
+    "gara": "Australia",
+    "pilota": "HAM",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Australia",
+    "pilota": "HUL",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 0
+   },
+   {
+    "gara": "Australia",
+    "pilota": "LAW",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Australia",
+    "pilota": "LEC",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Australia",
+    "pilota": "LIN",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Australia",
+    "pilota": "NOR",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Australia",
+    "pilota": "OCO",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Australia",
+    "pilota": "PER",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Australia",
+    "pilota": "RUS",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Australia",
+    "pilota": "SAI",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Australia",
+    "pilota": "STR",
+    "soste": 3,
+    "da_stint": 4,
+    "righe_pit": 8
+   },
+   {
+    "gara": "Australia",
+    "pilota": "VER",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Austria",
+    "pilota": "ALB",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Austria",
+    "pilota": "ALO",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Austria",
+    "pilota": "ANT",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Austria",
+    "pilota": "BEA",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Austria",
+    "pilota": "BOR",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Austria",
+    "pilota": "BOT",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 1
+   },
+   {
+    "gara": "Austria",
+    "pilota": "COL",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Austria",
+    "pilota": "GAS",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Austria",
+    "pilota": "HAD",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Austria",
+    "pilota": "HAM",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Austria",
+    "pilota": "HUL",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Austria",
+    "pilota": "LAW",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Austria",
+    "pilota": "LEC",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Austria",
+    "pilota": "LIN",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Austria",
+    "pilota": "NOR",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Austria",
+    "pilota": "OCO",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Austria",
+    "pilota": "PER",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 1
+   },
+   {
+    "gara": "Austria",
+    "pilota": "PIA",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Austria",
+    "pilota": "RUS",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Austria",
+    "pilota": "SAI",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Austria",
+    "pilota": "STR",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 3
+   },
+   {
+    "gara": "Austria",
+    "pilota": "VER",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "ALB",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "ALO",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "ANT",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "BEA",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "BOR",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "BOT",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "COL",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "GAS",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "HAD",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 5
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "HAM",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "HUL",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "LAW",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "LEC",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "LIN",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "NOR",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "OCO",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "PER",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "PIA",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "RUS",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 0
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "SAI",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "STR",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 3
+   },
+   {
+    "gara": "Belgio",
+    "pilota": "VER",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Canada",
+    "pilota": "ALB",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 0
+   },
+   {
+    "gara": "Canada",
+    "pilota": "ALO",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 3
+   },
+   {
+    "gara": "Canada",
+    "pilota": "ANT",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Canada",
+    "pilota": "BEA",
+    "soste": 0,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Canada",
+    "pilota": "BOR",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Canada",
+    "pilota": "BOT",
+    "soste": 4,
+    "da_stint": 4,
+    "righe_pit": 8
+   },
+   {
+    "gara": "Canada",
+    "pilota": "COL",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Canada",
+    "pilota": "GAS",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Canada",
+    "pilota": "HAD",
+    "soste": 1,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Canada",
+    "pilota": "HAM",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Canada",
+    "pilota": "HUL",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Canada",
+    "pilota": "LAW",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Canada",
+    "pilota": "LEC",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Canada",
+    "pilota": "LIN",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 0
+   },
+   {
+    "gara": "Canada",
+    "pilota": "NOR",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Canada",
+    "pilota": "OCO",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Canada",
+    "pilota": "PER",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 7
+   },
+   {
+    "gara": "Canada",
+    "pilota": "PIA",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Canada",
+    "pilota": "RUS",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 0
+   },
+   {
+    "gara": "Canada",
+    "pilota": "SAI",
+    "soste": 1,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Canada",
+    "pilota": "STR",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 5
+   },
+   {
+    "gara": "Canada",
+    "pilota": "VER",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Cina",
+    "pilota": "ALB",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 0
+   },
+   {
+    "gara": "Cina",
+    "pilota": "ALO",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Cina",
+    "pilota": "ANT",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Cina",
+    "pilota": "BEA",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Cina",
+    "pilota": "BOR",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 0
+   },
+   {
+    "gara": "Cina",
+    "pilota": "BOT",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Cina",
+    "pilota": "COL",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Cina",
+    "pilota": "GAS",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Cina",
+    "pilota": "HAD",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Cina",
+    "pilota": "HAM",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Cina",
+    "pilota": "HUL",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Cina",
+    "pilota": "LAW",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Cina",
+    "pilota": "LEC",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Cina",
+    "pilota": "LIN",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Cina",
+    "pilota": "NOR",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 0
+   },
+   {
+    "gara": "Cina",
+    "pilota": "OCO",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Cina",
+    "pilota": "PER",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Cina",
+    "pilota": "PIA",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 0
+   },
+   {
+    "gara": "Cina",
+    "pilota": "RUS",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Cina",
+    "pilota": "SAI",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Cina",
+    "pilota": "STR",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 0
+   },
+   {
+    "gara": "Cina",
+    "pilota": "VER",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 3
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "ALB",
+    "soste": 3,
+    "da_stint": 6,
+    "righe_pit": 8
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "ALO",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "ANT",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "BEA",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "BOR",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "BOT",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "COL",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "GAS",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "HAD",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "HAM",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "HUL",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "LAW",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "LEC",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "LIN",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "NOR",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "OCO",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "PER",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "PIA",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "RUS",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "SAI",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "STR",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 5
+   },
+   {
+    "gara": "Giappone",
+    "pilota": "VER",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "ALB",
+    "soste": 5,
+    "da_stint": 5,
+    "righe_pit": 11
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "ALO",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 5
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "ANT",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "BEA",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "BOR",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "BOT",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "COL",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "GAS",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "HAD",
+    "soste": 2,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "HAM",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "HUL",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "LAW",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "LEC",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "LIN",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "NOR",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "OCO",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "PER",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "PIA",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "RUS",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "SAI",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "STR",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Gran Bretagna",
+    "pilota": "VER",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Miami",
+    "pilota": "ALB",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Miami",
+    "pilota": "ALO",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Miami",
+    "pilota": "ANT",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Miami",
+    "pilota": "BEA",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Miami",
+    "pilota": "BOR",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Miami",
+    "pilota": "BOT",
+    "soste": 2,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Miami",
+    "pilota": "COL",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Miami",
+    "pilota": "GAS",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 0
+   },
+   {
+    "gara": "Miami",
+    "pilota": "HAD",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 1
+   },
+   {
+    "gara": "Miami",
+    "pilota": "HAM",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Miami",
+    "pilota": "HUL",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 3
+   },
+   {
+    "gara": "Miami",
+    "pilota": "LAW",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 1
+   },
+   {
+    "gara": "Miami",
+    "pilota": "LEC",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Miami",
+    "pilota": "LIN",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Miami",
+    "pilota": "NOR",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Miami",
+    "pilota": "OCO",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Miami",
+    "pilota": "PER",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Miami",
+    "pilota": "PIA",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Miami",
+    "pilota": "RUS",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Miami",
+    "pilota": "SAI",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Miami",
+    "pilota": "STR",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Miami",
+    "pilota": "VER",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "ALB",
+    "soste": 1,
+    "da_stint": 5,
+    "righe_pit": 9
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "ALO",
+    "soste": 2,
+    "da_stint": 6,
+    "righe_pit": 10
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "ANT",
+    "soste": 2,
+    "da_stint": 4,
+    "righe_pit": 8
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "BEA",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 3
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "BOR",
+    "soste": 3,
+    "da_stint": 7,
+    "righe_pit": 12
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "BOT",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 3
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "COL",
+    "soste": 1,
+    "da_stint": 5,
+    "righe_pit": 9
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "GAS",
+    "soste": 1,
+    "da_stint": 4,
+    "righe_pit": 8
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "HAD",
+    "soste": 1,
+    "da_stint": 4,
+    "righe_pit": 8
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "HAM",
+    "soste": 2,
+    "da_stint": 5,
+    "righe_pit": 9
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "HUL",
+    "soste": 1,
+    "da_stint": 6,
+    "righe_pit": 10
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "LAW",
+    "soste": 1,
+    "da_stint": 4,
+    "righe_pit": 8
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "LEC",
+    "soste": 2,
+    "da_stint": 3,
+    "righe_pit": 5
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "LIN",
+    "soste": 0,
+    "da_stint": 4,
+    "righe_pit": 7
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "NOR",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 1
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "OCO",
+    "soste": 1,
+    "da_stint": 5,
+    "righe_pit": 9
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "PER",
+    "soste": 2,
+    "da_stint": 6,
+    "righe_pit": 11
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "PIA",
+    "soste": 2,
+    "da_stint": 5,
+    "righe_pit": 9
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "RUS",
+    "soste": 2,
+    "da_stint": 5,
+    "righe_pit": 10
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "SAI",
+    "soste": 1,
+    "da_stint": 5,
+    "righe_pit": 9
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "STR",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Monaco",
+    "pilota": "VER",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 0
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "ALB",
+    "soste": 3,
+    "da_stint": 4,
+    "righe_pit": 8
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "ALO",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 3
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "ANT",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "BEA",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 5
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "BOR",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "BOT",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "COL",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "GAS",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "HAD",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "HAM",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "HUL",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 3
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "LAW",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "LEC",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 5
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "LIN",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "NOR",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "OCO",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "PER",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "PIA",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "RUS",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "SAI",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "STR",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 1
+   },
+   {
+    "gara": "Spagna",
+    "pilota": "VER",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "ALB",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "ALO",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "ANT",
+    "soste": 1,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "BEA",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "BOR",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "BOT",
+    "soste": 0,
+    "da_stint": 0,
+    "righe_pit": 1
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "COL",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "GAS",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "HAD",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "HAM",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "HUL",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "LAW",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "LEC",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "LIN",
+    "soste": 1,
+    "da_stint": 1,
+    "righe_pit": 2
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "NOR",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "OCO",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "PER",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "PIA",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "RUS",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "SAI",
+    "soste": 3,
+    "da_stint": 3,
+    "righe_pit": 6
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "STR",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   },
+   {
+    "gara": "Ungheria",
+    "pilota": "VER",
+    "soste": 2,
+    "da_stint": 2,
+    "righe_pit": 4
+   }
+  ]
+ },
+ "pit_lane": {
+  "metodo": "ogni sosta diventa lo scarto dalla mediana della propria gara, e solo dopo si aggrega per squadra: il tempo assoluto lo decide il circuito, non la squadra.",
+  "cosa_NON_e": "NON e' il tempo con l'auto ferma e NON e' la prestazione dei meccanici. La grandezza misurata e' il TRANSITO IN PIT LANE — ingresso, corsia a velocita' limitata, uscita — e l'auto ferma ne e' solo una frazione, non separabile con questi dati.",
+  "per_squadra": [
+   {
+    "team": "Mercedes",
+    "n": 30,
+    "scarto_mediano_s": -0.547,
+    "q1_s": -1.032,
+    "q3_s": 0.0,
+    "minimo_s": -1.643,
+    "massimo_s": 11.666
+   },
+   {
+    "team": "McLaren",
+    "n": 34,
+    "scarto_mediano_s": -0.274,
+    "q1_s": -0.912,
+    "q3_s": 0.255,
+    "minimo_s": -1.735,
+    "massimo_s": 11.474
+   },
+   {
+    "team": "Red Bull Racing",
+    "n": 33,
+    "scarto_mediano_s": -0.251,
+    "q1_s": -0.581,
+    "q3_s": 0.122,
+    "minimo_s": -1.739,
+    "massimo_s": 2.358
+   },
+   {
+    "team": "Ferrari",
+    "n": 37,
+    "scarto_mediano_s": -0.226,
+    "q1_s": -0.663,
+    "q3_s": 0.403,
+    "minimo_s": -1.572,
+    "massimo_s": 9.319
+   },
+   {
+    "team": "Racing Bulls",
+    "n": 27,
+    "scarto_mediano_s": -0.1,
+    "q1_s": -0.622,
+    "q3_s": 0.178,
+    "minimo_s": -1.014,
+    "massimo_s": 3.28
+   },
+   {
+    "team": "Alpine",
+    "n": 32,
+    "scarto_mediano_s": -0.054,
+    "q1_s": -0.349,
+    "q3_s": 0.21,
+    "minimo_s": -0.813,
+    "massimo_s": 8.799
+   },
+   {
+    "team": "Aston Martin",
+    "n": 33,
+    "scarto_mediano_s": 0.009,
+    "q1_s": -0.612,
+    "q3_s": 2.224,
+    "minimo_s": -1.546,
+    "massimo_s": 17.752
+   },
+   {
+    "team": "Williams",
+    "n": 38,
+    "scarto_mediano_s": 0.072,
+    "q1_s": -0.312,
+    "q3_s": 1.302,
+    "minimo_s": -2.098,
+    "massimo_s": 15.681
+   },
+   {
+    "team": "Audi",
+    "n": 32,
+    "scarto_mediano_s": 0.168,
+    "q1_s": -0.387,
+    "q3_s": 1.361,
+    "minimo_s": -1.61,
+    "massimo_s": 13.968
+   },
+   {
+    "team": "Haas F1 Team",
+    "n": 34,
+    "scarto_mediano_s": 0.487,
+    "q1_s": 0.314,
+    "q3_s": 2.607,
+    "minimo_s": -0.613,
+    "massimo_s": 23.677
+   },
+   {
+    "team": "Cadillac",
+    "n": 34,
+    "scarto_mediano_s": 1.173,
+    "q1_s": 0.316,
+    "q3_s": 2.437,
+    "minimo_s": -0.74,
+    "massimo_s": 11.453
+   }
+  ],
+  "per_gara": {
+   "Australia": {
+    "n": 30,
+    "mediana_s": 18.934,
+    "minimo_s": 17.649,
+    "massimo_s": 36.686
+   },
+   "Austria": {
+    "n": 41,
+    "mediana_s": 21.561,
+    "minimo_s": 21.02,
+    "massimo_s": 28.713
+   },
+   "Belgio": {
+    "n": 28,
+    "mediana_s": 24.736,
+    "minimo_s": 22.638,
+    "massimo_s": 34.841
+   },
+   "Canada": {
+    "n": 30,
+    "mediana_s": 25.153,
+    "minimo_s": 23.418,
+    "massimo_s": 36.627
+   },
+   "Cina": {
+    "n": 19,
+    "mediana_s": 23.39,
+    "minimo_s": 22.433,
+    "massimo_s": 47.067
+   },
+   "Giappone": {
+    "n": 26,
+    "mediana_s": 24.234,
+    "minimo_s": 22.891,
+    "massimo_s": 27.307
+   },
+   "Gran Bretagna": {
+    "n": 50,
+    "mediana_s": 29.55,
+    "minimo_s": 28.337,
+    "massimo_s": 46.234
+   },
+   "Miami": {
+    "n": 21,
+    "mediana_s": 23.16,
+    "minimo_s": 22.042,
+    "massimo_s": 33.71
+   },
+   "Monaco": {
+    "n": 28,
+    "mediana_s": 25.587,
+    "minimo_s": 24.029,
+    "massimo_s": 35.258
+   },
+   "Spagna": {
+    "n": 47,
+    "mediana_s": 22.703,
+    "minimo_s": 21.677,
+    "massimo_s": 26.449
+   },
+   "Ungheria": {
+    "n": 44,
+    "mediana_s": 22.017,
+    "minimo_s": 21.326,
+    "massimo_s": 28.658
+   }
+  }
+ },
+ "ritiri": {
+  "chi_non_e_arrivato": "demo/data/ufficiali_2026.json, campo `classificato` — l'arbitro dei risultati. NON il campo `status`: fra gli ufficiali ci sono «Retired» classificati e «Lapped» non classificati, e leggere lo status al posto del campo sbaglierebbe il verdetto.",
+  "perche": "f1db races-race-results.reasonRetired, l'unica fonte delle cause. Testo libero.",
+  "raggruppamento": {
+   "firmato": true,
+   "firmato_da": "Tommi",
+   "firmato_il": "2026-08-04",
+   "file": "data/ritiri_raggruppamento.json",
+   "perche_grezzo": null,
+   "cause_senza_famiglia": []
+  },
+  "non_arrivati_totali": 48,
+  "con_causa_dichiarata": 46,
+  "cause_grezze": {
+   "Gearbox": 7,
+   "Accident": 5,
+   "Brakes": 5,
+   "Electrical": 4,
+   "Engine": 3,
+   "Hydraulics": 3,
+   "Battery": 3,
+   "Collision": 3,
+   "Suspension": 3,
+   "Mechanical": 2,
+   "Overheating": 2,
+   "Fuel system": 1,
+   "Coolant leak": 1,
+   "Vibrations": 1,
+   "Broken seat": 1,
+   "Safety switch": 1,
+   "Collision damage": 1
+  },
+  "famiglie": {
+   "contatto": 3,
+   "danno da contatto": 1,
+   "elettrico": 5,
+   "incidente": 5,
+   "non specificato": 2,
+   "power unit": 10,
+   "telaio e sospensioni": 10,
+   "trasmissione": 10
+  },
+  "per_squadra": [
+   {
+    "squadra": "Aston Martin",
+    "partenze": 22,
+    "non_arrivati": 11,
+    "quota": 0.5
+   },
+   {
+    "squadra": "Cadillac",
+    "partenze": 22,
+    "non_arrivati": 9,
+    "quota": 0.4091
+   },
+   {
+    "squadra": "McLaren",
+    "partenze": 22,
+    "non_arrivati": 6,
+    "quota": 0.2727
+   },
+   {
+    "squadra": "Audi",
+    "partenze": 22,
+    "non_arrivati": 5,
+    "quota": 0.2273
+   },
+   {
+    "squadra": "Williams",
+    "partenze": 22,
+    "non_arrivati": 5,
+    "quota": 0.2273
+   },
+   {
+    "squadra": "Red Bull Racing",
+    "partenze": 22,
+    "non_arrivati": 4,
+    "quota": 0.1818
+   },
+   {
+    "squadra": "Mercedes",
+    "partenze": 22,
+    "non_arrivati": 2,
+    "quota": 0.0909
+   },
+   {
+    "squadra": "Haas F1 Team",
+    "partenze": 22,
+    "non_arrivati": 2,
+    "quota": 0.0909
+   },
+   {
+    "squadra": "Racing Bulls",
+    "partenze": 22,
+    "non_arrivati": 2,
+    "quota": 0.0909
+   },
+   {
+    "squadra": "Ferrari",
+    "partenze": 22,
+    "non_arrivati": 1,
+    "quota": 0.0455
+   },
+   {
+    "squadra": "Alpine",
+    "partenze": 22,
+    "non_arrivati": 1,
+    "quota": 0.0455
+   }
+  ],
+  "per_gara": {
+   "Australia": {
+    "non_arrivati": 6,
+    "dettaglio": [
+     {
+      "pilota": "STR",
+      "squadra": "Aston Martin",
+      "stato": "Lapped",
+      "causa": null
+     },
+     {
+      "pilota": "ALO",
+      "squadra": "Aston Martin",
+      "stato": "Retired",
+      "causa": "Mechanical"
+     },
+     {
+      "pilota": "BOT",
+      "squadra": "Cadillac",
+      "stato": "Retired",
+      "causa": "Fuel system"
+     },
+     {
+      "pilota": "HAD",
+      "squadra": "Red Bull Racing",
+      "stato": "Retired",
+      "causa": "Engine"
+     },
+     {
+      "pilota": "PIA",
+      "squadra": "McLaren",
+      "stato": "Did not start",
+      "causa": "Accident"
+     },
+     {
+      "pilota": "HUL",
+      "squadra": "Audi",
+      "stato": "Did not start",
+      "causa": "Hydraulics"
+     }
+    ]
+   },
+   "Cina": {
+    "non_arrivati": 7,
+    "dettaglio": [
+     {
+      "pilota": "VER",
+      "squadra": "Red Bull Racing",
+      "stato": "Retired",
+      "causa": "Coolant leak"
+     },
+     {
+      "pilota": "ALO",
+      "squadra": "Aston Martin",
+      "stato": "Retired",
+      "causa": "Vibrations"
+     },
+     {
+      "pilota": "STR",
+      "squadra": "Aston Martin",
+      "stato": "Retired",
+      "causa": "Battery"
+     },
+     {
+      "pilota": "PIA",
+      "squadra": "McLaren",
+      "stato": "Did not start",
+      "causa": "Electrical"
+     },
+     {
+      "pilota": "NOR",
+      "squadra": "McLaren",
+      "stato": "Did not start",
+      "causa": "Electrical"
+     },
+     {
+      "pilota": "BOR",
+      "squadra": "Audi",
+      "stato": "Did not start",
+      "causa": "Hydraulics"
+     },
+     {
+      "pilota": "ALB",
+      "squadra": "Williams",
+      "stato": "Did not start",
+      "causa": "Hydraulics"
+     }
+    ]
+   },
+   "Giappone": {
+    "non_arrivati": 2,
+    "dettaglio": [
+     {
+      "pilota": "STR",
+      "squadra": "Aston Martin",
+      "stato": "Retired",
+      "causa": "Mechanical"
+     },
+     {
+      "pilota": "BEA",
+      "squadra": "Haas F1 Team",
+      "stato": "Retired",
+      "causa": "Accident"
+     }
+    ]
+   },
+   "Miami": {
+    "non_arrivati": 4,
+    "dettaglio": [
+     {
+      "pilota": "HUL",
+      "squadra": "Audi",
+      "stato": "Retired",
+      "causa": "Overheating"
+     },
+     {
+      "pilota": "LAW",
+      "squadra": "Racing Bulls",
+      "stato": "Retired",
+      "causa": "Gearbox"
+     },
+     {
+      "pilota": "GAS",
+      "squadra": "Alpine",
+      "stato": "Retired",
+      "causa": "Collision"
+     },
+     {
+      "pilota": "HAD",
+      "squadra": "Red Bull Racing",
+      "stato": "Retired",
+      "causa": "Accident"
+     }
+    ]
+   },
+   "Canada": {
+    "non_arrivati": 6,
+    "dettaglio": [
+     {
+      "pilota": "PER",
+      "squadra": "Cadillac",
+      "stato": "Retired",
+      "causa": "Suspension"
+     },
+     {
+      "pilota": "NOR",
+      "squadra": "McLaren",
+      "stato": "Retired",
+      "causa": "Gearbox"
+     },
+     {
+      "pilota": "RUS",
+      "squadra": "Mercedes",
+      "stato": "Retired",
+      "causa": "Engine"
+     },
+     {
+      "pilota": "ALO",
+      "squadra": "Aston Martin",
+      "stato": "Retired",
+      "causa": "Broken seat"
+     },
+     {
+      "pilota": "ALB",
+      "squadra": "Williams",
+      "stato": "Retired",
+      "causa": "Collision"
+     },
+     {
+      "pilota": "LIN",
+      "squadra": "Racing Bulls",
+      "stato": "Did not start",
+      "causa": "Gearbox"
+     }
+    ]
+   },
+   "Monaco": {
+    "non_arrivati": 6,
+    "dettaglio": [
+     {
+      "pilota": "LEC",
+      "squadra": "Ferrari",
+      "stato": "Retired",
+      "causa": "Accident"
+     },
+     {
+      "pilota": "STR",
+      "squadra": "Aston Martin",
+      "stato": "Retired",
+      "causa": "Accident"
+     },
+     {
+      "pilota": "NOR",
+      "squadra": "McLaren",
+      "stato": "Retired",
+      "causa": "Battery"
+     },
+     {
+      "pilota": "BEA",
+      "squadra": "Haas F1 Team",
+      "stato": "Retired",
+      "causa": "Brakes"
+     },
+     {
+      "pilota": "BOT",
+      "squadra": "Cadillac",
+      "stato": "Retired",
+      "causa": "Brakes"
+     },
+     {
+      "pilota": "VER",
+      "squadra": "Red Bull Racing",
+      "stato": "Retired",
+      "causa": "Engine"
+     }
+    ]
+   },
+   "Spagna": {
+    "non_arrivati": 5,
+    "dettaglio": [
+     {
+      "pilota": "ALB",
+      "squadra": "Williams",
+      "stato": "Lapped",
+      "causa": null
+     },
+     {
+      "pilota": "ALO",
+      "squadra": "Aston Martin",
+      "stato": "Retired",
+      "causa": "Battery"
+     },
+     {
+      "pilota": "HUL",
+      "squadra": "Audi",
+      "stato": "Retired",
+      "causa": "Safety switch"
+     },
+     {
+      "pilota": "BOT",
+      "squadra": "Cadillac",
+      "stato": "Retired",
+      "causa": "Overheating"
+     },
+     {
+      "pilota": "STR",
+      "squadra": "Aston Martin",
+      "stato": "Retired",
+      "causa": "Gearbox"
+     }
+    ]
+   },
+   "Austria": {
+    "non_arrivati": 4,
+    "dettaglio": [
+     {
+      "pilota": "STR",
+      "squadra": "Aston Martin",
+      "stato": "Retired",
+      "causa": "Electrical"
+     },
+     {
+      "pilota": "SAI",
+      "squadra": "Williams",
+      "stato": "Retired",
+      "causa": "Electrical"
+     },
+     {
+      "pilota": "PER",
+      "squadra": "Cadillac",
+      "stato": "Retired",
+      "causa": "Brakes"
+     },
+     {
+      "pilota": "BOT",
+      "squadra": "Cadillac",
+      "stato": "Retired",
+      "causa": "Brakes"
+     }
+    ]
+   },
+   "Gran Bretagna": {
+    "non_arrivati": 2,
+    "dettaglio": [
+     {
+      "pilota": "ALB",
+      "squadra": "Williams",
+      "stato": "Retired",
+      "causa": "Collision damage"
+     },
+     {
+      "pilota": "HUL",
+      "squadra": "Audi",
+      "stato": "Retired",
+      "causa": "Gearbox"
+     }
+    ]
+   },
+   "Belgio": {
+    "non_arrivati": 3,
+    "dettaglio": [
+     {
+      "pilota": "STR",
+      "squadra": "Aston Martin",
+      "stato": "Retired",
+      "causa": "Gearbox"
+     },
+     {
+      "pilota": "PER",
+      "squadra": "Cadillac",
+      "stato": "Retired",
+      "causa": "Suspension"
+     },
+     {
+      "pilota": "RUS",
+      "squadra": "Mercedes",
+      "stato": "Retired",
+      "causa": "Collision"
+     }
+    ]
+   },
+   "Ungheria": {
+    "non_arrivati": 3,
+    "dettaglio": [
+     {
+      "pilota": "PIA",
+      "squadra": "McLaren",
+      "stato": "Retired",
+      "causa": "Gearbox"
+     },
+     {
+      "pilota": "PER",
+      "squadra": "Cadillac",
+      "stato": "Retired",
+      "causa": "Suspension"
+     },
+     {
+      "pilota": "BOT",
+      "squadra": "Cadillac",
+      "stato": "Retired",
+      "causa": "Brakes"
+     }
+    ]
+   }
+  }
+ },
+ "osservabilita": {
+  "metodo": "censimento del campo `canali` di ogni demo/data/tele_*.json pubblicato. E' una misura di COSA IL SITO ESPORTA, non di cosa esiste nel feed.",
+  "canali_pubblicati": [
+   "freno",
+   "marcia",
+   "t",
+   "throttle",
+   "velocita"
+  ],
+  "n_canali": 5,
+  "sessioni_con_telemetria": 6,
+  "gare_con_telemetria": [
+   "Belgio",
+   "Ungheria"
+  ],
+  "assenti_e_perche": {
+   "drs": "NON esportato. Non e' «a zero»: il canale non c'e' proprio, quindi su questi dati l'affermazione «nel 2026 il DRS e' a zero» non e' verificabile — viene da fuori, e va attribuita a chi la fa.",
+   "ers_stato_di_carica": "non esportato, e non esiste nei dati pubblici: F1 ha deciso di non renderlo disponibile.",
+   "aerodinamica_attiva": "la posizione delle ali (modalita' X/Z) non e' nei dati pubblici.",
+   "mj_recuperati_schierati": "non nei dati pubblici.",
+   "carico_carburante": "non nei dati pubblici; e' il motivo per cui un passo medio non corretto porta con se' circa due secondi al giro."
+  },
+  "cosa_resta_misurabile": [
+   "velocita' di punta e velocita' minima in curva",
+   "quota di giro a pieno gas (dal canale del gas)",
+   "tempi per settore e distacchi in qualifica",
+   "numero e durata degli stint"
+  ],
+  "limite": "la telemetria pubblicata e' UN GIRO per pilota (il piu' veloce), non la sessione: qualunque media o tendenza «telemetrica di stagione» sarebbe costruita su un giro solo per gara, e non si fa."
+ },
+ "copertura_canonica": {
+  "cosa_dice": "quanti round del 2026 la fonte canonica (f1db) copre, per tipo di sessione. Serve a distinguere «assente ovunque» da «assente da noi»: il primo e' un limite del mondo, il secondo un debito con un rimedio noto.",
+  "per_sessione": {
+   "qualifiche": {
+    "tabella": "races-qualifying-results",
+    "presente": true,
+    "round": 11,
+    "gare": [
+     "Australia",
+     "Cina",
+     "Giappone",
+     "Miami",
+     "Canada",
+     "Monaco",
+     "Spagna",
+     "Austria",
+     "Gran Bretagna",
+     "Belgio",
+     "Ungheria"
+    ],
+    "righe": 239
+   },
+   "libere_fp1": {
+    "tabella": "races-free-practice-1-results",
+    "presente": true,
+    "round": 11,
+    "gare": [
+     "Australia",
+     "Cina",
+     "Giappone",
+     "Miami",
+     "Canada",
+     "Monaco",
+     "Spagna",
+     "Austria",
+     "Gran Bretagna",
+     "Belgio",
+     "Ungheria"
+    ],
+    "righe": 240
+   },
+   "libere_fp2": {
+    "tabella": "races-free-practice-2-results",
+    "presente": true,
+    "round": 7,
+    "gare": [
+     "Australia",
+     "Giappone",
+     "Monaco",
+     "Spagna",
+     "Austria",
+     "Belgio",
+     "Ungheria"
+    ],
+    "righe": 153
+   },
+   "libere_fp3": {
+    "tabella": "races-free-practice-3-results",
+    "presente": true,
+    "round": 7,
+    "gare": [
+     "Australia",
+     "Giappone",
+     "Monaco",
+     "Spagna",
+     "Austria",
+     "Belgio",
+     "Ungheria"
+    ],
+    "righe": 153
+   },
+   "sprint": {
+    "tabella": "races-sprint-race-results",
+    "presente": true,
+    "round": 4,
+    "gare": [
+     "Cina",
+     "Miami",
+     "Canada",
+     "Gran Bretagna"
+    ],
+    "righe": 88
+   },
+   "sprint_quali": {
+    "tabella": "races-sprint-qualifying-results",
+    "presente": true,
+    "round": 4,
+    "gare": [
+     "Cina",
+     "Miami",
+     "Canada",
+     "Gran Bretagna"
+    ],
+    "righe": 84
+   },
+   "giro_veloce": {
+    "tabella": "races-fastest-laps",
+    "presente": true,
+    "round": 11,
+    "gare": [
+     "Australia",
+     "Cina",
+     "Giappone",
+     "Miami",
+     "Canada",
+     "Monaco",
+     "Spagna",
+     "Austria",
+     "Gran Bretagna",
+     "Belgio",
+     "Ungheria"
+    ],
+    "righe": 232
+   },
+   "soste": {
+    "tabella": "races-pit-stops",
+    "presente": true,
+    "round": 11,
+    "gare": [
+     "Australia",
+     "Cina",
+     "Giappone",
+     "Miami",
+     "Canada",
+     "Monaco",
+     "Spagna",
+     "Austria",
+     "Gran Bretagna",
+     "Belgio",
+     "Ungheria"
+    ],
+    "righe": 364
+   }
+  }
+ },
+ "gomme": {
+  "metodo": "uno stint = una coppia (pilota, numero di stint) dentro una gara; la sua lunghezza e' il numero di giri percorsi con quella mescola. Le mediane sono su tutti gli stint della stagione, ritiri compresi: uno stint interrotto da un ritiro e' corto e resta nel conto, quindi la mediana e' una durata OSSERVATA, non una durata voluta.",
+  "non_e_degrado": "questo modulo NON stima il degrado. I modelli di degrado e traffico del progetto sono spenti per verdetto proprio (ACCENDIBILE=false) e l'arco si e' chiuso con cinque cancelli NULL. Qui ci sono durate e conteggi con il loro N.",
+  "stint_totali": 675,
+  "giri_con_mescola": 12708,
+  "lunghezza_per_mescola": {
+   "HARD": {
+    "n": 246,
+    "mediana": 25.0,
+    "minimo": 1,
+    "massimo": 51,
+    "q1": 18,
+    "q3": 31
+   },
+   "INTERMEDIATE": {
+    "n": 7,
+    "mediana": 2,
+    "minimo": 1,
+    "massimo": 3,
+    "q1": 2,
+    "q3": 2
+   },
+   "MEDIUM": {
+    "n": 248,
+    "mediana": 19.0,
+    "minimo": 1,
+    "massimo": 59,
+    "q1": 12,
+    "q3": 24
+   },
+   "SOFT": {
+    "n": 174,
+    "mediana": 10.0,
+    "minimo": 1,
+    "massimo": 55,
+    "q1": 4,
+    "q3": 14
+   }
+  },
+  "giri_per_gara": {
+   "Australia": {
+    "HARD": 590,
+    "MEDIUM": 286,
+    "SOFT": 131
+   },
+   "Cina": {
+    "HARD": 731,
+    "MEDIUM": 174,
+    "SOFT": 19
+   },
+   "Giappone": {
+    "HARD": 610,
+    "MEDIUM": 493,
+    "SOFT": 4
+   },
+   "Miami": {
+    "HARD": 468,
+    "MEDIUM": 507,
+    "SOFT": 65
+   },
+   "Canada": {
+    "HARD": 74,
+    "INTERMEDIATE": 14,
+    "MEDIUM": 621,
+    "SOFT": 503
+   },
+   "Monaco": {
+    "HARD": 394,
+    "MEDIUM": 657,
+    "SOFT": 401
+   },
+   "Spagna": {
+    "HARD": 778,
+    "MEDIUM": 305,
+    "SOFT": 153
+   },
+   "Austria": {
+    "HARD": 618,
+    "MEDIUM": 577,
+    "SOFT": 144
+   },
+   "Gran Bretagna": {
+    "HARD": 457,
+    "MEDIUM": 551,
+    "SOFT": 105
+   },
+   "Belgio": {
+    "HARD": 558,
+    "MEDIUM": 231,
+    "SOFT": 83
+   },
+   "Ungheria": {
+    "HARD": 678,
+    "MEDIUM": 381,
+    "SOFT": 347
+   }
+  },
+  "mescola_di_partenza": {
+   "Australia": {
+    "MEDIUM": 15,
+    "SOFT": 2,
+    "HARD": 4
+   },
+   "Cina": {
+    "HARD": 9,
+    "MEDIUM": 11,
+    "SOFT": 2
+   },
+   "Giappone": {
+    "MEDIUM": 21,
+    "HARD": 1
+   },
+   "Miami": {
+    "MEDIUM": 21,
+    "HARD": 1
+   },
+   "Canada": {
+    "SOFT": 11,
+    "INTERMEDIATE": 7,
+    "MEDIUM": 4
+   },
+   "Monaco": {
+    "MEDIUM": 19,
+    "SOFT": 3
+   },
+   "Spagna": {
+    "MEDIUM": 13,
+    "HARD": 2,
+    "SOFT": 7
+   },
+   "Austria": {
+    "MEDIUM": 20,
+    "SOFT": 2
+   },
+   "Gran Bretagna": {
+    "MEDIUM": 22
+   },
+   "Belgio": {
+    "MEDIUM": 15,
+    "HARD": 5,
+    "SOFT": 2
+   },
+   "Ungheria": {
+    "MEDIUM": 16,
+    "SOFT": 6
+   }
+  }
+ }
+}

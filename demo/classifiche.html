@@ -8,8 +8,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Classifiche 2026 — Muretto Box Virtuale</title>
+<meta name="description" content="Il campionato piloti e costruttori 2026, dagli standings canonici f1db, con le gare in cui la nostra ricostruzione di pista non regge il referto ufficiale.">
 <link rel="canonical" href="https://murettobox.com/classifiche.html">
-<link rel="stylesheet" href="stile.css?v=250725c">
+<link rel="stylesheet" href="stile.css?v=040826a">
 <style>
   /* Colonne numeriche a larghezza fissa: così l'intestazione si allinea
      esattamente alle righe (con le colonne "auto" non combaciavano). */
@@ -38,15 +39,25 @@
     <a href="stagione.html">Stagione</a>
     <a href="live.html"><span class="dot-live"></span>Live</a>
     <a href="analisi.html">Analisi</a>
-    <a href="classifiche.html" class="on">Classifiche</a>
+    <a href="statistiche.html" class="on">Statistiche</a>
   </nav>
 </header>
 
-<div class="wrap-clas">
+<div class="wrap-clas stat-wrap">
   <div class="page-testa">
     <h1>Classifiche <em>//</em> campionato 2026</h1>
     <div class="sotto">Piloti e costruttori, gara per gara. Tocca una riga per aprire la scheda.</div>
   </div>
+
+  <nav class="stat-nav" aria-label="Statistiche">
+    <a href="statistiche.html">Il banco</a>
+    <a href="classifiche.html" class="on">Classifiche</a>
+    <a href="statistiche-piloti.html">Piloti</a>
+    <a href="statistiche-squadre.html">Squadre e vetture</a>
+    <a href="statistiche-stagione.html">Stagione 2026</a>
+    <a href="statistiche-confronti.html">Confronti fra stagioni</a>
+  </nav>
+
   <div class="aggiornato" id="agg"></div>
   <div class="clas-tabs" role="tablist">
     <button id="tabP" class="on" role="tab" aria-selected="true">Piloti</button>
@@ -57,6 +68,37 @@
     <div id="lista"></div>
   </div>
   <div class="clas-nota" id="nota" hidden></div>
+
+  <!-- P5 — la sola vista del sito in cui ammettiamo che i nostri dati di pista e il referto
+       ufficiale non coincidono. Il campo esisteva gia' in schede_2026.json, prodotto dal
+       ciclo post-gara, e nessuna pagina lo apriva. -->
+  <section class="stat-sez" id="sez-divergenze" hidden>
+    <div class="sez-tit">Dove la nostra ricostruzione non regge il referto</div>
+    <div class="stat-regola"><span class="k">Chi ha ragione, e chi sbaglia</span>
+      La classifica qui sopra viene dagli <b>standings canonici f1db</b> e non è in
+      discussione. Quello che si confronta è un'altra cosa: l'ordine d'arrivo che i
+      <b>nostri dati di pista</b> ricostruiscono, contro quello ufficiale. In <b>tutte</b> le
+      divergenze f1db coincide con la classifica FIA: <b>la parte che sbaglia è la nostra</b>.
+    </div>
+    <p class="stat-sub" id="div-spiega"></p>
+    <div id="div-tabella"></div>
+    <details class="stat-metodo">
+      <summary>Perché succede, e perché queste righe si fermano a nove</summary>
+      <div class="in">
+        <p><b>Le penalità di tempo.</b> Quasi tutte queste divergenze hanno una penalità
+          comminata dopo la bandiera. I nostri dati misurano l'ordine in cui le auto tagliano
+          il traguardo; la classifica ufficiale applica i secondi aggiunti. Sono due domande
+          diverse, e nessuna delle due è sbagliata &mdash; ma solo una è il risultato.</p>
+        <p><b>Perché nove righe e non ventinove.</b> Quando un pilota scala di una posizione,
+          tutti quelli dietro scalano con lui: la somma degli scostamenti è <b>zero in ogni
+          gara</b>. Le altre venti righe sono lo scorrimento meccanico prodotto da queste nove,
+          non venti errori distinti.</p>
+        <p><b>Un caso diverso dagli altri</b> è quello con la griglia vuota nel dato canonico:
+          non è una divergenza, è la convenzione con cui la fonte segna una <b>partenza dalla
+          pit lane</b>.</p>
+      </div>
+    </details>
+  </section>
 </div>
 
 <footer class="footer">
@@ -73,7 +115,7 @@
 <script type="module">
 import { scheletro, mostraErrore, prendiJSON } from './stato.mjs?v=250724a';
 const el = id => document.getElementById(id);
-let clas=null, colori={}, numeri={}, motori={};
+let clas=null, colori={}, numeri={}, motori={}, schede=null;
 
 const colore = t => colori[t] || 'var(--dim)';
 
@@ -117,8 +159,8 @@ async function boot(){
   try { clas = await prendiJSON('data/classifiche_2026.json'); }
   catch(e){ el('clhead').innerHTML=''; mostraErrore(el('lista'), boot); return; }
   try { colori = await (await fetch('team_colori.json')).json(); } catch(e){}
-  try { const sk = await (await fetch('data/schede_2026.json')).json();
-        numeri = Object.fromEntries(Object.entries(sk.piloti).map(([id,s])=>[id, s.numero])); } catch(e){}
+  try { schede = await (await fetch('data/schede_2026.json')).json();
+        numeri = Object.fromEntries(Object.entries(schede.piloti).map(([id,s])=>[id, s.numero])); } catch(e){}
   try { motori = await (await fetch('data/motori_2026.json')).json(); } catch(e){}
   const a = clas.aggiornato_al;
   // La coda provvisoria si DICE: fino alla release f1db i punti dell'ultima gara vengono
@@ -129,6 +171,47 @@ async function boot(){
     (a.data ? ` · ${new Date(a.data+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'long'})}` : '') +
     (p ? ` · <span class="prov" title="I punti di ${p.gare.join(', ')} vengono dalla classifica ufficiale FIA (FastF1). Diventano canonici quando esce la release f1db che li copre.">provvisorio</span>` : '');
   mostra('p');
+  divergenze();
+}
+
+// P5 — legge schede_2026.json.piloti[*].cross_check, che gen_schede.py scrive a ogni gara.
+function divergenze(){
+  const sez = el('sez-divergenze');
+  if (!schede?.piloti) return;
+  const tutte = [];
+  for (const [id, p] of Object.entries(schede.piloti))
+    for (const v of p.cross_check ?? []) tutte.push({ id, ...p, ...v });
+  if (!tutte.length) return;
+
+  // si mostrano solo le righe in cui i NOSTRI dati avvantaggiano il pilota: sono le
+  // divergenze di origine, e le altre sono il loro scorrimento (somma zero per gara).
+  const origine = tutte.filter(r => (r.arrivo_f1db - r.arrivo_demo) > 0)
+    .sort((a, b) => (b.arrivo_f1db - b.arrivo_demo) - (a.arrivo_f1db - a.arrivo_demo));
+  if (!origine.length) return;
+
+  const gare = [...new Set(tutte.map(r => r.gara))];
+  const conPen = origine.filter(r => r.penalita_f1db_s).length;
+  el('div-spiega').innerHTML =
+    `<b>${origine.length}</b> righe su ${tutte.length} scostamenti registrati, in
+     <b>${gare.length}</b> gare su ${clas.aggiornato_al.round}.
+     ${conPen} di queste ${origine.length} hanno una <b>penalità di tempo</b> a spiegarle.`;
+
+  el('div-tabella').innerHTML = `<table class="dtbl">
+    <thead><tr><th>pilota</th><th>gara</th><th style="text-align:right">nostro arrivo</th>
+      <th style="text-align:right">ufficiale</th><th style="text-align:right">scostamento</th>
+      <th style="text-align:right">penalità</th></tr></thead>
+    <tbody>${origine.map(r => `<tr>
+      <td><a href="scheda.html?tipo=pilota&id=${encodeURIComponent(r.id)}" class="nome" style="text-decoration:none">
+        <span class="cbar" style="background:${colore(r.team_demo)}"></span><b>${r.sigla}</b>
+        <span class="dim">${r.nome}</span></a></td>
+      <td>${r.gara}</td>
+      <td class="num">P${r.arrivo_demo}</td>
+      <td class="num">P${r.arrivo_f1db}</td>
+      <td class="num" style="color:var(--brand)">+${r.arrivo_f1db - r.arrivo_demo}</td>
+      <td class="num">${r.penalita_f1db_s
+        ? `${r.penalita_f1db_s.toFixed(0)}&nbsp;s`
+        : '<span class="dim">nessuna</span>'}</td></tr>`).join('')}</tbody></table>`;
+  sez.hidden = false;
 }
 el('tabP').addEventListener('click', ()=>mostra('p'));
 el('tabC').addEventListener('click', ()=>mostra('c'));

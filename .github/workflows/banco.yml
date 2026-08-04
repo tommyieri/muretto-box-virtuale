@@ -139,6 +139,17 @@ jobs:
       - name: Le sentinelle della redazione (correttore, memoria, guardia dei numeri)
         run: python3 ai_lab/redazione/test_redazione.py
 
+      # LA STRUTTURA DEL SITO NON AVEVA NESSUN GUARDIANO. Fino al 04/08/2026 questa CI non
+      # eseguiva un solo controllo su HTML o CSS: la nav e' ripetuta a mano in quindici
+      # file, i footer hanno elenchi diversi fra loro, e una voce dimenticata sarebbe
+      # rimasta invisibile per sempre col verde acceso. La sezione Statistiche aggiunge
+      # cinque pagine a quel sito. Questa sentinella nasce PRIMA di quelle pagine e verde
+      # sullo stato di oggi: le divergenze che gia' esistono stanno in
+      # demo/REGISTRO_SEZIONE.json con un referto, e — come per ROSSE_DICHIARATE — il
+      # passo esce 1 anche quando una di quelle GUARISCE senza che il registro lo dica.
+      - name: La struttura del sito regge (nav, sitemap, letture, artefatti di sezione)
+        run: node demo/test_stat.mjs
+
       # IL DEBITO DEL PERIMETRO PUBBLICATO resta uno specchio. Gli scenari accesi dal PO
       # (PR #64) hanno smesso di essere renderizzati con la migrazione al motore nuovo, e
       # nessun documento lo diceva: una decisione revocata di fatto, in silenzio. Ora e' a

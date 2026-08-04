@@ -1,30 +1,66 @@
 {
   "analisi.html": {
     "data": "2026-08-04",
-    "sha": "c8921cf97d3285135a12563c876ebce70cd6ebdd6edaf8f321f56c6cd8f42dfc"
+    "sha": "4a941d82f4626ab6c4f830a057408aca04e426601c55552616439bbe70433e4c"
   },
   "classifiche.html": {
-    "data": "2026-07-27",
-    "sha": "5908dbbb0f53449a0507c7f41a50f95e812c0cdc6822a492fba4510dc5d65e72"
+    "data": "2026-08-04",
+    "sha": "90a24c570df65cb94deb9c467aa9361c9cc5deed049ae7b0c0e6cbde0f157c0d"
   },
   "dati.html": {
-    "data": "2026-07-27",
-    "sha": "5271a3030ee4cce84b3333a6e695112c131e2abe44fcaa7b406297f811c0d0fb"
+    "data": "2026-08-04",
+    "sha": "e5d5a46c9b9aa9707252fb34da2e985e5f746c18fe6987628ea46030c0a01eba"
   },
   "forza.html": {
-    "data": "2026-07-27",
-    "sha": "77f07944e851c2afecf3befd836fce6146887d5a8456d769134d7a2786df8249"
+    "data": "2026-08-04",
+    "sha": "fda53326dc2c3ce8689d086c6cf37c56cd02c8d4ac82ebf962921fa009fccd49"
   },
   "index.html": {
-    "data": "2026-08-03",
-    "sha": "aec1c31b68ebc63ef080d40a57c414f6399df0bf4faa196ecd71fbdb10df73f8"
+    "data": "2026-08-04",
+    "sha": "55b5ea6858eb7a9bd464c1c72a040a95c6a072a5f0d8f54f0b5c94fe4c81a762"
+  },
+  "libere.html": {
+    "data": "2026-08-04",
+    "sha": "8f06977bd6474414cde765266e7567d8ed128f7c2c900ecab66f8727f0fa3cb8"
   },
   "live.html": {
-    "data": "2026-08-03",
-    "sha": "5e69c466c3afedc7f1697b6867742f8efa3f5311ddfbeee4d65c6e2d69b36c6a"
+    "data": "2026-08-04",
+    "sha": "253048cef78564d449bf3bb0090aef5dd8c67eb4b35692132653365f4a4f2aef"
+  },
+  "quali.html": {
+    "data": "2026-08-04",
+    "sha": "9e4dfa3ce566ce34fcc9d1b77506d337c3009d52151adb8998b1eeac881d4d1f"
+  },
+  "sprint.html": {
+    "data": "2026-08-04",
+    "sha": "ca1a04c482bffd95b27e64e6f68b0469306696c07d60656447145b18d532132d"
   },
   "stagione.html": {
-    "data": "2026-07-27",
-    "sha": "16772f422b0a5d30d2a09b12332d69d93181756e8c8495e8a55468a6222d42ce"
+    "data": "2026-08-04",
+    "sha": "75203106eaad75f1870b2e60974827fba0d7a3bebfc47d72e62be9eaf8c7d372"
+  },
+  "statistiche-confronti.html": {
+    "data": "2026-08-04",
+    "sha": "67863de36b5ca887b4ceafa007c4bb0235041889f0d858bbd708209d3ce2e311"
+  },
+  "statistiche-piloti.html": {
+    "data": "2026-08-04",
+    "sha": "c92820a9defe12080ae59e0568c05301b481492d93fa416b650b4843494d2bee"
+  },
+  "statistiche-squadre.html": {
+    "data": "2026-08-04",
+    "sha": "8cd596748e95d09c749d5ef206aa6d9b9bb3f5714a7add17255ea024cd30743b"
+  },
+  "statistiche-stagione.html": {
+    "data": "2026-08-04",
+    "sha": "4b5228d578528311269d3e5839f13080ec2fbe88bf533dba419f5e9db94dbd92"
+  },
+  "statistiche.html": {
+    "data": "2026-08-04",
+    "sha": "c499e95a704675f4a039db64b7006ff1eecca1cc4e91d01ad8d2e1d55278f358"
+  },
+  "tele.html": {
+    "data": "2026-08-04",
+    "sha": "3675e2dbe500812fa1345f80ce252cbe94d8766da09a4963c209d725d81df1b5"
   }
 }
