@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<!--
+  STATISTICHE / SQUADRE E VETTURE 2026. Consumatore puro:
+  demo/data/analisi/forza_macchina.json (indice di potenziale-vettura per gara) e
+  demo/data/analisi/stagione_dati.json (velocita' di punta, velocita' in curva, DNA del
+  circuito). Entrambi sono scritti dal ciclo post-gara della redazione e NON si toccano.
+
+  PERCHE' TEAM E VETTURE STANNO NELLA STESSA PAGINA. Le due meta' leggono gli stessi due
+  file e hanno la stessa copertura (10 gare su 11, manca Monaco). Separarle vorrebbe dire
+  caricare due volte lo stesso JSON e ripetere due volte lo stesso caveat. Hanno ancore
+  proprie (#team, #vetture) cosi' un articolo puo' citarle separatamente.
+
+  I NOMI DELLE SQUADRE. Questi due file usano l'alfabeto f1db («Haas F1 Team»), mentre i
+  colori in team_colori.json e le classifiche usano il proprio. La normalizzazione avviene
+  in UN punto solo — stat.mjs::normalizzaTeam — e mai dentro un modulo.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Squadre e vetture 2026 — Muretto Box Virtuale</title>
+<meta name="description" content="Quanto e' forte ogni vettura gara per gara, e dove ogni squadra ha scelto di essere lenta: velocita' di punta contro velocita' in curva, sul DNA di ogni circuito.">
+<link rel="canonical" href="https://murettobox.com/statistiche-squadre.html">
+<link rel="stylesheet" href="stile.css?v=040826a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
+    <span class="brand-mark"><span>M</span></span>
+    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+  </a>
+  <nav class="nav" aria-label="Sezioni">
+    <a href="stagione.html">Stagione</a>
+    <a href="live.html"><span class="dot-live"></span>Live</a>
+    <a href="analisi.html">Analisi</a>
+    <a href="statistiche.html" class="on">Statistiche</a>
+  </nav>
+</header>
+
+<div class="stat-wrap">
+  <div class="page-testa">
+    <h1>Squadre <em>//</em> e vetture 2026</h1>
+    <div class="sotto">Quanto è forte ogni macchina, e dove ogni squadra ha scelto di essere lenta.</div>
+  </div>
+
+  <nav class="stat-nav" aria-label="Statistiche">
+    <a href="statistiche.html">Il banco</a>
+    <a href="classifiche.html">Classifiche</a>
+    <a href="statistiche-piloti.html">Piloti</a>
+    <a href="statistiche-squadre.html" class="on">Squadre e vetture</a>
+    <a href="statistiche-stagione.html">Stagione 2026</a>
+    <a href="statistiche-confronti.html">Confronti fra stagioni</a>
+  </nav>
+
+  <div id="targhetta"></div>
+  <div id="copertura"></div>
+
+  <section class="stat-sez" id="team">
+    <div class="sez-tit">Forza-vettura, gara per gara</div>
+    <div class="stat-regola"><span class="k">Come nasce l'indice</span>
+      Non dal piazzamento &mdash; le penalità e il traffico lo falsano &mdash; ma da due segnali:
+      il <b>giro secco</b> (il miglior tempo di qualifica, cronometro e non griglia) e il
+      <b>passo in aria pulita</b>. Dentro ogni gara i due segnali diventano percentili fra le
+      squadre: <b>100 = la migliore di quel Gran Premio, 0 = l'ultima</b>. È un indice
+      <b>relativo alla gara</b>, quindi si legge in verticale, non in orizzontale: 100 a
+      Budapest e 100 a Spa non sono la stessa velocità.
+    </div>
+    <p class="stat-sub">Media dell'indice su tutte le gare coperte. La colonna <b>passo</b> porta
+      un avviso quando in qualche gara il passo pulito non era misurabile: lì l'indice si appoggia
+      di più al giro secco, e la cella lo dice invece di far finta di niente.</p>
+    <div id="tab-forza"></div>
+    <a class="sk-vai" href="forza.html" style="display:inline-block;margin-top:14px">
+      Vedi l'evoluzione gara per gara, con lo slider &rarr;</a>
+  </section>
+
+  <section class="stat-sez" id="pitlane">
+    <div class="sez-tit">La pit lane</div>
+    <div class="stat-regola"><span class="k">Perché non in secondi assoluti</span>
+      Il tempo per attraversare la corsia lo decide soprattutto il <b>circuito</b>: la pit
+      lane di Monaco e quella di Spa non si confrontano, e una classifica in secondi assoluti
+      misurerebbe il calendario invece delle squadre. Qui ogni sosta diventa lo <b>scarto dalla
+      mediana della propria gara</b>, e solo dopo si aggrega. Negativo = più rapidi dei rivali
+      di quel weekend.
+    </div>
+    <div class="stat-assente"><b>E anche così non è la prestazione dei meccanici</b>
+      La grandezza misurata è il <b>transito in pit lane</b> &mdash; ingresso, corsia a velocità
+      limitata, uscita &mdash; e l'auto ferma ne è solo una frazione, che con questi dati
+      <b>non è separabile</b>. Un box lento e una corsia percorsa male producono lo stesso
+      numero. È un indizio, non un cronometro sui meccanici.
+    </div>
+    <div id="tab-pit"></div>
+  </section>
+
+  <section class="stat-sez" id="vetture">
+    <div class="sez-tit">Punta contro curva</div>
+    <div class="stat-regola"><span class="k">Perché in percentili e non in km/h</span>
+      Fra circuiti diversi i km/h non si confrontano: a Spa si tocca una punta che a Budapest non
+      esiste, e una curva veloce di Silverstone è più rapida di un rettilineo di Monaco. Quindi
+      ogni valore diventa un <b>percentile dentro la propria gara</b>, e poi si fa la media.
+      Alto in orizzontale = forte sul dritto rispetto ai rivali di quel weekend; alto in
+      verticale = forte in curva.
+    </div>
+    <p class="stat-sub">La velocità di punta include la <b>potenza del motore</b>, non solo l'ala;
+      la velocità in curva include il <b>grip meccanico</b>. È una firma d'assetto, non una misura
+      di aerodinamica.</p>
+    <div class="stat-chart" id="scatter"></div>
+    <div class="stat-legend" id="leg-scatter"></div>
+    <div id="tab-assetto" style="margin-top:18px"></div>
+    <a class="sk-vai" href="dati.html" style="display:inline-block;margin-top:14px">
+      Vedi il cruscotto per gara, col DNA di ogni circuito &rarr;</a>
+  </section>
+
+  <section class="stat-sez" id="osservabilita">
+    <div class="sez-tit">Il muro dell'osservabilità</div>
+    <p class="stat-sub">In una pagina sulle vetture 2026 non c'è <b>una sola riga sull'ibrido</b>.
+      Non è una dimenticanza, ed è l'unica parte di questa pagina che <b>si conta</b> invece di
+      essere affermata: qui sotto ci sono i canali che il sito esporta davvero.</p>
+    <div id="tab-canali"></div>
+    <div class="panel stat-elenco" style="padding:4px 20px 10px;margin-top:16px" id="assenti"></div>
+    <div class="stat-assente" style="margin-top:14px" id="limite-tele"></div>
+  </section>
+</div>
+
+<footer class="footer">
+  <div class="footer-in">
+    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
+    <nav>
+      <a href="stagione.html">Stagione</a>
+      <a href="live.html">Live</a>
+      <a href="analisi.html">Analisi</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="module">
+import { prendiJSON, mostraErrore, scheletro, esc, dataIt, tabellaOrdinabile, barra, coloriTeam,
+         normalizzaTeam } from './stat.mjs?v=040826a';
+const el = id => document.getElementById(id);
+let colori = {};
+const col = t => colori[normalizzaTeam(t)] || colori[t] || 'var(--dim)';
+const media = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : null;
+
+/**
+ * Percentile di v dentro l'insieme vals.
+ *
+ * QUESTA E' ESATTAMENTE LA FORMULA DI dati.html (riga 111), copiata di proposito e non
+ * migliorata. La mia prima versione divideva per n-1 invece che per n e portava i valori
+ * estremi a 0 e 100: era altrettanto difendibile e produceva Ferrari 61/72/67 dove
+ * dati.html pubblica 60/70/65. Due numeri diversi per la stessa grandezza sullo stesso
+ * sito squalificano una sezione di statistiche piu' di qualunque cella mancante. Se un
+ * giorno la definizione va cambiata, si cambia in tutte e due le pagine nello stesso commit.
+ */
+function percentile(v, vals){
+  const n = vals.length;
+  if (!n) return 50;
+  const k = vals.filter(x => x < v).length;
+  const e = vals.filter(x => x === v).length;
+  return 100 * (k + 0.5 * e) / n;
+}
+
+function forza(f, calendario){
+  const per = {};
+  for (const g of f.gare) {
+    for (const [team, d] of Object.entries(g.team)) {
+      const q = (per[team] ??= { team, indice: [], secco: [], passo: [], gap: [], deboli: [], gare: 0 });
+      q.gare++;
+      if (d.indice != null) q.indice.push(d.indice);
+      if (d.potenziale_pct != null) q.secco.push(d.potenziale_pct);
+      if (d.passo_pct != null && d.passo_affidabile) q.passo.push(d.passo_pct);
+      if (d.gap != null) q.gap.push(d.gap);
+      if (!d.passo_affidabile) q.deboli.push(g.circuito ?? g.gp);
+    }
+  }
+  const righe = Object.values(per).map(q => ({
+    team: q.team, gare: q.gare,
+    indice: media(q.indice), secco: media(q.secco),
+    passo: q.passo.length ? media(q.passo) : null,
+    passoDeboli: q.deboli, gap: media(q.gap),
+  }));
+  tabellaOrdinabile(el('tab-forza'), righe, [
+    { k: 'team', testo: 'squadra',
+      cella: r => `<span class="nome"><span class="cbar" style="background:${col(r.team)}"></span>${esc(r.team)}</span>` },
+    { k: 'indice', testo: 'indice medio', num: true,
+      cella: r => barra(r.indice ?? 0, 100, col(r.team), (r.indice ?? 0).toFixed(0)) },
+    { k: 'secco', testo: 'giro secco', num: true, cella: r => (r.secco ?? 0).toFixed(0) },
+    { k: 'passo', testo: 'passo', num: true,
+      cella: r => r.passo == null
+        ? '<span class="dim">non misurabile</span>'
+        : `${r.passo.toFixed(0)}${r.passoDeboli.length
+            ? ` <span class="dim" title="Passo non affidabile a: ${esc(r.passoDeboli.join(', '))}. In quelle gare l'indice pesa di più il giro secco.">· ${r.passoDeboli.length}/${r.gare}</span>` : ''}` },
+    { k: 'gap', testo: 'gap medio (s)', num: true, cella: r => (r.gap ?? 0).toFixed(2) },
+    { k: 'gare', testo: 'gare', num: true },
+  ], { ordina: 'indice' });
+}
+
+function assetto(s){
+  // percentili DENTRO la gara: fra tracciati i km/h non sono confrontabili
+  const per = {};
+  for (const g of s.gare) {
+    const vm = Object.values(g.team).map(t => t.vmax).filter(v => v != null);
+    const cu = Object.values(g.team).map(t => t.cornering).filter(v => v != null);
+    for (const [team, t] of Object.entries(g.team)) {
+      const q = (per[team] ??= { team, dritto: [], curva: [], gare: 0 });
+      q.gare++;
+      if (t.vmax != null) q.dritto.push(percentile(t.vmax, vm));
+      if (t.cornering != null) q.curva.push(percentile(t.cornering, cu));
+    }
+  }
+  const righe = Object.values(per).map(q => ({
+    team: q.team, gare: q.gare,
+    dritto: media(q.dritto), curva: media(q.curva),
+    combinato: (media(q.dritto) + media(q.curva)) / 2,
+  }));
+
+  const W = 620, H = 460, M = 46;
+  const x = v => M + (v / 100) * (W - M * 2);
+  const y = v => H - M - (v / 100) * (H - M * 2);
+  const quad = (cx, cy, t, anc) => `<text x="${cx}" y="${cy}" text-anchor="${anc}"
+    fill="var(--dim)" font-family="var(--mono)" font-size="9.5" opacity=".8">${t}</text>`;
+  el('scatter').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img"
+    aria-label="Velocità di punta contro velocità in curva, in percentili, per squadra">
+    <line x1="${x(50)}" x2="${x(50)}" y1="${M}" y2="${H - M}" stroke="var(--line)" stroke-dasharray="3 3"/>
+    <line x1="${M}" x2="${W - M}" y1="${y(50)}" y2="${y(50)}" stroke="var(--line)" stroke-dasharray="3 3"/>
+    <rect x="${M}" y="${M}" width="${W - M * 2}" height="${H - M * 2}" fill="none" stroke="var(--line)"/>
+    ${quad(M + 6, M + 14, 'carico: curva sì, dritto no', 'start')}
+    ${quad(W - M - 6, M + 14, 'forte in entrambi', 'end')}
+    ${quad(M + 6, H - M - 8, 'indietro ovunque', 'start')}
+    ${quad(W - M - 6, H - M - 8, 'scarico: dritto sì, curva no', 'end')}
+    ${righe.map(r => `<g><circle cx="${x(r.dritto).toFixed(1)}" cy="${y(r.curva).toFixed(1)}" r="7"
+        fill="${col(r.team)}" fill-opacity=".82" stroke="var(--bg)" stroke-width="1.5"/>
+        <title>${esc(r.team)} — dritto ${r.dritto.toFixed(0)}, curva ${r.curva.toFixed(0)} (${r.gare} gare)</title></g>`).join('')}
+    <text x="${W / 2}" y="${H - 12}" text-anchor="middle" fill="var(--dim)"
+      font-family="var(--mono)" font-size="10">rettilineo (percentile fra le squadre)</text>
+    <text transform="translate(14,${H / 2}) rotate(-90)" text-anchor="middle" fill="var(--dim)"
+      font-family="var(--mono)" font-size="10">curva (percentile)</text>
+  </svg>`;
+  el('leg-scatter').innerHTML = [...righe].sort((a, b) => b.combinato - a.combinato)
+    .map(r => `<span class="chip on"><i style="background:${col(r.team)}"></i>${esc(r.team)}</span>`).join('');
+
+  tabellaOrdinabile(el('tab-assetto'), righe, [
+    { k: 'team', testo: 'squadra',
+      cella: r => `<span class="nome"><span class="cbar" style="background:${col(r.team)}"></span>${esc(r.team)}</span>` },
+    { k: 'dritto', testo: 'rettilineo %', num: true, cella: r => r.dritto.toFixed(0) },
+    { k: 'curva', testo: 'curva %', num: true, cella: r => r.curva.toFixed(0) },
+    { k: 'combinato', testo: 'combinato', num: true,
+      cella: r => barra(r.combinato, 100, col(r.team), r.combinato.toFixed(0)) },
+    { k: 'gare', testo: 'gare', num: true },
+  ], { ordina: 'combinato' });
+}
+
+function pitLane(g){
+  const pl = g?.pit_lane?.per_squadra ?? [];
+  if (!pl.length){
+    el('tab-pit').innerHTML = `<div class="stat-assente"><b>Non ancora disponibile</b>
+      L'artefatto delle statistiche di gara non e' stato trovato.</div>`;
+    return;
+  }
+  // la scala e' simmetrica intorno allo zero: altrimenti «meglio» e «peggio» avrebbero
+  // due unita' diverse e la barra piu' lunga non vorrebbe dire la differenza piu' grande.
+  const est = Math.max(...pl.map(t => Math.abs(t.scarto_mediano_s)), 0.1);
+  tabellaOrdinabile(el('tab-pit'), pl, [
+    { k: 'team', testo: 'squadra',
+      cella: r => `<span class="nome"><span class="cbar" style="background:${col(r.team)}"></span>${esc(r.team)}</span>` },
+    { k: 'scarto_mediano_s', testo: 'scarto dalla gara', num: true,
+      cella: r => {
+        const w = Math.abs(r.scarto_mediano_s) / est * 50;
+        const lato = r.scarto_mediano_s <= 0 ? `left:${50-w}%;width:${w}%` : `left:50%;width:${w}%`;
+        return `<span style="display:inline-flex;align-items:center;gap:8px;width:100%">
+          <span style="position:relative;flex:1;height:13px;min-width:80px">
+            <span style="position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:var(--line2)"></span>
+            <span style="position:absolute;top:0;bottom:0;border-radius:3px;${lato};
+              background:${r.scarto_mediano_s <= 0 ? 'var(--ok)' : 'var(--brand)'}"></span></span>
+          <b style="min-width:56px;text-align:right">${r.scarto_mediano_s > 0 ? '+' : ''}${r.scarto_mediano_s.toFixed(2)}&nbsp;s</b></span>`;
+      } },
+    { k: 'q1_s', testo: 'q1', num: true, cella: r => `${r.q1_s > 0 ? '+' : ''}${r.q1_s.toFixed(2)}` },
+    { k: 'q3_s', testo: 'q3', num: true, cella: r => `${r.q3_s > 0 ? '+' : ''}${r.q3_s.toFixed(2)}` },
+    { k: 'massimo_s', testo: 'peggiore', num: true, cella: r => `${r.massimo_s > 0 ? '+' : ''}${r.massimo_s.toFixed(2)}` },
+    { k: 'n', testo: 'soste', num: true },
+  ], { ordina: 'scarto_mediano_s', discendente: false });
+}
+
+// V3 — il censimento dei canali: la parte MISURATA del muro. Prima era prosa, e una prosa
+// non si aggiorna: se il collettore cominciasse a esportare un canale nuovo, la frase
+// resterebbe li' a mentire. Questo si rifa' a ogni gara insieme al resto.
+function osservabilita(g){
+  const o = g?.osservabilita;
+  if (!o){ document.getElementById('osservabilita')?.remove(); return; }
+  const nome = { t:'tempo', velocita:'velocità', throttle:'gas', freno:'freno', marcia:'marcia' };
+  el('tab-canali').innerHTML = `<table class="dtbl">
+    <thead><tr><th>canale pubblicato</th><th>cosa permette di misurare</th></tr></thead>
+    <tbody>${o.canali_pubblicati.map(c => `<tr>
+      <td><span class="nome"><span class="cbar" style="background:var(--ok)"></span>
+        <b>${esc(nome[c] ?? c)}</b> <span class="dim">${esc(c)}</span></span></td>
+      <td class="dim">${esc({
+        t: 'la posizione nel giro, e quindi i settori',
+        velocita: 'velocità di punta e velocità minima in curva',
+        throttle: 'la quota di giro a pieno gas',
+        freno: 'dove e per quanto si frena',
+        marcia: 'i rapporti, e da lì la scelta di trasmissione',
+      }[c] ?? '—')}</td></tr>`).join('')}</tbody></table>
+    <p class="stat-sub" style="margin-top:10px"><b>${o.n_canali} canali</b>, su
+      <b>${o.sessioni_con_telemetria} sessioni</b> di ${o.gare_con_telemetria.length} gare
+      (${o.gare_con_telemetria.map(esc).join(', ')}).</p>`;
+
+  el('assenti').innerHTML = Object.entries(o.assenti_e_perche).map(([k, v]) =>
+    `<div><span class="k">${esc(({
+       drs: 'DRS',
+       ers_stato_di_carica: 'Stato di carica',
+       aerodinamica_attiva: 'Aerodinamica attiva',
+       mj_recuperati_schierati: 'MJ recuperati',
+       carico_carburante: 'Carico carburante',
+     })[k] ?? k)}</span><span class="v">${esc(v)}</span></div>`).join('');
+
+  el('limite-tele').innerHTML = `<b>E un limite che vale per tutto quello che c'è</b>${esc(o.limite)}`;
+}
+
+async function boot(){
+  scheletro(el('tab-forza'), 8);
+  let f, s, cal;
+  try {
+    f   = await prendiJSON('data/analisi/forza_macchina.json');
+    s   = await prendiJSON('data/analisi/stagione_dati.json');
+    cal = await prendiJSON('data/calendario_2026.json');
+  } catch(e){ mostraErrore(el('tab-forza'), boot); return; }
+  colori = await coloriTeam();
+  let gara = null;
+  try { gara = await prendiJSON('data/stat/gara_2026.json'); } catch(e){}
+
+  // LA COPERTURA SI CALCOLA, NON SI COPIA DAL FILE. I due artefatti dichiarano n_gare=10 e
+  // non dicono quale manca: qui si confronta il loro elenco di round col calendario e si
+  // nomina l'assente. Finche' il generatore non scrivera' anche il MOTIVO, quello resta
+  // l'unica parte scritta a mano di questa pagina — ed e' dichiarato che lo e'.
+  const round = Object.fromEntries(cal.gare.filter(g => g.gara_demo).map(g => [g.round, g.gara_demo]));
+  const coperti = new Set(f.gare.map(g => g.round));
+  const mancanti = Object.entries(round).filter(([r]) => !coperti.has(Number(r))).map(([, n]) => n);
+  const MOTIVO = { Monaco: 'telemetria lacunosa: il tracciato non produce un passo pulito misurabile' };
+
+  el('targhetta').innerHTML = `<div class="stat-targhetta">
+    <div><span class="k">perimetro</span><span class="v">${f.gare.length} gare su ${Object.keys(round).length} corse</span></div>
+    <div><span class="k">ultima</span><span class="v">${esc(f.ultima ?? '')}</span></div>
+    <div><span class="k">aggiornato</span><span class="v">${dataIt(f.aggiornato)}</span></div>
+    <div><span class="k">fonte</span><span class="v">forza_macchina · stagione_dati</span></div>
+  </div>`;
+  el('copertura').innerHTML = mancanti.length
+    ? `<div class="stat-assente"><b>Questa pagina non copre tutta la stagione</b>${mancanti
+        .map(m => `<div>&mdash; <b style="display:inline">${esc(m)}</b>: ${esc(MOTIVO[m] ?? 'motivo non dichiarato dal file')}</div>`).join('')
+      }<div style="margin-top:8px;opacity:.75">Il motivo è scritto qui e non nel dato: finché il
+        generatore non lo esporterà, questa riga è l'unica parte a mano della pagina.</div></div>`
+    : '';
+
+  forza(f, cal);
+  pitLane(gara);
+  osservabilita(gara);
+  assetto(s);
+}
+boot();
+</script>
+</body>
+</html>

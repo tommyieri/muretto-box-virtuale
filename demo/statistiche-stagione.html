@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<!--
+  STATISTICHE / STAGIONE 2026. Consumatore puro: legge demo/data/stat/gara_2026.json,
+  scritto da gen_stat_gara.py.
+
+  Le undici gare come sono state CORSE, non come stanno in classifica: quanto si e' corso a
+  gara piena, e con che gomme. Il nome del file e' volutamente distinto da stagione.html,
+  che resta la pagina del calendario e del prossimo weekend.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stagione 2026 — Muretto Box Virtuale</title>
+<meta name="description" content="Quanto della stagione 2026 si e' corso davvero a gara piena, e con quali gomme: neutralizzazioni in tre metriche separate, mescole e durata degli stint.">
+<link rel="canonical" href="https://murettobox.com/statistiche-stagione.html">
+<link rel="stylesheet" href="stile.css?v=040826a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
+    <span class="brand-mark"><span>M</span></span>
+    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+  </a>
+  <nav class="nav" aria-label="Sezioni">
+    <a href="stagione.html">Stagione</a>
+    <a href="live.html"><span class="dot-live"></span>Live</a>
+    <a href="analisi.html">Analisi</a>
+    <a href="statistiche.html" class="on">Statistiche</a>
+  </nav>
+</header>
+
+<div class="stat-wrap">
+  <div class="page-testa">
+    <h1>Stagione 2026 <em>//</em> come si è corsa</h1>
+    <div class="sotto">Undici gare, undici corse diverse. Quanto si è corso a gara piena,
+      e con che gomme.</div>
+  </div>
+
+  <nav class="stat-nav" aria-label="Statistiche">
+    <a href="statistiche.html">Il banco</a>
+    <a href="classifiche.html">Classifiche</a>
+    <a href="statistiche-piloti.html">Piloti</a>
+    <a href="statistiche-squadre.html">Squadre e vetture</a>
+    <a href="statistiche-stagione.html" class="on">Stagione 2026</a>
+    <a href="statistiche-confronti.html">Confronti fra stagioni</a>
+  </nav>
+
+  <div id="targhetta"></div>
+
+  <section class="stat-sez" id="neutralizzazioni">
+    <div class="sez-tit">Quanto si è corso a gara piena</div>
+    <div class="stat-regola"><span class="k">Tre metriche, non una</span>
+      <b>Quante volte è uscita</b>, <b>quanti giri di gara</b> sono stati neutralizzati e
+      <b>che quota dei giri-auto</b> è stata corsa così sono tre grandezze diverse, e danno
+      tre classifiche di circuito diverse. I siti le pubblicano indistintamente sotto
+      «safety car stats»: qui ci sono tutte e tre, e chi ne cita una sola sta rispondendo a
+      un'altra domanda.
+    </div>
+    <p class="stat-sub">Dai digit del campo <code>status</code> di ogni giro-auto:
+      <b>4</b> safety car, <b>6</b> virtual safety car, <b>5</b> bandiera rossa. Il giallo di
+      settore <b>non</b> conta: nel vocabolario di questo progetto è un'ipotesi sul codice FIA,
+      non una neutralizzazione accertata.</p>
+    <div class="stat-chart" id="chart-neu"></div>
+    <div id="tab-neu"></div>
+    <div class="stat-assente" style="margin-top:14px"><b>Dove queste NON stanno</b>
+      Il file del race control non contiene le safety car: il suo vocabolario ha solo
+      giallo, info e penalità. Chi le cercasse lì ne troverebbe due in tutta la stagione.
+    </div>
+  </section>
+
+  <section class="stat-sez" id="gomme">
+    <div class="sez-tit">Gomme e stint</div>
+    <div class="stat-regola"><span class="k">Cosa questo modulo non è</span>
+      <b>Non è una stima del degrado.</b> I modelli di degrado e traffico di questo progetto
+      sono spenti per verdetto proprio, e l'arco si è chiuso con cinque cancelli NULL. Qui ci
+      sono <b>durate osservate e conteggi, con il loro N</b>: descrizione, non curve.
+    </div>
+    <p class="stat-sub">È il dato più pieno che il sito possiede: <b>11 gare su 11</b>, mentre
+      gli aggregati vettura ne coprono 10. Uno stint interrotto da un ritiro è corto e resta
+      nel conto: la mediana è una durata <b>osservata</b>, non una durata voluta.</p>
+    <div id="tab-mescole"></div>
+    <div class="stat-sez" style="margin-top:26px">
+      <div class="sez-tit">Come si è partiti, e quante volte ci si è fermati</div>
+      <p class="stat-sub">A sinistra la mescola di partenza, a destra la distribuzione del
+        numero di soste. Le soste vengono dal file che il suo generatore rimisura a ogni
+        esecuzione, e che <b>coincide con la fonte canonica su tutte le coppie confrontabili</b>.</p>
+      <div id="tab-gare"></div>
+    </div>
+  </section>
+
+
+  <section class="stat-sez" id="ritiri">
+    <div class="sez-tit">Chi non è arrivato, e per cosa</div>
+    <div class="stat-regola"><span class="k">Due fonti, due ruoli</span>
+      <b>Chi</b> non è arrivato lo dice la <b>classifica ufficiale FIA</b>, dal campo
+      <i>classificato</i> &mdash; non dallo stato scritto accanto: fra gli ufficiali ci sono
+      «Retired» che risultano <b>classificati</b> e «Lapped» che <b>non</b> lo sono, e leggere
+      lo stato al posto del campo sbaglierebbe il verdetto. <b>Per cosa</b> lo dice f1db, ed è
+      l'unica fonte che ce l'ha.
+    </div>
+    <div id="ritiri-firma"></div>
+    <div id="tab-famiglie"></div>
+    <div class="stat-sez" style="margin-top:24px">
+      <div class="sez-tit">Per squadra</div>
+      <div id="tab-ritiri"></div>
+    </div>
+    <div class="stat-sez" style="margin-top:24px">
+      <div class="sez-tit">Le cause, come le scrive la fonte</div>
+      <p class="stat-sub">Testo libero, così com'è. Nessuna famiglia, nessuna percentuale per
+        famiglia: raggrupparle è una scelta che cambia il numero, e va firmata prima.</p>
+      <div id="tab-cause"></div>
+    </div>
+  </section>
+
+  <details class="stat-metodo">
+    <summary>Come si legge, e i tre modi di contare una sosta</summary>
+    <div class="in">
+      <p><b>«Durata sosta» non è «transito pit lane» e non è «pit-loss».</b> Sono tre grandezze
+        con nomi simili: il tempo con l'auto ferma, il tempo per attraversare la corsia
+        (circa ventidue secondi) e i secondi persi rispetto a chi resta in pista. Il numero
+        che questo sito pubblica è il <b>transito</b>, ed è dichiarato nel dato.</p>
+      <p><b>Contare le soste si può sbagliare in due modi</b>, e li abbiamo misurati entrambi.
+        Dedurle dal numero di stint sbaglia in <b id="err-b">–</b> casi su <b id="tot-b">–</b>,
+        perché uno stint può non chiudersi. Contare le righe col flag di pit <b>non è affatto
+        un conteggio di soste</b>: quel flag segna sia il giro d'ingresso sia quello d'uscita
+        e vale circa il doppio — coincide solo in <b id="err-c">–</b> casi.</p>
+      <p><b>La numerazione della fonte salta dei numeri.</b> In Australia un pilota ha le soste
+        numerate 1, 2 e <b>4</b>. Contarle col numero più alto invece che per righe darebbe una
+        sosta in più in cinque casi: si contano le righe.</p>
+    </div>
+  </details>
+</div>
+
+<footer class="footer">
+  <div class="footer-in">
+    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
+    <nav>
+      <a href="stagione.html">Stagione</a>
+      <a href="live.html">Live</a>
+      <a href="analisi.html">Analisi</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="module">
+import { prendiJSON, mostraErrore, scheletro, esc, dataIt, targhetta, copertura,
+         tabellaOrdinabile, barra } from './stat.mjs?v=040826a';
+const el = id => document.getElementById(id);
+
+const TINTA = { HARD: '#d8d8d8', MEDIUM: '#e0c341', SOFT: '#e8384f', INTERMEDIATE: '#3fb950' };
+const REG = { sc: ['var(--sc)', 'safety car'], vsc: ['var(--vsc)', 'virtual safety car'],
+              rosso: ['var(--brand)', 'bandiera rossa'] };
+
+function neutralizzazioni(d){
+  const gare = Object.entries(d.neutralizzazioni.per_gara);
+  const max = Math.max(...gare.map(([, v]) => v.quota_neutralizzata ?? 0), 0.01);
+
+  // barra per gara sulla QUOTA di giri-auto, con i dispiegamenti scritti accanto:
+  // la quota risponde a «quanta gara», il conteggio a «quante volte». Sono due domande.
+  el('chart-neu').innerHTML = `<div style="padding:8px 6px">` + gare.map(([g, v]) => {
+    const w = (v.quota_neutralizzata ?? 0) / max * 100;
+    const disp = Object.entries(v.dispiegamenti).filter(([, n]) => n > 0)
+      .map(([k, n]) => `<span style="color:${REG[k][0]}">${n}&nbsp;${k === 'rosso' ? 'rossa' : k.toUpperCase()}</span>`)
+      .join(' · ') || '<span style="opacity:.5">nessuna</span>';
+    return `<div style="display:grid;grid-template-columns:120px 1fr 58px 190px;gap:12px;
+        align-items:center;padding:5px 0;font:12px/1.3 var(--mono)">
+      <span style="color:var(--txt)">${esc(g)}</span>
+      <span style="position:relative;height:14px;background:var(--panel2);border-radius:3px">
+        <i style="position:absolute;left:0;top:0;bottom:0;width:${w.toFixed(1)}%;
+           background:var(--sc);border-radius:3px"></i></span>
+      <span style="text-align:right;color:var(--txt)">${((v.quota_neutralizzata ?? 0) * 100).toFixed(1)}%</span>
+      <span style="color:var(--dim);font-size:11px">${disp}</span>
+    </div>`;
+  }).join('') + `</div>`;
+
+  tabellaOrdinabile(el('tab-neu'), gare.map(([g, v]) => ({
+    gara: g, giri: v.n_giri,
+    sc: v.dispiegamenti.sc, vsc: v.dispiegamenti.vsc, rosso: v.dispiegamenti.rosso,
+    giri_sc: v.giri_di_gara_per_regime.sc, giri_vsc: v.giri_di_gara_per_regime.vsc,
+    quota: v.quota_neutralizzata ?? 0,
+  })), [
+    { k: 'gara', testo: 'gara' },
+    { k: 'giri', testo: 'giri', num: true },
+    { k: 'sc', testo: 'SC uscite', num: true },
+    { k: 'vsc', testo: 'VSC', num: true },
+    { k: 'rosso', testo: 'rosse', num: true },
+    { k: 'giri_sc', testo: 'giri sotto SC', num: true },
+    { k: 'giri_vsc', testo: 'giri sotto VSC', num: true },
+    { k: 'quota', testo: 'quota giri-auto', num: true,
+      cella: r => barra(r.quota, max, 'var(--sc)', (r.quota * 100).toFixed(1) + '%') },
+  ], { ordina: 'quota' });
+}
+
+function gomme(d){
+  const m = d.gomme.lunghezza_per_mescola;
+  const maxMed = Math.max(...Object.values(m).map(v => v?.massimo ?? 0), 1);
+  tabellaOrdinabile(el('tab-mescole'), Object.entries(m).map(([c, v]) => ({
+    mescola: c, n: v.n, mediana: v.mediana, q1: v.q1, q3: v.q3,
+    minimo: v.minimo, massimo: v.massimo,
+  })), [
+    { k: 'mescola', testo: 'mescola',
+      cella: r => `<span class="nome"><span class="cbar" style="background:${TINTA[r.mescola] ?? 'var(--dim)'}"></span>${esc(r.mescola)}</span>` },
+    { k: 'n', testo: 'stint', num: true },
+    { k: 'mediana', testo: 'giri (mediana)', num: true,
+      cella: r => barra(r.mediana, maxMed, TINTA[r.mescola] ?? 'var(--dim)', r.mediana) },
+    { k: 'q1', testo: 'q1', num: true },
+    { k: 'q3', testo: 'q3', num: true },
+    { k: 'minimo', testo: 'min', num: true },
+    { k: 'massimo', testo: 'max', num: true },
+  ], { ordina: 'n' });
+
+  const part = d.gomme.mescola_di_partenza, soste = d.soste.per_gara;
+  const righe = Object.keys(soste).map(g => ({
+    gara: g,
+    partenza: part[g] ?? {},
+    totali: soste[g].soste_totali,
+    mediana: soste[g].per_pilota_mediana,
+    dist: soste[g].distribuzione,
+  }));
+  const pill = (t, n) => `<span style="display:inline-flex;align-items:center;gap:4px;
+    margin-right:8px"><i style="width:8px;height:8px;border-radius:50%;display:inline-block;
+    background:${TINTA[t] ?? 'var(--dim)'}"></i>${n}</span>`;
+  tabellaOrdinabile(el('tab-gare'), righe, [
+    { k: 'gara', testo: 'gara' },
+    { k: 'partenza', testo: 'mescola di partenza',
+      val: r => Object.entries(r.partenza).map(([, n]) => n).reduce((a, b) => a + b, 0),
+      cella: r => Object.entries(r.partenza).sort().map(([t, n]) => pill(t, n)).join('') },
+    { k: 'totali', testo: 'soste', num: true },
+    { k: 'mediana', testo: 'per pilota (mediana)', num: true },
+    { k: 'dist', testo: 'distribuzione', val: r => r.mediana ?? 0,
+      cella: r => Object.entries(r.dist).map(([k, n]) =>
+        `<span style="color:var(--dim)">${k}:</span>${n}`).join('&nbsp;&nbsp;') },
+  ], { ordina: 'totali' });
+}
+
+function ritiri(d){
+  const r = d.ritiri;
+  if (!r){ document.getElementById('ritiri')?.remove(); return; }
+  const g = r.raggruppamento;
+
+  document.getElementById('ritiri-firma').innerHTML = g.firmato
+    ? `<div class="stat-targhetta">
+         <div><span class="k">raggruppamento</span><span class="v">firmato da
+           <b>${esc(g.firmato_da ?? '?')}</b>${g.firmato_il ? ` il ${dataIt(g.firmato_il)}` : ''}</span></div>
+       </div>`
+      + (g.cause_senza_famiglia?.length
+         ? `<div class="stat-assente" style="border-color:var(--brand)">
+              <b>${g.cause_senza_famiglia.length} caus${g.cause_senza_famiglia.length === 1 ? 'a' : 'e'} senza famiglia</b>
+              ${g.cause_senza_famiglia.map(esc).join(', ')} &mdash; compars${g.cause_senza_famiglia.length === 1 ? 'a' : 'e'}
+              dopo la firma e <b>non attribuit${g.cause_senza_famiglia.length === 1 ? 'a' : 'e'} a nessuna famiglia</b>:
+              restano fuori dai totali qui sotto e visibili nel grezzo, invece di sparire in un
+              «altro» che nasconderebbe la scelta non fatta. Si assegnano in
+              <code>${esc(g.file)}</code>.</div>`
+         : '')
+    : `<div class="stat-assente"><b>Le famiglie non sono firmate, quindi qui c'è il testo grezzo</b>
+       ${esc(g.perche_grezzo ?? '')}
+       <div style="margin-top:8px;opacity:.8">Si firma in <code>${esc(g.file)}</code>. Le tre
+       domande da sciogliere sono scritte lì dentro &mdash; per esempio se «Battery» ed
+       «Electrical» stiano nella power unit o in una famiglia elettrica a sé.</div></div>`;
+
+  // LE FAMIGLIE, solo se firmate. Il testo grezzo resta pubblicato qui sotto in ogni caso:
+  // un raggruppamento che nascondesse il dato da cui viene sarebbe peggio di nessun
+  // raggruppamento.
+  const fam = r.famiglie;
+  if (fam && g.firmato){
+    const tot = Object.values(fam).reduce((a, b) => a + b, 0) || 1;
+    const TF = { 'power unit':'var(--brand)', 'trasmissione':'var(--sc)',
+                 'telaio e sospensioni':'var(--lead)', 'elettrico':'var(--vsc)',
+                 'contatto':'var(--accent)', 'danno da contatto':'var(--accent)',
+                 'incidente':'var(--dim)', 'non specificato':'var(--panel2)' };
+    tabellaOrdinabile(el('tab-famiglie'),
+      Object.entries(fam).map(([f, n]) => ({ famiglia: f, n, quota: n / tot })), [
+      { k: 'famiglia', testo: 'famiglia',
+        cella: x => `<span class="nome"><span class="cbar"
+          style="background:${TF[x.famiglia] ?? 'var(--dim)'}"></span>${esc(x.famiglia)}</span>` },
+      { k: 'n', testo: 'ritiri', num: true },
+      { k: 'quota', testo: 'quota', num: true,
+        cella: x => barra(x.n, Math.max(...Object.values(fam)),
+                          TF[x.famiglia] ?? 'var(--dim)', (x.quota * 100).toFixed(1) + '%') },
+    ], { ordina: 'n' });
+    const senza = r.non_arrivati_totali - r.con_causa_dichiarata;
+    el('tab-famiglie').insertAdjacentHTML('beforeend',
+      `<p class="stat-sub" style="margin-top:10px">${tot} ritiri su
+       <b>${r.non_arrivati_totali}</b> non arrivati${senza > 0
+         ? ` &mdash; per ${senza} la fonte non dichiara nessuna causa, e non vengono attribuiti a nessuna famiglia`
+         : ''}.
+       <b>«Incidente» non vuol dire errore del pilota</b>: un'uscita di pista può avere origine
+       meccanica e la fonte non lo dice.</p>`);
+  }
+
+  const sq = r.per_squadra.filter(x => x.squadra && x.squadra !== '?');
+  const maxq = Math.max(...sq.map(x => x.quota ?? 0), 0.01);
+  tabellaOrdinabile(document.getElementById('tab-ritiri'), sq, [
+    { k: 'squadra', testo: 'squadra' },
+    { k: 'non_arrivati', testo: 'non arrivati', num: true },
+    { k: 'partenze', testo: 'su partenze', num: true },
+    { k: 'quota', testo: 'quota', num: true,
+      cella: x => barra(x.quota ?? 0, maxq, 'var(--brand)', ((x.quota ?? 0) * 100).toFixed(1) + '%') },
+  ], { ordina: 'quota' });
+
+  const cause = Object.entries(r.cause_grezze).map(([c, n]) => ({ causa: c, n }));
+  const maxn = Math.max(...cause.map(x => x.n), 1);
+  tabellaOrdinabile(document.getElementById('tab-cause'), cause, [
+    { k: 'causa', testo: 'come la scrive la fonte' },
+    { k: 'n', testo: 'volte', num: true,
+      cella: x => barra(x.n, maxn, 'var(--dim)', x.n) },
+  ], { ordina: 'n' });
+}
+
+async function boot(){
+  scheletro(el('chart-neu'), 8);
+  let d;
+  try { d = await prendiJSON('data/stat/gara_2026.json'); }
+  catch(e){ mostraErrore(el('chart-neu'), boot); return; }
+
+  const tre = d.soste.i_tre_conteggi;
+  el('targhetta').innerHTML = targhetta(d, [
+    ['giri', `${d.giri_testa.giri_attribuiti}/${d.giri_testa.giri_totali} attribuiti`],
+    ['stint', String(d.gomme.stint_totali)],
+  ]) + copertura(d);
+  el('err-b').textContent = tre.coppie - tre.accordo_A_B;
+  el('tot-b').textContent = tre.coppie;
+  el('err-c').textContent = tre.accordo_A_C;
+
+  neutralizzazioni(d);
+  ritiri(d);
+  gomme(d);
+}
+boot();
+</script>
+</body>
+</html>

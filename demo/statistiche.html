@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<!--
+  STATISTICHE — l'hub della sezione. Consumatore puro: legge i manifest che gia' esistono
+  in demo/data/ e non calcola nessun numero di gara. La sua ragione d'essere e' il MURO
+  DELLE COPERTURE: la trappola numero uno di una sezione di statistiche e' che le coperture
+  NON coincidono e SEMBRANO coincidere (11 gare per i dati di pista, 10 senza Monaco per gli
+  aggregati vettura, 9 per il pit-loss, 2 per le libere, 1 per la sprint). Dichiararlo una
+  volta all'ingresso costa una tabella; scoprirlo a valle costa la credibilita' della sezione.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Statistiche 2026 — Muretto Box Virtuale</title>
+<meta name="description" content="Le statistiche della stagione 2026: classifiche, piloti, squadre e vetture, confronti fra stagioni. Ogni numero con la sua provenienza e il suo perimetro.">
+<link rel="canonical" href="https://murettobox.com/statistiche.html">
+<link rel="stylesheet" href="stile.css?v=040826a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
+    <span class="brand-mark"><span>M</span></span>
+    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+  </a>
+  <nav class="nav" aria-label="Sezioni">
+    <a href="stagione.html">Stagione</a>
+    <a href="live.html"><span class="dot-live"></span>Live</a>
+    <a href="analisi.html">Analisi</a>
+    <a href="statistiche.html" class="on">Statistiche</a>
+  </nav>
+</header>
+
+<div class="stat-wrap">
+  <div class="page-testa">
+    <h1>Statistiche <em>//</em> il banco</h1>
+    <div class="sotto">Le classifiche restano il cuore. Accanto, quello che la stagione 2026
+      dice davvero &mdash; e, prima di ogni numero, quanto di stagione quel numero copre.</div>
+  </div>
+
+  <nav class="stat-nav" aria-label="Statistiche">
+    <a href="statistiche.html" class="on">Il banco</a>
+    <a href="classifiche.html">Classifiche</a>
+    <a href="statistiche-piloti.html">Piloti</a>
+    <a href="statistiche-squadre.html">Squadre e vetture</a>
+    <a href="statistiche-stagione.html">Stagione 2026</a>
+    <a href="statistiche-confronti.html">Confronti fra stagioni</a>
+  </nav>
+
+  <section class="stat-sez">
+    <div class="sez-tit">Il campionato, in tre righe</div>
+    <div class="champ panel" id="champ" hidden></div>
+  </section>
+
+  <section class="stat-sez">
+    <div class="sez-tit">Il muro delle coperture</div>
+    <p class="stat-sub">Quando questa sezione dice <b>&laquo;quest'anno&raquo;</b>, non dice sempre
+      lo stesso numero di gare. Ogni riga è un artefatto, ogni colonna un Gran Premio pubblicato.
+      Le celle <b>grigie</b> non sono buchi: sono sessioni che quel weekend non prevedeva.</p>
+    <div class="stat-muro" id="muro"></div>
+    <div class="stat-legenda">
+      <span><i class="c-si" style="background:var(--ok)"></i> c'è</span>
+      <span><i class="c-motivo" style="background:var(--lead)"></i> manca, con un motivo dichiarato</span>
+      <span><i class="c-debito" style="background:var(--lead);opacity:.55"></i> non l'abbiamo importata (la fonte ce l'ha)</span>
+      <span><i class="c-no" style="background:var(--brand)"></i> manca ovunque</span>
+      <span><i class="c-nonprev" style="background:var(--panel2);border:1px solid var(--line)"></i> non prevista quel weekend</span>
+    </div>
+    <details class="stat-metodo">
+      <summary>Come si legge questo muro</summary>
+      <div class="in">
+        <p>Il <b>denominatore viene dal calendario</b>, non dall'elenco delle gare pubblicate: la sprint
+          è attesa solo nei weekend che ne prevedono una (quattro nel 2026), quindi negli altri sette la
+          cella è grigia e non rossa. Senza questa distinzione il muro pubblicherebbe decine di falsi allarmi.</p>
+        <p><b>Una cella verde dice che il round c'è dentro il file, non che il dato dentro sia pieno.</b>
+          Due esempi che contano: le qualifiche sono verdi in tutte e undici, ma i campi <b>q1</b> e <b>q2</b>
+          sono vuoti in tutte e 220 le righe e <b>q3</b> è una copia di <b>best</b> &mdash; la segmentazione
+          per fase va presa da f1db. E il race control è verde in tutte e undici, ma <b>non contiene le
+          safety car</b>: quelle stanno nei digit del campo <code>status</code> dentro i dati di gara.</p>
+        <p><b>&laquo;Assente ovunque&raquo; e &laquo;assente da noi&raquo; sono due cose diverse</b>, e dal
+          04/08/2026 hanno due colori diversi. Il primo è un limite del mondo; il secondo un debito
+          nostro con un rimedio noto. Misurato sulla fonte canonica: delle qualifiche ha
+          <b>tutti e undici</b> i round, delle prove libere ha <b>l'FP1 di tutti e undici</b>, e ha
+          <b>tutti e quattro</b> i weekend sprint. Le righe magre di libere e sprint non dicono che
+          i dati non esistano: dicono che non li abbiamo importati.</p>
+        <p>Ogni riga porta alla pagina che mostra quel dato, dove esiste.</p>
+      </div>
+    </details>
+  </section>
+
+  <section class="stat-sez">
+    <div class="sez-tit">Cosa questa sezione non dice</div>
+    <p class="stat-sub">Per un pubblico esperto questa lista vale quanto una vista. Non sono
+      dimenticanze: sono rifiuti, e ognuno ha una ragione misurata.</p>
+    <div class="panel stat-elenco" style="padding:4px 20px 10px">
+      <div><span class="k">Un voto ai piloti</span><span class="v">Non è identificabile su undici gare: circa l'88% della varianza è del costruttore. È un NULL prevedibile, e qui un NULL si registra prima, non si spiega dopo.</span></div>
+      <div><span class="k">Il conto dei sorpassi</span><span class="v">Senza una definizione operativa lo stesso Gran Premio dà numeri diversi del 30-40%, a seconda di come si contano giro 1, doppiaggi e riprese in pit lane.</span></div>
+      <div><span class="k">Il degrado e il traffico</span><span class="v">Spenti per verdetto del progetto: cinque cancelli chiusi NULL, e il circuito non è risultato un predittore su otto risultati indipendenti.</span></div>
+      <div><span class="k">L'ibrido</span><span class="v">Stato di carica, MJ recuperati e schierati, mappe motore, Overtake Mode: non osservabili dai dati pubblici, per decisione di F1. Ogni stima sarebbe un modello, e andrebbe detto.</span></div>
+      <div><span class="k">Il ritmo gara in secondi</span><span class="v">Fra inizio e fine stint ci sono circa due secondi al giro di carburante. Un passo medio senza la sua correzione dichiarata è la bugia più diffusa del settore.</span></div>
+    </div>
+  </section>
+
+  <div class="aggiornato" id="agg"></div>
+</div>
+
+<footer class="footer">
+  <div class="footer-in">
+    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
+    <nav>
+      <a href="stagione.html">Stagione</a>
+      <a href="live.html">Live</a>
+      <a href="analisi.html">Analisi</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="module">
+import { prendiJSON, mostraErrore, scheletro, esc, dataIt, coloriTeam } from './stat.mjs?v=040826a';
+const el = id => document.getElementById(id);
+
+// LE RIGHE DEL MURO. Ognuna dice: come si chiama, dove si guarda, quali gare sono ATTESE
+// (dal calendario, non dal registro) e come si riconosce una gara presente nel file.
+// `motivo` spiega un'assenza gia' dichiarata: la cella diventa gialla, non rossa.
+function righeMuro(dati, gare, calendario){
+  const round = Object.fromEntries(calendario.gare.filter(g=>g.gara_demo).map(g=>[g.round, g.gara_demo]));
+  const conSprint = new Set(calendario.gare.filter(g=>g.sessioni?.sprint && g.gara_demo).map(g=>g.gara_demo));
+  const daRound = f => new Set((f?.gare ?? []).map(g => round[g.round]).filter(Boolean));
+  const daManifest = m => new Set((m?.disponibili ?? []).map(d => d.gara));
+
+  return [
+    { nome:'Dati di gara, giro per giro', ha: new Set((dati.manifest ?? []).map(m=>m.gara)) },
+    { nome:'Classifica ufficiale (arbitro)', ha: new Set(Object.keys(dati.ufficiali ?? {})) },
+    { nome:'Griglia di partenza', ha: new Set(Object.keys(dati.grids ?? {})) },
+    { nome:'Soste (transito pit lane)', ha: new Set(Object.keys(dati.pitstops?.gare ?? {})) },
+    { nome:'Race control', ha: new Set(Object.keys(dati.rc ?? {})) },
+    { nome:'Qualifiche', ha: daManifest(dati.qualiM), pagina:'quali.html', canonica:'qualifiche' },
+    { nome:'Prove libere', ha: daManifest(dati.libereM), pagina:'libere.html', canonica:'libere_fp1' },
+    { nome:'Sprint', ha: daManifest(dati.sprintM), attese: conSprint, pagina:'sprint.html',
+      canonica:'sprint', nota:'attesa solo nei weekend sprint' },
+    { nome:'Telemetria (giro veloce)', ha: new Set((dati.teleM?.disponibili ?? []).map(d=>d.gara)),
+      pagina:'tele.html' },
+    { nome:'Pit-loss verificato', ha: new Set(Object.keys(dati.pitlossM ?? {}).filter(k=>!k.startsWith('_'))) },
+    { nome:'Forza-vettura', ha: daRound(dati.forza),
+      motivo:{ Monaco:'telemetria lacunosa: il tracciato non produce un passo pulito misurabile' } },
+    { nome:'Assetto e DNA del circuito', ha: daRound(dati.stagione),
+      motivo:{ Monaco:'telemetria lacunosa: stessa esclusione della forza-vettura' } },
+  ];
+}
+
+function disegnaMuro(righe, gare){
+  const cella = (r, g) => {
+    if (r.attese && !r.attese.has(g)) return `<i class="c-nonprev" title="${esc(g)}: non prevista quel weekend"></i>`;
+    if (r.ha.has(g)) return `<i class="c-si" title="${esc(g)}: c'è"></i>`;
+    const m = r.motivo?.[g];
+    if (m) return `<i class="c-motivo" title="${esc(g)}: manca — ${esc(m)}"></i>`;
+    // ASSENTE DA NOI ≠ ASSENTE OVUNQUE. Se la fonte canonica quella gara ce l'ha, il rosso
+    // sta dicendo la cosa sbagliata: non e' un limite del mondo, e' un debito nostro con un
+    // rimedio noto. Sono due informazioni diverse e meritano due colori diversi.
+    if (r.canoniche?.has(g))
+      return `<i class="c-debito" title="${esc(g)}: non l'abbiamo importata — la fonte canonica ce l'ha"></i>`;
+    return `<i class="c-no" title="${esc(g)}: manca, e nemmeno la fonte canonica ce l'ha"></i>`;
+  };
+  const conta = r => {
+    const attese = r.attese ? gare.filter(g=>r.attese.has(g)) : gare;
+    return `${attese.filter(g=>r.ha.has(g)).length}/${attese.length}`;
+  };
+  el('muro').innerHTML = `<table>
+    <thead><tr><th class="rowhd">artefatto</th>${
+      gare.map(g=>`<th title="${esc(g)}">${esc(g).slice(0,3).toUpperCase()}</th>`).join('')}<th>&nbsp;</th></tr></thead>
+    <tbody>${righe.map(r=>`<tr><td class="rowhd">${
+      r.pagina ? `<a href="${esc(r.pagina)}" style="color:inherit">${esc(r.nome)} &rarr;</a>` : esc(r.nome)}${
+      r.nota ? ` <span style="color:var(--dim)">· ${esc(r.nota)}</span>` : ''}</td>${
+      gare.map(g=>`<td>${cella(r,g)}</td>`).join('')}<td class="rowhd" style="color:var(--dim);padding-left:10px">${conta(r)}</td></tr>`).join('')}</tbody></table>`;
+}
+
+async function boot(){
+  scheletro(el('muro'), 8);
+  let cal, manifest;
+  try {
+    cal = await prendiJSON('data/calendario_2026.json');
+    manifest = await prendiJSON('data/manifest.json');
+  } catch(e){ mostraErrore(el('muro'), boot); return; }
+
+  // il resto e' opzionale: un manifest che manca produce una riga vuota, non una pagina rotta
+  const forse = async u => { try { return await prendiJSON(u); } catch(e){ return null; } };
+  const dati = {
+    manifest,
+    ufficiali: await forse('data/ufficiali_2026.json'),
+    grids:     await forse('data/grids.json'),
+    pitstops:  await forse('data/pitstops_2026.json'),
+    rc:        await forse('data/race_control_2026.json'),
+    qualiM:    await forse('data/quali_manifest.json'),
+    libereM:   await forse('data/libere_manifest.json'),
+    sprintM:   await forse('data/sprint_manifest.json'),
+    teleM:     await forse('data/tele_manifest.json'),
+    pitlossM:  await forse('data/pitloss_meta.json'),
+    gara:      await forse('data/stat/gara_2026.json'),
+    forza:     await forse('data/analisi/forza_macchina.json'),
+    stagione:  await forse('data/analisi/stagione_dati.json'),
+  };
+
+  // l'ordine delle colonne e' quello del calendario, non quello del manifest
+  const pubblicate = new Set(manifest.map(m=>m.gara));
+  const gare = cal.gare.filter(g=>g.gara_demo && pubblicate.has(g.gara_demo)).map(g=>g.gara_demo);
+  const righe = righeMuro(dati, gare, cal);
+  const cc = dati.gara?.copertura_canonica?.per_sessione ?? {};
+  for (const r of righe)
+    if (r.canonica && cc[r.canonica]?.gare)
+      r.canoniche = new Set(cc[r.canonica].gare);
+  disegnaMuro(righe, gare);
+
+  // campionato in tre righe: nessun ricalcolo, si legge la classifica gia' pubblicata
+  try {
+    const clas = await prendiJSON('data/classifiche_2026.json');
+    const col = await coloriTeam();
+    let numeri = {};
+    try { const sk = await prendiJSON('data/schede_2026.json');
+          numeri = Object.fromEntries(Object.entries(sk.piloti).map(([id,s])=>[id, s.numero])); } catch(e){}
+    el('champ').innerHTML = `<div class="champ-tit">Piloti</div>` +
+      clas.piloti.slice(0,3).map(p=>`<a class="champ-p" href="scheda.html?tipo=pilota&id=${encodeURIComponent(p.id)}">
+        <i style="background:${col[p.team_demo]||'var(--dim)'}"></i>
+        <span class="pp num">P${p.pos}</span><span class="rnum" style="color:${col[p.team_demo]||'var(--dim)'}">${numeri[p.id] ?? ''}</span><b>${esc(p.sigla)}</b><span class="pt num">${p.punti}</span></a>`).join('') +
+      `<a class="champ-tutta" href="classifiche.html">classifica completa &rarr;</a>`;
+    el('champ').hidden = false;
+    const a = clas.aggiornato_al;
+    el('agg').innerHTML = `aggiornato al <b>${esc(a.titolo || a.nome || ('round '+a.round))}</b>`
+      + (a.data ? ` · ${dataIt(a.data)}` : '')
+      + (a.provvisorio ? ` · <span class="prov" title="I punti di ${esc(a.provvisorio.gare.join(', '))} vengono dalla classifica ufficiale FIA. Diventano canonici quando esce la release f1db che li copre.">provvisorio</span>` : '');
+  } catch(e){}
+}
+boot();
+</script>
+</body>
+</html>

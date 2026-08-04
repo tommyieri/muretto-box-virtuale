@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<!--
+  STATISTICHE / PILOTI. Consumatore puro: demo/data/grids.json (griglia canonica f1db,
+  post-penalita') + demo/data/ufficiali_2026.json (la classifica FIA, l'ARBITRO dei
+  risultati) + demo/data/schede_2026.json (anagrafica) + team_colori.json.
+
+  PERCHE' IL GUADAGNO SI RICALCOLA QUI E NON SI LEGGE DA schede_2026.stagione.pos_guadagnate.
+  Quel campo esiste ed e' comodo, ma porta con se' un denominatore sbagliato: `su_gare.partite`
+  vale 11 per tutti e 22 i piloti perche' conta le ISCRIZIONI, DNS compresi. Un pilota che ha
+  davvero un confronto griglia-arrivo in tre gare e uno che ce l'ha in undici non possono avere
+  la stessa media. Qui il denominatore e' contato: sono le gare in cui il pilota ha SIA una
+  griglia SIA un arrivo classificato, e il numero e' stampato accanto a ogni riga.
+-->
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Piloti 2026 — Muretto Box Virtuale</title>
+<meta name="description" content="Chi recupera posizioni e chi le consuma, dalla griglia post-penalita' all'arrivo ufficiale, con il numero di gare su cui il confronto esiste davvero.">
+<link rel="canonical" href="https://murettobox.com/statistiche-piloti.html">
+<link rel="stylesheet" href="stile.css?v=040826a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
+    <span class="brand-mark"><span>M</span></span>
+    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
+  </a>
+  <nav class="nav" aria-label="Sezioni">
+    <a href="stagione.html">Stagione</a>
+    <a href="live.html"><span class="dot-live"></span>Live</a>
+    <a href="analisi.html">Analisi</a>
+    <a href="statistiche.html" class="on">Statistiche</a>
+  </nav>
+</header>
+
+<div class="stat-wrap">
+  <div class="page-testa">
+    <h1>Piloti <em>//</em> stagione 2026</h1>
+    <div class="sotto">Quello che succede fra il sabato e la bandiera a scacchi.</div>
+  </div>
+
+  <nav class="stat-nav" aria-label="Statistiche">
+    <a href="statistiche.html">Il banco</a>
+    <a href="classifiche.html">Classifiche</a>
+    <a href="statistiche-piloti.html" class="on">Piloti</a>
+    <a href="statistiche-squadre.html">Squadre e vetture</a>
+    <a href="statistiche-stagione.html">Stagione 2026</a>
+    <a href="statistiche-confronti.html">Confronti fra stagioni</a>
+  </nav>
+
+  <div id="targhetta"></div>
+
+  <section class="stat-sez">
+    <div class="sez-tit">Dalla griglia all'arrivo</div>
+    <div class="stat-regola"><span class="k">La regola</span>
+      Si contano solo le gare in cui il pilota ha <b>sia una griglia sia un arrivo
+      classificato</b>. La griglia è quella <b>dopo le penalità</b>; l'arrivo è quello della
+      <b>classifica ufficiale FIA</b>. Ritiri, squalifiche e mancate partenze <b>non producono
+      un guadagno</b> e non entrano nella media: sono contati a parte, perché escluderli in
+      silenzio farebbe sembrare più regolare chi rompe spesso.
+    </div>
+    <div class="stat-assente"><b>Due cose che gonfiano questa classifica, e non sono merito</b>
+      <div>&mdash; <b style="display:inline">Chi parte in fondo ha più spazio davanti.</b> Le vetture
+        più lente partono ultime e raccolgono le posizioni di chi si ritira: una parte del guadagno
+        è aritmetica della griglia, non sorpassi.</div>
+      <div>&mdash; <b style="display:inline">Le partenze dalla pit lane contano come ultima piazza.</b>
+        La griglia pubblicata è un elenco ordinato di ventidue sigle e non porta nessuna bandiera che
+        distingua chi è partito dai box: quel pilota risulta ventiduesimo e ogni posizione che
+        recupera viene contata. Finché la fonte non espone quel campo, il numero resta gonfiato
+        e questo riquadro è l'unico posto in cui lo si dice.</div>
+    </div>
+    <p class="stat-sub">Barre <b>verdi</b> verso destra per chi guadagna, <b>rosse</b> verso
+      sinistra per chi perde. Accanto a ogni pilota, <b>su quante gare</b> il confronto esiste:
+      non è undici per tutti, e con tre o quattro gare una media non significa granché.</p>
+    <div id="barre"></div>
+  </section>
+
+
+
+  <section class="stat-sez" id="compagni">
+    <div class="sez-tit">Compagni di squadra</div>
+    <div class="stat-regola"><span class="k">Perché questo confronto e non un voto</span>
+      È l'unico in cui la vettura è <b>costante</b>: stessa monoposto, cambia la mano. Un voto
+      sintetico ai piloti non è identificabile su undici gare &mdash; circa l'88% della varianza
+      dei risultati è del costruttore &mdash; e qui un NULL prevedibile si registra prima, non
+      si spiega dopo.
+    </div>
+
+    <div class="stat-sez" style="margin-top:22px">
+      <div class="sez-tit">Il sabato</div>
+      <div class="stat-regola"><span class="k">La regola del segmento</span>
+        <span id="regola-quali">Si confronta <b>l'ultimo segmento in cui entrambi hanno un tempo
+        valido</b>.</span> Confrontare il Q3 di uno col Q1 dell'altro gonfia sistematicamente chi
+        arriva più avanti: è l'errore più diffuso del settore. <b>Il delta è di segmento</b>, e
+        per questo non si somma né si media fra segmenti diversi &mdash; la mediana qui sotto è
+        sulla distribuzione dei confronti, non su una grandezza continua.
+      </div>
+      <div id="tab-quali"></div>
+    </div>
+
+    <div class="stat-sez" style="margin-top:26px">
+      <div class="sez-tit">La domenica</div>
+      <div class="stat-regola"><span class="k">Due colonne, mai una</span>
+        <b>Tutte le gare</b> conta come sconfitta anche il ritiro: misura anche l'affidabilità.
+        <b>Entrambi classificati</b> toglie quelle gare, ma il filtro ha un verso &mdash; toglie
+        anche gli incidenti <i>causati</i> dal pilota, quindi ripulisce a favore di chi sbaglia.
+        Il bias si dichiara, non si elimina: per questo ci sono <b>tutte e due</b>, e le gare
+        cadute fra l'una e l'altra sono contate.
+      </div>
+      <div id="tab-gara"></div>
+    </div>
+  </section>
+
+  <section class="stat-sez" id="giri-testa">
+    <div class="sez-tit">Chi ha condotto la corsa</div>
+    <div class="stat-regola"><span class="k">Da dove viene il leader</span>
+      Dalla <b>posizione in pista giro per giro</b>, non dedotta dal tempo cumulato. È una
+      distinzione che cambia il risultato: quando un giro manca, il feed copia il tempo del
+      leader nella riga e nascono <b>pareggi al millesimo</b> &mdash; a Cina, al primo giro,
+      cinque piloti hanno esattamente lo stesso tempo, e a vincere il pareggio è l'ordine
+      alfabetico. Dedotto così, il leader del primo giro sarebbe sbagliato in <b>tre gare su
+      undici</b>. Col campo giusto sono <b>673 giri su 673</b>, nessuno buttato.
+    </div>
+    <p class="stat-sub">In <b>verde</b> i giri condotti a gara piena, in <b>arancio</b> quelli
+      dietro una neutralizzazione: la domanda è chi ha <i>guidato</i> la corsa, e un giro dietro
+      la safety car non è guidare. Sono <span id="quanti-neutri">–</span> giri su 673.</p>
+    <div id="testa"></div>
+  </section>
+
+  <section class="stat-sez">
+    <div class="sez-tit">Gara per gara</div>
+    <p class="stat-sub">Clicca un'intestazione per riordinare. <b>Media</b> è il guadagno diviso
+      le gare utili, non le gare del calendario.</p>
+    <div id="tabella"></div>
+  </section>
+
+  <details class="stat-metodo">
+    <summary>Come si legge, e cosa manca ancora</summary>
+    <div class="in">
+      <p><b>Chi parte davanti ha poco da guadagnare e molto da perdere.</b> Un pilota che
+        conquista spesso la prima fila può stare in rosso pur vincendo gare: la metrica misura
+        il movimento, non il valore. Va letta accanto alla classifica, mai al posto suo.</p>
+      <p><b>Perché non c'è un voto ai piloti.</b> Separare il pilota dalla macchina non è
+        identificabile su undici gare: circa l'88% della varianza dei risultati è del
+        costruttore. Il confronto che azzera davvero la vettura è quello fra <b>compagni di
+        squadra</b> — stessa monoposto, cambia la mano — e arriva con l'ondata successiva,
+        con la sua regola stampata sopra: l'ultimo segmento di qualifica in cui <i>entrambi</i>
+        hanno segnato un tempo valido.</p>
+      <p><b>Una cosa che questo modulo non sa ancora dire.</b> Quanto del guadagno è il rimbalzo
+        di una partenza sbagliata, e quanto è recupero vero: servirebbe la posizione al primo
+        giro, che i dati di gara pubblicati non espongono in modo affidabile — il tempo
+        cumulato del primo giro produce dei pareggi al millesimo, e l'ordine che se ne ricava
+        è sbagliato in tre gare su undici.</p>
+    </div>
+  </details>
+</div>
+
+<footer class="footer">
+  <div class="footer-in">
+    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
+    <nav>
+      <a href="stagione.html">Stagione</a>
+      <a href="live.html">Live</a>
+      <a href="analisi.html">Analisi</a>
+    </nav>
+  </div>
+</footer>
+
+<script type="module">
+import { prendiJSON, mostraErrore, scheletro, esc, tabellaOrdinabile, coloriTeam,
+         normalizzaTeam } from './stat.mjs?v=040826a';
+
+// P1/P2 — i compagni di squadra, da demo/data/stat/piloti_2026.json (gen_stat_piloti.py).
+function compagni(d, colori){
+  if (!d?.qualifica?.coppie?.length){
+    for (const id of ['tab-quali','tab-gara'])
+      document.getElementById(id).innerHTML = `<div class="stat-assente"><b>Non ancora disponibile</b>
+        L'artefatto dei compagni di squadra non e' stato trovato.</div>`;
+    return;
+  }
+  document.getElementById('regola-quali').innerHTML = esc(d.qualifica.regola);
+  // I DUE ARTEFATTI PARLANO ALFABETI DIVERSI: piloti_2026.json dice «Haas» e «Red Bull»,
+  // team_colori.json e gara_2026.json dicono «Haas F1 Team» e «Red Bull Racing». Senza
+  // normalizzare, quelle due squadre perderebbero la livrea e diventerebbero grigie — e un
+  // colore mancante non da' errore, si limita a essere sbagliato. E' il debito n.8 del piano
+  // (una sola tabella di identita' squadre): finche' non c'e', si passa di qui.
+  const col = t => colori[normalizzaTeam(t)] || colori[t] || 'var(--dim)';
+  const duo = c => Object.keys(c.duelli ?? c.tutte_le_gare?.duelli ?? {});
+
+  // SABATO
+  const q = d.qualifica.coppie.map(c => {
+    const [a, b] = Object.entries(c.duelli).sort((x, y) => y[1] - x[1]);
+    return { team: c.team, a: a[0], av: a[1], b: b[0], bv: b[1], n: c.n,
+             mediano: Math.abs(c.delta_ms.mediano), cadute: c.sessioni_cadute.length,
+             segmenti: c.segmenti_usati };
+  });
+  tabellaOrdinabile(document.getElementById('tab-quali'), q, [
+    { k: 'team', testo: 'squadra',
+      cella: r => `<span class="nome"><span class="cbar" style="background:${col(r.team)}"></span>${esc(r.team)}</span>` },
+    { k: 'av', testo: 'duello', num: true,
+      cella: r => `<b>${esc(r.a)}</b> ${r.av}<span style="color:var(--dim)"> &ndash; </span>${r.bv} ${esc(r.b)}` },
+    { k: 'mediano', testo: 'scarto mediano', num: true,
+      cella: r => `${(r.mediano/1000).toFixed(3)}&nbsp;s` },
+    { k: 'n', testo: 'confronti', num: true },
+    { k: 'segmenti', testo: 'segmenti usati', val: r => r.segmenti.Q3 ?? 0,
+      cella: r => Object.entries(r.segmenti).filter(([, n]) => n)
+        .map(([k, n]) => `<span style="color:var(--dim)">${k}</span>&nbsp;${n}`).join('&nbsp; ') },
+    { k: 'cadute', testo: 'cadute', num: true,
+      cella: r => r.cadute ? `<span style="color:var(--brand)">${r.cadute}</span>` : '<span class="dim">–</span>' },
+  ], { ordina: 'n' });
+
+  // DOMENICA
+  const g = d.gara.coppie.map(c => {
+    const [a, b] = Object.entries(c.tutte_le_gare.duelli).sort((x, y) => y[1] - x[1]);
+    const eb = c.entrambi_classificati.duelli;
+    return { team: c.team, a: a[0], av: a[1], b: b[0], bv: b[1],
+             n: c.tutte_le_gare.n, nb: c.entrambi_classificati.n,
+             ba: eb[a[0]] ?? 0, bb: eb[b[0]] ?? 0,
+             cadute: c.cadute_fra_a_e_b.length,
+             doppi: c.tutte_le_gare.entrambi_non_classificati };
+  });
+  tabellaOrdinabile(document.getElementById('tab-gara'), g, [
+    { k: 'team', testo: 'squadra',
+      cella: r => `<span class="nome"><span class="cbar" style="background:${col(r.team)}"></span>${esc(r.team)}</span>` },
+    { k: 'av', testo: 'tutte le gare', num: true,
+      cella: r => `<b>${esc(r.a)}</b> ${r.av}<span style="color:var(--dim)"> &ndash; </span>${r.bv} ${esc(r.b)}
+        <span style="color:var(--dim)"> su ${r.n}</span>` },
+    { k: 'ba', testo: 'entrambi classificati', num: true,
+      cella: r => `${r.ba}<span style="color:var(--dim)"> &ndash; </span>${r.bb}
+        <span style="color:var(--dim)"> su ${r.nb}</span>` },
+    { k: 'cadute', testo: 'gare cadute', num: true,
+      cella: r => r.cadute ? `<span style="color:var(--brand)">${r.cadute}</span>` : '<span class="dim">–</span>' },
+    { k: 'doppi', testo: 'doppio ritiro', num: true,
+      cella: r => r.doppi || '<span class="dim">–</span>' },
+  ], { ordina: 'cadute' });
+}
+
+// P4 — chi ha condotto, da demo/data/stat/gara_2026.json (gen_stat_gara.py).
+function giriTesta(g, colori, perSigla){
+  const t = g?.giri_testa;
+  const box = document.getElementById('testa');
+  if (!t?.piloti?.length){
+    box.innerHTML = `<div class="stat-assente"><b>Non ancora disponibile</b>
+      L'artefatto delle statistiche di gara non e' stato trovato.</div>`;
+    return;
+  }
+  const tot = t.giri_totali || 1;
+  const neutri = t.piloti.reduce((a, p) => a + p.neutralizzati, 0);
+  document.getElementById('quanti-neutri').textContent = neutri;
+  box.innerHTML = `<section class="panel" style="padding:14px 18px">` + t.piloti.map(p => {
+    const a = perSigla[p.pilota] ?? {};
+    const c = colori[a.team_demo] || 'var(--dim)';
+    return `<a class="anl-riga" style="grid-template-columns:68px 1fr 150px"
+      href="scheda.html?tipo=pilota&id=${encodeURIComponent(a.id ?? '')}"
+      title="${esc(a.nome ?? p.pilota)} — ${p.verdi} giri a gara piena, ${p.neutralizzati} neutralizzati">
+      <span class="sig"><i style="background:${c}"></i><span class="rnum"
+        style="color:${c}">${esc(a.numero ?? '')}</span>${esc(p.pilota)}</span>
+      <span style="position:relative;height:14px;background:var(--panel2);border-radius:3px;overflow:hidden">
+        <i style="position:absolute;left:0;top:0;bottom:0;width:${(p.verdi / tot * 100).toFixed(2)}%;
+           background:var(--ok)"></i>
+        <i style="position:absolute;left:${(p.verdi / tot * 100).toFixed(2)}%;top:0;bottom:0;
+           width:${(p.neutralizzati / tot * 100).toFixed(2)}%;background:var(--sc)"></i></span>
+      <span class="val num"><b>${p.totale}</b> <span style="color:var(--dim)">giri ·
+        ${(p.totale / tot * 100).toFixed(0)}%</span></span></a>`;
+  }).join('') + `</section>
+  <p class="stat-sub" style="margin-top:10px">Hanno condotto <b>${t.piloti.length} piloti su 22</b>.
+    Le altre quindici barre sarebbero a zero, e non sono disegnate.</p>`;
+}
+const el = id => document.getElementById(id);
+
+async function boot(){
+  scheletro(el('barre'), 10);
+  let grids, uff, schede;
+  try {
+    grids  = await prendiJSON('data/grids.json');
+    uff    = await prendiJSON('data/ufficiali_2026.json');
+    schede = await prendiJSON('data/schede_2026.json');
+  } catch(e){ mostraErrore(el('barre'), boot); return; }
+  const colori = await coloriTeam();
+  let gara = null, comp = null;
+  try { gara = await prendiJSON('data/stat/gara_2026.json'); } catch(e){}
+  try { comp = await prendiJSON('data/stat/piloti_2026.json'); } catch(e){}
+
+  // sigla -> anagrafica (le due fonti si parlano per sigla, non per nome)
+  const perSigla = {};
+  for (const [id, s] of Object.entries(schede.piloti)) perSigla[s.sigla] = { id, ...s };
+  compagni(comp, colori);
+  giriTesta(gara, colori, perSigla);
+
+  // il perimetro sono le gare presenti in ENTRAMBE le fonti: se una gara ha la griglia ma
+  // non la classifica ufficiale (o viceversa) non produce nessun confronto, e va esclusa
+  // dal denominatore invece di contare come zero.
+  const gare = Object.keys(grids).filter(g => uff[g]?.classifica);
+
+  const p = {};
+  const tocca = s => (p[s] ??= { sigla: s, gare: [], nonArrivate: 0, senzaGriglia: 0 });
+  for (const g of gare) {
+    const griglia = Object.fromEntries(grids[g].map((s, i) => [s, i + 1]));
+    for (const r of uff[g].classifica) {
+      const q = tocca(r.pilota);
+      const part = griglia[r.pilota];
+      if (part == null) { q.senzaGriglia++; continue; }      // partenza dai box, o assente
+      if (!r.classificato) { q.nonArrivate++; continue; }    // ritirato, doppiato, squalificato
+      q.gare.push({ gara: g, griglia: part, arrivo: r.pos, delta: part - r.pos });
+    }
+  }
+
+  const righe = Object.values(p).map(q => {
+    const n = q.gare.length;
+    const somma = q.gare.reduce((a, x) => a + x.delta, 0);
+    const a = perSigla[q.sigla] ?? {};
+    return {
+      sigla: q.sigla, id: a.id, nome: a.nome ?? q.sigla, numero: a.numero,
+      team: a.team_demo ?? '', n, somma,
+      media: n ? somma / n : null,
+      migliore: n ? Math.max(...q.gare.map(x => x.delta)) : null,
+      peggiore: n ? Math.min(...q.gare.map(x => x.delta)) : null,
+      nonArrivate: q.nonArrivate, senzaGriglia: q.senzaGriglia,
+    };
+  }).filter(r => r.n > 0 || r.nonArrivate > 0);
+
+  // I DUE ARTEFATTI PARLANO ALFABETI DIVERSI: piloti_2026.json dice «Haas» e «Red Bull»,
+  // team_colori.json e gara_2026.json dicono «Haas F1 Team» e «Red Bull Racing». Senza
+  // normalizzare, quelle due squadre perderebbero la livrea e diventerebbero grigie — e un
+  // colore mancante non da' errore, si limita a essere sbagliato. E' il debito n.8 del piano
+  // (una sola tabella di identita' squadre): finche' non c'e', si passa di qui.
+  const col = t => colori[normalizzaTeam(t)] || colori[t] || 'var(--dim)';
+  const max = Math.max(...righe.map(r => Math.abs(r.somma)), 1);
+
+  // barre divergenti, ordinate per guadagno totale
+  el('barre').innerHTML = `<section class="panel anl">` + [...righe]
+    .sort((a, b) => b.somma - a.somma).map(r => {
+      const w = Math.abs(r.somma) / max * 50;
+      const lato = r.somma >= 0 ? `left:50%;width:${w}%` : `left:${50 - w}%;width:${w}%`;
+      return `<a class="anl-riga" href="scheda.html?tipo=pilota&id=${encodeURIComponent(r.id ?? '')}"
+        title="${esc(r.nome)} — ${r.n} gare utili${r.nonArrivate ? `, ${r.nonArrivate} senza arrivo` : ''}">
+        <span class="sig"><i style="background:${col(r.team)}"></i><span class="rnum"
+          style="color:${col(r.team)}">${esc(r.numero ?? '')}</span>${esc(r.sigla)}</span>
+        <span class="asse"><span class="zero"></span>
+          <span class="barra ${r.somma >= 0 ? 'su' : 'giu'}" style="${lato}"></span></span>
+        <span class="val num"><b>${r.somma > 0 ? '+' : ''}${r.somma}</b>
+          <span style="color:var(--dim)"> · ${r.n}g</span></span></a>`;
+    }).join('') + `</section>`;
+
+  tabellaOrdinabile(el('tabella'), righe, [
+    { k: 'sigla', testo: 'pilota',
+      cella: r => `<a href="scheda.html?tipo=pilota&id=${encodeURIComponent(r.id ?? '')}"
+        class="nome" style="text-decoration:none"><span class="cbar" style="background:${col(r.team)}"></span>
+        <b>${esc(r.sigla)}</b> <span class="dim">${esc(r.nome)}</span></a>` },
+    { k: 'team', testo: 'squadra' },
+    { k: 'n', testo: 'gare utili', num: true },
+    { k: 'somma', testo: 'posizioni', num: true,
+      cella: r => `${r.somma > 0 ? '+' : ''}${r.somma}` },
+    { k: 'media', testo: 'media per gara', num: true,
+      cella: r => r.media == null ? '<span class="dim">–</span>'
+        : `${r.media > 0 ? '+' : ''}${r.media.toFixed(2)}` },
+    { k: 'migliore', testo: 'meglio', num: true,
+      cella: r => r.migliore == null ? '<span class="dim">–</span>' : `${r.migliore > 0 ? '+' : ''}${r.migliore}` },
+    { k: 'peggiore', testo: 'peggio', num: true,
+      cella: r => r.peggiore == null ? '<span class="dim">–</span>' : `${r.peggiore}` },
+    { k: 'nonArrivate', testo: 'senza arrivo', num: true,
+      cella: r => r.nonArrivate ? `<span class="dim">${r.nonArrivate}</span>` : '<span class="dim">–</span>' },
+  ], { ordina: 'somma' });
+
+  // la targhetta dice il perimetro CONTATO, non quello sperato
+  const utili = righe.reduce((a, r) => a + r.n, 0);
+  const perse = righe.reduce((a, r) => a + r.nonArrivate, 0);
+  // `senzaGriglia` resta contato nel modello ma non si stampa: oggi vale zero per tutti,
+  // perche' grids.json elenca sempre ventidue sigle e mette le partenze dai box in coda
+  // invece di ometterle. Il giorno in cui la fonte esponesse quel campo, il contatore
+  // diventerebbe diverso da zero e la riga andrebbe rimessa nella targhetta.
+  el('targhetta').innerHTML = `<div class="stat-targhetta">
+    <div><span class="k">perimetro</span><span class="v">${gare.length} gare · ${righe.length} piloti</span></div>
+    <div><span class="k">confronti utili</span><span class="v">${utili}</span></div>
+    <div><span class="k">senza arrivo</span><span class="v">${perse}<span style="color:var(--dim)"> · ritiri, doppiati, non partiti</span></span></div>
+    <div><span class="k">fonti</span><span class="v">griglia f1db · arrivo FIA</span></div>
+  </div>`;
+}
+boot();
+</script>
+</body>
+</html>

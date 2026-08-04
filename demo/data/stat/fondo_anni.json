@@ -1,0 +1,2061 @@
+{
+ "_nota": "GENERATO da gen_stat_fondo.py. Non modificare a mano: si rigenera a ogni gara con `python3 aggiorna_stat.py`.",
+ "_generatore": "gen_stat_fondo.py",
+ "schema": 1,
+ "calcolato_il": "2026-08-04T09:24:45+00:00",
+ "provenienza": {
+  "porta": "lab/fondo.py — l'unico modulo autorizzato a sapere dove sta il grezzo",
+  "radici": {
+   "storico": "data/fondo",
+   "2026_weekend": "data/ti_archive/2026",
+   "2026_registro": "data/gare_registro.json"
+  },
+  "file_letti": 874,
+  "byte_letti": 29184230,
+  "per_anno": [
+   {
+    "anno": 2018,
+    "file": 105,
+    "byte": 2747350,
+    "digesto_12": "2e823fb25c12"
+   },
+   {
+    "anno": 2019,
+    "file": 104,
+    "byte": 1988305,
+    "digesto_12": "fe2f986b60d2"
+   },
+   {
+    "anno": 2020,
+    "file": 80,
+    "byte": 2210057,
+    "digesto_12": "db7dcd4c2cf5"
+   },
+   {
+    "anno": 2021,
+    "file": 106,
+    "byte": 2770944,
+    "digesto_12": "f065846f23b9"
+   },
+   {
+    "anno": 2022,
+    "file": 110,
+    "byte": 2780210,
+    "digesto_12": "61baa0eea716"
+   },
+   {
+    "anno": 2023,
+    "file": 104,
+    "byte": 2873793,
+    "digesto_12": "42ee7881b38f"
+   },
+   {
+    "anno": 2024,
+    "file": 114,
+    "byte": 3070345,
+    "digesto_12": "9019dde61895"
+   },
+   {
+    "anno": 2025,
+    "file": 114,
+    "byte": 3195933,
+    "digesto_12": "26af90f68a98"
+   },
+   {
+    "anno": 2026,
+    "file": 37,
+    "byte": 7547293,
+    "digesto_12": "a6db4622d70c"
+   }
+  ],
+  "percorsi_non_risolti": 0,
+  "quali_non_risolti": [],
+  "nota_digesto": "digesto_12 = sha256 della sequenza «anno/gara/sessione:sha256_12» dei file di quell'anno, in ordine. Cambia se cambia un solo file.",
+  "f1db_release_pinnata": "v2026.11.0",
+  "f1db_release_letta": "v2026.11.0",
+  "f1db_fallback_default": "v2026.10.0",
+  "come": "zip esplicito (--zip)",
+  "zip": "f1db-csv-v2026.11.0.zip",
+  "zip_sha256_12": "d5461cd30c57",
+  "tabelle": [
+   "races",
+   "races-sprint-race-results"
+  ],
+  "a_cosa_serve_f1db": "solo al DENOMINATORE: quante gare e quante sprint aveva il calendario di ogni stagione, e quanti giri erano previsti. Il fondo non puo' saperlo di se stesso — una gara che nessuno ha mai scaricato non lascia traccia nella cartella."
+ },
+ "perimetro": {
+  "anni": [
+   2018,
+   2019,
+   2020,
+   2021,
+   2022,
+   2023,
+   2024,
+   2025,
+   2026
+  ],
+  "note": [
+   "9 stagioni: 2018-2026. L'elenco e' DERIVATO da lab/fondo.anni(), mai scritto nel sorgente.",
+   "il 2026 e' dentro il perimetro ma NON e' nel fondo: viene da un'altra ingestione, ed e' la prima cosa che questo modulo dichiara.",
+   "tutto il grezzo si legge a ogni esecuzione: nessun campionamento."
+  ]
+ },
+ "legenda": {
+  "gare_in_calendario": "quante gare aveva la stagione, da f1db races. Per il 2026 sono le 22 in calendario, non le 11 gia' corse.",
+  "gare_nel_fondo": "quante cartelle-gara hanno almeno una sessione con delle righe.",
+  "gare_piene": "quante hanno una sessione Race che porta tutte e nove le colonne di lab/fondo.CHIAVE (lap, time, compound, life, stint, pin, pout, status, drv). Sotto questa soglia non si puo' attribuire un giro a un pilota ne' sapere sotto che bandiera e' stato fatto.",
+  "con_microsettori": "gare = weekend in cui TUTTE le sessioni presenti portano ms1/ms2/ms3; sessioni = i singoli file che le portano.",
+  "con_meteo": "stessa regola, per wAT/wTT/wH/wR/wWS (aria, asfalto, umidita', pioggia, vento).",
+  "giri_totali": "righe giro-auto, tutte le sessioni comprese.",
+  "giri_utilizzabili": "righe che passano lab/fondo.verde(): giro cronometrato, fuori da SC/VSC/bandiera rossa, su mescola asciutta, senza ingresso ne' uscita dai box. Contate SOLO dentro le sessioni piene (v. la trappola guscio_2019). ATTENZIONE AL 2018: «mescola asciutta» vuol dire SOFT/MEDIUM/HARD, quindi i giri su HYPERSOFT, ULTRASOFT e SUPERSOFT — la maggioranza di quella stagione — non ci sono. Il numero del 2018 NON e' confrontabile con quello degli altri anni: v. la trappola mescole_2018.",
+  "sprint_in_calendario": "gare con almeno un risultato in f1db races-sprint-race-results.",
+  "colonne_per_sessione": "quante sessioni hanno quel numero di colonne. 42 e' la forma piena, 43 e' una qualifica (aggiunge `qs`), 39 e' una sessione senza microsettori, 3 e' un guscio."
+ },
+ "anni": [
+  {
+   "anno": 2018,
+   "catena": "fondo storico (data/fondo, ingest_fondo_storico.py)",
+   "gare_in_calendario": 21,
+   "gare_nel_fondo": 21,
+   "gare_piene": 21,
+   "gare_guscio": [],
+   "con_microsettori": {
+    "gare": 21,
+    "sessioni": 105
+   },
+   "con_meteo": {
+    "gare": 21,
+    "sessioni": 105
+   },
+   "sessioni_per_tipo": {
+    "Race": 21,
+    "Sprint": 0,
+    "Qualifying": 21,
+    "Practice 1": 21,
+    "Practice 2": 21,
+    "Practice 3": 21
+   },
+   "sessioni_totali": 105,
+   "sessioni_piene": 105,
+   "sprint_in_calendario": 0,
+   "giri_totali": 58007,
+   "giri_utilizzabili": 15874,
+   "quota_utilizzabile": 0.2737,
+   "giri_cancellati_in_gara": 0,
+   "giri_cancellati_ovunque": 0,
+   "mescole": {
+    "distinte": 8,
+    "riconosciute_asciutte": [
+     "HARD",
+     "MEDIUM",
+     "SOFT"
+    ],
+    "riconosciute_bagnate": [
+     "INTERMEDIATE",
+     "WET"
+    ],
+    "fuori_dal_vocabolario": {
+     "HYPERSOFT": 7823,
+     "SUPERSOFT": 14033,
+     "ULTRASOFT": 13982
+    },
+    "giri_con_mescola": 56914,
+    "giri_riconosciuti_asciutti": 19873,
+    "giri_fuori_dal_vocabolario": 35838
+   },
+   "squadre": {
+    "distinte": 11,
+    "nomi": [
+     "Ferrari",
+     "Force India",
+     "Haas F1 Team",
+     "McLaren",
+     "Mercedes",
+     "Racing Point",
+     "Red Bull Racing",
+     "Renault",
+     "Sauber",
+     "Toro Rosso",
+     "Williams"
+    ]
+   },
+   "colonne_per_sessione": {
+    "42": 84,
+    "43": 21
+   }
+  },
+  {
+   "anno": 2019,
+   "catena": "fondo storico (data/fondo, ingest_fondo_storico.py)",
+   "gare_in_calendario": 21,
+   "gare_nel_fondo": 21,
+   "gare_piene": 15,
+   "gare_guscio": [
+    "Mexican Grand Prix",
+    "Monaco Grand Prix",
+    "Russian Grand Prix",
+    "Singapore Grand Prix",
+    "Spanish Grand Prix",
+    "United States Grand Prix"
+   ],
+   "con_microsettori": {
+    "gare": 15,
+    "sessioni": 74
+   },
+   "con_meteo": {
+    "gare": 15,
+    "sessioni": 74
+   },
+   "sessioni_per_tipo": {
+    "Race": 21,
+    "Sprint": 0,
+    "Qualifying": 21,
+    "Practice 1": 21,
+    "Practice 2": 21,
+    "Practice 3": 20
+   },
+   "sessioni_totali": 104,
+   "sessioni_piene": 74,
+   "sprint_in_calendario": 0,
+   "giri_totali": 58946,
+   "giri_utilizzabili": 28557,
+   "quota_utilizzabile": 0.4845,
+   "giri_cancellati_in_gara": 2,
+   "giri_cancellati_ovunque": 28,
+   "mescole": {
+    "distinte": 7,
+    "riconosciute_asciutte": [
+     "HARD",
+     "MEDIUM",
+     "SOFT"
+    ],
+    "riconosciute_bagnate": [
+     "INTERMEDIATE",
+     "WET"
+    ],
+    "fuori_dal_vocabolario": {
+     "TEST": 231,
+     "nan": 3
+    },
+    "giri_con_mescola": 58897,
+    "giri_riconosciuti_asciutti": 57164,
+    "giri_fuori_dal_vocabolario": 234
+   },
+   "squadre": {
+    "distinte": 10,
+    "nomi": [
+     "Alfa Romeo Racing",
+     "Ferrari",
+     "Haas F1 Team",
+     "McLaren",
+     "Mercedes",
+     "Racing Point",
+     "Red Bull Racing",
+     "Renault",
+     "Toro Rosso",
+     "Williams"
+    ]
+   },
+   "colonne_per_sessione": {
+    "3": 30,
+    "42": 59,
+    "43": 15
+   }
+  },
+  {
+   "anno": 2020,
+   "catena": "fondo storico (data/fondo, ingest_fondo_storico.py)",
+   "gare_in_calendario": 17,
+   "gare_nel_fondo": 17,
+   "gare_piene": 17,
+   "gare_guscio": [],
+   "con_microsettori": {
+    "gare": 17,
+    "sessioni": 80
+   },
+   "con_meteo": {
+    "gare": 17,
+    "sessioni": 80
+   },
+   "sessioni_per_tipo": {
+    "Race": 17,
+    "Sprint": 0,
+    "Qualifying": 17,
+    "Practice 1": 16,
+    "Practice 2": 15,
+    "Practice 3": 15
+   },
+   "sessioni_totali": 80,
+   "sessioni_piene": 80,
+   "sprint_in_calendario": 0,
+   "giri_totali": 46581,
+   "giri_utilizzabili": 30555,
+   "quota_utilizzabile": 0.656,
+   "giri_cancellati_in_gara": 220,
+   "giri_cancellati_ovunque": 781,
+   "mescole": {
+    "distinte": 7,
+    "riconosciute_asciutte": [
+     "HARD",
+     "MEDIUM",
+     "SOFT"
+    ],
+    "riconosciute_bagnate": [
+     "INTERMEDIATE",
+     "WET"
+    ],
+    "fuori_dal_vocabolario": {
+     "TEST_UNKNOWN": 928,
+     "UNKNOWN": 17
+    },
+    "giri_con_mescola": 46479,
+    "giri_riconosciuti_asciutti": 43249,
+    "giri_fuori_dal_vocabolario": 945
+   },
+   "squadre": {
+    "distinte": 10,
+    "nomi": [
+     "Alfa Romeo Racing",
+     "AlphaTauri",
+     "Ferrari",
+     "Haas F1 Team",
+     "McLaren",
+     "Mercedes",
+     "Racing Point",
+     "Red Bull Racing",
+     "Renault",
+     "Williams"
+    ]
+   },
+   "colonne_per_sessione": {
+    "42": 63,
+    "43": 17
+   }
+  },
+  {
+   "anno": 2021,
+   "catena": "fondo storico (data/fondo, ingest_fondo_storico.py)",
+   "gare_in_calendario": 22,
+   "gare_nel_fondo": 22,
+   "gare_piene": 22,
+   "gare_guscio": [],
+   "con_microsettori": {
+    "gare": 22,
+    "sessioni": 106
+   },
+   "con_meteo": {
+    "gare": 22,
+    "sessioni": 106
+   },
+   "sessioni_per_tipo": {
+    "Race": 22,
+    "Sprint": 0,
+    "Qualifying": 22,
+    "Practice 1": 22,
+    "Practice 2": 22,
+    "Practice 3": 18
+   },
+   "sessioni_totali": 106,
+   "sessioni_piene": 106,
+   "sprint_in_calendario": 3,
+   "giri_totali": 59134,
+   "giri_utilizzabili": 39715,
+   "quota_utilizzabile": 0.6716,
+   "giri_cancellati_in_gara": 183,
+   "giri_cancellati_ovunque": 876,
+   "mescole": {
+    "distinte": 7,
+    "riconosciute_asciutte": [
+     "HARD",
+     "MEDIUM",
+     "SOFT"
+    ],
+    "riconosciute_bagnate": [
+     "INTERMEDIATE",
+     "WET"
+    ],
+    "fuori_dal_vocabolario": {
+     "TEST_UNKNOWN": 479,
+     "UNKNOWN": 69
+    },
+    "giri_con_mescola": 58725,
+    "giri_riconosciuti_asciutti": 55155,
+    "giri_fuori_dal_vocabolario": 548
+   },
+   "squadre": {
+    "distinte": 10,
+    "nomi": [
+     "Alfa Romeo Racing",
+     "AlphaTauri",
+     "Alpine",
+     "Aston Martin",
+     "Ferrari",
+     "Haas F1 Team",
+     "McLaren",
+     "Mercedes",
+     "Red Bull Racing",
+     "Williams"
+    ]
+   },
+   "colonne_per_sessione": {
+    "42": 84,
+    "43": 22
+   }
+  },
+  {
+   "anno": 2022,
+   "catena": "fondo storico (data/fondo, ingest_fondo_storico.py)",
+   "gare_in_calendario": 22,
+   "gare_nel_fondo": 22,
+   "gare_piene": 22,
+   "gare_guscio": [],
+   "con_microsettori": {
+    "gare": 22,
+    "sessioni": 110
+   },
+   "con_meteo": {
+    "gare": 22,
+    "sessioni": 110
+   },
+   "sessioni_per_tipo": {
+    "Race": 22,
+    "Sprint": 3,
+    "Qualifying": 22,
+    "Practice 1": 22,
+    "Practice 2": 22,
+    "Practice 3": 19
+   },
+   "sessioni_totali": 110,
+   "sessioni_piene": 110,
+   "sprint_in_calendario": 3,
+   "giri_totali": 59565,
+   "giri_utilizzabili": 38004,
+   "quota_utilizzabile": 0.638,
+   "giri_cancellati_in_gara": 254,
+   "giri_cancellati_ovunque": 381,
+   "mescole": {
+    "distinte": 7,
+    "riconosciute_asciutte": [
+     "HARD",
+     "MEDIUM",
+     "SOFT"
+    ],
+    "riconosciute_bagnate": [
+     "INTERMEDIATE",
+     "WET"
+    ],
+    "fuori_dal_vocabolario": {
+     "TEST_UNKNOWN": 1068,
+     "UNKNOWN": 1
+    },
+    "giri_con_mescola": 59215,
+    "giri_riconosciuti_asciutti": 53132,
+    "giri_fuori_dal_vocabolario": 1069
+   },
+   "squadre": {
+    "distinte": 10,
+    "nomi": [
+     "Alfa Romeo",
+     "AlphaTauri",
+     "Alpine",
+     "Aston Martin",
+     "Ferrari",
+     "Haas F1 Team",
+     "McLaren",
+     "Mercedes",
+     "Red Bull Racing",
+     "Williams"
+    ]
+   },
+   "colonne_per_sessione": {
+    "42": 88,
+    "43": 22
+   }
+  },
+  {
+   "anno": 2023,
+   "catena": "fondo storico (data/fondo, ingest_fondo_storico.py)",
+   "gare_in_calendario": 22,
+   "gare_nel_fondo": 22,
+   "gare_piene": 22,
+   "gare_guscio": [],
+   "con_microsettori": {
+    "gare": 22,
+    "sessioni": 104
+   },
+   "con_meteo": {
+    "gare": 22,
+    "sessioni": 104
+   },
+   "sessioni_per_tipo": {
+    "Race": 22,
+    "Sprint": 6,
+    "Qualifying": 22,
+    "Practice 1": 22,
+    "Practice 2": 16,
+    "Practice 3": 16
+   },
+   "sessioni_totali": 104,
+   "sessioni_piene": 104,
+   "sprint_in_calendario": 6,
+   "giri_totali": 57621,
+   "giri_utilizzabili": 38468,
+   "quota_utilizzabile": 0.6676,
+   "giri_cancellati_in_gara": 394,
+   "giri_cancellati_ovunque": 609,
+   "mescole": {
+    "distinte": 7,
+    "riconosciute_asciutte": [
+     "HARD",
+     "MEDIUM",
+     "SOFT"
+    ],
+    "riconosciute_bagnate": [
+     "INTERMEDIATE",
+     "WET"
+    ],
+    "fuori_dal_vocabolario": {
+     "TEST_UNKNOWN": 780,
+     "UNKNOWN": 185
+    },
+    "giri_con_mescola": 57586,
+    "giri_riconosciuti_asciutti": 52859,
+    "giri_fuori_dal_vocabolario": 965
+   },
+   "squadre": {
+    "distinte": 10,
+    "nomi": [
+     "Alfa Romeo",
+     "AlphaTauri",
+     "Alpine",
+     "Aston Martin",
+     "Ferrari",
+     "Haas F1 Team",
+     "McLaren",
+     "Mercedes",
+     "Red Bull Racing",
+     "Williams"
+    ]
+   },
+   "colonne_per_sessione": {
+    "42": 82,
+    "43": 22
+   }
+  },
+  {
+   "anno": 2024,
+   "catena": "fondo storico (data/fondo, ingest_fondo_storico.py)",
+   "gare_in_calendario": 24,
+   "gare_nel_fondo": 24,
+   "gare_piene": 24,
+   "gare_guscio": [],
+   "con_microsettori": {
+    "gare": 16,
+    "sessioni": 85
+   },
+   "con_meteo": {
+    "gare": 24,
+    "sessioni": 114
+   },
+   "sessioni_per_tipo": {
+    "Race": 24,
+    "Sprint": 6,
+    "Qualifying": 24,
+    "Practice 1": 24,
+    "Practice 2": 18,
+    "Practice 3": 18
+   },
+   "sessioni_totali": 114,
+   "sessioni_piene": 114,
+   "sprint_in_calendario": 6,
+   "giri_totali": 62690,
+   "giri_utilizzabili": 42161,
+   "quota_utilizzabile": 0.6725,
+   "giri_cancellati_in_gara": 326,
+   "giri_cancellati_ovunque": 475,
+   "mescole": {
+    "distinte": 7,
+    "riconosciute_asciutte": [
+     "HARD",
+     "MEDIUM",
+     "SOFT"
+    ],
+    "riconosciute_bagnate": [
+     "INTERMEDIATE",
+     "WET"
+    ],
+    "fuori_dal_vocabolario": {
+     "TEST_UNKNOWN": 536,
+     "UNKNOWN": 5
+    },
+    "giri_con_mescola": 62640,
+    "giri_riconosciuti_asciutti": 57929,
+    "giri_fuori_dal_vocabolario": 541
+   },
+   "squadre": {
+    "distinte": 10,
+    "nomi": [
+     "Alpine",
+     "Aston Martin",
+     "Ferrari",
+     "Haas F1 Team",
+     "Kick Sauber",
+     "McLaren",
+     "Mercedes",
+     "RB",
+     "Red Bull Racing",
+     "Williams"
+    ]
+   },
+   "colonne_per_sessione": {
+    "39": 29,
+    "42": 69,
+    "43": 16
+   }
+  },
+  {
+   "anno": 2025,
+   "catena": "fondo storico (data/fondo, ingest_fondo_storico.py)",
+   "gare_in_calendario": 24,
+   "gare_nel_fondo": 24,
+   "gare_piene": 24,
+   "gare_guscio": [],
+   "con_microsettori": {
+    "gare": 24,
+    "sessioni": 114
+   },
+   "con_meteo": {
+    "gare": 24,
+    "sessioni": 114
+   },
+   "sessioni_per_tipo": {
+    "Race": 24,
+    "Sprint": 6,
+    "Qualifying": 24,
+    "Practice 1": 24,
+    "Practice 2": 18,
+    "Practice 3": 18
+   },
+   "sessioni_totali": 114,
+   "sessioni_piene": 114,
+   "sprint_in_calendario": 6,
+   "giri_totali": 64286,
+   "giri_utilizzabili": 42498,
+   "quota_utilizzabile": 0.6611,
+   "giri_cancellati_in_gara": 299,
+   "giri_cancellati_ovunque": 452,
+   "mescole": {
+    "distinte": 6,
+    "riconosciute_asciutte": [
+     "HARD",
+     "MEDIUM",
+     "SOFT"
+    ],
+    "riconosciute_bagnate": [
+     "INTERMEDIATE",
+     "WET"
+    ],
+    "fuori_dal_vocabolario": {
+     "UNKNOWN": 17
+    },
+    "giri_con_mescola": 63731,
+    "giri_riconosciuti_asciutti": 61373,
+    "giri_fuori_dal_vocabolario": 17
+   },
+   "squadre": {
+    "distinte": 10,
+    "nomi": [
+     "Alpine",
+     "Aston Martin",
+     "Ferrari",
+     "Haas F1 Team",
+     "Kick Sauber",
+     "McLaren",
+     "Mercedes",
+     "Racing Bulls",
+     "Red Bull Racing",
+     "Williams"
+    ]
+   },
+   "colonne_per_sessione": {
+    "42": 90,
+    "43": 24
+   }
+  },
+  {
+   "anno": 2026,
+   "catena": "ingestione 2026 (data/ti_archive/2026 + data/ti_cache, ingest_ti2026.py)",
+   "gare_in_calendario": 22,
+   "gare_nel_fondo": 11,
+   "gare_piene": 11,
+   "gare_guscio": [],
+   "con_microsettori": {
+    "gare": 6,
+    "sessioni": 25
+   },
+   "con_meteo": {
+    "gare": 11,
+    "sessioni": 37
+   },
+   "sessioni_per_tipo": {
+    "Race": 11,
+    "Sprint": 4,
+    "Qualifying": 0,
+    "Practice 1": 10,
+    "Practice 2": 6,
+    "Practice 3": 6
+   },
+   "sessioni_totali": 37,
+   "sessioni_piene": 37,
+   "sprint_in_calendario": 4,
+   "giri_totali": 26032,
+   "giri_utilizzabili": 19300,
+   "quota_utilizzabile": 0.7414,
+   "giri_cancellati_in_gara": 162,
+   "giri_cancellati_ovunque": 518,
+   "mescole": {
+    "distinte": 5,
+    "riconosciute_asciutte": [
+     "HARD",
+     "MEDIUM",
+     "SOFT"
+    ],
+    "riconosciute_bagnate": [
+     "INTERMEDIATE"
+    ],
+    "fuori_dal_vocabolario": {
+     "UNKNOWN": 2
+    },
+    "giri_con_mescola": 26007,
+    "giri_riconosciuti_asciutti": 25991,
+    "giri_fuori_dal_vocabolario": 2
+   },
+   "squadre": {
+    "distinte": 11,
+    "nomi": [
+     "Alpine",
+     "Aston Martin",
+     "Audi",
+     "Cadillac",
+     "Ferrari",
+     "Haas F1 Team",
+     "McLaren",
+     "Mercedes",
+     "Racing Bulls",
+     "Red Bull Racing",
+     "Williams"
+    ]
+   },
+   "colonne_per_sessione": {
+    "39": 12,
+    "42": 25
+   }
+  }
+ ],
+ "trappole": {
+  "guscio_2019": {
+   "verdetto": "CONFERMATA",
+   "cosa_dice": "sei gare del 2019 — Mexican, Monaco, Russian, Singapore, Spanish, United States — hanno TRE sole colonne in tutte e cinque le sessioni: compound, lap, time. Manca perfino `drv`, quindi un giro non si puo' attribuire a un pilota.",
+   "sessioni_mutilate": 30,
+   "dettaglio": {
+    "2019": {
+     "Mexican Grand Prix": [
+      {
+       "sessione": "Practice 1",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 458,
+       "giri_che_verde_direbbe_utilizzabili": 359
+      },
+      {
+       "sessione": "Practice 2",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 697,
+       "giri_che_verde_direbbe_utilizzabili": 612
+      },
+      {
+       "sessione": "Practice 3",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 237,
+       "giri_che_verde_direbbe_utilizzabili": 142
+      },
+      {
+       "sessione": "Qualifying",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 303,
+       "giri_che_verde_direbbe_utilizzabili": 214
+      },
+      {
+       "sessione": "Race",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 1370,
+       "giri_che_verde_direbbe_utilizzabili": 1369
+      }
+     ],
+     "Monaco Grand Prix": [
+      {
+       "sessione": "Practice 1",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 707,
+       "giri_che_verde_direbbe_utilizzabili": 639
+      },
+      {
+       "sessione": "Practice 2",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 868,
+       "giri_che_verde_direbbe_utilizzabili": 803
+      },
+      {
+       "sessione": "Practice 3",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 504,
+       "giri_che_verde_direbbe_utilizzabili": 443
+      },
+      {
+       "sessione": "Qualifying",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 427,
+       "giri_che_verde_direbbe_utilizzabili": 346
+      },
+      {
+       "sessione": "Race",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 1490,
+       "giri_che_verde_direbbe_utilizzabili": 1489
+      }
+     ],
+     "Russian Grand Prix": [
+      {
+       "sessione": "Practice 1",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 459,
+       "giri_che_verde_direbbe_utilizzabili": 363
+      },
+      {
+       "sessione": "Practice 2",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 609,
+       "giri_che_verde_direbbe_utilizzabili": 535
+      },
+      {
+       "sessione": "Practice 3",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 305,
+       "giri_che_verde_direbbe_utilizzabili": 237
+      },
+      {
+       "sessione": "Qualifying",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 277,
+       "giri_che_verde_direbbe_utilizzabili": 171
+      },
+      {
+       "sessione": "Race",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 901,
+       "giri_che_verde_direbbe_utilizzabili": 845
+      }
+     ],
+     "Singapore Grand Prix": [
+      {
+       "sessione": "Practice 1",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 437,
+       "giri_che_verde_direbbe_utilizzabili": 326
+      },
+      {
+       "sessione": "Practice 2",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 621,
+       "giri_che_verde_direbbe_utilizzabili": 533
+      },
+      {
+       "sessione": "Practice 3",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 249,
+       "giri_che_verde_direbbe_utilizzabili": 136
+      },
+      {
+       "sessione": "Qualifying",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 278,
+       "giri_che_verde_direbbe_utilizzabili": 171
+      },
+      {
+       "sessione": "Race",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 1165,
+       "giri_che_verde_direbbe_utilizzabili": 1035
+      }
+     ],
+     "Spanish Grand Prix": [
+      {
+       "sessione": "Practice 1",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 501,
+       "giri_che_verde_direbbe_utilizzabili": 407
+      },
+      {
+       "sessione": "Practice 2",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 755,
+       "giri_che_verde_direbbe_utilizzabili": 685
+      },
+      {
+       "sessione": "Practice 3",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 295,
+       "giri_che_verde_direbbe_utilizzabili": 207
+      },
+      {
+       "sessione": "Qualifying",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 277,
+       "giri_che_verde_direbbe_utilizzabili": 182
+      },
+      {
+       "sessione": "Race",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 1276,
+       "giri_che_verde_direbbe_utilizzabili": 1272
+      }
+     ],
+     "United States Grand Prix": [
+      {
+       "sessione": "Practice 1",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 534,
+       "giri_che_verde_direbbe_utilizzabili": 313
+      },
+      {
+       "sessione": "Practice 2",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 608,
+       "giri_che_verde_direbbe_utilizzabili": 456
+      },
+      {
+       "sessione": "Practice 3",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 291,
+       "giri_che_verde_direbbe_utilizzabili": 226
+      },
+      {
+       "sessione": "Qualifying",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 270,
+       "giri_che_verde_direbbe_utilizzabili": 187
+      },
+      {
+       "sessione": "Race",
+       "colonne": [
+        "compound",
+        "lap",
+        "time"
+       ],
+       "righe": 1032,
+       "giri_che_verde_direbbe_utilizzabili": 1030
+      }
+     ]
+    }
+   },
+   "perche_e_la_trappola_peggiore": "il test di lab/fondo.verde() — «giro cronometrato, in verde, asciutto, fuori dai box» — su queste righe risponde di SI', perche' le colonne che lo smentirebbero (status, pin, pout) non ci sono e un campo assente non contraddice nessuno. Un contatore ingenuo aggiungerebbe 15733 giri «utilizzabili» che non sono attribuibili a nessuno.",
+   "giri_che_un_contatore_ingenuo_aggiungerebbe": 15733,
+   "come_si_evita": "giri_utilizzabili conta solo dentro le sessioni PIENE, cioe' quelle che portano tutte e nove le colonne di lab/fondo.CHIAVE."
+  },
+  "microsettori_intermittenti": {
+   "verdetto": "CONFERMATA per il 2024, ma NON e' un fatto solo del 2024",
+   "cosa_dice": "le colonne ms1/ms2/ms3 — i microsettori, che nel resto del sito sono i settori S1/S2/S3 — mancano in ventinove file del 2024, distribuiti su otto weekend e sempre nelle sessioni diverse dalla gara.",
+   "precisazione": "la stessa lacuna c'e' nel 2026, e li' TOCCA ANCHE LE GARE: Belgio, Gran Bretagna e Ungheria non hanno microsettori nemmeno in gara. Non e' un incidente di una stagione, e' un'intermittenza della fonte.",
+   "file_senza_microsettori_per_anno": {
+    "2024": 29,
+    "2026": 12
+   },
+   "dettaglio": {
+    "2024": {
+     "Abu Dhabi Grand Prix": [
+      "Practice 1",
+      "Practice 2",
+      "Practice 3",
+      "Qualifying"
+     ],
+     "Azerbaijan Grand Prix": [
+      "Practice 1",
+      "Practice 2",
+      "Practice 3",
+      "Qualifying"
+     ],
+     "Las Vegas Grand Prix": [
+      "Practice 1",
+      "Practice 2",
+      "Practice 3",
+      "Qualifying"
+     ],
+     "Mexico City Grand Prix": [
+      "Practice 1",
+      "Practice 2",
+      "Practice 3",
+      "Qualifying"
+     ],
+     "Qatar Grand Prix": [
+      "Practice 1",
+      "Qualifying",
+      "Sprint"
+     ],
+     "Singapore Grand Prix": [
+      "Practice 1",
+      "Practice 2",
+      "Practice 3",
+      "Qualifying"
+     ],
+     "São Paulo Grand Prix": [
+      "Practice 1",
+      "Qualifying",
+      "Sprint"
+     ],
+     "United States Grand Prix": [
+      "Practice 1",
+      "Qualifying",
+      "Sprint"
+     ]
+    },
+    "2026": {
+     "Austrian Grand Prix": [
+      "Race"
+     ],
+     "Belgian Grand Prix": [
+      "Practice 1",
+      "Practice 2",
+      "Practice 3",
+      "Race"
+     ],
+     "British Grand Prix": [
+      "Practice 1",
+      "Race",
+      "Sprint"
+     ],
+     "Hungarian Grand Prix": [
+      "Race"
+     ],
+     "Miami Grand Prix": [
+      "Practice 1",
+      "Race",
+      "Sprint"
+     ]
+    }
+   },
+   "weekend_in_cui_manca_anche_in_gara": {
+    "2026": [
+     "Austrian Grand Prix",
+     "Belgian Grand Prix",
+     "British Grand Prix",
+     "Hungarian Grand Prix",
+     "Miami Grand Prix"
+    ]
+   },
+   "come_si_riconosce": "una sessione senza microsettori ha 39 colonne invece di 42. (Le sessioni di qualifica ne hanno 43: una in piu', `qs`, che dice in quale segmento — Q1/Q2/Q3 — e' stato fatto il giro.)"
+  },
+  "mescole_2018": {
+   "verdetto": "CONFERMATA, con una precisazione sul conteggio",
+   "cosa_significa": "nel 2018 i nomi delle mescole asciutte sono una SCALA ASSOLUTA: HYPERSOFT, ULTRASOFT, SUPERSOFT, SOFT, MEDIUM, HARD sono sei gomme fisiche diverse e il nome dice quale. Dal 2019 i nomi asciutti sono tre — SOFT, MEDIUM, HARD — e sono RELATIVI: indicano la posizione nella terna scelta per quella gara, e la terna cambia gara per gara.",
+   "conseguenza": "«SOFT 2018» e «SOFT 2019» non sono la stessa gomma ne' la stessa posizione nella gamma. Qualunque serie storica per nome di mescola che attraversi il confine 2018/2019 confronta due vocabolari, non due gomme.",
+   "precisazione": "i nomi asciutti che il fondo 2018 contiene davvero sono SEI. Il numero pubblicato e' quello CONTATO nei dati, non quello della gamma annunciata: un nome previsto e mai usato in pista non lascia righe, e qui si contano le righe.",
+   "riconosciute_per_anno": {
+    "2018": [
+     "HARD",
+     "MEDIUM",
+     "SOFT"
+    ],
+    "2019": [
+     "HARD",
+     "MEDIUM",
+     "SOFT"
+    ],
+    "2020": [
+     "HARD",
+     "MEDIUM",
+     "SOFT"
+    ],
+    "2021": [
+     "HARD",
+     "MEDIUM",
+     "SOFT"
+    ],
+    "2022": [
+     "HARD",
+     "MEDIUM",
+     "SOFT"
+    ],
+    "2023": [
+     "HARD",
+     "MEDIUM",
+     "SOFT"
+    ],
+    "2024": [
+     "HARD",
+     "MEDIUM",
+     "SOFT"
+    ],
+    "2025": [
+     "HARD",
+     "MEDIUM",
+     "SOFT"
+    ],
+    "2026": [
+     "HARD",
+     "MEDIUM",
+     "SOFT"
+    ]
+   },
+   "fuori_dal_vocabolario_per_anno": {
+    "2018": {
+     "HYPERSOFT": 7823,
+     "SUPERSOFT": 14033,
+     "ULTRASOFT": 13982
+    },
+    "2019": {
+     "TEST": 231,
+     "nan": 3
+    },
+    "2020": {
+     "TEST_UNKNOWN": 928,
+     "UNKNOWN": 17
+    },
+    "2021": {
+     "TEST_UNKNOWN": 479,
+     "UNKNOWN": 69
+    },
+    "2022": {
+     "TEST_UNKNOWN": 1068,
+     "UNKNOWN": 1
+    },
+    "2023": {
+     "TEST_UNKNOWN": 780,
+     "UNKNOWN": 185
+    },
+    "2024": {
+     "TEST_UNKNOWN": 536,
+     "UNKNOWN": 5
+    },
+    "2025": {
+     "UNKNOWN": 17
+    },
+    "2026": {
+     "UNKNOWN": 2
+    }
+   },
+   "il_costo_misurato": {
+    "cosa_succede": "lab/fondo.ASCIUTTE vale (SOFT, MEDIUM, HARD): e' il vocabolario dal 2019 in poi. Applicato al 2018 scarta HYPERSOFT, ULTRASOFT e SUPERSOFT, che sono gomme asciutte a tutti gli effetti — e sono la maggioranza dei giri di quella stagione. Non e' un difetto di lab/fondo: e' il prezzo di avere UN vocabolario per due ere. Ma chi legge giri_utilizzabili del 2018 deve sapere che quel numero non e' confrontabile con quello del 2019.",
+    "per_anno": {
+     "2018": {
+      "giri_con_mescola": 56914,
+      "riconosciuti_asciutti": 19873,
+      "fuori_dal_vocabolario": 35838,
+      "quota_fuori": 0.6297
+     },
+     "2019": {
+      "giri_con_mescola": 58897,
+      "riconosciuti_asciutti": 57164,
+      "fuori_dal_vocabolario": 234,
+      "quota_fuori": 0.004
+     },
+     "2020": {
+      "giri_con_mescola": 46479,
+      "riconosciuti_asciutti": 43249,
+      "fuori_dal_vocabolario": 945,
+      "quota_fuori": 0.0203
+     },
+     "2021": {
+      "giri_con_mescola": 58725,
+      "riconosciuti_asciutti": 55155,
+      "fuori_dal_vocabolario": 548,
+      "quota_fuori": 0.0093
+     },
+     "2022": {
+      "giri_con_mescola": 59215,
+      "riconosciuti_asciutti": 53132,
+      "fuori_dal_vocabolario": 1069,
+      "quota_fuori": 0.0181
+     },
+     "2023": {
+      "giri_con_mescola": 57586,
+      "riconosciuti_asciutti": 52859,
+      "fuori_dal_vocabolario": 965,
+      "quota_fuori": 0.0168
+     },
+     "2024": {
+      "giri_con_mescola": 62640,
+      "riconosciuti_asciutti": 57929,
+      "fuori_dal_vocabolario": 541,
+      "quota_fuori": 0.0086
+     },
+     "2025": {
+      "giri_con_mescola": 63731,
+      "riconosciuti_asciutti": 61373,
+      "fuori_dal_vocabolario": 17,
+      "quota_fuori": 0.0003
+     },
+     "2026": {
+      "giri_con_mescola": 26007,
+      "riconosciuti_asciutti": 25991,
+      "fuori_dal_vocabolario": 2,
+      "quota_fuori": 0.0001
+     }
+    }
+   },
+   "due_specie_dentro_fuori_dal_vocabolario": "i valori non riconosciuti sono di due specie e vanno letti diversamente: GOMME VERE che il vocabolario non prevede (HYPERSOFT, ULTRASOFT, SUPERSOFT nel 2018) e SEGNAPOSTO travestiti da valore (TEST, TEST_UNKNOWN, UNKNOWN e, nel 2019, la stringa 'nan'). I conteggi qui sopra tengono i due casi separati per anno, cosi' si vede quale dei due pesa."
+  },
+  "gare_accorciate": {
+   "verdetto": "CONFERMATA — e le due gare citate non sono le uniche",
+   "regola_f1db": "una gara e' accorciata quando f1db races.laps < races.scheduledLaps. E' la misura giusta perche' guarda cosa era PREVISTO, non cosa e' tipico.",
+   "regola_fondo": "seconda misura, indipendente: giri registrati nel fondo sotto il 98% del massimo mai registrato su quello stesso circuito. Serve dove l'incrocio con f1db non e' sicuro, e produce FALSI POSITIVI quando un circuito cambia tracciato — yas-marina, accorciato nel 2021 di tre curve, corre 58 giri dal 2021 e 55 prima: i tre anni vecchi risultano «corti» senza nessuna bandiera rossa.",
+   "accorciate_f1db": [
+    {
+     "anno": 2018,
+     "gara": "Canadian Grand Prix",
+     "giri_f1db": 68,
+     "giri_previsti": 70,
+     "quota": 0.971,
+     "giri_nel_fondo": 70
+    },
+    {
+     "anno": 2019,
+     "gara": "Japanese Grand Prix",
+     "giri_f1db": 52,
+     "giri_previsti": 53,
+     "quota": 0.981,
+     "giri_nel_fondo": 53
+    },
+    {
+     "anno": 2021,
+     "gara": "Bahrain Grand Prix",
+     "giri_f1db": 56,
+     "giri_previsti": 57,
+     "quota": 0.982,
+     "giri_nel_fondo": 56
+    },
+    {
+     "anno": 2021,
+     "gara": "Belgian Grand Prix",
+     "giri_f1db": 1,
+     "giri_previsti": 44,
+     "quota": 0.023,
+     "giri_nel_fondo": 3
+    },
+    {
+     "anno": 2022,
+     "gara": "Japanese Grand Prix",
+     "giri_f1db": 28,
+     "giri_previsti": 53,
+     "quota": 0.528,
+     "giri_nel_fondo": 29
+    },
+    {
+     "anno": 2022,
+     "gara": "Monaco Grand Prix",
+     "giri_f1db": 64,
+     "giri_previsti": 78,
+     "quota": 0.821,
+     "giri_nel_fondo": 64
+    },
+    {
+     "anno": 2022,
+     "gara": "Singapore Grand Prix",
+     "giri_f1db": 59,
+     "giri_previsti": 61,
+     "quota": 0.967,
+     "giri_nel_fondo": 59
+    },
+    {
+     "anno": 2023,
+     "gara": "Italian Grand Prix",
+     "giri_f1db": 51,
+     "giri_previsti": 53,
+     "quota": 0.962,
+     "giri_nel_fondo": 51
+    },
+    {
+     "anno": 2024,
+     "gara": "São Paulo Grand Prix",
+     "giri_f1db": 69,
+     "giri_previsti": 71,
+     "quota": 0.972,
+     "giri_nel_fondo": 69
+    },
+    {
+     "anno": 2025,
+     "gara": "Australian Grand Prix",
+     "giri_f1db": 57,
+     "giri_previsti": 58,
+     "quota": 0.983,
+     "giri_nel_fondo": 57
+    },
+    {
+     "anno": 2025,
+     "gara": "Austrian Grand Prix",
+     "giri_f1db": 70,
+     "giri_previsti": 71,
+     "quota": 0.986,
+     "giri_nel_fondo": 70
+    },
+    {
+     "anno": 2026,
+     "gara": "Canadian Grand Prix",
+     "giri_f1db": 68,
+     "giri_previsti": 70,
+     "quota": 0.971,
+     "giri_nel_fondo": 68
+    }
+   ],
+   "sospette_dal_fondo": [
+    {
+     "circuito": "spa-francorchamps",
+     "gara": "2021 Belgian Grand Prix",
+     "giri": 3,
+     "massimo_del_circuito": 44,
+     "quota": 0.068
+    },
+    {
+     "circuito": "suzuka",
+     "gara": "2022 Japanese Grand Prix",
+     "giri": 29,
+     "massimo_del_circuito": 53,
+     "quota": 0.547
+    },
+    {
+     "circuito": "monaco",
+     "gara": "2022 Monaco Grand Prix",
+     "giri": 64,
+     "massimo_del_circuito": 78,
+     "quota": 0.821
+    },
+    {
+     "circuito": "yas-marina",
+     "gara": "2018 Abu Dhabi Grand Prix",
+     "giri": 55,
+     "massimo_del_circuito": 58,
+     "quota": 0.948
+    },
+    {
+     "circuito": "yas-marina",
+     "gara": "2019 Abu Dhabi Grand Prix",
+     "giri": 55,
+     "massimo_del_circuito": 58,
+     "quota": 0.948
+    },
+    {
+     "circuito": "yas-marina",
+     "gara": "2020 Abu Dhabi Grand Prix",
+     "giri": 55,
+     "massimo_del_circuito": 58,
+     "quota": 0.948
+    },
+    {
+     "circuito": "marina-bay",
+     "gara": "2022 Singapore Grand Prix",
+     "giri": 59,
+     "massimo_del_circuito": 62,
+     "quota": 0.952
+    },
+    {
+     "circuito": "hockenheim",
+     "gara": "2019 German Grand Prix",
+     "giri": 64,
+     "massimo_del_circuito": 67,
+     "quota": 0.955
+    },
+    {
+     "circuito": "monza",
+     "gara": "2023 Italian Grand Prix",
+     "giri": 51,
+     "massimo_del_circuito": 53,
+     "quota": 0.962
+    },
+    {
+     "circuito": "montreal",
+     "gara": "2026 Canadian Grand Prix",
+     "giri": 68,
+     "massimo_del_circuito": 70,
+     "quota": 0.971
+    },
+    {
+     "circuito": "interlagos",
+     "gara": "2024 São Paulo Grand Prix",
+     "giri": 69,
+     "massimo_del_circuito": 71,
+     "quota": 0.972
+    }
+   ],
+   "incrocio": {
+    "metodo": "gara del fondo -> cid (fondo_identita.NOME2CID) -> f1db races.circuitId",
+    "gare_incrociate": 180,
+    "gare_totali": 184,
+    "ambigue": [
+     {
+      "anno": 2020,
+      "gara": "70th Anniversary Grand Prix",
+      "cid": "silverstone",
+      "gp_f1db": [
+       "70th-anniversary",
+       "great-britain"
+      ],
+      "esito": "nessuna delle due e' accorciata: la risposta non dipende da quale sia quale"
+     },
+     {
+      "anno": 2020,
+      "gara": "Austrian Grand Prix",
+      "cid": "spielberg",
+      "gp_f1db": [
+       "austria",
+       "styria"
+      ],
+      "esito": "nessuna delle due e' accorciata: la risposta non dipende da quale sia quale"
+     },
+     {
+      "anno": 2020,
+      "gara": "Bahrain Grand Prix",
+      "cid": "bahrain",
+      "gp_f1db": [
+       "bahrain",
+       "sakhir"
+      ],
+      "esito": "nessuna delle due e' accorciata: la risposta non dipende da quale sia quale"
+     },
+     {
+      "anno": 2020,
+      "gara": "British Grand Prix",
+      "cid": "silverstone",
+      "gp_f1db": [
+       "70th-anniversary",
+       "great-britain"
+      ],
+      "esito": "nessuna delle due e' accorciata: la risposta non dipende da quale sia quale"
+     },
+     {
+      "anno": 2020,
+      "gara": "Styrian Grand Prix",
+      "cid": "spielberg",
+      "gp_f1db": [
+       "austria",
+       "styria"
+      ],
+      "esito": "nessuna delle due e' accorciata: la risposta non dipende da quale sia quale"
+     },
+     {
+      "anno": 2021,
+      "gara": "Austrian Grand Prix",
+      "cid": "spielberg",
+      "gp_f1db": [
+       "austria",
+       "styria"
+      ],
+      "esito": "nessuna delle due e' accorciata: la risposta non dipende da quale sia quale"
+     },
+     {
+      "anno": 2021,
+      "gara": "Styrian Grand Prix",
+      "cid": "spielberg",
+      "gp_f1db": [
+       "austria",
+       "styria"
+      ],
+      "esito": "nessuna delle due e' accorciata: la risposta non dipende da quale sia quale"
+     }
+    ],
+    "fuori_vocabolario": [
+     {
+      "anno": 2018,
+      "gara": "German Grand Prix",
+      "cid": "hockenheim"
+     },
+     {
+      "anno": 2019,
+      "gara": "German Grand Prix",
+      "cid": "hockenheim"
+     },
+     {
+      "anno": 2020,
+      "gara": "Sakhir Grand Prix",
+      "cid": "bahrain-outer"
+     },
+     {
+      "anno": 2026,
+      "gara": "Barcelona Grand Prix",
+      "cid": null
+     }
+    ]
+   },
+   "divergenza_giri": {
+    "cosa_e": "il giro piu' alto REGISTRATO nel fondo e i giri CLASSIFICATI da f1db non sempre coincidono. Non e' un errore di nessuno dei due: quando la bandiera a scacchi esce in anticipo o la gara viene chiusa in regime di bandiera rossa, le auto un giro lo percorrono e la classifica non lo conta.",
+    "casi": [
+     {
+      "anno": 2018,
+      "gara": "Canadian Grand Prix",
+      "giri_f1db": 68,
+      "giri_nel_fondo": 70
+     },
+     {
+      "anno": 2019,
+      "gara": "Japanese Grand Prix",
+      "giri_f1db": 52,
+      "giri_nel_fondo": 53
+     },
+     {
+      "anno": 2021,
+      "gara": "Belgian Grand Prix",
+      "giri_f1db": 1,
+      "giri_nel_fondo": 3
+     },
+     {
+      "anno": 2022,
+      "gara": "Japanese Grand Prix",
+      "giri_f1db": 28,
+      "giri_nel_fondo": 29
+     }
+    ]
+   }
+  },
+  "giri_cancellati_prima_del_2020": {
+   "verdetto": "CONFERMATA",
+   "cosa_dice": "il flag `del` (giro cancellato per track limits) vale zero nel 2018 e due in tutta la stagione 2019, poi centinaia ogni anno. Non e' la F1 che ha cominciato a cancellare giri nel 2020: e' la fonte che ha cominciato a registrarli.",
+   "conseguenza": "una serie «giri cancellati per stagione» che parta dal 2018 racconta la storia della fonte e la spaccia per storia dello sport. Il campo si puo' usare dal 2020 in avanti, e va detto.",
+   "in_gara": {
+    "2018": 0,
+    "2019": 2,
+    "2020": 220,
+    "2021": 183,
+    "2022": 254,
+    "2023": 394,
+    "2024": 326,
+    "2025": 299,
+    "2026": 162
+   },
+   "in_tutte_le_sessioni": {
+    "2018": 0,
+    "2019": 28,
+    "2020": 781,
+    "2021": 876,
+    "2022": 381,
+    "2023": 609,
+    "2024": 475,
+    "2025": 452,
+    "2026": 518
+   },
+   "nota_denominatore": "i due conteggi sono diversi e diranno cose diverse: nel 2019 due in gara e ventotto contando le libere. Chi cita «due» e chi cita «ventotto» hanno ragione tutti e due su domande diverse."
+  },
+  "sprint_2021_mancanti": {
+   "verdetto": "CONFERMATA",
+   "cosa_dice": "nel 2021 il fondo non ha nemmeno un file Sprint, e le sprint si sono corse: f1db ne registra tre in quella stagione. Il 2022 ne ha tre, e ci sono. Il buco e' solo del 2021.",
+   "per_anno": {
+    "2018": {
+     "sprint_nel_fondo": 0,
+     "sprint_in_calendario": 0
+    },
+    "2019": {
+     "sprint_nel_fondo": 0,
+     "sprint_in_calendario": 0
+    },
+    "2020": {
+     "sprint_nel_fondo": 0,
+     "sprint_in_calendario": 0
+    },
+    "2021": {
+     "sprint_nel_fondo": 0,
+     "sprint_in_calendario": 3
+    },
+    "2022": {
+     "sprint_nel_fondo": 3,
+     "sprint_in_calendario": 3
+    },
+    "2023": {
+     "sprint_nel_fondo": 6,
+     "sprint_in_calendario": 6
+    },
+    "2024": {
+     "sprint_nel_fondo": 6,
+     "sprint_in_calendario": 6
+    },
+    "2025": {
+     "sprint_nel_fondo": 6,
+     "sprint_in_calendario": 6
+    },
+    "2026": {
+     "sprint_nel_fondo": 4,
+     "sprint_in_calendario": 4
+    }
+   },
+   "conseguenza": "una serie «giri di gara per stagione» che sommi Race e Sprint ha nel 2021 un avvallamento che non e' successo in pista.",
+   "come_si_conta_il_calendario": "dalle gare con almeno un risultato in f1db races-sprint-race-results. NON dal campo races.sprintRaceDate: verificato, e' valorizzato solo dal 2024 in poi e farebbe concludere che prima non ce n'erano."
+  },
+  "stagione_2020": {
+   "verdetto": "CONFERMATA, e vale anche per il 2021",
+   "cosa_dice": "il 2020 e' la stagione con il calendario piu' anomalo del fondo: sedici gare invece di ventidue, tre circuiti che compaiono una volta sola in otto anni, e due weekend consecutivi sulla stessa pista due volte.",
+   "circuiti_una_volta_sola": {
+    "bahrain-outer": "2020 Sakhir Grand Prix",
+    "mugello": "2020 Tuscan Grand Prix",
+    "nurburgring": "2020 Eifel Grand Prix"
+   },
+   "due_gare_stessa_pista_stesso_anno": {
+    "2020 silverstone": [
+     "2020 70th Anniversary Grand Prix",
+     "2020 British Grand Prix"
+    ],
+    "2020 spielberg": [
+     "2020 Austrian Grand Prix",
+     "2020 Styrian Grand Prix"
+    ],
+    "2021 spielberg": [
+     "2021 Austrian Grand Prix",
+     "2021 Styrian Grand Prix"
+    ]
+   },
+   "gare_fuori_dal_conteggio_perche_senza_cid": [
+    "2026 Barcelona Grand Prix"
+   ],
+   "precisazione": "la doppietta a spielberg NON e' solo del 2020: anche il 2021 ha Austrian e Styrian sullo stesso circuito. Chi filtrasse «un anno = una gara per circuito» perderebbe una gara in due stagioni, non in una.",
+   "sakhir_non_e_il_bahrain": {
+    "cosa_dice": "il Sakhir Grand Prix 2020 e' il tracciato ESTERNO dello stesso autodromo, non il Bahrain Grand Prix. Sommarli mette due piste diverse nella stessa cella.",
+    "prova_f1db": {
+     "bahrain": {
+      "circuitId": "bahrain",
+      "circuitLayoutId": "bahrain-1",
+      "km": "5.412",
+      "giri": 57
+     },
+     "sakhir": {
+      "circuitId": "bahrain",
+      "circuitLayoutId": "bahrain-3",
+      "km": "3.543",
+      "giri": 87
+     }
+    },
+    "nel_progetto": "fondo_identita.py li tiene separati (bahrain vs bahrain-outer), ed e' l'unica ragione per cui questo modulo puo' contarli bene."
+   }
+  },
+  "il_campo_team_spacca_le_squadre": {
+   "verdetto": "CONFERMATA",
+   "cosa_dice": "il campo `team` e' il nome commerciale del momento, non l'identita' della squadra. Cambia fra stagioni e — nel 2018 — cambia DENTRO la stagione: Force India corre dodici gare e Racing Point nove, come due entita' separate, e nessun campo del fondo dice che sono la stessa.",
+   "conseguenza": "qualunque aggregazione per squadra che attraversi gli anni somma cose che il dato non dichiara uguali, e nel 2018 spacca in due una squadra anche restando dentro l'anno. La congiunzione va DICHIARATA da fuori (come fa demo/team_colori.json per il 2026), mai dedotta dal campo.",
+   "nomi_distinti_in_tutto_il_fondo": 21,
+   "nomi": [
+    "Alfa Romeo",
+    "Alfa Romeo Racing",
+    "AlphaTauri",
+    "Alpine",
+    "Aston Martin",
+    "Audi",
+    "Cadillac",
+    "Ferrari",
+    "Force India",
+    "Haas F1 Team",
+    "Kick Sauber",
+    "McLaren",
+    "Mercedes",
+    "RB",
+    "Racing Bulls",
+    "Racing Point",
+    "Red Bull Racing",
+    "Renault",
+    "Sauber",
+    "Toro Rosso",
+    "Williams"
+   ],
+   "nomi_per_anno": {
+    "2018": [
+     "Ferrari",
+     "Force India",
+     "Haas F1 Team",
+     "McLaren",
+     "Mercedes",
+     "Racing Point",
+     "Red Bull Racing",
+     "Renault",
+     "Sauber",
+     "Toro Rosso",
+     "Williams"
+    ],
+    "2019": [
+     "Alfa Romeo Racing",
+     "Ferrari",
+     "Haas F1 Team",
+     "McLaren",
+     "Mercedes",
+     "Racing Point",
+     "Red Bull Racing",
+     "Renault",
+     "Toro Rosso",
+     "Williams"
+    ],
+    "2020": [
+     "Alfa Romeo Racing",
+     "AlphaTauri",
+     "Ferrari",
+     "Haas F1 Team",
+     "McLaren",
+     "Mercedes",
+     "Racing Point",
+     "Red Bull Racing",
+     "Renault",
+     "Williams"
+    ],
+    "2021": [
+     "Alfa Romeo Racing",
+     "AlphaTauri",
+     "Alpine",
+     "Aston Martin",
+     "Ferrari",
+     "Haas F1 Team",
+     "McLaren",
+     "Mercedes",
+     "Red Bull Racing",
+     "Williams"
+    ],
+    "2022": [
+     "Alfa Romeo",
+     "AlphaTauri",
+     "Alpine",
+     "Aston Martin",
+     "Ferrari",
+     "Haas F1 Team",
+     "McLaren",
+     "Mercedes",
+     "Red Bull Racing",
+     "Williams"
+    ],
+    "2023": [
+     "Alfa Romeo",
+     "AlphaTauri",
+     "Alpine",
+     "Aston Martin",
+     "Ferrari",
+     "Haas F1 Team",
+     "McLaren",
+     "Mercedes",
+     "Red Bull Racing",
+     "Williams"
+    ],
+    "2024": [
+     "Alpine",
+     "Aston Martin",
+     "Ferrari",
+     "Haas F1 Team",
+     "Kick Sauber",
+     "McLaren",
+     "Mercedes",
+     "RB",
+     "Red Bull Racing",
+     "Williams"
+    ],
+    "2025": [
+     "Alpine",
+     "Aston Martin",
+     "Ferrari",
+     "Haas F1 Team",
+     "Kick Sauber",
+     "McLaren",
+     "Mercedes",
+     "Racing Bulls",
+     "Red Bull Racing",
+     "Williams"
+    ],
+    "2026": [
+     "Alpine",
+     "Aston Martin",
+     "Audi",
+     "Cadillac",
+     "Ferrari",
+     "Haas F1 Team",
+     "McLaren",
+     "Mercedes",
+     "Racing Bulls",
+     "Red Bull Racing",
+     "Williams"
+    ]
+   },
+   "copertura_parziale_dentro_la_stagione": {
+    "2018": {
+     "gare_piene_in_stagione": 21,
+     "squadre_a_copertura_parziale": {
+      "Force India": 12,
+      "Racing Point": 9
+     },
+     "contate_sulle_gare": true
+    }
+   },
+   "nota_conteggio": "i dodici e i nove sono contati sulle GARE. Contando tutte le sessioni Force India arriva a tredici, perche' in un weekend compaiono entrambe le ragioni sociali: il cambio non e' avvenuto fra due gare, e' avvenuto dentro un weekend."
+  },
+  "il_2026_non_e_nel_fondo": {
+   "verdetto": "CONFERMATA",
+   "cosa_dice": "data/fondo/ contiene 2018-2025 e basta. Il 2026 arriva da un'ingestione DIVERSA — data/ti_archive/2026/ per le sessioni del weekend e data/ti_cache/ per le gare piu' vecchie — con file .json non compressi invece di .json.gz e con i nomi dei file decisi da data/gare_registro.json.",
+   "conseguenza": "la colonna 2026 di qualunque serie storica di questo progetto viene da una catena di produzione diversa dalle altre otto. Va scritto come riga propria in ogni tabella: non e' il nono punto della stessa serie.",
+   "radici": {
+    "storico": "data/fondo/{anno}/{Gara}/{Sessione}.json.gz",
+    "2026_weekend": "data/ti_archive/2026/{Gara}/{Sessione}.json",
+    "2026_gare_vecchie": "data/ti_cache/{Nome}.json (mappa: data/gare_registro.json)"
+   },
+   "gare_dal_ti_cache": [
+    "Australian.json",
+    "Austrian.json",
+    "Barcelona.json",
+    "Canadian.json",
+    "Chinese.json",
+    "Japanese.json",
+    "Miami.json",
+    "Monaco.json"
+   ],
+   "copertura_dichiarata_da_lab_fondo": {
+    "Race": 11,
+    "Sprint": 11,
+    "Qualifying": 11,
+    "Practice 1": 11,
+    "Practice 2": 11,
+    "Practice 3": 11
+   },
+   "copertura_contata_sui_file": {
+    "Race": 11,
+    "Sprint": 4,
+    "Qualifying": 0,
+    "Practice 1": 10,
+    "Practice 2": 6,
+    "Practice 3": 6
+   },
+   "la_bugia": "lab/fondo.gare(2026, sessione) risponde 11 per OGNI sessione, comprese Qualifying (che non c'e' affatto) e Practice 2 (che ce n'e' sei). La causa e' nel sorgente: le gare del registro entrano nell'insieme senza guardare la sessione richiesta, e solo le cartelle di ti_archive vengono filtrate. Chi conta le sessioni del 2026 con quella funzione pubblica undici qualifiche che non esistono.",
+   "come_si_conta_bene": "una sessione esiste se e solo se fondo.giri() restituisce righe. E' la regola usata da questo generatore."
+  },
+  "spagna_2026_cade_fuori_in_silenzio": {
+   "verdetto": "CONFERMATA",
+   "cosa_dice": "la cartella del Gran Premio di Spagna 2026 si chiama «Barcelona Grand Prix». fondo_identita.NOME2CID non contiene quella chiave (contiene «Spanish Grand Prix»), quindi cid() torna None.",
+   "perche_e_silenziosa": "i generatori che incrociano per circuito scrivono `c = cid(gara)` seguito da `if not c: continue`. Una gara senza identita' non produce un errore: produce una riga in meno. Il conto finale sembra giusto perche' non c'e' niente con cui confrontarlo.",
+   "cartelle_2026_e_loro_cid": {
+    "Australian Grand Prix": "melbourne",
+    "Austrian Grand Prix": "spielberg",
+    "Barcelona Grand Prix": null,
+    "Belgian Grand Prix": "spa-francorchamps",
+    "British Grand Prix": "silverstone",
+    "Canadian Grand Prix": "montreal",
+    "Chinese Grand Prix": "shanghai",
+    "Hungarian Grand Prix": "hungaroring",
+    "Japanese Grand Prix": "suzuka",
+    "Miami Grand Prix": "miami",
+    "Monaco Grand Prix": "monaco"
+   },
+   "orfane": [
+    "Barcelona Grand Prix"
+   ],
+   "gare_2026_perse_da_un_incrocio_per_cid": 1,
+   "gare_2026_totali": 11,
+   "nota": "il registro data/gare_registro.json la mappa correttamente (Spagna -> catalunya): l'identita' esiste, e' NOME2CID che non la vede. Due mappe che dicono cose diverse sulla stessa gara."
+  },
+  "il_fondo_e_duplicato": {
+   "verdetto": "CONFERMATA",
+   "cosa_dice": "lo stesso fondo esiste due volte nel repo, sotto due radici, con due convenzioni di nome diverse.",
+   "porte": [
+    {
+     "radice": "data/fondo",
+     "anni": [
+      "2018",
+      "2019",
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+     ],
+     "file": 837,
+     "convenzione": "nomi con SPAZI: «Italian Grand Prix/Practice 1.json.gz»"
+    },
+    {
+     "radice": "simulatore/data/fondo",
+     "anni": [
+      "2018",
+      "2019",
+      "2020",
+      "2021",
+      "2022",
+      "2023",
+      "2024",
+      "2025"
+     ],
+     "file": 837,
+     "convenzione": "nomi con UNDERSCORE: «Italian_Grand_Prix/Practice_1.json.gz»"
+    }
+   ],
+   "prova_identita": {
+    "file": "2022 Italian Grand Prix / Race",
+    "sha256_12_data_fondo": "810d90deaa78",
+    "sha256_12_simulatore": "810d90deaa78",
+    "identici": true
+   },
+   "perche_e_pericolosa": "codice che sceglie la radice sbagliata NON fallisce: trova zero gare, o le trova e non trova le sessioni, perche' cerca «Practice 1» dove il file si chiama «Practice_1». Un errore che si presenta come un dato piu' scarso, non come un errore.",
+   "la_porta_giusta": "lab/fondo.py, che legge data/fondo. Questo modulo non apre mai l'altra radice se non per contarla, qui."
+  },
+  "gare_json_non_e_un_indice": {
+   "verdetto": "CONFERMATA",
+   "cosa_dice": "data/fondo/_gare.json e' la cache grezza della GitHub Contents API, salvata per non consumare le sessanta chiamate all'ora concesse. Elenca le CARTELLE del repository remoto, e li' dentro ci sono anche cartelle che non sono gare.",
+   "voci_che_non_sono_gare": {
+    "2018": [
+     "cache"
+    ],
+    "2019": [
+     "cache"
+    ],
+    "2020": [
+     "cache"
+    ],
+    "2021": [
+     "cache"
+    ],
+    "2022": [
+     "Pre-Season Test",
+     "cache",
+     "cache_preseason"
+    ],
+    "2023": [
+     "Pre-Season Testing",
+     "cache"
+    ],
+    "2024": [
+     "Pre-Season Testing",
+     "cache"
+    ],
+    "2025": [
+     "Pre-Season Testing",
+     "cache",
+     "cache_joblib",
+     "fastf1_cache"
+    ]
+   },
+   "conseguenza": "chi lo usasse come indice conterebbe fino a quattro gare in piu' per stagione, e proverebbe a leggere sessioni dentro una cartella di cache.",
+   "indice_giusto": "lab/fondo.gare(anno), che guarda i file davvero presenti."
+  },
+  "i_cid_non_sono_i_circuitId_di_f1db": {
+   "verdetto": "TROVATA QUI, non era nell'elenco di partenza",
+   "cosa_dice": "il vocabolario dei circuiti del progetto (fondo_identita.NOME2CID) e i circuitId di f1db non coincidono su due piste.",
+   "cid_del_fondo_che_f1db_non_conosce": [
+    "bahrain-outer",
+    "hockenheim"
+   ],
+   "traduzione": {
+    "hockenheim": "f1db lo chiama hockenheimring",
+    "bahrain-outer": "f1db non ha un circuitId a parte: usa circuitId «bahrain» con circuitLayoutId «bahrain-3» (3,543 km) contro «bahrain-1» (5,412 km)"
+   },
+   "perche_conta": "un incrocio fondo-f1db fatto per cid perde in silenzio le gare su quelle due piste — e una delle perse, il Gran Premio di Germania 2019, e' una gara ACCORCIATA (64 giri sui 67 previsti). La trappola non toglie solo righe: toglie proprio le righe anomale, che sono quelle per cui si guarda."
+  }
+ }
+}

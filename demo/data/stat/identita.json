@@ -1,0 +1,229 @@
+{
+ "_nota": "GENERATO da gen_stat_identita.py. Non modificare a mano: si rigenera a ogni gara con `python3 aggiorna_stat.py`.",
+ "_generatore": "gen_stat_identita.py",
+ "schema": 1,
+ "calcolato_il": "2026-08-04T09:24:45+00:00",
+ "provenienza": {
+  "artefatti_letti": [
+   {
+    "path": "demo/data/classifiche_2026.json",
+    "sha256_12": "693b5796eb92"
+   },
+   {
+    "path": "demo/team_colori.json",
+    "sha256_12": "8511b3aaa521"
+   },
+   {
+    "path": "demo/data/motori_2026.json",
+    "sha256_12": "b99a8f9536f4"
+   }
+  ],
+  "canonico": "il campo `team_demo` di demo/data/classifiche_2026.json, scelto perche' MISURATO che coincide gia' con le chiavi di demo/team_colori.json su tutte le squadre. Nessun vocabolario nuovo: si dichiara quello che gia' funziona.",
+  "colori_scritti_a_mano": "demo/team_colori.json non ha un generatore ed e' dichiarato nel suo _nota: Audi e Cadillac hanno colori di marca provvisori, la livrea 2026 non e' confermata."
+ },
+ "perimetro": {
+  "anno": 2026,
+  "squadre": 11,
+  "note": [
+   "la tabella copre la stagione in corso: e' l'anagrafica di CHI CORRE ADESSO, non la continuita' storica delle squadre.",
+   "la continuita' fra stagioni (Sauber -> BMW -> Alfa -> Kick -> Audi) NON e' qui: esiste in f1db (constructors-chronology) e nessun modulo della sezione la usa ancora. Quando servira', andra' dichiarata come si e' fatto per i circuiti."
+  ]
+ },
+ "squadre": [
+  {
+   "id": "alpine",
+   "canonico": "Alpine",
+   "nome_breve": "Alpine",
+   "colore": "#FF87BC",
+   "motore": "Mercedes",
+   "piloti": [
+    "COL",
+    "GAS"
+   ],
+   "alias": [
+    "Alpine",
+    "alpine"
+   ]
+  },
+  {
+   "id": "aston-martin",
+   "canonico": "Aston Martin",
+   "nome_breve": "Aston Martin",
+   "colore": "#229971",
+   "motore": "Honda",
+   "piloti": [
+    "ALO",
+    "STR"
+   ],
+   "alias": [
+    "Aston Martin",
+    "aston-martin"
+   ]
+  },
+  {
+   "id": "audi",
+   "canonico": "Audi",
+   "nome_breve": "Audi",
+   "colore": "#A21D2B",
+   "motore": "Audi",
+   "piloti": [
+    "BOR",
+    "HUL"
+   ],
+   "alias": [
+    "Audi",
+    "audi"
+   ]
+  },
+  {
+   "id": "cadillac",
+   "canonico": "Cadillac",
+   "nome_breve": "Cadillac",
+   "colore": "#D4A537",
+   "motore": "Ferrari",
+   "piloti": [
+    "BOT",
+    "PER"
+   ],
+   "alias": [
+    "Cadillac",
+    "cadillac"
+   ]
+  },
+  {
+   "id": "ferrari",
+   "canonico": "Ferrari",
+   "nome_breve": "Ferrari",
+   "colore": "#E8002D",
+   "motore": "Ferrari",
+   "piloti": [
+    "HAM",
+    "LEC"
+   ],
+   "alias": [
+    "Ferrari",
+    "ferrari"
+   ]
+  },
+  {
+   "id": "haas",
+   "canonico": "Haas F1 Team",
+   "nome_breve": "Haas",
+   "colore": "#B6BABD",
+   "motore": "Ferrari",
+   "piloti": [
+    "BEA",
+    "OCO"
+   ],
+   "alias": [
+    "Haas",
+    "Haas F1 Team",
+    "haas"
+   ]
+  },
+  {
+   "id": "mclaren",
+   "canonico": "McLaren",
+   "nome_breve": "McLaren",
+   "colore": "#FF8000",
+   "motore": "Mercedes",
+   "piloti": [
+    "NOR",
+    "PIA"
+   ],
+   "alias": [
+    "McLaren",
+    "mclaren"
+   ]
+  },
+  {
+   "id": "mercedes",
+   "canonico": "Mercedes",
+   "nome_breve": "Mercedes",
+   "colore": "#27F4D2",
+   "motore": "Mercedes",
+   "piloti": [
+    "ANT",
+    "RUS"
+   ],
+   "alias": [
+    "Mercedes",
+    "mercedes"
+   ]
+  },
+  {
+   "id": "racing-bulls",
+   "canonico": "Racing Bulls",
+   "nome_breve": "Racing Bulls",
+   "colore": "#6692FF",
+   "motore": "Red Bull Ford",
+   "piloti": [
+    "LAW",
+    "LIN"
+   ],
+   "alias": [
+    "Racing Bulls",
+    "racing-bulls"
+   ]
+  },
+  {
+   "id": "red-bull",
+   "canonico": "Red Bull Racing",
+   "nome_breve": "Red Bull",
+   "colore": "#2B478F",
+   "motore": "Red Bull Ford",
+   "piloti": [
+    "HAD",
+    "VER"
+   ],
+   "alias": [
+    "Red Bull",
+    "Red Bull Racing",
+    "red-bull"
+   ]
+  },
+  {
+   "id": "williams",
+   "canonico": "Williams",
+   "nome_breve": "Williams",
+   "colore": "#1868DB",
+   "motore": "Mercedes",
+   "piloti": [
+    "ALB",
+    "SAI"
+   ],
+   "alias": [
+    "Williams",
+    "williams"
+   ]
+  }
+ ],
+ "alias": {
+  "Alpine": "Alpine",
+  "Aston Martin": "Aston Martin",
+  "Audi": "Audi",
+  "Cadillac": "Cadillac",
+  "Ferrari": "Ferrari",
+  "Haas": "Haas F1 Team",
+  "Haas F1 Team": "Haas F1 Team",
+  "McLaren": "McLaren",
+  "Mercedes": "Mercedes",
+  "Racing Bulls": "Racing Bulls",
+  "Red Bull": "Red Bull Racing",
+  "Red Bull Racing": "Red Bull Racing",
+  "Williams": "Williams",
+  "alpine": "Alpine",
+  "aston-martin": "Aston Martin",
+  "audi": "Audi",
+  "cadillac": "Cadillac",
+  "ferrari": "Ferrari",
+  "haas": "Haas F1 Team",
+  "mclaren": "McLaren",
+  "mercedes": "Mercedes",
+  "racing-bulls": "Racing Bulls",
+  "red-bull": "Red Bull Racing",
+  "williams": "Williams"
+ },
+ "senza_colore": [],
+ "alias_ignoti": []
+}
