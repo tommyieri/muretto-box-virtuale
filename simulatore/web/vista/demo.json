@@ -461,8 +461,8 @@
        "VER": 6666.064
       },
       "fantasma": {
-       "ALB": 6732.267,
-       "ANT": 6642.473,
+       "ALB": 6732.432,
+       "ANT": 6642.638,
        "BEA": 6681.807,
        "BOR": 6684.981,
        "COL": 6734.175,
@@ -471,13 +471,13 @@
        "LAW": 6717.639,
        "LEC": 6649.879,
        "LIN": 6680.519,
-       "NOR": 6664.668,
-       "OCO": 6693.392,
+       "NOR": 6664.798,
+       "OCO": 6693.572,
        "PER": 6780.837,
-       "RUS": 6636.612,
-       "SAI": 6713.388,
+       "RUS": 6636.735,
+       "SAI": 6713.577,
        "STR": 6830.474,
-       "VER": 6666.018
+       "VER": 6666.064
       },
       "in_box": [
        "ALB"
@@ -522,7 +522,7 @@
        "RUS": 6720.074,
        "SAI": 6799.507,
        "STR": 6917.497,
-       "VER": 6749.901
+       "VER": 6750.023
       },
       "in_box": [],
       "fuori_box": []
@@ -2304,9 +2304,9 @@
     "banda": null
    },
    "finestra": {
-    "da": 34,
-    "a": 53,
-    "n_giri": 20,
+    "da": 36,
+    "a": 51,
+    "n_giri": 16,
     "soglia_s": 4.25,
     "targhetta": "i giri che il motore non distingue dall'ottimo: entro 4.25 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 25 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
    },
@@ -5007,7 +5007,7 @@
       "k": 2,
       "totale": 9711.500580178643,
       "soste": [
-       45,
+       44,
        55
       ]
      },
@@ -5175,9 +5175,9 @@
        "HAD": 6372.27,
        "HAM": 6311.478,
        "LAW": 6409.904,
-       "LEC": 6323.156,
+       "LEC": 6323.232,
        "LIN": 6405.381,
-       "NOR": 6332.008,
+       "NOR": 6331.985,
        "OCO": 6445.644,
        "PER": 6462.902,
        "PIA": 6334.591,
@@ -5224,9 +5224,9 @@
        "HAD": 6455.325,
        "HAM": 6393.224,
        "LAW": 6493.682,
-       "LEC": 6406.06,
+       "LEC": 6406.243,
        "LIN": 6490.242,
-       "NOR": 6413.736,
+       "NOR": 6413.691,
        "OCO": 6530.097,
        "PER": 6548.353,
        "PIA": 6416.495,

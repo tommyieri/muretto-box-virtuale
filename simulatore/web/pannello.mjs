@@ -254,15 +254,13 @@ function selettoreMescole(vista, s) {
     ...vista.mescole.map((m) => el('span', {
       classe: `mescola sola-lettura ${m.codice === s.mescola_scelta ? 'scelta' : ''} ${m.attiva ? '' : 'spenta'}`,
       disabilitato: !m.attiva,
-      // Il testo dice COSA FA il comando, e basta. Le due decisioni del PO del 04/08 si
-      // incontrano proprio qui: la mescola e' tornata un comando, e dal sito sono uscite
-      // fonti, coperture e limiti dichiarati. Il referto — 0,0158 s per giro d'eta', le 427
-      // soste, il rumore a 22 giri — resta nel dato (data/modelli/vita_mescola.json) e in
-      // questo file come commento: in pagina no.
       titolo: m.attiva
-        ? (m.codice === s.mescola_scelta
-          ? 'gomma montata adesso'
-          : 'monta questa gomma: cambia quanto dura, non quanto va')
+        // Il titolo resta CORTO come la decisione del 04/08 su tutto il pannello: al
+        // lettore arriva la cosa, non il referto che la calibra. Dice solo che si puo'
+        // montare — cosa cambia e quanto vale sta nel sigillo vita_mescola.json, non qui.
+        // (Testo scelto da Tommi nello squash di #116: la mia versione diceva anche «cambia
+        // quanto dura, non quanto va», ed e' un dettaglio di troppo per la stessa regola.)
+        ? (m.codice === s.mescola_scelta ? 'la gomma che stai montando' : 'monta questa gomma')
         : m.motivo,
       valore: m.codice,
     }, txt(m.codice))));

@@ -1,14 +1,14 @@
 {
  "_nota": "GENERATO da aggiorna_ui.py — la targhetta di cosa e' online. Confrontala con `git ls-remote origin main`: se divergono, la macchina che pubblica non sta eseguendo il main. Sonda: scheduling/sonda_deploy.sh",
  "_ritardo_strutturale": "Questo file non puo' contenere il commit che lo include, e si rigenera solo quando gira aggiorna_ui.py (cioe' dopo una gara). Fra due gare il ritardo su origin/main CRESCE di un commit per commit, ed e' normale: non e' la catena rotta. Si azzera con `python3 -c \"import aggiorna_ui; aggiorna_ui.scrivi_versione()\"`. Il rimedio strutturale sarebbe scriverlo a ogni deploy, che richiede un build step su Vercel — impostazione del progetto, non codice.",
- "ramo_alla_generazione": "claude/sonda-versione",
- "commit": "ac4e1fd421dcf0182b21110564cee99bb2c4a352",
- "commit_breve": "ac4e1fd",
- "data_commit": "2026-08-03T14:19:27+02:00",
- "costruito_il": "2026-08-03T12:26:05+00:00",
+ "ramo_alla_generazione": "claude/lavoro",
+ "commit": "b4702ff6fc20e2c53e8c7e38bec5e51b92743456",
+ "commit_breve": "b4702ff",
+ "data_commit": "2026-08-04T17:04:26+02:00",
+ "costruito_il": "2026-08-04T15:04:58+00:00",
  "sigilli_sha256_16": {
   "simulatore/data/modelli/modello_v2.json": "4058e4909e8a7311",
-  "simulatore/banco/ROSSE_DICHIARATE.json": "449a1ce1437b0035",
+  "simulatore/banco/ROSSE_DICHIARATE.json": "c046dddcf4e31f29",
   "simulatore/data/modelli/banda_rientro.json": "689e5d8472c1c3aa"
  }
 }
