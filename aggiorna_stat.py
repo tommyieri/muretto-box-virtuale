@@ -74,6 +74,12 @@ def main():
          os.path.join(STAT, 'gara_2026.json')),
         ('fondo', [PY, 'gen_stat_fondo.py'] + con_zip,
          os.path.join(STAT, 'fondo_anni.json')),
+        # VA IN RETE: censisce l'archivio pubblico F1 e conta i canali che trasmette. E' la
+        # sentinella che si accorgerebbe se F1 riaprisse il rubinetto sull'energia. Se la rete
+        # non c'e', non tocca il file e torna 1: meglio una misura vecchia e datata che una
+        # misura degradata con l'aria di essere fresca.
+        ('feed', [PY, 'gen_stat_feed.py'],
+         os.path.join(STAT, 'feed.json')),
         # ULTIMO: raccoglie gli alias dagli artefatti gia' scritti, quindi deve vederli tutti.
         ('identita', [PY, 'gen_stat_identita.py'],
          os.path.join(STAT, 'identita.json')),
