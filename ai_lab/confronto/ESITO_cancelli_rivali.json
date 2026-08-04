@@ -1,0 +1,51 @@
+{
+ "_targhetta": {
+  "cosa_e": "Esito dei cancelli R1/R2/R4 di PREREG_rivali_comportamentali.md — i rivali che si fermano quando la loro gomma finisce.",
+  "prereg": "ai_lab/confronto/PREREG_rivali_comportamentali.md",
+  "generato_da": "ai_lab/confronto/cancelli_rivali.mjs",
+  "data": "2026-08-04",
+  "taratura": {
+   "errore": 7,
+   "arrivi": 64,
+   "n": 167
+  }
+ },
+ "n": 167,
+ "errore_mediano": {
+  "fermi": 7,
+  "attesi": 7,
+  "a_caso": 7
+ },
+ "arrivi_cosi": {
+  "fermi": 64,
+  "attesi": 68,
+  "a_caso": 70
+ },
+ "cancelli": {
+  "R1": {
+   "passa": false,
+   "segni": {
+    "n": 167,
+    "vinceA": 46,
+    "vinceB": 26,
+    "pari": 95,
+    "discordanti": 72,
+    "p": 0.024460907328323962
+   }
+  },
+  "R2": {
+   "passa": false
+  },
+  "R4": {
+   "passa": true,
+   "segni_placebo": {
+    "n": 167,
+    "vinceA": 39,
+    "vinceB": 32,
+    "pari": 96,
+    "discordanti": 71,
+    "p": 0.47668779343426954
+   }
+  }
+ }
+}

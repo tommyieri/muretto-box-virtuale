@@ -114,6 +114,9 @@ function contestoLive(dataOggi) {
     limiti: costanti.limiti,
     pavimenti: costanti.pavimenti,
     bandaRientro: leggi('data/modelli/banda_rientro.json'),
+    // il TETTO AL MOVIMENTO viaggia col motore: se stesse solo in Node, la diretta
+    // risponderebbe senza vincolo e il replay con — che e' E17 nella sua forma esatta.
+    sogliaSorpasso: leggi('data/modelli/soglia_sorpasso.json'),
     // I CASI viaggiano col motore, o la diretta direbbe meno del replay sulla
     // stessa situazione — ed e' la forma di E17 che questo trasporto esiste per
     // impedire. Il file e' piccolo: sono due contesti, non una tabella per gara.

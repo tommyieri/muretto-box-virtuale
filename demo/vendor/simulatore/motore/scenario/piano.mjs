@@ -201,9 +201,12 @@ export function mescolePerSoste(k, mescoleGiaUsate) {
  * restituisce il cumulato del pilota alla bandiera. `null` se il pilota esce
  * dalla simulazione (regola 6) — un piano non valutabile non è un piano lento.
  */
-export function valutaPiano({ gara, freezeLap, pilota, piano }, contesto) {
+export function valutaPiano({ gara, freezeLap, pilota, piano, sosteAtteseRivali }, contesto) {
   const scenario = costruisciScenario(
-    { gara, freezeLap, pilota, piano: piano.soste },
+    // `sosteAtteseRivali` VIAGGIA FINO QUI dal 04/08/2026. Prima non arrivava: pianoOttimo lo
+    // ignorava, quindi il pianificatore ottimizzava contro venti auto ferme — anche in
+    // produzione, dove nessuno lo passava. Prereg: PREREG_rivali_comportamentali.md.
+    { gara, freezeLap, pilota, piano: piano.soste, sosteAtteseRivali },
     { ...contesto, giroFinale: piano.giro_finale },
   );
   const risultato = simulate({
@@ -228,7 +231,7 @@ export function valutaPiano({ gara, freezeLap, pilota, piano }, contesto) {
  *          cumulato minore, `per_k` tiene tutti i k valutati perché la risposta
  *          «due soste costano 3 s più di una» è un'informazione, non uno scarto.
  */
-export function pianoOttimo({ gara, freezeLap, pilota, giroFinale, kMax = 3, mescolaPrimaSosta = null }, contesto) {
+export function pianoOttimo({ gara, freezeLap, pilota, giroFinale, kMax = 3, mescolaPrimaSosta = null, sosteAtteseRivali = undefined }, contesto) {
   const g = contesto.gare[gara];
   if (!g) throw new Error(`gara sconosciuta: ${gara}`);
   const cella = g.perPilota.get(pilota)?.get(freezeLap);
@@ -292,7 +295,7 @@ export function pianoOttimo({ gara, freezeLap, pilota, giroFinale, kMax = 3, mes
       piano = costruisci(correnti);
     }
     if (piano === null) continue;
-    let migliore = valutaPiano({ gara, freezeLap, pilota, piano }, contesto);
+    let migliore = valutaPiano({ gara, freezeLap, pilota, piano, sosteAtteseRivali }, contesto);
     if (migliore.totale === null) { perK.push({ k, piano, totale: null }); continue; }
 
     let cambiato = true;
@@ -305,7 +308,7 @@ export function pianoOttimo({ gara, freezeLap, pilota, giroFinale, kMax = 3, mes
           prova[i] += d;
           const p = costruisci(prova);
           if (p === null) continue;
-          const v = valutaPiano({ gara, freezeLap, pilota, piano: p }, contesto);
+          const v = valutaPiano({ gara, freezeLap, pilota, piano: p, sosteAtteseRivali }, contesto);
           if (v.totale !== null && v.totale < migliore.totale - 1e-9) {
             correnti = prova; piano = p; migliore = v; cambiato = true;
           }

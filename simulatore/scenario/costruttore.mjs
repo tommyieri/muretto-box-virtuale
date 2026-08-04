@@ -70,6 +70,42 @@ const BIAS_DICHIARATO_S_GIRO = 0.17;
 // generosa che si possa chiamare «campo» senza inventare (PREREG-6).
 const QUOTA_CAMPO_NEUTRALIZZATO = 0.5;
 
+/**
+ * IL TETTO AL MOVIMENTO, risolto in UN posto solo (regola 1).
+ *
+ * Tre casi, e sono tre apposta — il 04/08/2026 questo progetto ha scoperto che un
+ * override con una precedenza sbagliata rende un cancello incapace di fallire e non se ne
+ * accorge nessuno (E22, `cancelli_vita.mjs`). Qui la precedenza e' esplicita e ha una
+ * sentinella (s38):
+ *
+ *   contesto.tetto === false  ⇒  SPENTO ESPLICITAMENTE. Serve a chi misura: il braccio
+ *                                «senza vincolo» di un confronto appaiato deve poter dire
+ *                                spento e ottenerlo, anche quando la produzione e' accesa.
+ *                                Senza questo caso, il giorno dell'accensione tutti i
+ *                                confronti A/B sarebbero diventati A/A in silenzio.
+ *   contesto.tetto oggetto    ⇒  IMPOSTO da chi misura, esattamente com'e'.
+ *   altrimenti                ⇒  dal SIGILLO `contesto.sogliaSorpasso`, per circuito.
+ *                                `attivo !== true` ⇒ null ⇒ numeri bit-identici a prima.
+ *
+ * Un circuito che non compare nel sigillo prende la SOGLIA COMUNE, non 1 e non zero: la
+ * misura dice che dieci piste su undici condividono la stessa soglia, quindi la comune E'
+ * la stima per una pista nuova. Non e' un valore di riserva (regola 6): e' il risultato.
+ */
+export function risolviTetto(contesto, gara) {
+  if (contesto.tetto === false) return null;
+  if (contesto.tetto) return contesto.tetto;
+  const s = contesto.sogliaSorpasso;
+  if (!s || s.attivo !== true || !s.parametri) return null;
+  const soglia = s.soglia_sorpasso?.[gara] ?? s.soglia_comune;
+  if (typeof soglia !== 'number' || !Number.isFinite(soglia)) return null;
+  return {
+    minGap: s.parametri.minGap,
+    sogliaSorpasso: soglia,
+    costoDuello: s.parametri.costoDuello,
+    costoSubito: s.parametri.costoSubito,
+  };
+}
+
 function persistenzaPacchetto(contesto, attivo, regime) {
   if (!attivo) return PERSISTENZA_REGIME_GIRI;
   const m = contesto.prior?.persistenza_regime_interna;
@@ -130,7 +166,7 @@ const regimeAlCongelamento = regimeDiCella;
  *          orizzonte, perdita }` — `pits` è ciò che le due risposte devono
  *          condividere, ed è la cosa che il cancello P06 confronta.
  */
-export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, piano, pianiRivali }, contesto) {
+export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, piano, pianiRivali, sosteAtteseRivali }, contesto) {
   const { gare, modello, prior } = contesto;
   const g = gare[gara];
   if (!g) throw new Error(`gara sconosciuta: ${gara}`);
@@ -190,10 +226,10 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
     : null;
   // IL TETTO AL MOVIMENTO arriva dal CONTESTO, non dal modello: non e' fisica del passo
   // ma un vincolo di pista, e il suo parametro portante (la soglia di sorpasso) e' per
-  // CIRCUITO. Assente ⇒ null ⇒ il kernel si comporta come da sempre. Chi non lo mette nel
-  // contesto non lo ha acceso: la produzione non lo vede finche' il PO non lo decide.
-  // Parametri e cancelli: ai_lab/confronto/PREREG_tetto_movimento.md.
-  const tetto = contesto.tetto ?? null;
+  // CIRCUITO. Dal 04/08/2026 e' ACCESO in produzione, con la soglia MISURATA su 5.498
+  // occasioni del fondo. Parametri e cancelli: ai_lab/sorpasso/PREREG_soglia_sorpasso.md;
+  // accensione: ai_lab/sorpasso/ESITO_aggancio_tetto.json.
+  const tetto = risolviTetto(contesto, gara);
   // LA VITA DELLA MESCOLA arriva dal MODELLO, come il cliff e per la stessa ragione: e'
   // fisica del passo, e va letta dal sigillo che dichiara se e' accesa. `attivo !== true`
   // ⇒ null ⇒ numeri bit-identici a prima (sentinella s37). Natura del parametro:
@@ -322,8 +358,15 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   // (regola 1): un secondo modo di riempire `pits` sarebbe la porta di E17.
   let rivaliVeri = 0;
   let rivaliScartati = 0;
-  if (pianiRivali) {
-    for (const [drv, sosteDrv] of Object.entries(pianiRivali)) {
+  // DUE FONTI, E NON SI CONFONDONO MAI. `pianiRivali` sono le soste VERE: informazione dal
+  // futuro, ammessa solo al banco. `sosteAtteseRivali` sono DEDOTTE dallo stato al
+  // congelamento (scenario/rivali.mjs) e non contengono niente oltre Lf — sono l'unica
+  // forma che la produzione puo' usare. Il nome e' diverso apposta: la sentinella s25
+  // vieta `pianiRivali` in ogni percorso di produzione, e quel divieto resta intatto.
+  const daiRivali = pianiRivali ?? sosteAtteseRivali ?? null;
+  const rivaliDedotti = !pianiRivali && Boolean(sosteAtteseRivali);
+  if (daiRivali) {
+    for (const [drv, sosteDrv] of Object.entries(daiRivali)) {
       if (drv === pilota) continue;
       const nel = (sosteDrv ?? []).filter((s) => Number.isInteger(s?.giro) && s.giro > freezeLap && s.giro < giroFinale);
       // Il letterale "None" si LAVA alla frontiera, non fa esplodere il caso (E05). Una
@@ -338,8 +381,13 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
       rivaliVeri += 1;
     }
     if (rivaliVeri > 0) {
-      dichiara('SOSTE_VERE_DEI_RIVALI',
-        `a ${rivaliVeri} rivali sono state date le LORO soste vere: e' INFORMAZIONE DAL FUTURO, `
+      dichiara(rivaliDedotti ? 'SOSTE_ATTESE_DEI_RIVALI' : 'SOSTE_VERE_DEI_RIVALI',
+        rivaliDedotti
+          ? `a ${rivaliVeri} rivali e' stata attribuita la sosta che cadra' quando la gomma che avevano `
+            + 'al congelamento finisce (scenario/rivali.mjs). Non e\' informazione dal futuro: mescola ed '
+            + 'eta\' sono lette al congelamento e la vita viene dal sigillo. E\' un PRIOR COMPORTAMENTALE, '
+            + 'e sbaglia come sbaglia quel prior — ma lasciarli fermi sbagliava di piu\''
+          : `a ${rivaliVeri} rivali sono state date le LORO soste vere: e' INFORMAZIONE DAL FUTURO, `
         + 'lecita solo per misurare la fisica a strategia nota. Nessuna risposta del prodotto puo\' nascere da qui'
         + (rivaliScartati ? ` — ${rivaliScartati} soste altrui scartate perche' la mescola non e' slick nota (E05)` : ''),
         rivaliVeri,
