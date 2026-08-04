@@ -34,6 +34,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import path from 'node:path';
 import { adattaColonnare } from '../../simulatore/provenienza/adattatore.mjs';
 import { garaAsciutta, passoUtilizzabile, statusVerde } from '../../simulatore/provenienza/definizioni.mjs';
+import { fontiGare2026 } from '../../simulatore/provenienza/gare_2026.mjs';
 import { PISTA_DI } from '../degrado/durate.mjs';
 
 // I parametri dell'occasione. DICHIARATI, non tarati: si scrivono nella prereg e non si
@@ -126,6 +127,22 @@ export function occasioniDi(righe, { pista, anno, gara }, P = PARAMETRI) {
     }
   }
   return fuori;
+}
+
+/**
+ * Le occasioni delle gare 2026, per ANCORARE IL LIVELLO (prereg §7).
+ *
+ * Servono a una cosa sola e non alla stima della forma: il fondo ha il DRS e il 2026 no,
+ * quindi il livello della soglia va spostato di una costante — UNA, non undici — scelta
+ * perche' la quota di sorpassi prevista sul 2026 uguagli quella osservata.
+ */
+export function occasioni2026(radice, P = PARAMETRI) {
+  const out = [];
+  for (const [gara, { fonteAbs }] of Object.entries(fontiGare2026(radice))) {
+    const { righe } = adattaColonnare(JSON.parse(readFileSync(fonteAbs, 'utf8')), { fonte: gara });
+    out.push(...occasioniDi(righe, { pista: gara, anno: 2026, gara }, P));
+  }
+  return out;
 }
 
 /** Tutte le occasioni del fondo 2018-2025, gare asciutte. */

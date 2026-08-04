@@ -67,12 +67,12 @@
     "giro_di_rientro": 34,
     "davanti": {
      "drv": "LAW",
-     "gap_s": 13.406116199977987,
+     "gap_s": 13.529220199977317,
      "motivo_soppressione": null
     },
     "dietro": {
      "drv": "COL",
-     "gap_s": 3.681868699487495,
+     "gap_s": 3.5101206384260877,
      "motivo_soppressione": null
     },
     "gap_soppressi": null,
@@ -132,102 +132,102 @@
     },
     {
      "giroPit": 38,
-     "delta_s": 0.563,
+     "delta_s": 0.532,
      "banda": null
     },
     {
      "giroPit": 39,
-     "delta_s": 1.002,
+     "delta_s": 0.909,
      "banda": null
     },
     {
      "giroPit": 40,
-     "delta_s": 1.566,
+     "delta_s": 1.382,
      "banda": null
     },
     {
      "giroPit": 41,
-     "delta_s": 2.257,
+     "delta_s": 1.949,
      "banda": null
     },
     {
      "giroPit": 42,
-     "delta_s": 3.075,
+     "delta_s": 2.613,
      "banda": null
     },
     {
      "giroPit": 43,
-     "delta_s": 4.02,
+     "delta_s": 3.374,
      "banda": null
     },
     {
      "giroPit": 44,
-     "delta_s": 5.074,
+     "delta_s": 4.232,
      "banda": null
     },
     {
      "giroPit": 45,
-     "delta_s": 6.228,
+     "delta_s": 5.19,
      "banda": null
     },
     {
      "giroPit": 46,
-     "delta_s": 7.482,
+     "delta_s": 6.249,
      "banda": null
     },
     {
      "giroPit": 47,
-     "delta_s": 8.839,
+     "delta_s": 7.41,
      "banda": null
     },
     {
      "giroPit": 48,
-     "delta_s": 10.3,
+     "delta_s": 8.676,
      "banda": null
     },
     {
      "giroPit": 49,
-     "delta_s": 11.87,
+     "delta_s": 10.05,
      "banda": null
     },
     {
      "giroPit": 50,
-     "delta_s": 13.551,
+     "delta_s": 11.535,
      "banda": null
     },
     {
      "giroPit": 51,
-     "delta_s": 15.348,
+     "delta_s": 13.136,
      "banda": null
     },
     {
      "giroPit": 52,
-     "delta_s": 17.267,
+     "delta_s": 14.859,
      "banda": null
     },
     {
      "giroPit": 53,
-     "delta_s": 19.314,
+     "delta_s": 16.711,
      "banda": null
     },
     {
      "giroPit": 54,
-     "delta_s": 21.497,
+     "delta_s": 18.699,
      "banda": null
     },
     {
      "giroPit": 55,
-     "delta_s": 23.828,
+     "delta_s": 20.834,
      "banda": null
     },
     {
      "giroPit": 56,
-     "delta_s": 26.319,
+     "delta_s": 23.129,
      "banda": null
     },
     {
      "giroPit": 57,
-     "delta_s": 28.985,
+     "delta_s": 25.6,
      "banda": null
     }
    ],
@@ -238,8 +238,8 @@
    },
    "finestra": {
     "da": 33,
-    "a": 43,
-    "n_giri": 11,
+    "a": 44,
+    "n_giri": 12,
     "soglia_s": 4.42,
     "targhetta": "i giri che il motore non distingue dall'ottimo: entro 4.42 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 26 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
    },
@@ -300,19 +300,19 @@
     "alternative": [
      {
       "k": 0,
-      "totale": 8866.132093985936,
+      "totale": 8861.075350977932,
       "soste": []
      },
      {
       "k": 1,
-      "totale": 8855.932636468871,
+      "totale": 8854.457296580871,
       "soste": [
        35
       ]
      },
      {
       "k": 2,
-      "totale": 8869.074507794854,
+      "totale": 8868.909609986855,
       "soste": [
        33,
        46
@@ -320,7 +320,7 @@
      },
      {
       "k": 3,
-      "totale": 8887.340308368066,
+      "totale": 8887.175410560065,
       "soste": [
        33,
        41,
@@ -461,23 +461,23 @@
        "VER": 6666.064
       },
       "fantasma": {
-       "ALB": 6732.432,
-       "ANT": 6642.638,
+       "ALB": 6732.267,
+       "ANT": 6642.473,
        "BEA": 6681.807,
        "BOR": 6684.981,
-       "COL": 6734.343,
-       "GAS": 6692.848,
+       "COL": 6734.175,
+       "GAS": 6692.76,
        "HAM": 6657.048,
-       "LAW": 6717.783,
+       "LAW": 6717.639,
        "LEC": 6649.879,
        "LIN": 6680.519,
-       "NOR": 6664.798,
-       "OCO": 6693.572,
+       "NOR": 6664.668,
+       "OCO": 6693.392,
        "PER": 6780.837,
-       "RUS": 6636.735,
-       "SAI": 6713.577,
+       "RUS": 6636.612,
+       "SAI": 6713.388,
        "STR": 6830.474,
-       "VER": 6666.064
+       "VER": 6666.018
       },
       "in_box": [
        "ALB"
@@ -506,23 +506,23 @@
        "VER": 6764.28
       },
       "fantasma": {
-       "ALB": 6816.979,
-       "ANT": 6726.226,
-       "BEA": 6766.604,
-       "BOR": 6769.584,
-       "COL": 6820.661,
-       "GAS": 6778.097,
+       "ALB": 6816.814,
+       "ANT": 6725.866,
+       "BEA": 6766.593,
+       "BOR": 6769.573,
+       "COL": 6820.324,
+       "GAS": 6777.921,
        "HAM": 6740.239,
-       "LAW": 6803.573,
+       "LAW": 6803.285,
        "LEC": 6733.013,
-       "LIN": 6765.211,
-       "NOR": 6749.037,
-       "OCO": 6778.996,
-       "PER": 6868.336,
-       "RUS": 6720.351,
-       "SAI": 6799.884,
+       "LIN": 6765.2,
+       "NOR": 6748.776,
+       "OCO": 6778.637,
+       "PER": 6868.325,
+       "RUS": 6720.074,
+       "SAI": 6799.507,
        "STR": 6917.497,
-       "VER": 6750.023
+       "VER": 6749.901
       },
       "in_box": [],
       "fuori_box": []
@@ -577,7 +577,7 @@
     "giro_di_rientro": 41,
     "davanti": {
      "drv": "ALO",
-     "gap_s": 3.637256669853741,
+     "gap_s": 3.559701149853936,
      "motivo_soppressione": null
     },
     "dietro": null,
@@ -609,47 +609,47 @@
    "curva": [
     {
      "giroPit": 40,
-     "delta_s": 8.192,
+     "delta_s": 8.782,
      "banda": null
     },
     {
      "giroPit": 41,
-     "delta_s": 6.868,
+     "delta_s": 7.386,
      "banda": null
     },
     {
      "giroPit": 42,
-     "delta_s": 5.69,
+     "delta_s": 6.138,
      "banda": null
     },
     {
      "giroPit": 43,
-     "delta_s": 4.65,
+     "delta_s": 5.027,
      "banda": null
     },
     {
      "giroPit": 44,
-     "delta_s": 3.739,
+     "delta_s": 4.044,
      "banda": null
     },
     {
      "giroPit": 45,
-     "delta_s": 2.949,
+     "delta_s": 3.184,
      "banda": null
     },
     {
      "giroPit": 46,
-     "delta_s": 2.276,
+     "delta_s": 2.439,
      "banda": null
     },
     {
      "giroPit": 47,
-     "delta_s": 1.715,
+     "delta_s": 1.807,
      "banda": null
     },
     {
      "giroPit": 48,
-     "delta_s": 1.253,
+     "delta_s": 1.284,
      "banda": null
     },
     {
@@ -709,57 +709,57 @@
     },
     {
      "giroPit": 60,
-     "delta_s": 1.253,
+     "delta_s": 1.284,
      "banda": null
     },
     {
      "giroPit": 61,
-     "delta_s": 1.715,
+     "delta_s": 1.807,
      "banda": null
     },
     {
      "giroPit": 62,
-     "delta_s": 2.276,
+     "delta_s": 2.439,
      "banda": null
     },
     {
      "giroPit": 63,
-     "delta_s": 2.949,
+     "delta_s": 3.184,
      "banda": null
     },
     {
      "giroPit": 64,
-     "delta_s": 3.739,
+     "delta_s": 4.044,
      "banda": null
     },
     {
      "giroPit": 65,
-     "delta_s": 4.65,
+     "delta_s": 5.027,
      "banda": null
     },
     {
      "giroPit": 66,
-     "delta_s": 5.69,
+     "delta_s": 6.138,
      "banda": null
     },
     {
      "giroPit": 67,
-     "delta_s": 6.868,
+     "delta_s": 7.386,
      "banda": null
     },
     {
      "giroPit": 68,
-     "delta_s": 8.192,
+     "delta_s": 8.782,
      "banda": null
     },
     {
      "giroPit": 69,
-     "delta_s": 9.677,
+     "delta_s": 10.338,
      "banda": null
     },
     {
      "giroPit": 70,
-     "delta_s": 11.337,
+     "delta_s": 12.069,
      "banda": null
     }
    ],
@@ -817,7 +817,7 @@
     "alternative": [
      {
       "k": 0,
-      "totale": 8780.927453117574,
+      "totale": 8781.730706717572,
       "soste": []
      },
      {
@@ -996,14 +996,14 @@
       },
       "fantasma": {
        "ALB": 6516.383,
-       "ALO": 6510.609,
+       "ALO": 6510.648,
        "ANT": 6388.752,
        "BEA": 6461.702,
-       "BOR": 6435.793,
+       "BOR": 6435.855,
        "COL": 6469.362,
        "GAS": 6466.236,
-       "HAD": 6403.49,
-       "HAM": 6399.017,
+       "HAD": 6403.543,
+       "HAM": 6399.056,
        "HUL": 6450.344,
        "LAW": 6431.651,
        "LEC": 6418.22,
@@ -1012,7 +1012,7 @@
        "OCO": 6485.929,
        "PIA": 6398.176,
        "RUS": 6381.566,
-       "STR": 6509.674,
+       "STR": 6509.713,
        "VER": 6382.974
       },
       "in_box": [
@@ -1045,24 +1045,24 @@
       },
       "fantasma": {
        "ALB": 6589.487,
-       "ALO": 6585.85,
+       "ALO": 6585.927,
        "ANT": 6460.461,
        "BEA": 6535.714,
-       "BOR": 6509.26,
+       "BOR": 6509.383,
        "COL": 6543.414,
        "GAS": 6538.772,
-       "HAD": 6475.943,
-       "HAM": 6471.098,
-       "HUL": 6524.024,
+       "HAD": 6476.05,
+       "HAM": 6471.176,
+       "HUL": 6524.055,
        "LAW": 6504.71,
        "LEC": 6489.567,
-       "LIN": 6503.002,
+       "LIN": 6503.033,
        "NOR": 6477.166,
        "OCO": 6559.313,
        "PIA": 6470.374,
        "RUS": 6453.565,
-       "STR": 6584.729,
-       "VER": 6454.865
+       "STR": 6584.806,
+       "VER": 6454.896
       },
       "in_box": [],
       "fuori_box": []
@@ -1124,7 +1124,7 @@
     },
     "dietro": {
      "drv": "BOT",
-     "gap_s": 7.608110935644618,
+     "gap_s": 7.429363927644772,
      "motivo_soppressione": null
     },
     "gap_soppressi": null,
@@ -1224,32 +1224,32 @@
     },
     {
      "giroPit": 38,
-     "delta_s": 2.016,
+     "delta_s": 1.989,
      "banda": null
     },
     {
      "giroPit": 39,
-     "delta_s": 2.718,
+     "delta_s": 2.632,
      "banda": null
     },
     {
      "giroPit": 40,
-     "delta_s": 3.558,
+     "delta_s": 3.382,
      "banda": null
     },
     {
      "giroPit": 41,
-     "delta_s": 4.546,
+     "delta_s": 4.281,
      "banda": null
     },
     {
      "giroPit": 42,
-     "delta_s": 5.695,
+     "delta_s": 5.341,
      "banda": null
     },
     {
      "giroPit": 43,
-     "delta_s": 7.021,
+     "delta_s": 6.577,
      "banda": null
     }
    ],
@@ -1260,8 +1260,8 @@
    },
    "finestra": {
     "da": 25,
-    "a": 39,
-    "n_giri": 15,
+    "a": 40,
+    "n_giri": 16,
     "soglia_s": 3.4,
     "targhetta": "i giri che il motore non distingue dall'ottimo: entro 3.40 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 20 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
    },
@@ -1307,7 +1307,7 @@
     "alternative": [
      {
       "k": 0,
-      "totale": 8541.549188350433,
+      "totale": 8541.015901822433,
       "soste": []
      },
      {
@@ -1487,8 +1487,8 @@
        "ALO": 6454.221,
        "ANT": 6353.946,
        "BEA": 6405.331,
-       "BOR": 6377.694,
-       "BOT": 6427.712,
+       "BOR": 6377.702,
+       "BOT": 6427.623,
        "COL": 6391.498,
        "GAS": 6390.676,
        "HAD": 6372.767,
@@ -1497,7 +1497,7 @@
        "LAW": 6389.295,
        "LEC": 6351.046,
        "LIN": 6381.746,
-       "NOR": 6354.515,
+       "NOR": 6354.471,
        "OCO": 6415.9,
        "PIA": 6359.114,
        "SAI": 6415.064,
@@ -1535,10 +1535,10 @@
       "fantasma": {
        "ALB": 6534.77,
        "ALO": 6569.045,
-       "ANT": 6464.203,
+       "ANT": 6464.185,
        "BEA": 6517.457,
-       "BOR": 6489.07,
-       "BOT": 6542.378,
+       "BOR": 6489.085,
+       "BOT": 6542.2,
        "COL": 6503.39,
        "GAS": 6502.517,
        "HAD": 6483.545,
@@ -1547,7 +1547,7 @@
        "LAW": 6501.003,
        "LEC": 6461.156,
        "LIN": 6493.186,
-       "NOR": 6465.724,
+       "NOR": 6465.634,
        "OCO": 6528.487,
        "PIA": 6469.647,
        "SAI": 6527.512,
@@ -1614,7 +1614,7 @@
     },
     "dietro": {
      "drv": "HAD",
-     "gap_s": 0.01638077417646855,
+     "gap_s": 0.016380774175559054,
      "motivo_soppressione": null
     },
     "gap_soppressi": null,
@@ -1649,42 +1649,42 @@
    "curva": [
     {
      "giroPit": 38,
-     "delta_s": 5.195,
+     "delta_s": 5.714,
      "banda": null
     },
     {
      "giroPit": 39,
-     "delta_s": 4.219,
+     "delta_s": 4.667,
      "banda": null
     },
     {
      "giroPit": 40,
-     "delta_s": 3.36,
+     "delta_s": 3.737,
      "banda": null
     },
     {
      "giroPit": 41,
-     "delta_s": 2.613,
+     "delta_s": 2.919,
      "banda": null
     },
     {
      "giroPit": 42,
-     "delta_s": 1.974,
+     "delta_s": 2.208,
      "banda": null
     },
     {
      "giroPit": 43,
-     "delta_s": 1.44,
+     "delta_s": 1.604,
      "banda": null
     },
     {
      "giroPit": 44,
-     "delta_s": 1.01,
+     "delta_s": 1.102,
      "banda": null
     },
     {
      "giroPit": 45,
-     "delta_s": 0.671,
+     "delta_s": 0.702,
      "banda": null
     },
     {
@@ -1714,87 +1714,87 @@
     },
     {
      "giroPit": 51,
-     "delta_s": 0.067,
+     "delta_s": 0.098,
      "banda": null
     },
     {
      "giroPit": 52,
-     "delta_s": 0.201,
+     "delta_s": 0.293,
      "banda": null
     },
     {
      "giroPit": 53,
-     "delta_s": 0.433,
+     "delta_s": 0.586,
      "banda": null
     },
     {
      "giroPit": 54,
-     "delta_s": 0.764,
+     "delta_s": 0.979,
      "banda": null
     },
     {
      "giroPit": 55,
-     "delta_s": 1.195,
+     "delta_s": 1.471,
      "banda": null
     },
     {
      "giroPit": 56,
-     "delta_s": 1.728,
+     "delta_s": 2.065,
      "banda": null
     },
     {
      "giroPit": 57,
-     "delta_s": 2.363,
+     "delta_s": 2.762,
      "banda": null
     },
     {
      "giroPit": 58,
-     "delta_s": 3.104,
+     "delta_s": 3.565,
      "banda": null
     },
     {
      "giroPit": 59,
-     "delta_s": 3.954,
+     "delta_s": 4.476,
      "banda": null
     },
     {
      "giroPit": 60,
-     "delta_s": 4.915,
+     "delta_s": 5.498,
      "banda": null
     },
     {
      "giroPit": 61,
-     "delta_s": 5.992,
+     "delta_s": 6.637,
      "banda": null
     },
     {
      "giroPit": 62,
-     "delta_s": 7.191,
+     "delta_s": 7.897,
      "banda": null
     },
     {
      "giroPit": 63,
-     "delta_s": 8.519,
+     "delta_s": 9.286,
      "banda": null
     },
     {
      "giroPit": 64,
-     "delta_s": 9.983,
+     "delta_s": 10.812,
      "banda": null
     },
     {
      "giroPit": 65,
-     "delta_s": 11.595,
+     "delta_s": 12.485,
      "banda": null
     },
     {
      "giroPit": 66,
-     "delta_s": 13.366,
+     "delta_s": 14.318,
      "banda": null
     },
     {
      "giroPit": 67,
-     "delta_s": 15.314,
+     "delta_s": 16.327,
      "banda": null
     }
    ],
@@ -1804,9 +1804,9 @@
     "banda": null
    },
    "finestra": {
-    "da": 38,
-    "a": 60,
-    "n_giri": 23,
+    "da": 39,
+    "a": 59,
+    "n_giri": 21,
     "soglia_s": 5.27,
     "targhetta": "i giri che il motore non distingue dall'ottimo: entro 5.27 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 31 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
    },
@@ -1852,19 +1852,19 @@
     "alternative": [
      {
       "k": 0,
-      "totale": 8987.316641822952,
+      "totale": 8987.189075302953,
       "soste": []
      },
      {
       "k": 1,
-      "totale": 8989.186677522604,
+      "totale": 8987.984566962607,
       "soste": [
        50
       ]
      },
      {
       "k": 2,
-      "totale": 9002.67137572179,
+      "totale": 9001.469265161784,
       "soste": [
        43,
        56
@@ -1872,7 +1872,7 @@
      },
      {
       "k": 3,
-      "totale": 9018.380506372114,
+      "totale": 9017.178395812114,
       "soste": [
        40,
        50,
@@ -2025,24 +2025,24 @@
        "VER": 6745.82
       },
       "fantasma": {
-       "ANT": 6757.744,
+       "ANT": 6757.706,
        "BEA": 6829.596,
-       "BOR": 6855.501,
+       "BOR": 6855.532,
        "BOT": 6950.873,
        "COL": 6793.687,
-       "GAS": 6807.794,
-       "HAD": 6756.558,
-       "HAM": 6750.619,
+       "GAS": 6807.767,
+       "HAD": 6756.519,
+       "HAM": 6750.58,
        "HUL": 6847.807,
        "LAW": 6805.221,
-       "LEC": 6756.732,
-       "NOR": 6806.902,
+       "LEC": 6756.693,
+       "NOR": 6806.963,
        "OCO": 6889.029,
        "PER": 6889.14,
-       "PIA": 6839.724,
-       "SAI": 6823.085,
-       "STR": 6922.303,
-       "VER": 6745.26
+       "PIA": 6839.785,
+       "SAI": 6823.054,
+       "STR": 6922.342,
+       "VER": 6745.221
       },
       "in_box": [
        "ANT"
@@ -2072,24 +2072,24 @@
        "VER": 6821.455
       },
       "fantasma": {
-       "ANT": 6831.855,
+       "ANT": 6831.777,
        "BEA": 6906.55,
-       "BOR": 6933.317,
+       "BOR": 6933.409,
        "BOT": 7030.257,
        "COL": 6870.555,
-       "GAS": 6884.765,
-       "HAD": 6831.871,
-       "HAM": 6825.913,
+       "GAS": 6884.713,
+       "HAD": 6831.793,
+       "HAM": 6825.835,
        "HUL": 6925.467,
        "LAW": 6882.322,
-       "LEC": 6831.966,
-       "NOR": 6884.082,
+       "LEC": 6831.888,
+       "NOR": 6884.205,
        "OCO": 6967.446,
        "PER": 6967.15,
-       "PIA": 6917.403,
-       "SAI": 6899.406,
-       "STR": 7003.188,
-       "VER": 6820.418
+       "PIA": 6917.526,
+       "SAI": 6899.345,
+       "STR": 7003.265,
+       "VER": 6820.34
       },
       "in_box": [],
       "fuori_box": []
@@ -2143,7 +2143,7 @@
     "giro_di_rientro": 33,
     "davanti": {
      "drv": "PER",
-     "gap_s": 27.484733964711268,
+     "gap_s": 28.47560570034784,
      "motivo_soppressione": null
     },
     "dietro": null,
@@ -2179,62 +2179,62 @@
    "curva": [
     {
      "giroPit": 32,
-     "delta_s": 9.068,
+     "delta_s": 6.445,
      "banda": null
     },
     {
      "giroPit": 33,
-     "delta_s": 7.524,
+     "delta_s": 5.179,
      "banda": null
     },
     {
      "giroPit": 34,
-     "delta_s": 6.157,
+     "delta_s": 4.089,
      "banda": null
     },
     {
      "giroPit": 35,
-     "delta_s": 4.952,
+     "delta_s": 3.161,
      "banda": null
     },
     {
      "giroPit": 36,
-     "delta_s": 3.895,
+     "delta_s": 2.381,
      "banda": null
     },
     {
      "giroPit": 37,
-     "delta_s": 2.976,
+     "delta_s": 1.74,
      "banda": null
     },
     {
      "giroPit": 38,
-     "delta_s": 2.189,
+     "delta_s": 1.229,
      "banda": null
     },
     {
      "giroPit": 39,
-     "delta_s": 1.525,
+     "delta_s": 0.812,
      "banda": null
     },
     {
      "giroPit": 40,
-     "delta_s": 0.981,
+     "delta_s": 0.484,
      "banda": null
     },
     {
      "giroPit": 41,
-     "delta_s": 0.553,
+     "delta_s": 0.241,
      "banda": null
     },
     {
      "giroPit": 42,
-     "delta_s": 0.239,
+     "delta_s": 0.08,
      "banda": null
     },
     {
      "giroPit": 43,
-     "delta_s": 0.049,
+     "delta_s": 0,
      "banda": null
     },
     {
@@ -2244,69 +2244,69 @@
     },
     {
      "giroPit": 45,
-     "delta_s": 0.093,
+     "delta_s": 0.08,
      "banda": null
     },
     {
      "giroPit": 46,
-     "delta_s": 0.328,
+     "delta_s": 0.241,
      "banda": null
     },
     {
      "giroPit": 47,
-     "delta_s": 0.708,
+     "delta_s": 0.484,
      "banda": null
     },
     {
      "giroPit": 48,
-     "delta_s": 1.203,
+     "delta_s": 0.812,
      "banda": null
     },
     {
      "giroPit": 49,
-     "delta_s": 1.818,
+     "delta_s": 1.229,
      "banda": null
     },
     {
      "giroPit": 50,
-     "delta_s": 2.557,
+     "delta_s": 1.74,
      "banda": null
     },
     {
      "giroPit": 51,
-     "delta_s": 3.426,
+     "delta_s": 2.35,
      "banda": null
     },
     {
      "giroPit": 52,
-     "delta_s": 4.435,
+     "delta_s": 3.068,
      "banda": null
     },
     {
      "giroPit": 53,
-     "delta_s": 5.592,
+     "delta_s": 3.904,
      "banda": null
     },
     {
      "giroPit": 54,
-     "delta_s": 6.91,
+     "delta_s": 4.902,
      "banda": null
     },
     {
      "giroPit": 55,
-     "delta_s": 8.405,
+     "delta_s": 6.076,
      "banda": null
     }
    ],
    "minimo": {
-    "giroPit": 44,
+    "giroPit": 43,
     "delta_s": 0,
     "banda": null
    },
    "finestra": {
-    "da": 36,
-    "a": 51,
-    "n_giri": 16,
+    "da": 34,
+    "a": 53,
+    "n_giri": 20,
     "soglia_s": 4.25,
     "targhetta": "i giri che il motore non distingue dall'ottimo: entro 4.25 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 25 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
    },
@@ -2344,7 +2344,7 @@
     "k": 1,
     "soste": [
      {
-      "giro": 44,
+      "giro": 43,
       "mescola": "MEDIUM"
      }
     ],
@@ -2352,35 +2352,35 @@
      {
       "indice": 1,
       "giro_inizio": 32,
-      "giro_fine": 44,
-      "giri": 13,
+      "giro_fine": 43,
+      "giri": 12,
       "mescola": "HARD",
       "eta_iniziale": 31,
-      "eta_finale": 44,
+      "eta_finale": 43,
       "da_dati": false
      },
      {
       "indice": 2,
-      "giro_inizio": 45,
+      "giro_inizio": 44,
       "giro_fine": 56,
-      "giri": 12,
+      "giri": 13,
       "mescola": "MEDIUM",
       "eta_iniziale": 0,
-      "eta_finale": 12,
+      "eta_finale": 13,
       "da_dati": false
      }
     ],
     "alternative": [
      {
       "k": 1,
-      "totale": 9143.832039510924,
+      "totale": 9148.429330782366,
       "soste": [
-       44
+       43
       ]
      },
      {
       "k": 2,
-      "totale": 9163.61583786014,
+      "totale": 9168.363131355582,
       "soste": [
        39,
        47
@@ -2388,7 +2388,7 @@
      },
      {
       "k": 3,
-      "totale": 9184.928381623973,
+      "totale": 9189.675675119417,
       "soste": [
        36,
        42,
@@ -2528,23 +2528,23 @@
        "VER": 6708.724
       },
       "fantasma": {
-       "ALO": 6778.219,
-       "ANT": 6679.105,
-       "BEA": 6707.415,
-       "BOT": 6745.79,
-       "COL": 6717.867,
-       "GAS": 6715.464,
-       "HAD": 6721.343,
-       "HAM": 6689.558,
-       "HUL": 6718.881,
-       "LAW": 6720.624,
-       "LEC": 6688.799,
-       "LIN": 6738.817,
-       "OCO": 6741.548,
-       "PER": 6748.764,
-       "RUS": 6687.337,
-       "SAI": 6728.412,
-       "VER": 6709.944
+       "ALO": 6778.409,
+       "ANT": 6678.8,
+       "BEA": 6707.094,
+       "BOT": 6745.469,
+       "COL": 6717.663,
+       "GAS": 6715.216,
+       "HAD": 6721.096,
+       "HAM": 6689.237,
+       "HUL": 6718.56,
+       "LAW": 6720.303,
+       "LEC": 6688.478,
+       "LIN": 6738.698,
+       "OCO": 6741.621,
+       "PER": 6748.474,
+       "RUS": 6687.016,
+       "SAI": 6728.097,
+       "VER": 6709.643
       },
       "in_box": [
        "ALO"
@@ -2572,23 +2572,23 @@
        "VER": 6806.105
       },
       "fantasma": {
-       "ALO": 6876.703,
-       "ANT": 6776.217,
-       "BEA": 6806.122,
-       "BOT": 6846.083,
-       "COL": 6817.263,
-       "GAS": 6814.07,
-       "HAD": 6820.101,
-       "HAM": 6787.143,
-       "HUL": 6818.377,
-       "LAW": 6819.881,
-       "LEC": 6786.52,
-       "LIN": 6838.564,
-       "OCO": 6839.209,
-       "PER": 6849.218,
-       "RUS": 6784.622,
-       "SAI": 6827.912,
-       "VER": 6808.947
+       "ALO": 6877.082,
+       "ANT": 6775.606,
+       "BEA": 6805.48,
+       "BOT": 6845.441,
+       "COL": 6816.855,
+       "GAS": 6813.573,
+       "HAD": 6819.608,
+       "HAM": 6786.501,
+       "HUL": 6817.735,
+       "LAW": 6819.239,
+       "LEC": 6785.878,
+       "LIN": 6838.325,
+       "OCO": 6839.355,
+       "PER": 6848.607,
+       "RUS": 6783.98,
+       "SAI": 6827.283,
+       "VER": 6808.345
       },
       "in_box": [],
       "fuori_box": []
@@ -3192,124 +3192,124 @@
    "curva": [
     {
      "giroPit": 30,
-     "delta_s": 1.454,
+     "delta_s": 1.367,
      "banda": null
     },
     {
      "giroPit": 31,
-     "delta_s": 1.01,
+     "delta_s": 0.922,
      "banda": null
     },
     {
      "giroPit": 32,
-     "delta_s": 0.644,
+     "delta_s": 0.556,
      "banda": null
     },
     {
      "giroPit": 33,
-     "delta_s": 0.354,
+     "delta_s": 0.267,
      "banda": null
     },
     {
      "giroPit": 34,
-     "delta_s": 0.138,
+     "delta_s": 0.082,
      "banda": null
     },
     {
      "giroPit": 35,
-     "delta_s": 0.018,
-     "banda": null
-    },
-    {
-     "giroPit": 36,
      "delta_s": 0,
      "banda": null
     },
     {
+     "giroPit": 36,
+     "delta_s": 0.021,
+     "banda": null
+    },
+    {
      "giroPit": 37,
-     "delta_s": 0.084,
+     "delta_s": 0.144,
      "banda": null
     },
     {
      "giroPit": 38,
-     "delta_s": 0.271,
+     "delta_s": 0.369,
      "banda": null
     },
     {
      "giroPit": 39,
-     "delta_s": 0.56,
+     "delta_s": 0.697,
      "banda": null
     },
     {
      "giroPit": 40,
-     "delta_s": 0.952,
+     "delta_s": 1.128,
      "banda": null
     },
     {
      "giroPit": 41,
-     "delta_s": 1.449,
+     "delta_s": 1.664,
      "banda": null
     },
     {
      "giroPit": 42,
-     "delta_s": 2.054,
+     "delta_s": 2.307,
      "banda": null
     },
     {
      "giroPit": 43,
-     "delta_s": 2.767,
+     "delta_s": 3.059,
      "banda": null
     },
     {
      "giroPit": 44,
-     "delta_s": 3.593,
+     "delta_s": 3.924,
      "banda": null
     },
     {
      "giroPit": 45,
-     "delta_s": 4.536,
+     "delta_s": 4.906,
      "banda": null
     },
     {
      "giroPit": 46,
-     "delta_s": 5.601,
+     "delta_s": 6.01,
      "banda": null
     },
     {
      "giroPit": 47,
-     "delta_s": 6.796,
+     "delta_s": 7.243,
      "banda": null
     },
     {
      "giroPit": 48,
-     "delta_s": 8.127,
+     "delta_s": 8.613,
      "banda": null
     },
     {
      "giroPit": 49,
-     "delta_s": 9.606,
+     "delta_s": 10.131,
      "banda": null
     },
     {
      "giroPit": 50,
-     "delta_s": 11.245,
+     "delta_s": 11.809,
      "banda": null
     },
     {
      "giroPit": 51,
-     "delta_s": 13.061,
+     "delta_s": 13.664,
      "banda": null
     }
    ],
    "minimo": {
-    "giroPit": 36,
+    "giroPit": 35,
     "delta_s": 0,
     "banda": null
    },
    "finestra": {
     "da": 30,
-    "a": 44,
-    "n_giri": 15,
+    "a": 43,
+    "n_giri": 14,
     "soglia_s": 3.91,
     "targhetta": "i giri che il motore non distingue dall'ottimo: entro 3.91 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 23 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
    },
@@ -3361,14 +3361,14 @@
     "alternative": [
      {
       "k": 0,
-      "totale": 8526.4243022891,
+      "totale": 8527.1530779691,
       "soste": []
      },
      {
       "k": 1,
-      "totale": 8531.992334751687,
+      "totale": 8532.079679035985,
       "soste": [
-       36
+       35
       ]
      },
      {
@@ -3550,8 +3550,8 @@
       "fantasma": {
        "ALB": 6431.955,
        "ALO": 6341.116,
-       "ANT": 6180.651,
-       "BEA": 6272.321,
+       "ANT": 6180.713,
+       "BEA": 6272.261,
        "BOR": 6250.989,
        "BOT": 6298.078,
        "COL": 6259.411,
@@ -3560,12 +3560,12 @@
        "HAM": 6209.145,
        "HUL": 6266.561,
        "LAW": 6247.792,
-       "LEC": 6194.355,
+       "LEC": 6194.344,
        "LIN": 6249.743,
        "NOR": 6224.022,
        "OCO": 6289.447,
        "PER": 6291.986,
-       "PIA": 6271.429,
+       "PIA": 6271.477,
        "RUS": 6208.44,
        "SAI": 6270.702,
        "STR": 6347.226,
@@ -3605,8 +3605,8 @@
       "fantasma": {
        "ALB": 6527.184,
        "ALO": 6439.23,
-       "ANT": 6275.076,
-       "BEA": 6367.925,
+       "ANT": 6275.199,
+       "BEA": 6367.805,
        "BOR": 6345.704,
        "BOT": 6394.449,
        "COL": 6354.738,
@@ -3615,12 +3615,12 @@
        "HAM": 6302.902,
        "HUL": 6362.141,
        "LAW": 6342.245,
-       "LEC": 6287.588,
+       "LEC": 6287.566,
        "LIN": 6344.349,
        "NOR": 6317.766,
        "OCO": 6385.493,
        "PER": 6388.446,
-       "PIA": 6366.478,
+       "PIA": 6366.573,
        "RUS": 6302.287,
        "SAI": 6366.493,
        "STR": 6445.659,
@@ -3684,12 +3684,12 @@
     "giro_di_rientro": 33,
     "davanti": {
      "drv": "BEA",
-     "gap_s": 18.15337325220935,
+     "gap_s": 17.9960632949269,
      "motivo_soppressione": null
     },
     "dietro": {
      "drv": "LIN",
-     "gap_s": 2.6082468554923253,
+     "gap_s": 2.678389750444694,
      "motivo_soppressione": null
     },
     "gap_soppressi": null,
@@ -3720,17 +3720,17 @@
    "curva": [
     {
      "giroPit": 32,
-     "delta_s": 3.847,
+     "delta_s": 4.032,
      "banda": null
     },
     {
      "giroPit": 33,
-     "delta_s": 3.076,
+     "delta_s": 3.169,
      "banda": null
     },
     {
      "giroPit": 34,
-     "delta_s": 2.404,
+     "delta_s": 2.435,
      "banda": null
     },
     {
@@ -3810,37 +3810,37 @@
     },
     {
      "giroPit": 50,
-     "delta_s": 2.404,
+     "delta_s": 2.435,
      "banda": null
     },
     {
      "giroPit": 51,
-     "delta_s": 3.076,
+     "delta_s": 3.169,
      "banda": null
     },
     {
      "giroPit": 52,
-     "delta_s": 3.847,
+     "delta_s": 4.032,
      "banda": null
     },
     {
      "giroPit": 53,
-     "delta_s": 4.725,
+     "delta_s": 5.032,
      "banda": null
     },
     {
      "giroPit": 54,
-     "delta_s": 5.719,
+     "delta_s": 6.18,
      "banda": null
     },
     {
      "giroPit": 55,
-     "delta_s": 6.843,
+     "delta_s": 7.489,
      "banda": null
     },
     {
      "giroPit": 56,
-     "delta_s": 8.112,
+     "delta_s": 8.974,
      "banda": null
     }
    ],
@@ -3904,19 +3904,19 @@
     "alternative": [
      {
       "k": 0,
-      "totale": 9126.632447285272,
+      "totale": 9124.987120127376,
       "soste": []
      },
      {
       "k": 1,
-      "totale": 9137.584555912228,
+      "totale": 9134.831292754334,
       "soste": [
        42
       ]
      },
      {
       "k": 2,
-      "totale": 9153.716872824054,
+      "totale": 9150.963609666162,
       "soste": [
        37,
        47
@@ -3924,7 +3924,7 @@
      },
      {
       "k": 3,
-      "totale": 9171.543321612739,
+      "totale": 9168.790058454844,
       "soste": [
        35,
        42,
@@ -4070,24 +4070,24 @@
        "VER": 6737.436
       },
       "fantasma": {
-       "ALB": 6794.902,
-       "ALO": 6795.2,
+       "ALB": 6794.796,
+       "ALO": 6795.409,
        "ANT": 6731.384,
-       "BEA": 6776.187,
-       "BOR": 6771.579,
-       "BOT": 6838.543,
-       "COL": 6749.064,
-       "HAM": 6753.621,
+       "BEA": 6776.16,
+       "BOR": 6771.81,
+       "BOT": 6838.512,
+       "COL": 6748.927,
+       "HAM": 6753.58,
        "LEC": 6745.294,
-       "LIN": 6796.273,
-       "NOR": 6732.333,
-       "OCO": 6770.693,
-       "PER": 6810.474,
-       "PIA": 6747.473,
+       "LIN": 6796.202,
+       "NOR": 6732.264,
+       "OCO": 6770.601,
+       "PER": 6810.428,
+       "PIA": 6747.392,
        "RUS": 6746.713,
-       "SAI": 6771.558,
-       "STR": 6814.21,
-       "VER": 6737.371
+       "SAI": 6771.5,
+       "STR": 6814.271,
+       "VER": 6737.494
       },
       "in_box": [
        "ALB"
@@ -4117,24 +4117,24 @@
        "VER": 6830.978
       },
       "fantasma": {
-       "ALB": 6888.428,
-       "ALO": 6891.768,
+       "ALB": 6888.216,
+       "ALO": 6892.185,
        "ANT": 6823.531,
-       "BEA": 6870.274,
-       "BOR": 6867.154,
-       "BOT": 6934.864,
-       "COL": 6841.925,
-       "HAM": 6846.569,
+       "BEA": 6870.22,
+       "BOR": 6867.616,
+       "BOT": 6934.802,
+       "COL": 6841.651,
+       "HAM": 6846.486,
        "LEC": 6838.251,
-       "LIN": 6891.036,
-       "NOR": 6824.32,
-       "OCO": 6864.504,
-       "PER": 6905.713,
-       "PIA": 6840.1,
+       "LIN": 6890.894,
+       "NOR": 6824.181,
+       "OCO": 6864.32,
+       "PER": 6905.621,
+       "PIA": 6839.938,
        "RUS": 6839.938,
-       "SAI": 6865.234,
-       "STR": 6910.18,
-       "VER": 6830.881
+       "SAI": 6865.117,
+       "STR": 6910.333,
+       "VER": 6831.158
       },
       "in_box": [],
       "fuori_box": []
@@ -4189,12 +4189,12 @@
     "giro_di_rientro": 45,
     "davanti": {
      "drv": "ALO",
-     "gap_s": 3.2587969499427345,
+     "gap_s": 3.402391897079724,
      "motivo_soppressione": null
     },
     "dietro": {
      "drv": "STR",
-     "gap_s": 5.505577812341471,
+     "gap_s": 5.361982865204482,
      "motivo_soppressione": null
     },
     "gap_soppressi": null,
@@ -4225,82 +4225,82 @@
    "curva": [
     {
      "giroPit": 44,
-     "delta_s": 14.954,
+     "delta_s": 12.946,
      "banda": null
     },
     {
      "giroPit": 45,
-     "delta_s": 13.018,
+     "delta_s": 11.152,
      "banda": null
     },
     {
      "giroPit": 46,
-     "delta_s": 11.257,
+     "delta_s": 9.535,
      "banda": null
     },
     {
      "giroPit": 47,
-     "delta_s": 9.657,
+     "delta_s": 8.078,
      "banda": null
     },
     {
      "giroPit": 48,
-     "delta_s": 8.204,
+     "delta_s": 6.768,
      "banda": null
     },
     {
      "giroPit": 49,
-     "delta_s": 6.888,
+     "delta_s": 5.595,
      "banda": null
     },
     {
      "giroPit": 50,
-     "delta_s": 5.701,
+     "delta_s": 4.55,
      "banda": null
     },
     {
      "giroPit": 51,
-     "delta_s": 4.635,
+     "delta_s": 3.627,
      "banda": null
     },
     {
      "giroPit": 52,
-     "delta_s": 3.686,
+     "delta_s": 2.821,
      "banda": null
     },
     {
      "giroPit": 53,
-     "delta_s": 2.849,
+     "delta_s": 2.127,
      "banda": null
     },
     {
      "giroPit": 54,
-     "delta_s": 2.12,
+     "delta_s": 1.541,
      "banda": null
     },
     {
      "giroPit": 55,
-     "delta_s": 1.497,
+     "delta_s": 1.061,
      "banda": null
     },
     {
      "giroPit": 56,
-     "delta_s": 0.978,
+     "delta_s": 0.684,
      "banda": null
     },
     {
      "giroPit": 57,
-     "delta_s": 0.56,
+     "delta_s": 0.409,
      "banda": null
     },
     {
      "giroPit": 58,
-     "delta_s": 0.243,
+     "delta_s": 0.204,
      "banda": null
     },
     {
      "giroPit": 59,
-     "delta_s": 0.057,
+     "delta_s": 0.068,
      "banda": null
     },
     {
@@ -4310,87 +4310,87 @@
     },
     {
      "giroPit": 61,
-     "delta_s": 0.073,
+     "delta_s": 0,
      "banda": null
     },
     {
      "giroPit": 62,
-     "delta_s": 0.264,
+     "delta_s": 0.068,
      "banda": null
     },
     {
      "giroPit": 63,
-     "delta_s": 0.555,
+     "delta_s": 0.235,
      "banda": null
     },
     {
      "giroPit": 64,
-     "delta_s": 0.945,
+     "delta_s": 0.502,
      "banda": null
     },
     {
      "giroPit": 65,
-     "delta_s": 1.435,
+     "delta_s": 0.869,
      "banda": null
     },
     {
      "giroPit": 66,
-     "delta_s": 2.028,
+     "delta_s": 1.338,
      "banda": null
     },
     {
      "giroPit": 67,
-     "delta_s": 2.723,
+     "delta_s": 1.91,
      "banda": null
     },
     {
      "giroPit": 68,
-     "delta_s": 3.525,
+     "delta_s": 2.588,
      "banda": null
     },
     {
      "giroPit": 69,
-     "delta_s": 4.435,
+     "delta_s": 3.375,
      "banda": null
     },
     {
      "giroPit": 70,
-     "delta_s": 5.457,
+     "delta_s": 4.274,
      "banda": null
     },
     {
      "giroPit": 71,
-     "delta_s": 6.595,
+     "delta_s": 5.289,
      "banda": null
     },
     {
      "giroPit": 72,
-     "delta_s": 7.856,
+     "delta_s": 6.426,
      "banda": null
     },
     {
      "giroPit": 73,
-     "delta_s": 9.244,
+     "delta_s": 7.691,
      "banda": null
     },
     {
      "giroPit": 74,
-     "delta_s": 10.77,
+     "delta_s": 9.093,
      "banda": null
     },
     {
      "giroPit": 75,
-     "delta_s": 12.443,
+     "delta_s": 10.643,
      "banda": null
     },
     {
      "giroPit": 76,
-     "delta_s": 14.276,
+     "delta_s": 12.353,
      "banda": null
     },
     {
      "giroPit": 77,
-     "delta_s": 16.285,
+     "delta_s": 14.238,
      "banda": null
     }
    ],
@@ -4400,9 +4400,9 @@
     "banda": null
    },
    "finestra": {
-    "da": 50,
-    "a": 70,
-    "n_giri": 21,
+    "da": 49,
+    "a": 71,
+    "n_giri": 23,
     "soglia_s": 5.95,
     "targhetta": "i giri che il motore non distingue dall'ottimo: entro 5.95 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 35 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
    },
@@ -4469,14 +4469,14 @@
     "alternative": [
      {
       "k": 1,
-      "totale": 9489.816189486985,
+      "totale": 9492.216183917895,
       "soste": [
        60
       ]
      },
      {
       "k": 2,
-      "totale": 9506.309831544722,
+      "totale": 9508.822743119626,
       "soste": [
        54,
        66
@@ -4484,7 +4484,7 @@
      },
      {
       "k": 3,
-      "totale": 9525.021906274109,
+      "totale": 9527.534817849011,
       "soste": [
        51,
        59,
@@ -4634,24 +4634,24 @@
        "STR": 6865.213
       },
       "fantasma": {
-       "ALB": 6863.489,
+       "ALB": 6863.561,
        "ALO": 6857.385,
-       "ANT": 6726.345,
-       "BOR": 6898.091,
-       "COL": 6849.192,
-       "GAS": 6791.592,
-       "HAD": 6797.23,
-       "HAM": 6744.803,
-       "HUL": 6849.448,
-       "LAW": 6811.612,
-       "LEC": 6754.475,
-       "LIN": 6849.507,
+       "ANT": 6726.438,
+       "BOR": 6898.234,
+       "COL": 6849.224,
+       "GAS": 6791.581,
+       "HAD": 6797.261,
+       "HAM": 6744.85,
+       "HUL": 6849.357,
+       "LAW": 6811.575,
+       "LEC": 6754.539,
+       "LIN": 6849.384,
        "NOR": 6795.783,
-       "OCO": 6849.477,
+       "OCO": 6849.452,
        "PER": 6882.507,
        "PIA": 6782.317,
-       "RUS": 6794.763,
-       "SAI": 6848.596,
+       "RUS": 6794.826,
+       "SAI": 6848.511,
        "STR": 6865.898
       },
       "in_box": [
@@ -4682,24 +4682,24 @@
        "STR": 6944.45
       },
       "fantasma": {
-       "ALB": 6940.539,
+       "ALB": 6940.683,
        "ALO": 6937.281,
-       "ANT": 6801.876,
-       "BOR": 6975.997,
-       "COL": 6927.05,
-       "GAS": 6870.796,
-       "HAD": 6874.774,
-       "HAM": 6821.399,
-       "HUL": 6929.26,
-       "LAW": 6891.273,
-       "LEC": 6830.672,
-       "LIN": 6929.773,
+       "ANT": 6802.061,
+       "BOR": 6976.283,
+       "COL": 6927.115,
+       "GAS": 6870.774,
+       "HAD": 6874.837,
+       "HAM": 6821.493,
+       "HUL": 6929.077,
+       "LAW": 6891.199,
+       "LEC": 6830.799,
+       "LIN": 6929.527,
        "NOR": 6875.025,
-       "OCO": 6928.732,
+       "OCO": 6928.683,
        "PER": 6962.559,
        "PIA": 6861.327,
-       "RUS": 6872.273,
-       "SAI": 6928.781,
+       "RUS": 6872.399,
+       "SAI": 6928.609,
        "STR": 6946.045
       },
       "in_box": [],
@@ -4789,159 +4789,159 @@
    "curva": [
     {
      "giroPit": 37,
-     "delta_s": 7.949,
+     "delta_s": 7.173,
      "banda": null
     },
     {
      "giroPit": 38,
-     "delta_s": 6.57,
+     "delta_s": 5.901,
      "banda": null
     },
     {
      "giroPit": 39,
-     "delta_s": 5.339,
+     "delta_s": 4.776,
      "banda": null
     },
     {
      "giroPit": 40,
-     "delta_s": 4.244,
+     "delta_s": 3.789,
      "banda": null
     },
     {
      "giroPit": 41,
-     "delta_s": 3.279,
+     "delta_s": 2.931,
      "banda": null
     },
     {
      "giroPit": 42,
-     "delta_s": 2.435,
+     "delta_s": 2.194,
      "banda": null
     },
     {
      "giroPit": 43,
-     "delta_s": 1.709,
+     "delta_s": 1.574,
      "banda": null
     },
     {
      "giroPit": 44,
-     "delta_s": 1.095,
+     "delta_s": 1.067,
      "banda": null
     },
     {
      "giroPit": 45,
-     "delta_s": 0.617,
+     "delta_s": 0.669,
      "banda": null
     },
     {
      "giroPit": 46,
-     "delta_s": 0.277,
+     "delta_s": 0.347,
      "banda": null
     },
     {
      "giroPit": 47,
-     "delta_s": 0.072,
+     "delta_s": 0.129,
      "banda": null
     },
     {
      "giroPit": 48,
-     "delta_s": 0,
+     "delta_s": 0.013,
      "banda": null
     },
     {
      "giroPit": 49,
-     "delta_s": 0.045,
+     "delta_s": 0,
      "banda": null
     },
     {
      "giroPit": 50,
-     "delta_s": 0.191,
+     "delta_s": 0.088,
      "banda": null
     },
     {
      "giroPit": 51,
-     "delta_s": 0.439,
+     "delta_s": 0.277,
      "banda": null
     },
     {
      "giroPit": 52,
-     "delta_s": 0.787,
+     "delta_s": 0.567,
      "banda": null
     },
     {
      "giroPit": 53,
-     "delta_s": 1.238,
+     "delta_s": 0.96,
      "banda": null
     },
     {
      "giroPit": 54,
-     "delta_s": 1.791,
+     "delta_s": 1.455,
      "banda": null
     },
     {
      "giroPit": 55,
-     "delta_s": 2.449,
+     "delta_s": 2.054,
      "banda": null
     },
     {
      "giroPit": 56,
-     "delta_s": 3.213,
+     "delta_s": 2.76,
      "banda": null
     },
     {
      "giroPit": 57,
-     "delta_s": 4.087,
+     "delta_s": 3.575,
      "banda": null
     },
     {
      "giroPit": 58,
-     "delta_s": 5.073,
+     "delta_s": 4.502,
      "banda": null
     },
     {
      "giroPit": 59,
-     "delta_s": 6.175,
+     "delta_s": 5.546,
      "banda": null
     },
     {
      "giroPit": 60,
-     "delta_s": 7.4,
+     "delta_s": 6.713,
      "banda": null
     },
     {
      "giroPit": 61,
-     "delta_s": 8.753,
+     "delta_s": 8.008,
      "banda": null
     },
     {
      "giroPit": 62,
-     "delta_s": 10.244,
+     "delta_s": 9.44,
      "banda": null
     },
     {
      "giroPit": 63,
-     "delta_s": 11.882,
+     "delta_s": 11.02,
      "banda": null
     },
     {
      "giroPit": 64,
-     "delta_s": 13.68,
+     "delta_s": 12.76,
      "banda": null
     },
     {
      "giroPit": 65,
-     "delta_s": 15.655,
+     "delta_s": 14.676,
      "banda": null
     }
    ],
    "minimo": {
-    "giroPit": 48,
+    "giroPit": 49,
     "delta_s": 0,
     "banda": null
    },
    "finestra": {
-    "da": 40,
+    "da": 39,
     "a": 58,
-    "n_giri": 19,
+    "n_giri": 20,
     "soglia_s": 5.1,
     "targhetta": "i giri che il motore non distingue dall'ottimo: entro 5.10 s, cioe' 0.17 s/giro (il bias massimo che il modello dichiara di se') per 30 giri proiettati. NON e' un intervallo di confidenza: il rumore di gara, il traffico e la reazione dei rivali non sono qui dentro"
    },
@@ -4993,21 +4993,21 @@
     "alternative": [
      {
       "k": 0,
-      "totale": 9688.85834937364,
+      "totale": 9687.605396861645,
       "soste": []
      },
      {
       "k": 1,
-      "totale": 9693.86489096905,
+      "totale": 9693.648923656125,
       "soste": [
-       48
+       49
       ]
      },
      {
       "k": 2,
       "totale": 9711.500580178643,
       "soste": [
-       44,
+       45,
        55
       ]
      },
@@ -5167,21 +5167,21 @@
       "fantasma": {
        "ALB": 7248.035,
        "ALO": 6462.533,
-       "ANT": 6307.678,
-       "BEA": 6414.598,
+       "ANT": 6307.583,
+       "BEA": 6414.583,
        "BOR": 6430.323,
        "COL": 6407.913,
-       "GAS": 6388.197,
+       "GAS": 6388.091,
        "HAD": 6372.27,
        "HAM": 6311.478,
        "LAW": 6409.904,
-       "LEC": 6323.232,
+       "LEC": 6323.156,
        "LIN": 6405.381,
-       "NOR": 6331.985,
+       "NOR": 6332.008,
        "OCO": 6445.644,
        "PER": 6462.602,
-       "PIA": 6334.562,
-       "RUS": 6310.123,
+       "PIA": 6334.591,
+       "RUS": 6310.163,
        "SAI": 6424.08,
        "VER": 6335.843
       },
@@ -5216,21 +5216,21 @@
       "fantasma": {
        "ALB": 7332.175,
        "ALO": 6548.714,
-       "ANT": 6390.495,
-       "BEA": 6499.942,
+       "ANT": 6390.305,
+       "BEA": 6499.882,
        "BOR": 6514.576,
        "COL": 6491.488,
-       "GAS": 6473.142,
+       "GAS": 6472.928,
        "HAD": 6455.325,
        "HAM": 6393.224,
        "LAW": 6493.682,
-       "LEC": 6406.243,
+       "LEC": 6406.06,
        "LIN": 6490.242,
-       "NOR": 6413.691,
+       "NOR": 6413.736,
        "OCO": 6530.097,
        "PER": 6548.053,
-       "PIA": 6416.436,
-       "RUS": 6391.725,
+       "PIA": 6416.495,
+       "RUS": 6391.805,
        "SAI": 6508.534,
        "VER": 6418.029
       },
@@ -5288,7 +5288,7 @@
     "giro_di_rientro": 41,
     "davanti": {
      "drv": "BEA",
-     "gap_s": 24.09466000442262,
+     "gap_s": 24.105466549713128,
      "motivo_soppressione": null
     },
     "dietro": null,
@@ -5320,42 +5320,42 @@
    "curva": [
     {
      "giroPit": 40,
-     "delta_s": 2.895,
+     "delta_s": 3.177,
      "banda": null
     },
     {
      "giroPit": 41,
-     "delta_s": 2.196,
+     "delta_s": 2.442,
      "banda": null
     },
     {
      "giroPit": 42,
-     "delta_s": 1.595,
+     "delta_s": 1.805,
      "banda": null
     },
     {
      "giroPit": 43,
-     "delta_s": 1.091,
+     "delta_s": 1.265,
      "banda": null
     },
     {
      "giroPit": 44,
-     "delta_s": 0.683,
+     "delta_s": 0.821,
      "banda": null
     },
     {
      "giroPit": 45,
-     "delta_s": 0.371,
+     "delta_s": 0.473,
      "banda": null
     },
     {
      "giroPit": 46,
-     "delta_s": 0.154,
+     "delta_s": 0.22,
      "banda": null
     },
     {
      "giroPit": 47,
-     "delta_s": 0.032,
+     "delta_s": 0.063,
      "banda": null
     },
     {
@@ -5365,107 +5365,107 @@
     },
     {
      "giroPit": 49,
-     "delta_s": 0.032,
+     "delta_s": 0.063,
      "banda": null
     },
     {
      "giroPit": 50,
-     "delta_s": 0.154,
+     "delta_s": 0.22,
      "banda": null
     },
     {
      "giroPit": 51,
-     "delta_s": 0.371,
+     "delta_s": 0.473,
      "banda": null
     },
     {
      "giroPit": 52,
-     "delta_s": 0.683,
+     "delta_s": 0.821,
      "banda": null
     },
     {
      "giroPit": 53,
-     "delta_s": 1.091,
+     "delta_s": 1.265,
      "banda": null
     },
     {
      "giroPit": 54,
-     "delta_s": 1.595,
+     "delta_s": 1.805,
      "banda": null
     },
     {
      "giroPit": 55,
-     "delta_s": 2.196,
+     "delta_s": 2.442,
      "banda": null
     },
     {
      "giroPit": 56,
-     "delta_s": 2.895,
+     "delta_s": 3.177,
      "banda": null
     },
     {
      "giroPit": 57,
-     "delta_s": 3.694,
+     "delta_s": 4.011,
      "banda": null
     },
     {
      "giroPit": 58,
-     "delta_s": 4.593,
+     "delta_s": 4.947,
      "banda": null
     },
     {
      "giroPit": 59,
-     "delta_s": 5.595,
+     "delta_s": 5.984,
      "banda": null
     },
     {
      "giroPit": 60,
-     "delta_s": 6.702,
+     "delta_s": 7.127,
      "banda": null
     },
     {
      "giroPit": 61,
-     "delta_s": 7.916,
+     "delta_s": 8.378,
      "banda": null
     },
     {
      "giroPit": 62,
-     "delta_s": 9.243,
+     "delta_s": 9.74,
      "banda": null
     },
     {
      "giroPit": 63,
-     "delta_s": 10.685,
+     "delta_s": 11.218,
      "banda": null
     },
     {
      "giroPit": 64,
-     "delta_s": 12.249,
+     "delta_s": 12.818,
      "banda": null
     },
     {
      "giroPit": 65,
-     "delta_s": 13.941,
+     "delta_s": 14.546,
      "banda": null
     },
     {
      "giroPit": 66,
-     "delta_s": 15.77,
+     "delta_s": 16.411,
      "banda": null
     },
     {
      "giroPit": 67,
-     "delta_s": 17.746,
+     "delta_s": 18.423,
      "banda": null
     },
     {
      "giroPit": 68,
-     "delta_s": 19.882,
+     "delta_s": 20.595,
      "banda": null
     },
     {
      "giroPit": 69,
-     "delta_s": 22.194,
+     "delta_s": 22.943,
      "banda": null
     }
    ],
@@ -5544,7 +5544,7 @@
     "alternative": [
      {
       "k": 0,
-      "totale": 9453.881441283707,
+      "totale": 9454.665798419703,
       "soste": []
      },
      {
@@ -5726,25 +5726,25 @@
       },
       "fantasma": {
        "ALB": 6839.02,
-       "ALO": 6797.078,
+       "ALO": 6797.068,
        "ANT": 6698.75,
-       "BEA": 6813.95,
-       "BOR": 6763.851,
+       "BEA": 6813.945,
+       "BOR": 6763.831,
        "COL": 6808.566,
        "GAS": 6771.975,
        "HAD": 6725.363,
        "HAM": 6709.098,
        "HUL": 6755.994,
        "LAW": 6748.525,
-       "LEC": 6718.538,
+       "LEC": 6718.524,
        "LIN": 6752.649,
        "NOR": 6686.508,
        "OCO": 6814.503,
        "PIA": 6706.998,
        "RUS": 6727.117,
-       "SAI": 6805.895,
-       "STR": 6801.726,
-       "VER": 6694.776
+       "SAI": 6805.916,
+       "STR": 6801.714,
+       "VER": 6694.811
       },
       "in_box": [
        "ALB"
@@ -5778,25 +5778,25 @@
       },
       "fantasma": {
        "ALB": 6925.695,
-       "ALO": 6883.647,
+       "ALO": 6883.627,
        "ANT": 6784.021,
-       "BEA": 6901.6,
-       "BOR": 6850.066,
+       "BEA": 6901.589,
+       "BOR": 6850.027,
        "COL": 6895.163,
        "GAS": 6857.824,
        "HAD": 6811.219,
        "HAM": 6793.903,
        "HUL": 6841.536,
        "LAW": 6834.841,
-       "LEC": 6802.998,
+       "LEC": 6802.97,
        "LIN": 6839.184,
        "NOR": 6770.411,
        "OCO": 6901.397,
        "PIA": 6791.513,
        "RUS": 6812.495,
-       "SAI": 6893.791,
-       "STR": 6887.866,
-       "VER": 6780.3
+       "SAI": 6893.834,
+       "STR": 6887.843,
+       "VER": 6780.371
       },
       "in_box": [],
       "fuori_box": []
