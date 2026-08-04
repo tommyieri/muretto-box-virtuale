@@ -15,6 +15,10 @@ import path from 'node:path';
 import { RADICE } from '../confronto/banco.mjs';
 import { occasioniFondo, occasioni2026, PARAMETRI } from './attacchi.mjs';
 
+// I tre parametri del tetto che NON si misurano qui: vengono dal prior esterno e viaggiano
+// nel sigillo perche' la produzione non legge da ai_lab/ (e' lab, non un dipartimento dati).
+const K = JSON.parse(readFileSync(path.join(RADICE, 'ai_lab', 'confronto', 'duello_tum_2026.json'), 'utf8')).costanti;
+
 const JSON_OUT = process.argv.includes('--json');
 const stampa = (s = '') => { if (!JSON_OUT) console.log(s); };
 
@@ -277,5 +281,49 @@ const doc = {
   soglia_spedita: sogliaFinale,
 };
 writeFileSync(path.join(RADICE, 'ai_lab/sorpasso/ESITO_cancelli_soglia.json'), JSON.stringify(doc, null, 1) + '\n');
+
+// ── IL SIGILLO CHE VA IN PRODUZIONE ─────────────────────────────────────────
+//
+// Il kernel chiama `sogliaSorpasso` il vantaggio di passo che serve per passare, e lo vuole
+// POSITIVO: qui X e' negativo per costruzione (delta = passo(F) - passo(L), negativo =
+// l'inseguitore e' piu' veloce), quindi si spedisce -X.
+//
+// SPENTO ALLA NASCITA. `attivo: false`: questo file esiste perche' il numero sia
+// riproducibile e verificabile, non perche' sia acceso. L'accensione passa dal cancello
+// dell'aggancio (cancelli_tetto_misurato.mjs), che e' un'altra cosa e ha un'altra prereg.
+const sigillo = {
+  _targhetta: {
+    cosa_e: 'La soglia di vantaggio di passo per sorpassare, per circuito: quanti secondi al giro devi essere piu veloce perche il sorpasso da vicino diventi piu probabile che no.',
+    natura: 'MISURATO_FONDO',
+    prereg: 'ai_lab/sorpasso/PREREG_soglia_sorpasso.md',
+    esito: 'ai_lab/sorpasso/ESITO_soglia_sorpasso.md',
+    generato_da: 'ai_lab/sorpasso/cancelli_soglia.mjs',
+    data: '2026-08-04',
+    da_quante_occasioni: occasioni.length,
+    ramo: `${ramo} — S4 (senza Monaco) decide la forma: ${S4 ? 'la legge geometrica regge' : 'la legge geometrica NON regge senza Monaco, quindi due livelli e non una legge continua'}`,
+    cosa_significa: `La pendenza misurata e ${S1fit.b.toFixed(4)}: ogni secondo al giro di vantaggio moltiplica per ${Math.exp(-S1fit.b).toFixed(1)} le probabilita di passare entro cinque giri. La soglia e il vantaggio a cui quella probabilita arriva al 50%.`,
+    cosa_NON_e: 'NON e una probabilita di sorpasso per coppia di auto. Il progetto ha gia misurato che QUALI auto si scambiano non si riproduce: si riproduce QUANTI scambi. Questo e un vincolo sul movimento.',
+    il_DRS_e_il_limite: `Il fondo 2018-2025 ha il DRS, che nel 2026 non esiste (Manual Override Mode). Il livello e ancorato al 2026 con UNA costante (${C_2026 >= 0 ? '+' : ''}${C_2026.toFixed(4)} s/giro), scelta perche la quota di sorpassi prevista sulle 767 occasioni del 2026 uguagli quella osservata (${quota26.toFixed(4)}). MISURATO E CONTRO L ATTESA: la costante e praticamente zero, cioe togliere il DRS NON ha cambiato quanto vantaggio serve per passare. La prereg si aspettava una soglia piu alta.`,
+    gli_altri_parametri_del_tetto: 'minGap, costoDuello e costoSubito NON sono misurati qui: sono COPIATI da ai_lab/confronto/duello_tum_2026.json (prior esterno, 121 file) e viaggiano in questo file perche la produzione non legge da ai_lab/. La loro natura resta PRIOR_ESTERNO, diversa da quella della soglia: chi legge deve poterle distinguere.',
+    accensione: 'ACCESO il 04/08/2026 dopo ai_lab/sorpasso/ESITO_aggancio_tetto.json: U1 passa, U3 (la risposta a due giri, la sola validata) NON peggiora, e il movimento inventato nel terzile alto scende da 2,14 a 0,24 cambi per caso. Il costo dichiarato: il saldo dello strato sano scende da +17 a +11, cioe sei casi diventano pareggi.',
+  },
+  attivo: true,
+  parametri: {
+    _natura: 'PRIOR_ESTERNO — da duello_tum_2026.json, NON misurati qui',
+    minGap: K.min_t_dist_s,
+    costoDuello: K.t_duel_s,
+    costoSubito: K.t_overtake_loser_s,
+  },
+  pendenza: Number(S1fit.b.toFixed(6)),
+  // il kernel vuole il vantaggio come numero positivo
+  soglia_sorpasso: Object.fromEntries(PISTE.map((p) => [p, Number((-sogliaFinale[p]).toFixed(4))])),
+  _circuito_ignoto: `Un circuito che non compare qui usa la soglia comune (${(-sogliaFinale.Spagna).toFixed(4)} s/giro), non 1 e non zero: la misura dice che dieci piste su undici condividono la stessa soglia, quindi la comune E la stima per una pista nuova. Monaco e l unica eccezione misurata.`,
+  soglia_comune: Number((-sogliaFinale.Spagna).toFixed(4)),
+};
+writeFileSync(path.join(RADICE, 'simulatore/data/modelli/soglia_sorpasso.json'), JSON.stringify(sigillo, null, 1) + '\n');
+
 if (JSON_OUT) console.log(JSON.stringify(doc, null, 1));
-else stampa('\n   → ai_lab/sorpasso/ESITO_cancelli_soglia.json');
+else {
+  stampa('\n   → ai_lab/sorpasso/ESITO_cancelli_soglia.json');
+  stampa('   → simulatore/data/modelli/soglia_sorpasso.json  (attivo: false — l\'accensione ha il suo cancello)');
+}

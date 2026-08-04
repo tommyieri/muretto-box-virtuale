@@ -1,0 +1,74 @@
+{
+ "_targhetta": {
+  "cosa_e": "Aggancio del tetto al movimento con la soglia misurata su 5.498 occasioni del fondo, contro i cancelli gia firmati U1/U2/U3.",
+  "prereg": "ai_lab/sorpasso/PREREG_soglia_sorpasso.md §6 · cancelli da ai_lab/confronto/PREREG_tetto_uniforme.md",
+  "generato_da": "ai_lab/sorpasso/cancelli_aggancio.mjs",
+  "data": "2026-08-04",
+  "confronto": "Il 03/08 la stessa macchina con soglia TUM 2,025 dava U1 PASSA (0,0708, saldo -11), U2 NON PASSA, U3 PASSA (5-13, p 0,0963), quota discordanti 31,7% -> 32,3% (invariata)."
+ },
+ "soglia": {
+  "monaco": 2.8337,
+  "comune": 0.6054,
+  "fonte": "simulatore/data/modelli/soglia_sorpasso.json"
+ },
+ "senza_vincolo": {
+  "n": 193,
+  "alto": {
+   "n": 63,
+   "vince": 14,
+   "perde": 28,
+   "pari": 21,
+   "saldo": -14,
+   "p": 0.04355852192384131,
+   "eccesso": 2.142857142857143
+  },
+  "basso_medio": {
+   "n": 130,
+   "vince": 45,
+   "perde": 28,
+   "pari": 57,
+   "saldo": 17,
+   "p": 0.060370037339927435,
+   "eccesso": -3.4076923076923076
+  }
+ },
+ "con_vincolo": {
+  "appaiati": 193,
+  "alto": {
+   "n": 63,
+   "vince": 12,
+   "perde": 23,
+   "pari": 28,
+   "saldo": -11,
+   "p": 0.0895310789346704,
+   "eccesso": 0.23809523809523808
+  },
+  "basso_medio": {
+   "n": 130,
+   "vince": 39,
+   "perde": 28,
+   "pari": 63,
+   "saldo": 11,
+   "p": 0.22154872964480826,
+   "eccesso": -4.846153846153846
+  }
+ },
+ "cancelli": {
+  "U1": true,
+  "U2": false,
+  "U3": true,
+  "due_giri": {
+   "n": 178,
+   "vinceA": 3,
+   "vinceB": 5,
+   "pari": 170,
+   "discordanti": 8,
+   "p": 0.7265625000000008
+  }
+ },
+ "quota_discordanti_alto": {
+  "senza": 0.3333333333333333,
+  "con": 0.34285714285714286
+ },
+ "accende": true
+}
