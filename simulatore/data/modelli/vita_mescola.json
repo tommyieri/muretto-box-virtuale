@@ -10,7 +10,8 @@
   "ESITO_DEI_CANCELLI": "NULL. ai_lab/degrado/ESITO_vita_mescola.md: V1 PASSA (batte il motore di oggi, errore mediano 8 giri contro 11) ma V2 NON PASSA (perde contro la mediana per mescola, 8 contro 5). Il termine NON migliora la previsione. E' acceso per DECISIONE DEL PO del 04/08/2026: serve a far esistere la scelta della mescola nel simulatore, non a predire meglio.",
   "quanto_vale_leffetto": "Misurato dal campo (ai_lab/degrado/ESITO_degrado_dal_campo.md): il divario fra la mescola che degrada di piu' e quella che degrada di meno vale 0,01578 s per giro d'eta', e raggiunge il rumore di un singolo giro (0,346 s) solo a 21,9 giri d'eta' — cioe' quando i team la gomma la tolgono. L'effetto e' REALE (placebo su 200 rimescolamenti superato) e piu' piccolo del rumore per tutta la vita utile del pneumatico.",
   "data": "2026-08-04",
-  "generato_da": "ai_lab/degrado/decisioni.mjs, mediane sulle 427 decisioni"
+  "generato_da": "ai_lab/degrado/decisioni.mjs, mediane sulle 427 decisioni",
+  "SOFT_MEDIUM_HARD_SONO_ETICHETTE_RELATIVE": "Pirelli non porta tre gomme fisse: sceglie ogni fine settimana quali tre fra C1 e C5. Nel 2026: C3/C4/C5 in sei gare, C2/C3/C4 in tre, C1/C2/C3 in due (Giappone e Gran Bretagna). Quindi «HARD» e' C1 a Suzuka e C3 a Monaco: questa vita mette insieme gomme fisicamente diverse. VERIFICATO il 04/08 se il numero C spieghi piu' dell'etichetta: NO. Raggruppando per numero C, C1 dura 20,5 giri, C2 21, C3 20, C4 19 — indistinguibili — e solo C5 e' diversa (12). E la variazione residua fra circuiti PEGGIORA (30,0% col numero C contro 28,1% con l'etichetta). Per un prior COMPORTAMENTALE l'etichetta relativa e' la chiave giusta, perche' e' su quella che i team decidono: trattano «la piu' morbida disponibile» allo stesso modo, che sia C4 o C5. Resta un limite dichiarato, non risolto: la stessa gomma fisica puo' comparire in due gruppi diversi."
  },
  "attivo": true,
  "giri": {
