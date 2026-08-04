@@ -2,7 +2,7 @@
  "_nota": "GENERATO da gen_stat_gara.py. Non modificare a mano: si rigenera a ogni gara con `python3 aggiorna_stat.py`.",
  "_generatore": "gen_stat_gara.py",
  "schema": 1,
- "calcolato_il": "2026-08-04T10:15:47+00:00",
+ "calcolato_il": "2026-08-04T12:54:50+00:00",
  "provenienza": {
   "f1db_release_pinnata": "v2026.11.0",
   "f1db_release_letta": "v2026.11.0",

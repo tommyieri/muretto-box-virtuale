@@ -346,10 +346,12 @@ if (existsSync(IDENT) && (gS6.artefatti ?? []).length) {
 
 // ---------------------------------------------------------------- H. il feed non e' cambiato
 //
-// Il sito dichiara che l'energia non passa dai feed pubblici. E' una MISURA (gen_stat_feed.py
-// conta i canali dell'archivio ufficiale a ogni gara), non piu' un'affermazione — ma una misura
-// che nessuno rilegge torna a essere un'affermazione. Se comparisse un canale nuovo, quella riga
-// diventerebbe falsa: qui la CI se ne accorge invece di lasciarla invecchiare.
+// gen_stat_feed.py conta a ogni gara i canali dell'archivio ufficiale F1. Dal 04/08/2026 il
+// risultato NON si rende piu' in pagina (decisione di Tommi: quella prosa e' un referto interno
+// e leggeva come un sito incompleto) — ma la misura resta, e resta sorvegliata. Il motivo e' che
+// serve a NOI: e' cio' che ci dice se F1 riapre il rubinetto sull'energia, e quel giorno
+// cambierebbe cosa il sito puo' raccontare. Un artefatto invisibile al lettore non e' un
+// artefatto che puo' invecchiare in silenzio.
 const FEED = path.join(QUI, 'data', 'stat', 'feed.json');
 if (existsSync(FEED)) {
   const f = JSON.parse(readFileSync(FEED, 'utf8'));
@@ -362,6 +364,32 @@ if (existsSync(FEED)) {
   const c26 = Object.keys(f.per_anno?.['2026']?.canali ?? {});
   esito(c26.length > 0 && !c26.includes('45'),
     `[feed] il 2026 non trasmette il canale DRS (${c26.length} canali misurati)`);
+}
+
+// ---------------------------------------------------------------- I. il regolamento firmato
+//
+// Come per il feed: l'artefatto esiste e NON si rende in pagina. Restano due controlli.
+// (1) Ogni voce confermata porta il suo articolo — un numero di regolamento senza l'articolo
+// da cui viene non e' tracciabile, e la tracciabilita' e' proprio cio' che la decisione del
+// 04/08 ha voluto CONSERVARE nei dati mentre la toglieva dalla resa.
+// (2) La Sezione C ha avuto diciannove revisioni in una stagione: se la FIA ne pubblica una
+// piu' recente di quella firmata, la firma va rifatta.
+const REG = path.join(QUI, 'data', 'stat', 'regolamento.json');
+if (existsSync(REG)) {
+  const r = JSON.parse(readFileSync(REG, 'utf8'));
+  const senzArt = (r.voci ?? []).filter(v => !v.articolo);
+  esito(senzArt.length === 0,
+    `[regolamento] ogni voce pubblicata porta il suo articolo (${(r.voci ?? []).length} voci)`
+    + (senzArt.length ? ` — senza articolo: ${senzArt.map(v => v.id).join(', ')}` : ''));
+  esito(!r.sentinella_issue?.allarme,
+    '[regolamento] nessuna revisione FIA piu\' recente di quella firmata'
+    + (r.sentinella_issue?.allarme
+       ? ` — ${Object.entries(r.sentinella_issue.piu_recenti_di_quello_firmato)
+             .map(([k, v]) => `${k}: firmata ${v.firmato}, pubblicata ${v.pubblicato}`).join('; ')}. `
+         + 'La firma va rifatta sull\'Issue nuovo.' : ''));
+  if (!r.firma?.firmato)
+    console.log(`SALTO    [regolamento] non firmato: ${(r.da_firmare ?? []).length} voci in attesa, `
+      + 'nessun numero di regolamento e\' pubblicato');
 }
 
 console.log(rosse === 0
