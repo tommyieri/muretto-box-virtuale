@@ -4,6 +4,15 @@
 // parole piane. Idempotente per-render: si richiama dopo ogni innerHTML del pannello.
 
 const TERMINI = {
+  // I TERMINI DELL'ENERGIA. Aggiunti il 04/08/2026 dopo che una domanda — «qualcuno ha
+  // trovato la gestione batteria del 2026» — ha richiesto una ricerca intera per rispondere.
+  // Stanno qui perche' la risposta torni gratis la prossima volta, invece di essere rifatta.
+  'ERS': 'Il sistema ibrido: recupera energia in frenata e la ridà come potenza elettrica. Nel 2026 vale circa metà della potenza totale — ma i suoi dati NON sono nei feed pubblici.',
+  'stato di carica': 'Quanta energia ha in quel momento la batteria. Non è nei dati pubblici di F1: chi lo mostra lo STIMA da gas, freno e velocità, e i suoi autori lo dichiarano.',
+  'clipping': 'Quando la potenza elettrica finisce e la vettura smette di accelerare pur essendo a gas pieno. Si vedrebbe come un tetto sulla velocità: qui non lo misuriamo, perché servirebbe la posizione in pista che i dati pubblici non danno.',
+  'lift and coast': 'Alzare il piede prima della staccata. Il gesto si misura; il PERCHÉ no — può essere carburante, batteria, gomme o freni, e i dati non li distinguono.',
+  'Straight Mode': 'La modalità aerodinamica da rettilineo del 2026. Non è il DRS: è disponibile a tutti in zona, non solo a chi insegue. Per questo ogni statistica storica basata sul DRS è stata ritirata.',
+  'telemetria di un videogioco': 'I giochi ufficiali F1 espongono DAVVERO la batteria, campo per campo, via rete. È un simulatore: la F1 vera non espone niente di tutto questo, e la confusione fra i due è la spiegazione più comune di chi dice «ho i dati ERS».',
   'pit-loss': 'I secondi persi passando dai box invece di restare in pista. Qui è misurato su questa gara, quando si può.',
   'undercut': 'Fermarti PRIMA di un rivale: con le gomme nuove gli recuperi giri mentre lui è ancora sulle vecchie, e provi a uscirgli davanti.',
   'overcut': 'Il contrario dell’undercut: resti fuori più a lungo, sperando che il tuo passo basti a scavalcarlo quando si ferma lui.',
