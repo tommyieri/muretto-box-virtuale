@@ -344,6 +344,26 @@ if (existsSync(IDENT) && (gS6.artefatti ?? []).length) {
     + '(l\'identita\' viene dalla tabella generata)');
 }
 
+// ---------------------------------------------------------------- H. il feed non e' cambiato
+//
+// Il sito dichiara che l'energia non passa dai feed pubblici. E' una MISURA (gen_stat_feed.py
+// conta i canali dell'archivio ufficiale a ogni gara), non piu' un'affermazione — ma una misura
+// che nessuno rilegge torna a essere un'affermazione. Se comparisse un canale nuovo, quella riga
+// diventerebbe falsa: qui la CI se ne accorge invece di lasciarla invecchiare.
+const FEED = path.join(QUI, 'data', 'stat', 'feed.json');
+if (existsSync(FEED)) {
+  const f = JSON.parse(readFileSync(FEED, 'utf8'));
+  const s = f.sentinella ?? {};
+  esito(!s.allarme,
+    's[feed] nessun canale nuovo nell\'archivio ufficiale F1'
+    + (s.canali_nuovi?.length ? ` — COMPARSI: ${s.canali_nuovi.join(', ')}. `
+       + 'Se e\' un canale energetico, la riga sull\'osservabilita\' va RISCRITTA.' : '')
+    + (s.canali_spariti?.length ? ` — SPARITI: ${s.canali_spariti.join(', ')}` : ''));
+  const c26 = Object.keys(f.per_anno?.['2026']?.canali ?? {});
+  esito(c26.length > 0 && !c26.includes('45'),
+    `[feed] il 2026 non trasmette il canale DRS (${c26.length} canali misurati)`);
+}
+
 console.log(rosse === 0
   ? `\nstruttura del sito: ${pagine.length} pagine, ${reg.voci.length} divergenze a registro, tutte ancora vere.`
   : `\nstruttura del sito: ${rosse} asserzioni rosse.`);

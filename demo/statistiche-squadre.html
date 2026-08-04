@@ -114,8 +114,9 @@
   <section class="stat-sez" id="osservabilita">
     <div class="sez-tit">Il muro dell'osservabilità</div>
     <p class="stat-sub">In una pagina sulle vetture 2026 non c'è <b>una sola riga sull'ibrido</b>.
-      Non è una dimenticanza, ed è l'unica parte di questa pagina che <b>si conta</b> invece di
-      essere affermata: qui sotto ci sono i canali che il sito esporta davvero.</p>
+      Non è una dimenticanza, e da oggi non è nemmeno un'affermazione: è una <b>misura</b>, e si
+      rifà a ogni gara.</p>
+    <div id="feed-ufficiale"></div>
     <div id="tab-canali"></div>
     <div class="panel stat-elenco" style="padding:4px 20px 10px;margin-top:16px" id="assenti"></div>
     <div class="stat-assente" style="margin-top:14px" id="limite-tele"></div>
@@ -283,6 +284,48 @@ function pitLane(g){
 // V3 — il censimento dei canali: la parte MISURATA del muro. Prima era prosa, e una prosa
 // non si aggiorna: se il collettore cominciasse a esportare un canale nuovo, la frase
 // resterebbe li' a mentire. Questo si rifa' a ogni gara insieme al resto.
+// IL CENSIMENTO DEL FEED. Prima questa pagina diceva «l'energia non e' osservabile» citando il
+// manutentore di FastF1: vero, ma di seconda mano, e un'affermazione non si aggiorna. Adesso
+// gen_stat_feed.py scarica l'archivio ufficiale a ogni gara e CONTA i canali. Se F1 riaprisse il
+// rubinetto, la sentinella lo direbbe invece di lasciare che questa riga invecchi.
+function feedUfficiale(f){
+  const box = el('feed-ufficiale');
+  if (!f?.per_anno){ box.innerHTML = ''; return; }
+  const anni = Object.keys(f.per_anno).sort().reverse();
+  const nomi = a => Object.values(f.per_anno[a].canali).map(c => c.nome);
+  const cur = anni[0];
+  const tutti = [...new Set(anni.flatMap(nomi))];
+
+  box.innerHTML = `
+    <div class="stat-regola"><span class="k">Non ce lo dicono: l'abbiamo contato</span>
+      Il feed pubblico di F1 trasmette <b>${f.per_anno[cur].n_canali} canali</b> per vettura, e
+      nessuno riguarda l'energia. Nel ${anni[1] ?? '—'} erano
+      <b>${f.per_anno[anni[1]]?.n_canali ?? '—'}</b>: la differenza è il <b>DRS</b>, che nel
+      ${cur} <b>non c'è più</b>. E gli stream dell'archivio sono
+      <b>${f.per_anno[cur].n_feed}</b>, gli stessi identici dell'anno prima: nessun canale nuovo
+      è comparso per l'ibrido.
+    </div>
+    <table class="dtbl" style="margin-bottom:14px">
+      <thead><tr><th>canale</th>${anni.map(a => `<th style="text-align:center">${esc(a)}</th>`).join('')}</tr></thead>
+      <tbody>${tutti.map(c => `<tr>
+        <td><span class="nome">${esc(c)}</span></td>
+        ${anni.map(a => `<td style="text-align:center">${nomi(a).includes(c)
+          ? '<span style="color:var(--ok)">●</span>'
+          : '<span style="color:var(--brand)">—</span>'}</td>`).join('')}</tr>`).join('')}
+        <tr><td><span class="dim">stato di carica, MJ, mappe motore, Overtake Mode</span></td>
+          ${anni.map(() => '<td style="text-align:center"><span style="color:var(--brand)">—</span></td>').join('')}</tr>
+      </tbody></table>
+    <p class="stat-sub">Verificato su <b>${f.provenienza.sessioni_controllate.map(x =>
+        `${esc(x.gara)} ${esc(x.anno)}`).join('</b> e <b>')}</b>, il ${dataIt(f.calcolato_il)}.
+      ${f.sentinella.allarme
+        ? `<b style="color:var(--brand)">ATTENZIONE: il censimento è cambiato.</b>`
+        : 'Nessun canale nuovo, nessuno sparito dall\'ultimo controllo.'}</p>
+    <div class="stat-assente"><b>Quello che questo conteggio non dimostra</b>
+      ${esc(f.cosa_NON_dimostra)}
+      <div style="margin-top:8px">E sul DRS: ${esc(f.il_caso_DRS)}</div>
+    </div>`;
+}
+
 function osservabilita(g){
   const o = g?.osservabilita;
   if (!o){ document.getElementById('osservabilita')?.remove(); return; }
@@ -324,8 +367,9 @@ async function boot(){
     cal = await prendiJSON('data/calendario_2026.json');
   } catch(e){ mostraErrore(el('tab-forza'), boot); return; }
   colori = await coloriTeam();
-  let gara = null;
+  let gara = null, feed = null;
   try { gara = await prendiJSON('data/stat/gara_2026.json'); } catch(e){}
+  try { feed = await prendiJSON('data/stat/feed.json'); } catch(e){}
 
   // LA COPERTURA SI CALCOLA, NON SI COPIA DAL FILE. I due artefatti dichiarano n_gare=10 e
   // non dicono quale manca: qui si confronta il loro elenco di round col calendario e si
@@ -351,6 +395,7 @@ async function boot(){
 
   forza(f, cal);
   pitLane(gara);
+  feedUfficiale(feed);
   osservabilita(gara);
   assetto(s);
 }
