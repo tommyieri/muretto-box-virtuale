@@ -1,6 +1,6 @@
 {
  "_nota": "GENERATO da simulatore/web/trasporta_motore.mjs. Le copie in questa cartella sono artefatti: si modifica l'originale in simulatore/ e si ri-trasporta. `--verifica` esce 1 sulla deriva. Il motore gira in pagina SOLO per live.html, dove il pre-calcolo non puo' esistere: gara.html continua a non calcolare.",
- "generato_il": "2026-08-03",
+ "generato_il": "2026-08-04",
  "ingressi": [
   "scenario/risposta.mjs",
   "provenienza/gare_indice.mjs",
@@ -9,12 +9,12 @@
  ],
  "file": {
   "engine/kernel.mjs": {
-   "sha256_sorgente": "39980bfec2384fda773f29381d21d24f404bc80ca8d6df526c4bc8e2518c7256",
-   "byte": 21452
+   "sha256_sorgente": "69e91d90fd0e29e2c1cbcfdd668da20a5e1a50bf4e1d6f0bff5375683c8a6bdf",
+   "byte": 22331
   },
   "engine/passo_v2.mjs": {
-   "sha256_sorgente": "e6e3ad02d32e6a9cf78521647ca76bf9c0e3af8efcf94db915ce5d1c15d6a6eb",
-   "byte": 8490
+   "sha256_sorgente": "2b516794f36aa724ac3aa468e5cb33605bad41a51a2cec393c6ea0ebd231cc28",
+   "byte": 11725
   },
   "provenienza/contratto.mjs": {
    "sha256_sorgente": "b1e8c76b289535985249358a70b98e052d687839ac8d96668a97fb4a30f071c5",
@@ -25,8 +25,8 @@
    "byte": 6888
   },
   "provenienza/gare_indice.mjs": {
-   "sha256_sorgente": "dd70fcf9df546225b11f4160fdc9065d3713e688626421cf559f1029ee5e9ecc",
-   "byte": 2546
+   "sha256_sorgente": "e138ef07e8bd549485ba9f6034c0d3bed68aaa036d6bbce27944af3d31c172ce",
+   "byte": 2834
   },
   "provenienza/pitloss.mjs": {
    "sha256_sorgente": "7b4ed08caadbc285c8b56b388f987e7714899d0ae5a007aed465be5bf5b7e75c",
@@ -41,25 +41,25 @@
    "byte": 3585
   },
   "scenario/costruttore.mjs": {
-   "sha256_sorgente": "4e005cba460262dbb31f91f8c7f5687c5bf4c73bcdde80079019a7bc9a0ce3a3",
-   "byte": 45919
+   "sha256_sorgente": "4704e1c05524bbfedc6b65f3e4fc21c159c5f8ef85dd4addd58f482c4c150557",
+   "byte": 47444
   },
   "scenario/director.mjs": {
    "sha256_sorgente": "a305da62cf49576be92050910d7f9fe8a5abe1bedebb49334b8fcf0e016e4e9a",
    "byte": 16577
   },
   "scenario/piano.mjs": {
-   "sha256_sorgente": "dabd8ab6ac952cc319ea38167cf4aa73201042a58e788e8ac15a5d28b82c4ed3",
-   "byte": 15759
+   "sha256_sorgente": "537c6f050661cf4044511e590f4c3bd1266d5a624299a0db72d097ad9bdb6456",
+   "byte": 16291
   },
   "scenario/risposta.mjs": {
-   "sha256_sorgente": "552053aaa2c9651a77f2dace4b28cc44ab4df6e5757926f1db5a6e705a2fcbc6",
-   "byte": 12182
+   "sha256_sorgente": "36cb179cb6a27382c976aa6aa65c050a9a90a5ad06776938f748d6618899978d",
+   "byte": 13005
   },
   "contesto_live.json": {
-   "sha256_sorgente": "726c56ae6d845d423a59590a36cc93b3c525094b5bc16559d69b220b4e8b63d6",
+   "sha256_sorgente": "88c31e63c207fa1fecaef4bb7ab7e1a7475d6e9d0843173e66547dbef293b1d1",
    "byte": 53696,
-   "data": "2026-08-03"
+   "data": "2026-08-04"
   }
  }
 }

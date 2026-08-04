@@ -1,0 +1,100 @@
+{
+ "_targhetta": {
+  "cosa_e": "Indice di sorpassabilita per circuito, calcolato dalla FORMA della pista: 1 = pista tipica del 2026, 0 = nessuna zona di sorpasso.",
+  "natura": "GEOMETRICO",
+  "come": "Si ricampiona la traiettoria a 25 m, si misura il raggio di curvatura in ogni punto, si trovano i RETTILINEI (raggio >= 300 m) e si tengono quelli lunghi almeno 400 m che finiscono in una curva stretta (raggio <= 120 m nei 250 m successivi). Ogni zona pesa per la sua lunghezza, corretta da quanto e lenta la curva che la APRE — cioe da quanto puoi seguire vicino per prendere la scia.",
+  "perche_tre_condizioni": "Un sorpasso ha bisogno di rettilineo per accostare, frenata vera in fondo per staccare piu tardi, e curva lenta prima per poter seguire. Un rettilineo che finisce in curva veloce non e un punto di sorpasso: e un tratto veloce.",
+  "fonte": "demo/data/pista_<Gara>.json — 500 punti per circuito da FastF1, con lunghezza_m dichiarata. Dato pinnato e verificabile.",
+  "perche_non_e_il_quarto_tentativo": "La sorpassabilita e stata chiusa NULL tre volte, ma su un CSV difficolta_sorpasso che il progetto ha dichiarato ORFANO e non fidato. La regola di casa riapre un NULL solo con una FONTE NUOVA: la geometria della pista non era mai stata usata, ed e la prima volta che lindice viene CALCOLATO invece che ricevuto.",
+  "soglie": {
+   "raggio_rettilineo_m": 300,
+   "raggio_curva_lenta_m": 120,
+   "rettilineo_minimo_m": 400,
+   "passo_campionamento_m": 25
+  },
+  "cosa_NON_e": "NON e una probabilita di sorpasso e NON e tarato su nessun esito. E una descrizione della forma della pista.",
+  "verifica_dichiarata": "Confrontato con gli scambi di posizione osservati fuori dai cicli di sosta: Spearman +0,436 su 11 circuiti (p circa 0,18, NON significativo con questa numerosita). Laccordo forte e sul caso estremo: Monaco indice 0,00 contro 0,03 scambi per giro osservati, mentre tutti gli altri stanno fra 0,50 e 1,88. I disaccordi sono Austria (indice alto, scambi bassi) e Giappone (indice basso, scambi alti). PRIMA VERSIONE DEL METRO SBAGLIATA E DICHIARATA: contando tutti gli scambi la correlazione era -0,364, perche il metro misurava i cicli delle soste e non i sorpassi.",
+  "data": "2026-08-04",
+  "generato_da": "ai_lab/sorpasso/geometria.mjs"
+ },
+ "normalizzazione": "punteggio grezzo diviso per la mediana dei circuiti 2026 (1680)",
+ "per_circuito": {
+  "Australia": {
+   "indice": 0.894,
+   "zone": 3,
+   "metri_utili": 1600,
+   "rettilineo_max_m": 700,
+   "lunghezza_m": 5239.4
+  },
+  "Austria": {
+   "indice": 1.563,
+   "zone": 4,
+   "metri_utili": 2625,
+   "rettilineo_max_m": 850,
+   "lunghezza_m": 4291
+  },
+  "Belgio": {
+   "indice": 1.695,
+   "zone": 5,
+   "metri_utili": 2925,
+   "rettilineo_max_m": 1050,
+   "lunghezza_m": 6947.6
+  },
+  "Canada": {
+   "indice": 1.563,
+   "zone": 4,
+   "metri_utili": 2625,
+   "rettilineo_max_m": 1025,
+   "lunghezza_m": 4312.6
+  },
+  "Cina": {
+   "indice": 1.399,
+   "zone": 3,
+   "metri_utili": 2350,
+   "rettilineo_max_m": 1200,
+   "lunghezza_m": 5443.9
+  },
+  "Giappone": {
+   "indice": 0.938,
+   "zone": 2,
+   "metri_utili": 1575,
+   "rettilineo_max_m": 850,
+   "lunghezza_m": 5769.2
+  },
+  "Gran Bretagna": {
+   "indice": 1,
+   "zone": 3,
+   "metri_utili": 1700,
+   "rettilineo_max_m": 700,
+   "lunghezza_m": 5826.3
+  },
+  "Miami": {
+   "indice": 1.096,
+   "zone": 2,
+   "metri_utili": 2050,
+   "rettilineo_max_m": 1200,
+   "lunghezza_m": 5347.3
+  },
+  "Monaco": {
+   "indice": 0,
+   "zone": 0,
+   "metri_utili": 0,
+   "rettilineo_max_m": 350,
+   "lunghezza_m": 3270.4
+  },
+  "Spagna": {
+   "indice": 0.833,
+   "zone": 2,
+   "metri_utili": 1400,
+   "rettilineo_max_m": 975,
+   "lunghezza_m": 4610.1
+  },
+  "Ungheria": {
+   "indice": 0.432,
+   "zone": 1,
+   "metri_utili": 725,
+   "rettilineo_max_m": 725,
+   "lunghezza_m": 4326
+  }
+ }
+}

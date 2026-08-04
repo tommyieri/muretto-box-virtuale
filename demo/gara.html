@@ -159,7 +159,14 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
 // I formattatori sono ARTEFATTI trasportati da simulatore/web/ (vendor/simulatore/), con
 // manifest di hash: `node web/trasporta_formattatori.mjs --verifica` esce 1 sulla deriva.
 import { disegna } from './vendor/simulatore/render.mjs?v=280726a';
-import { pannello as pannelloNuovo } from './vendor/simulatore/pannello.mjs?v=280726a';
+import { pannello as pannelloNuovo } from './vendor/simulatore/pannello.mjs?v=040826c';
+// IL MOTORE IN PAGINA, ma solo quando serve. La vista pre-calcolata resta la strada
+// normale — e' gia' li', costa zero e risponde subito. Il motore si accende SOLO quando
+// l'utente sceglie una mescola diversa da quella che ha addosso: quella risposta non e'
+// pre-calcolata e non lo sara' mai, perche' pre-calcolarne tre per ogni giro di ogni
+// pilota porterebbe la vista da 86 a ~130 MB per una cosa che il motore sa gia' fare qui.
+// E' lo stesso `rispostaLive` che usa la diretta, quindi non ci sono due motori.
+import { rispostaLive } from './ponte_live.mjs?v=040826c';
 import { curva as curvaDelQuando } from './vendor/simulatore/curva.mjs?v=280726a';
 // l'adattatore del fantasma e' condiviso con live.html: una forma sola per due pagine
 import { simDaFantasma } from './fantasma_sim.mjs?v=310726a';
@@ -291,6 +298,16 @@ async function vistaDi(drv){
     vistaPilota[drv] = r.ok ? await r.json() : null;
   } catch(e){ vistaPilota[drv] = null; }
   return vistaPilota[drv];
+}
+
+// la gomma che l'utente ha scelto di montare, e il contesto del motore per calcolarla.
+// `null` ⇒ si usa la vista pre-calcolata, cioe' il comportamento di sempre.
+let mescolaScelta = null, contestoLive = null;
+async function contestoDelMotore(){
+  if (contestoLive !== null) return contestoLive;
+  try { contestoLive = await (await fetch('vendor/simulatore/motore/contesto_live.json?v=040826c')).json(); }
+  catch(e){ contestoLive = false; }
+  return contestoLive;
 }
 
 async function loadGara(gara) {
@@ -734,7 +751,7 @@ function openPit(){
   boxGiro=null;   // ogni pilota riparte dalla sua domanda
   updatePit();
 }
-function chiudiPit(){ if(simMode) esciSimulazione(); selDrv=null; el('pit').classList.add('hidden');
+function chiudiPit(){ if(simMode) esciSimulazione(); selDrv=null; mescolaScelta=null; el('pit').classList.add('hidden');
   el('simBtn').hidden=true; el('simBar').hidden=true;
   if(pista){ pista.setSpento(false); el('pista').classList.remove('pit-attivo'); }
   frame(clock.position); }
@@ -791,7 +808,24 @@ async function mostraRisposta(drv, L){
     kv.innerHTML = `<div class="pitmsg">${drv} non ha una risposta pre-calcolata in questa gara.</div>`;
     return;
   }
-  const s = v.giri.find(g => g.freeze_lap === L);
+  let s = v.giri.find(g => g.freeze_lap === L);
+  // LA SCELTA DELLA MESCOLA fa ricalcolare la risposta qui, con lo stesso motore della
+  // diretta. Se il contesto non c'e' (trasporto non fatto) si resta sulla vista e lo si
+  // dice, invece di mostrare una risposta che non e' quella scelta.
+  if (mescolaScelta && s) {
+    const ctx = await contestoDelMotore();
+    if (drv !== selDrv || boxGiro == null || Math.max(1, curLap-1) !== L) return;
+    if (!ctx) {
+      kv.innerHTML = `<div class="pitmsg">La scelta della mescola non e' disponibile in questa pagina.
+        <span class="sub">manca vendor/simulatore/motore/contesto_live.json</span></div>`;
+      return;
+    }
+    const calcolata = rispostaLive({
+      byLap: race.byLap, nGiriGara: race.n_laps, nomeGara: race.gara,
+      pilota: drv, freezeLap: L, contestoLive: ctx, mescolaScelta,
+    });
+    if (calcolata && !calcolata.senza_risposta) s = calcolata;
+  }
   if (!s){
     kv.innerHTML = `<div class="pitmsg">A questo giro il simulatore non risponde per ${drv}.
       <span class="sub">la vista copre i giri ${indiceVista.primo_giro}–${indiceVista.ultimo_giro}</span></div>`;
@@ -802,6 +836,15 @@ async function mostraRisposta(drv, L){
     lastPitRes = null; el('simBtn').hidden = true; return;
   }
   kv.replaceChildren(disegna(pannelloNuovo(indiceVista, s)));
+  // il selettore mescola e' un COMANDO anche qui: ri-cliccare quella scelta torna al vero
+  kv.querySelectorAll('.mescole [data-valore]').forEach((p) => {
+    if (p.hasAttribute('disabled')) return;
+    p.style.cursor = 'pointer';
+    p.addEventListener('click', () => {
+      mescolaScelta = (mescolaScelta === p.dataset.valore) ? null : p.dataset.valore;
+      mostraRisposta(drv, L);
+    });
+  });
   // LA CURVA DEL QUANDO, che il pannello vecchio non ha mai avuto: per ogni giro
   // candidato, quanto costa fermarsi li' rispetto al momento migliore.
   // LA CURVA SI DISEGNA ANCHE QUANDO E' VUOTA, perche' in quel caso dice PERCHE'.

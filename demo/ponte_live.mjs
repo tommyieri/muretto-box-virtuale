@@ -250,7 +250,7 @@ export function contestoDa(contestoLive, nomeGara, gara) {
  *          `null` se al congelamento la gomma non e' nota, oppure
  *          `{freeze_lap, senza_risposta}`.
  */
-export function rispostaLive({ byLap, nGiriGara, nomeGara, pilota, freezeLap, contestoLive, data }) {
+export function rispostaLive({ byLap, nGiriGara, nomeGara, pilota, freezeLap, contestoLive, data, mescolaScelta = null }) {
   const nome = nomeSimulatore(nomeGara);
   const gara = garaDaLive(byLap, nGiriGara, {
     tolleranzaCum: contestoLive?.limiti?.tolleranza_cum_s?.valore ?? null,
@@ -258,7 +258,9 @@ export function rispostaLive({ byLap, nGiriGara, nomeGara, pilota, freezeLap, co
   const { contesto, extra } = contestoDa(contestoLive, nome, gara);
   const quando = data ?? new Date().toISOString().slice(0, 10);
   try {
-    return rispostaPer(nome, gara, freezeLap, pilota, contesto, extra, quando);
+    // `mescolaScelta` e' la gomma che l'utente ha scelto di montare. Assente ⇒ si rimonta
+    // quella attuale, cioe' il comportamento di prima bit per bit.
+    return rispostaPer(nome, gara, freezeLap, pilota, contesto, extra, quando, mescolaScelta);
   } catch (e) {
     return { freeze_lap: freezeLap, senza_risposta: e.message };
   }

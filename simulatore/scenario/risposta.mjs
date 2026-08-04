@@ -45,9 +45,20 @@ export function regimeAlGiro(gara, Lf, pilota) {
  * @returns il record, oppure `null` se al congelamento la gomma non e' nota
  *          (non si finge una mescola), oppure `{freeze_lap, senza_risposta}`.
  */
-export function rispostaPer(nomeGara, gara, Lf, pilota, contesto, extra, data) {
-  const mescola = mescolaAlGiro(gara, Lf, pilota);
-  if (mescola === null) return null;               // gomma ignota o da bagnato: non si finge
+export function rispostaPer(nomeGara, gara, Lf, pilota, contesto, extra, data, mescolaScelta = null) {
+  // LA MESCOLA CHE SI MONTA ALLA SOSTA, e dal 04/08/2026 puo' essere SCELTA.
+  //
+  // Fino a ieri si rimontava sempre la gomma su cui si era: non era una scelta di prodotto,
+  // era la conseguenza del fatto che nel motore la mescola non faceva niente — con
+  // `vita_mescola` spenta, montare soft o hard dava numeri identici, e un selettore che
+  // risponde sempre la stessa cosa e' peggio di un selettore che non c'e'.
+  //
+  // Adesso la vita per mescola e' accesa (decisione del PO, sigillo
+  // data/modelli/vita_mescola.json) e la scelta cambia davvero la risposta. Assente ⇒ si
+  // rimonta la gomma attuale, cioe' il comportamento di prima, bit per bit.
+  const attuale = mescolaAlGiro(gara, Lf, pilota);
+  if (attuale === null) return null;               // gomma ignota o da bagnato: non si finge
+  const mescola = mescolaScelta ?? attuale;
   const giroPit = Lf + 1;
   let rientro;
   try {
@@ -62,6 +73,7 @@ export function rispostaPer(nomeGara, gara, Lf, pilota, contesto, extra, data) {
   if (rientro && rientro.approvato === false) {
     return {
       freeze_lap: Lf, _data: data, gara: nomeGara, pilota, n_giri: gara.nGiri,
+      mescola_scelta: mescola, mescola_attuale: attuale,
       approvato: false,
       motivi_rifiuto: (rientro.direttore?.violazioni ?? [])
         .filter((v) => v.severita === 'FATAL')
@@ -72,7 +84,7 @@ export function rispostaPer(nomeGara, gara, Lf, pilota, contesto, extra, data) {
     return { freeze_lap: Lf, senza_risposta: 'il motore non ha una risposta a questo giro' };
   }
   const ottimo = pianoOttimo(
-    { gara: nomeGara, freezeLap: Lf, pilota, giroFinale: gara.nGiri, kMax: 3 }, contesto);
+    { gara: nomeGara, freezeLap: Lf, pilota, giroFinale: gara.nGiri, kMax: 3, mescolaPrimaSosta: mescolaScelta }, contesto);
 
   // LA CURVA MONTA LA GOMMA CHE IL REGOLAMENTO PERMETTE, non quella che il pilota
   // ha su. Sembra un dettaglio e valeva il 26,4% dei pannelli: rimontare la stessa
