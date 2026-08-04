@@ -80,6 +80,11 @@ def main():
         # misura degradata con l'aria di essere fresca.
         ('feed', [PY, 'gen_stat_feed.py'],
          os.path.join(STAT, 'feed.json')),
+        # VA IN RETE anche questo, ma solo per la sentinella sull'Issue: i numeri vengono da
+        # data/regolamento_2026.json, che e' firmato a mano. Se il sito FIA non risponde, il
+        # controllo si dichiara non eseguito invece di tacere.
+        ('regolamento', [PY, 'gen_stat_regolamento.py'],
+         os.path.join(STAT, 'regolamento.json')),
         # ULTIMO: raccoglie gli alias dagli artefatti gia' scritti, quindi deve vederli tutti.
         ('identita', [PY, 'gen_stat_identita.py'],
          os.path.join(STAT, 'identita.json')),

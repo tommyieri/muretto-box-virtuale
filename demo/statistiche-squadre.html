@@ -118,6 +118,7 @@
       rifà a ogni gara.</p>
     <div id="feed-ufficiale"></div>
     <div id="tab-canali"></div>
+    <div id="regolamento" style="margin-top:26px"></div>
     <div class="panel stat-elenco" style="padding:4px 20px 10px;margin-top:16px" id="assenti"></div>
     <div class="stat-assente" style="margin-top:14px" id="limite-tele"></div>
   </section>
@@ -326,6 +327,62 @@ function feedUfficiale(f){
     </div>`;
 }
 
+// I LIMITI DEL REGOLAMENTO. L'energia della vettura non si legge, ma quanto sia PERMESSO sta
+// scritto, ed e' pubblico. I numeri stanno in un file firmato a mano (data/regolamento_2026.json):
+// finche' nessuno ha firmato, qui non compare NESSUN numero — compare cosa manca.
+function regolamento(r){
+  const box = el('regolamento');
+  if (!r){ box.innerHTML = ''; return; }
+
+  if (!r.firma?.firmato){
+    box.innerHTML = `<div class="stat-assente">
+      <b>I limiti del regolamento non sono ancora firmati, quindi qui non c'è nessun numero</b>
+      ${esc(r.firma?.perche_grezzo ?? '')}
+      <div style="margin-top:10px">Sono <b>${(r.da_firmare ?? []).length} voci</b>, ognuna con il
+        suo articolo già indicato: ${(r.da_firmare ?? []).map(v =>
+          `<span style="color:var(--txt)">${esc(v.articolo)}</span>`).join(', ')}.
+        Si firma in <code>data/regolamento_2026.json</code>.</div>
+    </div>`;
+    return;
+  }
+
+  const voci = r.voci ?? [];
+  box.innerHTML = `
+    <div class="stat-regola"><span class="k">Quanto è permesso</span>
+      L'energia della vettura non si legge, ma <b>quanto se ne possa usare sta scritto</b>. Ogni
+      riga porta l'<b>articolo</b> da cui viene e l'<b>Issue</b> del documento: la Sezione C ha
+      avuto diciannove revisioni in una stagione, e un numero di regolamento senza la sua
+      revisione non vuol dire niente.
+    </div>
+    <table class="dtbl">
+      <thead><tr><th>limite</th><th style="text-align:right">valore</th><th>articolo</th></tr></thead>
+      <tbody>${voci.map(v => `<tr>
+        <td><span class="nome">${esc(v.cosa)}</span>${v.nota
+          ? `<div class="dim" style="font:12px/1.5 var(--sans);white-space:normal;max-width:52ch;padding-top:4px">${esc(v.nota)}</div>` : ''}</td>
+        <td class="num">${v.formula
+          ? v.formula.map(t => `<div><span class="dim">${t.da != null ? `${t.da}–` : ''}${
+              t.a != null ? `${t.a} km/h` : 'oltre'}</span> <b>${esc(String(t.P))}</b></div>`).join('')
+            + (v.soglie_derivate ?? []).map(sd =>
+              `<div style="color:var(--accent);padding-top:4px">${esc(sd.significato)}
+                <b>${sd.a_km_h} km/h</b> <span class="dim">· derivata</span></div>`).join('')
+          : `<b>${esc(String(v.valore))}</b> <span class="dim">${esc(v.unita ?? '')}</span>`
+            + (v.riducibile_a != null ? `<div class="dim">riducibile a ${v.riducibile_a}, mai sotto ${v.pavimento}</div>` : '')}
+        </td>
+        <td><span class="dim">${esc(v.articolo)}</span><br>
+          <span class="dim" style="font-size:10px">Issue ${esc(String(v.issue))} · ${esc(v.data ?? '')}</span></td>
+      </tr>`).join('')}</tbody></table>
+    <p class="stat-sub" style="margin-top:10px">Firmato da <b>${esc(r.firma.firmato_da ?? '?')}</b>
+      il ${dataIt(r.firma.firmato_il)}. Le soglie in <span style="color:var(--accent)">accento</span>
+      sono <b>derivate dalla formula</b>, non lette: è il motivo per cui qui non troverai il
+      «288 contro 290 km/h» su cui le sintesi litigano — con la formula il conto è uno solo.</p>
+    ${(r.da_firmare ?? []).length ? `<div class="stat-assente"><b>${r.da_firmare.length} voci
+      non ancora firmate</b>${r.da_firmare.map(v => esc(v.articolo)).join(', ')} — non sono
+      pubblicate.</div>` : ''}
+    <details class="stat-metodo"><summary>Cosa NON entra in questa tabella</summary>
+      <div class="in">${Object.entries(r.cosa_non_entra ?? {}).map(([k, v]) =>
+        `<p><b>${esc(k.replace(/_/g, ' '))}</b> — ${esc(v)}</p>`).join('')}</div></details>`;
+}
+
 function osservabilita(g){
   const o = g?.osservabilita;
   if (!o){ document.getElementById('osservabilita')?.remove(); return; }
@@ -370,6 +427,8 @@ async function boot(){
   let gara = null, feed = null;
   try { gara = await prendiJSON('data/stat/gara_2026.json'); } catch(e){}
   try { feed = await prendiJSON('data/stat/feed.json'); } catch(e){}
+  let reg = null;
+  try { reg = await prendiJSON('data/stat/regolamento.json'); } catch(e){}
 
   // LA COPERTURA SI CALCOLA, NON SI COPIA DAL FILE. I due artefatti dichiarano n_gare=10 e
   // non dicono quale manca: qui si confronta il loro elenco di round col calendario e si
@@ -397,6 +456,7 @@ async function boot(){
   pitLane(gara);
   feedUfficiale(feed);
   osservabilita(gara);
+  regolamento(reg);
   assetto(s);
 }
 boot();

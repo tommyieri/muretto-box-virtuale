@@ -364,6 +364,31 @@ if (existsSync(FEED)) {
     `[feed] il 2026 non trasmette il canale DRS (${c26.length} canali misurati)`);
 }
 
+// ---------------------------------------------------------------- I. il regolamento firmato
+//
+// Due controlli, e il secondo e' quello che conta. (1) Se il file e' firmato, ogni voce
+// pubblicata deve portare l'articolo: un numero di regolamento senza articolo e' esattamente
+// il tipo di cifra che questa sezione ha rifiutato di pubblicare. (2) La Sezione C ha avuto
+// diciannove revisioni in una stagione: se la FIA ne pubblica una piu' recente di quella
+// firmata, i numeri in pagina potrebbero non essere piu' quelli in vigore.
+const REG = path.join(QUI, 'data', 'stat', 'regolamento.json');
+if (existsSync(REG)) {
+  const r = JSON.parse(readFileSync(REG, 'utf8'));
+  const senzArt = (r.voci ?? []).filter(v => !v.articolo);
+  esito(senzArt.length === 0,
+    `[regolamento] ogni voce pubblicata porta il suo articolo (${(r.voci ?? []).length} voci)`
+    + (senzArt.length ? ` — senza articolo: ${senzArt.map(v => v.id).join(', ')}` : ''));
+  esito(!r.sentinella_issue?.allarme,
+    '[regolamento] nessuna revisione FIA piu\' recente di quella firmata'
+    + (r.sentinella_issue?.allarme
+       ? ` — ${Object.entries(r.sentinella_issue.piu_recenti_di_quello_firmato)
+             .map(([k, v]) => `${k}: firmata ${v.firmato}, pubblicata ${v.pubblicato}`).join('; ')}. `
+         + 'La firma va rifatta sull\'Issue nuovo.' : ''));
+  if (!r.firma?.firmato)
+    console.log(`SALTO    [regolamento] non firmato: ${(r.da_firmare ?? []).length} voci in attesa, `
+      + 'nessun numero di regolamento e\' pubblicato');
+}
+
 console.log(rosse === 0
   ? `\nstruttura del sito: ${pagine.length} pagine, ${reg.voci.length} divergenze a registro, tutte ancora vere.`
   : `\nstruttura del sito: ${rosse} asserzioni rosse.`);
