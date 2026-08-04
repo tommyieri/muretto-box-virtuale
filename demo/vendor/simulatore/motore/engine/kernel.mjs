@@ -101,13 +101,17 @@ function normalizzaSoste(pits, pilotiNoti) {
     if (!Array.isArray(elenco)) throw new Error(`le soste di ${drv} non sono un elenco`);
     const perGiro = new Map();
     for (const sosta of elenco) {
-      const { lap, perdita } = sosta ?? {};
+      const { lap, perdita, mescola = null } = sosta ?? {};
       if (!Number.isInteger(lap)) throw new Error(`sosta di ${drv} senza giro intero: ${JSON.stringify(sosta)}`);
       if (typeof perdita !== 'number' || !Number.isFinite(perdita) || perdita < 0) {
         throw new Error(`sosta di ${drv} al giro ${lap} senza perdita dichiarata e finita ≥ 0: ${JSON.stringify(perdita)} (E07: niente numeri di riserva)`);
       }
       if (perGiro.has(lap)) throw new Error(`due soste di ${drv} sullo stesso giro ${lap}`);
-      perGiro.set(lap, perdita);
+      // LA MESCOLA VIAGGIA CON LA SOSTA dal 04/08/2026. Prima si teneva {lap, perdita} e
+      // la gomma montata veniva buttata via qui: e' la ragione MECCANICA per cui premere
+      // BOX NOW non permetteva di scegliere la mescola — la scelta non arrivava mai al
+      // motore. Resta opzionale (`null`): chi non la passa ha i numeri di prima.
+      perGiro.set(lap, { perdita, mescola });
     }
     soste.set(drv, perGiro);
   }
@@ -189,7 +193,7 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
   // ogni pilota accumula il suo cum indipendentemente, come prima.
   const marcia = [];
   for (const voce of state) {
-    const { drv, cum_time, tyre_age } = voce;
+    const { drv, cum_time, tyre_age, mescola = null } = voce;
     if (voce.lap < freezeLap) {
       escludi(drv, `stato fermo al giro ${voce.lap}, non aggiornato al congelamento ${freezeLap}`);
       continue;
@@ -212,6 +216,7 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
       drv,
       c: cum_time,
       e: tyre_age,            // età alla FINE del giro precedente
+      m: mescola,             // la gomma MONTATA adesso: cambia a ogni sosta
       attivo: true,
       passi: tracce ? [] : null,
       perGiro: soste.get(drv),
@@ -244,7 +249,7 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
     for (const m of marcia) {
       if (!m.attivo) continue;
       const etaDelGiro = m.e + 1;
-      const t = pace(m.drv, giro, etaDelGiro);
+      const t = pace(m.drv, giro, etaDelGiro, m.m);
       if (t === null || t === undefined) {
         // Regola 6: qui finisce la corsa di questo pilota. Il cum accumulato
         // fin qui NON diventa il suo risultato: sarebbe un numero che sembra
@@ -257,11 +262,16 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
         throw new Error(`pace(${m.drv}, ${giro}, ${etaDelGiro}) ha restituito ${JSON.stringify(t)}: né secondi né null`);
       }
       m.c += t;
-      const perdita = m.perGiro?.get(giro);
-      const inLap = perdita !== undefined;
+      const sosta = m.perGiro?.get(giro);
+      const inLap = sosta !== undefined;
+      const perdita = inLap ? sosta.perdita : undefined;
       if (inLap) {
         m.c += perdita;
         m.e = 0; // la sosta monta il set nuovo: al giro dopo l'età è 1
+        // LA GOMMA CAMBIA QUI, ed e' l'unico punto in cui cambia. Se la sosta non dichiara
+        // la mescola si tiene quella di prima: un'assenza non diventa una gomma nuova
+        // inventata (regola 6), e con `vita` spento non fa differenza comunque.
+        if (sosta.mescola !== null && sosta.mescola !== undefined) m.m = sosta.mescola;
         fermiQuestoGiro.add(m.drv);
       } else {
         m.e = etaDelGiro;

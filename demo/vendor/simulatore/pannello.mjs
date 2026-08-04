@@ -234,7 +234,12 @@ function percheSoste(s) {
 }
 
 /**
- * Le mescole: si MOSTRANO, non si scelgono. Non e' una rinuncia, e' una misura.
+ * Le mescole: dal 04/08/2026 si SCELGONO davvero — in diretta, dove il motore gira in
+ * pagina e puo' rispondere alla scelta. Nel replay restano un'informazione, perche' la
+ * vista e' pre-calcolata su una gomma sola.
+ *
+ * QUELLO CHE SEGUE E' LA STORIA DI PERCHE' NON SI SCEGLIEVANO, e resta perche' spiega cosa
+ * e' cambiato e cosa NO.
  *
  * Erano bottoni, e sembravano un comando. Misurato sul motore precedente:
  * cambiando la mescola dello scenario la risposta cambiava in 0 casi su 24.
@@ -258,7 +263,10 @@ function selettoreMescole(vista, s) {
       classe: `mescola sola-lettura ${m.codice === s.mescola_scelta ? 'scelta' : ''} ${m.attiva ? '' : 'spenta'}`,
       disabilitato: !m.attiva,
       titolo: m.attiva
-        ? (m.codice === s.mescola_scelta ? 'gomma montata adesso' : 'mescola della stagione')
+        // Il titolo resta CORTO come la decisione del 04/08 su tutto il pannello: al
+        // lettore arriva la cosa, non il referto che la calibra. Dice solo che si puo'
+        // montare — cosa cambia e quanto vale sta nel sigillo vita_mescola.json, non qui.
+        ? (m.codice === s.mescola_scelta ? 'la gomma che stai montando' : 'monta questa gomma')
         : m.motivo,
       valore: m.codice,
     }, txt(m.codice))));

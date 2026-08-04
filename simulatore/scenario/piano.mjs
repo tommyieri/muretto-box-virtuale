@@ -219,7 +219,7 @@ export function valutaPiano({ gara, freezeLap, pilota, piano }, contesto) {
  *          cumulato minore, `per_k` tiene tutti i k valutati perché la risposta
  *          «due soste costano 3 s più di una» è un'informazione, non uno scarto.
  */
-export function pianoOttimo({ gara, freezeLap, pilota, giroFinale, kMax = 3 }, contesto) {
+export function pianoOttimo({ gara, freezeLap, pilota, giroFinale, kMax = 3, mescolaPrimaSosta = null }, contesto) {
   const g = contesto.gare[gara];
   if (!g) throw new Error(`gara sconosciuta: ${gara}`);
   const cella = g.perPilota.get(pilota)?.get(freezeLap);
@@ -249,7 +249,14 @@ export function pianoOttimo({ gara, freezeLap, pilota, giroFinale, kMax = 3 }, c
   const perK = [];
   for (let k = kMinimo; k <= kMax; k += 1) {
     if (k > 0 && R - 1 < k) break; // non ci stanno k soste distinte prima della bandiera
-    const mescole = mescolePerSoste(k, usate);
+    // LA PRIMA SOSTA PUO' ESSERE IMPOSTA DALL'UTENTE. E' cio' che rende il selettore
+    // mescola un comando invece di un'informazione: tu scegli cosa monti ADESSO, il
+    // pianificatore ottimizza il resto sapendolo. Le soste successive restano sue, e il
+    // vincolo delle due mescole slick continua a valere — la scelta si aggiunge a `usate`,
+    // non lo scavalca.
+    const mescole = mescolaPrimaSosta && k > 0
+      ? [mescolaPrimaSosta, ...mescolePerSoste(k - 1, new Set([...usate, mescolaPrimaSosta]))]
+      : mescolePerSoste(k, usate);
     const partenza = formaChiusa({ R, a, k }).giri_sosta_relativi
       .map((m) => Math.round(m));
     const costruisci = (relativi) => {

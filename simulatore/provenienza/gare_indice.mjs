@@ -35,7 +35,10 @@ export function osservazioniVerdi(righe) {
   const fuori = [];
   for (const { drv, lap, cella } of righe) {
     if (!passoUtilizzabile(cella) || cella.tyre_age === null) continue;
-    fuori.push({ drv, lap, eta: cella.tyre_age, t: cella.lap_time, stint: cella.stint });
+    // `mescola` viaggia con l'osservazione dal 04/08/2026: senza, `stimaBasi` non
+    // potrebbe sottrarre il termine di vita che `creaPasso` ri-aggiunge, e sarebbe E02
+    // sotto un altro nome — cio' che si toglie misurando va rimesso simulando (regola 10).
+    fuori.push({ drv, lap, eta: cella.tyre_age, t: cella.lap_time, stint: cella.stint, mescola: cella.compound });
   }
   fuori.sort((a, b) => (a.drv < b.drv ? -1 : a.drv > b.drv ? 1 : a.lap - b.lap));
   return fuori;

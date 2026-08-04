@@ -1,0 +1,156 @@
+{
+ "_targhetta": {
+  "cosa_e": "Degrado stimato dal CAMPO con due effetti fissi (gara|pilota e gara|giro).",
+  "prereg": "ai_lab/degrado/PREREG_degrado_dal_campo.md",
+  "forma": "t = alpha(pilota) + gamma(giro) + rho(mescola)*eta — gamma assorbe carburante, evoluzione, meteo, neutralizzazioni",
+  "limite": "rho e' un LIMITE INFERIORE: le eta' alte sono selezionate verso chi aveva la gomma buona",
+  "data": "2026-08-04"
+ },
+ "n": 10269,
+ "per_gara": {
+  "Australia": {
+   "n": 854,
+   "identificazione": 6.869658286503099,
+   "rho_comune": 0.037256314390777014,
+   "rho_per_mescola": {
+    "SOFT": 0.03861805626450804,
+    "MEDIUM": 0.031136052728855508,
+    "HARD": 0.03813972639892049
+   }
+  },
+  "Austria": {
+   "n": 1147,
+   "identificazione": 4.826089585260634,
+   "rho_comune": 0.07271821133267384,
+   "rho_per_mescola": {
+    "SOFT": 0.07205192964514082,
+    "MEDIUM": 0.06703420105199438,
+    "HARD": 0.07448122965015432
+   }
+  },
+  "Belgio": {
+   "n": 679,
+   "identificazione": 4.210686581590942,
+   "rho_comune": 0.04635054548273402,
+   "rho_per_mescola": {
+    "SOFT": 0.05378561359805303,
+    "MEDIUM": 0.0452726330083456,
+    "HARD": 0.04662831761470067
+   }
+  },
+  "Canada": {
+   "n": 928,
+   "identificazione": 6.468758181289558,
+   "rho_comune": -0.010093856668941173,
+   "rho_per_mescola": {
+    "SOFT": -0.007691236838184933,
+    "MEDIUM": -0.01194436626296402,
+    "HARD": -0.01765320729291136
+   }
+  },
+  "Cina": {
+   "n": 735,
+   "identificazione": 6.937138868235236,
+   "rho_comune": 0.024762044476705675,
+   "rho_per_mescola": {
+    "SOFT": 0.10357363867463738,
+    "MEDIUM": 0.11477424612750965,
+    "HARD": 0.04288750672914994
+   }
+  },
+  "Giappone": {
+   "n": 936,
+   "identificazione": 2.3905828994148255,
+   "rho_comune": 0.038174220596317726,
+   "rho_per_mescola": null
+  },
+  "GranBretagna": {
+   "n": 811,
+   "identificazione": 5.25544379003275,
+   "rho_comune": 0.05728364119963611,
+   "rho_per_mescola": {
+    "SOFT": 0.003776790854555964,
+    "MEDIUM": 0.050527252119359885,
+    "HARD": 0.06858114301538284
+   }
+  },
+  "Miami": {
+   "n": 803,
+   "identificazione": 6.190521673824995,
+   "rho_comune": 0.040171483417922774,
+   "rho_per_mescola": {
+    "SOFT": -0.025230766321017943,
+    "MEDIUM": 0.04003806333160824,
+    "HARD": 0.016820977020142718
+   }
+  },
+  "Monaco": {
+   "n": 1136,
+   "identificazione": 8.827169085298982,
+   "rho_comune": 0.031057743003882626,
+   "rho_per_mescola": {
+    "SOFT": 0.014769339171606713,
+    "MEDIUM": 0.033524435348561046,
+    "HARD": 0.030174250276667498
+   }
+  },
+  "Spagna": {
+   "n": 1021,
+   "identificazione": 3.9597837569605936,
+   "rho_comune": 0.11799508019296669,
+   "rho_per_mescola": {
+    "SOFT": 0.10642575714444846,
+    "MEDIUM": 0.1358240874671562,
+    "HARD": 0.11436908739025341
+   }
+  },
+  "Ungheria": {
+   "n": 1219,
+   "identificazione": 6.106508729959564,
+   "rho_comune": 0.07097394225483214,
+   "rho_per_mescola": {
+    "SOFT": 0.05714493973115026,
+    "MEDIUM": 0.060983142835742105,
+    "HARD": 0.0777274085724455
+   }
+  }
+ },
+ "rho_comune": 0.04166956908971449,
+ "rho_per_mescola": {
+  "SOFT": 0.02891139960300493,
+  "MEDIUM": 0.040219921579260305,
+  "HARD": 0.0446925487906519
+ },
+ "divario_vero": 0.015781149187646965,
+ "D0": {
+  "passa": true,
+  "gare_sopra_soglia": 11,
+  "soglia": 2
+ },
+ "D1": {
+  "passa": true,
+  "rho": 0.04166956908971449,
+  "ic95_sigillo": [
+   0.0108,
+   0.0527
+  ]
+ },
+ "D2": {
+  "passa": false,
+  "n": 4395,
+  "vinceA": 2162,
+  "vinceB": 2230,
+  "pari": 3,
+  "discordanti": 4392,
+  "p": 0.3120246068280267,
+  "mediana_campo": 0.34866078098880604,
+  "mediana_sigillo": 0.3456971220122063
+ },
+ "D3": {
+  "passa": true,
+  "vero": 0.015781149187646965,
+  "p95": 0.011042418890119969,
+  "mediana_finti": 0.004346337505267139,
+  "rimescolamenti": 200
+ }
+}
