@@ -71,10 +71,34 @@ function durataPrevista(d, contesto) {
   } catch (e) { return { durata: null, motivo: `eccezione: ${e.message.slice(0, 40)}` }; }
 }
 
-const modelloCon = (contesto, vita) => ({
-  ...contesto.modello,
-  vita_mescola: { attivo: true, giri: vita, natura: 'PRIOR_COMPORTAMENTALE' },
+/**
+ * I DUE BRACCI, e il guasto che li aveva fatti diventare uno solo.
+ *
+ * Questo file scriveva la vita dentro `modello.vita_mescola`. Il costruttore però legge
+ * `contesto.vitaMescola ?? modello.vita_mescola`, e il 04/08 — con il commit che ha ACCESO
+ * la mescola in produzione, cioe' DOPO che questo cancello aveva gia' prodotto il suo
+ * esito — `contestoNuovo` ha cominciato a mettere `vitaMescola` nel contesto. Da quel
+ * momento l'override era inerte: il braccio col modello e il braccio N1 ricevevano
+ * entrambi la vita di produzione, e V1 usciva 0-0 con 167 pari — il modello confrontato
+ * con se stesso. E' E22 nella sua forma pura: un numero pubblicato, e il fix che lo ha
+ * invalidato arrivato dopo, in silenzio.
+ *
+ * Adesso i due bracci si dichiarano DOVE il costruttore guarda davvero, ed entrambi in
+ * modo esplicito:
+ *   · il modello: vita accesa, i `giri` leave-one-race-out, NESSUN fattore per circuito —
+ *     perche' il fattore non esisteva quando l'esito e' stato misurato, e un cancello si
+ *     riproduce con gli ingredienti che aveva;
+ *   · N1: vita SPENTA, esplicitamente. Non basta piu' «non passare niente»: oggi non
+ *     passare niente significa prendersi la vita di produzione.
+ *
+ * La prova che la correzione e' quella giusta e' che i numeri tornano quelli a referto:
+ * V1 35-8, errore mediano 8 contro 11.
+ */
+const CON_VITA = (contesto, vita) => ({
+  ...contesto,
+  vitaMescola: { attivo: true, giri: vita, natura: 'PRIOR_COMPORTAMENTALE' },
 });
+const SENZA_VITA = (contesto) => ({ ...contesto, vitaMescola: { attivo: false } });
 
 console.log('');
 console.log('══ CANCELLI DELLA VITA DELLA MESCOLA — PREREG_vita_mescola.md ═════════════');
@@ -90,11 +114,12 @@ for (const gara of GARE) {
   const vitaLoo = vitaDa(D, gara);
   const ciecaLoo = vitaCieca(D, gara);
   const base = contestoNuovo(gara);
-  const conVita = { ...base, modello: modelloCon(base, vitaLoo) };
+  const conVita = CON_VITA(base, vitaLoo);
+  const senzaVita = SENZA_VITA(base);
   let n = 0;
   for (const d of mie) {
     const modello = durataPrevista(d, conVita);
-    const n1 = durataPrevista(d, base);
+    const n1 = durataPrevista(d, senzaVita);
     const n2 = vitaLoo[d.mescola] ?? ciecaLoo;
     if (modello.durata === null || n1.durata === null) {
       persi[modello.motivo] = (persi[modello.motivo] ?? 0) + 1;

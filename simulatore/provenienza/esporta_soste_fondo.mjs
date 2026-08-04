@@ -22,8 +22,7 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { adattaColonnare } from './adattatore.mjs';
-import { passoUtilizzabile, statusVerde } from './definizioni.mjs';
-import { MESCOLE_BAGNATO } from './vocabolario.mjs';
+import { garaAsciutta, passoUtilizzabile, statusVerde } from './definizioni.mjs';
 
 export const PERCORSO_SOSTE = 'data/viste/soste_fondo.json';
 export const FINESTRE = [2, 3, 5];
@@ -54,17 +53,14 @@ export function costruisciSosteFondo(radice) {
         continue;
       }
 
-      // Gara asciutta: nessuna gomma da bagnato compare, per nessuno. È la
-      // definizione conservativa — una gara con dieci giri di pioggia non è
-      // "quasi asciutta", è bagnata.
-      let asciutta = true;
+      // Gara asciutta: la definizione vive in definizioni.mjs e da lì si importa
+      // (regola 1). Stava scritta qui dentro finché è servita a un solo modulo.
       const perPilota = new Map();
       for (const { drv, lap, cella } of righe) {
-        if (cella.compound !== null && MESCOLE_BAGNATO.has(cella.compound)) asciutta = false;
         if (!perPilota.has(drv)) perPilota.set(drv, new Map());
         perPilota.get(drv).set(lap, cella);
       }
-      if (!asciutta) { scarta('gara bagnata'); continue; }
+      if (!garaAsciutta(righe)) { scarta('gara bagnata'); continue; }
 
       for (const [drv, celle] of perPilota) {
         for (const [L, cella] of celle) {

@@ -15,52 +15,39 @@
 import { caricaGare2026 } from '../../simulatore/provenienza/gare_2026.mjs';
 import path from 'node:path';
 import { RADICE } from '../confronto/banco.mjs';
+// LA REGOLA DELLO STINT VIVE IN UN POSTO SOLO dal 04/08/2026: stava qui, scritta per il
+// 2026, e il lavoro n. 1 del PO ha chiesto la stessa cosa su otto stagioni di fondo. Due
+// copie sarebbero due perimetri quasi uguali, cioe' E12 (regola 1).
+import { stintConclusi, mediana } from './durate.mjs';
 
 const SIM = path.join(RADICE, 'simulatore');
 
 export const MESCOLE = ['SOFT', 'MEDIUM', 'HARD'];
 const SLICK = new Set(MESCOLE);
 
-export const mediana = (v) => {
-  if (!v.length) return null;
-  const s = [...v].sort((a, b) => a - b);
-  const m = s.length >> 1;
-  return s.length % 2 ? s[m] : (s[m - 1] + s[m]) / 2;
-};
+export { mediana };
 
 let _cache = null;
 
 /**
- * Ogni stint CONCLUSO DA UNA SOSTA, con la gomma che portava e quanto e' durato.
+ * Ogni stint CONCLUSO DA UNA SOSTA del 2026, con la gomma che portava e quanto e' durato.
  *
- * SI ESCLUDONO gli stint che finiscono con la bandiera, e non e' un dettaglio: quelli non
- * sono decisioni sulla gomma — e' la gara che e' finita. Tenerli significherebbe chiedere
- * al modello di prevedere la lunghezza della gara, non la vita del pneumatico.
+ * L'estrazione la fa `stintConclusi` (durate.mjs): esclude l'ultimo stint di ogni pilota,
+ * perche' quello non e' una decisione sulla gomma — e' la gara che e' finita.
  *
- * Si escludono anche le mescole non slick (l'intermedia e la wet hanno un'altra fisica, e
- * il modello dichiara di non averla) e le durate nulle.
+ * QUI si escludono soltanto le mescole non attuali (l'intermedia e la wet hanno un'altra
+ * fisica, e il modello dichiara di non averla) e le durate nulle. Il perimetro PIU' STRETTO
+ * di PREREG_vita_per_circuito.md — via le soste sotto SC e bandiera rossa — NON si applica
+ * qui: queste sono le 427 decisioni su cui i cancelli V1/V2 sono gia' stati chiusi, e
+ * cambiarle sotto un esito gia' scritto sarebbe riscrivere il passato. Chi vuole il
+ * perimetro nuovo chiama `nelPerimetro`.
  */
 export function decisioni() {
   if (_cache) return _cache;
   const gare = caricaGare2026(SIM);
   const fuori = [];
   for (const [nome, g] of Object.entries(gare)) {
-    for (const [drv, celle] of g.perPilota) {
-      const ord = [...celle].sort((a, b) => a[0] - b[0]);
-      let stint = null; let eta = 0; let mescola = null; let giroInizio = null;
-      for (const [lap, c] of ord) {
-        if (c.stint !== stint) {
-          if (stint !== null) {
-            fuori.push({
-              gara: nome, drv, mescola, durata: eta, giro_inizio: giroInizio, giro_sosta: lap - 1,
-            });
-          }
-          stint = c.stint; eta = 0; mescola = c.compound; giroInizio = lap;
-        }
-        if (Number.isFinite(c.tyre_age)) eta = Math.max(eta, c.tyre_age);
-      }
-      // l'ultimo stint NON entra: finisce con la bandiera, non con una decisione
-    }
+    fuori.push(...stintConclusi(g.perPilota, { gara: nome }));
   }
   _cache = fuori.filter((d) => SLICK.has(d.mescola) && d.durata > 0);
   return _cache;
