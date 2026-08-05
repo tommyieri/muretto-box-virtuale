@@ -159,14 +159,14 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
 // I formattatori sono ARTEFATTI trasportati da simulatore/web/ (vendor/simulatore/), con
 // manifest di hash: `node web/trasporta_formattatori.mjs --verifica` esce 1 sulla deriva.
 import { disegna } from './vendor/simulatore/render.mjs?v=280726a';
-import { pannello as pannelloNuovo } from './vendor/simulatore/pannello.mjs?v=040826c';
+import { pannello as pannelloNuovo } from './vendor/simulatore/pannello.mjs?v=280726a';
 // IL MOTORE IN PAGINA, ma solo quando serve. La vista pre-calcolata resta la strada
 // normale — e' gia' li', costa zero e risponde subito. Il motore si accende SOLO quando
 // l'utente sceglie una mescola diversa da quella che ha addosso: quella risposta non e'
 // pre-calcolata e non lo sara' mai, perche' pre-calcolarne tre per ogni giro di ogni
 // pilota porterebbe la vista da 86 a ~130 MB per una cosa che il motore sa gia' fare qui.
 // E' lo stesso `rispostaLive` che usa la diretta, quindi non ci sono due motori.
-import { rispostaLive } from './ponte_live.mjs?v=040826c';
+import { rispostaLive } from './ponte_live.mjs?v=040826a';
 import { curva as curvaDelQuando } from './vendor/simulatore/curva.mjs?v=280726a';
 // l'adattatore del fantasma e' condiviso con live.html: una forma sola per due pagine
 import { simDaFantasma } from './fantasma_sim.mjs?v=310726a';
@@ -305,7 +305,7 @@ async function vistaDi(drv){
 let mescolaScelta = null, contestoLive = null;
 async function contestoDelMotore(){
   if (contestoLive !== null) return contestoLive;
-  try { contestoLive = await (await fetch('vendor/simulatore/motore/contesto_live.json?v=040826c')).json(); }
+  try { contestoLive = await (await fetch('vendor/simulatore/motore/contesto_live.json?v=310726a')).json(); }
   catch(e){ contestoLive = false; }
   return contestoLive;
 }

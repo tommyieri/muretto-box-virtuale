@@ -430,9 +430,9 @@ async function creaMurettoLive(g, deps = {}){
          { rispostaLive, LIMITI_LIVE }, { simDaFantasma }, { creaGhostPlay }, { attaccaGlossario }] = await Promise.all([
     import('./live_bylap.mjs?v=310726a'),
     import('./vendor/simulatore/render.mjs?v=310726a'),
-    import('./vendor/simulatore/pannello.mjs?v=040826c'),
+    import('./vendor/simulatore/pannello.mjs?v=310726a'),
     import('./vendor/simulatore/curva.mjs?v=310726a'),
-    import('./ponte_live.mjs?v=040826c'),
+    import('./ponte_live.mjs?v=310726a'),
     import('./fantasma_sim.mjs?v=310726a'),
     import('./ghostplay.mjs?v=250724c'),
     import('./glossario.mjs?v=250724e')]);
@@ -468,7 +468,7 @@ async function creaMurettoLive(g, deps = {}){
   // vista pre-calcolata di gara.html: se qui ne arrivassero altre, diretta e replay
   // risponderebbero con due tarature — che e' il modo elegante di avere due motori.
   const [contestoLive, teamCol] = await Promise.all([
-    j('vendor/simulatore/motore/contesto_live.json?v=040826c', null),
+    j('vendor/simulatore/motore/contesto_live.json?v=310726a', null),
     j('team_colori.json', {})]);
   // colore del pilota per la messa in scena (dal team del giro corrente)
   const coloreDi = sg => { const L = B.giroPieno(); const t = B.byLap()[L]?.[sg]?.team; return (t && teamCol[t]) || '#9aa4b5'; };
