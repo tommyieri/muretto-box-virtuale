@@ -245,6 +245,24 @@ export function valutaPiano({ gara, freezeLap, pilota, piano, sosteAtteseRivali 
  *
  * `null` non vince mai: un piano non valutabile non e' un piano veloce (regola 6).
  */
+/**
+ * IL VINCOLO DELLA VITA: nessuno stint puo' finire oltre l'eta' massima della sua mescola.
+ *
+ * Legge `eta_finale`, che `creaStint` calcola gia': non ricalcola niente (regola 1).
+ * Una mescola SCONOSCIUTA non viene vincolata — un'assenza non diventa mai un muro
+ * (regola 6), e inventare un limite per una gomma che non si sa quale sia sarebbe peggio
+ * che non averne.
+ */
+export function pianoFattibile(piano, vitaMassima) {
+  if (!vitaMassima) return true;
+  for (const st of piano.stint) {
+    if (st.mescola === null) continue;
+    const max = vitaMassima[st.mescola];
+    if (typeof max === 'number' && st.eta_finale > max) return false;
+  }
+  return true;
+}
+
 export const OBIETTIVI = Object.freeze(['tempo', 'posizione']);
 export function meglioDi(a, b, obiettivo) {
   if (a === null || a.totale === null) return false;
@@ -268,6 +286,11 @@ export function meglioDi(a, b, obiettivo) {
  */
 export function pianoOttimo({
   gara, freezeLap, pilota, giroFinale, kMax = 3, mescolaPrimaSosta = null, sosteAtteseRivali = undefined,
+  // LA VITA MASSIMA come VINCOLO, non come penalita'. `null` ⇒ il vincolo non esiste e
+  // questo file si comporta bit per bit come prima (prereg: PREREG_vita_vincolo.md).
+  // Mappa mescola → eta' massima ammessa alla FINE di uno stint. Il passo non si tocca:
+  // il termine morbido di `vita_mescola` resta dov'era e fa quello che ha sempre fatto.
+  vitaMassima = null,
   // L'OBIETTIVO E' UN INGRESSO DICHIARATO, e il suo valore di riserva e' quello di sempre:
   // finche' nessuno passa `obiettivo`, questo file si comporta bit per bit come prima del
   // 04/08/2026. L'accensione e' una riga sola, e passa dai cancelli di
@@ -321,12 +344,13 @@ export function pianoOttimo({
         if (ordinati[i] < 1 || ordinati[i] > R - 1) return null;
         if (i > 0 && ordinati[i] <= ordinati[i - 1]) return null;
       }
-      return creaPiano({
+      const p = creaPiano({
         soste: ordinati.map((m, i) => ({ giro: freezeLap + m, mescola: mescole[i] })),
         freezeLap, giroFinale: fine,
         mescolaAlCongelamento: cella.compound,
         etaAlCongelamento: a,
       });
+      return pianoFattibile(p, vitaMassima) ? p : null;
     };
 
     // discesa per coordinate: una sosta alla volta, entro il raggio dichiarato
@@ -365,6 +389,18 @@ export function pianoOttimo({
   const migliore = valutabili.length
     ? valutabili.reduce((m, x) => (meglioDi(x, m, obiettivo) ? x : m))
     : null;
+
+  // NESSUN PIANO FATTIBILE: il vincolo si RILASSA e lo dichiara (prereg §4).
+  // Un prodotto che non risponde e' peggio di un prodotto che risponde dicendo di aver
+  // allentato un vincolo. Il caso si marca e chi misura lo conta: se fosse la maggioranza,
+  // il vincolo non sarebbe un vincolo ma un interruttore che spegne il pianificatore.
+  if (migliore === null && vitaMassima) {
+    const senza = pianoOttimo({
+      gara, freezeLap, pilota, giroFinale, kMax, mescolaPrimaSosta, sosteAtteseRivali, obiettivo,
+      vitaMassima: null,
+    }, contesto);
+    return { ...senza, vincolo_rilassato: true };
+  }
   return {
     migliore,
     per_k: perK.map((x) => ({ k: x.k, totale: x.totale, posizione: x.posizione ?? null, soste: x.piano.soste.map((s) => s.giro) })),
