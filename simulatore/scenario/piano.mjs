@@ -208,7 +208,42 @@ export function valutaPiano({ gara, freezeLap, pilota, piano, sosteAtteseRivali 
     steps: scenario.steps, pits: scenario.pits, neutralizzazione: scenario.neutralizzazione ?? null,
     tetto: scenario.tetto ?? null,
   });
-  return { totale: risultato.cum[pilota] ?? null, scenario };
+  // LA POSIZIONE viaggia accanto al tempo dal 04/08/2026. `ordine` e' gia' la lista dei
+  // piloti per cumulato con i null esclusi (regola 6): chi non ha passo non e' «dietro»,
+  // non c'e'. `popolazione` esce insieme perche' due ranghi su popolazioni diverse non si
+  // confrontano, e col tetto acceso il nostro piano puo' toccare il cumulato di un rivale.
+  // Prereg: ai_lab/pianificatore/PREREG_obiettivo_posizione.md §2.
+  const i = risultato.ordine.indexOf(pilota);
+  return {
+    totale: risultato.cum[pilota] ?? null,
+    posizione: i < 0 ? null : i + 1,
+    popolazione: risultato.ordine.length,
+    scenario,
+  };
+}
+
+/**
+ * L'OBIETTIVO, in un posto solo (regola 1).
+ *
+ * `tempo`      minimizza il cumulato alla bandiera — cio' che il motore ha sempre fatto.
+ * `posizione`  minimizza la coppia (posizione, cumulato) in ordine LESSICOGRAFICO: prima
+ *              la posizione, e a parita' di posizione il tempo.
+ *
+ * Non c'e' una somma pesata, e non e' una svista: un cambio in secondi-per-posizione
+ * sarebbe un parametro libero tarato in casa su undici gare — la forma esatta del fattore
+ * per circuito spento il 04/08. Cosi' i parametri liberi sono ZERO, e dove la posizione non
+ * distingue l'obiettivo resta identico a quello di prima, bit per bit.
+ *
+ * `null` non vince mai: un piano non valutabile non e' un piano veloce (regola 6).
+ */
+export const OBIETTIVI = Object.freeze(['tempo', 'posizione']);
+export function meglioDi(a, b, obiettivo) {
+  if (a === null || a.totale === null) return false;
+  if (b === null || b.totale === null) return true;
+  if (obiettivo === 'posizione' && a.posizione !== null && b.posizione !== null && a.posizione !== b.posizione) {
+    return a.posizione < b.posizione;
+  }
+  return a.totale < b.totale - 1e-9;
 }
 
 /**
@@ -222,7 +257,15 @@ export function valutaPiano({ gara, freezeLap, pilota, piano, sosteAtteseRivali 
  *          cumulato minore, `per_k` tiene tutti i k valutati perché la risposta
  *          «due soste costano 3 s più di una» è un'informazione, non uno scarto.
  */
-export function pianoOttimo({ gara, freezeLap, pilota, giroFinale, kMax = 3, mescolaPrimaSosta = null, sosteAtteseRivali = undefined }, contesto) {
+export function pianoOttimo({
+  gara, freezeLap, pilota, giroFinale, kMax = 3, mescolaPrimaSosta = null, sosteAtteseRivali = undefined,
+  // L'OBIETTIVO E' UN INGRESSO DICHIARATO, e il suo valore di riserva e' quello di sempre:
+  // finche' nessuno passa `obiettivo`, questo file si comporta bit per bit come prima del
+  // 04/08/2026. L'accensione e' una riga sola, e passa dai cancelli di
+  // ai_lab/pianificatore/PREREG_obiettivo_posizione.md.
+  obiettivo = 'tempo',
+}, contesto) {
+  if (!OBIETTIVI.includes(obiettivo)) throw new Error(`obiettivo sconosciuto: ${JSON.stringify(obiettivo)} — ammessi ${OBIETTIVI.join(', ')}`);
   const g = contesto.gare[gara];
   if (!g) throw new Error(`gara sconosciuta: ${gara}`);
   const cella = g.perPilota.get(pilota)?.get(freezeLap);
@@ -300,22 +343,23 @@ export function pianoOttimo({ gara, freezeLap, pilota, giroFinale, kMax = 3, mes
           const p = costruisci(prova);
           if (p === null) continue;
           const v = valutaPiano({ gara, freezeLap, pilota, piano: p, sosteAtteseRivali }, contesto);
-          if (v.totale !== null && v.totale < migliore.totale - 1e-9) {
+          if (meglioDi(v, migliore, obiettivo)) {
             correnti = prova; piano = p; migliore = v; cambiato = true;
           }
         }
       }
     }
-    perK.push({ k, piano, totale: migliore.totale, scenario: migliore.scenario });
+    perK.push({ k, piano, totale: migliore.totale, posizione: migliore.posizione, popolazione: migliore.popolazione, scenario: migliore.scenario });
   }
 
   const valutabili = perK.filter((x) => x.totale !== null);
   const migliore = valutabili.length
-    ? valutabili.reduce((m, x) => (x.totale < m.totale - 1e-9 ? x : m))
+    ? valutabili.reduce((m, x) => (meglioDi(x, m, obiettivo) ? x : m))
     : null;
   return {
     migliore,
-    per_k: perK.map((x) => ({ k: x.k, totale: x.totale, soste: x.piano.soste.map((s) => s.giro) })),
+    per_k: perK.map((x) => ({ k: x.k, totale: x.totale, posizione: x.posizione ?? null, soste: x.piano.soste.map((s) => s.giro) })),
+    obiettivo,
     mescole_gia_usate: [...usate].sort(),
     k_minimo: kMinimo,
     vincolo_regolamento: kMinimo > 0

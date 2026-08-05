@@ -1,12 +1,3 @@
-// ————————————————————————————————————————————————————————————————————————
-// ARTEFATTO GENERATO — non modificare qui.
-//   sorgente: simulatore/scenario/piano.mjs
-//   generato: simulatore/web/trasporta_motore.mjs
-// Vercel serve demo/ come radice e non vede simulatore/: questa copia esiste
-// solo per essere ESEGUITA dal pannello live, dove il pre-calcolo non puo'
-// esistere. Modificare QUESTO file lo fa divergere dall'originale, e
-// `node web/trasporta_motore.mjs --verifica` fallisce (lo esegue la CI).
-// ————————————————————————————————————————————————————————————————————————
 // piano.mjs — IL PIANO GOMME fino alla bandiera: la forma, e la ricerca.
 //
 // Questo modulo possiede DUE cose e nessuna terza:
@@ -249,8 +240,8 @@ export const OBIETTIVI = Object.freeze(['tempo', 'posizione']);
 export function meglioDi(a, b, obiettivo) {
   if (a === null || a.totale === null) return false;
   if (b === null || b.totale === null) return true;
-  if (obiettivo === 'posizione' && a.posizione !== null && b.posizione !== null && a.posizione !== b.posizione) {
-    return a.posizione < b.posizione;
+  if (obiettivo === 'posizione' && a.posizione !== null && b.posizione !== null) {
+    return a.posizione <= b.posizione;
   }
   return a.totale < b.totale - 1e-9;
 }

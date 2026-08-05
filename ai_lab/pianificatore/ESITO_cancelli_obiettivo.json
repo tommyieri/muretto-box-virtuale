@@ -1,0 +1,139 @@
+{
+ "_targhetta": {
+  "cosa_e": "Esito dei cancelli P1-P4 di PREREG_obiettivo_posizione.md — la posizione alla bandiera come obiettivo del pianificatore, contro il tempo.",
+  "prereg": "ai_lab/pianificatore/PREREG_obiettivo_posizione.md",
+  "generato_da": "ai_lab/pianificatore/cancelli_obiettivo.mjs",
+  "data": "2026-08-04",
+  "i_due_bracci": "identici salvo `obiettivo`: stesso tetto, stessi rivali (fermi, come in produzione), stessa vita mescola leave-one-race-out",
+  "soglie": {
+   "p2_calo_punti": 5,
+   "p4_quota_diversi": 0.1,
+   "p": 0.05
+  }
+ },
+ "n": 167,
+ "errore_mediano": {
+  "tempo": 7,
+  "posizione": 7
+ },
+ "arrivi_cosi": {
+  "tempo": 0.38323353293413176,
+  "posizione": 0.40718562874251496
+ },
+ "cancelli": {
+  "P1": {
+   "passa": true
+  },
+  "P2": {
+   "passa": false
+  },
+  "P3": {
+   "passa": true,
+   "n": 167,
+   "vinceA": 4,
+   "vinceB": 1,
+   "pari": 162,
+   "discordanti": 5,
+   "p": 0.37500000000000006
+  },
+  "P4": {
+   "passa": false,
+   "diversi": 5,
+   "quota": 0.029940119760479042
+  }
+ },
+ "guardie": {
+  "violazioni_regolamento": 0,
+  "popolazione_diversa": 0
+ },
+ "per_gara": {
+  "Australia": {
+   "n": 13,
+   "diversi": 0
+  },
+  "Austria": {
+   "n": 21,
+   "diversi": 0
+  },
+  "Belgio": {
+   "n": 1,
+   "diversi": 0
+  },
+  "Canada": {
+   "n": 8,
+   "diversi": 0
+  },
+  "Cina": {
+   "n": 1,
+   "diversi": 0
+  },
+  "Giappone": {
+   "n": 7,
+   "diversi": 0
+  },
+  "Miami": {
+   "n": 3,
+   "diversi": 0
+  },
+  "Monaco": {
+   "n": 63,
+   "diversi": 5
+  },
+  "Spagna": {
+   "n": 27,
+   "diversi": 0
+  },
+  "Ungheria": {
+   "n": 23,
+   "diversi": 0
+  }
+ },
+ "differenti": [
+  {
+   "gara": "Monaco",
+   "drv": "HAD",
+   "vera": 34,
+   "tempo": 1,
+   "posizione": 17,
+   "pos_tempo": 7,
+   "pos_posizione": 4
+  },
+  {
+   "gara": "Monaco",
+   "drv": "HAD",
+   "vera": 36,
+   "tempo": 1,
+   "posizione": 11,
+   "pos_tempo": 4,
+   "pos_posizione": 3
+  },
+  {
+   "gara": "Monaco",
+   "drv": "HUL",
+   "vera": 53,
+   "tempo": 2,
+   "posizione": 4,
+   "pos_tempo": 12,
+   "pos_posizione": 11
+  },
+  {
+   "gara": "Monaco",
+   "drv": "PIA",
+   "vera": 11,
+   "tempo": 10,
+   "posizione": 29,
+   "pos_tempo": 7,
+   "pos_posizione": 6
+  },
+  {
+   "gara": "Monaco",
+   "drv": "RUS",
+   "vera": 10,
+   "tempo": 1,
+   "posizione": 17,
+   "pos_tempo": 7,
+   "pos_posizione": 5
+  }
+ ],
+ "verdetto": "NON SI SPEDISCE — P4 fallisce: l'obiettivo e' inerte. Con questo tetto e questi rivali la posizione non distingue i piani, e il difetto era gia' chiuso dalle altre due voci."
+}
