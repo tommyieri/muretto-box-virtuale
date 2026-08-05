@@ -96,6 +96,7 @@ export function costruisciVistaDemo(radice) {
   // costante nel codice. Vedi ai_lab/REGISTRO_F1.md.
   const orizzonteRisposta = JSON.parse(readFileSync(path.join(radice, 'data', 'modelli', 'orizzonte_risposta.json'), 'utf8'));
   const vitaMescola = JSON.parse(readFileSync(path.join(radice, 'data', 'modelli', 'vita_mescola.json'), 'utf8'));
+  const sogliaSorpasso = JSON.parse(readFileSync(path.join(radice, 'data', 'modelli', 'soglia_sorpasso.json'), 'utf8'));
   const pavimenti = costantiDirector.pavimenti;
 
   const scenari = [];
@@ -105,7 +106,7 @@ export function costruisciVistaDemo(radice) {
     if (pilota === null) continue;
     const mescola = mescolaProposta(gara, Lf, pilota);
     const giroPit = Lf + 1; // BOX NOW: la sosta è al giro successivo al congelamento
-    const contesto = { gare, modello, prior, costantiDirector, bandaRientro, orizzonteRisposta, vitaMescola, nGiriGara: gara.nGiri };
+    const contesto = { gare, modello, prior, costantiDirector, bandaRientro, orizzonteRisposta, vitaMescola, sogliaSorpasso, nGiriGara: gara.nGiri };
 
     const rientro = doveRientri({ gara: nomeGara, freezeLap: Lf, pilota, giroPit, mescola }, contesto);
     // IL PIANO FINO ALLA BANDIERA. Gli allarmi si calcolano DOPO, sul piano già

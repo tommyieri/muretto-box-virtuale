@@ -125,4 +125,38 @@ for (const rotto of [{ SOFT: 0 }, { SOFT: -3 }, { SOFT: 'dodici' }, { SOFT: NaN 
     () => creaVita(rotto));
 }
 
+// ── (f) CHI MISURA DEVE POTER SPEGNERE LA VITA, e il contesto deve obbedirgli ──
+//
+// NATA DA UN GUASTO VERO, trovato il 04/08/2026. `cancelli_vita.mjs` scriveva la vita
+// dentro `modello.vita_mescola`; il costruttore legge `contesto.vitaMescola ?? modello.
+// vita_mescola`, e appena `contestoNuovo` ha cominciato a mettere `vitaMescola` nel
+// contesto — col commit che ha ACCESO la mescola in produzione, cioe' DOPO che il cancello
+// aveva gia' prodotto il suo esito — quell'override e' diventato inerte. I due bracci
+// ricevevano la stessa vita e V1 usciva 0-0 con 167 pari: il modello confrontato con se
+// stesso, verde e muto. E' E22 nella sua forma pura.
+//
+// Il guasto non stava nel passo (che questa sentinella copriva gia'): stava nella
+// PRECEDENZA fra le due sorgenti del parametro. Quindi si prova quella.
+//
+// COSA FA FALLIRE QUESTO BLOCCO: se `contesto.vitaMescola` smettesse di avere la
+// precedenza, o se uno spento esplicito nel contesto non spegnesse davvero — cioe' se chi
+// misura non potesse piu' costruire due bracci distinti.
+{
+  const sceltaDa = (contesto, modello) => {
+    // la stessa espressione di scenario/costruttore.mjs. Se la' cambia e qui no, questo
+    // caso diventa un ornamento: e' il motivo per cui il commento la nomina per intero.
+    const vm = contesto.vitaMescola ?? modello.vita_mescola;
+    if (vm?.attivo !== true || !vm.giri) return null;
+    return vm.giri;
+  };
+  const produzione = { vita_mescola: { attivo: true, giri: { SOFT: 99, MEDIUM: 99, HARD: 99 } } };
+
+  b.uguale('il contesto ha la PRECEDENZA sul modello: chi misura sceglie la vita',
+    JSON.stringify(sceltaDa({ vitaMescola: { attivo: true, giri: VITA } }, produzione)), JSON.stringify(VITA));
+  b.verifica('uno SPENTO esplicito nel contesto spegne davvero, anche se il modello e\' acceso',
+    sceltaDa({ vitaMescola: { attivo: false } }, produzione) === null);
+  b.uguale('senza vitaMescola nel contesto vale il modello — cioe\' la produzione, non un\'assenza',
+    JSON.stringify(sceltaDa({}, produzione)), JSON.stringify(produzione.vita_mescola.giri));
+}
+
 b.chiudi();

@@ -19,19 +19,6 @@
   "MEDIUM": 19,
   "HARD": 22
  },
- "_nota_fattore": "Il fattore moltiplica la vita di TUTTE le mescole su quel circuito. Si stima su tutte le mescole insieme (19-86 decisioni per circuito) perche' le celle circuito x mescola sono troppo magre: Canada e Miami hanno ZERO stint hard conclusi. ATTENZIONE: il fattore NON e' fisica della pista. Misurato: la vita e' piu' costante in GIRI (24,9% di variazione fra circuiti) che in CHILOMETRI (32,1%) o in frazione di gara (29,7%) — cioe' l'intuizione «pista corta, stint piu' lungo in giri» e' SMENTITA dai dati. Monaco fa stint di 15 giri e Spa di 16,5, benche' il giro di Monaco sia meta'. Il fattore basso di Monaco (0,789) viene dal regolamento — 4,30 soste per pilota, l'obbligo delle due soste — non dalle gomme.",
- "fattore_circuito": {
-  "Australia": 0.711,
-  "Austria": 1.105,
-  "Belgio": 0.868,
-  "Canada": 1.105,
-  "Cina": 0.526,
-  "Giappone": 1.0,
-  "GranBretagna": 1.105,
-  "Miami": 1.395,
-  "Monaco": 0.789,
-  "Spagna": 0.842,
-  "Ungheria": 1.053
- },
- "_nota_circuito_ignoto": "Un circuito che non compare qui usa fattore 1: la vita globale, senza inventare un adattamento che non e' stato misurato (regola 6). Vale per Zandvoort il 23/08."
+ "_fattore_circuito_SPENTO_il_04_08_2026": "C'ERA, ed e' stato tolto lo stesso giorno in cui era stato acceso. Undici numeri (Australia 0,711 ... Miami 1,395) stimati come mediana del circuito diviso mediana globale sulle 427 decisioni del 2026. Tolti per l'esito dei cancelli di ai_lab/degrado/PREREG_vita_per_circuito.md, che era la regola di STOP scritta PRIMA: (1) il fattore stimato su otto stagioni di fondo — 3.743 stint, la fonte piu' larga che il progetto abbia — e' PEGGIO del non avere nessun fattore, 5,20 giri di errore mediano contro 5,00; (2) il placebo p=0,42: dare a Monaco il fattore di Spa funziona quanto dargli il suo; (3) il vantaggio del fattore 2026 (3,52 contro 5,00) e' TUTTO IN CAMPIONE e non e' validabile con nessuna procedura, perche' nel 2026 ogni circuito compare esattamente una volta e togliere la gara toglie il circuito. In piu' era 1,5 volte piu' disperso della stima storica (sd 0,226 contro 0,153): otto stagioni dicono che le piste differiscono MENO di quanto undici gare avessero stimato. Chi vuole rimetterlo ha bisogno di una fonte che validi fuori campione, non di piu' calcoli sulla stessa. Il generatore delle due ricette resta vivo in ai_lab/degrado/fattore_circuito.mjs: il numero e' riproducibile anche adesso che non si usa.",
+ "_cosa_significa_che_non_c_e": "Il costruttore fa `vm.fattore_circuito?.[gara] ?? 1`, quindi l'assenza della chiave vale fattore 1 su OGNI circuito: la vita e' quella globale, uguale ovunque. Non e' un valore di riserva messo al posto di un dato mancante (regola 6) — e' la misura: la differenza fra piste non sopravvive a un placebo. Vale anche per Zandvoort il 23/08, che ora corre a 1 per la stessa ragione di tutti gli altri e non perche' e' un circuito ignoto."
 }

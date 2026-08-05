@@ -1,0 +1,181 @@
+{
+ "_targhetta": {
+  "cosa_e": "Esito dei cancelli S1-S4 di PREREG_soglia_sorpasso.md — la soglia di vantaggio di passo per sorpassare, e se la geometria la predice.",
+  "prereg": "ai_lab/sorpasso/PREREG_soglia_sorpasso.md",
+  "generato_da": "ai_lab/sorpasso/cancelli_soglia.mjs",
+  "data": "2026-08-04",
+  "natura": "MISURATO_FONDO",
+  "perimetro": "occasioni: F dietro L di <= 1s, nessun box e verde di status per [g, g+5], passo su 5 giri precedenti",
+  "limite_DRS": "Il fondo 2018-2025 ha il DRS, il 2026 no (Manual Override Mode). Il LIVELLO di X qui e di un era con un aiuto al sorpasso che non esiste piu: la soglia vera del 2026 e PIU ALTA. La forma viene dalla storia, il livello si ancora al 2026 con UNA costante (prereg §7)."
+ },
+ "perimetro": {
+  "occasioni": 5498,
+  "gare": 64,
+  "per_pista": {
+   "Australia": {
+    "n": 444,
+    "p": 103
+   },
+   "Austria": {
+    "n": 1055,
+    "p": 327
+   },
+   "Belgio": {
+    "n": 301,
+    "p": 124
+   },
+   "GranBretagna": {
+    "n": 475,
+    "p": 82
+   },
+   "Canada": {
+    "n": 567,
+    "p": 97
+   },
+   "Cina": {
+    "n": 167,
+    "p": 54
+   },
+   "Ungheria": {
+    "n": 592,
+    "p": 182
+   },
+   "Giappone": {
+    "n": 316,
+    "p": 111
+   },
+   "Monaco": {
+    "n": 745,
+    "p": 9
+   },
+   "Spagna": {
+    "n": 413,
+    "p": 189
+   },
+   "Miami": {
+    "n": 423,
+    "p": 123
+   }
+  }
+ },
+ "stadio1": {
+  "pendenza": -1.982602415131358,
+  "se": 0.09107151501539114,
+  "z": -21.769731345704493,
+  "p": 4.8965847315434656e-105,
+  "soglia_per_pista": {
+   "Australia": -0.7059368232166718,
+   "Austria": -0.537115398832581,
+   "Belgio": -0.40501492650988385,
+   "Canada": -0.9572130161026764,
+   "Cina": -0.5289532265655333,
+   "Giappone": -0.6372295981818094,
+   "GranBretagna": -0.8934272728702708,
+   "Miami": -0.5614421283445751,
+   "Monaco": -2.865555964293198,
+   "Spagna": -0.38806753316762677,
+   "Ungheria": -0.706810014502718
+  }
+ },
+ "indice": {
+  "Australia": 0.894,
+  "Austria": 1.563,
+  "Belgio": 1.695,
+  "Canada": 1.563,
+  "Cina": 1.399,
+  "Giappone": 0.938,
+  "GranBretagna": 1,
+  "Miami": 1.096,
+  "Monaco": 0,
+  "Spagna": 0.833,
+  "Ungheria": 0.432
+ },
+ "cancelli": {
+  "S1": {
+   "passa": true,
+   "b": -1.982602415131358,
+   "p": 4.8965847315434656e-105
+  },
+  "S2": {
+   "passa": true,
+   "legge": 0.2886212212002849,
+   "nullo": 0.3010902490797217
+  },
+  "S3": {
+   "passa": true,
+   "r2": 0.45137175434976856,
+   "a": -0.8693991627272083,
+   "b": -0.9119246668565336,
+   "battuti": 22,
+   "p": 0.04590818363273453
+  },
+  "S4": {
+   "passa": false,
+   "senza_monaco": {
+    "S2": {
+     "legge": 0.09645990650234515,
+     "nullo": 0.11009631236708617,
+     "passa": true
+    },
+    "S3": {
+     "r2": 0.015905316603070072,
+     "a": -0.640499477366994,
+     "b": -0.05929570797989618,
+     "battuti": 355,
+     "p": 0.7105788423153693,
+     "passa": false
+    }
+   }
+  }
+ },
+ "ramo": "DUE LIVELLI",
+ "consegna": "S1, S2 e S3 passano ma senza Monaco la legge non regge: si spedisce a DUE LIVELLI — le piste con indice sotto 0.2 prendono la loro soglia, tutte le altre la soglia comune.",
+ "soglie_candidate": {
+  "comune": -0.6372295981818094,
+  "da_legge": {
+   "Australia": -0.9660631774140008,
+   "Austria": -0.35598557528697994,
+   "Belgio": -0.23561151926191737,
+   "Canada": -0.35598557528697994,
+   "Cina": -0.5055412206514514,
+   "Giappone": -0.9259384920723134,
+   "GranBretagna": -0.8693991627272083,
+   "Miami": -0.781854394708981,
+   "Monaco": -1.781323829583742,
+   "Spagna": -1.0216905820922495,
+   "Ungheria": -1.3873723735017194
+  },
+  "due_livelli": {
+   "Australia": -0.6372295981818094,
+   "Austria": -0.6372295981818094,
+   "Belgio": -0.6372295981818094,
+   "Canada": -0.6372295981818094,
+   "Cina": -0.6372295981818094,
+   "Giappone": -0.6372295981818094,
+   "GranBretagna": -0.6372295981818094,
+   "Miami": -0.6372295981818094,
+   "Monaco": -2.865555964293198,
+   "Spagna": -0.6372295981818094,
+   "Ungheria": -0.6372295981818094
+  }
+ },
+ "ancoraggio_2026": {
+  "occasioni": 767,
+  "quota_osservata": 0.242503259452412,
+  "quota_prevista_senza_costante": 0.2332093618239393,
+  "costante": 0.031856755810975856
+ },
+ "soglia_spedita": {
+  "Australia": -0.6054,
+  "Austria": -0.6054,
+  "Belgio": -0.6054,
+  "Canada": -0.6054,
+  "Cina": -0.6054,
+  "Giappone": -0.6054,
+  "GranBretagna": -0.6054,
+  "Miami": -0.6054,
+  "Monaco": -2.8337,
+  "Spagna": -0.6054,
+  "Ungheria": -0.6054
+ }
+}

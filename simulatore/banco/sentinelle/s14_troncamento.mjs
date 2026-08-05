@@ -35,6 +35,7 @@ const modello = JSON.parse(readFileSync(path.join(radice, 'data', 'modelli', 'mo
 b.verifica('il registro delle misure a congelamento non è vuoto', MISURE_A_CONGELAMENTO.length > 0);
 
 // Fixture: due gare reali del grezzo pinnato, a due congelamenti diversi.
+const leggiSigillo = (nome) => JSON.parse(readFileSync(path.join(radice, 'data', 'modelli', nome), 'utf8'));
 const fonti = fontiGare2026(radice);
 const CASI = [['Ungheria', 30], ['Ungheria', 45], ['Miami', 20], ['Monaco', 40]];
 
@@ -43,6 +44,10 @@ for (const [nomeGara, Lf] of CASI) {
   const ctx = {
     nGiri: gara.nGiri, rho: modello.rho.valore, delta70: modello.delta_70.scelto,
     nomeGara, modello, prior: caricaPrior(radice), costantiDirector: caricaCostanti(radice),
+    // i sigilli che il motore legge dal contesto: senza, queste misure girerebbero su una
+    // fisica diversa da quella del prodotto e l'invarianza sarebbe provata a vuoto
+    vitaMescola: leggiSigillo('vita_mescola.json'),
+    sogliaSorpasso: leggiSigillo('soglia_sorpasso.json'),
   };
   const troncate = gara.righe.filter((r) => r.lap <= Lf);
 

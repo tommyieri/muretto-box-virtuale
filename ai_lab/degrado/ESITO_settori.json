@@ -1,0 +1,125 @@
+{
+ "_targhetta": {
+  "cosa_e": "Esito dei cancelli M1-M3 di PREREG_settori.md — il degrado per mescola letto sui tre settori invece che sul giro intero.",
+  "prereg": "ai_lab/degrado/PREREG_settori.md",
+  "generato_da": "ai_lab/degrado/settori.mjs",
+  "data": "2026-08-04",
+  "i_microsettori_non_esistono": "Le colonne ms1/ms2/ms3 del grezzo NON sono tempi: sono stringhe di codici di stato per mini-settore, della famiglia dei SegmentsSector di FastF1. La risoluzione piu fine disponibile sono i tre settori.",
+  "metrica": "eta_pareggio = rumore residuo / divario fra la mescola che degrada di piu e quella che degrada di meno. Sul giro intero vale 21,9 giri."
+ },
+ "taratura": {
+  "giro": {
+   "rho": {
+    "SOFT": 0.029265949661230715,
+    "MEDIUM": 0.04046874015667604,
+    "HARD": 0.04406711487166615
+   },
+   "divario": 0.014801165210435438,
+   "rumore": 0.6962996530225453,
+   "eta_pareggio": 47.043570092145515,
+   "n": 10170
+  },
+  "pubblicato": {
+   "divario": 0.01578,
+   "tolleranza_divario": 0.0015
+  },
+  "verde": true
+ },
+ "settori": [
+  {
+   "settore": 1,
+   "rho": {
+    "SOFT": 0.009209884029934423,
+    "MEDIUM": 0.011639465995969996,
+    "HARD": 0.012483089763513852
+   },
+   "divario": 0.0032732057335794294,
+   "rumore": 0.30825223805227425,
+   "eta_pareggio": 94.1744158914153,
+   "n": 10170
+  },
+  {
+   "settore": 2,
+   "rho": {
+    "SOFT": 0.013915350484387105,
+    "MEDIUM": 0.01681488353705854,
+    "HARD": 0.018171866640340265
+   },
+   "divario": 0.00425651615595316,
+   "rumore": 0.35078544708161297,
+   "eta_pareggio": 82.41139801407888,
+   "n": 10170
+  },
+  {
+   "settore": 3,
+   "rho": {
+    "SOFT": 0.006140715146909201,
+    "MEDIUM": 0.012014390623647534,
+    "HARD": 0.01341215846781201
+   },
+   "divario": 0.007271443320902809,
+   "rumore": 0.31157244979574295,
+   "eta_pareggio": 42.848776514572165,
+   "n": 10170
+  }
+ ],
+ "settore_vincente": 3,
+ "cancelli": {
+  "M1": {
+   "passa": false,
+   "eta_pareggio": 42.848776514572165,
+   "limite": 32.221623350784604,
+   "rapporto": 0.6849315068493151,
+   "eta_pareggio_giro": 47.043570092145515
+  },
+  "M2": {
+   "passa": true,
+   "p": 0.004975124378109453,
+   "battuti": 0,
+   "ripetizioni": 200
+  },
+  "M3": {
+   "passa": true,
+   "vincente_fondo": 3,
+   "fondo": [
+    {
+     "settore": 1,
+     "rho": {
+      "SOFT": 0.011730623376870171,
+      "MEDIUM": 0.010983349962638889,
+      "HARD": 0.010826904220681652
+     },
+     "divario": 0.0009037191561885195,
+     "rumore": 0.5358151027398375,
+     "eta_pareggio": 592.9000166375407,
+     "n": 73804
+    },
+    {
+     "settore": 2,
+     "rho": {
+      "SOFT": 0.019863932057812044,
+      "MEDIUM": 0.019945019294556367,
+      "HARD": 0.018637779865583914
+     },
+     "divario": 0.001307239428972453,
+     "rumore": 0.2990886921113633,
+     "eta_pareggio": 228.79411795776386,
+     "n": 73804
+    },
+    {
+     "settore": 3,
+     "rho": {
+      "SOFT": 0.014339838849568916,
+      "MEDIUM": 0.013920931568391585,
+      "HARD": 0.012959764377835411
+     },
+     "divario": 0.001380074471733505,
+     "rumore": 0.23577729890328578,
+     "eta_pareggio": 170.84389555233713,
+     "n": 73804
+    }
+   ]
+  }
+ },
+ "verdetto": "NULL, E LA RISPOSTA E' DEFINITIVA CON QUESTA FONTE: alla risoluzione che abbiamo il muro non cade. Non e' il modello e non e' il settore — servono tempi per mini-settore, che nel nostro grezzo non esistono (le colonne ms1/ms2/ms3 sono codici di stato, non cronometri)."
+}

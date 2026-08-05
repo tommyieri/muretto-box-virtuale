@@ -266,6 +266,8 @@ function selettoreMescole(vista, s) {
         // Il titolo resta CORTO come la decisione del 04/08 su tutto il pannello: al
         // lettore arriva la cosa, non il referto che la calibra. Dice solo che si puo'
         // montare — cosa cambia e quanto vale sta nel sigillo vita_mescola.json, non qui.
+        // (Testo scelto da Tommi nello squash di #116: la mia versione diceva anche «cambia
+        // quanto dura, non quanto va», ed e' un dettaglio di troppo per la stessa regola.)
         ? (m.codice === s.mescola_scelta ? 'la gomma che stai montando' : 'monta questa gomma')
         : m.motivo,
       valore: m.codice,

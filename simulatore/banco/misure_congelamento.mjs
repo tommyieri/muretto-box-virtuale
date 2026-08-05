@@ -21,6 +21,7 @@ import { creaPasso, stimaBasi } from '../engine/passo_v2.mjs';
 import { osservazioniVerdi, indicizza } from '../provenienza/gare_indice.mjs';
 import { costruisciScenario, doveRientri, curvaDelQuando } from '../scenario/costruttore.mjs';
 import { creaPiano, pianoOttimo, valutaPiano } from '../scenario/piano.mjs';
+import { pianiComportamentali } from '../scenario/rivali.mjs';
 import { calibraDegrado } from '../live/calibrazione.mjs';
 import { feedDaGara } from '../live/feed_archivio.mjs';
 
@@ -42,6 +43,14 @@ const contestoDa = (righe, ctx) => ({
   modello: ctx.modello,
   prior: ctx.prior,
   costantiDirector: ctx.costantiDirector,
+  // I SIGILLI che il motore legge dal contesto viaggiano anche qui, o le misure a
+  // congelamento girerebbero su una fisica diversa da quella del prodotto — e
+  // l'invarianza al troncamento sarebbe provata su un motore che non esiste.
+  // `pianiComportamentali` senza `vitaMescola` torna null per ogni Lf, cioe' costante:
+  // s14 lo prende come misura banale, ed e' esattamente il tipo di test-ornamento che
+  // la regola 4 vieta.
+  vitaMescola: ctx.vitaMescola,
+  sogliaSorpasso: ctx.sogliaSorpasso,
 });
 const pilotaDeterministico = (righe, Lf) =>
   [...new Set(righe.filter((r) => r.lap === Lf).map((r) => r.drv))].sort()[0];
@@ -155,6 +164,19 @@ export const MISURE_A_CONGELAMENTO = [
         contestoDa(righe, ctx),
       );
       return { per_k: r.per_k, mescole_gia_usate: r.mescole_gia_usate, migliore: r.migliore ? { k: r.migliore.k, totale: r.migliore.totale, soste: r.migliore.piano.soste } : null };
+    },
+  },
+  {
+    nome: 'pianiComportamentali',
+    modulo: 'scenario/rivali.mjs',
+    descrizione: 'le soste ATTESE dei rivali: dedotte da mescola ed eta\' al congelamento. Se sbirciasse oltre Lf sarebbe l\'oracolo travestito (E14), cioe\' il difetto peggiore possibile — un motore che sembra bravo perche\' sa gia\' quando si fermano gli altri',
+    esegui: (righe, Lf, ctx) => {
+      const ctxCompleto = contestoDa(righe, ctx);
+      const g = ctxCompleto.gare[ctx.nomeGara];
+      return pianiComportamentali(
+        { g, freezeLap: Lf, pilota: pilotaDeterministico(righe, Lf), giroFinale: Lf + 30 },
+        ctxCompleto,
+      );
     },
   },
   {

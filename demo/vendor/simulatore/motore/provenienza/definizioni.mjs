@@ -135,3 +135,23 @@ export function passoBagnato(cella) {
 export function passoUtilizzabile(cella) {
   return verde(cella) && cella.lap_time !== null;
 }
+
+/**
+ * GARA ASCIUTTA: nessuna gomma da bagnato compare, per nessuno.
+ *
+ * È la definizione CONSERVATIVA — una gara con dieci giri di pioggia non è
+ * "quasi asciutta", è bagnata — ed è l'unica del repo. Viveva inline dentro
+ * `esporta_soste_fondo.mjs`; è salita qui il 04/08/2026 quando le durate del
+ * fondo hanno avuto bisogno della stessa domanda. Due copie di "asciutta"
+ * avrebbero prodotto due perimetri che si somigliano abbastanza da non
+ * accorgersene: è la forma esatta di E12, che questo file esiste per impedire.
+ *
+ * Prende le righe GIÀ adattate al contratto, non il grezzo: la frontiera ha già
+ * lavato i letterali d'assenza (E05), quindi qui una mescola è una mescola.
+ */
+export function garaAsciutta(righe) {
+  for (const { cella } of righe) {
+    if (cella.compound !== null && MESCOLE_BAGNATO.has(cella.compound)) return false;
+  }
+  return true;
+}

@@ -91,7 +91,14 @@ console.log(`   parametri (tutti costanti nella fonte): minGap ${TETTO.minGap} �
 console.log(`   perimetro: ${gare().length} gare — Miami RIENTRA (nessun parametro per circuito da cercare)`);
 
 // ── il braccio senza vincolo: e' insieme la linea di base E la taratura ──────
-const senza = braccio(null);
+// IL BRACCIO SENZA VINCOLO DEVE DIRE `false`, NON `null`, dal 04/08/2026.
+// `null` significa «non specificato», e da quando il tetto e' in produzione non-specificato
+// vuol dire ACCESO: questo braccio stava misurando il tetto contro il tetto, e la taratura
+// e' andata rossa (terzile alto 13-23 invece di 13-28) per quel motivo e non per una
+// regressione. E' la terza volta in un giorno che un A/B diventa A/A in silenzio dopo
+// un'accensione — vedi cancelli_vita.mjs e il commento di risolviTetto. `false` e' il caso
+// che il costruttore espone apposta.
+const senza = braccio(false);
 const ordSenza = [...senza.values()].sort((x, y) => x.ecc - y.ecc);
 const t = Math.ceil(ordSenza.length / 3);
 const STRATO = new Map();                       // gli strati CONGELATI (§3)
@@ -167,7 +174,7 @@ function dueGiri(tetto) {
   }
   return out;
 }
-const dgSenza = dueGiri(null);
+const dgSenza = dueGiri(false);
 const dgCon = dueGiri(TETTO);
 const appaiate = [...dgCon.keys()].filter((k) => dgSenza.has(k))
   .map((k) => ({ gara: dgCon.get(k).gara, a: dgCon.get(k).err, b: dgSenza.get(k).err }));

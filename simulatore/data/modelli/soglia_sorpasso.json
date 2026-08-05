@@ -1,0 +1,40 @@
+{
+ "_targhetta": {
+  "cosa_e": "La soglia di vantaggio di passo per sorpassare, per circuito: quanti secondi al giro devi essere piu veloce perche il sorpasso da vicino diventi piu probabile che no.",
+  "natura": "MISURATO_FONDO",
+  "prereg": "ai_lab/sorpasso/PREREG_soglia_sorpasso.md",
+  "esito": "ai_lab/sorpasso/ESITO_soglia_sorpasso.md",
+  "generato_da": "ai_lab/sorpasso/cancelli_soglia.mjs",
+  "data": "2026-08-04",
+  "da_quante_occasioni": 5498,
+  "ramo": "DUE LIVELLI — S4 (senza Monaco) decide la forma: la legge geometrica NON regge senza Monaco, quindi due livelli e non una legge continua",
+  "cosa_significa": "La pendenza misurata e -1.9826: ogni secondo al giro di vantaggio moltiplica per 7.3 le probabilita di passare entro cinque giri. La soglia e il vantaggio a cui quella probabilita arriva al 50%.",
+  "cosa_NON_e": "NON e una probabilita di sorpasso per coppia di auto. Il progetto ha gia misurato che QUALI auto si scambiano non si riproduce: si riproduce QUANTI scambi. Questo e un vincolo sul movimento.",
+  "il_DRS_e_il_limite": "Il fondo 2018-2025 ha il DRS, che nel 2026 non esiste (Manual Override Mode). Il livello e ancorato al 2026 con UNA costante (+0.0319 s/giro), scelta perche la quota di sorpassi prevista sulle 767 occasioni del 2026 uguagli quella osservata (0.2425). MISURATO E CONTRO L ATTESA: la costante e praticamente zero, cioe togliere il DRS NON ha cambiato quanto vantaggio serve per passare. La prereg si aspettava una soglia piu alta.",
+  "gli_altri_parametri_del_tetto": "minGap, costoDuello e costoSubito NON sono misurati qui: sono COPIATI da ai_lab/confronto/duello_tum_2026.json (prior esterno, 121 file) e viaggiano in questo file perche la produzione non legge da ai_lab/. La loro natura resta PRIOR_ESTERNO, diversa da quella della soglia: chi legge deve poterle distinguere.",
+  "accensione": "ACCESO il 04/08/2026 dopo ai_lab/sorpasso/ESITO_aggancio_tetto.json: U1 passa, U3 (la risposta a due giri, la sola validata) NON peggiora, e il movimento inventato nel terzile alto scende da 2,14 a 0,24 cambi per caso. Il costo dichiarato: il saldo dello strato sano scende da +17 a +11, cioe sei casi diventano pareggi."
+ },
+ "attivo": true,
+ "parametri": {
+  "_natura": "PRIOR_ESTERNO — da duello_tum_2026.json, NON misurati qui",
+  "minGap": 0.5,
+  "costoDuello": 0.3,
+  "costoSubito": 0.3
+ },
+ "pendenza": -1.982602,
+ "soglia_sorpasso": {
+  "Australia": 0.6054,
+  "Austria": 0.6054,
+  "Belgio": 0.6054,
+  "Canada": 0.6054,
+  "Cina": 0.6054,
+  "Giappone": 0.6054,
+  "GranBretagna": 0.6054,
+  "Miami": 0.6054,
+  "Monaco": 2.8337,
+  "Spagna": 0.6054,
+  "Ungheria": 0.6054
+ },
+ "_circuito_ignoto": "Un circuito che non compare qui usa la soglia comune (0.6054 s/giro), non 1 e non zero: la misura dice che dieci piste su undici condividono la stessa soglia, quindi la comune E la stima per una pista nuova. Monaco e l unica eccezione misurata.",
+ "soglia_comune": 0.6054
+}
