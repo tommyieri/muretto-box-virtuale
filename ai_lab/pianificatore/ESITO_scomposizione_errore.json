@@ -1,0 +1,121 @@
+{
+ "_targhetta": {
+  "cosa_e": "Scomposizione dell errore del pianificatore sulla durata dello stint: quanto viene dalla scelta di k e quanto dal giro dato k.",
+  "prereg": "ai_lab/pianificatore/PREREG_scomposizione_errore.md",
+  "generato_da": "ai_lab/pianificatore/scomposizione_errore.mjs",
+  "data": "2026-08-05",
+  "natura": "DIAGNOSI — non accende e non spedisce niente",
+  "braccio_B": "riceve dal futuro il NUMERO di soste e nient altro. Non e un candidato alla produzione: nessun prodotto lo conosce in anticipo.",
+  "soglie_lettura": {
+   "delta_k": 2,
+   "delta_giro": 0.5
+  }
+ },
+ "n": 167,
+ "n_con_B": 152,
+ "senza_k_vero": 15,
+ "non_misurabili": {
+  "nessun piano: passo base assente al giro d'inizio": 209
+ },
+ "errore_mediano": {
+  "A_intero": 7,
+  "C_intero": 5,
+  "A_su_B": 7,
+  "B": 5,
+  "C_su_B": 5
+ },
+ "delta": 2,
+ "segni": {
+  "B_contro_A": {
+   "n": 152,
+   "vinceA": 50,
+   "vinceB": 33,
+   "pari": 69,
+   "discordanti": 83,
+   "p": 0.07841962481580975
+  },
+  "B_contro_C": {
+   "n": 152,
+   "vinceA": 60,
+   "vinceB": 88,
+   "pari": 4,
+   "discordanti": 148,
+   "p": 0.02612527879860277
+  }
+ },
+ "k": {
+  "azzeccati": 53,
+  "troppo_poche": 114,
+  "troppe": 0,
+  "matrice": [
+   {
+    "k_motore": 0,
+    "per_k_vero": {
+     "0": 0,
+     "1": 42,
+     "2": 10,
+     "3": 6,
+     "4": 5,
+     "5": 1
+    }
+   },
+   {
+    "k_motore": 1,
+    "per_k_vero": {
+     "0": 0,
+     "1": 52,
+     "2": 28,
+     "3": 13,
+     "4": 4,
+     "5": 2
+    }
+   },
+   {
+    "k_motore": 2,
+    "per_k_vero": {
+     "0": 0,
+     "1": 0,
+     "2": 1,
+     "3": 0,
+     "4": 3,
+     "5": 0
+    }
+   },
+   {
+    "k_motore": 3,
+    "per_k_vero": {
+     "0": 0,
+     "1": 0,
+     "2": 0,
+     "3": 0,
+     "4": 0,
+     "5": 0
+    }
+   },
+   {
+    "k_motore": 4,
+    "per_k_vero": {
+     "0": 0,
+     "1": 0,
+     "2": 0,
+     "3": 0,
+     "4": 0,
+     "5": 0
+    }
+   },
+   {
+    "k_motore": 5,
+    "per_k_vero": {
+     "0": 0,
+     "1": 0,
+     "2": 0,
+     "3": 0,
+     "4": 0,
+     "5": 0
+    }
+   }
+  ]
+ },
+ "ramo": "LA SCELTA DI QUANTE SOSTE",
+ "lettura": "Regalare il numero di soste vero vale 2.00 giri di errore mediano. Il difetto sta nel confronto fra 0/1/2/3 soste — forma chiusa e pit-loss — non nella fisica del passo. Il lavoro va li'."
+}
