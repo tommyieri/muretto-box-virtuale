@@ -48,8 +48,23 @@ proprio dove la gomma viene tolta prima.**
 ## Perché D2 fallisce, e qui c'è la risposta a tutto il resto
 
 Il divario fra la mescola che degrada di più e quella che degrada di meno vale **0,01578 s
-per ogni giro d'età**. Il rumore giro-per-giro, misurato come residuo dopo aver tolto pilota
-e giro, vale **0,3457 s**.
+per ogni giro d'età**. Il rumore giro-per-giro vale **0,3457 s**.
+
+> **CORREZIONE del 04/08/2026, stessa giornata.** La riga qui sopra diceva soltanto «il
+> rumore giro-per-giro, misurato come residuo dopo aver tolto pilota e giro», e quel nome
+> non basta a ritrovare il numero: rileggendola ho provato cinque grandezze diverse e
+> nessuna dava 0,3457. **Il numero è riproducibile e sta in
+> `ESITO_cancelli_campo.json` sotto `D2.mediana_sigillo`.** È la **mediana del valore
+> assoluto** del residuo — non una deviazione standard — del braccio **col ρ sigillato**
+> (0,030776), dopo la doppia sottrazione degli effetti fissi `gara|pilota` e `gara|giro`
+> (`cancelli_campo.mjs`, righe 95-103). Chiamarlo «il rumore» senza dire *quale* rumore era
+> una targhetta incompleta su un numero che regge tutta la conclusione di questa pagina:
+> corretto qui, e il numero non cambia.
+
+Il confronto che segue resta valido alla lettera — un divario per giro d'età contro la
+dimensione tipica del residuo di un singolo giro — a patto di leggerlo così: **a 22 giri
+d'età la differenza fra mescole raggiunge quanto tipicamente sbaglia il modello su un giro
+solo.**
 
 | età gomma | divario cumulato |
 |---|---|
