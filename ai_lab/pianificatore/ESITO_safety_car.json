@@ -1,0 +1,109 @@
+{
+ "_targhetta": {
+  "cosa_e": "SC0 e SC1 di PREREG_safety_car.md — la safety car come canale economico (aritmetica) e come opportunita non pianificabile (misura).",
+  "prereg": "ai_lab/pianificatore/PREREG_safety_car.md",
+  "generato_da": "ai_lab/pianificatore/safety_car.mjs",
+  "data": "2026-08-05",
+  "natura": "DIAGNOSI — non accende e non spedisce niente",
+  "vsc_escluso": "Il segnale 6 e dichiarato rotto (R_lap 1,055). Si contano solo SC (4) e rossa (5): la misura SOTTOSTIMA l opportunismo."
+ },
+ "SC0": {
+  "passa": true,
+  "p_min": 19.197,
+  "p_eff": 9.5985,
+  "q": 1,
+  "k_massimo": 2.123086455861082,
+  "per_gara": [
+   {
+    "gara": "Monaco",
+    "giri": 78,
+    "k_senza": 1.2083556111712328,
+    "k_con": 2.123086455861082,
+    "arriva": true
+   },
+   {
+    "gara": "Austria",
+    "giri": 71,
+    "k_senza": 1.0101698511943273,
+    "k_con": 1.8428094662325236,
+    "arriva": false
+   },
+   {
+    "gara": "Ungheria",
+    "giri": 70,
+    "k_senza": 0.9818575997690548,
+    "k_con": 1.8027698962855863,
+    "arriva": false
+   },
+   {
+    "gara": "Canada",
+    "giri": 68,
+    "k_senza": 0.9252330969185105,
+    "k_con": 1.7226907563917124,
+    "arriva": false
+   },
+   {
+    "gara": "Spagna",
+    "giri": 66,
+    "k_senza": 0.868608594067966,
+    "k_con": 1.6426116164978386,
+    "arriva": false
+   },
+   {
+    "gara": "Australia",
+    "giri": 58,
+    "k_senza": 0.6421105826657885,
+    "k_con": 1.3222950569223433,
+    "arriva": false
+   },
+   {
+    "gara": "Miami",
+    "giri": 57,
+    "k_senza": 0.6137983312405162,
+    "k_con": 1.282255486975406,
+    "arriva": false
+   },
+   {
+    "gara": "Cina",
+    "giri": 56,
+    "k_senza": 0.5854860798152439,
+    "k_con": 1.242215917028469,
+    "arriva": false
+   },
+   {
+    "gara": "Giappone",
+    "giri": 53,
+    "k_senza": 0.5005493255394273,
+    "k_con": 1.1220972071876583,
+    "arriva": false
+   },
+   {
+    "gara": "Gran Bretagna",
+    "giri": 52,
+    "k_senza": 0.47223707411415505,
+    "k_con": 1.0820576372407213,
+    "arriva": false
+   },
+   {
+    "gara": "Belgio",
+    "giri": 44,
+    "k_senza": 0.24573906271197732,
+    "k_con": 0.7617410776652258,
+    "arriva": false
+   }
+  ]
+ },
+ "SC1": {
+  "passa": false,
+  "soste": 435,
+  "neutralizzate": 112,
+  "quota": 0.2574712643678161,
+  "oltre_prima": 214,
+  "oltre_prima_neutralizzate": 84,
+  "decisioni_con_due_soste_verdi": 106,
+  "base": 114,
+  "soglia": 90,
+  "senza_status": 0
+ },
+ "verdetto": "SC0 PASSA: esiste un q plausibile che sposta il piano. Serve P(SC) per circuito e per giro, ed e' una sessione sua con la sua prereg."
+}
