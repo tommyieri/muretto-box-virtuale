@@ -1,0 +1,52 @@
+{
+  "perche": "Il perimetro-dal-registro esisteva per data/ (s02, manifest) e per demo/ (test_debito_demo), ma NON per il codice sorgente del motore: piano_rotto.mjs — una copia deliberatamente sbagliata di piano.mjs, costruita per provare che s39 ha potere di fallire — è arrivata su main dentro scenario/ e nessuna guardia se n'è accorta. s14 scandisce scenario/ ma controlla per NOME di funzione, e la copia ombra esporta gli stessi nomi già registrati. Questo registro elenca i file AMMESSI nelle cartelle del motore: un file in più è un intruso, un file in meno è una perdita. Chi aggiunge un modulo di proposito aggiunge QUI la riga, nello stesso commit — è il costo dichiarato del perimetro.",
+  "verificato_da": "banco/sentinelle/s40_inventario_codice.mjs",
+  "cartelle": {
+    "engine": [
+      "README.md",
+      "kernel.mjs",
+      "passo_v2.mjs"
+    ],
+    "scenario": [
+      "README.md",
+      "allarmi.mjs",
+      "allarmi_dati.mjs",
+      "costruttore.mjs",
+      "director.mjs",
+      "director_dati.mjs",
+      "piano.mjs",
+      "risposta.mjs",
+      "rivali.mjs"
+    ],
+    "provenienza": [
+      "README.md",
+      "adattatore.mjs",
+      "aggiorna_gara_2026.mjs",
+      "contratto.mjs",
+      "definizioni.mjs",
+      "esporta_bagnato.mjs",
+      "esporta_compressione_fondo.mjs",
+      "esporta_demo_gara.mjs",
+      "esporta_esiti_per_caso.mjs",
+      "esporta_soste_fondo.mjs",
+      "esporta_soste_sotto_sc.mjs",
+      "esporta_stint_2026.mjs",
+      "esporta_stint_fondo.mjs",
+      "esporta_vista_verde.mjs",
+      "gare_2026.mjs",
+      "gare_indice.mjs",
+      "genera_inventario.mjs",
+      "genera_manifest.mjs",
+      "genera_pavimenti.mjs",
+      "hash_lib.mjs",
+      "importa_archivio.mjs",
+      "manifest_lib.mjs",
+      "pitloss.mjs",
+      "pitloss_dati.mjs",
+      "ricostruisci_2026.mjs",
+      "ripinna.mjs",
+      "verifica_manifest.mjs",
+      "vocabolario.mjs"
+    ]
+  }
+}
