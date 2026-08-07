@@ -156,6 +156,19 @@ coppia), non un ritocco di questo delta.
 soglia più morbida alla ripartenza. Il record chiude qui con il motore a
 somma |err| 8, esatti 5/10, e Belgio +3 come unico caso irrisolto condiviso col nullo.
 
+### La forma condizionata all'età gomma — NULL ROVESCIATO, famiglia chiusa (07/08)
+
+PREREG_ripartenza_eta.md (G = 5 dal τ del rodaggio sigillato, dichiarato prima):
+**R0″ NON PASSA, e il dato dice il contrario dell'ipotesi**. Chi attacca con la gomma
+più fresca di ≥ 5 giri passa col **28% OVUNQUE** (ripartenza 28,3%, verde 28,0% —
+OR 1,019, IC95 [0,719; 1,418]): il vantaggio-gomma è interamente un fatto di PASSO,
+che il kernel già modella con ρ·età — alla ripartenza non si aggiunge niente.
+L'effetto-ripartenza vive invece **nelle coppie a gomme simili** (5,8% → 10,9%,
+OR 1,990): frenata in gruppo e scia, non gomma. Inseguire la forma rovesciata sarebbe
+la quarta forma sulla stessa fonte, e la prereg la vieta: **famiglia ripartenza chiusa
+NULL** (ESITO_ripartenza_eta.json conserva l'osservazione per un'eventuale prereg
+futura su dati nuovi). Il meccanismo nel kernel resta spento e sorvegliato (s43).
+
 ## Dove guardare per riparare (proposte, da decidere insieme)
 
 1. **Il movimento del campo nelle gare rimescolate** (Belgio, GB): l'errore condiviso
