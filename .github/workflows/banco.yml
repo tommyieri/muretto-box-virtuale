@@ -165,3 +165,11 @@ jobs:
       # che l'avvertenza resti resa all'utente. Esce 1 su ognuna di queste.
       - name: La pagina «E se?» rigioca davvero (e resta onesta)
         run: node demo/test_ese.mjs
+
+      # IL RAMO ROSSO DELLA SONDA non era mai scattato in produzione: che segnali davvero
+      # era provato solo in laboratorio, a mano. Qui scatta APPOSTA a ogni giro: un sito
+      # finto serve versione.json rotte in tre modi (assente, commit sconosciuto, sigillo
+      # null) e la sonda deve uscire 1 col messaggio giusto; sulla versione sana deve
+      # uscire 0. Esce 1 anche se non riesce a leggere origin/main: muto non e' verde.
+      - name: Il ramo rosso della sonda scatta (e il verde tace)
+        run: bash scheduling/test_sonda_rosso.sh
