@@ -1,0 +1,60 @@
+/* ese.css — lo stile dell'«E se?», CONDIVISO fra ese.html e gara.html (una
+   definizione, un posto): estratto dall'inline di ese.html il 08/08/2026. */
+  .ese{ max-width:1060px; margin:0 auto; padding:1rem; }
+  .ese h1{ font:800 26px var(--sans,system-ui,sans-serif); margin:.2rem 0; }
+  .ese h1 small{ font-weight:600; font-size:14px; color:#9aa4b2; margin-left:.5rem; }
+  .ese-cosa{ color:#c7cdd6; font:400 14px/1.5 var(--sans,system-ui,sans-serif); max-width:70ch; }
+  .ese-onesta{ border:1px solid rgba(245,158,11,.45); background:rgba(245,158,11,.07);
+    border-radius:10px; padding:.7rem .9rem; margin:.8rem 0 1rem; font:400 12.5px/1.55 var(--sans,system-ui,sans-serif); color:#e6dcc3; }
+  .ese-onesta b{ color:#fcd34d; }
+  .ese-onesta ul{ margin:.4rem 0 0 1.1rem; padding:0; }
+  .ese-controlli{ display:flex; flex-wrap:wrap; gap:1rem; align-items:flex-start;
+    border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:.9rem; margin-bottom:1rem; }
+  .ese-controlli label{ display:flex; flex-direction:column; gap:.3rem; font:700 11px var(--mono,ui-monospace,monospace);
+    letter-spacing:.5px; text-transform:uppercase; color:#9aa4b2; }
+  .ese-controlli select, .ese-controlli input{ background:#101418; color:var(--txt,#e9edf3);
+    border:1px solid rgba(255,255,255,.18); border-radius:8px; padding:.45rem .5rem; font:600 13px var(--mono,ui-monospace,monospace); }
+  .ese-freeze{ font:600 11.5px/1.5 var(--sans,system-ui,sans-serif); color:#9aa4b2; max-width:26ch; }
+  .ese-editor{ flex:1 1 320px; }
+  .ese-editor h3{ font:700 11px var(--mono,ui-monospace,monospace); letter-spacing:.5px; text-transform:uppercase; color:#9aa4b2; margin:.1rem 0 .4rem; }
+  .ese-sosta{ display:flex; gap:.5rem; align-items:center; margin:.3rem 0; }
+  .ese-sosta input{ width:5.2rem; }
+  .ese-sosta button{ border:1px solid rgba(255,255,255,.2); background:transparent; color:#f87171;
+    border-radius:6px; padding:.3rem .5rem; cursor:pointer; font:700 12px var(--mono,ui-monospace,monospace); }
+  .ese-mini{ border:1px solid rgba(255,255,255,.2); background:transparent; color:var(--txt,#e9edf3);
+    border-radius:6px; padding:.35rem .6rem; cursor:pointer; font:600 11.5px var(--mono,ui-monospace,monospace); margin-right:.4rem; }
+  .ese-mini:hover{ background:rgba(255,255,255,.08); }
+  .ese-corri{ display:block; border:0; border-radius:10px; background:#22c55e; color:#04140a;
+    font:800 14px/1 var(--mono,ui-monospace,monospace); letter-spacing:.5px; padding:.85rem 1.2rem; cursor:pointer; }
+  .ese-corri:hover{ filter:brightness(1.08); }
+  .ese-corri:disabled{ opacity:.5; cursor:wait; }
+  .ese-errore{ border:1px solid rgba(248,113,113,.5); background:rgba(248,113,113,.08); color:#fecaca;
+    border-radius:10px; padding:.6rem .8rem; font:500 12.5px/1.5 var(--sans,system-ui,sans-serif); margin-top:.6rem; width:100%; }
+  .ese-verdetto{ display:flex; flex-wrap:wrap; gap:.7rem; margin:.4rem 0 1rem; }
+  .ese-verdetto .ese-box{ flex:1 1 180px; border:1px solid rgba(255,255,255,.14); border-radius:12px; padding:.7rem .9rem; }
+  .ese-verdetto .ese-box small{ display:block; font:700 10px var(--mono,ui-monospace,monospace); letter-spacing:.6px;
+    text-transform:uppercase; color:#9aa4b2; margin-bottom:.25rem; }
+  .ese-verdetto .ese-box b{ font:800 24px var(--mono,ui-monospace,monospace); }
+  .ese-verdetto .ese-box .sub{ font:500 11px var(--sans,system-ui,sans-serif); color:#9aa4b2; }
+  .ese-verdetto .tua{ border-color:rgba(34,197,94,.55); background:rgba(34,197,94,.07); }
+  .ese-director{ font:600 12px var(--mono,ui-monospace,monospace); margin:.3rem 0 .9rem; }
+  .ese-director .ok{ color:#4ade80; } .ese-director .no{ color:#f87171; }
+  .ese-due{ display:grid; grid-template-columns:minmax(280px,420px) 1fr; gap:1.2rem; }
+  @media (max-width:800px){ .ese-due{ grid-template-columns:1fr; } }
+  .ese-due h3{ font:700 12px var(--mono,ui-monospace,monospace); letter-spacing:.5px; text-transform:uppercase; color:#9aa4b2; }
+  table.ese-torre{ border-collapse:collapse; width:100%; font:600 12.5px var(--mono,ui-monospace,monospace); }
+  table.ese-torre td{ padding:.28rem .45rem; border-bottom:1px solid rgba(255,255,255,.07); }
+  table.ese-torre tr.me{ background:rgba(34,197,94,.10); }
+  table.ese-torre .pos{ color:#9aa4b2; width:2.2rem; }
+  table.ese-torre .bar{ display:inline-block; width:4px; height:14px; border-radius:2px; margin-right:.45rem; vertical-align:-2px; }
+  table.ese-torre .gap{ color:#9aa4b2; text-align:right; }
+  table.ese-torre .su{ color:#4ade80; } table.ese-torre .giu{ color:#f87171; } table.ese-torre .pari{ color:#9aa4b2; }
+  .ese-nota{ font:400 11.5px/1.5 var(--sans,system-ui,sans-serif); color:#8a94a2; margin-top:.5rem; max-width:60ch; }
+  svg.ese-grafico{ width:100%; height:300px; background:rgba(255,255,255,.03); border:1px solid rgba(255,255,255,.1); border-radius:10px; }
+  .ese-legenda{ font:600 11.5px var(--mono,ui-monospace,monospace); color:#9aa4b2; margin-top:.4rem; }
+  .ese-legenda .l-reale{ color:#94a3b8; } .ese-legenda .l-tua{ color:#4ade80; } .ese-legenda .l-vera{ color:#60a5fa; }
+  details.ese-assunzioni{ margin-top:1.1rem; border:1px solid rgba(255,255,255,.12); border-radius:10px; padding:.5rem .8rem; }
+  details.ese-assunzioni summary{ cursor:pointer; font:700 12px var(--mono,ui-monospace,monospace); color:#c7cdd6; }
+  details.ese-assunzioni li{ font:400 12px/1.5 var(--sans,system-ui,sans-serif); color:#b7bec9; margin:.35rem 0; }
+  details.ese-assunzioni li b{ font:700 11px var(--mono,ui-monospace,monospace); color:#e9edf3; }
+  details.ese-assunzioni li small{ color:#8a94a2; }

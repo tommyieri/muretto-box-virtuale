@@ -102,12 +102,18 @@ australia.byLap = byLapDa(australia);
   }
 }
 
-// (f) — l'onestà resa in pagina, sempre visibile
+// (f) — l'onestà resa in pagina, sempre visibile — in TUTTE le pagine che rigiocano
 {
-  const html = readFileSync(path.join(qui, 'ese.html'), 'utf8');
-  if (!/informazione dal futuro/i.test(html)) fallisci('ese.html non dichiara più «informazione dal futuro»');
-  if (!/non una previsione/i.test(html)) fallisci('ese.html non dice più «non una previsione»');
-  if (!/class="ese-onesta"/.test(html)) fallisci('il blocco di onestà sempre-visibile non c\'è più');
+  for (const pagina of ['ese.html', 'gara.html']) {
+    const html = readFileSync(path.join(qui, pagina), 'utf8');
+    if (!/informazione dal futuro/i.test(html)) fallisci(`${pagina} non dichiara più «informazione dal futuro»`);
+    if (!/non una previsione/i.test(html)) fallisci(`${pagina} non dice più «non una previsione»`);
+    if (!/class="ese-onesta"/.test(html)) fallisci(`${pagina}: il blocco di onestà sempre-visibile non c'è più`);
+  }
+  // l'E se? dentro la gara (08/08): bottone nel pannello pit + vista condivisa
+  const gara = readFileSync(path.join(qui, 'gara.html'), 'utf8');
+  if (!/id="eseBtn"/.test(gara)) fallisci('gara.html non offre più il bottone E se? nel pannello pit');
+  if (!/ese_vista\.mjs/.test(gara)) fallisci('gara.html non usa la vista condivisa ese_vista.mjs');
 }
 
 if (errori === 0) console.log('test_ese: verde (soste vere, arrivo, pipeline, bracci distinti, assunzione dichiarata, onestà in pagina)');

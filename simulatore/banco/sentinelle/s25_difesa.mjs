@@ -485,6 +485,11 @@ const d = riassunto.difesa;
   const eseHtml = readFileSync(path.join(radice, '..', 'demo', 'ese.html'), 'utf8');
   b.verifica('ese.html rende l\'avvertenza «informazione dal futuro» in un blocco sempre visibile',
     /informazione dal futuro/i.test(eseHtml) && /class="ese-onesta"/.test(eseHtml));
+  // dal 08/08 il rigioca vive anche DENTRO la pagina gara: stessa deroga, stessa
+  // condizione — l'avvertenza deve stare dove il run si lancia
+  const garaHtml = readFileSync(path.join(radice, '..', 'demo', 'gara.html'), 'utf8');
+  b.verifica('gara.html (E se? in pagina) rende la stessa avvertenza sempre visibile',
+    /informazione dal futuro/i.test(garaHtml) && /class="ese-onesta"/.test(garaHtml));
 }
 
 b.chiudi();
