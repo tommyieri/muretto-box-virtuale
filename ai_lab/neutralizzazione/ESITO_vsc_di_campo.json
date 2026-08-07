@@ -1,0 +1,193 @@
+{
+ "_cosa_e": "V1 di PREREG_vsc_di_campo.md — la VSC letta di campo risana R_lap?",
+ "_data": "2026-08-07",
+ "range_fisico": [
+  1.2,
+  1.5
+ ],
+ "primario_2026": {
+  "pooled_vsc_campo": {
+   "n": 362,
+   "r_lap": 1.1164695609161117
+  },
+  "circuiti_con_dati": 7,
+  "circuiti_dentro_range": 0,
+  "diagnosi_vsc_solo_locale": {
+   "n": 110,
+   "r_lap": 1.1276670691823831
+  },
+  "confronto_sc_campo": {
+   "n": 420,
+   "r_lap": 1.4343721983828213
+  },
+  "per_circuito": {
+   "Australia": {
+    "vsc_campo": {
+     "n": 84,
+     "r_lap": 1.1750238621756304
+    },
+    "vsc_locale": {
+     "n": 9,
+     "r_lap": 1.0879481568759468
+    },
+    "sc_campo": {
+     "n": 0,
+     "r_lap": null
+    }
+   },
+   "Austria": {
+    "vsc_campo": {
+     "n": 63,
+     "r_lap": 1.1304926216468265
+    },
+    "vsc_locale": {
+     "n": 12,
+     "r_lap": 1.0855086590733027
+    },
+    "sc_campo": {
+     "n": 0,
+     "r_lap": null
+    }
+   },
+   "Belgio": {
+    "vsc_campo": {
+     "n": 28,
+     "r_lap": 1.116643357634906
+    },
+    "vsc_locale": {
+     "n": 6,
+     "r_lap": 1.0764627782017073
+    },
+    "sc_campo": {
+     "n": 3,
+     "r_lap": 1.3277156222763737
+    }
+   },
+   "Canada": {
+    "vsc_campo": {
+     "n": 31,
+     "r_lap": 1.1954364183111135
+    },
+    "vsc_locale": {
+     "n": 43,
+     "r_lap": 1.1864982877802248
+    },
+    "sc_campo": {
+     "n": 0,
+     "r_lap": null
+    }
+   },
+   "Cina": {
+    "vsc_campo": {
+     "n": 0,
+     "r_lap": null
+    },
+    "vsc_locale": {
+     "n": 0,
+     "r_lap": null
+    },
+    "sc_campo": {
+     "n": 47,
+     "r_lap": 1.452006130548197
+    }
+   },
+   "Giappone": {
+    "vsc_campo": {
+     "n": 0,
+     "r_lap": null
+    },
+    "vsc_locale": {
+     "n": 0,
+     "r_lap": null
+    },
+    "sc_campo": {
+     "n": 100,
+     "r_lap": 1.5151894657468357
+    }
+   },
+   "Gran Bretagna": {
+    "vsc_campo": {
+     "n": 55,
+     "r_lap": 1.0628255276423955
+    },
+    "vsc_locale": {
+     "n": 12,
+     "r_lap": 1.1367832488145981
+    },
+    "sc_campo": {
+     "n": 66,
+     "r_lap": 1.1959489033129092
+    }
+   },
+   "Miami": {
+    "vsc_campo": {
+     "n": 0,
+     "r_lap": null
+    },
+    "vsc_locale": {
+     "n": 0,
+     "r_lap": null
+    },
+    "sc_campo": {
+     "n": 102,
+     "r_lap": 1.4825038224077636
+    }
+   },
+   "Monaco": {
+    "vsc_campo": {
+     "n": 0,
+     "r_lap": null
+    },
+    "vsc_locale": {
+     "n": 0,
+     "r_lap": null
+    },
+    "sc_campo": {
+     "n": 102,
+     "r_lap": 1.1699299549584514
+    }
+   },
+   "Spagna": {
+    "vsc_campo": {
+     "n": 72,
+     "r_lap": 1.166709001205461
+    },
+    "vsc_locale": {
+     "n": 24,
+     "r_lap": 1.1273403879709236
+    },
+    "sc_campo": {
+     "n": 0,
+     "r_lap": null
+    }
+   },
+   "Ungheria": {
+    "vsc_campo": {
+     "n": 29,
+     "r_lap": 1.09069205529061
+    },
+    "vsc_locale": {
+     "n": 4,
+     "r_lap": 1.079723992692439
+    },
+    "sc_campo": {
+     "n": 0,
+     "r_lap": null
+    }
+   }
+  }
+ },
+ "secondario_fondo": {
+  "gare": 147,
+  "vsc_campo": {
+   "n": 2188,
+   "r_lap": 1.1992647003019163
+  },
+  "vsc_solo_locale": {
+   "n": 265,
+   "r_lap": 1.088862100618219
+  },
+  "nota": "descrittivo: non decide il cancello"
+ },
+ "V1_passa": false
+}

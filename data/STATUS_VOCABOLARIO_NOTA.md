@@ -53,3 +53,10 @@ Generatore: stesso file. Output: `data/rlap_per_regime.csv` (R_lap per regime pe
 3. Determinismo: il generatore ordina il vocabolario per frequenza con tie-break sul codice →
    output **stabile** indipendente da `PYTHONHASHSEED` (fix di robustezza dell'attivazione; non
    cambia codici né dati, solo l'ordine delle righe a pari frequenza).
+
+> **Aggiunta del 07/08/2026.** Seconda verifica indipendente sulla VSC (lettura di
+> campo, prereg + esito in `ai_lab/neutralizzazione/`): il veto del punto 2 è
+> CONFERMATO — e la diagnosi si restringe: non è la località della classificazione
+> (locale ≈ campo ≈ 1,12), è plausibilmente il giro parzialmente coperto. Il segnale
+> '6' resta una lettura per-giro di un fenomeno a tempo; la fonte per capirlo è il
+> race control con gli orari, non questo vocabolario.

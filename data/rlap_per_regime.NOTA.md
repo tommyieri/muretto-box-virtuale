@@ -45,3 +45,14 @@ SC_REGIME = **1,614** (risanato dalla separazione deploy/restart); nuova VSC_REG
 resta aperto.
 
 Rigenerabile: `python3 gen_neutralizzazione_v2.py`.
+
+---
+
+> **SECONDA VERIFICA (07/08/2026, `ai_lab/neutralizzazione/`).** La lettura DI CAMPO
+> (`regimePerGiroDiCampo`, soglia >50% del campo — pre-registrata in
+> `PREREG_vsc_di_campo.md`) **NON risana la VSC**: pooled 1,116, 0/7 circuiti nel range,
+> e i giri '6' *solo locali* valgono 1,128 — indistinguibili dal campo. Il guasto non è
+> la soglia ≥2-auto: il candidato rimasto è la **diluizione del giro parziale** (il
+> fondo, 147 gare, dà 1,199 — a un soffio dal range). Il veto resta pieno; la strada
+> futura dichiarata è una fonte a TEMPO (finestre deploy/ending del race control), non
+> il simbolo '6'. Referto: `ai_lab/neutralizzazione/ESITO_vsc_di_campo.md`.
