@@ -1,6 +1,6 @@
 {
  "_nota": "GENERATO da simulatore/web/trasporta_motore.mjs. Le copie in questa cartella sono artefatti: si modifica l'originale in simulatore/ e si ri-trasporta. `--verifica` esce 1 sulla deriva. Il motore gira in pagina SOLO per live.html, dove il pre-calcolo non puo' esistere: gara.html continua a non calcolare.",
- "generato_il": "2026-08-07",
+ "generato_il": "2026-08-05",
  "ingressi": [
   "scenario/risposta.mjs",
   "provenienza/gare_indice.mjs",
@@ -9,8 +9,8 @@
  ],
  "file": {
   "engine/kernel.mjs": {
-   "sha256_sorgente": "bc32a07c1d475e833a3dfabfecdf3577102815e9797ac0760929330defae69ed",
-   "byte": 26360
+   "sha256_sorgente": "69e91d90fd0e29e2c1cbcfdd668da20a5e1a50bf4e1d6f0bff5375683c8a6bdf",
+   "byte": 22331
   },
   "engine/passo_v2.mjs": {
    "sha256_sorgente": "2b516794f36aa724ac3aa468e5cb33605bad41a51a2cec393c6ea0ebd231cc28",
@@ -21,8 +21,8 @@
    "byte": 4257
   },
   "provenienza/definizioni.mjs": {
-   "sha256_sorgente": "065f1df55458a4a4e5e5f3e1068f2143c4c7dbaac20a7520c3749520859838a5",
-   "byte": 9485
+   "sha256_sorgente": "94f9f312c76a2db0fbb4cf436b5549029e59644264a2c14a62cb1b2a8c99262e",
+   "byte": 7764
   },
   "provenienza/gare_indice.mjs": {
    "sha256_sorgente": "e138ef07e8bd549485ba9f6034c0d3bed68aaa036d6bbce27944af3d31c172ce",
@@ -41,25 +41,25 @@
    "byte": 3585
   },
   "scenario/costruttore.mjs": {
-   "sha256_sorgente": "9283384994fe4206290b4c7221e82e4393c6b87b766f6ce9fd944fcd544c810d",
-   "byte": 60882
+   "sha256_sorgente": "1fd7ebff2fba051eb15fb8c6497f474652069d020942b61d7640b8f9a9c66212",
+   "byte": 50369
   },
   "scenario/director.mjs": {
    "sha256_sorgente": "a305da62cf49576be92050910d7f9fe8a5abe1bedebb49334b8fcf0e016e4e9a",
    "byte": 16577
   },
   "scenario/piano.mjs": {
-   "sha256_sorgente": "2c7b185bf234bf6c28d5048839da669a668735d212203c1dac9c485d6e618b64",
-   "byte": 18980
+   "sha256_sorgente": "2786b508a88819231768c1ed36fa929a60858f85160a48012b4fe2febb34e273",
+   "byte": 20669
   },
   "scenario/risposta.mjs": {
    "sha256_sorgente": "36cb179cb6a27382c976aa6aa65c050a9a90a5ad06776938f748d6618899978d",
    "byte": 13005
   },
   "contesto_live.json": {
-   "sha256_sorgente": "c24b9dd721b2515a0783f67f881ef185779272d8b1f3d983f4504f357513546f",
-   "byte": 62815,
-   "data": "2026-08-07"
+   "sha256_sorgente": "128d429ce3881abc42212a357ca6685d2300e0032bad758ada56072abb63798c",
+   "byte": 56500,
+   "data": "2026-08-05"
   }
  }
 }

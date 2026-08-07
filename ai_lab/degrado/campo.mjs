@@ -39,7 +39,13 @@ export function osservazioni(g) {
       if (!passoUtilizzabile(c)) continue;
       if (c.tyre_age === null || !Number.isFinite(c.tyre_age)) continue;
       if (!SLICK.has(c.compound)) continue;
-      out.push({ drv, lap, eta: c.tyre_age, mescola: c.compound, t: c.lap_time });
+      // `stint` viaggia con l'osservazione dal 05/08/2026: serve a PREREG_rho_selezione.md,
+      // che permuta le LUNGHEZZE degli stint per rompere la selezione senza toccare la
+      // curvatura. Senza, tutti i giri di un pilota sarebbero un blocco solo e il placebo
+      // non avrebbe niente da permutare. Nessuno stimatore lo legge: `degradoDi` usa
+      // eta/t/mescola/drv/lap e ignora il resto, quindi i numeri gia' pubblicati non si
+      // muovono — verificato rilanciando cancelli_campo.mjs.
+      out.push({ drv, lap, eta: c.tyre_age, mescola: c.compound, t: c.lap_time, stint: c.stint });
     }
   }
   return out;
