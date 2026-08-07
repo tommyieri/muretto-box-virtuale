@@ -1,0 +1,17 @@
+{
+ "_cosa_e": "Sorveglianza di PREREG_coppie_alla_pari.md — conta e tace. La lettura del cancello e' un gesto umano.",
+ "_prereg": "ai_lab/sorpasso/PREREG_coppie_alla_pari.md",
+ "stato": "IN_ATTESA",
+ "progresso": "0/200 occasioni alla-pari di ripartenza sulla fonte nuova",
+ "gare_nuove_viste": [],
+ "ripartenza": {
+  "n": 0,
+  "passa": 0
+ },
+ "verde": {
+  "n": 0,
+  "passa": 0
+ },
+ "attesa_dal_fondo": "OR 1,990 (5,8% -> 10,9%) — misurato sul fondo che ha GENERATO l'ipotesi: qui e' un'attesa, mai una prova",
+ "aggiornata": null
+}
