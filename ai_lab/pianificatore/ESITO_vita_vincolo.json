@@ -1,0 +1,72 @@
+{
+ "_targhetta": {
+  "cosa_e": "Esito dei cancelli V1-V5 di PREREG_vita_vincolo.md — la vita della gomma come vincolo sul piano invece che come penalita sul passo.",
+  "prereg": "ai_lab/pianificatore/PREREG_vita_vincolo.md",
+  "generato_da": "ai_lab/pianificatore/cancelli_vita_vincolo.mjs",
+  "data": "2026-08-05",
+  "natura": "PRIOR_COMPORTAMENTALE — deroga gia firmata; cambia COME entra un parametro che c era gia",
+  "i_due_bracci": "identici salvo `vitaMassima`",
+  "soglie": {
+   "quantile": 0.9,
+   "v1": 0.1,
+   "v2": [
+    90,
+    20
+   ],
+   "v3": 7,
+   "v4": 5
+  }
+ },
+ "vincolo": {
+  "SOFT": 27.800000000000026,
+  "MEDIUM": 30.900000000000006,
+  "HARD": 34
+ },
+ "stint_veri_vietati": 43,
+ "su": 427,
+ "n": 167,
+ "piani_rilassati": 8,
+ "errore_mediano": {
+  "senza": 7,
+  "con": 7
+ },
+ "soste": {
+  "troppo_poche": {
+   "senza": 114,
+   "con": 102
+  },
+  "troppe": {
+   "senza": 0,
+   "con": 1
+  }
+ },
+ "cancelli": {
+  "V1": {
+   "passa": true,
+   "diversi": 20,
+   "quota": 0.11976047904191617
+  },
+  "V2": {
+   "passa": false
+  },
+  "V3": {
+   "passa": true
+  },
+  "V4": {
+   "passa": false
+  },
+  "V5": {
+   "passa": true,
+   "violazioni": 0
+  }
+ },
+ "segni": {
+  "n": 167,
+  "vinceA": 15,
+  "vinceB": 5,
+  "pari": 147,
+  "discordanti": 20,
+  "p": 0.04138946533203116
+ },
+ "verdetto": "RIPORTATO, NON SPEDITO — il vincolo lega ma non cura il bias a senso unico."
+}

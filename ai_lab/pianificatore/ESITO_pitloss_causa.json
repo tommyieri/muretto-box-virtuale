@@ -1,0 +1,103 @@
+{
+ "_targhetta": {
+  "cosa_e": "W0 di PREREG_pitloss_causa.md — il P che servirebbe perche il motore volesse due soste, contro i P misurati.",
+  "prereg": "ai_lab/pianificatore/PREREG_pitloss_causa.md",
+  "generato_da": "ai_lab/pianificatore/pitloss_causa.mjs",
+  "data": "2026-08-05",
+  "natura": "ARITMETICA — nessuna stima, nessuna accensione",
+  "inversione": "P = rho·(R+a)²/(2·(k*+1)²), tarata rimettendola dentro kOttimoContinuo",
+  "scelta_favorevole": "a = 0 e gara intera: e il caso PIU FAVOREVOLE al pit-loss, perche piu giri restano piu k* cresce."
+ },
+ "rho": 0.030776,
+ "k_bersaglio": 2,
+ "pitloss_misurati": {
+  "n": 26,
+  "min": 19.197,
+  "max": 28.164
+ },
+ "per_gara": [
+  {
+   "gara": "Monaco",
+   "giri": 78,
+   "p_richiesto": 10.402288,
+   "p_in_uso": null,
+   "dentro": false
+  },
+  {
+   "gara": "Austria",
+   "giri": 71,
+   "p_richiesto": 8.618989777777777,
+   "p_in_uso": 21.352,
+   "dentro": false
+  },
+  {
+   "gara": "Ungheria",
+   "giri": 70,
+   "p_richiesto": 8.37791111111111,
+   "p_in_uso": 21.16,
+   "dentro": false
+  },
+  {
+   "gara": "Canada",
+   "giri": 68,
+   "p_richiesto": 7.906012444444444,
+   "p_in_uso": 19.327,
+   "dentro": false
+  },
+  {
+   "gara": "Spagna",
+   "giri": 66,
+   "p_richiesto": 7.447792000000001,
+   "p_in_uso": 22.831,
+   "dentro": false
+  },
+  {
+   "gara": "Australia",
+   "giri": 58,
+   "p_richiesto": 5.751692444444445,
+   "p_in_uso": 21.648,
+   "dentro": false
+  },
+  {
+   "gara": "Miami",
+   "giri": 57,
+   "p_richiesto": 5.555068,
+   "p_in_uso": 20.498,
+   "dentro": false
+  },
+  {
+   "gara": "Cina",
+   "giri": 56,
+   "p_richiesto": 5.361863111111111,
+   "p_in_uso": 23.316,
+   "dentro": false
+  },
+  {
+   "gara": "Giappone",
+   "giri": 53,
+   "p_richiesto": 4.802765777777778,
+   "p_in_uso": null,
+   "dentro": false
+  },
+  {
+   "gara": "Gran Bretagna",
+   "giri": 52,
+   "p_richiesto": 4.623239111111111,
+   "p_in_uso": 19.197,
+   "dentro": false
+  },
+  {
+   "gara": "Belgio",
+   "giri": 44,
+   "p_richiesto": 3.310129777777778,
+   "p_in_uso": null,
+   "dentro": false
+  }
+ ],
+ "p_richiesto_massimo": 10.402288,
+ "quante_volte_piu_piccolo_del_minimo_misurato": 1.8454593835510031,
+ "W0": {
+  "passa": false
+ },
+ "lettura": "W0 NON passa: il P che servirebbe e' 1.8 volte piu' piccolo del pit-loss piu' basso mai misurato su qualunque circuito. IL PIT-LOSS E' ESCLUSO come causa del sotto-fermarsi: non e' improbabile, e' escluso dall'aritmetica. W1 NON si esegue, per la ragione scritta nella prereg §5."
+}

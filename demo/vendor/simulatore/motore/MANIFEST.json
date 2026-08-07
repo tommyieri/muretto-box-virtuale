@@ -49,8 +49,8 @@
    "byte": 16577
   },
   "scenario/piano.mjs": {
-   "sha256_sorgente": "2c7b185bf234bf6c28d5048839da669a668735d212203c1dac9c485d6e618b64",
-   "byte": 18980
+   "sha256_sorgente": "96c065bd9015e5d659ea84dbc6c3e28da9f721f3174389f29ce2ffc2ecafeb0f",
+   "byte": 20702
   },
   "scenario/risposta.mjs": {
    "sha256_sorgente": "36cb179cb6a27382c976aa6aa65c050a9a90a5ad06776938f748d6618899978d",

@@ -33,7 +33,7 @@
 //  (b) una regola dichiarata non esiste, o non espone l'interfaccia;
 //  (c) il perimetro cambia sotto i piedi (n diverso da quello atteso) — che e' il modo
 //      in cui un confronto smette di essere confrontabile senza che nessuno lo veda.
-import { writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { RADICE, gare, casi } from './banco.mjs';
 import { rispostaNuovo } from './banco.mjs';
@@ -92,21 +92,20 @@ const REGOLE = {
 // Le attese viaggiano COL banco (E07: mai soglie cablate dentro una condizione senza
 // dichiararle). Ogni numero qui e' stato riprodotto il 03/08/2026 prima di scrivere
 // questo file, e porta la fonte di dove era stato pubblicato.
+// Dal 07/08 i numeri vengono dalla SORGENTE UNICA (basi_kpi.json): le fonti di
+// prosa restano qui, i numeri no. Il 44-27 — che «non e' stampato da nessuno
+// script» — ora e' stampato dalla sorgente, e s45 verifica la somma dei terzili.
+const BASI = JSON.parse(readFileSync(path.join(RADICE, 'ai_lab', 'confronto', 'basi_kpi.json'), 'utf8'));
 const ATTESE = {
   due_giri: {
-    fonte: 'PREREG_voce6_bandiera.md §M1 + M1a_errore_posizione.mjs (lettura B, V-pannello)',
-    n: 235, vinceA: 36, vinceB: 12, pari: 187, p: 0.0007,
+    ...BASI.due_giri,
+    fonte: 'PREREG_voce6_bandiera.md §M1 + M1a_errore_posizione.mjs (lettura B, V-pannello) — numeri da basi_kpi.json',
   },
   bandiera: {
-    fonte: 'PREREG_sorpassi.md §120-126 + gara_intera.mjs --tutto --rivali',
-    n: 193,
-    terzili: [
-      { nome: 'ne inventa MENO del vero', n: 65, vince: 20, perde: 13 },
-      { nome: 'circa il giusto', n: 65, vince: 24, perde: 14 },
-      { nome: 'ne inventa PIU\' del vero', n: 63, vince: 13, perde: 28 },
-    ],
-    // il 44-27 non e' stampato da nessuno script: e' la somma dei due terzili bassi
-    aggregato_basso_medio: { n: 130, vince: 44, perde: 27 },
+    fonte: BASI.bandiera.fonte,
+    n: BASI.bandiera.n,
+    terzili: BASI.bandiera.terzili,
+    aggregato_basso_medio: { n: BASI.bandiera.basso_medio.n, vince: BASI.bandiera.basso_medio.vince, perde: BASI.bandiera.basso_medio.perde },
   },
 };
 

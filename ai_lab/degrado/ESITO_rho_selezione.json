@@ -1,0 +1,67 @@
+{
+ "_targhetta": {
+  "cosa_e": "R1 di PREREG_rho_selezione.md — il rho su finestre d eta annidate, e il placebo che separa la selezione dalla curvatura.",
+  "prereg": "ai_lab/degrado/PREREG_rho_selezione.md",
+  "generato_da": "ai_lab/degrado/rho_selezione.mjs",
+  "data": "2026-08-05",
+  "natura": "DIAGNOSI — non accende e non spedisce niente",
+  "perimetro": "11 gare 2026, giri verdi utilizzabili, slick, eta >= 5 (il rodaggio esce da tutte le finestre)",
+  "placebo": "lunghezze degli stint permutate DENTRO la gara (E11): rompe la selezione, lascia intatta la curvatura. Si puo solo accorciare, mai allungare: conservativo.",
+  "taratura": "rho sul campione intero, senza pavimento d eta, contro il pubblicato 0.04167"
+ },
+ "n": 10269,
+ "n_stint": 566,
+ "scala": [
+  {
+   "finestra": 10,
+   "n": 2741,
+   "rho": 0.08553531373423773,
+   "identificazione": 0.9419312808104684
+  },
+  {
+   "finestra": 15,
+   "n": 4826,
+   "rho": 0.07308666365514449,
+   "identificazione": 1.7584695737780947
+  },
+  {
+   "finestra": 20,
+   "n": 6392,
+   "rho": 0.06351643507110784,
+   "identificazione": 2.643553686289682
+  },
+  {
+   "finestra": 25,
+   "n": 7447,
+   "rho": 0.05182781199674592,
+   "identificazione": 3.5545389147338473
+  },
+  {
+   "finestra": 30,
+   "n": 8109,
+   "rho": 0.047176018236992544,
+   "identificazione": 4.198297803098194
+  },
+  {
+   "finestra": null,
+   "n": 8906,
+   "rho": 0.038766678920984884,
+   "identificazione": 5.5093190897385345
+  }
+ ],
+ "rapporto": 2.2064132423769838,
+ "rho_infinito": 0.038766678920984884,
+ "taratura_campo": 0.04167,
+ "placebo": {
+  "ripetizioni": 500,
+  "rapporto_mediano": 2.14743755754933,
+  "battuti": 195,
+  "p": 0.3912175648702595,
+  "stint_intatti_medi": 303.714
+ },
+ "R1": {
+  "passa": false,
+  "soglia_rapporto": 1.25
+ },
+ "lettura": "La scala decresce, ma le scale FINTE decrescono uguale: e' CURVATURA, non selezione. Il degrado e' genuinamente concavo, e il rho basso non e' colpa dei sopravvissuti. Toglie di mezzo l'unica spiegazione che il progetto aveva per il sotto-fermarsi."
+}

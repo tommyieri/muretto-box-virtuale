@@ -53,11 +53,15 @@ const TETTO = {
   costoSubito: K.t_overtake_loser_s,
 };
 
-// ── §4: le linee di base, copiate da KPI_5_4_4.md. Sono la TARATURA, non attese molli.
+// ── §4: le linee di base dalla SORGENTE UNICA (basi_kpi.json). Sono la TARATURA,
+// non attese molli. Fino al 07/08 erano copiate a mano da KPI_5_4_4.md — la stessa
+// famiglia di difetto che gen_numeri_ereditati risolve per CLAUDE.md; la sentinella
+// s45 vieta che le copie cablate ricompaiano.
+const BASI = JSON.parse(readFileSync(path.join(RADICE, 'ai_lab', 'confronto', 'basi_kpi.json'), 'utf8'));
 const BASE = {
-  n: 193,
-  alto: { vince: 13, perde: 28 },          // saldo -15, p = 0,027
-  bassoMedio: { vince: 44, perde: 27 },    // saldo +17, p = 0,0568
+  n: BASI.bandiera.n,
+  alto: { vince: BASI.bandiera.alto.vince, perde: BASI.bandiera.alto.perde },
+  bassoMedio: { vince: BASI.bandiera.basso_medio.vince, perde: BASI.bandiera.basso_medio.perde },
 };
 
 /** Un braccio alla bandiera: tutti i casi delle undici gare, col vincolo o senza. */
