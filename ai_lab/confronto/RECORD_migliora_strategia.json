@@ -15,6 +15,10 @@
     "tipo_arrivo": "doppiato",
     "partenza": "HARD"
    },
+   "cambi": {
+    "reali": 12,
+    "motore": 12
+   },
    "strategia_vera": "9:HARD 46:SOFT",
    "motore_strategia_vera": {
     "posizione_riclassificata": 14,
@@ -83,6 +87,10 @@
     "posizione": 16,
     "tipo_arrivo": "doppiato",
     "partenza": "MEDIUM"
+   },
+   "cambi": {
+    "reali": 11,
+    "motore": 5
    },
    "strategia_vera": "24:SOFT 49:SOFT",
    "motore_strategia_vera": {
@@ -153,6 +161,10 @@
     "tipo_arrivo": "pieno_giro",
     "partenza": "MEDIUM"
    },
+   "cambi": {
+    "reali": 9,
+    "motore": 5
+   },
    "strategia_vera": "20:HARD",
    "motore_strategia_vera": {
     "posizione_riclassificata": 11,
@@ -221,6 +233,10 @@
     "posizione": 15,
     "tipo_arrivo": "doppiato",
     "partenza": "INTERMEDIATE"
+   },
+   "cambi": {
+    "reali": 7,
+    "motore": 10
    },
    "strategia_vera": "3:SOFT 9:MEDIUM 29:SOFT 49:MEDIUM",
    "motore_strategia_vera": {
@@ -291,6 +307,10 @@
     "tipo_arrivo": "pieno_giro",
     "partenza": "MEDIUM"
    },
+   "cambi": {
+    "reali": 9,
+    "motore": 7
+   },
    "strategia_vera": "10:HARD",
    "motore_strategia_vera": {
     "posizione_riclassificata": 3,
@@ -359,6 +379,10 @@
     "posizione": 10,
     "tipo_arrivo": "pieno_giro",
     "partenza": "MEDIUM"
+   },
+   "cambi": {
+    "reali": 14,
+    "motore": 12
    },
    "strategia_vera": "19:HARD",
    "motore_strategia_vera": {
@@ -429,6 +453,10 @@
     "tipo_arrivo": "pieno_giro",
     "partenza": "MEDIUM"
    },
+   "cambi": {
+    "reali": 15,
+    "motore": 16
+   },
    "strategia_vera": "28:HARD 38:MEDIUM 48:SOFT",
    "motore_strategia_vera": {
     "posizione_riclassificata": 5,
@@ -497,6 +525,10 @@
     "posizione": 1,
     "tipo_arrivo": "pieno_giro",
     "partenza": "MEDIUM"
+   },
+   "cambi": {
+    "reali": 15,
+    "motore": 13
    },
    "strategia_vera": "26:HARD",
    "motore_strategia_vera": {
@@ -567,6 +599,10 @@
     "tipo_arrivo": "pieno_giro",
     "partenza": "MEDIUM"
    },
+   "cambi": {
+    "reali": 17,
+    "motore": 7
+   },
    "strategia_vera": "11:HARD 35:HARD",
    "motore_strategia_vera": {
     "posizione_riclassificata": 8,
@@ -635,6 +671,10 @@
     "posizione": 6,
     "tipo_arrivo": "pieno_giro",
     "partenza": "MEDIUM"
+   },
+   "cambi": {
+    "reali": 15,
+    "motore": 11
    },
    "strategia_vera": "19:HARD 42:HARD",
    "motore_strategia_vera": {

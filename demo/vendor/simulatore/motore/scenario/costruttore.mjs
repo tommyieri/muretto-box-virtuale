@@ -175,7 +175,7 @@ const regimeAlCongelamento = regimeDiCella;
  *          orizzonte, perdita }` — `pits` è ciò che le due risposte devono
  *          condividere, ed è la cosa che il cancello P06 confronta.
  */
-export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, piano, pianiRivali, sosteAtteseRivali, rivaliNonClassificati, ritiriRivali, neutralizzazioneVera }, contesto) {
+export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, piano, pianiRivali, sosteAtteseRivali, rivaliNonClassificati, ritiriRivali, neutralizzazioneVera, ripartenzaGiri }, contesto) {
   const { gare, modello, prior } = contesto;
   const g = gare[gara];
   if (!g) throw new Error(`gara sconosciuta: ${gara}`);
@@ -547,6 +547,31 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
       + `sotto metà campo non è una Safety Car ma una gialla locale, e la compressione non si applica`);
   }
 
+  // ── LA RIPARTENZA: sul primo giro dopo una finestra VERA la soglia si abbassa ──
+  // del delta MISURATO sul fondo (PREREG_ripartenza_fondo.md, sigillo
+  // sogliaSorpasso.ripartenza). Ingresso di laboratorio: esiste solo con
+  // neutralizzazioneVera. `ripartenzaGiri` e' l'override dichiarato per il
+  // placebo R3 (giri finti al posto dei veri): mai nei percorsi di produzione.
+  const regolaRipartenza = contesto.sogliaSorpasso?.ripartenza;
+  const giriDiRipartenza = (() => {
+    // SPENTA per esito dei cancelli (R1/R3 NON PASSANO, ESITO_cancelli_ripartenza.json):
+    // il fenomeno esiste sul fondo (R0') ma questa applicazione non migliora il record.
+    if (regolaRipartenza?.attivo !== true) return [];
+    if (!vera || typeof regolaRipartenza?.delta_soglia !== 'number') return [];
+    if (Array.isArray(ripartenzaGiri)) return ripartenzaGiri.filter((L) => Number.isInteger(L) && L > freezeLap && L <= giroFinale);
+    return Object.keys(vera).map(Number).filter((L) => !vera[L + 1] && L + 1 > freezeLap && L + 1 <= giroFinale).map((L) => L + 1);
+  })();
+  const tettoConRipartenza = (tetto && giriDiRipartenza.length)
+    ? { ...tetto, ripartenza: { giri: giriDiRipartenza, deltaSoglia: regolaRipartenza.delta_soglia } }
+    : tetto;
+  if (tettoConRipartenza !== tetto) {
+    dichiara('RIPARTENZA_SC',
+      `su ${giriDiRipartenza.length} giro/i di ripartenza la soglia di sorpasso si abbassa di ${regolaRipartenza.delta_soglia} s/giro`
+      + (Array.isArray(ripartenzaGiri) ? ' — GIRI IMPOSTI (placebo/collaudo, non derivati dalle finestre)' : ''),
+      giriDiRipartenza.length,
+      'misurato sul fondo asciutto (147 gare): alla ripartenza le odds di sorpasso valgono x1,357 (IC95 [1,114; 1,640]); Δ = ln(OR)/pendenza sigillata. INGRESSO DI LABORATORIO');
+  }
+
   // ── passo: base misurata togliendo gli stessi termini che si ri-aggiungono ─
   const minGiriBase = typeof modello.min_giri_base?.valore === 'number'
     ? modello.min_giri_base.valore : MIN_GIRI_BASE_RIPIEGO;
@@ -593,7 +618,7 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   }
 
   return {
-    state, pace, freezeLap, steps, pits, neutralizzazione, tetto, ritiri,
+    state, pace, freezeLap, steps, pits, neutralizzazione, tetto: tettoConRipartenza, ritiri,
     assunzioni,
     perdita,
     // DUE ORIZZONTI, e fino al 03/08/2026 ne veniva pubblicato uno solo — quello sbagliato

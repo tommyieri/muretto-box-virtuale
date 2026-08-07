@@ -33,10 +33,13 @@ import {
   corri, pianiVeriDi, perGara, ordineVero, ordineAlGiro, ordinePrevisto, mediana,
 } from './bandiera.mjs';
 import { costruisciScenario, eseguiEValida } from '../../simulatore/scenario/costruttore.mjs';
+import { creaGeneratore } from '../../simulatore/banco/misure/difesa.mjs';
 import { simulate } from '../../simulatore/engine/kernel.mjs';
 import { mescolePerSoste } from '../../simulatore/scenario/piano.mjs';
 
 const JSON_OUT = process.argv.includes('--json');
+// R3 della prereg ripartenza: giri FINTI al posto dei veri (stesso numero, verdi, seme 20260807)
+const PLACEBO_RIPARTENZA = process.argv.includes('--placebo-ripartenza');
 
 // ── il perimetro, meccanico e cieco all'esito ────────────────────────────────
 // Dieci team in ordine alfabetico X dieci gare in ordine alfabetico (senza Monaco).
@@ -46,7 +49,7 @@ const GARE = gare().filter((g) => g !== 'Monaco');
 
 // ── un candidato: soste del soggetto -> posizione alla bandiera ──────────────
 // Director SPENTO qui dentro (come pianoOttimo): la validazione tocca al vincitore.
-function valuta(nomeSito, pilota, lf, soste, piani, contesto, gSim, nonClassificati = [], ritiriVeri = undefined, neutraVera = undefined) {
+function valuta(nomeSito, pilota, lf, soste, piani, contesto, gSim, nonClassificati = [], ritiriVeri = undefined, neutraVera = undefined, ripFinta = undefined) {
   let sc;
   try {
     // `rivaliNonClassificati`: i ritirati veri vengono proiettati lo stesso (il kernel
@@ -57,7 +60,7 @@ function valuta(nomeSito, pilota, lf, soste, piani, contesto, gSim, nonClassific
       pianiRivali: piani, rivaliNonClassificati: nonClassificati,
       // i ritiri VERI (riparazione 2) e le neutralizzazioni VERE (riparazione 1):
       // a gara nota sono DATI, e il costruttore li dichiara come tali
-      ritiriRivali: ritiriVeri, neutralizzazioneVera: neutraVera,
+      ritiriRivali: ritiriVeri, neutralizzazioneVera: neutraVera, ripartenzaGiri: ripFinta,
     }, contesto);
   } catch { return null; }
   const ris = simulate({
@@ -95,14 +98,14 @@ function slickUsate(gSim, pilota, lf) {
 }
 
 /** La ricerca per un k fissato: griglia grossa + discesa per coordinate. */
-function cercaK(k, { nomeSito, pilota, lf, piani, contesto, gSim, usate, nonClassificati, ritiriVeri, neutraVera }) {
+function cercaK(k, { nomeSito, pilota, lf, piani, contesto, gSim, usate, nonClassificati, ritiriVeri, neutraVera, ripFinta }) {
   const nGiri = gSim.nGiri;
   const mescole = mescolePerSoste(k, [...usate]);
   const conMescole = (giri) => giri.map((g, i) => ({ giro: g, mescola: mescole[i] ?? mescole[mescole.length - 1] ?? 'MEDIUM' }));
   const prova = (giri) => {
     for (let i = 1; i < giri.length; i += 1) if (giri[i] <= giri[i - 1]) return null;
     if (giri[0] <= lf || giri[giri.length - 1] >= nGiri) return null;
-    return valuta(nomeSito, pilota, lf, conMescole(giri), piani, contesto, gSim, nonClassificati, ritiriVeri, neutraVera);
+    return valuta(nomeSito, pilota, lf, conMescole(giri), piani, contesto, gSim, nonClassificati, ritiriVeri, neutraVera, ripFinta);
   };
   let migliore = null;
   let valutati = 0;
@@ -142,6 +145,19 @@ function caso(team, nomeSito) {
 
   const gSimPerRitiri = garaNuova(nomeSito);
   const neutraVera = regimePerGiroDiCampo(gSimPerRitiri.perPilota);
+  // R3: i giri finti si estraggono PRIMA di conoscere qualunque esito, con seme
+  // dichiarato — stesso numero dei giri di ripartenza veri, pescati fra i verdi
+  let ripFinta;
+  if (PLACEBO_RIPARTENZA) {
+    const nGiriTot = gSimPerRitiri.nGiri;
+    const veri = Object.keys(neutraVera).map(Number).filter((L) => !neutraVera[L + 1]).map((L) => L + 1).filter((L) => L <= nGiriTot);
+    const candidati = [];
+    for (let L = 16; L < nGiriTot; L += 1) if (!neutraVera[L] && !neutraVera[L - 1]) candidati.push(L);
+    const rnd = creaGeneratore(20260807 + nomeSito.length * 7 + nomeSito.charCodeAt(0));
+    ripFinta = [];
+    const urna = [...candidati];
+    while (ripFinta.length < veri.length && urna.length) ripFinta.push(urna.splice(Math.floor(rnd() * urna.length), 1)[0]);
+  }
   const ritiriVeri = {};
   for (const x of perGara(nomeSito)) {
     if (x.classificato) continue;
@@ -151,7 +167,7 @@ function caso(team, nomeSito) {
 
   let base = null; let pilota = null; const saltati = [];
   for (const p of duo) {
-    const e = corri(nomeSito, p, { pianiRivali: piani, ritiriRivali: ritiriVeri, neutralizzazioneVera: neutraVera });
+    const e = corri(nomeSito, p, { pianiRivali: piani, ritiriRivali: ritiriVeri, neutralizzazioneVera: neutraVera, ripartenzaGiri: ripFinta });
     if (e.saltato) { saltati.push(`${p}: ${e.saltato}`); continue; }
     base = e; pilota = p; break;
   }
@@ -167,7 +183,7 @@ function caso(team, nomeSito) {
   // il confronto A/B e' motore-contro-motore senza nessuna differenza di montaggio
   const r = perGara(nomeSito).find((x) => x.pilota === pilota);
   const sosteVere = r.soste_piano.filter((s) => s.giro > lf && ['SOFT', 'MEDIUM', 'HARD'].includes(s.mescola));
-  const bracciA = valuta(nomeSito, pilota, lf, sosteVere, piani, contesto, gSim, nonClassificati, ritiriVeri, neutraVera);
+  const bracciA = valuta(nomeSito, pilota, lf, sosteVere, piani, contesto, gSim, nonClassificati, ritiriVeri, neutraVera, ripFinta);
 
   // il braccio B: la ricerca su k = 0..3. LA STRATEGIA VERA E' UN CANDIDATO:
   // «migliorare» non puo' mai restituire un piano peggiore di quello che il
@@ -179,7 +195,7 @@ function caso(team, nomeSito) {
   let valutatiTot = 0;
   for (const k of [0, 1, 2, 3]) {
     if (k === 0 && usate.size < 2) { perK.push({ k, posizione: null, nota: 'illegale (una sola slick usata al congelamento, REG01)' }); continue; }
-    const { migliore: mk, valutati } = cercaK(k, { nomeSito, pilota, lf, piani, contesto, gSim, usate, nonClassificati, ritiriVeri, neutraVera });
+    const { migliore: mk, valutati } = cercaK(k, { nomeSito, pilota, lf, piani, contesto, gSim, usate, nonClassificati, ritiriVeri, neutraVera, ripFinta });
     valutatiTot += valutati;
     perK.push(mk
       ? { k, posizione: mk.posizione, cum: Number(mk.cum.toFixed(3)), soste: mk.soste }
@@ -195,7 +211,7 @@ function caso(team, nomeSito) {
   ].sort((a, b) => (a.posizione - b.posizione) || (a.cum - b.cum));
   for (const c of candidatiOrdinati) {
     try {
-      const sc = costruisciScenario({ gara: garaSimDi(nomeSito), freezeLap: lf, pilota, piano: c.soste, pianiRivali: piani, rivaliNonClassificati: nonClassificati, ritiriRivali: ritiriVeri, neutralizzazioneVera: neutraVera }, contesto);
+      const sc = costruisciScenario({ gara: garaSimDi(nomeSito), freezeLap: lf, pilota, piano: c.soste, pianiRivali: piani, rivaliNonClassificati: nonClassificati, ritiriRivali: ritiriVeri, neutralizzazioneVera: neutraVera, ripartenzaGiri: ripFinta }, contesto);
       const { direttore } = eseguiEValida(sc, contesto.costantiDirector);
       const fatal = (direttore?.violazioni ?? []).filter((v) => v.severita === 'FATAL');
       if (fatal.length === 0) { vincitore = { ...c, ordine: null }; directorFatal = 0; break; }
@@ -206,7 +222,7 @@ function caso(team, nomeSito) {
   const vero = ordineVero(nomeSito);
   const nullo = ordineAlGiro(gSim, lf);
   const evalVincitore = vincitore?.soste !== undefined
-    ? valuta(nomeSito, pilota, lf, vincitore.soste, piani, contesto, gSim, nonClassificati, ritiriVeri, neutraVera) : null;
+    ? valuta(nomeSito, pilota, lf, vincitore.soste, piani, contesto, gSim, nonClassificati, ritiriVeri, neutraVera, ripFinta) : null;
   const mB = evalVincitore ? riclassifica(evalVincitore.ordine, vero, pilota, nullo) : null;
   const mA = bracciA ? riclassifica(bracciA.ordine, vero, pilota, nullo) : null;
 
@@ -214,6 +230,7 @@ function caso(team, nomeSito) {
     team, gara: nomeSito, pilota,
     congelamento: lf, proiettati: base.proiettati, n_giri: base.n_giri,
     reale: { posizione: base.vero, tipo_arrivo: base.tipo_arrivo, partenza: base.partenza },
+    cambi: { reali: base.cambi_reali, motore: base.cambi_motore },
     strategia_vera: base.strategia,
     motore_strategia_vera: {
       posizione_riclassificata: base.previsto, su: base.su, errore_vs_reale: base.errore,

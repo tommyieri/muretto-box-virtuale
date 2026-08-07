@@ -130,6 +130,32 @@ divieto s25 esteso; assunzione NEUTRALIZZAZIONE_VERA in ogni run.
   compressione, è ALTRO), **Canada −2** con 10 cambi contro 7. Il prossimo indizio
   sta lì: che cosa muove il campo a Spa che né il verde né la compressione spiegano.
 
+## La ripartenza — misurata VERA, applicata NULL, SPENTA (07/08, notte fonda)
+
+Prereg prima dei numeri (PREREG_ripartenza.md, poi PREREG_ripartenza_fondo.md).
+**R0 sul 2026: NON PASSA** (OR 2,078 ma IC95 [0,919; 3,410], 115 occasioni — poche
+ripartenze, non poca fisica). **R0′ sul fondo asciutto (147 gare): PASSA** — alla
+ripartenza si passa col 12,9% contro il 9,8% dei giri verdi, OR 1,357, IC95
+[1,114; 1,640]; Δsoglia = ln(OR)/pendenza sigillata = **0,154 s/giro**, dal fondo,
+fuori campione per i cancelli 2026.
+
+Meccanismo costruito e sorvegliato: `tetto.ripartenza` nel kernel (s43: spento è
+spento, il delta agisce sul suo giro e solo lì), aggancio dal costruttore sulle
+finestre vere, sigillo in `soglia_sorpasso.json`, placebo con giri finti seminati.
+
+**I cancelli di applicazione dicono NO** (ESITO_cancelli_ripartenza.json):
+R1 peggiora (8 → 10), R2 quasi ferma (34 → 33), R3 fallisce — il placebo rende
+quanto il reale — e soprattutto **Belgio, il caso bersaglio, non si muove**
+(+3 invariato, 5 cambi contro 9). Verdetto onorato: **la regola resta nel kernel
+con `attivo: false` nel sigillo**. Il fenomeno esiste; la forma «delta uniforme sul
+giro di ripartenza» non è quella giusta. Se si riapre, serve una forma NUOVA
+pre-registrata (candidata naturale: delta condizionato al divario d'età gomma della
+coppia), non un ritocco di questo delta.
+
+**Cosa dice del residuo**: ciò che rimescolò Spa non è né la compressione né la
+soglia più morbida alla ripartenza. Il record chiude qui con il motore a
+somma |err| 8, esatti 5/10, e Belgio +3 come unico caso irrisolto condiviso col nullo.
+
 ## Dove guardare per riparare (proposte, da decidere insieme)
 
 1. **Il movimento del campo nelle gare rimescolate** (Belgio, GB): l'errore condiviso

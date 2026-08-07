@@ -36,5 +36,19 @@
   "Ungheria": 0.6054
  },
  "_circuito_ignoto": "Un circuito che non compare qui usa la soglia comune (0.6054 s/giro), non 1 e non zero: la misura dice che dieci piste su undici condividono la stessa soglia, quindi la comune E la stima per una pista nuova. Monaco e l unica eccezione misurata.",
- "soglia_comune": 0.6054
+ "soglia_comune": 0.6054,
+ "ripartenza": {
+  "attivo": false,
+  "perche_spenta": "cancelli di applicazione NON superati (ESITO_cancelli_ripartenza.json): R1 8->10, R3 placebo >= reale. Il fenomeno esiste (R0 sotto), la forma uniforme del delta non rende. Accensione solo con una forma nuova pre-registrata.",
+  "delta_soglia": 0.154014,
+  "odds_ratio": 1.3571,
+  "ic95": [
+   1.1136,
+   1.6401
+  ],
+  "occasioni_ripartenza": 1719,
+  "gare": 147,
+  "targhetta": "misurato sul fondo 2018-2025 asciutto (07/08/2026, PREREG_ripartenza_fondo.md) — INGRESSO DI LABORATORIO: agisce solo con neutralizzazioneVera, mai in produzione",
+  "generato_da": "ai_lab/sorpasso/misura_ripartenza_fondo.mjs"
+ }
 }

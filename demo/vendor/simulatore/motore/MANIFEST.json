@@ -9,8 +9,8 @@
  ],
  "file": {
   "engine/kernel.mjs": {
-   "sha256_sorgente": "01562e1704b1778f6cbd9972398883c59bc6f878d10705ef0b0ce196273863f3",
-   "byte": 25019
+   "sha256_sorgente": "bc32a07c1d475e833a3dfabfecdf3577102815e9797ac0760929330defae69ed",
+   "byte": 26360
   },
   "engine/passo_v2.mjs": {
    "sha256_sorgente": "2b516794f36aa724ac3aa468e5cb33605bad41a51a2cec393c6ea0ebd231cc28",
@@ -41,8 +41,8 @@
    "byte": 3585
   },
   "scenario/costruttore.mjs": {
-   "sha256_sorgente": "78cff15c88c5096b7d710b654eb241b5a08025777bb290ac2a69f16f0d206674",
-   "byte": 59062
+   "sha256_sorgente": "9283384994fe4206290b4c7221e82e4393c6b87b766f6ce9fd944fcd544c810d",
+   "byte": 60882
   },
   "scenario/director.mjs": {
    "sha256_sorgente": "a305da62cf49576be92050910d7f9fe8a5abe1bedebb49334b8fcf0e016e4e9a",
@@ -57,8 +57,8 @@
    "byte": 13005
   },
   "contesto_live.json": {
-   "sha256_sorgente": "f0ea724ed2ba01b576fc45de7f9e3fc6f54968c368e6f41ee7d711771a7aca86",
-   "byte": 62200,
+   "sha256_sorgente": "c24b9dd721b2515a0783f67f881ef185779272d8b1f3d983f4504f357513546f",
+   "byte": 62815,
    "data": "2026-08-07"
   }
  }

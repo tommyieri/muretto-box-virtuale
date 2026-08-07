@@ -142,7 +142,19 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
       const v = tetto[k];
       if (typeof v !== 'number' || !Number.isFinite(v) || v < 0) throw new Error(`tetto.${k} non utilizzabile (serve un numero ≥ 0): ${JSON.stringify(v)}`);
     }
+    // LA RIPARTENZA (ingresso di laboratorio, 07/08): sui giri elencati la soglia
+    // di sorpasso della coppia si abbassa del delta MISURATO sul fondo (147 gare
+    // asciutte: alla ripartenza si passa con odds x1,357, IC95 [1,114; 1,640];
+    // delta = ln(OR)/pendenza = 0,154 s/giro — PREREG_ripartenza_fondo.md).
+    // Assente ⇒ questo blocco non esiste e i numeri sono bit-identici (s43).
+    if (tetto.ripartenza !== undefined && tetto.ripartenza !== null) {
+      if (!Array.isArray(tetto.ripartenza.giri)) throw new Error(`tetto.ripartenza.giri deve essere un elenco di giri: ${JSON.stringify(tetto.ripartenza)}`);
+      for (const g of tetto.ripartenza.giri) if (!Number.isInteger(g)) throw new Error(`tetto.ripartenza.giri contiene un giro non intero: ${JSON.stringify(g)}`);
+      const d = tetto.ripartenza.deltaSoglia;
+      if (typeof d !== 'number' || !Number.isFinite(d) || d < 0) throw new Error(`tetto.ripartenza.deltaSoglia non utilizzabile: ${JSON.stringify(d)}`);
+    }
   }
+  const giriRipartenza = tetto?.ripartenza?.giri?.length ? new Set(tetto.ripartenza.giri) : null;
   // I RITIRI DICHIARATI ({drv: ultimo giro percorso}) sono un ingresso di
   // LABORATORIO, il gemello delle soste vere: informazione dal futuro, lecita
   // solo a gara finita, e il costruttore la dichiara (RITIRI_VERI_DEI_RIVALI).
@@ -371,6 +383,10 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
         if (dietro.c - avanti.c >= tetto.minGap) continue;      // non sono in contatto
         // il vantaggio di PASSO su questo giro, non il distacco accumulato
         const vantaggio = avanti.ultimoGiro.lap_time - dietro.ultimoGiro.lap_time;
+        // al giro di RIPARTENZA la soglia si abbassa del delta misurato (vedi sopra)
+        const sogliaDelGiro = giriRipartenza?.has(giro)
+          ? Math.max(0, tetto.sogliaSorpasso - tetto.ripartenza.deltaSoglia)
+          : tetto.sogliaSorpasso;
         // IL TEMPO PERSO E' TEMPO SUL GIRO, non solo cumulato. La prima scrittura
         // muoveva `c` e lasciava intatto `lap_time`: il Director l'ha respinta subito
         // — «il cumulato non corrisponde alla somma dei tempi sul giro» — su 183 casi
@@ -378,7 +394,7 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
         // fisicamente. Restare imbottigliato dietro qualcuno E' un giro piu' lento, e
         // deve comparire nel giro, non solo nel totale.
         const applica = (m, delta) => { m.c += delta; m.ultimoGiro.lap_time += delta; };
-        if (vantaggio > tetto.sogliaSorpasso) {
+        if (vantaggio > sogliaDelGiro) {
           applica(avanti, tetto.costoSubito);              // il sorpasso avviene: chi lo subisce paga
         } else {
           applica(dietro, (avanti.c + tetto.minGap) - dietro.c);  // niente passo per passare: resta dietro
