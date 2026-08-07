@@ -1,0 +1,36 @@
+{
+ "_cosa_e": "V2 di PREREG_vsc_a_tempo.md — R_lap in funzione della frazione di giro sotto VSC (fonte a tempo).",
+ "_data": "2026-08-07",
+ "range_fisico": [
+  1.2,
+  1.5
+ ],
+ "bin": {
+  "pieni": {
+   "n": 82,
+   "r_lap": 1.3229304489966855
+  },
+  "alti": {
+   "n": 129,
+   "r_lap": 1.1984265400430283
+  },
+  "bassi": {
+   "n": 197,
+   "r_lap": 1.077283766561666
+  },
+  "zero_ma_6": {
+   "n": 0,
+   "r_lap": null
+  }
+ },
+ "cancello": {
+  "pieni_nel_range": true,
+  "monotonia": true
+ },
+ "V2_passa": true,
+ "riconciliazione_simbolo_6": {
+  "f_vsc_mediana_delle_celle_6": 0.5334,
+  "n": 380,
+  "nota": "quanta VSC c'e' davvero nei giri che l'archivio marca '6' — la diagnosi della diluizione"
+ }
+}

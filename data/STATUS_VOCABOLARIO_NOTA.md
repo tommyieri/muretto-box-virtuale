@@ -60,3 +60,10 @@ Generatore: stesso file. Output: `data/rlap_per_regime.csv` (R_lap per regime pe
 > (locale ≈ campo ≈ 1,12), è plausibilmente il giro parzialmente coperto. Il segnale
 > '6' resta una lettura per-giro di un fenomeno a tempo; la fonte per capirlo è il
 > race control con gli orari, non questo vocabolario.
+
+> **Chiusura del 07/08/2026, sera.** Il punto 2 si RESTRINGE: la fonte a tempo
+> (track_status, prereg V2 in `ai_lab/neutralizzazione/`) ha spiegato il debito —
+> il segnale '6' marca la presenza giusta con la quantità sbagliata (copertura
+> mediana 53% del giro), e la VSC piena rallenta il 32%, fisica sana. Vietato
+> resta costruire sul '6' per-giro; la VSC A TEMPO è validata e utilizzabile con
+> targhetta. Vedi `ESITO_vsc_a_tempo.md`.
