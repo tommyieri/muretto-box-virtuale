@@ -117,6 +117,14 @@ function contestoLive(dataOggi) {
     // il TETTO AL MOVIMENTO viaggia col motore: se stesse solo in Node, la diretta
     // risponderebbe senza vincolo e il replay con — che e' E17 nella sua forma esatta.
     sogliaSorpasso: leggi('data/modelli/soglia_sorpasso.json'),
+    // LA VITA DELLA MESCOLA e L'ORIZZONTE viaggiano per la stessa ragione del tetto.
+    // Fino al 07/08 NON viaggiavano — e il ponte non agganciava nemmeno la soglia qui
+    // sopra: in pagina il selettore mescola cambiava l'etichetta ma non la fisica, e il
+    // tetto era spento mentre le viste pre-calcolate l'avevano acceso. La divergenza era
+    // invisibile perche' la prova di identita' della parita' confronta ponte-contro-ponte:
+    // il contesto monco stava su entrambi i lati (la famiglia A/A della pagella).
+    vitaMescola: leggi('data/modelli/vita_mescola.json'),
+    orizzonteRisposta: leggi('data/modelli/orizzonte_risposta.json'),
     // I CASI viaggiano col motore, o la diretta direbbe meno del replay sulla
     // stessa situazione — ed e' la forma di E17 che questo trasporto esiste per
     // impedire. Il file e' piccolo: sono due contesti, non una tabella per gara.

@@ -157,3 +157,11 @@ jobs:
       # piu', sia se l'accensione cambia senza che nessuno decida.
       - name: Il registro del debito pubblicato descrive ancora la realtà
         run: node demo/test_debito_demo.mjs
+
+      # LA PAGINA «E SE?» rigioca una gara finita col motore vero nel browser, e ha una
+      # DEROGA sorvegliata (s25: soste vere dei rivali = informazione dal futuro,
+      # dichiarata in pagina). Questo banco verifica la derivazione delle soste vere,
+      # l'arrivo, la pipeline intera col Director, che i bracci si distinguano (A/A) e
+      # che l'avvertenza resti resa all'utente. Esce 1 su ognuna di queste.
+      - name: La pagina «E se?» rigioca davvero (e resta onesta)
+        run: node demo/test_ese.mjs
