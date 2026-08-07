@@ -135,12 +135,35 @@ function normalizzaSoste(pits, pilotiNoti) {
  *          inventato per chi non aveva passo (E06 — errori da 480 s), mai una
  *          somma parziale spacciata per cum a fine orizzonte.
  */
-export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizzazione = null, tetto = null, traccia = false }) {
+export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizzazione = null, tetto = null, traccia = false, ritiri = null }) {
   if (tetto !== null) {
     if (typeof tetto !== 'object') throw new Error(`tetto non utilizzabile: ${JSON.stringify(tetto)}`);
     for (const k of ['minGap', 'sogliaSorpasso', 'costoDuello', 'costoSubito']) {
       const v = tetto[k];
       if (typeof v !== 'number' || !Number.isFinite(v) || v < 0) throw new Error(`tetto.${k} non utilizzabile (serve un numero ≥ 0): ${JSON.stringify(v)}`);
+    }
+    // LA RIPARTENZA (ingresso di laboratorio, 07/08): sui giri elencati la soglia
+    // di sorpasso della coppia si abbassa del delta MISURATO sul fondo (147 gare
+    // asciutte: alla ripartenza si passa con odds x1,357, IC95 [1,114; 1,640];
+    // delta = ln(OR)/pendenza = 0,154 s/giro — PREREG_ripartenza_fondo.md).
+    // Assente ⇒ questo blocco non esiste e i numeri sono bit-identici (s43).
+    if (tetto.ripartenza !== undefined && tetto.ripartenza !== null) {
+      if (!Array.isArray(tetto.ripartenza.giri)) throw new Error(`tetto.ripartenza.giri deve essere un elenco di giri: ${JSON.stringify(tetto.ripartenza)}`);
+      for (const g of tetto.ripartenza.giri) if (!Number.isInteger(g)) throw new Error(`tetto.ripartenza.giri contiene un giro non intero: ${JSON.stringify(g)}`);
+      const d = tetto.ripartenza.deltaSoglia;
+      if (typeof d !== 'number' || !Number.isFinite(d) || d < 0) throw new Error(`tetto.ripartenza.deltaSoglia non utilizzabile: ${JSON.stringify(d)}`);
+    }
+  }
+  const giriRipartenza = tetto?.ripartenza?.giri?.length ? new Set(tetto.ripartenza.giri) : null;
+  // I RITIRI DICHIARATI ({drv: ultimo giro percorso}) sono un ingresso di
+  // LABORATORIO, il gemello delle soste vere: informazione dal futuro, lecita
+  // solo a gara finita, e il costruttore la dichiara (RITIRI_VERI_DEI_RIVALI).
+  // Il default null e' la produzione: nessuno sparisce mai (la regola resta).
+  // Un oggetto vuoto o assente e' bit-identico a null (sentinella s41).
+  if (ritiri !== null) {
+    if (typeof ritiri !== 'object' || Array.isArray(ritiri)) throw new Error(`ritiri non utilizzabile: ${JSON.stringify(ritiri)}`);
+    for (const [drv, lap] of Object.entries(ritiri)) {
+      if (!Number.isInteger(lap) || lap < 0) throw new Error(`ritiri.${drv} non utilizzabile (serve il suo ultimo giro, intero ≥ 0): ${JSON.stringify(lap)}`);
     }
   }
   if (!interoNonNegativo(freezeLap)) throw new Error(`freezeLap deve essere intero ≥ 0: ${JSON.stringify(freezeLap)}`);
@@ -175,6 +198,7 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
   const cum = {};
   const eta = {};
   const esclusi = [];
+  const ritirati = [];
   // La traccia per giro serve a chi deve VALIDARE l'output, non solo leggerlo:
   // il Director ragiona su celle, non su cumulati. È opzionale perché è l'unico
   // pezzo di questa funzione che costa memoria proporzionale all'orizzonte.
@@ -224,6 +248,25 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
   }
 
   for (const giro of orizzonte) {
+    // ── i ritiri dichiarati escono QUI, prima di ogni interazione del giro ──
+    // Chi ha corso il suo ultimo giro vero non compare piu': niente compressione,
+    // niente tetto, niente classifica per un pilota che a questo giro non c'era
+    // (sentinella s41: ritiro al congelamento == assenza dallo stato). La sua
+    // storia parziale resta nella traccia — il ritiro e' la verita', non un cum
+    // a meta' (non e' il caso E06) — e il suo posto e' in `ritirati`, mai in
+    // `ordine`: un cum di 30 giri non si confronta con uno di 57.
+    if (ritiri !== null) {
+      for (const m of marcia) {
+        if (!m.attivo) continue;
+        const ultimo = ritiri[m.drv];
+        if (ultimo === undefined || giro <= ultimo) continue;
+        m.attivo = false;
+        cum[m.drv] = null;
+        eta[m.drv] = null;
+        if (tracce) tracce[m.drv] = m.passi;
+        ritirati.push({ drv: m.drv, lap: ultimo, cum: m.c });
+      }
+    }
     // Il leader e i distacchi PRIMA di avanzare: la compressione è definita
     // come gap(k+1) = gap(k)·κ, cioè sul distacco di fine giro precedente. È
     // la stessa costruzione con cui κ è stato misurato sul fondo.
@@ -289,7 +332,16 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
         if (fermiQuestoGiro.has(m.drv)) continue;
         const g = gapPrima.get(m.drv);
         if (g === undefined) continue;
-        m.c = capofila.c + g * kappaDelGiro;
+        // IL TEMPO RECUPERATO E' TEMPO SUL GIRO, non solo cumulato — la stessa
+        // lezione pagata dal tetto (GEO02, respinto su 183 casi su 223): chiudere
+        // sul leader dietro la Safety Car E' un giro diverso, e deve comparire nel
+        // giro. La prima scrittura muoveva solo `c`: con le finestre corte della
+        // persistenza al congelamento il delta stava sotto la tolleranza del
+        // Director e nessuno se n'e' accorto; con le finestre VERE di una gara
+        // intera usciva GEO02 a grappoli (129 in un run di Silverstone).
+        const delta = (capofila.c + g * kappaDelGiro) - m.c;
+        m.c += delta;
+        if (m.ultimoGiro) m.ultimoGiro.lap_time += delta;
       }
     }
 
@@ -331,6 +383,10 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
         if (dietro.c - avanti.c >= tetto.minGap) continue;      // non sono in contatto
         // il vantaggio di PASSO su questo giro, non il distacco accumulato
         const vantaggio = avanti.ultimoGiro.lap_time - dietro.ultimoGiro.lap_time;
+        // al giro di RIPARTENZA la soglia si abbassa del delta misurato (vedi sopra)
+        const sogliaDelGiro = giriRipartenza?.has(giro)
+          ? Math.max(0, tetto.sogliaSorpasso - tetto.ripartenza.deltaSoglia)
+          : tetto.sogliaSorpasso;
         // IL TEMPO PERSO E' TEMPO SUL GIRO, non solo cumulato. La prima scrittura
         // muoveva `c` e lasciava intatto `lap_time`: il Director l'ha respinta subito
         // — «il cumulato non corrisponde alla somma dei tempi sul giro» — su 183 casi
@@ -338,7 +394,7 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
         // fisicamente. Restare imbottigliato dietro qualcuno E' un giro piu' lento, e
         // deve comparire nel giro, non solo nel totale.
         const applica = (m, delta) => { m.c += delta; m.ultimoGiro.lap_time += delta; };
-        if (vantaggio > tetto.sogliaSorpasso) {
+        if (vantaggio > sogliaDelGiro) {
           applica(avanti, tetto.costoSubito);              // il sorpasso avviene: chi lo subisce paga
         } else {
           applica(dietro, (avanti.c + tetto.minGap) - dietro.c);  // niente passo per passare: resta dietro
@@ -385,6 +441,9 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
     ordine: Object.keys(cum).filter((d) => cum[d] !== null).sort(perCum(cum)),
     ordineIniziale: Object.keys(cumIniziale).sort(perCum(cumIniziale)),
     esclusi: esclusi.sort((a, d) => (a.drv < d.drv ? -1 : a.drv > d.drv ? 1 : 0)),
+    // la chiave compare solo se qualcuno si e' ritirato davvero: cosi' `ritiri`
+    // assente, null e {} producono lo stesso identico oggetto (s41, spento e' spento)
+    ...(ritirati.length ? { ritirati: ritirati.sort((a, d) => (a.lap - d.lap) || (a.drv < d.drv ? -1 : 1)) } : {}),
   };
 }
 

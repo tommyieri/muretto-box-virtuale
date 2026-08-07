@@ -1,0 +1,79 @@
+{
+ "_cosa_e": "R0 di PREREG_ripartenza.md — alla ripartenza si passa di piu'? Misura, non cancello di prodotto.",
+ "_data": "2026-08-07",
+ "perimetro": {
+  "gare": 11,
+  "gap_max_s": 1.5,
+  "seme": 20260807,
+  "ripetizioni": 2000
+ },
+ "ripartenza": {
+  "occasioni": 115,
+  "sorpassi": 24,
+  "p": 0.20869565217391303
+ },
+ "verde": {
+  "occasioni": 3010,
+  "sorpassi": 339,
+  "p": 0.11262458471760797
+ },
+ "odds_ratio": 2.0779928036565205,
+ "ic95": [
+  0.9191542288557215,
+  3.4096739130434788
+ ],
+ "R0_passa": false,
+ "conversione": {
+  "pendenza_sigillata": 1.982602,
+  "delta_soglia_s_giro": 0.3689103660546122,
+  "nota": "Δ = ln(OR)/pendenza — stessa logistica con intercetta spostata, assunzione di forma DICHIARATA (prereg)"
+ },
+ "contorno_descrittivo": {
+  "eta_delta_mediano_chi_passa_ripartenza": 1,
+  "eta_delta_mediano_chi_passa_verde": 0,
+  "nota": "quanto e' piu' fresca (in giri) la gomma di chi passa; descrive, non decide"
+ },
+ "giri_di_ripartenza_per_gara": {
+  "Australia": [
+   14,
+   20,
+   35
+  ],
+  "Austria": [
+   27,
+   53
+  ],
+  "Belgio": [
+   5,
+   19,
+   21
+  ],
+  "Canada": [
+   32,
+   53
+  ],
+  "Cina": [
+   14
+  ],
+  "Giappone": [
+   28
+  ],
+  "Gran Bretagna": [
+   23,
+   39
+  ],
+  "Miami": [
+   12
+  ],
+  "Monaco": [
+   71
+  ],
+  "Spagna": [
+   42,
+   64
+  ],
+  "Ungheria": [
+   57
+  ]
+ }
+}

@@ -466,8 +466,11 @@ const d = riassunto.difesa;
     ...elencaFile(path.join(radice, '..', 'demo'))
       .filter((f) => !/\/data\//.test(f) && !/\/vendor\//.test(f) && !/\/ese\.mjs$/.test(f)),
   ];
-  const colpevoli = vietate.filter((f) => /pianiRivali/.test(readFileSync(f, 'utf8')));
-  b.uguale('nessun percorso di produzione passa le soste vere dei rivali (E14)',
+  // `ritiriRivali` e `neutralizzazioneVera` sono della stessa famiglia
+  // (informazione dal futuro, dal 07/08) e hanno lo stesso divieto: si cercano
+  // insieme, con la stessa eccezione.
+  const colpevoli = vietate.filter((f) => /pianiRivali|ritiriRivali|neutralizzazioneVera|ripartenzaGiri/.test(readFileSync(f, 'utf8')));
+  b.uguale('nessun percorso di produzione passa soste, ritiri, neutralizzazioni o ripartenze VERE (E14)',
     colpevoli.map((f) => path.relative(radice, f)).sort(), []);
 
   // ...e il costruttore la dichiara come assunzione, invece di applicarla in silenzio

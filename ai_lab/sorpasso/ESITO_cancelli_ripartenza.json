@@ -1,0 +1,15 @@
+{
+ "_cosa_e": "Esito dei cancelli di APPLICAZIONE R1-R3 di PREREG_ripartenza.md / PREREG_ripartenza_fondo.md",
+ "_data": "2026-08-07",
+ "parametro": {"fonte": "fondo 2018-2025 asciutto, 147 gare", "delta_soglia": 0.154014, "odds_ratio": 1.3571, "ic95": [1.1136, 1.6401]},
+ "R0_2026": {"passa": false, "odds_ratio": 2.078, "ic95": [0.919, 3.41], "occasioni": 115, "nota": "verso giusto, potenza insufficiente"},
+ "R0_fondo": {"passa": true},
+ "cancelli_di_applicazione": {
+  "riproduzione": "node ai_lab/confronto/migliora_strategia.mjs --json (con e senza --placebo-ripartenza; baseline = sigillo con attivo:false)",
+  "R1_somma_err_riclassificato": {"senza": 8, "con_ripartenza_vera": 10, "placebo": 8, "passa": false},
+  "R2_somma_delta_cambi": {"senza": 34, "con_ripartenza_vera": 33, "placebo": 34, "passa": true},
+  "R3_placebo": {"miglioramento_reale": -1, "miglioramento_placebo": 0, "passa": false}
+ },
+ "verdetto": "SPENTA. Il fenomeno esiste (R0' fondo: alla ripartenza le odds di sorpasso valgono x1,357), ma abbassare uniformemente la soglia sul giro di ripartenza NON migliora il record 2026 (R1 peggiora 8->10, il placebo rende quanto il reale) e NON tocca il caso bersaglio (Belgio +3 invariato, cambi 5 contro 9). La regola resta nel kernel con l'interruttore attivo:false nel sigillo e la sentinella s43 a guardia; riaprirla richiede una FORMA nuova pre-registrata (es. delta condizionato all'eta'-gomma della coppia), non un ritocco di questo delta.",
+ "belgio_nota": "il residuo di Spa non e' la ripartenza uniforme: i cambi simulati restano 5 contro 9 anche con la soglia abbassata — cio' che rimescolo' Spa passa da un meccanismo che questa forma non cattura."
+}

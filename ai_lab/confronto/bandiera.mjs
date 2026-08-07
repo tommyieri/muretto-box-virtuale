@@ -91,7 +91,11 @@ export function ordinePrevisto(traccia, giroFinale) {
   }
   const giri = Object.values(cum).map((x) => x.lap);
   return {
-    ordine: Object.keys(cum).sort((a, b) => (cum[a].cum - cum[b].cum) || (a < b ? -1 : 1)),
+    // GIRI PERCORSI PRIMA, POI TEMPO — la convenzione di ogni classifica vera. Fino al
+    // 07/08 l'ordine era per solo cum: identico quando tutte le tracce arrivano allo
+    // stesso giro (ogni uso pubblicato), SBAGLIATO con i ritiri dichiarati del kernel —
+    // un cum di 30 giri e' piu' piccolo di uno di 57, e il ritirato usciva primo.
+    ordine: Object.keys(cum).sort((a, b) => (cum[b].lap - cum[a].lap) || (cum[a].cum - cum[b].cum) || (a < b ? -1 : 1)),
     giro_min: giri.length ? Math.min(...giri) : null,
     giro_max: giri.length ? Math.max(...giri) : null,
   };
@@ -129,7 +133,7 @@ export function pianiVeriDi(nomeSito) {
  * ATTENZIONE al perimetro: s25_difesa fa fallire la suite se `pianiRivali` compare in un
  * percorso di web/, demo/ o scenario/. E' un ingresso di LABORATORIO e deve restare qui.
  */
-export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = null, tetto = null } = {}) {
+export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = null, tetto = null, ritiriRivali = undefined, neutralizzazioneVera = undefined, ripartenzaGiri = undefined } = {}) {
   const r = riga(nomeSito, pilota);
   if (!r) return { saltato: 'nessuna riga in arrivi_2026.csv' };
   if (!r.classificato) return { saltato: `non classificato (${r.tipo_arrivo})`, tipo_arrivo: r.tipo_arrivo };
@@ -159,6 +163,9 @@ export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = nul
     try {
       s2 = costruisciScenario({
         gara: garaSimDi(nomeSito), freezeLap: lf, pilota, piano: futuro, pianiRivali: piani,
+        // i ritiri e le neutralizzazioni VERE (ingressi di laboratorio, 07/08):
+        // undefined in ogni misura pubblicata — i numeri a referto restano bit-identici
+        ritiriRivali, neutralizzazioneVera, ripartenzaGiri,
       }, contesto);
       e2 = eseguiEValida(s2, contesto.costantiDirector);
     } catch (e) { ultimoMotivo = `eccezione: ${e.message}`; continue; }

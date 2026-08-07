@@ -398,6 +398,11 @@ def wave_nuove():
         # non e' cambiato nulla.
         sh([PY, 'undercut_sorveglianza.py'], check=False)
         sh([PY, os.path.join('ai_lab', 'scienziato', 'sorveglianza.py')], check=False)
+        # COPPIE ALLA PARI (PREREG_coppie_alla_pari.md): conta le occasioni di ripartenza
+        # sulle SOLE gare successive alle 11 congelate al 07/08/2026 — la fonte che
+        # l'ipotesi non ha mai visto. Conta e tace: il cancello (200 occasioni) lo legge
+        # un umano. check=False come ogni sorveglianza: non ferma mai la gara.
+        sh(['node', os.path.join('ai_lab', 'sorpasso', 'sorveglia_coppie_alla_pari.mjs')], check=False)
         # REDAZIONE TECNICA — genera le BOZZE degli articoli dai rilevatori registrati.
         # Solo bozze nell'area Lab (ai_lab/redazione/bozze/): la pubblicazione resta un
         # gesto umano (coda.py --approva --attore). check=False e ogni rilevatore isolato:

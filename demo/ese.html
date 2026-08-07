@@ -108,7 +108,8 @@
       <li>La proiezione copre decine di giri contro i <b>~6 validati</b> della risposta del muretto: sulla gara intera è
         misurato che il motore e «non cambia niente» sono indistinguibili. È un gioco onesto, non un oracolo.</li>
       <li>I duelli non si simulano: il tetto al movimento (misurato su 5.498 occasioni) limita <b>quanto</b> ci si passa,
-        mai <b>chi</b> passa chi. I rivali non reagiscono alla tua strategia: fanno ciò che fecero.</li>
+        mai <b>chi</b> passa chi. I rivali non reagiscono alla tua strategia: fanno ciò che fecero — soste,
+        ritiri e Safety Car sono quelli <b>veri</b> della gara.</li>
     </ul>
   </div>
 
@@ -238,7 +239,8 @@ function corri() {
   let mio;
   try {
     mio = rigioca({ nome: PREP.nome, contesto: PREP.contesto, pilota, freezeLap: FREEZE, soste,
-      sosteRivali: PREP.sosteVere, nonClassificati: PREP.nonClassificati });
+      sosteRivali: PREP.sosteVere, nonClassificati: PREP.nonClassificati, ritiriVeri: PREP.ritiriVeri,
+      neutraVera: PREP.neutraVera });
   } catch (e) { mostraErrore(`il motore rifiuta questo piano: ${e.message}`); return; }
   // il braccio di confronto: la STRATEGIA VERA del pilota, nello stesso motore.
   // Se non è simulabile (gomme da bagnato, soste illeggibili) resta null, dichiarato.
@@ -247,7 +249,8 @@ function corri() {
     const sosteVereMie = (PREP.sosteVere[pilota] ?? [])
       .filter((s) => s.giro > FREEZE && MESCOLE_EDITOR.includes(s.mescola));
     vero = rigioca({ nome: PREP.nome, contesto: PREP.contesto, pilota, freezeLap: FREEZE, soste: sosteVereMie,
-      sosteRivali: PREP.sosteVere, nonClassificati: PREP.nonClassificati });
+      sosteRivali: PREP.sosteVere, nonClassificati: PREP.nonClassificati, ritiriVeri: PREP.ritiriVeri,
+      neutraVera: PREP.neutraVera });
   } catch (_) { /* dichiarato sotto */ }
   rendi(pilota, mio, vero);
 }
@@ -304,10 +307,21 @@ function rendi(pilota, mio, vero) {
       + `<td>${freccia}</td>`;
     torre.appendChild(tr);
   });
+  // i ritirati veri: fuori classifica al loro giro, come nella gara vera
+  for (const rit of (risultato.ritirati ?? [])) {
+    const tr = document.createElement('tr');
+    const team = PREP.race.byLap[FREEZE]?.[rit.drv]?.team ?? PREP.race.byLap[1]?.[rit.drv]?.team;
+    const col = TEAMCOL[team] ?? '#6b7280';
+    tr.innerHTML = `<td class="pos">RIT</td>`
+      + `<td style="opacity:.55"><span class="bar" style="background:${col}"></span>${rit.drv}</td>`
+      + `<td class="gap" style="opacity:.55">giro ${rit.lap}</td>`
+      + `<td><span class="pari" title="ritirato nella gara vera: esce dalla simulazione al suo giro">vero</span></td>`;
+    torre.appendChild(tr);
+  }
   const fuori = (risultato.esclusi ?? []).map((x) => x.drv).join(', ');
   el('torreNota').textContent = 'Ordine per tempo simulato alla bandiera; i doppiaggi non sono modellati. '
-    + 'La freccia confronta con l\'arrivo reale. Chi è marcato «RIT reale» nella gara vera non arrivò: '
-    + 'la sua proiezione fino in fondo è un\'assunzione dichiarata, non un risultato.'
+    + 'La freccia confronta con l\'arrivo reale. Chi si ritirò nella gara vera esce dalla simulazione '
+    + 'al suo giro (righe RIT): il ritiro è un dato, non si proietta un arrivo mai successo.'
     + (fuori ? ` Fuori simulazione (senza passo, regola 6): ${fuori}.` : '');
 
   // grafico posizioni per giro

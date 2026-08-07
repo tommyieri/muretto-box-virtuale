@@ -215,7 +215,7 @@ export function valutaPiano({ gara, freezeLap, pilota, piano, sosteAtteseRivali 
     // riga mancasse, "quando fermarti" girerebbe su una fisica e "dove rientri"
     // su un'altra — E17 nella forma esatta in cui il vecchio repo l'ha pagata.
     steps: scenario.steps, pits: scenario.pits, neutralizzazione: scenario.neutralizzazione ?? null,
-    tetto: scenario.tetto ?? null,
+    tetto: scenario.tetto ?? null, ritiri: scenario.ritiri ?? null,
   });
   // LA POSIZIONE viaggia accanto al tempo dal 04/08/2026. `ordine` e' gia' la lista dei
   // piloti per cumulato con i null esclusi (regola 6): chi non ha passo non e' «dietro»,

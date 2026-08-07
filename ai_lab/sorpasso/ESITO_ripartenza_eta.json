@@ -1,0 +1,45 @@
+{
+ "_cosa_e": "R0'' di PREREG_ripartenza_eta.md — l'effetto-ripartenza e' concentrato in chi ha la gomma fresca?",
+ "_data": "2026-08-07",
+ "perimetro": {
+  "gare_lette": 147,
+  "gare_bagnate_escluse": 20,
+  "gare_illeggibili": 6,
+  "gap_max_s": 1.5,
+  "divario_minimo_giri": 5,
+  "coppie_senza_eta_escluse": 269,
+  "seme": 20260807,
+  "ripetizioni": 2000
+ },
+ "fresco": {
+  "ripartenza": {
+   "n": 187,
+   "passa": 53
+  },
+  "verde": {
+   "n": 7620,
+   "passa": 2131
+  },
+  "odds_ratio": 1.0187810361612866,
+  "ic95": [
+   0.7192785398627953,
+   1.4180381740011503
+  ]
+ },
+ "resto": {
+  "ripartenza": {
+   "n": 1510,
+   "passa": 165
+  },
+  "verde": {
+   "n": 34560,
+   "passa": 2007
+  },
+  "odds_ratio": 1.9897811192425023
+ },
+ "R0_passa": false,
+ "conversione": {
+  "pendenza_sigillata": 1.982602,
+  "delta_soglia_fresco": 0.009385065712877633
+ }
+}

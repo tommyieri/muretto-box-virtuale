@@ -1,0 +1,737 @@
+{
+ "_cosa_e": "Record descrittivo (NON un cancello): la gara vera nel motore, e la migliore che il motore sa trovare a rivali veri. Richiesta PO 07/08/2026.",
+ "_perimetro": "dieci team alfabetici X dieci gare alfabetiche senza Monaco; per team il primo pilota non saltato",
+ "_obiettivo_ricerca": "lessicografico (posizione, cum) alla bandiera; k 0-3; mescole deterministiche da mescolePerSoste; Director sul vincitore",
+ "casi": [
+  {
+   "team": "Alpine",
+   "gara": "Australia",
+   "pilota": "COL",
+   "congelamento": 5,
+   "proiettati": 53,
+   "n_giri": 58,
+   "reale": {
+    "posizione": 14,
+    "tipo_arrivo": "doppiato",
+    "partenza": "HARD"
+   },
+   "cambi": {
+    "reali": 12,
+    "motore": 12
+   },
+   "strategia_vera": "9:HARD 46:SOFT",
+   "motore_strategia_vera": {
+    "posizione_riclassificata": 14,
+    "su": 16,
+    "errore_vs_reale": 0,
+    "posizione_campo_pieno": 14,
+    "su_campo": 20,
+    "cum": 8840.775
+   },
+   "nullo": {
+    "posizione": 14,
+    "errore_vs_reale": 0
+   },
+   "migliore_trovata": {
+    "k": 1,
+    "soste": "34:MEDIUM",
+    "posizione_campo_pieno": 13,
+    "posizione_riclassificata": 13,
+    "cum": 8808.412,
+    "guadagno_posizioni_motore": 1,
+    "guadagno_cum_s": 32.364,
+    "director": "approvato"
+   },
+   "per_k": [
+    {
+     "k": 0,
+     "posizione": null,
+     "nota": "illegale (una sola slick usata al congelamento, REG01)"
+    },
+    {
+     "k": 1,
+     "posizione": 13,
+     "cum": 8808.412,
+     "soste": "34:MEDIUM"
+    },
+    {
+     "k": 2,
+     "posizione": 13,
+     "cum": 8809.432,
+     "soste": "19:MEDIUM 34:HARD"
+    },
+    {
+     "k": 3,
+     "posizione": 13,
+     "cum": 8827.096,
+     "soste": "7:MEDIUM 19:HARD 41:HARD"
+    }
+   ],
+   "slick_usate_al_congelamento": "HARD",
+   "ritiri_veri_applicati": 5,
+   "giri_neutralizzati_veri": 7,
+   "ricerca_valutazioni": 228,
+   "controllo_A": {
+    "riclassificata": 14,
+    "coincide_con_corri": true
+   }
+  },
+  {
+   "team": "Aston Martin",
+   "gara": "Austria",
+   "pilota": "ALO",
+   "congelamento": 5,
+   "proiettati": 66,
+   "n_giri": 71,
+   "reale": {
+    "posizione": 16,
+    "tipo_arrivo": "doppiato",
+    "partenza": "MEDIUM"
+   },
+   "cambi": {
+    "reali": 11,
+    "motore": 5
+   },
+   "strategia_vera": "24:SOFT 49:SOFT",
+   "motore_strategia_vera": {
+    "posizione_riclassificata": 16,
+    "su": 16,
+    "errore_vs_reale": 0,
+    "posizione_campo_pieno": 16,
+    "su_campo": 18,
+    "cum": 8764.725
+   },
+   "nullo": {
+    "posizione": 16,
+    "errore_vs_reale": 0
+   },
+   "migliore_trovata": {
+    "k": 2,
+    "soste": "26:HARD 48:HARD",
+    "posizione_campo_pieno": 16,
+    "posizione_riclassificata": 16,
+    "cum": 8755.98,
+    "guadagno_posizioni_motore": 0,
+    "guadagno_cum_s": 8.746,
+    "director": "approvato"
+   },
+   "per_k": [
+    {
+     "k": 0,
+     "posizione": null,
+     "nota": "illegale (una sola slick usata al congelamento, REG01)"
+    },
+    {
+     "k": 1,
+     "posizione": 16,
+     "cum": 8758.991,
+     "soste": "35:HARD"
+    },
+    {
+     "k": 2,
+     "posizione": 16,
+     "cum": 8755.98,
+     "soste": "26:HARD 48:HARD"
+    },
+    {
+     "k": 3,
+     "posizione": 16,
+     "cum": 8768.02,
+     "soste": "16:HARD 34:HARD 52:HARD"
+    }
+   ],
+   "slick_usate_al_congelamento": "MEDIUM",
+   "ritiri_veri_applicati": 4,
+   "giri_neutralizzati_veri": 4,
+   "ricerca_valutazioni": 371,
+   "controllo_A": {
+    "riclassificata": 16,
+    "coincide_con_corri": true
+   }
+  },
+  {
+   "team": "Audi",
+   "gara": "Belgio",
+   "pilota": "BOR",
+   "congelamento": 9,
+   "proiettati": 35,
+   "n_giri": 44,
+   "reale": {
+    "posizione": 8,
+    "tipo_arrivo": "pieno_giro",
+    "partenza": "MEDIUM"
+   },
+   "cambi": {
+    "reali": 9,
+    "motore": 5
+   },
+   "strategia_vera": "20:HARD",
+   "motore_strategia_vera": {
+    "posizione_riclassificata": 11,
+    "su": 18,
+    "errore_vs_reale": 3,
+    "posizione_campo_pieno": 11,
+    "su_campo": 19,
+    "cum": 8474.769
+   },
+   "nullo": {
+    "posizione": 11,
+    "errore_vs_reale": 3
+   },
+   "migliore_trovata": {
+    "k": 1,
+    "soste": "20:HARD",
+    "posizione_campo_pieno": 11,
+    "posizione_riclassificata": 11,
+    "cum": 8474.769,
+    "guadagno_posizioni_motore": 0,
+    "guadagno_cum_s": 0,
+    "director": "approvato"
+   },
+   "per_k": [
+    {
+     "k": 0,
+     "posizione": null,
+     "nota": "illegale (una sola slick usata al congelamento, REG01)"
+    },
+    {
+     "k": 1,
+     "posizione": 11,
+     "cum": 8484.3,
+     "soste": "15:HARD"
+    },
+    {
+     "k": 2,
+     "posizione": 13,
+     "cum": 8487.078,
+     "soste": "18:HARD 32:HARD"
+    },
+    {
+     "k": 3,
+     "posizione": 15,
+     "cum": 8499.652,
+     "soste": "10:HARD 20:HARD 31:HARD"
+    }
+   ],
+   "slick_usate_al_congelamento": "MEDIUM",
+   "ritiri_veri_applicati": 3,
+   "giri_neutralizzati_veri": 6,
+   "ricerca_valutazioni": 116,
+   "controllo_A": {
+    "riclassificata": 11,
+    "coincide_con_corri": true
+   }
+  },
+  {
+   "team": "Cadillac",
+   "gara": "Canada",
+   "pilota": "BOT",
+   "congelamento": 8,
+   "proiettati": 60,
+   "n_giri": 68,
+   "reale": {
+    "posizione": 15,
+    "tipo_arrivo": "doppiato",
+    "partenza": "INTERMEDIATE"
+   },
+   "cambi": {
+    "reali": 7,
+    "motore": 10
+   },
+   "strategia_vera": "3:SOFT 9:MEDIUM 29:SOFT 49:MEDIUM",
+   "motore_strategia_vera": {
+    "posizione_riclassificata": 13,
+    "su": 15,
+    "errore_vs_reale": -2,
+    "posizione_campo_pieno": 13,
+    "su_campo": 20,
+    "cum": 9306.274
+   },
+   "nullo": {
+    "posizione": 15,
+    "errore_vs_reale": 0
+   },
+   "migliore_trovata": {
+    "k": 1,
+    "soste": "31:HARD",
+    "posizione_campo_pieno": 13,
+    "posizione_riclassificata": 13,
+    "cum": 9285.155,
+    "guadagno_posizioni_motore": 0,
+    "guadagno_cum_s": 21.119,
+    "director": "approvato"
+   },
+   "per_k": [
+    {
+     "k": 0,
+     "posizione": null,
+     "nota": "illegale (una sola slick usata al congelamento, REG01)"
+    },
+    {
+     "k": 1,
+     "posizione": 13,
+     "cum": 9285.155,
+     "soste": "31:HARD"
+    },
+    {
+     "k": 2,
+     "posizione": 13,
+     "cum": 9291.586,
+     "soste": "21:HARD 44:HARD"
+    },
+    {
+     "k": 3,
+     "posizione": 13,
+     "cum": 9296.147,
+     "soste": "15:HARD 31:HARD 48:HARD"
+    }
+   ],
+   "slick_usate_al_congelamento": "SOFT",
+   "ritiri_veri_applicati": 6,
+   "giri_neutralizzati_veri": 3,
+   "ricerca_valutazioni": 293,
+   "controllo_A": {
+    "riclassificata": 13,
+    "coincide_con_corri": true
+   }
+  },
+  {
+   "team": "Ferrari",
+   "gara": "Cina",
+   "pilota": "HAM",
+   "congelamento": 5,
+   "proiettati": 51,
+   "n_giri": 56,
+   "reale": {
+    "posizione": 3,
+    "tipo_arrivo": "pieno_giro",
+    "partenza": "MEDIUM"
+   },
+   "cambi": {
+    "reali": 9,
+    "motore": 7
+   },
+   "strategia_vera": "10:HARD",
+   "motore_strategia_vera": {
+    "posizione_riclassificata": 3,
+    "su": 14,
+    "errore_vs_reale": 0,
+    "posizione_campo_pieno": 3,
+    "su_campo": 16,
+    "cum": 8912.016
+   },
+   "nullo": {
+    "posizione": 3,
+    "errore_vs_reale": 0
+   },
+   "migliore_trovata": {
+    "k": 2,
+    "soste": "10:HARD 31:HARD",
+    "posizione_campo_pieno": 3,
+    "posizione_riclassificata": 3,
+    "cum": 8900.416,
+    "guadagno_posizioni_motore": 0,
+    "guadagno_cum_s": 11.6,
+    "director": "approvato"
+   },
+   "per_k": [
+    {
+     "k": 0,
+     "posizione": null,
+     "nota": "illegale (una sola slick usata al congelamento, REG01)"
+    },
+    {
+     "k": 1,
+     "posizione": 3,
+     "cum": 8912.016,
+     "soste": "10:HARD"
+    },
+    {
+     "k": 2,
+     "posizione": 3,
+     "cum": 8900.416,
+     "soste": "10:HARD 31:HARD"
+    },
+    {
+     "k": 3,
+     "posizione": 4,
+     "cum": 8903.155,
+     "soste": "7:HARD 10:HARD 34:HARD"
+    }
+   ],
+   "slick_usate_al_congelamento": "MEDIUM",
+   "ritiri_veri_applicati": 7,
+   "giri_neutralizzati_veri": 4,
+   "ricerca_valutazioni": 227,
+   "controllo_A": {
+    "riclassificata": 3,
+    "coincide_con_corri": true
+   }
+  },
+  {
+   "team": "Haas F1 Team",
+   "gara": "Giappone",
+   "pilota": "OCO",
+   "congelamento": 5,
+   "proiettati": 48,
+   "n_giri": 53,
+   "reale": {
+    "posizione": 10,
+    "tipo_arrivo": "pieno_giro",
+    "partenza": "MEDIUM"
+   },
+   "cambi": {
+    "reali": 14,
+    "motore": 12
+   },
+   "strategia_vera": "19:HARD",
+   "motore_strategia_vera": {
+    "posizione_riclassificata": 10,
+    "su": 20,
+    "errore_vs_reale": 0,
+    "posizione_campo_pieno": 10,
+    "su_campo": 22,
+    "cum": 8921.507
+   },
+   "nullo": {
+    "posizione": 10,
+    "errore_vs_reale": 0
+   },
+   "migliore_trovata": {
+    "k": 1,
+    "soste": "27:HARD",
+    "posizione_campo_pieno": 9,
+    "posizione_riclassificata": 9,
+    "cum": 8922.099,
+    "guadagno_posizioni_motore": 1,
+    "guadagno_cum_s": -0.592,
+    "director": "approvato"
+   },
+   "per_k": [
+    {
+     "k": 0,
+     "posizione": null,
+     "nota": "illegale (una sola slick usata al congelamento, REG01)"
+    },
+    {
+     "k": 1,
+     "posizione": 9,
+     "cum": 8922.099,
+     "soste": "27:HARD"
+    },
+    {
+     "k": 2,
+     "posizione": 10,
+     "cum": 8922.2,
+     "soste": "22:HARD 26:HARD"
+    },
+    {
+     "k": 3,
+     "posizione": 11,
+     "cum": 8924.104,
+     "soste": "6:HARD 10:HARD 24:HARD"
+    }
+   ],
+   "slick_usate_al_congelamento": "MEDIUM",
+   "ritiri_veri_applicati": 2,
+   "giri_neutralizzati_veri": 6,
+   "ricerca_valutazioni": 186,
+   "controllo_A": {
+    "riclassificata": 10,
+    "coincide_con_corri": true
+   }
+  },
+  {
+   "team": "McLaren",
+   "gara": "Gran Bretagna",
+   "pilota": "NOR",
+   "congelamento": 6,
+   "proiettati": 46,
+   "n_giri": 52,
+   "reale": {
+    "posizione": 4,
+    "tipo_arrivo": "pieno_giro",
+    "partenza": "MEDIUM"
+   },
+   "cambi": {
+    "reali": 15,
+    "motore": 16
+   },
+   "strategia_vera": "28:HARD 38:MEDIUM 48:SOFT",
+   "motore_strategia_vera": {
+    "posizione_riclassificata": 5,
+    "su": 18,
+    "errore_vs_reale": 1,
+    "posizione_campo_pieno": 5,
+    "su_campo": 21,
+    "cum": 8244.033
+   },
+   "nullo": {
+    "posizione": 6,
+    "errore_vs_reale": 2
+   },
+   "migliore_trovata": {
+    "k": 1,
+    "soste": "22:HARD",
+    "posizione_campo_pieno": 3,
+    "posizione_riclassificata": 3,
+    "cum": 8239.158,
+    "guadagno_posizioni_motore": 2,
+    "guadagno_cum_s": 4.875,
+    "director": "approvato"
+   },
+   "per_k": [
+    {
+     "k": 0,
+     "posizione": null,
+     "nota": "illegale (una sola slick usata al congelamento, REG01)"
+    },
+    {
+     "k": 1,
+     "posizione": 3,
+     "cum": 8239.158,
+     "soste": "22:HARD"
+    },
+    {
+     "k": 2,
+     "posizione": 4,
+     "cum": 8241.709,
+     "soste": "14:HARD 30:HARD"
+    },
+    {
+     "k": 3,
+     "posizione": 5,
+     "cum": 8243.647,
+     "soste": "10:HARD 21:HARD 34:HARD"
+    }
+   ],
+   "slick_usate_al_congelamento": "MEDIUM",
+   "ritiri_veri_applicati": 3,
+   "giri_neutralizzati_veri": 9,
+   "ricerca_valutazioni": 185,
+   "controllo_A": {
+    "riclassificata": 5,
+    "coincide_con_corri": true
+   }
+  },
+  {
+   "team": "Mercedes",
+   "gara": "Miami",
+   "pilota": "ANT",
+   "congelamento": 5,
+   "proiettati": 52,
+   "n_giri": 57,
+   "reale": {
+    "posizione": 1,
+    "tipo_arrivo": "pieno_giro",
+    "partenza": "MEDIUM"
+   },
+   "cambi": {
+    "reali": 15,
+    "motore": 13
+   },
+   "strategia_vera": "26:HARD",
+   "motore_strategia_vera": {
+    "posizione_riclassificata": 1,
+    "su": 18,
+    "errore_vs_reale": 0,
+    "posizione_campo_pieno": 1,
+    "su_campo": 20,
+    "cum": 8774.855
+   },
+   "nullo": {
+    "posizione": 2,
+    "errore_vs_reale": 1
+   },
+   "migliore_trovata": {
+    "k": 2,
+    "soste": "7:HARD 32:HARD",
+    "posizione_campo_pieno": 1,
+    "posizione_riclassificata": 1,
+    "cum": 8769.705,
+    "guadagno_posizioni_motore": 0,
+    "guadagno_cum_s": 5.15,
+    "director": "approvato"
+   },
+   "per_k": [
+    {
+     "k": 0,
+     "posizione": null,
+     "nota": "illegale (una sola slick usata al congelamento, REG01)"
+    },
+    {
+     "k": 1,
+     "posizione": 1,
+     "cum": 8774.068,
+     "soste": "28:HARD"
+    },
+    {
+     "k": 2,
+     "posizione": 1,
+     "cum": 8769.705,
+     "soste": "7:HARD 32:HARD"
+    },
+    {
+     "k": 3,
+     "posizione": 1,
+     "cum": 8780.939,
+     "soste": "7:HARD 26:HARD 41:HARD"
+    }
+   ],
+   "slick_usate_al_congelamento": "MEDIUM",
+   "ritiri_veri_applicati": 4,
+   "giri_neutralizzati_veri": 6,
+   "ricerca_valutazioni": 227,
+   "controllo_A": {
+    "riclassificata": 1,
+    "coincide_con_corri": true
+   }
+  },
+  {
+   "team": "Racing Bulls",
+   "gara": "Spagna",
+   "pilota": "LAW",
+   "congelamento": 5,
+   "proiettati": 61,
+   "n_giri": 66,
+   "reale": {
+    "posizione": 9,
+    "tipo_arrivo": "pieno_giro",
+    "partenza": "MEDIUM"
+   },
+   "cambi": {
+    "reali": 17,
+    "motore": 7
+   },
+   "strategia_vera": "11:HARD 35:HARD",
+   "motore_strategia_vera": {
+    "posizione_riclassificata": 8,
+    "su": 17,
+    "errore_vs_reale": -1,
+    "posizione_campo_pieno": 8,
+    "su_campo": 22,
+    "cum": 8759.847
+   },
+   "nullo": {
+    "posizione": 8,
+    "errore_vs_reale": -1
+   },
+   "migliore_trovata": {
+    "k": 2,
+    "soste": "16:HARD 41:HARD",
+    "posizione_campo_pieno": 8,
+    "posizione_riclassificata": 8,
+    "cum": 8752.762,
+    "guadagno_posizioni_motore": 0,
+    "guadagno_cum_s": 7.085,
+    "director": "approvato"
+   },
+   "per_k": [
+    {
+     "k": 0,
+     "posizione": null,
+     "nota": "illegale (una sola slick usata al congelamento, REG01)"
+    },
+    {
+     "k": 1,
+     "posizione": 8,
+     "cum": 8753.256,
+     "soste": "30:HARD"
+    },
+    {
+     "k": 2,
+     "posizione": 8,
+     "cum": 8752.762,
+     "soste": "16:HARD 41:HARD"
+    },
+    {
+     "k": 3,
+     "posizione": 8,
+     "cum": 8770.442,
+     "soste": "12:HARD 31:HARD 48:HARD"
+    }
+   ],
+   "slick_usate_al_congelamento": "MEDIUM",
+   "ritiri_veri_applicati": 5,
+   "giri_neutralizzati_veri": 5,
+   "ricerca_valutazioni": 293,
+   "controllo_A": {
+    "riclassificata": 8,
+    "coincide_con_corri": true
+   }
+  },
+  {
+   "team": "Red Bull Racing",
+   "gara": "Ungheria",
+   "pilota": "HAD",
+   "congelamento": 5,
+   "proiettati": 65,
+   "n_giri": 70,
+   "reale": {
+    "posizione": 6,
+    "tipo_arrivo": "pieno_giro",
+    "partenza": "MEDIUM"
+   },
+   "cambi": {
+    "reali": 15,
+    "motore": 11
+   },
+   "strategia_vera": "19:HARD 42:HARD",
+   "motore_strategia_vera": {
+    "posizione_riclassificata": 5,
+    "su": 19,
+    "errore_vs_reale": -1,
+    "posizione_campo_pieno": 5,
+    "su_campo": 22,
+    "cum": 9283.544
+   },
+   "nullo": {
+    "posizione": 6,
+    "errore_vs_reale": 0
+   },
+   "migliore_trovata": {
+    "k": 2,
+    "soste": "19:HARD 42:HARD",
+    "posizione_campo_pieno": 5,
+    "posizione_riclassificata": 5,
+    "cum": 9283.544,
+    "guadagno_posizioni_motore": 0,
+    "guadagno_cum_s": 0,
+    "director": "approvato"
+   },
+   "per_k": [
+    {
+     "k": 0,
+     "posizione": null,
+     "nota": "illegale (una sola slick usata al congelamento, REG01)"
+    },
+    {
+     "k": 1,
+     "posizione": 6,
+     "cum": 9281.756,
+     "soste": "33:HARD"
+    },
+    {
+     "k": 2,
+     "posizione": 5,
+     "cum": 9283.544,
+     "soste": "19:HARD 42:HARD"
+    },
+    {
+     "k": 3,
+     "posizione": 6,
+     "cum": 9290.771,
+     "soste": "13:HARD 32:HARD 49:HARD"
+    }
+   ],
+   "slick_usate_al_congelamento": "MEDIUM",
+   "ritiri_veri_applicati": 3,
+   "giri_neutralizzati_veri": 2,
+   "ricerca_valutazioni": 355,
+   "controllo_A": {
+    "riclassificata": 5,
+    "coincide_con_corri": true
+   }
+  }
+ ]
+}

@@ -1,0 +1,33 @@
+{
+ "_cosa_e": "R0' di PREREG_ripartenza_fondo.md — la ripartenza sul fondo 2018-2025, gare asciutte.",
+ "_data": "2026-08-07",
+ "perimetro": {
+  "gare_lette": 147,
+  "gare_bagnate_escluse": 20,
+  "gare_illeggibili": 6,
+  "gap_max_s": 1.5,
+  "seme": 20260807,
+  "ripetizioni": 2000
+ },
+ "ripartenza": {
+  "occasioni": 1719,
+  "sorpassi": 221,
+  "p": 0.1285631180919139
+ },
+ "verde": {
+  "occasioni": 42427,
+  "sorpassi": 4160,
+  "p": 0.09805076955712165
+ },
+ "odds_ratio": 1.3570990487316419,
+ "ic95": [
+  1.1136121033011432,
+  1.6400770055346119
+ ],
+ "R0_passa": true,
+ "conversione": {
+  "pendenza_sigillata": 1.982602,
+  "delta_soglia_s_giro": 0.15401445632972585
+ },
+ "richiamo_2026": "la stessa misura sul 2026 (ESITO_ripartenza.json): OR 2,078, IC95 [0,919; 3,410], 115 occasioni — NON PASSA da sola, va nello stesso verso"
+}
