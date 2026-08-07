@@ -177,6 +177,7 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
       <div class="ese-errore" id="eseErrore" hidden></div>
     </div>
     <section id="eseRisultati" hidden>
+      <button type="button" class="simbtn" id="eseGuarda" hidden>&#9654; Guarda la gara simulata sulla pista</button>
       <div class="ese-verdetto" id="eseVerdetto"></div>
       <div class="ese-director" id="eseDirector"></div>
       <div class="ese-due">
@@ -226,7 +227,7 @@ import { pannello as pannelloNuovo } from './vendor/simulatore/pannello.mjs?v=28
 import { rispostaLive } from './ponte_live.mjs?v=040826a';
 import { curva as curvaDelQuando } from './vendor/simulatore/curva.mjs?v=280726a';
 // l'adattatore del fantasma e' condiviso con live.html: una forma sola per due pagine
-import { simDaFantasma } from './fantasma_sim.mjs?v=310726a';
+import { simDaFantasma, simDaRigioca } from './fantasma_sim.mjs?v=080826b';
 import { creaGhostPlay } from './ghostplay.mjs?v=250724c';
 import { attaccaGlossario } from './glossario.mjs?v=250724e';
 import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs?v=220726a';
@@ -971,7 +972,9 @@ async function avviaSimulazione(){
 function renderGaraTorre(righe, meta){
   const presenti = new Set(righe.map(r=>r.drv));
   righe.forEach((r,i)=>{
-    const st = race.byLap[meta.lap]?.[r.drv];
+    // nella gara RIGIOCATA gomme ed eta' non sono quelle del replay reale: si tace
+    // il dato dell'altra gara invece di mostrarlo come se fosse di questa (regola 6)
+    const st = simEse ? null : race.byLap[meta.lap]?.[r.drv];
     paintRow({pos:r.pos, drv:r.drv, team:teamOfR[r.drv], compound:st?.compound, age:st?.tyre_age,
       et:r.gapTxt, cls:r.gapCls, prev:null, inlap:r.inPit, outlap:false,
       monta:null, stopDur:null, leader:r.leader, selectable:false, st:''}, i);
@@ -1002,7 +1005,7 @@ function continuaSim(){
 function esciSimulazione(){
   if(!simMode) return;
   if(simGp){ simGp.stop(); simGp=null; }
-  simMode=false;
+  simMode=false; simEse=false;
   el('pista').classList.remove('sim-attiva');
   el('simBar').hidden=true; el('simCont').hidden=true;
   for(const d in rowEls) rowEls[d].root.style.display='';
@@ -1084,6 +1087,8 @@ function corriEse(){
       torre: el('eseTorre'), torreNota: el('eseTorreNota'), grafico: el('eseGrafico'), assunzioniLista: el('eseAssunzioni') },
     prep: ESE.prep, pilota: ESE.pilota, freeze: ESE.freeze, mio: esiti.mio, vero: esiti.vero, teamCol,
   });
+  ESE.ultimo = esiti;
+  el('eseGuarda').hidden = !esiti.mio.direttore.approved;   // la scena solo su un run approvato
 }
 el('eseBtn').addEventListener('click', apriEse);
 el('eseCorri').addEventListener('click', corriEse);
@@ -1091,6 +1096,45 @@ el('eseAdd').addEventListener('click', ()=>{ if(!ESE||ESE.freeze==null) return;
   el('eseSoste').appendChild(ESE.vista.rigaSosta({ giro: Math.min(ESE.freeze+5, ESE.prep.race.n_laps-1), mescola:'MEDIUM', min: ESE.freeze+1, max: ESE.prep.race.n_laps-1 })); });
 el('eseRipristina').addEventListener('click', ()=>{ if(!ESE||ESE.freeze==null) return;
   ESE.vista.riempiEditor({ box: el('eseSoste'), notaEl: el('eseMescoleNota'), sosteVere: ESE.prep.sosteVere[ESE.pilota], freeze: ESE.freeze, nLaps: ESE.prep.race.n_laps }); });
+
+// ── LA GARA SIMULATA SULLA PISTA (08/08, richiesta PO): «faccio fermare Leclerc,
+// vedo il pallino che va nei box, e da li' si apre un'altra gara». La scena usa
+// lo STESSO motore di scena della sosta (creaGhostPlay) sul cum del rigioca:
+// il fantasma transita in pit-lane al PRIMO stop del piano; gli stop successivi
+// e quelli dei rivali vivono nel cum (la perdita c'e', la scenografia no); i
+// ritirati veri spariscono dalla pista al loro giro.
+let simEse = false;
+function avviaSimulazioneEse(){
+  if (!ESE || !ESE.ultimo || !ESE.ultimo.mio?.direttore?.approved) return;
+  const mio = ESE.ultimo.mio;
+  const sim = simDaRigioca({ risultato: mio.risultato, race, pilota: ESE.pilota, freeze: ESE.freeze });
+  if (!sim){ el('eseGuarda').hidden = true; return; }
+  if (simMode) esciSimulazione();
+  selDrv = ESE.pilota;                    // la scena e' del soggetto del rigioca
+  simEse = true; simMode = true; simDriver = sim.driver;
+  // il rientro della scena: la posizione del soggetto al giro dopo il primo stop,
+  // letta dalla STESSA traccia che anima i pallini (nessun secondo calcolo)
+  const pos = ESE.mod.posizioniPerGiro(mio.risultato.traccia);
+  const giroRisposta = Math.min(sim.pitLap + 1, race.n_laps);
+  simRientroPos = pos[giroRisposta]?.[ESE.pilota] ?? null;
+  simSuTotale = pos[giroRisposta] ? Object.keys(pos[giroRisposta]).length : null;
+  clock.pause();
+  el('pista').scrollIntoView({behavior:'smooth', block:'center'});
+  el('pista').classList.add('sim-attiva'); if(pista) pista.setSpento(false);
+  el('simBar').hidden=false; el('simBtn').hidden=true; el('simCont').hidden=true;
+  el('simTag').innerHTML = `Gara RIGIOCATA: <b>${simDriver}</b> con la TUA strategia · rivali con soste, ritiri e Safety Car veri`;
+  simGp = creaGhostPlay({ sim, pista, coloreDi: sg=>coloreTeam(teamOfR[sg]),
+    onTower: renderGaraTorre, giroRisposta,
+    onRientro: ()=>{
+      const suff = simSuTotale ? ` su ${simSuTotale}` : '';
+      el('simTag').innerHTML = `\u{1F4CD} <b>${simDriver} rientra ${simRientroPos ?? '?'}\u00BA</b>${suff} dopo la TUA sosta — continua per vedere il resto della gara rigiocata.`;
+      el('simCont').hidden = false; setPlayIcon(false);
+    },
+    onFine: ()=>{ setPlayIcon(false); el('simTag').innerHTML = `Bandiera: la gara rigiocata di <b>${simDriver}</b> e' finita — i numeri stanno nel verdetto qui sotto.`; } });
+  simGp.play(); setPlayIcon(true);
+  conta('simula_rigioca');
+}
+el('eseGuarda').addEventListener('click', avviaSimulazioneEse);
 </script>
 </body>
 </html>
