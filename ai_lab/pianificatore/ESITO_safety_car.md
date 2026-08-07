@@ -119,3 +119,24 @@ il VSC rotto rende per metà inaffidabile.
 - **Non** si tocca niente in produzione.
 - **Non** si riapre nessuna delle cinque strade senza una **fonte nuova**, che è la regola
   di casa.
+
+---
+
+## Coda del 07/08/2026 — la semantica del pass, scritta (rettifica E08, non riscrittura)
+
+La pagella del 06/08 ha messo il dito dove il §1 già indicava: SC0 non aveva una
+definizione di pass, e va scritta — non per rigirare questo esito, che resta com'è,
+ma perché il prossimo cancello della stessa famiglia non nasca con lo stesso buco.
+
+**Cosa un pass avrebbe dovuto significare.** Un cancello di ESCLUSIONE si legge solo
+al fallimento («il canale non basta nemmeno al limite» ⇒ escluso). Perché un PASS
+dicesse qualcosa, il cancello avrebbe dovuto essere scritto sulla `q` MISURATA — non
+al limite `q = 1` — e col pit-loss del circuito giusto:
+
+    pass ⟺ k*(q misurata, pit-loss del circuito) ≥ 2 in almeno una gara
+
+**Con quella scrittura, e i numeri di questo stesso referto, SC0 sarebbe NON PASSA**:
+`q` = 25,7 % dà `k*` massimo 1,37 (Monaco), contro il 2 che serviva. Non si registra
+un cancello nuovo perché la domanda è già chiusa qui sopra dalla misura (§2): un
+cancello che ripete una misura già fatta sarebbe un timbro, non un esperimento.
+Questa coda è la definizione che mancava, attaccata dove mancava.
