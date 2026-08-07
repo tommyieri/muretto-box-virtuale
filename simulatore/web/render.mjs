@@ -16,7 +16,7 @@ const SVG = new Set(['svg', 'g', 'path', 'circle', 'line', 'rect', 'text']);
 const ATTRIBUTI = {
   classe: 'class', etichetta: 'aria-label', ruolo: 'role', titolo: 'title',
   disabilitato: 'disabled', valore: 'data-valore', larghezza: 'width',
-  altezza: 'height', raggio: 'rx', ancora: 'text-anchor',
+  altezza: 'height', raggio: 'rx', ancora: 'text-anchor', aperto: 'open',
 };
 
 function testoTarghetta(t) {
