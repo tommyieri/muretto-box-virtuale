@@ -2,16 +2,10 @@
   "version": "0.0.1",
   "configurations": [
     {
-      "name": "muretto-demo",
+      "name": "demo",
       "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8099", "--directory", "demo"],
-      "port": 8099
-    },
-    {
-      "name": "muretto-radice",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8100"],
-      "port": 8100
+      "runtimeArgs": ["-m", "http.server", "8123", "--directory", "demo"],
+      "port": 8123
     }
   ]
 }

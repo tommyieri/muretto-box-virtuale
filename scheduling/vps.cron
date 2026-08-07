@@ -1,0 +1,19 @@
+# vps.cron — LA CRONTAB DEL VPS, VERSIONATA (fonte: questo file, non la prosa).
+#
+# Fino al 07/08/2026 la riga del VPS viveva solo come blocco markdown in
+# scheduling/README.md, ed e' gia' successo una volta che il documento restasse
+# indietro rispetto alla macchina (rettifica del 03/08 nel README: la diagnosi
+# sbagliata nasceva proprio da li'). La prosa racconta; QUESTO file si installa.
+#
+# Installazione sul VPS (sostituisce l'intera crontab dell'utente muretto):
+#     crontab ~/muretto/scheduling/vps.cron
+#
+# Verifica che la macchina esegua QUESTO file (da lanciare SUL VPS):
+#     ~/muretto/scheduling/verifica_crontab.sh
+#
+# Lo stato di una macchina si legge sulla macchina: il file dichiara l'intento,
+# la verifica confronta l'intento con crontab -l. Se divergono, o si installa
+# questo file o si aggiorna questo file — mai lasciare due verita'.
+
+PATH=/usr/local/bin:/usr/bin:/bin
+*/30 * * * * /home/muretto/muretto/scheduling/auto_run.sh

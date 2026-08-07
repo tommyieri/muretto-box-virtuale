@@ -1,73 +1,77 @@
 {
-  "_nota": "REGISTRO DELLE DIVERGENZE della struttura del sito. Scritto a mano, sorvegliato da demo/test_stat.mjs. Non e' un elenco di desideri: e' uno SPECCHIO. Una voce che descrive un difetto ormai saldato fa uscire 1 esattamente come un difetto nuovo, per la stessa ragione per cui lo fa simulatore/banco/ROSSE_DICHIARATE.json — se il registro puo' invecchiare in silenzio, smette di valere.",
-  "_perche": "Fino al 04/08/2026 la CI (.github/workflows/banco.yml) non toccava NE' HTML NE' CSS: una pagina poteva nascere rotta, con una voce di nav dimenticata o un href che non risolve, e il verde restava verde. La sezione Statistiche aggiunge cinque pagine a un sito che ripete la nav a mano in quindici file. Questa sentinella nasce PRIMA di quelle pagine, e nasce verde sullo stato di oggi: se nascesse dopo, certificherebbe il risultato invece di sorvegliare il cambiamento.",
-  "nav_attesa": [
-    [
-      "Stagione",
-      "stagione.html"
-    ],
-    [
-      "Live",
-      "live.html"
-    ],
-    [
-      "Analisi",
-      "analisi.html"
-    ],
-    [
-      "Statistiche",
-      "statistiche.html"
-    ]
+ "_nota": "REGISTRO DELLE DIVERGENZE della struttura del sito. Scritto a mano, sorvegliato da demo/test_stat.mjs. Non e' un elenco di desideri: e' uno SPECCHIO. Una voce che descrive un difetto ormai saldato fa uscire 1 esattamente come un difetto nuovo, per la stessa ragione per cui lo fa simulatore/banco/ROSSE_DICHIARATE.json — se il registro puo' invecchiare in silenzio, smette di valere.",
+ "_perche": "Fino al 04/08/2026 la CI (.github/workflows/banco.yml) non toccava NE' HTML NE' CSS: una pagina poteva nascere rotta, con una voce di nav dimenticata o un href che non risolve, e il verde restava verde. La sezione Statistiche aggiunge cinque pagine a un sito che ripete la nav a mano in quindici file. Questa sentinella nasce PRIMA di quelle pagine, e nasce verde sullo stato di oggi: se nascesse dopo, certificherebbe il risultato invece di sorvegliare il cambiamento.",
+ "nav_attesa": [
+  [
+   "Stagione",
+   "stagione.html"
   ],
-  "_nav_attesa_sorgente": "Questo elenco e' la COPIA DI CONTROLLO della costante NAV in ai_lab/redazione/statico.py, che e' la sorgente unica da cui si timbrano le pagine (`python3 ai_lab/redazione/statico.py --nav`). Sono due file apposta: se lo stampatore e il sorvegliante fossero lo stesso, un errore nello stampatore si certificherebbe da solo. Cambiare la nav significa cambiare NAV, rilanciare --nav, e aggiornare questa riga: il test resta rosso finche' non si e' fatto tutt'e tre.",
-  "_nav_attesa_nota": "Sequenza (etichetta, href) normalizzata: il prefisso ('' nelle pagine, '/' in 404.html, '../' negli articoli) viene tolto prima del confronto, e class=\"on\" e' IGNORATO. Sono informazione, non deriva: pretendere il blocco byte-identico sarebbe irrealizzabile e sbagliato.",
-  "pagine_non_indicizzabili": {
-    "404.html": "pagina di errore: generata da ai_lab/redazione/statico.py, non va in sitemap per definizione",
-    "articolo.html": "fallback JS non canonico. I canonici sono i dodici file pre-renderizzati in demo/articolo/, perche' su hosting statico la querystring non puo' scegliere un file",
-    "gara.html": "richiede ?g=<gara>: senza parametro non e' una pagina, e' un contenitore",
-    "weekend.html": "richiede ?gp=<gara>",
-    "scheda.html": "richiede ?tipo=&id=: e' la scheda di un pilota o di un team, non un indirizzo fisso"
-  },
-  "voci": [
-    {
-      "id": "S4-analisi-non-usa-il-design-system",
-      "cosa": "analisi.html non carica stile.css e ha una nav con classe propria",
-      "referto": "analisi.html ridefinisce :root da capo (--paper, --card, --ink, --red, --viola, --band) e usa <nav class=\"site\"> invece di <nav class=\"nav\">. E' la pagina piu' bella del sito ed e' la tentazione ovvia da copiare per una pagina nuova: non e' un modello, e' un'eccezione. Le due pagine figlie esistenti (dati.html, forza.html) infatti tornano a stile.css. La sequenza delle voci di nav resta comunque sorvegliata anche qui.",
-      "guardia": {
-        "tipo": "nav_classe_propria",
-        "pagine": {
-          "analisi.html": "site"
-        }
-      }
-    },
-    {
-      "id": "S5-dati-fuori-da-demo-data",
-      "cosa": "Due file di dati stanno nella radice di demo/ invece che in demo/data/",
-      "referto": "team_colori.json (letto da otto pagine) e neutralizzazione.json non stanno sotto demo/data/. Su team_colori pesa anche un secondo difetto gia' noto: e' caricato con fetch nudo e catch muto in ogni pagina, quindi se manca i colori diventano var(--dim) senza che nessuno lo dica. E' tollerabile per un colore, non per un numero: la regola «le pagine leggono solo demo/data/» resta, e queste due sono le uniche eccezioni ammesse.",
-      "guardia": {
-        "tipo": "letture_fuori_da_data",
-        "consentite": [
-          "team_colori.json",
-          "neutralizzazione.json"
-        ]
-      }
-    },
-    {
-      "id": "S6-alfabeti-squadre",
-      "cosa": "Gli artefatti della sezione chiamano le squadre in tre modi diversi",
-      "referto": "demo/data/stat/piloti_2026.json dice «Haas» e «Red Bull»; demo/data/stat/gara_2026.json e demo/team_colori.json dicono «Haas F1 Team» e «Red Bull Racing»; demo/data/classifiche_2026.json porta sia `nome` sia `team_demo`. Le pagine tengono insieme i tre alfabeti con stat.mjs::normalizzaTeam, che e' un cerotto in UN punto solo e non una tabella di identita'. Il difetto e' silenzioso per costruzione: un nome che non risolve non da' errore, restituisce il grigio di riserva. La chiusura vera e' una sola tabella sigla<->driverId<->squadra, ed e' una decisione del PO (PIANO_STATISTICHE.md, decisione 8) — non una riscrittura.",
-      "guardia": {
-        "tipo": "colori_squadre_risolvono",
-        "artefatti": [
-          "demo/data/stat/piloti_2026.json",
-          "demo/data/stat/gara_2026.json"
-        ]
-      }
+  [
+   "Live",
+   "live.html"
+  ],
+  [
+   "E se?",
+   "ese.html"
+  ],
+  [
+   "Analisi",
+   "analisi.html"
+  ],
+  [
+   "Statistiche",
+   "statistiche.html"
+  ]
+ ],
+ "_nav_attesa_sorgente": "Questo elenco e' la COPIA DI CONTROLLO della costante NAV in ai_lab/redazione/statico.py, che e' la sorgente unica da cui si timbrano le pagine (`python3 ai_lab/redazione/statico.py --nav`). Sono due file apposta: se lo stampatore e il sorvegliante fossero lo stesso, un errore nello stampatore si certificherebbe da solo. Cambiare la nav significa cambiare NAV, rilanciare --nav, e aggiornare questa riga: il test resta rosso finche' non si e' fatto tutt'e tre.",
+ "_nav_attesa_nota": "Sequenza (etichetta, href) normalizzata: il prefisso ('' nelle pagine, '/' in 404.html, '../' negli articoli) viene tolto prima del confronto, e class=\"on\" e' IGNORATO. Sono informazione, non deriva: pretendere il blocco byte-identico sarebbe irrealizzabile e sbagliato.",
+ "pagine_non_indicizzabili": {
+  "404.html": "pagina di errore: generata da ai_lab/redazione/statico.py, non va in sitemap per definizione",
+  "articolo.html": "fallback JS non canonico. I canonici sono i dodici file pre-renderizzati in demo/articolo/, perche' su hosting statico la querystring non puo' scegliere un file",
+  "gara.html": "richiede ?g=<gara>: senza parametro non e' una pagina, e' un contenitore",
+  "weekend.html": "richiede ?gp=<gara>",
+  "scheda.html": "richiede ?tipo=&id=: e' la scheda di un pilota o di un team, non un indirizzo fisso"
+ },
+ "voci": [
+  {
+   "id": "S4-analisi-non-usa-il-design-system",
+   "cosa": "analisi.html non carica stile.css e ha una nav con classe propria",
+   "referto": "analisi.html ridefinisce :root da capo (--paper, --card, --ink, --red, --viola, --band) e usa <nav class=\"site\"> invece di <nav class=\"nav\">. E' la pagina piu' bella del sito ed e' la tentazione ovvia da copiare per una pagina nuova: non e' un modello, e' un'eccezione. Le due pagine figlie esistenti (dati.html, forza.html) infatti tornano a stile.css. La sequenza delle voci di nav resta comunque sorvegliata anche qui.",
+   "guardia": {
+    "tipo": "nav_classe_propria",
+    "pagine": {
+     "analisi.html": "site"
     }
-  ],
-  "_saldate": {
-    "S1-stile-senza-versione": "SALDATA il 04/08/2026: articolo.html, dati.html, forza.html e 404.html versionano stile.css come tutte le altre, e il controllo ora pretende in piu' che la versione sia LA STESSA ovunque — una versione per pagina non invalida niente.",
-    "S2-pagine-vive-fuori-da-sitemap": "SALDATA il 04/08/2026: quali.html, sprint.html, libere.html e tele.html sono entrate in PAGINE_FISSE. Decisione di Tommi («chiudile tutte»): adottate, non cancellate — sono pagine vive che consumano artefatti reali.",
-    "S3-pagine-mai-linkate": "SALDATA il 04/08/2026: le stesse quattro pagine (quali, libere, sprint, tele) sono linkate da statistiche.html, sezione «Il weekend, sessione per sessione». Ci si arrivava dal muro delle coperture, tolto lo stesso giorno insieme al resto della prosa di provenienza: la sezione di link e' nata proprio per non lasciarle orfane."
+   }
+  },
+  {
+   "id": "S5-dati-fuori-da-demo-data",
+   "cosa": "Due file di dati stanno nella radice di demo/ invece che in demo/data/",
+   "referto": "team_colori.json (letto da otto pagine) e neutralizzazione.json non stanno sotto demo/data/. Su team_colori pesa anche un secondo difetto gia' noto: e' caricato con fetch nudo e catch muto in ogni pagina, quindi se manca i colori diventano var(--dim) senza che nessuno lo dica. E' tollerabile per un colore, non per un numero: la regola «le pagine leggono solo demo/data/» resta, e queste due sono le uniche eccezioni ammesse.",
+   "guardia": {
+    "tipo": "letture_fuori_da_data",
+    "consentite": [
+     "team_colori.json",
+     "neutralizzazione.json"
+    ]
+   }
+  },
+  {
+   "id": "S6-alfabeti-squadre",
+   "cosa": "Gli artefatti della sezione chiamano le squadre in tre modi diversi",
+   "referto": "demo/data/stat/piloti_2026.json dice «Haas» e «Red Bull»; demo/data/stat/gara_2026.json e demo/team_colori.json dicono «Haas F1 Team» e «Red Bull Racing»; demo/data/classifiche_2026.json porta sia `nome` sia `team_demo`. Le pagine tengono insieme i tre alfabeti con stat.mjs::normalizzaTeam, che e' un cerotto in UN punto solo e non una tabella di identita'. Il difetto e' silenzioso per costruzione: un nome che non risolve non da' errore, restituisce il grigio di riserva. La chiusura vera e' una sola tabella sigla<->driverId<->squadra, ed e' una decisione del PO (PIANO_STATISTICHE.md, decisione 8) — non una riscrittura.",
+   "guardia": {
+    "tipo": "colori_squadre_risolvono",
+    "artefatti": [
+     "demo/data/stat/piloti_2026.json",
+     "demo/data/stat/gara_2026.json"
+    ]
+   }
   }
+ ],
+ "_saldate": {
+  "S1-stile-senza-versione": "SALDATA il 04/08/2026: articolo.html, dati.html, forza.html e 404.html versionano stile.css come tutte le altre, e il controllo ora pretende in piu' che la versione sia LA STESSA ovunque — una versione per pagina non invalida niente.",
+  "S2-pagine-vive-fuori-da-sitemap": "SALDATA il 04/08/2026: quali.html, sprint.html, libere.html e tele.html sono entrate in PAGINE_FISSE. Decisione di Tommi («chiudile tutte»): adottate, non cancellate — sono pagine vive che consumano artefatti reali.",
+  "S3-pagine-mai-linkate": "SALDATA il 04/08/2026: le stesse quattro pagine (quali, libere, sprint, tele) sono linkate da statistiche.html, sezione «Il weekend, sessione per sessione». Ci si arrivava dal muro delle coperture, tolto lo stesso giorno insieme al resto della prosa di provenienza: la sezione di link e' nata proprio per non lasciarle orfane."
+ }
 }

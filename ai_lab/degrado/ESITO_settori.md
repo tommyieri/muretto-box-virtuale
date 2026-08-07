@@ -78,6 +78,19 @@ rapporto i famosi **21,9 giri**. Rilanciando lo stimatore con lo stesso pooling:
 della fonte orfana trovata stamattina — un numero senza generatore — e va a referto invece
 che aggirato.
 
+> **RETTIFICA del 07/08/2026.** Il verdetto qui sopra è stato superato lo stesso giorno in
+> cui fu scritto, da `56e0d21` (blocco di correzione in `ESITO_degrado_dal_campo.md`): il
+> numero **è riproducibile**, con una definizione che non sta fra le cinque provate. È la
+> **mediana del valore assoluto** del residuo — non una sd, non una MAD scalata — del
+> braccio **col ρ sigillato** (0,030776), dopo la doppia sottrazione `gara|pilota` e
+> `gara|giro`: `ESITO_cancelli_campo.json` → `D2.mediana_sigillo` = **0,34570**
+> (`cancelli_campo.mjs`, righe 95-103). Le cinque misure elencate sopra restano vere come
+> misure — e la più vicina, la MAD scalata 0,471, è proprio questa mediana × 1,4826. La
+> **riespressione di M1 come rapporto resta valida e non si tocca**: era stata scelta
+> perché invariante alla definizione del rumore, ed è invariante anche a un mistero
+> risolto. Questi due file affermavano il contrario di `ESITO_degrado_dal_campo.md`; da
+> oggi non più.
+
 Conseguenza dichiarata sul cancello. M1 era scritto come **soglia assoluta** (15 giri, su
 una scala in cui il giro vale 21,9). Su una scala diversa quella soglia non significa più la
 stessa cosa, quindi è stata riespressa nell'unica forma **invariante alla definizione del

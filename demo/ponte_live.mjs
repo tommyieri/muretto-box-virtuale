@@ -233,6 +233,17 @@ export function contestoDa(contestoLive, nomeGara, gara) {
         pavimenti: contestoLive.pavimenti,
       },
       bandaRientro: contestoLive.bandaRientro,
+      // GLI STESSI OGGETTI CHE PASSA genera_vista_gara.mjs, fino in fondo. Il trasporto
+      // portava gia' la soglia di sorpasso «perche' la diretta non risponda senza vincolo
+      // mentre il replay risponde con» (la sua targhetta) — ma QUI nessuno la passava al
+      // costruttore: il tetto era acceso nelle viste e spento in pagina, e il selettore
+      // mescola cambiava l'etichetta senza toccare la fisica (vitaMescola non viaggiava
+      // affatto). E17 fermato all'ultimo centimetro, dal 07/08 non piu'. `?? undefined`
+      // non serve: un contesto_live vecchio senza queste chiavi si comporta come prima.
+      sogliaSorpasso: contestoLive.sogliaSorpasso,
+      vitaMescola: contestoLive.vitaMescola,
+      orizzonteRisposta: contestoLive.orizzonteRisposta,
+      esitiPerCaso: contestoLive.esitiPerCaso,
       nGiriGara: gara.nGiri,
     },
     extra: {

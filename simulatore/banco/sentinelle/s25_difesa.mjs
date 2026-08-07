@@ -452,8 +452,19 @@ const d = riassunto.difesa;
     // e' passarlo, ed e' esattamente la distinzione che questo blocco deve fare. Vietare
     // alla copia cio' che si permette all'originale renderebbe rossa la sentinella ogni
     // volta che il motore viene ri-trasportato, cioe' proprio quando le cose sono a posto.
+    // demo/ese.mjs ha una DEROGA DICHIARATA (07/08/2026): la pagina «E se?» e' un
+    // CONTROFATTUALE su una gara finita — l'utente cambia la propria strategia e i
+    // rivali eseguono le loro soste vere, lette dall'archivio. Non e' una risposta
+    // del muretto al congelamento (il caso che E14 vieta): a gara finita il
+    // "futuro" e' un dato registrato, e senza le soste vere degli altri l'arrivo
+    // simulato non significherebbe niente. La deroga non e' gratis, e i controlli
+    // qui sotto la sorvegliano: il modulo deve DOCUMENTARE la deroga nominando
+    // questa sentinella, e la pagina deve rendere l'avvertenza all'utente con un
+    // blocco di onesta' SEMPRE VISIBILE. Revocarla = togliere ese.mjs da questo
+    // filtro. Il test del run (demo/test_ese.mjs, job parita') verifica in piu'
+    // che l'assunzione SOSTE_VERE_DEI_RIVALI compaia davvero in ogni run.
     ...elencaFile(path.join(radice, '..', 'demo'))
-      .filter((f) => !/\/data\//.test(f) && !/\/vendor\//.test(f)),
+      .filter((f) => !/\/data\//.test(f) && !/\/vendor\//.test(f) && !/\/ese\.mjs$/.test(f)),
   ];
   const colpevoli = vietate.filter((f) => /pianiRivali/.test(readFileSync(f, 'utf8')));
   b.uguale('nessun percorso di produzione passa le soste vere dei rivali (E14)',
@@ -463,6 +474,14 @@ const d = riassunto.difesa;
   const cost = readFileSync(path.join(radice, 'scenario', 'costruttore.mjs'), 'utf8');
   b.verifica('il costruttore mette a referto SOSTE_VERE_DEI_RIVALI', /SOSTE_VERE_DEI_RIVALI/.test(cost));
   b.verifica('...e la dichiara informazione dal futuro', /INFORMAZIONE DAL FUTURO/.test(cost));
+
+  // ── le condizioni della deroga di demo/ese.mjs, verificate qui ─────────────
+  const ese = readFileSync(path.join(radice, '..', 'demo', 'ese.mjs'), 'utf8');
+  b.verifica('ese.mjs documenta la deroga nominando questa sentinella', /DEROGA/.test(ese) && /s25/.test(ese));
+  b.verifica('...e si dichiara controfattuale, non previsione', /controfattuale/i.test(ese) && /non una previsione/i.test(ese));
+  const eseHtml = readFileSync(path.join(radice, '..', 'demo', 'ese.html'), 'utf8');
+  b.verifica('ese.html rende l\'avvertenza «informazione dal futuro» in un blocco sempre visibile',
+    /informazione dal futuro/i.test(eseHtml) && /class="ese-onesta"/.test(eseHtml));
 }
 
 b.chiudi();

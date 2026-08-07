@@ -166,7 +166,7 @@ const regimeAlCongelamento = regimeDiCella;
  *          orizzonte, perdita }` — `pits` è ciò che le due risposte devono
  *          condividere, ed è la cosa che il cancello P06 confronta.
  */
-export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, piano, pianiRivali, sosteAtteseRivali }, contesto) {
+export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, piano, pianiRivali, sosteAtteseRivali, rivaliNonClassificati }, contesto) {
   const { gare, modello, prior } = contesto;
   const g = gare[gara];
   if (!g) throw new Error(`gara sconosciuta: ${gara}`);
@@ -395,6 +395,28 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
     }
   }
 
+  // ── I RIVALI CHE NON SONO ARRIVATI: ingresso di laboratorio, come le soste vere ──
+  //
+  // Nella gara vera qualcuno si ritira; il kernel — giustamente — non fa sparire
+  // nessuno e proietta tutti fino alla bandiera. Ma allora un ritirato con una
+  // sosta sola «completa» su una mescola sola, e REG01 lo squalificherebbe: una
+  // squalifica per un arrivo CHE NON E' MAI SUCCESSO. Il Director ha gia' la
+  // tacca giusta — strategia non dichiarata ⇒ REG01 non eseguito, a referto in
+  // `non_verificabili` — e questo ingresso la usa: chi sta nell'elenco non ha
+  // una strategia di gara COMPLETA dichiarabile, perche' la sua gara vera si e'
+  // fermata prima. Stessa natura di `pianiRivali` (informazione dal futuro,
+  // lecita solo a gara finita), e viaggia solo insieme a quello.
+  const nonClassificati = new Set(
+    (pianiRivali || sosteAtteseRivali) ? (rivaliNonClassificati ?? []).filter((d) => d !== pilota) : [],
+  );
+  if (nonClassificati.size > 0) {
+    dichiara('RIVALI_NON_CLASSIFICATI',
+      `${nonClassificati.size} rivale/i non arrivo' alla bandiera nella gara vera: la sua proiezione fino in fondo `
+      + 'e\' un\'assunzione della messa in scena, e REG01 (due mescole slick) non si applica a un arrivo mai successo',
+      nonClassificati.size,
+      'INGRESSO DI LABORATORIO (informazione dal futuro, come le soste vere): in diretta non si sa chi si ritirera\'');
+  }
+
   let rivaliAssunti = 0;
   if (regime !== null) {
     // N4 — LE SOSTE DEI RIVALI. `stint !== 1` ferma 148 rivali e ne azzecca 25
@@ -530,7 +552,7 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
       pit_loss: perdita.targhetta,
     },
     // materiale per il Director e per le risposte
-    _interno: { g, gara, pilota, soste, regime, celleAlCongelamento, nGiriGara },
+    _interno: { g, gara, pilota, soste, regime, celleAlCongelamento, nGiriGara, nonClassificati },
   };
 }
 
@@ -561,11 +583,24 @@ function materializzaPerDirector(scenario, risultato) {
       let stint = alCongelamento.stint;
       let compound = alCongelamento.compound;
       const suoiPit = new Set((scenario.pits[drv] ?? []).map((p) => p.lap));
+      // giro di sosta → mescola montata, PER QUESTO pilota. Fino al 07/08 il
+      // cambio gomma valeva solo per il soggetto (`drv === pilota`): scritto
+      // quando solo lui aveva mescole nei pits. Dal 04/08 anche i rivali
+      // possono averle (soste attese o vere), e lasciarli sulla gomma del
+      // congelamento faceva squalificare da REG01 ogni rivale proiettato con
+      // strategia dichiarata — un difetto del MATERIALIZZATORE, non del kernel,
+      // trovato dal banco della pagina «E se?» (E20: i pezzi si spengono e si
+      // accendono insieme). La fonte è UNA, `scenario.pits`, dove le mescole
+      // sono già validate slick alla frontiera; per il soggetto coincide con
+      // `mescolaDopoLaSosta` (stesse soste, stessa mappa).
+      const mescolaAllaSosta = drv === pilota
+        ? mescolaDopoLaSosta
+        : new Map((scenario.pits[drv] ?? []).filter((p) => p.mescola).map((p) => [p.lap, p.mescola]));
       // Il primo giro proiettato è un out-lap se il pilota era ENTRATO ai box
       // al giro del congelamento: è il caso che il Director aveva ragione a
       // bocciare quando la proiezione lo ignorava.
       let prossimoEOutLap = alCongelamento.in_lap === true;
-      let giroDelMioPit = null;
+      let giroDelPit = null;
       for (const passo of traccia) {
         const eraInLap = passo.in_lap;
         const eOutLap = prossimoEOutLap;
@@ -573,10 +608,10 @@ function materializzaPerDirector(scenario, risultato) {
           stint = stint === null ? null : stint + 1;
           // La mescola scelta si monta solo dopo una sosta DELLO SCENARIO: dopo
           // una sosta già avvenuta al congelamento non si sa cosa abbiano preso.
-          if (drv === pilota && mescolaDopoLaSosta.has(giroDelMioPit)) compound = mescolaDopoLaSosta.get(giroDelMioPit);
+          if (mescolaAllaSosta.has(giroDelPit)) compound = mescolaAllaSosta.get(giroDelPit);
         }
         prossimoEOutLap = eraInLap;
-        if (eraInLap && drv === pilota) giroDelMioPit = passo.lap;
+        if (eraInLap) giroDelPit = passo.lap;
         proiettate.push({
           lap: passo.lap,
           cella: creaCella({
@@ -608,7 +643,12 @@ function materializzaPerDirector(scenario, risultato) {
       // ha usato una sola mescola è una squalifica, e il Director lo lasciava
       // passare classificandolo «strategia non dichiarata». Trovato dal
       // cancello M3 su 9 casi delle gare 2026.
-      strategia_dichiarata: drv === pilota || (scenario.pits[drv] ?? []).length > 0,
+      // I non-classificati della gara vera (elenco di laboratorio, vedi sopra) non
+      // hanno una strategia COMPLETA dichiarabile: la loro gara si e' fermata prima,
+      // e il Director mette a referto «REG01 non eseguito» invece di squalificare
+      // un arrivo mai successo.
+      strategia_dichiarata: drv === pilota
+        || ((scenario.pits[drv] ?? []).length > 0 && !(scenario._interno.nonClassificati?.has(drv))),
       celle: [...osservate, ...proiettate],
       soste: (scenario.pits[drv] ?? []).map((p) => ({
         lap: p.lap,

@@ -51,6 +51,17 @@ const PLACEBO_SEME = 20260804;
 // che non e' rimasto in nessun generatore. Stessa famiglia della fonte orfana trovata
 // stamattina, e va a referto invece che aggirato.
 //
+// RETTIFICA 07/08/2026 — il paragrafo qui sopra e' stato superato lo stesso giorno in cui
+// fu scritto, da 56e0d21: il numero E' riproducibile, ma con una definizione che non sta
+// fra le cinque provate. E' la MEDIANA DEL VALORE ASSOLUTO del residuo (non una sd, non
+// una MAD scalata) del braccio col rho SIGILLATO (0,030776), dopo la doppia sottrazione
+// `gara|pilota` e `gara|giro`: `ESITO_cancelli_campo.json` -> `D2.mediana_sigillo` =
+// 0,34570 (generato da `cancelli_campo.mjs`, righe 95-103). Le cinque grandezze qui sopra
+// restano vere COME MISURE: nessuna e' quella pubblicata, e la piu' vicina (MAD scalata
+// 0,471) e' proprio la stessa mediana moltiplicata per 1,4826. La conclusione operativa
+// NON cambia: M1 resta espresso come RAPPORTO, che e' invariante alla definizione del
+// rumore — la riespressione era giusta anche col mistero risolto.
+//
 // CONSEGUENZA SUL CANCELLO, dichiarata qui: M1 era scritto come soglia ASSOLUTA (15 giri su
 // una scala in cui il giro intero vale 21,9). Con una scala diversa quella soglia non
 // significa piu' la stessa cosa, quindi si riesprime nell'unica forma INVARIANTE alla
@@ -151,9 +162,10 @@ if (!TARATO) {
   stampa(`   TARATURA FALLITA: non giudico.`);
   process.exit(1);
 }
-stampa(`   taratura verde sul divario. Il rumore pubblicato (0,3457) NON e' riproducibile dal`);
-stampa(`   codice committato: qui vale ${GIRO.rumore.toFixed(4)} con la definizione dichiarata nel file, e il`);
-stampa(`   cancello M1 e' quindi un RAPPORTO (<= ${(RAPPORTO_M1 * 100).toFixed(1)}% dell'eta' di pareggio del giro), non una soglia assoluta.`);
+stampa(`   taratura verde sul divario. Il rumore pubblicato (0,3457) e' la mediana del |residuo|`);
+stampa(`   del braccio col rho sigillato (D2.mediana_sigillo, rettifica 07/08) — NON la sd usata`);
+stampa(`   qui, che vale ${GIRO.rumore.toFixed(4)}. Il cancello M1 resta un RAPPORTO (<= ${(RAPPORTO_M1 * 100).toFixed(1)}% dell'eta' di`);
+stampa(`   pareggio del giro), invariante alla definizione del rumore.`);
 
 stampa('');
 stampa('                     divario (s/giro d\'eta\')   rumore (s)   eta\' di pareggio');

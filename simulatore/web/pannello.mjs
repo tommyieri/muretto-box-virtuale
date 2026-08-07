@@ -175,7 +175,30 @@ function pianoGomme(s) {
     p.vincolo_regolamento
       ? el('p', { classe: 'nota vincolo' }, txt(p.vincolo_regolamento, { cifre_dichiarate: 'testo del vincolo: i numeri fanno parte della spiegazione, non sono quantità mostrate come risultato' }))
       : null,
+    sintesiAlternative(s),
     percheSoste(s));
+}
+
+/**
+ * LA RIGA-SINTESI DEL CONFRONTO, in chiaro. La pagella del prodotto (02/08) ha
+ * messo il dito qui: il piano singolo era in chiaro e il confronto — la parte
+ * su cui il motore ha piu' titolo — stava tutto in un cassetto. Una riga sola,
+ * subito sotto il piano: quanto costerebbe l'alternativa piu' vicina. Il resto
+ * (tabella completa e ragione aritmetica) sta in percheSoste.
+ */
+function sintesiAlternative(s) {
+  const alt = Array.isArray(s.piano?.alternative) ? s.piano.alternative.filter((a) => Number.isFinite(a?.totale)) : [];
+  if (alt.length < 2) return null;
+  const migliore = Math.min(...alt.map((a) => a.totale));
+  const seconde = alt.filter((a) => a.totale !== migliore).sort((a, b) => a.totale - b.totale);
+  if (!seconde.length) return null;
+  const seconda = seconde[0];
+  return el('p', { classe: 'piano-riga alternative-sintesi' },
+    txt('L\'alternativa più vicina ('),
+    num(seconda.k, { formato: 'intero', targhetta: T.piano(s) }),
+    txt(seconda.k === 1 ? ' sosta) costerebbe ' : ' soste) costerebbe '),
+    num(seconda.totale - migliore, { unita: 's', formato: 'secondi', targhetta: T.alternative(s) }),
+    txt(' in più.'));
 }
 
 /**
@@ -192,22 +215,32 @@ function pianoGomme(s) {
  * `limite_perche` e' la ragione aritmetica per cui non le propone. Mostrare il confronto e
  * la ragione insieme e' l'unico modo onesto di dire «una sosta» a chi si aspettava due.
  *
- * STA DENTRO UN <details> CHIUSO, e non e' pigrizia: la risposta a due giri deve restare
- * l'elemento dominante del pannello (KPI P4). Questo blocco e' una spiegazione, e una
- * spiegazione che compete tipograficamente con la risposta sposta l'attenzione sulla cosa
- * su cui il motore e' meno validato.
+ * STAVA DENTRO UN <details> CHIUSO per una ragione dichiarata (la risposta a due giri
+ * deve restare l'elemento dominante del pannello, KPI P4) — e la pagella del prodotto
+ * (02/08, voto 4) ha mostrato il costo di quella scelta: il piano singolo in chiaro e il
+ * confronto nel cassetto e' esattamente il disallineamento fra fiducia visiva e capacita'
+ * validata. DECISIONE del 07/08: il details si APRE di default e sopra c'e' una
+ * riga-sintesi sempre visibile (sintesiAlternative). La dominanza della risposta resta
+ * affidata all'ordine e alla scala tipografica, non all'occultamento del confronto —
+ * che e' la parte su cui il motore ha PIU' titolo, non meno: sei esclusioni dicono che
+ * «una sosta» e' robusta, e la tabella e' il posto dove si vede quanto costa non crederci.
  */
 function percheSoste(s) {
   const p = s.piano;
   const alt = Array.isArray(p.alternative) ? [...p.alternative].filter((a) => Number.isFinite(a?.totale)) : [];
   if (!alt.length) return null;
   const migliore = alt.length ? Math.min(...alt.map((a) => a.totale)) : null;
-  return el('details', { classe: 'perche-soste' },
+  // La POSIZIONE per k viaggia nella vista dal 07/08 (era emessa dal motore da
+  // fe23170 e non arrivava mai in pagina): con lei il confronto smette di essere
+  // solo un costo in secondi e dice dove ARRIVERESTI — che e' la domanda vera.
+  const conPosizioni = alt.some((a) => Number.isInteger(a?.posizione));
+  return el('details', { classe: 'perche-soste', aperto: true },
     el('summary', {}, txt('Perché questo numero di soste, e non un altro')),
     alt.length
       ? el('table', { classe: 'alternative' },
         el('tr', {},
-          el('th', {}, txt('soste')), el('th', {}, txt('quando')), el('th', {}, txt('costo in più')))
+          el('th', {}, txt('soste')), el('th', {}, txt('quando')), el('th', {}, txt('costo in più')),
+          conPosizioni ? el('th', {}, txt('arrivi')) : null)
         , ...alt.sort((a, b) => a.k - b.k).map((a) => el('tr', { classe: a.totale === migliore ? 'scelta' : null },
           el('td', {}, num(a.k, { formato: 'intero', targhetta: T.piano(s) })),
           // OGNI GIRO PASSA DA num(): «giro 48» come stringa e' una quantita' travestita
@@ -221,7 +254,20 @@ function percheSoste(s) {
             : [txt('nessuna')])),
           el('td', {}, a.totale === migliore
             ? txt('— la scelta')
-            : num(a.totale - migliore, { unita: 's', formato: 'secondi', targhetta: T.alternative(s) })))))
+            : num(a.totale - migliore, { unita: 's', formato: 'secondi', targhetta: T.alternative(s) })),
+          conPosizioni
+            ? el('td', {}, Number.isInteger(a.posizione)
+              ? [txt('P'), num(a.posizione, { formato: 'intero', targhetta: T.alternative(s) })]
+              : txt('—'))
+            : null)))
+      : null,
+    // LA RAGIONE ARITMETICA, ri-agganciata il 07/08: `limite_perche` era emesso e
+    // letto da nessuno — cioe' il motivo per cui il motore non propone mai due
+    // soste era calcolato e invisibile (il censimento l'aveva gia' saldato una
+    // volta, poi la voce e' tornata orfana con la resa del metodo ritirata).
+    p.limite_perche
+      ? el('p', { classe: 'nota limite-perche' },
+        txt(p.limite_perche, { cifre_dichiarate: 'ragione dichiarata del limite del piano: i numeri fanno parte della spiegazione, non sono quantità mostrate come risultato' }))
       : null);
 }
 

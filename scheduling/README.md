@@ -35,6 +35,12 @@ PATH=/usr/local/bin:/usr/bin:/bin
 Gestione: `ssh muretto@167.233.236.186` poi `crontab -l` (vedi) · `crontab -r` (ferma) ·
 `tail -f ~/muretto/data/auto_gara.log` (guarda). Prima gara che lo esercita: Ungheria.
 
+> **Dal 07/08/2026 la crontab e' VERSIONATA: la fonte e' `scheduling/vps.cron`, non questo
+> blocco.** Si installa con `crontab ~/muretto/scheduling/vps.cron` e si verifica SUL VPS
+> con `scheduling/verifica_crontab.sh` (esce 1 se la macchina diverge dal file). Questo
+> blocco resta come racconto; se un giorno contraddice `vps.cron`, ha ragione il file —
+> e la rettifica del 03/08 qui sopra e' il motivo per cui la prosa non fa piu' da fonte.
+
 > **RETTIFICA del 03/08/2026.** Fino a oggi questo blocco mostrava la riga VECCHIA, quella
 > che invocava `.venv-auto/bin/python auto_gara.py --push` dentro un `flock`. Quella riga
 > saltava `auto_run.sh`, cioe' saltava l'aggiornamento del codice — ed e' il guasto per cui
