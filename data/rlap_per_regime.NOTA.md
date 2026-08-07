@@ -56,3 +56,14 @@ Rigenerabile: `python3 gen_neutralizzazione_v2.py`.
 > fondo, 147 gare, dà 1,199 — a un soffio dal range). Il veto resta pieno; la strada
 > futura dichiarata è una fonte a TEMPO (finestre deploy/ending del race control), non
 > il simbolo '6'. Referto: `ai_lab/neutralizzazione/ESITO_vsc_di_campo.md`.
+
+---
+
+> **TERZA VERIFICA, FONTE A TEMPO (07/08/2026) — IL DEBITO È SPIEGATO.** Con le
+> finestre al millisecondo del track_status (`ai_lab/neutralizzazione/`, prereg V2):
+> R_lap dei giri PIENAMENTE coperti (f ≥ 0,9) = **1,323**, nel range fisico; monotonia
+> perfetta sui bin di copertura (1,077 / 1,198 / 1,323). Le celle '6' hanno copertura
+> mediana **0,533** e mai nulla: il simbolo proietta per-giro un fenomeno A TEMPO — il
+> 1,055/1,116 era diluizione, non una fonte rotta. **Il veto si restringe al simbolo
+> '6' per-giro; la VSC a tempo è utilizzabile con targhetta**
+> (`frazioni_vsc_2026.json`). Referto: `ESITO_vsc_a_tempo.md`.
