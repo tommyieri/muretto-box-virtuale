@@ -45,7 +45,7 @@ const GARE = gare().filter((g) => g !== 'Monaco');
 
 // ── un candidato: soste del soggetto -> posizione alla bandiera ──────────────
 // Director SPENTO qui dentro (come pianoOttimo): la validazione tocca al vincitore.
-function valuta(nomeSito, pilota, lf, soste, piani, contesto, gSim, nonClassificati = []) {
+function valuta(nomeSito, pilota, lf, soste, piani, contesto, gSim, nonClassificati = [], ritiriVeri = undefined) {
   let sc;
   try {
     // `rivaliNonClassificati`: i ritirati veri vengono proiettati lo stesso (il kernel
@@ -54,11 +54,15 @@ function valuta(nomeSito, pilota, lf, soste, piani, contesto, gSim, nonClassific
     sc = costruisciScenario({
       gara: garaSimDi(nomeSito), freezeLap: lf, pilota, piano: soste,
       pianiRivali: piani, rivaliNonClassificati: nonClassificati,
+      // i ritiri VERI (07/08): chi si ritiro' esce al suo giro invece di correre
+      // fino alla bandiera — e' la riparazione n. 2 del record, qui misurata
+      ritiriRivali: ritiriVeri,
     }, contesto);
   } catch { return null; }
   const ris = simulate({
     state: sc.state, pace: sc.pace, freezeLap: sc.freezeLap, steps: sc.steps,
-    pits: sc.pits, neutralizzazione: sc.neutralizzazione ?? null, tetto: sc.tetto ?? null, traccia: true,
+    pits: sc.pits, neutralizzazione: sc.neutralizzazione ?? null, tetto: sc.tetto ?? null,
+    ritiri: sc.ritiri ?? null, traccia: true,
   });
   const prev = ordinePrevisto(ris.traccia, gSim.nGiri);
   if (!prev || !prev.ordine.includes(pilota)) return null;
@@ -90,14 +94,14 @@ function slickUsate(gSim, pilota, lf) {
 }
 
 /** La ricerca per un k fissato: griglia grossa + discesa per coordinate. */
-function cercaK(k, { nomeSito, pilota, lf, piani, contesto, gSim, usate, nonClassificati }) {
+function cercaK(k, { nomeSito, pilota, lf, piani, contesto, gSim, usate, nonClassificati, ritiriVeri }) {
   const nGiri = gSim.nGiri;
   const mescole = mescolePerSoste(k, [...usate]);
   const conMescole = (giri) => giri.map((g, i) => ({ giro: g, mescola: mescole[i] ?? mescole[mescole.length - 1] ?? 'MEDIUM' }));
   const prova = (giri) => {
     for (let i = 1; i < giri.length; i += 1) if (giri[i] <= giri[i - 1]) return null;
     if (giri[0] <= lf || giri[giri.length - 1] >= nGiri) return null;
-    return valuta(nomeSito, pilota, lf, conMescole(giri), piani, contesto, gSim, nonClassificati);
+    return valuta(nomeSito, pilota, lf, conMescole(giri), piani, contesto, gSim, nonClassificati, ritiriVeri);
   };
   let migliore = null;
   let valutati = 0;
@@ -135,9 +139,17 @@ function caso(team, nomeSito) {
   const duo = perGara(nomeSito).filter((x) => x.team === team).map((x) => x.pilota).sort();
   const piani = pianiVeriDi(nomeSito);
 
+  const gSimPerRitiri = garaNuova(nomeSito);
+  const ritiriVeri = {};
+  for (const x of perGara(nomeSito)) {
+    if (x.classificato) continue;
+    const celle = gSimPerRitiri.perPilota.get(x.pilota);
+    if (celle && celle.size) ritiriVeri[x.pilota] = Math.max(...celle.keys());
+  }
+
   let base = null; let pilota = null; const saltati = [];
   for (const p of duo) {
-    const e = corri(nomeSito, p, { pianiRivali: piani });
+    const e = corri(nomeSito, p, { pianiRivali: piani, ritiriRivali: ritiriVeri });
     if (e.saltato) { saltati.push(`${p}: ${e.saltato}`); continue; }
     base = e; pilota = p; break;
   }
@@ -153,7 +165,7 @@ function caso(team, nomeSito) {
   // il confronto A/B e' motore-contro-motore senza nessuna differenza di montaggio
   const r = perGara(nomeSito).find((x) => x.pilota === pilota);
   const sosteVere = r.soste_piano.filter((s) => s.giro > lf && ['SOFT', 'MEDIUM', 'HARD'].includes(s.mescola));
-  const bracciA = valuta(nomeSito, pilota, lf, sosteVere, piani, contesto, gSim, nonClassificati);
+  const bracciA = valuta(nomeSito, pilota, lf, sosteVere, piani, contesto, gSim, nonClassificati, ritiriVeri);
 
   // il braccio B: la ricerca su k = 0..3
   const perK = [];
@@ -161,7 +173,7 @@ function caso(team, nomeSito) {
   let valutatiTot = 0;
   for (const k of [0, 1, 2, 3]) {
     if (k === 0 && usate.size < 2) { perK.push({ k, posizione: null, nota: 'illegale (una sola slick usata al congelamento, REG01)' }); continue; }
-    const { migliore: mk, valutati } = cercaK(k, { nomeSito, pilota, lf, piani, contesto, gSim, usate, nonClassificati });
+    const { migliore: mk, valutati } = cercaK(k, { nomeSito, pilota, lf, piani, contesto, gSim, usate, nonClassificati, ritiriVeri });
     valutatiTot += valutati;
     perK.push(mk
       ? { k, posizione: mk.posizione, cum: Number(mk.cum.toFixed(3)), soste: mk.soste }
@@ -175,7 +187,7 @@ function caso(team, nomeSito) {
     .sort((a, b) => (a.posizione - b.posizione) || (a.cum - b.cum));
   for (const c of candidatiOrdinati) {
     try {
-      const sc = costruisciScenario({ gara: garaSimDi(nomeSito), freezeLap: lf, pilota, piano: c.soste, pianiRivali: piani, rivaliNonClassificati: nonClassificati }, contesto);
+      const sc = costruisciScenario({ gara: garaSimDi(nomeSito), freezeLap: lf, pilota, piano: c.soste, pianiRivali: piani, rivaliNonClassificati: nonClassificati, ritiriRivali: ritiriVeri }, contesto);
       const { direttore } = eseguiEValida(sc, contesto.costantiDirector);
       const fatal = (direttore?.violazioni ?? []).filter((v) => v.severita === 'FATAL');
       if (fatal.length === 0) { vincitore = { ...c, ordine: null }; directorFatal = 0; break; }
@@ -186,7 +198,7 @@ function caso(team, nomeSito) {
   const vero = ordineVero(nomeSito);
   const nullo = ordineAlGiro(gSim, lf);
   const evalVincitore = vincitore?.soste !== undefined
-    ? valuta(nomeSito, pilota, lf, vincitore.soste, piani, contesto, gSim, nonClassificati) : null;
+    ? valuta(nomeSito, pilota, lf, vincitore.soste, piani, contesto, gSim, nonClassificati, ritiriVeri) : null;
   const mB = evalVincitore ? riclassifica(evalVincitore.ordine, vero, pilota, nullo) : null;
   const mA = bracciA ? riclassifica(bracciA.ordine, vero, pilota, nullo) : null;
 
@@ -213,6 +225,7 @@ function caso(team, nomeSito) {
     } : null,
     per_k: perK.map((x) => ({ ...x, soste: x.soste ? x.soste.map((s) => `${s.giro}:${s.mescola}`).join(' ') : undefined })),
     slick_usate_al_congelamento: [...usate].join('+') || 'nessuna',
+    ritiri_veri_applicati: Object.keys(ritiriVeri).length,
     ricerca_valutazioni: valutatiTot,
     controllo_A: mA ? { riclassificata: mA.pos, coincide_con_corri: mA.pos === base.previsto } : null,
   };

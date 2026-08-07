@@ -65,7 +65,14 @@ australia.byLap = byLapDa(australia);
   else {
     const vere = (prep.sosteVere[pilota] ?? []).filter((s) => s.giro > freezeLap && ['SOFT', 'MEDIUM', 'HARD'].includes(s.mescola));
     const runVero = rigioca({ nome: prep.nome, contesto: prep.contesto, pilota, freezeLap, soste: vere,
-      sosteRivali: prep.sosteVere, nonClassificati: prep.nonClassificati });
+      sosteRivali: prep.sosteVere, nonClassificati: prep.nonClassificati, ritiriVeri: prep.ritiriVeri });
+    // (g) i ritirati veri escono al loro giro: ALO/BOT fuori da ordine, dentro ritirati
+    for (const drv of ['ALO', 'BOT']) {
+      if (runVero.risultato.ordine.includes(drv)) fallisci(`${drv} si ritiro' davvero ma sta ancora nella classifica simulata`);
+      const rit = (runVero.risultato.ritirati ?? []).find((x) => x.drv === drv);
+      if (!rit) fallisci(`${drv} non compare fra i ritirati del kernel`);
+      else if (!(rit.lap > freezeLap && rit.lap < australia.n_laps)) fallisci(`${drv} ritirato a un giro implausibile: ${rit.lap}`);
+    }
     if (!runVero.direttore.approved) {
       fallisci(`il Director respinge la strategia VERA di ${pilota}: ${JSON.stringify(runVero.direttore.violazioni?.filter((v) => v.severita === 'FATAL').map((v) => v.codice))}`);
     }
@@ -76,13 +83,10 @@ australia.byLap = byLapDa(australia);
     if (!codici.includes('SOSTE_VERE_DEI_RIVALI')) {
       fallisci(`SOSTE_VERE_DEI_RIVALI non è fra le assunzioni del run: ${JSON.stringify(codici)}`);
     }
-    // il caso di confine trovato da questo stesso banco: chi si e' ritirato nella
-    // gara vera (ALO/BOT in Australia) non va squalificato da REG01 per un arrivo
-    // mai successo — va a referto come «non eseguito»
-    const nv = runVero.direttore.riepilogo?.non_verificabili ?? [];
-    if (!nv.some((r) => /ALO|BOT/.test(r) && /REG01 non eseguito/.test(r))) {
-      fallisci(`i ritirati veri non compaiono fra i non-verificabili del Director: ${JSON.stringify(nv)}`);
-    }
+    // Il caso di confine trovato da questo banco (ritirati squalificati da REG01)
+    // era gestito con la tacca «strategia non dichiarata»; dal 07/08 i ritiri VERI
+    // fanno il passo intero — chi si ritiro' esce al suo giro e REG01 non lo
+    // riguarda per costruzione (non completa). L'asserzione vive sopra, in (g).
     // (d) anti-A/A: spostare la sosta di 8 giri deve muovere il cumulato
     const spostate = vere.map((s) => ({ ...s, giro: Math.min(s.giro + 8, australia.n_laps - 1) }));
     const runAltro = rigioca({ nome: prep.nome, contesto: prep.contesto, pilota, freezeLap, soste: spostate,

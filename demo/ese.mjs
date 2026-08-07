@@ -112,13 +112,16 @@ export function scegliCongelamento({ nome, contesto, pilota, min = 5, max = 15 }
  * Ritorna risultato del kernel (con traccia), verdetto del Director e lo
  * scenario (con le sue assunzioni, che la pagina rende SEMPRE).
  */
-export function rigioca({ nome, contesto, pilota, freezeLap, soste, sosteRivali, nonClassificati = [] }) {
+export function rigioca({ nome, contesto, pilota, freezeLap, soste, sosteRivali, nonClassificati = [], ritiriVeri = undefined }) {
   const scenario = costruisciScenario(
-    // `rivaliNonClassificati`: chi nella gara vera non arrivo' (RIT/NP) viene
-    // proiettato lo stesso — il kernel non fa sparire nessuno — ma il Director
-    // mette a referto «REG01 non eseguito» invece di squalificare un arrivo
-    // mai successo. Stessa natura del resto: informazione dal futuro, dichiarata.
-    { gara: nome, freezeLap, pilota, piano: soste, pianiRivali: sosteRivali, rivaliNonClassificati: nonClassificati },
+    // `rivaliNonClassificati`: chi nella gara vera non arrivo' (RIT/NP) non viene
+    // squalificato da REG01 per un arrivo mai successo. `ritiriRivali` (07/08) fa
+    // il passo intero: chi si ritiro' ESCE al suo giro vero invece di correre
+    // fino alla bandiera da fantasma — misurato che i fantasmi comprimono i
+    // ranghi (Canada: cambi inventati 12 contro 7 reali). Stessa natura di
+    // tutto il resto: informazione dal futuro, dichiarata dal motore in run.
+    { gara: nome, freezeLap, pilota, piano: soste, pianiRivali: sosteRivali,
+      rivaliNonClassificati: nonClassificati, ritiriRivali: ritiriVeri },
     { ...contesto, giroFinale: contesto.nGiriGara },
   );
   const { risultato, direttore } = eseguiEValida(scenario, contesto.costantiDirector);
@@ -175,6 +178,14 @@ export async function preparaGara(nomeSito, { fetchJson }) {
   });
   const { contesto } = contestoDa(contestoLive, nome, gara);
   const tipoArrivo = esiti?.[nomeSito] ?? {};
+  const nonClassificati = Object.entries(tipoArrivo).filter(([, t]) => t === 'RIT' || t === 'NP').map(([d]) => d);
+  // l'ultimo giro VERO di chi si ritiro': dal lap chart, per l'ingresso ritiriRivali
+  const ritiriVeri = {};
+  for (const drv of nonClassificati) {
+    let ultimo = null;
+    for (let L = 1; L <= race.n_laps; L += 1) if (race.byLap[L]?.[drv]) ultimo = L;
+    if (ultimo !== null) ritiriVeri[drv] = ultimo;
+  }
   return {
     race, nome, gara, contesto,
     sosteVere: sosteVereDa(race),
@@ -182,6 +193,7 @@ export async function preparaGara(nomeSito, { fetchJson }) {
     posizioniReali: posizioniRealiPerGiro(race),
     tipoArrivo,
     // chi non arrivo' alla bandiera nella gara vera (per il Director, dichiarato)
-    nonClassificati: Object.entries(tipoArrivo).filter(([, t]) => t === 'RIT' || t === 'NP').map(([d]) => d),
+    nonClassificati,
+    ritiriVeri,
   };
 }

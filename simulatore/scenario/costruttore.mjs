@@ -166,7 +166,7 @@ const regimeAlCongelamento = regimeDiCella;
  *          orizzonte, perdita }` — `pits` è ciò che le due risposte devono
  *          condividere, ed è la cosa che il cancello P06 confronta.
  */
-export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, piano, pianiRivali, sosteAtteseRivali, rivaliNonClassificati }, contesto) {
+export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, piano, pianiRivali, sosteAtteseRivali, rivaliNonClassificati, ritiriRivali }, contesto) {
   const { gare, modello, prior } = contesto;
   const g = gare[gara];
   if (!g) throw new Error(`gara sconosciuta: ${gara}`);
@@ -417,6 +417,33 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
       'INGRESSO DI LABORATORIO (informazione dal futuro, come le soste vere): in diretta non si sa chi si ritirera\'');
   }
 
+  // ── I RITIRI VERI DEI RIVALI: il gemello delle soste vere, sul kernel ──────
+  //
+  // Proiettare un ritirato fino alla bandiera comprime i ranghi attorno al
+  // soggetto (record 07/08: Canada, 6 ritirati, il motore inventa 12 cambi
+  // contro 7 reali). A gara nota il ritiro e' un DATO come le soste: qui entra
+  // {drv: ultimo giro percorso}, il kernel lo fa uscire da quel giro in poi e
+  // lo mette in `ritirati`, mai in classifica. INFORMAZIONE DAL FUTURO in
+  // piena regola: viaggia solo nei percorsi di laboratorio (s25 la vieta in
+  // produzione insieme a pianiRivali), e mai sul soggetto — il controfattuale
+  // del soggetto e' il punto della domanda, non si ritira per decreto.
+  const ritiri = (() => {
+    if (!ritiriRivali) return null;
+    const puliti = {};
+    for (const [drv, lap] of Object.entries(ritiriRivali)) {
+      if (drv === pilota) continue;
+      if (!Number.isInteger(lap) || lap < 1) throw new Error(`ritiriRivali.${drv} non utilizzabile (serve il suo ultimo giro, intero ≥ 1): ${JSON.stringify(lap)}`);
+      if (lap > freezeLap) puliti[drv] = lap;   // chi si e' gia' ritirato non ha una cella a Lf: e' gia' assente
+    }
+    return Object.keys(puliti).length ? puliti : null;
+  })();
+  if (ritiri) {
+    dichiara('RITIRI_VERI_DEI_RIVALI',
+      `${Object.keys(ritiri).length} rivale/i esce dalla simulazione al giro del suo ritiro VERO invece di essere proiettato alla bandiera`,
+      Object.keys(ritiri).length,
+      'INGRESSO DI LABORATORIO (informazione dal futuro, come le soste vere): in diretta non si sa chi si ritirera\', ne\' quando');
+  }
+
   let rivaliAssunti = 0;
   if (regime !== null) {
     // N4 — LE SOSTE DEI RIVALI. `stint !== 1` ferma 148 rivali e ne azzecca 25
@@ -519,7 +546,7 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   }
 
   return {
-    state, pace, freezeLap, steps, pits, neutralizzazione, tetto,
+    state, pace, freezeLap, steps, pits, neutralizzazione, tetto, ritiri,
     assunzioni,
     perdita,
     // DUE ORIZZONTI, e fino al 03/08/2026 ne veniva pubblicato uno solo — quello sbagliato
@@ -670,7 +697,9 @@ export function eseguiEValida(scenario, costantiDirector) {
     neutralizzazione: scenario.neutralizzazione ?? null,
     // il tetto viaggia con lo scenario come pace e pits: se questa riga mancasse,
     // "dove rientri" girerebbe con il vincolo e "quando fermarti" senza — E17.
-    tetto: scenario.tetto ?? null, traccia: true,
+    // E i ritiri viaggiano con lo scenario per la stessa ragione (null in ogni
+    // percorso di produzione: e' un ingresso di laboratorio).
+    tetto: scenario.tetto ?? null, ritiri: scenario.ritiri ?? null, traccia: true,
   });
   const direttore = validaSimulazione(materializzaPerDirector(scenario, risultato), costantiDirector);
   return { risultato, direttore };

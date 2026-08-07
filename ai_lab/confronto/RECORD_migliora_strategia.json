@@ -20,7 +20,7 @@
     "posizione_riclassificata": 13,
     "su": 16,
     "errore_vs_reale": -1,
-    "posizione_campo_pieno": 14,
+    "posizione_campo_pieno": 13,
     "su_campo": 20,
     "cum": 8848.603
    },
@@ -31,7 +31,7 @@
    "migliore_trovata": {
     "k": 1,
     "soste": "30:MEDIUM",
-    "posizione_campo_pieno": 14,
+    "posizione_campo_pieno": 13,
     "posizione_riclassificata": 13,
     "cum": 8833.05,
     "guadagno_posizioni_motore": 0,
@@ -46,24 +46,25 @@
     },
     {
      "k": 1,
-     "posizione": 14,
+     "posizione": 13,
      "cum": 8833.05,
      "soste": "30:MEDIUM"
     },
     {
      "k": 2,
-     "posizione": 14,
+     "posizione": 13,
      "cum": 8838.125,
      "soste": "15:MEDIUM 35:HARD"
     },
     {
      "k": 3,
-     "posizione": 14,
+     "posizione": 13,
      "cum": 8850.759,
      "soste": "9:MEDIUM 27:HARD 42:HARD"
     }
    ],
    "slick_usate_al_congelamento": "HARD",
+   "ritiri_veri_applicati": 5,
    "ricerca_valutazioni": 228,
    "controllo_A": {
     "riclassificata": 13,
@@ -87,9 +88,9 @@
     "posizione_riclassificata": 16,
     "su": 16,
     "errore_vs_reale": 0,
-    "posizione_campo_pieno": 17,
+    "posizione_campo_pieno": 16,
     "su_campo": 18,
-    "cum": 8789.529
+    "cum": 8788.329
    },
    "nullo": {
     "posizione": 16,
@@ -97,12 +98,12 @@
    },
    "migliore_trovata": {
     "k": 2,
-    "soste": "18:HARD 44:HARD",
-    "posizione_campo_pieno": 17,
+    "soste": "21:HARD 46:HARD",
+    "posizione_campo_pieno": 16,
     "posizione_riclassificata": 16,
-    "cum": 8780.646,
+    "cum": 8780.032,
     "guadagno_posizioni_motore": 0,
-    "guadagno_cum_s": 8.883,
+    "guadagno_cum_s": 8.298,
     "director": "approvato"
    },
    "per_k": [
@@ -113,24 +114,25 @@
     },
     {
      "k": 1,
-     "posizione": 17,
-     "cum": 8782.891,
-     "soste": "33:HARD"
+     "posizione": 16,
+     "cum": 8782.406,
+     "soste": "35:HARD"
     },
     {
      "k": 2,
-     "posizione": 17,
-     "cum": 8780.646,
-     "soste": "18:HARD 44:HARD"
+     "posizione": 16,
+     "cum": 8780.032,
+     "soste": "21:HARD 46:HARD"
     },
     {
      "k": 3,
-     "posizione": 17,
-     "cum": 8791.356,
+     "posizione": 16,
+     "cum": 8791.056,
      "soste": "18:HARD 35:HARD 53:HARD"
     }
    ],
    "slick_usate_al_congelamento": "MEDIUM",
+   "ritiri_veri_applicati": 4,
    "ricerca_valutazioni": 371,
    "controllo_A": {
     "riclassificata": 16,
@@ -198,6 +200,7 @@
     }
    ],
    "slick_usate_al_congelamento": "MEDIUM",
+   "ritiri_veri_applicati": 3,
    "ricerca_valutazioni": 116,
    "controllo_A": {
     "riclassificata": 11,
@@ -221,7 +224,7 @@
     "posizione_riclassificata": 13,
     "su": 15,
     "errore_vs_reale": -2,
-    "posizione_campo_pieno": 18,
+    "posizione_campo_pieno": 13,
     "su_campo": 20,
     "cum": 9318.026
    },
@@ -232,11 +235,11 @@
    "migliore_trovata": {
     "k": 2,
     "soste": "21:HARD 45:HARD",
-    "posizione_campo_pieno": 17,
+    "posizione_campo_pieno": 13,
     "posizione_riclassificata": 13,
-    "cum": 9303.919,
-    "guadagno_posizioni_motore": 1,
-    "guadagno_cum_s": 14.107,
+    "cum": 9303.619,
+    "guadagno_posizioni_motore": 0,
+    "guadagno_cum_s": 14.407,
     "director": "approvato"
    },
    "per_k": [
@@ -247,24 +250,25 @@
     },
     {
      "k": 1,
-     "posizione": 17,
-     "cum": 9305.357,
-     "soste": "33:HARD"
+     "posizione": 13,
+     "cum": 9305.002,
+     "soste": "35:HARD"
     },
     {
      "k": 2,
-     "posizione": 17,
-     "cum": 9303.919,
+     "posizione": 13,
+     "cum": 9303.619,
      "soste": "21:HARD 45:HARD"
     },
     {
      "k": 3,
-     "posizione": 17,
-     "cum": 9315.195,
+     "posizione": 13,
+     "cum": 9314.895,
      "soste": "15:HARD 33:HARD 51:HARD"
     }
    ],
    "slick_usate_al_congelamento": "SOFT",
+   "ritiri_veri_applicati": 6,
    "ricerca_valutazioni": 293,
    "controllo_A": {
     "riclassificata": 13,
@@ -332,6 +336,7 @@
     }
    ],
    "slick_usate_al_congelamento": "MEDIUM",
+   "ritiri_veri_applicati": 7,
    "ricerca_valutazioni": 227,
    "controllo_A": {
     "riclassificata": 3,
@@ -388,17 +393,18 @@
     {
      "k": 2,
      "posizione": 10,
-     "cum": 8969.58,
+     "cum": 8969.28,
      "soste": "13:HARD 32:HARD"
     },
     {
      "k": 3,
-     "posizione": 11,
+     "posizione": 10,
      "cum": 8986.424,
      "soste": "10:HARD 29:HARD 41:HARD"
     }
    ],
    "slick_usate_al_congelamento": "MEDIUM",
+   "ritiri_veri_applicati": 2,
    "ricerca_valutazioni": 186,
    "controllo_A": {
     "riclassificata": 9,
@@ -422,7 +428,7 @@
     "posizione_riclassificata": 6,
     "su": 18,
     "errore_vs_reale": 2,
-    "posizione_campo_pieno": 7,
+    "posizione_campo_pieno": 6,
     "su_campo": 21,
     "cum": 8320.673
    },
@@ -433,7 +439,7 @@
    "migliore_trovata": {
     "k": 1,
     "soste": "26:HARD",
-    "posizione_campo_pieno": 5,
+    "posizione_campo_pieno": 4,
     "posizione_riclassificata": 4,
     "cum": 8289.601,
     "guadagno_posizioni_motore": 2,
@@ -448,24 +454,25 @@
     },
     {
      "k": 1,
-     "posizione": 5,
+     "posizione": 4,
      "cum": 8289.601,
      "soste": "26:HARD"
     },
     {
      "k": 2,
-     "posizione": 6,
+     "posizione": 5,
      "cum": 8298.888,
      "soste": "17:HARD 35:HARD"
     },
     {
      "k": 3,
-     "posizione": 7,
+     "posizione": 6,
      "cum": 8314.347,
      "soste": "18:HARD 30:HARD 41:HARD"
     }
    ],
    "slick_usate_al_congelamento": "MEDIUM",
+   "ritiri_veri_applicati": 3,
    "ricerca_valutazioni": 185,
    "controllo_A": {
     "riclassificata": 6,
@@ -533,6 +540,7 @@
     }
    ],
    "slick_usate_al_congelamento": "MEDIUM",
+   "ritiri_veri_applicati": 4,
    "ricerca_valutazioni": 227,
    "controllo_A": {
     "riclassificata": 1,
@@ -558,7 +566,7 @@
     "errore_vs_reale": -1,
     "posizione_campo_pieno": 8,
     "su_campo": 22,
-    "cum": 8779.994
+    "cum": 8779.694
    },
    "nullo": {
     "posizione": 8,
@@ -569,7 +577,7 @@
     "soste": "32:HARD",
     "posizione_campo_pieno": 8,
     "posizione_riclassificata": 8,
-    "cum": 8773.58,
+    "cum": 8773.28,
     "guadagno_posizioni_motore": 0,
     "guadagno_cum_s": 6.414,
     "director": "approvato"
@@ -583,23 +591,24 @@
     {
      "k": 1,
      "posizione": 8,
-     "cum": 8773.58,
+     "cum": 8773.28,
      "soste": "32:HARD"
     },
     {
      "k": 2,
      "posizione": 8,
-     "cum": 8776.371,
-     "soste": "16:HARD 41:HARD"
+     "cum": 8776.938,
+     "soste": "22:HARD 44:HARD"
     },
     {
      "k": 3,
      "posizione": 8,
-     "cum": 8790.266,
-     "soste": "12:HARD 30:HARD 48:HARD"
+     "cum": 8789.7,
+     "soste": "12:HARD 31:HARD 49:HARD"
     }
    ],
    "slick_usate_al_congelamento": "MEDIUM",
+   "ritiri_veri_applicati": 5,
    "ricerca_valutazioni": 293,
    "controllo_A": {
     "riclassificata": 8,
@@ -623,7 +632,7 @@
     "posizione_riclassificata": 6,
     "su": 19,
     "errore_vs_reale": 0,
-    "posizione_campo_pieno": 7,
+    "posizione_campo_pieno": 6,
     "su_campo": 22,
     "cum": 9288.821
    },
@@ -634,7 +643,7 @@
    "migliore_trovata": {
     "k": 2,
     "soste": "20:HARD 48:HARD",
-    "posizione_campo_pieno": 5,
+    "posizione_campo_pieno": 4,
     "posizione_riclassificata": 4,
     "cum": 9280.024,
     "guadagno_posizioni_motore": 2,
@@ -649,24 +658,25 @@
     },
     {
      "k": 1,
-     "posizione": 7,
+     "posizione": 6,
      "cum": 9285.453,
      "soste": "33:HARD"
     },
     {
      "k": 2,
-     "posizione": 5,
+     "posizione": 4,
      "cum": 9280.024,
      "soste": "20:HARD 48:HARD"
     },
     {
      "k": 3,
-     "posizione": 7,
+     "posizione": 6,
      "cum": 9291.223,
      "soste": "20:HARD 37:HARD 54:HARD"
     }
    ],
    "slick_usate_al_congelamento": "MEDIUM",
+   "ritiri_veri_applicati": 3,
    "ricerca_valutazioni": 355,
    "controllo_A": {
     "riclassificata": 6,

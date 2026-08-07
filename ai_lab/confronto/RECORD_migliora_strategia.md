@@ -23,20 +23,20 @@ dalla pagina «E se?»):
   sul piano vincente: **10/10 approvati**. Cucitura verificata: piani proposti ai
   rivali = piani arrivati al motore in tutti i casi campionati (20/20, 21/21, 18/18).
 
-## Il record
+## Il record (aggiornato 07/08 sera: CON i ritiri veri — v. §sotto per il prima/dopo)
 
 | team | gara | pil | Lf | reale | motore (vera) | migliore | Δpos | Δs | piano migliore | vera |
 |---|---|---|---|---|---|---|---|---|---|---|
-| Alpine | Australia | COL | 5 | P14 | P14 | P14 | 0 | 15,6 | 30:H | 9:H 46:S |
-| Aston Martin | Austria | ALO | 5 | P16 | P17 | P17 | 0 | 8,9 | 18:H 44:H | 24:S 49:S |
+| Alpine | Australia | COL | 5 | P14 | P13 | P13 | 0 | 15,6 | 30:M | 9:H 46:S |
+| Aston Martin | Austria | ALO | 5 | P16 | **P16** | P16 | 0 | 8,3 | 21:H 46:H | 24:S 49:S |
 | Audi | Belgio | BOR | 9 | P8 | P11 | P11 | 0 | 0,1 | 21:H | 20:H |
-| Cadillac | Canada | BOT | 8 | P15 | P18 | P17 | 1 | 14,1 | 21:H 45:H | 3:S 9:M 29:S 49:M |
-| Ferrari | Cina | HAM | 5 | P3 | P3 | P3 | 0 | 31,9 | 25:H | 10:H |
+| Cadillac | Canada | BOT | 8 | P15 | P13 | P13 | 0 | 14,4 | 21:H 45:H | 3:S 9:M 29:S 49:M |
+| Ferrari | Cina | HAM | 5 | P3 | **P3** | P3 | 0 | 31,9 | 25:H | 10:H |
 | Haas | Giappone | OCO | 5 | P10 | P9 | P9 | 0 | 4,7 | 21:H | 19:H |
-| McLaren | Gran Bretagna | NOR | 6 | P4 | P7 | P5 | 2 | 31,1 | 26:H | 28:H 38:M 48:S |
-| Mercedes | Miami | ANT | 5 | P1 | P1 | P1 | 0 | 0,2 | 28:H | 26:H |
+| McLaren | Gran Bretagna | NOR | 6 | P4 | P6 | **P4** | 2 | 31,1 | 26:H | 28:H 38:M 48:S |
+| Mercedes | Miami | ANT | 5 | P1 | **P1** | P1 | 0 | 0,2 | 28:H | 26:H |
 | Racing Bulls | Spagna | LAW | 5 | P9 | P8 | P8 | 0 | 6,4 | 32:H | 11:H 35:H |
-| Red Bull | Ungheria | HAD | 5 | P6 | P7 | P5 | 2 | 8,8 | 20:H 48:H | 19:H 42:H |
+| Red Bull | Ungheria | HAD | 5 | P6 | **P6** | P4 | 2 | 8,8 | 20:H 48:H | 19:H 42:H |
 
 *«motore (vera)» e «migliore» = posizioni nel campo simulato pieno. Δpos/Δs = guadagno
 del braccio B sul braccio A: **promessa motore-contro-motore, mai contro la realtà**.
@@ -72,17 +72,38 @@ e quasi mai POSIZIONI (3/10): coi gap veri, 10-30 secondi non comprano un rango.
 firma già misurata del sotto-fermarsi (ρ al fondo del suo IC95, degrado concavo): il
 record mostra che resta identica anche a rivali veri e obiettivo-posizione.
 
+## Con i ritiri veri — la riparazione 2, FATTA e misurata (07/08 sera)
+
+Ingresso `ritiri` nel kernel ({drv: ultimo giro vero}, uscita `ritirati`, mai in
+classifica) + `ritiriRivali` nel costruttore (assunzione RITIRI_VERI_DEI_RIVALI,
+famiglia s25) + `ordinePrevisto` per (giri percorsi, poi tempo). Sentinella s41:
+spento è spento nei tre modi, il ritirato esce al giro giusto con la sua storia
+parziale, e il fantasma non tocca il campo (ritiro al congelamento ≡ assenza dallo
+stato). Produzione bit-identica (suite verde, parità identità 0/168).
+
+**Cosa cambia, misurato** (prima → dopo, stessa ricerca):
+
+- **Campo pieno**: somma |errore| 13 → 10; esatti 3 → 4 (Austria e Ungheria
+  diventano esatte); Canada **P18 → P13** (da 3 peggio a 2 meglio del vero: la
+  compressione dei fantasmi era la gran parte, non tutto); GB: la migliore trovata
+  ora arriva **P4 = la posizione vera di NOR**.
+- **Cambi inventati a Canada**: 12 → 10 (reali 7): i fantasmi erano metà
+  dell'eccesso, il resto è d'altro.
+- **Popolazione comune (solo classificati): NESSUN cambiamento** — somma |err| 10 e
+  4 esatti, identici. È la scoperta che affina la diagnosi: i ritirati proiettati
+  gonfiavano i ranghi del CAMPO, ma l'ordine del soggetto fra i veri arrivati era
+  già quello. Il residuo — **Belgio +3 e GB +2, uguali al nullo** — non si tocca da
+  qui: sta tutto nella dinamica del campo (riparazione 1).
+
 ## Dove guardare per riparare (proposte, da decidere insieme)
 
 1. **Il movimento del campo nelle gare rimescolate** (Belgio, GB): l'errore condiviso
    col nullo dice che il collo di bottiglia non è il passo ma la dinamica di
    SC/ripartenze — il posto dove il motore e il nullo sbagliano INSIEME è il posto
    dove c'è informazione nuova da modellare (o da dichiarare non modellabile).
-2. **I ritirati proiettati alla bandiera** (Canada): a gara nota il ritiro è un DATO
-   come le soste. Un ingresso di laboratorio «ritiro al giro vero» (il gemello di
-   `rivaliNonClassificati`, ma sul kernel) toglierebbe la compressione artificiale dei
-   ranghi — da pesare contro la regola «il motore non fa sparire nessuno», che è una
-   regola di PRODOTTO, non di laboratorio.
+2. ~~**I ritirati proiettati alla bandiera**~~ — **FATTA il 07/08 sera** (v. sezione
+   sopra): ripara il campo pieno e metà dei cambi inventati di Canada; non tocca la
+   popolazione comune, e questo sposta tutto il peso residuo sulla n. 1.
 3. **Il mono-sosta dell'ottimizzatore**: non è un difetto della ricerca (Ungheria
    dimostra che due soste POSSONO vincere quando la vita mescola morde) — è il ρ/la
    concavità. Qualunque intervento passa dai capitoli già chiusi su ρ e curvatura:
