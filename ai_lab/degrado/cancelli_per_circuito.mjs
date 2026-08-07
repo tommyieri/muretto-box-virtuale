@@ -33,6 +33,7 @@ import { decisioni, vitaDa, vitaCieca, MESCOLE } from './decisioni.mjs';
 import { durateFondo, nelPerimetro, mediana, PISTE_2026, PISTA_ZANDVOORT } from './durate.mjs';
 import { fattore2026, fattoreStorico } from './fattore_circuito.mjs';
 import { pianoOttimo } from '../../simulatore/scenario/piano.mjs';
+import { contaDistinti, abGiudicabile } from '../lib/bracci.mjs';
 
 const ARGV = process.argv.slice(2);
 const JSON_OUT = ARGV.includes('--json');
@@ -62,6 +63,17 @@ const STORICO = fattoreStorico(FONDO, pesi);
 // (b) N1 dev'essere il fattore di OGGI: se la ricetta non riproduce la produzione, il
 // confronto non e' quello scritto nella prereg e non si giudica.
 const inProduzione = JSON.parse(readFileSync(path.join(RADICE, 'simulatore', 'data', 'modelli', 'vita_mescola.json'), 'utf8')).fattore_circuito;
+if (inProduzione == null) {
+  // Fino al 07/08 questo caso moriva con un TypeError alla Object.entries — cioe' il
+  // cancello si era spento da solo SENZA DIRLO quando il fattore e' uscito dalla
+  // produzione (spegnimento del 04/08). Un processo che muore non ha detto niente:
+  // il rifiuto va dichiarato (lo stesso guasto di cancelli_vita, E22).
+  console.error('N1 NON ESISTE PIU\': vita_mescola.json non porta fattore_circuito — il fattore per');
+  console.error('circuito e\' SPENTO in produzione (decisione 04/08). Questo cancello confronta il');
+  console.error('fattore storico contro quello DI OGGI: senza un N1 in produzione il confronto della');
+  console.error('prereg non esiste, e il cancello appartiene a un capitolo chiuso. Non giudico.');
+  process.exit(1);
+}
 {
   const ricetta = fattore2026(TUTTE).fattore;
   for (const [c, v] of Object.entries(inProduzione)) {
@@ -178,11 +190,12 @@ function durataPrevista(d, contesto) {
   } catch { return null; }
 }
 
-let C4 = null; const pianoRis = {};
+let C4 = null; let c4Giudicabile = null; const pianoRis = {};
 if (!SENZA_PIANO) {
   const bracci = { STORICO: (c) => F_STORICO(c), N1: null, N2: F_N2 };
   const perBraccio = { STORICO: [], N1: [], N2: [] };
-  const mossi = { storicoVsN2: 0, n1VsN2: 0 };
+  const coppie = { storicoVsN2: [], n1VsN2: [], storicoVsN1: [] };
+  const mossi = {};
   let persi = 0;
   for (const gara of gare()) {
     const mie = D.filter((d) => d.gara === gara);
@@ -208,21 +221,26 @@ if (!SENZA_PIANO) {
       // QUANTE VOLTE I BRACCI SI DISTINGUONO DAVVERO. Un cancello di non-fare-danno che
       // passa perche' non si muove niente non e' un cancello: e' un termometro rotto che
       // segna sempre la stessa temperatura. Il 04/08 questo progetto ha trovato proprio
-      // cosi' un guasto in cancelli_vita.mjs (E22), e il conto va stampato accanto
-      // all'esito, non dedotto da chi legge.
-      if (v.STORICO !== v.N2) mossi.storicoVsN2 += 1;
-      if (v.N1 !== v.N2) mossi.n1VsN2 += 1;
+      // cosi' un guasto in cancelli_vita.mjs (E22). Dal 07/08 il conto non e' piu' solo
+      // stampato: VINCOLA — la coppia giudicata da C4 e' STORICO vs N1, e se non si
+      // distingue mai il cancello e' NON GIUDICABILE, non PASSA (lib/bracci.mjs).
+      coppie.storicoVsN2.push([v.STORICO, v.N2]);
+      coppie.n1VsN2.push([v.N1, v.N2]);
+      coppie.storicoVsN1.push([v.STORICO, v.N1]);
     }
   }
+  for (const k of Object.keys(coppie)) mossi[k] = contaDistinti(coppie[k]);
   for (const b of Object.keys(perBraccio)) pianoRis[b] = perBraccio[b].length ? mediana(perBraccio[b]) : null;
   pianoRis.n = perBraccio.STORICO.length;
   pianoRis.non_misurabili = persi;
   pianoRis.decisioni_in_cui_i_bracci_differiscono = { ...mossi };
-  C4 = pianoRis.n > 0 && (pianoRis.STORICO - pianoRis.N1) <= SOGLIA_C4_GIRI;
+  c4Giudicabile = abGiudicabile(coppie.storicoVsN1);
+  C4 = c4Giudicabile && (pianoRis.STORICO - pianoRis.N1) <= SOGLIA_C4_GIRI;
   stampa(`   C4  non fare danno attraverso il pianificatore (peggiora al piu' di ${SOGLIA_C4_GIRI} giri):`);
   stampa(`         errore mediano  STORICO ${pianoRis.STORICO}  ·  N1 ${pianoRis.N1}  ·  N2 ${pianoRis.N2}`
-    + `  su ${pianoRis.n} decisioni (${persi} non misurabili)   ${C4 ? 'PASSA' : 'NON PASSA'}`);
-  stampa(`         i bracci si distinguono su: STORICO≠N2 ${mossi.storicoVsN2}/${pianoRis.n}`
+    + `  su ${pianoRis.n} decisioni (${persi} non misurabili)   ${c4Giudicabile ? (C4 ? 'PASSA' : 'NON PASSA') : 'NON GIUDICABILE (bracci A/A)'}`);
+  stampa(`         i bracci si distinguono su: STORICO≠N1 ${mossi.storicoVsN1}/${pianoRis.n}`
+    + ` · STORICO≠N2 ${mossi.storicoVsN2}/${pianoRis.n}`
     + ` · N1≠N2 ${mossi.n1VsN2}/${pianoRis.n}`);
 }
 
@@ -275,6 +293,7 @@ let verdetto;
 if (!C1) verdetto = 'NULL — C1 fallisce: il fattore storico non batte «la pista non conta». La stessa evidenza toglie la gamba anche al fattore 2026: la PROPOSTA al PO e\' spegnere il fattore per circuito, non sostituirlo.';
 else if (!C3) verdetto = 'NULL — C3 fallisce: rimescolare i fattori fra i circuiti funziona quanto assegnarli giusti. Il guadagno non e\' la pista.';
 else if (!C2) verdetto = 'RIPORTATO, NON PROMOSSO — C1 e C3 passano ma C2 no: il fattore storico e\' meglio di niente e peggio del rattoppo.';
+else if (c4Giudicabile === false) verdetto = 'NON PROMOSSO — C4 NON GIUDICABILE: i bracci STORICO e N1 non si distinguono mai su queste decisioni, quindi il cancello di non-fare-danno non ha misurato niente (il caso cancelli_vita, E22). Un pass vuoto non e\' un pass.';
 else if (C4 === false) verdetto = 'NON PROMOSSO — C1, C2, C3 passano ma C4 no: il parametro migliore attraverso un obiettivo rotto peggiora il prodotto. Prima il lavoro n. 3.';
 else verdetto = 'PROMOSSO alla decisione del PO — i cancelli passano. Zandvoort riceve il suo fattore dalle edizioni 2021-2025 invece del fattore 1 di default.';
 
@@ -297,7 +316,7 @@ const doc = {
     C1: { passa: C1, guadagno_giri: guadagnoSuN2, segni: c1 },
     C2: { passa: C2, storico: med(eStorico), n1: med(eN1), segni: c2 },
     C3: { passa: C3, p: pPlacebo, battuti, ripetizioni: PLACEBO_RIPETIZIONI },
-    C4: C4 === null ? null : { passa: C4, ...pianoRis },
+    C4: C4 === null ? null : { passa: C4, giudicabile: c4Giudicabile, ...pianoRis },
   },
   robustezze,
   verdetto,
