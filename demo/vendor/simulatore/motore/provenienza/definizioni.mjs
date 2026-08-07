@@ -116,6 +116,48 @@ export function garaSospesa(cella) {
   return simboliStatus(cella.status).has('5');
 }
 
+/**
+ * IL REGIME DI CAMPO, GIRO PER GIRO: { giro: 'SC' | 'VSC' | 'RED' }.
+ *
+ * E' la lettura A GARA FINITA di cio' che `regimeDiCella` legge su una cella
+ * sola: un giro e' di campo se PIU' DI META' delle auto presenti lo passano
+ * sotto lo stesso regime — la stessa soglia del costruttore per la
+ * compressione al congelamento (sotto meta' campo non e' una Safety Car, e'
+ * una gialla locale). A parita' di voti vince il regime piu' severo
+ * (RED > SC > VSC). Vive QUI perche' la useranno piu' consumatori (il
+ * laboratorio e la pagina «E se?»), e due derivazioni sarebbero E12.
+ *
+ * ATTENZIONE E14: su una gara IN CORSO questa funzione legge il futuro.
+ * Nessun percorso a congelamento deve chiamarla oltre Lf — e' un ingrediente
+ * degli ingressi di laboratorio (neutralizzazioneVera), non del prodotto.
+ */
+export function regimePerGiroDiCampo(perPilota, { soglia = 0.5 } = {}) {
+  const perGiro = new Map();
+  for (const [, celle] of perPilota) {
+    for (const [lap, cella] of celle) {
+      if (!perGiro.has(lap)) perGiro.set(lap, { presenti: 0, RED: 0, SC: 0, VSC: 0 });
+      const v = perGiro.get(lap);
+      v.presenti += 1;
+      let rosso = false;
+      try { rosso = garaSospesa(cella); } catch { rosso = false; }
+      if (rosso) { v.RED += 1; continue; }
+      const r = regimeDiCella(cella);
+      if (r !== null) v[r] += 1;
+    }
+  }
+  const esito = {};
+  for (const [lap, v] of perGiro) {
+    for (const regime of ['RED', 'SC', 'VSC']) {   // il piu' severo vince a parita'
+      if (v.presenti > 0 && v[regime] / v.presenti > soglia
+          && v[regime] >= v.RED && v[regime] >= v.SC && v[regime] >= v.VSC) {
+        esito[lap] = regime;
+        break;
+      }
+    }
+  }
+  return esito;
+}
+
 export function verde(cella) {
   return passoPulitoDi(cella, MESCOLE_SLICK);
 }

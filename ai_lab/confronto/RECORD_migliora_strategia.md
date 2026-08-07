@@ -95,6 +95,41 @@ stato). Produzione bit-identica (suite verde, parità identità 0/168).
   già quello. Il residuo — **Belgio +3 e GB +2, uguali al nullo** — non si tocca da
   qui: sta tutto nella dinamica del campo (riparazione 1).
 
+## Con le neutralizzazioni vere — la riparazione 1, FATTA e misurata (07/08 notte)
+
+Ingresso `neutralizzazioneVera` ({giro: SC/VSC/RED}, dalla nuova definizione unica
+`regimePerGiroDiCampo` in provenienza — soglia 50% di campo, la rossa vince a parità):
+i giri che la gara vera passò sotto SC/VSC **comprimono il campo col κ del sigillo**
+(`perGiroDaVera`, niente valori di ripiego) e **le soste cadute in finestra pagano il
+fattore del regime** — prima il replay correva quei giri in verde. Sentinella s42;
+divieto s25 esteso; assunzione NEUTRALIZZAZIONE_VERA in ogni run.
+
+**Due guasti latenti trovati accendendola** (invisibili finché le finestre erano corte):
+- la **compressione del kernel muoveva il cumulato senza il tempo sul giro** — lo
+  stesso identico difetto che il Director bocciò al tetto (183/223); in produzione i
+  delta delle finestre di persistenza stavano sotto la tolleranza GEO02 e nessuno se
+  n'era accorto; con le finestre vere usciva a grappoli (129 in un run). Corretto nel
+  kernel, produzione bit-identica sul cumulato;
+- il **materializzatore etichettava le soste col regime del congelamento**: una sosta
+  pagata al fattore SC sembrava una sosta verde sotto il pavimento (FIS04). Ora ogni
+  sosta e ogni giro proiettato portano il regime del PROPRIO giro.
+
+**Cosa cambia, misurato** (ritiri → ritiri+neutralizzazioni, riclassificato):
+
+- somma |errore| **10 → 8**, esatti **4 → 5**; campo pieno 10 → 8 con 5 esatti;
+- **Gran Bretagna: +2 → +1, e per la prima volta il motore batte il nullo** (+1 contro
+  +2) col rimescolamento GIUSTO: 16 cambi simulati contro 15 reali (era 6). Miami: 0
+  contro +1 del nullo. La strategia migliore trovata per NOR arriva P3 sfruttando la
+  finestra (22:HARD);
+- la ricerca smette di essere mono-sosta: **5 piani migliori su 10 hanno due soste**
+  (a Ungheria trova ESATTAMENTE la strategia vera, 19:H 42:H), e i piani si spostano
+  dentro le finestre — il sotto-fermarsi era in parte figlio del mondo-sempre-verde;
+- Director: **10/10 approvati**;
+- residuo: **Belgio +3** (= nullo, e i cambi simulati scendono a 5 contro 9: la
+  compressione vera congela l'ordine relativo — quello che successe a Spa non è
+  compressione, è ALTRO), **Canada −2** con 10 cambi contro 7. Il prossimo indizio
+  sta lì: che cosa muove il campo a Spa che né il verde né la compressione spiegano.
+
 ## Dove guardare per riparare (proposte, da decidere insieme)
 
 1. **Il movimento del campo nelle gare rimescolate** (Belgio, GB): l'errore condiviso

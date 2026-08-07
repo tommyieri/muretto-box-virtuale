@@ -166,7 +166,7 @@ const regimeAlCongelamento = regimeDiCella;
  *          orizzonte, perdita }` — `pits` è ciò che le due risposte devono
  *          condividere, ed è la cosa che il cancello P06 confronta.
  */
-export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, piano, pianiRivali, sosteAtteseRivali, rivaliNonClassificati, ritiriRivali }, contesto) {
+export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, piano, pianiRivali, sosteAtteseRivali, rivaliNonClassificati, ritiriRivali, neutralizzazioneVera }, contesto) {
   const { gare, modello, prior } = contesto;
   const g = gare[gara];
   if (!g) throw new Error(`gara sconosciuta: ${gara}`);
@@ -290,6 +290,27 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   // che il motore prezzava a pit-loss pieno una sosta fatta a gara ferma.
   // 'RED' non entra qui come regime: entra come STATO DI PREZZO, ed e' l'unico
   // posto in cui la rossa tocca la fisica.
+  // ── LA NEUTRALIZZAZIONE VERA (ingresso di laboratorio, 07/08/2026) ────────
+  // {giro: 'SC'|'VSC'|'RED'}, di norma da regimePerGiroDiCampo a gara finita.
+  // E14 vieta di estrapolare Safety Car future al congelamento — giustamente —
+  // ma cosi' il replay di laboratorio corre IN VERDE i giri che la gara vera
+  // passo' dietro la SC: niente compressione e soste a prezzo pieno, ed e'
+  // il pezzo mancante misurato dal record (Belgio +3 e GB +2, identici al
+  // nullo; a Silverstone il campo vero si rimescola il triplo del motore).
+  // Stessa famiglia di pianiRivali/ritiriRivali: informazione dal futuro,
+  // dichiarata, vietata in produzione da s25.
+  const vera = (() => {
+    if (!neutralizzazioneVera) return null;
+    const v = {};
+    for (const [lap, r] of Object.entries(neutralizzazioneVera)) {
+      const L = Number(lap);
+      if (!Number.isInteger(L) || L < 1) throw new Error(`neutralizzazioneVera: giro non utilizzabile ${JSON.stringify(lap)}`);
+      if (!['SC', 'VSC', 'RED'].includes(r)) throw new Error(`neutralizzazioneVera: regime sconosciuto ${JSON.stringify(r)} al giro ${L}`);
+      if (L > freezeLap && L <= giroFinale) v[L] = r;   // <= Lf e' gia' nello stato osservato
+    }
+    return Object.keys(v).length ? v : null;
+  })();
+
   const regimeOsservato = garaSospesa(mia) ? 'RED' : regimeAlCongelamento(mia);
   const pacchetto = leggiPacchetto(contesto);
   // N2 — la finestra di persistenza è misurata e distinta per regime quando il
@@ -299,6 +320,10 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
     regimeOsservato !== null && indice === 0 && sosta.giro - freezeLap <= persistenza
       ? regimeOsservato : null
   );
+  // Con la neutralizzazione VERA il prezzo di OGNI sosta (anche dei rivali) viene dal
+  // giro in cui cade davvero, non dalla persistenza del regime al congelamento: e'
+  // l'informazione in piu' che l'ingresso di laboratorio dichiara. Senza, bit-identico.
+  const regimeAllaSosta = (s, i) => (vera ? (vera[s.giro] ?? null) : regimeDi(s, i));
   // N1 — IL REGIME VALE ANCHE IN PROIEZIONE PURA. Senza soste nel piano il
   // meccanismo era inerte: `soste.length ? … : null`. Ma "non mi fermo" sotto
   // Safety Car non è uno scenario in verde — è uno scenario in cui il CAMPO
@@ -337,7 +362,7 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
 
   // ── soste: le mie, più quelle ASSUNTE dei rivali sotto neutralizzazione ──
   const pits = soste.length
-    ? { [pilota]: soste.map((s, i) => ({ lap: s.giro, perdita: perditaBox(prior, gara, regimeDi(s, i)).perdita, mescola: s.mescola ?? null })) }
+    ? { [pilota]: soste.map((s, i) => ({ lap: s.giro, perdita: perditaBox(prior, gara, regimeAllaSosta(s, i)).perdita, mescola: s.mescola ?? null })) }
     : {};
   // ── LE SOSTE VERE DEI RIVALI: ingresso DI LABORATORIO, spento in produzione ──
   //
@@ -377,7 +402,7 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
       const future = nel.filter((s) => MESCOLE_SLICK.has(s.mescola));
       rivaliScartati += nel.length - future.length;
       if (!future.length) continue;
-      pits[drv] = future.map((s, i) => ({ lap: s.giro, perdita: perditaBox(prior, gara, regimeDi(s, i)).perdita, mescola: s.mescola ?? null }));
+      pits[drv] = future.map((s, i) => ({ lap: s.giro, perdita: perditaBox(prior, gara, regimeAllaSosta(s, i)).perdita, mescola: s.mescola ?? null }));
       rivaliVeri += 1;
     }
     if (rivaliVeri > 0) {
@@ -486,9 +511,22 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
     }
     return tot === 0 ? 0 : n / tot;
   })();
-  const perGiroCompressione = pacchetto.compressionePerGiro(regimeOsservato, freezeLap, giroFinale, quotaCampoNeutralizzato);
+  const perGiroCompressione = vera
+    ? perGiroDaVera(vera, prior)
+    : pacchetto.compressionePerGiro(regimeOsservato, freezeLap, giroFinale, quotaCampoNeutralizzato);
   const neutralizzazione = perGiroCompressione === null ? null : { perGiro: perGiroCompressione };
-  if (neutralizzazione !== null) {
+  if (vera) {
+    const conta = { SC: 0, VSC: 0, RED: 0 };
+    for (const r of Object.values(vera)) conta[r] += 1;
+    let sosteInFinestra = 0;
+    for (const v of Object.values(pits)) for (const p of v) if (vera[p.lap]) sosteInFinestra += 1;
+    dichiara('NEUTRALIZZAZIONE_VERA',
+      `i giri neutralizzati sono quelli VERI della gara (${['SC', 'VSC', 'RED'].filter((r) => conta[r]).map((r) => `${conta[r]} ${r}`).join(' + ')}): `
+      + `il campo si comprime li' col kappa del sigillo, e ${sosteInFinestra} sosta/e cadute in finestra pagano il fattore del regime`,
+      Object.keys(vera).length,
+      'INGRESSO DI LABORATORIO (informazione dal futuro, come le soste vere): al congelamento le Safety Car future non si conoscono (E14)');
+  }
+  if (neutralizzazione !== null && !vera) {
     const giri = Object.keys(perGiroCompressione).map(Number).sort((a, b) => a - b);
     const kBase = prior.compressione_distacchi_interna?.[regimeOsservato]?.kappa_mediano;
     dichiara('DISTACCHI_COMPRESSI',
@@ -579,7 +617,7 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
       pit_loss: perdita.targhetta,
     },
     // materiale per il Director e per le risposte
-    _interno: { g, gara, pilota, soste, regime, celleAlCongelamento, nGiriGara, nonClassificati },
+    _interno: { g, gara, pilota, soste, regime, celleAlCongelamento, nGiriGara, nonClassificati, vera },
   };
 }
 
@@ -651,8 +689,13 @@ function materializzaPerDirector(scenario, risultato) {
             out_lap: eOutLap,
             // ASSUNZIONE dichiarata: dopo il congelamento si assume pista
             // libera, tranne sul giro della sosta se il regime osservato è
-            // ancora in corso. Non è una misura.
-            status: suoiPit.has(passo.lap) && regime !== null ? (regime === 'SC' ? '4' : '6') : '1',
+            // ancora in corso. Non è una misura. Con la neutralizzazione VERA
+            // i giri in finestra portano il loro simbolo — il Director deve
+            // vedere neutralizzato ciò che era neutralizzato (i giri compressi
+            // sono più veloci del passo, e in verde farebbero scattare FIS01).
+            status: scenario._interno.vera?.[passo.lap]
+              ? ({ SC: '4', VSC: '6', RED: '5' })[scenario._interno.vera[passo.lap]]
+              : (suoiPit.has(passo.lap) && regime !== null ? (regime === 'SC' ? '4' : '6') : '1'),
             del: false,
           }),
         });
@@ -681,12 +724,37 @@ function materializzaPerDirector(scenario, risultato) {
         lap: p.lap,
         perdita: p.perdita,
         stazionario: null, // il grezzo non lo porta e non si inventa (regola 6)
-        regime,
+        // con la neutralizzazione VERA ogni sosta porta il regime del SUO giro:
+        // senza, il Director vedrebbe una sosta «verde» pagata al fattore SC e
+        // la boccerebbe con FIS04 — a ragione, sul regime sbagliato
+        regime: scenario._interno.vera ? (scenario._interno.vera[p.lap] ?? null) : regime,
       })),
     };
   }
   const nGiriGara = scenario._interno.nGiriGara;
   return { gara, n_giri: nGiriGara, completa: scenario.orizzonte.giroFinale === nGiriGara, piloti };
+}
+
+/**
+ * IL perGiro DALLA NEUTRALIZZAZIONE VERA: ogni giro in finestra prende il kappa
+ * MISURATO del suo regime, dal sigillo (compressione_distacchi_interna). Niente
+ * valori di ripiego: un kappa assente fa esplodere, non inventa (regola 6).
+ * Sotto ROSSA il campo si ricompatta come sotto SC — e' una scelta DICHIARATA
+ * (la rossa incolonna in corsia box), non una misura: il fondo non ha abbastanza
+ * giri di rossa per un kappa suo. Pura ed esportata per la sentinella s42.
+ */
+export function perGiroDaVera(vera, prior) {
+  if (!vera) return null;
+  const perGiro = {};
+  for (const [lap, regime] of Object.entries(vera)) {
+    const chiave = regime === 'RED' ? 'SC' : regime;
+    const kappa = prior?.compressione_distacchi_interna?.[chiave]?.kappa_mediano;
+    if (typeof kappa !== 'number' || !Number.isFinite(kappa)) {
+      throw new Error(`kappa mancante nel sigillo per ${chiave}: la neutralizzazione vera non ha valori di ripiego (regola 6)`);
+    }
+    perGiro[lap] = kappa;
+  }
+  return Object.keys(perGiro).length ? perGiro : null;
 }
 
 /** Esegue lo scenario e lo fa passare dal Director prima di restituirlo. */

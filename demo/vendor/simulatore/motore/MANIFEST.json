@@ -9,8 +9,8 @@
  ],
  "file": {
   "engine/kernel.mjs": {
-   "sha256_sorgente": "df097fa56a8c0420c215f3c3520a126e7eb4adaf0fbbf5773fcb46c3b6b4c891",
-   "byte": 24362
+   "sha256_sorgente": "01562e1704b1778f6cbd9972398883c59bc6f878d10705ef0b0ce196273863f3",
+   "byte": 25019
   },
   "engine/passo_v2.mjs": {
    "sha256_sorgente": "2b516794f36aa724ac3aa468e5cb33605bad41a51a2cec393c6ea0ebd231cc28",
@@ -21,8 +21,8 @@
    "byte": 4257
   },
   "provenienza/definizioni.mjs": {
-   "sha256_sorgente": "94f9f312c76a2db0fbb4cf436b5549029e59644264a2c14a62cb1b2a8c99262e",
-   "byte": 7764
+   "sha256_sorgente": "065f1df55458a4a4e5e5f3e1068f2143c4c7dbaac20a7520c3749520859838a5",
+   "byte": 9485
   },
   "provenienza/gare_indice.mjs": {
    "sha256_sorgente": "e138ef07e8bd549485ba9f6034c0d3bed68aaa036d6bbce27944af3d31c172ce",
@@ -41,8 +41,8 @@
    "byte": 3585
   },
   "scenario/costruttore.mjs": {
-   "sha256_sorgente": "220d1d757d6ad63875725cda5b20b3c6626d9aa09fbc3ce69b533509101a8e20",
-   "byte": 54841
+   "sha256_sorgente": "78cff15c88c5096b7d710b654eb241b5a08025777bb290ac2a69f16f0d206674",
+   "byte": 59062
   },
   "scenario/director.mjs": {
    "sha256_sorgente": "a305da62cf49576be92050910d7f9fe8a5abe1bedebb49334b8fcf0e016e4e9a",

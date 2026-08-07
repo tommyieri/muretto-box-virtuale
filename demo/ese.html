@@ -108,7 +108,8 @@
       <li>La proiezione copre decine di giri contro i <b>~6 validati</b> della risposta del muretto: sulla gara intera è
         misurato che il motore e «non cambia niente» sono indistinguibili. È un gioco onesto, non un oracolo.</li>
       <li>I duelli non si simulano: il tetto al movimento (misurato su 5.498 occasioni) limita <b>quanto</b> ci si passa,
-        mai <b>chi</b> passa chi. I rivali non reagiscono alla tua strategia: fanno ciò che fecero.</li>
+        mai <b>chi</b> passa chi. I rivali non reagiscono alla tua strategia: fanno ciò che fecero — soste,
+        ritiri e Safety Car sono quelli <b>veri</b> della gara.</li>
     </ul>
   </div>
 
@@ -238,7 +239,8 @@ function corri() {
   let mio;
   try {
     mio = rigioca({ nome: PREP.nome, contesto: PREP.contesto, pilota, freezeLap: FREEZE, soste,
-      sosteRivali: PREP.sosteVere, nonClassificati: PREP.nonClassificati, ritiriVeri: PREP.ritiriVeri });
+      sosteRivali: PREP.sosteVere, nonClassificati: PREP.nonClassificati, ritiriVeri: PREP.ritiriVeri,
+      neutraVera: PREP.neutraVera });
   } catch (e) { mostraErrore(`il motore rifiuta questo piano: ${e.message}`); return; }
   // il braccio di confronto: la STRATEGIA VERA del pilota, nello stesso motore.
   // Se non è simulabile (gomme da bagnato, soste illeggibili) resta null, dichiarato.
@@ -247,7 +249,8 @@ function corri() {
     const sosteVereMie = (PREP.sosteVere[pilota] ?? [])
       .filter((s) => s.giro > FREEZE && MESCOLE_EDITOR.includes(s.mescola));
     vero = rigioca({ nome: PREP.nome, contesto: PREP.contesto, pilota, freezeLap: FREEZE, soste: sosteVereMie,
-      sosteRivali: PREP.sosteVere, nonClassificati: PREP.nonClassificati, ritiriVeri: PREP.ritiriVeri });
+      sosteRivali: PREP.sosteVere, nonClassificati: PREP.nonClassificati, ritiriVeri: PREP.ritiriVeri,
+      neutraVera: PREP.neutraVera });
   } catch (_) { /* dichiarato sotto */ }
   rendi(pilota, mio, vero);
 }

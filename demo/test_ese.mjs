@@ -65,7 +65,8 @@ australia.byLap = byLapDa(australia);
   else {
     const vere = (prep.sosteVere[pilota] ?? []).filter((s) => s.giro > freezeLap && ['SOFT', 'MEDIUM', 'HARD'].includes(s.mescola));
     const runVero = rigioca({ nome: prep.nome, contesto: prep.contesto, pilota, freezeLap, soste: vere,
-      sosteRivali: prep.sosteVere, nonClassificati: prep.nonClassificati, ritiriVeri: prep.ritiriVeri });
+      sosteRivali: prep.sosteVere, nonClassificati: prep.nonClassificati, ritiriVeri: prep.ritiriVeri,
+      neutraVera: prep.neutraVera });
     // (g) i ritirati veri escono al loro giro: ALO/BOT fuori da ordine, dentro ritirati
     for (const drv of ['ALO', 'BOT']) {
       if (runVero.risultato.ordine.includes(drv)) fallisci(`${drv} si ritiro' davvero ma sta ancora nella classifica simulata`);
@@ -78,10 +79,13 @@ australia.byLap = byLapDa(australia);
     }
     if (!runVero.risultato.ordine.length) fallisci('il run non produce un ordine alla bandiera');
     if (!runVero.risultato.traccia?.[pilota]?.length) fallisci('il run non produce la traccia del soggetto');
-    // (e) la deroga s25 pretende l'assunzione dichiarata
+    // (e) la deroga s25 pretende le assunzioni dichiarate: soste vere E finestre vere
     const codici = (runVero.scenario.assunzioni ?? []).map((a) => a.codice);
     if (!codici.includes('SOSTE_VERE_DEI_RIVALI')) {
       fallisci(`SOSTE_VERE_DEI_RIVALI non è fra le assunzioni del run: ${JSON.stringify(codici)}`);
+    }
+    if (!codici.includes('NEUTRALIZZAZIONE_VERA')) {
+      fallisci(`NEUTRALIZZAZIONE_VERA non è fra le assunzioni (l'Australia ha giri SC veri): ${JSON.stringify(codici)}`);
     }
     // Il caso di confine trovato da questo banco (ritirati squalificati da REG01)
     // era gestito con la tacca «strategia non dichiarata»; dal 07/08 i ritiri VERI
@@ -90,7 +94,8 @@ australia.byLap = byLapDa(australia);
     // (d) anti-A/A: spostare la sosta di 8 giri deve muovere il cumulato
     const spostate = vere.map((s) => ({ ...s, giro: Math.min(s.giro + 8, australia.n_laps - 1) }));
     const runAltro = rigioca({ nome: prep.nome, contesto: prep.contesto, pilota, freezeLap, soste: spostate,
-      sosteRivali: prep.sosteVere, nonClassificati: prep.nonClassificati });
+      sosteRivali: prep.sosteVere, nonClassificati: prep.nonClassificati, ritiriVeri: prep.ritiriVeri,
+      neutraVera: prep.neutraVera });
     if (runAltro.risultato.cum[pilota] === runVero.risultato.cum[pilota]) {
       fallisci('due strategie diverse producono lo stesso cumulato: i bracci non si distinguono (A/A)');
     }

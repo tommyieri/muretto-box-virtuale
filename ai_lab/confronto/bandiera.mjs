@@ -133,7 +133,7 @@ export function pianiVeriDi(nomeSito) {
  * ATTENZIONE al perimetro: s25_difesa fa fallire la suite se `pianiRivali` compare in un
  * percorso di web/, demo/ o scenario/. E' un ingresso di LABORATORIO e deve restare qui.
  */
-export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = null, tetto = null, ritiriRivali = undefined } = {}) {
+export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = null, tetto = null, ritiriRivali = undefined, neutralizzazioneVera = undefined } = {}) {
   const r = riga(nomeSito, pilota);
   if (!r) return { saltato: 'nessuna riga in arrivi_2026.csv' };
   if (!r.classificato) return { saltato: `non classificato (${r.tipo_arrivo})`, tipo_arrivo: r.tipo_arrivo };
@@ -163,9 +163,9 @@ export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = nul
     try {
       s2 = costruisciScenario({
         gara: garaSimDi(nomeSito), freezeLap: lf, pilota, piano: futuro, pianiRivali: piani,
-        // i ritiri veri (ingresso di laboratorio, 07/08): undefined in ogni misura
-        // pubblicata — i numeri a referto restano bit-identici
-        ritiriRivali,
+        // i ritiri e le neutralizzazioni VERE (ingressi di laboratorio, 07/08):
+        // undefined in ogni misura pubblicata — i numeri a referto restano bit-identici
+        ritiriRivali, neutralizzazioneVera,
       }, contesto);
       e2 = eseguiEValida(s2, contesto.costantiDirector);
     } catch (e) { ultimoMotivo = `eccezione: ${e.message}`; continue; }

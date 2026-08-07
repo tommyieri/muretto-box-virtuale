@@ -17,12 +17,12 @@
    },
    "strategia_vera": "9:HARD 46:SOFT",
    "motore_strategia_vera": {
-    "posizione_riclassificata": 13,
+    "posizione_riclassificata": 14,
     "su": 16,
-    "errore_vs_reale": -1,
-    "posizione_campo_pieno": 13,
+    "errore_vs_reale": 0,
+    "posizione_campo_pieno": 14,
     "su_campo": 20,
-    "cum": 8848.603
+    "cum": 8840.775
    },
    "nullo": {
     "posizione": 14,
@@ -30,12 +30,12 @@
    },
    "migliore_trovata": {
     "k": 1,
-    "soste": "30:MEDIUM",
+    "soste": "34:MEDIUM",
     "posizione_campo_pieno": 13,
     "posizione_riclassificata": 13,
-    "cum": 8833.05,
-    "guadagno_posizioni_motore": 0,
-    "guadagno_cum_s": 15.554,
+    "cum": 8808.412,
+    "guadagno_posizioni_motore": 1,
+    "guadagno_cum_s": 32.364,
     "director": "approvato"
    },
    "per_k": [
@@ -47,27 +47,28 @@
     {
      "k": 1,
      "posizione": 13,
-     "cum": 8833.05,
-     "soste": "30:MEDIUM"
+     "cum": 8808.412,
+     "soste": "34:MEDIUM"
     },
     {
      "k": 2,
      "posizione": 13,
-     "cum": 8838.125,
-     "soste": "15:MEDIUM 35:HARD"
+     "cum": 8809.432,
+     "soste": "19:MEDIUM 34:HARD"
     },
     {
      "k": 3,
      "posizione": 13,
-     "cum": 8850.759,
-     "soste": "9:MEDIUM 27:HARD 42:HARD"
+     "cum": 8827.096,
+     "soste": "7:MEDIUM 19:HARD 41:HARD"
     }
    ],
    "slick_usate_al_congelamento": "HARD",
    "ritiri_veri_applicati": 5,
+   "giri_neutralizzati_veri": 7,
    "ricerca_valutazioni": 228,
    "controllo_A": {
-    "riclassificata": 13,
+    "riclassificata": 14,
     "coincide_con_corri": true
    }
   },
@@ -90,7 +91,7 @@
     "errore_vs_reale": 0,
     "posizione_campo_pieno": 16,
     "su_campo": 18,
-    "cum": 8788.329
+    "cum": 8764.725
    },
    "nullo": {
     "posizione": 16,
@@ -98,12 +99,12 @@
    },
    "migliore_trovata": {
     "k": 2,
-    "soste": "21:HARD 46:HARD",
+    "soste": "26:HARD 48:HARD",
     "posizione_campo_pieno": 16,
     "posizione_riclassificata": 16,
-    "cum": 8780.032,
+    "cum": 8755.98,
     "guadagno_posizioni_motore": 0,
-    "guadagno_cum_s": 8.298,
+    "guadagno_cum_s": 8.746,
     "director": "approvato"
    },
    "per_k": [
@@ -115,24 +116,25 @@
     {
      "k": 1,
      "posizione": 16,
-     "cum": 8782.406,
+     "cum": 8758.991,
      "soste": "35:HARD"
     },
     {
      "k": 2,
      "posizione": 16,
-     "cum": 8780.032,
-     "soste": "21:HARD 46:HARD"
+     "cum": 8755.98,
+     "soste": "26:HARD 48:HARD"
     },
     {
      "k": 3,
      "posizione": 16,
-     "cum": 8791.056,
-     "soste": "18:HARD 35:HARD 53:HARD"
+     "cum": 8768.02,
+     "soste": "16:HARD 34:HARD 52:HARD"
     }
    ],
    "slick_usate_al_congelamento": "MEDIUM",
    "ritiri_veri_applicati": 4,
+   "giri_neutralizzati_veri": 4,
    "ricerca_valutazioni": 371,
    "controllo_A": {
     "riclassificata": 16,
@@ -158,7 +160,7 @@
     "errore_vs_reale": 3,
     "posizione_campo_pieno": 11,
     "su_campo": 19,
-    "cum": 8481.209
+    "cum": 8474.769
    },
    "nullo": {
     "posizione": 11,
@@ -166,12 +168,12 @@
    },
    "migliore_trovata": {
     "k": 1,
-    "soste": "21:HARD",
+    "soste": "20:HARD",
     "posizione_campo_pieno": 11,
     "posizione_riclassificata": 11,
-    "cum": 8481.113,
+    "cum": 8474.769,
     "guadagno_posizioni_motore": 0,
-    "guadagno_cum_s": 0.096,
+    "guadagno_cum_s": 0,
     "director": "approvato"
    },
    "per_k": [
@@ -183,24 +185,25 @@
     {
      "k": 1,
      "posizione": 11,
-     "cum": 8481.113,
-     "soste": "21:HARD"
+     "cum": 8484.3,
+     "soste": "15:HARD"
     },
     {
      "k": 2,
      "posizione": 13,
-     "cum": 8492.626,
-     "soste": "17:HARD 31:HARD"
+     "cum": 8487.078,
+     "soste": "18:HARD 32:HARD"
     },
     {
      "k": 3,
      "posizione": 15,
-     "cum": 8506.216,
-     "soste": "10:HARD 20:HARD 30:HARD"
+     "cum": 8499.652,
+     "soste": "10:HARD 20:HARD 31:HARD"
     }
    ],
    "slick_usate_al_congelamento": "MEDIUM",
    "ritiri_veri_applicati": 3,
+   "giri_neutralizzati_veri": 6,
    "ricerca_valutazioni": 116,
    "controllo_A": {
     "riclassificata": 11,
@@ -226,20 +229,20 @@
     "errore_vs_reale": -2,
     "posizione_campo_pieno": 13,
     "su_campo": 20,
-    "cum": 9318.026
+    "cum": 9306.274
    },
    "nullo": {
     "posizione": 15,
     "errore_vs_reale": 0
    },
    "migliore_trovata": {
-    "k": 2,
-    "soste": "21:HARD 45:HARD",
+    "k": 1,
+    "soste": "31:HARD",
     "posizione_campo_pieno": 13,
     "posizione_riclassificata": 13,
-    "cum": 9303.619,
+    "cum": 9285.155,
     "guadagno_posizioni_motore": 0,
-    "guadagno_cum_s": 14.407,
+    "guadagno_cum_s": 21.119,
     "director": "approvato"
    },
    "per_k": [
@@ -251,24 +254,25 @@
     {
      "k": 1,
      "posizione": 13,
-     "cum": 9305.002,
-     "soste": "35:HARD"
+     "cum": 9285.155,
+     "soste": "31:HARD"
     },
     {
      "k": 2,
      "posizione": 13,
-     "cum": 9303.619,
-     "soste": "21:HARD 45:HARD"
+     "cum": 9291.586,
+     "soste": "21:HARD 44:HARD"
     },
     {
      "k": 3,
      "posizione": 13,
-     "cum": 9314.895,
-     "soste": "15:HARD 33:HARD 51:HARD"
+     "cum": 9296.147,
+     "soste": "15:HARD 31:HARD 48:HARD"
     }
    ],
    "slick_usate_al_congelamento": "SOFT",
    "ritiri_veri_applicati": 6,
+   "giri_neutralizzati_veri": 3,
    "ricerca_valutazioni": 293,
    "controllo_A": {
     "riclassificata": 13,
@@ -294,20 +298,20 @@
     "errore_vs_reale": 0,
     "posizione_campo_pieno": 3,
     "su_campo": 16,
-    "cum": 8932.007
+    "cum": 8912.016
    },
    "nullo": {
     "posizione": 3,
     "errore_vs_reale": 0
    },
    "migliore_trovata": {
-    "k": 1,
-    "soste": "25:HARD",
+    "k": 2,
+    "soste": "10:HARD 31:HARD",
     "posizione_campo_pieno": 3,
     "posizione_riclassificata": 3,
-    "cum": 8900.082,
+    "cum": 8900.416,
     "guadagno_posizioni_motore": 0,
-    "guadagno_cum_s": 31.926,
+    "guadagno_cum_s": 11.6,
     "director": "approvato"
    },
    "per_k": [
@@ -319,24 +323,25 @@
     {
      "k": 1,
      "posizione": 3,
-     "cum": 8900.082,
-     "soste": "25:HARD"
+     "cum": 8912.016,
+     "soste": "10:HARD"
     },
     {
      "k": 2,
      "posizione": 3,
-     "cum": 8919.789,
-     "soste": "10:HARD 30:HARD"
+     "cum": 8900.416,
+     "soste": "10:HARD 31:HARD"
     },
     {
      "k": 3,
      "posizione": 4,
-     "cum": 8928.741,
-     "soste": "15:HARD 28:HARD 42:HARD"
+     "cum": 8903.155,
+     "soste": "7:HARD 10:HARD 34:HARD"
     }
    ],
    "slick_usate_al_congelamento": "MEDIUM",
    "ritiri_veri_applicati": 7,
+   "giri_neutralizzati_veri": 4,
    "ricerca_valutazioni": 227,
    "controllo_A": {
     "riclassificata": 3,
@@ -357,12 +362,12 @@
    },
    "strategia_vera": "19:HARD",
    "motore_strategia_vera": {
-    "posizione_riclassificata": 9,
+    "posizione_riclassificata": 10,
     "su": 20,
-    "errore_vs_reale": -1,
-    "posizione_campo_pieno": 9,
+    "errore_vs_reale": 0,
+    "posizione_campo_pieno": 10,
     "su_campo": 22,
-    "cum": 8965.703
+    "cum": 8921.507
    },
    "nullo": {
     "posizione": 10,
@@ -370,12 +375,12 @@
    },
    "migliore_trovata": {
     "k": 1,
-    "soste": "21:HARD",
+    "soste": "27:HARD",
     "posizione_campo_pieno": 9,
     "posizione_riclassificata": 9,
-    "cum": 8960.971,
-    "guadagno_posizioni_motore": 0,
-    "guadagno_cum_s": 4.733,
+    "cum": 8922.099,
+    "guadagno_posizioni_motore": 1,
+    "guadagno_cum_s": -0.592,
     "director": "approvato"
    },
    "per_k": [
@@ -387,27 +392,28 @@
     {
      "k": 1,
      "posizione": 9,
-     "cum": 8960.971,
-     "soste": "21:HARD"
+     "cum": 8922.099,
+     "soste": "27:HARD"
     },
     {
      "k": 2,
      "posizione": 10,
-     "cum": 8969.28,
-     "soste": "13:HARD 32:HARD"
+     "cum": 8922.2,
+     "soste": "22:HARD 26:HARD"
     },
     {
      "k": 3,
-     "posizione": 10,
-     "cum": 8986.424,
-     "soste": "10:HARD 29:HARD 41:HARD"
+     "posizione": 11,
+     "cum": 8924.104,
+     "soste": "6:HARD 10:HARD 24:HARD"
     }
    ],
    "slick_usate_al_congelamento": "MEDIUM",
    "ritiri_veri_applicati": 2,
+   "giri_neutralizzati_veri": 6,
    "ricerca_valutazioni": 186,
    "controllo_A": {
-    "riclassificata": 9,
+    "riclassificata": 10,
     "coincide_con_corri": true
    }
   },
@@ -425,12 +431,12 @@
    },
    "strategia_vera": "28:HARD 38:MEDIUM 48:SOFT",
    "motore_strategia_vera": {
-    "posizione_riclassificata": 6,
+    "posizione_riclassificata": 5,
     "su": 18,
-    "errore_vs_reale": 2,
-    "posizione_campo_pieno": 6,
+    "errore_vs_reale": 1,
+    "posizione_campo_pieno": 5,
     "su_campo": 21,
-    "cum": 8320.673
+    "cum": 8244.033
    },
    "nullo": {
     "posizione": 6,
@@ -438,12 +444,12 @@
    },
    "migliore_trovata": {
     "k": 1,
-    "soste": "26:HARD",
-    "posizione_campo_pieno": 4,
-    "posizione_riclassificata": 4,
-    "cum": 8289.601,
+    "soste": "22:HARD",
+    "posizione_campo_pieno": 3,
+    "posizione_riclassificata": 3,
+    "cum": 8239.158,
     "guadagno_posizioni_motore": 2,
-    "guadagno_cum_s": 31.073,
+    "guadagno_cum_s": 4.875,
     "director": "approvato"
    },
    "per_k": [
@@ -454,28 +460,29 @@
     },
     {
      "k": 1,
-     "posizione": 4,
-     "cum": 8289.601,
-     "soste": "26:HARD"
+     "posizione": 3,
+     "cum": 8239.158,
+     "soste": "22:HARD"
     },
     {
      "k": 2,
-     "posizione": 5,
-     "cum": 8298.888,
-     "soste": "17:HARD 35:HARD"
+     "posizione": 4,
+     "cum": 8241.709,
+     "soste": "14:HARD 30:HARD"
     },
     {
      "k": 3,
-     "posizione": 6,
-     "cum": 8314.347,
-     "soste": "18:HARD 30:HARD 41:HARD"
+     "posizione": 5,
+     "cum": 8243.647,
+     "soste": "10:HARD 21:HARD 34:HARD"
     }
    ],
    "slick_usate_al_congelamento": "MEDIUM",
    "ritiri_veri_applicati": 3,
+   "giri_neutralizzati_veri": 9,
    "ricerca_valutazioni": 185,
    "controllo_A": {
-    "riclassificata": 6,
+    "riclassificata": 5,
     "coincide_con_corri": true
    }
   },
@@ -498,20 +505,20 @@
     "errore_vs_reale": 0,
     "posizione_campo_pieno": 1,
     "su_campo": 20,
-    "cum": 8771.323
+    "cum": 8774.855
    },
    "nullo": {
     "posizione": 2,
     "errore_vs_reale": 1
    },
    "migliore_trovata": {
-    "k": 1,
-    "soste": "28:HARD",
+    "k": 2,
+    "soste": "7:HARD 32:HARD",
     "posizione_campo_pieno": 1,
     "posizione_riclassificata": 1,
-    "cum": 8771.137,
+    "cum": 8769.705,
     "guadagno_posizioni_motore": 0,
-    "guadagno_cum_s": 0.187,
+    "guadagno_cum_s": 5.15,
     "director": "approvato"
    },
    "per_k": [
@@ -523,24 +530,25 @@
     {
      "k": 1,
      "posizione": 1,
-     "cum": 8771.137,
+     "cum": 8774.068,
      "soste": "28:HARD"
     },
     {
      "k": 2,
      "posizione": 1,
-     "cum": 8784.735,
-     "soste": "6:HARD 30:HARD"
+     "cum": 8769.705,
+     "soste": "7:HARD 32:HARD"
     },
     {
      "k": 3,
-     "posizione": 2,
-     "cum": 8794.109,
-     "soste": "18:HARD 34:HARD 47:HARD"
+     "posizione": 1,
+     "cum": 8780.939,
+     "soste": "7:HARD 26:HARD 41:HARD"
     }
    ],
    "slick_usate_al_congelamento": "MEDIUM",
    "ritiri_veri_applicati": 4,
+   "giri_neutralizzati_veri": 6,
    "ricerca_valutazioni": 227,
    "controllo_A": {
     "riclassificata": 1,
@@ -566,20 +574,20 @@
     "errore_vs_reale": -1,
     "posizione_campo_pieno": 8,
     "su_campo": 22,
-    "cum": 8779.694
+    "cum": 8759.847
    },
    "nullo": {
     "posizione": 8,
     "errore_vs_reale": -1
    },
    "migliore_trovata": {
-    "k": 1,
-    "soste": "32:HARD",
+    "k": 2,
+    "soste": "16:HARD 41:HARD",
     "posizione_campo_pieno": 8,
     "posizione_riclassificata": 8,
-    "cum": 8773.28,
+    "cum": 8752.762,
     "guadagno_posizioni_motore": 0,
-    "guadagno_cum_s": 6.414,
+    "guadagno_cum_s": 7.085,
     "director": "approvato"
    },
    "per_k": [
@@ -591,24 +599,25 @@
     {
      "k": 1,
      "posizione": 8,
-     "cum": 8773.28,
-     "soste": "32:HARD"
+     "cum": 8753.256,
+     "soste": "30:HARD"
     },
     {
      "k": 2,
      "posizione": 8,
-     "cum": 8776.938,
-     "soste": "22:HARD 44:HARD"
+     "cum": 8752.762,
+     "soste": "16:HARD 41:HARD"
     },
     {
      "k": 3,
      "posizione": 8,
-     "cum": 8789.7,
-     "soste": "12:HARD 31:HARD 49:HARD"
+     "cum": 8770.442,
+     "soste": "12:HARD 31:HARD 48:HARD"
     }
    ],
    "slick_usate_al_congelamento": "MEDIUM",
    "ritiri_veri_applicati": 5,
+   "giri_neutralizzati_veri": 5,
    "ricerca_valutazioni": 293,
    "controllo_A": {
     "riclassificata": 8,
@@ -629,12 +638,12 @@
    },
    "strategia_vera": "19:HARD 42:HARD",
    "motore_strategia_vera": {
-    "posizione_riclassificata": 6,
+    "posizione_riclassificata": 5,
     "su": 19,
-    "errore_vs_reale": 0,
-    "posizione_campo_pieno": 6,
+    "errore_vs_reale": -1,
+    "posizione_campo_pieno": 5,
     "su_campo": 22,
-    "cum": 9288.821
+    "cum": 9283.544
    },
    "nullo": {
     "posizione": 6,
@@ -642,12 +651,12 @@
    },
    "migliore_trovata": {
     "k": 2,
-    "soste": "20:HARD 48:HARD",
-    "posizione_campo_pieno": 4,
-    "posizione_riclassificata": 4,
-    "cum": 9280.024,
-    "guadagno_posizioni_motore": 2,
-    "guadagno_cum_s": 8.797,
+    "soste": "19:HARD 42:HARD",
+    "posizione_campo_pieno": 5,
+    "posizione_riclassificata": 5,
+    "cum": 9283.544,
+    "guadagno_posizioni_motore": 0,
+    "guadagno_cum_s": 0,
     "director": "approvato"
    },
    "per_k": [
@@ -659,27 +668,28 @@
     {
      "k": 1,
      "posizione": 6,
-     "cum": 9285.453,
+     "cum": 9281.756,
      "soste": "33:HARD"
     },
     {
      "k": 2,
-     "posizione": 4,
-     "cum": 9280.024,
-     "soste": "20:HARD 48:HARD"
+     "posizione": 5,
+     "cum": 9283.544,
+     "soste": "19:HARD 42:HARD"
     },
     {
      "k": 3,
      "posizione": 6,
-     "cum": 9291.223,
-     "soste": "20:HARD 37:HARD 54:HARD"
+     "cum": 9290.771,
+     "soste": "13:HARD 32:HARD 49:HARD"
     }
    ],
    "slick_usate_al_congelamento": "MEDIUM",
    "ritiri_veri_applicati": 3,
+   "giri_neutralizzati_veri": 2,
    "ricerca_valutazioni": 355,
    "controllo_A": {
-    "riclassificata": 6,
+    "riclassificata": 5,
     "coincide_con_corri": true
    }
   }

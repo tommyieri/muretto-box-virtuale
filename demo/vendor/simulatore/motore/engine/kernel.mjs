@@ -320,7 +320,16 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
         if (fermiQuestoGiro.has(m.drv)) continue;
         const g = gapPrima.get(m.drv);
         if (g === undefined) continue;
-        m.c = capofila.c + g * kappaDelGiro;
+        // IL TEMPO RECUPERATO E' TEMPO SUL GIRO, non solo cumulato — la stessa
+        // lezione pagata dal tetto (GEO02, respinto su 183 casi su 223): chiudere
+        // sul leader dietro la Safety Car E' un giro diverso, e deve comparire nel
+        // giro. La prima scrittura muoveva solo `c`: con le finestre corte della
+        // persistenza al congelamento il delta stava sotto la tolleranza del
+        // Director e nessuno se n'e' accorto; con le finestre VERE di una gara
+        // intera usciva GEO02 a grappoli (129 in un run di Silverstone).
+        const delta = (capofila.c + g * kappaDelGiro) - m.c;
+        m.c += delta;
+        if (m.ultimoGiro) m.ultimoGiro.lap_time += delta;
       }
     }
 
