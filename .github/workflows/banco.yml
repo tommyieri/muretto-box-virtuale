@@ -214,3 +214,14 @@ jobs:
 
       - name: La stessa definizione, in JavaScript, non e' derivata
         run: node demo/test_sosta.mjs
+
+      # L'OROLOGIO E' UNO SOLO, E DEVE RESTARE QUELLO DI PRIMA. `tempoReale` e `giroDi`
+      # esistevano due volte — in gara.html sui cum reali e in ghostplay.mjs su quelli
+      # simulati — con la stessa ricerca binaria e due ancoraggi DIVERSI del primo campione,
+      # differenza che sembrava un dettaglio e non lo era. Questo banco tiene una copia
+      # CONGELATA del comportamento precedente e pretende che il modulo unificato la
+      # riproduca esattamente: 398.700 campioni di giroDi e 18.194 di tempoReale, null
+      # compresi. Una divergenza di interpolazione sposta il pallino di mezzo metro e non
+      # si vede a occhio per settimane: qui esce 1 al primo campione che non torna.
+      - name: L'orologio unificato non ha cambiato il replay
+        run: node demo/test_orologio.mjs

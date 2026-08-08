@@ -19,6 +19,9 @@
 // Le funzioni pure (costruisciCum / tempoReale / statoAl / righeTorre) sono testabili in
 // Node senza DOM (test_ghostplay.mjs). creaGhostPlay aggiunge solo il loop rAF + il rendering.
 
+import { creaAncora, giroDi as giroDiCum } from './orologio.mjs?v=250808a';
+import { makeClock } from './timeline.mjs?v=220726a';
+
 // cumSim[d] = [{lap, cum}] dalla traiettoria; leadSim[L] = cum del battistrada al giro L.
 export function costruisciCum(sim) {
   const { laps, cumByLap, present, freezeLap } = sim;
@@ -50,35 +53,36 @@ function durataMediana(lead, laps) {
   return d.length ? d[d.length >> 1] : 90;
 }
 
-// ancora dell'animazione: p (giro frazionario) -> tempo T del battistrada simulato.
+// L'ARITMETICA DEL TEMPO E' CONDIVISA con la pagina-gara: demo/orologio.mjs. Prima queste
+// tre funzioni erano una copia di quelle di gara.html, con la stessa ricerca binaria e lo
+// stesso calcolo della frazione su una sorgente di cum diversa (simulata invece che reale).
+// Restano esportate perche' il banco (test_ghostplay.mjs) le esercita, ma ora sono involucri
+// che dichiarano solo COME la scena e' diversa: comincia al giro di CONGELAMENTO, quindi il
+// suo primo campione non va respinto (lapZero = laps[0]-1, non 0) e la frazione si clampa.
 export function tempoReale(C, p) {
-  const L = Math.max(C.freezeLap, Math.min(C.nLap, Math.floor(p))), f = Math.min(1, Math.max(0, p - L));
-  const t0 = C.lead[L - 1], t1 = C.lead[L] ?? t0;
-  if (t0 === undefined) return undefined;
-  return t0 + f * (t1 - t0);
+  return ancoraDi(C).tempoDa(p);
 }
 
 // inverso: dato un tempo T del battistrada -> la posizione p (giro-frazionario). Serve a
 // fermare la fase 1 ESATTAMENTE al rientro del fantasma, senza dipendere dal frame-rate.
 export function pDaTempo(C, T) {
-  for (let L = C.freezeLap; L <= C.nLap; L++) {
-    const a = C.lead[L - 1], b = C.lead[L];
-    if (a == null || b == null) continue;
-    if (T <= b) return L + (T - a) / ((b - a) || 1);
-  }
-  return C.nLap + 1;
+  return ancoraDi(C).pDaTempo(T);
+}
+
+// una sola ancora per traccia, tenuta accanto alla traccia stessa
+function ancoraDi(C) {
+  return (C._ancora ||= creaAncora({ lead: C.lead, minLap: C.freezeLap, maxLap: C.nLap }));
 }
 
 // orologio-per-pilota sui cum simulati: al tempo T il pilota d e' nel suo giro con frazione fd.
+// lapZero e' PER PILOTA — il giro prima del suo primo campione — e non una costante della
+// scena: il codice di prima ancorava con `{lap: fine.lap - 1}`, cioe' si adattava al primo
+// giro DI QUEL pilota. Un pilota i cui dati cominciano dopo il congelamento (perche' entra
+// piu' tardi nella traccia) veniva accettato, e deve continuare a esserlo. Fissare lapZero
+// al congelamento della scena lo avrebbe respinto: un pallino che sparisce, in silenzio.
 function giroDi(cumD, leadL0, T) {
-  if (!cumD || !cumD.length || !(T >= leadL0)) return null;
-  let lo = 0, hi = cumD.length - 1, idx = cumD.length;
-  if (cumD[hi].cum > T) { while (lo < hi) { const m = (lo + hi) >> 1; if (cumD[m].cum > T) hi = m; else lo = m + 1; } idx = lo; }
-  if (idx >= cumD.length) return null;
-  const fine = cumD[idx], inizio = idx > 0 ? cumD[idx - 1] : { lap: fine.lap - 1, cum: leadL0 };
-  if (fine.lap !== inizio.lap + 1) return null;
-  const fd = (T - inizio.cum) / ((fine.cum - inizio.cum) || 1);
-  return { lap: fine.lap, fd: Math.min(1, Math.max(0, fd)) };
+  if (!cumD || !cumD.length) return null;
+  return giroDiCum(cumD, T, { tempoZero: leadL0, lapZero: cumD[0].lap - 1, clamp: true });
 }
 
 // stato completo al tempo T: array ordinato per progresso (leader primo), col fantasma marcato.
@@ -175,10 +179,53 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro
   // p0 (08/08): la scena puo' PARTIRE da un giro arbitrario — serve al BOX ORA di
   // gara.html, dove la sosta si aggiunge mentre la gara scorre e la scena riparte
   // dal giro corrente, non dal congelamento. Assente = comportamento di sempre.
-  let p = (p0 != null ? Math.min(Math.max(p0, pMin), pMaxPieno) : pMin), raf = null, last = null, vivo = false, fase = 1;
-  let ghostInPit = false, dwelled = false, dwelling = false, dwellAcc = 0;
+  let fase = 1;
+  let ghostInPit = false, dwelled = false, dwelling = false, dwellFino = 0, rientrato = false;
 
-  function frame(T) {
+  // L'OROLOGIO E' QUELLO DELLA PAGINA-GARA (timeline.mjs::makeClock), non un secondo loop
+  // rAF scritto qui. Prima ce n'erano due che facevano la stessa cosa — avanzare p nel
+  // tempo — e solo uno dei due sapeva mettersi in pausa, cambiare velocita' e farsi
+  // trascinare. Ora ne resta uno, e la scena eredita quelle tre cose.
+  //
+  // Cio' che RESTA diverso, ed e' una scelta di prodotto e non un dettaglio: il RITMO.
+  // La pagina-gara passa a setDur() le durate VERE dei giri, quindi a 1x un giro dura i
+  // secondi che e' durato davvero e i giri sotto Safety Car restano lenti. La scena e' una
+  // proiezione da guardare in venti secondi, non una gara da rivivere: passa una costante.
+  // Stesso orologio, due andature — dichiarate qui, non sparse in due implementazioni.
+  const clock = makeClock({
+    min: pMin,
+    onTick: (p, ts) => aggiorna(p, ts),
+    onEnd: () => { onFine && onFine(); },
+  });
+  clock.setDur(() => dwelling ? Infinity : lapSec);   // Infinity = p non avanza (sosta ferma)
+  clock.reset(pMaxPieno);
+  if (p0 != null) clock.seek(Math.min(Math.max(p0, pMin), pMaxPieno));
+
+  function aggiorna(p, ts) {
+    // la sosta ferma si conta sul TIMESTAMP DEL FRAME, non sull'ora di sistema: e' la
+    // stessa base dei tempi con cui l'orologio fa avanzare p, ed e' l'unica che i banchi
+    // possono pilotare (pompano rAF a mano). Con l'ora di sistema la sosta non sarebbe
+    // scaduta mai a orologio simulato, e la scena sarebbe rimasta ferma per sempre.
+    if (dwelling && ts != null && ts >= dwellFino) dwelling = false;
+    const T = tempoReale(C, p);
+    if (T !== undefined) frame(T, p);
+    // primo istante in pit-lane -> sosta ferma (una volta): il pit stop si vede
+    if (!dwelled && ghostInPit && ts != null) {
+      dwelled = true; dwelling = true;
+      dwellFino = ts + DWELL_S * 1000;
+    }
+    // la fase 1 non supera il rientro: ci si ferma sull'ISTANTE esatto, non sul frame.
+    // `rientrato` non e' un ornamento: seek() richiama onTick, che rientrerebbe qui e
+    // chiamerebbe seek di nuovo — ricorsione infinita al primo frame oltre pStop.
+    if (fase === 1 && giroRisp != null && !rientrato && p >= pStop) {
+      rientrato = true;
+      clock.pause();
+      if (p > pStop) clock.seek(pStop);
+      onRientro && onRientro();
+    }
+  }
+
+  function frame(T, p) {
     const stato = statoAl(C, T, opts);
     const dots = stato.map(s => ({
       f: s.fd, box: s.box, colore: coloreDi(s.d) || 'var(--dim)', sigla: s.d,
@@ -190,34 +237,19 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro
     ghostInPit = !!(g && g.inPit);
   }
 
-  function step(ts) {
-    if (!vivo) return;
-    if (last == null) last = ts;
-    const dt = (ts - last) / 1000; last = ts;
-    if (dwelling) {                          // fermi ai box: non si avanza, si ridisegna e basta
-      dwellAcc += dt; if (dwellAcc >= DWELL_S) dwelling = false;
-      const T = tempoReale(C, p); if (T !== undefined) frame(T);
-      raf = requestAnimationFrame(step); return;
-    }
-    const cap = (fase === 1) ? pStop : pMaxPieno;   // fase 1 non supera il rientro
-    p = Math.min(cap, p + dt / lapSec);
-    const T = tempoReale(C, p);
-    if (T !== undefined) frame(T);
-    // primo istante in pit-lane -> sosta ferma (una volta): il pit stop si vede
-    if (!dwelled && ghostInPit) { dwelling = true; dwelled = true; dwellAcc = 0; }
-    if (fase === 1 && giroRisp != null && p >= pStop) { vivo = false; last = null; onRientro && onRientro(); return; }
-    if (p >= pMaxPieno) { vivo = false; last = null; onFine && onFine(); return; }
-    raf = requestAnimationFrame(step);
-  }
-
   return {
-    play() { if (vivo) return; if (p >= pMaxPieno) { p = pMin; fase = 1; } vivo = true; last = null; raf = requestAnimationFrame(step); },
-    stop() { vivo = false; last = null; if (raf) cancelAnimationFrame(raf); },
-    continua() { fase = 2; if (vivo) return; vivo = true; last = null; raf = requestAnimationFrame(step); },  // fino alla bandiera (proiezione)
-    riparti() { this.stop(); p = pMin; fase = 1; this.play(); },
-    get playing() { return vivo; },
-    get posizione() { return p; },   // il giro-frazionario corrente della scena (per aggiungere soste al volo)
+    play() { if (clock.position >= pMaxPieno) { fase = 1; clock.seek(pMin); } clock.play(); },
+    stop() { clock.pause(); },
+    continua() { fase = 2; clock.play(); },   // fino alla bandiera (proiezione)
+    riparti() { clock.pause(); fase = 1; rientrato = false; dwelled = dwelling = false; clock.seek(pMin); clock.play(); },
+    // TRASPORTO, che la scena prima non aveva: si puo' mettere in pausa, scorrere e
+    // cambiare velocita' come nel replay reale. Arriva gratis dall'orologio condiviso.
+    seek(p) { clock.seek(Math.min(Math.max(p, pMin), pMaxPieno)); },
+    setSpeed(s) { clock.setSpeed(s); },
+    get playing() { return clock.playing; },
+    get posizione() { return clock.position; },   // giro-frazionario corrente (per aggiungere soste al volo)
     get haRientro() { return giroRisp != null; },
+    get estremi() { return { min: pMin, max: pMaxPieno }; },
     _C: C,   // per i test
   };
 }

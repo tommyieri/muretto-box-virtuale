@@ -17,7 +17,11 @@ export function makeClock({ onTick, onEnd, min = 1 }) {
     const L = Math.max(1, Math.floor(p));
     const ld = durFn(L) || 1;                 // secondi reali di quel giro a 1×
     p = Math.min(max, p + dt * speed / ld);
-    onTick(p);
+    // onTick riceve anche il timestamp del frame: chi deve misurare una DURATA di scena
+    // (la sosta ferma di ghostplay) va contata sullo stesso orologio dell'animazione, non
+    // sull'ora di sistema — altrimenti a orologio simulato (i banchi pompano rAF a mano)
+    // la durata non scade mai e l'animazione si blocca. In seek/reset ts e' undefined.
+    onTick(p, t);
     if (p >= max) { playing = false; last = null; onEnd && onEnd(); return; }
     raf = requestAnimationFrame(step);
   }
