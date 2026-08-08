@@ -9,15 +9,18 @@
 // LEGGE DEL REPLAY: esplorazione pit attiva => setSpento(true), i pallini si spengono.
 // Consumatore puro: legge il JSON generato, non tocca engine/pitscenario/timeline.
 
-export async function creaPista({ canvas, url }) {
+export async function creaPista({ canvas, url, pitlane }) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`pista non disponibile (${res.status})`);
   const data = await res.json();                      // {viewBox,punti,dist,pitlane,sorgente,...}
   const G = canvas.getContext('2d');
   const [, , VW, VH] = data.viewBox;
   const P = data.punti, D = data.dist, N = P.length;
-  // pit-lane stilizzata (dal generatore): i pallini in in/out-lap transitano di qui
-  const PL = data.pitlane || null;
+  // La corsia box: se il chiamante ne passa una MISURATA (da replay_<gara>.json, ricavata
+  // dal GPS di chi ai box c'e' passato davvero) si usa quella; altrimenti resta la
+  // STILIZZATA di pista_<gara>.json — parallela al nastro, con le frazioni 0,95/0,05 che
+  // sono costanti del generatore e non misure di questa pista.
+  const PL = pitlane || data.pitlane || null;
   const FE = PL?.frazione_ingresso ?? 0.95, FX = PL?.frazione_uscita ?? 0.05;
   let dots = [], spento = false, proj = null;
 
@@ -110,10 +113,19 @@ export async function creaPista({ canvas, url }) {
       if (d.dim) G.globalAlpha = 0.4;
       if (d.ghost) { G.shadowColor = d.colore; G.shadowBlur = 14 * dpr; }
       G.beginPath(); G.arc(X, Y, rr, 0, 7);
-      G.fillStyle = d.colore; G.fill();
+      // pallino PIENO = posizione misurata sul GPS; pallino VUOTO = posizione ricostruita
+      // dai tempi-giro (velocita' assunta uniforme dentro il giro). Due verita' diverse
+      // non si disegnano allo stesso modo: chi guarda deve poterle distinguere.
+      if (d.stimato) {
+        G.globalAlpha = (d.dim ? 0.4 : 0.85);
+        G.lineWidth = 2 * dpr; G.strokeStyle = d.colore; G.stroke();
+      } else {
+        G.fillStyle = d.colore; G.fill();
+        G.shadowBlur = 0;
+        G.lineWidth = (d.ghost ? 2.4 : 1.2) * dpr;
+        G.strokeStyle = d.ghost ? '#fff' : 'rgba(255,255,255,.85)'; G.stroke();
+      }
       G.shadowBlur = 0;
-      G.lineWidth = (d.ghost ? 2.4 : 1.2) * dpr;
-      G.strokeStyle = d.ghost ? '#fff' : 'rgba(255,255,255,.85)'; G.stroke();
       G.globalAlpha = 1;
       if (d.pit) {                          // in sosta ai box: anello tratteggiato + etichetta BOX
         G.setLineDash([3 * dpr, 2.5 * dpr]);

@@ -229,6 +229,7 @@ let pitstops=null, stopsGara={}, etichettaStop='pit lane';   // durate per-stop 
 let boxGiro=null;
 let curLap=1, selDrv=null, rowEls={}, leaderMemo={}, finestre=null, teamWarned=new Set(), pitLaps={};
 let pista=null, leadCum=null, cumPil=null, teamOfR=null;   // vista pallini (gare con pista_<gara>.json)
+let replayVero=null;                                       // posizioni GPS vere (gare con replay_<gara>.json)
 // race control LIVELLO 1 (decisione PO su MOCKUP_RACE_CONTROL_UI.md): le penalita' si
 // MOSTRANO (feed + badge + doppia vista), non entrano nella simulazione ne' nei gap
 let rcmAll=null, ufficAll=null, rcmGara=null, ufficGara=null, penPil={};
@@ -421,8 +422,21 @@ async function drawPista(gara){
     <div class="spenta">Pallini spenti durante l&rsquo;esplorazione pit:<br>
       il replay mostra la gara com&rsquo;e&rsquo; andata davvero, il motore risponde al controfattuale per-giro.</div>`;
   try {
-    const { creaPista } = await import('./pista.mjs?v=250724c');
-    pista = await creaPista({ canvas: el('pista').querySelector('canvas'), url: `data/pista_${encodeURIComponent(gara)}.json` });
+    const { creaPista } = await import('./pista.mjs?v=250808a');
+    // POSIZIONI VERE: se la gara ha un replay_<gara>.json (GPS per-auto, generato e
+    // verificato da gen_replay.py) i pallini si muovono dove le vetture erano DAVVERO.
+    // Dove non c'e' — gare senza copertura GPS sufficiente, come Monaco — resta la
+    // ricostruzione dai tempi-giro, disegnata vuota per non confonderla con la misura.
+    replayVero = null;
+    try {
+      const { creaReplayVero } = await import('./replay_vero.mjs?v=250808a');
+      replayVero = await creaReplayVero({ url: `data/replay_${encodeURIComponent(gara)}.json` });
+    } catch(e){ console.warn('replay a posizioni vere non disponibile:', e.message); }
+    pista = await creaPista({
+      canvas: el('pista').querySelector('canvas'),
+      url: `data/pista_${encodeURIComponent(gara)}.json`,
+      pitlane: replayVero?.pitlane || null,        // corsia MISURATA quando esiste
+    });
     if (selDrv){ pista.setSpento(true); el('pista').classList.add('pit-attivo'); }
     pistaFrame(clock.position);
   } catch(e){ console.warn('pista non disponibile:', e.message); pistaVuota(gara); }
@@ -458,7 +472,12 @@ function giroDi(d, T){
   const inPit = (box==='in' && fd>=FE) || (box==='out' && fd<=FX);
   return { lap: fine.lap, fd, box, inPit, stato: c };
 }
-// pallini = replay posizionale dai cum_time per-giro, via giroDi (stesso orologio della tabella)
+// Pallini. DUE sorgenti, mai mescolate in silenzio:
+//  - replay_<gara>.json: la frazione di giro MISURATA sul GPS per-auto -> pallino pieno;
+//  - cum_time per-giro via giroDi: la ricostruzione a velocita' uniforme dentro il giro,
+//    che era l'unica sorgente fino a oggi -> pallino vuoto.
+// L'orologio e' lo stesso per entrambe (T = tempo di sessione), perche' gen_replay.py
+// verifica a ogni esecuzione che cum_time e SessionTime siano lo stesso orologio.
 function pistaFrame(p){
   if (!pista || !leadCum) return;
   const T = tempoReale(p);
@@ -466,7 +485,16 @@ function pistaFrame(p){
   const dots=[];
   for (const d in cumPil){
     const g = giroDi(d, T);
-    if (g) dots.push({f:g.fd, box:g.box, colore:coloreTeam(teamOfR[d]), sigla:d});
+    const vero = replayVero?.posizioneDi(d, T);
+    if (vero){
+      // il box lo dicono i dati gara (in_lap/out_lap), il transito in corsia lo conferma
+      // il GPS: si usa il primo, cosi' badge di riga e pallino restano d'accordo
+      dots.push({f:vero.f, box:g?.box ?? (vero.box==='lane' ? 'in' : null),
+                 colore:coloreTeam(teamOfR[d]), sigla:d});
+    } else if (g){
+      dots.push({f:g.fd, box:g.box, colore:coloreTeam(teamOfR[d]), sigla:d, stimato:true});
+    }
+    // ne' l'uno ne' l'altro: il pilota non e' in pista in questo istante, e non si disegna
   }
   pista.aggiorna(dots);
 }
