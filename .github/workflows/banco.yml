@@ -173,3 +173,29 @@ jobs:
       # uscire 0. Esce 1 anche se non riesce a leggere origin/main: muto non e' verde.
       - name: Il ramo rosso della sonda scatta (e il verde tace)
         run: bash scheduling/test_sonda_rosso.sh
+
+      # numpy serve alla sentinella del replay (decodifica e statistiche sugli scarti).
+      # `python3 -m pip` e non `pip`: sul runner non e' garantito che siano lo stesso
+      # interprete, e installare numpy accanto a un python3 diverso da quello che esegue
+      # la sentinella la farebbe fallire per un motivo che non c'entra con i dati.
+      - name: numpy per le sentinelle dei dati
+        run: python3 -m pip install --quiet numpy
+
+      # IL REPLAY A POSIZIONI VERE non puo' degradare in silenzio. I pallini di gara.html
+      # non sono piu' una frazione di TEMPO ma la posizione MISURATA sul GPS per-auto: se
+      # un giorno la proiezione sul nastro, l'aggancio al cronometraggio o le tre guardie
+      # sul grezzo si rompessero, la pagina continuerebbe a disegnare pallini — solo nel
+      # posto sbagliato, che e' il modo peggiore di sbagliare. Cinque cancelli, fra cui
+      # lo scarto dalla linea a ogni fine-giro e il divieto di ritirati congelati in pista.
+      - name: I pallini stanno dove le vetture erano davvero
+        run: python3 test_replay.py
+
+      # LE SAFETY CAR ERANO SPARITE FRA LA SORGENTE E LA PAGINA. gen_rc_feed.py non aveva
+      # un ramo per la categoria 'SafetyCar' e 45 messaggi su 45 cadevano fuori: il feed
+      # pubblicato aveva 296 voci e ZERO eventi SC, cioe' mancavano gli eventi che
+      # decidono le gare, e nessun test se ne accorgeva. Questa sentinella conta i
+      # messaggi uno per uno, pretende che due Safety Car nello stesso giro restino due
+      # (Gran Bretagna, giro 51) e verifica che l'annuncio del race control e il regime
+      # misurato dallo status per-auto si sovrappongano sempre.
+      - name: Nessun evento di regime si perde fra il race control e la pagina
+        run: python3 test_rc_feed.py

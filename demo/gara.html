@@ -438,6 +438,7 @@ async function drawPista(gara){
       pitlane: replayVero?.pitlane || null,        // corsia MISURATA quando esiste
     });
     if (selDrv){ pista.setSpento(true); el('pista').classList.add('pit-attivo'); }
+    pista.setRegime(fase(finestre, Math.max(1, Math.floor(clock.position))));
     pistaFrame(clock.position);
   } catch(e){ console.warn('pista non disponibile:', e.message); pistaVuota(gara); }
 }
@@ -509,9 +510,19 @@ function drawEvtl(){
     `<div class="pitm" title="pit al giro ${L}: ${ds.join(', ')}" style="left:${lapPct(+L)}%"></div>`).join('');
   // feed race control (livello 1): tacche informative sulla stessa barra — giallo =
   // bandiere, § = annuncio penalita', grigio = investigazioni/lap deleted. Tooltip = testo.
+  // I regimi (sc/vsc/rossa) sono ANNUNCI: la tacca sta sul giro in cui il messaggio e'
+  // uscito, mentre la banda sotto e' il regime misurato dallo status per-auto, che
+  // comincia prima. Non e' una contraddizione: sono due domande diverse, e il tooltip
+  // lo dice. Due tacche dentro una banda sola = due Safety Car distinte.
+  const CLASSE = {penalita:'p', giallo:'g', sc:'ann sc', vsc:'ann vsc', rossa:'ann rossa'};
   const feed = rcmGara?.feed || [];
-  el('evtlRcm').innerHTML = feed.map(e=>
-    `<div class="rcmm ${e.tipo==='penalita'?'p':(e.tipo==='giallo'?'g':'i')}" title="giro ${e.giro}: ${e.testo.replaceAll('"','&quot;')}" style="left:${lapPct(e.giro)}%"></div>`).join('');
+  el('evtlRcm').innerHTML = feed.map(e=>{
+    const reg = e.tipo==='sc'||e.tipo==='vsc'||e.tipo==='rossa';
+    const tip = reg
+      ? `${e.testo}${e.chiuso_da ? ` (chiusa dalla ${e.chiuso_da})` : ''} — annunciata al giro ${e.giro}`
+      : `giro ${e.giro}: ${e.testo}`;
+    return `<div class="rcmm ${CLASSE[e.tipo]||'i'}" title="${tip.replaceAll('"','&quot;')}" style="left:${lapPct(e.giro)}%"></div>`;
+  }).join('');
   el('legrcg').style.display = feed.some(e=>e.tipo==='giallo') ? 'inline-flex' : 'none';
   el('legrcp').style.display = feed.some(e=>e.tipo==='penalita') ? 'inline-flex' : 'none';
   el('evtlLeg').style.visibility = (bs.length || Object.keys(pitLaps).length || feed.length) ? 'visible' : 'hidden';
@@ -706,6 +717,7 @@ function frame(p){
   el('evtlFatto').style.width = pct+'%';
   el('evtl').setAttribute('aria-valuenow', curLap);
   const ph=fase(finestre,curLap);
+  pista?.setRegime(ph);            // il nastro prende il colore del regime, stessa fonte della pillola
   el('phase').className='phase '+(ph?ph.toLowerCase():'run');
   // pillola fase in parole piene (mai gli acronimi: "RF" non lo capisce nessuno)
   el('phase').textContent = ph ? ({SC:'Safety Car', VSC:'Virtual SC', RF:'Bandiera rossa'}[ph]) : 'in corso';

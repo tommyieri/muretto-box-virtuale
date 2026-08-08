@@ -22,7 +22,7 @@ export async function creaPista({ canvas, url, pitlane }) {
   // sono costanti del generatore e non misure di questa pista.
   const PL = pitlane || data.pitlane || null;
   const FE = PL?.frazione_ingresso ?? 0.95, FX = PL?.frazione_uscita ?? 0.05;
-  let dots = [], spento = false, proj = null;
+  let dots = [], spento = false, proj = null, regime = null;
 
   const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 
@@ -50,7 +50,16 @@ export async function creaPista({ canvas, url, pitlane }) {
       G.closePath(); G.stroke();
     };
     passa('#1d2430', 14);                                    // alone
-    passa(css('--line') || '#3a4557', 8);                    // nastro
+    // IL NASTRO PORTA IL REGIME. Sotto Safety Car, VSC o bandiera rossa la pista stessa
+    // cambia colore: e' l'informazione che decide le soste, e leggerla dal tracciato e'
+    // immediato quanto leggerla da un badge. La fonte e' la STESSA della pillola e delle
+    // bande della barra (fase() su neutralizzazione.json), quindi non possono contraddirsi.
+    const COL = { SC: '--sc', VSC: '--vsc', RF: '--rf' };
+    const tinta = regime ? (css(COL[regime]) || null) : null;
+    passa(tinta || css('--line') || '#3a4557', 8);            // nastro
+    if (regime === 'VSC') {                                   // VSC: tratteggio, come la banda
+      passa('rgba(0,0,0,.45)', 8, [7 * dpr, 7 * dpr]);
+    }
     passa('rgba(255,255,255,.08)', 1.2, [4 * dpr, 6 * dpr]); // mezzeria
     G.setLineDash([]);
     if (PL) {                                                // pit-lane (nastro sottile)
@@ -155,6 +164,9 @@ export async function creaPista({ canvas, url, pitlane }) {
     vista() { return proj ? { proj, dpr: window.devicePixelRatio || 1 } : null; },
     // nuovi pallini: [{f: frazione di giro [0,1), colore, sigla}]
     aggiorna(nuovi) { dots = nuovi || []; render(); },
+    // regime di gara corrente: 'SC' | 'VSC' | 'RF' | null. Lo decide il chiamante con
+    // fase() — qui non si ri-definisce cosa sia una neutralizzazione (regola 1).
+    setRegime(r) { if (r === regime) return; regime = r || null; render(); },
     setSpento(v) { spento = !!v; render(); },
     destroy() { ro.disconnect(); },
   };

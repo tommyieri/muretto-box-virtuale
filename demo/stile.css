@@ -388,6 +388,15 @@ a.gpcard:hover::after { right: 0; }
 .evtl .rcmm.g { background: var(--sc); }
 .evtl .rcmm.i { background: var(--dim); opacity: .55; }
 .evtl .rcmm.p { width: 3px; background: var(--pen); height: 12px; }
+/* ANNUNCI di regime (race control): l'istante in cui la Safety Car e' stata CHIAMATA.
+   Diversi dalle bande `.seg`, che sono il regime MISURATO giro per giro dallo status
+   per-auto e cominciano prima. Due annunci dentro la stessa banda = due Safety Car
+   distinte (Gran Bretagna, giro 51), cosa che la banda da sola non puo' dire. */
+.evtl .rcmm.ann { top: 0; width: 3px; height: 100%; border-radius: 0; opacity: .95;
+  box-shadow: 0 0 0 1px rgba(0,0,0,.55); }
+.evtl .rcmm.ann.sc { background: var(--sc); }
+.evtl .rcmm.ann.vsc { background: var(--vsc); }
+.evtl .rcmm.ann.rossa { background: var(--rf); width: 4px; }
 .evtl-leg { display: flex; gap: 14px; margin: 8px 2px 0; font: 10.5px/1 var(--mono); color: var(--dim); flex-wrap: wrap; }
 .evtl-leg i { font-style: normal; display: inline-flex; align-items: center; gap: 5px; }
 .evtl-leg .sw { width: 16px; height: 7px; border-radius: 2px; display: inline-block; }
