@@ -124,18 +124,27 @@
            lascerebbe bloccati su un pilota ritirato. -->
       <button type="button" class="mu-cambia" id="mu-cambia">cambia</button>
     </div>
-    <button type="button" class="boxbtn" id="mu-box" hidden>BOX <span id="mu-boxgiro"></span></button>
-    <!-- LA SOSTA MESSA IN SCENA (live): il pallino entra ai box adesso e segue la strategia,
-         su mappa e su torre, sorpassando i rivali dove il motore dice che passa. -->
-    <button type="button" class="mu-sim" id="mu-sim" hidden>&#9654; Guarda la sosta</button>
+    <!-- LA STRATEGIA SI FA GIOCANDO (08/08, stessa decisione di gara.html): un comando
+         solo. Scegli la gomma, premi BOX ORA: il pallino si ferma e la PROIEZIONE
+         continua fino alla bandiera — altre soste aggiungibili mentre scorre. In
+         diretta i rivali NON reagiscono e oltre ~6 giri non e' validata: sta scritto
+         nella barra, sempre. -->
+    <div class="mesc-chips" id="mu-chips" hidden></div>
+    <button type="button" class="boxbtn" id="mu-box" hidden>BOX ORA <span id="mu-boxgiro"></span></button>
+    <div class="stratlist" id="mu-strat"></div>
     <div class="mu-simbar" id="mu-simbar" hidden>
-      <span class="mu-simtag" id="mu-simtag">Simulazione: <b id="mu-simdrv"></b> si ferma adesso &middot; rivali al passo reale</span>
+      <span class="mu-simtag" id="mu-simtag"></span>
       <button type="button" id="mu-simcont" hidden>continua &rarr;</button>
       <button type="button" id="mu-simesci">&#8634; dati reali</button>
     </div>
-    <div id="mu-kv" class="sim-pannello"></div>
+    <details class="muretto-det" id="mu-det" open>
+      <summary>il muretto dice &mdash; dettagli</summary>
+      <div id="mu-kv" class="sim-pannello"></div>
+    </details>
     <div id="mu-nota" class="lv-nota">Durante una <b>gara</b> scegli qui il pilota da seguire e il
       pannello risponde alla domanda del muretto: <i>se lo fermo adesso, dove rientra?</i>
+      Con la gomma e <b>BOX ORA</b> lo fermi davvero: il pallino entra ai box e la proiezione
+      continua fino alla bandiera &mdash; altre soste si aggiungono mentre scorre.
       Serve qualche giro perch&eacute; il passo-base di ogni pilota si misuri &mdash; il pannello
       dice sempre a che punto &egrave;. Nelle libere e in qualifica resta spento: senza giri di gara
       la domanda non esiste.</div>
@@ -190,6 +199,15 @@
   .tw-row[data-sigla]{cursor:pointer}
   .tw-row.tw-sel{background:#16202c;box-shadow:inset 2px 0 0 #e80d2e}
 
+  .mesc-chips{ display:flex; gap:.4rem; margin:.3rem 0 .35rem; }
+  .mesc-chips .chip{ flex:1; border:1px solid rgba(255,255,255,.22); background:transparent; color:var(--txt,#e9edf3);
+    border-radius:8px; padding:.42rem 0; font:800 11px var(--mono,ui-monospace,monospace); letter-spacing:.5px;
+    text-transform:uppercase; cursor:pointer; }
+  .mesc-chips .chip.on{ border-color:#22c55e; background:rgba(34,197,94,.14); color:#bbf7d0; }
+  .stratlist{ font:600 11px/1.5 var(--mono,ui-monospace,monospace); color:#9aa4b2; margin:.25rem 0; min-height:1em; }
+  .muretto-det{ margin-top:.5rem; border-top:1px solid rgba(255,255,255,.08); padding-top:.4rem; }
+  .muretto-det summary{ cursor:pointer; font:700 10.5px var(--mono,ui-monospace,monospace); letter-spacing:.5px;
+    text-transform:uppercase; color:#8a94a2; }
   /* il muretto in diretta: stessa veste del pannello pit di gara.html */
   .mu-testa{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.6rem}
   .mu-lab{color:#8b93a5;font-size:.82rem}
@@ -427,14 +445,14 @@ async function creaMurettoLive(g, deps = {}){
   // flusso nel contratto del simulatore. E' lo stesso identico codice del replay — il
   // cancello demo/test_parita_live.mjs lo misura su una gara vera.
   const [{ creaByLapLive }, { disegna }, { pannello: pannelloNuovo }, { curva: curvaDelQuando },
-         { rispostaLive, LIMITI_LIVE }, { simDaFantasma }, { creaGhostPlay }, { attaccaGlossario }] = await Promise.all([
+         { rispostaLive, rigiocaLive, LIMITI_LIVE }, { simDaRigioca }, { creaGhostPlay }, { attaccaGlossario }] = await Promise.all([
     import('./live_bylap.mjs?v=310726a'),
-    import('./vendor/simulatore/render.mjs?v=310726a'),
-    import('./vendor/simulatore/pannello.mjs?v=310726a'),
-    import('./vendor/simulatore/curva.mjs?v=310726a'),
-    import('./ponte_live.mjs?v=310726a'),
-    import('./fantasma_sim.mjs?v=310726a'),
-    import('./ghostplay.mjs?v=250724c'),
+    import('./vendor/simulatore/render.mjs?v=080826c'),
+    import('./vendor/simulatore/pannello.mjs?v=080826c'),
+    import('./vendor/simulatore/curva.mjs?v=080826c'),
+    import('./ponte_live.mjs?v=080826c'),
+    import('./fantasma_sim.mjs?v=080826c'),
+    import('./ghostplay.mjs?v=080826c'),
     import('./glossario.mjs?v=250724e')]);
   const B = deps.B || creaByLapLive();
   // pista/mappa/torre servono alla SOSTA MESSA IN SCENA; pausaLive ferma i dati live durante
@@ -493,8 +511,16 @@ async function creaMurettoLive(g, deps = {}){
     mescole: contestoLive.mescole,
   };
 
-  let scelto = null, boxAperto = false, ridisegna = null, mescolaScelta = null;
-  let lastRes = null, gp = null;   // ultima risposta del pannello + la messa in scena in corso
+  let scelto = null, ridisegna = null, mescolaScelta = null;
+  let gp = null;                   // la messa in scena in corso (proiezione)
+  // LA STRATEGIA IN CORSO (08/08, stessa struttura di gara.html): al primo BOX ORA
+  // il campo si congela ADESSO — byLap e giro vengono fotografati, perche' la
+  // proiezione deve restare coerente fra una sosta e la successiva anche mentre
+  // la gara vera continua a correre sotto.
+  let STRAT = null;                // {freeze, bl, nLaps, soste:[{giro,mescola}], risultato}
+  // la risposta del pannello si ricalcola solo quando cambia (giro, pilota, gomma):
+  // prima si ricalcolava a ogni battito da 1 s, motore compreso.
+  let cacheRisp = { chiave: null, s: null };
 
   // LA GRIGLIA DI SCELTA. Non una tendina: le sigle in chiaro, con la posizione, come una
   // formazione da schierare. Si ricostruisce solo quando l'elenco cambia davvero, altrimenti
@@ -519,28 +545,28 @@ async function creaMurettoLive(g, deps = {}){
   };
 
   ridisegna = () => {
-    const kv = el('mu-kv'), nota = el('mu-nota');
+    const kv = el('mu-kv'), nota = el('mu-nota'), det = el('mu-det');
     const nLaps = B.nLaps(), L = B.giroPieno();
-    el('mu-sim').hidden = true;   // visibile solo con una risposta simulabile (sotto)
+    const spegniComandi = () => { el('mu-chips').hidden = true; det.hidden = true; el('mu-strat').textContent = ''; };
 
     // NON E' LA GARA (libere, qualifica): la domanda del muretto non esiste. Tutto spento,
     // resta solo la nota che spiega perche'. Prima di nLaps apposta: in quali OpenF1 puo'
     // mandare un conteggio giri, e senza questo cancello BOX comparirebbe.
     if (!eGaraOra()) {
       el('mu-porta').hidden = true; el('mu-testa').hidden = true;
-      el('mu-box').hidden = true; kv.innerHTML = ''; nota.hidden = false;
+      el('mu-box').hidden = true; spegniComandi(); kv.innerHTML = ''; nota.hidden = false;
       return;
     }
     // FUORI GARA: niente porta, niente pannello. La domanda non esiste nelle libere.
     if (!nLaps) {
       el('mu-porta').hidden = true; el('mu-testa').hidden = true;
-      el('mu-box').hidden = true; kv.innerHTML = ''; nota.hidden = false;
+      el('mu-box').hidden = true; spegniComandi(); kv.innerHTML = ''; nota.hidden = false;
       return;
     }
     // PRIMA DELLA SCELTA: solo la porta.
     if (!scelto) {
       el('mu-porta').hidden = false; el('mu-testa').hidden = true;
-      el('mu-box').hidden = true; kv.innerHTML = ''; nota.hidden = true;
+      el('mu-box').hidden = true; spegniComandi(); kv.innerHTML = ''; nota.hidden = true;
       porta();
       return;
     }
@@ -560,20 +586,23 @@ async function creaMurettoLive(g, deps = {}){
 
     const d = B.diagnosi(L);
     if (!d.pronto) {
-      el('mu-box').hidden = true;
+      el('mu-box').hidden = true; el('mu-chips').hidden = true;
+      el('mu-strat').textContent = ''; det.hidden = false;
       kv.innerHTML = `<div class="pitmsg">Ancora presto: ${d.motivo}.
         <span class="sub">Il passo-base di ogni pilota si misura dai suoi giri veri in gara;
         finche non c'e, il pannello preferisce tacere.</span></div>`;
       return;
     }
-    // il giro fermabile e' SEMPRE quello in corso: in diretta non esiste "fra dieci giri",
-    // esiste adesso. Nessuno slider — e' la richiesta del PO, e in live e' anche l'unica
-    // cosa vera: il campo congelato non regge dieci giri di gara che devono ancora succedere.
-    const pitL = L + 1;
+    // il giro fermabile e' SEMPRE quello che stai guardando: la diretta (giro in corso)
+    // oppure, a proiezione avviata, il giro dove sta il pallino. Nessuno slider — e' la
+    // richiesta del PO, e in live e' anche l'unica cosa vera.
+    const pitL = STRAT
+      ? Math.max(STRAT.freeze + 1, Math.min(STRAT.nLaps - 1, Math.round(gp?.posizione ?? (L + 1))))
+      : L + 1;
     el('mu-box').hidden = false;
     el('mu-boxgiro').textContent = `giro ${pitL}`;
-    el('mu-box').classList.toggle('on', boxAperto);
-    if (!boxAperto) { kv.innerHTML = ''; return; }
+    el('mu-chips').hidden = false; det.hidden = false;
+    chipMescole(); listaSoste();
 
     if (!vistaLive) {
       kv.innerHTML = `<div class="pitmsg">Il motore non e' disponibile in questa pagina.
@@ -583,18 +612,22 @@ async function creaMurettoLive(g, deps = {}){
     }
     // LA RISPOSTA, calcolata QUI perche' in diretta non puo' essere pre-calcolata. Il ponte
     // traduce le celle del flusso nel contratto e chiama lo stesso montaggio del replay.
-    const s = rispostaLive({
-      byLap: bl, nGiriGara: nLaps, nomeGara: g.nome,
-      pilota: scelto, freezeLap: L, contestoLive, mescolaScelta,
-    });
+    const chiave = `${L}|${scelto}|${mescolaScelta ?? ''}`;
+    if (cacheRisp.chiave !== chiave) {
+      cacheRisp = { chiave, s: rispostaLive({
+        byLap: bl, nGiriGara: nLaps, nomeGara: g.nome,
+        pilota: scelto, freezeLap: L, contestoLive, mescolaScelta,
+      }) };
+    }
+    const s = cacheRisp.s;
     if (!s) {
       kv.innerHTML = `<div class="pitmsg">A questo giro non si sa su che gomma sta ${scelto}.
         <span class="sub">senza la mescola il motore non risponde, invece di indovinarla</span></div>`;
-      lastRes = null; el('mu-sim').hidden = true; return;
+      return;
     }
     if (s.senza_risposta) {
       kv.innerHTML = `<div class="pitmsg">${s.senza_risposta}</div>`;
-      lastRes = null; el('mu-sim').hidden = true; return;
+      return;
     }
     kv.replaceChildren(disegna(pannelloNuovo(vistaLive, s)));
     // LA CURVA DEL QUANDO: per ogni giro candidato, quanto costa fermarsi li' rispetto al
@@ -616,18 +649,17 @@ async function creaMurettoLive(g, deps = {}){
       + ` (${(100 * LIMITI_LIVE.giri_cancellati_ignoti.quota_sui_verdi).toFixed(1)}% di giri verdi in piu', misurato).`;
     kv.append(lim);
     attaccaGlossario(kv);   // il gergo diventa toccabile (spiegazione in parole piane)
-    lastRes = s;
-    el('mu-sim').hidden = !(s.approvato !== false && s.fantasma && s.fantasma.length);
   };
 
   el('mu-griglia').addEventListener('click', e => {
     const b = e.target.closest('[data-drv]'); if (!b) return;
-    scelto = b.dataset.drv; boxAperto = false; ridisegna();
+    scelto = b.dataset.drv; mescolaScelta = null; ridisegna();
   });
   el('mu-cambia').addEventListener('click', () => {
-    scelto = null; boxAperto = false; mescolaScelta = null; ridisegna();
+    scelto = null; mescolaScelta = null;
+    esciSim();   // se una proiezione era in corso, si torna alla diretta
   });
-  el('mu-box').addEventListener('click', () => { boxAperto = !boxAperto; ridisegna(); });
+  el('mu-box').addEventListener('click', boxOra);
   // IL SELETTORE MESCOLA E' TORNATO UN COMANDO, il 04/08/2026.
   //
   // Era stato staccato il 31/07 per una ragione giusta: misurato su Spa, cambiando la
@@ -645,13 +677,13 @@ async function creaMurettoLive(g, deps = {}){
   //
   // Funziona SOLO in diretta, e non e' una scelta: qui il motore gira in pagina e puo'
   // rispondere: nel replay la vista e' pre-calcolata su una gomma sola.
+  // dal 08/08 le pastiglie del pannello e le chips sopra il BOX scrivono la STESSA
+  // scelta: la gomma che prezza la risposta e' anche quella che si monta col prossimo
+  // BOX ORA. Due selettori con due significati sarebbero il doppio flusso appena tolto.
   el('mu-kv').addEventListener('click', (e) => {
     const p = e.target.closest('.mescole [data-valore]');
     if (!p || p.hasAttribute('disabled')) return;
-    const scelta = p.dataset.valore;
-    // ri-cliccare la gomma gia' scelta torna a quella vera: la scelta si annulla, non si
-    // incastra. Senza, chi ha provato una mescola non avrebbe piu' modo di tornare al vero.
-    mescolaScelta = (mescolaScelta === scelta) ? null : scelta;
+    mescolaScelta = p.dataset.valore;
     ridisegna();
   });
   // la torre resta un secondo modo di scegliere, ma SOLO prima di aver scelto: dopo, un
@@ -659,47 +691,119 @@ async function creaMurettoLive(g, deps = {}){
   el('tw-list').addEventListener('click', e => {
     if (scelto) return;
     const r = e.target.closest('.tw-row[data-sigla]'); if (!r) return;
-    scelto = r.dataset.sigla; boxAperto = false; ridisegna();
+    scelto = r.dataset.sigla; ridisegna();
   });
 
+  // LE CHIPS DELLA GOMMA: la scelta per la prossima sosta, precaricata su una gomma
+  // DIVERSA da quella montata (rimontare la stessa e' il piano che il Director respinge).
+  function chipMescole(){
+    const c = el('mu-chips'); if (!c) return; c.replaceChildren();
+    const L = B.giroPieno();
+    const attuale = B.byLap()[L]?.[scelto]?.compound ?? null;
+    if (mescolaScelta === null) mescolaScelta = ['HARD', 'MEDIUM', 'SOFT'].find(x => x !== attuale) ?? 'MEDIUM';
+    for (const x of ['SOFT', 'MEDIUM', 'HARD']) {
+      const b = document.createElement('button'); b.type = 'button'; b.textContent = x.toLowerCase();
+      b.className = 'chip' + (x === mescolaScelta ? ' on' : '');
+      b.onclick = () => { mescolaScelta = x; ridisegna(); };
+      c.appendChild(b);
+    }
+  }
+  function listaSoste(){
+    el('mu-strat').textContent = STRAT && STRAT.soste.length
+      ? 'Le tue soste: ' + STRAT.soste.map(x => `giro ${x.giro} → ${x.mescola.toLowerCase()}`).join(' · ')
+      : '';
+  }
+
   // ---- LA SOSTA MESSA IN SCENA (ghostplay) ------------------------------------------
-  function avviaSim(){
-    if (!pista || !lastRes || lastRes.approvato === false) return;
-    // la traccia arriva dal record del motore (`fantasma`), non da un secondo calcolo:
-    // stesso adattatore di gara.html, quindi la sosta si vede uguale nelle due pagine
-    const sim = simDaFantasma(lastRes.fantasma, scelto, lastRes.freeze_lap);
-    if (!sim) { el('mu-sim').hidden = true; return; }
-    pausaLive.attiva = true;                    // i dati live restano fermi durante la scena
+  // BOX ORA (08/08, stessa decisione di gara.html): la strategia si fa GIOCANDO.
+  // Primo BOX: il campo si congela ADESSO e la proiezione parte dal giro corrente,
+  // SENZA PAUSE fino alla bandiera. BOX ORA di nuovo, mentre scorre, aggiunge
+  // un'altra sosta al giro dove sta il pallino. La differenza col replay e'
+  // DICHIARATA nell'etichetta: qui il futuro non e' successo, quindi niente soste
+  // vere dei rivali, niente ritiri, niente Safety Car — e' la proiezione del
+  // motore, validata ~6 giri (ai_lab/REGISTRO_F1.md).
+  function tagOnesta(){
+    return 'PROIEZIONE: i rivali non reagiscono &middot; oltre ~6 giri non e&#39; validata';
+  }
+  function boxOra(){
+    if (!scelto || !vistaLive) return;
+    const L = B.giroPieno(), nLaps = B.nLaps();
+    if (!L || !nLaps) return;
+    if (!STRAT) STRAT = { freeze: L, bl: B.byLap(), nLaps, soste: [] };
+    const giro = STRAT.soste.length
+      ? Math.max(STRAT.freeze + 1, Math.min(STRAT.nLaps - 1, Math.round(gp?.posizione ?? (L + 1))))
+      : Math.min(STRAT.nLaps - 1, STRAT.freeze + 1);
+    const ultima = STRAT.soste[STRAT.soste.length - 1];
+    if (ultima && giro <= ultima.giro && giro !== ultima.giro) return;
+    const soste = [...STRAT.soste.filter(x => x.giro !== giro), { giro, mescola: mescolaScelta }]
+      .sort((a, b) => a.giro - b.giro);
+    let esito;
+    try {
+      esito = rigiocaLive({ byLap: STRAT.bl, nGiriGara: STRAT.nLaps, nomeGara: g.nome,
+        pilota: scelto, freezeLap: STRAT.freeze, contestoLive, soste });
+    } catch (err) {
+      el('mu-simbar').hidden = false;
+      el('mu-simtag').innerHTML = `il motore rifiuta questa sosta: ${err.message}`;
+      if (!STRAT.soste.length) STRAT = null;
+      return;
+    }
+    if (!esito.direttore.approved) {
+      const fatal = (esito.direttore.violazioni ?? []).filter(v => v.severita === 'FATAL').map(v => v.messaggio ?? v.codice);
+      el('mu-simbar').hidden = false;
+      el('mu-simtag').innerHTML = `il Director respinge: ${fatal[0] ?? 'piano non valido'} &mdash; prova un&#39;altra gomma o un altro giro`;
+      if (!STRAT.soste.length) STRAT = null;
+      return;
+    }
+    STRAT.soste = soste; STRAT.risultato = esito.risultato;
+    listaSoste();
+    avviaScenaLive(giro);
+  }
+  function avviaScenaLive(giroSosta){
+    if (!pista || !STRAT || !STRAT.risultato) return;
+    // stesso adattatore di gara.html: la traccia del kernel, non un secondo calcolo
+    const sim = simDaRigioca({ risultato: STRAT.risultato, race: { byLap: STRAT.bl },
+      pilota: scelto, freeze: STRAT.freeze });
+    if (!sim) {
+      el('mu-simbar').hidden = false;
+      el('mu-simtag').innerHTML = 'scena non disponibile per questo run';
+      return;
+    }
+    sim.pitLap = giroSosta;                     // la scenografia del transito segue l'ULTIMA sosta
+    if (gp) gp.stop();
+    pausaLive.attiva = true;                    // i dati live si accumulano ma non ridisegnano
     if (mappa) mappa.setAcceso(false);          // spegni l'overlay GPS: in scena resta il fantasma
-    el('mu-sim').hidden = true; el('mu-simbar').hidden = false; el('mu-simcont').hidden = true;
-    el('mu-simtag').innerHTML = `Simulazione: <b>${scelto}</b> si ferma adesso &middot; rivali al passo reale`;
-    gp = creaGhostPlay({ sim, pista, coloreDi, onTower: renderSimTorre,
-      giroRisposta: lastRes.pannello.giro_di_rientro,
-      // fase 1 finita: il fantasma è al giro-rientro, esattamente dove il pannello lo valuta
-      onRientro: () => {
-        const suff = lastRes.pannello.su_quanti ? ` tra i ${lastRes.pannello.su_quanti} a pari giro` : '';
-        el('mu-simtag').innerHTML = `&#128205; <b>${scelto} rientra ${lastRes.pannello.posizione}&ordm;</b>${suff}`
-          + ` &mdash; come dice il pannello. Oltre &egrave; una proiezione (i rivali non reagiscono).`;
-        el('mu-simcont').hidden = false;
+    el('mu-simbar').hidden = false; el('mu-simcont').hidden = true;
+    const mesc = STRAT.soste.find(x => x.giro === giroSosta)?.mescola ?? '';
+    el('mu-simtag').innerHTML = `<b>${scelto}</b> box al giro ${giroSosta} (${mesc.toLowerCase()})`
+      + ` e la gara CONTINUA fino alla bandiera &mdash; ${tagOnesta()}.`
+      + ` BOX ORA per un&#39;altra sosta, &#8634; per la diretta.`;
+    gp = creaGhostPlay({ sim, pista, coloreDi,
+      onTower: (righe) => {
+        renderSimTorre(righe);
+        // il bottone segue il pallino: il prossimo BOX cade dove stai guardando
+        if (gp && STRAT) el('mu-boxgiro').textContent =
+          `giro ${Math.max(STRAT.freeze + 1, Math.min(STRAT.nLaps - 1, Math.round(gp.posizione)))}`;
+      },
+      giroRisposta: null, p0: Math.max(STRAT.freeze, giroSosta - 1), durataTot: 22,
+      onFine: () => {
+        const i = STRAT.risultato.ordine.indexOf(scelto);
+        el('mu-simtag').innerHTML = `&#127937; con la tua strategia il motore proietta <b>${scelto}`
+          + ` ${i < 0 ? 'fuori classifica' : 'P' + (i + 1)}</b> alla bandiera &mdash; ${tagOnesta()}.`
+          + ` &#8634; per tornare alla diretta.`;
       },
     });
     gp.play();
   }
   function esciSim(){
     if (gp){ gp.stop(); gp = null; }
+    STRAT = null;
+    cacheRisp = { chiave: null, s: null };
     if (pista) pista.aggiorna([]);              // togli il fantasma dalla mappa
     pausaLive.attiva = false;
     if (mappa) mappa.setAcceso(true);
     el('mu-simbar').hidden = true; el('mu-simcont').hidden = true;
     if (ripristinaTorre) ripristinaTorre();     // demo: ridisegna la torre statica; live: la ridisegna il feed
     ridisegna();
-  }
-  function continuaSim(){
-    el('mu-simcont').hidden = true;
-    // stessa correzione di gara.html: oltre 6 giri la proiezione non e' validata
-    // (ai_lab/REGISTRO_F1.md), e l'etichetta non lo diceva.
-    el('mu-simtag').innerHTML = 'Proiezione fino alla bandiera &middot; validata solo fino a 6 giri &middot; i rivali non reagiscono';
-    if (gp) gp.continua();
   }
   function renderSimTorre(righe){
     el('tw-list').innerHTML = righe.map(r =>
@@ -713,9 +817,7 @@ async function creaMurettoLive(g, deps = {}){
       + `</div></div>`).join('');
     const n = el('tw-nota'); if (n) n.hidden = true;
   }
-  el('mu-sim').addEventListener('click', avviaSim);
   el('mu-simesci').addEventListener('click', esciSim);
-  el('mu-simcont').addEventListener('click', continuaSim);
 
   ridisegna();   // avvio: porta o nota, secondo lo stato di B
 
@@ -783,7 +885,7 @@ async function bootDemo(gara, lapStr){
   b.textContent = `DEMO — ${gara} · giro ${L}/${N}`;
   el('live-nota').textContent = 'Modalità demo: la gara è già corsa, i dati sono reali ma non in diretta. '
     + 'Serve a provare il muretto live e la messa in scena della sosta senza un feed. '
-    + 'Scegli un pilota qui sotto, premi BOX, poi "Guarda la sosta".';
+    + 'Scegli un pilota qui sotto, la gomma, e premi BOX ORA.';
   el('live-nota').hidden = false;
   const B = fintaByLap(race, L);
   const ripristinaTorre = () => renderTorreDemo(race, L, teamCol);
