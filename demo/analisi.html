@@ -129,6 +129,29 @@
   .strum-go{ font:700 11px/1 var(--mono); color:var(--red); margin-top:13px; }
   @media (max-width:640px){ .strumenti{ grid-template-columns:1fr; } }
 
+  /* Strategia (vista stint) — stile di QUESTA pagina: analisi.html e' auto-contenuta e
+     non usa stile.css, quindi il blocco .strat del tema scuro non si puo' riusare. */
+  .st-riga{ display:grid; grid-template-columns:78px 1fr; align-items:center; gap:10px;
+    height:30px; border-bottom:1px solid var(--line); }
+  .st-riga:last-child{ border-bottom:0; }
+  .st-sig{ font:700 12px/1 var(--mono); letter-spacing:.5px; display:flex; align-items:center; gap:7px; }
+  .st-sig i{ width:3px; height:16px; border-radius:2px; display:inline-block; flex:none; }
+  .st-pos{ color:var(--dim); font-size:11px; min-width:16px; text-align:right; }
+  .st-barra{ position:relative; height:14px; border-radius:3px; background:var(--paper-2);
+    overflow:hidden; }
+  .st-stint{ position:absolute; top:0; bottom:0; }
+  /* set USATO: righine oblique. Un set nuovo e uno gia' girato non sono la stessa cosa e
+     non devono avere lo stesso aspetto. */
+  .st-stint.usato{ background-image:repeating-linear-gradient(45deg,
+    rgba(0,0,0,.34) 0 3px, transparent 3px 6px); }
+  .st-stint.bagnata{ box-shadow:inset 0 2px 0 #3ba7ff, inset 0 -2px 0 #3ba7ff; }
+  .st-sosta{ position:absolute; top:-2px; bottom:-2px; width:2px; background:var(--ink);
+    opacity:.92; }
+  .st-assi{ display:grid; grid-template-columns:78px 1fr; gap:10px; margin-top:6px; }
+  .st-assi .sc{ position:relative; height:14px; font:10px/1 var(--mono); color:var(--dim); }
+  .st-assi .sc span{ position:absolute; transform:translateX(-50%); }
+  .st-vuoto{ padding:20px; color:var(--dim); font:13px/1.5 var(--sans); }
+
   /* Telemetria (foglio-tempi) */
   .tele-head{ display:flex; align-items:baseline; justify-content:space-between; gap:14px; flex-wrap:wrap; margin-bottom:14px; }
   .tele-head h2{ margin:0; font:800 22px/1 var(--disp); letter-spacing:.02em; text-transform:uppercase; }
@@ -227,6 +250,7 @@
     <div class="tabs" role="tablist" aria-label="Sezioni di Analisi">
       <button class="tab" role="tab" id="t-art" aria-controls="panel-articoli" aria-selected="true">Articoli<span class="n" id="n-art"></span></button>
       <button class="tab" role="tab" id="t-tel" aria-controls="panel-telemetria" aria-selected="false">Telemetria<span class="n" id="n-tel"></span></button>
+      <button class="tab" role="tab" id="t-str" aria-controls="panel-strategia" aria-selected="false">Strategia<span class="n" id="n-str"></span></button>
     </div>
   </header>
 
@@ -296,6 +320,23 @@
       <div class="links">
         <a class="link" href="stagione.html"><span class="ic">▤</span><span><b>Stagione 2026</b><span>Tutti i weekend, gara per gara.</span></span></a>
       </div>
+    </section>
+
+    <!-- STRATEGIA — la vista stint. Sta QUI e non nella pagina-gara per una decisione gia'
+         presa il 25/07/2026 e scritta in gara.html: la strategia gomme e' racconto
+         retrospettivo, non un input alla simulazione. Le barre si costruiscono sulla
+         definizione UNICA di sosta (demo/sosta.mjs, promossa in data/SOSTA_PREREG3.md),
+         NON sul contatore `stint` grezzo: quello a Monaco conta fino a cinque stint dove
+         ce ne sono due, perche' avanza a ogni transito in corsia anche senza cambio gomma. -->
+    <section class="panel" id="panel-strategia" role="tabpanel" aria-labelledby="t-str" hidden>
+      <div class="tele-head">
+        <h2>Strategia gomme <span class="selname" id="strname">·</span></h2>
+        <span class="sub">Ogni riga è una gara: le fasce sono gli <b>stint</b>, colorate per mescola.
+          Il taglio verticale è il giro in cui sono cambiate le gomme.</span>
+      </div>
+      <div class="selrow" id="strgprow"></div>
+      <div id="stratbox"></div>
+      <div class="leg" id="strleg"></div>
     </section>
   </main>
 
@@ -655,17 +696,113 @@ async function bootTelemetria(){
 }
 
 /* ---------------- tab ---------------- */
-const tabs=[{b:'t-art',p:'panel-articoli'},{b:'t-tel',p:'panel-telemetria'}];
+// ── STRATEGIA: la vista stint, sulla definizione UNICA di sosta ────────────────────────
+// Le fasce NON si ricavano dal contatore `stint` dei dati grezzi (a Monaco conta fino a
+// cinque stint dove ce ne sono due: avanza a ogni transito in corsia, anche sotto Safety
+// Car e bandiera rossa, senza che si monti niente). Si ricavano da demo/sosta.mjs, che
+// definisce la sosta come CAMBIO DI SET ed e' stata promossa con accordo esatto contro un
+// arbitro indipendente (data/SOSTA_PREREG3.md).
+let strGPS = [], strSel = null, strBooted = false;
+
+async function bootStrategia(){
+  const man = await prendi('data/manifest.json');
+  strGPS = man.map(g => g.gara);
+  el('n-str').textContent = strGPS.length + ' gare';
+  strSel = strGPS[strGPS.length - 1];
+  renderStrGpRow();
+  el('strgprow').addEventListener('click', e => {
+    const b = e.target.closest('.gp'); if (!b) return;
+    strSel = b.textContent; renderStrGpRow(); caricaStrategia();
+  });
+  caricaStrategia();
+}
+
+function renderStrGpRow(){
+  el('strgprow').innerHTML = strGPS.map(g =>
+    `<button class="gp${g===strSel?' on':''}">${g}</button>`).join('');
+}
+
+async function caricaStrategia(){
+  const box = el('stratbox');
+  el('strname').textContent = '· ' + strSel;
+  box.innerHTML = `<div class="st-vuoto">Carico ${strSel}…</div>`;
+  let gara, teamCol = {};
+  try {
+    gara = await prendi(`data/${encodeURIComponent(strSel)}.json`);
+  } catch(e){
+    box.innerHTML = `<div class="st-vuoto">Dati non disponibili per ${strSel}.</div>`; return;
+  }
+  // stessa tabella colori della pagina-gara (demo/team_colori.json): squadra senza colore
+  // -> grigio neutro, mai un colore inventato
+  try { teamCol = await prendi('team_colori.json'); } catch(e){}
+  const { stintDi } = await import('./sosta.mjs?v=250808a');
+  const { tyreColor } = await import('./timeline.mjs?v=250808a');
+
+  // per-pilota: {giro: cella}
+  const per = {};
+  for (const L of gara.laps)
+    for (const [sig, c] of Object.entries(L.cars)) (per[sig] ||= {})[L.lap] = c;
+
+  // ordine: chi ha fatto piu' giri, e a parita' chi li ha fatti prima (ordine d'arrivo)
+  const ultimo = sig => Math.max(...Object.keys(per[sig]).map(Number));
+  const cumFin = sig => per[sig][ultimo(sig)]?.cum_time ?? Infinity;
+  const piloti = Object.keys(per).sort((a,b) =>
+    (ultimo(b) - ultimo(a)) || (cumFin(a) - cumFin(b)));
+
+  const N = gara.n_laps;
+  const pct = L => (L - 1) / N * 100;
+  const mescole = new Set();
+  const righe = piloti.map((sig, i) => {
+    const st = stintDi(per[sig]);
+    if (!st.length) return '';
+    const team = per[sig][ultimo(sig)]?.team;
+    const col = (team && teamCol[team]) || 'var(--dim)';
+    const fasce = st.map(s => {
+      if (s.compound) mescole.add(s.compound);
+      const c = tyreColor(s.compound) || 'var(--dim)';
+      const bagnata = (s.compound === 'INTERMEDIATE' || s.compound === 'WET') ? ' bagnata' : '';
+      // `nuovo === false` = set gia' girato; `null` = non lo sappiamo, e non si finge
+      const usato = s.nuovo === false ? ' usato' : '';
+      const eta = s.etaIniziale == null ? '' :
+        (s.nuovo ? ' · set nuovo' : ` · set usato (${s.etaIniziale} giri)`);
+      const tit = `${(s.compound || 'mescola ignota').toLowerCase()} · giri ${s.da}–${s.a}`
+                + ` (${s.giri})${eta}${s.finito ? '' : ' · fino alla fine'}`;
+      return `<div class="st-stint${bagnata}${usato}" title="${tit}"`
+           + ` style="left:${pct(s.da)}%;width:${Math.max(pct(s.a + 1) - pct(s.da), 0.7)}%;background:${c}"></div>`;
+    }).join('');
+    const soste = st.filter(s => s.finito).map(s =>
+      `<div class="st-sosta" title="cambio gomme al giro ${s.a}" style="left:${pct(s.a + 1)}%"></div>`).join('');
+    return `<div class="st-riga"><span class="st-sig"><i style="background:${col}"></i>`
+         + `<span class="st-pos">${i + 1}</span>${sig}</span>`
+         + `<span class="st-barra">${fasce}${soste}</span></div>`;
+  }).join('');
+
+  const tacche = [1, Math.round(N / 4), Math.round(N / 2), Math.round(3 * N / 4), N];
+  box.innerHTML = righe
+    + `<div class="st-assi"><span></span><span class="sc">`
+    + tacche.map(L => `<span style="left:${pct(L)}%">${L}</span>`).join('') + `</span></div>`;
+
+  const ORD = ['SOFT','MEDIUM','HARD','INTERMEDIATE','WET'];
+  el('strleg').innerHTML =
+    [...mescole].sort((a,b) => ORD.indexOf(a) - ORD.indexOf(b)).map(m =>
+      `<i><span class="sw" style="background:${tyreColor(m)||'var(--dim)'}"></span>${m.toLowerCase()}</i>`).join('')
+    + `<i><span class="sw" style="background:var(--dim);background-image:repeating-linear-gradient(45deg,rgba(0,0,0,.34) 0 3px,transparent 3px 6px)"></span>set usato</i>`
+    + `<i><span class="sw" style="background:var(--ink);width:2px"></span>cambio gomme</i>`;
+}
+
+const tabs=[{b:'t-art',p:'panel-articoli'},{b:'t-tel',p:'panel-telemetria'},{b:'t-str',p:'panel-strategia'}];
 let teleBooted=false;
 function select(id){
   tabs.forEach(t=>{ const on=t.b===id;
     el(t.b).setAttribute('aria-selected',on); el(t.p).hidden=!on; });
   if (id==='t-tel' && !teleBooted){ teleBooted=true; bootTelemetria(); }
+  if (id==='t-str' && !strBooted){ strBooted=true; bootStrategia(); }
 }
 tabs.forEach(t=>el(t.b).addEventListener('click',()=>select(t.b)));
 
-// deep-link: analisi.html#telemetria apre la scheda Telemetria
+// deep-link: analisi.html#telemetria / #strategia aprono la scheda giusta
 if (location.hash.replace('#','')==='telemetria') select('t-tel');
+if (location.hash.replace('#','')==='strategia') select('t-str');
 bootArticoli();
 </script>
 </body>

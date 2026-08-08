@@ -199,3 +199,18 @@ jobs:
       # misurato dallo status per-auto si sovrappongano sempre.
       - name: Nessun evento di regime si perde fra il race control e la pagina
         run: python3 test_rc_feed.py
+
+      # UNA DEFINIZIONE DI SOSTA, E RESTA UNA. La vista stint si costruisce sul cambio di
+      # SET (demo/sosta.mjs), non sul contatore `stint` grezzo, che avanza a ogni transito
+      # in corsia anche senza montare niente: a Monaco disegnerebbe cinque stint dove ce ne
+      # sono due. La definizione e' promossa in data/SOSTA_PREREG3.md con accordo ESATTO
+      # contro un arbitro indipendente (i campi Compound/TyreLife di FastF1, congelati in
+      # data/soste_fastf1_2026.json), e questi due passi sorvegliano quell'accordo: il
+      # primo la versione Python, il secondo quella JavaScript che gira in produzione.
+      # Girano ENTRAMBI perche' una definizione in due lingue sono due definizioni che
+      # aspettano di divergere (E12).
+      - name: La definizione di sosta regge contro l'arbitro indipendente (Python)
+        run: python3 test_sosta.py --sentinella
+
+      - name: La stessa definizione, in JavaScript, non e' derivata
+        run: node demo/test_sosta.mjs

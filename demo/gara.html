@@ -739,44 +739,13 @@ function setPlayIcon(playing){ const b=el('play'); b.textContent=playing?'❚❚
 
 // --- strip strategia: stint da (stint, compound) per-giro, pit dai flag in_lap ---
 // Dati gia' nei JSON gara: nessun calcolo nuovo, solo raggruppamento per la vista.
-function buildStrat(){
-  const ordine = classificaAt(race.n_laps, 1);          // ordine d'arrivo (fine ultimo giro) + coda
-  const righe = [];
-  for (const r of ordine){
-    const d = r.drv, fine = lastLap[d];
-    if (fine === undefined) continue;                   // mai in pista (NP senza giri)
-    const seg = []; let cur = null;
-    for (let L=1; L<=fine; L++){
-      const c = race.byLap[L]?.[d]; if (!c) continue;
-      const k = `${c.stint}|${c.compound}`;
-      if (!cur || cur.k !== k){ if(cur) seg.push(cur); cur = {k, da:L, a:L, compound:c.compound}; }
-      else cur.a = L;
-    }
-    if (cur) seg.push(cur);
-    if (!seg.length) continue;
-    // tacche pit arricchite: giro, durata (etichetta per semantica), gomme prima/dopo —
-    // ogni pezzo solo se il dato esiste, mai stime
-    const pits = [];
-    for (let L=1; L<=fine; L++) if (race.byLap[L]?.[d]?.in_lap){
-      const dur = (stopsGara[d]||[]).find(s=>s.giro===L)?.durata_s ?? null;
-      const prima = race.byLap[L]?.[d]?.compound, dopo = race.byLap[L+1]?.[d]?.compound;
-      const info = [`giro ${L}`,
-                    (typeof dur==='number') ? `${etichettaStop} ${dur.toFixed(1).replace('.',',')}s` : null,
-                    (prima&&dopo) ? `${prima.toLowerCase()} → ${dopo.toLowerCase()}` : null]
-                   .filter(Boolean).join(' · ');
-      pits.push({L, info});
-    }
-    const pct = L => (L-1)/(race.n_laps-1)*100;
-    const bar = seg.map(s=>{
-      const col = tyreColor(s.compound) || 'var(--dim)';
-      const wet = (s.compound==='INTERMEDIATE'||s.compound==='WET') ? ' wetb' : '';
-      const w = Math.max(pct(s.a)-pct(s.da) + 100/(race.n_laps-1), 0.8);
-      return `<div class="stint${wet}" title="${s.compound||'?'} giri ${s.da}–${s.a}" style="left:${pct(s.da)}%;width:${w}%;background:${col}"></div>`;
-    }).join('') + pits.map(p=>`<div class="pitt" title="${p.info}" data-info="${p.info}" data-pct="${pct(p.L)}" style="left:${pct(p.L)}%"></div>`).join('');
-    righe.push(`<div class="riga" data-drv="${d}"><span class="sig"><i style="background:${coloreTeam(r.team)}"></i><span class="rnum" style="color:${coloreTeam(r.team)}">${numDi[d] ?? ''}</span>${d}</span><span class="barra">${bar}</span></div>`);
-  }
-  el('stratRighe').innerHTML = righe.join('');
-}
+// buildStrat() e' stata RIMOSSA l'08/08/2026. La vista stint ora esiste davvero, in
+// analisi.html#strategia, ed e' costruita sulla definizione unica di sosta
+// (demo/sosta.mjs). Questa copia raggruppava per `${stint}|${compound}`, cioe' sul
+// contatore grezzo: a Monaco avrebbe disegnato cinque stint dove ce ne sono due.
+// Era orfana da mesi (scriveva in #stratRighe, un id che il markup non ha piu').
+// Tenerla viva accanto a quella nuova sarebbe stata una seconda definizione della
+// stessa cosa, che e' l'errore E12 del catalogo.
 // (rimossi con la ripulitura gara: il tooltip della strip strategia-gomme.)
 function mostraVista(quale){                 // 'clas' | 'strat' | 'uff' — dead code (nessun tab)
   if (quale === true) quale = 'strat'; if (!quale) quale = 'clas';
