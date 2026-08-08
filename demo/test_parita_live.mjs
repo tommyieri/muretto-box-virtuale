@@ -38,7 +38,8 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { creaByLapLive } from './live_bylap.mjs';
-import { rispostaLive, garaDaLive, contestoDa } from './ponte_live.mjs';
+import { rispostaLive, garaDaLive, contestoDa, rigiocaLive } from './ponte_live.mjs';
+import { simDaRigioca } from './fantasma_sim.mjs';
 import { rispostaPer } from './vendor/simulatore/motore/scenario/risposta.mjs';
 import { indicizza } from './vendor/simulatore/motore/provenienza/gare_indice.mjs';
 
@@ -207,6 +208,50 @@ console.log('\nprova di identita\' (stesse celle a entrambi i percorsi) — qui 
   esito(diversi === SOGLIA.identita_su_stesse_celle,
     'a parita\' di celle, diretta e pre-calcolo danno la STESSA risposta campo per campo',
     `diversi ${diversi}/${confrontati}${primoDiverso.length ? ' — ' + primoDiverso.join(', ') : ''}`);
+}
+
+// ── (e) il BOX ORA in diretta: rigiocaLive porta la gara alla BANDIERA ──────
+// Il guasto grave del vecchio flusso (dichiarato dal PO il 08/08) era la gara
+// che si fermava alla sosta. Qui si prova, sul flusso vero di Spa troncato al
+// congelamento (in diretta i giri dopo non esistono), che un piano MULTI-SOSTA
+// viene approvato e che la traccia arriva all'ultimo giro — e che l'adattatore
+// di scena la sa mettere in pista.
+{
+  console.log("\nIL RIGIOCA IN DIRETTA (BOX ORA) — multi-sosta, fino alla bandiera\n");
+  const Lf = indice.primo_giro + 10;
+  const bl = troncato(Lf);
+  const soste = [
+    { giro: Lf + 1, mescola: 'MEDIUM' },
+    { giro: Math.min(Lf + 15, nGiriGara - 1), mescola: 'HARD' },
+  ];
+  let provato = null;
+  for (const drv of Object.keys(indice.piloti).sort()) {
+    let esitoRun;
+    try {
+      esitoRun = rigiocaLive({ byLap: bl, nGiriGara, nomeGara: GARA_SITO,
+        pilota: drv, freezeLap: Lf, contestoLive, soste });
+    } catch (_) { continue; }
+    if (!esitoRun.direttore.approved) continue;
+    provato = { drv, ...esitoRun };
+    break;
+  }
+  esito(!!provato, 'almeno un pilota ha un piano a due soste approvato dal Director',
+    provato ? `${provato.drv}@${Lf}, soste ai giri ${soste.map((x) => x.giro).join(' e ')}` : 'nessuno');
+  if (provato) {
+    const passi = provato.risultato.traccia[provato.drv] ?? [];
+    const ultimo = passi.length ? passi[passi.length - 1].lap : null;
+    esito(ultimo === nGiriGara, 'la gara rigiocata arriva alla BANDIERA, non alla sosta',
+      `ultimo giro in traccia ${ultimo} · gara ${nGiriGara}`);
+    const inLap = passi.filter((x) => x.in_lap === true).map((x) => x.lap);
+    esito(soste.every((x) => inLap.includes(x.giro)), 'tutte e due le soste del piano sono in traccia',
+      `in_lap ai giri ${inLap.join(', ')}`);
+    esito(provato.risultato.ordine.includes(provato.drv), 'il pilota e\' classificato all\'arrivo proiettato');
+    const sim = simDaRigioca({ risultato: provato.risultato, race: { byLap: bl },
+      pilota: provato.drv, freeze: Lf });
+    esito(!!sim && sim.laps[sim.laps.length - 1] === nGiriGara,
+      'l\'adattatore di scena copre la proiezione fino all\'ultimo giro',
+      sim ? `giri ${sim.laps[0]}–${sim.laps[sim.laps.length - 1]}` : 'sim nullo');
+  }
 }
 
 console.log(falliti ? `\nPARITA' ROTTA: ${falliti} controlli falliti.` : '\nparita\' verificata.');

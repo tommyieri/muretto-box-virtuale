@@ -112,6 +112,35 @@ australia.byLap = byLapDa(australia);
   if (!/BOX ORA/.test(gara)) fallisci('gara.html non offre più il comando BOX ORA');
   if (!/ese_vista\.mjs/.test(gara)) fallisci('gara.html non usa la vista condivisa ese_vista.mjs');
   if (/id="eseBtn"|Guarda la sosta/.test(gara)) fallisci('gara.html ha ancora pezzi del doppio flusso vecchio');
+  // il guasto pagato il 08/08: la ricostruzione cancellò la definizione di
+  // renderGaraTorre lasciandone il riferimento in avviaScena — il tag prometteva
+  // la scena e la scena moriva su un ReferenceError. Ogni callback passata a
+  // creaGhostPlay deve avere la sua definizione nella stessa pagina.
+  for (const m of gara.matchAll(/onTower:\s*([A-Za-z_$][\w$]*)/g)) {
+    if (!new RegExp(`function ${m[1]}\\(`).test(gara)) {
+      fallisci(`gara.html: onTower usa ${m[1]} ma la funzione non è definita nella pagina`);
+    }
+  }
+}
+
+// (h) — il BOX ORA in DIRETTA (live.html): stesso comando, ma proiezione
+// dichiarata — niente informazione dal futuro, e l'onestà sta nell'etichetta.
+{
+  const live = readFileSync(path.join(qui, 'live.html'), 'utf8');
+  if (!/BOX ORA/.test(live)) fallisci('live.html non offre più il comando BOX ORA');
+  if (!/rigiocaLive/.test(live)) fallisci('live.html non usa rigiocaLive dal ponte');
+  if (!/i rivali non reagiscono/.test(live)) fallisci('live.html: la proiezione non dichiara più «i rivali non reagiscono»');
+  if (!/~6 giri/.test(live)) fallisci('live.html: l\'orizzonte validato (~6 giri) non è più dichiarato');
+  if (/Guarda la sosta|id="mu-sim"/.test(live)) fallisci('live.html ha ancora pezzi del doppio flusso vecchio');
+  for (const m of live.matchAll(/onTower:\s*([A-Za-z_$][\w$]*)/g)) {
+    if (!new RegExp(`function ${m[1]}\\(`).test(live)) {
+      fallisci(`live.html: onTower usa ${m[1]} ma la funzione non è definita nella pagina`);
+    }
+  }
+  // che in DIRETTA il futuro non entri (niente ingressi da laboratorio in
+  // live.html) lo vieta gia' s25_difesa (k), che scandisce tutto demo/: qui
+  // sarebbe una seconda copia del divieto, e pure una che fa scattare s25
+  // scrivendone i letterali (pagato il 08/08).
 }
 
 if (errori === 0) console.log('test_ese: verde (soste vere, arrivo, pipeline, bracci distinti, assunzione dichiarata, onestà in pagina)');

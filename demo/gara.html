@@ -1025,6 +1025,26 @@ async function boxOra(){
     conta('box_ora');
   } finally { el('boxBtn').disabled = false; }
 }
+// LA TORRE DELLA SCENA. La ricostruzione del 08/08 l'aveva cancellata insieme al
+// vecchio blocco fantasma, ma `avviaScena` la passava ancora a creaGhostPlay: il
+// tag diceva «la gara CONTINUA» e la scena moriva li', su un ReferenceError. Il
+// collaudo guardava le sonde sincrone dell'adattatore, non il click intero — e' il
+// pezzo che il click attraversa. Nella scena rigiocata gomma/eta' REALI si tacciono
+// (simEse): sarebbero i dati di un'altra gara.
+function renderGaraTorre(righe, meta){
+  const presenti = new Set(righe.map(r=>r.drv));
+  righe.forEach((r,i)=>{
+    const st = simEse ? null : race.byLap[meta.lap]?.[r.drv];
+    paintRow({pos:r.pos, drv:r.drv, team:teamOfR[r.drv], compound:st?.compound, age:st?.tyre_age,
+      et:r.gapTxt, cls:r.gapCls, prev:null, inlap:r.inPit, outlap:false,
+      monta:null, stopDur:null, leader:r.leader, selectable:false, st:''}, i);
+  });
+  for(const d in rowEls) rowEls[d].root.style.display = presenti.has(d) ? '' : 'none';
+  el('lapLabel').textContent = meta.lap;
+  const pct=((meta.p ?? meta.lap)-1)/race.n_laps*100;
+  el('evtlCur').style.left=pct+'%'; el('evtlFatto').style.width=pct+'%';
+  el('evtl').setAttribute('aria-valuenow', meta.lap);
+}
 function avviaScena(giroSosta){
   const mio = STRAT.esiti.mio;
   const sim = simDaRigioca({ risultato: mio.risultato, race, pilota: selDrv, freeze: STRAT.freeze });

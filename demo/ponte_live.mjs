@@ -37,6 +37,7 @@
 import { creaCella } from './vendor/simulatore/motore/provenienza/contratto.mjs';
 import { indicizza } from './vendor/simulatore/motore/provenienza/gare_indice.mjs';
 import { rispostaPer } from './vendor/simulatore/motore/scenario/risposta.mjs';
+import { costruisciScenario, eseguiEValida } from './vendor/simulatore/motore/scenario/costruttore.mjs';
 
 export const LIMITI_LIVE = Object.freeze({
   stato_track_wide: Object.freeze({
@@ -275,4 +276,29 @@ export function rispostaLive({ byLap, nGiriGara, nomeGara, pilota, freezeLap, co
   } catch (e) {
     return { freeze_lap: freezeLap, senza_risposta: e.message };
   }
+}
+
+/**
+ * LA GARA SI GIOCA IN DIRETTA (08/08/2026, stessa decisione di gara.html: un
+ * solo comando, BOX ORA). `soste` e' il piano dell'utente (giri > freezeLap).
+ *
+ * A differenza del rigioca del replay (demo/ese.mjs, che e' una DEROGA a s25 e
+ * monta soste vere, ritiri veri e Safety Car vere dei rivali), qui NON entra
+ * nessuna informazione dal futuro: il futuro non e' ancora successo. E' la
+ * PROIEZIONE del motore — i rivali non reagiscono, e oltre l'orizzonte
+ * validato (~6 giri, ai_lab/REGISTRO_F1.md) non e' misurata. Chi mette in
+ * scena questo risultato lo scrive accanto, sempre.
+ */
+export function rigiocaLive({ byLap, nGiriGara, nomeGara, pilota, freezeLap, contestoLive, soste }) {
+  const nome = nomeSimulatore(nomeGara);
+  const gara = garaDaLive(byLap, nGiriGara, {
+    tolleranzaCum: contestoLive?.limiti?.tolleranza_cum_s?.valore ?? null,
+  });
+  const { contesto } = contestoDa(contestoLive, nome, gara);
+  const scenario = costruisciScenario(
+    { gara: nome, freezeLap, pilota, piano: soste },
+    { ...contesto, giroFinale: nGiriGara },
+  );
+  const { risultato, direttore } = eseguiEValida(scenario, contesto.costantiDirector);
+  return { scenario, risultato, direttore };
 }
