@@ -66,7 +66,6 @@ PAGINE_FISSE = [
     ("statistiche.html", "0.8"),
     ("classifiche.html", "0.7"),
     ("live.html", "0.6"),
-    ("ese.html", "0.7"),
     ("forza.html", "0.7"),
     ("dati.html", "0.7"),
     ("statistiche-piloti.html", "0.6"),
@@ -107,10 +106,9 @@ PAGINE_FISSE = [
 NAV = [
     ("Stagione", "stagione.html"),
     ("Live", "live.html"),
-    # «E se?» (07/08/2026): la gara finita si rigioca col motore vero nel browser.
-    # E' la prima voce di prodotto che SIMULA per l'utente, e sta fra Live e Analisi
-    # perche' e' un modo di guardare la gara, non una statistica.
-    ("E se?", "ese.html"),
+    # La voce «E se?» e' VISSUTA UN GIORNO (07-08/08/2026): il PO ha deciso che la
+    # simulazione non e' una pagina accanto alle gare, E' il modo in cui si guarda
+    # una gara — il rigioca vive dentro gara.html (BOX ORA), la pagina separata no.
     ("Analisi", "analisi.html"),
     ("Statistiche", "statistiche.html"),
 ]
@@ -121,7 +119,6 @@ NAV = [
 SEZIONE_DI = {
     "stagione.html": "stagione.html",
     "live.html": "live.html",
-    "ese.html": "ese.html",
     "analisi.html": "analisi.html",
     "classifiche.html": "statistiche.html",
     "statistiche.html": "statistiche.html",

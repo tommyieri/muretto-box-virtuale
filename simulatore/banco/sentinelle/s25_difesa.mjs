@@ -482,13 +482,13 @@ const d = riassunto.difesa;
   const ese = readFileSync(path.join(radice, '..', 'demo', 'ese.mjs'), 'utf8');
   b.verifica('ese.mjs documenta la deroga nominando questa sentinella', /DEROGA/.test(ese) && /s25/.test(ese));
   b.verifica('...e si dichiara controfattuale, non previsione', /controfattuale/i.test(ese) && /non una previsione/i.test(ese));
-  const eseHtml = readFileSync(path.join(radice, '..', 'demo', 'ese.html'), 'utf8');
-  b.verifica('ese.html rende l\'avvertenza «informazione dal futuro» in un blocco sempre visibile',
-    /informazione dal futuro/i.test(eseHtml) && /class="ese-onesta"/.test(eseHtml));
-  // dal 08/08 il rigioca vive anche DENTRO la pagina gara: stessa deroga, stessa
-  // condizione — l'avvertenza deve stare dove il run si lancia
+  // La pagina ese.html E' VISSUTA UN GIORNO (07-08/08): il PO ha deciso che il
+  // rigioca non e' una pagina accanto alle gare, e' il modo in cui si guarda una
+  // gara — vive in gara.html (BOX ORA). La deroga resta su ese.mjs (il motore del
+  // rigioca) e la condizione resta la stessa: l'avvertenza deve stare dove il run
+  // si lancia.
   const garaHtml = readFileSync(path.join(radice, '..', 'demo', 'gara.html'), 'utf8');
-  b.verifica('gara.html (E se? in pagina) rende la stessa avvertenza sempre visibile',
+  b.verifica('gara.html (BOX ORA) rende l\'avvertenza «informazione dal futuro» sempre visibile',
     /informazione dal futuro/i.test(garaHtml) && /class="ese-onesta"/.test(garaHtml));
 }
 

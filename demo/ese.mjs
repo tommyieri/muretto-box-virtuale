@@ -88,6 +88,26 @@ export function arrivoRealeDa(race) {
  * verdi minimi; se non si trova entro `max`, si restituisce l'ultimo errore —
  * un rifiuto parlante, non un numero inventato (regola 6).
  */
+/**
+ * IL CONGELAMENTO VICINO ALLA SOSTA (08/08, per il BOX ORA): il piu' TARDI
+ * possibile prima del giro scelto — cosi' la storia che l'utente ha appena
+ * visto scorrere e' quella VERA fino a un giro dalla sosta, e la scena riparte
+ * senza salti. Si scende da giroSosta-1 verso min finche' il motore ha un
+ * passo per il pilota (stesso criterio di scegliCongelamento).
+ */
+export function congelamentoPer({ nome, contesto, pilota, giroSosta, min = 5 }) {
+  let ultimo = null;
+  for (let Lf = Math.max(min, giroSosta - 1); Lf >= min; Lf -= 1) {
+    try {
+      const scenario = costruisciScenario({ gara: nome, freezeLap: Lf, pilota }, { ...contesto, giroFinale: Lf + 1 });
+      const { risultato } = eseguiEValida(scenario, contesto.costantiDirector);
+      if (typeof risultato.cum[pilota] === 'number') return { freezeLap: Lf, motivo: null };
+      ultimo = `al giro ${Lf} il pilota non ha un passo base`;
+    } catch (e) { ultimo = e.message; }
+  }
+  return { freezeLap: null, motivo: ultimo };
+}
+
 export function scegliCongelamento({ nome, contesto, pilota, min = 5, max = 15 }) {
   let ultimo = null;
   for (let Lf = min; Lf <= max; Lf += 1) {

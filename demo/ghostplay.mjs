@@ -158,7 +158,7 @@ export function classificaSim(C, p, opts = {}) {
 //   fase 2  giro-risposta -> bandiera: solo su richiesta (continua()). È una PROIEZIONE —
 //           i rivali non reagiscono — e va detto. Senza giroRisposta: una fase sola, fino in fondo.
 export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro,
-                                giroRisposta = null, durataTot = 16 }) {
+                                giroRisposta = null, durataTot = 16, p0 = null }) {
   const C = costruisciCum(sim);
   const FE = pista?.pitFrazioni?.ingresso ?? 0.95, FX = pista?.pitFrazioni?.uscita ?? 0.05;
   const opts = { driver: sim.driver, pitLap: sim.pitLap, FE, FX };
@@ -172,7 +172,10 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro
   const giriRest = Math.max(1, pMaxPieno - pMin);
   const lapSec = Math.min(1.2, Math.max(0.35, durataTot / giriRest));
   const DWELL_S = 1.3;                     // sosta ferma ai box, per rendere visibile il pit stop
-  let p = pMin, raf = null, last = null, vivo = false, fase = 1;
+  // p0 (08/08): la scena puo' PARTIRE da un giro arbitrario — serve al BOX ORA di
+  // gara.html, dove la sosta si aggiunge mentre la gara scorre e la scena riparte
+  // dal giro corrente, non dal congelamento. Assente = comportamento di sempre.
+  let p = (p0 != null ? Math.min(Math.max(p0, pMin), pMaxPieno) : pMin), raf = null, last = null, vivo = false, fase = 1;
   let ghostInPit = false, dwelled = false, dwelling = false, dwellAcc = 0;
 
   function frame(T) {
@@ -213,6 +216,7 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro
     continua() { fase = 2; if (vivo) return; vivo = true; last = null; raf = requestAnimationFrame(step); },  // fino alla bandiera (proiezione)
     riparti() { this.stop(); p = pMin; fase = 1; this.play(); },
     get playing() { return vivo; },
+    get posizione() { return p; },   // il giro-frazionario corrente della scena (per aggiungere soste al volo)
     get haRientro() { return giroRisp != null; },
     _C: C,   // per i test
   };
