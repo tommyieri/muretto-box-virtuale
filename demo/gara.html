@@ -575,7 +575,7 @@ function buildGrid(){
   for(const d of tutti){
     const row=document.createElement('div'); row.className='row'; row.dataset.drv=d;
     // la sigla e' un link alla scheda pilota (stopPropagation: il resto della riga apre il pit)
-    row.innerHTML=`<span class="tbar"></span><span class="pos"></span>`
+    row.innerHTML=`<span class="tbar"></span><span class="pos"></span><span class="dpos"></span>`
       +`<span class="idn"><span class="l1"><span class="rnum"></span><span class="drv"><a href="scheda.html?sigla=${d}" title="scheda pilota">${d}</a></span><span class="box" style="display:none"></span><span class="penb" style="display:none"></span></span><span class="team"></span></span>`
       +`<span class="gaps"><span class="gap"></span><span class="gapprev"></span></span>`
       +`<span class="tyreb"><span class="dot"></span><span class="age"></span></span>`;
@@ -591,6 +591,7 @@ function buildGrid(){
     });
     g.appendChild(row);
     rowEls[d]={root:row, tbar:row.querySelector('.tbar'), pos:row.querySelector('.pos'),
+               dpos:row.querySelector('.dpos'),
                num:row.querySelector('.rnum'),
                team:row.querySelector('.team'), box:row.querySelector('.box'),
                pen:row.querySelector('.penb'),
@@ -654,7 +655,13 @@ function classificaAt(L, f){
       if (g.box==='in') monta = race.byLap[g.lap+1]?.[drv]?.compound || null;
       stopDur = (stopsGara[drv]||[]).find(s=>s.giro===Lin)?.durata_s ?? null;
     }
-    return {pos:i+1,drv,team:c.team,compound:st.compound,age:st.tyre_age,et,cls,prev,
+    // POSIZIONI GUADAGNATE dalla partenza: il confronto e' con la GRIGLIA, non con
+    // l'arrivo — a meta' gara l'arrivo non e' ancora successo, e usarlo vorrebbe dire
+    // leggere il futuro. Chi non era in griglia (partito dalla pit lane, o assente)
+    // non ha un termine di paragone: null, non zero.
+    const iGr = gridGara.indexOf(drv);
+    const dgr = (faseGriglia || iGr < 0) ? null : (iGr + 1) - (i + 1);
+    return {pos:i+1,drv,team:c.team,compound:st.compound,age:st.tyre_age,et,cls,prev,dgr,
             inlap:boxNow,outlap:outNow,monta,stopDur,leader:i===0,selectable:true};
   });
   const inGara=new Set(ordine.map(([d])=>d));
@@ -688,6 +695,12 @@ function paintRow(r, i){
   if(e.num.textContent!==nd) e.num.textContent=nd;
   e.num.style.color=coloreTeam(r.team);
   if(e.pos.textContent!==String(r.pos)) e.pos.textContent=r.pos;
+  if (e.dpos){
+    const d=r.dgr;
+    const txt = (d==null||d===0) ? '' : (d>0 ? `\u25B2${d}` : `\u25BC${-d}`);
+    if (e.dpos.textContent!==txt) e.dpos.textContent=txt;
+    e.dpos.className='dpos'+(d>0?' su':(d<0?' giu':''));
+  }
   if(e.team.textContent!==(r.team||'')) e.team.textContent=r.team||'';
   e.gap.textContent=r.et; e.gap.className='gap '+(r.cls|| (r.st?'stato':''));
   // ai box: la seconda riga racconta lo stop (durata etichettata per semantica + gomma
@@ -765,44 +778,13 @@ function setPlayIcon(playing){ const b=el('play'); b.textContent=playing?'❚❚
 // Tenerla viva accanto a quella nuova sarebbe stata una seconda definizione della
 // stessa cosa, che e' l'errore E12 del catalogo.
 // (rimossi con la ripulitura gara: il tooltip della strip strategia-gomme.)
-function mostraVista(quale){                 // 'clas' | 'strat' | 'uff' — dead code (nessun tab)
-  if (quale === true) quale = 'strat'; if (!quale) quale = 'clas';
-  el('vistaClas').hidden = quale!=='clas';
-  el('vistaStrat').hidden = quale!=='strat';
-  el('vistaUff').hidden = quale!=='uff';
-  for (const [id,k] of [['tabClas','clas'],['tabStrat','strat'],['tabUff','uff']]){
-    el(id).classList.toggle('on', quale===k);
-    el(id).setAttribute('aria-selected', String(quale===k));
-  }
-}
-
-// --- doppia vista finale "in pista | ufficiale" (race control livello 1) ---
-// In pista = ordine dei dati demo (giri desc, cum finale asc: quello che il replay mostra).
-// Ufficiale = classifica FIA RIPORTATA da ufficiali_2026.json (fonte di classifica, non
-// rettifica: verdetto RC2 in REPORT_RACE_CONTROL.md). Frecce = scostamento tra le due.
-function buildUfficiale(){
-  const ha = !!(ufficGara?.classifica?.length);
-  el('tabUff').style.display = ha ? '' : 'none';
-  if (!ha){ if(!el('vistaUff').hidden) mostraVista('clas'); el('uffTab').innerHTML=''; return; }
-  const cum={}, laps={};
-  for (const lp of race.laps) for (const [d,c] of Object.entries(lp.cars))
-    if (typeof c.cum_time==='number' && !race.nonParten.has(d)){ cum[d]=c.cum_time; laps[d]=lp.lap; }
-  const pista = Object.keys(cum).sort((a,b)=>(laps[b]-laps[a])||(cum[a]-cum[b]));
-  const posPista = {}; pista.forEach((d,i)=>posPista[d]=i+1);
-  const righe = ufficGara.classifica.filter(r=>posPista[r.pilota]).map(r=>{
-    const pp = posPista[r.pilota], delta = pp - r.pos;
-    const pens = penPil[r.pilota] || [];
-    const badge = pens.length ? `<span class="penb on">+${pens.reduce((s,p)=>s+p.secondi,0)}s</span>` : '';
-    const fr = delta===0 ? '' : (delta>0 ? `<span class="su">&#9650; ${delta}</span>`
-                                          : `<span class="giu">&#9660; ${-delta}</span>`);
-    const st = /finish/i.test(r.status) ? '' : `<span class="stat">${r.status.toLowerCase()}</span>`;
-    return `<div class="uffr${r.pos===11?' primafuori':''}${pens.length?' conpen':''}">
-      <span class="pp">P${pp}</span><span class="sig"><i style="background:${coloreTeam(teamOfR?.[r.pilota] ?? teams[r.pilota])}"></i><span class="rnum" style="color:${coloreTeam(teamOfR?.[r.pilota] ?? teams[r.pilota])}">${numDi[r.pilota] ?? ''}</span>${r.pilota}</span>
-      <span class="pb">${badge}</span><span class="pu">P${r.pos}</span><span class="fr">${fr}</span>${st}</div>`;
-  }).join('');
-  el('uffTab').innerHTML = `<div class="uffr testa"><span class="pp">in pista</span><span class="sig">pilota</span>
-    <span class="pb">penalit&agrave;</span><span class="pu">ufficiale</span><span class="fr"></span></div>` + righe;
-}
+// mostraVista() e buildUfficiale() sono state RIMOSSE il 09/08/2026. Erano codice morto
+// dichiarato: nessuno le chiamava, e riferivano id (vistaUff, uffTab, tabClas, tabStrat)
+// spariti dal markup con la ripulitura del 25/07 — se qualcuno le avesse invocate
+// sarebbero esplose su el(...).hidden di null. Portavano anche la SECONDA resa delle
+// posizioni guadagnate/perse: quella viva ora sta nella torre (campo dgr), e confronta
+// con la GRIGLIA invece che con l'arrivo, perche' a meta' gara l'arrivo non e' ancora
+// successo. La doppia vista «in pista | ufficiale» resta fuori dalla pagina-gara.
 
 // --- esplorazione pit: la risposta non si calcola qui, si LEGGE dalla vista
 //     pre-calcolata del simulatore (vistaDi -> mostraRisposta) ---

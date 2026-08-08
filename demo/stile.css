@@ -446,6 +446,13 @@ a.gpcard:hover::after { right: 0; }
 .row.leader { background: rgba(255,210,78,.05); }
 .tbar { position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--dim); }
 .pos { color: var(--dim); font-family: var(--mono); font-variant-numeric: tabular-nums; font-size: 13px; }
+/* POSIZIONI GUADAGNATE dalla partenza. Fuori dal flusso della griglia (come .tbar): la
+   riga ha quattro colonne e aggiungerne una quinta le avrebbe spostate tutte. Vuoto
+   quando il pilota non era in griglia o non ha guadagnato niente — mai uno zero finto. */
+.dpos { position: absolute; left: 13px; bottom: 5px; font: 700 9px/1 var(--mono);
+  letter-spacing: -.02em; color: transparent; }
+.dpos.su { color: #43c463; }
+.dpos.giu { color: #ff6b7a; }
 .idn { display: flex; flex-direction: column; gap: 1px; min-width: 0; overflow: hidden; }
 .idn .l1 { display: flex; align-items: baseline; gap: 7px; }
 .drv { font-weight: 700; letter-spacing: .4px; font-size: 14px; }

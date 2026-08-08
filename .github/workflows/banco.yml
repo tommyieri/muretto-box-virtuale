@@ -225,3 +225,12 @@ jobs:
       # si vede a occhio per settimane: qui esce 1 al primo campione che non torna.
       - name: L'orologio unificato non ha cambiato il replay
         run: node demo/test_orologio.mjs
+
+      # UN CANALE DISEGNATO SULLA PISTA sembra giusto anche quando e' sbagliato: i colori
+      # sono belli comunque e nessuno vede che la frenata e' cento metri piu' in la'. Questi
+      # cancelli guardano la fisica — in frenata si rallenta, gas e freno non convivono, la
+      # velocita' di punta di un pilota non si scosta dal campo — e sono gli stessi che
+      # hanno fatto declinare l'Ungheria, dove la deriva del feed di posizione sfasa i
+      # canali (gas e freno insieme nel 13,8% dei punti contro lo 0,2-3% normale).
+      - name: La telemetria e ancorata al tracciato davvero
+        run: python3 test_tele_giro.py
