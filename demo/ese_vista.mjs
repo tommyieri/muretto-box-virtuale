@@ -6,7 +6,7 @@
 // grafico, assunzioni. La fisica resta in ese.mjs (che chiama il costruttore
 // unico); se qui comparisse un numero calcolato, sarebbe la seconda fisica.
 
-import { rigioca, posizioniPerGiro, MESCOLE_EDITOR } from './ese.mjs?v=080826a';
+import { rigioca, posizioniPerGiro, MESCOLE_EDITOR } from './ese.mjs?v=080826b';
 
 export { MESCOLE_EDITOR };
 

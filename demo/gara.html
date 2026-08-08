@@ -29,6 +29,15 @@
     letter-spacing:.4px; text-transform:uppercase; cursor:pointer; transition:filter .15s, transform .05s; }
   .simbtn:hover{ filter:brightness(1.08); } .simbtn:active{ transform:translateY(1px); }
   .simbtn[hidden]{ display:none; }
+  .mesc-chips{ display:flex; gap:.4rem; margin:.3rem 0 .35rem; }
+  .mesc-chips .chip{ flex:1; border:1px solid rgba(255,255,255,.22); background:transparent; color:var(--txt,#e9edf3);
+    border-radius:8px; padding:.42rem 0; font:800 11px var(--mono,ui-monospace,monospace); letter-spacing:.5px;
+    text-transform:uppercase; cursor:pointer; }
+  .mesc-chips .chip.on{ border-color:#22c55e; background:rgba(34,197,94,.14); color:#bbf7d0; }
+  .stratlist{ font:600 11px/1.5 var(--mono,ui-monospace,monospace); color:#9aa4b2; margin:.25rem 0; min-height:1em; }
+  .muretto-det{ margin-top:.5rem; border-top:1px solid rgba(255,255,255,.08); padding-top:.4rem; }
+  .muretto-det summary{ cursor:pointer; font:700 10.5px var(--mono,ui-monospace,monospace); letter-spacing:.5px;
+    text-transform:uppercase; color:#8a94a2; }
   .esebtn{ display:block; width:100%; margin:.35rem 0 .2rem; padding:.55rem .8rem; border:1px solid rgba(96,165,250,.55);
     border-radius:9px; background:rgba(96,165,250,.10); color:#bfdbfe; font:800 12px/1 var(--mono,ui-monospace,monospace);
     letter-spacing:.4px; text-transform:uppercase; cursor:pointer; }
@@ -62,7 +71,6 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
   <nav class="nav" aria-label="Sezioni">
     <a href="stagione.html">Stagione</a>
     <a href="live.html"><span class="dot-live"></span>Live</a>
-    <a href="ese.html">E se?</a>
     <a href="analisi.html">Analisi</a>
     <a href="statistiche.html">Statistiche</a>
   </nav>
@@ -130,59 +138,38 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
           <h3 id="pitTitle">Pit</h3>
           <button class="chiudi" id="pitChiudi" title="Chiudi esplorazione pit">&#10005;</button>
         </div>
-        <!-- IL BOX. Prima qui c'era uno slider "pit al giro N", e DUPLICAVA la barra dei
-             giri: portare il cursore al giro 20 e premere BOX fa la stessa domanda. Era
-             anche la causa del bug del "pit nel passato" (pannello aperto al giro 28,
-             gara avanzata al 35, e si continuava a chiedere del 28). Un comando solo. -->
-        <button type="button" class="boxbtn" id="boxBtn">BOX <span id="boxGiro"></span></button>
-        <!-- LA SOSTA MESSA IN SCENA: il fantasma entra ai box e segue la strategia scelta,
-             sulla pista E sulla torre, sorpassando i rivali dove il motore dice che passa. -->
-        <button type="button" class="simbtn" id="simBtn" hidden>&#9654; Guarda la sosta</button>
+        <!-- LA STRATEGIA SI FA GIOCANDO (08/08, decisione PO): niente doppio bottone,
+             niente moduli. Scegli la gomma, premi BOX ORA: il pallino si ferma e LA GARA
+             CONTINUA fino alla bandiera — e puoi fermarti ancora, mentre scorre. -->
+        <div class="mesc-chips" id="mescChips"></div>
+        <button type="button" class="boxbtn" id="boxBtn">BOX ORA <span id="boxGiro"></span></button>
+        <div class="stratlist" id="stratList"></div>
         <div class="simbar" id="simBar" hidden>
           <span class="simtag" id="simTag">Simulazione: <b id="simDrvLab"></b> si ferma &middot; rivali al passo reale</span>
           <button type="button" id="simCont" hidden>continua &rarr;</button>
           <button type="button" id="simEsci">&#8634; replay reale</button>
         </div>
-        <!-- E SE? (08/08, richiesta PO): il rigioca vive DENTRO ogni gara — scegli il
-             pilota, sposta le sue soste, cambia le gomme, e il motore rigioca la gara
-             intera qui sotto. La pagina dedicata ese.html resta; questa e' la stessa
-             vista condivisa (ese_vista.mjs), non una copia. -->
-        <button type="button" class="esebtn" id="eseBtn" hidden>&#8635; E SE? Rigioca con la TUA strategia</button>
-        <div id="pitKv" class="sim-pannello"></div>
-        <div class="pithint">Si apre sul pit <b>adesso</b>; sposta il cursore per pittare pi&ugrave; avanti.
-          Rivali congelati al reale &middot; il motore mostra dove rientri, non se conviene.</div>
+        <details class="muretto-det">
+          <summary>il muretto dice &mdash; dettagli</summary>
+          <div id="pitKv" class="sim-pannello"></div>
+        </details>
       </section>
     </div>
   </div>
 
   <section class="ese-inline ese" id="eseSez" hidden>
-    <h2>E se? <small id="eseTitolo"></small></h2>
+    <h2>Alla bandiera <small id="eseTitolo"></small></h2>
     <div class="ese-onesta">
       <b>Controfattuale a fisica misurata, non una previsione.</b>
-      I rivali eseguono le loro soste, i ritiri e le Safety Car <b>veri</b> della gara: è
-      <b>informazione dal futuro</b>, lecita qui perché la gara è finita — e il motore la dichiara
-      in ogni run, fra le assunzioni qui sotto. Oltre i ~6 giri validati è un gioco onesto, non un oracolo.
-    </div>
-    <div class="ese-controlli">
-      <div class="ese-freeze" id="eseFreezeInfo"></div>
-      <div class="ese-editor">
-        <h3>Le tue soste <span id="eseMescoleNota"></span></h3>
-        <div id="eseSoste"></div>
-        <div style="margin-top:.4rem">
-          <button class="ese-mini" id="eseAdd">+ aggiungi una sosta</button>
-          <button class="ese-mini" id="eseRipristina">&#8634; strategia vera</button>
-        </div>
-      </div>
-      <button class="ese-corri" id="eseCorri">&#9654; RIGIOCA LA GARA</button>
-      <div class="ese-errore" id="eseErrore" hidden></div>
+      I rivali eseguono soste, ritiri e Safety Car <b>veri</b> della gara: è <b>informazione dal futuro</b>,
+      lecita perché la gara è finita — il motore la dichiara in ogni run, fra le assunzioni qui sotto.
     </div>
     <section id="eseRisultati" hidden>
-      <button type="button" class="simbtn" id="eseGuarda" hidden>&#9654; Guarda la gara simulata sulla pista</button>
       <div class="ese-verdetto" id="eseVerdetto"></div>
       <div class="ese-director" id="eseDirector"></div>
       <div class="ese-due">
         <div>
-          <h3>Alla bandiera (simulata, con la tua strategia)</h3>
+          <h3>La classifica con la tua strategia</h3>
           <table class="ese-torre" id="eseTorre"></table>
           <p class="ese-nota" id="eseTorreNota"></p>
         </div>
@@ -192,7 +179,7 @@ if (new URLSearchParams(location.search).get('embed')) document.body.classList.a
           <div class="ese-legenda">&#9644; <span class="l-reale">gara reale</span> &nbsp; &#9644; <span class="l-tua">la tua strategia (motore)</span> &nbsp; &#9644; <span class="l-vera">strategia vera (motore)</span></div>
         </div>
       </div>
-      <details class="ese-assunzioni" open>
+      <details class="ese-assunzioni">
         <summary>Le assunzioni di questo run — dette dal motore, non da noi</summary>
         <ul id="eseAssunzioni"></ul>
       </details>
@@ -249,7 +236,7 @@ let numDi={};   // sigla -> numero di gara (da schede_2026.json, fonte f1db)
 // LA VISTA DEL SIMULATORE. indiceVista fa da `vista` per i componenti (porta targhetta,
 // modello e mescole); vistaPilota e' la cache per-pilota, scaricata al primo tocco.
 let vistaMap=null, vistaCartella=null, indiceVista=null;
-const vistaPilota={}, fantasmaPilota={};
+const vistaPilota={};
 // QUATTRO SCARICHI MORTI, tolti il 02/08/2026: climatologia_bande, modello_passo_2026,
 // neutralizzazione_fondo e raggruppamento venivano scaricati a ogni apertura della pagina
 // e non li leggeva piu' nessuno — erano ingressi del motore VECCHIO, rimasti orfani
@@ -339,7 +326,6 @@ async function caricaVistaGara(gara){
   vistaCartella = vistaMap?.cartella_di?.[gara] ?? null;
   indiceVista = null;
   for (const k in vistaPilota) delete vistaPilota[k];
-  for (const k in fantasmaPilota) delete fantasmaPilota[k];
   if (!vistaCartella) return;
   try { indiceVista = await (await fetch(`data/vista/${encodeURIComponent(vistaCartella)}/indice.json`)).json(); }
   catch(e){ indiceVista=null; }
@@ -797,21 +783,24 @@ function openPit(){
   if(!selDrv){ el('pit').classList.add('hidden'); return; }
   conta('valutazione_pit');
   if(simMode) esciSimulazione();                 // cambio pilota: chiudi la simulazione in corso
-  el('simBtn').hidden=true; el('simBar').hidden=true;
+  el('simBar').hidden=true;
   // LEGGE DEL REPLAY: esplorazione pit attiva => pallini spenti (replay ≠ controfattuale)
   if(pista){ pista.setSpento(true); el('pista').classList.add('pit-attivo'); }
   el('pit').classList.remove('hidden');
-  el('eseBtn').hidden=false; el('eseSez').hidden=true;   // E se?: si offre col pilota, i risultati vecchi non restano
+  el('eseSez').hidden=true;   // i risultati della strategia vecchia non restano al cambio pilota
   // RISPOSTA IMMEDIATA (decisione PO): il pannello si apre su "pit ADESSO" — il giro in
   // corso, la domanda del muretto: dove rientro SE pitto ora. Lo slider resta sotto per
   // l'esplorazione ("e se aspetto fino al giro N?"), ma non e' richiesto per avere la
   // risposta. Il freeze e' l'ultimo giro COMPLETATO visibile (curLap-1): pittare al giro
   // IN CORSO (in-lap = curLap) e' quindi sempre possibile. Al giro 1 freeze clampato a 1.
-  boxGiro=null;   // ogni pilota riparte dalla sua domanda
+  // LA RISPOSTA E' AUTOMATICA (08/08): il cassetto «il muretto dice» si riempie da
+  // solo per il giro corrente — nessun bottone da premere per avere il numero.
+  boxGiro = Math.max(2, curLap);
+  mescolaBox = null; chipMescole(); listaSoste();
   updatePit();
 }
 function chiudiPit(){ if(simMode) esciSimulazione(); selDrv=null; mescolaScelta=null; el('pit').classList.add('hidden');
-  el('simBtn').hidden=true; el('simBar').hidden=true; el('eseBtn').hidden=true; el('eseSez').hidden=true;
+  el('simBar').hidden=true; el('eseSez').hidden=true;
   if(pista){ pista.setSpento(false); el('pista').classList.remove('pit-attivo'); }
   frame(clock.position); }
 function updatePit(){
@@ -829,7 +818,6 @@ function updatePit(){
     ? `${selDrv} <small>&mdash; premi BOX per sapere dove rientra</small>`
     : `Se ${selDrv} entra <b>adesso</b>&hellip; <small>rivali congelati</small>`;
   if (boxGiro==null){
-    el('simBtn').hidden=true; el('simBar').hidden=true; if(simMode) esciSimulazione();
     // prima di chiamare il box: lo stato del pilota, non una risposta che non e stata chiesta
     const c=race.byLap[L]?.[selDrv];
     el('pitKv').innerHTML = c
@@ -900,11 +888,11 @@ async function mostraRisposta(drv, L){
     }
     kv.innerHTML = `<div class="pitmsg">A questo giro il simulatore non risponde per ${drv}.
       <span class="sub">la vista copre i giri ${indiceVista.primo_giro}–${indiceVista.ultimo_giro}</span></div>`;
-    lastPitRes = null; el('simBtn').hidden = true; return;
+    lastPitRes = null; return;
   }
   if (s.senza_risposta){
     kv.innerHTML = `<div class="pitmsg">${s.senza_risposta}</div>`;
-    lastPitRes = null; el('simBtn').hidden = true; return;
+    lastPitRes = null; return;
   }
   kv.replaceChildren(disegna(pannelloNuovo(indiceVista, s)));
   // il selettore mescola e' un COMANDO anche qui: ri-cliccare quella scelta torna al vero
@@ -927,91 +915,25 @@ async function mostraRisposta(drv, L){
   if (s.approvato !== false && s.curva) kv.append(disegna(curvaDelQuando(indiceVista, s)));
   attaccaGlossario(kv);
   lastPitRes = s;
-  if (!simMode) el('simBtn').hidden = !(boxGiro != null && s.approvato !== false);
 }
 
-// ============ SIMULAZIONE FANTASMA: la sosta messa in scena dentro la gara ============
-// Il pannello dà il NUMERO ("rientri P8"); questo lo fa VEDERE: il pallino entra ai box e
-// segue la strategia, sorpassando i rivali dove il motore dice che passa. Sorgente cum =
-// traiettoriaPit (stessi input del pannello), quindi animazione e numero non divergono.
-// IL FANTASMA VIAGGIA A PARTE (<pilota>.fantasma.json) e si scarica solo se lo chiedi:
-// e' un terzo del peso della vista e serve a chi preme "Guarda la sosta". Chi legge la
-// risposta e va avanti non lo paga.
-async function fantasmaDi(drv){
-  if (!vistaCartella) return null;
-  if (fantasmaPilota[drv] !== undefined) return fantasmaPilota[drv];
-  try {
-    const r = await fetch(`data/vista/${encodeURIComponent(vistaCartella)}/${drv}.fantasma.json`);
-    fantasmaPilota[drv] = r.ok ? await r.json() : null;
-  } catch(e){ fantasmaPilota[drv] = null; }
-  return fantasmaPilota[drv];
-}
+// ============ LA GARA RIGIOCATA (08/08): un solo flusso, BOX ORA ============
+// La vecchia coppia di comandi separati (numero da una parte, scena a due
+// fasi dall'altra, con la pausa al rientro che al PO sembrava — giustamente —
+// una gara che non finisce) e' stata sostituita: BOX ORA ferma il pallino e la
+// gara CONTINUA fino alla bandiera, con altre soste aggiungibili mentre scorre.
 
-// avvia la scena sul motore condiviso. Il pannello dà il numero; qui la messa in scena:
-// il pallino entra ai box (sosta ferma), monta gomma nuova e risale seguendo la strategia,
-// sorpassando i rivali dove il motore dice che passa — su pista E su torre.
-async function avviaSimulazione(){
-  const s = lastPitRes; if(!s || s.approvato === false) return;
-  const f = await fantasmaDi(selDrv);
-  const sim = simDaFantasma(f?.per_giro?.[s.freeze_lap], selDrv, s.freeze_lap);
-  if (!sim){ el('simBtn').hidden = true; return; }
-  const res = { sim, rientro: s.pannello.posizione, su_totale: s.pannello.su_quanti,
-                giroRisposta: s.pannello.giro_di_rientro };
-  simMode=true; simDriver=sim.driver; simRientroPos=res.rientro ?? null; simSuTotale=res.su_totale ?? null;
-  clock.pause();                                    // ferma il replay reale (la scena ha un loop suo)
-  el('pista').classList.add('sim-attiva'); if(pista) pista.setSpento(false);
-  el('simBar').hidden=false; el('simBtn').hidden=true; el('simCont').hidden=true;
-  el('simTag').innerHTML = `Simulazione: <b>${simDriver}</b> si ferma · rivali al passo reale`;
-  simGp = creaGhostPlay({ sim:res.sim, pista, coloreDi: sg=>coloreTeam(teamOfR[sg]),
-    onTower: renderGaraTorre, giroRisposta: res.giroRisposta,
-    onRientro: mostraRientroSim, onFine: ()=>setPlayIcon(false) });
-  simGp.play(); setPlayIcon(true);
-  conta('simula');
-}
-// disegna la torre-sim (righe PRECISE da classificaSim) via paintRow + il cursore timeline
-function renderGaraTorre(righe, meta){
-  const presenti = new Set(righe.map(r=>r.drv));
-  righe.forEach((r,i)=>{
-    // nella gara RIGIOCATA gomme ed eta' non sono quelle del replay reale: si tace
-    // il dato dell'altra gara invece di mostrarlo come se fosse di questa (regola 6)
-    const st = simEse ? null : race.byLap[meta.lap]?.[r.drv];
-    paintRow({pos:r.pos, drv:r.drv, team:teamOfR[r.drv], compound:st?.compound, age:st?.tyre_age,
-      et:r.gapTxt, cls:r.gapCls, prev:null, inlap:r.inPit, outlap:false,
-      monta:null, stopDur:null, leader:r.leader, selectable:false, st:''}, i);
-  });
-  for(const d in rowEls) rowEls[d].root.style.display = presenti.has(d) ? '' : 'none';
-  el('lapLabel').textContent = meta.lap;
-  const pct=((meta.p ?? meta.lap)-1)/race.n_laps*100;
-  el('evtlCur').style.left=pct+'%'; el('evtlFatto').style.width=pct+'%';
-  el('evtl').setAttribute('aria-valuenow', meta.lap);
-}
-function mostraRientroSim(){
-  const suff = simSuTotale ? ` tra i ${simSuTotale} a pari giro` : '';
-  el('simTag').innerHTML = `\u{1F4CD} <b>${simDriver} rientra ${simRientroPos ?? '?'}º</b>${suff} — come dice il pannello. Oltre è una proiezione (i rivali non reagiscono).`;
-  el('simCont').hidden = false;
-  setPlayIcon(false);   // la scena è in pausa al rientro
-}
-function continuaSim(){
-  el('simCont').hidden = true;
-  // L'ETICHETTA DICEVA MEZZA VERITA'. «I rivali non reagiscono» e' vero e dichiarato;
-  // cio' che taceva e' che OLTRE 6 GIRI la proiezione non e' validata affatto — F1 e'
-  // stato registrato RAGGIUNTO a 6 giri (ai_lab/REGISTRO_F1.md) e oltre quella soglia
-  // nessun motore batte il non-fare-niente. Promettere una proiezione «fino alla
-  // bandiera» senza dirlo e' la voce P2 dei KPI: una promessa su un ramo che il
-  // progetto ha misurato e chiuso. Corretto il 03/08/2026.
-  el('simTag').innerHTML = 'Proiezione fino alla bandiera · validata solo fino a 6 giri · i rivali non reagiscono';
-  if(simGp) simGp.continua(); setPlayIcon(true);
-}
 function esciSimulazione(){
   if(!simMode) return;
   if(simGp){ simGp.stop(); simGp=null; }
   simMode=false; simEse=false;
+  STRAT=null; mescolaBox=null; if(el('stratList')) listaSoste();
+  el('eseSez').hidden=true;
   el('pista').classList.remove('sim-attiva');
   el('simBar').hidden=true; el('simCont').hidden=true;
   for(const d in rowEls) rowEls[d].root.style.display='';
   setPlayIcon(false);
   if(pista){ pista.aggiorna([]); pista.setSpento(true); }   // togli il fantasma, torna a esplorazione (spenti)
-  if(boxGiro!=null && lastPitRes && lastPitRes.approvato!==false) el('simBtn').hidden=false;
   frame(clock.position);                                     // ridisegna il replay reale
 }
 
@@ -1023,15 +945,8 @@ el('play').addEventListener('click', ()=>{
 el('speeds').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b)return;
   clock.setSpeed(+b.dataset.s);
   [...el('speeds').children].forEach(x=>x.classList.toggle('on',x===b)); });
-el('boxBtn').addEventListener('click', ()=>{
-  if(simMode) esciSimulazione();
-  boxGiro = boxGiro==null ? Math.max(2,curLap) : null;   // ripremere richiude la risposta
-  if(boxGiro!=null) conta('box');
-  updatePit();
-});
-el('simBtn').addEventListener('click', avviaSimulazione);
+el('boxBtn').addEventListener('click', boxOra);
 el('simEsci').addEventListener('click', esciSimulazione);
-el('simCont').addEventListener('click', continuaSim);
 // IL LISTENER DELLA MESCOLA E' STATO TOLTO, e prima ancora era MORTO: cercava
 // `data-mesc` mentre il pannello del simulatore emette `data-valore`, quindi il
 // click non arrivava. Collegarlo non avrebbe cambiato niente — misurato: mescola
@@ -1042,99 +957,107 @@ el('pitChiudi').addEventListener('click', chiudiPit);
 conta('apertura');
 boot();
 
-// ── E SE? DENTRO LA GARA (08/08, richiesta PO): il rigioca vive qui ─────────
-// Moduli caricati al primo click (la pagina resta leggera per chi guarda solo il
-// replay); stessa vista condivisa di ese.html (ese_vista.mjs), nessuna copia.
-let ESE = null;
-async function apriEse(){
-  const drv = selDrv; if(!drv) return;
-  el('eseSez').hidden = false;
-  el('eseErrore').hidden = true;
-  el('eseRisultati').hidden = true;
-  el('eseTitolo').textContent = `${drv} — la gara si rigioca con la TUA strategia`;
-  el('eseFreezeInfo').textContent = 'carico il motore…';
-  el('eseSez').scrollIntoView({behavior:'smooth', block:'start'});
-  try{
-    if (!ESE){
-      const [mod, vista] = await Promise.all([
-        import('./ese.mjs?v=080826a'), import('./ese_vista.mjs?v=080826a'),
-      ]);
-      const fetchJson = async (u)=>{ const r=await fetch(u); if(!r.ok) throw new Error(`${u}: HTTP ${r.status}`); return r.json(); };
-      ESE = { mod, vista, prep: await mod.preparaGara(race.gara, { fetchJson }) };
-    }
-    const scelta = ESE.mod.scegliCongelamento({ nome: ESE.prep.nome, contesto: ESE.prep.contesto, pilota: drv });
-    if (scelta.freezeLap === null){
-      el('eseFreezeInfo').textContent='';
-      const e=el('eseErrore'); e.textContent=`il motore non ha un passo base per ${drv} nei primi giri e si rifiuta di inventarlo: ${scelta.motivo}`; e.hidden=false;
-      return;
-    }
-    ESE.freeze = scelta.freezeLap; ESE.pilota = drv;
-    el('eseFreezeInfo').textContent = `si parte dal giro ${ESE.freeze}: fin lì la gara è quella vera (il motore non inventa il passato). Le soste si piazzano dal giro ${ESE.freeze+1} in poi.`;
-    ESE.vista.riempiEditor({ box: el('eseSoste'), notaEl: el('eseMescoleNota'), sosteVere: ESE.prep.sosteVere[drv], freeze: ESE.freeze, nLaps: ESE.prep.race.n_laps });
-  }catch(err){
-    const e=el('eseErrore'); e.textContent=`l'E se? non si carica: ${err.message}`; e.hidden=false;
+// ── BOX ORA (08/08, decisione PO): la strategia si fa GIOCANDO ──────────────
+// Un solo comando. Scegli la gomma (chips), premi BOX ORA: il congelamento si
+// piazza DA SOLO un giro prima della sosta (la storia che hai appena visto e'
+// quella vera fino a li'), il motore rigioca la gara intera con soste, ritiri
+// e Safety Car VERI dei rivali, e la scena riparte dal giro corrente SENZA
+// PAUSE fino alla bandiera. BOX ORA di nuovo, mentre scorre, aggiunge un'altra
+// sosta. Moduli caricati al primo BOX: chi guarda solo il replay non paga niente.
+let ESE = null;      // {mod, vista, prep}
+let STRAT = null;    // {freeze, soste:[{giro,mescola}], esiti}
+let simEse = false;
+let mescolaBox = null;
+
+function chipMescole(){
+  const c = el('mescChips'); if(!c) return; c.replaceChildren();
+  const attuale = race.byLap[Math.max(1,curLap-1)]?.[selDrv]?.compound ?? null;
+  if (mescolaBox === null) mescolaBox = ['HARD','MEDIUM','SOFT'].find(x=>x!==attuale) ?? 'MEDIUM';
+  for (const x of ['SOFT','MEDIUM','HARD']){
+    const b=document.createElement('button'); b.type='button'; b.textContent=x.toLowerCase();
+    b.className='chip'+(x===mescolaBox?' on':'');
+    b.onclick=()=>{ mescolaBox=x; chipMescole(); };
+    c.appendChild(b);
   }
 }
-function corriEse(){
-  if(!ESE || ESE.freeze==null) return;
-  el('eseErrore').hidden=true;
-  let esiti;
+function listaSoste(){
+  const lst = el('stratList'); if(!lst) return;
+  lst.textContent = STRAT && STRAT.soste.length
+    ? 'Le tue soste: ' + STRAT.soste.map(x=>`giro ${x.giro} → ${x.mescola.toLowerCase()}`).join(' · ')
+    : '';
+}
+function notaStrategia(msg){ el('simTag').innerHTML = msg; el('simBar').hidden=false; }
+async function caricaEse(){
+  if (ESE) return ESE;
+  const [mod, vista] = await Promise.all([import('./ese.mjs?v=080826b'), import('./ese_vista.mjs?v=080826b')]);
+  const fetchJson = async (u)=>{ const r=await fetch(u); if(!r.ok) throw new Error(`${u}: HTTP ${r.status}`); return r.json(); };
+  ESE = { mod, vista, prep: await mod.preparaGara(race.gara, { fetchJson }) };
+  return ESE;
+}
+async function boxOra(){
+  if(!selDrv) return;
+  const drv = selDrv;
+  // il giro della sosta: quello che stai GUARDANDO — replay reale o scena in corso
+  const giro = STRAT
+    ? Math.max(STRAT.freeze+1, Math.min(race.n_laps-1, Math.round(simGp?.posizione ?? curLap)))
+    : Math.max(2, Math.min(race.n_laps-1, curLap));
+  el('boxBtn').disabled = true;
   try{
-    esiti = ESE.vista.eseguiRigioca({ prep: ESE.prep, pilota: ESE.pilota, freeze: ESE.freeze, soste: ESE.vista.leggiSoste(el('eseSoste')) });
-  }catch(err){ const e=el('eseErrore'); e.textContent=`il motore rifiuta questo piano: ${err.message}`; e.hidden=false; return; }
+    await caricaEse();
+    if(!STRAT){
+      const f = ESE.mod.congelamentoPer({ nome: ESE.prep.nome, contesto: ESE.prep.contesto, pilota: drv, giroSosta: giro });
+      if (f.freezeLap === null){ notaStrategia(`il motore non ha un passo per <b>${drv}</b> prima del giro ${giro}: ${f.motivo}`); return; }
+      STRAT = { freeze: f.freezeLap, soste: [] };
+    }
+    const soste = [...STRAT.soste.filter(x=>x.giro!==giro), { giro, mescola: mescolaBox }].sort((a,b)=>a.giro-b.giro);
+    let esiti;
+    try{
+      esiti = ESE.vista.eseguiRigioca({ prep: ESE.prep, pilota: drv, freeze: STRAT.freeze, soste });
+    }catch(err){ notaStrategia(`il motore rifiuta questa sosta: ${err.message}`); return; }
+    if (!esiti.mio.direttore.approved){
+      const fatal=(esiti.mio.direttore.violazioni??[]).filter(v=>v.severita==='FATAL').map(v=>v.messaggio??v.codice);
+      notaStrategia(`il Director respinge: ${fatal[0]??'piano non valido'} — prova un'altra gomma o un altro giro`);
+      return;
+    }
+    STRAT.soste = soste; STRAT.esiti = esiti;
+    listaSoste();
+    avviaScena(giro);
+    conta('box_ora');
+  } finally { el('boxBtn').disabled = false; }
+}
+function avviaScena(giroSosta){
+  const mio = STRAT.esiti.mio;
+  const sim = simDaRigioca({ risultato: mio.risultato, race, pilota: selDrv, freeze: STRAT.freeze });
+  if(!sim){ notaStrategia('scena non disponibile per questo run'); return; }
+  sim.pitLap = giroSosta;                        // la scenografia del transito segue l'ULTIMA sosta
+  if(simGp) simGp.stop();
+  simEse = true; simMode = true; simDriver = selDrv;
+  clock.pause();
+  el('pista').classList.add('sim-attiva'); if(pista) pista.setSpento(false);
+  el('eseSez').hidden = true; el('simCont').hidden = true;
+  const pos = ESE.mod.posizioniPerGiro(mio.risultato.traccia);
+  const pr = pos[Math.min(giroSosta+1, race.n_laps)]?.[selDrv];
+  const mesc = STRAT.soste.find(x=>x.giro===giroSosta)?.mescola ?? '';
+  notaStrategia(`<b>${selDrv}</b> box al giro ${giroSosta} (${mesc.toLowerCase()})${pr?` — rientra <b>P${pr}</b>`:''} e la gara CONTINUA. Premi BOX ORA per un'altra sosta, o &#8634; per il replay reale.`);
+  simGp = creaGhostPlay({ sim, pista, coloreDi: sg=>coloreTeam(teamOfR[sg]),
+    onTower: renderGaraTorre, giroRisposta: null,
+    p0: Math.max(STRAT.freeze, giroSosta - 1), durataTot: 22,
+    onFine: ()=>{ setPlayIcon(false); mostraVerdettoFinale(); } });
+  simGp.play(); setPlayIcon(true);
+}
+function mostraVerdettoFinale(){
+  if(!STRAT || !STRAT.esiti) return;
+  const { mio, vero } = STRAT.esiti;
+  el('eseTitolo').textContent = `${selDrv} — com'è finita con la TUA strategia`;
+  el('eseSez').hidden = false;
   ESE.vista.rendiRisultati({
     refs: { risultati: el('eseRisultati'), verdetto: el('eseVerdetto'), director: el('eseDirector'),
       torre: el('eseTorre'), torreNota: el('eseTorreNota'), grafico: el('eseGrafico'), assunzioniLista: el('eseAssunzioni') },
-    prep: ESE.prep, pilota: ESE.pilota, freeze: ESE.freeze, mio: esiti.mio, vero: esiti.vero, teamCol,
+    prep: ESE.prep, pilota: selDrv, freeze: STRAT.freeze, mio, vero, teamCol,
   });
-  ESE.ultimo = esiti;
-  el('eseGuarda').hidden = !esiti.mio.direttore.approved;   // la scena solo su un run approvato
+  notaStrategia(`Bandiera: la gara rigiocata di <b>${selDrv}</b> è finita — il verdetto è qui sotto. &#8634; per tornare al replay reale.`);
+  el('eseSez').scrollIntoView({behavior:'smooth', block:'start'});
 }
-el('eseBtn').addEventListener('click', apriEse);
-el('eseCorri').addEventListener('click', corriEse);
-el('eseAdd').addEventListener('click', ()=>{ if(!ESE||ESE.freeze==null) return;
-  el('eseSoste').appendChild(ESE.vista.rigaSosta({ giro: Math.min(ESE.freeze+5, ESE.prep.race.n_laps-1), mescola:'MEDIUM', min: ESE.freeze+1, max: ESE.prep.race.n_laps-1 })); });
-el('eseRipristina').addEventListener('click', ()=>{ if(!ESE||ESE.freeze==null) return;
-  ESE.vista.riempiEditor({ box: el('eseSoste'), notaEl: el('eseMescoleNota'), sosteVere: ESE.prep.sosteVere[ESE.pilota], freeze: ESE.freeze, nLaps: ESE.prep.race.n_laps }); });
-
-// ── LA GARA SIMULATA SULLA PISTA (08/08, richiesta PO): «faccio fermare Leclerc,
-// vedo il pallino che va nei box, e da li' si apre un'altra gara». La scena usa
-// lo STESSO motore di scena della sosta (creaGhostPlay) sul cum del rigioca:
-// il fantasma transita in pit-lane al PRIMO stop del piano; gli stop successivi
-// e quelli dei rivali vivono nel cum (la perdita c'e', la scenografia no); i
-// ritirati veri spariscono dalla pista al loro giro.
-let simEse = false;
-function avviaSimulazioneEse(){
-  if (!ESE || !ESE.ultimo || !ESE.ultimo.mio?.direttore?.approved) return;
-  const mio = ESE.ultimo.mio;
-  const sim = simDaRigioca({ risultato: mio.risultato, race, pilota: ESE.pilota, freeze: ESE.freeze });
-  if (!sim){ el('eseGuarda').hidden = true; return; }
-  if (simMode) esciSimulazione();
-  selDrv = ESE.pilota;                    // la scena e' del soggetto del rigioca
-  simEse = true; simMode = true; simDriver = sim.driver;
-  // il rientro della scena: la posizione del soggetto al giro dopo il primo stop,
-  // letta dalla STESSA traccia che anima i pallini (nessun secondo calcolo)
-  const pos = ESE.mod.posizioniPerGiro(mio.risultato.traccia);
-  const giroRisposta = Math.min(sim.pitLap + 1, race.n_laps);
-  simRientroPos = pos[giroRisposta]?.[ESE.pilota] ?? null;
-  simSuTotale = pos[giroRisposta] ? Object.keys(pos[giroRisposta]).length : null;
-  clock.pause();
-  el('pista').scrollIntoView({behavior:'smooth', block:'center'});
-  el('pista').classList.add('sim-attiva'); if(pista) pista.setSpento(false);
-  el('simBar').hidden=false; el('simBtn').hidden=true; el('simCont').hidden=true;
-  el('simTag').innerHTML = `Gara RIGIOCATA: <b>${simDriver}</b> con la TUA strategia · rivali con soste, ritiri e Safety Car veri`;
-  simGp = creaGhostPlay({ sim, pista, coloreDi: sg=>coloreTeam(teamOfR[sg]),
-    onTower: renderGaraTorre, giroRisposta,
-    onRientro: ()=>{
-      const suff = simSuTotale ? ` su ${simSuTotale}` : '';
-      el('simTag').innerHTML = `\u{1F4CD} <b>${simDriver} rientra ${simRientroPos ?? '?'}\u00BA</b>${suff} dopo la TUA sosta — continua per vedere il resto della gara rigiocata.`;
-      el('simCont').hidden = false; setPlayIcon(false);
-    },
-    onFine: ()=>{ setPlayIcon(false); el('simTag').innerHTML = `Bandiera: la gara rigiocata di <b>${simDriver}</b> e' finita — i numeri stanno nel verdetto qui sotto.`; } });
-  simGp.play(); setPlayIcon(true);
-  conta('simula_rigioca');
-}
-el('eseGuarda').addEventListener('click', avviaSimulazioneEse);
 </script>
 </body>
 </html>

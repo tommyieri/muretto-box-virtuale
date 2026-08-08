@@ -102,18 +102,16 @@ australia.byLap = byLapDa(australia);
   }
 }
 
-// (f) — l'onestà resa in pagina, sempre visibile — in TUTTE le pagine che rigiocano
+// (f) — l'onestà resa dove il run si lancia (gara.html: la pagina ese.html non
+// esiste più — decisione PO 08/08, il rigioca È il modo in cui si guarda una gara)
 {
-  for (const pagina of ['ese.html', 'gara.html']) {
-    const html = readFileSync(path.join(qui, pagina), 'utf8');
-    if (!/informazione dal futuro/i.test(html)) fallisci(`${pagina} non dichiara più «informazione dal futuro»`);
-    if (!/non una previsione/i.test(html)) fallisci(`${pagina} non dice più «non una previsione»`);
-    if (!/class="ese-onesta"/.test(html)) fallisci(`${pagina}: il blocco di onestà sempre-visibile non c'è più`);
-  }
-  // l'E se? dentro la gara (08/08): bottone nel pannello pit + vista condivisa
   const gara = readFileSync(path.join(qui, 'gara.html'), 'utf8');
-  if (!/id="eseBtn"/.test(gara)) fallisci('gara.html non offre più il bottone E se? nel pannello pit');
+  if (!/informazione dal futuro/i.test(gara)) fallisci('gara.html non dichiara più «informazione dal futuro»');
+  if (!/non una previsione/i.test(gara)) fallisci('gara.html non dice più «non una previsione»');
+  if (!/class="ese-onesta"/.test(gara)) fallisci('gara.html: il blocco di onestà sempre-visibile non c\'è più');
+  if (!/BOX ORA/.test(gara)) fallisci('gara.html non offre più il comando BOX ORA');
   if (!/ese_vista\.mjs/.test(gara)) fallisci('gara.html non usa la vista condivisa ese_vista.mjs');
+  if (/id="eseBtn"|Guarda la sosta/.test(gara)) fallisci('gara.html ha ancora pezzi del doppio flusso vecchio');
 }
 
 if (errori === 0) console.log('test_ese: verde (soste vere, arrivo, pipeline, bracci distinti, assunzione dichiarata, onestà in pagina)');
