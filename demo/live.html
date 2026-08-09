@@ -1,906 +1,343 @@
 <!DOCTYPE html>
-<!--
-  LIVE — la pagina della gara mentre succede. Tre cose, tutte dagli STESSI eventi del
-  collettore (una sola connessione WebSocket):
-
-    mappa       le auto in pista, posizioni dal feed
-    torre       classifica, gap, settori e micro-settori
-    muretto     "se fermo questo pilota adesso, dove rientra?" — dal 22/07/2026
-
-  IL PANNELLO E' QUELLO DI gara.html (dal 31/07/2026). Le due pagine rispondono con lo
-  STESSO motore, ma per due strade diverse, e la differenza va capita prima di toccare
-  questo file:
-
-    gara.html   le risposte sono PRE-CALCOLATE in Node (data/vista/): la pagina formatta
-                e non calcola, come vuole la regola 8 del simulatore.
-    live.html   la gara sta succedendo: una risposta pre-calcolata su un giro non ancora
-                percorso non e' difficile, e' impossibile. Qui il motore gira DAVVERO in
-                pagina — non una seconda implementazione, lo STESSO codice trasportato da
-                simulatore/ come artefatto con manifest di hash (vendor/simulatore/motore/,
-                verificato in CI). Il ponte e' demo/ponte_live.mjs.
-
-  E LA PARITA' E' MISURATA, non promessa: demo/test_parita_live.mjs rigioca la gara vera
-  di Spa 2026 dal flusso del collettore e confronta la risposta con la vista
-  pre-calcolata. A parita' di celle le due risposte sono IDENTICHE campo per campo; dal
-  flusso vero la posizione di rientro coincide nel 95,5% dei casi, e lo scarto e' la somma
-  dei due limiti dichiarati del live (stato pista track-wide, giri cancellati ignoti), che
-  il pannello scrive sotto la risposta.
-
-  Chi cambia il pannello, il ponte o il cavo live faccia girare quel test: e' l'unica cosa
-  che impedisce alle due pagine di tornare a raccontare due gare diverse.
-
-  La regola che tiene insieme tutto: fuori sessione la pagina si SVUOTA. Date e orari
-  vengono dal calendario generato (f1db, UTC convertiti nel fuso del lettore; se l'ora
-  manca si mostra solo la data). Mai numeri finti, mai una riga congelata che sembra viva.
--->
 <html lang="it">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Live — Muretto Box Virtuale</title>
+<meta name="description" content="Il weekend di gara in diretta: classifica in tempo reale e la prossima sessione.">
 <link rel="canonical" href="https://murettobox.com/live.html">
-<link rel="stylesheet" href="stile.css?v=040826b">
-<link rel="stylesheet" href="vendor/simulatore/stile.css?v=310726a">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="muro.css?v=090826a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+<style>
+  .stato{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:20px 0 24px; }
+  .spia{ display:inline-flex; align-items:center; gap:9px; height:34px; padding:0 14px;
+    border-radius:999px; background:rgba(255,255,255,.05); border:1px solid var(--bordo);
+    color:var(--calmo); font:500 11px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; }
+  .spia.viva{ background:rgba(255,30,60,.14); border-color:rgba(255,30,60,.4); color:#ff8a9c; }
+
+  .colonne{ display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:var(--gap); align-items:start; }
+  @media (max-width:900px){ .colonne{ grid-template-columns:1fr; } }
+
+  .prossima{ padding:clamp(20px,3vw,30px); }
+  .prossima .gp{ font-size:clamp(28px,4.4vw,44px); text-transform:uppercase; margin:10px 0 6px; }
+  .prossima .circ{ color:var(--calmo); }
+  .conto{ display:grid; grid-template-columns:repeat(4,1fr); gap:8px; margin-top:22px; max-width:430px; }
+  .conto div{ padding:12px 8px; border-radius:11px; background:rgba(255,255,255,.045); text-align:center; }
+  .conto b{ display:block; font:500 27px/1 var(--mono); letter-spacing:-.03em; }
+  .conto span{ display:block; margin-top:6px; color:var(--fioco); font:500 9px/1 var(--mono); letter-spacing:.14em; }
+  .sessioni{ margin-top:26px; }
+  .ses{ display:flex; align-items:center; gap:12px; padding:11px 0; border-top:1px solid var(--bordo); }
+  .ses b{ min-width:120px; font:700 15px/1 var(--disp); letter-spacing:.1em; text-transform:uppercase; }
+  .ses span{ color:var(--calmo); font:500 12.5px/1 var(--mono); }
+  .ses .etic{ margin-left:auto; }
+  .ses.passata{ opacity:.4; }
+
+  .torreLive{ border-radius:var(--r); background:var(--carbonio); border:1px solid var(--bordo); overflow:hidden; }
+  .torreLive .cap{ display:flex; align-items:center; gap:9px; padding:12px 14px;
+    border-bottom:1px solid var(--bordo); color:var(--fioco);
+    font:500 10px/1 var(--mono); letter-spacing:.18em; text-transform:uppercase; }
+  .torreLive .lista{ max-height:min(72vh,820px); overflow-y:auto; scrollbar-width:thin; }
+  .fianco h3{ font-size:20px; text-transform:uppercase; margin-bottom:10px; }
+  .fianco p{ color:var(--calmo); font-size:14.5px; }
+
+  /* --------- il muretto in diretta --------- */
+  .mesc{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin:12px 0; }
+  .mesc button{ display:flex; align-items:center; justify-content:center; gap:7px; min-height:40px;
+    border-radius:9px; background:rgba(255,255,255,.04); border:1px solid transparent;
+    color:var(--calmo); font:500 11px/1 var(--mono); transition:background-color .15s,color .15s,border-color .15s; }
+  .mesc button:hover{ background:rgba(255,255,255,.08); color:var(--testo); }
+  .mesc button.on{ background:rgba(36,227,210,.12); border-color:rgba(36,227,210,.4); color:var(--ciano); }
+  .esitoLive{ margin-top:14px; padding:14px; border-radius:11px; background:rgba(255,255,255,.04); }
+  .esitoLive b.pos{ display:block; font:500 34px/1 var(--mono); color:var(--ciano); margin:6px 0 8px; }
+  .onesta{ margin-top:12px; color:var(--fioco); font-size:12px; line-height:1.5; }
+  .onesta b{ color:var(--calmo); }
+  .sceltoLive{ display:flex; align-items:center; gap:9px; margin-bottom:4px; }
+  .sceltoLive .bar{ width:4px; height:22px; border-radius:2px; background:var(--c,#8A93A3); }
+  .sceltoLive b{ font:700 18px/1 var(--disp); letter-spacing:.09em; }
+</style>
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
-    <span class="brand-mark"><span>M</span></span>
-    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
-  </a>
-  <nav class="nav" aria-label="Sezioni">
-    <a href="stagione.html">Stagione</a>
-    <a href="live.html" class="on"><span class="dot-live"></span>Live</a>
-    <a href="analisi.html">Analisi</a>
-    <a href="statistiche.html">Statistiche</a>
-  </nav>
-</header>
+<header class="barra"></header>
 
-<div class="wrap-clas">
-  <div class="page-testa">
-    <h1>Live <em>//</em> weekend di gara</h1>
-    <div class="sotto">FP, qualifiche e gara in diretta, con il simulatore pit attivo mentre la gara succede.</div>
+<main class="scafo">
+  <p class="occhiello">Diretta</p>
+  <h1 class="titolone">Il muretto <em>in diretta</em></h1>
+
+  <div class="stato">
+    <span class="spia" id="spia"><span class="pallino"></span><span id="spiaTxt">collego…</span></span>
+    <span class="etic" id="etichSess" hidden></span>
   </div>
 
-  <div class="wip panel">
-    <span class="wip-tag">IN DIRETTA</span>
-    La stessa domanda del muretto &mdash; &ldquo;se pitto al giro L, dove rientro?&rdquo; &mdash; mentre la
-    gara succede. Il pannello &egrave; identico a quello delle gare gi&agrave; corse: cambia solo che
-    i dati arrivano dal feed invece che da un archivio, e che il campo si ferma dov&rsquo;&egrave;
-    davvero. <b>Nelle libere e in qualifica resta spento</b>: senza giri di gara la domanda
-    non esiste.
+  <div class="colonne">
+    <div style="min-width:0">
+      <!-- fuori sessione -->
+      <section class="piastra prossima" id="prossima" hidden></section>
+      <!-- in sessione -->
+      <section class="torreLive" id="boxTorre" hidden>
+        <div class="cap"><span>Classifica in tempo reale</span>
+          <span style="margin-left:auto" id="notaTorre"></span></div>
+        <div class="lista" id="torre"></div>
+      </section>
+    </div>
+    <aside class="piastra piastra-p fianco" id="fianco"></aside>
   </div>
+</main>
 
-  <div class="sez-tit">Prossimo evento</div>
-  <section class="panel live-week" id="week"></section>
-
-  <div class="sez-tit">Mappa live</div>
-  <section class="panel" id="live-panel">
-    <div id="live-testa">
-      <span id="live-badge" class="lv-badge lv-off">NESSUNA SESSIONE IN CORSO</span>
-      <span id="live-pista-stato" class="lv-flag" hidden></span>
-      <span id="live-conn" class="lv-conn" title="connessione al collettore"></span>
-    </div>
-    <div id="live-mappa" style="position:relative">
-      <canvas style="width:100%;display:block"></canvas>
-      <canvas id="live-overlay" style="position:absolute;left:0;top:0;pointer-events:none"></canvas>
-    </div>
-    <div id="live-nota" class="lv-nota">Quando una sessione &egrave; in corso, qui compaiono le auto in tempo reale
-      (posizioni dal feed, ritardo di distribuzione ~4&nbsp;s). Fuori sessione la mappa resta vuota:
-      niente numeri finti, mai.</div>
-    <a id="live-invito" class="live-invito" href="gara.html?g=Belgio" hidden>&#9654; Nessuna gara in diretta adesso &mdash; prova il simulatore su una gara gi&agrave; corsa</a>
-  </section>
-
-  <!-- IL MURETTO IN DIRETTA. La stessa domanda di gara.html, e dal 31/07/2026 lo STESSO
-       motore: il simulatore nuovo. Non e' una divergenza, e' una strada diversa per la
-       stessa risposta — la pagina-gara legge le viste pre-calcolate (data/vista/), qui
-       il motore gira in pagina attraverso demo/ponte_live.mjs e vendor/simulatore/,
-       perche' in diretta una risposta pre-calcolata su un giro non ancora percorso non
-       esiste. Vedi la nota in testa al file: la parita' e' MISURATA
-       (demo/test_parita_live.mjs), non promessa.
-       Scegli un pilota e la pagina risponde: se lo fermo adesso, dove rientra. -->
-  <div class="sez-tit">Il muretto</div>
-  <section class="panel" id="mu-panel">
-    <!-- LA PORTA. Prima si sceglieva da una tendina come si sceglie una voce di menu, e
-         il pannello restava una fra tante cose in pagina. Qui invece si entra: scegli il
-         pilota e la pagina diventa la SUA. E' la richiesta del PO ("appena entri
-         seleziona un pilota per seguire la sua strategia"), e cambia il gesto: non stai
-         consultando una tabella, stai al muretto di qualcuno. -->
-    <div class="mu-porta" id="mu-porta">
-      <div class="mu-porta-t">Scegli il pilota di cui fare la strategia</div>
-      <div class="mu-porta-s">Da qui in poi la pagina segue lui: ogni giro, la stessa
-        domanda del muretto.</div>
-      <div class="mu-griglia" id="mu-griglia"></div>
-      <div class="mu-porta-n" id="mu-porta-n">In attesa dei primi giri&hellip;</div>
-    </div>
-
-    <div class="mu-testa" id="mu-testa" hidden>
-      <span class="mu-chi"><b id="mu-sigla">&mdash;</b><span id="mu-team"></span></span>
-      <span class="mu-stato" id="mu-stato"></span>
-      <span class="mu-giro" id="mu-giro"></span>
-      <!-- il cambio pilota c'e' ma e' piccolo e sta in fondo: la scelta e un impegno,
-           non un menu a tendina. Toglierlo del tutto punirebbe un click sbagliato e
-           lascerebbe bloccati su un pilota ritirato. -->
-      <button type="button" class="mu-cambia" id="mu-cambia">cambia</button>
-    </div>
-    <!-- LA STRATEGIA SI FA GIOCANDO (08/08, stessa decisione di gara.html): un comando
-         solo. Scegli la gomma, premi BOX ORA: il pallino si ferma e la PROIEZIONE
-         continua fino alla bandiera — altre soste aggiungibili mentre scorre. In
-         diretta i rivali NON reagiscono e oltre ~6 giri non e' validata: sta scritto
-         nella barra, sempre. -->
-    <div class="mesc-chips" id="mu-chips" hidden></div>
-    <button type="button" class="boxbtn" id="mu-box" hidden>BOX ORA <span id="mu-boxgiro"></span></button>
-    <div class="stratlist" id="mu-strat"></div>
-    <div class="mu-simbar" id="mu-simbar" hidden>
-      <span class="mu-simtag" id="mu-simtag"></span>
-      <button type="button" id="mu-simcont" hidden>continua &rarr;</button>
-      <button type="button" id="mu-simesci">&#8634; dati reali</button>
-    </div>
-    <details class="muretto-det" id="mu-det" open>
-      <summary>il muretto dice &mdash; dettagli</summary>
-      <div id="mu-kv" class="sim-pannello"></div>
-    </details>
-    <div id="mu-nota" class="lv-nota">Durante una <b>gara</b> scegli qui il pilota da seguire e il
-      pannello risponde alla domanda del muretto: <i>se lo fermo adesso, dove rientra?</i>
-      Con la gomma e <b>BOX ORA</b> lo fermi davvero: il pallino entra ai box e la proiezione
-      continua fino alla bandiera &mdash; altre soste si aggiungono mentre scorre.
-      Serve qualche giro perch&eacute; il passo-base di ogni pilota si misuri &mdash; il pannello
-      dice sempre a che punto &egrave;. Nelle libere e in qualifica resta spento: senza giri di gara
-      la domanda non esiste.</div>
-  </section>
-
-  <div class="sez-tit">Classifica live</div>
-  <section class="panel" id="tw-panel">
-    <div id="tw-list" class="tw-list tw-cliccabile"></div>
-    <div id="tw-nota" class="lv-nota">Durante una sessione qui compare la classifica in tempo reale:
-      posizione, gap dal leader, miglior giro e i micro-settori dal feed. In qualifica l'ordine
-      &egrave; per giro veloce e il gap &egrave; dalla pole. Fuori sessione resta vuota &mdash;
-      nessun numero finto, mai.</div>
-  </section>
-</div>
-
-<style>
-  #live-testa{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.5rem}
-  .lv-badge{font:700 .72rem/1.9 -apple-system,Arial;letter-spacing:.08em;padding:0 .55em;border-radius:4px}
-  .lv-badge.lv-on{background:#e80d2e;color:#fff}
-  .lv-badge.lv-on::before{content:'';display:inline-block;width:.5em;height:.5em;border-radius:50%;
-    background:#fff;margin-right:.4em;animation:lvpulse 1.2s infinite}
-  .lv-badge.lv-off{background:#242b38;color:#8b93a5}
-  @keyframes lvpulse{50%{opacity:.35}}
-  .lv-flag{font:700 .72rem/1.9 -apple-system,Arial;letter-spacing:.06em;padding:0 .55em;border-radius:4px;color:#111}
-  .lv-flag.verde{background:#3fbf6f}.lv-flag.gialla{background:#f5d43c}
-  .lv-flag.sc{background:#f5a03c}.lv-flag.rossa{background:#e8452e;color:#fff}
-  .lv-conn{width:.55rem;height:.55rem;border-radius:50%;background:#5a6272;margin-left:auto}
-  .lv-conn.ok{background:#3fbf6f}.lv-conn.retry{background:#f5a03c}
-  .lv-nota{color:#8b93a5;font-size:.8rem;margin-top:.5rem}
-  .live-invito{display:inline-block;margin-top:.7rem;padding:.55rem .85rem;border-radius:9px;
-    background:#22c55e;color:#04140a;font:800 .82rem/1 -apple-system,Arial;text-decoration:none;
-    letter-spacing:.2px;transition:filter .15s}
-  .live-invito:hover{filter:brightness(1.08)} .live-invito[hidden]{display:none}
-
-  /* R2 — torre di cronometraggio live (card con settori + micro-settori) */
-  /* le regole .tw-* stanno in stile.css: la torre e' una sola, e anche il suo
-     aspetto. Vedi la sezione TORRE DI CRONOMETRAGGIO li'. */
-
-  .mesc-chips{ display:flex; gap:.4rem; margin:.3rem 0 .35rem; }
-  .mesc-chips .chip{ flex:1; border:1px solid rgba(255,255,255,.22); background:transparent; color:var(--txt,#e9edf3);
-    border-radius:8px; padding:.42rem 0; font:800 11px var(--mono,ui-monospace,monospace); letter-spacing:.5px;
-    text-transform:uppercase; cursor:pointer; }
-  .mesc-chips .chip.on{ border-color:#22c55e; background:rgba(34,197,94,.14); color:#bbf7d0; }
-  .stratlist{ font:600 11px/1.5 var(--mono,ui-monospace,monospace); color:#9aa4b2; margin:.25rem 0; min-height:1em; }
-  .muretto-det{ margin-top:.5rem; border-top:1px solid rgba(255,255,255,.08); padding-top:.4rem; }
-  .muretto-det summary{ cursor:pointer; font:700 10.5px var(--mono,ui-monospace,monospace); letter-spacing:.5px;
-    text-transform:uppercase; color:#8a94a2; }
-  /* il muretto in diretta: stessa veste del pannello pit di gara.html */
-  .mu-testa{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.6rem}
-  .mu-lab{color:#8b93a5;font-size:.82rem}
-  .mu-giro{color:#8b93a5;font-size:.8rem;font-variant-numeric:tabular-nums}
-  /* la porta: si entra scegliendo un pilota, e la pagina diventa la sua */
-  .mu-porta-t{font:800 1rem/1.3 -apple-system,Arial;color:#e8edf5}
-  .mu-porta-s{color:#8b93a5;font-size:.83rem;margin:.2rem 0 .8rem}
-  .mu-porta-n{color:#767e8e;font-size:.8rem}
-  .mu-griglia{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.4rem,1fr));gap:.35rem}
-  .mu-p{display:flex;align-items:center;gap:.35rem;padding:.45rem .5rem;cursor:pointer;
-    background:#141b25;border:1px solid #2a333f;border-radius:6px;color:#e8edf5;
-    font:700 .84rem -apple-system,Arial;text-align:left}
-  .mu-p:hover{border-color:#5a6a80;background:#1a2330}
-  .mu-p-pos{color:#767e8e;font:600 .72rem var(--mono);min-width:1.1rem}
-  .mu-p-t{color:#767e8e;font-weight:400;font-size:.68rem;margin-left:auto;
-    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:3.4rem}
-  .mu-chi{display:flex;align-items:baseline;gap:.45rem}
-  .mu-chi b{font:800 1.15rem/1 var(--mono);letter-spacing:.04em;color:#e8edf5}
-  .mu-chi span{color:#8b93a5;font-size:.78rem}
-  .mu-stato{color:#aab2c0;font-size:.8rem}
-  .mu-stato b{color:#e8edf5;text-transform:capitalize}
-  .mu-cambia{margin-left:auto;background:none;border:0;cursor:pointer;color:#767e8e;
-    font:400 .75rem -apple-system,Arial;text-decoration:underline;padding:0}
-  .mu-cambia:hover{color:#aab2c0}
-  #mu-kv .kv{display:flex;gap:.8rem;padding:.4rem 0;border-bottom:1px solid #1c2430;font-size:.86rem}
-  #mu-kv .kv .k{color:#8b93a5;flex:0 0 8.5rem}
-  #mu-kv .kv .v{color:#e8edf5;flex:1 1 auto}
-  #mu-kv .kv .v.num{font-variant-numeric:tabular-nums;font-weight:700}
-  #mu-kv .kv .v.dim,#mu-kv .dim{color:#8b93a5;font-weight:400}
-  #mu-kv .sub{display:block;color:#767e8e;font-size:.76rem;font-weight:400;margin-top:.1rem}
-  #mu-kv .g{color:#3fbf6f;font-variant-numeric:tabular-nums}
-  #mu-kv .warn{background:#1e1a10;border-left:3px solid #f5a03c;padding:.45rem .6rem;
-    margin:.4rem 0;font-size:.83rem;color:#e8d9b8;border-radius:0 4px 4px 0}
-  #mu-kv .pitmsg{color:#8b93a5;font-size:.85rem;padding:.5rem 0}
-  #mu-kv .scenari{margin-top:.6rem}
-  #mu-kv .sc-h{font-size:.82rem;color:#aab2c0;margin-bottom:.3rem}
-  #mu-kv .sc-tag{display:inline-block;background:#242b38;color:#8b93a5;font-size:.68rem;
-    letter-spacing:.05em;padding:.1em .5em;border-radius:3px;margin-left:.4rem}
-  #mu-kv .sc-t{width:100%;border-collapse:collapse;font-size:.8rem;font-variant-numeric:tabular-nums}
-  #mu-kv .sc-t th{color:#767e8e;font-weight:600;text-align:left;padding:.2rem .4rem}
-  #mu-kv .sc-t td{padding:.2rem .4rem;border-top:1px solid #1c2430}
-  #mu-kv .sc-o{color:#3fbf6f}#mu-kv .sc-c{color:#aab2c0}#mu-kv .sc-p{color:#f5a03c}
-  /* la sosta messa in scena (live) */
-  .mu-sim{display:block;width:100%;margin:.5rem 0 .2rem;padding:.62rem .8rem;border:0;border-radius:9px;
-    background:#22c55e;color:#04140a;font:800 .82rem/1 var(--mono,ui-monospace,monospace);
-    letter-spacing:.4px;text-transform:uppercase;cursor:pointer;transition:filter .15s}
-  .mu-sim:hover{filter:brightness(1.08)} .mu-sim[hidden]{display:none}
-  .mu-simbar{display:flex;align-items:center;justify-content:space-between;gap:.5rem;margin:.35rem 0 .1rem;
-    padding:.45rem .6rem;border:1px solid rgba(34,197,94,.42);border-radius:9px;background:rgba(34,197,94,.09);
-    font:600 .72rem -apple-system,Arial}
-  .mu-simbar[hidden]{display:none} .mu-simtag{color:#bdead0} .mu-simtag b{color:#eafff2}
-  .mu-simbar button{border:1px solid rgba(255,255,255,.2);background:transparent;color:#e9edf3;border-radius:6px;
-    padding:.32rem .55rem;font:600 .68rem var(--mono,ui-monospace,monospace);cursor:pointer;white-space:nowrap}
-  .mu-simbar button:hover{background:rgba(255,255,255,.08)}
-</style>
-
-<footer class="footer">
-  <div class="footer-in">
-    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
-    <nav>
-      <a href="stagione.html">Stagione</a>
-      <a href="analisi.html">Analisi</a>
-      <a href="statistiche.html">Statistiche</a>
-    </nav>
-  </div>
-</footer>
+<footer class="piede"><div class="piede-in"></div></footer>
 
 <script type="module">
-const el = id => document.getElementById(id);
-const NOMI = {fp1:'Prove libere 1', fp2:'Prove libere 2', fp3:'Prove libere 3', fp4:'Prove libere 4',
-              sprint_quali:'Sprint qualifying', sprint:'Sprint', qualifiche:'Qualifiche', gara:'GARA'};
+import { guscio, dati, el, veri, V } from './muro.mjs?v=090826a';
+import { WS_URL, HEARTBEAT_LIVE_S } from './live_config.mjs?v=090826a';
+import { creaLiveClient } from './live_client.mjs?v=090826a';
+import { creaTorreTiming } from './live_timing.mjs?v=250809a';
+import { creaByLapLive } from './live_bylap.mjs?v=250809a';
+import { rigiocaLive } from './ponte_live.mjs?v=040826a';
 
-function quando(s){                       // orari f1db in UTC -> fuso del lettore; senza ora: solo data
-  if (!s.data) return null;
-  if (s.ora_utc){
-    const d = new Date(`${s.data}T${s.ora_utc}:00Z`);
-    return { d, testo: d.toLocaleDateString('it-IT',{weekday:'short', day:'numeric', month:'long'})
-             + ' · ' + d.toLocaleTimeString('it-IT',{hour:'2-digit', minute:'2-digit'}) };
-  }
-  return { d: new Date(`${s.data}T23:59:00Z`),
-           testo: new Date(s.data+'T12:00:00').toLocaleDateString('it-IT',{weekday:'short', day:'numeric', month:'long'}) + ' · orario da annunciare' };
+guscio('live.html');
+const E = (id) => document.getElementById(id);
+
+const NOMI = { fp1: 'Prove libere 1', fp2: 'Prove libere 2', fp3: 'Prove libere 3',
+  sprint_quali: 'Qualifiche sprint', sprint: 'Sprint',
+  qualifiche: 'Qualifiche', gara: 'Gara' };
+
+let viva = false, montatoAttesa = false, ultimaGara = null;
+
+/* ---- IL MURETTO IN DIRETTA ------------------------------------------------
+   Stesso comando della pagina-gara, ma qui il futuro NON e' successo: niente
+   soste vere dei rivali, niente Safety Car note. E' la proiezione del motore,
+   e la differenza si scrive accanto al numero, sempre. */
+const B = creaByLapLive();
+let contestoLive = null, garaCorrente = null, scelto = null, mescolaScelta = 'MEDIUM';
+let calendario = null, colori = {}, teams = {};
+const SLICK = ['SOFT', 'MEDIUM', 'HARD'];
+
+/* Una torre viva SEMPRE: e' lei l'unico giudice di «c'e' una sessione».
+   Il collettore risponde anche quando dorme, e uno snapshot vuoto non e' una
+   diretta: la pagina che scrive IN DIRETTA sopra una tabella vuota mente. */
+const torre = creaTorreTiming({ lista: E('torre'), nota: E('notaTorre') });
+torre.setAcceso(true);
+const conRighe = () => E('torre').querySelectorAll('.tw-row').length > 0;
+
+/* ------------------------------------------------------- fuori sessione */
+function quandoIso(g, s) {
+  const v = g.sessioni?.[s];
+  return v ? new Date(`${v.data}T${v.ora_utc}:00Z`) : null;
 }
 
-async function boot(){
-  const params = new URLSearchParams(location.search);
-  if (params.get('demo')) return bootDemo(params.get('demo'), params.get('lap'));
-  const cal = await (await fetch('data/calendario_2026.json')).json();
+async function mostraAttesa() {
+  E('boxTorre').hidden = true;
+  E('prossima').hidden = false;
+  if (montatoAttesa) return;
+  montatoAttesa = true;
+
+  const [cal, man] = await Promise.all([
+    dati(`data/calendario_2026.json?v=${V}`), dati(`data/manifest.json?v=${V}`)]);
+  const gare = cal?.gare || [];
   const ora = new Date();
-  // il weekend della prossima gara in calendario; ?gp=<gara> forza un circuito preciso
-  // (collaudo: la mappa deve combaciare con la sessione rigiocata dal collettore --replay).
-  const gp = params.get('gp');
-  const g = (gp && cal.gare.find(x => x.nome===gp || x.gara_demo===gp))
-    || cal.gare.find(x => new Date(x.data+'T23:59:59') >= ora) || cal.gare[cal.gare.length-1];
-  const sess = Object.entries(g.sessioni || {}).map(([k,s]) => ({k, ...quando(s)}))
-    .filter(s=>s.d).sort((a,b)=>a.d-b.d);
-  // durata tipica per riconoscere la sessione IN CORSO adesso (non solo "la prossima"):
-  // prima il pannello saltava alla sessione futura successiva e faceva sembrare che non si
-  // fosse aggiornato mentre la quali era in pista. Finestre generose: reggono i ritardi.
-  const durataMin = k => k==='gara' ? 210 : k.startsWith('fp') ? 90
-                       : k==='sprint' ? 75 : (k.includes('quali') ? 75 : 90);
-  const inCorso = sess.find(s => ora >= s.d && ora < new Date(s.d.getTime() + durataMin(s.k)*60000));
-  const prossima = !inCorso ? sess.find(s => s.d >= ora) : null;
-  el('week').innerHTML = `
-    <div class="live-gp"><b>${g.titolo}</b><span>${g.circuito}</span></div>
-    ${sess.map(s=>{
-      const stato = s===inCorso ? ' live' : (s===prossima ? ' next' : '');
-      const tag = s===inCorso ? '<span class="tag live"><span class="dot-live"></span>in corso</span>'
-                : (s===prossima ? '<span class="tag">prossimo</span>' : '');
-      return `<div class="live-sess${stato}">
-        <span class="n">${NOMI[s.k]||s.k}</span><span class="q num">${s.testo}</span>${tag}</div>`;
-    }).join('')}`;
-  bootMappa(g).catch(err => {
-    console.error('mappa live:', err);
-    // IL MESSAGGIO TECNICO RESTA IN CONSOLE, non in pagina. Prima qui finiva
-    // `err.message`, cioe' cose come "live_geo_Olanda.json assente (runbook:
-    // gen_live_geo)": un nome di file e un comando interni, letti da chiunque apra
-    // LIVE nella settimana prima di un Gran Premio non ancora preparato.
-    console.warn('mappa live non disponibile:', err);
-    el('live-nota').textContent = 'La mappa di questo circuito non è ancora pronta: '
-      + 'il resto della pagina funziona.';
-  });
+  const ORD = ['fp1', 'fp2', 'fp3', 'sprint_quali', 'sprint', 'qualifiche', 'gara'];
+
+  let pross = null;
+  for (const g of gare) {
+    for (const s of ORD) {
+      const q = quandoIso(g, s);
+      if (q && q > ora && (!pross || q < pross.quando)) pross = { g, s, quando: q };
+    }
+    if (pross) break;
+  }
+
+  const box = E('prossima');
+  if (!pross) {
+    box.replaceChildren(el('p', { class: 'occhiello' }, 'Calendario'),
+      el('h2', { class: 'gp' }, 'Stagione finita'),
+      el('p', { class: 'circ' }, 'Il calendario 2026 è completo: si riparte il prossimo anno.'));
+  } else {
+    const g = pross.g;
+    box.replaceChildren(
+      el('p', { class: 'occhiello' }, `Round ${g.round} · prossimo appuntamento`),
+      el('h2', { class: 'gp' }, g.titolo),
+      el('p', { class: 'circ' }, `${g.circuito || ''} · ${g.giri} giri`),
+      el('div', { class: 'conto', id: 'conto' }),
+      el('div', { class: 'sessioni' },
+        ORD.filter(s => g.sessioni?.[s]).map(s => {
+          const q = quandoIso(g, s);
+          return el('div', { class: 'ses' + (q < ora ? ' passata' : '') },
+            el('b', {}, NOMI[s] || s),
+            el('span', {}, q.toLocaleString('it-IT', { weekday: 'short', day: 'numeric',
+              month: 'short', hour: '2-digit', minute: '2-digit' })),
+            q.getTime() === pross.quando.getTime()
+              ? el('span', { class: 'etic etic-r' }, 'prima') : null);
+        })));
+    conta(pross.quando);
+  }
+
+  const inDemo = new Set((man || []).map(r => r.gara));
+  ultimaGara = gare.filter(x => x.gara_demo && inDemo.has(x.gara_demo)).pop() || null;
+  fianco(false);
 }
 
-// ---- mappa live (Fase 3): pista del sito + layer posizioni dal collettore
-const FLAG = {AllClear:['verde','PISTA VERDE'], Yellow:['gialla','BANDIERA GIALLA'],
-              SCDeployed:['sc','SAFETY CAR'], SCEnding:['sc','SAFETY CAR — RIENTRA'],
-              VSCDeployed:['sc','VIRTUAL SAFETY CAR'], VSCEnding:['sc','VSC — FINE'],
-              Red:['rossa','BANDIERA ROSSA']};
-
-async function bootMappa(g){
-  const [{ creaPista }, { creaLiveMappa }, { creaTorreTiming, snapshotDaSessione }, { creaLiveClient }, cfg] = await Promise.all([
-    // ?v= ANCHE QUI. Questi quattro moduli erano gli unici importati senza tampone,
-    // e il 31/07/2026 due di loro (live_timing, live_config) hanno ricevuto una
-    // correzione di SICUREZZA: senza bustare la cache, chi ha gia' aperto il sito
-    // continuerebbe a eseguire la versione vulnerabile. Solo /data/* rivalida per
-    // regola d'header (demo/vercel.json); i moduli no.
-    import('./pista.mjs?v=250724c'), import('./live_mappa.mjs?v=310726a'),
-    import('./live_timing.mjs?v=090826a'),
-    import('./live_client.mjs?v=310726a'), import('./live_config.mjs?v=310726a')]);
-  const geoRes = await fetch(`data/live_geo_${encodeURIComponent(g.nome)}.json`);
-  if (!geoRes.ok) throw new Error(`live_geo_${g.nome}.json assente (runbook: gen_live_geo)`);
-  const geo = await geoRes.json();
-
-  const cont = el('live-mappa');
-  const pista = await creaPista({ canvas: cont.querySelector('canvas'),
-                                  url: `data/pista_${encodeURIComponent(g.nome)}.json` });
-  const mappa = creaLiveMappa({ canvasPista: cont.querySelector('canvas'),
-                                canvasLive: el('live-overlay'), pista, geo });
-
-  // R2: torre timing, stessi eventi della mappa (nessun secondo WebSocket)
-  const torre = creaTorreTiming({ lista: el('tw-list'), nota: el('tw-nota') });
-
-  // IL MURETTO IN DIRETTA — di nuovo gli stessi eventi, nessuna terza connessione.
-  const pausaLive = { attiva: false };   // ferma i dati live durante la simulazione fantasma
-  const muretto = await creaMurettoLive(g, { pista, mappa, torre, pausaLive });
-
-  // R2b: dataset PERSISTENTE dell'ultima qualifica (dati veri da FastF1,
-  // gen_quali.py). Serve a NON mostrare una pagina vuota fuori sessione:
-  // quando il feed e' muto, la torre mostra l'ultima quali salvata; il
-  // live la sostituisce appena una sessione parte. Se manca, torre vuota.
-  const ultimaQuali = await caricaUltimaQuali();
-
-  const client = creaLiveClient({
-    url: cfg.WS_URL,
-    onEvento(e){
-      if (!pausaLive.attiva){ mappa.applica(e); torre.applica(e); }
-      muretto.applica(e);   // il muretto accumula sempre; non ridisegna durante la simulazione
-      const stato = e.type === 'track_status' ? e.status
-        : (e.type === 'snapshot' ? e.track_status : null);
-      if (stato){
-        const [cls, testo] = FLAG[stato] || [null, null];
-        const f = el('live-pista-stato');
-        if (cls){ f.hidden = false; f.className = 'lv-flag ' + cls; f.textContent = testo; }
-      }
-    },
-    onStato(s){ el('live-conn').className = 'lv-conn ' + (s === 'connesso' ? 'ok' : 'retry'); },
-  });
-
-  // LIVE / fuori sessione: derivato dal FLUSSO (heartbeat eventi <30 s),
-  // non da un calendario — verbale: session_status assente dall'ingresso OpenF1.
-  // Fuori sessione: se c'e' una qualifica salvata, la torre la mostra (R2b);
-  // altrimenti resta vuota. La mappa resta sempre vuota fuori sessione.
-  let statoTorre = null;
-  const dotNav = document.querySelector('.nav a .dot-live');
-  setInterval(() => {
-    const vivo = client.etaUltimoEvento() < cfg.HEARTBEAT_LIVE_S;
-    mappa.setAcceso(vivo);
-    if (dotNav) dotNav.classList.toggle('on', vivo);   // il pallino Live pulsa SOLO se c'e' davvero
-    el('live-invito').hidden = vivo;                    // fuori sessione: invita a provare il simulatore
-    muretto.tick();   // rivaluta "e' la gara?" ogni secondo (accende/spegne il muretto da solo)
-    const b = el('live-badge');
-    if (vivo){
-      if (statoTorre !== 'live'){       // passaggio a live: pulisci il persistente
-        statoTorre = 'live';
-        torre.setAcceso(false); torre.setAcceso(true);
-      }
-      b.className = 'lv-badge lv-on'; b.textContent = 'LIVE';
-      el('live-nota').hidden = true;
-    } else if (ultimaQuali){
-      if (statoTorre !== 'quali'){       // passaggio a persistente: mostra l'ultima quali
-        statoTorre = 'quali';
-        torre.setAcceso(false);          // svuota lo stato live
-        torre.setAcceso(true);
-        torre.applica(snapshotDaSessione(ultimaQuali));
-      }
-      b.className = 'lv-badge lv-off';
-      b.textContent = 'ULTIMA QUALIFICA — ' + (ultimaQuali.evento || ultimaQuali.gara || '');
-      el('live-nota').hidden = false; el('live-pista-stato').hidden = true;
-    } else {
-      if (statoTorre !== 'vuota'){ statoTorre = 'vuota'; torre.setAcceso(false); }
-      b.className = 'lv-badge lv-off'; b.textContent = 'NESSUNA SESSIONE IN CORSO';
-      el('live-nota').hidden = false; el('live-pista-stato').hidden = true;
-    }
-  }, 1000);
+function conta(quando) {
+  const box = E('conto');
+  if (!box) return;
+  const passo = () => {
+    let d = Math.max(0, (quando - new Date()) / 1000);
+    const gg = Math.floor(d / 86400); d -= gg * 86400;
+    const hh = Math.floor(d / 3600); d -= hh * 3600;
+    const mm = Math.floor(d / 60); const ss = Math.floor(d - mm * 60);
+    box.replaceChildren(...[[gg, 'giorni'], [hh, 'ore'], [mm, 'minuti'], [ss, 'secondi']]
+      .map(([v, t]) => el('div', {}, el('b', { class: 'n' }, String(v).padStart(2, '0')),
+        el('span', {}, t))));
+  };
+  passo();
+  setInterval(passo, 1000);
 }
 
-// ============================================================ IL MURETTO IN DIRETTA
-//
-// La stessa domanda del pannello di gara.html, sulla gara che sta succedendo. E' LO
-// STESSO CODICE — il motore del simulatore, trasportato in vendor/simulatore/ con
-// manifest di hash: cambia solo da dove arrivano i dati, dal flusso del collettore
-// invece che dalla vista pre-calcolata di una gara finita. Due traduttori, nessuna
-// fisica: live_bylap.mjs porta il flusso alla struttura per-giro (provato contro la
-// gara vera di Spa, demo/test_live_bylap.mjs), ponte_live.mjs porta quella struttura
-// al contratto del simulatore (parita' misurata, demo/test_parita_live.mjs).
-//
-// SOLO IN GARA, e il cancello e' un fatto non una preferenza: la distanza di gara arriva
-// dal messaggio LapCount, che il feed manda soltanto in gara. Nelle libere e in qualifica
-// non esiste, quindi il pannello non si accende — ed e' giusto: senza giri di gara e senza
-// un ordine di corsa, "se lo fermo adesso dove rientra" non e' una domanda.
-async function creaMurettoLive(g, deps = {}){
-  // I FORMATTATORI E IL MOTORE sono ARTEFATTI trasportati da simulatore/ (vendor/simulatore/),
-  // con manifest di hash e verifica in CI. Qui il motore gira DAVVERO in pagina: in diretta
-  // una risposta pre-calcolata non esiste, e il ponte (ponte_live.mjs) traduce le celle del
-  // flusso nel contratto del simulatore. E' lo stesso identico codice del replay — il
-  // cancello demo/test_parita_live.mjs lo misura su una gara vera.
-  const [{ creaByLapLive }, { disegna }, { pannello: pannelloNuovo }, { curva: curvaDelQuando },
-         { rispostaLive, rigiocaLive, LIMITI_LIVE }, { simDaRigioca }, { creaGhostPlay }, { attaccaGlossario }] = await Promise.all([
-    import('./live_bylap.mjs?v=310726a'),
-    import('./vendor/simulatore/render.mjs?v=080826c'),
-    import('./vendor/simulatore/pannello.mjs?v=080826c'),
-    import('./vendor/simulatore/curva.mjs?v=080826c'),
-    import('./ponte_live.mjs?v=080826c'),
-    import('./fantasma_sim.mjs?v=080826c'),
-    import('./ghostplay.mjs?v=080826c'),
-    import('./glossario.mjs?v=250724e')]);
-  const B = deps.B || creaByLapLive();
-  // pista/mappa/torre servono alla SOSTA MESSA IN SCENA; pausaLive ferma i dati live durante
-  // la simulazione; ripristinaTorre ridisegna la torre statica (usato dalla modalità demo).
-  const { pista = null, mappa = null, torre = null,
-          pausaLive = { attiva: false }, ripristinaTorre = null } = deps;
-
-  // IL MURETTO SOLO IN GARA (25/07/2026). La domanda "se lo fermo adesso dove rientra" non
-  // esiste nelle libere e in qualifica: li' non c'e' strategia di gara, e BOX non ha senso.
-  // Si accendeva su nLaps (LapCount), assumendo che il feed lo mandasse solo in gara: vero
-  // per SignalR, FALSO per OpenF1 — che in diretta e' la sorgente e riporta i giri anche in
-  // quali, cosi' BOX compariva. Il collettore non dice che sessione e' (sessione: null),
-  // quindi il tipo lo si deduce dal CALENDARIO: gara solo dentro la finestra dell'orario di
-  // gara (larga 3,5 h per ritardi e bandiere rosse). Client-side, niente collettore. In
-  // modalita' demo (deps.B fornito) il cancello NON si applica: li' si rigioca una gara vera.
-  const gs = g && g.sessioni && g.sessioni.gara;
-  const inizioGara = (gs && gs.ora_utc) ? new Date(`${gs.data}T${gs.ora_utc}:00Z`).getTime() : null;
-  const eGaraOra = () => !!deps.B || (inizioGara != null
-    && Date.now() >= inizioGara - 10 * 60000
-    && Date.now() <= inizioGara + 3.5 * 3600000);
-
-  // Le tabelle dal fondo 2018-2026, le stesse che usa gara.html. La freschezza di data/
-  // e' garantita da UNA regola sola (demo/vercel.json: Cache-Control must-revalidate su
-  // /data/*), non piu' da un ?v= per pagina. Quel tampone era pure agganciato al BUILD e
-  // non al contenuto: auto_gara riscrive i dati senza toccare il BUILD, quindi non bustava
-  // niente. La regola d'header invece fa rivalidare il browser a ogni richiesta.
-  const j = async (u, d) => { try { return await (await fetch(u)).json(); } catch(_) { return d; } };
-  // IL CONTESTO DEL MOTORE: le costanti che in Node si leggono dal disco (modello, prior
-  // pit-loss, limiti del Director, banda di rientro, durate stint 2026), congelate in un
-  // JSON solo da simulatore/web/trasporta_motore.mjs. Sono le STESSE che producono la
-  // vista pre-calcolata di gara.html: se qui ne arrivassero altre, diretta e replay
-  // risponderebbero con due tarature — che e' il modo elegante di avere due motori.
-  const [contestoLive, teamCol] = await Promise.all([
-    j('vendor/simulatore/motore/contesto_live.json?v=310726a', null),
-    j('team_colori.json', {})]);
-  // colore del pilota per la messa in scena (dal team del giro corrente)
-  const coloreDi = sg => { const L = B.giroPieno(); const t = B.byLap()[L]?.[sg]?.team; return (t && teamCol[t]) || '#9aa4b5'; };
-
-  // IL PIT-LOSS non si sceglie piu' qui. Lo sceglie il motore, dal suo prior per circuito
-  // (data/priors/pitloss_priors.json, promosso a misura interna dove il cancello e'
-  // passato) e lo dichiara nella targhetta della perdita. Le tre tabelle che questa pagina
-  // caricava per conto suo — pitloss.json, neutralizzazione_fondo.json,
-  // raggruppamento.json — erano la scelta del pannello VECCHIO, e tenerle in piedi accanto
-  // al motore nuovo avrebbe voluto dire due fonti per lo stesso numero (E12).
-  //
-  // LA VISTA per i formattatori. gara.html la legge dall'indice della vista pre-calcolata;
-  // qui si compone dal contesto trasportato, con gli stessi campi e lo stesso significato:
-  // i componenti restano quelli del simulatore, non una variante per il live.
-  const vistaLive = contestoLive && {
-    _targhetta: {
-      tipo: 'diretta — il motore del simulatore eseguito in pagina sulle celle del flusso',
-      generata_da: 'demo/ponte_live.mjs',
-      data: new Date().toISOString().slice(0, 10),
-    },
-    modello: contestoLive.modelloTarghetta,
-    mescole: contestoLive.mescole,
-  };
-
-  let scelto = null, ridisegna = null, mescolaScelta = null;
-  let gp = null;                   // la messa in scena in corso (proiezione)
-  // LA STRATEGIA IN CORSO (08/08, stessa struttura di gara.html): al primo BOX ORA
-  // il campo si congela ADESSO — byLap e giro vengono fotografati, perche' la
-  // proiezione deve restare coerente fra una sosta e la successiva anche mentre
-  // la gara vera continua a correre sotto.
-  let STRAT = null;                // {freeze, bl, nLaps, soste:[{giro,mescola}], risultato}
-  // la risposta del pannello si ricalcola solo quando cambia (giro, pilota, gomma):
-  // prima si ricalcolava a ogni battito da 1 s, motore compreso.
-  let cacheRisp = { chiave: null, s: null };
-
-  // LA GRIGLIA DI SCELTA. Non una tendina: le sigle in chiaro, con la posizione, come una
-  // formazione da schierare. Si ricostruisce solo quando l'elenco cambia davvero, altrimenti
-  // un giro nuovo la ridisegnerebbe sotto il dito di chi sta scegliendo.
-  const porta = () => {
-    const L = B.giroPieno();
-    const sigle = L ? B.presenti(L).sort() : [];
-    const cont = el('mu-griglia');
-    const chiave = sigle.join(',');
-    if (cont.dataset.chiave !== chiave) {
-      cont.dataset.chiave = chiave;
-      const bl = B.byLap()[L] || {};
-      cont.innerHTML = sigle
-        .sort((a, b) => (bl[a]?.cum_time ?? 1e9) - (bl[b]?.cum_time ?? 1e9))
-        .map((sg, i) => `<button type="button" class="mu-p" data-drv="${sg}">`
-          + `<span class="mu-p-pos">${i + 1}</span><b>${sg}</b>`
-          + `<span class="mu-p-t">${bl[sg]?.team || ''}</span></button>`).join('');
-    }
-    el('mu-porta-n').textContent = sigle.length
-      ? '' : 'In attesa dei primi giri: la scelta si apre appena la gara ha un ordine.';
-    el('mu-porta-n').hidden = sigle.length > 0;
-  };
-
-  ridisegna = () => {
-    const kv = el('mu-kv'), nota = el('mu-nota'), det = el('mu-det');
-    const nLaps = B.nLaps(), L = B.giroPieno();
-    const spegniComandi = () => { el('mu-chips').hidden = true; det.hidden = true; el('mu-strat').textContent = ''; };
-
-    // NON E' LA GARA (libere, qualifica): la domanda del muretto non esiste. Tutto spento,
-    // resta solo la nota che spiega perche'. Prima di nLaps apposta: in quali OpenF1 puo'
-    // mandare un conteggio giri, e senza questo cancello BOX comparirebbe.
-    if (!eGaraOra()) {
-      el('mu-porta').hidden = true; el('mu-testa').hidden = true;
-      el('mu-box').hidden = true; spegniComandi(); kv.innerHTML = ''; nota.hidden = false;
-      return;
-    }
-    // FUORI GARA: niente porta, niente pannello. La domanda non esiste nelle libere.
-    if (!nLaps) {
-      el('mu-porta').hidden = true; el('mu-testa').hidden = true;
-      el('mu-box').hidden = true; spegniComandi(); kv.innerHTML = ''; nota.hidden = false;
-      return;
-    }
-    // PRIMA DELLA SCELTA: solo la porta.
-    if (!scelto) {
-      el('mu-porta').hidden = false; el('mu-testa').hidden = true;
-      el('mu-box').hidden = true; spegniComandi(); kv.innerHTML = ''; nota.hidden = true;
-      porta();
-      return;
-    }
-
-    // DOPO LA SCELTA: la pagina e' sua.
-    el('mu-porta').hidden = true; el('mu-testa').hidden = false; nota.hidden = true;
-    const bl = B.byLap(), c = bl[L]?.[scelto];
-    el('mu-sigla').textContent = scelto;
-    el('mu-team').textContent = c?.team || '';
-    el('mu-giro').textContent = `giro ${B.giro() ?? '–'} / ${nLaps}`;
-    el('mu-stato').innerHTML = c
-      ? (c.compound ? `<b>${c.compound.toLowerCase()}</b>` : '')
-        + (typeof c.tyre_age === 'number' ? ` da ${c.tyre_age} giri` : '')
-      : '';
-    for (const r of el('tw-list').querySelectorAll('.tw-row'))
-      r.classList.toggle('tw-sel', r.dataset.sigla === scelto);
-
-    const d = B.diagnosi(L);
-    if (!d.pronto) {
-      el('mu-box').hidden = true; el('mu-chips').hidden = true;
-      el('mu-strat').textContent = ''; det.hidden = false;
-      kv.innerHTML = `<div class="pitmsg">Ancora presto: ${d.motivo}.
-        <span class="sub">Il passo-base di ogni pilota si misura dai suoi giri veri in gara;
-        finche non c'e, il pannello preferisce tacere.</span></div>`;
-      return;
-    }
-    // il giro fermabile e' SEMPRE quello che stai guardando: la diretta (giro in corso)
-    // oppure, a proiezione avviata, il giro dove sta il pallino. Nessuno slider — e' la
-    // richiesta del PO, e in live e' anche l'unica cosa vera.
-    const pitL = STRAT
-      ? Math.max(STRAT.freeze + 1, Math.min(STRAT.nLaps - 1, Math.round(gp?.posizione ?? (L + 1))))
-      : L + 1;
-    el('mu-box').hidden = false;
-    el('mu-boxgiro').textContent = `giro ${pitL}`;
-    el('mu-chips').hidden = false; det.hidden = false;
-    chipMescole(); listaSoste();
-
-    if (!vistaLive) {
-      kv.innerHTML = `<div class="pitmsg">Il motore non e' disponibile in questa pagina.
-        <span class="sub">manca vendor/simulatore/motore/contesto_live.json:
-        si genera con <code>node web/trasporta_motore.mjs</code> nel simulatore</span></div>`;
-      return;
-    }
-    // LA RISPOSTA, calcolata QUI perche' in diretta non puo' essere pre-calcolata. Il ponte
-    // traduce le celle del flusso nel contratto e chiama lo stesso montaggio del replay.
-    const chiave = `${L}|${scelto}|${mescolaScelta ?? ''}`;
-    if (cacheRisp.chiave !== chiave) {
-      cacheRisp = { chiave, s: rispostaLive({
-        byLap: bl, nGiriGara: nLaps, nomeGara: g.nome,
-        pilota: scelto, freezeLap: L, contestoLive, mescolaScelta,
-      }) };
-    }
-    const s = cacheRisp.s;
-    if (!s) {
-      kv.innerHTML = `<div class="pitmsg">A questo giro non si sa su che gomma sta ${scelto}.
-        <span class="sub">senza la mescola il motore non risponde, invece di indovinarla</span></div>`;
-      return;
-    }
-    if (s.senza_risposta) {
-      kv.innerHTML = `<div class="pitmsg">${s.senza_risposta}</div>`;
-      return;
-    }
-    kv.replaceChildren(disegna(pannelloNuovo(vistaLive, s)));
-    // LA CURVA DEL QUANDO: per ogni giro candidato, quanto costa fermarsi li' rispetto al
-    // momento migliore. Il pannello vecchio non sapeva porre questa domanda.
-    // LA CURVA SI DISEGNA ANCHE QUANDO E' VUOTA, perche' in quel caso dice PERCHE'.
-    // La guardia chiedeva anche `s.curva.length`, e su 2.678 risposte su 10.131 (il
-    // 26,4%) faceva sparire la sezione senza una riga: la novita' dichiarata del
-    // pannello spariva in piu' di un caso su quattro e sembrava un difetto. Il
-    // componente `curva` ha gia' il suo ramo per l'assenza, con la frase che la
-    // spiega — rendeva irraggiungibile proprio quella. L'assenza si dichiara (regola 6).
-    if (s.approvato !== false && s.curva) kv.append(disegna(curvaDelQuando(vistaLive, s)));
-    // I DUE LIMITI DEL LIVE, in fondo alla risposta e non in un commento: chi legge un
-    // numero deve vedere da quale conoscenza della gara e' uscito.
-    const lim = document.createElement('p');
-    lim.className = 'nota limite';
-    lim.textContent = 'In diretta lo stato pista e\' quello della PISTA, non della singola auto'
-      + ` (accordo ${(100 * LIMITI_LIVE.stato_track_wide.accordo).toFixed(1)}% col dato ufficiale)`
-      + ' e il feed non revoca i giri cancellati'
-      + ` (${(100 * LIMITI_LIVE.giri_cancellati_ignoti.quota_sui_verdi).toFixed(1)}% di giri verdi in piu', misurato).`;
-    kv.append(lim);
-    attaccaGlossario(kv);   // il gergo diventa toccabile (spiegazione in parole piane)
-  };
-
-  el('mu-griglia').addEventListener('click', e => {
-    const b = e.target.closest('[data-drv]'); if (!b) return;
-    scelto = b.dataset.drv; mescolaScelta = null; ridisegna();
-  });
-  el('mu-cambia').addEventListener('click', () => {
-    scelto = null; mescolaScelta = null;
-    esciSim();   // se una proiezione era in corso, si torna alla diretta
-  });
-  el('mu-box').addEventListener('click', boxOra);
-  // IL SELETTORE MESCOLA E' TORNATO UN COMANDO, il 04/08/2026.
-  //
-  // Era stato staccato il 31/07 per una ragione giusta: misurato su Spa, cambiando la
-  // mescola la risposta cambiava in 0 casi su 24, perche' nel motore la gomma non faceva
-  // niente. Un bottone che risponde sempre la stessa cosa e' peggio di un bottone spento.
-  //
-  // Adesso fa qualcosa: `vita_mescola` e' accesa (decisione del PO) e la scelta cambia la
-  // vita della gomma, quindi il piano e la curva. Misurato: a Monaco montare la soft invece
-  // della hard costa 10,9 s sull'intera gara, in Belgio 2,6.
-  //
-  // COSA NON FA, e sta scritto nel titolo di ogni pastiglia: non cambia il PASSO. L'effetto
-  // per mescola e' 0,0158 s per giro d'eta' fra la piu' dura e la piu' morbida, e resta
-  // sotto il rumore di un giro finche' la gomma non arriva a 22 giri d'eta'. E le vite
-  // vengono dalle 427 soste vere del 2026: sono decisioni dei team, non fisica.
-  //
-  // Funziona SOLO in diretta, e non e' una scelta: qui il motore gira in pagina e puo'
-  // rispondere: nel replay la vista e' pre-calcolata su una gomma sola.
-  // dal 08/08 le pastiglie del pannello e le chips sopra il BOX scrivono la STESSA
-  // scelta: la gomma che prezza la risposta e' anche quella che si monta col prossimo
-  // BOX ORA. Due selettori con due significati sarebbero il doppio flusso appena tolto.
-  el('mu-kv').addEventListener('click', (e) => {
-    const p = e.target.closest('.mescole [data-valore]');
-    if (!p || p.hasAttribute('disabled')) return;
-    mescolaScelta = p.dataset.valore;
-    ridisegna();
-  });
-  // la torre resta un secondo modo di scegliere, ma SOLO prima di aver scelto: dopo, un
-  // click distratto sulla classifica non deve cambiare il pilota di cui sei il muretto
-  el('tw-list').addEventListener('click', e => {
-    if (scelto) return;
-    const r = e.target.closest('.tw-row[data-sigla]'); if (!r) return;
-    scelto = r.dataset.sigla; ridisegna();
-  });
-
-  // LE CHIPS DELLA GOMMA: la scelta per la prossima sosta, precaricata su una gomma
-  // DIVERSA da quella montata (rimontare la stessa e' il piano che il Director respinge).
-  function chipMescole(){
-    const c = el('mu-chips'); if (!c) return; c.replaceChildren();
-    const L = B.giroPieno();
-    const attuale = B.byLap()[L]?.[scelto]?.compound ?? null;
-    if (mescolaScelta === null) mescolaScelta = ['HARD', 'MEDIUM', 'SOFT'].find(x => x !== attuale) ?? 'MEDIUM';
-    for (const x of ['SOFT', 'MEDIUM', 'HARD']) {
-      const b = document.createElement('button'); b.type = 'button'; b.textContent = x.toLowerCase();
-      b.className = 'chip' + (x === mescolaScelta ? ' on' : '');
-      b.onclick = () => { mescolaScelta = x; ridisegna(); };
-      c.appendChild(b);
-    }
-  }
-  function listaSoste(){
-    el('mu-strat').textContent = STRAT && STRAT.soste.length
-      ? 'Le tue soste: ' + STRAT.soste.map(x => `giro ${x.giro} → ${x.mescola.toLowerCase()}`).join(' · ')
-      : '';
-  }
-
-  // ---- LA SOSTA MESSA IN SCENA (ghostplay) ------------------------------------------
-  // BOX ORA (08/08, stessa decisione di gara.html): la strategia si fa GIOCANDO.
-  // Primo BOX: il campo si congela ADESSO e la proiezione parte dal giro corrente,
-  // SENZA PAUSE fino alla bandiera. BOX ORA di nuovo, mentre scorre, aggiunge
-  // un'altra sosta al giro dove sta il pallino. La differenza col replay e'
-  // DICHIARATA nell'etichetta: qui il futuro non e' successo, quindi niente soste
-  // vere dei rivali, niente ritiri, niente Safety Car — e' la proiezione del
-  // motore, validata ~6 giri (ai_lab/REGISTRO_F1.md).
-  function tagOnesta(){
-    return 'PROIEZIONE: i rivali non reagiscono &middot; oltre ~6 giri non e&#39; validata';
-  }
-  function boxOra(){
-    if (!scelto || !vistaLive) return;
-    const L = B.giroPieno(), nLaps = B.nLaps();
-    if (!L || !nLaps) return;
-    if (!STRAT) STRAT = { freeze: L, bl: B.byLap(), nLaps, soste: [] };
-    const giro = STRAT.soste.length
-      ? Math.max(STRAT.freeze + 1, Math.min(STRAT.nLaps - 1, Math.round(gp?.posizione ?? (L + 1))))
-      : Math.min(STRAT.nLaps - 1, STRAT.freeze + 1);
-    const ultima = STRAT.soste[STRAT.soste.length - 1];
-    if (ultima && giro <= ultima.giro && giro !== ultima.giro) return;
-    const soste = [...STRAT.soste.filter(x => x.giro !== giro), { giro, mescola: mescolaScelta }]
-      .sort((a, b) => a.giro - b.giro);
-    let esito;
-    try {
-      esito = rigiocaLive({ byLap: STRAT.bl, nGiriGara: STRAT.nLaps, nomeGara: g.nome,
-        pilota: scelto, freezeLap: STRAT.freeze, contestoLive, soste });
-    } catch (err) {
-      el('mu-simbar').hidden = false;
-      el('mu-simtag').innerHTML = `il motore rifiuta questa sosta: ${err.message}`;
-      if (!STRAT.soste.length) STRAT = null;
-      return;
-    }
-    if (!esito.direttore.approved) {
-      const fatal = (esito.direttore.violazioni ?? []).filter(v => v.severita === 'FATAL').map(v => v.messaggio ?? v.codice);
-      el('mu-simbar').hidden = false;
-      el('mu-simtag').innerHTML = `il Director respinge: ${fatal[0] ?? 'piano non valido'} &mdash; prova un&#39;altra gomma o un altro giro`;
-      if (!STRAT.soste.length) STRAT = null;
-      return;
-    }
-    STRAT.soste = soste; STRAT.risultato = esito.risultato;
-    listaSoste();
-    avviaScenaLive(giro);
-  }
-  function avviaScenaLive(giroSosta){
-    if (!pista || !STRAT || !STRAT.risultato) return;
-    // stesso adattatore di gara.html: la traccia del kernel, non un secondo calcolo
-    const sim = simDaRigioca({ risultato: STRAT.risultato, race: { byLap: STRAT.bl },
-      pilota: scelto, freeze: STRAT.freeze });
-    if (!sim) {
-      el('mu-simbar').hidden = false;
-      el('mu-simtag').innerHTML = 'scena non disponibile per questo run';
-      return;
-    }
-    sim.pitLap = giroSosta;                     // la scenografia del transito segue l'ULTIMA sosta
-    if (gp) gp.stop();
-    pausaLive.attiva = true;                    // i dati live si accumulano ma non ridisegnano
-    if (mappa) mappa.setAcceso(false);          // spegni l'overlay GPS: in scena resta il fantasma
-    el('mu-simbar').hidden = false; el('mu-simcont').hidden = true;
-    const mesc = STRAT.soste.find(x => x.giro === giroSosta)?.mescola ?? '';
-    el('mu-simtag').innerHTML = `<b>${scelto}</b> box al giro ${giroSosta} (${mesc.toLowerCase()})`
-      + ` e la gara CONTINUA fino alla bandiera &mdash; ${tagOnesta()}.`
-      + ` BOX ORA per un&#39;altra sosta, &#8634; per la diretta.`;
-    gp = creaGhostPlay({ sim, pista, coloreDi,
-      onTower: (righe) => {
-        renderSimTorre(righe);
-        // il bottone segue il pallino: il prossimo BOX cade dove stai guardando
-        if (gp && STRAT) el('mu-boxgiro').textContent =
-          `giro ${Math.max(STRAT.freeze + 1, Math.min(STRAT.nLaps - 1, Math.round(gp.posizione)))}`;
-      },
-      giroRisposta: null, p0: Math.max(STRAT.freeze, giroSosta - 1), durataTot: 22,
-      onFine: () => {
-        const i = STRAT.risultato.ordine.indexOf(scelto);
-        el('mu-simtag').innerHTML = `&#127937; con la tua strategia il motore proietta <b>${scelto}`
-          + ` ${i < 0 ? 'fuori classifica' : 'P' + (i + 1)}</b> alla bandiera &mdash; ${tagOnesta()}.`
-          + ` &#8634; per tornare alla diretta.`;
-      },
-    });
-    gp.play();
-  }
-  function esciSim(){
-    if (gp){ gp.stop(); gp = null; }
-    STRAT = null;
-    cacheRisp = { chiave: null, s: null };
-    if (pista) pista.aggiorna([]);              // togli il fantasma dalla mappa
-    pausaLive.attiva = false;
-    if (mappa) mappa.setAcceso(true);
-    el('mu-simbar').hidden = true; el('mu-simcont').hidden = true;
-    if (ripristinaTorre) ripristinaTorre();     // demo: ridisegna la torre statica; live: la ridisegna il feed
-    ridisegna();
-  }
-  function renderSimTorre(righe){
-    el('tw-list').innerHTML = righe.map(r =>
-      `<div class="tw-row${r.inPit ? ' tw-pit' : ''}${r.drv === scelto ? ' tw-sel' : ''}"><div class="tw-main">`
-      + `<span class="tw-pos">${r.pos}</span>`
-      + `<span class="tw-col" style="background:${coloreDi(r.drv)}"></span>`
-      + `<span class="tw-sig">${r.drv}</span>`
-      + `<span class="tw-time">${r.drv === scelto ? 'TU' : ''}</span>`
-      + `<span class="tw-gap ${r.leader ? 'tw-lead' : ''}">${r.gapTxt}</span>`
-      + `<span class="tw-tag">${r.inPit ? 'PIT' : ''}</span>`
-      + `</div></div>`).join('');
-    const n = el('tw-nota'); if (n) n.hidden = true;
-  }
-  el('mu-simesci').addEventListener('click', esciSim);
-
-  ridisegna();   // avvio: porta o nota, secondo lo stato di B
-
-  let ultimo = null;
-  return {
-    ridisegna,
-    applica(e){
-      B.applica(e);
-      if (pausaLive.attiva) return;   // sotto simulazione il pannello accumula ma non ridisegna
-      // si ridisegna quando la gara cambia davvero giro, non 50 volte al secondo
-      const L = B.giroPieno();
-      if (L !== ultimo){ ultimo = L; ridisegna(); }
-    },
-    // ripassata periodica (dal battito da 1s): rivaluta "e' la gara?" col passare del tempo,
-    // cosi' il muretto si accende/spegne da solo al cambio di sessione anche a pagina aperta.
-    // Rispetta la pausa: durante la sosta messa in scena non tocca il pannello.
-    tick(){ if (!pausaLive.attiva) ridisegna(); },
-  };
+/** In diretta il fianco diventa il muretto: pilota, gomma, BOX ORA. */
+function murettoLive() {
+  const nome = scelto || '—';
+  E('fianco').replaceChildren(...veri(
+    el('h3', {}, 'Il muretto'),
+    scelto
+      ? el('div', { class: 'sceltoLive', stile: { '--c': colori[teams[scelto]] || '#8A93A3' } },
+          el('span', { class: 'bar' }), el('b', {}, nome))
+      : el('p', {}, 'Tocca un pilota nella classifica, scegli la gomma e premi BOX ORA.'),
+    el('div', { class: 'mesc' }, SLICK.map(m => el('button', {
+      class: mescolaScelta === m ? 'on' : '', type: 'button',
+      onclick: () => { mescolaScelta = m; murettoLive(); } },
+      el('span', { class: 'gomma ' + m }),
+      m === 'SOFT' ? 'morbida' : m === 'MEDIUM' ? 'media' : 'dura'))),
+    el('button', { class: 'btn btn-p', id: 'boxOra', type: 'button',
+      stile: { width: '100%' }, disabled: !scelto, onclick: boxOra }, 'BOX ORA'),
+    el('div', { id: 'esitoLive' }),
+    el('p', { class: 'onesta' },
+      'È una ', el('b', {}, 'proiezione'), ': il futuro non è ancora successo, quindi ',
+      el('b', {}, 'i rivali non reagiscono'), ' e oltre ~6 giri non è validata.')));
 }
 
-// R2b: carica l'ultima qualifica salvata (manifest -> file). null se assente.
-async function caricaUltimaQuali(){
+function boxOra() {
+  const L = B.giroPieno(), nLaps = B.nLaps();
+  const box = E('esitoLive');
+  if (!scelto || !L || !nLaps) {
+    box.replaceChildren(el('div', { class: 'esitoLive' },
+      'Il giro in corso non è ancora completo: riprova fra poco.'));
+    return;
+  }
+  if (!contestoLive) {
+    box.replaceChildren(el('div', { class: 'esitoLive' },
+      'Il motore non è disponibile in questa pagina.'));
+    return;
+  }
+  const giro = Math.min(nLaps - 1, L + 1);
+  let esito;
   try {
-    const man = await (await fetch('data/quali_manifest.json')).json();
-    const u = man && man.ultima;
-    if (!u || !u.file) return null;
-    const q = await (await fetch('data/' + u.file)).json();
-    return (q && Array.isArray(q.piloti) && q.piloti.length) ? q : null;
-  } catch (_) { return null; }
+    esito = rigiocaLive({ byLap: B.byLap(), nGiriGara: nLaps,
+      nomeGara: garaCorrente, pilota: scelto, freezeLap: L, contestoLive,
+      soste: [{ giro, mescola: mescolaScelta }] });
+  } catch (err) {
+    box.replaceChildren(el('div', { class: 'esitoLive' },
+      `Il motore rifiuta questa sosta: ${err.message}`));
+    return;
+  }
+  if (!esito.direttore?.approved) {
+    const f = (esito.direttore?.violazioni ?? []).filter(v => v.severita === 'FATAL');
+    box.replaceChildren(el('div', { class: 'esitoLive' },
+      f[0]?.messaggio || 'Piano non valido: prova un\'altra gomma.'));
+    return;
+  }
+  const i = esito.risultato?.ordine?.indexOf(scelto) ?? -1;
+  box.replaceChildren(el('div', { class: 'esitoLive' },
+    el('span', { class: 'st-occ', stile: { color: 'var(--fioco)', font: '500 10px/1 var(--mono)',
+      letterSpacing: '.16em', textTransform: 'uppercase' } },
+      `se ${scelto} si ferma al giro ${giro}`),
+    el('b', { class: 'pos n' }, i < 0 ? '—' : 'P' + (i + 1)),
+    el('span', { stile: { color: 'var(--calmo)', fontSize: '13.5px' } },
+      'alla bandiera, con questa gomma.')));
 }
 
-// R2b: converte la quali salvata in uno snapshot per la torre (stesso
-// vocabolario del live). Micro-settori assenti nel persistente (sono un
-// artefatto del feed live): qui ci sono i TEMPI di settore.
-// qualiToSnapshot e' stata RIMOSSA: la traduzione sessione-archiviata -> snapshot vive in
-// live_timing.mjs::snapshotDaSessione, dove vive gia' la torre che la consuma.
+function fianco(inDiretta) {
+  if (inDiretta) { murettoLive(); return; }
+  E('fianco').replaceChildren(...veri(
+    el('h3', {}, inDiretta ? 'Il pannello strategia' : 'Nel frattempo'),
+    el('p', {}, inDiretta
+      ? 'Durante la gara la stessa domanda del muretto — «se mi fermo ora, dove rientro?» — si fa sulla pagina della gara, sui dati appena registrati.'
+      : 'Non c\'è una sessione in corso. Puoi rigiocare l\'ultima gara e provare la strategia: è lo stesso pannello che vedrai qui in diretta.'),
+    ultimaGara ? el('a', { class: 'btn btn-p', stile: { width: '100%', marginTop: '6px' },
+      href: `gara.html?g=${encodeURIComponent(ultimaGara.gara_demo)}` },
+      `Rivedi ${ultimaGara.nome}`) : null,
+    el('a', { class: 'btn btn-s', stile: { width: '100%', marginTop: '8px' }, href: 'telemetria.html' },
+      'Apri la telemetria')));
+}
 
-// ============================================================ MODALITÀ DEMO (?demo=<gara>)
-// Prova il muretto live senza un feed: una gara GIÀ CORSA alimenta il pannello e la messa in
-// scena della sosta, con dati reali ma dichiaratamente NON in diretta. È l'equivalente del
-// collettore --replay per la sola parte-muretto (niente GPS: la mappa mostra il fantasma).
-async function bootDemo(gara, lapStr){
-  el('week').innerHTML = `<div class="live-gp"><b>DEMO &middot; ${gara}</b>`
-    + `<span>prova del muretto live su una gara gi&agrave; corsa &mdash; dati reali, nessun feed</span></div>`;
-  const { creaPista } = await import('./pista.mjs?v=250724c');
-  const race = await (await fetch(`data/${encodeURIComponent(gara)}.json`)).json();
-  const teamCol = await (await fetch('team_colori.json')).json();
-  race.byLap = {}; for (const lp of race.laps) race.byLap[lp.lap] = lp.cars;
-  const N = race.n_laps;
-  const L = Math.max(2, Math.min(N - 1, lapStr ? +lapStr : Math.round(N * 0.7)));
-  const cont = el('live-mappa');
-  const pista = await creaPista({ canvas: cont.querySelector('canvas'),
-                                  url: `data/pista_${encodeURIComponent(gara)}.json` });
-  el('live-overlay').style.display = 'none';
-  const b = el('live-badge'); b.className = 'lv-badge lv-off';
-  b.textContent = `DEMO — ${gara} · giro ${L}/${N}`;
-  el('live-nota').textContent = 'Modalità demo: la gara è già corsa, i dati sono reali ma non in diretta. '
-    + 'Serve a provare il muretto live e la messa in scena della sosta senza un feed. '
-    + 'Scegli un pilota qui sotto, la gomma, e premi BOX ORA.';
-  el('live-nota').hidden = false;
-  const B = fintaByLap(race, L);
-  const ripristinaTorre = () => renderTorreDemo(race, L, teamCol);
-  ripristinaTorre();
-  await creaMurettoLive({ nome: gara, gara_demo: gara, circuitId: null }, { B, pista, ripristinaTorre });
+/* ------------------------------------------------------------ in diretta */
+E('torre').addEventListener('click', (ev) => {
+  const r = ev.target.closest('.tw-row[data-sigla]');
+  if (!r) return;
+  scelto = r.dataset.sigla;
+  for (const x of E('torre').querySelectorAll('.tw-row')) x.classList.toggle('tw-sel', x === r);
+  murettoLive();
+});
+
+function mostraDiretta(nome) {
+  E('prossima').hidden = true;
+  E('boxTorre').hidden = false;
+  E('etichSess').hidden = !nome;
+  if (nome) E('etichSess').textContent = nome;
+  if (!viva) { viva = true; fianco(true); }
 }
-// finta B (stessa interfaccia di creaByLapLive) a partire dai dati di una gara finita
-function fintaByLap(race, L){
-  const nLaps = race.n_laps;
-  return {
-    applica(){},
-    byLap: () => race.byLap,
-    nLaps: () => nLaps,
-    giro: () => L,
-    giroPieno: () => L,
-    pace: Lx => race.pace[String(Lx)] || {},
-    presenti: Lx => Object.keys(race.byLap[Lx] || {}).filter(d => typeof race.byLap[Lx][d].cum_time === 'number'),
-    diagnosi: Lx => { const n = Object.keys(race.pace[String(Lx)] || {}).length;
-      return n >= 6 ? { pronto: true, n } : { pronto: false, n, motivo: `passo-base per ${n} piloti` }; },
-  };
+
+function spia(testo, accesa) {
+  E('spiaTxt').textContent = testo;
+  E('spia').classList.toggle('viva', !!accesa);
+  E('spia').querySelector('.pallino').classList.toggle('on', !!accesa);
+  const nav = document.getElementById('pallinoLive');
+  if (nav) nav.classList.toggle('on', !!accesa);
 }
-// torre statica al giro L dai dati della gara (ordinata per cum_time)
-function renderTorreDemo(race, L, teamCol){
-  const A = race.byLap[L] || {};
-  const ord = Object.entries(A).filter(([d, c]) => typeof c.cum_time === 'number')
-    .sort((a, b) => a[1].cum_time - b[1].cum_time);
-  const leader = ord.length ? ord[0][1].cum_time : 0;
-  el('tw-list').innerHTML = ord.map(([d, c], i) => {
-    const gap = c.cum_time - leader;
-    return `<div class="tw-row" data-sigla="${d}"><div class="tw-main">`
-      + `<span class="tw-pos">${i + 1}</span>`
-      + `<span class="tw-col" style="background:${teamCol[c.team] || '#9aa4b5'}"></span>`
-      + `<span class="tw-sig">${d}</span>`
-      + `<span class="tw-time">${c.compound ? c.compound.toLowerCase() : ''}</span>`
-      + `<span class="tw-gap ${i === 0 ? 'tw-lead' : ''}">${i === 0 ? 'LEADER' : '+' + gap.toFixed(1) + 's'}</span>`
-      + `<span class="tw-tag"></span></div></div>`;
-  }).join('');
-  el('tw-nota').hidden = true;
+
+let nomeSessione = null;
+const client = creaLiveClient({
+  url: WS_URL,
+  onStato: (s) => { if (s !== 'connesso') spia(s === 'connessione' ? 'collego…' : 'riconnetto…', false); },
+  onEvento: (e) => {
+    try { torre.applica(e); } catch (_) { /* evento che la torre non consuma */ }
+    try { B.applica(e); } catch (_) { /* evento che il lap-chart non consuma */ }
+    if (e.session_name || e.session) nomeSessione = e.session_name || e.session;
+    valuta();
+  },
+});
+
+/** L'unico criterio: ci sono righe in torre? Allora e' una sessione. */
+function valuta() {
+  if (conRighe()) { spia('in diretta', true); mostraDiretta(nomeSessione); }
+  else { viva = false; spia('nessuna sessione', false); mostraAttesa(); }
 }
-boot();
+
+/* Il motore e l'identita' servono solo in diretta: si caricano una volta sola,
+   e non fanno aspettare chi apre la pagina fuori sessione. */
+(async () => {
+  const [ctx, cal, t, c] = await Promise.all([
+    dati(`vendor/simulatore/motore/contesto_live.json?v=${V}`),
+    dati(`data/calendario_2026.json?v=${V}`),
+    dati(`data/teams.json?v=${V}`),
+    dati(`team_colori.json?v=${V}`),
+  ]);
+  contestoLive = ctx || null; calendario = cal; teams = t || {}; colori = c || {};
+  // che GP si sta correndo: quello con una sessione oggi, altrimenti il piu' vicino
+  const oggi = new Date().toISOString().slice(0, 10);
+  const g = (cal?.gare || []).find(x => Object.values(x.sessioni || {})
+    .some(v => v.data === oggi));
+  garaCorrente = (g || (cal?.gare || []).slice(-1)[0])?.nome || null;
+})();
+
+// se entro pochi secondi non arriva niente, la sessione non c'e': meglio
+// mostrare subito la prossima che lasciare una pagina che gira a vuoto.
+setTimeout(valuta, 3000);
+
+// il battito: se il flusso si ferma, si torna fuori-sessione da soli
+setInterval(() => {
+  if (viva && client.etaUltimoEvento() > HEARTBEAT_LIVE_S) {
+    torre.setAcceso(false); torre.setAcceso(true);
+    valuta();
+  }
+}, 5000);
 </script>
 </body>
 </html>

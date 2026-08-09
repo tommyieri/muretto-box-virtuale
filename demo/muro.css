@@ -1,0 +1,407 @@
+/* ============================================================================
+   muro.css — il foglio di stile del sito nuovo (agosto 2026).
+   Sostituisce stile.css: nessuna pagina nuova lo importa.
+
+   PERCHE' SCURO. Questo e' un cruscotto di cronometraggio: i colori squadra,
+   le tracce di telemetria e le mescole esistono solo sul buio. Il chiaro era
+   gia' stato provato in produzione e combatteva il mestiere del sito.
+
+   Tre famiglie e basta:
+     Barlow Condensed  titoli, etichette, tutto cio' che grida
+     Barlow            prosa
+     JetBrains Mono    OGNI numero, sempre tabulare
+   ========================================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root{
+  /* fondo e piani */
+  --nero:      #08090C;
+  --carbonio:  #0E1116;
+  --piastra:   #141821;
+  --alto:      #1B2029;
+  --bordo:     #242A36;
+  --bordo-2:   #333B4A;
+
+  /* inchiostro */
+  --testo:     #EDF1F7;
+  --calmo:     #A7B0BF;
+  --fioco:     #737D8C;
+
+  /* semantica */
+  --rosso:     #FF1E3C;   /* identita', azione */
+  --rosso-cupo:#B3122A;
+  --ciano:     #24E3D2;   /* dato vivo, selezione */
+  --ambra:     #FFB000;
+  --verde:     #2FD576;
+  --viola:     #B47CFF;
+
+  /* mescole */
+  --soft:      #FF2E3F;
+  --medium:    #FFD32A;
+  --hard:      #EDEFF2;
+  --inter:     #43C464;
+  --wet:       #2E7FE8;
+
+  /* misure */
+  --r:         14px;      /* raggio piastra */
+  --r-s:       9px;
+  --barra:     58px;      /* altezza topbar */
+  --max:       1360px;
+  --gap:       18px;
+
+  --disp: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --sans: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+
+  /* ALIAS DEI NOMI VECCHI. Non sono decorazione: gli SVG degli articoli e le
+     targhette dei grafici sono GENERATI da ai_lab/redazione e portano dentro
+     var(--txt), var(--dim), var(--accent)… Senza queste righe le etichette dei
+     grafici pubblicati diventano invisibili, e non si possono riscrivere da qui
+     perche' li riscrive il generatore a ogni pubblicazione. */
+  --bg: var(--nero);
+  --bg2: var(--carbonio);
+  --panel: var(--piastra);
+  --panel2: var(--alto);
+  --line: var(--bordo);
+  --line2: var(--bordo-2);
+  --txt: var(--testo);
+  --fg: var(--testo);
+  --dim: var(--fioco);
+  --brand: var(--rosso);
+  --accent: var(--ciano);
+  --accent-ink: #05070B;
+  --ok: var(--verde);
+  --lead: #FFD24E;
+  --sc: var(--ambra);
+  --vsc: #E0B400;
+  --rf: var(--rosso);
+  --pen: var(--viola);
+  --row-h: 46px;
+
+  --ease: cubic-bezier(.22,.61,.36,1);
+  --z-nav: 40; --z-velo: 60; --z-foglio: 70; --z-avviso: 90;
+}
+
+/* ------------------------------------------------------------ azzeramento */
+*,*::before,*::after{ box-sizing:border-box; }
+html{ -webkit-text-size-adjust:100%; }
+body{
+  margin:0; background:var(--nero); color:var(--testo);
+  font:400 16px/1.6 var(--sans);
+  -webkit-font-smoothing:antialiased;
+  /* CLIP, non HIDDEN: `overflow-x:hidden` rende <body> un contenitore di
+     scorrimento e la barra `position:sticky` smette di agganciarsi al viewport
+     (si vedeva restare a meta' pagina dopo uno scroll). `clip` taglia e basta. */
+  overflow-x:clip;
+}
+/* la trama di carbonio: due velature fisse, mai un'immagine da scaricare */
+body::before{
+  content:""; position:fixed; inset:0; z-index:-1; pointer-events:none;
+  background:
+    radial-gradient(900px 520px at 12% -6%, rgba(255,30,60,.10), transparent 62%),
+    radial-gradient(760px 480px at 92% 4%, rgba(36,227,210,.055), transparent 60%),
+    repeating-linear-gradient(115deg, rgba(255,255,255,.014) 0 1px, transparent 1px 7px);
+}
+img,svg,canvas{ max-width:100%; display:block; }
+/* `hidden` deve vincere: un `display:grid` nel foglio batte il display:none
+   dello user-agent, e un pannello "nascosto" resta in pagina vuoto. */
+[hidden]{ display:none !important; }
+button,input,select,textarea{ font:inherit; color:inherit; }
+button{ background:none; border:0; padding:0; cursor:pointer; }
+a{ color:inherit; text-decoration:none; }
+h1,h2,h3,h4{ margin:0; font-family:var(--disp); font-weight:700; line-height:1.05; letter-spacing:.01em; }
+p{ margin:0 0 .85em; }
+hr{ border:0; border-top:1px solid var(--bordo); margin:26px 0; }
+::selection{ background:var(--rosso); color:#fff; }
+
+:focus-visible{ outline:2px solid var(--ciano); outline-offset:2px; border-radius:4px; }
+
+/* numeri: SEMPRE tabulari, mai ballerini */
+.n,.num,td.n,th.n{ font-family:var(--mono); font-variant-numeric:tabular-nums; letter-spacing:-.02em; }
+
+.solo-lettori{ position:absolute; width:1px; height:1px; margin:-1px; padding:0;
+  overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0; }
+
+/* =========================================================== intestazione */
+.barra{
+  position:sticky; top:0; z-index:var(--z-nav);
+  height:var(--barra); display:flex; align-items:center; gap:24px;
+  padding:0 clamp(14px,3vw,26px);
+  background:rgba(8,9,12,.82); backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--bordo);
+}
+.barra::after{
+  content:""; position:absolute; left:0; right:0; bottom:-1px; height:1px;
+  background:linear-gradient(90deg,var(--rosso) 0 22%,transparent 60%);
+}
+.marchio{ display:flex; align-items:center; gap:11px; flex:0 0 auto; }
+.marchio-b{
+  width:32px; height:32px; border-radius:8px; flex:0 0 auto;
+  background:linear-gradient(150deg,var(--rosso),var(--rosso-cupo));
+  display:grid; place-items:center; color:#fff;
+  font:700 19px/1 var(--disp);
+  box-shadow:0 3px 14px rgba(255,30,60,.32);
+}
+.marchio-t b{ display:block; font:700 18px/1 var(--disp); letter-spacing:.16em; }
+.marchio-t small{ display:block; margin-top:3px; color:var(--fioco);
+  font:500 8px/1 var(--mono); letter-spacing:.26em; }
+
+.menu{ display:flex; align-items:center; gap:2px; margin-left:auto; }
+.menu a{
+  position:relative; display:flex; align-items:center; gap:7px;
+  height:38px; padding:0 14px; border-radius:9px;
+  color:var(--calmo); font:700 15px/1 var(--disp); letter-spacing:.09em;
+  text-transform:uppercase; transition:color .18s var(--ease), background-color .18s var(--ease);
+}
+.menu a:hover{ color:var(--testo); background:rgba(255,255,255,.05); }
+.menu a[aria-current="page"]{ color:var(--testo); background:rgba(255,255,255,.07); }
+.menu a[aria-current="page"]::after{
+  content:""; position:absolute; left:14px; right:14px; bottom:5px; height:2px;
+  border-radius:2px; background:var(--rosso);
+}
+.pallino{ width:7px; height:7px; border-radius:50%; background:var(--fioco); flex:0 0 auto; }
+.pallino.on{ background:var(--rosso); box-shadow:0 0 0 0 rgba(255,30,60,.6); animation:battito 1.8s infinite; }
+@keyframes battito{ 70%{ box-shadow:0 0 0 7px rgba(255,30,60,0); } 100%{ box-shadow:0 0 0 0 rgba(255,30,60,0); } }
+
+@media (max-width:700px){
+  .barra{ gap:10px; padding:0 12px; }
+  .marchio-t b{ font-size:16px; letter-spacing:.12em; }
+  .marchio-t small{ display:none; }
+  .menu{ gap:0; }
+  .menu a{ padding:0 9px; font-size:14px; letter-spacing:.05em; }
+}
+@media (max-width:420px){ .marchio-t{ display:none; } }
+
+/* ================================================================= scafo */
+.scafo{ max-width:var(--max); margin:0 auto; padding:clamp(22px,4vw,40px) clamp(14px,3vw,26px) 90px; }
+.scafo-largo{ max-width:1600px; }
+
+.occhiello{
+  display:flex; align-items:center; gap:9px;
+  color:var(--rosso); font:500 11px/1 var(--mono);
+  letter-spacing:.2em; text-transform:uppercase; margin-bottom:12px;
+}
+.occhiello::before{ content:""; width:22px; height:2px; background:var(--rosso); border-radius:2px; }
+
+.titolone{ font-size:clamp(34px,6vw,60px); letter-spacing:-.005em; text-transform:uppercase; }
+.titolone em{ font-style:normal; color:var(--rosso); }
+.sottotitolo{ margin-top:14px; max-width:56ch; color:var(--calmo); font-size:17px; }
+
+.sezione-t{
+  display:flex; align-items:baseline; gap:12px; margin:44px 0 16px;
+  font:700 15px/1 var(--disp); letter-spacing:.2em; text-transform:uppercase;
+}
+.sezione-t::before{ content:"//"; color:var(--rosso); font:700 14px/1 var(--mono); letter-spacing:-.08em; }
+.sezione-t .coda{ margin-left:auto; color:var(--fioco); font:400 12px/1 var(--mono); letter-spacing:.06em; text-transform:none; }
+
+/* =============================================================== piastre */
+.piastra{
+  background:linear-gradient(180deg,var(--piastra),var(--carbonio));
+  border:1px solid var(--bordo); border-radius:var(--r);
+  position:relative; overflow:hidden;
+}
+.piastra::before{
+  content:""; position:absolute; inset:0 0 auto; height:1px;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.10) 30%,rgba(255,255,255,.03) 70%,transparent);
+}
+.piastra-p{ padding:clamp(16px,2.4vw,24px); }
+
+/* ================================================================ bottoni */
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:9px;
+  min-height:46px; padding:0 20px; border-radius:11px;
+  font:700 15px/1 var(--disp); letter-spacing:.11em; text-transform:uppercase;
+  border:1px solid transparent; cursor:pointer; white-space:nowrap;
+  transition:background-color .18s var(--ease), border-color .18s var(--ease),
+             color .18s var(--ease), box-shadow .18s var(--ease);
+}
+.btn-p{ background:var(--rosso); color:#fff; box-shadow:0 6px 20px -6px rgba(255,30,60,.6); }
+.btn-p:hover{ background:#ff3550; box-shadow:0 8px 26px -6px rgba(255,30,60,.75); }
+.btn-s{ background:rgba(255,255,255,.05); border-color:var(--bordo-2); color:var(--testo); }
+.btn-s:hover{ background:rgba(255,255,255,.09); border-color:#43506a; }
+.btn-f{ color:var(--calmo); }
+.btn-f:hover{ color:var(--testo); background:rgba(255,255,255,.05); }
+.btn[disabled]{ opacity:.4; cursor:not-allowed; box-shadow:none; }
+.btn svg{ width:17px; height:17px; }
+
+/* pillole di scelta (gara, sessione, pilota, vista…) */
+.pillole{ display:flex; flex-wrap:wrap; gap:7px; }
+.pillole.riga{ flex-wrap:nowrap; overflow-x:auto; scrollbar-width:thin; padding-bottom:4px; }
+.pillole.riga::-webkit-scrollbar{ height:5px; }
+.pillole.riga::-webkit-scrollbar-thumb{ background:var(--bordo-2); border-radius:3px; }
+.pil{
+  min-height:36px; padding:0 14px; border-radius:999px;
+  background:rgba(255,255,255,.04); border:1px solid var(--bordo);
+  color:var(--calmo); font:700 13px/1 var(--disp); letter-spacing:.1em; text-transform:uppercase;
+  display:inline-flex; align-items:center; gap:7px; white-space:nowrap; cursor:pointer;
+  transition:background-color .16s var(--ease), color .16s var(--ease), border-color .16s var(--ease);
+}
+.pil:hover{ background:rgba(255,255,255,.08); color:var(--testo); }
+.pil[aria-pressed="true"],.pil.on{ background:var(--testo); color:var(--nero); border-color:var(--testo); }
+.pil[disabled]{ opacity:.32; cursor:not-allowed; }
+
+/* =============================================================== etichette */
+.etic{
+  display:inline-flex; align-items:center; gap:6px; height:22px; padding:0 9px;
+  border-radius:6px; background:rgba(255,255,255,.06); border:1px solid var(--bordo);
+  color:var(--calmo); font:500 10px/1 var(--mono); letter-spacing:.13em; text-transform:uppercase;
+}
+.etic-r{ background:rgba(255,30,60,.14); border-color:rgba(255,30,60,.35); color:#ff8a9c; }
+.etic-c{ background:rgba(36,227,210,.13); border-color:rgba(36,227,210,.32); color:var(--ciano); }
+.etic-a{ background:rgba(255,176,0,.13); border-color:rgba(255,176,0,.32); color:var(--ambra); }
+.etic-v{ background:rgba(47,213,118,.13); border-color:rgba(47,213,118,.3); color:var(--verde); }
+
+/* gomma */
+.gomma{ width:16px; height:16px; border-radius:50%; border:2.5px solid var(--hard);
+  background:transparent; flex:0 0 auto; display:inline-block; }
+.gomma.SOFT{ border-color:var(--soft); } .gomma.MEDIUM{ border-color:var(--medium); }
+.gomma.HARD{ border-color:var(--hard); } .gomma.INTERMEDIATE{ border-color:var(--inter); }
+.gomma.WET{ border-color:var(--wet); }
+
+/* ============================================================== tabelle */
+.tab{ width:100%; border-collapse:collapse; }
+.tab th{
+  position:sticky; top:var(--barra); z-index:2;
+  background:var(--carbonio);
+  padding:10px 12px; text-align:left;
+  color:var(--fioco); font:500 10px/1 var(--mono); letter-spacing:.16em; text-transform:uppercase;
+  border-bottom:1px solid var(--bordo); white-space:nowrap;
+}
+.tab td{ padding:11px 12px; border-bottom:1px solid rgba(255,255,255,.045); vertical-align:middle; }
+.tab tbody tr{ transition:background-color .14s var(--ease); }
+.tab tbody tr:hover{ background:rgba(255,255,255,.035); }
+.tab .d{ text-align:right; }
+.rotolo{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+
+/* barretta colore squadra a inizio riga */
+.livrea{ display:inline-block; width:3px; height:19px; border-radius:2px; vertical-align:-4px;
+  margin-right:10px; background:var(--c,#8A93A3); }
+
+/* =============================================================== caricamento */
+@keyframes lucido{ 100%{ background-position-x:-200%; } }
+.scheletro{
+  background:linear-gradient(90deg,rgba(255,255,255,.04) 8%,rgba(255,255,255,.09) 18%,rgba(255,255,255,.04) 33%);
+  background-size:200% 100%; animation:lucido 1.3s linear infinite; border-radius:7px;
+}
+.vuoto{ padding:34px 22px; text-align:center; color:var(--fioco); font-size:15px; }
+.guasto{ padding:26px; text-align:center; }
+.guasto p{ color:var(--calmo); }
+
+/* =============================================================== piede */
+.piede{ border-top:1px solid var(--bordo); background:var(--carbonio); margin-top:40px; }
+.piede-in{
+  max-width:var(--max); margin:0 auto; padding:26px clamp(14px,3vw,26px);
+  display:flex; flex-wrap:wrap; gap:18px 30px; align-items:center;
+}
+.piede nav{ display:flex; flex-wrap:wrap; gap:6px; margin-left:auto; }
+.piede nav a{ padding:7px 11px; border-radius:8px; color:var(--fioco);
+  font:700 13px/1 var(--disp); letter-spacing:.1em; text-transform:uppercase; transition:color .16s; }
+.piede nav a:hover{ color:var(--testo); background:rgba(255,255,255,.05); }
+.piede small{ color:var(--fioco); font:400 11px/1.5 var(--mono); letter-spacing:.04em; }
+
+/* ============================================================ movimento */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{ animation-duration:.001ms !important; animation-iteration-count:1 !important;
+    transition-duration:.001ms !important; scroll-behavior:auto !important; }
+}
+
+/* ============================================================================
+   EDITORIALE — le classi che scrive ai_lab/redazione/statico.py.
+   Non si rinominano: quel generatore le emette da solo a ogni pubblicazione,
+   e cambiarle qui vorrebbe dire romperlo a distanza.
+   ========================================================================= */
+.wrap-scheda{ max-width:min(var(--max),820px); margin:0 auto; padding:clamp(20px,4vw,40px) clamp(14px,3vw,26px) 80px; }
+.wrap-scheda.art{ padding-top:8px; }
+.crumb{ display:inline-flex; align-items:center; gap:7px; color:var(--fioco);
+  font:500 11px/1 var(--mono); letter-spacing:.16em; text-transform:uppercase; }
+.crumb:hover{ color:var(--testo); }
+
+.art-testa{ padding:22px 0 26px; border-bottom:1px solid var(--bordo); margin-bottom:30px; }
+.art-occhiello{ color:var(--ac,var(--rosso)); font:500 11px/1.5 var(--mono);
+  letter-spacing:.18em; text-transform:uppercase; margin-bottom:14px; }
+.art-titolo{ font-family:var(--disp); font-weight:700; font-size:clamp(30px,5.2vw,50px);
+  line-height:1.03; letter-spacing:-.005em; }
+.art-sommario{ margin:18px 0 0; color:var(--calmo); font-size:19px; line-height:1.55; max-width:62ch; }
+.art-riga{ display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:20px;
+  color:var(--fioco); font:500 11px/1 var(--mono); letter-spacing:.1em; }
+.art-dot{ width:3px; height:3px; border-radius:50%; background:var(--fioco); }
+.art-firma{ color:var(--calmo); }
+.art-bozza{ display:inline-flex; align-items:center; height:22px; padding:0 9px; border-radius:6px;
+  background:rgba(255,176,0,.14); color:var(--ambra); font:500 10px/1 var(--mono); letter-spacing:.14em; }
+
+.art-sez{ margin:38px 0; }
+.art-prosa{ font-size:17.5px; line-height:1.75; color:#DCE2EB; }
+.art-prosa p{ margin:0 0 1.15em; max-width:68ch; }
+.art-prosa b,.art-prosa strong{ color:var(--testo); font-weight:600; }
+.art-prosa ul,.art-prosa ol{ max-width:66ch; padding-left:1.25em; }
+.art-prosa li{ margin-bottom:.5em; }
+.art-prosa a{ color:var(--ciano); text-decoration:underline; text-underline-offset:3px; }
+.art-tag{ display:inline-flex; align-items:center; height:22px; padding:0 9px; border-radius:6px;
+  background:var(--ac,var(--rosso)); color:#fff;
+  font:500 10px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; margin-right:10px; }
+.art-fig{ margin:26px 0; padding:18px; border-radius:var(--r);
+  background:var(--carbonio); border:1px solid var(--bordo); }
+.art-svg-wrap{ overflow-x:auto; }
+.art-svg-wrap svg{ max-width:100%; height:auto; }
+.art-fig .cap{ margin-top:12px; color:var(--fioco); font-size:13.5px; line-height:1.5; }
+.art-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:34px;
+  padding-top:22px; border-top:1px solid var(--bordo); }
+.art-chip,.chip{ display:inline-flex; align-items:center; height:24px; padding:0 10px;
+  border-radius:999px; background:rgba(255,255,255,.05); border:1px solid var(--bordo);
+  color:var(--fioco); font:500 10px/1 var(--mono); letter-spacing:.1em; }
+
+/* l'elenco degli articoli (blocco fra i marcatori ELENCO) */
+.grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:var(--gap); }
+.card{ display:flex; flex-direction:column; padding:20px; border-radius:var(--r);
+  background:linear-gradient(180deg,var(--piastra),var(--carbonio)); border:1px solid var(--bordo);
+  position:relative; overflow:hidden; transition:border-color .2s var(--ease); }
+.card:hover{ border-color:var(--bordo-2); }
+.card::after{ content:""; position:absolute; left:0; top:0; width:100%; height:2px;
+  background:var(--ac,var(--rosso)); transform:scaleX(0); transform-origin:left;
+  transition:transform .3s var(--ease); }
+.card:hover::after{ transform:scaleX(1); }
+.card .eyebrow{ color:var(--ac,var(--rosso)); font:500 10px/1.45 var(--mono);
+  letter-spacing:.14em; text-transform:uppercase; }
+.card h3{ margin:11px 0 9px; font-size:21px; line-height:1.16; }
+.card p{ margin:0; color:var(--calmo); font-size:14.5px; line-height:1.55;
+  display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+.card .foot{ display:flex; align-items:center; gap:12px; margin-top:16px; }
+.card .meta{ color:var(--fioco); font:500 10px/1.4 var(--mono); letter-spacing:.06em; }
+.card .go{ margin-left:auto; color:var(--testo); font:700 12px/1 var(--disp);
+  letter-spacing:.13em; text-transform:uppercase; white-space:nowrap; }
+.card .chips{ display:flex; flex-wrap:wrap; gap:5px; margin-top:13px; }
+
+/* ============================================================================
+   TORRE LIVE — le classi che scrive demo/live_timing.mjs::creaTorreTiming.
+   Stessa ragione delle classi editoriali: le emette un modulo condiviso, non
+   si rinominano da qui.
+   ========================================================================= */
+.tw-list{ display:flex; flex-direction:column; }
+.tw-row{ padding:9px 12px; border-bottom:1px solid rgba(255,255,255,.045); }
+.tw-main{ display:flex; align-items:center; gap:10px; font:400 14px/1.35 var(--sans); }
+.tw-pos{ width:24px; text-align:right; color:var(--fioco);
+  font:500 12px/1 var(--mono); font-variant-numeric:tabular-nums; }
+.tw-col{ display:inline-block; width:4px; height:19px; border-radius:2px; flex:0 0 auto; }
+.tw-sig{ width:46px; font:700 16px/1 var(--disp); letter-spacing:.08em; }
+.tw-time{ font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:12.5px; color:var(--testo); }
+.tw-gap{ margin-left:auto; white-space:nowrap; color:var(--calmo);
+  font-family:var(--mono); font-variant-numeric:tabular-nums; font-size:12.5px; }
+.tw-gap.tw-lead{ color:var(--ciano); letter-spacing:.04em; }
+.tw-tag{ width:32px; text-align:right; color:var(--verde);
+  font:500 9.5px/1 var(--mono); letter-spacing:.1em; }
+.tw-sectors{ display:flex; gap:8px; margin:7px 0 1px 34px; }
+.tw-sec{ flex:1 1 0; min-width:0; }
+.tw-sec-t{ display:block; margin-bottom:3px;
+  font:500 10.5px/1.3 var(--mono); font-variant-numeric:tabular-nums; }
+.tw-bar{ display:flex; gap:1px; height:4px; border-radius:2px; overflow:hidden; }
+.tw-seg{ flex:1 1 0; min-width:1px; display:block; }
+.tw-row.tw-pit{ opacity:.6; }
+.tw-row.tw-sel{ background:rgba(36,227,210,.09); box-shadow:inset 2px 0 0 var(--rosso); }
+.tw-list.tw-cliccabile .tw-row[data-sigla]{ cursor:pointer; }
+.tw-list.tw-cliccabile .tw-row[data-sigla]:hover{ background:rgba(255,255,255,.05); }
+.tw-gomma{ display:inline-flex; align-items:center; gap:5px; width:40px; justify-content:flex-end; }
+.tw-mescola{ width:10px; height:10px; border-radius:50%; flex:0 0 auto;
+  box-shadow:inset 0 0 0 1px rgba(0,0,0,.45); }
+.tw-eta{ min-width:15px; text-align:right; color:var(--fioco);
+  font:400 11px/1 var(--mono); font-variant-numeric:tabular-nums; }

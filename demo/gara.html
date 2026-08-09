@@ -1,1089 +1,784 @@
 <!DOCTYPE html>
-<!--
-  PAGINA-GARA (ui-v2). Consumatore puro, e dal 31/07/2026 nel senso pieno: questa pagina
-  NON CALCOLA PIU'. Le risposte del muretto sono pre-calcolate in Node dal simulatore
-  nuovo (simulatore/web/genera_vista_gara.mjs, che passa dal Director) e scritte in
-  data/vista/<gara>/<pilota>.json; qui si formatta e basta, com'e' giusto per una pagina.
-  Quello che importa sono i formattatori trasportati (vendor/simulatore/render, pannello,
-  curva) piu' timeline.mjs e pista.mjs. Il motore vecchio — engine.mjs, pitscenario.mjs —
-  in questa pagina non entra piu': vive ancora nel repo, ma solo per banchi e strumenti.
-  Gerarchia: la pista e' la protagonista; la timeline eventi sostituisce lo slider;
-  l'esplorazione pit ("se pitto al giro L") resta il prodotto.
--->
 <html lang="it">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Gara — Muretto Box Virtuale</title>
-<link rel="stylesheet" href="stile.css?v=040826b">
-<!-- Lo stile del pannello nuovo, TRASPORTATO da simulatore/web/stile.css e scopato sotto
-     #pitKv: le sue regole non possono ridipingere il resto della pagina. Artefatto
-     generato, con manifest di hash — `trasporta_formattatori.mjs --verifica` esce 1
-     se qualcuno modifica la copia invece dell'originale. -->
-<link rel="stylesheet" href="vendor/simulatore/stile.css?v=280726a">
-<link rel="stylesheet" href="ese.css?v=080826a">
+<meta name="description" content="Rivedi la gara giro per giro e decidi quando fermarsi ai box: il motore dice dove rientri.">
+<link rel="stylesheet" href="muro.css?v=090826a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 <style>
-  /* SIMULAZIONE FANTASMA — controlli della "sosta messa in scena" (additivo, scoped) */
-  .simbtn{ display:block; width:100%; margin:.5rem 0 .2rem; padding:.62rem .8rem; border:0;
-    border-radius:9px; background:#22c55e; color:#04140a; font:800 13px/1 var(--mono,ui-monospace,monospace);
-    letter-spacing:.4px; text-transform:uppercase; cursor:pointer; transition:filter .15s, transform .05s; }
-  .simbtn:hover{ filter:brightness(1.08); } .simbtn:active{ transform:translateY(1px); }
-  .simbtn[hidden]{ display:none; }
-  .mesc-chips{ display:flex; gap:.4rem; margin:.3rem 0 .35rem; }
-  .mesc-chips .chip{ flex:1; border:1px solid rgba(255,255,255,.22); background:transparent; color:var(--txt,#e9edf3);
-    border-radius:8px; padding:.42rem 0; font:800 11px var(--mono,ui-monospace,monospace); letter-spacing:.5px;
-    text-transform:uppercase; cursor:pointer; }
-  .mesc-chips .chip.on{ border-color:#22c55e; background:rgba(34,197,94,.14); color:#bbf7d0; }
-  .stratlist{ font:600 11px/1.5 var(--mono,ui-monospace,monospace); color:#9aa4b2; margin:.25rem 0; min-height:1em; }
-  .muretto-det{ margin-top:.5rem; border-top:1px solid rgba(255,255,255,.08); padding-top:.4rem; }
-  .muretto-det summary{ cursor:pointer; font:700 10.5px var(--mono,ui-monospace,monospace); letter-spacing:.5px;
-    text-transform:uppercase; color:#8a94a2; }
-  .esebtn{ display:block; width:100%; margin:.35rem 0 .2rem; padding:.55rem .8rem; border:1px solid rgba(96,165,250,.55);
-    border-radius:9px; background:rgba(96,165,250,.10); color:#bfdbfe; font:800 12px/1 var(--mono,ui-monospace,monospace);
-    letter-spacing:.4px; text-transform:uppercase; cursor:pointer; }
-  .esebtn:hover{ background:rgba(96,165,250,.18); }
-  .esebtn[hidden]{ display:none; }
-  .ese-inline{ margin-top:1rem; border:1px solid rgba(96,165,250,.35); border-radius:12px; padding:1rem; }
-  .ese-inline h2{ font:800 16px var(--sans,system-ui,sans-serif); margin:.1rem 0 .4rem; }
-  .simbar{ display:flex; align-items:center; justify-content:space-between; gap:.5rem;
-    margin:.35rem 0 .1rem; padding:.45rem .6rem; border:1px solid rgba(34,197,94,.42);
-    border-radius:9px; background:rgba(34,197,94,.09); font:600 11.5px var(--sans,system-ui,sans-serif); }
-  .simbar[hidden]{ display:none; }
-  .simbar .simtag{ color:#bdead0; } .simbar .simtag b{ color:#eafff2; }
-  .simbar button{ border:1px solid rgba(255,255,255,.2); background:transparent; color:var(--txt,#e9edf3);
-    border-radius:6px; padding:.32rem .55rem; font:600 11px var(--mono,ui-monospace,monospace);
-    cursor:pointer; white-space:nowrap; }
-  .simbar button:hover{ background:rgba(255,255,255,.08); }
-  .pista.sim-attiva .spenta{ display:none !important; }
-  .pista.sim-attiva canvas{ opacity:1 !important; filter:none !important; }
-  .pista.sim-attiva{ outline:1px solid rgba(34,197,94,.28); outline-offset:-1px; }
+  body{ overflow-y:scroll; }
+  .scafo{ padding-bottom:0; max-width:1720px; }
+
+  /* ------------------------------------------------------------ testata */
+  .testa{ display:flex; align-items:flex-end; gap:18px; flex-wrap:wrap; margin-bottom:18px; }
+  .testa .indietro{ display:inline-flex; align-items:center; gap:7px; color:var(--fioco);
+    font:500 11px/1 var(--mono); letter-spacing:.16em; text-transform:uppercase; margin-bottom:9px; }
+  .testa .indietro:hover{ color:var(--testo); }
+  .testa h1{ font-size:clamp(28px,4vw,44px); text-transform:uppercase; }
+  .testa .meta{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; padding-bottom:5px; }
+
+  /* -------------------------------------------------------------- tavolo */
+  .tavolo{ display:grid; grid-template-columns:290px minmax(0,1fr) 372px; gap:14px; align-items:start; }
+  @media (max-width:1240px){ .tavolo{ grid-template-columns:250px minmax(0,1fr); } .rail{ grid-column:1/-1; } }
+  @media (max-width:860px){ .tavolo{ grid-template-columns:1fr; } }
+
+  /* ---------- torre ---------- */
+  .torre{ border-radius:var(--r); background:var(--carbonio); border:1px solid var(--bordo);
+    overflow:hidden; }
+  .torre-t{ display:flex; align-items:center; gap:8px; padding:11px 14px;
+    border-bottom:1px solid var(--bordo); color:var(--fioco);
+    font:500 10px/1 var(--mono); letter-spacing:.18em; text-transform:uppercase; }
+  .torre-c{ max-height:min(66vh,720px); overflow-y:auto; scrollbar-width:thin; }
+  .torre-c::-webkit-scrollbar{ width:6px; } .torre-c::-webkit-scrollbar-thumb{ background:var(--bordo-2); border-radius:3px; }
+  .rw{ display:grid; grid-template-columns:26px 4px 1fr auto; align-items:center; gap:9px;
+    width:100%; padding:8px 12px 8px 9px; text-align:left; border-bottom:1px solid rgba(255,255,255,.04);
+    cursor:pointer; transition:background-color .14s var(--ease); min-height:46px; }
+  .rw:hover{ background:rgba(255,255,255,.05); }
+  .rw.scelto{ background:rgba(36,227,210,.09); }
+  .rw.scelto .sig{ color:#fff; }
+  .rw .pz{ font:500 12px/1 var(--mono); color:var(--fioco); text-align:right; }
+  .rw .bar{ width:4px; height:26px; border-radius:2px; background:var(--c,#8A93A3); }
+  .rw .sig{ font:700 16px/1 var(--disp); letter-spacing:.09em; }
+  .rw .sotto{ display:flex; align-items:center; gap:6px; margin-top:3px; }
+  .rw .sotto .gomma{ width:12px; height:12px; border-width:2px; }
+  .rw .eta{ font:400 10px/1 var(--mono); color:var(--fioco); }
+  .rw .gap{ font:500 12px/1 var(--mono); color:var(--calmo); text-align:right; white-space:nowrap; }
+  .rw .gap.lead{ color:var(--ciano); }
+  .rw .gap.lapped{ color:var(--fioco); }
+  .rw.fuori{ opacity:.44; }
+  .rw .st{ display:block; font:500 9px/1 var(--mono); letter-spacing:.12em; margin-top:4px; }
+  .rw .st.box{ color:var(--verde); } .rw .st.rit{ color:var(--fioco); }
+
+  /* ---------- arena ---------- */
+  .arena{ position:relative; border-radius:var(--r); border:1px solid var(--bordo);
+    background:radial-gradient(120% 100% at 50% 0%,#12161E,#090B0F 72%); overflow:hidden; }
+  .arena canvas{ width:100%; height:clamp(340px,54vh,620px); display:block; }
+  .arena .bandiera{ position:absolute; left:14px; top:14px; display:flex; align-items:center;
+    gap:9px; padding:8px 13px; border-radius:9px; font:700 13px/1 var(--disp);
+    letter-spacing:.13em; text-transform:uppercase; opacity:0; transform:translateY(-6px);
+    transition:opacity .25s var(--ease), transform .25s var(--ease); pointer-events:none; }
+  .arena .bandiera.on{ opacity:1; transform:none; }
+  .arena .bandiera.SC{ background:rgba(255,176,0,.16); color:var(--ambra); box-shadow:inset 0 0 0 1px rgba(255,176,0,.4); }
+  .arena .bandiera.VSC{ background:rgba(224,180,0,.13); color:#E0B400; box-shadow:inset 0 0 0 1px rgba(224,180,0,.35); }
+  .arena .bandiera.RF{ background:rgba(255,30,60,.18); color:#FF6178; box-shadow:inset 0 0 0 1px rgba(255,30,60,.45); }
+  .arena .giro{ position:absolute; right:16px; top:13px; text-align:right; }
+  .arena .giro b{ font:500 30px/1 var(--mono); letter-spacing:-.04em; }
+  .arena .giro span{ display:block; color:var(--fioco); font:500 9px/1 var(--mono); letter-spacing:.2em; margin-top:5px; }
+
+  /* ---------- comandi ---------- */
+  .comandi{ display:flex; align-items:center; gap:12px; padding:11px 14px; margin-top:12px;
+    border-radius:var(--r); background:var(--carbonio); border:1px solid var(--bordo); }
+  .via{ width:46px; height:46px; border-radius:12px; background:var(--rosso); color:#fff;
+    display:grid; place-items:center; flex:0 0 auto; box-shadow:0 5px 16px -6px rgba(255,30,60,.7);
+    transition:background-color .16s var(--ease); }
+  .via:hover{ background:#ff3550; }
+  .via svg{ width:19px; height:19px; }
+  .vel{ display:flex; gap:2px; background:rgba(255,255,255,.045); border-radius:9px; padding:3px; flex:0 0 auto; }
+  .vel button{ min-width:38px; height:32px; border-radius:7px; color:var(--fioco);
+    font:500 12px/1 var(--mono); transition:background-color .15s, color .15s; }
+  .vel button:hover{ color:var(--testo); }
+  .vel button.on{ background:var(--testo); color:var(--nero); }
+
+  .barra-t{ position:relative; flex:1 1 auto; height:34px; cursor:pointer; touch-action:none; }
+  .barra-t .letto{ position:absolute; left:0; right:0; top:13px; height:8px; border-radius:4px;
+    background:rgba(255,255,255,.07); overflow:hidden; }
+  .barra-t .fatto{ position:absolute; left:0; top:0; bottom:0; background:var(--rosso); opacity:.75; }
+  .barra-t .bd{ position:absolute; top:0; bottom:0; }
+  .barra-t .bd.sc{ background:rgba(255,176,0,.55); }
+  .barra-t .bd.vsc{ background:repeating-linear-gradient(90deg,rgba(224,180,0,.6) 0 4px,transparent 4px 8px); }
+  .barra-t .bd.rf{ background:rgba(255,30,60,.8); }
+  .barra-t .pit{ position:absolute; top:5px; width:2px; height:8px; border-radius:1px;
+    background:var(--verde); transform:translateX(-1px); }
+  .barra-t .cur{ position:absolute; top:6px; width:3px; height:22px; border-radius:2px;
+    background:#fff; box-shadow:0 0 10px rgba(255,255,255,.55); transform:translateX(-1.5px); }
+  .conta-giri{ font:500 13px/1 var(--mono); color:var(--calmo); white-space:nowrap; flex:0 0 auto; }
+  .conta-giri b{ color:var(--testo); font-size:17px; }
+  @media (max-width:720px){ .comandi{ flex-wrap:wrap; } .barra-t{ order:5; flex-basis:100%; } }
+
+  /* ---------- rail strategia ---------- */
+  .rail{ position:sticky; top:calc(var(--barra) + 12px); border-radius:var(--r);
+    background:linear-gradient(180deg,#171B24,#0E1116); border:1px solid var(--bordo-2);
+    overflow:hidden; }
+  .rail::before{ content:""; position:absolute; inset:0 0 auto; height:2px;
+    background:linear-gradient(90deg,var(--rosso),rgba(255,30,60,0)); }
+  .rail-t{ display:flex; align-items:center; gap:10px; padding:13px 16px; border-bottom:1px solid var(--bordo); }
+  .rail-t h2{ font-size:17px; letter-spacing:.16em; text-transform:uppercase; }
+  .rail-t .chi{ margin-left:auto; display:flex; align-items:center; gap:8px; }
+  .rail-t .chi .bar{ width:4px; height:22px; border-radius:2px; background:var(--c,#8A93A3); }
+  .rail-t .chi b{ font:700 18px/1 var(--disp); letter-spacing:.1em; }
+  .rail-c{ padding:16px; max-height:min(74vh,860px); overflow-y:auto; scrollbar-width:thin; }
+  .rail-c::-webkit-scrollbar{ width:6px; } .rail-c::-webkit-scrollbar-thumb{ background:var(--bordo-2); border-radius:3px; }
+
+  .st-verdetto{ padding:2px 0 14px; }
+  .st-occ{ display:block; color:var(--fioco); font:500 10px/1 var(--mono); letter-spacing:.18em; text-transform:uppercase; }
+  .st-riga{ display:flex; align-items:baseline; gap:14px; margin-top:9px; }
+  .st-pos{ font:500 clamp(46px,7vw,60px)/.86 var(--mono); letter-spacing:-.05em; color:var(--ciano); }
+  .st-di{ display:flex; flex-direction:column; gap:5px; }
+  .st-di span{ color:var(--calmo); font-size:13.5px; }
+  .st-banda{ color:var(--fioco) !important; font-size:12.5px !important; }
+  .st-sub{ margin:9px 0 0; color:var(--fioco); font-size:13px; }
+  .st-muto{ padding:22px 4px; color:var(--fioco); font-size:14px; }
+
+  .st-vicini{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px; }
+  .st-vic{ padding:10px 12px; border-radius:10px; background:rgba(255,255,255,.04); }
+  .st-vic span{ display:block; color:var(--fioco); font:500 9px/1 var(--mono); letter-spacing:.16em; text-transform:uppercase; }
+  .st-vic b{ display:block; margin-top:7px; font:700 19px/1 var(--disp); letter-spacing:.08em; }
+  .st-vic b.nulla{ color:var(--fioco); font-size:15px; }
+  .st-vic i{ display:block; margin-top:4px; font-style:normal; font-size:12px; color:var(--calmo); }
+
+  .st-blocco{ padding-top:15px; margin-top:15px; border-top:1px solid var(--bordo); }
+  .st-blocco h4{ font-size:13px; letter-spacing:.18em; text-transform:uppercase; color:var(--calmo); margin-bottom:11px; }
+  .curva{ width:100%; height:auto; display:block; }
+  .st-nota{ margin:9px 0 0; color:var(--fioco); font-size:12.5px; line-height:1.5; }
+  .st-nota b{ color:var(--calmo); }
+
+  .st-soste{ display:grid; grid-template-columns:repeat(auto-fit,minmax(68px,1fr)); gap:6px; }
+  .st-sosta{ padding:9px 6px; border-radius:9px; background:rgba(255,255,255,.04); text-align:center; }
+  .st-sosta b{ display:block; font:500 19px/1 var(--mono); }
+  .st-sosta span{ display:block; margin-top:5px; color:var(--fioco); font-size:10px; line-height:1.25; }
+  .st-sosta.meglio{ background:rgba(47,213,118,.12); box-shadow:inset 0 0 0 1px rgba(47,213,118,.3); }
+  .st-sosta.meglio b{ color:var(--verde); }
+
+  .st-piedi{ display:flex; gap:16px; flex-wrap:wrap; padding-top:14px; margin-top:15px;
+    border-top:1px solid var(--bordo); color:var(--fioco); font-size:12px; }
+  .st-piedi b{ color:var(--calmo); }
+  .st-neutra{ flex-basis:100%; color:var(--ambra); }
+
+  /* Che cosa e' la gara rigiocata: sempre in pagina, non dietro un tooltip. */
+  .ese-onesta{ padding:11px 16px; border-top:1px solid var(--bordo);
+    color:var(--fioco); font-size:12px; line-height:1.5; }
+  .ese-onesta b{ color:var(--calmo); }
+
+  .st-mescbox{ margin-bottom:16px; }
+  .st-mescbox .st-occ{ margin-bottom:8px; }
+  .st-mesc{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
+  .st-m{ display:flex; align-items:center; justify-content:center; gap:7px; min-height:40px;
+    border-radius:9px; background:rgba(255,255,255,.04); border:1px solid transparent;
+    color:var(--calmo); font:500 11px/1 var(--mono); letter-spacing:.06em;
+    transition:background-color .15s, color .15s, border-color .15s; }
+  .st-m:hover{ background:rgba(255,255,255,.08); color:var(--testo); }
+  .st-m.on{ background:rgba(36,227,210,.12); border-color:rgba(36,227,210,.4); color:var(--ciano); }
+
+  .rail-f{ padding:13px 16px; border-top:1px solid var(--bordo); display:flex; gap:9px; }
+  .rail-f .btn{ flex:1 1 auto; min-height:44px; }
+
+  /* ---------- esito della simulazione ---------- */
+  .esito{ margin-top:14px; }
+  .esito-g{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  .esito-b{ padding:14px; border-radius:11px; background:rgba(255,255,255,.04); }
+  .esito-b small{ display:block; color:var(--fioco); font:500 9px/1.3 var(--mono); letter-spacing:.14em; text-transform:uppercase; }
+  .esito-b b{ display:block; margin-top:9px; font:500 30px/1 var(--mono); letter-spacing:-.04em; }
+  .esito-b.tua{ background:rgba(255,30,60,.12); box-shadow:inset 0 0 0 1px rgba(255,30,60,.3); }
+  .esito-b.tua b{ color:var(--rosso); }
+
+  /* ---------- mobile: schede ---------- */
+  .schede{ display:none; gap:6px; margin:12px 0; }
+  @media (max-width:860px){
+    .schede{ display:flex; }
+    .tavolo{ gap:0; }
+    .arena{ order:1; } .comandi{ order:2; } .rail{ order:3; margin-top:14px; position:static; }
+    .torre{ order:4; margin-top:14px; }
+    .rail[hidden], .torre[hidden]{ display:none; }
+    .rail-c{ max-height:none; }
+  }
 </style>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>
-<script>/* modalità incorporata nel weekend: nasconde intestazione/briciola/footer */
-if (new URLSearchParams(location.search).get('embed')) document.body.classList.add('embed');</script>
-<header class="topbar">
-  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
-    <span class="brand-mark"><span>M</span></span>
-    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
-  </a>
-  <nav class="nav" aria-label="Sezioni">
-    <a href="stagione.html">Stagione</a>
-    <a href="live.html"><span class="dot-live"></span>Live</a>
-    <a href="analisi.html">Analisi</a>
-    <a href="statistiche.html">Statistiche</a>
-  </nav>
-</header>
+<header class="barra"></header>
 
-<div class="wrap-gara">
-  <a class="crumb" href="stagione.html">&larr; Stagione 2026</a>
-  <div class="gheader">
-    <h1 id="hTitolo">…</h1>
-    <div class="sub">
-      <span id="hData"></span>
-      <span><b id="hGiri">–</b> giri</span>
-      <span id="hMeteo"></span>
+<main class="scafo">
+  <div class="testa">
+    <div>
+      <a class="indietro" href="stagione.html">← Stagione 2026</a>
+      <h1 id="tGp">—</h1>
     </div>
-    <span class="plbadge" id="plBadge" style="display:none">
-      pit-loss <span class="v" id="plVal"></span>
-    </span>
+    <div class="meta" id="tMeta"></div>
   </div>
 
-  <div class="glayout">
-    <div class="col-pista">
-      <section class="panel pista" id="pista" aria-label="Area pista"></section>
-
-      <div class="transport">
-        <button id="play" class="play" title="Play / Pausa">&#9654;</button>
-        <div class="speeds" id="speeds">
-          <button data-s="1" class="on">1&times;</button><button data-s="2">2&times;</button><button data-s="4">4&times;</button><button data-s="8">8&times;</button>
-        </div>
-        <span class="lapnum">Giro <b id="lapLabel">1</b>/<span id="lapMax">–</span></span>
-        <span class="phase" id="phase"></span>
-      </div>
-
-      <!-- timeline eventi: barra-giri con SC/VSC/rossa e tacche pit; click/drag = vai al giro -->
-      <div class="evtl" id="evtl" tabindex="0" role="slider" aria-label="Giro di gara"
-           aria-valuemin="1" aria-valuemax="1" aria-valuenow="1">
-        <div class="rail" id="evtlRail">
-          <div class="fatto" id="evtlFatto"></div>
-          <div id="evtlSegs"></div>
-          <div id="evtlPits"></div>
-          <div id="evtlRcm"></div>
-        </div>
-        <div class="cursore" id="evtlCur" style="left:0%"></div>
-      </div>
-      <div class="evtl-leg" id="evtlLeg" style="visibility:hidden">
-        <i><span class="sw sc"></span>Safety Car</i>
-        <i><span class="sw vsc"></span>Virtual Safety Car</i>
-        <i id="legrf" style="display:none"><span class="sw rf"></span>Bandiera rossa</i>
-        <i><span class="sw pitsw"></span>pit stop</i>
-        <i id="legrcg" style="display:none"><span class="sw rcg"></span>bandiera gialla</i>
-        <i id="legrcp" style="display:none"><span class="sw rcp"></span>&sect; penalit&agrave;</i>
-      </div>
-
-      <div class="flag" id="flag"></div>
-    </div>
-
-    <div class="col-piloti">
-      <!-- Gara ripulita (25/07): solo la CLASSIFICA (la torre). Tap su un pilota = apre il box.
-           Strategia-gomme e vista Ufficiale erano racconto retrospettivo, non input alla
-           simulazione: spostate fuori dalla gara (vanno in Analisi). Niente più tab. -->
-      <div class="gridscroll" id="vistaClas"><div class="grid panel notrans" id="grid"></div></div>
-      <div class="colhint">Tocca un pilota: &ldquo;se pitto <b>adesso</b>, dove rientro?&rdquo;</div>
-
-      <section class="pit panel hidden" id="pit">
-        <div class="head">
-          <h3 id="pitTitle">Pit</h3>
-          <button class="chiudi" id="pitChiudi" title="Chiudi esplorazione pit">&#10005;</button>
-        </div>
-        <!-- LA STRATEGIA SI FA GIOCANDO (08/08, decisione PO): niente doppio bottone,
-             niente moduli. Scegli la gomma, premi BOX ORA: il pallino si ferma e LA GARA
-             CONTINUA fino alla bandiera — e puoi fermarti ancora, mentre scorre. -->
-        <div class="mesc-chips" id="mescChips"></div>
-        <button type="button" class="boxbtn" id="boxBtn">BOX ORA <span id="boxGiro"></span></button>
-        <div class="stratlist" id="stratList"></div>
-        <div class="simbar" id="simBar" hidden>
-          <span class="simtag" id="simTag">Simulazione: <b id="simDrvLab"></b> si ferma &middot; rivali al passo reale</span>
-          <button type="button" id="simCont" hidden>continua &rarr;</button>
-          <button type="button" id="simEsci">&#8634; replay reale</button>
-        </div>
-        <details class="muretto-det">
-          <summary>il muretto dice &mdash; dettagli</summary>
-          <div id="pitKv" class="sim-pannello"></div>
-        </details>
-      </section>
-    </div>
+  <div class="schede" role="tablist">
+    <button class="pil on" id="sbStrat" role="tab" aria-selected="true">Strategia</button>
+    <button class="pil" id="sbTorre" role="tab" aria-selected="false">Classifica</button>
   </div>
 
-  <section class="ese-inline ese" id="eseSez" hidden>
-    <h2>Alla bandiera <small id="eseTitolo"></small></h2>
-    <div class="ese-onesta">
-      <b>Controfattuale a fisica misurata, non una previsione.</b>
-      I rivali eseguono soste, ritiri e Safety Car <b>veri</b> della gara: è <b>informazione dal futuro</b>,
-      lecita perché la gara è finita — il motore la dichiara in ogni run, fra le assunzioni qui sotto.
-    </div>
-    <section id="eseRisultati" hidden>
-      <div class="ese-verdetto" id="eseVerdetto"></div>
-      <div class="ese-director" id="eseDirector"></div>
-      <div class="ese-due">
-        <div>
-          <h3>La classifica con la tua strategia</h3>
-          <table class="ese-torre" id="eseTorre"></table>
-          <p class="ese-nota" id="eseTorreNota"></p>
-        </div>
-        <div>
-          <h3>La gara del tuo pilota, giro per giro</h3>
-          <svg class="ese-grafico" id="eseGrafico" viewBox="0 0 720 300" preserveAspectRatio="none"></svg>
-          <div class="ese-legenda">&#9644; <span class="l-reale">gara reale</span> &nbsp; &#9644; <span class="l-tua">la tua strategia (motore)</span> &nbsp; &#9644; <span class="l-vera">strategia vera (motore)</span></div>
-        </div>
-      </div>
-      <details class="ese-assunzioni">
-        <summary>Le assunzioni di questo run — dette dal motore, non da noi</summary>
-        <ul id="eseAssunzioni"></ul>
-      </details>
+  <div class="tavolo">
+    <!-- classifica -->
+    <section class="torre" aria-label="Classifica">
+      <div class="torre-t"><span>Classifica</span><span style="margin-left:auto" id="torreGiro"></span></div>
+      <div class="torre-c" id="torre"></div>
     </section>
-  </section>
 
-  <span id="buildTag" hidden></span>
-</div>
+    <!-- pista + comandi -->
+    <div style="min-width:0">
+      <div class="arena" id="arena">
+        <canvas id="tela" aria-label="Mappa del circuito con la posizione delle vetture"></canvas>
+        <div class="bandiera" id="bandiera"></div>
+        <div class="giro"><b class="n" id="giroOra">1</b><span id="giroTot">/ —</span></div>
+      </div>
+      <div class="comandi">
+        <button class="via" id="via" aria-label="Play"></button>
+        <div class="vel" id="vel">
+          <button data-s="1" class="on">1×</button><button data-s="2">2×</button>
+          <button data-s="4">4×</button><button data-s="8">8×</button>
+        </div>
+        <div class="barra-t" id="scorri" role="slider" aria-label="Giro" tabindex="0"
+             aria-valuemin="1" aria-valuenow="1">
+          <div class="letto" id="letto"><div class="fatto" id="fatto"></div></div>
+          <div class="cur" id="cur"></div>
+        </div>
+        <div class="conta-giri">GIRO <b class="n" id="lapNow">1</b>/<span class="n" id="lapMax">—</span></div>
+      </div>
+      <div class="esito" id="esito" hidden></div>
+    </div>
+
+    <!-- strategia: sempre aperta -->
+    <aside class="rail" id="rail">
+      <div class="rail-t">
+        <h2>Strategia</h2>
+        <div class="chi" id="railChi"></div>
+      </div>
+      <div class="rail-c" id="railC"></div>
+      <div class="rail-f">
+        <button class="btn btn-p" id="boxOra">BOX ORA</button>
+        <button class="btn btn-s" id="reset" hidden aria-label="Torna al replay reale">↺</button>
+      </div>
+      <p class="ese-onesta">Con <b>BOX ORA</b> la gara riparte da qui con la tua sosta, fino alla
+        bandiera. I rivali fanno le soste che hanno fatto davvero: è
+        <b>informazione dal futuro</b>, quindi un ricalcolo su una gara già corsa e
+        <b>non una previsione</b>.</p>
+    </aside>
+  </div>
+</main>
+
+<footer class="piede"><div class="piede-in"></div></footer>
 
 <script type="module">
-// ?v= su TUTTI i moduli: senza, un deploy puo' servire HTML nuovo con moduli .mjs vecchi
-// dalla cache del browser (pagina mista = sintomi di sync fantasma). Bump a ogni release.
-// IL PANNELLO E' QUELLO DEL SIMULATORE, e la stessa identica risposta la mostra
-// live.html sulla gara in corso — dal 31/07/2026 anche li'. Due copie della stessa
-// domanda sono il modo piu' sicuro di ritrovarsi con due numeri diversi, e il
-// cancello demo/test_parita_live.mjs misura che non sia successo.
-// IL PANNELLO ORA VIENE DAL SIMULATORE NUOVO, e la pagina NON calcola piu'.
-// I numeri sono pre-calcolati in Node (simulatore/web/genera_vista_gara.mjs, che passa dal
-// Director) e scritti in data/vista/<gara>/<pilota>.json; qui si formatta e basta. E' la
-// regola 8 del simulatore: una seconda implementazione della fisica dentro l'interfaccia
-// sarebbe l'errore E17 nel posto peggiore, perche' la pagina e' cio' che l'utente crede.
-// I formattatori sono ARTEFATTI trasportati da simulatore/web/ (vendor/simulatore/), con
-// manifest di hash: `node web/trasporta_formattatori.mjs --verifica` esce 1 sulla deriva.
-import { disegna } from './vendor/simulatore/render.mjs?v=280726a';
-import { pannello as pannelloNuovo } from './vendor/simulatore/pannello.mjs?v=280726a';
-// IL MOTORE IN PAGINA, ma solo quando serve. La vista pre-calcolata resta la strada
-// normale — e' gia' li', costa zero e risponde subito. Il motore si accende SOLO quando
-// l'utente sceglie una mescola diversa da quella che ha addosso: quella risposta non e'
-// pre-calcolata e non lo sara' mai, perche' pre-calcolarne tre per ogni giro di ogni
-// pilota porterebbe la vista da 86 a ~130 MB per una cosa che il motore sa gia' fare qui.
-// E' lo stesso `rispostaLive` che usa la diretta, quindi non ci sono due motori.
-import { rispostaLive } from './ponte_live.mjs?v=040826a';
-import { curva as curvaDelQuando } from './vendor/simulatore/curva.mjs?v=280726a';
-// l'adattatore del fantasma e' condiviso con live.html: una forma sola per due pagine
-import { simDaFantasma, simDaRigioca } from './fantasma_sim.mjs?v=080826b';
-import { creaGhostPlay } from './ghostplay.mjs?v=250724c';
-import { attaccaGlossario } from './glossario.mjs?v=250724e';
-import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs?v=220726a';
+import { guscio, dati, datiObbligatori, el, veri, V, param, scriviParam, identita, coloreDi,
+         nnum, guasto, scheletro, MESCOLA_IT } from './muro.mjs?v=090826a';
+import { creaMappa } from './mappa.mjs?v=090826a';
+import { pannello as pannelloStrategia, selettoreMescole } from './strategia.mjs?v=090826a';
+import { makeClock, computeDurations, bands, fase } from './timeline.mjs?v=220726a';
 import { creaAncora, giroDi as giroDiCum } from './orologio.mjs?v=250808a';
-import { classifica as classificaCondivisa } from './classifica.mjs?v=250809a';
-const BUILD = '250724c-sim';
-const el = id => document.getElementById(id);
-const ROW_H = 44;
-let race=null, lastLap={}, esiti={}, esitiGara={}, grids={}, gridGara=[], teams={}, pitloss={}, neutral={}, teamCol={}, calendario=null;
-let pitstops=null, stopsGara={}, etichettaStop='pit lane';   // durate per-stop f1db (semantica verificata dal generatore)
-// boxGiro = il giro in cui l'utente ha chiamato il box (null = non ancora chiamato).
-// boxGiro = il giro della sosta chiesta. E' l'unico stato dell'esplorazione: il giro
-// non si sceglie piu' a parte, e' quello dove sta il cursore quando si preme BOX.
-let boxGiro=null;
-let curLap=1, selDrv=null, rowEls={}, leaderMemo={}, finestre=null, teamWarned=new Set(), pitLaps={};
-let pista=null, leadCum=null, cumPil=null, teamOfR=null;   // vista pallini (gare con pista_<gara>.json)
-let ancora=null;                                           // orologio condiviso (demo/orologio.mjs)
-let replayVero=null;                                       // posizioni GPS vere (gare con replay_<gara>.json)
-// race control LIVELLO 1 (decisione PO su MOCKUP_RACE_CONTROL_UI.md): le penalita' si
-// MOSTRANO (feed + badge + doppia vista), non entrano nella simulazione ne' nei gap
-let rcmAll=null, ufficAll=null, rcmGara=null, ufficGara=null, penPil={};
-let numDi={};   // sigla -> numero di gara (da schede_2026.json, fonte f1db)
-// LA VISTA DEL SIMULATORE. indiceVista fa da `vista` per i componenti (porta targhetta,
-// modello e mescole); vistaPilota e' la cache per-pilota, scaricata al primo tocco.
-let vistaMap=null, vistaCartella=null, indiceVista=null;
-const vistaPilota={};
-// QUATTRO SCARICHI MORTI, tolti il 02/08/2026: climatologia_bande, modello_passo_2026,
-// neutralizzazione_fondo e raggruppamento venivano scaricati a ogni apertura della pagina
-// e non li leggeva piu' nessuno — erano ingressi del motore VECCHIO, rimasti orfani
-// quando la pagina e' passata alla vista pre-calcolata. Un fetch che nessuno legge non e'
-// inerte: e' una promessa di funzionalita' per chi legge il codice, e quattro richieste
-// pagate da ogni visitatore. I generatori restano (gli artefatti servono altrove): qui
-// spariscono solo i consumatori inesistenti.
-// SIMULAZIONE FANTASMA — ora sul motore condiviso ghostplay.mjs (niente più copia inline).
-// La scena ha un loop suo; il `clock` resta solo per il replay reale (in pausa durante la sim).
-let simMode=false, simGp=null, simDriver=null, simRientroPos=null, simSuTotale=null, lastPitRes=null;
+import { classifica, battistradaAiGiri } from './classifica.mjs?v=250809a';
+import { creaReplayVero } from './replay_vero.mjs?v=250808a';
+import { rispostaLive } from './ponte_live.mjs?v=040826a';
 
-// --- contatore anonimo aggregato (strumentazione, non simulatore) ---
-const conta = e => { try { navigator.sendBeacon(`api/contatore?e=${e}`); } catch(_){} };
+guscio('gara.html');
 
-// Le costanti del modello (degrado, deriva, pit-loss, limiti del Director) vivono nel
-// simulatore, con le loro targhette, e arrivano qui dentro la vista pre-calcolata.
-// In questa pagina resta solo il cablaggio: quale gara, quale pilota, quale giro.
-
-const clock = makeClock({ onTick: p => { if (simMode) return; frame(p); }, onEnd: () => setPlayIcon(false), min: 1 });
-
-function coloreTeam(t){
-  if (t && teamCol[t]) return teamCol[t];
-  if (t && !teamWarned.has(t)) { teamWarned.add(t); console.warn('team senza colore, fallback neutro:', t); }
-  return 'var(--dim)';
+const E = (id) => document.getElementById(id);
+let race = null, gara = null, colori = {}, schede = null, calendario = null;
+let leadCum = {}, cumPil = {}, teamDi = {}, ancora = null, durate = {}, finestre = null;
+let mappa = null, replay = null, indiceVista = null, vistaCart = null;
+const vistaPil = {};
+let selDrv = null, curP = 1, ctxLive = null, mescolaScelta = null;
+let esitiGara = {}, nonPart = new Set(), pitLaps = {}, ultimoGiro = {}, griglia = [];
+let scenaGp = null, STRAT = null, ESE = null;
+let ultimaRisposta = null;
+const SLICK = ['SOFT', 'MEDIUM', 'HARD'];
+/** La gomma che BOX ORA monta: quella evidenziata nel selettore. Mai null — il
+ *  motore rifiuta un piano senza mescola (E05), e un rifiuto per un campo che
+ *  l'utente non ha mai visto e' un vicolo cieco. */
+function gommaPerBox() {
+  for (const m of [mescolaScelta, ultimaRisposta?.mescola_scelta,
+                   race?.byLap[Math.max(1, Math.floor(curP) - 1)]?.[selDrv]?.compound]) {
+    if (SLICK.includes(m)) return m;
+  }
+  return 'MEDIUM';
 }
 
+const clock = makeClock({ onTick: (p) => frame(p), onEnd: () => icona(false) });
+
+/* =================================================================== boot */
 async function boot() {
-  el('buildTag').textContent = '· build ' + BUILD;   // verita' su COSA si sta guardando
-  const m = await (await fetch('data/manifest.json')).json();
-  try { esiti = await (await fetch('data/esiti.json')).json(); } catch(e){ esiti={}; }
-  try { grids = await (await fetch('data/grids.json')).json(); } catch(e){ grids={}; }
-  try { teams = await (await fetch('data/teams.json')).json(); } catch(e){ teams={}; }
-  try { pitloss = await (await fetch('data/pitloss.json')).json(); } catch(e){ pitloss={}; }
-  try { neutral = await (await fetch('neutralizzazione.json')).json(); } catch(e){ neutral={}; }
-  try { teamCol = await (await fetch('team_colori.json')).json(); } catch(e){ teamCol={}; }
-  try { calendario = await (await fetch('data/calendario_2026.json')).json(); } catch(e){ calendario=null; }
-  // la mappa nome-sito -> cartella sta nel DATO, non in un if: il simulatore scrive
-  // "GranBretagna" senza spazio (E24: lo spazio spezza i glob), il sito dice "Gran Bretagna"
-  try { vistaMap = await (await fetch('data/vista/manifest.json')).json(); } catch(e){ vistaMap=null; }
-  try { pitstops = await (await fetch('data/pitstops_2026.json')).json(); } catch(e){ pitstops=null; }
-  try { rcmAll = await (await fetch('data/race_control_2026.json')).json(); } catch(e){ rcmAll=null; }
-  try { ufficAll = await (await fetch('data/ufficiali_2026.json')).json(); } catch(e){ ufficAll=null; }
-  try { const sk = await (await fetch('data/schede_2026.json')).json();
-        numDi = Object.fromEntries(Object.values(sk.piloti).filter(s=>s.numero!=null).map(s=>[s.sigla, s.numero])); } catch(e){ numDi={}; }
-  // etichetta della durata DERIVATA dalla semantica dichiarata nel file (mai "pit stop" generico)
-  etichettaStop = pitstops?.semantica === 'sosta_ferma' ? 'sosta' : 'pit lane';
-  const nomi = m.map(r=>r.gara);
-  const rich = new URLSearchParams(location.search).get('g');
-  await loadGara(nomi.includes(rich) ? rich : nomi[0]);
-}
+  const man = await datiObbligatori(`data/manifest.json?v=${V}`);
+  const nomi = man.map(r => r.gara);
+  gara = nomi.includes(param('g')) ? param('g') : nomi[nomi.length - 1];
+  scriviParam({ g: gara });
 
-function header(gara){
-  const cal = calendario?.gare?.find(g => g.gara_demo === gara);
-  el('hTitolo').textContent = cal?.titolo || gara;
-  document.title = `${cal?.titolo || gara} — Muretto Box Virtuale`;
-  el('hData').textContent = cal ? new Date(cal.data+'T12:00:00').toLocaleDateString('it-IT',{day:'numeric',month:'long',year:'numeric'}) : '';
-  el('hGiri').textContent = race.n_laps;
-  // meteo: stesso criterio DRY di drycheck (zero giri su INTERMEDIATE/WET) sui dati gara
-  let intwet = false;
-  for (const lp of race.laps){ for (const d in lp.cars){ const c=lp.cars[d].compound;
-    if (c==='INTERMEDIATE'||c==='WET'){ intwet=true; break; } } if(intwet) break; }
-  el('hMeteo').textContent = intwet ? 'bagnata/mista' : 'asciutta';
-  // niente spoiler-vincitore nell'intestazione: qui si SIMULA, non si racconta il risultato.
-  // BADGE PIT-LOSS: il numero che il MOTORE USA, non un altro.
-  //
-  // Fino al 02/08/2026 mostrava il valore di data/pitloss.json, che e' il pit-loss
-  // REALIZZATO in quella gara (la media delle soste avvenute). Il motore risponde invece
-  // con la perdita TIPICA del circuito, misurata sul fondo. Sono due grandezze diverse per
-  // costruzione e nessuna delle due era sbagliata — ma su Canada divergevano di 5,04 s e
-  // la home dichiarava che la risposta era calcolata col primo. Peggio: nove badge su
-  // undici portavano provenienza «non misurato», cioe' un valore ereditato e non
-  // verificato, mentre il motore usava una misura con IC95 promossa da un cancello: in
-  // intestazione stava il numero PIU' DEBOLE dei due.
-  //
-  // Il realizzato NON puo' entrare nel calcolo: al congelamento nessuno sa quanto
-  // costeranno le soste di quella gara (E14). Resta come nota, dove esiste.
-  // Decisione del PO, 02/08/2026.
-  const pm = indiceVista?.perdita;
-  const loss = pm?.verde ?? pitloss[gara];
-  if (typeof loss === 'number'){
-    el('plVal').textContent = loss.toFixed(2).replace('.',',')+' s';
-    el('plBadge').style.display = 'inline-flex';
-  } else el('plBadge').style.display = 'none';
-}
-
-async function caricaVistaGara(gara){
-  vistaCartella = vistaMap?.cartella_di?.[gara] ?? null;
-  indiceVista = null;
-  for (const k in vistaPilota) delete vistaPilota[k];
-  if (!vistaCartella) return;
-  try { indiceVista = await (await fetch(`data/vista/${encodeURIComponent(vistaCartella)}/indice.json`)).json(); }
-  catch(e){ indiceVista=null; }
-}
-
-// La risposta di UN pilota, tutti i giri. Si scarica al primo tocco e resta in cache: sono
-// ~13 KB gzippati, e scaricarli per tutti e 22 in anticipo sarebbe far pagare a chi guarda
-// una gara intera il costo di venti piloti che non aprira' mai.
-async function vistaDi(drv){
-  if (!vistaCartella) return null;
-  if (vistaPilota[drv] !== undefined) return vistaPilota[drv];
-  try {
-    const r = await fetch(`data/vista/${encodeURIComponent(vistaCartella)}/${drv}.json`);
-    vistaPilota[drv] = r.ok ? await r.json() : null;
-  } catch(e){ vistaPilota[drv] = null; }
-  return vistaPilota[drv];
-}
-
-// la gomma che l'utente ha scelto di montare, e il contesto del motore per calcolarla.
-// `null` ⇒ si usa la vista pre-calcolata, cioe' il comportamento di sempre.
-let mescolaScelta = null, contestoLive = null;
-async function contestoDelMotore(){
-  if (contestoLive !== null) return contestoLive;
-  try { contestoLive = await (await fetch('vendor/simulatore/motore/contesto_live.json?v=310726a')).json(); }
-  catch(e){ contestoLive = false; }
-  return contestoLive;
-}
-
-async function loadGara(gara) {
-  race = await (await fetch(`data/${encodeURIComponent(gara)}.json`)).json();
-  race.gara = gara; race.byLap = {};
-  await caricaVistaGara(gara);
+  const id = await identita(); colori = id.colori; schede = id.schede;
+  const [r, cal, neutral, esiti, grids, vm] = await Promise.all([
+    datiObbligatori(`data/${encodeURIComponent(gara)}.json?v=${V}`),
+    dati(`data/calendario_2026.json?v=${V}`),
+    dati(`neutralizzazione.json?v=${V}`),
+    dati(`data/esiti.json?v=${V}`),
+    dati(`data/grids.json?v=${V}`),
+    dati(`data/vista/manifest.json?v=${V}`),
+  ]);
+  race = r; race.byLap = {};
   for (const lp of race.laps) race.byLap[lp.lap] = lp.cars;
-  lastLap = {};
-  for (const lp of race.laps) for (const d in lp.cars) lastLap[d] = lp.lap;
-  esitiGara = esiti[gara] || {}; gridGara = grids[gara] || [];
-  const nonP = new Set(Object.entries(esitiGara).filter(([d,t])=>t==='NP').map(([d])=>d));
-  race.nonParten = nonP;
-  finestre = neutral[gara] || null; leaderMemo = {};
-  // tacche pit per la timeline eventi: giri con almeno un in_lap nei dati gara
-  pitLaps = {};
-  for (const lp of race.laps) for (const d in lp.cars)
-    if (lp.cars[d].in_lap) (pitLaps[lp.lap] ||= []).push(d);
-  stopsGara = pitstops?.gare?.[gara] || {};
-  // race control: feed per la timeline + penalita' di tempo per i badge (per pilota,
-  // ordinate per giro dell'annuncio); ufficiale per la doppia vista. Tutto opzionale.
-  rcmGara = rcmAll?.[gara] || null; ufficGara = ufficAll?.[gara] || null;
-  penPil = {};
-  for (const p of (rcmGara?.penalita || [])) (penPil[p.pilota] ||= []).push(p);
-  for (const d in penPil) penPil[d].sort((a,b)=>a.giro-b.giro);
-  el('lapMax').textContent = race.n_laps;
-  header(gara);
-  selDrv=null; el('pit').classList.add('hidden');
-  drawEvtl();
-  buildGrid();
-  const rfLaps = new Set();
-  for (const [a,b] of (finestre?.rf || [])) for (let L=a; L<=b; L++) rfLaps.add(L);
-  const durate = computeDurations(race.byLap, race.n_laps, rfLaps);
-  // tabelle per pallini e stati: tempo del leader per giro + cum_time per pilota (dati reali)
-  leadCum = {}; cumPil = {}; teamOfR = {};
-  for (const lp of race.laps) for (const [d,c] of Object.entries(lp.cars)){
-    teamOfR[d] = c.team;
-    if (typeof c.cum_time === 'number' && !race.nonParten.has(d)){
-      (cumPil[d] ||= []).push({lap: lp.lap, cum: c.cum_time});
+  calendario = cal; finestre = neutral?.[gara] || null;
+  esitiGara = esiti?.[gara] || {};
+  nonPart = new Set(Object.entries(esitiGara).filter(([, t]) => t === 'NP').map(([d]) => d));
+  vistaCart = vm?.cartella_di?.[gara] || null;
+  griglia = grids?.[gara] || [];
+
+  // tabelle di tempo
+  leadCum = {}; cumPil = {}; teamDi = {}; ultimoGiro = {}; pitLaps = {};
+  for (const lp of race.laps) for (const [d, c] of Object.entries(lp.cars)) {
+    teamDi[d] = c.team; ultimoGiro[d] = lp.lap;
+    if (c.in_lap) (pitLaps[d] ||= []).push(lp.lap);
+    if (typeof c.cum_time === 'number' && !nonPart.has(d)) {
+      (cumPil[d] ||= []).push({ lap: lp.lap, cum: c.cum_time });
       if (leadCum[lp.lap] === undefined || c.cum_time < leadCum[lp.lap]) leadCum[lp.lap] = c.cum_time;
     }
   }
-  for (const d in cumPil) cumPil[d].sort((a,b)=>a.lap-b.lap);
-  // partenza: istante COMUNE a tutti per definizione, ma non nei dati (cum_time e' tempo-
-  // sessione, l'offset di partenza e' cotto in cum_time[1]). Stima = fine giro 1 del leader
-  // meno durate[1] (mediana): passo d'animazione dichiarato, mai usato come dato di gara.
+  for (const d in cumPil) cumPil[d].sort((a, b) => a.lap - b.lap);
+  const rf = new Set();
+  for (const [a, b] of (finestre?.rf || [])) for (let L = a; L <= b; L++) rf.add(L);
+  durate = computeDurations(race.byLap, race.n_laps, rf);
   leadCum[0] = (leadCum[1] !== undefined) ? leadCum[1] - durate[1] : 0;
   ancora = creaAncora({ lead: leadCum, minLap: 1, maxLap: race.n_laps });
-  drawPista(gara);
-  if (simMode) esciSimulazione();   // gara nuova: chiudi una simulazione eventualmente aperta
+
+  testata();
+  E('lapMax').textContent = race.n_laps;
+  E('giroTot').textContent = '/ ' + race.n_laps;
+  E('scorri').setAttribute('aria-valuemax', race.n_laps);
+  disegnaBande();
+  costruisciTorre();
+
+  await Promise.all([apriMappa(), apriVista()]);
   clock.setDur(L => durate[L]);
-  clock.reset(race.n_laps + 1);   // il traguardo del giro n sta a p = n+1 (ancora dell'orologio)
-  setPlayIcon(false);
-  requestAnimationFrame(()=>requestAnimationFrame(()=>el('grid').classList.remove('notrans')));
+  clock.reset(race.n_laps + 1);
+  scegli(ordineAl(1)[0]?.drv || Object.keys(cumPil)[0]);
+  frame(1);
 }
 
-// --- area pista: ogni gara con pista_<gara>.json (generata da gen_pista_svg.py) ha i
-// pallini; le altre restano al placeholder. NIENTE piste disegnate a mano. ---
-function pistaVuota(gara){
-  el('pista').innerHTML = `<div class="pista-vuota">
-      <b>${gara}</b>
-      <span>pista in arrivo &mdash; telemetria non disponibile per questa gara</span>
-    </div>`;
+function testata() {
+  const c = calendario?.gare?.find(g => g.gara_demo === gara);
+  E('tGp').textContent = c?.titolo || gara;
+  document.title = `${c?.titolo || gara} — Muretto Box Virtuale`;
+  const bagnata = race.laps.some(lp => Object.values(lp.cars)
+    .some(x => x.compound === 'INTERMEDIATE' || x.compound === 'WET'));
+  E('tMeta').replaceChildren(
+    c ? el('span', { class: 'etic' }, new Date(c.data + 'T12:00:00')
+      .toLocaleDateString('it-IT', { day: 'numeric', month: 'long' })) : null,
+    el('span', { class: 'etic' }, `${race.n_laps} giri`),
+    el('span', { class: 'etic' }, bagnata ? 'pista bagnata' : 'pista asciutta'),
+    el('span', { class: 'etic etic-c' }, `${Object.keys(cumPil).length} in gara`));
 }
-async function drawPista(gara){
-  if (pista){ pista.destroy(); pista=null; }
-  el('pista').classList.remove('pit-attivo');
-  el('pista').innerHTML = `<canvas aria-label="Mappa circuito con pallini piloti (replay per-giro)"></canvas>
-    <div class="spenta">Pallini spenti durante l&rsquo;esplorazione pit:<br>
-      il replay mostra la gara com&rsquo;e&rsquo; andata davvero, il motore risponde al controfattuale per-giro.</div>`;
+
+/* ================================================================= mappa */
+async function apriMappa() {
   try {
-    const { creaPista } = await import('./pista.mjs?v=250808a');
-    // POSIZIONI VERE: se la gara ha un replay_<gara>.json (GPS per-auto, generato e
-    // verificato da gen_replay.py) i pallini si muovono dove le vetture erano DAVVERO.
-    // Dove non c'e' — gare senza copertura GPS sufficiente, come Monaco — resta la
-    // ricostruzione dai tempi-giro, disegnata vuota per non confonderla con la misura.
-    replayVero = null;
-    try {
-      const { creaReplayVero } = await import('./replay_vero.mjs?v=250808a');
-      replayVero = await creaReplayVero({ url: `data/replay_${encodeURIComponent(gara)}.json` });
-    } catch(e){ console.warn('replay a posizioni vere non disponibile:', e.message); }
-    pista = await creaPista({
-      canvas: el('pista').querySelector('canvas'),
-      url: `data/pista_${encodeURIComponent(gara)}.json`,
-      pitlane: replayVero?.pitlane || null,        // corsia MISURATA quando esiste
+    replay = await creaReplayVero({ url: `data/replay_${encodeURIComponent(gara)}.json?v=${V}` });
+  } catch (e) { replay = null; }
+  try {
+    mappa = await creaMappa({
+      canvas: E('tela'),
+      url: `data/pista_${encodeURIComponent(gara)}.json?v=${V}`,
+      pitlane: replay?.pitlane || null,
     });
-    if (selDrv){ pista.setSpento(true); el('pista').classList.add('pit-attivo'); }
-    pista.setRegime(fase(finestre, Math.max(1, Math.floor(clock.position))));
-    pistaFrame(clock.position);
-  } catch(e){ console.warn('pista non disponibile:', e.message); pistaVuota(gara); }
-}
-// --- orologio per-pilota: percorso UNICO per pallini, badge BOX e stati di riga ---
-// L'ARITMETICA STA IN demo/orologio.mjs, condivisa con la scena rigiocata (ghostplay):
-// era la stessa ricerca binaria scritta due volte su due sorgenti di cum. Qui restano
-// solo le due cose che sono DAVVERO di questa pagina: quale ancora usare e come vestire
-// il risultato con lo stato del giro. La parita' col comportamento precedente e'
-// verificata su 398.700 campioni da demo/test_orologio.mjs.
-// tempoReale(p): p in [L, L+1) = il leader percorre il giro L; il traguardo del giro L
-// del leader sta a p = L+1 (T = leadCum[L]). leadCum[0] = partenza.
-function tempoReale(p){
-  return ancora ? ancora.tempoDa(p) : undefined;
-}
-// giroDi(d, T): al tempo reale T il pilota d e' nel SUO giro lap con frazione fd, dai SUOI
-// cum_time (il traguardo del suo giro N sta a cum_time[N]). box/inPit usano gli stessi
-// campi (in_lap/out_lap) e le stesse soglie del transito pallino (pista.mjs): nessun
-// percorso parallelo. Giri mancanti => null, mai inventato. Oltre l'ultimo giro noto
-// (arrivato/ritirato) => null.
-// lapZero = 0: in gara la linea del tempo comincia dalla PARTENZA, quindi un pilota il cui
-// primo giro noto non e' l'1 e' un buco nei dati e si respinge (nella scena, che comincia
-// al congelamento, la stessa funzione riceve un lapZero diverso e non respinge).
-function giroDi(d, T){
-  const g = giroDiCum(cumPil[d], T, { tempoZero: leadCum?.[0], lapZero: 0 });
-  if (!g) return null;
-  const fine = { lap: g.lap }, fd = g.fd;
-  const c=race.byLap[fine.lap]?.[d];
-  const box = c?.in_lap ? 'in' : (c?.out_lap ? 'out' : null);
-  const FE = pista?.pitFrazioni?.ingresso ?? 0.95, FX = pista?.pitFrazioni?.uscita ?? 0.05;
-  const inPit = (box==='in' && fd>=FE) || (box==='out' && fd<=FX);
-  return { lap: fine.lap, fd, box, inPit, stato: c };
-}
-// Pallini. DUE sorgenti, mai mescolate in silenzio:
-//  - replay_<gara>.json: la frazione di giro MISURATA sul GPS per-auto -> pallino pieno;
-//  - cum_time per-giro via giroDi: la ricostruzione a velocita' uniforme dentro il giro,
-//    che era l'unica sorgente fino a oggi -> pallino vuoto.
-// L'orologio e' lo stesso per entrambe (T = tempo di sessione), perche' gen_replay.py
-// verifica a ogni esecuzione che cum_time e SessionTime siano lo stesso orologio.
-function pistaFrame(p){
-  if (!pista || !leadCum) return;
-  const T = tempoReale(p);
-  if (T===undefined) return;
-  const dots=[];
-  for (const d in cumPil){
-    const g = giroDi(d, T);
-    const vero = replayVero?.posizioneDi(d, T);
-    if (vero){
-      // il box lo dicono i dati gara (in_lap/out_lap), il transito in corsia lo conferma
-      // il GPS: si usa il primo, cosi' badge di riga e pallino restano d'accordo
-      dots.push({f:vero.f, box:g?.box ?? (vero.box==='lane' ? 'in' : null),
-                 colore:coloreTeam(teamOfR[d]), sigla:d});
-    } else if (g){
-      dots.push({f:g.fd, box:g.box, colore:coloreTeam(teamOfR[d]), sigla:d, stimato:true});
-    }
-    // ne' l'uno ne' l'altro: il pilota non e' in pista in questo istante, e non si disegna
-  }
-  pista.aggiorna(dots);
-}
-
-// --- timeline eventi: geometria da bands() (helper puro), tacche pit dai dati gara ---
-// tacca pit a FINE giro L (L/n): e' li' che la sosta avviene, sull'asse 0=partenza 100=traguardo
-const lapPct = L => L/race.n_laps*100;
-function drawEvtl(){
-  const bs = bands(finestre, race.n_laps);
-  el('evtlSegs').innerHTML = bs.map(b=>`<div class="seg ${b.type}" title="${b.type.toUpperCase()} giri ${b.a}&ndash;${b.b}" style="left:${b.left}%;width:${b.width}%"></div>`).join('');
-  el('evtlPits').innerHTML = Object.entries(pitLaps).map(([L,ds])=>
-    `<div class="pitm" title="pit al giro ${L}: ${ds.join(', ')}" style="left:${lapPct(+L)}%"></div>`).join('');
-  // feed race control (livello 1): tacche informative sulla stessa barra — giallo =
-  // bandiere, § = annuncio penalita', grigio = investigazioni/lap deleted. Tooltip = testo.
-  // I regimi (sc/vsc/rossa) sono ANNUNCI: la tacca sta sul giro in cui il messaggio e'
-  // uscito, mentre la banda sotto e' il regime misurato dallo status per-auto, che
-  // comincia prima. Non e' una contraddizione: sono due domande diverse, e il tooltip
-  // lo dice. Due tacche dentro una banda sola = due Safety Car distinte.
-  const CLASSE = {penalita:'p', giallo:'g', sc:'ann sc', vsc:'ann vsc', rossa:'ann rossa'};
-  const feed = rcmGara?.feed || [];
-  el('evtlRcm').innerHTML = feed.map(e=>{
-    const reg = e.tipo==='sc'||e.tipo==='vsc'||e.tipo==='rossa';
-    const tip = reg
-      ? `${e.testo}${e.chiuso_da ? ` (chiusa dalla ${e.chiuso_da})` : ''} — annunciata al giro ${e.giro}`
-      : `giro ${e.giro}: ${e.testo}`;
-    return `<div class="rcmm ${CLASSE[e.tipo]||'i'}" title="${tip.replaceAll('"','&quot;')}" style="left:${lapPct(e.giro)}%"></div>`;
-  }).join('');
-  el('legrcg').style.display = feed.some(e=>e.tipo==='giallo') ? 'inline-flex' : 'none';
-  el('legrcp').style.display = feed.some(e=>e.tipo==='penalita') ? 'inline-flex' : 'none';
-  el('evtlLeg').style.visibility = (bs.length || Object.keys(pitLaps).length || feed.length) ? 'visible' : 'hidden';
-  el('legrf').style.display = (finestre?.rf?.length) ? 'inline-flex' : 'none';
-  el('evtl').setAttribute('aria-valuemax', race.n_laps);
-}
-// La barra scorre SEMPRE, anche durante la scena rigiocata: prima usciva subito su
-// simMode, quindi dentro BOX ORA non si poteva tornare indietro — si poteva solo uscire.
-// Ora la scena ha lo stesso orologio del replay e quindi lo stesso trasporto; l'asse resta
-// quello della gara intera (0 = partenza, 100 = traguardo) e la posizione si CLAMPA nella
-// finestra della scena, che comincia al congelamento e non prima.
-function evtlSeek(clientX){
-  const r = el('evtlRail').getBoundingClientRect();
-  const f = Math.min(1, Math.max(0, (clientX - r.left) / r.width));
-  const p = 1 + f*race.n_laps;     // stesso asse del cursore: fine barra = traguardo (p = n+1)
-  if(simMode){
-    if(!simGp) return;
-    simGp.stop(); setPlayIcon(false); simGp.seek(p);
-    return;
-  }
-  clock.pause(); setPlayIcon(false);
-  clock.seek(p);
-}
-{ // interazione: click/drag + tastiera
-  const tl = el('evtl'); let giu=false;
-  tl.addEventListener('pointerdown', e=>{ giu=true; evtlSeek(e.clientX);
-    try{ tl.setPointerCapture(e.pointerId); }catch(_){} });
-  tl.addEventListener('pointermove', e=>{ if(giu) evtlSeek(e.clientX); });
-  tl.addEventListener('pointerup', ()=>{ giu=false; });
-  tl.addEventListener('keydown', e=>{
-    if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight') return;
-    e.preventDefault();
-    const passo = (e.key==='ArrowRight'?1:-1);
-    if(simMode){                       // anche la scena si scorre di un giro per volta
-      if(!simGp) return;
-      simGp.stop(); setPlayIcon(false);
-      simGp.seek(Math.round(simGp.posizione)+passo);
-      return;
-    }
-    clock.pause(); setPlayIcon(false);
-    clock.seek(Math.min(race.n_laps+1, Math.max(1, Math.round(clock.position)+passo)));
+  } catch (e) { mappa = null; }
+  E('tela').addEventListener('click', (ev) => {
+    if (!mappa) return;
+    const r = E('tela').getBoundingClientRect();
+    const s = mappa.colpito(ev.clientX - r.left, ev.clientY - r.top);
+    if (s) scegli(s);
   });
 }
 
-// righe keyed create UNA volta per gara; poi aggiornate in place ogni frame
-function buildGrid(){
-  const tutti=[...new Set([...race.drivers, ...gridGara])];
-  const g=el('grid'); g.classList.add('notrans'); g.innerHTML=''; rowEls={};
-  for(const d of tutti){
-    const row=document.createElement('div'); row.className='row'; row.dataset.drv=d;
-    // la sigla e' un link alla scheda pilota (stopPropagation: il resto della riga apre il pit)
-    row.innerHTML=`<span class="tbar"></span><span class="pos"></span><span class="dpos"></span>`
-      +`<span class="idn"><span class="l1"><span class="rnum"></span><span class="drv"><a href="scheda.html?sigla=${d}" title="scheda pilota">${d}</a></span><span class="box" style="display:none"></span><span class="penb" style="display:none"></span></span><span class="team"></span></span>`
-      +`<span class="gaps"><span class="gap"></span><span class="gapprev"></span></span>`
-      +`<span class="tyreb"><span class="dot"></span><span class="age"></span></span>`;
-    row.querySelector('.drv a').addEventListener('click', e=>e.stopPropagation());
-    row.addEventListener('click',()=>{ if(!row.classList.contains('selectable'))return;
-      if(simMode) esciSimulazione();
-      selDrv=d; clock.pause(); setPlayIcon(false);
-      // floor, NON round: si congela il giro che l'utente sta GUARDANDO; il seek porta al
-      // suo inizio, cioe' alla fine del giro curLap-1 — lo stesso stato che il motore riceve
-      curLap=Math.max(1,Math.min(race.n_laps,Math.floor(clock.position))); clock.seek(curLap);
-      openPit(); frame(clock.position);
-      if(matchMedia('(max-width:899px)').matches) el('pit').scrollIntoView({behavior:'smooth',block:'nearest'});
-    });
-    g.appendChild(row);
-    rowEls[d]={root:row, tbar:row.querySelector('.tbar'), pos:row.querySelector('.pos'),
-               dpos:row.querySelector('.dpos'),
-               num:row.querySelector('.rnum'),
-               team:row.querySelector('.team'), box:row.querySelector('.box'),
-               pen:row.querySelector('.penb'),
-               gap:row.querySelector('.gap'), gapprev:row.querySelector('.gapprev'),
-               dot:row.querySelector('.dot'), age:row.querySelector('.age')};
+/* ---- dove sta ogni pilota all'istante p (giro frazionario del battistrada) ---- */
+function posizioni(p) {
+  const T = ancora?.tempoDa(p);
+  if (T === undefined) return [];
+  const out = [];
+  if (replay) {
+    for (const d of Object.keys(cumPil)) {
+      const q = replay.posizioneDi(d, T);
+      if (!q) continue;
+      out.push({ sigla: d, f: q.f, box: q.box, colore: coloreDi(teamDi[d], colori),
+                 dim: !!selDrv && d !== selDrv && !!scenaGp });
+    }
+    if (out.length) return out;
   }
-  g.style.height = (tutti.length*ROW_H)+'px';
+  // ricostruzione dai tempi-giro dove il GPS non c'e' (pallino vuoto: e' una stima)
+  for (const d of Object.keys(cumPil)) {
+    const g = giroDiCum(cumPil[d], T, { tempoZero: leadCum[0], lapZero: 0 });
+    if (!g) continue;
+    const c = race.byLap[g.lap]?.[d];
+    out.push({ sigla: d, f: g.fd, stimato: true,
+               box: c?.in_lap ? 'in' : (c?.out_lap ? 'out' : null),
+               colore: coloreDi(teamDi[d], colori) });
+  }
+  return out;
 }
 
-// leaderAiGiri (conteggio doppiati): identico alla v1
-function leaderAiGiri(L){
-  if(leaderMemo[L]) return leaderMemo[L];
-  const out={};
-  for (let k=L;k<=Math.min(L+3,race.n_laps);k++) if (race.byLap[k]) {
-    const o=Object.entries(race.byLap[k]).filter(([d,c])=>typeof c.cum_time==='number'&&!race.nonParten.has(d)).sort((a,b)=>a[1].cum_time-b[1].cum_time);
-    if(o.length) out[k]=o[0][1].cum_time;
-  }
-  return leaderMemo[L]=out;
-}
-
-// Classifica al giro frazionario. ORDINAMENTO sincronizzato per giro, come il motore:
-// ogni pilota valutato alla frazione f del SUO giro L (icum interpola tra fine giro L-1
-// e fine giro L). STATI (BOX/OUT, gomma, eta') invece al tempo reale T via giroDi: gli
-// stessi campi e lo stesso orologio che muovono il pallino.
-function classificaAt(L, f){
-  const T=tempoReale(L+f);
-  // IL NUCLEO E' CONDIVISO con la scena rigiocata (demo/classifica.mjs): cum interpolato a
-  // (L, f), ordine per quel cum, doppiati sul battistrada ai giri L..L+3, e le etichette.
-  // Era lo stesso modello scritto due volte, e il commento di classificaSim lo ammetteva
-  // per iscritto. Qui resta solo cio' che e' DI QUESTA PAGINA: lo stato del giro, i badge,
-  // le posizioni guadagnate, la coda dei fuori-gara. Parita' verificata su 684 classifiche
-  // di tutte e 11 le gare da demo/test_classifica.mjs.
-  const base = classificaCondivisa({
-    cumCorrente: race.byLap[L], cumPrecedente: race.byLap[L-1],
-    ancora: leadCum[0], primoGiro: L===1, f, L, nLap: race.n_laps,
-    battistrada: leaderAiGiri(L),
-    escludi: d => race.nonParten.has(d),
-    pareggio: 'gara',                 // a pari cum: cum di fine giro, poi sigla
-    ordineGriglia: gridGara,          // giro 1 fermo: ordine di partenza, distacchi soppressi
+/* ============================================================= classifica */
+function ordineAl(p) {
+  const L = Math.max(1, Math.min(race.n_laps, Math.floor(p)));
+  const f = Math.min(1, Math.max(0, p - L));
+  const bs = battistradaAiGiri(k => race.byLap[k], L, race.n_laps, d => !nonPart.has(d));
+  return classifica({
+    cumCorrente: race.byLap[L], cumPrecedente: race.byLap[L - 1],
+    ancora: leadCum[0], primoGiro: L === 1, f, L, nLap: race.n_laps,
+    battistrada: bs, escludi: d => nonPart.has(d), ordineGriglia: griglia,
   });
-  const faseGriglia = (L===1 && f===0 && gridGara.length>0);
-  const rows = base.map((r,i)=>{
-    const drv=r.drv, c=race.byLap[L][drv], cum=r.icum;
-    const et=r.et, cls=r.cls, prev=r.prev;
-    // stato al tempo reale T (lo stesso orologio del pallino); fuori dai dati (oltre
-    // l'ultimo giro noto, buchi): si ricade sullo stato di fine giro L, badge spenti
-    const g = giroDi(drv, T);
-    const st = g?.stato ?? c;
-    const boxNow = !!g?.inPit;                     // in pit-lane ADESSO (soglie del pallino)
-    const outNow = !boxNow && g?.box==='out';      // resto dell'out-lap
-    // in pit-lane: gomma che sta montando (compound del giro dopo l'in-lap) + durata f1db
-    let monta=null, stopDur=null;
-    if (boxNow){
-      const Lin = g.box==='in' ? g.lap : g.lap-1;  // giro di in-lap della sosta in corso
-      if (g.box==='in') monta = race.byLap[g.lap+1]?.[drv]?.compound || null;
-      stopDur = (stopsGara[drv]||[]).find(s=>s.giro===Lin)?.durata_s ?? null;
-    }
-    // POSIZIONI GUADAGNATE dalla partenza: il confronto e' con la GRIGLIA, non con
-    // l'arrivo — a meta' gara l'arrivo non e' ancora successo, e usarlo vorrebbe dire
-    // leggere il futuro. Chi non era in griglia (partito dalla pit lane, o assente)
-    // non ha un termine di paragone: null, non zero.
-    const iGr = gridGara.indexOf(drv);
-    const dgr = (faseGriglia || iGr < 0) ? null : (iGr + 1) - (i + 1);
-    return {pos:i+1,drv,team:c.team,compound:st.compound,age:st.tyre_age,et,cls,prev,dgr,
-            inlap:boxNow,outlap:outNow,monta,stopDur,leader:i===0,selectable:true};
+}
+
+const righe = {};
+function costruisciTorre() {
+  const box = E('torre'); box.replaceChildren();
+  for (const d of Object.keys(cumPil)) {
+    const n = el('button', { class: 'rw', type: 'button', 'data-d': d,
+      stile: { '--c': coloreDi(teamDi[d], colori) },
+      onclick: () => scegli(d) },
+      el('span', { class: 'pz n' }, ''),
+      el('span', { class: 'bar' }),
+      el('span', {},
+        el('span', { class: 'sig' }, d),
+        el('span', { class: 'sotto' })),
+      el('span', { class: 'gap n' }, ''));
+    box.append(n);
+    righe[d] = { root: n, pz: n.children[0], sig: n.children[2].children[0],
+                 sotto: n.children[2].children[1], gap: n.children[3] };
+  }
+}
+
+function pittaTorre(p) {
+  const L = Math.max(1, Math.min(race.n_laps, Math.floor(p)));
+  const ord = ordineAl(p);
+  const box = E('torre');
+  const visti = new Set();
+  ord.forEach((r, i) => {
+    const R = righe[r.drv]; if (!R) return;
+    visti.add(r.drv);
+    const c = race.byLap[L]?.[r.drv];
+    R.pz.textContent = r.pos;
+    R.gap.textContent = r.et;
+    R.gap.className = 'gap n ' + (r.cls || '');
+    R.sotto.replaceChildren(...veri(
+      c?.compound ? el('span', { class: 'gomma ' + c.compound, title: c.compound }) : null,
+      c?.tyre_age != null ? el('span', { class: 'eta' }, `${c.tyre_age}g`) : null,
+      c?.in_lap ? el('span', { class: 'st box' }, 'BOX') : null,
+      c?.out_lap ? el('span', { class: 'st box' }, 'OUT') : null));
+    R.root.classList.remove('fuori');
+    if (R.root.style.order !== String(i)) R.root.style.order = i;
+    box.append(R.root);
   });
-  const inGara=new Set(base.map(r=>r.drv));
-  const teamOf={}; for(const lp of race.laps) for(const [d,c] of Object.entries(lp.cars)) teamOf[d]=c.team;
-  const tutti=new Set([...race.drivers,...gridGara]);
-  const fuori=[...tutti].filter(d=>!inGara.has(d));
-  const sr={doppiato:0,RIT:1,NP:2,ghost:3};
-  const coda=fuori.map(d=>{
-    const t=esitiGara[d], np=race.nonParten.has(d), last=lastLap[d]; let label,st;
-    if(t==='doppiato'&&last!==undefined){label=`arrivato · ${last} giri`;st='doppiato';}
-    else if(t==='RIT'&&last!==undefined){label=`ritirato (giro ${last})`;st='RIT';}
-    else if(np||t==='NP'){label='non partito';st='NP';}
-    else if(last!==undefined&&last<race.n_laps){label=`arrivato · ${last} giri`;st='doppiato';}
-    else{label='non partito';st='ghost';}
-    return {pos:'',drv:d,team:teamOf[d]||teams[d]||'',compound:null,age:null,et:label,st,prev:null,
-            inlap:false,outlap:false,leader:false,selectable:false,last:last??-1};
-  }).sort((a,b)=>(sr[a.st]-sr[b.st])||(b.last-a.last));
-  return rows.concat(coda);
+  // chi non e' piu' in gara resta in fondo, spento: la griglia non si svuota mai
+  for (const d of Object.keys(righe)) {
+    if (visti.has(d)) continue;
+    const R = righe[d];
+    R.root.classList.add('fuori');
+    R.pz.textContent = '';
+    const t = esitiGara[d];
+    R.gap.textContent = t === 'NP' ? 'non parte' : (ultimoGiro[d] < race.n_laps ? 'ritirato' : '—');
+    R.gap.className = 'gap n lapped';
+    R.sotto.replaceChildren();
+    R.root.style.order = 99;
+    box.append(R.root);
+  }
+  E('torreGiro').textContent = `giro ${L}`;
 }
 
-// aggiornamento in place di una riga (nessun innerHTML per frame)
-function paintRow(r, i){
-  const e=rowEls[r.drv]; if(!e) return;
-  e.root.style.transform=`translateY(${i*ROW_H}px)`;
-  const retired = r.st==='RIT'||r.st==='NP'||r.st==='ghost';
-  e.root.className='row'
-    + (r.leader?' leader':'') + (retired?' retired':'') + (r.st==='doppiato'?' done':'')
-    + (r.selectable?' selectable':'') + (r.drv===selDrv?' sel':'');
-  e.tbar.style.background=coloreTeam(r.team);
-  const nd = numDi[r.drv] != null ? String(numDi[r.drv]) : '';
-  if(e.num.textContent!==nd) e.num.textContent=nd;
-  e.num.style.color=coloreTeam(r.team);
-  if(e.pos.textContent!==String(r.pos)) e.pos.textContent=r.pos;
-  if (e.dpos){
-    const d=r.dgr;
-    const txt = (d==null||d===0) ? '' : (d>0 ? `\u25B2${d}` : `\u25BC${-d}`);
-    if (e.dpos.textContent!==txt) e.dpos.textContent=txt;
-    e.dpos.className='dpos'+(d>0?' su':(d<0?' giu':''));
-  }
-  if(e.team.textContent!==(r.team||'')) e.team.textContent=r.team||'';
-  e.gap.textContent=r.et; e.gap.className='gap '+(r.cls|| (r.st?'stato':''));
-  // ai box: la seconda riga racconta lo stop (durata etichettata per semantica + gomma
-  // che sta montando); ogni pezzo appare SOLO se il dato c'e' — mai valori stimati
-  if (r.inlap){
-    const pezzi=[];
-    if (typeof r.stopDur==='number') pezzi.push(`${etichettaStop}: ${r.stopDur.toFixed(1).replace('.',',')}s`);
-    if (r.monta) pezzi.push(`monta ${r.monta.toLowerCase()}`);
-    e.gapprev.textContent = pezzi.join(' · ');
-  } else
-    e.gapprev.textContent = (typeof r.prev==='number') ? `+${r.prev.toFixed(1)} da chi precede` : '';
-  // ai box / out-lap: fatto grezzo dei dati gara (in_lap/out_lap), non un giudizio
-  if (r.inlap || r.outlap){ e.box.style.display='inline-block'; e.box.textContent = r.inlap?'BOX':'OUT'; }
-  else e.box.style.display='none';
-  // badge penalita' (livello 1): appare DAL giro dell'annuncio race control; somma le
-  // penalita' di tempo comminate fin qui, tooltip con giro e motivo. Solo informativo:
-  // gap, ordine e motore restano al reale.
-  const pens=(penPil[r.drv]||[]).filter(p=>p.giro<=curLap);
-  if (pens.length){
-    const tot=pens.reduce((s,p)=>s+p.secondi,0);
-    if (e.pen.textContent!==`+${tot}s`){
-      e.pen.textContent=`+${tot}s`;
-      e.pen.title=pens.map(p=>`giro ${p.giro}: +${p.secondi}s${p.motivo?' — '+p.motivo.toLowerCase():''}`).join('\n');
-    }
-    e.pen.style.display='inline-block';
-  } else e.pen.style.display='none';
-  const col=tyreColor(r.compound);
-  if(r.compound){
-    e.dot.style.visibility='visible'; e.dot.title=r.compound;
-    e.dot.style.background=col||'var(--dim)';
-    e.age.textContent = (typeof r.age==='number') ? r.age : '';
-  } else { e.dot.style.visibility='hidden'; e.age.textContent=''; }
+/* ================================================================ frame */
+function frame(p) {
+  curP = p;
+  const L = Math.max(1, Math.min(race.n_laps, Math.floor(p)));
+  E('giroOra').textContent = L;
+  E('lapNow').textContent = L;
+  const pct = Math.max(0, Math.min(100, (p - 1) / race.n_laps * 100));
+  E('fatto').style.width = pct + '%';
+  E('cur').style.left = pct + '%';
+  E('scorri').setAttribute('aria-valuenow', L);
+
+  const fs = fase(finestre, L);
+  const b = E('bandiera');
+  b.className = 'bandiera' + (fs ? ' on ' + fs : '');
+  b.textContent = fs === 'SC' ? 'Safety car' : fs === 'VSC' ? 'Virtual safety car'
+    : fs === 'RF' ? 'Bandiera rossa' : '';
+  if (mappa) { mappa.setRegime(fs); if (!scenaGp) mappa.aggiorna(posizioni(p)); }
+
+  pittaTorre(p);
+  aggiornaTorreScelta();
+  if (!scenaGp) aggiornaStrategia();
 }
 
-// un frame: righe, giro/fase, cursore timeline; il pit si aggiorna solo da fermi
-function frame(p){
-  const L=Math.max(1,Math.min(race.n_laps,Math.floor(p)));
-  const f=Math.min(1,Math.max(0,p-L));
-  curLap=L;   // giro in corso del leader: scatta al SUO traguardo (p intero), non a meta' giro
-  classificaAt(L,f).forEach(paintRow);
-  pistaFrame(p);
-  el('lapLabel').textContent=curLap;
-  const pct = (p-1)/race.n_laps*100;   // asse barra: 0 = partenza, 100 = traguardo (p = n+1)
-  el('evtlCur').style.left = pct+'%';
-  el('evtlFatto').style.width = pct+'%';
-  el('evtl').setAttribute('aria-valuenow', curLap);
-  const ph=fase(finestre,curLap);
-  pista?.setRegime(ph);            // il nastro prende il colore del regime, stessa fonte della pillola
-  el('phase').className='phase '+(ph?ph.toLowerCase():'run');
-  // pillola fase in parole piene (mai gli acronimi: "RF" non lo capisce nessuno)
-  el('phase').textContent = ph ? ({SC:'Safety Car', VSC:'Virtual SC', RF:'Bandiera rossa'}[ph]) : 'in corso';
-  const fl=el('flag');
-  // il banner NON è solo un'etichetta: dice COSA succede e PERCHÉ cambia la strategia. La VSC
-  // resta cauta (il vantaggio della SC piena NON è validato per lei — "i dati sono la verità").
-  const FLAG_UI={
-    SC:{t:'⚑ Safety Car in pista', s:`Le auto rallentano e il gruppo si ricompatta: fermarsi ai box adesso costa molto meno tempo del solito — è il momento buono per la sosta.`},
-    VSC:{t:'⚑ Virtual Safety Car', s:`Tutti rallentano a un ritmo imposto ma restano distanziati: la sosta costa un po' meno del normale — meno però che con la Safety Car piena, e di quanto non sappiamo dirlo con precisione.`},
-    RF:{t:'⚑ Bandiera rossa · gara sospesa', s:`La gara è ferma e le auto rientrano: qui le regole della sosta cambiano del tutto, i conti sul pit stop normale non valgono.`},
-  };
-  if(ph){ const u=FLAG_UI[ph]; fl.className='flag on '+ph.toLowerCase();
-    fl.innerHTML=`<span class="flag-t">${u.t}</span><span class="flag-s">${u.s}</span>`; }
-  else if(fl.className!=='flag'){ fl.className='flag'; fl.innerHTML=''; }
-  if(selDrv && !clock.playing) updatePit();
+function icona(playing) {
+  E('via').innerHTML = playing
+    ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
+  E('via').setAttribute('aria-label', playing ? 'Pausa' : 'Play');
 }
 
-function setPlayIcon(playing){ const b=el('play'); b.textContent=playing?'❚❚':'▶'; b.classList.toggle('playing',playing); }
-
-// --- strip strategia: stint da (stint, compound) per-giro, pit dai flag in_lap ---
-// Dati gia' nei JSON gara: nessun calcolo nuovo, solo raggruppamento per la vista.
-// buildStrat() e' stata RIMOSSA l'08/08/2026. La vista stint ora esiste davvero, in
-// analisi.html#strategia, ed e' costruita sulla definizione unica di sosta
-// (demo/sosta.mjs). Questa copia raggruppava per `${stint}|${compound}`, cioe' sul
-// contatore grezzo: a Monaco avrebbe disegnato cinque stint dove ce ne sono due.
-// Era orfana da mesi (scriveva in #stratRighe, un id che il markup non ha piu').
-// Tenerla viva accanto a quella nuova sarebbe stata una seconda definizione della
-// stessa cosa, che e' l'errore E12 del catalogo.
-// (rimossi con la ripulitura gara: il tooltip della strip strategia-gomme.)
-// mostraVista() e buildUfficiale() sono state RIMOSSE il 09/08/2026. Erano codice morto
-// dichiarato: nessuno le chiamava, e riferivano id (vistaUff, uffTab, tabClas, tabStrat)
-// spariti dal markup con la ripulitura del 25/07 — se qualcuno le avesse invocate
-// sarebbero esplose su el(...).hidden di null. Portavano anche la SECONDA resa delle
-// posizioni guadagnate/perse: quella viva ora sta nella torre (campo dgr), e confronta
-// con la GRIGLIA invece che con l'arrivo, perche' a meta' gara l'arrivo non e' ancora
-// successo. La doppia vista «in pista | ufficiale» resta fuori dalla pagina-gara.
-
-// --- esplorazione pit: la risposta non si calcola qui, si LEGGE dalla vista
-//     pre-calcolata del simulatore (vistaDi -> mostraRisposta) ---
-function openPit(){
-  if(!selDrv){ el('pit').classList.add('hidden'); return; }
-  conta('valutazione_pit');
-  if(simMode) esciSimulazione();                 // cambio pilota: chiudi la simulazione in corso
-  el('simBar').hidden=true;
-  // LEGGE DEL REPLAY: esplorazione pit attiva => pallini spenti (replay ≠ controfattuale)
-  if(pista){ pista.setSpento(true); el('pista').classList.add('pit-attivo'); }
-  el('pit').classList.remove('hidden');
-  el('eseSez').hidden=true;   // i risultati della strategia vecchia non restano al cambio pilota
-  // RISPOSTA IMMEDIATA (decisione PO): il pannello si apre su "pit ADESSO" — il giro in
-  // corso, la domanda del muretto: dove rientro SE pitto ora. Lo slider resta sotto per
-  // l'esplorazione ("e se aspetto fino al giro N?"), ma non e' richiesto per avere la
-  // risposta. Il freeze e' l'ultimo giro COMPLETATO visibile (curLap-1): pittare al giro
-  // IN CORSO (in-lap = curLap) e' quindi sempre possibile. Al giro 1 freeze clampato a 1.
-  // LA RISPOSTA E' AUTOMATICA (08/08): il cassetto «il muretto dice» si riempie da
-  // solo per il giro corrente — nessun bottone da premere per avere il numero.
-  boxGiro = Math.max(2, curLap);
-  mescolaBox = null; chipMescole(); listaSoste();
-  updatePit();
-}
-function chiudiPit(){ if(simMode) esciSimulazione(); selDrv=null; mescolaScelta=null; el('pit').classList.add('hidden');
-  el('simBar').hidden=true; el('eseSez').hidden=true;
-  if(pista){ pista.setSpento(false); el('pista').classList.remove('pit-attivo'); }
-  frame(clock.position); }
-function updatePit(){
-  // freeze = ultimo giro COMPLETATO visibile: a p=curLap lo schermo mostra la classifica
-  // di fine giro curLap-1, ed e' QUELLO lo stato che il motore congela (byLap[freeze]).
-  // Il giro della sosta e' SEMPRE quello in corso: si sposta il cursore della gara e si
-  // preme BOX. Non c'e' piu' un secondo modo di dire la stessa cosa.
-  const L=Math.max(1,curLap-1), pitL=Math.max(2,curLap);
-  // se la gara e' avanzata dopo la chiamata, la risposta vale per il giro chiamato: si
-  // rifa' la domanda al giro nuovo, invece di lasciare in pagina un numero scaduto
-  if (boxGiro!=null && boxGiro!==pitL) boxGiro=pitL;
-  el('boxGiro').textContent = `giro ${pitL}`;
-  el('boxBtn').classList.toggle('on', boxGiro!=null);
-  el('pitTitle').innerHTML = boxGiro==null
-    ? `${selDrv} <small>&mdash; premi BOX per sapere dove rientra</small>`
-    : `Se ${selDrv} entra <b>adesso</b>&hellip; <small>rivali congelati</small>`;
-  if (boxGiro==null){
-    // prima di chiamare il box: lo stato del pilota, non una risposta che non e stata chiesta
-    const c=race.byLap[L]?.[selDrv];
-    el('pitKv').innerHTML = c
-      ? `<div class="kv"><span class="k">In pista</span><span class="v">giro ${curLap} di ${race.n_laps}`
-        + (c.compound?` &middot; <b>${c.compound.toLowerCase()}</b>`:'')
-        + (typeof c.tyre_age==='number'?` da ${c.tyre_age} giri`:'') + `</span></div>`
-      : `<div class="pitmsg">${selDrv} non &egrave; in pista a questo giro.</div>`;
-    return;
-  }
-  mostraRisposta(selDrv, L);
-}
-
-// LA RISPOSTA, LETTA E NON CALCOLATA. Si prende il record del giro di congelamento dalla
-// vista del pilota e lo si passa ai componenti del simulatore: `pannello` e `curva`
-// tornano un albero dichiarativo, `disegna` lo mette nel DOM. Se qui comparisse
-// un'operazione su un tempo sul giro sarebbe una seconda fisica dentro l'interfaccia.
-async function mostraRisposta(drv, L){
-  const kv = el('pitKv');
-  if (!vistaCartella || !indiceVista){
-    // NIENTE COMANDI DA TERMINALE IN UNA PAGINA PUBBLICA. Qui prima si leggeva
-    // "si genera con node web/genera_vista_gara.mjs nel simulatore": un'istruzione
-    // per chi sviluppa, mostrata a chi guarda una gara. Il ramo e' raggiungibile la
-    // prima volta che una gara viene pubblicata senza la sua vista, e non e' un caso
-    // di scuola — il ciclo post-gara genera la vista con check=False.
-    kv.innerHTML = `<div class="pitmsg">Il muretto non &egrave; ancora disponibile per questa gara.
-      <span class="sub">le risposte si preparano dopo la gara: riprova pi&ugrave; tardi</span></div>`;
-    return;
-  }
-  kv.innerHTML = '<div class="pitmsg">…</div>';
-  const v = await vistaDi(drv);
-  // la gara puo' essere avanzata mentre il file arrivava: se non siamo piu' su questo
-  // pilota o su questo giro, la risposta che sta tornando e' scaduta e non si mostra
-  if (drv !== selDrv || boxGiro == null || Math.max(1, curLap-1) !== L) return;
-  if (!v){
-    kv.innerHTML = `<div class="pitmsg">${drv} non ha una risposta pre-calcolata in questa gara.</div>`;
-    return;
-  }
-  let s = v.giri.find(g => g.freeze_lap === L);
-  // LA SCELTA DELLA MESCOLA fa ricalcolare la risposta qui, con lo stesso motore della
-  // diretta. Se il contesto non c'e' (trasporto non fatto) si resta sulla vista e lo si
-  // dice, invece di mostrare una risposta che non e' quella scelta.
-  if (mescolaScelta && s) {
-    const ctx = await contestoDelMotore();
-    if (drv !== selDrv || boxGiro == null || Math.max(1, curLap-1) !== L) return;
-    if (!ctx) {
-      kv.innerHTML = `<div class="pitmsg">La scelta della mescola non e' disponibile in questa pagina.
-        <span class="sub">manca vendor/simulatore/motore/contesto_live.json</span></div>`;
-      return;
-    }
-    const calcolata = rispostaLive({
-      byLap: race.byLap, nGiriGara: race.n_laps, nomeGara: race.gara,
-      pilota: drv, freezeLap: L, contestoLive: ctx, mescolaScelta,
-    });
-    if (calcolata && !calcolata.senza_risposta) s = calcolata;
-  }
-  if (!s){
-    // IL BOX NON RESTA MUTO A INIZIO GARA (08/08, richiesta PO: «premi BOX e non ti
-    // dice niente»). Se il congelamento e' fuori dalla copertura della vista, la gara
-    // si porta DA SOLA al primo giro con una risposta, e lo dice — era il difetto
-    // della pagella: 209 decisioni mute, tutte all'apertura della pagina.
-    const dentro = Math.min(Math.max(L, indiceVista.primo_giro), indiceVista.ultimo_giro);
-    if (dentro !== L){
-      clock.pause(); setPlayIcon(false);
-      curLap = Math.min(race.n_laps, dentro + 1);
-      clock.seek(curLap); frame(clock.position);
-      updatePit();
-      return;
-    }
-    kv.innerHTML = `<div class="pitmsg">A questo giro il simulatore non risponde per ${drv}.
-      <span class="sub">la vista copre i giri ${indiceVista.primo_giro}–${indiceVista.ultimo_giro}</span></div>`;
-    lastPitRes = null; return;
-  }
-  if (s.senza_risposta){
-    kv.innerHTML = `<div class="pitmsg">${s.senza_risposta}</div>`;
-    lastPitRes = null; return;
-  }
-  kv.replaceChildren(disegna(pannelloNuovo(indiceVista, s)));
-  // il selettore mescola e' un COMANDO anche qui: ri-cliccare quella scelta torna al vero
-  kv.querySelectorAll('.mescole [data-valore]').forEach((p) => {
-    if (p.hasAttribute('disabled')) return;
-    p.style.cursor = 'pointer';
-    p.addEventListener('click', () => {
-      mescolaScelta = (mescolaScelta === p.dataset.valore) ? null : p.dataset.valore;
-      mostraRisposta(drv, L);
-    });
-  });
-  // LA CURVA DEL QUANDO, che il pannello vecchio non ha mai avuto: per ogni giro
-  // candidato, quanto costa fermarsi li' rispetto al momento migliore.
-  // LA CURVA SI DISEGNA ANCHE QUANDO E' VUOTA, perche' in quel caso dice PERCHE'.
-  // La guardia chiedeva anche `s.curva.length`, e su 2.678 risposte su 10.131 (il
-  // 26,4%) faceva sparire la sezione senza una riga: la novita' dichiarata del
-  // pannello spariva in piu' di un caso su quattro e sembrava un difetto. Il
-  // componente `curva` ha gia' il suo ramo per l'assenza, con la frase che la
-  // spiega — rendeva irraggiungibile proprio quella. L'assenza si dichiara (regola 6).
-  if (s.approvato !== false && s.curva) kv.append(disegna(curvaDelQuando(indiceVista, s)));
-  attaccaGlossario(kv);
-  lastPitRes = s;
-}
-
-// ============ LA GARA RIGIOCATA (08/08): un solo flusso, BOX ORA ============
-// La vecchia coppia di comandi separati (numero da una parte, scena a due
-// fasi dall'altra, con la pausa al rientro che al PO sembrava — giustamente —
-// una gara che non finisce) e' stata sostituita: BOX ORA ferma il pallino e la
-// gara CONTINUA fino alla bandiera, con altre soste aggiungibili mentre scorre.
-
-function esciSimulazione(){
-  if(!simMode) return;
-  if(simGp){ simGp.stop(); simGp=null; }
-  simMode=false; simEse=false;
-  STRAT=null; mescolaBox=null; if(el('stratList')) listaSoste();
-  el('eseSez').hidden=true;
-  el('pista').classList.remove('sim-attiva');
-  el('simBar').hidden=true; el('simCont').hidden=true;
-  for(const d in rowEls) rowEls[d].root.style.display='';
-  setPlayIcon(false);
-  if(pista){ pista.aggiorna([]); pista.setSpento(true); }   // togli il fantasma, torna a esplorazione (spenti)
-  frame(clock.position);                                     // ridisegna il replay reale
-}
-
-// play/pausa: durante la scena comanda il loop del fantasma, fuori il replay reale
-el('play').addEventListener('click', ()=>{
-  if(simMode){ if(simGp){ simGp.playing ? simGp.stop() : simGp.play(); setPlayIcon(!!simGp.playing); } return; }
-  clock.toggle(); setPlayIcon(clock.playing);
+/* =============================================================== comandi */
+E('via').addEventListener('click', () => {
+  if (scenaGp) { scenaGp.playing ? scenaGp.stop() : scenaGp.play(); icona(!!scenaGp.playing); return; }
+  clock.toggle(); icona(clock.playing);
 });
-el('speeds').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b)return;
-  // la velocita' vale per l'orologio che sta girando: quello del replay o quello della
-  // scena. Sono lo stesso makeClock, quindi la scala e' la stessa e non va ridefinita.
-  if(simMode && simGp) simGp.setSpeed(+b.dataset.s); else clock.setSpeed(+b.dataset.s);
-  [...el('speeds').children].forEach(x=>x.classList.toggle('on',x===b)); });
-el('boxBtn').addEventListener('click', boxOra);
-el('simEsci').addEventListener('click', esciSimulazione);
-// IL LISTENER DELLA MESCOLA E' STATO TOLTO, e prima ancora era MORTO: cercava
-// `data-mesc` mentre il pannello del simulatore emette `data-valore`, quindi il
-// click non arrivava. Collegarlo non avrebbe cambiato niente — misurato: mescola
-// diversa in 4.943 casi, posizione di rientro cambiata in 0. Le mescole ora si
-// mostrano e non si scelgono (selettoreMescole in simulatore/web/pannello.mjs).
-el('pitChiudi').addEventListener('click', chiudiPit);
-// (rimossi con la ripulitura gara: i listener dei tab Classifica/Strategia/Ufficiale — resta solo la torre.)
-conta('apertura');
-boot();
+E('vel').addEventListener('click', (e) => {
+  const b = e.target.closest('button'); if (!b) return;
+  (scenaGp || clock).setSpeed(+b.dataset.s);
+  [...E('vel').children].forEach(x => x.classList.toggle('on', x === b));
+});
+(function scorrevole() {
+  const barra = E('scorri');
+  let giu = false;
+  const vai = (ev) => {
+    if (scenaGp || !race) return;
+    const r = barra.getBoundingClientRect();
+    const x = (ev.clientX ?? ev.touches?.[0]?.clientX ?? NaN) - r.left;
+    if (!isFinite(x) || !r.width) return;          // mai un orologio a NaN
+    const p = 1 + Math.max(0, Math.min(1, x / r.width)) * race.n_laps;
+    clock.pause(); icona(false); clock.seek(p);
+  };
+  barra.addEventListener('pointerdown', (e) => {
+    giu = true;
+    try { barra.setPointerCapture(e.pointerId); } catch (_) { /* puntatore gia' finito */ }
+    vai(e);
+  });
+  barra.addEventListener('pointermove', (e) => { if (giu) vai(e); });
+  barra.addEventListener('pointerup', () => { giu = false; });
+  barra.addEventListener('keydown', (e) => {
+    const d = { ArrowLeft: -1, ArrowRight: 1, PageDown: -5, PageUp: 5 }[e.key];
+    if (!d) return; e.preventDefault();
+    clock.pause(); icona(false); clock.seek(Math.floor(curP) + d);
+  });
+})();
 
-// ── BOX ORA (08/08, decisione PO): la strategia si fa GIOCANDO ──────────────
-// Un solo comando. Scegli la gomma (chips), premi BOX ORA: il congelamento si
-// piazza DA SOLO un giro prima della sosta (la storia che hai appena visto e'
-// quella vera fino a li'), il motore rigioca la gara intera con soste, ritiri
-// e Safety Car VERI dei rivali, e la scena riparte dal giro corrente SENZA
-// PAUSE fino alla bandiera. BOX ORA di nuovo, mentre scorre, aggiunge un'altra
-// sosta. Moduli caricati al primo BOX: chi guarda solo il replay non paga niente.
-let ESE = null;      // {mod, vista, prep}
-let STRAT = null;    // {freeze, soste:[{giro,mescola}], esiti}
-let simEse = false;
-let mescolaBox = null;
-
-function chipMescole(){
-  const c = el('mescChips'); if(!c) return; c.replaceChildren();
-  const attuale = race.byLap[Math.max(1,curLap-1)]?.[selDrv]?.compound ?? null;
-  if (mescolaBox === null) mescolaBox = ['HARD','MEDIUM','SOFT'].find(x=>x!==attuale) ?? 'MEDIUM';
-  for (const x of ['SOFT','MEDIUM','HARD']){
-    const b=document.createElement('button'); b.type='button'; b.textContent=x.toLowerCase();
-    b.className='chip'+(x===mescolaBox?' on':'');
-    b.onclick=()=>{ mescolaBox=x; chipMescole(); };
-    c.appendChild(b);
+function disegnaBande() {
+  const letto = E('letto');
+  [...letto.querySelectorAll('.bd')].forEach(x => x.remove());
+  for (const b of bands(finestre, race.n_laps)) {
+    letto.append(el('div', { class: 'bd ' + b.type,
+      stile: { left: b.left + '%', width: b.width + '%' } }));
   }
 }
-function listaSoste(){
-  const lst = el('stratList'); if(!lst) return;
-  lst.textContent = STRAT && STRAT.soste.length
-    ? 'Le tue soste: ' + STRAT.soste.map(x=>`giro ${x.giro} → ${x.mescola.toLowerCase()}`).join(' · ')
-    : '';
+function disegnaPit(d) {
+  const barra = E('scorri');
+  [...barra.querySelectorAll('.pit')].forEach(x => x.remove());
+  for (const L of (pitLaps[d] || [])) {
+    barra.append(el('div', { class: 'pit', stile: { left: (L / race.n_laps * 100) + '%' } }));
+  }
 }
-function notaStrategia(msg){ el('simTag').innerHTML = msg; el('simBar').hidden=false; }
-async function caricaEse(){
+
+/* ============================================================ selezione */
+function scegli(d) {
+  if (!d || d === selDrv) return;
+  selDrv = d; mescolaScelta = null;
+  mappa?.setScelto(d);
+  E('railChi').replaceChildren(
+    el('span', { class: 'bar', stile: { background: coloreDi(teamDi[d], colori) } }),
+    el('b', {}, d));
+  disegnaPit(d);
+  aggiornaTorreScelta();
+  aggiornaStrategia();
+}
+function aggiornaTorreScelta() {
+  for (const d in righe) righe[d].root.classList.toggle('scelto', d === selDrv);
+}
+
+/* ============================================================ strategia */
+async function vistaDi(d) {
+  if (!vistaCart) return null;
+  if (vistaPil[d] !== undefined) return vistaPil[d];
+  vistaPil[d] = await dati(`data/vista/${encodeURIComponent(vistaCart)}/${d}.json?v=${V}`);
+  return vistaPil[d];
+}
+async function apriVista() {
+  if (!vistaCart) return;
+  indiceVista = await dati(`data/vista/${encodeURIComponent(vistaCart)}/indice.json?v=${V}`);
+}
+async function contesto() {
+  if (ctxLive !== null) return ctxLive;
+  ctxLive = await dati(`vendor/simulatore/motore/contesto_live.json?v=${V}`) || false;
+  return ctxLive;
+}
+
+let ultimaChiave = '';
+async function aggiornaStrategia() {
+  const c = E('railC');
+  if (!selDrv) return;
+  if (!indiceVista) {
+    c.replaceChildren(el('div', { class: 'st-muto' },
+      'Per questa gara il motore non ha una risposta pronta.'));
+    return;
+  }
+  const L = Math.max(indiceVista.primo_giro,
+    Math.min(indiceVista.ultimo_giro, Math.max(1, Math.floor(curP) - 1)));
+  const chiave = `${selDrv}|${L}|${mescolaScelta || ''}`;
+  if (chiave === ultimaChiave) return;
+  ultimaChiave = chiave;
+
+  const v = await vistaDi(selDrv);
+  if (chiave !== ultimaChiave) return;
+  let s = v?.giri?.find(g => g.freeze_lap === L) || null;
+
+  if (mescolaScelta && s) {
+    const ctx = await contesto();
+    if (chiave !== ultimaChiave) return;
+    if (ctx) {
+      const calc = rispostaLive({ byLap: race.byLap, nGiriGara: race.n_laps, nomeGara: gara,
+        pilota: selDrv, freezeLap: L, contestoLive: ctx, mescolaScelta });
+      if (calc && !calc.senza_risposta) s = calc;
+    }
+  }
+
+  const frag = document.createDocumentFragment();
+  const attuale = race.byLap[L]?.[selDrv]?.compound || null;
+  frag.append(selettoreMescole({
+    scelta: mescolaScelta, attuale,
+    onScegli: (m) => { mescolaScelta = m; ultimaChiave = ''; aggiornaStrategia(); },
+  }));
+  if (!s || s.senza_risposta) {
+    ultimaRisposta = null;
+    const primo = (v?.giri || []).find(g => g.freeze_lap >= L && !g.senza_risposta && g.pannello)
+      || (v?.giri || []).find(g => !g.senza_risposta && g.pannello);
+    frag.append(el('div', { class: 'st-muto' },
+      el('p', { stile: { margin: '0 0 12px' } },
+        `Qui il motore non risponde per ${selDrv}: nei primi giri la gara non è ancora leggibile.`),
+      primo ? el('button', {
+        class: 'btn btn-s', type: 'button',
+        onclick: () => { clock.pause(); icona(false); clock.seek(primo.freeze_lap + 1); },
+      }, `Vai al giro ${primo.freeze_lap + 1}`) : null));
+  } else {
+    ultimaRisposta = s;
+    frag.append(pannelloStrategia(s, {
+      pilota: selDrv, giro: Math.floor(curP), nGiri: race.n_laps,
+      onGiro: (g) => { clock.pause(); icona(false); clock.seek(g); },
+    }));
+  }
+  c.replaceChildren(frag);
+}
+
+/* ============================================================== box ora */
+async function caricaEse() {
   if (ESE) return ESE;
-  const [mod, vista] = await Promise.all([import('./ese.mjs?v=080826b'), import('./ese_vista.mjs?v=080826b')]);
-  const fetchJson = async (u)=>{ const r=await fetch(u); if(!r.ok) throw new Error(`${u}: HTTP ${r.status}`); return r.json(); };
-  ESE = { mod, vista, prep: await mod.preparaGara(race.gara, { fetchJson }) };
+  const [mod, vista] = await Promise.all([
+    import('./ese.mjs?v=080826b'), import('./ese_vista.mjs?v=080826b')]);
+  const fetchJson = async (u) => { const r = await fetch(u); if (!r.ok) throw new Error(u); return r.json(); };
+  ESE = { mod, vista, prep: await mod.preparaGara(gara, { fetchJson }) };
   return ESE;
 }
-async function boxOra(){
-  if(!selDrv) return;
-  const drv = selDrv;
-  // il giro della sosta: quello che stai GUARDANDO — replay reale o scena in corso
+
+E('boxOra').addEventListener('click', async () => {
+  if (!selDrv) return;
+  const b = E('boxOra'); b.disabled = true;
   const giro = STRAT
-    ? Math.max(STRAT.freeze+1, Math.min(race.n_laps-1, Math.round(simGp?.posizione ?? curLap)))
-    : Math.max(2, Math.min(race.n_laps-1, curLap));
-  el('boxBtn').disabled = true;
-  try{
+    ? Math.max(STRAT.freeze + 1, Math.min(race.n_laps - 1, Math.round(scenaGp?.posizione ?? curP)))
+    : Math.max(2, Math.min(race.n_laps - 1, Math.floor(curP)));
+  try {
     await caricaEse();
-    if(!STRAT){
-      const f = ESE.mod.congelamentoPer({ nome: ESE.prep.nome, contesto: ESE.prep.contesto, pilota: drv, giroSosta: giro });
-      if (f.freezeLap === null){ notaStrategia(`il motore non ha un passo per <b>${drv}</b> prima del giro ${giro}: ${f.motivo}`); return; }
+    if (!STRAT) {
+      const f = ESE.mod.congelamentoPer({ nome: ESE.prep.nome, contesto: ESE.prep.contesto,
+        pilota: selDrv, giroSosta: giro });
+      if (f.freezeLap === null) { nota(`Il motore non ha un passo per ${selDrv} prima del giro ${giro}.`); return; }
       STRAT = { freeze: f.freezeLap, soste: [] };
     }
-    const soste = [...STRAT.soste.filter(x=>x.giro!==giro), { giro, mescola: mescolaBox }].sort((a,b)=>a.giro-b.giro);
+    const soste = [...STRAT.soste.filter(x => x.giro !== giro),
+                   { giro, mescola: gommaPerBox() }].sort((a, b) => a.giro - b.giro);
     let esiti;
-    try{
-      esiti = ESE.vista.eseguiRigioca({ prep: ESE.prep, pilota: drv, freeze: STRAT.freeze, soste });
-    }catch(err){ notaStrategia(`il motore rifiuta questa sosta: ${err.message}`); return; }
-    if (!esiti.mio.direttore.approved){
-      const fatal=(esiti.mio.direttore.violazioni??[]).filter(v=>v.severita==='FATAL').map(v=>v.messaggio??v.codice);
-      notaStrategia(`il Director respinge: ${fatal[0]??'piano non valido'} — prova un'altra gomma o un altro giro`);
+    try { esiti = ESE.vista.eseguiRigioca({ prep: ESE.prep, pilota: selDrv, freeze: STRAT.freeze, soste }); }
+    catch (err) { nota(`Il motore rifiuta questa sosta: ${err.message}`); return; }
+    if (!esiti.mio.direttore.approved) {
+      const f = (esiti.mio.direttore.violazioni ?? []).filter(v => v.severita === 'FATAL');
+      nota(f[0]?.messaggio || 'Piano non valido: prova un altro giro o un\'altra gomma.');
       return;
     }
     STRAT.soste = soste; STRAT.esiti = esiti;
-    listaSoste();
     avviaScena(giro);
-    conta('box_ora');
-  } finally { el('boxBtn').disabled = false; }
+  } finally { b.disabled = false; }
+});
+
+function nota(testo) {
+  E('esito').hidden = false;
+  E('esito').replaceChildren(el('div', { class: 'piastra piastra-p' },
+    el('p', { stile: { margin: 0, color: 'var(--calmo)', fontSize: '14px' } }, testo)));
 }
-// LA TORRE DELLA SCENA. La ricostruzione del 08/08 l'aveva cancellata insieme al
-// vecchio blocco fantasma, ma `avviaScena` la passava ancora a creaGhostPlay: il
-// tag diceva «la gara CONTINUA» e la scena moriva li', su un ReferenceError. Il
-// collaudo guardava le sonde sincrone dell'adattatore, non il click intero — e' il
-// pezzo che il click attraversa. Nella scena rigiocata gomma/eta' REALI si tacciono
-// (simEse): sarebbero i dati di un'altra gara.
-function renderGaraTorre(righe, meta){
-  const presenti = new Set(righe.map(r=>r.drv));
-  righe.forEach((r,i)=>{
-    const st = simEse ? null : race.byLap[meta.lap]?.[r.drv];
-    paintRow({pos:r.pos, drv:r.drv, team:teamOfR[r.drv], compound:st?.compound, age:st?.tyre_age,
-      et:r.gapTxt, cls:r.gapCls, prev:null, inlap:r.inPit, outlap:false,
-      monta:null, stopDur:null, leader:r.leader, selectable:false, st:''}, i);
-  });
-  for(const d in rowEls) rowEls[d].root.style.display = presenti.has(d) ? '' : 'none';
-  el('lapLabel').textContent = meta.lap;
-  const pct=((meta.p ?? meta.lap)-1)/race.n_laps*100;
-  el('evtlCur').style.left=pct+'%'; el('evtlFatto').style.width=pct+'%';
-  el('evtl').setAttribute('aria-valuenow', meta.lap);
-}
-function avviaScena(giroSosta){
-  const mio = STRAT.esiti.mio;
-  const sim = simDaRigioca({ risultato: mio.risultato, race, pilota: selDrv, freeze: STRAT.freeze });
-  if(!sim){ notaStrategia('scena non disponibile per questo run'); return; }
-  sim.pitLap = giroSosta;                        // la scenografia del transito segue l'ULTIMA sosta
-  if(simGp) simGp.stop();
-  simEse = true; simMode = true; simDriver = selDrv;
+
+async function avviaScena(giroSosta) {
+  const { creaGhostPlay } = await import('./ghostplay.mjs?v=250724c');
+  const { simDaRigioca } = await import('./fantasma_sim.mjs?v=080826b');
+  const sim = simDaRigioca({ risultato: STRAT.esiti.mio.risultato, race,
+    pilota: selDrv, freeze: STRAT.freeze });
+  if (!sim) { nota('La scena non è disponibile per questa strategia.'); return; }
+  sim.pitLap = giroSosta;
+  if (scenaGp) scenaGp.stop();
   clock.pause();
-  el('pista').classList.add('sim-attiva'); if(pista) pista.setSpento(false);
-  el('eseSez').hidden = true; el('simCont').hidden = true;
-  const pos = ESE.mod.posizioniPerGiro(mio.risultato.traccia);
-  const pr = pos[Math.min(giroSosta+1, race.n_laps)]?.[selDrv];
-  const mesc = STRAT.soste.find(x=>x.giro===giroSosta)?.mescola ?? '';
-  notaStrategia(`<b>${selDrv}</b> box al giro ${giroSosta} (${mesc.toLowerCase()})${pr?` — rientra <b>P${pr}</b>`:''} e la gara CONTINUA. Premi BOX ORA per un'altra sosta, o &#8634; per il replay reale.`);
-  simGp = creaGhostPlay({ sim, pista, coloreDi: sg=>coloreTeam(teamOfR[sg]),
-    onTower: renderGaraTorre, giroRisposta: null,
+  E('reset').hidden = false;
+  E('esito').hidden = true;
+  const mesc = soste0(giroSosta);
+  nota(`${selDrv} si ferma al giro ${giroSosta}${mesc ? ' con gomma ' + (MESCOLA_IT[mesc] || mesc.toLowerCase()) : ''} — e la gara continua fino alla bandiera. Premi di nuovo BOX ORA per aggiungere un'altra sosta.`);
+
+  scenaGp = creaGhostPlay({
+    sim, pista: mappa, coloreDi: sg => coloreDi(teamDi[sg], colori),
+    onTower: torreScena, giroRisposta: null,
     p0: Math.max(STRAT.freeze, giroSosta - 1), durataTot: 22,
-    onFine: ()=>{ setPlayIcon(false); mostraVerdettoFinale(); } });
-  simGp.play(); setPlayIcon(true);
-}
-function mostraVerdettoFinale(){
-  if(!STRAT || !STRAT.esiti) return;
-  const { mio, vero } = STRAT.esiti;
-  el('eseTitolo').textContent = `${selDrv} — com'è finita con la TUA strategia`;
-  el('eseSez').hidden = false;
-  ESE.vista.rendiRisultati({
-    refs: { risultati: el('eseRisultati'), verdetto: el('eseVerdetto'), director: el('eseDirector'),
-      torre: el('eseTorre'), torreNota: el('eseTorreNota'), grafico: el('eseGrafico'), assunzioniLista: el('eseAssunzioni') },
-    prep: ESE.prep, pilota: selDrv, freeze: STRAT.freeze, mio, vero, teamCol,
+    onFine: () => { icona(false); verdetto(); },
   });
-  notaStrategia(`Bandiera: la gara rigiocata di <b>${selDrv}</b> è finita — il verdetto è qui sotto. &#8634; per tornare al replay reale.`);
-  el('eseSez').scrollIntoView({behavior:'smooth', block:'start'});
+  scenaGp.play(); icona(true);
 }
+function soste0(g) { return STRAT?.soste.find(x => x.giro === g)?.mescola || null; }
+
+function torreScena(rs, meta) {
+  const presenti = new Set(rs.map(r => r.drv));
+  rs.forEach((r, i) => {
+    const R = righe[r.drv]; if (!R) return;
+    R.pz.textContent = r.pos;
+    R.gap.textContent = r.gapTxt; R.gap.className = 'gap n ' + (r.gapCls || '');
+    R.sotto.replaceChildren(...veri(r.inPit ? el('span', { class: 'st box' }, 'BOX') : null));
+    R.root.style.order = i;
+    R.root.classList.toggle('fuori', false);
+  });
+  for (const d in righe) righe[d].root.style.display = presenti.has(d) ? '' : 'none';
+  E('giroOra').textContent = meta.lap; E('lapNow').textContent = meta.lap;
+  E('torreGiro').textContent = `giro ${meta.lap}`;
+  const pct = ((meta.p ?? meta.lap) - 1) / race.n_laps * 100;
+  E('fatto').style.width = pct + '%'; E('cur').style.left = pct + '%';
+}
+
+function verdetto() {
+  if (!STRAT?.esiti) return;
+  const { mio, vero } = STRAT.esiti;
+  const posDi = (run) => { const i = run?.risultato?.ordine?.indexOf(selDrv); return (i == null || i < 0) ? null : i + 1; };
+  const reale = ESE.prep.arrivoReale.find(r => r.drv === selDrv)?.posizione ?? null;
+  const P = (n) => n == null ? '—' : 'P' + n;
+  E('esito').hidden = false;
+  E('esito').replaceChildren(el('div', { class: 'piastra piastra-p' },
+    el('h3', { stile: { fontSize: '20px', textTransform: 'uppercase', marginBottom: '14px' } },
+      `${selDrv} — com'è finita`),
+    el('div', { class: 'esito-g' },
+      el('div', { class: 'esito-b' }, el('small', {}, 'nella gara vera'), el('b', { class: 'n' }, P(reale))),
+      el('div', { class: 'esito-b' }, el('small', {}, 'strategia vera nel motore'), el('b', { class: 'n' }, P(posDi(vero)))),
+      el('div', { class: 'esito-b tua' }, el('small', {}, 'la tua strategia'), el('b', { class: 'n' }, P(posDi(mio))))),
+    el('p', { class: 'st-nota', stile: { marginTop: '12px' } },
+      'Le prime due caselle dicono quanto il motore ci prende da solo. La differenza fra la seconda e la terza è la tua mossa.')));
+}
+
+E('reset').addEventListener('click', () => {
+  if (scenaGp) { scenaGp.stop(); scenaGp = null; }
+  STRAT = null; ultimaChiave = '';
+  E('reset').hidden = true; E('esito').hidden = true;
+  for (const d in righe) righe[d].root.style.display = '';
+  mappa?.setSpento(false);
+  icona(false);
+  frame(clock.position);
+  aggiornaStrategia();
+});
+
+/* ---------------------------------------------------------- schede mobile */
+for (const [b, mostra] of [['sbStrat', 'rail'], ['sbTorre', 'torre']]) {
+  E(b).addEventListener('click', () => {
+    E('rail').hidden = mostra !== 'rail';
+    E('torre').hidden = mostra !== 'torre';
+    E('sbStrat').classList.toggle('on', mostra === 'rail');
+    E('sbTorre').classList.toggle('on', mostra === 'torre');
+    E('sbStrat').setAttribute('aria-selected', String(mostra === 'rail'));
+    E('sbTorre').setAttribute('aria-selected', String(mostra === 'torre'));
+  });
+}
+function adattaSchede() {
+  const stretto = window.matchMedia('(max-width:860px)').matches;
+  if (!stretto) { E('rail').hidden = false; E('torre').hidden = false; }
+  else if (!E('rail').hidden && !E('torre').hidden) E('torre').hidden = true;
+}
+window.addEventListener('resize', adattaSchede);
+adattaSchede();
+
+icona(false);
+scheletro(E('railC'), 4, 52);
+boot().catch(() => guasto(E('railC'), () => location.reload()));
 </script>
 </body>
 </html>

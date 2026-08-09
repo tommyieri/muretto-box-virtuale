@@ -1,183 +1,152 @@
 <!DOCTYPE html>
-<!--
-  STAGIONE (ui-v5): hero prossima gara (con sessioni del weekend), campionato in
-  breve, griglia stagione con bandiere. Consumatore puro: calendario_2026.json,
-  classifiche_2026.json, manifest. La landing è index.html.
--->
 <html lang="it">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Stagione 2026 — Muretto Box Virtuale</title>
+<meta name="description" content="Il calendario della Formula 1 2026: ogni gara corsa si rivede giro per giro, con il pannello strategia.">
 <link rel="canonical" href="https://murettobox.com/stagione.html">
-<link rel="stylesheet" href="stile.css?v=040826b">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="muro.css?v=090826a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+<style>
+  .griglia{ display:grid; grid-template-columns:repeat(auto-fill,minmax(272px,1fr)); gap:var(--gap); }
+
+  .gp{
+    position:relative; display:flex; flex-direction:column; min-height:196px;
+    padding:18px; border-radius:var(--r);
+    background:linear-gradient(180deg,var(--piastra),var(--carbonio));
+    border:1px solid var(--bordo); overflow:hidden;
+    transition:border-color .2s var(--ease), transform .2s var(--ease);
+  }
+  a.gp:hover{ border-color:var(--bordo-2); transform:translateY(-2px); }
+  a.gp:hover .disegno{ opacity:.5; }
+  .gp .disegno{
+    position:absolute; right:-26px; top:-14px; width:170px; height:170px;
+    opacity:.24; transition:opacity .25s var(--ease); pointer-events:none;
+  }
+  .gp .disegno path{ fill:none; stroke:#8FA0BC; stroke-width:11; stroke-linejoin:round; }
+  .gp .capo{ display:flex; align-items:center; gap:9px; }
+  .gp .rnd{ font:500 10px/1 var(--mono); letter-spacing:.18em; color:var(--fioco); }
+  .gp h3{ margin:11px 0 0; font-size:25px; line-height:1.02; text-transform:uppercase; max-width:11ch; }
+  .gp .circ{ margin-top:7px; color:var(--calmo); font-size:13.5px; }
+  .gp .fondo{ margin-top:auto; padding-top:14px; display:flex; align-items:center; gap:9px; }
+  .gp .fondo .livrea{ height:20px; margin-right:0; }
+  .gp .chi{ font:700 15px/1 var(--disp); letter-spacing:.08em; }
+  .gp .quando{ margin-left:auto; color:var(--fioco); font:500 11px/1 var(--mono); letter-spacing:.05em; }
+  .gp.futura{ background:var(--carbonio); }
+  .gp.futura h3, .gp.futura .circ{ opacity:.72; }
+  .gp.prossima{ border-color:rgba(255,30,60,.45); }
+  .gp.prossima::after{ content:""; position:absolute; inset:0; border-radius:var(--r);
+    box-shadow:inset 0 0 0 1px rgba(255,30,60,.3); pointer-events:none; }
+
+  .conta{ display:flex; flex-wrap:wrap; gap:26px; margin-bottom:6px; }
+  .conta div b{ display:block; font:700 30px/1 var(--mono); letter-spacing:-.03em; }
+  .conta div span{ color:var(--fioco); font:500 10px/1 var(--mono); letter-spacing:.18em; text-transform:uppercase; }
+</style>
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="index.html" aria-label="Muretto Box Virtuale — home">
-    <span class="brand-mark"><span>M</span></span>
-    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
-  </a>
-  <nav class="nav" aria-label="Sezioni">
-    <a href="stagione.html" class="on">Stagione</a>
-    <a href="live.html"><span class="dot-live"></span>Live</a>
-    <a href="analisi.html">Analisi</a>
-    <a href="statistiche.html">Statistiche</a>
-  </nav>
-</header>
+<header class="barra"></header>
 
-<div class="wrap-home">
-  <section class="hero" id="hero" hidden>
-    <div class="eyebrow" id="heroEyebrow">Prossima gara</div>
-    <h2 id="heroTitolo">…</h2>
-    <div class="circuito" id="heroCircuito"></div>
-    <div class="quando">
-      <span class="data" id="heroData"></span>
-      <span class="count" id="heroCount"></span>
-    </div>
-    <div class="hero-cta" id="heroCta"></div>
-  </section>
+<main class="scafo">
+  <p class="occhiello">Formula 1 · Calendario</p>
+  <h1 class="titolone">Stagione <em>2026</em></h1>
+  <p class="sottotitolo">Ogni Gran Premio già corso si rivede dall'inizio alla fine, con la
+     strategia in mano. Tocca una gara per aprirla.</p>
 
-  <!-- accessi rapidi alle sezioni -->
-  <nav class="navrow" aria-label="Accessi rapidi">
-    <a class="navbtn" href="live.html"><b>Live</b><span>Il weekend di gara in diretta, con il simulatore pit attivo.</span><span class="freccia">&rarr;</span></a>
-    <a class="navbtn" href="analisi.html"><b>Analisi</b><span>Articoli e telemetria della stagione.</span><span class="freccia">&rarr;</span></a>
-    <a class="navbtn" href="statistiche.html"><b>Statistiche</b><span>Classifiche, piloti e squadre, e il confronto fra stagioni.</span><span class="freccia">&rarr;</span></a>
-  </nav>
+  <div class="conta" id="conta" style="margin-top:26px"></div>
 
-  <section class="champ panel" id="champ" hidden></section>
+  <h2 class="sezione-t">Gare corse <span class="coda" id="codaCorse"></span></h2>
+  <div class="griglia" id="corse"></div>
 
-  <div class="sez-tit">Stagione 2026</div>
-  <div class="stagione" id="stagione"></div>
+  <h2 class="sezione-t" id="titFuture" hidden>Il resto del calendario</h2>
+  <div class="griglia" id="future"></div>
+</main>
 
-  <div class="sez-tit">Posizioni guadagnate/perse in gara</div>
-  <p class="anl-spiega">Quante posizioni ogni pilota <b>recupera</b> o <b>perde</b> dalla
-    <b>griglia di partenza</b> all'<b>arrivo</b>, sommate su tutta la stagione 2026.
-    Barre <b>verdi</b> verso destra per chi guadagna, <b>rosse</b> verso sinistra per chi perde;
-    accanto alla sigla, un trattino ricorda il colore della squadra.
-    <span class="anl-nb">Chi parte spesso davanti (in pole) ha poco da guadagnare e molto da
-    perdere: per questo un big pu&ograve; stare in rosso pur vincendo tante gare.</span></p>
-  <section class="panel anl" id="grafico"></section>
-
-</div>
-
-<footer class="footer">
-  <div class="footer-in">
-    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
-    <nav>
-      <a href="live.html">Live</a>
-      <a href="analisi.html">Analisi</a>
-      <a href="statistiche.html">Statistiche</a>
-    </nav>
-  </div>
-</footer>
+<footer class="piede"><div class="piede-in"></div></footer>
 
 <script type="module">
-import { scheletro, mostraErrore, prendiJSON } from './stato.mjs?v=250724a';
-const el = id => document.getElementById(id);
-const MESE = d => d.toLocaleDateString('it-IT', { day:'numeric', month:'long' });
-let teamCol = {};
+import { guscio, dati, el, V, identita, coloreDi, dataIt, guasto, scheletro } from './muro.mjs?v=090826a';
+guscio('stagione.html');
 
-// bandiera emoji dall'alpha2 f1db (dato, non mappa a mano)
-const bandiera = a2 => a2 ? String.fromCodePoint(...[...a2.toUpperCase()].map(c=>0x1F1A5+c.charCodeAt(0))) : '';
+const box = document.getElementById('corse');
+scheletro(box, 6, 196);
 
-// una card per weekend: click -> pagina weekend (selettore sessioni, timing,
-// micro-settori, telemetria). Il replay per-giro vive DENTRO il weekend (sessione Gara).
-function cardGara(g, inDemo, corsa){
-  const quando = MESE(new Date(g.data+'T12:00:00'));
-  const wk = `weekend.html?gp=${encodeURIComponent(g.nome)}`;
-  const testa = `<div class="r">R${String(g.round).padStart(2,'0')}</div>
-    <div class="nome"><span class="gflag">${bandiera(g.alpha2)}</span> Weekend del ${g.nome}</div>
-    <div class="data">${quando}${g.giri?` · ${g.giri} giri`:''}</div>`;
-  if (inDemo){
-    const w = g.vincitore;
-    const win = w ? `<div class="win"><span class="tdot" style="background:${teamCol[w.team]||'var(--dim)'}"></span><b>${w.sigla}</b><span class="lab">vincitore</span></div>` : '';
-    return `<a class="gpcard" href="${wk}">${testa}${win}</a>`;
-  }
-  if (corsa)   // corsa ma non (ancora) pubblicata in demo
-    return `<a class="gpcard arrivo" href="${wk}">${testa}<div class="win"><span class="lab">apri il weekend &rarr;</span></div></a>`;
-  return `<div class="gpcard futura">${testa}<div class="stato">in calendario</div></div>`;
+/* Il tracciato in filigrana: lo stesso nastro GPS della pagina-gara, ridotto.
+   Si scarica solo per le gare che ce l'hanno, e senza bloccare la scheda. */
+async function filigrana(nodo, gara) {
+  const p = await dati(`data/pista_${encodeURIComponent(gara)}.json?v=${V}`);
+  if (!p) return;
+  const [x0, y0, w, h] = p.viewBox;
+  const d = 'M' + p.punti.filter((_, i) => i % 3 === 0)
+    .map(([x, y]) => `${x.toFixed(0)} ${y.toFixed(0)}`).join('L') + 'Z';
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+  svg.setAttribute('class', 'disegno');
+  svg.setAttribute('viewBox', `${x0 - 20} ${y0 - 20} ${w + 40} ${h + 40}`);
+  svg.setAttribute('aria-hidden', 'true');
+  svg.innerHTML = `<path d="${d}"/>`;
+  nodo.prepend(svg);
 }
 
-function countdown(dataISO){
-  const gg = Math.ceil((new Date(dataISO+'T12:00:00') - new Date()) / 86400000);
-  if (gg <= 0) return 'oggi';
-  if (gg === 1) return 'domani';
-  return `fra ${gg} giorni`;
+function scheda(g, corsa, colori, schede, prossima) {
+  const vin = g.vincitore;
+  const nome = vin && Object.values(schede?.piloti || {}).find(p => p.sigla === vin.sigla)?.nome;
+  const attr = {
+    class: 'gp' + (corsa ? '' : ' futura') + (prossima ? ' prossima' : ''),
+  };
+  const figli = [
+    el('div', { class: 'capo' },
+      el('span', { class: 'rnd' }, `ROUND ${String(g.round).padStart(2, '0')}`),
+      prossima ? el('span', { class: 'etic etic-r' }, 'prossima') : null,
+      corsa ? null : el('span', { class: 'etic' }, 'da correre')),
+    el('h3', {}, g.nome),
+    el('p', { class: 'circ' }, g.circuito || ''),
+    el('div', { class: 'fondo' },
+      corsa && vin
+        ? [el('span', { class: 'livrea', stile: { background: coloreDi(vin.team, colori) } }),
+           el('span', { class: 'chi' }, nome || vin.sigla)]
+        : el('span', { class: 'chi', stile: { color: 'var(--fioco)' } }, `${g.giri} giri`),
+      el('span', { class: 'quando' }, dataIt(g.data, { day: '2-digit', month: 'short' }).toUpperCase())),
+  ];
+  const n = corsa
+    ? el('a', { ...attr, href: `gara.html?g=${encodeURIComponent(g.gara_demo)}` }, figli)
+    : el('div', attr, figli);
+  if (corsa) filigrana(n, g.gara_demo);
+  return n;
 }
 
-async function boot(){
-  scheletro(el('stagione'), 8);
-  let cal, manifest;
+async function boot() {
   try {
-    cal = await prendiJSON('data/calendario_2026.json');
-    manifest = await prendiJSON('data/manifest.json');
-  } catch(e){ mostraErrore(el('stagione'), boot); return; }
-  try { teamCol = await (await fetch('team_colori.json')).json(); } catch(e){ teamCol={}; }
-  const inDemo = new Set(manifest.map(r=>r.gara));
-  const oggi = new Date(); oggi.setHours(0,0,0,0);
+    const [cal, man, { colori, schede }] = await Promise.all([
+      dati(`data/calendario_2026.json?v=${V}`),
+      dati(`data/manifest.json?v=${V}`),
+      identita(),
+    ]);
+    if (!cal) throw new Error('calendario');
+    const inDemo = new Set((man || []).map(r => r.gara));
+    const gare = cal.gare || [];
+    const corse = gare.filter(g => g.gara_demo && inDemo.has(g.gara_demo));
+    const future = gare.filter(g => !(g.gara_demo && inDemo.has(g.gara_demo)));
 
-  // hero: la prossima gara in calendario (data >= oggi); a stagione finita, l'ultima corsa
-  const prossima = cal.gare.find(g => new Date(g.data+'T23:59:59') >= oggi);
-  const h = prossima || cal.gare[cal.gare.length-1];
-  if (h){
-    el('heroEyebrow').textContent = prossima ? 'Prossima gara' : 'Stagione conclusa';
-    el('heroTitolo').textContent = `${bandiera(h.alpha2)} ${h.titolo} — ${MESE(new Date(h.data+'T12:00:00'))}`;
-    el('heroCircuito').textContent = `${h.circuito}${h.giri?` · ${h.giri} giri`:''} · round ${h.round} di ${cal.gare.length}`;
-    el('heroData').textContent = new Date(h.data+'T12:00:00').toLocaleDateString('it-IT',{weekday:'long', day:'numeric', month:'long', year:'numeric'});
-    el('heroCount').textContent = prossima ? countdown(h.data) : '';
-    el('heroCta').innerHTML = `<a class="btn btn-pri" href="weekend.html?gp=${encodeURIComponent(h.nome)}">Apri il weekend del ${h.nome} &rarr;</a>`;
-    el('hero').hidden = false;
+    document.getElementById('conta').replaceChildren(
+      el('div', {}, el('b', { class: 'n' }, String(corse.length)), el('span', {}, 'gare da rivedere')),
+      el('div', {}, el('b', { class: 'n' }, String(gare.length)), el('span', {}, 'nel calendario')),
+      el('div', {}, el('b', { class: 'n' }, String(corse.reduce((s, g) => s + (g.giri || 0), 0))),
+        el('span', {}, 'giri disponibili')));
+
+    document.getElementById('codaCorse').textContent = `${corse.length} di ${gare.length}`;
+    box.replaceChildren(...corse.slice().reverse()
+      .map(g => scheda(g, true, colori, schede, false)));
+
+    if (future.length) {
+      document.getElementById('titFuture').hidden = false;
+      document.getElementById('future').replaceChildren(
+        ...future.map((g, i) => scheda(g, false, colori, schede, i === 0)));
+    }
+  } catch (e) {
+    guasto(box, boot);
   }
-
-  // campionato in breve: primi 3 dagli standings f1db gia' generati
-  try {
-    const clas = await (await fetch('data/classifiche_2026.json')).json();
-    let numeri = {};
-    try { const sk = await (await fetch('data/schede_2026.json')).json();
-          numeri = Object.fromEntries(Object.entries(sk.piloti).map(([id,s])=>[id, s.numero])); } catch(e){}
-    el('champ').innerHTML = `<div class="champ-tit">Campionato</div>` +
-      clas.piloti.slice(0,3).map(p=>`<a class="champ-p" href="scheda.html?tipo=pilota&id=${encodeURIComponent(p.id)}">
-        <i style="background:${teamCol[p.team_demo]||'var(--dim)'}"></i>
-        <span class="pp num">P${p.pos}</span><span class="rnum" style="color:${teamCol[p.team_demo]||'var(--dim)'}">${numeri[p.id] ?? ''}</span><b>${p.sigla}</b><span class="pt num">${p.punti}</span></a>`).join('') +
-      `<a class="champ-tutta" href="classifiche.html">classifica completa &rarr;</a>`;
-    el('champ').hidden = false;
-  } catch(e){}
-
-  el('stagione').innerHTML = cal.gare.map(g => {
-    const demoOk = !!g.gara_demo && inDemo.has(g.gara_demo);
-    const corsa = new Date(g.data+'T23:59:59') < oggi;
-    return cardGara(g, demoOk, corsa);
-  }).join('');
 }
 boot();
-</script>
-
-<script type="module">
-// Posizioni guadagnate/perse in gara (barra divergente per pilota). Consumatore
-// puro di data/schede_2026.json (fonte f1db). Spostato qui da Analisi, che ora
-// ospita gli articoli della redazione tecnica.
-(async () => {
-  const g = document.getElementById('grafico');
-  if (!g) return;
-  let schede, colori = {};
-  try { schede = await (await fetch('data/schede_2026.json')).json(); } catch(e){ return; }
-  try { colori = await (await fetch('team_colori.json')).json(); } catch(e){}
-  const piloti = Object.entries(schede.piloti)
-    .map(([id,s]) => ({id, sigla:s.sigla, numero:s.numero, team:s.team_demo, v:s.stagione.pos_guadagnate}))
-    .sort((a,b)=>b.v-a.v);
-  const max = Math.max(...piloti.map(p=>Math.abs(p.v)), 1);
-  g.innerHTML = piloti.map(p=>{
-    const w = Math.abs(p.v)/max*50;
-    const lato = p.v>=0 ? `left:50%;width:${w}%` : `left:${50-w}%;width:${w}%`;
-    return `<a class="anl-riga" href="scheda.html?tipo=pilota&id=${encodeURIComponent(p.id)}">
-      <span class="sig"><i style="background:${colori[p.team]||'var(--dim)'}"></i><span class="rnum" style="color:${colori[p.team]||'var(--dim)'}">${p.numero ?? ''}</span>${p.sigla}</span>
-      <span class="asse"><span class="zero"></span>
-        <span class="barra ${p.v>=0?'su':'giu'}" style="${lato}"></span></span>
-      <span class="val num">${p.v>0?'+':''}${p.v}</span></a>`;
-  }).join('');
-})();
 </script>
 </body>
 </html>
