@@ -6,7 +6,7 @@
 <title>Telemetria — Muretto Box Virtuale</title>
 <meta name="description" content="La telemetria di qualunque giro di qualunque pilota: velocità, gas, freno e marce, e due giri a confronto.">
 <link rel="canonical" href="https://murettobox.com/telemetria.html">
-<link rel="stylesheet" href="muro.css?v=090826a">
+<link rel="stylesheet" href="muro.css?v=090826b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 <style>
   .scelte{ display:flex; flex-direction:column; gap:10px; margin:22px 0 20px; }
@@ -144,8 +144,8 @@
 
 <script type="module">
 import { guscio, dati, el, veri, V, param, scriviParam, tempo, delta, nnum,
-         coloreDi, identita, guasto, scheletro, MESCOLA_IT } from './muro.mjs?v=090826a';
-import { decodifica, differenza, traccia, mirino, frazioneDa, nastroVelocita } from './tele.mjs?v=090826a';
+         coloreDi, identita, guasto, scheletro, MESCOLA_IT } from './muro.mjs?v=090826b';
+import { decodifica, differenza, traccia, mirino, frazioneDa, nastroVelocita } from './tele.mjs?v=090826b';
 
 guscio('telemetria.html');
 const E = (id) => document.getElementById(id);

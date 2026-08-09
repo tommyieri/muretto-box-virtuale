@@ -6,26 +6,10 @@
 <title>Muretto Box Virtuale — la Formula 1 vista dal muretto</title>
 <meta name="description" content="Rivedi ogni gara della stagione 2026 giro per giro, decidi tu quando fermarsi ai box e guarda la telemetria di qualunque giro di qualunque pilota.">
 <link rel="canonical" href="https://murettobox.com/">
-<link rel="stylesheet" href="muro.css?v=090826a">
+<link rel="stylesheet" href="muro.css?v=090826b">
+<link rel="stylesheet" href="hero.css?v=090826b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 <style>
-  /* ------------------------------------------------------------- apertura */
-  .apre{ position:relative; padding:clamp(30px,6vw,62px) 0 clamp(24px,4vw,44px); }
-  .apre-g{ display:grid; grid-template-columns:minmax(0,1fr) minmax(0,.92fr); gap:clamp(24px,4vw,56px); align-items:center; }
-  .apre h1{ font-size:clamp(40px,8.4vw,88px); line-height:.92; text-transform:uppercase; letter-spacing:-.01em; }
-  .apre h1 em{ font-style:normal; display:block; color:var(--rosso); }
-  .apre .dice{ margin-top:20px; max-width:44ch; font-size:clamp(16px,1.6vw,19px); color:var(--calmo); }
-  .apre .dice b{ color:var(--testo); font-weight:600; }
-  .apre .fai{ display:flex; flex-wrap:wrap; gap:11px; margin-top:28px; }
-
-  /* la pista che gira: SVG vero dell'ultimo GP, cinque pallini che scorrono */
-  .palco{ position:relative; aspect-ratio:4/3; border-radius:var(--r);
-    background:radial-gradient(120% 90% at 50% 0%, #171C25, #0B0D12 70%);
-    border:1px solid var(--bordo); overflow:hidden; }
-  .palco svg{ width:100%; height:100%; }
-  .palco .nastro{ fill:none; stroke:#2A313E; stroke-width:9; stroke-linecap:round; stroke-linejoin:round; }
-  .palco .nastro-l{ fill:none; stroke:rgba(255,255,255,.10); stroke-width:1.4; stroke-dasharray:2 9; }
-
   /* ------------------------------------------------------------ tre porte */
   .porte{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap); }
   .porta{ display:block; padding:24px 22px 22px; border-radius:var(--r);
@@ -66,10 +50,12 @@
   .lettura p{ margin:0; color:var(--calmo); font-size:14.5px; line-height:1.55;
     display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
 
-  @media (max-width:900px){
-    .apre-g{ grid-template-columns:1fr; }
-    .palco{ order:-1; aspect-ratio:16/10; }
-    .porte{ grid-template-columns:1fr; }
+  @media (max-width:900px){ .porte{ grid-template-columns:1fr; } }
+  /* su schermo stretto l'occhiello della hero andava a capo su «44» da solo:
+     stessa riga, spaziatura piu' compatta. */
+  @media (max-width:560px){
+    .hero .occhiello{ letter-spacing:.1em; font-size:10px; }
+    .hero .occhiello::before{ width:16px; }
   }
 </style>
 </head>
@@ -78,25 +64,67 @@
 
 <main class="scafo">
 
-  <section class="apre">
-    <div class="apre-g">
-      <div>
-        <p class="occhiello">Formula 1 · Stagione 2026</p>
-        <h1>Il muretto<em>adesso è tuo.</em></h1>
-        <p class="dice">
-          Rivedi ogni gara <b>giro per giro</b>, fermi ai box chi vuoi e nel momento che
-          vuoi, e vedi <b>dove rientra</b>. Poi apri la telemetria di <b>qualunque giro</b>
-          di qualunque pilota.
+  <!-- ======================================================= LA HERO GIOCATA
+       Non e' una decorazione: e' il prodotto in miniatura. Scegli quando fermarti
+       e il motore risponde dove rientri, coi rivali al loro passo vero. I numeri
+       vengono da demo/data/hero.json, scritto da gen_hero.mjs chiamando LO STESSO
+       motore della pagina-gara — nessuna cifra e' scritta a mano qui dentro.
+       Titolo, promessa e bottoni sono statici: si leggono al primo fotogramma e
+       restano leggibili anche se GSAP non parte. -->
+  <section class="hero" id="hero" aria-labelledby="hero-tit">
+    <div class="hero-grid">
+
+      <div class="hero-say">
+        <p class="occhiello">Spa-Francorchamps · giro 20 di 44</p>
+
+        <h1 class="hero-tit" id="hero-tit">Decidi tu<br><em>quando fermarsi.</em></h1>
+
+        <p class="hero-sub">
+          Il <b>muretto box</b> decide la strategia. Qui la decidi tu: fermi il leader
+          ai box e il motore dice <b>dove rientri</b>, coi rivali al loro passo reale.
         </p>
-        <div class="fai">
+
+        <!-- le due strade, riempite dal motore -->
+        <div class="hero-choices" role="group" aria-label="Quando fermarsi ai box" aria-busy="true"></div>
+
+        <div class="hero-mesc">
+          <div class="hero-mesc-h">Che gomma monti</div>
+          <div class="hero-mesc-r"></div>
+          <p class="hero-mesc-n">La mescola <b>non cambia</b> la risposta: quello che la
+            cambia è <b>il momento</b>.</p>
+        </div>
+
+        <!-- lo spazio del verdetto e' riservato dal CSS: la risposta non sposta nulla -->
+        <div class="hero-verdetto" aria-live="polite">
+          <span class="hero-verdetto-flash" aria-hidden="true"></span>
+          <div class="hero-verdetto-corpo">
+            <p class="hero-verdetto-attesa">Scegli quando fermarti: il motore dice dove
+              rientri, coi rivali al loro passo reale.</p>
+          </div>
+        </div>
+
+        <div class="hero-cta">
           <a class="btn btn-p" id="ctaGara" href="stagione.html">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            Apri l'ultima gara</a>
+            Prova sulla gara vera</a>
           <a class="btn btn-s" href="telemetria.html">Telemetria</a>
         </div>
       </div>
 
-      <div class="palco" id="palco" aria-hidden="true"></div>
+      <div class="hero-scena">
+        <div class="hero-stage">
+          <div class="hero-hud"></div>
+          <div class="hero-pista"></div>
+          <ol class="hero-tower" aria-label="Classifica simulata"></ol>
+          <div class="hero-prompt" aria-hidden="true"></div>
+          <div class="hero-pit" aria-hidden="true"></div>
+          <button type="button" class="hero-rivedi">Rivedi</button>
+          <p class="hero-firma"><span>Sei tu,</span> <span><em>al muretto.</em></span></p>
+        </div>
+        <!-- i due numeri che il motore usa; li scrive hero.mjs -->
+        <p class="hero-fonte"></p>
+      </div>
+
     </div>
   </section>
 
@@ -138,56 +166,8 @@
 <footer class="piede"><div class="piede-in"></div></footer>
 
 <script type="module">
-import { guscio, dati, el, V, MOTO, ciclo, identita, coloreDi, dataIt, guasto } from './muro.mjs?v=090826a';
+import { guscio, dati, el, V, identita, coloreDi, dataIt, guasto } from './muro.mjs?v=090826b';
 guscio('index.html');
-
-/* ---------------------------------------------------------------- la pista
-   Il nastro e' quello vero dell'ultimo GP (500 punti GPS). I pallini NO: scorrono
-   a velocita' inventate, sono un'apertura e non una simulazione. Nessuna didascalia:
-   il palco non dichiara piu' niente, quindi non puo' piu' dire niente di falso. */
-async function palco(gara) {
-  const p = await dati(`data/pista_${encodeURIComponent(gara)}.json?v=${V}`);
-  const box = document.getElementById('palco');
-  if (!p) { box.remove(); return; }
-  const [x0, y0, w, h] = p.viewBox;
-  const d = 'M' + p.punti.map(([x, y]) => `${x.toFixed(1)} ${y.toFixed(1)}`).join('L') + 'Z';
-  const ns = 'http://www.w3.org/2000/svg';
-  const svg = document.createElementNS(ns, 'svg');
-  svg.setAttribute('viewBox', `${x0 - 14} ${y0 - 14} ${w + 28} ${h + 28}`);
-  svg.innerHTML = `<path class="nastro" d="${d}"/><path class="nastro-l" d="${d}"/>`;
-  box.prepend(svg);
-
-  if (!MOTO) return;
-  const { colori } = await identita();
-  const squadre = ['Mercedes', 'Ferrari', 'Red Bull Racing', 'McLaren', 'Williams'];
-  const auto = squadre.map((t, i) => {
-    const g = document.createElementNS(ns, 'circle');
-    g.setAttribute('r', 7.5);
-    g.setAttribute('fill', coloreDi(t, colori));
-    g.setAttribute('stroke', 'rgba(0,0,0,.55)');
-    g.setAttribute('stroke-width', 2);
-    svg.append(g);
-    return { n: g, u: 1 - i * 0.028, v: 0.052 + i * 0.0016 };
-  });
-  // lunghezze cumulate: il pallino avanza in DISTANZA, non in indice, cosi'
-  // non rallenta nei rettilinei dove i punti sono radi.
-  const pts = p.punti, cum = p.dist, L = cum[cum.length - 1];
-  const dove = (u) => {
-    const s = ((u % 1) + 1) % 1 * L;
-    let lo = 0, hi = cum.length - 1;
-    while (lo < hi - 1) { const m = (lo + hi) >> 1; (cum[m] <= s) ? lo = m : hi = m; }
-    const f = (s - cum[lo]) / Math.max(1e-6, cum[hi] - cum[lo]);
-    return [pts[lo][0] + (pts[hi][0] - pts[lo][0]) * f,
-            pts[lo][1] + (pts[hi][1] - pts[lo][1]) * f];
-  };
-  ciclo((dt) => {
-    for (const a of auto) {
-      a.u += a.v * dt;
-      const [x, y] = dove(a.u);
-      a.n.setAttribute('cx', x); a.n.setAttribute('cy', y);
-    }
-  });
-}
 
 /* ----------------------------------------------------------- ultima gara */
 async function ultima() {
@@ -206,7 +186,6 @@ async function ultima() {
   if (!g) { box.replaceChildren(el('div', { class: 'vuoto' }, 'Nessuna gara ancora pubblicata.')); return; }
 
   document.getElementById('ctaGara').href = `gara.html?g=${encodeURIComponent(g.gara_demo)}`;
-  palco(g.gara_demo);
 
   const { colori, schede } = await identita();
   const v = g.vincitore;
@@ -240,6 +219,14 @@ async function letture() {
 }
 
 ultima(); letture();
+
+/* LA HERO SI AVVIA DA SOLA, e GSAP lo scarica lei — solo quando la hero e' davvero
+   in viewport e il movimento e' consentito. Chi ha prefers-reduced-motion, o chi non
+   arriva fin qui, non paga un byte di libreria: il markup statico resta leggibile.
+   Se qualcosa va storto la pagina NON si rompe — la hero resta com'e' scritta. */
+import('./hero.mjs?v=090826b')
+  .then(({ creaHero }) => creaHero(document.getElementById('hero')))
+  .catch((e) => console.warn('hero non avviata:', e.message));
 </script>
 </body>
 </html>

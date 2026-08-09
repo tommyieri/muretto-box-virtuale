@@ -63,7 +63,9 @@
   text-wrap: balance;
   letter-spacing: .5px; text-transform: uppercase;
 }
-.hero-tit em { font-style: normal; color: var(--accent); }
+/* IDENTITA' DEL SITO NUOVO (09/08/2026): l'accento dei titoli e' il ROSSO, come
+   .titolone em in muro.css. Il ciano resta cio' che era: il dato vivo e il fuoco. */
+.hero-tit em { font-style: normal; color: var(--rosso, #FF1E3C); }
 
 .hero-sub {
   margin: 0 0 14px; max-width: 46ch;

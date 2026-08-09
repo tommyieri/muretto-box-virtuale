@@ -152,9 +152,16 @@ function costruisci(root, H) {
   // ---- la riga sotto la torre: i due numeri che il motore usa, senza la loro origine.
   // La provenienza (targhetta, costo realizzato in gara, sorgente del giro GPS) resta nel
   // dato — hero.json la porta ancora — ma dal 04/08/2026 non si stampa in home.
-  q(root, '.hero-fonte').innerHTML =
-    `Pit-loss <b>${num(H.pitloss.s)} s</b>. `
-    + (H.degrado ? `Degrado <b>${num(H.degrado.rho_s_giro, 3)} s/giro</b> per ogni giro di gomma.` : '');
+  // FACOLTATIVA: una pagina che non la vuole non deve far morire la hero. Prima
+  // l'assenza di questo elemento buttava un'eccezione QUI, cioe' prima che il
+  // direttore fosse agganciato: la scena si costruiva e poi restava immobile per
+  // sempre, senza che niente in pagina lo dicesse.
+  const fonte = q(root, '.hero-fonte');
+  if (fonte) {
+    fonte.innerHTML =
+      `Pit-loss <b>${num(H.pitloss.s)} s</b>. `
+      + (H.degrado ? `Degrado <b>${num(H.degrado.rho_s_giro, 3)} s/giro</b> per ogni giro di gomma.` : '');
+  }
 }
 
 const ICO_BOX = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3l14 9-14 9V3z" fill="currentColor"/></svg>`;
@@ -694,7 +701,10 @@ export async function creaHero(root) {
     // credentials 'omit' non e' un vezzo: e' cio' che fa combaciare questa fetch col
     // <link rel=preload as=fetch crossorigin> in testa alla pagina. Senza, il browser
     // scarica hero.json due volte (misurato).
-    const r = await fetch(FONTE, { credentials: 'omit', cache: 'force-cache' });
+    // niente credentials 'omit': il <link rel=preload crossorigin> non combaciava e il
+    // browser scaricava hero.json DUE volte, dicendolo in console. Il preload e' stato
+    // tolto dalla pagina, e qui resta la fetch normale.
+    const r = await fetch(FONTE, { cache: 'force-cache' });
     if (!r.ok) throw new Error(`hero.json ${r.status}`);
     H = await r.json();
   } catch (e) {
