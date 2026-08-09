@@ -283,47 +283,20 @@
    ]
   },
   {
-   "id": "ondata-libere-senza-lettore",
-   "titolo": "L'ondata delle prove libere si rigenera a ogni weekend e nessuna pagina del sito la legge",
-   "natura": "orfano dichiarato",
-   "cosa_e_successo": "auto_gara.py chiama wave_libere() a ogni weekend: gen_libere_ti.py scarica la sessione da TracingInsights e scrive demo/data/libere_<gara>.json piu' demo/data/libere_manifest.json. L'unica pagina che li leggeva era demo/libere.html, ritirata col sito nuovo (sta in demo/_ritirate/). Il dato quindi continua ad arrivare, aggiornato e committato, e non lo mostra nessuno.",
-   "perche_resta_aperto": "Non e' codice morto da cancellare: la telemetria per giro delle libere il sito nuovo la prende da gen_giri.py (FastF1), ma il passo e i rapporti che sta catena porta non li ricostruisce nessun altro. Spegnerla e' una decisione di prodotto — o torna una pagina che li legge, o si spegne l'ondata. Finche' nessuno decide, resta accesa e DICHIARATA: cosi' il giorno in cui una pagina la legge davvero, la sentinella lo dice.",
-   "referto": "demo/DEBITO_DEMO.json — verificato il 09/08/2026 con la ricerca dei lettori in demo/",
+   "id": "ondate-libere-sprint-spente",
+   "titolo": "Le ondate libere e sprint sono spente: i loro dati in demo/data restano fermi all'Ungheria",
+   "natura": "decisione del PO",
+   "cosa_e_successo": "Fino al 09/08/2026 auto_gara.py chiamava wave_libere() e wave_sprint() a ogni weekend: scaricavano FP1/FP2/FP3 e le due sessioni sprint da TracingInsights e scrivevano demo/data/libere_<gara>.json, sprint_<gara>.json e i due manifest. L'unica pagina che li leggeva (demo/libere.html, demo/sprint.html) e' stata ritirata col sito nuovo, quindi il dato arrivava aggiornato a ogni gara e non lo mostrava nessuno. Il 09/08 il PO ha deciso di spegnere le due ondate: le funzioni e _gp_weekend_corrente() sono state tolte da auto_gara.py.",
+   "perche_resta_aperto": "Non e' un difetto ma il suo residuo, e va detto ad alta voce perche' NON e' visibile guardando il sito: cinque file in demo/data (libere_*, sprint_* e i due manifest) restano sul disco fermi all'Ungheria, e i due generatori (gen_libere_ti.py, gen_sprint_ti.py) restano nel repo senza chiamanti — si lanciano a mano il giorno in cui una pagina torna a leggerli. Chi arriva fra sei mesi e trova quei file deve poter sapere che sono congelati per decisione e non per guasto. La voce si chiude quando i file spariscono o quando una pagina li legge di nuovo.",
+   "referto": "demo/DEBITO_DEMO.json — decisione di Tommi del 09/08/2026, dopo la misura dei lettori in demo/ (zero pagine del sito nuovo)",
    "guardia": {
-    "file_accensione": "auto_gara.py",
-    "deve_contenere": "wave_libere()",
-    "pagine_che_non_devono_importarlo": [
-     "demo/index.html",
-     "demo/stagione.html",
-     "demo/gara.html",
-     "demo/live.html",
-     "demo/analisi.html",
-     "demo/telemetria.html",
-     "demo/campionato.html"
-    ],
-    "import_atteso": "libere_manifest.json"
-   }
-  },
-  {
-   "id": "ondata-sprint-senza-lettore",
-   "titolo": "L'ondata sprint si rigenera nei weekend sprint e nessuna pagina del sito la legge",
-   "natura": "orfano dichiarato",
-   "cosa_e_successo": "Stessa storia dell'ondata libere, un piano piu' in la': auto_gara.py chiama wave_sprint(), gen_sprint_ti.py scrive demo/data/sprint_<gara>.json e sprint_manifest.json, e la pagina che li mostrava (demo/sprint.html) e' in demo/_ritirate/.",
-   "perche_resta_aperto": "Vale parola per parola quanto scritto per l'ondata libere: e' una decisione di prodotto, non un difetto da chiudere di nascosto. Il weekend sprint arriva poche volte l'anno, quindi il costo di tenerla accesa e' basso e quello di perderla — se un giorno la pagina torna — sarebbe una stagione di dati.",
-   "referto": "demo/DEBITO_DEMO.json — verificato il 09/08/2026 con la ricerca dei lettori in demo/",
-   "guardia": {
-    "file_accensione": "auto_gara.py",
-    "deve_contenere": "wave_sprint()",
-    "pagine_che_non_devono_importarlo": [
-     "demo/index.html",
-     "demo/stagione.html",
-     "demo/gara.html",
-     "demo/live.html",
-     "demo/analisi.html",
-     "demo/telemetria.html",
-     "demo/campionato.html"
-    ],
-    "import_atteso": "sprint_manifest.json"
+    "file_spento": "auto_gara.py",
+    "non_deve_contenere": [
+     "wave_libere()",
+     "wave_sprint()",
+     "gen_libere_ti.py'",
+     "gen_sprint_ti.py'"
+    ]
    }
   }
  ]
