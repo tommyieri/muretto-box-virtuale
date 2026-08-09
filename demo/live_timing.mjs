@@ -29,19 +29,29 @@ const COL_SEG = {
 };
 const COL_SEG_ALTRO = '#39424f';   // 2052/2068/... : neutro dichiarato
 
+import { tyreColor } from './timeline.mjs?v=220726a';
+
 // ---------------------------------------------------------------- stato
 // Riduttore puro, SENZA DOM: testabile in Node (test_live_timing.mjs).
 export function creaStatoTiming() {
   const piloti = new Map();   // num -> {sigla, colore}
-  const timing = new Map();   // num -> {pos,gap,in_pit,last_lap,best_lap,interval,sectors,micro}
+  const timing = new Map();   // num -> {pos,gap,in_pit,last_lap,best_lap,interval,sectors,micro,
+                              //         compound,tyre_age}
+  // compound/tyre_age ARRIVANO GIA' dal cavo — live/replay.py li mette nei diff di
+  // timing_update (Fase C, dal TimingAppData SignalR) e live/collector/stint_poller.py li
+  // ricava da OpenF1 v1/stints dove SignalR non arriva. Non li teneva NESSUNO: cadevano
+  // qui, nel riduttore, perche' il contratto non li elencava. In diretta la classifica non
+  // diceva su che gomma sei — l'unica cosa che la torre del replay mostra sempre.
   const CAMPI = ['pos', 'gap', 'in_pit', 'last_lap', 'best_lap',
-                 'interval', 'sectors', 'micro'];
+                 'interval', 'sectors', 'micro', 'compound', 'tyre_age'];
 
   function voce(num) {
     let v = timing.get(num);
     if (!v) {
       v = { pos: null, gap: '', in_pit: false, last_lap: null,
-            best_lap: null, interval: null, sectors: [], micro: [] };
+            best_lap: null, interval: null, sectors: [], micro: [],
+            // null e non '': non sapere su che gomma sei e' diverso da non averla
+            compound: null, tyre_age: null };
       timing.set(num, v);
     }
     return v;
@@ -94,6 +104,9 @@ export function creaStatoTiming() {
         micro: Array.isArray(t.micro) ? t.micro : [],
         sigla: p.sigla || num,
         colore: p.colore || '#9aa4b5',
+        // ?? e non ||: tyre_age 0 e' un'eta valida (giro d'uscita), non un'assenza
+        compound: t.compound ?? null,
+        tyre_age: t.tyre_age ?? null,
       });
     }
     out.sort((a, b) => {
@@ -125,6 +138,23 @@ export function creaTorreTiming({ lista, nota }) {
 
   function colSet(best) {
     return best === 'o' ? '#a05cff' : (best === 'p' ? '#3fbf6f' : '#cfd6e2');
+  }
+
+  // LA GOMMA, come nella torre del replay: pallino del colore della mescola + eta' in giri.
+  // Il colore viene da timeline.mjs::tyreColor, che e' gia' la tabella di quell'altra torre:
+  // due torri che mostrano la stessa cosa non devono avere due palette (nel repo ce n'erano
+  // gia' tre). Mescola assente => niente pallino: in diretta capita di non sapere ancora su
+  // che gomma sia un pilota, e un pallino grigio direbbe «gomma ignota» come se fosse una
+  // mescola. Meglio non dire niente che dire una cosa che non si sa (regola 6).
+  function gomma(r) {
+    if (!r.compound) return '<span class="tw-gomma"></span>';
+    // esc() INLINE su ogni interpolazione, anche sul colore che viene da un elenco chiuso:
+    // il banco pretende di vederlo qui, e ha ragione a pretenderlo. Il compound arriva da un
+    // WebSocket, e la regola «tutto cio' che entra in innerHTML passa da esc()» vale piu' del
+    // ragionamento caso per caso su quale campo sia gia' sicuro (e' il difetto del 31/07).
+    return `<span class="tw-gomma" title="${esc(r.compound)}">`
+      + `<i class="tw-mescola" style="background:${esc(tyreColor(r.compound) || 'var(--dim)')}"></i>`
+      + `<span class="tw-eta">${esc(typeof r.tyre_age === 'number' ? r.tyre_age : '')}</span></span>`;
   }
 
   function barraMicro(seg) {
@@ -170,6 +200,7 @@ export function creaTorreTiming({ lista, nota }) {
         +   `<span class="tw-sig">${esc(r.sigla)}</span>`
         +   `<span class="tw-time">${tempo ? esc(tempo) : '—'}</span>`
         +   `<span class="tw-gap ${g.cls}">${g.txt}</span>`
+        +   gomma(r)
         +   `<span class="tw-tag">${r.in_pit ? 'PIT' : ''}</span>`
         + `</div>`
         + blocchiSettori(r)
@@ -190,4 +221,26 @@ export function creaTorreTiming({ lista, nota }) {
     },
     _stato: stato,   // per i test
   };
+}
+
+/** Una sessione gia' corsa (quali_*.json, libere_*.json, sprint_*.json) nella forma che la
+ *  torre consuma. Stava scritta QUATTRO volte identica — quali.html, libere.html,
+ *  sprint.html e live.html — con l'unica differenza del nome del parametro. Quattro copie
+ *  della stessa traduzione, pronte a divergere alla prima aggiunta di campo: E12.
+ *
+ *  Serve perche' la torre e' nata per il feed in DIRETTA e parla la lingua degli snapshot;
+ *  una sessione archiviata e' la stessa classifica senza il tempo che scorre. `last_lap` e
+ *  gli stati pista/sessione restano null: non sono mancanti per errore, non esistono
+ *  proprio in un file di archivio (regola 6). */
+export function snapshotDaSessione(sessione) {
+  const driver_list = {}, cars = {};
+  for (const p of (sessione?.piloti || [])) {
+    driver_list[p.num] = { sigla: p.sigla, colore: p.colore };
+    cars[p.num] = {
+      pos: p.pos, gap: p.gap || '', last_lap: null,
+      best_lap: p.best || null, in_pit: false,
+      sectors: Array.isArray(p.sectors) ? p.sectors : [], micro: [],
+    };
+  }
+  return { type: 'snapshot', driver_list, cars, track_status: null, session_status: null };
 }

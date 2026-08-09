@@ -136,6 +136,32 @@ caso('R2: diff parziale su un solo settore', () => {
 //
 // COSA LO FA FALLIRE: qualcuno aggiunge un campo alla riga della torre e lo interpola
 // senza esc(). Provato: togliendo esc() da `pos` questo test esce 1.
+// R3) LA GOMMA ARRIVA FINO IN FONDO. compound/tyre_age viaggiavano gia' sul cavo
+// (live/replay.py li mette nei diff di timing_update; stint_poller.py li ricava da OpenF1)
+// ma il riduttore non li elencava fra i CAMPI e li buttava: in diretta la classifica non
+// diceva su che gomma sei. Un campo che cade nel riduttore non fa rumore — la torre si
+// disegna lo stesso, solo senza quella cosa. Questo caso e' il rumore.
+caso('R3: compound e tyre_age sopravvivono al riduttore', () => {
+  const s = creaStatoTiming();
+  s.applica({ type: 'driver_list', cars: { '4': { sigla: 'NOR', colore: '#FF8000' } } });
+  s.applica({ type: 'timing_update', cars: { '4': { pos: 1, gap: '', compound: 'MEDIUM', tyre_age: 14 } } });
+  let r = s.righe()[0];
+  assert.equal(r.compound, 'MEDIUM', 'la mescola deve arrivare in riga');
+  assert.equal(r.tyre_age, 14, "l'eta gomma deve arrivare in riga");
+
+  // eta 0 e' un'eta VALIDA (giro d'uscita dai box): non deve diventare null
+  s.applica({ type: 'timing_update', cars: { '4': { compound: 'SOFT', tyre_age: 0 } } });
+  r = s.righe()[0];
+  assert.equal(r.compound, 'SOFT', 'il cambio mescola deve propagarsi');
+  assert.strictEqual(r.tyre_age, 0, "tyre_age 0 e' un'eta, non un'assenza");
+
+  // chi non ha mai avuto notizie di gomma resta a null, non a stringa vuota (regola 6)
+  const v = creaStatoTiming();
+  v.applica({ type: 'timing_update', cars: { '9': { pos: 1 } } });
+  assert.strictEqual(v.righe()[0].compound, null, 'mescola ignota => null');
+  assert.strictEqual(v.righe()[0].tyre_age, null, 'eta ignota => null');
+});
+
 caso('nessun campo del feed entra in innerHTML senza escape', () => {
   const sorgente = fs.readFileSync(new URL('./live_timing.mjs', import.meta.url), 'utf8');
   // le interpolazioni ${...} dentro i template letterali del modulo
