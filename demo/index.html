@@ -102,7 +102,7 @@
 
       <div class="palco" id="palco" aria-hidden="true">
         <span class="palco-n" id="palcoNome"></span>
-        <span class="palco-t">tracciato reale · posizioni reali</span>
+        <span class="palco-t">il tracciato dell'ultimo Gran Premio, dal giro GPS</span>
       </div>
     </div>
   </section>
@@ -149,9 +149,10 @@ import { guscio, dati, el, V, MOTO, ciclo, identita, coloreDi, dataIt } from './
 guscio('index.html');
 
 /* ---------------------------------------------------------------- la pista
-   Il nastro e' quello vero dell'ultimo GP (500 punti GPS). I pallini scorrono
-   a velocita' leggermente diverse: e' un'apertura, non una simulazione, e non
-   pretende di esserlo. Se il moto e' disattivato, resta la pista ferma. */
+   Il nastro e' quello vero dell'ultimo GP (500 punti GPS). I pallini NO: scorrono
+   a velocita' inventate, sono un'apertura e non una simulazione. Per questo la
+   didascalia parla del tracciato e TACE sulle posizioni — diceva «posizioni reali»
+   sopra cinque pallini finti, ed era la sola bugia rimasta in pagina. */
 async function palco(gara) {
   const p = await dati(`data/pista_${encodeURIComponent(gara)}.json?v=${V}`);
   const box = document.getElementById('palco');

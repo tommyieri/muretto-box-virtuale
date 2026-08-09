@@ -39,8 +39,15 @@
   .scheda{ position:fixed; inset:auto 0 0; z-index:var(--z-foglio);
     background:var(--carbonio); border-top:1px solid var(--bordo-2);
     box-shadow:0 -18px 50px rgba(0,0,0,.6);
-    transform:translateY(102%); transition:transform .3s var(--ease); }
-  .scheda.su{ transform:none; }
+    /* CHIUSO VUOL DIRE FUORI DAL TAB. Con la sola translateY il pannello restava nel
+       DOM e focalizzabile: il fuoco poteva finire dentro un sottoalbero aria-hidden.
+       La visibilita' NON si interpola (scatta a fine chiusura e all'inizio
+       dell'apertura): interpolarla lega l'apertura al render, e in un pannello non
+       disegnato il foglio non si apriva affatto. */
+    transform:translateY(102%); visibility:hidden;
+    transition:transform .3s var(--ease), visibility 0s linear .3s; }
+  .scheda.su{ transform:none; visibility:visible;
+    transition:transform .3s var(--ease), visibility 0s; }
   .scheda-in{ max-width:var(--max); margin:0 auto; padding:20px clamp(14px,3vw,26px) 26px;
     max-height:min(78vh,660px); overflow-y:auto; }
   .scheda-t{ display:flex; align-items:center; gap:14px; margin-bottom:18px; }
@@ -79,7 +86,8 @@
 </main>
 
 <div class="velo" id="velo"></div>
-<aside class="scheda" id="scheda" aria-hidden="true">
+<aside class="scheda" id="scheda" aria-hidden="true" role="dialog" aria-modal="true"
+       aria-label="Scheda del pilota">
   <div class="scheda-in" id="schedaIn"></div>
 </aside>
 
@@ -121,7 +129,7 @@ function riga(r, piloti) {
     : (motori[r.constructorId]?.motore ? `motore ${motori[r.constructorId].motore}` : '');
   return el('button', {
     class: 'cr' + (r.pos <= 3 ? ' podio' : ''), type: 'button', stile: { '--c': col },
-    onclick: () => apri(r, piloti),
+    onclick: (ev) => apri(r, piloti, ev.currentTarget),
   },
     el('span', { class: 'p n' }, String(r.pos)),
     el('span', { class: 'bar' }),
@@ -135,7 +143,10 @@ function riga(r, piloti) {
 /* ------------------------------------------------------------- scheda */
 function cella(t, v) { return el('div', { class: 'cel' }, el('small', {}, t), el('b', { class: 'n' }, v)); }
 
-function apri(r, piloti) {
+let apertoDa = null;                 // chi ha aperto la scheda: li' torna il fuoco
+
+function apri(r, piloti, bottone) {
+  apertoDa = bottone || null;
   const s = piloti
     ? Object.values(schede?.piloti || {}).find(p => p.sigla === r.sigla)
     : Object.values(schede?.team || {}).find(t => (t.team_demo || t.nome) === (r.team_demo || r.nome));
@@ -177,9 +188,24 @@ function apri(r, piloti) {
   E('schedaIn').querySelector('.x')?.focus();
 }
 function chiudi() {
+  if (!E('scheda').classList.contains('su')) return;
+  // il fuoco PRIMA dell'aria-hidden: altrimenti resta dentro un sottoalbero nascosto
+  const torna = apertoDa; apertoDa = null;
+  if (torna && document.contains(torna)) torna.focus();
   E('scheda').classList.remove('su'); E('scheda').setAttribute('aria-hidden', 'true');
   E('velo').classList.remove('su');
 }
+
+/* il fuoco resta dentro la scheda finche' e' aperta */
+E('scheda').addEventListener('keydown', (ev) => {
+  if (ev.key !== 'Tab') return;
+  const f = [...E('scheda').querySelectorAll('button, [href], [tabindex]:not([tabindex="-1"])')]
+    .filter(x => x.offsetParent !== null);
+  if (!f.length) return;
+  const primo = f[0], ultimo = f[f.length - 1];
+  if (ev.shiftKey && document.activeElement === primo) { ev.preventDefault(); ultimo.focus(); }
+  else if (!ev.shiftKey && document.activeElement === ultimo) { ev.preventDefault(); primo.focus(); }
+});
 E('velo').addEventListener('click', chiudi);
 document.addEventListener('keydown', e => { if (e.key === 'Escape') chiudi(); });
 

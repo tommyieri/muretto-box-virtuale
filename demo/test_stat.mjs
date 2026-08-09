@@ -67,10 +67,21 @@ const guardia = t => reg.voci.find(v => v.guardia?.tipo === t)?.guardia ?? {};
 const attesa = reg.nav_attesa.map(([e, h]) => `${e}->${h}`).join(' | ');
 
 const muro = readFileSync(path.join(QUI, 'muro.mjs'), 'utf8');
-const vociMuro = [...(muro.match(/const VOCI = \[([\s\S]*?)\];/)?.[1] ?? '')
-  .matchAll(/\['([^']+)',\s*'([^']+)'\]/g)].map(m => `${m[1]}->${m[2]}`).join(' | ');
+const crudeMuro = [...(muro.match(/const VOCI = \[([\s\S]*?)\];/)?.[1] ?? '')
+  .matchAll(/\['([^']+)',\s*'([^']+)'\]/g)].map(m => [m[1], m[2]]);
+const vociMuro = crudeMuro.map(([e, h]) => `${e}->${h.replace(/^\//, '')}`).join(' | ');
 esito(vociMuro === attesa,
   `muro.mjs monta la nav attesa${vociMuro === attesa ? '' : `\n           atteso: ${attesa}\n           trovato: ${vociMuro}`}`);
+
+// I PERCORSI DEVONO PARTIRE DALLA RADICE, e non e' pedanteria: guscio() serve anche le
+// dodici pagine in demo/articolo/, che stanno un livello piu' giu'. Con href relativi il
+// browser risolveva 'stagione.html' in /articolo/stagione.html — nav e marchio a 404 su
+// tutte e dodici, in produzione, e nessun controllo se n'era accorto.
+const relativi = crudeMuro.filter(([, h]) => !h.startsWith('/')).map(([e]) => e);
+esito(relativi.length === 0,
+  `muro.mjs punta dalla radice (le pagine annidate usano lo stesso guscio)`
+  + (relativi.length ? ` — relativi: ${relativi.join(', ')}` : ''));
+esito(/href: '\/index\.html'/.test(muro), 'il marchio punta dalla radice');
 
 const vociStatico = [...(readFileSync(STATICO, 'utf8').match(/^NAV = \[([\s\S]*?)^\]/m)?.[1] ?? '')
   .matchAll(/\("([^"]+)",\s*"([^"]+)"\)/g)].map(m => `${m[1]}->${m[2]}`).join(' | ');

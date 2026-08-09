@@ -100,7 +100,7 @@ const NOMI = { fp1: 'Prove libere 1', fp2: 'Prove libere 2', fp3: 'Prove libere 
   sprint_quali: 'Qualifiche sprint', sprint: 'Sprint',
   qualifiche: 'Qualifiche', gara: 'Gara' };
 
-let viva = false, montatoAttesa = false, ultimaGara = null;
+let viva = false, montatoAttesa = false, ultimaGara = null, gareCal = [];
 
 /* ---- IL MURETTO IN DIRETTA ------------------------------------------------
    Stesso comando della pagina-gara, ma qui il futuro NON e' successo: niente
@@ -124,6 +124,24 @@ function quandoIso(g, s) {
   return v ? new Date(`${v.data}T${v.ora_utc}:00Z`) : null;
 }
 
+const ORD = ['fp1', 'fp2', 'fp3', 'sprint_quali', 'sprint', 'qualifiche', 'gara'];
+
+/** La prima sessione ancora da correre, ADESSO. Ricalcolata a ogni chiamata: la
+ *  vecchia versione la fissava al primo montaggio, quindi a conto alla rovescia
+ *  scaduto la pagina restava a 00:00:00 annunciando come «prossima» una sessione
+ *  gia' corsa — proprio nel momento in cui uno guarda la pagina. */
+function prossimaSessione(gare, ora = new Date()) {
+  let p = null;
+  for (const g of gare) {
+    for (const s of ORD) {
+      const q = quandoIso(g, s);
+      if (q && q > ora && (!p || q < p.quando)) p = { g, s, quando: q };
+    }
+    if (p) break;
+  }
+  return p;
+}
+
 async function mostraAttesa() {
   E('boxTorre').hidden = true;
   E('prossima').hidden = false;
@@ -134,16 +152,8 @@ async function mostraAttesa() {
     dati(`data/calendario_2026.json?v=${V}`), dati(`data/manifest.json?v=${V}`)]);
   const gare = cal?.gare || [];
   const ora = new Date();
-  const ORD = ['fp1', 'fp2', 'fp3', 'sprint_quali', 'sprint', 'qualifiche', 'gara'];
-
-  let pross = null;
-  for (const g of gare) {
-    for (const s of ORD) {
-      const q = quandoIso(g, s);
-      if (q && q > ora && (!pross || q < pross.quando)) pross = { g, s, quando: q };
-    }
-    if (pross) break;
-  }
+  const pross = prossimaSessione(gare, ora);
+  gareCal = gare;
 
   const box = E('prossima');
   if (!pross) {
@@ -175,11 +185,21 @@ async function mostraAttesa() {
   fianco(false);
 }
 
+let battito = null;
 function conta(quando) {
   const box = E('conto');
   if (!box) return;
+  clearInterval(battito);
   const passo = () => {
-    let d = Math.max(0, (quando - new Date()) / 1000);
+    const d0 = (quando - new Date()) / 1000;
+    if (d0 <= 0) {
+      // scaduta: si rimonta la pagina d'attesa sulla sessione davvero prossima
+      clearInterval(battito);
+      montatoAttesa = false;
+      mostraAttesa();
+      return;
+    }
+    let d = d0;
     const gg = Math.floor(d / 86400); d -= gg * 86400;
     const hh = Math.floor(d / 3600); d -= hh * 3600;
     const mm = Math.floor(d / 60); const ss = Math.floor(d - mm * 60);
@@ -188,7 +208,7 @@ function conta(quando) {
         el('span', {}, t))));
   };
   passo();
-  setInterval(passo, 1000);
+  battito = setInterval(passo, 1000);
 }
 
 /** In diretta il fianco diventa il muretto: pilota, gomma, BOX ORA. */
@@ -206,7 +226,9 @@ function murettoLive() {
       el('span', { class: 'gomma ' + m }),
       m === 'SOFT' ? 'morbida' : m === 'MEDIUM' ? 'media' : 'dura'))),
     el('button', { class: 'btn btn-p', id: 'boxOra', type: 'button',
-      stile: { width: '100%' }, disabled: !scelto, onclick: boxOra }, 'BOX ORA'),
+      stile: { width: '100%' }, disabled: !scelto,
+      title: scelto ? null : 'Scegli prima un pilota nella classifica',
+      onclick: boxOra }, 'BOX ORA'),
     el('div', { id: 'esitoLive' }),
     el('p', { class: 'onesta' },
       'È una ', el('b', {}, 'proiezione'), ': il futuro non è ancora successo, quindi ',
@@ -268,12 +290,40 @@ function fianco(inDiretta) {
 }
 
 /* ------------------------------------------------------------ in diretta */
-E('torre').addEventListener('click', (ev) => {
-  const r = ev.target.closest('.tw-row[data-sigla]');
+/* LE RIGHE DELLA TORRE SI ATTIVANO ANCHE DA TASTIERA.
+   Le disegna live_timing.mjs, che e' condiviso col resto del progetto e non si tocca
+   da qui: le rendiamo raggiungibili dopo ogni render. Senza questo, chi naviga col Tab
+   non poteva scegliere nessun pilota — e BOX ORA restava disabilitato per sempre. */
+function scegliPilotaLive(r) {
   if (!r) return;
   scelto = r.dataset.sigla;
-  for (const x of E('torre').querySelectorAll('.tw-row')) x.classList.toggle('tw-sel', x === r);
+  for (const x of E('torre').querySelectorAll('.tw-row')) {
+    const suo = x === r;
+    x.classList.toggle('tw-sel', suo);
+    x.setAttribute('aria-pressed', String(suo));
+  }
   murettoLive();
+}
+function rendiTorreRaggiungibile() {
+  for (const r of E('torre').querySelectorAll('.tw-row[data-sigla]')) {
+    if (r.dataset.pronta) continue;
+    r.dataset.pronta = '1';
+    r.tabIndex = 0;
+    r.setAttribute('role', 'button');
+    r.setAttribute('aria-pressed', String(r.dataset.sigla === scelto));
+    r.setAttribute('aria-label', `Scegli ${r.dataset.sigla} per il muretto`);
+  }
+}
+new MutationObserver(rendiTorreRaggiungibile)
+  .observe(E('torre'), { childList: true, subtree: true });
+
+E('torre').addEventListener('click', (ev) => scegliPilotaLive(ev.target.closest('.tw-row[data-sigla]')));
+E('torre').addEventListener('keydown', (ev) => {
+  if (ev.key !== 'Enter' && ev.key !== ' ') return;
+  const r = ev.target.closest('.tw-row[data-sigla]');
+  if (!r) return;
+  ev.preventDefault();
+  scegliPilotaLive(r);
 });
 
 function mostraDiretta(nome) {
@@ -307,7 +357,13 @@ const client = creaLiveClient({
 /** L'unico criterio: ci sono righe in torre? Allora e' una sessione. */
 function valuta() {
   if (conRighe()) { spia('in diretta', true); mostraDiretta(nomeSessione); }
-  else { viva = false; spia('nessuna sessione', false); mostraAttesa(); }
+  else {
+    const era = viva;
+    viva = false;
+    spia('nessuna sessione', false);
+    if (era) { montatoAttesa = false; fianco(false); }
+    mostraAttesa();
+  }
 }
 
 /* Il motore e l'identita' servono solo in diretta: si caricano una volta sola,

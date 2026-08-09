@@ -276,15 +276,20 @@ let esitiGara = {}, nonPart = new Set(), pitLaps = {}, ultimoGiro = {}, griglia 
 let scenaGp = null, STRAT = null, ESE = null;
 let ultimaRisposta = null;
 const SLICK = ['SOFT', 'MEDIUM', 'HARD'];
-/** La gomma che BOX ORA monta: quella evidenziata nel selettore. Mai null — il
- *  motore rifiuta un piano senza mescola (E05), e un rifiuto per un campo che
- *  l'utente non ha mai visto e' un vicolo cieco. */
+/** La gomma che BOX ORA monta.
+ *  Mai null — il motore rifiuta un piano senza mescola (E05), e un rifiuto per un
+ *  campo che l'utente non ha mai visto e' un vicolo cieco.
+ *  E mai UGUALE a quella gia' montata, se l'utente non l'ha scelta lui: una gara
+ *  asciutta finita su una sola mescola slick e' squalifica (REG01), quindi il
+ *  Director respingeva ogni sosta proposta a inizio gara. Il muretto vero, alla
+ *  prima sosta, cambia mescola: qui si fa lo stesso. */
 function gommaPerBox() {
-  for (const m of [mescolaScelta, ultimaRisposta?.mescola_scelta,
-                   race?.byLap[Math.max(1, Math.floor(curP) - 1)]?.[selDrv]?.compound]) {
-    if (SLICK.includes(m)) return m;
-  }
-  return 'MEDIUM';
+  if (SLICK.includes(mescolaScelta)) return mescolaScelta;      // scelta esplicita: si rispetta
+  const su = [ultimaRisposta?.mescola_scelta,
+              race?.byLap[Math.max(1, Math.floor(curP) - 1)]?.[selDrv]?.compound]
+    .find(m => SLICK.includes(m));
+  if (!su) return 'MEDIUM';
+  return su === 'HARD' ? 'MEDIUM' : 'HARD';
 }
 
 const clock = makeClock({ onTick: (p) => frame(p), onEnd: () => icona(false) });
@@ -595,8 +600,12 @@ async function aggiornaStrategia() {
       'Per questa gara il motore non ha una risposta pronta.'));
     return;
   }
-  const L = Math.max(indiceVista.primo_giro,
-    Math.min(indiceVista.ultimo_giro, Math.max(1, Math.floor(curP) - 1)));
+  // IL GIRO E' QUELLO DELLA BARRA, sempre. Prima veniva schiacciato dentro la
+  // copertura della vista: al giro 1 il pannello rispondeva sul giro 5 e scriveva
+  // «Se ti fermi al giro 6» mentre il contagiri diceva 1. Una risposta giusta per una
+  // domanda che nessuno ha fatto e' peggio di nessuna risposta — e rendeva anche
+  // irraggiungibile il ramo «Vai al giro N» scritto dodici righe piu' sotto.
+  const L = Math.max(1, Math.floor(curP) - 1);
   const chiave = `${selDrv}|${L}|${mescolaScelta || ''}`;
   if (chiave === ultimaChiave) return;
   ultimaChiave = chiave;
@@ -623,17 +632,37 @@ async function aggiornaStrategia() {
   }));
   if (!s || s.senza_risposta) {
     ultimaRisposta = null;
-    const primo = (v?.giri || []).find(g => g.freeze_lap >= L && !g.senza_risposta && g.pannello)
-      || (v?.giri || []).find(g => !g.senza_risposta && g.pannello);
+    // il giro da proporre dipende da DOVE sei: a inizio gara il primo utile in avanti,
+    // a fine gara l'ultimo utile all'indietro. Proporre «vai al giro 10» quando manca
+    // un giro alla bandiera e' un consiglio che nessuno seguirebbe.
+    const utili = (v?.giri || []).filter(x => !x.senza_risposta && x.pannello);
+    const primo = (L > indiceVista.ultimo_giro)
+      ? utili[utili.length - 1]
+      : (utili.find(x => x.freeze_lap >= L) || utili[0]);
+    const presto = L < indiceVista.primo_giro;
+    const tardi = L > indiceVista.ultimo_giro;
+    // lo stesso giro che legge il contagiri: l'orologio arriva a n+1 (il traguardo),
+    // e scrivere «giro 45 di 44» sarebbe un numero che in pagina non esiste.
+    const g = Math.min(race.n_laps, Math.max(1, Math.floor(curP)));
     frag.append(el('div', { class: 'st-muto' },
       el('p', { stile: { margin: '0 0 12px' } },
-        `Qui il motore non risponde per ${selDrv}: nei primi giri la gara non è ancora leggibile.`),
+        presto ? `Al giro ${g} la gara non è ancora leggibile: serve qualche giro di passo prima di poter rispondere.`
+        : tardi ? `Al giro ${g} manca troppo poco alla bandiera perché fermarsi abbia una risposta.`
+        : `A questo giro il motore non risponde per ${selDrv}.`),
       primo ? el('button', {
         class: 'btn btn-s', type: 'button',
         onclick: () => { clock.pause(); icona(false); clock.seek(primo.freeze_lap + 1); },
       }, `Vai al giro ${primo.freeze_lap + 1}`) : null));
+    // il tasto non invita a premere quando non c'e' niente da chiedere: la strada
+    // e' il bottone «Vai al giro N» qui sopra, non un errore dopo il click.
+    if (!STRAT) {
+      E('boxOra').disabled = true;
+      E('boxOra').title = presto ? 'Il motore risponde da qualche giro più avanti'
+                                 : 'Troppo tardi perché una sosta abbia una risposta';
+    }
   } else {
     ultimaRisposta = s;
+    if (!STRAT) { E('boxOra').disabled = false; E('boxOra').removeAttribute('title'); }
     frag.append(pannelloStrategia(s, {
       pilota: selDrv, giro: Math.floor(curP), nGiri: race.n_laps,
       onGiro: (g) => { clock.pause(); icona(false); clock.seek(g); },
@@ -655,28 +684,50 @@ async function caricaEse() {
 E('boxOra').addEventListener('click', async () => {
   if (!selDrv) return;
   const b = E('boxOra'); b.disabled = true;
-  const giro = STRAT
-    ? Math.max(STRAT.freeze + 1, Math.min(race.n_laps - 1, Math.round(scenaGp?.posizione ?? curP)))
-    : Math.max(2, Math.min(race.n_laps - 1, Math.floor(curP)));
   try {
     await caricaEse();
-    if (!STRAT) {
+
+    // IL CONGELAMENTO PRIMA, IL GIRO DOPO — e in quest'ordine, non nell'altro.
+    // Prima il giro si calcolava da curP e poi si chiedeva il congelamento: a inizio
+    // gara usciva giro=2 con freeze=5, cioe' una sosta PRIMA del congelamento, e il
+    // motore la rifiutava giustamente. Il primo click che l'interfaccia offriva era
+    // quello rotto, in tutte le gare, e in pagina finiva un JSON.stringify.
+    let freeze = STRAT?.freeze ?? null;
+    if (freeze === null) {
+      const voluto = Math.max(2, Math.min(race.n_laps - 1, Math.floor(curP)));
       const f = ESE.mod.congelamentoPer({ nome: ESE.prep.nome, contesto: ESE.prep.contesto,
-        pilota: selDrv, giroSosta: giro });
-      if (f.freezeLap === null) { nota(`Il motore non ha un passo per ${selDrv} prima del giro ${giro}.`); return; }
-      STRAT = { freeze: f.freezeLap, soste: [] };
+        pilota: selDrv, giroSosta: voluto });
+      if (f.freezeLap === null) {
+        nota(`Il motore non ha ancora un passo per ${selDrv}: prova qualche giro piu' avanti.`);
+        return;
+      }
+      freeze = f.freezeLap;
     }
-    const soste = [...STRAT.soste.filter(x => x.giro !== giro),
+    // la sosta cade DOVE STAI GUARDANDO, ma mai prima del congelamento
+    const giro = Math.max(freeze + 1,
+      Math.min(race.n_laps - 1, Math.round(scenaGp?.posizione ?? Math.floor(curP))));
+
+    const soste = [...(STRAT?.soste ?? []).filter(x => x.giro !== giro),
                    { giro, mescola: gommaPerBox() }].sort((a, b) => a.giro - b.giro);
     let esiti;
-    try { esiti = ESE.vista.eseguiRigioca({ prep: ESE.prep, pilota: selDrv, freeze: STRAT.freeze, soste }); }
-    catch (err) { nota(`Il motore rifiuta questa sosta: ${err.message}`); return; }
+    try {
+      esiti = ESE.vista.eseguiRigioca({ prep: ESE.prep, pilota: selDrv, freeze, soste });
+    } catch (err) {
+      // il messaggio del motore e' un referto interno (contiene JSON): resta in console.
+      console.warn('BOX ORA rifiutato:', err.message);
+      nota('Il motore non riesce a mettere in scena questa sosta: prova un altro giro o un\'altra gomma.');
+      return;
+    }
     if (!esiti.mio.direttore.approved) {
       const f = (esiti.mio.direttore.violazioni ?? []).filter(v => v.severita === 'FATAL');
       nota(f[0]?.messaggio || 'Piano non valido: prova un altro giro o un\'altra gomma.');
       return;
     }
-    STRAT.soste = soste; STRAT.esiti = esiti;
+    // STRAT si scrive SOLO quando il piano e' davvero valido: prima veniva assegnato
+    // subito, e un rifiuto lasciava la pagina con un congelamento fantasma e il tasto
+    // di azzeramento ancora nascosto.
+    STRAT = { freeze, soste, esiti };
+    E('reset').hidden = false;
     avviaScena(giro);
   } finally { b.disabled = false; }
 });
@@ -778,7 +829,11 @@ adattaSchede();
 
 icona(false);
 scheletro(E('railC'), 4, 52);
-boot().catch(() => guasto(E('railC'), () => location.reload()));
+// un boot che fallisce in silenzio si diagnostica solo a mano: il motivo va in console
+boot().catch((e) => {
+  console.error('gara: boot fallito —', e);
+  guasto(E('railC'), () => location.reload());
+});
 </script>
 </body>
 </html>
