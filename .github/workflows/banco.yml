@@ -234,3 +234,12 @@ jobs:
       # canali (gas e freno insieme nel 13,8% dei punti contro lo 0,2-3% normale).
       - name: La telemetria e ancorata al tracciato davvero
         run: python3 test_tele_giro.py
+
+      # LA CLASSIFICA E' UNA SOLA, E DEVE RESTARE QUELLA DI PRIMA. classificaAt (cum reali)
+      # e classificaSim (cum simulati) rispondevano alla stessa domanda — chi e' davanti, di
+      # quanto, chi e' doppiato — con lo stesso modello scritto due volte, e il commento
+      # della seconda lo ammetteva. Unirle tocca l'ordine della torre: uno scambio fra due
+      # righe non si nota finche' qualcuno non confronta col risultato vero. Il banco tiene
+      # una copia CONGELATA di entrambe e pretende parita' esatta su 684 classifiche.
+      - name: La classifica unificata non ha cambiato la torre
+        run: node demo/test_classifica.mjs

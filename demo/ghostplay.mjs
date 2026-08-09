@@ -21,6 +21,7 @@
 
 import { creaAncora, giroDi as giroDiCum } from './orologio.mjs?v=250808a';
 import { makeClock } from './timeline.mjs?v=220726a';
+import { classifica as classificaCondivisa, battistradaAiGiri } from './classifica.mjs?v=250809a';
 
 // cumSim[d] = [{lap, cum}] dalla traiettoria; leadSim[L] = cum del battistrada al giro L.
 export function costruisciCum(sim) {
@@ -128,29 +129,25 @@ export function classificaSim(C, p, opts = {}) {
   const L = Math.max(C.freezeLap, Math.min(C.nLap, Math.floor(p)));
   const f = Math.min(1, Math.max(0, p - L));
   const cumA = (d, k) => (C.cum[d] || []).find(x => x.lap === k)?.cum;
-  const cumL = {}, ic = {};
-  for (const d of C.present) {
-    const cur = cumA(d, L); if (cur == null) continue;
-    cumL[d] = cur;
-    const pv = cumA(d, L - 1) ?? C.lead[L - 1];
-    ic[d] = (typeof pv === 'number') ? pv + f * (cur - pv) : cur;   // cum interpolato a (L, f)
-  }
-  const lag = {};                                     // battistrada ai giri L..L+3 (per i doppiati)
-  for (let k = L; k <= Math.min(L + 3, C.nLap); k++) {
-    let mn = Infinity;
-    for (const d of C.present) { const c = cumA(d, k); if (c != null && c < mn) mn = c; }
-    if (mn < Infinity) lag[k] = mn;
-  }
-  const ord = Object.keys(ic).sort((a, b) => ic[a] - ic[b]);
-  const leader = ord.length ? ic[ord[0]] : 0;
-  return ord.map((d, i) => {
-    let gd = 0; for (const k in lag) if (+k > L && cumL[d] > lag[k]) gd = +k - L;
-    let gapTxt, gapCls = '';
-    if (gd >= 1) { gapTxt = `+${gd} gir${gd > 1 ? 'i' : 'o'}`; gapCls = 'lapped'; }
-    else if (i === 0) { gapTxt = 'LEADER'; gapCls = 'lead'; }
-    else gapTxt = `+${(ic[d] - leader).toFixed(1)}s`;
-    return { drv: d, pos: i + 1, leader: i === 0, gapTxt, gapCls, inPit: d === driver && L === pitLap };
+  // celle nella forma che il modulo condiviso si aspetta: {sigla: {cum_time}}
+  const celleAl = k => {
+    const o = {};
+    for (const d of C.present) { const c = cumA(d, k); if (c != null) o[d] = { cum_time: c }; }
+    return Object.keys(o).length ? o : null;
+  };
+  const righe = classificaCondivisa({
+    cumCorrente: celleAl(L), cumPrecedente: celleAl(L - 1),
+    ancora: C.lead[L - 1], primoGiro: false, f, L, nLap: C.nLap,
+    battistrada: battistradaAiGiri(celleAl, L, C.nLap),
+    // la scena NON ordina a pari merito e RIPIEGA sul battistrada quando un pilota non ha
+    // il proprio giro precedente: al congelamento non ce l'ha nessuno, e senza ripiego i
+    // distacchi resterebbero fermi. Erano le due differenze con la pagina-gara, e restano.
+    pareggio: 'scena', ripiegoAncora: true,
   });
+  return righe.map(r => ({
+    drv: r.drv, pos: r.pos, leader: r.pos === 1, gapTxt: r.et, gapCls: r.cls,
+    inPit: r.drv === driver && L === pitLap,
+  }));
 }
 
 // ---- la messa in scena (browser): loop rAF + rendering su pista + callback torre ----

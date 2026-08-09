@@ -219,6 +219,7 @@ import { creaGhostPlay } from './ghostplay.mjs?v=250724c';
 import { attaccaGlossario } from './glossario.mjs?v=250724e';
 import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs?v=220726a';
 import { creaAncora, giroDi as giroDiCum } from './orologio.mjs?v=250808a';
+import { classifica as classificaCondivisa } from './classifica.mjs?v=250809a';
 const BUILD = '250724c-sim';
 const el = id => document.getElementById(id);
 const ROW_H = 44;
@@ -617,31 +618,25 @@ function leaderAiGiri(L){
 // e fine giro L). STATI (BOX/OUT, gomma, eta') invece al tempo reale T via giroDi: gli
 // stessi campi e lo stesso orologio che muovono il pallino.
 function classificaAt(L, f){
-  const A=race.byLap[L], P=race.byLap[L-1];
   const T=tempoReale(L+f);
-  const icum=(d,c)=>{
-    const prev = L===1 ? leadCum[0] : P?.[d]?.cum_time;
-    return (typeof prev==='number') ? prev + f*(c.cum_time - prev) : c.cum_time;
-  };
-  let ordine = Object.entries(A).filter(([d,c]) => typeof c.cum_time==='number' && !race.nonParten.has(d))
-      .map(([d,c])=>[d,c,icum(d,c)]);
+  // IL NUCLEO E' CONDIVISO con la scena rigiocata (demo/classifica.mjs): cum interpolato a
+  // (L, f), ordine per quel cum, doppiati sul battistrada ai giri L..L+3, e le etichette.
+  // Era lo stesso modello scritto due volte, e il commento di classificaSim lo ammetteva
+  // per iscritto. Qui resta solo cio' che e' DI QUESTA PAGINA: lo stato del giro, i badge,
+  // le posizioni guadagnate, la coda dei fuori-gara. Parita' verificata su 684 classifiche
+  // di tutte e 11 le gare da demo/test_classifica.mjs.
+  const base = classificaCondivisa({
+    cumCorrente: race.byLap[L], cumPrecedente: race.byLap[L-1],
+    ancora: leadCum[0], primoGiro: L===1, f, L, nLap: race.n_laps,
+    battistrada: leaderAiGiri(L),
+    escludi: d => race.nonParten.has(d),
+    pareggio: 'gara',                 // a pari cum: cum di fine giro, poi sigla
+    ordineGriglia: gridGara,          // giro 1 fermo: ordine di partenza, distacchi soppressi
+  });
   const faseGriglia = (L===1 && f===0 && gridGara.length>0);
-  if (faseGriglia) {
-    const rank={}; gridGara.forEach((d,i)=>rank[d]=i);
-    ordine.sort((a,b)=>(rank[a[0]]??999)-(rank[b[0]]??999));
-  } else ordine.sort((a,b)=>(a[2]-b[2])||(a[1].cum_time-b[1].cum_time)||(a[0]<b[0]?-1:1));
-  const leader = ordine.length?ordine[0][2]:0;
-  const lag = leaderAiGiri(L);
-  const rows = ordine.map(([drv,c,cum],i)=>{
-    const gap=cum-leader; let gd=0;
-    for(const k in lag) if(+k>L && c.cum_time>lag[k]) gd=+k-L;
-    let et,cls,prev=null;
-    // in ordine-griglia (giro 1, fermo) i delta di cum_time NON sono gap di gara: soppressi
-    if(faseGriglia){et=i===0?'POLE':'—';cls=i===0?'lead':'';}
-    else if(gd>=1){et=`+${gd} gir${gd>1?'i':'o'}`;cls='lapped';}
-    else if(i===0){et='LEADER';cls='lead';}
-    else{et=`+${gap.toFixed(1)}s`;cls='';
-      prev=cum-ordine[i-1][2];}
+  const rows = base.map((r,i)=>{
+    const drv=r.drv, c=race.byLap[L][drv], cum=r.icum;
+    const et=r.et, cls=r.cls, prev=r.prev;
     // stato al tempo reale T (lo stesso orologio del pallino); fuori dai dati (oltre
     // l'ultimo giro noto, buchi): si ricade sullo stato di fine giro L, badge spenti
     const g = giroDi(drv, T);
@@ -664,7 +659,7 @@ function classificaAt(L, f){
     return {pos:i+1,drv,team:c.team,compound:st.compound,age:st.tyre_age,et,cls,prev,dgr,
             inlap:boxNow,outlap:outNow,monta,stopDur,leader:i===0,selectable:true};
   });
-  const inGara=new Set(ordine.map(([d])=>d));
+  const inGara=new Set(base.map(r=>r.drv));
   const teamOf={}; for(const lp of race.laps) for(const [d,c] of Object.entries(lp.cars)) teamOf[d]=c.team;
   const tutti=new Set([...race.drivers,...gridGara]);
   const fuori=[...tutti].filter(d=>!inGara.has(d));
