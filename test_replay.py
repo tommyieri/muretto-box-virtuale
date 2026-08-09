@@ -135,6 +135,35 @@ def prova(gara):
                   f'posizioni oltre l\'ultimo giro: {tardivi[:5]}' if tardivi
                   else 'nessun ritirato congelato in pista'))
 
+    # ── S6 FLUIDITA': il pallino non deve stare fermo mentre l'auto corre
+    # Nessuna sentinella misurava il MOVIMENTO, e per questo lo scatto e' arrivato fino
+    # all'utente: i cinque cancelli guardavano dove sta il pallino, non se ci arriva
+    # scorrendo. All'Ungheria il 68,8% dei campioni consecutivi era identico al precedente
+    # — il feed ripete le coordinate (76,9% dei campioni grezzi) e la pipeline lo
+    # riproduceva fedelmente, cioe' pubblicava come «ferma» un'auto che stava correndo.
+    # Un pianoro lungo e' legittimo solo se l'auto e' davvero ferma (box, rossa, ritiro).
+    fermi = mossi = 0
+    pianori_lunghi = []
+    for sig, s_arr in S.items():
+        v = s_arr[np.isfinite(s_arr)]
+        if len(v) < 2:
+            continue
+        d = np.diff(v)
+        fermi += int((d == 0).sum())
+        mossi += len(d)
+        run = 1
+        for k in range(1, len(v)):
+            if v[k] == v[k - 1]:
+                run += 1
+            else:
+                if run >= 12:            # 6 s fermi: o e' ai box, o e' un artefatto
+                    pianori_lunghi.append((sig, run))
+                run = 1
+    quota = fermi / max(mossi, 1)
+    esiti.append(('S6', quota <= 0.10,
+                  f'campioni consecutivi identici {quota:.1%} (soglia 10%) · '
+                  f'{len(pianori_lunghi)} pianori oltre 6 s'))
+
     # ── S5 pit lane misurata
     pl = R.get('pitlane')
     if not pl:

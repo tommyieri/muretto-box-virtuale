@@ -60,6 +60,13 @@ MAX_OFFSET_S = 0.5        # oltre questo scarto fra i due orologi il generatore 
 MAX_BUCO_S = 2.0          # oltre questo buco nel feed non si interpola: si dichiara assente
 MAX_SCARTO_GIRO = 0.20    # scarto massimo fra GPS e stima a velocita' uniforme, in giri
 MIN_COPERTURA = 0.50      # sotto questa copertura la gara non ha un replay a posizioni vere
+# due candidati piu' vicini di cosi' LUNGO IL NASTRO sono lo stesso posto, non due rami:
+# il nastro e' campionato a 2 m, quindi i vertici vicini sono consecutivi per costruzione.
+# 100 m separa due tratti che si sfiorano davvero (un tornante, un ripiegamento).
+SEPARAZIONE_RAMI = 1000.0  # decimi di metro = 100 m
+# se fra i due capi di una tenuta l'auto si e' spostata meno di questo, era ferma davvero
+# (sosta ai box, bandiera rossa, ritiro) e la tenuta E' il dato: non si scavalca.
+FERMO_U = 200.0           # decimi di metro = 20 m
 ASSENTE = -1              # sentinella nel campo `pit`: mai una posizione inventata
 
 
@@ -125,6 +132,52 @@ def nastro_fine(xy):
     return np.column_stack([fx, fy]), passi, L
 
 
+def senza_tenute(ts, XY):
+    """Toglie le TENUTE del feed: i campioni che ripetono identiche le coordinate del
+    precedente.
+
+    PERCHE'. FastF1 non manda sempre una posizione nuova: quando non ne ha una, ripete
+    l'ultima. Misurato sul 2026: Belgio e Spagna il 38% dei campioni sono ripetizioni,
+    l'UNGHERIA il 76,9%, e li' fra due posizioni DIVERSE passano fino a 2,8 s (p90).
+    Ricampionare quel grezzo cosi' com'e' produce un pallino che sta fermo mezzo secondo e
+    poi salta: misurato in pagina, il 68,8% dei campioni pubblicati era identico al
+    precedente, ed e' esattamente lo scatto che si vede all'ultima curva dell'Hungaroring.
+
+    Fra due rilevazioni distinte l'auto si e' MOSSA: interpolare fra loro non e' inventare —
+    e' cio' che gia' si fa fra due campioni qualsiasi, visto che la griglia pubblicata e' a
+    2 Hz e il feed a 4. La tenuta, invece, e' un artefatto del trasporto: riprodurla
+    vorrebbe dire pubblicare come «ferma» un'auto che stava correndo.
+
+    MA UN'AUTO PUO' ESSERE DAVVERO FERMA (in sosta ai box, sotto bandiera rossa, ritirata a
+    bordo pista) e allora le ripetizioni sono il dato, non il rumore. Per questo il ponte e'
+    LIMITATO: una tenuta piu' lunga di MAX_PONTE_S conserva i suoi campioni, cosi' l'auto
+    resta dov'e'. Si scavalcano solo le tenute brevi, quelle in cui la macchina non puo'
+    essersi fermata.
+    """
+    if len(ts) < 3:
+        return ts, XY
+    cambia = np.ones(len(ts), dtype=bool)
+    cambia[1:] = (np.diff(XY[:, 0]) != 0) | (np.diff(XY[:, 1]) != 0)
+    tieni = cambia.copy()
+    tieni[0] = tieni[-1] = True
+    # UN'AUTO FERMA NON SI RICONOSCE DALLA DURATA DELLA TENUTA, ma dal fatto che non si e'
+    # spostata. Il primo tentativo usava un limite di tempo (3 s): all'Ungheria le tenute
+    # durano tipicamente 3-5,5 s mentre la macchina sta correndo, quindi quel limite le
+    # conservava tutte e il pallino restava fermo cinque secondi per volta — misurato,
+    # pianori di 6-11 campioni su tutta la gara. Il criterio giusto guarda i due capi: se la
+    # posizione prima e dopo la tenuta e' LA STESSA, l'auto era davvero ferma (box, bandiera
+    # rossa, ritiro) e i campioni si conservano; se e' lontana, l'auto si e' mossa e la
+    # tenuta e' solo il trasporto che non aveva niente di nuovo da dire.
+    bordi = np.flatnonzero(cambia)
+    for a, b in zip(bordi[:-1], bordi[1:]):
+        if b - a <= 1:
+            continue
+        spostamento = float(np.hypot(*(XY[b] - XY[a])))
+        if spostamento < FERMO_U:
+            tieni[a:b] = True        # ferma davvero: la tenuta e' il dato
+    return ts[tieni], XY[tieni]
+
+
 class Proiettore:
     """Punto -> (frazione di giro, scarto laterale). Nearest vertex con KD-tree, poi
     raffinamento sui due segmenti adiacenti: l'errore di discretizzazione sparisce."""
@@ -162,33 +215,57 @@ class Proiettore:
 
         Il punto piu' vicino non basta: su un tracciato che si ripiega (Hungaroring, i
         tornanti di Monaco) due tratti diversi passano a pochi metri l'uno dall'altro, e
-        il vertice piu' vicino puo' stare sul tratto sbagliato — misurato: l'8,6% dei
-        fine-giro finiva altrove. Fra i K vertici piu' vicini si sceglie quello coerente
-        col campione precedente: a 2 Hz un'auto avanza di una frazione piccola e nota,
-        quindi un salto di mezzo giro e' un errore di proiezione, non un sorpasso.
-        Quando nessun candidato e' coerente, il campione resta NaN: meglio assente che
-        collocato dove non era (regola 6)."""
-        K = min(6, self.N)
+        il vertice piu' vicino puo' stare sul tratto sbagliato.
+
+        I CANDIDATI DEVONO ESSERE RAMI DIVERSI, e la prima stesura non lo erano. Chiedeva
+        al KD-tree i 6 vertici piu' vicini: su un nastro campionato a 2 m sono sei vertici
+        CONSECUTIVI dello stesso tratto — misurato all'Ungheria, il 99,9% dei candidati
+        cadeva entro 30 m dal primo, mediana 4 m. Non c'era nessuna alternativa fra cui
+        scegliere: la disambiguazione era un ornamento, e l'unico suo effetto era buttare
+        via il campione quando quell'unico tratto non tornava. All'Ungheria costava 22.773
+        posizioni, e in pagina si vedeva: i pallini si fermavano e sparivano all'ultima
+        curva. Ora i candidati si raggruppano per distanza LUNGO il nastro e se ne tiene
+        uno per gruppo: quelli sono rami veri.
+
+        E NON SCARTA PIU' NIENTE. Scegliere fra rami e giudicare se una posizione e'
+        plausibile sono due mestieri diversi: qui si sceglie e basta, restituendo il piu'
+        vicino quando nessun ramo e' coerente. A scartare le posizioni implausibili ci
+        pensa la guardia del cronometraggio in genera(), che per quello ha lo strumento
+        giusto (la stima a velocita' uniforme). Prima facevano il doppio lavoro, e la
+        proiezione bocciava anche cio' che la guardia avrebbe promosso."""
+        K = min(48, self.N)
         _, idx = self.tree.query(xy, k=K, workers=-1)
-        fr = np.empty((len(xy), K))
-        lat = np.empty((len(xy), K))
-        for c in range(K):
-            fr[:, c], lat[:, c] = self._raffina(xy, idx[:, c])
-        scelta_f = np.full(len(xy), np.nan)
-        scelta_l = np.full(len(xy), np.nan)
+        s_cand = self.s[idx]                       # distanza d'arco di ogni candidato
+        fr0, lat0 = self._raffina(xy, idx[:, 0])   # il piu' vicino in assoluto
+        scelta_f = fr0.copy()
+        scelta_l = lat0.copy()
         prec = None
         for n_i in range(len(xy)):
-            if prec is None:
-                c = int(np.argmin(lat[n_i]))       # primo campione: il piu' vicino
+            # rami distinti: si scorre in ordine di vicinanza e si tiene un candidato solo
+            # per ogni zona del nastro (>= SEPARAZIONE_RAMI dalle gia' prese)
+            rami = [0]
+            for c in range(1, K):
+                d = np.abs(s_cand[n_i, c] - s_cand[n_i, rami])
+                d = np.minimum(d, self.L - d)
+                if np.all(d >= SEPARAZIONE_RAMI):
+                    rami.append(c)
+                    if len(rami) >= 4:
+                        break
+            if prec is None or len(rami) == 1:
+                c = 0                              # nessuna ambiguita': il piu' vicino
             else:
-                d = np.abs(fr[n_i] - prec)
-                d = np.minimum(d, 1.0 - d)         # distanza circolare
+                f_r, l_r = self._raffina(np.repeat(xy[n_i:n_i + 1], len(rami), axis=0),
+                                         idx[n_i, rami])
+                d = np.abs(f_r - prec)
+                d = np.minimum(d, 1.0 - d)
                 amm = np.flatnonzero(d <= salto_max)
-                if len(amm) == 0:
-                    prec = None                    # continuita' persa: si riparte pulito
-                    continue
-                c = int(amm[np.argmin(lat[n_i][amm])])
-            scelta_f[n_i], scelta_l[n_i] = fr[n_i, c], lat[n_i, c]
+                # nessun ramo coerente: si tiene il piu' vicino e si lascia decidere alla
+                # guardia. Un campione scartato qui sarebbe un buco che nessuno spiega.
+                k_sel = int(amm[np.argmin(l_r[amm])]) if len(amm) else int(np.argmin(l_r))
+                scelta_f[n_i], scelta_l[n_i] = f_r[k_sel], l_r[k_sel]
+                prec = scelta_f[n_i]
+                continue
+            scelta_f[n_i], scelta_l[n_i] = fr0[n_i], lat0[n_i]
             prec = scelta_f[n_i]
         return scelta_f, scelta_l
 
@@ -329,8 +406,14 @@ def genera(nome, reg, hz=HZ, anno=ANNO):
             saltati.append(str(dn))
             continue
         gl = session.laps[session.laps['DriverNumber'] == dn]
-        ts = df['SessionTime'].dt.total_seconds().to_numpy()
-        XY = np.column_stack([df['X'].to_numpy(float), df['Y'].to_numpy(float)])
+        ts_grezzo = df['SessionTime'].dt.total_seconds().to_numpy()
+        XY_grezzo = np.column_stack([df['X'].to_numpy(float), df['Y'].to_numpy(float)])
+        # DUE COSE DIVERSE, e prima le confondevo. Un BUCO e' l'assenza di campioni (a
+        # Monaco fino a 3.011 s: il feed tace); una TENUTA e' la presenza di campioni che
+        # ripetono le stesse coordinate (all'Ungheria il 76,9%: il feed parla ma non sa).
+        # Il buco si rileva sul grezzo e non si scavalca mai; la tenuta si scavalca, perche'
+        # fra due rilevazioni distinte l'auto si e' mossa davvero.
+        ts, XY = senza_tenute(ts_grezzo, XY_grezzo)
         # presenza: dal via all'ULTIMO giro davvero completato (il ritirato sparisce,
         # non resta congelato in pista). Regola 6.
         t_ultimo = float(gl['Time'].max().total_seconds()) if gl['Time'].notna().any() else t_fin
@@ -350,11 +433,11 @@ def genera(nome, reg, hz=HZ, anno=ANNO):
         # una retta fra i due bordi disegnerebbe una traiettoria che nessuno ha percorso
         # — a Monaco ci sono 22 buchi oltre 30 s, uno da 3.011 s (la bandiera rossa).
         # Li' il pilota e' ASSENTE, e il pallino sparisce. Regola 6.
-        if len(ts) > 1:
-            j = np.searchsorted(ts, g, side='right')
-            prima = np.clip(j - 1, 0, len(ts) - 1)
-            dopo = np.clip(j, 0, len(ts) - 1)
-            buco = ts[dopo] - ts[prima]
+        if len(ts_grezzo) > 1:
+            j = np.searchsorted(ts_grezzo, g, side='right')
+            prima = np.clip(j - 1, 0, len(ts_grezzo) - 1)
+            dopo = np.clip(j, 0, len(ts_grezzo) - 1)
+            buco = ts_grezzo[dopo] - ts_grezzo[prima]
             X = np.where(buco > MAX_BUCO_S, np.nan, X)
             Y = np.where(buco > MAX_BUCO_S, np.nan, Y)
         buoni = np.isfinite(X) & np.isfinite(Y)
