@@ -199,5 +199,45 @@ console.log('\n== 6. lisciatore: niente teletrasporti, ma segue davvero ==');
   ok(creaLisciatore().passo(null) === null, 'senza bersaglio non inventa');
 }
 
+
+// ---- LE TENUTE NON DEVONO FERMARE IL PALLINO --------------------------
+// Il feed ripete l'ultima posizione quando non ne ha una nuova (misurato sul grezzo 2026:
+// 38% al Belgio, 76,9% all'Ungheria). Se una ripetizione entra nel buffer, posizionaSu()
+// interpola fra due punti IDENTICI e restituisce una costante: il pallino si ferma e poi
+// salta. E' il difetto che nel replay si vedeva all'ultima curva dell'Hungaroring.
+{
+  // buffer con una TENUTA in mezzo: due campioni identici a t=0 e t=263
+  const conTenuta = [
+    { t: 0,    vb: [0, 0] },
+    { t: 263,  vb: [0, 0] },        // ripetizione: il feed non aveva niente di nuovo
+    { t: 526,  vb: [20, 0] },
+  ];
+  // senza la tenuta, il buffer che il modulo costruisce oggi
+  const pulito = [
+    { t: 0,    vb: [0, 0] },
+    { t: 526,  vb: [20, 0] },
+  ];
+  const a = posizionaSu(conTenuta, 130);    // a meta' fra t=0 e t=263
+  const b = posizionaSu(pulito, 130);
+  ok(a[0] === 0, 'con la tenuta nel buffer il pallino resta FERMO (e il difetto)');
+  ok(b[0] > 3 && b[0] < 7, `senza la tenuta il pallino avanza (x=${b[0].toFixed(1)})`);
+
+  // e il modulo, oggi, la tenuta non la mette proprio nel buffer: si verifica sul
+  // comportamento osservabile di creaLisciatore + posizionaSu su un feed che ripete
+  const liscio = creaLisciatore();
+  let fermi = 0, tot = 0, prec = null;
+  for (let k = 0; k < 60; k++) {
+    // feed che ripete due volte su tre, come all'Ungheria
+    const idx = Math.floor(k / 3);
+    const campioni = [];
+    for (let j = 0; j <= idx; j++) campioni.push({ t: j * 263, vb: [j * 20, 0] });
+    const p = posizionaSu(campioni, idx * 263 + (k % 3) * 88);
+    const q = liscio.passo(p);
+    if (prec) { tot++; if (Math.abs(q[0] - prec[0]) < 1e-9) fermi++; }
+    prec = [q[0], q[1]];
+  }
+  ok(fermi / tot < 0.2, `il pallino non resta fermo su un feed che ripete (fermi ${(100*fermi/tot).toFixed(0)}%)`);
+}
+
 console.log(fail ? `\n${fail} FAIL` : '\nTUTTI OK');
 process.exit(fail ? 1 : 0);

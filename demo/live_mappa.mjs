@@ -171,7 +171,24 @@ export function creaLiveMappa({ canvasPista, canvasLive, pista, geo }) {
     const v = voce(num);
     v.wall = Date.now();
     v.extra = extra;
-    v.campioni.push({ t: tMs, vb: versoVb(xy.x, xy.y) });
+    const vb = versoVb(xy.x, xy.y);
+    // LE TENUTE NON ENTRANO NEL BUFFER. Il feed non manda sempre una posizione nuova:
+    // quando non ne ha una, ripete l'ultima. Misurato sul 2026 lato archivio, dove il
+    // grezzo e' lo stesso: il 38% dei campioni al Belgio, il 76,9% all'Ungheria. Se una
+    // ripetizione entra nel buffer, posizionaSu() interpola fra due punti IDENTICI e
+    // restituisce una costante — il pallino si ferma e poi salta, che e' esattamente lo
+    // scatto che si vedeva nel replay prima di ripararlo.
+    //
+    // Scartarle non fa perdere niente: la posizione e' gia' quella, e il tempo di arrivo
+    // di un campione che non dice niente di nuovo non e' informazione. Un'auto DAVVERO
+    // ferma smette semplicemente di produrre campioni distinti, e l'extrapolazione — che
+    // e' gia' limitata a EXTRAP_MAX_MS — la lascia dov'e' invece di farla scivolare.
+    const ult = v.campioni[v.campioni.length - 1];
+    if (ult && ult.vb[0] === vb[0] && ult.vb[1] === vb[1]) {
+      if (tMs > tMax) { rit.osserva(Date.now(), tMs); tMax = tMs; wallTMax = Date.now(); }
+      return;
+    }
+    v.campioni.push({ t: tMs, vb });
     if (v.campioni.length > 12) v.campioni.shift();
     if (tMs > tMax) {
       rit.osserva(Date.now(), tMs);          // ritmo e buco di consegna su finestra
