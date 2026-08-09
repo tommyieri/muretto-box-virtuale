@@ -14,8 +14,20 @@
 # COSA LO FA USCIRE 1:
 #  (a) sito che non serve versione.json ma la sonda non lo dice (o esce 0);
 #  (b) commit sconosciuto al repo ma la sonda non lo dice;
+#  (c) sito che serve byte DIVERSI da main ma la sonda non lo dice;
 #  (d) sigillo null ma la sonda non lo dice;
 #  (v) versione sana ma la sonda esce != 0 (falso allarme = guardiano spento).
+#
+# IL CASO (c) E' NUOVO col 10/08/2026, quando la sonda ha smesso di contare i commit di
+# versione.json e ha cominciato a confrontare i BYTE serviti con quelli di main. E' il ramo
+# che porta il verdetto, quindi e' quello che deve essere provato meglio: il sito finto qui
+# sotto serve una copia fedele del file che la sonda sceglierebbe (verde) e poi la stessa
+# copia con un byte in piu' (rosso).
+#
+# --grazia-minuti 0 DAPPERTUTTO, e non e' un dettaglio: la sonda vera non giudica se
+# l'ultimo commit che tocca demo/ ha meno di dieci minuti. Senza azzerarla, questo collaudo
+# passerebbe o fallirebbe a seconda di quanto tempo fa e' stato spinto l'ultimo commit —
+# cioe' sarebbe un test a orologio.
 set -uo pipefail
 
 QUI="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -37,7 +49,7 @@ ERRORI=0
 caso() { # caso <nome> <exit_atteso> <frammento_atteso_nel_messaggio>
   local nome="$1" atteso="$2" frammento="$3"
   local uscita esito
-  uscita="$("$SONDA" --sito "http://127.0.0.1:$PORTA" 2>&1)"; esito=$?
+  uscita="$("$SONDA" --sito "http://127.0.0.1:$PORTA" --grazia-minuti 0 2>&1)"; esito=$?
   if [[ "$esito" -ne "$atteso" ]]; then
     echo "test_sonda FALLITA — caso $nome: exit $esito invece di $atteso"
     printf '%s\n' "$uscita" | sed 's/^/       /'
@@ -57,6 +69,20 @@ if [[ -z "$MAIN_SHA" ]]; then
   exit 1
 fi
 
+# IL FILE TESTIMONE lo sceglie la SONDA, non questo collaudo: `--quale-file` stampa gli
+# stessi candidati che userebbe davvero. Se lo riscrivessimo qui, un giorno le due scelte
+# divergerebbero e il collaudo proverebbe un ramo che in produzione non si percorre.
+TESTIMONE="$("$SONDA" --quale-file 2>/dev/null | head -1)"
+if [[ -z "$TESTIMONE" ]]; then
+  echo "test_sonda NON GIUDICABILE: la sonda non indica nessun file testimone — esco 1"
+  exit 1
+fi
+REL="${TESTIMONE#demo/}"
+mkdir -p "$DIR/$(dirname "$REL")"
+git -C "$QUI/.." show "origin/main:$TESTIMONE" > "$DIR/$REL" || {
+  echo "test_sonda NON GIUDICABILE: non leggo origin/main:$TESTIMONE — esco 1"; exit 1; }
+echo "    testimone: $REL"
+
 # (a) il sito non serve versione.json
 rm -f "$DIR/data/versione.json"
 caso "a-sito-senza-versione" 1 "non serve data/versione.json"
@@ -69,12 +95,17 @@ caso "b-commit-sconosciuto" 1 "non esiste in questo repo"
 printf '{"commit": "%s", "sigillo_finto": null}\n' "$MAIN_SHA" > "$DIR/data/versione.json"
 caso "d-sigillo-null" 1 "sigillo assente"
 
-# (v) versione sana: la sonda deve stare zitta e uscire 0
+# (c) il sito serve BYTE diversi da main: e' il ramo che porta il verdetto
 printf '{"commit": "%s", "sigillo_finto": "c0ffee"}\n' "$MAIN_SHA" > "$DIR/data/versione.json"
-caso "v-versione-sana" 0 "esattamente origin/main"
+printf '\n<!-- un byte che main non ha -->\n' >> "$DIR/$REL"
+caso "c-byte-diversi" 1 "NON serve i byte di main"
+
+# (v) versione sana E byte fedeli: la sonda deve stare zitta e uscire 0
+git -C "$QUI/.." show "origin/main:$TESTIMONE" > "$DIR/$REL"
+caso "v-versione-sana" 0 "i byte pubblicati sono quelli di main"
 
 if [[ "$ERRORI" -eq 0 ]]; then
-  echo "test_sonda: 4/4 rami provati (3 rossi scattano, il verde tace)"
+  echo "test_sonda: 5/5 rami provati (4 rossi scattano, il verde tace)"
   exit 0
 fi
 exit 1
