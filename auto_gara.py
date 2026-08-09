@@ -693,79 +693,22 @@ def wave_quali():
     return True
 
 
-# --------------------------------------------- ONDATA LIBERE: prove libere
-# Stessa fonte delle gare/quali (TracingInsights). Le libere sono tre sessioni
-# (FP1/FP2/FP3) che compaiono in momenti diversi: il file cresce nel weekend.
-# BOUNDED: si processa solo il GP del weekend in corso (finestra di date dal
-# calendario), non tutti i 22 -> poche richieste. Isolata: non tocca gare/quali.
-# Idempotente: rigenera dallo stato attuale di TI, commit solo se cambia.
-def _gp_weekend_corrente():
-    try:
-        cal = json.load(open(os.path.join(ROOT, CALENDARIO)))
-        mappa = json.load(open(os.path.join(ROOT, MAPPA)))
-    except OSError:
-        return []
-    nome2ti = {m['nome']: (ti, m.get('titolo', m['nome']))
-               for ti, m in mappa.items()}
-    oggi = datetime.date.today()
-    out = []
-    for g in cal.get('gare', []):
-        nome = g.get('nome') or g.get('gara_demo')
-        d = g.get('data')
-        if not d or nome not in nome2ti:
-            continue
-        try:
-            gd = datetime.date.fromisoformat(d)
-        except ValueError:
-            continue
-        if -3 <= (oggi - gd).days <= 2:      # dal giovedi al lunedi del weekend
-            ti, titolo = nome2ti[nome]
-            out.append((ti, nome, titolo))
-    return out
-
-
-def wave_libere():
-    correnti = _gp_weekend_corrente()
-    if not correnti:
-        log('ondata libere: nessun weekend in corso.'); return False
-    prodotte = []
-    for ti, nome, titolo in correnti:
-        if not raw_head_sess(ti, 'Practice 1'):   # nessuna libera ancora online
-            continue
-        rc = sh([PY, 'gen_libere_ti.py', '--gara', nome, '--ti', ti,
-                 '--evento', titolo], check=False)
-        if rc == 0:
-            prodotte.append(nome)
-    if not prodotte:
-        log('ondata libere: nessuna sessione utile online.'); return False
-    commit_push('auto: prove libere aggiornate ' + ', '.join(prodotte)
-                + ' (fonte TracingInsights)')
-    return True
-
-
-# --------------------------------------------- ONDATA SPRINT: weekend sprint
-# Come le libere ma per le sessioni "Sprint Qualifying" e "Sprint": esiste solo
-# nei weekend sprint (le cartelle mancano negli altri -> raw_head salta).
-# Bounded al weekend in corso, isolata dopo gare/quali/libere.
-def wave_sprint():
-    correnti = _gp_weekend_corrente()
-    if not correnti:
-        log('ondata sprint: nessun weekend in corso.'); return False
-    prodotte = []
-    for ti, nome, titolo in correnti:
-        if not raw_head_sess(ti, 'Sprint Qualifying'):   # non e' un weekend sprint
-            continue
-        rc = sh([PY, 'gen_sprint_ti.py', '--gara', nome, '--ti', ti,
-                 '--evento', titolo], check=False)
-        if rc == 0:
-            prodotte.append(nome)
-    if not prodotte:
-        log('ondata sprint: nessuna sessione sprint online (weekend non-sprint).')
-        return False
-    commit_push('auto: sprint aggiornato ' + ', '.join(prodotte)
-                + ' (fonte TracingInsights)')
-    return True
-
+# QUI STAVANO LE ONDATE LIBERE E SPRINT, spente il 09/08/2026 per decisione del PO.
+#
+# Scaricavano FP1/FP2/FP3 e le due sessioni sprint da TracingInsights e scrivevano
+# demo/data/libere_<gara>.json e sprint_<gara>.json coi loro manifest. L'unica pagina che
+# li leggeva — demo/libere.html, demo/sprint.html — e' stata ritirata col sito nuovo: il
+# dato continuava ad arrivare, aggiornato e committato a ogni weekend, e non lo mostrava
+# nessuno. La telemetria per giro delle libere il sito nuovo la prende da gen_giri.py
+# (FastF1), che e' una fonte diversa e viva.
+#
+# I generatori restano: gen_libere_ti.py e gen_sprint_ti.py si lanciano a mano il giorno in
+# cui una pagina torna a leggerli. I file gia' scritti restano dove sono, fermi
+# all'Ungheria — e stanno a registro in demo/DEBITO_DEMO.json, con una guardia che diventa
+# rossa se qualcuno riaccende l'ondata senza una decisione nuova.
+#
+# _gp_weekend_corrente() se n'e' andata con loro: la usavano solo queste due (wave_quali
+# ha una sua strada, legge la mappa e non la finestra di date).
 
 # ------------------------------------------------------ ONDATA 2: release f1db
 def _github_latest():
@@ -894,19 +837,5 @@ if __name__ == '__main__':
     except Exception as e:
         log(f"ondata quali: errore ({e!r}) — le gare sono gia state gestite, proseguo.")
         fattoq = False
-    try:
-        fattol = wave_libere()
-    except SystemExit:
-        raise
-    except Exception as e:
-        log(f"ondata libere: errore ({e!r}) — gare e quali gia gestite, proseguo.")
-        fattol = False
-    try:
-        fattos = wave_sprint()
-    except SystemExit:
-        raise
-    except Exception as e:
-        log(f"ondata sprint: errore ({e!r}) — resto gia gestito, proseguo.")
-        fattos = False
-    if not (fatto1 or fatto2 or fattor or fattoq or fattol or fattos):
+    if not (fatto1 or fatto2 or fattor or fattoq):
         log('niente da fare: demo allineata.')

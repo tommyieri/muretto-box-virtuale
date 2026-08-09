@@ -17,6 +17,10 @@
 //  (b) una pagina che il registro dichiara «non lo importa» ha ricominciato a importarlo
 //      (il debito e' saldato: la voce va rimossa, e la cosa merita di essere vista);
 //  (c) un file dichiarato nella guardia non esiste;
+//  (c-bis) una cosa dichiarata SPENTA e' tornata accesa: `non_deve_contenere` sorveglia il
+//      verso opposto — non «l'accensione c'e' ancora» ma «lo spegnimento regge». Serve
+//      quando il PO decide di togliere qualcosa: senza, la decisione vale finche' nessuno
+//      la rimette per sbaglio, e nessuno se ne accorge;
 //  (d) una voce senza `referto` o senza `guardia` — come in ROSSE_DICHIARATE, una voce che
 //      nessun documento spiega non e' una decisione, e' un difetto smesso di guardare.
 import { readFileSync, existsSync } from 'node:fs';
@@ -63,6 +67,22 @@ for (const v of reg.voci ?? []) {
       esito(readFileSync(pa).equals(readFileSync(pb)),
         `${eti} ${a} e ${bb} sono ancora byte-identici `
         + '— se divergono, il motore e il sito leggono due tabelle diverse (E12)');
+    }
+    continue;
+  }
+
+  // GUARDIA A ROVESCIO: una cosa SPENTA per decisione deve restare spenta.
+  if (Array.isArray(g.non_deve_contenere)) {
+    const f = path.join(RADICE, g.file_spento);
+    if (!existsSync(f)) {
+      esito(false, `${eti} il file dichiarato spento non esiste: ${g.file_spento}`);
+      continue;
+    }
+    const testo = readFileSync(f, 'utf8');
+    for (const ago of g.non_deve_contenere) {
+      esito(!testo.includes(ago),
+        `${eti} ${g.file_spento} NON contiene piu' «${ago}» `
+        + '— se lo contenesse, qualcuno avrebbe riacceso cio\' che il PO ha spento');
     }
     continue;
   }
