@@ -11,39 +11,25 @@
    "live.html"
   ],
   [
-   "Analisi",
-   "analisi.html"
+   "Telemetria",
+   "telemetria.html"
   ],
   [
-   "Statistiche",
-   "statistiche.html"
+   "Campionato",
+   "campionato.html"
   ]
  ],
- "_nav_attesa_sorgente": "Questo elenco e' la COPIA DI CONTROLLO della costante NAV in ai_lab/redazione/statico.py, che e' la sorgente unica da cui si timbrano le pagine (`python3 ai_lab/redazione/statico.py --nav`). Sono due file apposta: se lo stampatore e il sorvegliante fossero lo stesso, un errore nello stampatore si certificherebbe da solo. Cambiare la nav significa cambiare NAV, rilanciare --nav, e aggiornare questa riga: il test resta rosso finche' non si e' fatto tutt'e tre.",
- "_nav_attesa_nota": "Sequenza (etichetta, href) normalizzata: il prefisso ('' nelle pagine, '/' in 404.html, '../' negli articoli) viene tolto prima del confronto, e class=\"on\" e' IGNORATO. Sono informazione, non deriva: pretendere il blocco byte-identico sarebbe irrealizzabile e sbagliato.",
+ "_nav_attesa_sorgente": "Copia di controllo della costante VOCI in demo/muro.mjs (che monta la nav di ogni pagina) e di NAV in ai_lab/redazione/statico.py (che scrive 404 e articoli). Restano tre file apposta: se lo stampatore e il sorvegliante fossero lo stesso, un errore si certificherebbe da solo.",
+ "_nav_attesa_nota": "La nav si monta in JS da un posto solo: la sentinella non cerca piu' un blocco <nav> in ogni file — cerca che ogni pagina importi muro.mjs e chiami guscio(), e che la sequenza (etichetta, href) dichiarata in muro.mjs sia questa.",
  "pagine_non_indicizzabili": {
   "404.html": "pagina di errore: generata da ai_lab/redazione/statico.py, non va in sitemap per definizione",
-  "articolo.html": "fallback JS non canonico. I canonici sono i dodici file pre-renderizzati in demo/articolo/, perche' su hosting statico la querystring non puo' scegliere un file",
-  "gara.html": "richiede ?g=<gara>: senza parametro non e' una pagina, e' un contenitore",
-  "weekend.html": "richiede ?gp=<gara>",
-  "scheda.html": "richiede ?tipo=&id=: e' la scheda di un pilota o di un team, non un indirizzo fisso"
+  "gara.html": "richiede ?g=<gara>: senza parametro non e' una pagina, e' un contenitore"
  },
  "voci": [
   {
-   "id": "S4-analisi-non-usa-il-design-system",
-   "cosa": "analisi.html non carica stile.css e ha una nav con classe propria",
-   "referto": "analisi.html ridefinisce :root da capo (--paper, --card, --ink, --red, --viola, --band) e usa <nav class=\"site\"> invece di <nav class=\"nav\">. E' la pagina piu' bella del sito ed e' la tentazione ovvia da copiare per una pagina nuova: non e' un modello, e' un'eccezione. Le due pagine figlie esistenti (dati.html, forza.html) infatti tornano a stile.css. La sequenza delle voci di nav resta comunque sorvegliata anche qui.",
-   "guardia": {
-    "tipo": "nav_classe_propria",
-    "pagine": {
-     "analisi.html": "site"
-    }
-   }
-  },
-  {
    "id": "S5-dati-fuori-da-demo-data",
    "cosa": "Due file di dati stanno nella radice di demo/ invece che in demo/data/",
-   "referto": "team_colori.json (letto da otto pagine) e neutralizzazione.json non stanno sotto demo/data/. Su team_colori pesa anche un secondo difetto gia' noto: e' caricato con fetch nudo e catch muto in ogni pagina, quindi se manca i colori diventano var(--dim) senza che nessuno lo dica. E' tollerabile per un colore, non per un numero: la regola «le pagine leggono solo demo/data/» resta, e queste due sono le uniche eccezioni ammesse.",
+   "referto": "team_colori.json (letto da otto pagine) e neutralizzazione.json non stanno sotto demo/data/. Su team_colori pesa anche un secondo difetto gia' noto: e' caricato con fetch nudo e catch muto in ogni pagina, quindi se manca i colori diventano var(--dim) senza che nessuno lo dica. E' tollerabile per un colore, non per un numero: la regola «le pagine leggono solo demo/data/» resta, e queste due sono le uniche eccezioni ammesse. [09/08/2026] Col sito nuovo le due letture restano: team_colori.json lo legge muro.mjs::identita(), neutralizzazione.json la pagina-gara.",
    "guardia": {
     "tipo": "letture_fuori_da_data",
     "consentite": [
@@ -68,6 +54,9 @@
  "_saldate": {
   "S1-stile-senza-versione": "SALDATA il 04/08/2026: articolo.html, dati.html, forza.html e 404.html versionano stile.css come tutte le altre, e il controllo ora pretende in piu' che la versione sia LA STESSA ovunque — una versione per pagina non invalida niente.",
   "S2-pagine-vive-fuori-da-sitemap": "SALDATA il 04/08/2026: quali.html, sprint.html, libere.html e tele.html sono entrate in PAGINE_FISSE. Decisione di Tommi («chiudile tutte»): adottate, non cancellate — sono pagine vive che consumano artefatti reali.",
-  "S3-pagine-mai-linkate": "SALDATA il 04/08/2026: le stesse quattro pagine (quali, libere, sprint, tele) sono linkate da statistiche.html, sezione «Il weekend, sessione per sessione». Ci si arrivava dal muro delle coperture, tolto lo stesso giorno insieme al resto della prosa di provenienza: la sezione di link e' nata proprio per non lasciarle orfane."
- }
+  "S3-pagine-mai-linkate": "SALDATA il 04/08/2026: le stesse quattro pagine (quali, libere, sprint, tele) sono linkate da statistiche.html, sezione «Il weekend, sessione per sessione». Ci si arrivava dal muro delle coperture, tolto lo stesso giorno insieme al resto della prosa di provenienza: la sezione di link e' nata proprio per non lasciarle orfane.",
+  "S4-analisi-non-usa-il-design-system": "CHIUSA il 09/08/2026: col sito nuovo NON esiste piu' un'eccezione — analisi.html usa muro.css come tutte le altre e non ridefinisce :root.",
+  "S3-S2-pagine-sezione": "CHIUSE il 09/08/2026 spostando le pagine in demo/_ritirate/: classifiche, statistiche-*, forza, dati, quali, libere, sprint, tele, weekend, scheda, articolo. Il sito nuovo ha sei pagine; quelle non sono piu' linkate ne' in sitemap, e non stanno piu' nella radice servita. I file restano su disco (e in git) finche' il PO non decide di cancellarli."
+ },
+ "_nota_riscrittura": "RISCRITTO il 09/08/2026 col sito nuovo. La struttura sorvegliata e' cambiata: la nav non e' piu' ripetuta nell'HTML di ogni pagina ma costruita da demo/muro.mjs::guscio, e il foglio di stile e' demo/muro.css. Le voci che descrivevano il vecchio impianto sono state chiuse, non cancellate in silenzio: stanno in _saldate."
 }

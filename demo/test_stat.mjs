@@ -56,74 +56,47 @@ const guardia = t => reg.voci.find(v => v.guardia?.tipo === t)?.guardia ?? {};
 
 // ---------------------------------------------------------------- A. la nav
 //
-// NORMALIZZATA, non byte-identica. Il blocco non e' identico in nessun caso e NON deve
-// esserlo: class="on" dice quale sezione e' attiva e il prefisso dell'href cambia con la
-// profondita' della pagina ('' nelle pagine, '/' in 404.html, '../' negli articoli).
-// Sono informazione. Quello che deve restare uguale e' la SEQUENZA (etichetta, href).
+// RISCRITTA IL 09/08/2026 col sito nuovo. Prima la nav era ripetuta nell'HTML di ogni
+// pagina e la sentinella confrontava quindici copie con l'attesa; ora la monta
+// demo/muro.mjs::guscio() da una costante sola, e il controllo cambia oggetto:
+//   1. la sequenza dichiarata in muro.mjs e' quella attesa dal registro;
+//   2. la stessa sequenza sta anche in statico.py (che scrive 404 e articoli);
+//   3. OGNI pagina importa muro.mjs e chiama guscio(): una pagina che se lo dimentica
+//      resta senza intestazione, ed e' esattamente il guasto che questo blocco cerca.
+// Il controllo e' piu' forte di prima, non piu' debole: una copia in meno da sbagliare.
 const attesa = reg.nav_attesa.map(([e, h]) => `${e}->${h}`).join(' | ');
-const classePropria = guardia('nav_classe_propria').pagine ?? {};
-const navDi = src => {
-  const m = src.match(/<nav class="(nav|site)"[^>]*>([\s\S]*?)<\/nav>/);
-  if (!m) return null;
-  const voci = [...m[2].matchAll(/<a href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)].map(([, href, txt]) => {
-    const etichetta = txt.replace(/<[^>]+>/g, '').trim();
-    const pulito = href.replace(/^(\.\.\/|\/)/, '');   // via il prefisso di profondita'
-    return `${etichetta}->${pulito}`;
-  });
-  return { classe: m[1], voci: voci.join(' | ') };
-};
 
-const conNav = [];
+const muro = readFileSync(path.join(QUI, 'muro.mjs'), 'utf8');
+const vociMuro = [...(muro.match(/const VOCI = \[([\s\S]*?)\];/)?.[1] ?? '')
+  .matchAll(/\['([^']+)',\s*'([^']+)'\]/g)].map(m => `${m[1]}->${m[2]}`).join(' | ');
+esito(vociMuro === attesa,
+  `muro.mjs monta la nav attesa${vociMuro === attesa ? '' : `\n           atteso: ${attesa}\n           trovato: ${vociMuro}`}`);
+
+const vociStatico = [...(readFileSync(STATICO, 'utf8').match(/^NAV = \[([\s\S]*?)^\]/m)?.[1] ?? '')
+  .matchAll(/\("([^"]+)",\s*"([^"]+)"\)/g)].map(m => `${m[1]}->${m[2]}`).join(' | ');
+esito(vociStatico === attesa,
+  `statico.py::NAV e' d'accordo con muro.mjs${vociStatico === attesa ? '' : `\n           trovato: ${vociStatico}`}`);
+
 for (const f of pagine) {
-  const nav = navDi(testo[f]);
-  if (!nav) { esito(false, `${f} non ha nessun blocco <nav>`); continue; }
-  conNav.push(f);
-  esito(nav.voci === attesa,
-    `${f} ha la nav attesa${nav.voci === attesa ? '' : `\n           atteso: ${attesa}\n           trovato: ${nav.voci}`}`);
-
-  // la classe propria e' ammessa solo dove il registro la dichiara, e DEVE esserci dove
-  // la dichiara: se analisi.html tornasse a class="nav" la voce S4 andrebbe tolta.
-  const attesaClasse = classePropria[f] ?? 'nav';
-  esito(nav.classe === attesaClasse,
-    `${f} usa <nav class="${attesaClasse}">`
-    + (classePropria[f] ? ' (classe propria dichiarata a registro)' : ''));
+  const usa = /muro\.mjs/.test(testo[f]) && /guscio\(/.test(testo[f]);
+  esito(usa, `${f} monta il guscio da muro.mjs`);
 }
-esito(conNav.length === pagine.length, `tutte le ${pagine.length} pagine hanno una nav`);
 
 // ---------------------------------------------------------------- A-bis. i footer
 //
-// AGGIUNTO DOPO UN GUASTO VERO, il 04/08/2026. La prima versione di questa sentinella
-// guardava solo la nav dell'intestazione. Nel rinominare la sezione, lo stampatore ha
-// saltato i footer di dati.html e forza.html — che sono su UNA RIGA SOLA e non
-// combaciavano con la sua espressione regolare — e quelle due pagine sono rimaste con la
-// voce vecchia mentre le altre quattordici erano gia' cambiate. La sentinella e' rimasta
-// verde, perche' non aveva idea che i footer esistessero. Se il controllo esiste solo
-// dove hai gia' guardato, non e' un controllo.
-//
-// LA REGOLA: il footer offre le sezioni in cui NON sei. Per le pagine che non stanno in
-// nessuna sezione (index, scheda, gara, weekend...) sono tutte e quattro.
-const sezioneDi = {};
-for (const [, href] of reg.nav_attesa) sezioneDi[href] = href;
+// Il footer lo scrive lo STESSO guscio della nav (muro.mjs), quindi non c'e' piu' una
+// copia per pagina da confrontare: quello che si controlla e' che il posto dove il
+// guscio va a scrivere esista davvero in ogni pagina. Senza <div class="piede-in">
+// la funzione non trova nulla e la pagina esce senza piede, in silenzio.
 for (const f of pagine) {
-  const m = testo[f].match(/<footer[^>]*>[\s\S]*?<nav>([\s\S]*?)<\/nav>/);
-  if (!m) { console.log(`SALTO    ${f} non ha footer (dichiarato: gara.html non ne ha uno)`); continue; }
-  const voci = [...m[1].matchAll(/<a href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/g)]
-    .map(([, href, txt]) => `${txt.replace(/<[^>]+>/g, '').trim()}->${href.replace(/^(\.\.\/|\/)/, '')}`);
-  const dentro = reg.nav_attesa.map(([e, h]) => `${e}->${h}`);
-  const estranee = voci.filter(v => !dentro.includes(v));
-  const mancanti = dentro.filter(v => !voci.includes(v));
-  esito(estranee.length === 0,
-    `${f} nel footer non ha voci estranee alla nav${estranee.length ? `: ${estranee.join(', ')}` : ''}`);
-  // ne puo' mancare al massimo una, ed e' la propria sezione
-  esito(mancanti.length <= 1,
-    `${f} nel footer manca al massimo la propria sezione${mancanti.length > 1 ? ` (mancano: ${mancanti.join(', ')})` : ''}`);
+  esito(/class="piede-in"/.test(testo[f]), `${f} ha il posto del piede (.piede-in)`);
+  esito(/class="barra"/.test(testo[f]), `${f} ha il posto dell'intestazione (.barra)`);
 }
 
 // ---------------------------------------------------------------- B. gli href risolvono
-for (const f of conNav) {
+for (const f of pagine.slice(0, 1)) {
   for (const [, href] of reg.nav_attesa) {
-    esito(existsSync(path.join(QUI, href)), `[${f}] la nav punta a ${href}, che esiste`);
-    break;   // il file e' lo stesso per tutte: basta provarlo una volta per pagina
+    esito(existsSync(path.join(QUI, href)), `[nav] punta a ${href}, che esiste`);
   }
 }
 for (const [, href] of reg.nav_attesa) {
@@ -179,29 +152,22 @@ for (const f of pagine) {
   }
 }
 
-// ---------------------------------------------------------------- D. ?v= su stile.css
+// ---------------------------------------------------------------- D. ?v= su muro.css
 //
-// SALDATO IL 04/08/2026 (voce S1, tolta dal registro): articolo.html, dati.html e forza.html
-// caricavano stile.css nudo. Adesso il controllo pretende non solo che il ?v= ci sia, ma che
-// sia LO STESSO OVUNQUE — e' la seconda meta' della lezione. Aggiungendo la famiglia .stat-*
-// il file e' cambiato mentre la versione restava 250725c: le pagine gia' visitate hanno
-// continuato a ricevere il CSS vecchio dalla cache, e la barra nella colonna dell'indice non
-// si vedeva. Una versione per pagina non serve a niente: o si muovono tutte, o non si e'
-// invalidato niente.
+// La lezione del 04/08/2026 vale identica sul foglio nuovo: o si muovono tutte le
+// pagine sulla stessa versione, o non si e' invalidato niente. Dal 09/08 il foglio e'
+// demo/muro.css e non ci sono eccezioni dichiarate: chi non lo carica e' un errore.
 const versioni = new Map();
 for (const f of pagine) {
-  const m = testo[f].match(/href="\/?stile\.css([^"]*)"/);
-  if (!m) {
-    // analisi.html non carica stile.css: ridefinisce :root da capo (S4).
-    esito(Boolean(classePropria[f]), `${f} non carica stile.css, ed e' dichiarato`);
-    continue;
-  }
+  const m = testo[f].match(/href="\/?muro\.css([^"]*)"/);
+  esito(Boolean(m), `${f} carica muro.css`);
+  if (!m) continue;
   const v = m[1].startsWith('?v=') ? m[1].slice(3) : null;
-  esito(Boolean(v), `${f} carica stile.css con la querystring di versione`);
+  esito(Boolean(v), `${f} carica muro.css con la querystring di versione`);
   if (v) versioni.set(v, [...(versioni.get(v) ?? []), f]);
 }
 esito(versioni.size <= 1,
-  `tutte le pagine chiedono la stessa versione di stile.css`
+  `tutte le pagine chiedono la stessa versione di muro.css`
   + (versioni.size > 1
      ? `\n           ${[...versioni].map(([v, ff]) => `?v=${v}: ${ff.join(', ')}`).join('\n           ')}`
      : ` (?v=${[...versioni.keys()][0] ?? '—'})`));
@@ -211,15 +177,23 @@ esito(versioni.size <= 1,
 // E' la legge 1 della casa: le pagine sono consumatori puri. Un fetch verso data/ (la
 // cartella di laboratorio, fuori da demo/) non fallirebbe in sviluppo e fallirebbe online.
 const consentite = new Set(guardia('letture_fuori_da_data').consentite ?? []);
+// DAL 09/08/2026 SI GUARDANO ANCHE I MODULI. Col sito nuovo le pagine non fanno piu'
+// fetch da sole: chiamano dati()/datiObbligatori() di muro.mjs, e le due letture
+// eccezionali (team_colori.json, neutralizzazione.json) sono finite li' dentro. Guardare
+// solo l'HTML avrebbe detto «nessuno le legge piu'» mentre le legge tutto il sito: un
+// controllo che cerca dove non e' successo niente non e' un controllo.
+const moduli = readdirSync(QUI).filter(f => f.endsWith('.mjs') && !f.startsWith('test_'));
+const sorgentiLettura = [...pagine.map(f => testo[f]),
+                         ...moduli.map(f => readFileSync(path.join(QUI, f), 'utf8'))];
 for (const f of pagine) {
-  const letti = [...testo[f].matchAll(/(?:fetch|prendiJSON)\(\s*'([^']+)'/g)].map(m => m[1]);
+  const letti = [...testo[f].matchAll(/(?:fetch|prendiJSON|dati|datiObbligatori)\(\s*[`']([^`']+)[`']/g)].map(m => m[1]);
   const fuori = letti.filter(u => !u.startsWith('data/') && !u.startsWith('http')
     && !consentite.has(u) && u.endsWith('.json'));
   esito(fuori.length === 0,
     `${f} legge solo demo/data/${fuori.length ? ` — trovati: ${fuori.join(', ')}` : ''}`);
 }
 for (const u of consentite) {
-  const usata = pagine.some(f => testo[f].includes(`'${u}'`));
+  const usata = sorgentiLettura.some(t => t.includes(u));
   esito(usata, `[S5] l'eccezione ${u} e' ancora usata da qualcuno `
     + '— se nessuno la legge piu\', la voce del registro va tolta');
 }
@@ -410,7 +384,7 @@ if (existsSync(REG)) {
     if (/function\s+\w*ToSnapshot\s*\(/.test(t)) colpevoliFn.push(f);
   }
   esito(colpevoliCss.length === 0,
-    'nessuna pagina ridefinisce le regole .tw-* (stanno in stile.css)'
+    'nessuna pagina ridefinisce le regole .tw-* (stanno in muro.css)'
     + (colpevoliCss.length ? ` — le ridefiniscono: ${colpevoliCss.join(', ')}` : ''));
   esito(colpevoliFn.length === 0,
     'nessuna pagina ri-scrive la traduzione snapshot (sta in live_timing.mjs)'
@@ -419,8 +393,8 @@ if (existsSync(REG)) {
   const lt = readFileSync(path.join(QUI, 'live_timing.mjs'), 'utf8');
   esito(/export function snapshotDaSessione/.test(lt),
     'live_timing.mjs esporta snapshotDaSessione (senza, il controllo sopra passerebbe a vuoto)');
-  esito(/\.tw-list\{/.test(readFileSync(path.join(QUI, 'stile.css'), 'utf8')),
-    'stile.css contiene le regole della torre');
+  esito(/\.tw-list\{/.test(readFileSync(path.join(QUI, 'muro.css'), 'utf8')),
+    'muro.css contiene le regole della torre');
 }
 
 console.log(rosse === 0

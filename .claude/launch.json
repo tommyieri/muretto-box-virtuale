@@ -6,6 +6,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "8123", "--directory", "demo"],
       "port": 8123
+    },
+    {
+      "name": "sito",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8231", "--directory", "demo"],
+      "port": 8231
     }
   ]
 }

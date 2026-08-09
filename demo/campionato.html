@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Campionato 2026 — Muretto Box Virtuale</title>
+<meta name="description" content="Classifica piloti e costruttori della Formula 1 2026, con la scheda di ogni pilota e di ogni squadra.">
+<link rel="canonical" href="https://murettobox.com/campionato.html">
+<link rel="stylesheet" href="muro.css?v=090826a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+<style>
+  .tolgi{ display:flex; gap:6px; margin:24px 0 18px; }
+
+  .clas{ border-radius:var(--r); background:var(--carbonio); border:1px solid var(--bordo); overflow:hidden; }
+  .cr{ display:grid; grid-template-columns:44px 4px 1fr 76px 92px; align-items:center; gap:12px;
+    width:100%; padding:12px 16px; text-align:left; border-bottom:1px solid rgba(255,255,255,.045);
+    cursor:pointer; min-height:62px; transition:background-color .14s var(--ease); }
+  .cr:hover{ background:rgba(255,255,255,.045); }
+  .cr.on{ background:rgba(36,227,210,.08); }
+  .cr .p{ font:500 20px/1 var(--mono); color:var(--fioco); text-align:right; }
+  .cr.podio .p{ color:var(--testo); }
+  .cr:first-child .p{ color:var(--ambra); }
+  .cr .bar{ width:4px; height:34px; border-radius:2px; background:var(--c,#8A93A3); }
+  .cr .chi b{ font:700 20px/1 var(--disp); letter-spacing:.03em; }
+  .cr .chi small{ display:block; margin-top:5px; color:var(--fioco); font-size:12.5px; }
+  .cr .v{ font:500 14px/1 var(--mono); color:var(--calmo); text-align:right; }
+  .cr .pt{ font:500 22px/1 var(--mono); text-align:right; }
+  .cr .pt small{ display:block; margin-top:5px; color:var(--fioco); font:400 10px/1 var(--mono); letter-spacing:.14em; }
+  .cap-clas{ display:grid; grid-template-columns:44px 4px 1fr 76px 92px; gap:12px; padding:10px 16px;
+    border-bottom:1px solid var(--bordo); color:var(--fioco);
+    font:500 9.5px/1 var(--mono); letter-spacing:.16em; text-transform:uppercase; }
+  .cap-clas span:nth-child(4),.cap-clas span:nth-child(5){ text-align:right; }
+  @media (max-width:620px){
+    .cr,.cap-clas{ grid-template-columns:34px 4px 1fr 64px; }
+    .cr .v,.cap-clas span:nth-child(4){ display:none; }
+  }
+
+  /* scheda */
+  .scheda{ position:fixed; inset:auto 0 0; z-index:var(--z-foglio);
+    background:var(--carbonio); border-top:1px solid var(--bordo-2);
+    box-shadow:0 -18px 50px rgba(0,0,0,.6);
+    transform:translateY(102%); transition:transform .3s var(--ease); }
+  .scheda.su{ transform:none; }
+  .scheda-in{ max-width:var(--max); margin:0 auto; padding:20px clamp(14px,3vw,26px) 26px;
+    max-height:min(78vh,660px); overflow-y:auto; }
+  .scheda-t{ display:flex; align-items:center; gap:14px; margin-bottom:18px; }
+  .scheda-t .bar{ width:5px; height:44px; border-radius:3px; background:var(--c,#8A93A3); }
+  .scheda-t h2{ font-size:30px; text-transform:uppercase; }
+  .scheda-t .sq{ color:var(--calmo); font-size:14px; margin-top:4px; }
+  .scheda-t .num{ margin-left:auto; font:500 40px/1 var(--mono); color:var(--c,#8A93A3); }
+  .scheda-t .x{ width:42px; height:42px; border-radius:11px; background:rgba(255,255,255,.06);
+    display:grid; place-items:center; color:var(--calmo); font-size:20px; flex:0 0 auto; }
+  .scheda-t .x:hover{ background:rgba(255,255,255,.12); color:var(--testo); }
+  .duetti{ display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  @media (max-width:760px){ .duetti{ grid-template-columns:1fr; } }
+  .duetti h4{ font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--calmo); margin-bottom:10px; }
+  .celle{ display:grid; grid-template-columns:repeat(auto-fit,minmax(88px,1fr)); gap:8px; }
+  .cel{ padding:11px 12px; border-radius:10px; background:rgba(255,255,255,.04); }
+  .cel small{ display:block; color:var(--fioco); font:500 9px/1.3 var(--mono); letter-spacing:.13em; text-transform:uppercase; }
+  .cel b{ display:block; margin-top:7px; font:500 21px/1 var(--mono); }
+  .velo{ position:fixed; inset:0; background:rgba(4,5,7,.6); backdrop-filter:blur(2px);
+    z-index:var(--z-velo); opacity:0; pointer-events:none; transition:opacity .25s var(--ease); }
+  .velo.su{ opacity:1; pointer-events:auto; }
+</style>
+</head>
+<body>
+<header class="barra"></header>
+
+<main class="scafo">
+  <p class="occhiello" id="occ">Campionato · Stagione 2026</p>
+  <h1 class="titolone">La <em>classifica</em></h1>
+
+  <div class="tolgi" role="tablist">
+    <button class="pil on" id="tbPil" role="tab" aria-selected="true">Piloti</button>
+    <button class="pil" id="tbCos" role="tab" aria-selected="false">Costruttori</button>
+  </div>
+
+  <section class="clas" id="clas"></section>
+</main>
+
+<div class="velo" id="velo"></div>
+<aside class="scheda" id="scheda" aria-hidden="true">
+  <div class="scheda-in" id="schedaIn"></div>
+</aside>
+
+<footer class="piede"><div class="piede-in"></div></footer>
+
+<script type="module">
+import { guscio, dati, el, veri, V, identita, coloreDi, guasto, scheletro, dataIt, nnum }
+  from './muro.mjs?v=090826a';
+guscio('campionato.html');
+const E = (id) => document.getElementById(id);
+
+let cls = null, schede = null, motori = null, colori = {};
+let vista = 'piloti';
+
+async function boot() {
+  const [c, id, mot] = await Promise.all([
+    dati(`data/classifiche_2026.json?v=${V}`), identita(), dati(`data/motori_2026.json?v=${V}`)]);
+  if (!c) { guasto(E('clas'), boot); return; }
+  cls = c; schede = id.schede; colori = id.colori; motori = mot || {};
+  const a = c.aggiornato_al;
+  E('occ').textContent = `Campionato 2026 · dopo il ${a?.titolo || 'via'}`;
+  disegna();
+}
+
+function disegna() {
+  const piloti = vista === 'piloti';
+  const righe = piloti ? (cls.piloti || []) : (cls.costruttori || cls.squadre || []);
+  E('clas').replaceChildren(
+    el('div', { class: 'cap-clas' },
+      el('span', {}, 'Pos'), el('span', {}), el('span', {}, piloti ? 'Pilota' : 'Costruttore'),
+      el('span', {}, 'Vittorie'), el('span', {}, 'Punti')),
+    ...righe.map(r => riga(r, piloti)));
+}
+
+function riga(r, piloti) {
+  const team = piloti ? r.team_demo : (r.team_demo || r.nome);
+  const col = coloreDi(team, colori);
+  const sotto = piloti ? team
+    : (motori[r.constructorId]?.motore ? `motore ${motori[r.constructorId].motore}` : '');
+  return el('button', {
+    class: 'cr' + (r.pos <= 3 ? ' podio' : ''), type: 'button', stile: { '--c': col },
+    onclick: () => apri(r, piloti),
+  },
+    el('span', { class: 'p n' }, String(r.pos)),
+    el('span', { class: 'bar' }),
+    el('span', { class: 'chi' }, el('b', {}, piloti ? r.nome : (r.nome || r.team_demo)),
+      sotto ? el('small', {}, sotto) : null),
+    el('span', { class: 'v n' }, String(r.vittorie ?? 0)),
+    el('span', { class: 'pt n' }, String(r.punti).replace('.0', ''),
+      el('small', {}, r.distacco ? `−${String(r.distacco).replace('.0', '')}` : 'LEADER')));
+}
+
+/* ------------------------------------------------------------- scheda */
+function cella(t, v) { return el('div', { class: 'cel' }, el('small', {}, t), el('b', { class: 'n' }, v)); }
+
+function apri(r, piloti) {
+  const s = piloti
+    ? Object.values(schede?.piloti || {}).find(p => p.sigla === r.sigla)
+    : Object.values(schede?.team || {}).find(t => (t.team_demo || t.nome) === (r.team_demo || r.nome));
+  const team = piloti ? r.team_demo : (r.team_demo || r.nome);
+  const col = coloreDi(team, colori);
+  const car = s?.carriera, sta = s?.stagione;
+  E('schedaIn').replaceChildren(
+    el('div', { class: 'scheda-t', stile: { '--c': col } },
+      el('span', { class: 'bar' }),
+      el('div', {}, el('h2', {}, piloti ? r.nome : (s?.nome_completo || r.nome || team)),
+        el('p', { class: 'sq' }, piloti ? team
+          : (motori[r.constructorId]?.motore ? `motore ${motori[r.constructorId].motore}` : ''))),
+      piloti && s?.numero ? el('span', { class: 'num' }, s.numero) : null,
+      el('button', { class: 'x', type: 'button', 'aria-label': 'Chiudi', onclick: chiudi }, '✕')),
+    el('div', { class: 'duetti' },
+      el('div', {}, el('h4', {}, 'Stagione 2026'),
+        el('div', { class: 'celle' }, veri(
+          cella('posizione', 'P' + (sta?.pos ?? r.pos)),
+          cella('punti', String(r.punti).replace('.0', '')),
+          cella('vittorie', String(r.vittorie ?? 0)),
+          sta?.podi != null ? cella('podi', String(sta.podi)) : null,
+          sta?.media_griglia != null ? cella('media griglia', nnum(sta.media_griglia, 1)) : null,
+          sta?.media_arrivo != null ? cella('media arrivo', nnum(sta.media_arrivo, 1)) : null))),
+      car ? el('div', {}, el('h4', {}, 'In carriera'),
+        el('div', { class: 'celle' }, veri(
+          cella('gran premi', String(car.gp_disputati)),
+          cella('vittorie', String(car.vittorie)),
+          cella('podi', String(car.podi)),
+          cella('pole', String(car.pole)),
+          car.titoli ? cella('titoli', String(car.titoli)) : null,
+          cella('punti', String(car.punti).replace('.0', '')))),
+        // il nome del GP arriva in inglese dalla fonte: si mostra la data, non la traduzione
+        car.ultima_vittoria?.data
+          ? el('p', { stile: { marginTop: '12px', color: 'var(--fioco)', fontSize: '13px' } },
+              `Ultima vittoria: ${dataIt(car.ultima_vittoria.data)}.`)
+          : null) : null));
+  E('scheda').classList.add('su'); E('scheda').setAttribute('aria-hidden', 'false');
+  E('velo').classList.add('su');
+  E('schedaIn').querySelector('.x')?.focus();
+}
+function chiudi() {
+  E('scheda').classList.remove('su'); E('scheda').setAttribute('aria-hidden', 'true');
+  E('velo').classList.remove('su');
+}
+E('velo').addEventListener('click', chiudi);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') chiudi(); });
+
+for (const [b, v] of [['tbPil', 'piloti'], ['tbCos', 'costruttori']]) {
+  E(b).addEventListener('click', () => {
+    vista = v; chiudi();
+    E('tbPil').classList.toggle('on', v === 'piloti');
+    E('tbCos').classList.toggle('on', v !== 'piloti');
+    E('tbPil').setAttribute('aria-selected', String(v === 'piloti'));
+    E('tbCos').setAttribute('aria-selected', String(v !== 'piloti'));
+    disegna();
+  });
+}
+
+scheletro(E('clas'), 8, 62);
+boot();
+</script>
+</body>
+</html>

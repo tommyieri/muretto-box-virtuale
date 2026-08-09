@@ -323,6 +323,12 @@ def wave_nuove():
         sh([PY, 'gen_replay.py', '--gara', nome], check=False)        # posizioni GPS vere
         sh([PY, 'gen_tele_giro.py', '--gara', nome], check=False)     # overlay sul tracciato
         sh([PY, 'gen_soste_fastf1.py', '--gara', nome], check=False)  # arbitro delle soste
+        # LA TELEMETRIA GIRO PER GIRO della gara nuova (e delle sue sessioni). Senza
+        # questa riga la pagina Telemetria mostrerebbe tutte le gare tranne l'ultima —
+        # cioe' proprio quella che uno va a cercare la domenica sera. check=False come
+        # i fratelli: una gara resta pubblicata anche se FastF1 non ha ancora i dati,
+        # e la sessione mancante si ripesca alla pubblicazione dopo.
+        sh([PY, 'gen_giri.py', '--gara', nome], check=False)          # ogni giro, ogni pilota
 
         # RIPROVA SULLE GARE CHE AVEVANO DECLINATO. Monaco e Ungheria non hanno un replay a
         # posizioni vere perche' il loro GPS era rado o derivante QUANDO l'abbiamo chiesto —

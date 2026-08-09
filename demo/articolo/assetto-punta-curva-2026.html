@@ -35,7 +35,7 @@
 <meta name="twitter:image" content="https://murettobox.com/og/assetto-punta-curva-2026.png">
 <meta name="twitter:title" content="La McLaren è la più forte in curva della griglia e la quartultima sul dritto">
 <meta name="twitter:description" content="Chi guarda le classifiche vede chi va forte. Incrociando la velocità di punta con quella in curva su dieci gare si vede una cosa diversa: dove ogni…">
-<link rel="stylesheet" href="../stile.css">
+<link rel="stylesheet" href="../muro.css?v=090826a">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 <script type="application/ld+json">
 {
@@ -67,21 +67,10 @@
 </script>
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="../index.html" aria-label="Muretto Box Virtuale — home">
-    <span class="brand-mark"><span>M</span></span>
-    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
-  </a>
-  <nav class="nav" aria-label="Sezioni">
-    <a href="../stagione.html">Stagione</a>
-    <a href="../live.html"><span class="dot-live"></span>Live</a>
-    <a href="../analisi.html" class="on">Analisi</a>
-    <a href="../statistiche.html">Statistiche</a>
-  </nav>
-</header>
+<header class="barra"></header>
 
 <div class="wrap-scheda" style="padding-bottom:0">
-  <a class="crumb" href="../analisi.html">&larr; Analisi</a>
+  <a class="crumb" href="../analisi.html">&larr; Letture</a>
 </div>
 
 <article class="wrap-scheda art" id="art">
@@ -120,15 +109,10 @@
   
 </article>
 
-<footer class="footer">
-  <div class="footer-in">
-    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
-    <nav>
-      <a href="../stagione.html">Stagione</a>
-      <a href="../live.html">Live</a>
-      <a href="../statistiche.html">Statistiche</a>
-    </nav>
-  </div>
-</footer>
+<footer class="piede"><div class="piede-in"></div></footer>
+<script type="module">
+  import { guscio } from '../muro.mjs?v=090826a';
+  guscio('analisi.html');
+</script>
 </body>
 </html>

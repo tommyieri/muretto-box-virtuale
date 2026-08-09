@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Telemetria — Muretto Box Virtuale</title>
+<meta name="description" content="La telemetria di qualunque giro di qualunque pilota: velocità, gas, freno e marce, e due giri a confronto.">
+<link rel="canonical" href="https://murettobox.com/telemetria.html">
+<link rel="stylesheet" href="muro.css?v=090826a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+<style>
+  .scelte{ display:flex; flex-direction:column; gap:10px; margin:22px 0 20px; }
+
+  .banco{ display:grid; grid-template-columns:250px minmax(0,1fr); gap:14px; align-items:start; }
+  @media (max-width:940px){ .banco{ grid-template-columns:1fr; } }
+
+  /* ---------- piloti ---------- */
+  .piloti{ border-radius:var(--r); background:var(--carbonio); border:1px solid var(--bordo); overflow:hidden; }
+  .piloti .cap{ padding:11px 14px; border-bottom:1px solid var(--bordo); color:var(--fioco);
+    font:500 10px/1 var(--mono); letter-spacing:.18em; text-transform:uppercase; }
+  .piloti .lista{ max-height:min(62vh,640px); overflow-y:auto; scrollbar-width:thin; }
+  .pl{ display:grid; grid-template-columns:4px 1fr auto; gap:10px; align-items:center; width:100%;
+    padding:9px 13px; text-align:left; border-bottom:1px solid rgba(255,255,255,.04);
+    cursor:pointer; min-height:46px; transition:background-color .14s var(--ease); }
+  .pl:hover{ background:rgba(255,255,255,.05); }
+  .pl.on{ background:rgba(36,227,210,.1); }
+  .pl.rif{ background:rgba(255,176,0,.09); }
+  .pl .bar{ width:4px; height:24px; border-radius:2px; background:var(--c,#8A93A3); }
+  .pl b{ font:700 15px/1 var(--disp); letter-spacing:.09em; }
+  .pl small{ display:block; margin-top:3px; color:var(--fioco); font:400 10px/1 var(--mono); }
+  .pl i{ font-style:normal; font:500 12px/1 var(--mono); color:var(--calmo); }
+
+  /* ---------- giri ---------- */
+  .giri{ border-radius:var(--r); background:var(--carbonio); border:1px solid var(--bordo);
+    padding:13px; margin-bottom:14px; }
+  .giri .cap{ display:flex; align-items:center; gap:10px; margin-bottom:11px; color:var(--fioco);
+    font:500 10px/1 var(--mono); letter-spacing:.18em; text-transform:uppercase; }
+  .giri .cap b{ color:var(--testo); }
+  .strisce{ display:grid; grid-template-columns:repeat(auto-fill,minmax(76px,1fr)); gap:5px;
+    max-height:212px; overflow-y:auto; scrollbar-width:thin; }
+  .gr{ position:relative; padding:7px 6px 8px; border-radius:8px; background:rgba(255,255,255,.035);
+    border:1px solid transparent; text-align:left; cursor:pointer; min-height:46px;
+    transition:background-color .14s var(--ease), border-color .14s var(--ease); }
+  .gr:hover{ background:rgba(255,255,255,.09); }
+  .gr .ng{ display:flex; align-items:center; gap:5px; font:500 10px/1 var(--mono); color:var(--fioco); }
+  .gr .tp{ display:block; margin-top:5px; font:500 12.5px/1 var(--mono); color:var(--testo); }
+  .gr .gomma{ width:9px; height:9px; border-width:2px; }
+  .gr.on{ background:rgba(36,227,210,.14); border-color:rgba(36,227,210,.45); }
+  .gr.on .tp{ color:var(--ciano); }
+  .gr.rif{ background:rgba(255,176,0,.12); border-color:rgba(255,176,0,.4); }
+  .gr.rif .tp{ color:var(--ambra); }
+  .gr.veloce .tp{ color:var(--viola); }
+  .gr.box{ opacity:.5; }
+
+  /* ---------- tracce ---------- */
+  .quadro{ display:grid; grid-template-columns:minmax(0,1fr) 300px; gap:14px; align-items:start; }
+  @media (max-width:1180px){ .quadro{ grid-template-columns:1fr; } }
+  .pannelli{ border-radius:var(--r); background:var(--carbonio); border:1px solid var(--bordo);
+    padding:14px; }
+  .pan{ margin-bottom:14px; }
+  .pan:last-child{ margin-bottom:0; }
+  .pan .lab{ display:flex; align-items:baseline; gap:10px; margin-bottom:5px; }
+  .pan .lab h4{ font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--calmo); }
+  .pan .lab .val{ margin-left:auto; font:500 12px/1 var(--mono); color:var(--fioco); }
+  .pan .lab .val b{ color:var(--testo); }
+  .tr{ width:100%; display:block; cursor:crosshair; }
+
+  .fianco{ display:flex; flex-direction:column; gap:14px; }
+  .cartello{ border-radius:var(--r); background:var(--carbonio); border:1px solid var(--bordo); padding:14px; }
+  .cartello h4{ font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--calmo); margin-bottom:11px; }
+  .nastro{ width:100%; height:auto; display:block; }
+  .legenda{ display:flex; flex-direction:column; gap:8px; }
+  .lg{ display:flex; align-items:center; gap:9px; font-size:13px; }
+  .lg .sw{ width:16px; height:3px; border-radius:2px; flex:0 0 auto; }
+  .lg b{ font:700 14px/1 var(--disp); letter-spacing:.08em; }
+  .lg span{ margin-left:auto; font:500 12px/1 var(--mono); color:var(--calmo); }
+  .cifre{ display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+  .cf{ padding:9px 11px; border-radius:9px; background:rgba(255,255,255,.04); }
+  .cf small{ display:block; color:var(--fioco); font:500 9px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; }
+  .cf b{ display:block; margin-top:6px; font:500 17px/1 var(--mono); }
+
+  .avviso{ padding:16px; border-radius:var(--r); background:rgba(255,255,255,.035);
+    color:var(--fioco); font-size:14px; }
+  .confronto-tit{ display:flex; align-items:center; gap:9px; flex-wrap:wrap; margin-bottom:9px; }
+</style>
+</head>
+<body>
+<header class="barra"></header>
+
+<main class="scafo scafo-largo">
+  <p class="occhiello">Telemetria · stagione 2026</p>
+  <h1 class="titolone">Scegli il <em>giro</em></h1>
+  <p class="sottotitolo">Ogni giro cronometrato di ogni pilota, in ogni sessione del weekend.
+     Prendine due e vedi dove si guadagna.</p>
+
+  <div class="scelte">
+    <div class="pillole riga" id="pilGare" role="group" aria-label="Gran Premio"></div>
+    <div class="pillole riga" id="pilSess" role="group" aria-label="Sessione"></div>
+  </div>
+
+  <div class="banco">
+    <section class="piloti">
+      <div class="cap" id="capPiloti">Piloti</div>
+      <div class="lista" id="lista"></div>
+    </section>
+
+    <div style="min-width:0">
+      <section class="giri" id="boxGiri" hidden>
+        <div class="cap" id="capGiri"></div>
+        <div class="strisce" id="strisce"></div>
+      </section>
+
+      <div class="quadro" id="quadro" hidden>
+        <div class="pannelli" id="pannelli"></div>
+        <aside class="fianco">
+          <div class="cartello">
+            <h4>Sul tracciato</h4>
+            <div id="mappaVel"></div>
+          </div>
+          <div class="cartello">
+            <h4>Giri a confronto</h4>
+            <div class="legenda" id="legenda"></div>
+          </div>
+          <div class="cartello" id="boxCifre" hidden>
+            <h4>Il giro</h4>
+            <div class="cifre" id="cifre"></div>
+          </div>
+        </aside>
+      </div>
+
+      <div class="avviso" id="avviso">Scegli un pilota per vedere i suoi giri.</div>
+    </div>
+  </div>
+</main>
+
+<footer class="piede"><div class="piede-in"></div></footer>
+
+<script type="module">
+import { guscio, dati, el, veri, V, param, scriviParam, tempo, delta, nnum,
+         coloreDi, identita, guasto, scheletro, MESCOLA_IT } from './muro.mjs?v=090826a';
+import { decodifica, differenza, traccia, mirino, frazioneDa, nastroVelocita } from './tele.mjs?v=090826a';
+
+guscio('telemetria.html');
+const E = (id) => document.getElementById(id);
+
+const NOMI_SESS = { fp1: 'Libere 1', fp2: 'Libere 2', fp3: 'Libere 3',
+  sprint_quali: 'Quali sprint', sprint: 'Sprint', qualifiche: 'Qualifiche', gara: 'Gara' };
+const ORDINE = ['fp1', 'fp2', 'fp3', 'sprint_quali', 'sprint', 'qualifiche', 'gara'];
+const slug = (s) => s.toLowerCase().replace(/ /g, '-').replace(/'/g, '')
+  .replace(/à/g, 'a').replace(/è|é/g, 'e');
+
+let manifest = null, colori = {}, gara = null, sess = null, indice = null;
+const cacheTracce = new Map();
+let A = null, B = null;            // {sig, giro, tr}  A = scelto, B = confronto
+let pista = null;
+
+/* ------------------------------------------------------------ scelte */
+async function boot() {
+  const [man, id] = await Promise.all([
+    dati(`data/giri_manifest.json?v=${V}`), identita()]);
+  colori = id.colori;
+  if (!man?.gare) { guasto(E('lista'), boot); return; }
+  manifest = man.gare;
+  const gare = Object.keys(manifest);
+  gara = gare.includes(param('g')) ? param('g') : gare[gare.length - 1];
+  E('pilGare').replaceChildren(...gare.slice().reverse().map(g => el('button', {
+    class: 'pil', type: 'button', 'aria-pressed': String(g === gara),
+    onclick: () => { gara = g; scriviParam({ g, s: null }); scegliSessioni(); },
+  }, g)));
+  scegliSessioni(param('s'));
+}
+
+function scegliSessioni(voluta) {
+  [...E('pilGare').children].forEach(b => b.setAttribute('aria-pressed', String(b.textContent === gara)));
+  const disp = (manifest[gara] || []).map(x => x.sessione)
+    .sort((a, b) => ORDINE.indexOf(a) - ORDINE.indexOf(b));
+  sess = disp.includes(voluta) ? voluta : (disp.includes('gara') ? 'gara' : disp[disp.length - 1]);
+  E('pilSess').replaceChildren(...disp.map(s => el('button', {
+    class: 'pil', type: 'button', 'aria-pressed': String(s === sess),
+    onclick: () => { sess = s; scriviParam({ g: gara, s }); caricaSessione(); },
+  }, NOMI_SESS[s] || s)));
+  scriviParam({ g: gara, s: sess });
+  caricaSessione();
+}
+
+async function caricaSessione() {
+  [...E('pilSess').children].forEach(b =>
+    b.setAttribute('aria-pressed', String((NOMI_SESS[sess] || sess) === b.textContent)));
+  A = null; B = null; pista = null;
+  E('boxGiri').hidden = true; E('quadro').hidden = true;
+  E('avviso').hidden = false;
+  E('avviso').textContent = 'Carico la sessione…';
+  scheletro(E('lista'), 8, 46);
+  indice = await dati(`data/giri/${slug(gara)}__${sess}.json?v=${V}`);
+  if (!indice) { E('avviso').textContent = 'Questa sessione non è disponibile.'; E('lista').replaceChildren(); return; }
+  dati(`data/pista_${encodeURIComponent(gara)}.json?v=${V}`).then(p => { pista = p; if (A) disegna(); });
+  elencaPiloti();
+  E('avviso').textContent = 'Scegli un pilota per vedere i suoi giri.';
+}
+
+/* ------------------------------------------------------------ piloti */
+function migliore(p) {
+  const buoni = p.giri.filter(g => g.buono && g.t != null);
+  return buoni.length ? buoni.reduce((a, b) => (b.t < a.t ? b : a)) : null;
+}
+
+function elencaPiloti() {
+  const righe = Object.entries(indice.piloti)
+    .map(([sig, p]) => ({ sig, p, best: migliore(p) }))
+    .sort((a, b) => (a.best?.t ?? 1e9) - (b.best?.t ?? 1e9));
+  const rif = righe.find(r => r.best)?.best?.t ?? null;
+  E('capPiloti').textContent = `${righe.length} piloti · miglior giro`;
+  E('lista').replaceChildren(...righe.map(({ sig, p, best }) => el('button', {
+    class: 'pl', type: 'button', 'data-sig': sig,
+    stile: { '--c': coloreDi(p.team, colori) },
+    onclick: (ev) => scegliPilota(sig, ev.shiftKey || ev.altKey),
+  },
+    el('span', { class: 'bar' }),
+    el('span', {}, el('b', {}, sig),
+      el('small', {}, `${p.giri.length} giri`)),
+    el('i', {}, best ? (rif && best.t !== rif ? delta(best.t - rif) : tempo(best.t)) : '—'))));
+}
+
+function scegliPilota(sig, comeConfronto) {
+  const p = indice.piloti[sig];
+  if (!p) return;
+  const best = migliore(p) || p.giri.find(g => g.tel);
+  if (!best) return;
+  if (comeConfronto && A && A.sig !== sig) impostaB(sig, best.n);
+  else impostaA(sig, best.n);
+}
+
+/* -------------------------------------------------------------- giri */
+async function tracceDi(sig) {
+  const k = `${gara}|${sess}|${sig}`;
+  if (!cacheTracce.has(k)) {
+    cacheTracce.set(k, dati(`data/giri/${slug(gara)}__${sess}__${sig}.json?v=${V}`));
+  }
+  return cacheTracce.get(k);
+}
+
+async function impostaA(sig, giro) {
+  const file = await tracceDi(sig);
+  const c = file?.giri?.[String(giro)];
+  if (!c) return;
+  A = { sig, giro, tr: decodifica(c), meta: indice.piloti[sig].giri.find(g => g.n === giro) };
+  if (B && B.sig === sig) B = null;
+  elencaGiri();
+  disegna();
+}
+
+async function impostaB(sig, giro) {
+  const file = await tracceDi(sig);
+  const c = file?.giri?.[String(giro)];
+  if (!c) return;
+  B = { sig, giro, tr: decodifica(c), meta: indice.piloti[sig].giri.find(g => g.n === giro) };
+  elencaGiri();
+  disegna();
+}
+
+function elencaGiri() {
+  if (!A) return;
+  E('boxGiri').hidden = false;
+  E('avviso').hidden = true;
+  const p = indice.piloti[A.sig];
+  const best = migliore(p);
+  E('capGiri').replaceChildren(
+    el('b', {}, A.sig), ' · i suoi giri — tocca per cambiare');
+  const conTel = p.giri.filter(g => g.tel);
+  E('strisce').replaceChildren(...conTel.map(g => el('button', {
+    class: 'gr' + (g.n === A.giro ? ' on' : '') + (B && B.sig === A.sig && g.n === B.giro ? ' rif' : '')
+      + (best && g.n === best.n ? ' veloce' : '') + (g.box ? ' box' : ''),
+    type: 'button',
+    title: g.box === 'in' ? 'giro di rientro ai box' : g.box === 'out' ? 'giro di uscita dai box' : '',
+    onclick: () => impostaA(A.sig, g.n),
+  },
+    el('span', { class: 'ng' }, veri(
+      String(g.n),
+      g.mescola ? el('span', { class: 'gomma ' + g.mescola, title: MESCOLA_IT[g.mescola] || g.mescola }) : null,
+      g.box ? el('span', { stile: { color: 'var(--verde)' } }, g.box === 'in' ? 'IN' : 'OUT') : null)),
+    el('span', { class: 'tp' }, g.t != null ? tempo(g.t) : '—'))));
+}
+
+/* ------------------------------------------------------------ disegno */
+function disegna() {
+  if (!A) return;
+  E('quadro').hidden = false;
+  const cA = A.tr, cB = B?.tr;
+  const colA = coloreDi(indice.piloti[A.sig].team, colori);
+  const colB = B ? coloreDi(indice.piloti[B.sig].team, colori) : null;
+
+  const serieV = veri({ dati: cA.v, colore: colA }, cB && { dati: cB.v, colore: colB, tratteggio: '5 4' });
+  const serieG = veri({ dati: cA.gas, colore: '#2FD576', area: 'rgba(47,213,118,.10)' },
+                      cB && { dati: cB.gas, colore: '#2FD576', tratteggio: '5 4', spessore: 1.2 });
+  const serieF = veri({ dati: cA.freno.map(x => x * 100), colore: '#FF1E3C', area: 'rgba(255,30,60,.14)' },
+                      cB && { dati: cB.freno.map(x => x * 100), colore: '#FF1E3C', tratteggio: '5 4', spessore: 1.2 });
+  const serieM = veri({ dati: cA.marcia, colore: '#B47CFF' },
+                      cB && { dati: cB.marcia, colore: '#B47CFF', tratteggio: '5 4', spessore: 1.2 });
+
+  const pan = (titolo, unita, svg, id) => el('div', { class: 'pan' },
+    el('div', { class: 'lab' }, el('h4', {}, titolo),
+      el('span', { class: 'val', id })), svg);
+
+  const svgV = traccia(serieV, { h: 190, min: 0, titolo: 'Velocità',
+    tacche: [0, 100, 200, 300], formato: v => v });
+  const svgG = traccia(serieG, { h: 92, min: 0, max: 100, titolo: 'Acceleratore', tacche: [0, 100] });
+  const svgF = traccia(serieF, { h: 62, min: 0, max: 100, titolo: 'Freno', tacche: [0, 100], passi: true });
+  const svgM = traccia(serieM, { h: 84, min: 0, max: 8, titolo: 'Marcia', tacche: [2, 4, 6, 8], passi: true });
+
+  const figli = [
+    pan('Velocità · km/h', 'km/h', svgV, 'vV'),
+    pan('Acceleratore · %', '%', svgG, 'vG'),
+    pan('Freno', '', svgF, 'vF'),
+    pan('Marcia', '', svgM, 'vM'),
+  ];
+  let svgD = null;
+  if (cB) {
+    const d = differenza(cA.tr ? cA : cA, cB);   // A rispetto a B
+    const dd = differenza(cA, cB);
+    svgD = traccia([{ dati: dd, colore: '#fff', area: 'rgba(255,255,255,.06)' }],
+      { h: 96, zero: true, titolo: 'Distacco', formato: v => (v > 0 ? '+' : '') + v.toFixed(1) });
+    figli.push(pan(`Distacco · ${A.sig} rispetto a ${B.sig}`, 's', svgD, 'vD'));
+  }
+  E('pannelli').replaceChildren(...figli);
+
+  const tutti = veri(svgV, svgG, svgF, svgM, svgD);
+  const mappa = pista ? nastroVelocita(pista, cA.v) : null;
+  E('mappaVel').replaceChildren(...veri(mappa,
+    !pista ? el('p', { stile: { color: 'var(--fioco)', fontSize: '13px', margin: 0 } },
+      'Tracciato non disponibile per questo GP.') : null));
+
+  const muovi = (ev) => {
+    const f = frazioneDa(tutti[0], ev.clientX ?? ev.touches?.[0]?.clientX);
+    mirino(tutti, f);
+    if (mappa) mappa.puntoA(f);
+    const i = Math.round(f * (cA.n - 1));
+    const set = (id, t) => { const n = E(id); if (n) n.replaceChildren(...t); };
+    set('vV', [el('b', {}, Math.round(cA.v[i]) + ''), cB ? ` / ${Math.round(cB.v[i])}` : '']);
+    set('vG', [el('b', {}, Math.round(cA.gas[i]) + '%'), cB ? ` / ${Math.round(cB.gas[i])}%` : '']);
+    set('vF', [el('b', {}, cA.freno[i] ? 'FRENO' : '—'), cB ? ` / ${cB.freno[i] ? 'FRENO' : '—'}` : '']);
+    set('vM', [el('b', {}, String(cA.marcia[i])), cB ? ` / ${cB.marcia[i]}` : '']);
+    if (cB) set('vD', [el('b', {}, delta(cA.t[i] - cB.t[i], 2) + ' s')]);
+  };
+  for (const s of tutti) {
+    s.addEventListener('pointermove', muovi);
+    s.addEventListener('pointerleave', () => { mirino(tutti, null); if (mappa) mappa.puntoA(null); });
+  }
+
+  legenda();
+  cifre();
+}
+
+function legenda() {
+  const riga = (x, colore, ruolo) => {
+    const m = x.meta || {};
+    return el('div', { class: 'lg' },
+      el('span', { class: 'sw', stile: { background: colore } }),
+      el('b', {}, x.sig),
+      el('span', {}, `giro ${x.giro} · ${m.t != null ? tempo(m.t) : '—'}`));
+  };
+  const nodi = [riga(A, coloreDi(indice.piloti[A.sig].team, colori))];
+  if (B) nodi.push(riga(B, coloreDi(indice.piloti[B.sig].team, colori)));
+  nodi.push(el('p', { stile: { margin: '4px 0 0', color: 'var(--fioco)', fontSize: '12.5px', lineHeight: 1.5 } },
+    B ? 'Tocca un altro pilota tenendo premuto ⇧ per cambiare il confronto, o tocca un suo giro qui sopra.'
+      : 'Tieni premuto ⇧ e tocca un altro pilota per metterlo a confronto.'));
+  if (B) nodi.push(el('button', { class: 'btn btn-s', type: 'button',
+    stile: { marginTop: '6px', width: '100%' },
+    onclick: () => { B = null; elencaGiri(); disegna(); } }, 'Togli il confronto'));
+  E('legenda').replaceChildren(...nodi);
+}
+
+function cifre() {
+  const m = A.meta || {};
+  const c = A.tr;
+  const gasPieno = c.gas.filter(x => x >= 98).length / c.n * 100;
+  E('boxCifre').hidden = false;
+  E('cifre').replaceChildren(
+    el('div', { class: 'cf' }, el('small', {}, 'giro'), el('b', { class: 'n' }, m.t != null ? tempo(m.t) : '—')),
+    el('div', { class: 'cf' }, el('small', {}, 'punta'), el('b', { class: 'n' }, `${Math.round(Math.max(...c.v))}`)),
+    el('div', { class: 'cf' }, el('small', {}, 'gas pieno'), el('b', { class: 'n' }, `${Math.round(gasPieno)}%`)),
+    el('div', { class: 'cf' }, el('small', {}, 'gomma'),
+      el('b', {}, m.mescola ? (MESCOLA_IT[m.mescola] || m.mescola.toLowerCase()) : '—')));
+}
+
+boot();
+</script>
+</body>
+</html>
