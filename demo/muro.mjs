@@ -137,36 +137,92 @@ export function numeroDi(sigla, schede = _schede) {
 // PERCORSI DALLA RADICE, non relativi. Le dodici pagine in demo/articolo/ chiamano
 // questo stesso guscio: con href relativi il browser risolveva 'stagione.html' in
 // /articolo/stagione.html — nav e marchio a 404 su tutte e dodici, in produzione.
+//
+// UNA VOCE PUO' AVERE SOTTOVOCI: Analisi non e' una pagina, e' un cassetto che
+// contiene Articoli e Telemetria. La voce col cassetto non ha un indirizzo suo —
+// aprirla NON deve portare da nessuna parte, deve mostrare le due scelte.
 const VOCI = [
   ['Stagione',   '/stagione.html'],
   ['Live',       '/live.html'],
-  ['Telemetria', '/telemetria.html'],
+  ['Analisi',    null, [['Articoli', '/analisi.html'], ['Telemetria', '/telemetria.html']]],
   ['Campionato', '/campionato.html'],
 ];
-const foglio = (h) => h.replace(/^\//, '');
+const foglio = (h) => (h || '').replace(/^\//, '');
 
 /** Intestazione + piede, scritti da un posto solo. `qui` = file corrente. */
 export function guscio(qui) {
   const barra = $('.barra'), piede = $('.piede-in');
+
+  // la voce attiva: anche quando sei dentro una sottovoce, il cassetto si accende
+  const attiva = ([, href, sotto]) =>
+    foglio(href) === qui || (sotto || []).some(([, h]) => foglio(h) === qui);
+
   if (barra) {
     barra.replaceChildren(
       el('a', { class: 'marchio', href: '/index.html', 'aria-label': 'Muretto Box Virtuale — home' },
         el('span', { class: 'marchio-b' }, 'M'),
         el('span', { class: 'marchio-t' }, el('b', {}, 'MURETTO'), el('small', {}, 'BOX VIRTUALE'))),
       el('nav', { class: 'menu', 'aria-label': 'Sezioni' },
-        VOCI.map(([n, f]) => el('a', {
-          href: f, 'aria-current': foglio(f) === qui ? 'page' : null,
-        }, foglio(f) === 'live.html' ? el('span', { class: 'pallino', id: 'pallinoLive' }) : null, n))));
+        VOCI.map((v) => (v[2] ? cassetto(v, qui) : voceSemplice(v, qui, attiva)))));
   }
   if (piede) {
+    const piatte = VOCI.flatMap(([n, h, sotto]) => sotto ? sotto : [[n, h]]);
     piede.replaceChildren(
       el('span', { class: 'marchio' },
         el('span', { class: 'marchio-b' }, 'M'),
         el('span', { class: 'marchio-t' }, el('b', {}, 'MURETTO'), el('small', {}, 'STAGIONE 2026'))),
-      el('nav', {},
-        [...VOCI, ['Letture', '/analisi.html']].map(([n, f]) => el('a', { href: f }, n))),
+      el('nav', {}, piatte.map(([n, f]) => el('a', { href: f }, n))),
       el('small', {}, 'Formula 1 2026 · replay, strategia e telemetria'));
   }
+}
+
+function voceSemplice([n, f], qui, attiva) {
+  return el('a', {
+    href: f, 'aria-current': attiva([n, f]) ? 'page' : null,
+  }, foglio(f) === 'live.html' ? el('span', { class: 'pallino', id: 'pallinoLive' }) : null, n);
+}
+
+/** Una voce con le sue sottovoci: bottone + tendina. */
+function cassetto([nome, , sotto], qui) {
+  const dentro = sotto.some(([, h]) => foglio(h) === qui);
+  const id = 'sotto-' + nome.toLowerCase();
+  const lista = el('div', { class: 'tendina', id, role: 'menu' },
+    sotto.map(([n, h]) => el('a', {
+      href: h, role: 'menuitem', 'aria-current': foglio(h) === qui ? 'page' : null,
+    }, n)));
+
+  const bottone = el('button', {
+    class: 'apri', type: 'button', 'aria-expanded': 'false', 'aria-controls': id,
+    'aria-current': dentro ? 'true' : null,
+  }, nome, el('span', { class: 'freccia', 'aria-hidden': 'true' }));
+
+  const box = el('div', { class: 'voce' }, bottone, lista);
+
+  const apri = (v) => {
+    box.classList.toggle('aperta', v);
+    bottone.setAttribute('aria-expanded', String(v));
+  };
+  bottone.addEventListener('click', (e) => {
+    e.stopPropagation();
+    apri(bottone.getAttribute('aria-expanded') !== 'true');
+  });
+  // col mouse basta passarci sopra; col dito e con la tastiera serve il click
+  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    box.addEventListener('pointerenter', () => apri(true));
+    box.addEventListener('pointerleave', () => apri(false));
+  }
+  box.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { apri(false); bottone.focus(); }
+    if (e.key === 'ArrowDown' && document.activeElement === bottone) {
+      e.preventDefault(); apri(true); lista.querySelector('a')?.focus();
+    }
+  });
+  // il fuoco che esce dal cassetto lo chiude: senza, resta aperto alle spalle
+  box.addEventListener('focusout', (e) => {
+    if (!box.contains(e.relatedTarget)) apri(false);
+  });
+  document.addEventListener('click', (e) => { if (!box.contains(e.target)) apri(false); });
+  return box;
 }
 
 /* --------------------------------------------------- scelte nell'URL */

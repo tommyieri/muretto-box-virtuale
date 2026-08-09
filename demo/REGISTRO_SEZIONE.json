@@ -11,7 +11,11 @@
    "live.html"
   ],
   [
-   "Telemetria",
+   "Analisi>Articoli",
+   "analisi.html"
+  ],
+  [
+   "Analisi>Telemetria",
    "telemetria.html"
   ],
   [
@@ -20,7 +24,7 @@
   ]
  ],
  "_nav_attesa_sorgente": "Copia di controllo della costante VOCI in demo/muro.mjs (che monta la nav di ogni pagina) e di NAV in ai_lab/redazione/statico.py (che scrive 404 e articoli). Restano tre file apposta: se lo stampatore e il sorvegliante fossero lo stesso, un errore si certificherebbe da solo.",
- "_nav_attesa_nota": "La nav si monta in JS da un posto solo: la sentinella non cerca piu' un blocco <nav> in ogni file — cerca che ogni pagina importi muro.mjs e chiami guscio(), e che la sequenza (etichetta, href) dichiarata in muro.mjs sia questa.",
+ "_nav_attesa_nota": "La nav si monta in JS da un posto solo (demo/muro.mjs::VOCI). Una voce puo' avere SOTTOVOCI: «Analisi» non e' una pagina ma un cassetto che contiene Articoli e Telemetria, e qui compare appiattito come «Analisi>Articoli». La sentinella controlla la sequenza, che i percorsi partano dalla radice, e che ogni pagina importi muro.mjs e chiami guscio().",
  "pagine_non_indicizzabili": {
   "404.html": "pagina di errore: generata da ai_lab/redazione/statico.py, non va in sitemap per definizione",
   "gara.html": "richiede ?g=<gara>: senza parametro non e' una pagina, e' un contenitore"
