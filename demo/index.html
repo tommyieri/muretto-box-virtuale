@@ -25,10 +25,6 @@
   .palco svg{ width:100%; height:100%; }
   .palco .nastro{ fill:none; stroke:#2A313E; stroke-width:9; stroke-linecap:round; stroke-linejoin:round; }
   .palco .nastro-l{ fill:none; stroke:rgba(255,255,255,.10); stroke-width:1.4; stroke-dasharray:2 9; }
-  .palco-t{ position:absolute; left:16px; bottom:14px; color:var(--fioco);
-    font:500 10px/1 var(--mono); letter-spacing:.2em; text-transform:uppercase; }
-  .palco-n{ position:absolute; right:16px; top:14px; color:var(--calmo);
-    font:700 13px/1 var(--disp); letter-spacing:.16em; text-transform:uppercase; }
 
   /* ------------------------------------------------------------ tre porte */
   .porte{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap); }
@@ -100,10 +96,7 @@
         </div>
       </div>
 
-      <div class="palco" id="palco" aria-hidden="true">
-        <span class="palco-n" id="palcoNome"></span>
-        <span class="palco-t">il tracciato dell'ultimo Gran Premio, dal giro GPS</span>
-      </div>
+      <div class="palco" id="palco" aria-hidden="true"></div>
     </div>
   </section>
 
@@ -137,7 +130,7 @@
     <div><div class="scheletro" style="height:96px"></div></div>
   </div>
 
-  <h2 class="sezione-t">Letture <a class="coda" href="analisi.html">tutte →</a></h2>
+  <h2 class="sezione-t">Articoli <a class="coda" href="analisi.html">tutti →</a></h2>
   <div class="letture" id="letture"></div>
 
 </main>
@@ -150,9 +143,8 @@ guscio('index.html');
 
 /* ---------------------------------------------------------------- la pista
    Il nastro e' quello vero dell'ultimo GP (500 punti GPS). I pallini NO: scorrono
-   a velocita' inventate, sono un'apertura e non una simulazione. Per questo la
-   didascalia parla del tracciato e TACE sulle posizioni — diceva «posizioni reali»
-   sopra cinque pallini finti, ed era la sola bugia rimasta in pagina. */
+   a velocita' inventate, sono un'apertura e non una simulazione. Nessuna didascalia:
+   il palco non dichiara piu' niente, quindi non puo' piu' dire niente di falso. */
 async function palco(gara) {
   const p = await dati(`data/pista_${encodeURIComponent(gara)}.json?v=${V}`);
   const box = document.getElementById('palco');
@@ -214,7 +206,6 @@ async function ultima() {
   if (!g) { box.replaceChildren(el('div', { class: 'vuoto' }, 'Nessuna gara ancora pubblicata.')); return; }
 
   document.getElementById('ctaGara').href = `gara.html?g=${encodeURIComponent(g.gara_demo)}`;
-  document.getElementById('palcoNome').textContent = g.circuito?.split(' ')[0] || g.nome;
   palco(g.gara_demo);
 
   const { colori, schede } = await identita();

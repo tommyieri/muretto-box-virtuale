@@ -67,8 +67,24 @@ const guardia = t => reg.voci.find(v => v.guardia?.tipo === t)?.guardia ?? {};
 const attesa = reg.nav_attesa.map(([e, h]) => `${e}->${h}`).join(' | ');
 
 const muro = readFileSync(path.join(QUI, 'muro.mjs'), 'utf8');
-const crudeMuro = [...(muro.match(/const VOCI = \[([\s\S]*?)\];/)?.[1] ?? '')
-  .matchAll(/\['([^']+)',\s*'([^']+)'\]/g)].map(m => [m[1], m[2]]);
+// VOCI puo' contenere sottovoci: ['Analisi', null, [['Articoli','/analisi.html'], …]].
+// Si appiattisce come la vede l'utente — «Analisi>Articoli» — perche' e' quello che il
+// registro dichiara, ed e' quello che deve restare stabile.
+const bloccoVOCI = muro.match(/const VOCI = \[([\s\S]*?)\n\];/)?.[1] ?? '';
+const crudeMuro = [];
+for (const riga of bloccoVOCI.split('\n')) {
+  const capo = riga.match(/^\s*\['([^']+)',\s*(?:'([^']+)'|null)/);
+  if (!capo) continue;
+  // le sottovoci stanno in un array annidato: si riconoscono dal '[[' sulla riga
+  const grezzoSotto = riga.match(/\[\[([\s\S]*)\]\]/)?.[1];
+  if (grezzoSotto) {
+    for (const s2 of grezzoSotto.matchAll(/'([^']+)',\s*'([^']+)'/g)) {
+      crudeMuro.push([`${capo[1]}>${s2[1]}`, s2[2]]);
+    }
+  } else {
+    crudeMuro.push([capo[1], capo[2]]);
+  }
+}
 const vociMuro = crudeMuro.map(([e, h]) => `${e}->${h.replace(/^\//, '')}`).join(' | ');
 esito(vociMuro === attesa,
   `muro.mjs monta la nav attesa${vociMuro === attesa ? '' : `\n           atteso: ${attesa}\n           trovato: ${vociMuro}`}`);

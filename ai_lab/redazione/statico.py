@@ -96,12 +96,14 @@ PAGINE_FISSE = [
 # un solo <nav> dentro <footer>), quindi la si riconosce e la si sostituisce. La funzione
 # e' idempotente: rilanciarla due volte non cambia niente la seconda.
 NAV = [
+    # COPIA DI CONTROLLO della costante VOCI in demo/muro.mjs, che e' la sorgente unica.
+    # «Analisi» non e' una pagina: e' un cassetto con due sottovoci, e qui sta appiattito
+    # come le vede l'utente. Sono due file apposta: se lo stampatore e il sorvegliante
+    # fossero lo stesso, un errore si certificherebbe da solo.
     ("Stagione", "stagione.html"),
     ("Live", "live.html"),
-    ("Telemetria", "telemetria.html"),
-    # La voce «E se?» e' VISSUTA UN GIORNO (07-08/08/2026): il PO ha deciso che la
-    # simulazione non e' una pagina accanto alle gare, E' il modo in cui si guarda
-    # una gara — il rigioca vive dentro gara.html (BOX ORA), la pagina separata no.
+    ("Analisi>Articoli", "analisi.html"),
+    ("Analisi>Telemetria", "telemetria.html"),
     ("Campionato", "campionato.html"),
 ]
 
@@ -111,6 +113,7 @@ NAV = [
 SEZIONE_DI = {
     "stagione.html": "stagione.html",
     "live.html": "live.html",
+    "analisi.html": "analisi.html",
     "telemetria.html": "telemetria.html",
     "campionato.html": "campionato.html",
 }
