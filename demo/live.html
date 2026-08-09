@@ -19,6 +19,9 @@
 <meta name="twitter:description" content="Il weekend di gara in diretta: classifica in tempo reale e la prossima sessione.">
 <meta name="twitter:image" content="https://murettobox.com/og/pagina-live.png">
 <link rel="canonical" href="https://murettobox.com/live.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
 <link rel="stylesheet" href="muro.css?v=090826b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 <style>
@@ -99,7 +102,7 @@
 <footer class="piede"><div class="piede-in"></div></footer>
 
 <script type="module">
-import { guscio, dati, el, veri, V } from './muro.mjs?v=090826b';
+import { guscio, dati, el, veri, V, coloreDi } from './muro.mjs?v=090826b';
 import { WS_URL, HEARTBEAT_LIVE_S } from './live_config.mjs?v=090826b';
 import { creaLiveClient } from './live_client.mjs?v=090826b';
 import { creaTorreTiming } from './live_timing.mjs?v=250809a';
@@ -138,6 +141,22 @@ function quandoIso(g, s) {
 }
 
 const ORD = ['fp1', 'fp2', 'fp3', 'sprint_quali', 'sprint', 'qualifiche', 'gara'];
+
+/** QUALE sessione e' in diretta, dedotta dal calendario. L'etichetta accanto alla spia
+ *  aspettava un campo `session_name`/`session` che il collettore non ha mai mandato:
+ *  restava nascosta sempre, e la pagina diceva «in diretta» senza dire di cosa. Qui la
+ *  risposta viene da cio' che la pagina ha gia' in mano — l'ultima sessione cominciata
+ *  nelle quattro ore precedenti. Se un giorno il feed portera' il campo, quello vince. */
+function sessioneOra(gare, ora = new Date()) {
+  let m = null;
+  for (const g of gare || []) {
+    for (const s of ORD) {
+      const q = quandoIso(g, s);
+      if (q && q <= ora && (ora - q) < 4 * 3600e3 && (!m || q > m.q)) m = { g, s, q };
+    }
+  }
+  return m ? `${m.g.titolo} — ${NOMI[m.s] || m.s}` : null;
+}
 
 /** La prima sessione ancora da correre, ADESSO. Ricalcolata a ogni chiamata: la
  *  vecchia versione la fissava al primo montaggio, quindi a conto alla rovescia
@@ -206,9 +225,14 @@ function conta(quando) {
   const passo = () => {
     const d0 = (quando - new Date()) / 1000;
     if (d0 <= 0) {
-      // scaduta: si rimonta la pagina d'attesa sulla sessione davvero prossima
+      // scaduta: si rimonta la pagina d'attesa sulla sessione davvero prossima.
+      // MA SE LA TORRE HA RIGHE la sessione e' gia' partita e comanda lei: rimontare
+      // l'attesa qui spegneva il muretto a meta' sessione, e mostraDiretta() non lo
+      // riaccendeva (rimonta solo `if (!viva)`, e viva era rimasta true). Bastava avere
+      // la pagina aperta un minuto prima dell'orario di calendario.
       clearInterval(battito);
       montatoAttesa = false;
+      if (conRighe()) return;
       mostraAttesa();
       return;
     }
@@ -230,7 +254,7 @@ function murettoLive() {
   E('fianco').replaceChildren(...veri(
     el('h3', {}, 'Il muretto'),
     scelto
-      ? el('div', { class: 'sceltoLive', stile: { '--c': colori[teams[scelto]] || '#8A93A3' } },
+      ? el('div', { class: 'sceltoLive', stile: { '--c': coloreDi(teams[scelto], colori) } },
           el('span', { class: 'bar' }), el('b', {}, nome))
       : el('p', {}, 'Tocca un pilota nella classifica, scegli la gomma e premi BOX ORA.'),
     el('div', { class: 'mesc' }, SLICK.map(m => el('button', {
@@ -251,7 +275,17 @@ function murettoLive() {
 function boxOra() {
   const L = B.giroPieno(), nLaps = B.nLaps();
   const box = E('esitoLive');
-  if (!scelto || !L || !nLaps) {
+  // LA DISTANZA DI GARA ARRIVA SOLO DALLA GARA. nLaps si popola da LapCount, un canale
+  // che nelle libere e in qualifica non trasmette mai: li' la risposta era «il giro non
+  // e' ancora completo, riprova fra poco» — due bugie insieme, perche' di giri chiusi ce
+  // n'erano trenta e riprovare non avrebbe cambiato nulla per tutta la sessione.
+  if (!nLaps) {
+    box.replaceChildren(el('div', { class: 'esitoLive' },
+      'Qui non si corre una gara: senza una distanza da coprire non c\'è una sosta da '
+      + 'giudicare. Il muretto torna in gara.'));
+    return;
+  }
+  if (!scelto || !L) {
     box.replaceChildren(el('div', { class: 'esitoLive' },
       'Il giro in corso non è ancora completo: riprova fra poco.'));
     return;
@@ -319,6 +353,10 @@ function scegliPilotaLive(r) {
 }
 function rendiTorreRaggiungibile() {
   for (const r of E('torre').querySelectorAll('.tw-row[data-sigla]')) {
+    // PRIMA della guardia: la torre si ridisegna per intero a ogni evento del feed, e la
+    // classe messa al click spariva col primo aggiornamento — un secondo scarso. Qui
+    // l'osservatore la rimette a ogni ridisegno.
+    r.classList.toggle('tw-sel', r.dataset.sigla === scelto);
     if (r.dataset.pronta) continue;
     r.dataset.pronta = '1';
     r.tabIndex = 0;
@@ -369,7 +407,7 @@ const client = creaLiveClient({
 
 /** L'unico criterio: ci sono righe in torre? Allora e' una sessione. */
 function valuta() {
-  if (conRighe()) { spia('in diretta', true); mostraDiretta(nomeSessione); }
+  if (conRighe()) { spia('in diretta', true); mostraDiretta(nomeSessione || sessioneOra(gareCal.length ? gareCal : (calendario?.gare || []))); }
   else {
     const era = viva;
     viva = false;

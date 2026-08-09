@@ -19,6 +19,9 @@
 <meta name="twitter:description" content="La telemetria di qualunque giro di qualunque pilota: velocità, gas, freno e marce, e due giri a confronto.">
 <meta name="twitter:image" content="https://murettobox.com/og/pagina-telemetria.png">
 <link rel="canonical" href="https://murettobox.com/telemetria.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
 <link rel="stylesheet" href="muro.css?v=090826b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 <style>
@@ -465,7 +468,10 @@ function cifre() {
   E('cifre').replaceChildren(
     el('div', { class: 'cf' }, el('small', {}, 'giro'), el('b', { class: 'n' }, m.t != null ? tempo(m.t) : '—')),
     el('div', { class: 'cf' }, el('small', {}, 'punta'), el('b', { class: 'n' }, `${Math.round(Math.max(...c.v))}`)),
-    el('div', { class: 'cf' }, el('small', {}, 'gas pieno'), el('b', { class: 'n' }, `${Math.round(gasPieno)}%`)),
+    // «gas pieno (tempo)» e non «gas pieno»: qui e' pesato sul TEMPO, negli articoli
+    // la stessa quantita' e' pesata sulla distanza. Due numeri diversi con lo stesso
+    // nome, sullo stesso sito, sono una contraddizione anche quando sono entrambi giusti.
+    el('div', { class: 'cf' }, el('small', {}, 'gas pieno (tempo)'), el('b', { class: 'n' }, `${Math.round(gasPieno)}%`)),
     el('div', { class: 'cf' }, el('small', {}, 'gomma'),
       el('b', {}, m.mescola ? (MESCOLA_IT[m.mescola] || m.mescola.toLowerCase()) : '—')));
 }

@@ -203,7 +203,7 @@
 /* ---------------------------------------------------------------- la CTA */
 .hero-cta { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 12px; }
 .hero-cta .btn { min-height: 46px; }
-.hero-cta .btn-pri { position: relative; }
+.hero-cta .btn-p { position: relative; }
 
 .hero-scena { min-width: 0; }
 .hero-fonte {
@@ -323,12 +323,15 @@
   background: rgba(10,11,14,.8); color: var(--dim);
   font: 700 9px/1 var(--mono); letter-spacing: 1.2px; text-transform: uppercase;
   opacity: 0; transition: color var(--h-gate), border-color var(--h-gate), opacity .3s;
+  /* invisibile E intoccabile: a opacity 0 restava in pagina e si prendeva il clic
+     nell'angolo in basso a destra della scena fin dal primo fotogramma. */
+  pointer-events: none;
 }
 .hero-rivedi::after { content: ""; position: absolute; inset: -8px; }   /* area tattile ~46px */
 .hero-rivedi:hover, .hero-rivedi:focus-visible { color: var(--accent); border-color: var(--accent); }
 .hero-rivedi:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; opacity: 1; }
 .hero-rivedi svg { width: 10px; height: 10px; }
-.hero.e-riposo .hero-rivedi { opacity: 1; }
+.hero.e-riposo .hero-rivedi { opacity: 1; pointer-events: auto; }
 
 /* ================================================================ RESPONSIVE */
 @media (max-width: 1040px) {
@@ -388,5 +391,8 @@
 
 /* Stato finale senza JS: se il modulo non parte (rete, errore, no-module), la hero
    resta comunque una hero leggibile e cliccabile. */
+/* la firma la accende la timeline GSAP: senza (reduce-motion, o modulo assente)
+   restava invisibile per sempre, e statico() aggiunge sempre .e-finale. */
+.hero.e-finale .hero-firma { opacity: 1; }
 .hero.e-finale .hero-prompt { display: none; }
 .hero.e-finale .hero-pit { display: none; }

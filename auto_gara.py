@@ -170,11 +170,6 @@ def _riprova_gare_declinate():
     log(f'riprova replay a posizioni vere sulle gare declinate: {mancanti}')
     for g in mancanti:
         sh([PY, 'gen_replay.py', '--gara', g], check=False)
-        # l'overlay telemetrico dipende dallo stesso GPS: se il replay si accende, ha senso
-        # riprovare anche quello. Se il replay resta declinato, questo esce a vuoto e basta.
-        if os.path.exists(os.path.join(reg, f'replay_{g}.json')):
-            log(f'  {g}: il replay si e\' acceso, riprovo anche l\'overlay')
-            sh([PY, 'gen_tele_giro.py', '--gara', g], check=False)
 
 
 def _controlla_pista_nuova(nome):
@@ -321,7 +316,6 @@ def wave_nuove():
         # ricostruzione dai tempi-giro, che e' esattamente cio' che faceva prima. Il
         # contrario (morire qui) lascerebbe la gara sul disco e non committata.
         sh([PY, 'gen_replay.py', '--gara', nome], check=False)        # posizioni GPS vere
-        sh([PY, 'gen_tele_giro.py', '--gara', nome], check=False)     # overlay sul tracciato
         sh([PY, 'gen_soste_fastf1.py', '--gara', nome], check=False)  # arbitro delle soste
         # LA TELEMETRIA GIRO PER GIRO della gara nuova (e delle sue sessioni). Senza
         # questa riga la pagina Telemetria mostrerebbe tutte le gare tranne l'ultima —

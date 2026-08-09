@@ -185,6 +185,23 @@ export function guscio(qui) {
       el('nav', {}, piatte.map(([n, f]) => el('a', { href: f }, n))),
       el('small', {}, 'Formula 1 2026 · replay, strategia e telemetria'));
   }
+  graficiLeggibili();
+}
+
+/** I GRAFICI DEGLI ARTICOLI, LARGHI QUANTO SONO STATI DISEGNATI.
+ *
+ *  Sono SVG con viewBox e width:100%: dentro una colonna da 309 px un disegno pensato
+ *  per 760 si riduce a scala 0,4 — assi, etichette e numeri con lui, sotto i sette pixel.
+ *  Il contenitore ha gia' overflow-x, mancava dire al disegno di non rimpicciolirsi.
+ *  La larghezza giusta la sa solo il disegno (il viewBox), e il CSS non la puo' leggere:
+ *  per questo sta qui e non in muro.css. Il tetto a 900 evita che un grafico molto largo
+ *  chieda uno scorrimento infinito. */
+function graficiLeggibili() {
+  for (const svg of document.querySelectorAll('.art-svg-wrap svg[viewBox]')) {
+    const largo = parseFloat((svg.getAttribute('viewBox') || '').split(/[\s,]+/)[2]);
+    if (!Number.isFinite(largo) || largo <= 0) continue;
+    svg.style.minWidth = Math.min(900, Math.round(largo)) + 'px';
+  }
 }
 
 function voceSemplice([n, f], qui, attiva) {

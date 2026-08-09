@@ -494,7 +494,7 @@ function OUTCOME(gsap, root, H) {
 
 // --------------------------------------------------------- la firma + CTA --
 function FIRMA(gsap, root) {
-  const f = q(root, '.hero-firma'), cta = q(root, '.hero-cta .btn-pri');
+  const f = q(root, '.hero-firma'), cta = q(root, '.hero-cta .btn-p');
   const finale = () => gsap.set([f, cta], { opacity: 1, y: 0 });
   const tl = () => gsap.timeline()
     .fromTo(f, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .45 })
@@ -582,6 +582,9 @@ async function dirigi(root, H) {
   // ------------------------------------------------------- atto 1 + cancello
   let master = null;
   function riparti() {
+    // il timer della catena automatica va spento qui: chi preme «rivedi» mentre l'attesa
+    // e' ancora armata si trovava la scena ripartita E la scelta d'ufficio, insieme.
+    clearTimeout(attesaTimer);
     root.classList.remove('e-riposo');
     stato = 'armato';
     choice.reset();

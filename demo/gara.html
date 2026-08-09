@@ -17,6 +17,9 @@
 <meta name="twitter:title" content="Gara — Muretto Box Virtuale">
 <meta name="twitter:description" content="Rivedi la gara giro per giro e decidi quando fermarsi ai box: il motore dice dove rientri.">
 <meta name="twitter:image" content="https://murettobox.com/og/pagina-gara.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
 <link rel="stylesheet" href="muro.css?v=090826b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 <style>
@@ -213,9 +216,9 @@
     <div class="meta" id="tMeta"></div>
   </div>
 
-  <div class="schede" role="tablist">
-    <button class="pil on" id="sbStrat" role="tab" aria-selected="true">Strategia</button>
-    <button class="pil" id="sbTorre" role="tab" aria-selected="false">Classifica</button>
+  <div class="schede">
+    <button class="pil on" id="sbStrat" aria-pressed="true">Strategia</button>
+    <button class="pil" id="sbTorre" aria-pressed="false">Classifica</button>
   </div>
 
   <div class="tavolo">
@@ -278,7 +281,6 @@ import { makeClock, computeDurations, bands, fase } from './timeline.mjs?v=22072
 import { creaAncora, giroDi as giroDiCum } from './orologio.mjs?v=250808a';
 import { classifica, battistradaAiGiri, ordineArrivo } from './classifica.mjs?v=090826b';
 import { creaReplayVero } from './replay_vero.mjs?v=250808a';
-import { rispostaLive } from './ponte_live.mjs?v=040826a';
 
 guscio('gara.html');
 
@@ -670,6 +672,14 @@ async function aggiornaStrategia() {
     const ctx = await contesto();
     if (chiave !== ultimaChiave) return;
     if (ctx) {
+      // IL MOTORE ARRIVA SOLO SE SERVE. Importato in cima, ponte_live.mjs tirava dentro
+      // tutta la catena vendor/simulatore — dodici richieste e 72 KB — all'apertura di
+      // ogni gara, anche di chi guarda il replay e non tocca mai la mescola. Qui e' un
+      // import dinamico dentro un ramo gia' async; `chiave` si ri-verifica dopo l'await
+      // come gia' si fa dopo contesto(), perche' nel frattempo la barra puo' essere andata
+      // avanti e la risposta sarebbe di un altro giro.
+      const { rispostaLive } = await import('./ponte_live.mjs?v=040826a');
+      if (chiave !== ultimaChiave) return;
       const calc = rispostaLive({ byLap: race.byLap, nGiriGara: race.n_laps, nomeGara: gara,
         pilota: selDrv, freezeLap: L, contestoLive: ctx, mescolaScelta });
       if (calc && !calc.senza_risposta) s = calc;
@@ -867,8 +877,9 @@ for (const [b, mostra] of [['sbStrat', 'rail'], ['sbTorre', 'torre']]) {
     E('torre').hidden = mostra !== 'torre';
     E('sbStrat').classList.toggle('on', mostra === 'rail');
     E('sbTorre').classList.toggle('on', mostra === 'torre');
-    E('sbStrat').setAttribute('aria-selected', String(mostra === 'rail'));
-    E('sbTorre').setAttribute('aria-selected', String(mostra === 'torre'));
+    // due bottoni a due stati: role=tab prometterebbe un tabpanel e le frecce
+    E('sbStrat').setAttribute('aria-pressed', String(mostra === 'rail'));
+    E('sbTorre').setAttribute('aria-pressed', String(mostra === 'torre'));
   });
 }
 function adattaSchede() {

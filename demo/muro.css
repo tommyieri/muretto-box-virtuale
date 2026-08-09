@@ -11,7 +11,11 @@
      Barlow            prosa
      JetBrains Mono    OGNI numero, sempre tabulare
    ========================================================================= */
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+/* I FONT NON ENTRANO PIU' DA QUI. Un @import in cima al foglio incatena tre giri di
+   rete in serie prima del primo disegno: muro.css, poi il CSS dei font, poi i woff2.
+   Il preload scanner del browser non puo' anticipare cio' che sta dentro un CSS che
+   non ha ancora scaricato. Ora il <link> sta nel <head> di ogni pagina, accanto a
+   questo foglio, e le due richieste partono insieme. */
 
 :root{
   /* fondo e piani */
@@ -217,6 +221,10 @@ hr{ border:0; border-top:1px solid var(--bordo); margin:26px 0; }
   .menu .tendina{ min-width:170px; }
 }
 @media (max-width:420px){ .marchio-t{ display:none; } }
+/* SOTTO I 348 px la barra sforava e CAMPIONATO usciva dallo schermo: nessuna
+   scorciatoia per raggiungerlo, perche' la barra non scorre. Con 4 px di respiro
+   per voce il menu chiude dentro i 308 px disponibili di un iPhone SE. */
+@media (max-width:380px){ .menu a,.menu .apri{ padding:0 4px; } }
 
 /* ================================================================= scafo */
 .scafo{ max-width:var(--max); margin:0 auto; padding:clamp(22px,4vw,40px) clamp(14px,3vw,26px) 90px; }
@@ -261,8 +269,13 @@ hr{ border:0; border-top:1px solid var(--bordo); margin:26px 0; }
   transition:background-color .18s var(--ease), border-color .18s var(--ease),
              color .18s var(--ease), box-shadow .18s var(--ease);
 }
-.btn-p{ background:var(--rosso); color:#fff; box-shadow:0 6px 20px -6px rgba(255,30,60,.6); }
-.btn-p:hover{ background:#ff3550; box-shadow:0 8px 26px -6px rgba(255,30,60,.75); }
+/* IL ROSSO D'AZIONE E' PIU' SCURO DEL ROSSO D'INCHIOSTRO. Bianco su --rosso sta a
+   3,82:1, sotto la soglia 4.5:1 per un testo da 15px: il bottone piu' cliccato del
+   sito era il meno leggibile. Qui 5,20:1 a riposo e 4,77:1 in hover — l'hover
+   continua a schiarire, come deve. Il token --rosso non si tocca: come inchiostro
+   sul fondo scuro sta a 5,50:1 e va bene. */
+.btn-p{ background:#D8102F; color:#fff; box-shadow:0 6px 20px -6px rgba(255,30,60,.6); }
+.btn-p:hover{ background:#E31235; box-shadow:0 8px 26px -6px rgba(255,30,60,.75); }
 .btn-s{ background:rgba(255,255,255,.05); border-color:var(--bordo-2); color:var(--testo); }
 .btn-s:hover{ background:rgba(255,255,255,.09); border-color:#43506a; }
 .btn-f{ color:var(--calmo); }
@@ -409,11 +422,11 @@ hr{ border:0; border-top:1px solid var(--bordo); margin:26px 0; }
 .art-svg-wrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
 .art-svg-wrap svg{ width:100%; height:auto; display:block; }
 .art-svg.art-pista{ max-height:340px; }
-/* SU SCHERMO STRETTO IL GRAFICO SCORRE, non si rimpicciolisce. Con width:100% e basta,
-   su un telefono un grafico da 1000 unita' finiva in 309 px e le sue etichette a 5 px:
-   illeggibili. Il contenitore ha gia' overflow-x, mancava un minimo al disegno. */
-@media (max-width:640px){
-  .art-svg-wrap svg{ width:auto; min-width:560px; }
+/* SU SCHERMO STRETTO IL GRAFICO SCORRE, non si rimpicciolisce: il minimo lo mette
+   muro.mjs::graficiLeggibili, che legge il viewBox del disegno — qui il CSS non lo sa.
+   Questa regola serve solo a lasciare che quel minimo comandi. */
+@media (max-width:900px){
+  .art-svg-wrap svg{ width:auto; max-width:none; }
 }
 .art-fig .cap{ margin-top:12px; color:var(--fioco); font-size:13.5px; line-height:1.5; }
 .art-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:34px;

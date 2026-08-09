@@ -163,7 +163,13 @@ def estrai(sess, gara, nome_sess, colori, teams):
                 "vmax": None,
                 "mescola": (lap["Compound"] if isinstance(lap["Compound"], str) else None),
                 "eta": (int(lap["TyreLife"]) if lap["TyreLife"] == lap["TyreLife"] else None),
-                "buono": bool(lap["IsAccurate"]) and t_giro is not None,
+                # UN GIRO CANCELLATO NON E' UN GIRO. La direzione gara ne toglie di
+                # continuo per track limits, e FastF1 li lascia IsAccurate e cronometrati:
+                # il foglio tempi proponeva come «miglior giro» tempi che non esistono.
+                # `is not True` e non `== False`: quando i messaggi non ci sono la colonna
+                # e' NaN, e la sessione si comporta come prima.
+                "buono": (bool(lap["IsAccurate"]) and t_giro is not None
+                          and lap.get("Deleted") is not True),
                 "box": ("in" if in_lap else ("out" if out_lap else None)),
                 "tel": bool(canali),
             }
@@ -228,7 +234,9 @@ def una(anno, rnd, gara, sess_ff, nome_sess, colori, teams, forza=False):
     t0 = time.time()
     try:
         s = fastf1.get_session(anno, rnd, sess_ff)
-        s.load(telemetry=True, weather=False, messages=False)
+        # messages=True: senza il race control la colonna `Deleted` resta vuota e i
+        # giri cancellati passerebbero per buoni.
+        s.load(telemetry=True, weather=False, messages=True)
     except Exception as e:
         print(f"  · {gara} {sess_ff}: non disponibile ({type(e).__name__})")
         return False
