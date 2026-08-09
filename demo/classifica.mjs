@@ -110,3 +110,30 @@ export function classifica({ cumCorrente, cumPrecedente, ancora, primoGiro, f, L
     return { drv, icum, cumFine, pos: i + 1, giriRitardo: gd, distacco, et, cls, prev };
   });
 }
+
+/** L'ORDINE D'ARRIVO: chi ha fatto piu' giri, e a pari giri chi ha il cum piu' basso.
+ *
+ *  Sta qui perche' qui sta la definizione di «chi e' davanti»: era gia' scritta, identica,
+ *  in ese.mjs::arrivoRealeDa (che ora chiama questa) e serviva una terza volta alla torre
+ *  della pagina-gara. Tre copie della stessa regola sono tre occasioni di divergere.
+ *
+ *  A COSA SERVE NELLA TORRE. Un pilota sparisce da byLap[L] quando ha completato MENO di L
+ *  giri: si e' ritirato, non e' partito, oppure e' arrivato DOPPIATO — e la sua ultima riga
+ *  e' il giro 69 di una gara da 70. Senza questa distinzione la pagina chiamava «ritirato»
+ *  chiunque non avesse una riga al giro del battistrada: all'Hungaroring, dodici piloti che
+ *  avevano finito la gara.
+ *
+ *  @param celleAlGiro (L) => {sigla: cella} del giro L, o null
+ *  @param nLap        ultimo giro della gara
+ *  @param escludi     (sigla) => boolean, per i non partenti */
+export function ordineArrivo(celleAlGiro, nLap, escludi = () => false) {
+  const ultimo = {};
+  for (let L = 1; L <= nLap; L += 1) {
+    for (const [d, c] of Object.entries(celleAlGiro(L) || {})) {
+      if (typeof c?.cum_time === 'number' && !escludi(d)) ultimo[d] = { giri: L, cum: c.cum_time };
+    }
+  }
+  return Object.entries(ultimo)
+    .sort(([a, x], [b, y]) => (y.giri - x.giri) || (x.cum - y.cum) || (a < b ? -1 : 1))
+    .map(([drv, x], i) => ({ drv, posizione: i + 1, giri: x.giri, cum: x.cum }));
+}

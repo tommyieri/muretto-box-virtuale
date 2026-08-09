@@ -32,6 +32,7 @@
 // Revocare la deroga = togliere ese.mjs dall'elenco escluso in s25_difesa.mjs.
 
 import { garaDaLive, contestoDa, nomeSimulatore } from './ponte_live.mjs?v=070826a';
+import { ordineArrivo } from './classifica.mjs?v=090826b';
 import { costruisciScenario, eseguiEValida } from './vendor/simulatore/motore/scenario/costruttore.mjs';
 import { regimePerGiroDiCampo } from './vendor/simulatore/motore/provenienza/definizioni.mjs';
 
@@ -70,16 +71,12 @@ export function sosteVereDa(race) {
  * la classifica ufficiale (penalita' post-gara escluse) e la targhetta lo dice.
  */
 export function arrivoRealeDa(race) {
+  // LA REGOLA STA IN UN POSTO SOLO (demo/classifica.mjs::ordineArrivo): era scritta qui
+  // e serviva anche alla torre della pagina-gara. Il comportamento non cambia — stessa
+  // chiave d'ordinamento, stesso tie-break sulla sigla — cambia solo dove vive.
   const byLap = race.byLap ?? byLapDa(race);
-  const ultimo = {};
-  for (let L = 1; L <= race.n_laps; L += 1) {
-    for (const [drv, c] of Object.entries(byLap[L] ?? {})) {
-      if (typeof c?.cum_time === 'number') ultimo[drv] = { giri: L, cum: c.cum_time };
-    }
-  }
-  return Object.entries(ultimo)
-    .sort(([a, x], [b, y]) => (y.giri - x.giri) || (x.cum - y.cum) || (a < b ? -1 : 1))
-    .map(([drv, x], i) => ({ drv, posizione: i + 1, giri: x.giri }));
+  return ordineArrivo((L) => byLap[L], race.n_laps)
+    .map(({ drv, posizione, giri }) => ({ drv, posizione, giri }));
 }
 
 /**
