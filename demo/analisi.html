@@ -24,6 +24,7 @@
      conclusione sola. Niente pagelle, niente voci di mercato.</p>
 
   <div class="filtri pillole" id="filtri" role="group" aria-label="Filtra per Gran Premio"></div>
+  <p id="quanti" class="sottotitolo" style="margin-top:-8px;font-size:13px"></p>
 
   <!-- ELENCO:INIZIO — generato da ai_lab/redazione/statico.py, non modificare a mano -->
         <div class="grid">
@@ -46,36 +47,56 @@
 <footer class="piede"><div class="piede-in"></div></footer>
 
 <script type="module">
-import { guscio, el, $$ } from './muro.mjs?v=090826a';
+import { guscio, dati, el, V, $$ } from './muro.mjs?v=090826a';
 guscio('analisi.html');
 
 /* Il filtro lavora sulle card GIA' IN PAGINA: il blocco fra i marcatori e' scritto
-   dal generatore ed e' crawlabile senza JS. Qui non si ridisegna niente, si nasconde. */
-const carte = $$('.card');
-const gp = [...new Set(carte.map(c => (c.querySelector('.eyebrow')?.textContent || '')
-  .split('·')[0].trim()).filter(Boolean))];
+   dal generatore ed e' crawlabile senza JS. Qui non si ridisegna niente, si nasconde.
 
-if (carte.length && gp.length > 1) {
+   IL GRAN PREMIO VIENE DAL DATO, non dal testo. Prima si prendeva il primo pezzo
+   dell'occhiello (una stringa redazionale libera), e nascevano pillole che Gran Premi
+   non sono: «Dieci circuiti 2026», «Dieci gare 2026». Un filtro etichettato «per Gran
+   Premio» che offre voci che non sono Gran Premi promette una cosa e ne fa un'altra. */
+const carte = $$('.card');
+const idDi = (c) => (c.getAttribute('href') || '').split('/').pop().replace('.html', '');
+
+(async () => {
+  if (!carte.length) return;
+  const elenco = await dati(`data/analisi_articoli.json?v=${V}`) || [];
+  const gpDi = {};
+  for (const a of elenco) if (a.id && a.gp) gpDi[a.id] = a.gp;
+
+  const gp = [...new Set(carte.map(c => gpDi[idDi(c)]).filter(Boolean))];
+  if (gp.length < 2) return;                    // un filtro con una voce sola non filtra
+
   let scelto = null;
   const box = document.getElementById('filtri');
-  const bottoni = [['Tutte', null], ...gp.map(g => [g, g])].map(([et, v]) =>
-    el('button', { class: 'pil' + (v === scelto ? ' on' : ''), type: 'button',
-      'aria-pressed': String(v === scelto),
-      onclick: () => { scelto = v; applica(); } }, et));
+  const voci = [['Tutte', null], ...gp.map(g => [g, g])];
+  const bottoni = voci.map(([et, v]) => el('button', {
+    class: 'pil', type: 'button', onclick: () => { scelto = v; applica(); },
+  }, et));
   box.replaceChildren(...bottoni);
-  const applica = () => {
+
+  function applica() {
     bottoni.forEach((b, i) => {
-      const v = i === 0 ? null : gp[i - 1];
+      const v = voci[i][1];
       b.classList.toggle('on', v === scelto);
       b.setAttribute('aria-pressed', String(v === scelto));
     });
+    let visti = 0;
     for (const c of carte) {
-      const suo = (c.querySelector('.eyebrow')?.textContent || '').split('·')[0].trim();
-      c.hidden = !!scelto && suo !== scelto;
+      const suo = gpDi[idDi(c)] || null;
+      // senza GP nel dato la card resta SEMPRE visibile: un pezzo su dieci circuiti
+      // non appartiene a un Gran Premio, e nasconderlo sarebbe perdere un articolo
+      const fuori = !!scelto && suo !== scelto;
+      c.hidden = fuori;
+      if (!fuori) visti++;
     }
-  };
+    const n = document.getElementById('quanti');
+    if (n) n.textContent = scelto ? `${visti} su ${carte.length}` : '';
+  }
   applica();
-}
+})();
 </script>
 </body>
 </html>

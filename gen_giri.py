@@ -23,7 +23,14 @@ Le tracce sono base64 di array interi:
   freno  uint8   0/1
   marcia uint8   0-8
   drs    uint8   0/1
-  t      uint16  centesimi di secondo dall'inizio giro (little endian)
+  t      uint16  tempo dall'inizio giro, in unita' di `t_scala` secondi
+
+IL TEMPO HA UNA SCALA PER-GIRO, e non e' un vezzo. In centesimi fissi il fondo scala
+di uint16 e' 655,35 s: 565 giri su 31.840 (i giri con una sosta lunga dentro, o una
+bandiera rossa) ci sbattevano contro e venivano TRONCATI IN SILENZIO — la curva del
+distacco di quei giri era falsa senza che niente lo dicesse. Con `t_scala =
+durata/65535` la saturazione non e' piu' possibile per costruzione, e su un giro
+normale la risoluzione MIGLIORA (1/65535 di 90 s = 1,4 ms contro i 10 ms dei centesimi).
 
 Uso:
   python3 gen_giri.py --gara Belgio --sessione R
@@ -108,14 +115,18 @@ def campiona(tel):
         drs = np.zeros(N, dtype=np.uint8)
     t = tel["Time"].dt.total_seconds().to_numpy(dtype=float)
     t = t - t[0]
-    tt = np.clip(np.interp(g, x, t) * 100.0, 0, 65535)
+    tt_s = np.interp(g, x, t)
+    durata = float(max(tt_s[-1], 1e-3))
+    scala = durata / 65535.0
+    tt = np.clip(np.round(tt_s / scala), 0, 65535)
     return {
+        "t_scala": round(scala, 9),
         "v": b64(np.round(v), np.uint8),
         "gas": b64(np.round(gas), np.uint8),
         "freno": b64(freno, np.uint8),
         "marcia": b64(np.round(marcia), np.uint8),
         "drs": b64(drs, np.uint8),
-        "t": b64(np.round(tt), np.uint16),
+        "t": b64(tt, np.uint16),
     }
 
 

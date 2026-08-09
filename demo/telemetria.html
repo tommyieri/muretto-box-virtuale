@@ -25,6 +25,9 @@
   .pl:hover{ background:rgba(255,255,255,.05); }
   .pl.on{ background:rgba(36,227,210,.1); }
   .pl.rif{ background:rgba(255,176,0,.09); }
+  .pl.senza{ opacity:.42; cursor:not-allowed; }
+  .pl.senza:hover{ background:transparent; }
+  .nota-box{ margin:0; color:var(--fioco); font-size:12.5px; line-height:1.5; }
   .pl .bar{ width:4px; height:24px; border-radius:2px; background:var(--c,#8A93A3); }
   .pl b{ font:700 15px/1 var(--disp); letter-spacing:.09em; }
   .pl small{ display:block; margin-top:3px; color:var(--fioco); font:400 10px/1 var(--mono); }
@@ -108,6 +111,10 @@
       <section class="giri" id="boxGiri" hidden>
         <div class="cap" id="capGiri"></div>
         <div class="strisce" id="strisce"></div>
+        <div id="boxGiriB" hidden>
+          <div class="cap" id="capGiriB" style="margin-top:14px"></div>
+          <div class="strisce" id="strisceB"></div>
+        </div>
       </section>
 
       <div class="quadro" id="quadro" hidden>
@@ -156,12 +163,18 @@ let pista = null;
 
 /* ------------------------------------------------------------ scelte */
 async function boot() {
-  const [man, id] = await Promise.all([
-    dati(`data/giri_manifest.json?v=${V}`), identita()]);
+  const [man, id, cal] = await Promise.all([
+    dati(`data/giri_manifest.json?v=${V}`), identita(),
+    dati(`data/calendario_2026.json?v=${V}`)]);
   colori = id.colori;
   if (!man?.gare) { guasto(E('lista'), boot); return; }
   manifest = man.gare;
-  const gare = Object.keys(manifest);
+  // IL MANIFEST E' ALFABETICO (lo scrive un sorted(listdir)), ma una fila di Gran
+  // Premi si legge come un calendario: Australia, Austria, Belgio… sembrava un ordine
+  // di stagione sbagliato. Qui si ordina per round vero.
+  const round = {};
+  for (const g of (cal?.gare || [])) if (g.nome) round[g.nome] = g.round;
+  const gare = Object.keys(manifest).sort((a, b) => (round[a] ?? 99) - (round[b] ?? 99));
   gara = gare.includes(param('g')) ? param('g') : gare[gare.length - 1];
   E('pilGare').replaceChildren(...gare.slice().reverse().map(g => el('button', {
     class: 'pil', type: 'button', 'aria-pressed': String(g === gara),
@@ -199,33 +212,48 @@ async function caricaSessione() {
 }
 
 /* ------------------------------------------------------------ piloti */
-function migliore(p) {
-  const buoni = p.giri.filter(g => g.buono && g.t != null);
+/** Il miglior giro FRA QUELLI CON TELEMETRIA.
+ *  Prima guardava tutti i giri cronometrati: se il piu' veloce era senza traccia
+ *  (capita: in Cina FP1 il giro buono di VER non ha car_data), il click sul pilota
+ *  non faceva NIENTE, in silenzio. Un pilota che non risponde sembra un sito rotto. */
+function migliore(p, conTraccia = true) {
+  const buoni = p.giri.filter(g => g.buono && g.t != null && (!conTraccia || g.tel));
   return buoni.length ? buoni.reduce((a, b) => (b.t < a.t ? b : a)) : null;
 }
+/** Il tempo da mostrare in elenco: il miglior giro cronometrato, traccia o no. */
+const miglioreCronometrato = (p) => migliore(p, false);
 
 function elencaPiloti() {
   const righe = Object.entries(indice.piloti)
-    .map(([sig, p]) => ({ sig, p, best: migliore(p) }))
+    // apribile = ha ALMENO una traccia, anche su un giro non cronometrato: spegnere
+    // un pilota che qualcosa da mostrare ce l'ha sarebbe il difetto opposto.
+    .map(([sig, p]) => ({ sig, p, best: miglioreCronometrato(p),
+                          apribile: p.giri.some(g => g.tel) }))
     .sort((a, b) => (a.best?.t ?? 1e9) - (b.best?.t ?? 1e9));
   const rif = righe.find(r => r.best)?.best?.t ?? null;
   E('capPiloti').textContent = `${righe.length} piloti · miglior giro`;
-  E('lista').replaceChildren(...righe.map(({ sig, p, best }) => el('button', {
-    class: 'pl', type: 'button', 'data-sig': sig,
+  E('lista').replaceChildren(...righe.map(({ sig, p, best, apribile }) => el('button', {
+    class: 'pl' + (apribile ? '' : ' senza'), type: 'button', 'data-sig': sig,
+    disabled: !apribile,
+    title: apribile ? null : 'nessun giro con telemetria registrata',
     stile: { '--c': coloreDi(p.team, colori) },
     onclick: (ev) => scegliPilota(sig, ev.shiftKey || ev.altKey),
   },
     el('span', { class: 'bar' }),
     el('span', {}, el('b', {}, sig),
-      el('small', {}, `${p.giri.length} giri`)),
+      el('small', {}, apribile ? `${p.giri.filter(g => g.tel).length} giri` : 'senza telemetria')),
     el('i', {}, best ? (rif && best.t !== rif ? delta(best.t - rif) : tempo(best.t)) : '—'))));
 }
 
 function scegliPilota(sig, comeConfronto) {
   const p = indice.piloti[sig];
   if (!p) return;
-  const best = migliore(p) || p.giri.find(g => g.tel);
-  if (!best) return;
+  const best = migliore(p) || p.giri.find(g => g.tel);   // il migliore con traccia, o la prima traccia che c'e'
+  if (!best) {
+    E('avviso').hidden = false;
+    E('avviso').textContent = `${sig} non ha nessun giro con la telemetria registrata in questa sessione.`;
+    return;
+  }
   if (comeConfronto && A && A.sig !== sig) impostaB(sig, best.n);
   else impostaA(sig, best.n);
 }
@@ -242,7 +270,11 @@ async function tracceDi(sig) {
 async function impostaA(sig, giro) {
   const file = await tracceDi(sig);
   const c = file?.giri?.[String(giro)];
-  if (!c) return;
+  if (!c) {
+    E('avviso').hidden = false;
+    E('avviso').textContent = `Il giro ${giro} di ${sig} non ha la telemetria registrata.`;
+    return;
+  }
   A = { sig, giro, tr: decodifica(c), meta: indice.piloti[sig].giri.find(g => g.n === giro) };
   if (B && B.sig === sig) B = null;
   elencaGiri();
@@ -252,33 +284,45 @@ async function impostaA(sig, giro) {
 async function impostaB(sig, giro) {
   const file = await tracceDi(sig);
   const c = file?.giri?.[String(giro)];
-  if (!c) return;
+  if (!c) return;                       // il confronto non si aggiunge, e A resta com'e'
   B = { sig, giro, tr: decodifica(c), meta: indice.piloti[sig].giri.find(g => g.n === giro) };
   elencaGiri();
   disegna();
+}
+
+/** Una striscia di giri: quelli del pilota X, cliccabili. */
+function striscia(sig, scelto, classeScelto, onScegli) {
+  const p = indice.piloti[sig];
+  const best = migliore(p);
+  return p.giri.filter(g => g.tel).map(g => el('button', {
+    class: 'gr' + (g.n === scelto ? ' ' + classeScelto : '')
+      + (best && g.n === best.n ? ' veloce' : '') + (g.box ? ' box' : ''),
+    type: 'button',
+    'aria-pressed': String(g.n === scelto),
+    title: g.box === 'in' ? 'giro di rientro ai box' : g.box === 'out' ? 'giro di uscita dai box' : '',
+    onclick: () => onScegli(g.n),
+  },
+    el('span', { class: 'ng' }, veri(
+      String(g.n),
+      g.mescola ? el('span', { class: 'gomma ' + g.mescola, title: MESCOLA_IT[g.mescola] || g.mescola }) : null,
+      g.box ? el('span', { stile: { color: 'var(--verde)' } }, g.box === 'in' ? 'IN' : 'OUT') : null)),
+    el('span', { class: 'tp' }, g.t != null ? tempo(g.t) : '—')));
 }
 
 function elencaGiri() {
   if (!A) return;
   E('boxGiri').hidden = false;
   E('avviso').hidden = true;
-  const p = indice.piloti[A.sig];
-  const best = migliore(p);
-  E('capGiri').replaceChildren(
-    el('b', {}, A.sig), ' · i suoi giri — tocca per cambiare');
-  const conTel = p.giri.filter(g => g.tel);
-  E('strisce').replaceChildren(...conTel.map(g => el('button', {
-    class: 'gr' + (g.n === A.giro ? ' on' : '') + (B && B.sig === A.sig && g.n === B.giro ? ' rif' : '')
-      + (best && g.n === best.n ? ' veloce' : '') + (g.box ? ' box' : ''),
-    type: 'button',
-    title: g.box === 'in' ? 'giro di rientro ai box' : g.box === 'out' ? 'giro di uscita dai box' : '',
-    onclick: () => impostaA(A.sig, g.n),
-  },
-    el('span', { class: 'ng' }, veri(
-      String(g.n),
-      g.mescola ? el('span', { class: 'gomma ' + g.mescola, title: MESCOLA_IT[g.mescola] || g.mescola }) : null,
-      g.box ? el('span', { stile: { color: 'var(--verde)' } }, g.box === 'in' ? 'IN' : 'OUT') : null)),
-    el('span', { class: 'tp' }, g.t != null ? tempo(g.t) : '—'))));
+  E('capGiri').replaceChildren(el('b', {}, A.sig), ' · i suoi giri — tocca per cambiare');
+  E('strisce').replaceChildren(...striscia(A.sig, A.giro, 'on', (n) => impostaA(A.sig, n)));
+
+  // LA SECONDA STRISCIA, che prima non c'era: la legenda prometteva «tocca un suo
+  // giro qui sopra» per il pilota di confronto, e i suoi giri non erano in pagina.
+  E('boxGiriB').hidden = !B;
+  if (B) {
+    E('capGiriB').replaceChildren(el('b', {}, B.sig), ' · a confronto — tocca per cambiare');
+    E('strisceB').replaceChildren(...striscia(B.sig, B.giro, 'rif', (n) => impostaB(B.sig, n)));
+  }
 }
 
 /* ------------------------------------------------------------ disegno */
@@ -313,8 +357,15 @@ function disegna() {
     pan('Freno', '', svgF, 'vF'),
     pan('Marcia', '', svgM, 'vM'),
   ];
+  // UN GIRO DI BOX NON E' UN GIRO DI PISTA. La griglia e' normalizzata sulla distanza
+  // percorsa da QUEL giro: per un in-lap finisce all'ingresso box, per un out-lap
+  // comincia all'uscita. Sovrapporlo al tracciato o a un altro giro vorrebbe dire
+  // colorare la corsia box come se fosse pista, e confrontare due assi diversi.
+  const boxA = !!A.meta?.box, boxB = !!B?.meta?.box;
+  const asseSporco = boxA || boxB;
+
   let svgD = null;
-  if (cB) {
+  if (cB && !asseSporco) {
     const d = differenza(cA.tr ? cA : cA, cB);   // A rispetto a B
     const dd = differenza(cA, cB);
     svgD = traccia([{ dati: dd, colore: '#fff', area: 'rgba(255,255,255,.06)' }],
@@ -324,10 +375,11 @@ function disegna() {
   E('pannelli').replaceChildren(...figli);
 
   const tutti = veri(svgV, svgG, svgF, svgM, svgD);
-  const mappa = pista ? nastroVelocita(pista, cA.v) : null;
+  const mappa = (pista && !boxA) ? nastroVelocita(pista, cA.v) : null;
   E('mappaVel').replaceChildren(...veri(mappa,
-    !pista ? el('p', { stile: { color: 'var(--fioco)', fontSize: '13px', margin: 0 } },
-      'Tracciato non disponibile per questo GP.') : null));
+    boxA ? el('p', { class: 'nota-box' },
+      `Il giro ${A.giro} passa dai box: non copre il giro di pista, quindi non si colora sul tracciato.`)
+    : !pista ? el('p', { class: 'nota-box' }, 'Tracciato non disponibile per questo GP.') : null));
 
   const muovi = (ev) => {
     const f = frazioneDa(tutti[0], ev.clientX ?? ev.touches?.[0]?.clientX);
@@ -360,8 +412,10 @@ function legenda() {
   };
   const nodi = [riga(A, coloreDi(indice.piloti[A.sig].team, colori))];
   if (B) nodi.push(riga(B, coloreDi(indice.piloti[B.sig].team, colori)));
+  const sporco = !!A.meta?.box || !!B?.meta?.box;
   nodi.push(el('p', { stile: { margin: '4px 0 0', color: 'var(--fioco)', fontSize: '12.5px', lineHeight: 1.5 } },
-    B ? 'Tocca un altro pilota tenendo premuto ⇧ per cambiare il confronto, o tocca un suo giro qui sopra.'
+    sporco ? 'Uno dei due giri passa dai box: non è un giro di pista intero, quindi il distacco non si calcola.'
+    : B ? 'Tocca un altro pilota tenendo premuto ⇧ per cambiare il confronto, o tocca un suo giro qui sopra.'
       : 'Tieni premuto ⇧ e tocca un altro pilota per metterlo a confronto.'));
   if (B) nodi.push(el('button', { class: 'btn btn-s', type: 'button',
     stile: { marginTop: '6px', width: '100%' },
@@ -372,7 +426,17 @@ function legenda() {
 function cifre() {
   const m = A.meta || {};
   const c = A.tr;
-  const gasPieno = c.gas.filter(x => x >= 98).length / c.n * 100;
+  // PESATO SUL TEMPO. La griglia e' uniforme in DISTANZA: contare i punti sopra il
+  // 98% dava la frazione di METRI a gas pieno, e siccome l'auto sta piu' a lungo dove
+  // va piano il numero sovrastimava sempre. Qui ogni punto pesa quanto dura.
+  let pieno = 0, tot = 0;
+  for (let i = 1; i < c.n; i++) {
+    const dt = c.t[i] - c.t[i - 1];
+    if (!(dt > 0)) continue;
+    tot += dt;
+    if (c.gas[i] >= 98) pieno += dt;
+  }
+  const gasPieno = tot > 0 ? pieno / tot * 100 : 0;
   E('boxCifre').hidden = false;
   E('cifre').replaceChildren(
     el('div', { class: 'cf' }, el('small', {}, 'giro'), el('b', { class: 'n' }, m.t != null ? tempo(m.t) : '—')),

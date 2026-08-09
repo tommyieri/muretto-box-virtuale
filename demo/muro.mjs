@@ -134,25 +134,29 @@ export function numeroDi(sigla, schede = _schede) {
 }
 
 /* ------------------------------------------------------------- il guscio */
+// PERCORSI DALLA RADICE, non relativi. Le dodici pagine in demo/articolo/ chiamano
+// questo stesso guscio: con href relativi il browser risolveva 'stagione.html' in
+// /articolo/stagione.html — nav e marchio a 404 su tutte e dodici, in produzione.
 const VOCI = [
-  ['Stagione',   'stagione.html'],
-  ['Live',       'live.html'],
-  ['Telemetria', 'telemetria.html'],
-  ['Campionato', 'campionato.html'],
+  ['Stagione',   '/stagione.html'],
+  ['Live',       '/live.html'],
+  ['Telemetria', '/telemetria.html'],
+  ['Campionato', '/campionato.html'],
 ];
+const foglio = (h) => h.replace(/^\//, '');
 
 /** Intestazione + piede, scritti da un posto solo. `qui` = file corrente. */
 export function guscio(qui) {
   const barra = $('.barra'), piede = $('.piede-in');
   if (barra) {
     barra.replaceChildren(
-      el('a', { class: 'marchio', href: 'index.html', 'aria-label': 'Muretto Box Virtuale — home' },
+      el('a', { class: 'marchio', href: '/index.html', 'aria-label': 'Muretto Box Virtuale — home' },
         el('span', { class: 'marchio-b' }, 'M'),
         el('span', { class: 'marchio-t' }, el('b', {}, 'MURETTO'), el('small', {}, 'BOX VIRTUALE'))),
       el('nav', { class: 'menu', 'aria-label': 'Sezioni' },
         VOCI.map(([n, f]) => el('a', {
-          href: f, 'aria-current': f === qui ? 'page' : null,
-        }, f === 'live.html' ? el('span', { class: 'pallino', id: 'pallinoLive' }) : null, n))));
+          href: f, 'aria-current': foglio(f) === qui ? 'page' : null,
+        }, foglio(f) === 'live.html' ? el('span', { class: 'pallino', id: 'pallinoLive' }) : null, n))));
   }
   if (piede) {
     piede.replaceChildren(
@@ -160,7 +164,7 @@ export function guscio(qui) {
         el('span', { class: 'marchio-b' }, 'M'),
         el('span', { class: 'marchio-t' }, el('b', {}, 'MURETTO'), el('small', {}, 'STAGIONE 2026'))),
       el('nav', {},
-        [...VOCI, ['Letture', 'analisi.html']].map(([n, f]) => el('a', { href: f }, n))),
+        [...VOCI, ['Letture', '/analisi.html']].map(([n, f]) => el('a', { href: f }, n))),
       el('small', {}, 'Formula 1 2026 · replay, strategia e telemetria'));
   }
 }
