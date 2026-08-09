@@ -5,54 +5,29 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pagina non trovata — Muretto Box Virtuale</title>
 <meta name="robots" content="noindex, follow">
-<link rel="stylesheet" href="/stile.css?v=040826b">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/muro.css?v=090826a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="/index.html" aria-label="Muretto Box Virtuale — home">
-    <span class="brand-mark"><span>M</span></span>
-    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
-  </a>
-  <nav class="nav" aria-label="Sezioni">
-    <a href="/stagione.html">Stagione</a>
-    <a href="/live.html"><span class="dot-live"></span>Live</a>
-    <a href="/analisi.html">Analisi</a>
-    <a href="/statistiche.html">Statistiche</a>
-  </nav>
-</header>
+<header class="barra"></header>
 
-<main class="wrap-scheda art">
-  <header class="art-testa" style="--ac:#E4002B">
-    <div class="art-occhiello">Errore 404</div>
-    <h1 class="art-titolo">Questa pagina non esiste</h1>
-    <p class="art-sommario">L'indirizzo che hai seguito non porta a nulla: forse
-      un vecchio link, forse un refuso. Da qui si riparte.</p>
-  </header>
-  <section class="art-sez">
-    <div class="sez-tit"><span class="art-tag">Dove andare</span> Le sezioni del sito</div>
-    <div class="art-prosa">
-      <ul>
-        <li><a href="/analisi.html">Analisi</a> — gli articoli della redazione tecnica.</li>
-        <li><a href="/stagione.html">Stagione 2026</a> — tutti i weekend, gara per gara.</li>
-        <li><a href="/live.html">Live</a> — il muretto in diretta.</li>
-        <li><a href="/statistiche.html">Statistiche</a> — classifiche, piloti, squadre e confronti fra stagioni.</li>
-        <li><a href="/index.html">Home</a></li>
-      </ul>
-    </div>
-  </section>
+<main class="scafo">
+  <p class="occhiello">Errore 404</p>
+  <h1 class="titolone">Questa pagina <em>non esiste</em></h1>
+  <p class="sottotitolo">L'indirizzo che hai seguito non porta a nulla: forse un vecchio
+     link, forse un refuso. Da qui si riparte.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:28px">
+    <a class="btn btn-p" href="/stagione.html">Le gare</a>
+    <a class="btn btn-s" href="/telemetria.html">Telemetria</a>
+    <a class="btn btn-s" href="/campionato.html">Campionato</a>
+    <a class="btn btn-f" href="/index.html">Home</a>
+  </div>
 </main>
 
-<footer class="footer">
-  <div class="footer-in">
-    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
-    <nav>
-      <a href="/stagione.html">Stagione</a>
-      <a href="/live.html">Live</a>
-      <a href="/analisi.html">Analisi</a>
-      <a href="/statistiche.html">Statistiche</a>
-    </nav>
-  </div>
-</footer>
+<footer class="piede"><div class="piede-in"></div></footer>
+<script type="module">
+  import { guscio } from '/muro.mjs?v=090826a';
+  guscio(null);
+</script>
 </body>
 </html>

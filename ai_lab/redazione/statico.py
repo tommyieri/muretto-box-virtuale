@@ -59,26 +59,18 @@ MARCA_INIZIO = "<!-- ELENCO:INIZIO — generato da ai_lab/redazione/statico.py, 
 MARCA_FINE = "<!-- ELENCO:FINE -->"
 
 # pagine fisse del sito: (file, titolo per il sitemap, priorita')
+# IL SITO NUOVO (agosto 2026) HA SEI PAGINE, e questa e' la loro lista.
+# Le vecchie pagine-sezione (statistiche-*, classifiche, forza, dati, quali, sprint,
+# libere, tele) NON sono piu' raggiungibili dal menu e quindi non entrano piu' in
+# sitemap: annunciare un indirizzo che il sito non linka piu' e' il modo classico di
+# lasciare in giro pagine morte. I file restano su disco finche' qualcuno decide.
 PAGINE_FISSE = [
     ("index.html", "1.0"),
-    ("analisi.html", "0.9"),
-    ("stagione.html", "0.8"),
-    ("statistiche.html", "0.8"),
-    ("classifiche.html", "0.7"),
+    ("stagione.html", "0.9"),
+    ("telemetria.html", "0.9"),
+    ("campionato.html", "0.8"),
+    ("analisi.html", "0.8"),
     ("live.html", "0.6"),
-    ("forza.html", "0.7"),
-    ("dati.html", "0.7"),
-    ("statistiche-piloti.html", "0.6"),
-    ("statistiche-squadre.html", "0.6"),
-    ("statistiche-stagione.html", "0.6"),
-    ("statistiche-confronti.html", "0.6"),
-    # le quattro pagine-sessione, adottate il 04/08/2026 (decisione di Tommi). Erano vive,
-    # funzionanti e linkate da nessuno: ora le punta il muro delle coperture, che pubblica
-    # una riga per ognuno degli artefatti che mostrano.
-    ("quali.html", "0.5"),
-    ("sprint.html", "0.5"),
-    ("libere.html", "0.5"),
-    ("tele.html", "0.5"),
 ]
 # REGOLA DI STOP, decisa il 04/08/2026: una pagina entra qui — e una voce entra nella
 # sotto-barra della sezione — solo quando il suo artefatto esiste davvero. Altrimenti
@@ -106,11 +98,11 @@ PAGINE_FISSE = [
 NAV = [
     ("Stagione", "stagione.html"),
     ("Live", "live.html"),
+    ("Telemetria", "telemetria.html"),
     # La voce «E se?» e' VISSUTA UN GIORNO (07-08/08/2026): il PO ha deciso che la
     # simulazione non e' una pagina accanto alle gare, E' il modo in cui si guarda
     # una gara — il rigioca vive dentro gara.html (BOX ORA), la pagina separata no.
-    ("Analisi", "analisi.html"),
-    ("Statistiche", "statistiche.html"),
+    ("Campionato", "campionato.html"),
 ]
 
 # a quale voce di nav "appartiene" ogni pagina: decide chi porta class="on" e chi sparisce
@@ -119,15 +111,8 @@ NAV = [
 SEZIONE_DI = {
     "stagione.html": "stagione.html",
     "live.html": "live.html",
-    "analisi.html": "analisi.html",
-    "classifiche.html": "statistiche.html",
-    "statistiche.html": "statistiche.html",
-    "statistiche-piloti.html": "statistiche.html",
-    "statistiche-squadre.html": "statistiche.html",
-    "statistiche-stagione.html": "statistiche.html",
-    "statistiche-confronti.html": "statistiche.html",
-    "forza.html": "statistiche.html",
-    "dati.html": "statistiche.html",
+    "telemetria.html": "telemetria.html",
+    "campionato.html": "campionato.html",
 }
 
 
@@ -495,37 +480,28 @@ def rendi_html(art) -> str:
 <html lang="it">
 <head>
 {_testa(art)}
-<link rel="stylesheet" href="../stile.css">
+<link rel="stylesheet" href="../muro.css?v=090826a">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 <script type="application/ld+json">
 {_jsonld(art)}
 </script>
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="../index.html" aria-label="Muretto Box Virtuale — home">
-    <span class="brand-mark"><span>M</span></span>
-    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
-  </a>
-{blocco_nav('analisi.html', '../')}
-</header>
+<header class="barra"></header>
 
 <div class="wrap-scheda" style="padding-bottom:0">
-  <a class="crumb" href="../analisi.html">&larr; Analisi</a>
+  <a class="crumb" href="../analisi.html">&larr; Letture</a>
 </div>
 
 <article class="wrap-scheda art" id="art">
   {_corpo(art)}
 </article>
 
-<footer class="footer">
-  <div class="footer-in">
-    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
-    <nav>
-{blocco_footer_voci('analisi.html', '../')}
-    </nav>
-  </div>
-</footer>
+<footer class="piede"><div class="piede-in"></div></footer>
+<script type="module">
+  import {{ guscio }} from '../muro.mjs?v=090826a';
+  guscio('analisi.html');
+</script>
 </body>
 </html>
 """
@@ -775,54 +751,33 @@ def scrivi_404() -> bool:
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pagina non trovata — Muretto Box Virtuale</title>
 <meta name="robots" content="noindex, follow">
-<link rel="stylesheet" href="/stile.css?v=040826b">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+<link rel="stylesheet" href="/muro.css?v=090826a">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
 <body>
-<header class="topbar">
-  <a class="brand" href="/index.html" aria-label="Muretto Box Virtuale — home">
-    <span class="brand-mark"><span>M</span></span>
-    <span class="brand-name"><b>MURETTO</b><small>BOX VIRTUALE</small></span>
-  </a>
-@@NAV@@
-</header>
+<header class="barra"></header>
 
-<main class="wrap-scheda art">
-  <header class="art-testa" style="--ac:#E4002B">
-    <div class="art-occhiello">Errore 404</div>
-    <h1 class="art-titolo">Questa pagina non esiste</h1>
-    <p class="art-sommario">L'indirizzo che hai seguito non porta a nulla: forse
-      un vecchio link, forse un refuso. Da qui si riparte.</p>
-  </header>
-  <section class="art-sez">
-    <div class="sez-tit"><span class="art-tag">Dove andare</span> Le sezioni del sito</div>
-    <div class="art-prosa">
-      <ul>
-        <li><a href="/analisi.html">Analisi</a> — gli articoli della redazione tecnica.</li>
-        <li><a href="/stagione.html">Stagione 2026</a> — tutti i weekend, gara per gara.</li>
-        <li><a href="/live.html">Live</a> — il muretto in diretta.</li>
-        <li><a href="/statistiche.html">Statistiche</a> — classifiche, piloti, squadre e confronti fra stagioni.</li>
-        <li><a href="/index.html">Home</a></li>
-      </ul>
-    </div>
-  </section>
+<main class="scafo">
+  <p class="occhiello">Errore 404</p>
+  <h1 class="titolone">Questa pagina <em>non esiste</em></h1>
+  <p class="sottotitolo">L'indirizzo che hai seguito non porta a nulla: forse un vecchio
+     link, forse un refuso. Da qui si riparte.</p>
+  <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:28px">
+    <a class="btn btn-p" href="/stagione.html">Le gare</a>
+    <a class="btn btn-s" href="/telemetria.html">Telemetria</a>
+    <a class="btn btn-s" href="/campionato.html">Campionato</a>
+    <a class="btn btn-f" href="/index.html">Home</a>
+  </div>
 </main>
 
-<footer class="footer">
-  <div class="footer-in">
-    <span class="fbrand"><b>MURETTO</b><small>BOX VIRTUALE &middot; STAGIONE 2026</small></span>
-    <nav>
-@@FOOT@@
-    </nav>
-  </div>
-</footer>
+<footer class="piede"><div class="piede-in"></div></footer>
+<script type="module">
+  import { guscio } from '/muro.mjs?v=090826a';
+  guscio(null);
+</script>
 </body>
 </html>
 """
-    # il template e' una stringa SEMPLICE, non una f-string: contiene una graffa in un
-    # attributo e trasformarlo sarebbe fragile. I due blocchi si sciolgono qui.
-    testo = testo.replace("@@NAV@@", blocco_nav(None, "/"))\
-                 .replace("@@FOOT@@", blocco_footer_voci(None, "/"))
     return _scrivi(os.path.join(DEMO, "404.html"), testo)
 
 
