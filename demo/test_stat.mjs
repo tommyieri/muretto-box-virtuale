@@ -392,6 +392,37 @@ if (existsSync(REG)) {
       + 'nessun numero di regolamento e\' pubblicato');
 }
 
+// --- G. la torre di cronometraggio non si ri-scrive in pagina ------------------------
+// Le regole .tw-* stavano copiate in QUATTRO pagine (live, quali, libere, sprint) e la
+// traduzione sessione-archiviata -> snapshot in ALTRETTANTE quattro, byte per byte. Quattro
+// copie che sarebbero divergute alla prima modifica: e' l'errore E12 applicato alla vista.
+// Ora l'aspetto sta in stile.css e la traduzione in live_timing.mjs::snapshotDaSessione.
+// Questo controllo esiste perche' il modo naturale di rompere l'unificazione non e'
+// cancellarla: e' incollare di nuovo una regola «solo per questa pagina».
+{
+  const colpevoliCss = [], colpevoliFn = [];
+  for (const f of pagine) {
+    const t = testo[f];
+    // regole .tw-* dentro un <style> della pagina (non i selettori usati nel markup)
+    for (const stile of t.match(/<style[\s\S]*?<\/style>/g) || []) {
+      if (/^\s*\.tw-[\w-]*\s*[{,]/m.test(stile)) { colpevoliCss.push(f); break; }
+    }
+    if (/function\s+\w*ToSnapshot\s*\(/.test(t)) colpevoliFn.push(f);
+  }
+  esito(colpevoliCss.length === 0,
+    'nessuna pagina ridefinisce le regole .tw-* (stanno in stile.css)'
+    + (colpevoliCss.length ? ` — le ridefiniscono: ${colpevoliCss.join(', ')}` : ''));
+  esito(colpevoliFn.length === 0,
+    'nessuna pagina ri-scrive la traduzione snapshot (sta in live_timing.mjs)'
+    + (colpevoliFn.length ? ` — la ri-scrivono: ${colpevoliFn.join(', ')}` : ''));
+  // e il modulo condiviso deve davvero esportarla, altrimenti il controllo sopra e' vuoto
+  const lt = readFileSync(path.join(QUI, 'live_timing.mjs'), 'utf8');
+  esito(/export function snapshotDaSessione/.test(lt),
+    'live_timing.mjs esporta snapshotDaSessione (senza, il controllo sopra passerebbe a vuoto)');
+  esito(/\.tw-list\{/.test(readFileSync(path.join(QUI, 'stile.css'), 'utf8')),
+    'stile.css contiene le regole della torre');
+}
+
 console.log(rosse === 0
   ? `\nstruttura del sito: ${pagine.length} pagine, ${reg.voci.length} divergenze a registro, tutte ancora vere.`
   : `\nstruttura del sito: ${rosse} asserzioni rosse.`);

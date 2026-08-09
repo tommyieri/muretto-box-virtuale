@@ -143,15 +143,17 @@
     </div>
     <div class="feat"><div class="fn">03</div>
       <h3>Strategia gomme</h3>
-      <!-- NON PROMETTERE LA STRISCIA: non &egrave; renderizzata da nessuna pagina.
-           buildStrat() esiste in gara.html ma scrive in un id (#stratRighe) che il
-           markup non contiene pi&ugrave; dopo la ripulitura della pagina gara, e non
-           viene mai chiamata. La funzione &egrave; viva, il suo esito non arriva in
-           pagina: promettere qui ci&ograve; che l&igrave; non si vede &egrave;
-           esattamente la voce P2 dei KPI. Riscritto il 03/08/2026 su ci&ograve; che
-           la pagina mostra davvero. -->
-      <p>Le <b>soste</b> di ogni pilota sulla timeline della gara, con durata e mescola
-      montata, e le mescole disponibili nel pannello pit.</p>
+      <!-- LA STRISCIA ADESSO ESISTE, e si pu&ograve; promettere: sta in
+           analisi.html#strategia (scheda Strategia), non in gara.html — la pagina-gara
+           l'aveva esclusa il 25/07/2026 perch&eacute; &egrave; racconto retrospettivo,
+           non un input alla simulazione. Dall'08/08/2026 le fasce si costruiscono sulla
+           definizione UNICA di sosta (demo/sosta.mjs): NON sul contatore `stint` grezzo,
+           che a Monaco disegnerebbe cinque stint dove ce ne sono due. La vecchia
+           buildStrat() di gara.html resta orfana e va rimossa.
+           Se un giorno la scheda sparisse, questo testo torna a mentire: e' la voce P2
+           dei KPI, e vale ancora. -->
+      <p>Gli <b>stint</b> di ogni pilota, gara per gara: una fascia per set di gomme,
+      colorata per mescola, con il giro esatto in cui sono state cambiate.</p>
     </div>
     <div class="feat"><div class="fn">04</div>
       <h3>Race control</h3>

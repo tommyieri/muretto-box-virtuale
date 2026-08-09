@@ -173,3 +173,73 @@ jobs:
       # uscire 0. Esce 1 anche se non riesce a leggere origin/main: muto non e' verde.
       - name: Il ramo rosso della sonda scatta (e il verde tace)
         run: bash scheduling/test_sonda_rosso.sh
+
+      # numpy serve alla sentinella del replay (decodifica e statistiche sugli scarti).
+      # `python3 -m pip` e non `pip`: sul runner non e' garantito che siano lo stesso
+      # interprete, e installare numpy accanto a un python3 diverso da quello che esegue
+      # la sentinella la farebbe fallire per un motivo che non c'entra con i dati.
+      - name: numpy per le sentinelle dei dati
+        run: python3 -m pip install --quiet numpy
+
+      # IL REPLAY A POSIZIONI VERE non puo' degradare in silenzio. I pallini di gara.html
+      # non sono piu' una frazione di TEMPO ma la posizione MISURATA sul GPS per-auto: se
+      # un giorno la proiezione sul nastro, l'aggancio al cronometraggio o le tre guardie
+      # sul grezzo si rompessero, la pagina continuerebbe a disegnare pallini — solo nel
+      # posto sbagliato, che e' il modo peggiore di sbagliare. Cinque cancelli, fra cui
+      # lo scarto dalla linea a ogni fine-giro e il divieto di ritirati congelati in pista.
+      - name: I pallini stanno dove le vetture erano davvero
+        run: python3 test_replay.py
+
+      # LE SAFETY CAR ERANO SPARITE FRA LA SORGENTE E LA PAGINA. gen_rc_feed.py non aveva
+      # un ramo per la categoria 'SafetyCar' e 45 messaggi su 45 cadevano fuori: il feed
+      # pubblicato aveva 296 voci e ZERO eventi SC, cioe' mancavano gli eventi che
+      # decidono le gare, e nessun test se ne accorgeva. Questa sentinella conta i
+      # messaggi uno per uno, pretende che due Safety Car nello stesso giro restino due
+      # (Gran Bretagna, giro 51) e verifica che l'annuncio del race control e il regime
+      # misurato dallo status per-auto si sovrappongano sempre.
+      - name: Nessun evento di regime si perde fra il race control e la pagina
+        run: python3 test_rc_feed.py
+
+      # UNA DEFINIZIONE DI SOSTA, E RESTA UNA. La vista stint si costruisce sul cambio di
+      # SET (demo/sosta.mjs), non sul contatore `stint` grezzo, che avanza a ogni transito
+      # in corsia anche senza montare niente: a Monaco disegnerebbe cinque stint dove ce ne
+      # sono due. La definizione e' promossa in data/SOSTA_PREREG3.md con accordo ESATTO
+      # contro un arbitro indipendente (i campi Compound/TyreLife di FastF1, congelati in
+      # data/soste_fastf1_2026.json), e questi due passi sorvegliano quell'accordo: il
+      # primo la versione Python, il secondo quella JavaScript che gira in produzione.
+      # Girano ENTRAMBI perche' una definizione in due lingue sono due definizioni che
+      # aspettano di divergere (E12).
+      - name: La definizione di sosta regge contro l'arbitro indipendente (Python)
+        run: python3 test_sosta.py --sentinella
+
+      - name: La stessa definizione, in JavaScript, non e' derivata
+        run: node demo/test_sosta.mjs
+
+      # L'OROLOGIO E' UNO SOLO, E DEVE RESTARE QUELLO DI PRIMA. `tempoReale` e `giroDi`
+      # esistevano due volte — in gara.html sui cum reali e in ghostplay.mjs su quelli
+      # simulati — con la stessa ricerca binaria e due ancoraggi DIVERSI del primo campione,
+      # differenza che sembrava un dettaglio e non lo era. Questo banco tiene una copia
+      # CONGELATA del comportamento precedente e pretende che il modulo unificato la
+      # riproduca esattamente: 398.700 campioni di giroDi e 18.194 di tempoReale, null
+      # compresi. Una divergenza di interpolazione sposta il pallino di mezzo metro e non
+      # si vede a occhio per settimane: qui esce 1 al primo campione che non torna.
+      - name: L'orologio unificato non ha cambiato il replay
+        run: node demo/test_orologio.mjs
+
+      # UN CANALE DISEGNATO SULLA PISTA sembra giusto anche quando e' sbagliato: i colori
+      # sono belli comunque e nessuno vede che la frenata e' cento metri piu' in la'. Questi
+      # cancelli guardano la fisica — in frenata si rallenta, gas e freno non convivono, la
+      # velocita' di punta di un pilota non si scosta dal campo — e sono gli stessi che
+      # hanno fatto declinare l'Ungheria, dove la deriva del feed di posizione sfasa i
+      # canali (gas e freno insieme nel 13,8% dei punti contro lo 0,2-3% normale).
+      - name: La telemetria e ancorata al tracciato davvero
+        run: python3 test_tele_giro.py
+
+      # LA CLASSIFICA E' UNA SOLA, E DEVE RESTARE QUELLA DI PRIMA. classificaAt (cum reali)
+      # e classificaSim (cum simulati) rispondevano alla stessa domanda — chi e' davanti, di
+      # quanto, chi e' doppiato — con lo stesso modello scritto due volte, e il commento
+      # della seconda lo ammetteva. Unirle tocca l'ordine della torre: uno scambio fra due
+      # righe non si nota finche' qualcuno non confronta col risultato vero. Il banco tiene
+      # una copia CONGELATA di entrambe e pretende parita' esatta su 684 classifiche.
+      - name: La classifica unificata non ha cambiato la torre
+        run: node demo/test_classifica.mjs

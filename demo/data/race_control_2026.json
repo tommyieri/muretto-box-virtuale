@@ -37,6 +37,12 @@
     "testo": "YELLOW IN TRACK SECTOR 13 · DOUBLE YELLOW IN TRACK SECTOR 13"
    },
    {
+    "giro": 12,
+    "fine": 14,
+    "tipo": "vsc",
+    "testo": "Virtual Safety Car: giri 12-14"
+   },
+   {
     "giro": 18,
     "tipo": "giallo",
     "testo": "YELLOW IN TRACK SECTOR 20"
@@ -45,6 +51,12 @@
     "giro": 18,
     "tipo": "info",
     "testo": "CAR 23 (ALB) TIME 1:28.434 DELETED - TRACK LIMITS AT TURN 3 LAP 16 15:26:48"
+   },
+   {
+    "giro": 18,
+    "fine": 20,
+    "tipo": "vsc",
+    "testo": "Virtual Safety Car: giri 18-20"
    },
    {
     "giro": 22,
@@ -65,6 +77,12 @@
     "giro": 34,
     "tipo": "giallo",
     "testo": "DOUBLE YELLOW IN TRACK SECTOR 13 · DOUBLE YELLOW IN TRACK SECTOR 12"
+   },
+   {
+    "giro": 34,
+    "fine": 34,
+    "tipo": "vsc",
+    "testo": "Virtual Safety Car: giro 34"
    },
    {
     "giro": 35,
@@ -106,6 +124,12 @@
     "giro": 10,
     "tipo": "giallo",
     "testo": "YELLOW IN TRACK SECTOR 3 · YELLOW IN TRACK SECTOR 2"
+   },
+   {
+    "giro": 10,
+    "fine": 13,
+    "tipo": "sc",
+    "testo": "Safety Car: giri 10-13"
    },
    {
     "giro": 11,
@@ -216,6 +240,12 @@
     "testo": "YELLOW IN TRACK SECTOR 21 · YELLOW IN TRACK SECTOR 20"
    },
    {
+    "giro": 22,
+    "fine": 27,
+    "tipo": "sc",
+    "testo": "Safety Car: giri 22-27"
+   },
+   {
     "giro": 23,
     "tipo": "giallo",
     "testo": "DOUBLE YELLOW IN TRACK SECTOR 21 · DOUBLE YELLOW IN TRACK SECTOR 20"
@@ -270,6 +300,12 @@
     "giro": 6,
     "tipo": "giallo",
     "testo": "DOUBLE YELLOW IN TRACK SECTOR 19 · YELLOW IN TRACK SECTOR 14 · YELLOW IN TRACK SECTOR 13"
+   },
+   {
+    "giro": 6,
+    "fine": 11,
+    "tipo": "sc",
+    "testo": "Safety Car: giri 6-11"
    },
    {
     "giro": 8,
@@ -528,6 +564,12 @@
     "testo": "TURN 13 INCIDENT INVOLVING CARS 12 (ANT) AND 63 (RUS) REVIEWED NO FURTHER INVESTIGATION (16:40:28) · CAR 63 (RUS) TIME 1:16.828 DELETED - TRACK LIMITS AT TURN 14 LAP 24 16:40:29"
    },
    {
+    "giro": 31,
+    "fine": 32,
+    "tipo": "vsc",
+    "testo": "Virtual Safety Car: giri 31-32"
+   },
+   {
     "giro": 33,
     "tipo": "info",
     "testo": "CAR 5 (BOR) TIME 1:44.804 DELETED - TRACK LIMITS AT TURN 14 LAP 30 16:50:47"
@@ -563,6 +605,12 @@
     "testo": "CAR 18 (STR) TIME 1:21.728 DELETED - TRACK LIMITS AT TURN 2 LAP 42 17:06:40"
    },
    {
+    "giro": 46,
+    "fine": 46,
+    "tipo": "vsc",
+    "testo": "Virtual Safety Car: giro 46"
+   },
+   {
     "giro": 47,
     "tipo": "info",
     "testo": "INCIDENT INVOLVING CAR 77 (BOT) UNDER INVESTIGATION - SPEEDING IN THE PIT LANE"
@@ -581,6 +629,12 @@
     "giro": 53,
     "tipo": "giallo",
     "testo": "DOUBLE YELLOW IN TRACK SECTOR 12"
+   },
+   {
+    "giro": 53,
+    "fine": 54,
+    "tipo": "vsc",
+    "testo": "Virtual Safety Car: giri 53-54"
    },
    {
     "giro": 57,
@@ -840,6 +894,12 @@
     "testo": "YELLOW IN TRACK SECTOR 18 · DOUBLE YELLOW IN TRACK SECTOR 17 · DOUBLE YELLOW IN TRACK SECTOR 18"
    },
    {
+    "giro": 60,
+    "fine": 65,
+    "tipo": "sc",
+    "testo": "Safety Car: giri 60-65"
+   },
+   {
     "giro": 65,
     "tipo": "giallo",
     "testo": "YELLOW IN TRACK SECTOR 18"
@@ -848,6 +908,13 @@
     "giro": 66,
     "tipo": "giallo",
     "testo": "DOUBLE YELLOW IN TRACK SECTOR 18"
+   },
+   {
+    "giro": 66,
+    "fine": 68,
+    "tipo": "sc",
+    "testo": "Safety Car: giri 66-68",
+    "chiuso_da": "bandiera rossa"
    },
    {
     "giro": 67,
@@ -873,6 +940,11 @@
     "giro": 68,
     "tipo": "penalita",
     "testo": "DRIVE THROUGH PENALTY FOR CAR 63 (RUS) - FAILING TO SERVE TIME PENALTY CORRECTLY"
+   },
+   {
+    "giro": 68,
+    "tipo": "rossa",
+    "testo": "Bandiera rossa — gara sospesa"
    },
    {
     "giro": 71,
@@ -1025,6 +1097,12 @@
     "testo": "CAR 81 (PIA) TIME 1:22.113 DELETED - TRACK LIMITS AT TURN 14 LAP 38 15:57:01"
    },
    {
+    "giro": 41,
+    "fine": 42,
+    "tipo": "vsc",
+    "testo": "Virtual Safety Car: giri 41-42"
+   },
+   {
     "giro": 45,
     "tipo": "info",
     "testo": "CAR 10 (GAS) TIME 1:21.708 DELETED - TRACK LIMITS AT TURN 13 LAP 42 16:03:58"
@@ -1043,6 +1121,12 @@
     "giro": 63,
     "tipo": "giallo",
     "testo": "YELLOW IN TRACK SECTOR 7 · DOUBLE YELLOW IN TRACK SECTOR 7"
+   },
+   {
+    "giro": 63,
+    "fine": 65,
+    "tipo": "vsc",
+    "testo": "Virtual Safety Car: giri 63-65"
    },
    {
     "giro": 64,
@@ -1131,6 +1215,12 @@
     "testo": "DOUBLE YELLOW IN TRACK SECTOR 16"
    },
    {
+    "giro": 25,
+    "fine": 26,
+    "tipo": "vsc",
+    "testo": "Virtual Safety Car: giri 25-26"
+   },
+   {
     "giro": 26,
     "tipo": "giallo",
     "testo": "DOUBLE YELLOW IN TRACK SECTOR 1"
@@ -1164,6 +1254,12 @@
     "giro": 49,
     "tipo": "info",
     "testo": "INCIDENT INVOLVING CAR 31 (OCO) REVIEWED NO FURTHER INVESTIGATION - YELLOW FLAG INFRINGEMENT (15:32:25)"
+   },
+   {
+    "giro": 52,
+    "fine": 53,
+    "tipo": "vsc",
+    "testo": "Virtual Safety Car: giri 52-53"
    },
    {
     "giro": 53,
@@ -1264,6 +1360,12 @@
     "testo": "DOUBLE YELLOW IN TRACK SECTOR 11 · DOUBLE YELLOW IN TRACK SECTOR 11"
    },
    {
+    "giro": 22,
+    "fine": 22,
+    "tipo": "vsc",
+    "testo": "Virtual Safety Car: giro 22"
+   },
+   {
     "giro": 25,
     "tipo": "info",
     "testo": "CAR 55 (SAI) TIME 1:36.537 DELETED - TRACK LIMITS AT TURN 9 LAP 24 15:42:28"
@@ -1319,6 +1421,12 @@
     "testo": "CAR 18 (STR) TIME 1:38.557 DELETED - TRACK LIMITS AT TURN 9 LAP 33 16:01:30"
    },
    {
+    "giro": 39,
+    "fine": 39,
+    "tipo": "vsc",
+    "testo": "Virtual Safety Car: giro 39"
+   },
+   {
     "giro": 40,
     "tipo": "info",
     "testo": "INCIDENT INVOLVING CAR 18 (STR) UNDER INVESTIGATION - TRACK LIMITS (5TH OFFENCE) · TURN 15 INCIDENT INVOLVING CARS 63 (RUS) AND 3 (VER) REVIEWED NO FURTHER INVESTIGATION (15:57:46)"
@@ -1369,9 +1477,21 @@
     "testo": "YELLOW IN TRACK SECTOR 15 · DOUBLE YELLOW IN TRACK SECTOR 15"
    },
    {
+    "giro": 48,
+    "fine": 51,
+    "tipo": "sc",
+    "testo": "Safety Car: giri 48-51"
+   },
+   {
     "giro": 50,
     "tipo": "giallo",
     "testo": "YELLOW IN TRACK SECTOR 15"
+   },
+   {
+    "giro": 51,
+    "fine": 52,
+    "tipo": "sc",
+    "testo": "Safety Car: giri 51-52"
    },
    {
     "giro": 52,
@@ -1427,6 +1547,12 @@
     "testo": "DOUBLE YELLOW IN TRACK SECTOR 7 · DOUBLE YELLOW IN TRACK SECTOR 13 · DOUBLE YELLOW IN TRACK SECTOR 8"
    },
    {
+    "giro": 1,
+    "fine": 4,
+    "tipo": "sc",
+    "testo": "Safety Car: giri 1-4"
+   },
+   {
     "giro": 2,
     "tipo": "giallo",
     "testo": "DOUBLE YELLOW IN TRACK SECTOR 13"
@@ -1477,6 +1603,12 @@
     "testo": "DOUBLE YELLOW IN TRACK SECTOR 18 · DOUBLE YELLOW IN TRACK SECTOR 19"
    },
    {
+    "giro": 18,
+    "fine": 18,
+    "tipo": "vsc",
+    "testo": "Virtual Safety Car: giro 18"
+   },
+   {
     "giro": 19,
     "tipo": "info",
     "testo": "CAR 44 (HAM) TIME 2:02.860 DELETED - TRACK LIMITS AT TURN 4 LAP 18 15:38:35"
@@ -1490,6 +1622,12 @@
     "giro": 20,
     "tipo": "info",
     "testo": "CAR 30 (LAW) TIME 1:53.390 DELETED - TRACK LIMITS AT TURN 6 LAP 17 15:37:34"
+   },
+   {
+    "giro": 20,
+    "fine": 21,
+    "tipo": "vsc",
+    "testo": "Virtual Safety Car: giri 20-21"
    },
    {
     "giro": 21,
@@ -1648,6 +1786,12 @@
     "giro": 56,
     "tipo": "info",
     "testo": "INCIDENT INVOLVING CAR 18 (STR) REVIEWED NO FURTHER INVESTIGATION - YELLOW FLAG INFRINGEMENT (15:58:36)"
+   },
+   {
+    "giro": 56,
+    "fine": 57,
+    "tipo": "vsc",
+    "testo": "Virtual Safety Car: giri 56-57"
    },
    {
     "giro": 57,

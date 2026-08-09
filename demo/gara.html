@@ -218,6 +218,8 @@ import { simDaFantasma, simDaRigioca } from './fantasma_sim.mjs?v=080826b';
 import { creaGhostPlay } from './ghostplay.mjs?v=250724c';
 import { attaccaGlossario } from './glossario.mjs?v=250724e';
 import { makeClock, tyreColor, bands, fase, computeDurations } from './timeline.mjs?v=220726a';
+import { creaAncora, giroDi as giroDiCum } from './orologio.mjs?v=250808a';
+import { classifica as classificaCondivisa } from './classifica.mjs?v=250809a';
 const BUILD = '250724c-sim';
 const el = id => document.getElementById(id);
 const ROW_H = 44;
@@ -229,6 +231,8 @@ let pitstops=null, stopsGara={}, etichettaStop='pit lane';   // durate per-stop 
 let boxGiro=null;
 let curLap=1, selDrv=null, rowEls={}, leaderMemo={}, finestre=null, teamWarned=new Set(), pitLaps={};
 let pista=null, leadCum=null, cumPil=null, teamOfR=null;   // vista pallini (gare con pista_<gara>.json)
+let ancora=null;                                           // orologio condiviso (demo/orologio.mjs)
+let replayVero=null;                                       // posizioni GPS vere (gare con replay_<gara>.json)
 // race control LIVELLO 1 (decisione PO su MOCKUP_RACE_CONTROL_UI.md): le penalita' si
 // MOSTRANO (feed + badge + doppia vista), non entrano nella simulazione ne' nei gap
 let rcmAll=null, ufficAll=null, rcmGara=null, ufficGara=null, penPil={};
@@ -398,6 +402,7 @@ async function loadGara(gara) {
   // sessione, l'offset di partenza e' cotto in cum_time[1]). Stima = fine giro 1 del leader
   // meno durate[1] (mediana): passo d'animazione dichiarato, mai usato come dato di gara.
   leadCum[0] = (leadCum[1] !== undefined) ? leadCum[1] - durate[1] : 0;
+  ancora = creaAncora({ lead: leadCum, minLap: 1, maxLap: race.n_laps });
   drawPista(gara);
   if (simMode) esciSimulazione();   // gara nuova: chiudi una simulazione eventualmente aperta
   clock.setDur(L => durate[L]);
@@ -421,44 +426,61 @@ async function drawPista(gara){
     <div class="spenta">Pallini spenti durante l&rsquo;esplorazione pit:<br>
       il replay mostra la gara com&rsquo;e&rsquo; andata davvero, il motore risponde al controfattuale per-giro.</div>`;
   try {
-    const { creaPista } = await import('./pista.mjs?v=250724c');
-    pista = await creaPista({ canvas: el('pista').querySelector('canvas'), url: `data/pista_${encodeURIComponent(gara)}.json` });
+    const { creaPista } = await import('./pista.mjs?v=250808a');
+    // POSIZIONI VERE: se la gara ha un replay_<gara>.json (GPS per-auto, generato e
+    // verificato da gen_replay.py) i pallini si muovono dove le vetture erano DAVVERO.
+    // Dove non c'e' — gare senza copertura GPS sufficiente, come Monaco — resta la
+    // ricostruzione dai tempi-giro, disegnata vuota per non confonderla con la misura.
+    replayVero = null;
+    try {
+      const { creaReplayVero } = await import('./replay_vero.mjs?v=250808a');
+      replayVero = await creaReplayVero({ url: `data/replay_${encodeURIComponent(gara)}.json` });
+    } catch(e){ console.warn('replay a posizioni vere non disponibile:', e.message); }
+    pista = await creaPista({
+      canvas: el('pista').querySelector('canvas'),
+      url: `data/pista_${encodeURIComponent(gara)}.json`,
+      pitlane: replayVero?.pitlane || null,        // corsia MISURATA quando esiste
+    });
     if (selDrv){ pista.setSpento(true); el('pista').classList.add('pit-attivo'); }
+    pista.setRegime(fase(finestre, Math.max(1, Math.floor(clock.position))));
     pistaFrame(clock.position);
   } catch(e){ console.warn('pista non disponibile:', e.message); pistaVuota(gara); }
 }
 // --- orologio per-pilota: percorso UNICO per pallini, badge BOX e stati di riga ---
-// tempoReale(p): ancora dell'animazione. p in [L, L+1) = il leader percorre il giro L;
-// il traguardo del giro L del leader sta a p = L+1 (T = leadCum[L]). leadCum[0] = partenza.
+// L'ARITMETICA STA IN demo/orologio.mjs, condivisa con la scena rigiocata (ghostplay):
+// era la stessa ricerca binaria scritta due volte su due sorgenti di cum. Qui restano
+// solo le due cose che sono DAVVERO di questa pagina: quale ancora usare e come vestire
+// il risultato con lo stato del giro. La parita' col comportamento precedente e'
+// verificata su 398.700 campioni da demo/test_orologio.mjs.
+// tempoReale(p): p in [L, L+1) = il leader percorre il giro L; il traguardo del giro L
+// del leader sta a p = L+1 (T = leadCum[L]). leadCum[0] = partenza.
 function tempoReale(p){
-  const L=Math.max(1,Math.min(race.n_laps,Math.floor(p))), f=Math.min(1,Math.max(0,p-L));
-  const t0=leadCum[L-1], t1=leadCum[L] ?? t0;
-  if (t0===undefined) return undefined;
-  return t0 + f*(t1-t0);
+  return ancora ? ancora.tempoDa(p) : undefined;
 }
 // giroDi(d, T): al tempo reale T il pilota d e' nel SUO giro lap con frazione fd, dai SUOI
 // cum_time (il traguardo del suo giro N sta a cum_time[N]). box/inPit usano gli stessi
 // campi (in_lap/out_lap) e le stesse soglie del transito pallino (pista.mjs): nessun
 // percorso parallelo. Giri mancanti => null, mai inventato. Oltre l'ultimo giro noto
 // (arrivato/ritirato) => null.
+// lapZero = 0: in gara la linea del tempo comincia dalla PARTENZA, quindi un pilota il cui
+// primo giro noto non e' l'1 e' un buco nei dati e si respinge (nella scena, che comincia
+// al congelamento, la stessa funzione riceve un lapZero diverso e non respinge).
 function giroDi(d, T){
-  const arr=cumPil[d]; if (!arr || !arr.length || !(T >= leadCum[0])) return null;
-  let lo=0, hi=arr.length-1, idx=arr.length;        // primo indice con cum > T
-  if (arr[hi].cum > T){
-    while (lo<hi){ const m=(lo+hi)>>1; if (arr[m].cum > T) hi=m; else lo=m+1; }
-    idx=lo;
-  }
-  if (idx>=arr.length) return null;                  // oltre l'ultimo giro noto
-  const fine=arr[idx], inizio = idx>0 ? arr[idx-1] : {lap:0, cum:leadCum[0]};
-  if (fine.lap !== inizio.lap+1) return null;        // buco nei dati: non inventare
-  const fd=(T-inizio.cum)/(fine.cum-inizio.cum || 1);
+  const g = giroDiCum(cumPil[d], T, { tempoZero: leadCum?.[0], lapZero: 0 });
+  if (!g) return null;
+  const fine = { lap: g.lap }, fd = g.fd;
   const c=race.byLap[fine.lap]?.[d];
   const box = c?.in_lap ? 'in' : (c?.out_lap ? 'out' : null);
   const FE = pista?.pitFrazioni?.ingresso ?? 0.95, FX = pista?.pitFrazioni?.uscita ?? 0.05;
   const inPit = (box==='in' && fd>=FE) || (box==='out' && fd<=FX);
   return { lap: fine.lap, fd, box, inPit, stato: c };
 }
-// pallini = replay posizionale dai cum_time per-giro, via giroDi (stesso orologio della tabella)
+// Pallini. DUE sorgenti, mai mescolate in silenzio:
+//  - replay_<gara>.json: la frazione di giro MISURATA sul GPS per-auto -> pallino pieno;
+//  - cum_time per-giro via giroDi: la ricostruzione a velocita' uniforme dentro il giro,
+//    che era l'unica sorgente fino a oggi -> pallino vuoto.
+// L'orologio e' lo stesso per entrambe (T = tempo di sessione), perche' gen_replay.py
+// verifica a ogni esecuzione che cum_time e SessionTime siano lo stesso orologio.
 function pistaFrame(p){
   if (!pista || !leadCum) return;
   const T = tempoReale(p);
@@ -466,7 +488,16 @@ function pistaFrame(p){
   const dots=[];
   for (const d in cumPil){
     const g = giroDi(d, T);
-    if (g) dots.push({f:g.fd, box:g.box, colore:coloreTeam(teamOfR[d]), sigla:d});
+    const vero = replayVero?.posizioneDi(d, T);
+    if (vero){
+      // il box lo dicono i dati gara (in_lap/out_lap), il transito in corsia lo conferma
+      // il GPS: si usa il primo, cosi' badge di riga e pallino restano d'accordo
+      dots.push({f:vero.f, box:g?.box ?? (vero.box==='lane' ? 'in' : null),
+                 colore:coloreTeam(teamOfR[d]), sigla:d});
+    } else if (g){
+      dots.push({f:g.fd, box:g.box, colore:coloreTeam(teamOfR[d]), sigla:d, stimato:true});
+    }
+    // ne' l'uno ne' l'altro: il pilota non e' in pista in questo istante, e non si disegna
   }
   pista.aggiorna(dots);
 }
@@ -481,21 +512,41 @@ function drawEvtl(){
     `<div class="pitm" title="pit al giro ${L}: ${ds.join(', ')}" style="left:${lapPct(+L)}%"></div>`).join('');
   // feed race control (livello 1): tacche informative sulla stessa barra — giallo =
   // bandiere, § = annuncio penalita', grigio = investigazioni/lap deleted. Tooltip = testo.
+  // I regimi (sc/vsc/rossa) sono ANNUNCI: la tacca sta sul giro in cui il messaggio e'
+  // uscito, mentre la banda sotto e' il regime misurato dallo status per-auto, che
+  // comincia prima. Non e' una contraddizione: sono due domande diverse, e il tooltip
+  // lo dice. Due tacche dentro una banda sola = due Safety Car distinte.
+  const CLASSE = {penalita:'p', giallo:'g', sc:'ann sc', vsc:'ann vsc', rossa:'ann rossa'};
   const feed = rcmGara?.feed || [];
-  el('evtlRcm').innerHTML = feed.map(e=>
-    `<div class="rcmm ${e.tipo==='penalita'?'p':(e.tipo==='giallo'?'g':'i')}" title="giro ${e.giro}: ${e.testo.replaceAll('"','&quot;')}" style="left:${lapPct(e.giro)}%"></div>`).join('');
+  el('evtlRcm').innerHTML = feed.map(e=>{
+    const reg = e.tipo==='sc'||e.tipo==='vsc'||e.tipo==='rossa';
+    const tip = reg
+      ? `${e.testo}${e.chiuso_da ? ` (chiusa dalla ${e.chiuso_da})` : ''} — annunciata al giro ${e.giro}`
+      : `giro ${e.giro}: ${e.testo}`;
+    return `<div class="rcmm ${CLASSE[e.tipo]||'i'}" title="${tip.replaceAll('"','&quot;')}" style="left:${lapPct(e.giro)}%"></div>`;
+  }).join('');
   el('legrcg').style.display = feed.some(e=>e.tipo==='giallo') ? 'inline-flex' : 'none';
   el('legrcp').style.display = feed.some(e=>e.tipo==='penalita') ? 'inline-flex' : 'none';
   el('evtlLeg').style.visibility = (bs.length || Object.keys(pitLaps).length || feed.length) ? 'visible' : 'hidden';
   el('legrf').style.display = (finestre?.rf?.length) ? 'inline-flex' : 'none';
   el('evtl').setAttribute('aria-valuemax', race.n_laps);
 }
+// La barra scorre SEMPRE, anche durante la scena rigiocata: prima usciva subito su
+// simMode, quindi dentro BOX ORA non si poteva tornare indietro — si poteva solo uscire.
+// Ora la scena ha lo stesso orologio del replay e quindi lo stesso trasporto; l'asse resta
+// quello della gara intera (0 = partenza, 100 = traguardo) e la posizione si CLAMPA nella
+// finestra della scena, che comincia al congelamento e non prima.
 function evtlSeek(clientX){
-  if(simMode) return;   // durante la scena il cursore non scorre il replay reale
   const r = el('evtlRail').getBoundingClientRect();
   const f = Math.min(1, Math.max(0, (clientX - r.left) / r.width));
+  const p = 1 + f*race.n_laps;     // stesso asse del cursore: fine barra = traguardo (p = n+1)
+  if(simMode){
+    if(!simGp) return;
+    simGp.stop(); setPlayIcon(false); simGp.seek(p);
+    return;
+  }
   clock.pause(); setPlayIcon(false);
-  clock.seek(1 + f*race.n_laps);   // stesso asse del cursore: fine barra = traguardo (p = n+1)
+  clock.seek(p);
 }
 { // interazione: click/drag + tastiera
   const tl = el('evtl'); let giu=false;
@@ -505,9 +556,16 @@ function evtlSeek(clientX){
   tl.addEventListener('pointerup', ()=>{ giu=false; });
   tl.addEventListener('keydown', e=>{
     if(e.key!=='ArrowLeft'&&e.key!=='ArrowRight') return;
-    if(simMode) return;   // durante la scena le frecce non scorrono il replay reale
-    e.preventDefault(); clock.pause(); setPlayIcon(false);
-    clock.seek(Math.min(race.n_laps+1, Math.max(1, Math.round(clock.position)+(e.key==='ArrowRight'?1:-1))));
+    e.preventDefault();
+    const passo = (e.key==='ArrowRight'?1:-1);
+    if(simMode){                       // anche la scena si scorre di un giro per volta
+      if(!simGp) return;
+      simGp.stop(); setPlayIcon(false);
+      simGp.seek(Math.round(simGp.posizione)+passo);
+      return;
+    }
+    clock.pause(); setPlayIcon(false);
+    clock.seek(Math.min(race.n_laps+1, Math.max(1, Math.round(clock.position)+passo)));
   });
 }
 
@@ -518,7 +576,7 @@ function buildGrid(){
   for(const d of tutti){
     const row=document.createElement('div'); row.className='row'; row.dataset.drv=d;
     // la sigla e' un link alla scheda pilota (stopPropagation: il resto della riga apre il pit)
-    row.innerHTML=`<span class="tbar"></span><span class="pos"></span>`
+    row.innerHTML=`<span class="tbar"></span><span class="pos"></span><span class="dpos"></span>`
       +`<span class="idn"><span class="l1"><span class="rnum"></span><span class="drv"><a href="scheda.html?sigla=${d}" title="scheda pilota">${d}</a></span><span class="box" style="display:none"></span><span class="penb" style="display:none"></span></span><span class="team"></span></span>`
       +`<span class="gaps"><span class="gap"></span><span class="gapprev"></span></span>`
       +`<span class="tyreb"><span class="dot"></span><span class="age"></span></span>`;
@@ -534,6 +592,7 @@ function buildGrid(){
     });
     g.appendChild(row);
     rowEls[d]={root:row, tbar:row.querySelector('.tbar'), pos:row.querySelector('.pos'),
+               dpos:row.querySelector('.dpos'),
                num:row.querySelector('.rnum'),
                team:row.querySelector('.team'), box:row.querySelector('.box'),
                pen:row.querySelector('.penb'),
@@ -559,31 +618,25 @@ function leaderAiGiri(L){
 // e fine giro L). STATI (BOX/OUT, gomma, eta') invece al tempo reale T via giroDi: gli
 // stessi campi e lo stesso orologio che muovono il pallino.
 function classificaAt(L, f){
-  const A=race.byLap[L], P=race.byLap[L-1];
   const T=tempoReale(L+f);
-  const icum=(d,c)=>{
-    const prev = L===1 ? leadCum[0] : P?.[d]?.cum_time;
-    return (typeof prev==='number') ? prev + f*(c.cum_time - prev) : c.cum_time;
-  };
-  let ordine = Object.entries(A).filter(([d,c]) => typeof c.cum_time==='number' && !race.nonParten.has(d))
-      .map(([d,c])=>[d,c,icum(d,c)]);
+  // IL NUCLEO E' CONDIVISO con la scena rigiocata (demo/classifica.mjs): cum interpolato a
+  // (L, f), ordine per quel cum, doppiati sul battistrada ai giri L..L+3, e le etichette.
+  // Era lo stesso modello scritto due volte, e il commento di classificaSim lo ammetteva
+  // per iscritto. Qui resta solo cio' che e' DI QUESTA PAGINA: lo stato del giro, i badge,
+  // le posizioni guadagnate, la coda dei fuori-gara. Parita' verificata su 684 classifiche
+  // di tutte e 11 le gare da demo/test_classifica.mjs.
+  const base = classificaCondivisa({
+    cumCorrente: race.byLap[L], cumPrecedente: race.byLap[L-1],
+    ancora: leadCum[0], primoGiro: L===1, f, L, nLap: race.n_laps,
+    battistrada: leaderAiGiri(L),
+    escludi: d => race.nonParten.has(d),
+    pareggio: 'gara',                 // a pari cum: cum di fine giro, poi sigla
+    ordineGriglia: gridGara,          // giro 1 fermo: ordine di partenza, distacchi soppressi
+  });
   const faseGriglia = (L===1 && f===0 && gridGara.length>0);
-  if (faseGriglia) {
-    const rank={}; gridGara.forEach((d,i)=>rank[d]=i);
-    ordine.sort((a,b)=>(rank[a[0]]??999)-(rank[b[0]]??999));
-  } else ordine.sort((a,b)=>(a[2]-b[2])||(a[1].cum_time-b[1].cum_time)||(a[0]<b[0]?-1:1));
-  const leader = ordine.length?ordine[0][2]:0;
-  const lag = leaderAiGiri(L);
-  const rows = ordine.map(([drv,c,cum],i)=>{
-    const gap=cum-leader; let gd=0;
-    for(const k in lag) if(+k>L && c.cum_time>lag[k]) gd=+k-L;
-    let et,cls,prev=null;
-    // in ordine-griglia (giro 1, fermo) i delta di cum_time NON sono gap di gara: soppressi
-    if(faseGriglia){et=i===0?'POLE':'—';cls=i===0?'lead':'';}
-    else if(gd>=1){et=`+${gd} gir${gd>1?'i':'o'}`;cls='lapped';}
-    else if(i===0){et='LEADER';cls='lead';}
-    else{et=`+${gap.toFixed(1)}s`;cls='';
-      prev=cum-ordine[i-1][2];}
+  const rows = base.map((r,i)=>{
+    const drv=r.drv, c=race.byLap[L][drv], cum=r.icum;
+    const et=r.et, cls=r.cls, prev=r.prev;
     // stato al tempo reale T (lo stesso orologio del pallino); fuori dai dati (oltre
     // l'ultimo giro noto, buchi): si ricade sullo stato di fine giro L, badge spenti
     const g = giroDi(drv, T);
@@ -597,10 +650,16 @@ function classificaAt(L, f){
       if (g.box==='in') monta = race.byLap[g.lap+1]?.[drv]?.compound || null;
       stopDur = (stopsGara[drv]||[]).find(s=>s.giro===Lin)?.durata_s ?? null;
     }
-    return {pos:i+1,drv,team:c.team,compound:st.compound,age:st.tyre_age,et,cls,prev,
+    // POSIZIONI GUADAGNATE dalla partenza: il confronto e' con la GRIGLIA, non con
+    // l'arrivo — a meta' gara l'arrivo non e' ancora successo, e usarlo vorrebbe dire
+    // leggere il futuro. Chi non era in griglia (partito dalla pit lane, o assente)
+    // non ha un termine di paragone: null, non zero.
+    const iGr = gridGara.indexOf(drv);
+    const dgr = (faseGriglia || iGr < 0) ? null : (iGr + 1) - (i + 1);
+    return {pos:i+1,drv,team:c.team,compound:st.compound,age:st.tyre_age,et,cls,prev,dgr,
             inlap:boxNow,outlap:outNow,monta,stopDur,leader:i===0,selectable:true};
   });
-  const inGara=new Set(ordine.map(([d])=>d));
+  const inGara=new Set(base.map(r=>r.drv));
   const teamOf={}; for(const lp of race.laps) for(const [d,c] of Object.entries(lp.cars)) teamOf[d]=c.team;
   const tutti=new Set([...race.drivers,...gridGara]);
   const fuori=[...tutti].filter(d=>!inGara.has(d));
@@ -631,6 +690,12 @@ function paintRow(r, i){
   if(e.num.textContent!==nd) e.num.textContent=nd;
   e.num.style.color=coloreTeam(r.team);
   if(e.pos.textContent!==String(r.pos)) e.pos.textContent=r.pos;
+  if (e.dpos){
+    const d=r.dgr;
+    const txt = (d==null||d===0) ? '' : (d>0 ? `\u25B2${d}` : `\u25BC${-d}`);
+    if (e.dpos.textContent!==txt) e.dpos.textContent=txt;
+    e.dpos.className='dpos'+(d>0?' su':(d<0?' giu':''));
+  }
   if(e.team.textContent!==(r.team||'')) e.team.textContent=r.team||'';
   e.gap.textContent=r.et; e.gap.className='gap '+(r.cls|| (r.st?'stato':''));
   // ai box: la seconda riga racconta lo stop (durata etichettata per semantica + gomma
@@ -678,6 +743,7 @@ function frame(p){
   el('evtlFatto').style.width = pct+'%';
   el('evtl').setAttribute('aria-valuenow', curLap);
   const ph=fase(finestre,curLap);
+  pista?.setRegime(ph);            // il nastro prende il colore del regime, stessa fonte della pillola
   el('phase').className='phase '+(ph?ph.toLowerCase():'run');
   // pillola fase in parole piene (mai gli acronimi: "RF" non lo capisce nessuno)
   el('phase').textContent = ph ? ({SC:'Safety Car', VSC:'Virtual SC', RF:'Bandiera rossa'}[ph]) : 'in corso';
@@ -699,83 +765,21 @@ function setPlayIcon(playing){ const b=el('play'); b.textContent=playing?'❚❚
 
 // --- strip strategia: stint da (stint, compound) per-giro, pit dai flag in_lap ---
 // Dati gia' nei JSON gara: nessun calcolo nuovo, solo raggruppamento per la vista.
-function buildStrat(){
-  const ordine = classificaAt(race.n_laps, 1);          // ordine d'arrivo (fine ultimo giro) + coda
-  const righe = [];
-  for (const r of ordine){
-    const d = r.drv, fine = lastLap[d];
-    if (fine === undefined) continue;                   // mai in pista (NP senza giri)
-    const seg = []; let cur = null;
-    for (let L=1; L<=fine; L++){
-      const c = race.byLap[L]?.[d]; if (!c) continue;
-      const k = `${c.stint}|${c.compound}`;
-      if (!cur || cur.k !== k){ if(cur) seg.push(cur); cur = {k, da:L, a:L, compound:c.compound}; }
-      else cur.a = L;
-    }
-    if (cur) seg.push(cur);
-    if (!seg.length) continue;
-    // tacche pit arricchite: giro, durata (etichetta per semantica), gomme prima/dopo —
-    // ogni pezzo solo se il dato esiste, mai stime
-    const pits = [];
-    for (let L=1; L<=fine; L++) if (race.byLap[L]?.[d]?.in_lap){
-      const dur = (stopsGara[d]||[]).find(s=>s.giro===L)?.durata_s ?? null;
-      const prima = race.byLap[L]?.[d]?.compound, dopo = race.byLap[L+1]?.[d]?.compound;
-      const info = [`giro ${L}`,
-                    (typeof dur==='number') ? `${etichettaStop} ${dur.toFixed(1).replace('.',',')}s` : null,
-                    (prima&&dopo) ? `${prima.toLowerCase()} → ${dopo.toLowerCase()}` : null]
-                   .filter(Boolean).join(' · ');
-      pits.push({L, info});
-    }
-    const pct = L => (L-1)/(race.n_laps-1)*100;
-    const bar = seg.map(s=>{
-      const col = tyreColor(s.compound) || 'var(--dim)';
-      const wet = (s.compound==='INTERMEDIATE'||s.compound==='WET') ? ' wetb' : '';
-      const w = Math.max(pct(s.a)-pct(s.da) + 100/(race.n_laps-1), 0.8);
-      return `<div class="stint${wet}" title="${s.compound||'?'} giri ${s.da}–${s.a}" style="left:${pct(s.da)}%;width:${w}%;background:${col}"></div>`;
-    }).join('') + pits.map(p=>`<div class="pitt" title="${p.info}" data-info="${p.info}" data-pct="${pct(p.L)}" style="left:${pct(p.L)}%"></div>`).join('');
-    righe.push(`<div class="riga" data-drv="${d}"><span class="sig"><i style="background:${coloreTeam(r.team)}"></i><span class="rnum" style="color:${coloreTeam(r.team)}">${numDi[d] ?? ''}</span>${d}</span><span class="barra">${bar}</span></div>`);
-  }
-  el('stratRighe').innerHTML = righe.join('');
-}
+// buildStrat() e' stata RIMOSSA l'08/08/2026. La vista stint ora esiste davvero, in
+// analisi.html#strategia, ed e' costruita sulla definizione unica di sosta
+// (demo/sosta.mjs). Questa copia raggruppava per `${stint}|${compound}`, cioe' sul
+// contatore grezzo: a Monaco avrebbe disegnato cinque stint dove ce ne sono due.
+// Era orfana da mesi (scriveva in #stratRighe, un id che il markup non ha piu').
+// Tenerla viva accanto a quella nuova sarebbe stata una seconda definizione della
+// stessa cosa, che e' l'errore E12 del catalogo.
 // (rimossi con la ripulitura gara: il tooltip della strip strategia-gomme.)
-function mostraVista(quale){                 // 'clas' | 'strat' | 'uff' — dead code (nessun tab)
-  if (quale === true) quale = 'strat'; if (!quale) quale = 'clas';
-  el('vistaClas').hidden = quale!=='clas';
-  el('vistaStrat').hidden = quale!=='strat';
-  el('vistaUff').hidden = quale!=='uff';
-  for (const [id,k] of [['tabClas','clas'],['tabStrat','strat'],['tabUff','uff']]){
-    el(id).classList.toggle('on', quale===k);
-    el(id).setAttribute('aria-selected', String(quale===k));
-  }
-}
-
-// --- doppia vista finale "in pista | ufficiale" (race control livello 1) ---
-// In pista = ordine dei dati demo (giri desc, cum finale asc: quello che il replay mostra).
-// Ufficiale = classifica FIA RIPORTATA da ufficiali_2026.json (fonte di classifica, non
-// rettifica: verdetto RC2 in REPORT_RACE_CONTROL.md). Frecce = scostamento tra le due.
-function buildUfficiale(){
-  const ha = !!(ufficGara?.classifica?.length);
-  el('tabUff').style.display = ha ? '' : 'none';
-  if (!ha){ if(!el('vistaUff').hidden) mostraVista('clas'); el('uffTab').innerHTML=''; return; }
-  const cum={}, laps={};
-  for (const lp of race.laps) for (const [d,c] of Object.entries(lp.cars))
-    if (typeof c.cum_time==='number' && !race.nonParten.has(d)){ cum[d]=c.cum_time; laps[d]=lp.lap; }
-  const pista = Object.keys(cum).sort((a,b)=>(laps[b]-laps[a])||(cum[a]-cum[b]));
-  const posPista = {}; pista.forEach((d,i)=>posPista[d]=i+1);
-  const righe = ufficGara.classifica.filter(r=>posPista[r.pilota]).map(r=>{
-    const pp = posPista[r.pilota], delta = pp - r.pos;
-    const pens = penPil[r.pilota] || [];
-    const badge = pens.length ? `<span class="penb on">+${pens.reduce((s,p)=>s+p.secondi,0)}s</span>` : '';
-    const fr = delta===0 ? '' : (delta>0 ? `<span class="su">&#9650; ${delta}</span>`
-                                          : `<span class="giu">&#9660; ${-delta}</span>`);
-    const st = /finish/i.test(r.status) ? '' : `<span class="stat">${r.status.toLowerCase()}</span>`;
-    return `<div class="uffr${r.pos===11?' primafuori':''}${pens.length?' conpen':''}">
-      <span class="pp">P${pp}</span><span class="sig"><i style="background:${coloreTeam(teamOfR?.[r.pilota] ?? teams[r.pilota])}"></i><span class="rnum" style="color:${coloreTeam(teamOfR?.[r.pilota] ?? teams[r.pilota])}">${numDi[r.pilota] ?? ''}</span>${r.pilota}</span>
-      <span class="pb">${badge}</span><span class="pu">P${r.pos}</span><span class="fr">${fr}</span>${st}</div>`;
-  }).join('');
-  el('uffTab').innerHTML = `<div class="uffr testa"><span class="pp">in pista</span><span class="sig">pilota</span>
-    <span class="pb">penalit&agrave;</span><span class="pu">ufficiale</span><span class="fr"></span></div>` + righe;
-}
+// mostraVista() e buildUfficiale() sono state RIMOSSE il 09/08/2026. Erano codice morto
+// dichiarato: nessuno le chiamava, e riferivano id (vistaUff, uffTab, tabClas, tabStrat)
+// spariti dal markup con la ripulitura del 25/07 — se qualcuno le avesse invocate
+// sarebbero esplose su el(...).hidden di null. Portavano anche la SECONDA resa delle
+// posizioni guadagnate/perse: quella viva ora sta nella torre (campo dgr), e confronta
+// con la GRIGLIA invece che con l'arrivo, perche' a meta' gara l'arrivo non e' ancora
+// successo. La doppia vista «in pista | ufficiale» resta fuori dalla pagina-gara.
 
 // --- esplorazione pit: la risposta non si calcola qui, si LEGGE dalla vista
 //     pre-calcolata del simulatore (vistaDi -> mostraRisposta) ---
@@ -943,7 +947,9 @@ el('play').addEventListener('click', ()=>{
   clock.toggle(); setPlayIcon(clock.playing);
 });
 el('speeds').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b)return;
-  clock.setSpeed(+b.dataset.s);
+  // la velocita' vale per l'orologio che sta girando: quello del replay o quello della
+  // scena. Sono lo stesso makeClock, quindi la scala e' la stessa e non va ridefinita.
+  if(simMode && simGp) simGp.setSpeed(+b.dataset.s); else clock.setSpeed(+b.dataset.s);
   [...el('speeds').children].forEach(x=>x.classList.toggle('on',x===b)); });
 el('boxBtn').addEventListener('click', boxOra);
 el('simEsci').addEventListener('click', esciSimulazione);

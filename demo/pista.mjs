@@ -9,17 +9,20 @@
 // LEGGE DEL REPLAY: esplorazione pit attiva => setSpento(true), i pallini si spengono.
 // Consumatore puro: legge il JSON generato, non tocca engine/pitscenario/timeline.
 
-export async function creaPista({ canvas, url }) {
+export async function creaPista({ canvas, url, pitlane }) {
   const res = await fetch(url);
   if (!res.ok) throw new Error(`pista non disponibile (${res.status})`);
   const data = await res.json();                      // {viewBox,punti,dist,pitlane,sorgente,...}
   const G = canvas.getContext('2d');
   const [, , VW, VH] = data.viewBox;
   const P = data.punti, D = data.dist, N = P.length;
-  // pit-lane stilizzata (dal generatore): i pallini in in/out-lap transitano di qui
-  const PL = data.pitlane || null;
+  // La corsia box: se il chiamante ne passa una MISURATA (da replay_<gara>.json, ricavata
+  // dal GPS di chi ai box c'e' passato davvero) si usa quella; altrimenti resta la
+  // STILIZZATA di pista_<gara>.json — parallela al nastro, con le frazioni 0,95/0,05 che
+  // sono costanti del generatore e non misure di questa pista.
+  const PL = pitlane || data.pitlane || null;
   const FE = PL?.frazione_ingresso ?? 0.95, FX = PL?.frazione_uscita ?? 0.05;
-  let dots = [], spento = false, proj = null;
+  let dots = [], spento = false, proj = null, regime = null;
 
   const css = v => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
 
@@ -47,7 +50,16 @@ export async function creaPista({ canvas, url }) {
       G.closePath(); G.stroke();
     };
     passa('#1d2430', 14);                                    // alone
-    passa(css('--line') || '#3a4557', 8);                    // nastro
+    // IL NASTRO PORTA IL REGIME. Sotto Safety Car, VSC o bandiera rossa la pista stessa
+    // cambia colore: e' l'informazione che decide le soste, e leggerla dal tracciato e'
+    // immediato quanto leggerla da un badge. La fonte e' la STESSA della pillola e delle
+    // bande della barra (fase() su neutralizzazione.json), quindi non possono contraddirsi.
+    const COL = { SC: '--sc', VSC: '--vsc', RF: '--rf' };
+    const tinta = regime ? (css(COL[regime]) || null) : null;
+    passa(tinta || css('--line') || '#3a4557', 8);            // nastro
+    if (regime === 'VSC') {                                   // VSC: tratteggio, come la banda
+      passa('rgba(0,0,0,.45)', 8, [7 * dpr, 7 * dpr]);
+    }
     passa('rgba(255,255,255,.08)', 1.2, [4 * dpr, 6 * dpr]); // mezzeria
     G.setLineDash([]);
     if (PL) {                                                // pit-lane (nastro sottile)
@@ -110,10 +122,19 @@ export async function creaPista({ canvas, url }) {
       if (d.dim) G.globalAlpha = 0.4;
       if (d.ghost) { G.shadowColor = d.colore; G.shadowBlur = 14 * dpr; }
       G.beginPath(); G.arc(X, Y, rr, 0, 7);
-      G.fillStyle = d.colore; G.fill();
+      // pallino PIENO = posizione misurata sul GPS; pallino VUOTO = posizione ricostruita
+      // dai tempi-giro (velocita' assunta uniforme dentro il giro). Due verita' diverse
+      // non si disegnano allo stesso modo: chi guarda deve poterle distinguere.
+      if (d.stimato) {
+        G.globalAlpha = (d.dim ? 0.4 : 0.85);
+        G.lineWidth = 2 * dpr; G.strokeStyle = d.colore; G.stroke();
+      } else {
+        G.fillStyle = d.colore; G.fill();
+        G.shadowBlur = 0;
+        G.lineWidth = (d.ghost ? 2.4 : 1.2) * dpr;
+        G.strokeStyle = d.ghost ? '#fff' : 'rgba(255,255,255,.85)'; G.stroke();
+      }
       G.shadowBlur = 0;
-      G.lineWidth = (d.ghost ? 2.4 : 1.2) * dpr;
-      G.strokeStyle = d.ghost ? '#fff' : 'rgba(255,255,255,.85)'; G.stroke();
       G.globalAlpha = 1;
       if (d.pit) {                          // in sosta ai box: anello tratteggiato + etichetta BOX
         G.setLineDash([3 * dpr, 2.5 * dpr]);
@@ -143,6 +164,9 @@ export async function creaPista({ canvas, url }) {
     vista() { return proj ? { proj, dpr: window.devicePixelRatio || 1 } : null; },
     // nuovi pallini: [{f: frazione di giro [0,1), colore, sigla}]
     aggiorna(nuovi) { dots = nuovi || []; render(); },
+    // regime di gara corrente: 'SC' | 'VSC' | 'RF' | null. Lo decide il chiamante con
+    // fase() — qui non si ri-definisce cosa sia una neutralizzazione (regola 1).
+    setRegime(r) { if (r === regime) return; regime = r || null; render(); },
     setSpento(v) { spento = !!v; render(); },
     destroy() { ro.disconnect(); },
   };

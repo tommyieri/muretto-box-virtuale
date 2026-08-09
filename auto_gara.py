@@ -143,6 +143,40 @@ def registro_committato():
         return None
 
 
+def _riprova_gare_declinate():
+    """Le gare senza replay a posizioni vere si ri-tentano a ogni pubblicazione.
+
+    gen_replay.py DECLINA una gara quando la copertura GPS e' sotto il minimo (Monaco:
+    5,3%, con 22 buchi oltre 30 s). Non e' un verdetto sul circuito: e' un verdetto su
+    quel che FastF1 aveva pubblicato quel giorno. Le sessioni vengono ripubblicate, e senza
+    una riprova periodica il file mancante resterebbe mancante per sempre — con la pagina
+    che ricade sulla ricostruzione dai tempi-giro e nessuno che se ne accorga.
+
+    Chi ha gia' il suo replay_<gara>.json non viene ritoccato: il generatore non gira
+    nemmeno. Chi non ce l'ha, ci riprova. Se declina di nuovo, declina in silenzio (il
+    log lo dice) e la pagina resta com'e'.
+    """
+    reg = os.path.join(ROOT, 'demo', 'data')
+    try:
+        with open(os.path.join(reg, 'manifest.json')) as f:
+            gare = [g['gara'] for g in json.load(f)]
+    except Exception as e:
+        log(f'riprova declinate: manifest illeggibile ({e}), salto')
+        return
+    mancanti = [g for g in gare
+                if not os.path.exists(os.path.join(reg, f'replay_{g}.json'))]
+    if not mancanti:
+        return
+    log(f'riprova replay a posizioni vere sulle gare declinate: {mancanti}')
+    for g in mancanti:
+        sh([PY, 'gen_replay.py', '--gara', g], check=False)
+        # l'overlay telemetrico dipende dallo stesso GPS: se il replay si accende, ha senso
+        # riprovare anche quello. Se il replay resta declinato, questo esce a vuoto e basta.
+        if os.path.exists(os.path.join(reg, f'replay_{g}.json')):
+            log(f'  {g}: il replay si e\' acceso, riprovo anche l\'overlay')
+            sh([PY, 'gen_tele_giro.py', '--gara', g], check=False)
+
+
 def _controlla_pista_nuova(nome):
     """Una pista che il motore non ha mai visto ha bisogno di UNA riga in una mappa
     scritta a mano (provenienza/pitloss.mjs, GP_PER_GARA). Se manca, il motore NON
@@ -275,6 +309,28 @@ def wave_nuove():
         # che non esce, e il log lo grida. ~2 minuti per gara.
         sh(['node', 'web/genera_vista_gara.mjs', nome], cwd=os.path.join(ROOT, 'simulatore'),
            check=False)
+
+        # I TRE GENERATORI NUOVI (08-09/08/2026) NON LI CHIAMAVA NESSUNO. Erano scritti,
+        # provati e committati, e sarebbero rimasti fermi: la prossima gara sarebbe uscita
+        # senza posizioni vere, senza overlay telemetrico e senza l'arbitro delle soste
+        # aggiornato, in silenzio e col verde acceso. Un generatore che nessuno chiama non
+        # e' una funzione: e' debito (v. «fonte orfana» nelle note del progetto).
+        #
+        # check=False come i fratelli, e per la stessa ragione: una gara senza replay a
+        # posizioni vere resta una gara pubblicata e leggibile — la pagina ricade sulla
+        # ricostruzione dai tempi-giro, che e' esattamente cio' che faceva prima. Il
+        # contrario (morire qui) lascerebbe la gara sul disco e non committata.
+        sh([PY, 'gen_replay.py', '--gara', nome], check=False)        # posizioni GPS vere
+        sh([PY, 'gen_tele_giro.py', '--gara', nome], check=False)     # overlay sul tracciato
+        sh([PY, 'gen_soste_fastf1.py', '--gara', nome], check=False)  # arbitro delle soste
+
+        # RIPROVA SULLE GARE CHE AVEVANO DECLINATO. Monaco e Ungheria non hanno un replay a
+        # posizioni vere perche' il loro GPS era rado o derivante QUANDO l'abbiamo chiesto —
+        # non perche' quel circuito sia impossibile. FastF1 ripubblica le sessioni, e senza
+        # questa riprova nessuno se ne accorgerebbe mai: la mia stessa nota diceva «basta
+        # rilanciare i generatori», che e' vero solo se qualcuno li rilancia. Costa pochi
+        # minuti a gara nuova e si spegne da sola appena la gara entra.
+        _riprova_gare_declinate()
         # file per-gara accessori, ex ORFANI: ora hanno un generatore con perimetro dal
         # registro, quindi la gara nuova entra da sola. Vanno DOPO la pubblicazione in
         # demo/ perche' gen_arrivi legge demo/data/esiti.json (e' li' che vive l'NP).
