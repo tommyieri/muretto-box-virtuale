@@ -111,6 +111,10 @@
       <section class="giri" id="boxGiri" hidden>
         <div class="cap" id="capGiri"></div>
         <div class="strisce" id="strisce"></div>
+        <div id="boxGiriB" hidden>
+          <div class="cap" id="capGiriB" style="margin-top:14px"></div>
+          <div class="strisce" id="strisceB"></div>
+        </div>
       </section>
 
       <div class="quadro" id="quadro" hidden>
@@ -159,12 +163,18 @@ let pista = null;
 
 /* ------------------------------------------------------------ scelte */
 async function boot() {
-  const [man, id] = await Promise.all([
-    dati(`data/giri_manifest.json?v=${V}`), identita()]);
+  const [man, id, cal] = await Promise.all([
+    dati(`data/giri_manifest.json?v=${V}`), identita(),
+    dati(`data/calendario_2026.json?v=${V}`)]);
   colori = id.colori;
   if (!man?.gare) { guasto(E('lista'), boot); return; }
   manifest = man.gare;
-  const gare = Object.keys(manifest);
+  // IL MANIFEST E' ALFABETICO (lo scrive un sorted(listdir)), ma una fila di Gran
+  // Premi si legge come un calendario: Australia, Austria, Belgio… sembrava un ordine
+  // di stagione sbagliato. Qui si ordina per round vero.
+  const round = {};
+  for (const g of (cal?.gare || [])) if (g.nome) round[g.nome] = g.round;
+  const gare = Object.keys(manifest).sort((a, b) => (round[a] ?? 99) - (round[b] ?? 99));
   gara = gare.includes(param('g')) ? param('g') : gare[gare.length - 1];
   E('pilGare').replaceChildren(...gare.slice().reverse().map(g => el('button', {
     class: 'pil', type: 'button', 'aria-pressed': String(g === gara),
@@ -280,27 +290,39 @@ async function impostaB(sig, giro) {
   disegna();
 }
 
-function elencaGiri() {
-  if (!A) return;
-  E('boxGiri').hidden = false;
-  E('avviso').hidden = true;
-  const p = indice.piloti[A.sig];
+/** Una striscia di giri: quelli del pilota X, cliccabili. */
+function striscia(sig, scelto, classeScelto, onScegli) {
+  const p = indice.piloti[sig];
   const best = migliore(p);
-  E('capGiri').replaceChildren(
-    el('b', {}, A.sig), ' · i suoi giri — tocca per cambiare');
-  const conTel = p.giri.filter(g => g.tel);
-  E('strisce').replaceChildren(...conTel.map(g => el('button', {
-    class: 'gr' + (g.n === A.giro ? ' on' : '') + (B && B.sig === A.sig && g.n === B.giro ? ' rif' : '')
+  return p.giri.filter(g => g.tel).map(g => el('button', {
+    class: 'gr' + (g.n === scelto ? ' ' + classeScelto : '')
       + (best && g.n === best.n ? ' veloce' : '') + (g.box ? ' box' : ''),
     type: 'button',
+    'aria-pressed': String(g.n === scelto),
     title: g.box === 'in' ? 'giro di rientro ai box' : g.box === 'out' ? 'giro di uscita dai box' : '',
-    onclick: () => impostaA(A.sig, g.n),
+    onclick: () => onScegli(g.n),
   },
     el('span', { class: 'ng' }, veri(
       String(g.n),
       g.mescola ? el('span', { class: 'gomma ' + g.mescola, title: MESCOLA_IT[g.mescola] || g.mescola }) : null,
       g.box ? el('span', { stile: { color: 'var(--verde)' } }, g.box === 'in' ? 'IN' : 'OUT') : null)),
-    el('span', { class: 'tp' }, g.t != null ? tempo(g.t) : '—'))));
+    el('span', { class: 'tp' }, g.t != null ? tempo(g.t) : '—')));
+}
+
+function elencaGiri() {
+  if (!A) return;
+  E('boxGiri').hidden = false;
+  E('avviso').hidden = true;
+  E('capGiri').replaceChildren(el('b', {}, A.sig), ' · i suoi giri — tocca per cambiare');
+  E('strisce').replaceChildren(...striscia(A.sig, A.giro, 'on', (n) => impostaA(A.sig, n)));
+
+  // LA SECONDA STRISCIA, che prima non c'era: la legenda prometteva «tocca un suo
+  // giro qui sopra» per il pilota di confronto, e i suoi giri non erano in pagina.
+  E('boxGiriB').hidden = !B;
+  if (B) {
+    E('capGiriB').replaceChildren(el('b', {}, B.sig), ' · a confronto — tocca per cambiare');
+    E('strisceB').replaceChildren(...striscia(B.sig, B.giro, 'rif', (n) => impostaB(B.sig, n)));
+  }
 }
 
 /* ------------------------------------------------------------ disegno */
@@ -404,7 +426,17 @@ function legenda() {
 function cifre() {
   const m = A.meta || {};
   const c = A.tr;
-  const gasPieno = c.gas.filter(x => x >= 98).length / c.n * 100;
+  // PESATO SUL TEMPO. La griglia e' uniforme in DISTANZA: contare i punti sopra il
+  // 98% dava la frazione di METRI a gas pieno, e siccome l'auto sta piu' a lungo dove
+  // va piano il numero sovrastimava sempre. Qui ogni punto pesa quanto dura.
+  let pieno = 0, tot = 0;
+  for (let i = 1; i < c.n; i++) {
+    const dt = c.t[i] - c.t[i - 1];
+    if (!(dt > 0)) continue;
+    tot += dt;
+    if (c.gas[i] >= 98) pieno += dt;
+  }
+  const gasPieno = tot > 0 ? pieno / tot * 100 : 0;
   E('boxCifre').hidden = false;
   E('cifre').replaceChildren(
     el('div', { class: 'cf' }, el('small', {}, 'giro'), el('b', { class: 'n' }, m.t != null ? tempo(m.t) : '—')),

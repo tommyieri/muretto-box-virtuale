@@ -145,7 +145,7 @@
 <footer class="piede"><div class="piede-in"></div></footer>
 
 <script type="module">
-import { guscio, dati, el, V, MOTO, ciclo, identita, coloreDi, dataIt } from './muro.mjs?v=090826a';
+import { guscio, dati, el, V, MOTO, ciclo, identita, coloreDi, dataIt, guasto } from './muro.mjs?v=090826a';
 guscio('index.html');
 
 /* ---------------------------------------------------------------- la pista
@@ -203,10 +203,14 @@ async function ultima() {
     dati(`data/calendario_2026.json?v=${V}`),
     dati(`data/manifest.json?v=${V}`),
   ]);
-  const inDemo = new Set((man || []).map(r => r.gara));
-  const corse = (cal?.gare || []).filter(g => g.gara_demo && inDemo.has(g.gara_demo));
-  const g = corse[corse.length - 1];
   const box = document.getElementById('ultima');
+  // UN GUASTO NON E' UN VUOTO. dati() restituisce null sia quando il file non c'e'
+  // sia quando la rete e' caduta: dire «nessuna gara pubblicata» a chi ha solo perso
+  // la connessione e' una bugia comoda. Le due cose si distinguono.
+  if (!cal || !man) { guasto(box, () => { location.reload(); }); return; }
+  const inDemo = new Set(man.map(r => r.gara));
+  const corse = (cal.gare || []).filter(g => g.gara_demo && inDemo.has(g.gara_demo));
+  const g = corse[corse.length - 1];
   if (!g) { box.replaceChildren(el('div', { class: 'vuoto' }, 'Nessuna gara ancora pubblicata.')); return; }
 
   document.getElementById('ctaGara').href = `gara.html?g=${encodeURIComponent(g.gara_demo)}`;
@@ -233,7 +237,8 @@ async function ultima() {
 async function letture() {
   const a = await dati(`data/analisi_articoli.json?v=${V}`);
   const box = document.getElementById('letture');
-  const lista = (a || []).filter(x => x.stato === 'pubblicato' && x.pagina).slice(0, 3);
+  if (a == null) return;                    // guasto: la sezione resta com'e', non sparisce
+  const lista = a.filter(x => x.stato === 'pubblicato' && x.pagina).slice(0, 3);
   if (!lista.length) { box.closest('main').querySelector('.sezione-t:last-of-type')?.remove(); box.remove(); return; }
   box.replaceChildren(...lista.map(x => el('a', {
     class: 'lettura', href: `articolo/${x.id}.html`, stile: { '--ac': x.accent || '#FF1E3C' },

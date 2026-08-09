@@ -25,7 +25,9 @@
   /* inchiostro */
   --testo:     #EDF1F7;
   --calmo:     #A7B0BF;
-  --fioco:     #737D8C;
+  /* MISURATO, non scelto a occhio: #737D8C dava 4,26:1 sulle piastre — sotto la
+     soglia proprio sulle etichette che dicono cosa significa ogni numero. */
+  --fioco:     #838D9D;
 
   /* semantica */
   --rosso:     #FF1E3C;   /* identita', azione */

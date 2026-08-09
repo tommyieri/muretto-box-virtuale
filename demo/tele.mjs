@@ -6,7 +6,8 @@
 // senza allineamenti a occhio.
 //
 // I canali sono base64 di interi: v (uint8 x1,6 km/h), gas (0-100), freno (0/1),
-// marcia (0-8), drs (0/1), t (uint16 centesimi dall'inizio giro).
+// marcia (0-8), drs (0/1), t (uint16 in unita' di `t_scala` secondi — scala per-giro,
+// cosi' il tempo non satura mai e i giri lunghi non vengono troncati in silenzio).
 
 const SCALA_V = 1.6;
 
@@ -22,6 +23,8 @@ export function decodifica(c) {
   if (!c) return null;
   const v8 = bytes(c.v);
   const t16 = new Uint16Array(bytes(c.t).buffer);
+  // t_scala assente = file vecchio in centesimi: si legge lo stesso, senza mentire
+  const kt = Number.isFinite(c.t_scala) ? c.t_scala : 0.01;
   return {
     n: v8.length,
     v: Array.from(v8, x => x * SCALA_V),
@@ -29,7 +32,7 @@ export function decodifica(c) {
     freno: Array.from(bytes(c.freno)),
     marcia: Array.from(bytes(c.marcia)),
     drs: Array.from(bytes(c.drs)),
-    t: Array.from(t16, x => x / 100),
+    t: Array.from(t16, x => x * kt),
   };
 }
 

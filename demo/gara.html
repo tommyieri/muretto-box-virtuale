@@ -30,7 +30,11 @@
   .torre-t{ display:flex; align-items:center; gap:8px; padding:11px 14px;
     border-bottom:1px solid var(--bordo); color:var(--fioco);
     font:500 10px/1 var(--mono); letter-spacing:.18em; text-transform:uppercase; }
-  .torre-c{ max-height:min(66vh,720px); overflow-y:auto; scrollbar-width:thin; }
+  /* FLEX, non blocco: la scena BOX ORA riordina le righe con `order`, e su un
+     contenitore a blocco `order` e' semplicemente ignorato — le posizioni
+     cambiavano e le righe restavano ferme. */
+  .torre-c{ display:flex; flex-direction:column;
+    max-height:min(66vh,720px); overflow-y:auto; scrollbar-width:thin; }
   .torre-c::-webkit-scrollbar{ width:6px; } .torre-c::-webkit-scrollbar-thumb{ background:var(--bordo-2); border-radius:3px; }
   .rw{ display:grid; grid-template-columns:26px 4px 1fr auto; align-items:center; gap:9px;
     width:100%; padding:8px 12px 8px 9px; text-align:left; border-bottom:1px solid rgba(255,255,255,.04);
@@ -229,7 +233,7 @@
         </div>
         <div class="conta-giri">GIRO <b class="n" id="lapNow">1</b>/<span class="n" id="lapMax">—</span></div>
       </div>
-      <div class="esito" id="esito" hidden></div>
+      <div class="esito" id="esito" role="status" aria-live="polite" hidden></div>
     </div>
 
     <!-- strategia: sempre aperta -->
@@ -537,7 +541,10 @@ E('vel').addEventListener('click', (e) => {
   barra.addEventListener('pointerup', () => { giu = false; });
   barra.addEventListener('keydown', (e) => {
     const d = { ArrowLeft: -1, ArrowRight: 1, PageDown: -5, PageUp: 5 }[e.key];
-    if (!d) return; e.preventDefault();
+    // durante la scena l'orologio non e' questo: muoverlo scriveva sulla stessa
+    // torre del fantasma e invertiva l'icona del play.
+    if (!d || scenaGp || !race) return;
+    e.preventDefault();
     clock.pause(); icona(false); clock.seek(Math.floor(curP) + d);
   });
 })();

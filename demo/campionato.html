@@ -125,8 +125,11 @@ function disegna() {
 function riga(r, piloti) {
   const team = piloti ? r.team_demo : (r.team_demo || r.nome);
   const col = coloreDi(team, colori);
+  // le righe costruttori hanno `id`, non `constructorId` (quello sta solo sui piloti):
+  // cercando la chiave sbagliata il motore non compariva MAI in questa vista.
+  const cid = r.constructorId || r.id;
   const sotto = piloti ? team
-    : (motori[r.constructorId]?.motore ? `motore ${motori[r.constructorId].motore}` : '');
+    : (motori[cid]?.motore ? `motore ${motori[cid].motore}` : '');
   return el('button', {
     class: 'cr' + (r.pos <= 3 ? ' podio' : ''), type: 'button', stile: { '--c': col },
     onclick: (ev) => apri(r, piloti, ev.currentTarget),
@@ -158,7 +161,8 @@ function apri(r, piloti, bottone) {
       el('span', { class: 'bar' }),
       el('div', {}, el('h2', {}, piloti ? r.nome : (s?.nome_completo || r.nome || team)),
         el('p', { class: 'sq' }, piloti ? team
-          : (motori[r.constructorId]?.motore ? `motore ${motori[r.constructorId].motore}` : ''))),
+          : (motori[r.constructorId || r.id]?.motore
+             ? `motore ${motori[r.constructorId || r.id].motore}` : ''))),
       piloti && s?.numero ? el('span', { class: 'num' }, s.numero) : null,
       el('button', { class: 'x', type: 'button', 'aria-label': 'Chiudi', onclick: chiudi }, '✕')),
     el('div', { class: 'duetti' },
