@@ -226,6 +226,15 @@ jobs:
       - name: L'orologio unificato non ha cambiato il replay
         run: node demo/test_orologio.mjs
 
+      # IL MOVIMENTO DEL PALLINO IN DIRETTA. Questo banco non girava in CI, e il caso che
+      # sorveglia le TENUTE del feed (campioni che ripetono le coordinate: 38% al Belgio,
+      # 76,9% all'Ungheria) sarebbe stato un ornamento — la stessa malattia dei generatori
+      # orfani, scoperta due giorni fa. Se una ripetizione torna nel buffer, posizionaSu()
+      # interpola fra due punti identici e il pallino si ferma: e' il difetto che il PO ha
+      # visto all'ultima curva dell'Hungaroring.
+      - name: In diretta il pallino scorre (le tenute del feed non lo fermano)
+        run: node demo/test_playhead.mjs
+
       # UN CANALE DISEGNATO SULLA PISTA sembra giusto anche quando e' sbagliato: i colori
       # sono belli comunque e nessuno vede che la frenata e' cento metri piu' in la'. Questi
       # cancelli guardano la fisica — in frenata si rallenta, gas e freno non convivono, la
