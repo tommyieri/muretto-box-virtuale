@@ -3,7 +3,7 @@
 // Regola: qui dentro non entra NIENTE che sappia di una pagina sola. Se una
 // funzione serve a un posto solo, sta in quel posto.
 
-export const V = '090826a';                      // targhetta di cache
+export const V = '090826b';                      // targhetta di cache
 
 /* ------------------------------------------------------------------ DOM */
 export const $  = (s, r = document) => r.querySelector(s);
