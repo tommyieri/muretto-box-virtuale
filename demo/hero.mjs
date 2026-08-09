@@ -30,6 +30,10 @@
 // che a meta' gara mancava a dieci piloti.
 // ============================================================================
 
+// la targhetta di cache vive in un posto solo (muro.mjs::V) e serve alla fetch
+// congelata di hero.json qui sotto
+import { V } from './muro.mjs?v=090826b';
+
 const FONTE = 'data/hero.json';
 const VENDOR = 'vendor/';         // relativo al documento: i file sono UMD, non moduli
 
@@ -494,7 +498,7 @@ function OUTCOME(gsap, root, H) {
 
 // --------------------------------------------------------- la firma + CTA --
 function FIRMA(gsap, root) {
-  const f = q(root, '.hero-firma'), cta = q(root, '.hero-cta .btn-pri');
+  const f = q(root, '.hero-firma'), cta = q(root, '.hero-cta .btn-p');
   const finale = () => gsap.set([f, cta], { opacity: 1, y: 0 });
   const tl = () => gsap.timeline()
     .fromTo(f, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: .45 })
@@ -582,6 +586,9 @@ async function dirigi(root, H) {
   // ------------------------------------------------------- atto 1 + cancello
   let master = null;
   function riparti() {
+    // il timer della catena automatica va spento qui: chi preme «rivedi» mentre l'attesa
+    // e' ancora armata si trovava la scena ripartita E la scelta d'ufficio, insieme.
+    clearTimeout(attesaTimer);
     root.classList.remove('e-riposo');
     stato = 'armato';
     choice.reset();
@@ -698,13 +705,16 @@ export async function creaHero(root) {
   if (!root) return;
   let H;
   try {
-    // credentials 'omit' non e' un vezzo: e' cio' che fa combaciare questa fetch col
-    // <link rel=preload as=fetch crossorigin> in testa alla pagina. Senza, il browser
-    // scarica hero.json due volte (misurato).
     // niente credentials 'omit': il <link rel=preload crossorigin> non combaciava e il
     // browser scaricava hero.json DUE volte, dicendolo in console. Il preload e' stato
     // tolto dalla pagina, e qui resta la fetch normale.
-    const r = await fetch(FONTE, { cache: 'force-cache' });
+    //
+    // LA TARGHETTA SERVE PROPRIO QUI. `force-cache` dice al browser: se ce l'hai, tienilo,
+    // non chiedere. Senza un'URL che cambia, una hero rigenerata (posizioni della torre,
+    // gara nuova) non arriverebbe MAI a chi ha gia' visitato la home — e sarebbe l'unico
+    // punto del sito dove il must-revalidate di Vercel non ci salva, perche' la richiesta
+    // al server non parte proprio. `?v=` la fa ripartire il giorno in cui V cambia.
+    const r = await fetch(`${FONTE}?v=${V}`, { cache: 'force-cache' });
     if (!r.ok) throw new Error(`hero.json ${r.status}`);
     H = await r.json();
   } catch (e) {

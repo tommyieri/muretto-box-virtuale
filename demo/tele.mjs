@@ -57,7 +57,13 @@ const nodo = (t, at = {}) => {
  * @param opz    {h, min, max, titolo, unita, tacche:[], zero:boolean, passi:boolean}
  */
 export function traccia(serie, opz = {}) {
-  const W = 1000, H = opz.h ?? 150;
+  // LA GRIGLIA E' IN PIXEL VERI, non in mille unita' scalate.  Con viewBox fisso a 1000
+  // e preserveAspectRatio:none il disegno si schiacciava con la finestra: su un telefono
+  // da 360 px il pannello della velocita' diventava alto 54 px e le etichette dell'asse
+  // 3,4 px — illeggibili proprio sulla pagina per cui e' stato fatto tutto questo.
+  // Passando la larghezza vera, un'unita' utente e' un pixel: 9,5 restano 9,5 e l'altezza
+  // e' quella dichiarata.  Chi disegna ri-disegna quando la finestra cambia.
+  const W = Math.max(240, Math.round(opz.larg || 1000)), H = opz.h ?? 150;
   const mt = 8, mb = 16, ml = 40, mr = 6;
   const dati = serie.filter(s => s.dati?.length);
   if (!dati.length) return nodo('svg');

@@ -5,7 +5,23 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Campionato 2026 — Muretto Box Virtuale</title>
 <meta name="description" content="Classifica piloti e costruttori della Formula 1 2026, con la scheda di ogni pilota e di ogni squadra.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Muretto Box Virtuale">
+<meta property="og:locale" content="it_IT">
+<meta property="og:url" content="https://murettobox.com/campionato.html">
+<meta property="og:title" content="Campionato 2026 — Muretto Box Virtuale">
+<meta property="og:description" content="Classifica piloti e costruttori della Formula 1 2026, con la scheda di ogni pilota e di ogni squadra.">
+<meta property="og:image" content="https://murettobox.com/og/pagina-campionato.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Campionato 2026 — Muretto Box Virtuale">
+<meta name="twitter:description" content="Classifica piloti e costruttori della Formula 1 2026, con la scheda di ogni pilota e di ogni squadra.">
+<meta name="twitter:image" content="https://murettobox.com/og/pagina-campionato.png">
 <link rel="canonical" href="https://murettobox.com/campionato.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
 <link rel="stylesheet" href="muro.css?v=090826b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 <style>
@@ -19,7 +35,9 @@
   .cr.on{ background:rgba(36,227,210,.08); }
   .cr .p{ font:500 20px/1 var(--mono); color:var(--fioco); text-align:right; }
   .cr.podio .p{ color:var(--testo); }
-  .cr:first-child .p{ color:var(--ambra); }
+  /* :first-of-type e non :first-child: il primo figlio del contenitore e' la testata
+     .cap-clas, un DIV, quindi la regola non si applicava a nessuno. Le .cr sono BUTTON. */
+  .cr:first-of-type .p{ color:var(--ambra); }
   .cr .bar{ width:4px; height:34px; border-radius:2px; background:var(--c,#8A93A3); }
   .cr .chi b{ font:700 20px/1 var(--disp); letter-spacing:.03em; }
   .cr .chi small{ display:block; margin-top:5px; color:var(--fioco); font-size:12.5px; }
@@ -77,9 +95,9 @@
   <p class="occhiello" id="occ">Campionato · Stagione 2026</p>
   <h1 class="titolone">La <em>classifica</em></h1>
 
-  <div class="tolgi" role="tablist">
-    <button class="pil on" id="tbPil" role="tab" aria-selected="true">Piloti</button>
-    <button class="pil" id="tbCos" role="tab" aria-selected="false">Costruttori</button>
+  <div class="tolgi">
+    <button class="pil on" id="tbPil" aria-pressed="true">Piloti</button>
+    <button class="pil" id="tbCos" aria-pressed="false">Costruttori</button>
   </div>
 
   <section class="clas" id="clas"></section>
@@ -139,8 +157,9 @@ function riga(r, piloti) {
     el('span', { class: 'chi' }, el('b', {}, piloti ? r.nome : (r.nome || r.team_demo)),
       sotto ? el('small', {}, sotto) : null),
     el('span', { class: 'v n' }, String(r.vittorie ?? 0)),
-    el('span', { class: 'pt n' }, String(r.punti).replace('.0', ''),
-      el('small', {}, r.distacco ? `−${String(r.distacco).replace('.0', '')}` : 'LEADER')));
+    el('span', { class: 'pt n' }, nnum(r.punti, Number.isInteger(r.punti) ? 0 : 1),
+      el('small', {}, r.distacco
+        ? `−${nnum(r.distacco, Number.isInteger(r.distacco) ? 0 : 1)}` : 'LEADER')));
 }
 
 /* ------------------------------------------------------------- scheda */
@@ -150,6 +169,8 @@ let apertoDa = null;                 // chi ha aperto la scheda: li' torna il fu
 
 function apri(r, piloti, bottone) {
   apertoDa = bottone || null;
+  // il pannello si annunciava «Scheda del pilota» anche quando dentro c'era una squadra
+  E('scheda').setAttribute('aria-label', piloti ? 'Scheda del pilota' : 'Scheda della squadra');
   const s = piloti
     ? Object.values(schede?.piloti || {}).find(p => p.sigla === r.sigla)
     : Object.values(schede?.team || {}).find(t => (t.team_demo || t.nome) === (r.team_demo || r.nome));
@@ -169,7 +190,7 @@ function apri(r, piloti, bottone) {
       el('div', {}, el('h4', {}, 'Stagione 2026'),
         el('div', { class: 'celle' }, veri(
           cella('posizione', 'P' + (sta?.pos ?? r.pos)),
-          cella('punti', String(r.punti).replace('.0', '')),
+          cella('punti', nnum(r.punti, Number.isInteger(r.punti) ? 0 : 1)),
           cella('vittorie', String(r.vittorie ?? 0)),
           sta?.podi != null ? cella('podi', String(sta.podi)) : null,
           sta?.media_griglia != null ? cella('media griglia', nnum(sta.media_griglia, 1)) : null,
@@ -181,7 +202,7 @@ function apri(r, piloti, bottone) {
           cella('podi', String(car.podi)),
           cella('pole', String(car.pole)),
           car.titoli ? cella('titoli', String(car.titoli)) : null,
-          cella('punti', String(car.punti).replace('.0', '')))),
+          cella('punti', nnum(car.punti, Number.isInteger(car.punti) ? 0 : 1)))),
         // il nome del GP arriva in inglese dalla fonte: si mostra la data, non la traduzione
         car.ultima_vittoria?.data
           ? el('p', { stile: { marginTop: '12px', color: 'var(--fioco)', fontSize: '13px' } },
@@ -218,8 +239,11 @@ for (const [b, v] of [['tbPil', 'piloti'], ['tbCos', 'costruttori']]) {
     vista = v; chiudi();
     E('tbPil').classList.toggle('on', v === 'piloti');
     E('tbCos').classList.toggle('on', v !== 'piloti');
-    E('tbPil').setAttribute('aria-selected', String(v === 'piloti'));
-    E('tbCos').setAttribute('aria-selected', String(v !== 'piloti'));
+    // aria-pressed e non aria-selected: sono due bottoni a due stati. Con role=tab un
+    // lettore di schermo annuncia una scheda e poi cerca il pannello che governa, le
+    // frecce per cambiarla e aria-controls — tre promesse che questa pagina non mantiene.
+    E('tbPil').setAttribute('aria-pressed', String(v === 'piloti'));
+    E('tbCos').setAttribute('aria-pressed', String(v !== 'piloti'));
     disegna();
   });
 }

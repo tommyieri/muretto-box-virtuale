@@ -281,6 +281,50 @@
    "note": [
     "07/08/2026: scenari[].piano.limite_perche e' USCITO da questa voce perche' e' tornato reso — sta dentro «Perché questo numero di soste» (percheSoste, pannello.mjs), che dal 07/08 e' aperto di default con la riga-sintesi in chiaro. La decisione editoriale del 04/08 sul resto non cambia."
    ]
+  },
+  {
+   "id": "ondata-libere-senza-lettore",
+   "titolo": "L'ondata delle prove libere si rigenera a ogni weekend e nessuna pagina del sito la legge",
+   "natura": "orfano dichiarato",
+   "cosa_e_successo": "auto_gara.py chiama wave_libere() a ogni weekend: gen_libere_ti.py scarica la sessione da TracingInsights e scrive demo/data/libere_<gara>.json piu' demo/data/libere_manifest.json. L'unica pagina che li leggeva era demo/libere.html, ritirata col sito nuovo (sta in demo/_ritirate/). Il dato quindi continua ad arrivare, aggiornato e committato, e non lo mostra nessuno.",
+   "perche_resta_aperto": "Non e' codice morto da cancellare: la telemetria per giro delle libere il sito nuovo la prende da gen_giri.py (FastF1), ma il passo e i rapporti che sta catena porta non li ricostruisce nessun altro. Spegnerla e' una decisione di prodotto — o torna una pagina che li legge, o si spegne l'ondata. Finche' nessuno decide, resta accesa e DICHIARATA: cosi' il giorno in cui una pagina la legge davvero, la sentinella lo dice.",
+   "referto": "demo/DEBITO_DEMO.json — verificato il 09/08/2026 con la ricerca dei lettori in demo/",
+   "guardia": {
+    "file_accensione": "auto_gara.py",
+    "deve_contenere": "wave_libere()",
+    "pagine_che_non_devono_importarlo": [
+     "demo/index.html",
+     "demo/stagione.html",
+     "demo/gara.html",
+     "demo/live.html",
+     "demo/analisi.html",
+     "demo/telemetria.html",
+     "demo/campionato.html"
+    ],
+    "import_atteso": "libere_manifest.json"
+   }
+  },
+  {
+   "id": "ondata-sprint-senza-lettore",
+   "titolo": "L'ondata sprint si rigenera nei weekend sprint e nessuna pagina del sito la legge",
+   "natura": "orfano dichiarato",
+   "cosa_e_successo": "Stessa storia dell'ondata libere, un piano piu' in la': auto_gara.py chiama wave_sprint(), gen_sprint_ti.py scrive demo/data/sprint_<gara>.json e sprint_manifest.json, e la pagina che li mostrava (demo/sprint.html) e' in demo/_ritirate/.",
+   "perche_resta_aperto": "Vale parola per parola quanto scritto per l'ondata libere: e' una decisione di prodotto, non un difetto da chiudere di nascosto. Il weekend sprint arriva poche volte l'anno, quindi il costo di tenerla accesa e' basso e quello di perderla — se un giorno la pagina torna — sarebbe una stagione di dati.",
+   "referto": "demo/DEBITO_DEMO.json — verificato il 09/08/2026 con la ricerca dei lettori in demo/",
+   "guardia": {
+    "file_accensione": "auto_gara.py",
+    "deve_contenere": "wave_sprint()",
+    "pagine_che_non_devono_importarlo": [
+     "demo/index.html",
+     "demo/stagione.html",
+     "demo/gara.html",
+     "demo/live.html",
+     "demo/analisi.html",
+     "demo/telemetria.html",
+     "demo/campionato.html"
+    ],
+    "import_atteso": "sprint_manifest.json"
+   }
   }
  ]
 }

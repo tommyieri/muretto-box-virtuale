@@ -42,10 +42,21 @@ export function el(tag, attr = {}, ...figli) {
 /* ----------------------------------------------------------------- dati */
 const memoria = new Map();
 
-/** Un JSON, una volta sola per pagina. Ritorna null se non c'e' (mai eccezione). */
+/** Un JSON, una volta sola per pagina. Ritorna null se non c'e' (mai eccezione).
+ *
+ *  IL FALLIMENTO NON SI TIENE IN CACHE. Prima la promessa andava in `memoria` anche
+ *  quando la fetch falliva, e quella promessa valeva null per sempre: il bottone
+ *  «Riprova» ri-chiamava boot(), boot() ri-chiamava dati(), e dati() restituiva il null
+ *  di prima. Il riquadro di guasto ricompariva identico, all'infinito, su tre pagine.
+ *  Un rimedio che non puo' funzionare e' peggio di nessun rimedio: promette.
+ *  La voce resta per tutta la durata della richiesta — cosi' due chiamanti simultanei
+ *  continuano a condividerla — e sparisce appena si sa che non ha portato niente. */
 export async function dati(url) {
   if (memoria.has(url)) return memoria.get(url);
-  const p = fetch(url).then(r => (r.ok ? r.json() : null)).catch(() => null);
+  const p = fetch(url)
+    .then(r => (r.ok ? r.json() : null))
+    .catch(() => null)
+    .then((v) => { if (v == null) memoria.delete(url); return v; });
   memoria.set(url, p);
   return p;
 }
@@ -173,6 +184,23 @@ export function guscio(qui) {
         el('span', { class: 'marchio-t' }, el('b', {}, 'MURETTO'), el('small', {}, 'STAGIONE 2026'))),
       el('nav', {}, piatte.map(([n, f]) => el('a', { href: f }, n))),
       el('small', {}, 'Formula 1 2026 · replay, strategia e telemetria'));
+  }
+  graficiLeggibili();
+}
+
+/** I GRAFICI DEGLI ARTICOLI, LARGHI QUANTO SONO STATI DISEGNATI.
+ *
+ *  Sono SVG con viewBox e width:100%: dentro una colonna da 309 px un disegno pensato
+ *  per 760 si riduce a scala 0,4 — assi, etichette e numeri con lui, sotto i sette pixel.
+ *  Il contenitore ha gia' overflow-x, mancava dire al disegno di non rimpicciolirsi.
+ *  La larghezza giusta la sa solo il disegno (il viewBox), e il CSS non la puo' leggere:
+ *  per questo sta qui e non in muro.css. Il tetto a 900 evita che un grafico molto largo
+ *  chieda uno scorrimento infinito. */
+function graficiLeggibili() {
+  for (const svg of document.querySelectorAll('.art-svg-wrap svg[viewBox]')) {
+    const largo = parseFloat((svg.getAttribute('viewBox') || '').split(/[\s,]+/)[2]);
+    if (!Number.isFinite(largo) || largo <= 0) continue;
+    svg.style.minWidth = Math.min(900, Math.round(largo)) + 'px';
   }
 }
 

@@ -135,7 +135,13 @@ const mescolaMia = garaSim.perPilota.get(CASO.driver)?.get(L)?.compound ?? null;
 if (mescolaMia === null) throw new Error(`${CASO.driver} non ha mescola nota al giro ${L}`);
 
 // ------------------------------------------------------- torre al congelamento
-const ordFreeze = present
+//
+// LA TORRE E' IL CAMPO INTERO, non i simulabili. `present` esclude chi non ha un passo
+// nel modello: usarlo anche qui rinumerava le posizioni su un sottoinsieme, e la home
+// mostrava HAD e BOR come P5 e P6 quando in gara erano P7 e P8. `present` resta dov'e'
+// necessario — al controllo di simulabilita' del pilota del caso.
+const inPista = G.drivers.filter(d => typeof byLap[L]?.[d]?.cum_time === 'number');
+const ordFreeze = inPista
   .map(d => [d, byLap[L][d].cum_time])
   .sort((a, b) => (a[1] - b[1]) || (a[0] < b[0] ? -1 : 1));
 const t0 = ordFreeze[0][1];

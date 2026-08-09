@@ -170,11 +170,6 @@ def _riprova_gare_declinate():
     log(f'riprova replay a posizioni vere sulle gare declinate: {mancanti}')
     for g in mancanti:
         sh([PY, 'gen_replay.py', '--gara', g], check=False)
-        # l'overlay telemetrico dipende dallo stesso GPS: se il replay si accende, ha senso
-        # riprovare anche quello. Se il replay resta declinato, questo esce a vuoto e basta.
-        if os.path.exists(os.path.join(reg, f'replay_{g}.json')):
-            log(f'  {g}: il replay si e\' acceso, riprovo anche l\'overlay')
-            sh([PY, 'gen_tele_giro.py', '--gara', g], check=False)
 
 
 def _controlla_pista_nuova(nome):
@@ -321,7 +316,6 @@ def wave_nuove():
         # ricostruzione dai tempi-giro, che e' esattamente cio' che faceva prima. Il
         # contrario (morire qui) lascerebbe la gara sul disco e non committata.
         sh([PY, 'gen_replay.py', '--gara', nome], check=False)        # posizioni GPS vere
-        sh([PY, 'gen_tele_giro.py', '--gara', nome], check=False)     # overlay sul tracciato
         sh([PY, 'gen_soste_fastf1.py', '--gara', nome], check=False)  # arbitro delle soste
         # LA TELEMETRIA GIRO PER GIRO della gara nuova (e delle sue sessioni). Senza
         # questa riga la pagina Telemetria mostrerebbe tutte le gare tranne l'ultima —
@@ -521,6 +515,12 @@ RIPARAZIONI = [
     # grids: da quando ha il ripiego FastF1 non dipende piu' dalla release f1db, quindi
     # una griglia mancante e' riparabile lo stesso giorno (v. gen_grids.py).
     ('grids.json',             [['gen_grids.py']]),
+    # LA TELEMETRIA GIRO PER GIRO e' un passo tardivo come gli altri: gen_giri.py legge
+    # FastF1, e la domenica sera FastF1 spesso non ha ancora la gara. Senza riparazione la
+    # pagina Telemetria resterebbe senza l'ultima gara — cioe' senza quella che uno va a
+    # cercare — e nessuno se ne accorgerebbe fino al weekend dopo. La chiave sta dentro
+    # "gare", non in cima al file: da qui il terzo campo.
+    ('giri_manifest.json',     [['gen_giri.py', '--tutto']], 'gare'),
 ]
 
 
@@ -542,14 +542,21 @@ def _date_gare():
     return out
 
 
-def _gare_mancanti(artefatto, gare):
+def _gare_mancanti(artefatto, gare, dentro=None):
     """Gare del registro assenti dalle chiavi dell'artefatto. [] se illeggibile: un file
-    rotto o assente e' un guaio diverso, non lo si cura rilanciando generatori a raffica."""
+    rotto o assente e' un guaio diverso, non lo si cura rilanciando generatori a raffica.
+
+    `dentro` e' la chiave in cui stanno le gare quando non sono in cima al file."""
     try:
         d = json.load(open(os.path.join(ROOT, 'demo', 'data', artefatto)))
     except (OSError, ValueError):
         log(f'ondata riparazione: {artefatto} illeggibile — non ci provo.')
         return []
+    if dentro is not None:
+        d = d.get(dentro)
+        if not isinstance(d, dict):
+            log(f'ondata riparazione: {artefatto} non ha «{dentro}» — non ci provo.')
+            return []
     return [g for g in gare if g not in d]
 
 
@@ -591,8 +598,8 @@ def wave_riparazione():
     date = _date_gare()
     oggi = datetime.date.today()
     da_fare, fuori = [], []
-    for artefatto, comandi in RIPARAZIONI:
-        manca = _gare_mancanti(artefatto, reg)
+    for artefatto, comandi, *resto in RIPARAZIONI:
+        manca = _gare_mancanti(artefatto, reg, resto[0] if resto else None)
         if not manca:
             continue
         # dentro la finestra? una gara senza data nel calendario si tenta (meglio un giro

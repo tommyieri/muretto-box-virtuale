@@ -88,7 +88,9 @@ PAGINE_FISSE = [
 # intero l'intestazione di 404.html e dei dodici articoli — e quindi tredici file su
 # ventotto erano gia' a sorgente unica. Erano i quindici restanti il problema.
 #
-# Cambiare una voce adesso e' una riga qui piu' `python3 ai_lab/redazione/statico.py --nav`.
+# Cambiare una voce si fa in demo/muro.mjs::VOCI: e' li' che vive la nav vera, montata
+# a runtime da guscio(). NAV qui sotto e' la COPIA DI CONTROLLO che demo/test_stat.mjs
+# confronta con VOCI — se le due divergono, la sentinella diventa rossa.
 #
 # NIENTE MARCATORI, e non e' pigrizia: inserire <!-- NAV:INIZIO --> in quindici file e' un
 # passaggio a mano che alla prima esecuzione puo' cancellare markup buono se finisce nel
@@ -107,91 +109,14 @@ NAV = [
     ("Campionato", "campionato.html"),
 ]
 
-# a quale voce di nav "appartiene" ogni pagina: decide chi porta class="on" e chi sparisce
-# dal footer. Le pagine che non compaiono qui non sono in nessuna sezione (index, scheda,
-# gara, weekend, 404...) e mostrano tutte e quattro le voci.
-SEZIONE_DI = {
-    "stagione.html": "stagione.html",
-    "live.html": "live.html",
-    "analisi.html": "analisi.html",
-    "telemetria.html": "telemetria.html",
-    "campionato.html": "campionato.html",
-}
-
-
-def blocco_nav(attiva=None, prefisso="", classe="nav", rientro="  ") -> str:
-    """Il blocco <nav> dell'intestazione. `classe` resta quella trovata in pagina:
-    analisi.html usa <nav class="site"> col suo CSS, ed e' un'eccezione a registro
-    (demo/REGISTRO_SEZIONE.json, voce S4), non una deriva da correggere qui."""
-    punto = '<span class="dot"></span>' if classe == "site" else '<span class="dot-live"></span>'
-    righe = [f'{rientro}<nav class="{classe}" aria-label="Sezioni">']
-    for etichetta, file in NAV:
-        deco = punto if file == "live.html" else ""
-        on = ' class="on"' if file == attiva else ""
-        righe.append(f'{rientro}  <a href="{prefisso}{file}"{on}>{deco}{etichetta}</a>')
-    righe.append(f"{rientro}</nav>")
-    return "\n".join(righe)
-
-
-def blocco_footer_voci(escludi=None, prefisso="", rientro="      ") -> str:
-    """Le voci dentro il <nav> del footer: tutte quelle in cui NON sei gia'.
-
-    Prima del 04/08/2026 questa regola era rispettata da sei pagine e violata da cinque
-    (libere, quali, sprint, tele, weekend lasciavano fuori Live invece della propria
-    sezione; dati e forza elencavano tutte e quattro in un ordine loro). Nessuna di quelle
-    differenze era stata decisa: erano il residuo di copie successive. Qui la regola
-    diventa una sola, e quelle cinque pagine riprendono la voce che avevano perso."""
-    return "\n".join(f'{rientro}<a href="{prefisso}{f}">{e}</a>'
-                     for e, f in NAV if f != escludi)
-
-
-_RE_NAV = re.compile(r'([ \t]*)<nav class="(nav|site)" aria-label="Sezioni">[\s\S]*?</nav>')
-# NON pretendere un a capo dopo <nav>. La prima versione di questa regex era
-# `<nav>\n(...)` e falliva in silenzio su dati.html e forza.html, che hanno il footer
-# tutto su una riga: quelle due pagine sono rimaste con la voce vecchia mentre le altre
-# quattordici erano state timbrate, e nessun test se ne e' accorto perche' la sentinella
-# guarda la nav dell'intestazione e non il footer. Ora si accetta l'una e l'altra forma,
-# e si RESTITUISCE quella trovata: una pagina compatta resta compatta.
-_RE_FOOT = re.compile(r'(<footer[^>]*>[\s\S]*?<nav>)([\s\S]*?)(</nav>)')
-
-
-def stampa_nav_pagine(files=None) -> list:
-    """Riscrive nav e footer di ogni pagina in demo/ dalla costante NAV. Torna l'elenco
-    dei file davvero cambiati (idempotente: la seconda esecuzione torna vuoto)."""
-    cambiati = []
-    elenco = files or sorted(f for f in os.listdir(DEMO) if f.endswith(".html"))
-    for nome in elenco:
-        percorso = os.path.join(DEMO, nome)
-        testo = vecchio = open(percorso, encoding="utf-8").read()
-        attiva = SEZIONE_DI.get(nome)
-        prefisso = "/" if nome == "404.html" else ""
-
-        def _nav(m):
-            return blocco_nav(attiva, prefisso, classe=m.group(2), rientro=m.group(1))
-        testo = _RE_NAV.sub(_nav, testo, count=1)
-
-        def _foot(m):
-            interno = m.group(2)
-            if "\n" not in interno:                       # footer compatto (dati, forza)
-                voci = "".join(f'<a href="{prefisso}{f}">{e}</a>'
-                               for e, f in NAV if f != attiva)
-                return m.group(1) + voci + m.group(3)
-            rientro = re.match(r"[\n]*([ \t]*)", interno).group(1) or "      "
-            return (m.group(1) + "\n" + blocco_footer_voci(attiva, prefisso, rientro)
-                    + "\n" + rientro[:-2] + m.group(3))
-        testo = _RE_FOOT.sub(_foot, testo, count=1)
-
-        if testo != vecchio:
-            open(percorso, "w", encoding="utf-8").write(testo)
-            cambiati.append(nome)
-    return cambiati
-
-MESI = ["gennaio", "febbraio", "marzo", "aprile", "maggio", "giugno", "luglio",
-        "agosto", "settembre", "ottobre", "novembre", "dicembre"]
-
-# le stesse conversioni che fa analisi.html: l'accent puo' essere una var CSS
-AC_MAP = {"var(--sc)": "#E8892B", "var(--brand)": "#E4002B", "var(--lead)": "#E0A400"}
-
+# QUI SOTTO C'ERA UN TIMBRATORE DI NAV, e non timbrava piu' niente.
+# blocco_nav / blocco_footer_voci / stampa_nav_pagine riscrivevano il <nav> statico delle
+# pagine di demo/ a partire da NAV. Quel <nav> non esiste piu': il guscio del sito lo monta
+# a runtime (demo/muro.mjs::guscio), le pagine hanno <header class="barra"></header> vuoto,
+# e le due regex non facevano match su 8 pagine su 8. `--nav` percio' non falliva: contava
+# zero cambiamenti e stampava «erano gia' allineate», cioe' dava conferma di un lavoro
+# che non aveva fatto. Un attrezzo che mente e' peggio di un attrezzo che manca.
+# Restano NAV (copia di controllo per test_stat.mjs) e nient'altro.
 
 # ---------------------------------------------------------------- utilita'
 
@@ -483,6 +408,9 @@ def rendi_html(art) -> str:
 <html lang="it">
 <head>
 {_testa(art)}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
 <link rel="stylesheet" href="../muro.css?v=090826b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23e80d2e%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 <script type="application/ld+json">
@@ -708,7 +636,11 @@ def scrivi_feed() -> bool:
 
 def _card_html(a) -> str:
     """Stessa card che il JS di analisi.html costruisce, ma servita subito."""
-    ac = _ac(a.get("accent"))
+    # STESSA ESPRESSIONE DI _corpo. Passava da _ac, che traduce il nome dell'accento
+    # con una tavolozza scritta a mano qui dentro e rimasta a quella vecchia: lo stesso
+    # articolo usciva di un colore nella card e di un altro nella sua pagina. La var CSS
+    # la risolve il browser, con muro.css, una volta sola.
+    ac = a.get("accent") or "var(--brand)"
     meta = " · ".join([x for x in (a.get("circuito"), a.get("sessione"),
                                    data_it(a.get("data"))) if x])
     tags = "".join(f'<span class="chip">{esc(t)}</span>' for t in (a.get("tag") or [])[:3])
@@ -754,6 +686,9 @@ def scrivi_404() -> bool:
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pagina non trovata — Muretto Box Virtuale</title>
 <meta name="robots" content="noindex, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
 <link rel="stylesheet" href="/muro.css?v=090826b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 </head>
@@ -875,16 +810,10 @@ if __name__ == "__main__":
     ap.add_argument("--tutto", action="store_true", help="rigenera ogni articolo e gli indici")
     ap.add_argument("--articolo", metavar="ID", help="rigenera un solo articolo + indici")
     ap.add_argument("--indici", action="store_true", help="solo robots/sitemap/feed/404/elenco")
-    ap.add_argument("--nav", action="store_true",
-                    help="ristampa nav e footer di tutte le pagine dalla costante NAV")
     ap.add_argument("--senza-og", action="store_true", help="salta le immagini social")
     a = ap.parse_args()
     og = not a.senza_og
-    if a.nav:
-        cambiati = stampa_nav_pagine()
-        print(f"[statico] nav e footer ristampati: {len(cambiati)} pagine cambiate"
-              + (f" ({', '.join(cambiati)})" if cambiati else " — erano gia' allineate"))
-    elif a.tutto:
+    if a.tutto:
         e = rigenera_tutto(con_og=og)
         print(f"[statico] {len(e['articoli'])} articoli resi in demo/articolo/")
         if e["saltati"]:

@@ -11,7 +11,11 @@
      Barlow            prosa
      JetBrains Mono    OGNI numero, sempre tabulare
    ========================================================================= */
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+/* I FONT NON ENTRANO PIU' DA QUI. Un @import in cima al foglio incatena tre giri di
+   rete in serie prima del primo disegno: muro.css, poi il CSS dei font, poi i woff2.
+   Il preload scanner del browser non puo' anticipare cio' che sta dentro un CSS che
+   non ha ancora scaricato. Ora il <link> sta nel <head> di ogni pagina, accanto a
+   questo foglio, e le due richieste partono insieme. */
 
 :root{
   /* fondo e piani */
@@ -217,6 +221,10 @@ hr{ border:0; border-top:1px solid var(--bordo); margin:26px 0; }
   .menu .tendina{ min-width:170px; }
 }
 @media (max-width:420px){ .marchio-t{ display:none; } }
+/* SOTTO I 348 px la barra sforava e CAMPIONATO usciva dallo schermo: nessuna
+   scorciatoia per raggiungerlo, perche' la barra non scorre. Con 4 px di respiro
+   per voce il menu chiude dentro i 308 px disponibili di un iPhone SE. */
+@media (max-width:380px){ .menu a,.menu .apri{ padding:0 4px; } }
 
 /* ================================================================= scafo */
 .scafo{ max-width:var(--max); margin:0 auto; padding:clamp(22px,4vw,40px) clamp(14px,3vw,26px) 90px; }
@@ -261,8 +269,13 @@ hr{ border:0; border-top:1px solid var(--bordo); margin:26px 0; }
   transition:background-color .18s var(--ease), border-color .18s var(--ease),
              color .18s var(--ease), box-shadow .18s var(--ease);
 }
-.btn-p{ background:var(--rosso); color:#fff; box-shadow:0 6px 20px -6px rgba(255,30,60,.6); }
-.btn-p:hover{ background:#ff3550; box-shadow:0 8px 26px -6px rgba(255,30,60,.75); }
+/* IL ROSSO D'AZIONE E' PIU' SCURO DEL ROSSO D'INCHIOSTRO. Bianco su --rosso sta a
+   3,82:1, sotto la soglia 4.5:1 per un testo da 15px: il bottone piu' cliccato del
+   sito era il meno leggibile. Qui 5,20:1 a riposo e 4,77:1 in hover — l'hover
+   continua a schiarire, come deve. Il token --rosso non si tocca: come inchiostro
+   sul fondo scuro sta a 5,50:1 e va bene. */
+.btn-p{ background:#D8102F; color:#fff; box-shadow:0 6px 20px -6px rgba(255,30,60,.6); }
+.btn-p:hover{ background:#E31235; box-shadow:0 8px 26px -6px rgba(255,30,60,.75); }
 .btn-s{ background:rgba(255,255,255,.05); border-color:var(--bordo-2); color:var(--testo); }
 .btn-s:hover{ background:rgba(255,255,255,.09); border-color:#43506a; }
 .btn-f{ color:var(--calmo); }
@@ -376,6 +389,25 @@ hr{ border:0; border-top:1px solid var(--bordo); margin:26px 0; }
   background:rgba(255,176,0,.14); color:var(--ambra); font:500 10px/1 var(--mono); letter-spacing:.14em; }
 
 .art-sez{ margin:38px 0; }
+
+/* I TITOLI DI SEZIONE DENTRO UN ARTICOLO. Li scrive statico.py come <div class="sez-tit">,
+   e muro.css non li vestiva: rendevano a 16px peso 400 contro un corpo da 17,5px — un
+   titolo piu' piccolo del testo che intitola, attaccato al paragrafo, per 36 volte in
+   produzione. La regola c'era nel foglio vecchio ed e' rimasta indietro nel trasloco. */
+.sez-tit{ display:flex; align-items:center; gap:11px; margin:36px 2px 15px;
+  color:var(--testo); font:700 20px/1.15 var(--disp);
+  letter-spacing:.13em; text-transform:uppercase; }
+.sez-tit::before{ content:"//"; color:var(--rosso); font:700 15px/1 var(--mono); letter-spacing:-.08em; }
+.sez-tit::after{ content:""; flex:1 1 auto; height:1px; background:var(--bordo); }
+.sez-tit .art-tag{ margin-right:0; flex:0 0 auto; }
+/* SU SCHERMO STRETTO il titolo NON sta in riga col cartellino: si strizzava in una
+   colonna da meta' larghezza, quattro righe accanto a un chip. Torna testo che scorre. */
+@media (max-width:700px){
+  .sez-tit{ display:block; font-size:18px; letter-spacing:.1em; }
+  .sez-tit::before{ display:inline; margin-right:9px; }
+  .sez-tit::after{ display:none; }
+  .sez-tit .art-tag{ margin-right:9px; }
+}
 .art-prosa{ font-size:17.5px; line-height:1.75; color:#DCE2EB; }
 .art-prosa p{ margin:0 0 1.15em; max-width:68ch; }
 .art-prosa b,.art-prosa strong{ color:var(--testo); font-weight:600; }
@@ -387,8 +419,15 @@ hr{ border:0; border-top:1px solid var(--bordo); margin:26px 0; }
   font:500 10px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; margin-right:10px; }
 .art-fig{ margin:26px 0; padding:18px; border-radius:var(--r);
   background:var(--carbonio); border:1px solid var(--bordo); }
-.art-svg-wrap{ overflow-x:auto; }
-.art-svg-wrap svg{ max-width:100%; height:auto; }
+.art-svg-wrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.art-svg-wrap svg{ width:100%; height:auto; display:block; }
+.art-svg.art-pista{ max-height:340px; }
+/* SU SCHERMO STRETTO IL GRAFICO SCORRE, non si rimpicciolisce: il minimo lo mette
+   muro.mjs::graficiLeggibili, che legge il viewBox del disegno — qui il CSS non lo sa.
+   Questa regola serve solo a lasciare che quel minimo comandi. */
+@media (max-width:900px){
+  .art-svg-wrap svg{ width:auto; max-width:none; }
+}
 .art-fig .cap{ margin-top:12px; color:var(--fioco); font-size:13.5px; line-height:1.5; }
 .art-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:34px;
   padding-top:22px; border-top:1px solid var(--bordo); }
