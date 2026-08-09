@@ -5,6 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Telemetria — Muretto Box Virtuale</title>
 <meta name="description" content="La telemetria di qualunque giro di qualunque pilota: velocità, gas, freno e marce, e due giri a confronto.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Muretto Box Virtuale">
+<meta property="og:locale" content="it_IT">
+<meta property="og:url" content="https://murettobox.com/telemetria.html">
+<meta property="og:title" content="Telemetria — Muretto Box Virtuale">
+<meta property="og:description" content="La telemetria di qualunque giro di qualunque pilota: velocità, gas, freno e marce, e due giri a confronto.">
+<meta property="og:image" content="https://murettobox.com/og/pagina-telemetria.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Telemetria — Muretto Box Virtuale">
+<meta name="twitter:description" content="La telemetria di qualunque giro di qualunque pilota: velocità, gas, freno e marce, e due giri a confronto.">
+<meta name="twitter:image" content="https://murettobox.com/og/pagina-telemetria.png">
 <link rel="canonical" href="https://murettobox.com/telemetria.html">
 <link rel="stylesheet" href="muro.css?v=090826b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
@@ -326,9 +339,20 @@ function elencaGiri() {
 }
 
 /* ------------------------------------------------------------ disegno */
+/** La larghezza in pixel dentro cui sta una traccia: il riquadro meno il suo padding.
+ *  Serve a `traccia()`, che disegna in pixel veri e non in unita' da scalare. */
+function largTracce() {
+  const n = E('pannelli');
+  const w = n?.clientWidth || 0;
+  if (!w) return 1000;                       // prima del layout: il vecchio valore
+  const st = getComputedStyle(n);
+  return Math.max(240, w - parseFloat(st.paddingLeft) - parseFloat(st.paddingRight));
+}
+
 function disegna() {
   if (!A) return;
   E('quadro').hidden = false;
+  const larg = largTracce();
   const cA = A.tr, cB = B?.tr;
   const colA = coloreDi(indice.piloti[A.sig].team, colori);
   const colB = B ? coloreDi(indice.piloti[B.sig].team, colori) : null;
@@ -345,11 +369,11 @@ function disegna() {
     el('div', { class: 'lab' }, el('h4', {}, titolo),
       el('span', { class: 'val', id })), svg);
 
-  const svgV = traccia(serieV, { h: 190, min: 0, titolo: 'Velocità',
+  const svgV = traccia(serieV, { larg, h: 190, min: 0, titolo: 'Velocità',
     tacche: [0, 100, 200, 300], formato: v => v });
-  const svgG = traccia(serieG, { h: 92, min: 0, max: 100, titolo: 'Acceleratore', tacche: [0, 100] });
-  const svgF = traccia(serieF, { h: 62, min: 0, max: 100, titolo: 'Freno', tacche: [0, 100], passi: true });
-  const svgM = traccia(serieM, { h: 84, min: 0, max: 8, titolo: 'Marcia', tacche: [2, 4, 6, 8], passi: true });
+  const svgG = traccia(serieG, { larg, h: 92, min: 0, max: 100, titolo: 'Acceleratore', tacche: [0, 100] });
+  const svgF = traccia(serieF, { larg, h: 62, min: 0, max: 100, titolo: 'Freno', tacche: [0, 100], passi: true });
+  const svgM = traccia(serieM, { larg, h: 84, min: 0, max: 8, titolo: 'Marcia', tacche: [2, 4, 6, 8], passi: true });
 
   const figli = [
     pan('Velocità · km/h', 'km/h', svgV, 'vV'),
@@ -369,7 +393,7 @@ function disegna() {
     const d = differenza(cA.tr ? cA : cA, cB);   // A rispetto a B
     const dd = differenza(cA, cB);
     svgD = traccia([{ dati: dd, colore: '#fff', area: 'rgba(255,255,255,.06)' }],
-      { h: 96, zero: true, titolo: 'Distacco', formato: v => (v > 0 ? '+' : '') + v.toFixed(1) });
+      { larg, h: 96, zero: true, titolo: 'Distacco', formato: v => (v > 0 ? '+' : '') + v.toFixed(1) });
     figli.push(pan(`Distacco · ${A.sig} rispetto a ${B.sig}`, 's', svgD, 'vD'));
   }
   E('pannelli').replaceChildren(...figli);
@@ -445,6 +469,18 @@ function cifre() {
     el('div', { class: 'cf' }, el('small', {}, 'gomma'),
       el('b', {}, m.mescola ? (MESCOLA_IT[m.mescola] || m.mescola.toLowerCase()) : '—')));
 }
+
+// SE CAMBIA LA LARGHEZZA, SI RI-DISEGNA. Le tracce ora sono in pixel veri: girare
+// il telefono o trascinare il bordo della finestra cambierebbe la scala senza che
+// nessuno rifaccia i punti. `disegna()` e' gia' un ri-disegno completo, e osserviamo
+// il contenitore (non i figli), quindi rifarne il contenuto non richiama l'osservatore.
+let ultimaLarg = 0;
+new ResizeObserver(() => {
+  const w = Math.round(largTracce());
+  if (!A || w === ultimaLarg) return;
+  ultimaLarg = w;
+  disegna();
+}).observe(E('pannelli'));
 
 boot();
 </script>

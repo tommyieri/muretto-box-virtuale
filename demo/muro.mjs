@@ -42,10 +42,21 @@ export function el(tag, attr = {}, ...figli) {
 /* ----------------------------------------------------------------- dati */
 const memoria = new Map();
 
-/** Un JSON, una volta sola per pagina. Ritorna null se non c'e' (mai eccezione). */
+/** Un JSON, una volta sola per pagina. Ritorna null se non c'e' (mai eccezione).
+ *
+ *  IL FALLIMENTO NON SI TIENE IN CACHE. Prima la promessa andava in `memoria` anche
+ *  quando la fetch falliva, e quella promessa valeva null per sempre: il bottone
+ *  «Riprova» ri-chiamava boot(), boot() ri-chiamava dati(), e dati() restituiva il null
+ *  di prima. Il riquadro di guasto ricompariva identico, all'infinito, su tre pagine.
+ *  Un rimedio che non puo' funzionare e' peggio di nessun rimedio: promette.
+ *  La voce resta per tutta la durata della richiesta — cosi' due chiamanti simultanei
+ *  continuano a condividerla — e sparisce appena si sa che non ha portato niente. */
 export async function dati(url) {
   if (memoria.has(url)) return memoria.get(url);
-  const p = fetch(url).then(r => (r.ok ? r.json() : null)).catch(() => null);
+  const p = fetch(url)
+    .then(r => (r.ok ? r.json() : null))
+    .catch(() => null)
+    .then((v) => { if (v == null) memoria.delete(url); return v; });
   memoria.set(url, p);
   return p;
 }

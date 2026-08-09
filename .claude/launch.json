@@ -1,17 +1,6 @@
 {
   "version": "0.0.1",
   "configurations": [
-    {
-      "name": "demo",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8123", "--directory", "demo"],
-      "port": 8123
-    },
-    {
-      "name": "sito",
-      "runtimeExecutable": "python3",
-      "runtimeArgs": ["-m", "http.server", "8231", "--directory", "demo"],
-      "port": 8231
-    }
+    { "name": "muretto-static", "runtimeExecutable": "python3", "runtimeArgs": ["-m", "http.server", "8811", "--directory", "demo"], "port": 8811 }
   ]
 }

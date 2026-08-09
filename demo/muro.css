@@ -376,6 +376,25 @@ hr{ border:0; border-top:1px solid var(--bordo); margin:26px 0; }
   background:rgba(255,176,0,.14); color:var(--ambra); font:500 10px/1 var(--mono); letter-spacing:.14em; }
 
 .art-sez{ margin:38px 0; }
+
+/* I TITOLI DI SEZIONE DENTRO UN ARTICOLO. Li scrive statico.py come <div class="sez-tit">,
+   e muro.css non li vestiva: rendevano a 16px peso 400 contro un corpo da 17,5px — un
+   titolo piu' piccolo del testo che intitola, attaccato al paragrafo, per 36 volte in
+   produzione. La regola c'era nel foglio vecchio ed e' rimasta indietro nel trasloco. */
+.sez-tit{ display:flex; align-items:center; gap:11px; margin:36px 2px 15px;
+  color:var(--testo); font:700 20px/1.15 var(--disp);
+  letter-spacing:.13em; text-transform:uppercase; }
+.sez-tit::before{ content:"//"; color:var(--rosso); font:700 15px/1 var(--mono); letter-spacing:-.08em; }
+.sez-tit::after{ content:""; flex:1 1 auto; height:1px; background:var(--bordo); }
+.sez-tit .art-tag{ margin-right:0; flex:0 0 auto; }
+/* SU SCHERMO STRETTO il titolo NON sta in riga col cartellino: si strizzava in una
+   colonna da meta' larghezza, quattro righe accanto a un chip. Torna testo che scorre. */
+@media (max-width:700px){
+  .sez-tit{ display:block; font-size:18px; letter-spacing:.1em; }
+  .sez-tit::before{ display:inline; margin-right:9px; }
+  .sez-tit::after{ display:none; }
+  .sez-tit .art-tag{ margin-right:9px; }
+}
 .art-prosa{ font-size:17.5px; line-height:1.75; color:#DCE2EB; }
 .art-prosa p{ margin:0 0 1.15em; max-width:68ch; }
 .art-prosa b,.art-prosa strong{ color:var(--testo); font-weight:600; }
@@ -387,8 +406,15 @@ hr{ border:0; border-top:1px solid var(--bordo); margin:26px 0; }
   font:500 10px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; margin-right:10px; }
 .art-fig{ margin:26px 0; padding:18px; border-radius:var(--r);
   background:var(--carbonio); border:1px solid var(--bordo); }
-.art-svg-wrap{ overflow-x:auto; }
-.art-svg-wrap svg{ max-width:100%; height:auto; }
+.art-svg-wrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+.art-svg-wrap svg{ width:100%; height:auto; display:block; }
+.art-svg.art-pista{ max-height:340px; }
+/* SU SCHERMO STRETTO IL GRAFICO SCORRE, non si rimpicciolisce. Con width:100% e basta,
+   su un telefono un grafico da 1000 unita' finiva in 309 px e le sue etichette a 5 px:
+   illeggibili. Il contenitore ha gia' overflow-x, mancava un minimo al disegno. */
+@media (max-width:640px){
+  .art-svg-wrap svg{ width:auto; min-width:560px; }
+}
 .art-fig .cap{ margin-top:12px; color:var(--fioco); font-size:13.5px; line-height:1.5; }
 .art-tags{ display:flex; flex-wrap:wrap; gap:6px; margin-top:34px;
   padding-top:22px; border-top:1px solid var(--bordo); }
