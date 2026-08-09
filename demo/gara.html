@@ -264,7 +264,7 @@ import { creaMappa } from './mappa.mjs?v=090826b';
 import { pannello as pannelloStrategia, selettoreMescole } from './strategia.mjs?v=090826b';
 import { makeClock, computeDurations, bands, fase } from './timeline.mjs?v=220726a';
 import { creaAncora, giroDi as giroDiCum } from './orologio.mjs?v=250808a';
-import { classifica, battistradaAiGiri } from './classifica.mjs?v=250809a';
+import { classifica, battistradaAiGiri, ordineArrivo } from './classifica.mjs?v=090826b';
 import { creaReplayVero } from './replay_vero.mjs?v=250808a';
 import { rispostaLive } from './ponte_live.mjs?v=040826a';
 
@@ -277,6 +277,7 @@ let mappa = null, replay = null, indiceVista = null, vistaCart = null;
 const vistaPil = {};
 let selDrv = null, curP = 1, ctxLive = null, mescolaScelta = null;
 let esitiGara = {}, nonPart = new Set(), pitLaps = {}, ultimoGiro = {}, griglia = [];
+let arrivo = {};      // sigla -> {posizione, giri} — l'ordine d'arrivo, calcolato una volta
 let scenaGp = null, STRAT = null, ESE = null;
 let ultimaRisposta = null;
 const SLICK = ['SOFT', 'MEDIUM', 'HARD'];
@@ -338,6 +339,8 @@ async function boot() {
   durate = computeDurations(race.byLap, race.n_laps, rf);
   leadCum[0] = (leadCum[1] !== undefined) ? leadCum[1] - durate[1] : 0;
   ancora = creaAncora({ lead: leadCum, minLap: 1, maxLap: race.n_laps });
+  arrivo = {};
+  for (const a of ordineArrivo(k => race.byLap[k], race.n_laps, d => nonPart.has(d))) arrivo[a.drv] = a;
 
   testata();
   E('lapMax').textContent = race.n_laps;
@@ -428,7 +431,12 @@ function ordineAl(p) {
 const righe = {};
 function costruisciTorre() {
   const box = E('torre'); box.replaceChildren();
-  for (const d of Object.keys(cumPil)) {
+  // ANCHE CHI NON E' PARTITO. Prima la torre nasceva dai soli piloti con un cum_time,
+  // quindi un non partente non compariva da nessuna parte — ne' in classifica ne' fra i
+  // fuori. La griglia non si svuota mai: all'ultimo giro ci sono tutti, ognuno col suo
+  // stato (in pista, arrivato, doppiato, ritirato, non partito).
+  const tutti = [...new Set([...Object.keys(cumPil), ...[...nonPart].filter(d => teamDi[d])])];
+  for (const d of tutti) {
     const n = el('button', { class: 'rw', type: 'button', 'data-d': d,
       stile: { '--c': coloreDi(teamDi[d], colori) },
       onclick: () => scegli(d) },
@@ -465,19 +473,44 @@ function pittaTorre(p) {
     if (R.root.style.order !== String(i)) R.root.style.order = i;
     box.append(R.root);
   });
-  // chi non e' piu' in gara resta in fondo, spento: la griglia non si svuota mai
+  // CHI NON HA UNA RIGA AL GIRO DEL BATTISTRADA. Sparisce da byLap[L] chi ha completato
+  // MENO di L giri, e sono tre cose diverse: chi non e' partito, chi si e' ritirato, e chi
+  // e' ARRIVATO ma doppiato — la sua ultima riga e' il giro 69 di una gara da 70.
+  // Prima erano tutti «ritirato»: all'Hungaroring dodici piloti che avevano finito la gara,
+  // dieci in Australia, e non solo alla bandiera. Lo stato lo dice esiti.json, che e' la
+  // classificazione d'arrivo del progetto; il posto in fondo lo da' l'ordine d'arrivo.
+  const fuori = [];
   for (const d of Object.keys(righe)) {
-    if (visti.has(d)) continue;
-    const R = righe[d];
-    R.root.classList.add('fuori');
-    R.pz.textContent = '';
-    const t = esitiGara[d];
-    R.gap.textContent = t === 'NP' ? 'non parte' : (ultimoGiro[d] < race.n_laps ? 'ritirato' : '—');
-    R.gap.className = 'gap n lapped';
-    R.sotto.replaceChildren();
-    R.root.style.order = 99;
-    box.append(R.root);
+    if (!visti.has(d)) fuori.push(d);
   }
+  fuori.sort((a, b) => (arrivo[a]?.posizione ?? 99) - (arrivo[b]?.posizione ?? 99));
+  fuori.forEach((d, i) => {
+    const R = righe[d];
+    const t = esitiGara[d];
+    const suo = ultimoGiro[d] ?? 0;
+    const indietro = Math.max(0, L - suo);
+    R.root.classList.add('fuori');
+    R.sotto.replaceChildren();
+    R.root.style.order = 90 + i;
+    if (t === 'NP') {
+      R.pz.textContent = ''; R.gap.textContent = 'non parte';
+    } else if (t === 'RIT') {
+      R.pz.textContent = ''; R.gap.textContent = 'ritirato';
+    } else {
+      // ancora in gara, solo piu' indietro nel conteggio giri: non e' «fuori».
+      // LA PAROLA LA DECIDE esiti.json, non il conteggio delle righe. Alla bandiera
+      // in Australia sette piloti hanno l'ultima riga al giro 57 su 58 ma la
+      // classificazione li mette a PIENO GIRO: scrivere «+1 giro» contraddirebbe il
+      // nostro stesso dato. Il numero di giri si mostra solo a chi e' doppiato davvero.
+      R.root.classList.remove('fuori');
+      R.pz.textContent = arrivo[d]?.posizione ?? '';
+      R.gap.textContent = (t === 'doppiato' && indietro > 0)
+        ? `+${indietro} gir${indietro > 1 ? 'i' : 'o'}`
+        : (L >= race.n_laps ? 'arrivato' : '—');
+    }
+    R.gap.className = 'gap n lapped';
+    box.append(R.root);
+  });
   E('torreGiro').textContent = `giro ${L}`;
 }
 
