@@ -1,0 +1,350 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forza-macchina — Muretto Box Virtuale</title>
+<meta name="description" content="Quanto è forte ogni vettura in ogni gara del 2026: un indice del potenziale, non del piazzamento. Scegli l'intervallo di gare e guarda come cambia la gerarchia.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Muretto Box Virtuale">
+<meta property="og:locale" content="it_IT">
+<meta property="og:url" content="https://murettobox.com/forza.html">
+<meta property="og:title" content="Forza-macchina — Muretto Box Virtuale">
+<meta property="og:description" content="Quanto è forte ogni vettura in ogni gara del 2026: un indice del potenziale, non del piazzamento.">
+<meta property="og:image" content="https://murettobox.com/og/pagina-analisi.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Forza-macchina — Muretto Box Virtuale">
+<meta name="twitter:description" content="Quanto è forte ogni vettura in ogni gara del 2026: un indice del potenziale, non del piazzamento.">
+<meta name="twitter:image" content="https://murettobox.com/og/pagina-analisi.png">
+<link rel="canonical" href="https://murettobox.com/forza.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
+<link rel="stylesheet" href="muro.css?v=090826b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+<style>
+  /* ---------- comandi ---------- */
+  .comandi{ display:grid; gap:14px; margin:24px 0 22px;
+    border-radius:var(--r); background:var(--carbonio); border:1px solid var(--bordo); padding:16px; }
+  .cap-c{ display:flex; align-items:baseline; gap:10px; margin-bottom:9px; }
+  .cap-c b{ font:500 10px/1 var(--mono); letter-spacing:.18em; text-transform:uppercase; color:var(--calmo); }
+  .cap-c span{ margin-left:auto; font:500 12px/1 var(--mono); color:var(--testo); }
+
+  /* IL DOPPIO CURSORE. Due <input range> sovrapposti: il trucco e' che il contenitore
+     non riceve i clic (pointer-events:none sulle piste) e le maniglie si'. Senza,
+     quello sopra rubava il tocco a quello sotto su meta' corsa. */
+  .rng{ position:relative; height:34px; }
+  .rng .pista, .rng .presa{ position:absolute; top:16px; height:3px; border-radius:2px; }
+  .rng .pista{ left:0; right:0; background:var(--bordo-2); }
+  .rng .presa{ background:var(--rosso); }
+  .rng input{ position:absolute; top:0; left:0; width:100%; height:34px; margin:0;
+    -webkit-appearance:none; appearance:none; background:none; pointer-events:none; }
+  .rng input::-webkit-slider-thumb{ -webkit-appearance:none; pointer-events:auto;
+    width:20px; height:20px; border-radius:50%; background:var(--testo);
+    border:3px solid var(--rosso); cursor:grab; margin-top:-9px; }
+  .rng input::-moz-range-thumb{ pointer-events:auto; width:20px; height:20px; border:3px solid var(--rosso);
+    border-radius:50%; background:var(--testo); cursor:grab; }
+  .tacche{ display:flex; justify-content:space-between; margin-top:-4px;
+    font:500 9px/1 var(--mono); letter-spacing:.06em; color:var(--fioco); }
+  .tacche span{ flex:1 1 0; text-align:center; overflow:hidden; white-space:nowrap; }
+
+  .seg{ display:inline-flex; gap:0; border:1px solid var(--bordo); border-radius:999px; overflow:hidden; }
+  .seg button{ padding:0 15px; height:34px; background:none; color:var(--calmo); cursor:pointer;
+    font:600 11px/1 var(--disp); letter-spacing:.12em; text-transform:uppercase;
+    border:0; border-right:1px solid var(--bordo); transition:background-color .14s var(--ease); }
+  .seg button:last-child{ border-right:0; }
+  .seg button:hover{ background:rgba(255,255,255,.05); }
+  .seg button.on{ background:var(--testo); color:var(--nero); }
+  .riga-seg{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; }
+  .riga-seg .et{ font:500 10px/1 var(--mono); letter-spacing:.18em; text-transform:uppercase; color:var(--calmo); }
+
+  /* ---------- grafico ---------- */
+  .quadro-g{ border-radius:var(--r); background:var(--carbonio); border:1px solid var(--bordo);
+    padding:16px; margin-bottom:16px; }
+  .gr{ width:100%; display:block; }
+  .leg{ display:flex; flex-wrap:wrap; gap:7px; margin-top:12px; }
+  .leg button{ display:inline-flex; align-items:center; gap:7px; padding:6px 11px; cursor:pointer;
+    border:1px solid var(--bordo); border-radius:999px; background:none; color:var(--calmo);
+    font:600 11px/1 var(--disp); letter-spacing:.06em; transition:all .14s var(--ease); }
+  .leg button .sw{ width:14px; height:3px; border-radius:2px; background:var(--c); }
+  .leg button.spento{ opacity:.35; }
+  .leg button.solo{ border-color:var(--c); color:var(--testo); }
+
+  /* ---------- tabella ---------- */
+  .tab{ width:100%; border-collapse:collapse; }
+  .tab th{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--bordo);
+    font:500 10px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--calmo);
+    cursor:pointer; white-space:nowrap; user-select:none; }
+  .tab th:hover{ color:var(--testo); }
+  .tab th.n, .tab td.n{ text-align:right; font-family:var(--mono); }
+  .tab td{ padding:10px; border-bottom:1px solid rgba(255,255,255,.04); font-size:14px; }
+  .tab tr:last-child td{ border-bottom:0; }
+  .tab tr.spenta{ opacity:.35; }
+  .tab .sq{ display:flex; align-items:center; gap:9px; }
+  .tab .sq i{ width:4px; height:20px; border-radius:2px; background:var(--c); flex:0 0 auto; }
+  .tab .sq b{ font:700 14px/1 var(--disp); letter-spacing:.04em; }
+  .barra-c{ display:flex; align-items:center; gap:9px; min-width:150px; }
+  .barra-c .b{ flex:1 1 auto; height:7px; border-radius:4px; background:var(--bordo-2); overflow:hidden; }
+  .barra-c .b i{ display:block; height:100%; background:var(--c); border-radius:4px; }
+  .barra-c .v{ font:500 13px/1 var(--mono); color:var(--testo); min-width:34px; text-align:right; }
+  .su{ color:var(--verde); } .giu{ color:var(--rosso); } .pari{ color:var(--fioco); }
+  .avviso{ margin:10px 0 0; color:var(--fioco); font-size:12.5px; line-height:1.55; }
+</style>
+
+<header class="barra"></header>
+
+<main class="scafo">
+  <a class="crumb" href="analisi.html">← Articoli</a>
+
+  <p class="occhiello">Analisi · strumento di stagione</p>
+  <h1 class="titolone">Forza-<em>macchina</em></h1>
+  <p class="sottotitolo">Il piazzamento mente: chi parte indietro per una penalità corre imbottigliato, e il
+    suo passo non si vede. Questo è un indice del <b>potenziale</b> della vettura — giro secco e passo
+    gara, normalizzati gara per gara. Scegli l'intervallo e guarda come cambia la gerarchia.</p>
+
+  <div id="avvio"></div>
+
+  <div id="quadro" hidden>
+    <div class="comandi">
+      <div>
+        <div class="cap-c"><b>Intervallo gare</b><span id="etichettaRange">—</span></div>
+        <div class="rng" id="rng">
+          <div class="pista"></div><div class="presa" id="presa"></div>
+          <input type="range" id="rmin" min="0" step="1" value="0" aria-label="Prima gara dell'intervallo">
+          <input type="range" id="rmax" min="0" step="1" value="0" aria-label="Ultima gara dell'intervallo">
+        </div>
+        <div class="tacche" id="tacche"></div>
+      </div>
+      <div class="riga-seg">
+        <span class="et">Traccia</span>
+        <div class="seg" id="seg">
+          <button data-m="indice" class="on" type="button">Indice</button>
+          <button data-m="potenziale_pct" type="button">Giro secco</button>
+          <button data-m="passo_pct" type="button">Passo</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="quadro-g">
+      <div class="cap-c"><b id="titGraf">Evoluzione</b><span id="sotGraf"></span></div>
+      <div id="graf"></div>
+      <div class="leg" id="leg"></div>
+    </div>
+
+    <div class="quadro-g">
+      <div class="cap-c"><b>Classifica dell'intervallo</b><span id="sotTab"></span></div>
+      <div style="overflow-x:auto"><table class="tab" id="tab"></table></div>
+      <p class="avviso" id="nota"></p>
+    </div>
+  </div>
+</main>
+
+<footer class="piede"><div class="piede-in"></div></footer>
+
+<script type="module">
+import { guscio, datiObbligatori, el, veri, V, identita, coloreDi, guasto, scheletro, nnum }
+  from './muro.mjs?v=090826b';
+guscio('analisi.html');
+
+const E = (id) => document.getElementById(id);
+const NS = 'http://www.w3.org/2000/svg';
+const METRICA = { indice: 'indice di forza', potenziale_pct: 'potenziale sul giro secco', passo_pct: 'passo gara' };
+
+let D = null, colori = {}, metrica = 'indice', LO = 0, HI = 0, isolato = null, spenti = new Set();
+
+/* ------------------------------------------------------------------ dati */
+function gareScelte() { return D.gare.slice(LO, HI + 1); }
+
+function squadre() {
+  const s = new Set();
+  for (const g of D.gare) for (const t of Object.keys(g.team || {})) s.add(t);
+  return [...s];
+}
+
+/** Media della metrica sull'intervallo, per squadra. Le gare in cui una squadra non
+ *  compare NON valgono zero: valgono niente, e la media si fa su quelle che ci sono —
+ *  contarle zero direbbe «era la piu' lenta» dove il dato semplicemente manca. */
+function medie() {
+  const out = {};
+  for (const t of squadre()) {
+    const v = gareScelte().map(g => g.team?.[t]?.[metrica]).filter(x => typeof x === 'number');
+    if (v.length) out[t] = { media: v.reduce((a, b) => a + b, 0) / v.length, n: v.length,
+                             primo: v[0], ultimo: v[v.length - 1] };
+  }
+  return out;
+}
+
+/* --------------------------------------------------------------- grafico */
+function disegnaGrafico() {
+  const cont = E('graf');
+  // pixel veri, non unita' da scalare: un viewBox fisso schiaccerebbe le etichette
+  // sul telefono esattamente come faceva la telemetria prima del 09/08.
+  const W = Math.max(280, Math.round(cont.clientWidth || 700)), H = 300;
+  const ml = 34, mr = 12, mt = 10, mb = 34;
+  const gare = gareScelte();
+  const svg = document.createElementNS(NS, 'svg');
+  svg.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  svg.setAttribute('class', 'gr');
+  svg.setAttribute('role', 'img');
+  svg.setAttribute('aria-label', `Evoluzione dell'${METRICA[metrica]} per squadra`);
+
+  const X = (i) => gare.length < 2 ? (ml + (W - ml - mr) / 2)
+                                   : ml + (i / (gare.length - 1)) * (W - ml - mr);
+  const Y = (v) => mt + (1 - v / 100) * (H - mt - mb);
+  const nodo = (t, a) => { const n = document.createElementNS(NS, t);
+    for (const [k, x] of Object.entries(a)) if (x != null) n.setAttribute(k, x); return n; };
+
+  for (const t of [0, 25, 50, 75, 100]) {
+    svg.append(nodo('line', { x1: ml, x2: W - mr, y1: Y(t), y2: Y(t),
+      stroke: 'rgba(255,255,255,.07)', 'stroke-width': 1 }));
+    const e = nodo('text', { x: ml - 7, y: Y(t) + 3.5, 'text-anchor': 'end', fill: '#737D8C',
+      'font-family': 'JetBrains Mono, monospace', 'font-size': 10 });
+    e.textContent = t; svg.append(e);
+  }
+  gare.forEach((g, i) => {
+    const e = nodo('text', { x: X(i), y: H - 12, 'text-anchor': 'middle', fill: '#737D8C',
+      'font-family': 'JetBrains Mono, monospace', 'font-size': 10 });
+    e.textContent = (g.circuito || g.gp || '').slice(0, 3).toUpperCase();
+    svg.append(e);
+  });
+
+  for (const t of squadre()) {
+    if (spenti.has(t) || (isolato && isolato !== t)) continue;
+    const punti = [];
+    gare.forEach((g, i) => {
+      const v = g.team?.[t]?.[metrica];
+      if (typeof v === 'number') punti.push(`${X(i).toFixed(1)},${Y(v).toFixed(1)}`);
+    });
+    if (!punti.length) continue;
+    const c = coloreDi(t, colori);
+    svg.append(nodo('polyline', { points: punti.join(' '), fill: 'none', stroke: c,
+      'stroke-width': isolato === t ? 3 : 2, 'stroke-linejoin': 'round', 'stroke-linecap': 'round',
+      opacity: isolato && isolato !== t ? .25 : 1 }));
+    if (punti.length === 1) {
+      const [x, y] = punti[0].split(',');
+      svg.append(nodo('circle', { cx: x, cy: y, r: 4, fill: c }));
+    }
+  }
+  cont.replaceChildren(svg);
+}
+
+function disegnaLegenda() {
+  E('leg').replaceChildren(...squadre().map(t => el('button', {
+    class: 'leg-b' + (spenti.has(t) ? ' spento' : '') + (isolato === t ? ' solo' : ''),
+    type: 'button', stile: { '--c': coloreDi(t, colori) },
+    'aria-pressed': String(isolato === t),
+    title: isolato === t ? 'Torna a vederle tutte' : `Isola ${t}`,
+    onclick: () => { isolato = (isolato === t ? null : t); ridisegna(); },
+  }, el('span', { class: 'sw' }), t)));
+}
+
+/* -------------------------------------------------------------- tabella */
+let ordine = { campo: 'media', giu: true };
+function disegnaTabella() {
+  const m = medie();
+  const righe = Object.entries(m).map(([t, x]) => ({ team: t, ...x, trend: x.ultimo - x.primo }));
+  const max = Math.max(1, ...righe.map(r => r.media));
+  righe.sort((a, b) => {
+    const c = ordine.campo === 'team' ? (a.team < b.team ? -1 : 1) : (a[ordine.campo] - b[ordine.campo]);
+    return ordine.giu ? -c : c;
+  });
+  const testa = [['team', 'Squadra', ''], ['media', 'Media', 'n'], ['trend', 'Tendenza', 'n'], ['n', 'Gare', 'n']];
+  const th = testa.map(([k, et, cl]) => el('th', {
+    class: cl, onclick: () => { ordine = { campo: k, giu: ordine.campo === k ? !ordine.giu : true };
+      disegnaTabella(); },
+    title: 'Riordina',
+  }, et + (ordine.campo === k ? (ordine.giu ? ' ↓' : ' ↑') : '')));
+
+  const corpo = righe.map(r => {
+    const c = coloreDi(r.team, colori);
+    const t = r.trend;
+    return el('tr', {
+      class: spenti.has(r.team) ? 'spenta' : null, stile: { '--c': c },
+      onclick: () => { isolato = (isolato === r.team ? null : r.team); ridisegna(); },
+      title: 'Isola questa squadra nel grafico',
+    },
+      el('td', {}, el('span', { class: 'sq' }, el('i', {}), el('b', {}, r.team))),
+      el('td', { class: 'n' }, el('span', { class: 'barra-c' },
+        el('span', { class: 'b' }, el('i', { stile: { width: `${Math.max(3, r.media / max * 100)}%` } })),
+        el('span', { class: 'v' }, nnum(r.media, 0)))),
+      el('td', { class: 'n ' + (Math.abs(t) < 2 ? 'pari' : t > 0 ? 'su' : 'giu') },
+        Math.abs(t) < 2 ? '=' : `${t > 0 ? '+' : '−'}${nnum(Math.abs(t), 0)}`),
+      el('td', { class: 'n' }, String(r.n)));
+  });
+  E('tab').replaceChildren(el('thead', {}, el('tr', {}, th)), el('tbody', {}, corpo));
+}
+
+/* --------------------------------------------------------------- cursore */
+function leggiCursore() {
+  let a = +E('rmin').value, b = +E('rmax').value;
+  if (a > b) [a, b] = [b, a];              // le maniglie si possono incrociare
+  LO = a; HI = b;
+}
+function pittura() {
+  const n = D.gare.length - 1 || 1;
+  E('presa').style.left = `${LO / n * 100}%`;
+  E('presa').style.right = `${100 - HI / n * 100}%`;
+  const da = D.gare[LO], a = D.gare[HI];
+  E('etichettaRange').textContent = LO === HI
+    ? (da.circuito || da.gp)
+    : `${da.circuito || da.gp} → ${a.circuito || a.gp} · ${HI - LO + 1} gare`;
+}
+
+function ridisegna() {
+  disegnaGrafico(); disegnaLegenda(); disegnaTabella();
+  E('titGraf').textContent = `Evoluzione · ${METRICA[metrica]}`;
+  E('sotGraf').textContent = isolato ? `solo ${isolato} — tocca di nuovo per tutte` : '0–100 per gara';
+  E('sotTab').textContent = `media di ${HI - LO + 1} gar${HI - LO ? 'e' : 'a'}`;
+}
+
+/* ------------------------------------------------------------------ boot */
+async function boot() {
+  scheletro(E('avvio'), 6, 40);
+  let d, ident;
+  try {
+    [d, ident] = await Promise.all([
+      datiObbligatori(`data/analisi/forza_macchina.json?v=${V}`), identita(),
+    ]);
+  } catch (_) {
+    guasto(E('avvio'), () => location.reload()); return;
+  }
+  D = d; colori = ident?.colori || {};
+  if (!D.gare?.length) { guasto(E('avvio'), () => location.reload()); return; }
+
+  E('avvio').replaceChildren();
+  E('quadro').hidden = false;
+
+  const n = D.gare.length - 1;
+  for (const id of ['rmin', 'rmax']) { E(id).max = String(n); }
+  E('rmin').value = '0'; E('rmax').value = String(n);
+  E('tacche').replaceChildren(...D.gare.map(g =>
+    el('span', { title: g.gp || '' }, (g.circuito || g.gp || '').slice(0, 3).toUpperCase())));
+  leggiCursore(); pittura();
+
+  for (const id of ['rmin', 'rmax']) {
+    E(id).addEventListener('input', () => { leggiCursore(); pittura(); ridisegna(); });
+  }
+  for (const b of E('seg').querySelectorAll('button')) {
+    b.addEventListener('click', () => {
+      metrica = b.dataset.m;
+      for (const x of E('seg').querySelectorAll('button')) x.classList.toggle('on', x === b);
+      ridisegna();
+    });
+  }
+  E('nota').textContent = D.metodo
+    ? `${D.n_gare} gare nel conto, ultima ${D.ultima}. ${String(D.metodo).slice(0, 220)}`
+    : `${D.n_gare} gare nel conto, ultima ${D.ultima}.`;
+
+  ridisegna();
+
+  // il grafico e' in pixel veri: se cambia la larghezza va ridisegnato, altrimenti
+  // resterebbe alla scala di prima (vedi la stessa lezione in telemetria.html)
+  let ultima = 0;
+  new ResizeObserver(() => {
+    const w = Math.round(E('graf').clientWidth);
+    if (!D || w === ultima) return;
+    ultima = w; disegnaGrafico();
+  }).observe(E('graf'));
+}
+
+boot().catch((e) => { console.error('[forza] boot', e); guasto(E('avvio'), () => location.reload()); });
+</script>

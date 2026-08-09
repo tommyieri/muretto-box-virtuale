@@ -1,0 +1,346 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Assetto e DNA dei circuiti — Muretto Box Virtuale</title>
+<meta name="description" content="Come è messa ogni squadra fra punta e curva, e che carattere ha ogni circuito fra motore e carico. Stagione 2026, gara per gara.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Muretto Box Virtuale">
+<meta property="og:locale" content="it_IT">
+<meta property="og:url" content="https://murettobox.com/dati.html">
+<meta property="og:title" content="Assetto e DNA dei circuiti — Muretto Box Virtuale">
+<meta property="og:description" content="Come è messa ogni squadra fra punta e curva, e che carattere ha ogni circuito fra motore e carico.">
+<meta property="og:image" content="https://murettobox.com/og/pagina-analisi.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Assetto e DNA dei circuiti — Muretto Box Virtuale">
+<meta name="twitter:description" content="Come è messa ogni squadra fra punta e curva, e che carattere ha ogni circuito fra motore e carico.">
+<meta name="twitter:image" content="https://murettobox.com/og/pagina-analisi.png">
+<link rel="canonical" href="https://murettobox.com/dati.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
+<link rel="stylesheet" href="muro.css?v=090826b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+<style>
+  .comandi{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:24px 0 22px;
+    border-radius:var(--r); background:var(--carbonio); border:1px solid var(--bordo); padding:14px 16px; }
+  .comandi .et{ font:500 10px/1 var(--mono); letter-spacing:.18em; text-transform:uppercase; color:var(--calmo); }
+  .seg{ display:inline-flex; border:1px solid var(--bordo); border-radius:999px; overflow:hidden; }
+  .seg button{ padding:0 15px; height:34px; background:none; color:var(--calmo); cursor:pointer;
+    font:600 11px/1 var(--disp); letter-spacing:.12em; text-transform:uppercase;
+    border:0; border-right:1px solid var(--bordo); transition:background-color .14s var(--ease); }
+  .seg button:last-child{ border-right:0; }
+  .seg button:hover{ background:rgba(255,255,255,.05); }
+  .seg button.on{ background:var(--testo); color:var(--nero); }
+  select{ height:34px; padding:0 12px; border-radius:999px; cursor:pointer;
+    background:var(--nero); color:var(--testo); border:1px solid var(--bordo);
+    font:600 11px/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; }
+  .comandi .nota{ margin-left:auto; font:500 12px/1.4 var(--mono); color:var(--fioco); }
+
+  .quadro-g{ border-radius:var(--r); background:var(--carbonio); border:1px solid var(--bordo);
+    padding:16px; margin-bottom:16px; }
+  .cap-c{ display:flex; align-items:baseline; gap:10px; margin-bottom:4px; }
+  .cap-c b{ font:500 10px/1 var(--mono); letter-spacing:.18em; text-transform:uppercase; color:var(--calmo); }
+  .cap-c span{ margin-left:auto; font:500 12px/1 var(--mono); color:var(--testo); }
+  .sub{ margin:0 0 14px; color:var(--fioco); font-size:13px; line-height:1.55; max-width:70ch; }
+  .gr{ width:100%; display:block; }
+
+  .tab{ width:100%; border-collapse:collapse; margin-top:14px; }
+  .tab th{ text-align:left; padding:9px 10px; border-bottom:1px solid var(--bordo);
+    font:500 10px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:var(--calmo);
+    white-space:nowrap; cursor:pointer; user-select:none; }
+  .tab th:hover{ color:var(--testo); }
+  .tab th.n, .tab td.n{ text-align:right; font-family:var(--mono); }
+  .tab td{ padding:10px; border-bottom:1px solid rgba(255,255,255,.04); font-size:14px; }
+  .tab tr:last-child td{ border-bottom:0; }
+  .tab .sq{ display:flex; align-items:center; gap:9px; }
+  .tab .sq i{ width:4px; height:20px; border-radius:2px; background:var(--c); flex:0 0 auto; }
+  .tab .sq b{ font:700 14px/1 var(--disp); letter-spacing:.04em; }
+  .avviso{ margin:12px 0 0; color:var(--fioco); font-size:12.5px; line-height:1.55; }
+</style>
+
+<header class="barra"></header>
+
+<main class="scafo">
+  <a class="crumb" href="analisi.html">← Articoli</a>
+
+  <p class="occhiello">Analisi · strumento di stagione</p>
+  <h1 class="titolone">Assetto e <em>DNA</em> dei circuiti</h1>
+  <p class="sottotitolo">Due domande che si rispondono con lo stesso dato. Come è messa una squadra fra
+    velocità di punta e velocità in curva — cioè dove ha scelto di essere lenta. E che carattere ha un
+    tracciato fra motore e carico: quanta parte del giro si passa a tutto gas.</p>
+
+  <div id="avvio"></div>
+
+  <div id="quadro" hidden>
+    <div class="comandi">
+      <span class="et">Vista</span>
+      <div class="seg" id="seg">
+        <button data-v="stagione" class="on" type="button">Stagione</button>
+        <button data-v="ultime5" type="button">Ultime 5</button>
+      </div>
+      <select id="selGara" aria-label="Scegli una gara"><option value="">Per gara…</option></select>
+      <span class="nota" id="notaVista"></span>
+    </div>
+
+    <div class="quadro-g">
+      <div class="cap-c"><b>Assetto · punta contro curva</b><span id="capAss"></span></div>
+      <p class="sub">Ogni pallino è una squadra: a destra chi va forte sul dritto, in alto chi va forte
+        in curva. La diagonale non è un giudizio — è il compromesso, e ognuno lo scioglie a modo suo.</p>
+      <div id="grafAss"></div>
+      <div style="overflow-x:auto"><table class="tab" id="tabAss"></table></div>
+    </div>
+
+    <div class="quadro-g">
+      <div class="cap-c"><b>DNA dei circuiti · motore contro carico</b><span id="capDna"></span></div>
+      <p class="sub">La percentuale di giro a tutto gas è la firma più pulita di un tracciato: più è alta,
+        più conta il motore; più è bassa, più conta il carico aerodinamico.</p>
+      <div id="grafDna"></div>
+      <div style="overflow-x:auto"><table class="tab" id="tabDna"></table></div>
+    </div>
+
+    <p class="avviso" id="nota"></p>
+  </div>
+</main>
+
+<footer class="piede"><div class="piede-in"></div></footer>
+
+<script type="module">
+import { guscio, datiObbligatori, el, V, identita, coloreDi, guasto, scheletro, nnum }
+  from './muro.mjs?v=090826b';
+guscio('analisi.html');
+
+const E = (id) => document.getElementById(id);
+const NS = 'http://www.w3.org/2000/svg';
+const nodo = (t, a) => { const n = document.createElementNS(NS, t);
+  for (const [k, x] of Object.entries(a)) if (x != null) n.setAttribute(k, x); return n; };
+
+let D = null, colori = {}, vista = 'stagione', garaScelta = '';
+
+/** Le gare della vista scelta. Una gara sola quando la si sceglie dalla tendina. */
+function gare() {
+  if (garaScelta) return D.gare.filter(g => String(g.round) === garaScelta);
+  if (vista === 'ultime5') return D.gare.slice(-5);
+  return D.gare;
+}
+
+/** Media per squadra di vmax e cornering sulle gare in vista. Le gare in cui una
+ *  squadra non compare non contano zero: non contano. */
+function perSquadra() {
+  const acc = {};
+  for (const g of gare()) {
+    for (const [t, v] of Object.entries(g.team || {})) {
+      if (typeof v?.vmax !== 'number' || typeof v?.cornering !== 'number') continue;
+      (acc[t] ??= { vmax: [], cor: [] });
+      acc[t].vmax.push(v.vmax); acc[t].cor.push(v.cornering);
+    }
+  }
+  const med = (a) => a.reduce((x, y) => x + y, 0) / a.length;
+  return Object.entries(acc)
+    .map(([t, v]) => ({ team: t, vmax: med(v.vmax), cor: med(v.cor), n: v.vmax.length }))
+    .sort((a, b) => b.vmax - a.vmax);
+}
+
+/* ---------------------------------------------------- assetto: nuvola di punti */
+function disegnaAssetto() {
+  const righe = perSquadra();
+  const cont = E('grafAss');
+  const W = Math.max(280, Math.round(cont.clientWidth || 700)), H = 320;
+  // mt lascia posto alla didascalia dell'asse Y: a 14 finiva sopra la prima tacca
+  const ml = 46, mr = 14, mt = 30, mb = 38;
+  const svg = nodo('svg', { viewBox: `0 0 ${W} ${H}`, class: 'gr', role: 'img',
+    'aria-label': 'Velocità di punta contro velocità in curva, per squadra' });
+  if (!righe.length) { cont.replaceChildren(svg); return; }
+
+  const xs = righe.map(r => r.vmax), ys = righe.map(r => r.cor);
+  const mx = (a) => [Math.min(...a), Math.max(...a)];
+  let [x0, x1] = mx(xs), [y0, y1] = mx(ys);
+  const px = (x1 - x0) * .18 || 4, py = (y1 - y0) * .18 || 4;
+  x0 -= px; x1 += px; y0 -= py; y1 += py;
+  const X = (v) => ml + (v - x0) / (x1 - x0) * (W - ml - mr);
+  const Y = (v) => mt + (1 - (v - y0) / (y1 - y0)) * (H - mt - mb);
+
+  for (let i = 0; i <= 3; i += 1) {
+    const v = y0 + (y1 - y0) * i / 3;
+    svg.append(nodo('line', { x1: ml, x2: W - mr, y1: Y(v), y2: Y(v),
+      stroke: 'rgba(255,255,255,.07)', 'stroke-width': 1 }));
+    const e = nodo('text', { x: ml - 7, y: Y(v) + 3.5, 'text-anchor': 'end', fill: '#737D8C',
+      'font-family': 'JetBrains Mono, monospace', 'font-size': 10 });
+    e.textContent = Math.round(v); svg.append(e);
+  }
+  for (let i = 0; i <= 3; i += 1) {
+    const v = x0 + (x1 - x0) * i / 3;
+    const e = nodo('text', { x: X(v), y: H - 20, 'text-anchor': 'middle', fill: '#737D8C',
+      'font-family': 'JetBrains Mono, monospace', 'font-size': 10 });
+    e.textContent = Math.round(v); svg.append(e);
+  }
+  const et = (t, x, y, anc) => { const n = nodo('text', { x, y, 'text-anchor': anc, fill: '#A7B0BF',
+    'font-family': 'JetBrains Mono, monospace', 'font-size': 9.5, 'letter-spacing': '.1em' });
+    n.textContent = t; return n; };
+  svg.append(et('VELOCITÀ DI PUNTA (km/h) →', W - mr, H - 5, 'end'));
+  svg.append(et('↑ IN CURVA (km/h)', 2, 11, 'start'));
+
+  // DUE SQUADRE VICINE HANNO DUE ETICHETTE, non una macchia. Con vmax entro pochi km/h
+  // i pallini quasi coincidono e i nomi si sovrappongono fra loro E sui pallini altrui:
+  // si leggeva «CAD●AC». Per ognuno si provano quattro posizioni, in ordine di
+  // preferenza, e si prende la prima libera — libera vuol dire: non tocca nessuna
+  // etichetta gia' messa e nessun pallino, compresi quelli non ancora disegnati.
+  const punti = righe.map(r => ({ r, x: X(r.vmax), y: Y(r.cor),
+    nome: r.team.replace(/ (F1 Team|Racing|Formula 1 Team)$/i, '').toUpperCase() }));
+  for (const p of punti) {
+    svg.append(nodo('circle', { cx: p.x, cy: p.y, r: 7, fill: coloreDi(p.r.team, colori),
+      stroke: '#0A0B0E', 'stroke-width': 2 }));
+  }
+  const messe = [];
+  const libero = (b) => !messe.some(m => Math.abs(m.cx - b.cx) < (m.w + b.w) / 2 && Math.abs(m.cy - b.cy) < 15)
+    && !punti.some(q => Math.abs(q.x - b.cx) < b.w / 2 + 7 && Math.abs(q.y - b.cy) < 13);
+  for (const p of [...punti].sort((a, b) => a.y - b.y)) {
+    const w = p.nome.length * 7.2 + 6;
+    const posti = [{ cy: p.y - 15, cx: p.x }, { cy: p.y + 19, cx: p.x },
+                   { cy: p.y - 15, cx: p.x + w / 2 + 10 }, { cy: p.y + 19, cx: p.x - w / 2 - 10 }];
+    const b = posti.map(q => ({ ...q, w })).find(libero) || { ...posti[0], w };
+    messe.push(b);
+    const e = nodo('text', { x: b.cx, y: b.cy + 4, 'text-anchor': 'middle', fill: '#EDF1F7',
+      'font-family': 'Barlow Condensed, sans-serif', 'font-size': 12, 'font-weight': 700,
+      'letter-spacing': '.06em' });
+    e.textContent = p.nome;
+    svg.append(e);
+  }
+  cont.replaceChildren(svg);
+}
+
+let ordAss = { campo: 'vmax', giu: true };
+function tabellaAssetto() {
+  const righe = perSquadra().sort((a, b) => {
+    const c = ordAss.campo === 'team' ? (a.team < b.team ? -1 : 1) : (a[ordAss.campo] - b[ordAss.campo]);
+    return ordAss.giu ? -c : c;
+  });
+  const testa = [['team', 'Squadra', ''], ['vmax', 'Punta km/h', 'n'], ['cor', 'In curva km/h', 'n'], ['n', 'Gare', 'n']];
+  E('tabAss').replaceChildren(
+    el('thead', {}, el('tr', {}, testa.map(([k, t, cl]) => el('th', {
+      class: cl, onclick: () => { ordAss = { campo: k, giu: ordAss.campo === k ? !ordAss.giu : true };
+        tabellaAssetto(); },
+    }, t + (ordAss.campo === k ? (ordAss.giu ? ' ↓' : ' ↑') : ''))))),
+    el('tbody', {}, righe.map(r => el('tr', { stile: { '--c': coloreDi(r.team, colori) } },
+      el('td', {}, el('span', { class: 'sq' }, el('i', {}), el('b', {}, r.team))),
+      el('td', { class: 'n' }, nnum(r.vmax, 1)),
+      el('td', { class: 'n' }, nnum(r.cor, 1)),
+      el('td', { class: 'n' }, String(r.n))))));
+}
+
+/* ------------------------------------------------------------ DNA: barre */
+function disegnaDna() {
+  const gg = gare().filter(g => typeof g.dna?.full_throttle_pct === 'number')
+    .sort((a, b) => b.dna.full_throttle_pct - a.dna.full_throttle_pct);
+  const cont = E('grafDna');
+  const W = Math.max(280, Math.round(cont.clientWidth || 700));
+  const ml = 128, mr = 44, mt = 6, alt = 26;
+  const H = mt + Math.max(1, gg.length) * alt + 8;
+  const svg = nodo('svg', { viewBox: `0 0 ${W} ${H}`, class: 'gr', role: 'img',
+    'aria-label': 'Percentuale di giro a tutto gas, per circuito' });
+  const X = (v) => ml + (v / 100) * (W - ml - mr);
+
+  gg.forEach((g, i) => {
+    const y = mt + i * alt;
+    const p = g.dna.full_throttle_pct;
+    // arancio = pista da motore, ciano = pista da carico. La soglia e' la mediana
+    // del campione mostrato, non un numero calato dall'alto.
+    const mediana = gg.length ? gg[Math.floor(gg.length / 2)].dna.full_throttle_pct : 50;
+    const c = p >= mediana ? '#FFB000' : '#24E3D2';
+    const e = nodo('text', { x: ml - 10, y: y + 14, 'text-anchor': 'end', fill: '#A7B0BF',
+      'font-family': 'JetBrains Mono, monospace', 'font-size': 10.5 });
+    e.textContent = g.circuito || g.gp; svg.append(e);
+    svg.append(nodo('rect', { x: ml, y: y + 4, width: Math.max(2, X(p) - ml), height: 15,
+      rx: 3, fill: c }));
+    const n = nodo('text', { x: X(p) + 8, y: y + 15.5, fill: '#EDF1F7',
+      'font-family': 'JetBrains Mono, monospace', 'font-size': 11 });
+    n.textContent = nnum(p, 1); svg.append(n);
+  });
+  cont.replaceChildren(svg);
+}
+
+let ordDna = { campo: 'ft', giu: true };
+function tabellaDna() {
+  const righe = gare().filter(g => g.dna).map(g => ({
+    nome: g.circuito || g.gp, ft: g.dna.full_throttle_pct, top: g.dna.top,
+    curve: g.dna.n_curve, lente: g.dna.curve_lente, veloci: g.dna.curve_veloci,
+    med: g.dna.vel_curva_med,
+  })).sort((a, b) => {
+    const c = ordDna.campo === 'nome' ? (a.nome < b.nome ? -1 : 1) : (a[ordDna.campo] - b[ordDna.campo]);
+    return ordDna.giu ? -c : c;
+  });
+  const testa = [['nome', 'Circuito', ''], ['ft', 'Tutto gas %', 'n'], ['top', 'Punta km/h', 'n'],
+                 ['curve', 'Curve', 'n'], ['lente', 'Lente', 'n'], ['veloci', 'Veloci', 'n'],
+                 ['med', 'Media curva', 'n']];
+  E('tabDna').replaceChildren(
+    el('thead', {}, el('tr', {}, testa.map(([k, t, cl]) => el('th', {
+      class: cl, onclick: () => { ordDna = { campo: k, giu: ordDna.campo === k ? !ordDna.giu : true };
+        tabellaDna(); },
+    }, t + (ordDna.campo === k ? (ordDna.giu ? ' ↓' : ' ↑') : ''))))),
+    el('tbody', {}, righe.map(r => el('tr', {},
+      el('td', {}, el('b', {}, r.nome)),
+      el('td', { class: 'n' }, nnum(r.ft, 1)),
+      el('td', { class: 'n' }, r.top != null ? nnum(r.top, 0) : '—'),
+      el('td', { class: 'n' }, String(r.curve ?? '—')),
+      el('td', { class: 'n' }, String(r.lente ?? '—')),
+      el('td', { class: 'n' }, String(r.veloci ?? '—')),
+      el('td', { class: 'n' }, r.med != null ? nnum(r.med, 0) : '—')))));
+}
+
+/* ------------------------------------------------------------------ vista */
+function ridisegna() {
+  const n = gare().length;
+  const dove = garaScelta
+    ? (gare()[0]?.circuito || gare()[0]?.gp || '')
+    : (vista === 'ultime5' ? 'ultime 5 gare' : `stagione, ${n} gare`);
+  E('capAss').textContent = dove;
+  E('capDna').textContent = dove;
+  E('notaVista').textContent = `${n} gar${n === 1 ? 'a' : 'e'} nel conto`;
+  disegnaAssetto(); tabellaAssetto(); disegnaDna(); tabellaDna();
+}
+
+async function boot() {
+  scheletro(E('avvio'), 6, 40);
+  let d, ident;
+  try {
+    [d, ident] = await Promise.all([
+      datiObbligatori(`data/analisi/stagione_dati.json?v=${V}`), identita(),
+    ]);
+  } catch (_) { guasto(E('avvio'), () => location.reload()); return; }
+  D = d; colori = ident?.colori || {};
+  if (!D.gare?.length) { guasto(E('avvio'), () => location.reload()); return; }
+
+  E('avvio').replaceChildren();
+  E('quadro').hidden = false;
+
+  E('selGara').append(...D.gare.map(g => el('option', { value: String(g.round) },
+    `${g.round}. ${g.circuito || g.gp}`)));
+  E('selGara').addEventListener('change', () => {
+    garaScelta = E('selGara').value;
+    // scegliere una gara spegne la vista aggregata, e si vede: due comandi che
+    // dicono cose diverse contemporaneamente sono il modo classico di non capire
+    // che cosa si sta guardando.
+    for (const b of E('seg').querySelectorAll('button')) b.classList.toggle('on', !garaScelta && b.dataset.v === vista);
+    ridisegna();
+  });
+  for (const b of E('seg').querySelectorAll('button')) {
+    b.addEventListener('click', () => {
+      vista = b.dataset.v; garaScelta = ''; E('selGara').value = '';
+      for (const x of E('seg').querySelectorAll('button')) x.classList.toggle('on', x === b);
+      ridisegna();
+    });
+  }
+  E('nota').textContent = `${D.n_gare} gare nel cruscotto, ultima ${D.ultima}.`;
+
+  ridisegna();
+
+  let ultima = 0;
+  new ResizeObserver(() => {
+    const w = Math.round(E('grafAss').clientWidth);
+    if (!D || w === ultima) return;
+    ultima = w; disegnaAssetto(); disegnaDna();
+  }).observe(E('grafAss'));
+}
+
+boot().catch((e) => { console.error('[dati] boot', e); guasto(E('avvio'), () => location.reload()); });
+</script>
