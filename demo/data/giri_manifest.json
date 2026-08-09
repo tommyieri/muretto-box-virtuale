@@ -1,0 +1,301 @@
+{
+ "gare": {
+  "Australia": [
+   {
+    "sessione": "fp1",
+    "piloti": 21,
+    "giri": 487
+   },
+   {
+    "sessione": "fp2",
+    "piloti": 22,
+    "giri": 544
+   },
+   {
+    "sessione": "fp3",
+    "piloti": 21,
+    "giri": 377
+   },
+   {
+    "sessione": "gara",
+    "piloti": 20,
+    "giri": 1006
+   },
+   {
+    "sessione": "qualifiche",
+    "piloti": 20,
+    "giri": 353
+   }
+  ],
+  "Austria": [
+   {
+    "sessione": "fp1",
+    "piloti": 22,
+    "giri": 500
+   },
+   {
+    "sessione": "fp2",
+    "piloti": 22,
+    "giri": 631
+   },
+   {
+    "sessione": "fp3",
+    "piloti": 22,
+    "giri": 464
+   },
+   {
+    "sessione": "gara",
+    "piloti": 22,
+    "giri": 1339
+   },
+   {
+    "sessione": "qualifiche",
+    "piloti": 22,
+    "giri": 289
+   }
+  ],
+  "Belgio": [
+   {
+    "sessione": "fp1",
+    "piloti": 22,
+    "giri": 486
+   },
+   {
+    "sessione": "fp2",
+    "piloti": 22,
+    "giri": 394
+   },
+   {
+    "sessione": "fp3",
+    "piloti": 22,
+    "giri": 417
+   },
+   {
+    "sessione": "gara",
+    "piloti": 22,
+    "giri": 872
+   },
+   {
+    "sessione": "qualifiche",
+    "piloti": 22,
+    "giri": 269
+   }
+  ],
+  "Canada": [
+   {
+    "sessione": "fp1",
+    "piloti": 22,
+    "giri": 619
+   },
+   {
+    "sessione": "gara",
+    "piloti": 21,
+    "giri": 1211
+   },
+   {
+    "sessione": "qualifiche",
+    "piloti": 22,
+    "giri": 456
+   },
+   {
+    "sessione": "sprint",
+    "piloti": 22,
+    "giri": 491
+   },
+   {
+    "sessione": "sprint_quali",
+    "piloti": 20,
+    "giri": 300
+   }
+  ],
+  "Cina": [
+   {
+    "sessione": "fp1",
+    "piloti": 22,
+    "giri": 540
+   },
+   {
+    "sessione": "gara",
+    "piloti": 18,
+    "giri": 920
+   },
+   {
+    "sessione": "qualifiche",
+    "piloti": 22,
+    "giri": 325
+   },
+   {
+    "sessione": "sprint",
+    "piloti": 22,
+    "giri": 397
+   },
+   {
+    "sessione": "sprint_quali",
+    "piloti": 21,
+    "giri": 257
+   }
+  ],
+  "Giappone": [
+   {
+    "sessione": "fp1",
+    "piloti": 22,
+    "giri": 529
+   },
+   {
+    "sessione": "fp2",
+    "piloti": 22,
+    "giri": 547
+   },
+   {
+    "sessione": "fp3",
+    "piloti": 22,
+    "giri": 436
+   },
+   {
+    "sessione": "gara",
+    "piloti": 22,
+    "giri": 1107
+   },
+   {
+    "sessione": "qualifiche",
+    "piloti": 22,
+    "giri": 324
+   }
+  ],
+  "Gran Bretagna": [
+   {
+    "sessione": "fp1",
+    "piloti": 22,
+    "giri": 613
+   },
+   {
+    "sessione": "gara",
+    "piloti": 22,
+    "giri": 1113
+   },
+   {
+    "sessione": "qualifiche",
+    "piloti": 22,
+    "giri": 309
+   },
+   {
+    "sessione": "sprint",
+    "piloti": 22,
+    "giri": 372
+   },
+   {
+    "sessione": "sprint_quali",
+    "piloti": 22,
+    "giri": 236
+   }
+  ],
+  "Miami": [
+   {
+    "sessione": "fp1",
+    "piloti": 22,
+    "giri": 757
+   },
+   {
+    "sessione": "gara",
+    "piloti": 22,
+    "giri": 1040
+   },
+   {
+    "sessione": "qualifiche",
+    "piloti": 22,
+    "giri": 324
+   },
+   {
+    "sessione": "sprint",
+    "piloti": 20,
+    "giri": 380
+   },
+   {
+    "sessione": "sprint_quali",
+    "piloti": 22,
+    "giri": 237
+   }
+  ],
+  "Monaco": [
+   {
+    "sessione": "fp1",
+    "piloti": 22,
+    "giri": 620
+   },
+   {
+    "sessione": "fp2",
+    "piloti": 22,
+    "giri": 711
+   },
+   {
+    "sessione": "fp3",
+    "piloti": 22,
+    "giri": 518
+   },
+   {
+    "sessione": "gara",
+    "piloti": 22,
+    "giri": 1452
+   },
+   {
+    "sessione": "qualifiche",
+    "piloti": 22,
+    "giri": 484
+   }
+  ],
+  "Spagna": [
+   {
+    "sessione": "fp1",
+    "piloti": 21,
+    "giri": 544
+   },
+   {
+    "sessione": "fp2",
+    "piloti": 22,
+    "giri": 586
+   },
+   {
+    "sessione": "fp3",
+    "piloti": 22,
+    "giri": 337
+   },
+   {
+    "sessione": "gara",
+    "piloti": 22,
+    "giri": 1236
+   },
+   {
+    "sessione": "qualifiche",
+    "piloti": 22,
+    "giri": 255
+   }
+  ],
+  "Ungheria": [
+   {
+    "sessione": "fp1",
+    "piloti": 22,
+    "giri": 545
+   },
+   {
+    "sessione": "fp2",
+    "piloti": 21,
+    "giri": 572
+   },
+   {
+    "sessione": "fp3",
+    "piloti": 21,
+    "giri": 392
+   },
+   {
+    "sessione": "gara",
+    "piloti": 22,
+    "giri": 1431
+   },
+   {
+    "sessione": "qualifiche",
+    "piloti": 22,
+    "giri": 297
+   }
+  ]
+ }
+}
