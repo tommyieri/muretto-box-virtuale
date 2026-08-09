@@ -54,8 +54,16 @@ def scrivi_versione():
     Nessun controllo attraversava la catena Mac -> push -> VPS -> push -> Vercel:
     ogni pezzo si verificava da solo, e il guasto «la macchina che pubblica esegue
     un main vecchio» si scopriva solo entrando in ssh. Qui il sito porta addosso
-    il commit con cui e' stato costruito e l'impronta dei sigilli del motore, cosi'
-    `scheduling/sonda_deploy.sh` puo' chiedere DA FUORI se l'online e' il main.
+    l'impronta dei sigilli del motore, cosi' si vede DA FUORI con che modello e'
+    stato costruito cio' che la gente usa.
+
+    QUESTO FILE NON DATA IL DEPLOY. Il campo `commit` e' il commit del repo quando e'
+    girata l'ultima gara, non quello da cui Vercel ha costruito il sito: sono la stessa
+    cosa solo la domenica sera. Per mesi la sonda li ha confusi e contava «il sito e'
+    indietro di N commit», dove N era solo il tempo passato dall'ultima gara — 95 con
+    grazia 25, cioe' rossa per costruzione. Dal 10/08/2026 la sonda giudica il deploy
+    confrontando i BYTE serviti con quelli di main, e questo file resta quello che e'
+    sempre stato davvero: la targhetta dei sigilli.
 
     Il file e' un artefatto generato: se un hash cambia senza che nessuno abbia
     ri-pubblicato, la sonda lo dice. Se git non c'e' (o la cartella non e' un
@@ -77,15 +85,18 @@ def scrivi_versione():
             sigilli[rel] = None          # assente: la sonda lo segnala, non lo inventa
 
     d = {
-        '_nota': 'GENERATO da aggiorna_ui.py — la targhetta di cosa e\' online. '
-                 'Confrontala con `git ls-remote origin main`: se divergono, la macchina '
-                 'che pubblica non sta eseguendo il main. Sonda: scheduling/sonda_deploy.sh',
-        '_ritardo_strutturale': 'Questo file non puo\' contenere il commit che lo include, e si '
-                 'rigenera solo quando gira aggiorna_ui.py (cioe\' dopo una gara). Fra due gare il '
-                 'ritardo su origin/main CRESCE di un commit per commit, ed e\' normale: non e\' la '
-                 'catena rotta. Si azzera con `python3 -c "import aggiorna_ui; aggiorna_ui.scrivi_versione()"`. '
-                 'Il rimedio strutturale sarebbe scriverlo a ogni deploy, che richiede un build step '
-                 'su Vercel — impostazione del progetto, non codice.',
+        '_nota': 'GENERATO da aggiorna_ui.py: il commit del repo QUANDO E\' GIRATA L\'ULTIMA '
+                 'GARA, e i sigilli del motore di allora. NON e\' il commit da cui il sito e\' '
+                 'stato costruito, e non va confrontato con origin/main per sapere se il deploy '
+                 'e\' fresco: fra una gara e l\'altra questo campo resta indietro di un commit per '
+                 'commit senza che niente sia rotto. A cosa serve davvero: portare i SIGILLI '
+                 'online, cosi\' si vede da fuori con che modello e\' stato costruito cio\' che '
+                 'la gente usa.',
+        '_chi_giudica_il_deploy': 'scheduling/sonda_deploy.sh, e dal 10/08/2026 non guarda piu\' '
+                 'questo campo per farlo: prende il file di demo/ che main ha cambiato piu\' di '
+                 'recente, se lo fa dare dal sito e ne confronta lo sha256 con '
+                 '`git show origin/main:<file>`. Domanda sull\'oggetto servito, non sull\'eta\' '
+                 'di una targhetta — e non ha bisogno che nessuno rigeneri niente per tornare verde.',
         'ramo_alla_generazione': git('rev-parse', '--abbrev-ref', 'HEAD'),
         'commit': git('rev-parse', 'HEAD'),
         'commit_breve': git('rev-parse', '--short', 'HEAD'),
