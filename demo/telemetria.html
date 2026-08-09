@@ -43,6 +43,12 @@
   .pl.rif{ background:rgba(255,176,0,.09); }
   .pl.senza{ opacity:.42; cursor:not-allowed; }
   .pl.senza:hover{ background:transparent; }
+  /* IL CONFRONTO SI RAGGIUNGE CON UN DITO. Prima la sola via era ⇧+clic: su un telefono
+     — cioe' proprio dove questa pagina serve di piu' — il secondo pilota era irraggiungibile. */
+  .modo{ display:flex; flex-direction:column; gap:7px; padding:10px 13px;
+    border-bottom:1px solid var(--bordo); background:rgba(255,255,255,.02); }
+  .modo p{ margin:0; color:var(--ciano); font:500 11px/1.4 var(--mono); letter-spacing:.06em; }
+  .lista.confronta .pl:not(.on){ box-shadow:inset 0 0 0 1px rgba(36,227,210,.35); }
   .nota-box{ margin:0; color:var(--fioco); font-size:12.5px; line-height:1.5; }
   .pl .bar{ width:4px; height:24px; border-radius:2px; background:var(--c,#8A93A3); }
   .pl b{ font:700 15px/1 var(--disp); letter-spacing:.09em; }
@@ -120,6 +126,10 @@
   <div class="banco">
     <section class="piloti">
       <div class="cap" id="capPiloti">Piloti</div>
+      <div class="modo" id="modo" hidden>
+        <button class="btn btn-s" type="button" id="btnConfronta" aria-pressed="false">Confronta con…</button>
+        <p id="modoNota" hidden>Tocca il secondo pilota.</p>
+      </div>
       <div class="lista" id="lista"></div>
     </section>
 
@@ -270,9 +280,22 @@ function scegliPilota(sig, comeConfronto) {
     E('avviso').textContent = `${sig} non ha nessun giro con la telemetria registrata in questa sessione.`;
     return;
   }
-  if (comeConfronto && A && A.sig !== sig) impostaB(sig, best.n);
-  else impostaA(sig, best.n);
+  if ((comeConfronto || modoConfronto) && A && A.sig !== sig) { confronto(false); impostaB(sig, best.n); }
+  else { confronto(false); impostaA(sig, best.n); }
 }
+
+/* Il modo confronto: acceso, il tocco successivo sceglie il SECONDO pilota. ⇧+clic
+   continua a funzionare per chi ha una tastiera, e non serve accendere niente. */
+let modoConfronto = false;
+function confronto(v) {
+  modoConfronto = !!v && !!A;
+  E('btnConfronta').setAttribute('aria-pressed', String(modoConfronto));
+  E('btnConfronta').textContent = modoConfronto ? 'Annulla' : 'Confronta con…';
+  E('modoNota').hidden = !modoConfronto;
+  E('lista').classList.toggle('confronta', modoConfronto);
+}
+E('btnConfronta').addEventListener('click', () => confronto(!modoConfronto));
+document.addEventListener('keydown', (ev) => { if (ev.key === 'Escape') confronto(false); });
 
 /* -------------------------------------------------------------- giri */
 async function tracceDi(sig) {
@@ -327,6 +350,11 @@ function striscia(sig, scelto, classeScelto, onScegli) {
 
 function elencaGiri() {
   if (!A) return;
+  E('modo').hidden = false;              // il confronto ha senso solo dopo il primo pilota
+  for (const b of E('lista').querySelectorAll('.pl')) {
+    b.classList.toggle('on', b.dataset.sig === A.sig);
+    b.classList.toggle('rif', !!B && b.dataset.sig === B.sig);
+  }
   E('boxGiri').hidden = false;
   E('avviso').hidden = true;
   E('capGiri').replaceChildren(el('b', {}, A.sig), ' · i suoi giri — tocca per cambiare');
@@ -442,8 +470,8 @@ function legenda() {
   const sporco = !!A.meta?.box || !!B?.meta?.box;
   nodi.push(el('p', { stile: { margin: '4px 0 0', color: 'var(--fioco)', fontSize: '12.5px', lineHeight: 1.5 } },
     sporco ? 'Uno dei due giri passa dai box: non è un giro di pista intero, quindi il distacco non si calcola.'
-    : B ? 'Tocca un altro pilota tenendo premuto ⇧ per cambiare il confronto, o tocca un suo giro qui sopra.'
-      : 'Tieni premuto ⇧ e tocca un altro pilota per metterlo a confronto.'));
+    : B ? 'Per cambiare il secondo pilota: «Confronta con…» a sinistra, o ⇧+clic sul suo nome.'
+      : 'Premi «Confronta con…» a sinistra per mettere due giri a confronto.'));
   if (B) nodi.push(el('button', { class: 'btn btn-s', type: 'button',
     stile: { marginTop: '6px', width: '100%' },
     onclick: () => { B = null; elencaGiri(); disegna(); } }, 'Togli il confronto'));

@@ -103,13 +103,17 @@ const idDi = (c) => (c.getAttribute('href') || '').split('/').pop().replace('.ht
     for (const c of carte) {
       const suo = gpDi[idDi(c)] || null;
       // senza GP nel dato la card resta SEMPRE visibile: un pezzo su dieci circuiti
-      // non appartiene a un Gran Premio, e nasconderlo sarebbe perdere un articolo
-      const fuori = !!scelto && suo !== scelto;
+      // non appartiene a un Gran Premio, e nasconderlo sarebbe perdere un articolo.
+      // Il commento c'era, il `!!suo` no: filtrando per Ungheria sparivano i due pezzi
+      // trasversali — cioe' proprio quelli che nessun filtro per gara puo' ritrovare.
+      const fuori = !!scelto && !!suo && suo !== scelto;
       c.hidden = fuori;
       if (!fuori) visti++;
     }
     const n = document.getElementById('quanti');
-    if (n) n.textContent = scelto ? `${visti} su ${carte.length}` : '';
+    // «6 su 12» conterebbe i trasversali come se fossero della gara scelta: si dice
+    // quanti se ne vedono, e basta.
+    if (n) n.textContent = scelto ? `${visti} articoli` : '';
   }
   applica();
 })();

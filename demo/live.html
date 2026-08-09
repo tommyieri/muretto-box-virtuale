@@ -295,6 +295,18 @@ function boxOra() {
       'Il motore non è disponibile in questa pagina.'));
     return;
   }
+  // CHI ARRIVA A GARA IN CORSO NON HA LA STORIA. La torre si riallinea con uno snapshot,
+  // ma lo snapshot NON e' un giro chiuso: il passo-base si ricostruisce dai giri visti
+  // dopo il collegamento, e prima di averne abbastanza il motore risponderebbe su una
+  // manciata di giri come se fossero la gara. live_bylap sa dirlo — diagnosi() esiste da
+  // sempre, con il motivo gia' scritto — e questa pagina non gliel'aveva mai chiesto.
+  const d = B.diagnosi(L);
+  if (!d.pronto) {
+    box.replaceChildren(el('div', { class: 'esitoLive' },
+      `Il muretto sta ancora imparando la gara: ${d.motivo} `
+      + 'Se ti sei collegato a corsa iniziata, servono qualche giro.'));
+    return;
+  }
   const giro = Math.min(nLaps - 1, L + 1);
   let esito;
   try {
