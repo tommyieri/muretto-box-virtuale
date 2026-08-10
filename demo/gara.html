@@ -240,6 +240,7 @@
         <div class="vel" id="vel">
           <button data-s="1" class="on">1×</button><button data-s="2">2×</button>
           <button data-s="4">4×</button><button data-s="8">8×</button>
+          <button data-s="20">20×</button><button data-s="60">60×</button>
         </div>
         <div class="barra-t" id="scorri" role="slider" aria-label="Giro" tabindex="0"
              aria-valuemin="1" aria-valuenow="1">
@@ -811,13 +812,24 @@ async function avviaScena(giroSosta) {
   clock.pause();
   E('reset').hidden = false;
   E('esito').hidden = true;
-  const mesc = soste0(giroSosta);
-  nota(`${selDrv} si ferma al giro ${giroSosta}${mesc ? ' con gomma ' + (MESCOLA_IT[mesc] || mesc.toLowerCase()) : ''} — e la gara continua fino alla bandiera. Premi di nuovo BOX ORA per aggiungere un'altra sosta.`);
+  // IL PIANO INTERO, non solo l'ultima sosta. Con il multi-sosta raggiungibile (prima la
+  // scena arrivava alla bandiera in ventidue secondi) il messaggio nominava solo la sosta
+  // appena aggiunta: chi guardava non aveva modo di sapere che ne aveva gia' due.
+  const piano = (STRAT?.soste ?? []).map(x =>
+    `giro ${x.giro}${x.mescola ? ' ' + (MESCOLA_IT[x.mescola] || x.mescola.toLowerCase()) : ''}`);
+  const quante = piano.length;
+  nota(`${selDrv}: ${quante === 1 ? 'una sosta' : quante === 2 ? 'due soste' : quante + ' soste'} — `
+    + `${piano.join(' · ')}. La gara continua fino alla bandiera: cambia velocità per seguirla, `
+    + `e premi di nuovo BOX ORA per aggiungerne un'altra.`);
 
   scenaGp = creaGhostPlay({
     sim, pista: mappa, coloreDi: sg => coloreDi(teamDi[sg], colori),
     onTower: torreScena, giroRisposta: null,
     p0: Math.max(STRAT.freeze, giroSosta - 1), durataTot: 22,
+    // LE DURATE VERE, le stesse del replay: la scena non sprinta piu' alla bandiera in
+    // ventidue secondi (erano 229x il tempo reale, 209 metri di pista per fotogramma) e
+    // resta il tempo di premere BOX ORA una seconda e una terza volta.
+    durateVere: (L) => durate[L],
     onFine: () => { icona(false); verdetto(); },
   });
   scenaGp.play(); icona(true);

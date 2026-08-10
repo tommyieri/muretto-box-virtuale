@@ -159,7 +159,8 @@ export function classificaSim(C, p, opts = {}) {
 //   fase 2  giro-risposta -> bandiera: solo su richiesta (continua()). È una PROIEZIONE —
 //           i rivali non reagiscono — e va detto. Senza giroRisposta: una fase sola, fino in fondo.
 export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro,
-                                giroRisposta = null, durataTot = 16, p0 = null }) {
+                                giroRisposta = null, durataTot = 16, p0 = null,
+                                durateVere = null }) {
   const C = costruisciCum(sim);
   const FE = pista?.pitFrazioni?.ingresso ?? 0.95, FX = pista?.pitFrazioni?.uscita ?? 0.05;
   const opts = { driver: sim.driver, pitLap: sim.pitLap, FE, FX };
@@ -171,7 +172,11 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro
   const rejoinCum = giroRisp != null ? (C.cum[opts.driver] || []).find(e => e.lap === giroRisp)?.cum : null;
   const pStop = (rejoinCum != null) ? pDaTempo(C, rejoinCum) : pMaxPieno;
   const giriRest = Math.max(1, pMaxPieno - pMin);
-  const lapSec = Math.min(1.2, Math.max(0.35, durataTot / giriRest));
+  const lapSecFisso = Math.min(1.2, Math.max(0.35, durataTot / giriRest));
+  // DUE ANDATURE, e adesso si sceglie. `durateVere` (giro -> secondi reali) fa correre la
+  // scena come la gara: a 1x un giro dura quello che e' durato, e i tasti 1/2/4x... dicono
+  // la verita'. Senza, resta la compressione di sempre.
+  const lapSecDi = durateVere ? (L) => (durateVere(L) || lapSecFisso) : () => lapSecFisso;
   const DWELL_S = 1.3;                     // sosta ferma ai box, per rendere visibile il pit stop
   // p0 (08/08): la scena puo' PARTIRE da un giro arbitrario — serve al BOX ORA di
   // gara.html, dove la sosta si aggiunge mentre la gara scorre e la scena riparte
@@ -184,17 +189,24 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro
   // tempo — e solo uno dei due sapeva mettersi in pausa, cambiare velocita' e farsi
   // trascinare. Ora ne resta uno, e la scena eredita quelle tre cose.
   //
-  // Cio' che RESTA diverso, ed e' una scelta di prodotto e non un dettaglio: il RITMO.
-  // La pagina-gara passa a setDur() le durate VERE dei giri, quindi a 1x un giro dura i
-  // secondi che e' durato davvero e i giri sotto Safety Car restano lenti. La scena e' una
-  // proiezione da guardare in venti secondi, non una gara da rivivere: passa una costante.
-  // Stesso orologio, due andature — dichiarate qui, non sparse in due implementazioni.
+  // IL RITMO: due andature, e dal 10/08/2026 SI SCEGLIE (prima era imposta).
+  //
+  // La scena nasceva come «proiezione da guardare in venti secondi»: durataTot spalmato sui
+  // giri rimasti, cioe' una costante. Con 65 giri da correre veniva 0,35 s/giro, cioe' 229
+  // VOLTE il tempo reale: a 60 fotogrammi il pallino avanzava di 209 metri per fotogramma —
+  // «a scatti», ma non per un difetto di disegno: per l'andatura. E soprattutto la gara
+  // finiva prima che si potesse premere BOX ORA una seconda volta, quindi il multi-sosta
+  // c'era, era scritto anche nel messaggio in pagina, ed era irraggiungibile.
+  //
+  // Con `durateVere` la scena corre come la gara: a 1x un giro dura i secondi che e' durato
+  // davvero, i giri sotto Safety Car restano lenti, e i tasti di velocita' dicono la verita'.
+  // La compressione resta per chi non passa le durate (i banchi).
   const clock = makeClock({
     min: pMin,
     onTick: (p, ts) => aggiorna(p, ts),
     onEnd: () => { onFine && onFine(); },
   });
-  clock.setDur(() => dwelling ? Infinity : lapSec);   // Infinity = p non avanza (sosta ferma)
+  clock.setDur((L) => dwelling ? Infinity : lapSecDi(L));   // Infinity = p non avanza (sosta ferma)
   clock.reset(pMaxPieno);
   if (p0 != null) clock.seek(Math.min(Math.max(p0, pMin), pMaxPieno));
 
