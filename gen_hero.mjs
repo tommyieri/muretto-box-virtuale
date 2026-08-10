@@ -41,13 +41,16 @@
 // che nessuno se ne accorgesse. Il posto dei numeri e' demo/data/hero.json, che e' generato:
 // chi li vuole li legge di li'.
 //
-// DERIVA MISURATA IL 02/08/2026, APERTA. `node gen_hero.mjs --stdout` oggi NON riproduce il
-// hero.json committato: pubblicato P1 -> P6 (delta 5), rigenerato P4 -> P6 (delta 2). Il
-// motore e' lo stesso — a muoversi sono stati i dati sotto, che si ri-stimano a ogni gara —
-// ma il hero.json in pagina porta gia' la targhetta del motore nuovo, quindi e' un numero
-// pubblicato che nessuno ha piu' rimisurato dopo un cambio: E22, di nuovo e per altra via.
-// Rigenerarlo cambia la landing pubblica: e' una decisione del PO, non l'effetto collaterale
-// di una correzione ai commenti. Percio' qui resta SCRITTO, non fatto.
+// LA DERIVA DEL 02/08/2026 E' CHIUSA (10/08). Era questa: `--stdout` non riproduceva piu' il
+// hero.json committato (pubblicato P1 -> P6, rigenerato P4 -> P6), perche' il motore e' lo
+// stesso ma i dati sotto si ri-stimano a ogni gara. Era E22: un numero pubblicato che nessuno
+// rimisura dopo un cambio. La decisione del PO e' arrivata: questo generatore entra
+// nell'ondata 1 di auto_gara.py e rigenera a ogni gara.
+//
+// IL CASO NON SEGUE LA GARA NUOVA. Resta Belgio giro 20 perche' e' li' che la lezione si
+// vede; a cambiare sono solo i numeri, che tornano in passo coi modelli. Se un giorno la
+// ri-stima appiattisse le due scelte sullo stesso rientro, la scena smetterebbe di
+// insegnare: la guardia in fondo al file non scrive e esce 1.
 //
 // COSA NON C'E' E PERCHE'. Nessun numero cambia con la MESCOLA. Sul fondo 2026 la
 // differenza fra mescole su gradino, warm-up e degrado non si distingue dal caso
@@ -303,6 +306,27 @@ const OUT = {
 };
 
 const testo = JSON.stringify(OUT);
+
+// LA SCENA DEVE ANCORA INSEGNARE QUALCOSA, altrimenti non si pubblica.
+//
+// Dal 10/08/2026 questo generatore gira DA SOLO a ogni gara (auto_gara.py, ondata 1),
+// e non per cambiare gara: il caso resta Belgio giro 20, scelto perche' li' la lezione
+// si vede a occhio nudo. Gira perche' i dati sotto si ri-stimano a ogni gara, e senza
+// rigenerare la home resterebbe con numeri che nessuno ha piu' rimisurato — la deriva
+// che questo stesso file denunciava dal 02/08 (E22).
+//
+// Ma se la ri-stima porta le due scelte allo STESSO rientro, la scena non insegna piu'
+// niente: mostrerebbe «fermati ora» e «aspetta tre giri» con lo stesso esito, cioe' il
+// contrario di cio' che il prodotto promette. In quel caso NON si scrive e si esce 1:
+// meglio una home ferma a numeri veri di ieri che una home che smentisce il prodotto.
+// auto_gara chiama con check=False, quindi la gara esce lo stesso e il log lo grida.
+if (!process.argv.includes('--stdout') && OUT.delta_posizioni < 1) {
+  console.error(`hero.json NON scritto: le due scelte danno lo stesso rientro `
+    + `(delta ${OUT.delta_posizioni}). La scena non mostra piu' la differenza fra `
+    + `fermarsi al giro ${ora.giro} e al giro ${dopo.giro}: il caso va ri-scelto a mano.`);
+  process.exit(1);
+}
+
 if (process.argv.includes('--stdout')) {
   console.log(JSON.stringify(OUT, null, 2));
 } else {

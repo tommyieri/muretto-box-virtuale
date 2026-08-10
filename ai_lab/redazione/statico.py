@@ -70,6 +70,11 @@ PAGINE_FISSE = [
     ("telemetria.html", "0.9"),
     ("campionato.html", "0.8"),
     ("analisi.html", "0.8"),
+    # GLI STRUMENTI DI STAGIONE sono pagine vere, con contenuto vero e un dato che si
+    # ricalcola a ogni gara: entrano in sitemap come le altre. Non stanno nella nav
+    # perche' si raggiungono dagli Articoli, che e' la sezione a cui appartengono.
+    ("forza.html", "0.7"),
+    ("dati.html", "0.7"),
     ("live.html", "0.6"),
 ]
 # REGOLA DI STOP, decisa il 04/08/2026: una pagina entra qui — e una voce entra nella
@@ -421,7 +426,7 @@ def rendi_html(art) -> str:
 <header class="barra"></header>
 
 <div class="wrap-scheda" style="padding-bottom:0">
-  <a class="crumb" href="../analisi.html">&larr; Letture</a>
+  <a class="crumb" href="../analisi.html">&larr; Articoli</a>
 </div>
 
 <article class="wrap-scheda art" id="art">
