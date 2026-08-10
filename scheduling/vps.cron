@@ -17,3 +17,18 @@
 
 PATH=/usr/local/bin:/usr/bin:/bin
 */30 * * * * /home/muretto/muretto/scheduling/auto_run.sh
+
+# ARTICOLI DELLA REDAZIONE — trasferiti dal Mac il 10/08/2026.
+#
+# Stavano nella crontab del Mac perche' li' c'erano fastf1 e anthropic. Ma erano l'ultimo
+# pezzo della catena che dipendeva da una macchina che puo' essere spenta, e con loro si
+# fermavano anche i due strumenti di stagione (genera.py ripubblica forza_macchina.json e
+# stagione_dati.json). Un weekend col Mac spento = niente articoli e due pagine ferme,
+# in silenzio. Il VPS e' acceso per definizione: e' lui che pubblica.
+#
+# A :15 e :45, sfasato dai :00/:30 di auto_run per non sovrapporsi (lock separati, ma le
+# due cose leggono FastF1 e la RAM qui e' 2 GB).
+#
+# SERVE LA CHIAVE: ~/.muretto_env con `export ANTHROPIC_API_KEY="..."`, chmod 600. Senza,
+# il wrapper lo scrive nel log a ogni giro e la redazione gira senza scrittore-LLM.
+15,45 * * * * /home/muretto/muretto/scheduling/auto_articoli_run.sh
