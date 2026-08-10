@@ -340,6 +340,19 @@ def wave_nuove():
         # ritoccato una gara vecchia sarebbe il rimedio peggiore del male.
         sh([PY, 'gen_classifica_giro.py', '--write'], check=False)
         sh([PY, 'gen_arrivi.py', '--write'], check=False)
+        # LA SCENA DELLA HOME, che fino al 10/08/2026 non la rigenerava nessuno.
+        #
+        # gen_hero.mjs era scritto, provato, committato — e senza chiamanti: la home ha
+        # giocato la stessa scena di Spa mentre il sito pubblicava altre due gare, e
+        # nessuno se n'e' accorto perche' la pagina funzionava benissimo. Il caso NON segue
+        # la gara nuova (resta Belgio giro 20, scelto perche' li' la lezione si vede a
+        # occhio nudo): a muoversi sono i numeri, che si ri-stimano a ogni gara e senza
+        # questa riga restavano indietro — E22, un numero pubblicato che nessuno rimisura.
+        #
+        # check=False, e la guardia sta DENTRO il generatore: se la ri-stima appiattisse
+        # le due scelte sullo stesso rientro, gen_hero esce 1 SENZA scrivere e la home
+        # resta ai numeri veri di ieri invece di mostrare una scena che si smentisce.
+        sh(['node', 'gen_hero.mjs'], check=False)
         # ------------------------------------------------------------------ LABORATORIO
         # Tutto quello che segue e' RICERCA: aggiorna DATI, non accende niente in
         # produzione, e gira con check=False perche' la ricerca non deve MAI fermare la
@@ -708,7 +721,80 @@ def wave_quali():
 # rossa se qualcuno riaccende l'ondata senza una decisione nuova.
 #
 # _gp_weekend_corrente() se n'e' andata con loro: la usavano solo queste due (wave_quali
-# ha una sua strada, legge la mappa e non la finestra di date).
+# ha una sua strada, legge la mappa e non la finestra di date). La finestra di date e'
+# tornata qui sotto, per l'ondata sessioni, con un'altra fonte e un altro scopo.
+
+
+# ------------------------------------------- ONDATA SESSIONI: il weekend, mentre accade
+#
+# IL BUCO CHE CHIUDE. Fino al 10/08/2026 la telemetria giro-per-giro usciva SOLO
+# nell'ondata 1, che scatta quando la GARA e' online (raw_head chiede Race.json). Quindi
+# libere e qualifiche di un weekend in corso non comparivano in pagina fino alla domenica
+# sera: il venerdi' e il sabato la sezione Telemetria mostrava tutte le gare TRANNE quella
+# che si stava correndo. Non era una scelta: era il momento in cui nessuno guardava.
+#
+# Il runner che gia' esisteva per le sessioni (auto_tele.py sul Mac -> gen_tele.py) scrive
+# demo/data/tele_*.json, che il sito nuovo NON legge piu': alimentava le pagine ritirate.
+#
+# BOUNDED AL WEEKEND, e non e' prudenza: fuori dalla finestra non c'e' niente da prendere,
+# e ogni giro sarebbe una chiamata a FastF1 a vuoto, ogni mezz'ora, per venti giorni.
+# Dal giovedi' al lunedi' del GP in calendario, e basta.
+#
+# IDEMPOTENTE PER COSTRUZIONE: gen_giri.py salta le sessioni gia' scritte, quindi dal
+# secondo giro in poi tenta solo quelle nuove. Un weekend non-sprint prova SQ e S, non le
+# trova, e non scrive: e' il comportamento giusto, non un errore.
+def _gp_del_weekend():
+    # Il GP in calendario la cui data cade nella finestra giovedi'-lunedi'. Ritorna una
+    # LISTA e non un nome solo: due gare nella stessa finestra non esistono, ma un
+    # calendario sbagliato non deve far scegliere a caso a questo modulo.
+    try:
+        cal = json.load(open(os.path.join(ROOT, CALENDARIO)))
+    except OSError:
+        return []
+    oggi = datetime.date.today()
+    dentro = []
+    for g in cal.get('gare', []):
+        nome, d = (g.get('nome') or g.get('gara_demo')), g.get('data')
+        if not nome or not d:
+            continue
+        try:
+            gd = datetime.date.fromisoformat(d)
+        except ValueError:
+            continue
+        if -3 <= (oggi - gd).days <= 1:      # dal giovedi' al lunedi'
+            dentro.append(nome)
+    return dentro
+
+
+def _sessioni_scritte():
+    # Le sessioni gia' in demo/data/giri/, come insieme di nomi. Il confronto prima/dopo e'
+    # cio' che distingue «ho pubblicato qualcosa» da «ho girato a vuoto»: gen_giri esce 0
+    # anche quando non scrive niente, quindi il suo codice di uscita non basta a saperlo.
+    # Il filtro su un solo '__' tiene gli INDICI di sessione e scarta i file di traccia,
+    # che hanno la sigla del pilota in fondo (gara__sessione__SIG.json).
+    d = os.path.join(ROOT, 'demo', 'data', 'giri')
+    try:
+        return {f[:-5] for f in os.listdir(d)
+                if f.endswith('.json') and f.count('__') == 1}
+    except OSError:
+        return set()
+
+
+def wave_sessioni():
+    correnti = _gp_del_weekend()
+    if not correnti:
+        log('ondata sessioni: nessun weekend in corso.'); return False
+    prima = _sessioni_scritte()
+    for nome in correnti:
+        log(f'ondata sessioni: {nome} — cerco sessioni nuove')
+        sh([PY, 'gen_giri.py', '--gara', nome], check=False)
+    nuove = sorted(_sessioni_scritte() - prima)
+    if not nuove:
+        log('ondata sessioni: nessuna sessione nuova disponibile.'); return False
+    log(f'ondata sessioni: pubblicate {len(nuove)} -> {nuove}')
+    commit_push('auto: telemetria delle sessioni ' + ', '.join(nuove) + ' (fonte FastF1)')
+    return True
+
 
 # ------------------------------------------------------ ONDATA 2: release f1db
 def _github_latest():
@@ -837,5 +923,15 @@ if __name__ == '__main__':
     except Exception as e:
         log(f"ondata quali: errore ({e!r}) — le gare sono gia state gestite, proseguo.")
         fattoq = False
-    if not (fatto1 or fatto2 or fattor or fattoq):
+    # ONDATA SESSIONI: ultima, e isolata come le altre. Va DOPO l'ondata 1 perche' se la
+    # gara e' appena uscita quella ha gia' scritto tutte le sessioni del weekend, e questa
+    # trova tutto a posto e tace in una riga.
+    try:
+        fattos = wave_sessioni()
+    except SystemExit:
+        raise
+    except Exception as e:
+        log(f"ondata sessioni: errore ({e!r}) — il resto e' gia stato gestito, proseguo.")
+        fattos = False
+    if not (fatto1 or fatto2 or fattor or fattoq or fattos):
         log('niente da fare: demo allineata.')

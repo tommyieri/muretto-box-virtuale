@@ -305,7 +305,13 @@ def main():
     corse = [g for g in cal["gare"] if g.get("gara_demo")]
 
     if a.gara:
-        corse = [g for g in corse if g["nome"] == a.gara]
+        # UNA GARA CHIESTA PER NOME SI CERCA IN TUTTO IL CALENDARIO, non solo fra quelle
+        # gia' pubblicate. `gara_demo` si popola quando la gara ESCE sul sito, la domenica
+        # sera: filtrare su quello significava che durante il weekend — cioe' quando ci
+        # sono le libere e le qualifiche da pubblicare — questo generatore rispondeva
+        # «gara sconosciuta» proprio per il Gran Premio in corso. Le sessioni di un weekend
+        # devono poter uscire prima della gara: e' tutto il punto dell'ondata sessioni.
+        corse = [g for g in cal["gare"] if g["nome"] == a.gara]
         if not corse:
             print(f"gara sconosciuta: {a.gara}", file=sys.stderr)
             return 2
