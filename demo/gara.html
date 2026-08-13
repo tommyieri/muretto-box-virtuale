@@ -342,6 +342,7 @@ import { makeClock, computeDurations, bands, fase } from './timeline.mjs?v=22072
 import { creaAncora, giroDi as giroDiCum } from './orologio.mjs?v=250808a';
 import { classifica, battistradaAiGiri, ordineArrivo } from './classifica.mjs?v=090826b';
 import { creaReplayVero } from './replay_vero.mjs?v=250808a';
+import { creaProfiloGiro } from './profilo_giro.mjs?v=130826a';
 import { guadagnoAlGiro, vitaMescolaGiri } from './gomma.mjs?v=130826a';
 import { sostaFra } from './sosta.mjs?v=130826a';
 
@@ -350,7 +351,7 @@ guscio('gara.html');
 const E = (id) => document.getElementById(id);
 let race = null, gara = null, colori = {}, schede = null, calendario = null;
 let leadCum = {}, cumPil = {}, teamDi = {}, ancora = null, durate = {}, finestre = null;
-let mappa = null, replay = null, indiceVista = null, vistaCart = null;
+let mappa = null, replay = null, indiceVista = null, vistaCart = null, profiloGiro = null;
 const vistaPil = {};
 let selDrv = null, curP = 1, ctxLive = null, mescolaScelta = null;
 let esitiGara = {}, nonPart = new Set(), sosteVereDi = {}, ultimoGiro = {}, griglia = [];
@@ -511,6 +512,12 @@ async function apriMappa() {
   try {
     replay = await creaReplayVero({ url: `data/replay_${encodeURIComponent(gara)}.json?v=${V}` });
   } catch (e) { replay = null; }
+  // IL PROFILO DEL CIRCUITO, misurato una volta sola dal GPS di questa gara: serve alla
+  // scena, che i pallini deve ricostruirli. Senza replay non c'e' profilo, e la scena torna
+  // alla velocita' uniforme dichiarando i pallini stimati (regola 6).
+  try {
+    profiloGiro = creaProfiloGiro({ replay, byLap: race.byLap, nLaps: race.n_laps });
+  } catch (e) { profiloGiro = null; }
   try {
     mappa = await creaMappa({
       canvas: E('tela'),
@@ -1052,6 +1059,7 @@ async function avviaScena(giroSosta) {
     // resta il tempo di premere BOX ORA una seconda e una terza volta.
     durateVere: (L) => durate[L],
     velocita: velCorrente,
+    profilo: profiloGiro ? (t) => profiloGiro.frazione(t) : null,
     // ALLA BANDIERA LA SCENA RESTA, ma finita. Prima restava viva e basta, e siccome ogni
     // guardia della pagina testava `scenaGp` per verita', barra e frecce erano morte per
     // sempre e un secondo BOX ORA leggeva `posizione = nLap+1` piazzando una sosta al

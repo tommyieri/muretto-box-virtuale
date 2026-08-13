@@ -231,6 +231,47 @@ console.log('(g) il guadagno della gomma nuova');
     `la vita sì: ${vite.join(' < ')} giri — è quello che la scelta della gomma decide`);
 }
 
+/* ─────────────── (i) il profilo del giro: la scena non va a velocità uniforme */
+console.log('(i) il profilo tempo→distanza del circuito');
+{
+  const { creaProfiloGiro } = await import('./profilo_giro.mjs');
+  const { creaReplayVero } = await import('./replay_vero.mjs');
+  // replay_vero usa fetch: qui lo si serve dal disco
+  const fetchVero = globalThis.fetch;
+  globalThis.fetch = async (u) => {
+    const p = decodeURIComponent(String(u).split('?')[0]);
+    try { return { ok: true, json: async () => JSON.parse(leggi(p)) }; }
+    catch { return { ok: false, status: 404 }; }
+  };
+  try {
+    const race = prep.Ungheria.race;
+    const rep = await creaReplayVero({ url: 'data/replay_Ungheria.json' });
+    const P = creaProfiloGiro({ replay: rep, byLap: race.byLap, nLaps: race.n_laps });
+    controlla(!!P && P.campioni >= 100, `il profilo dell'Ungheria si costruisce (${P?.campioni ?? 0} giri puliti)`);
+    let mono = true, prec = -1;
+    for (let k = 0; k <= 400; k += 1) { const v = P.frazione(k / 400); if (v < prec - 1e-12) mono = false; prec = v; }
+    controlla(mono, 'il profilo è monotono: nessun pallino può indietreggiare');
+    controlla(Math.abs(P.frazione(0)) < 1e-9 && Math.abs(P.frazione(1) - 1) < 1e-9,
+      'il profilo parte dal traguardo e ci torna');
+    // NON e' la retta: se lo fosse, tanto varrebbe non averlo
+    let scostaMax = 0;
+    for (let k = 1; k < 40; k += 1) scostaMax = Math.max(scostaMax, Math.abs(P.frazione(k / 40) - k / 40));
+    controlla(scostaMax > 0.03,
+      `il profilo si scosta dalla velocità uniforme fino a ${(scostaMax * 4381).toFixed(0)} m: c'è qualcosa da correggere`);
+    // il PLACEBO, che e' la ragione per cui il profilo si tiene: quello di un'altra pista
+    // non deve funzionare. Se funzionasse, non staremmo misurando questo circuito.
+    const bel = await creaReplayVero({ url: 'data/replay_Belgio.json' });
+    const PB = creaProfiloGiro({ replay: bel, byLap: prep.Miami.race.byLap, nLaps: 44 });
+    let diverso = 0;
+    for (let k = 1; k < 40; k += 1) diverso = Math.max(diverso, Math.abs(P.frazione(k / 40) - (PB?.frazione(k / 40) ?? k / 40)));
+    controlla(diverso > 0.03,
+      `il profilo del Belgio è diverso da quello dell'Ungheria (fino a ${(diverso * 4381).toFixed(0)} m): è la forma di QUELLA pista`);
+    // Monaco non ha il GPS: niente profilo inventato (regola 6)
+    const noGps = creaProfiloGiro({ replay: null, byLap: prep.Monaco.race.byLap, nLaps: 78 });
+    controlla(noGps === null, 'senza replay GPS non si inventa un profilo: si torna alla velocità uniforme');
+  } finally { globalThis.fetch = fetchVero; }
+}
+
 /* ─────────────────── (h) gli spilli sull'orchestrazione, che vive solo in pagina */
 console.log('(h) la pagina non disfa le riparazioni di orchestrazione');
 {
@@ -279,6 +320,10 @@ console.log('(h) la pagina non disfa le riparazioni di orchestrazione');
     'il banner SC/VSC e la tinta della pista seguono il regime anche durante la scena');
   controlla(/\.comandi \.barra-t\{ grid-column:1\/-1/.test(gara),
     'la barra dei giri ha una riga sua: il giro si può scegliere');
+  controlla(/creaProfiloGiro\(\{ replay/.test(gara) && /profilo: profiloGiro/.test(gara),
+    'la scena riceve il profilo del circuito invece di assumere velocità uniforme');
+  controlla(/f: profilo \? profilo\(s\.tau\) : s\.fd/.test(soloCodice(leggi('ghostplay.mjs'))),
+    'il profilo tocca la POSIZIONE sul nastro, non il progresso che ordina il campo');
 }
 
 console.log(`\ntest_boxora: ${fatti} controlli passati, ${errori} falliti`);
