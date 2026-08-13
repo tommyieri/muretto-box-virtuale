@@ -87,8 +87,14 @@
   .arena .giro span{ display:block; color:var(--fioco); font:500 9px/1 var(--mono); letter-spacing:.2em; margin-top:5px; }
 
   /* ---------- comandi ---------- */
-  .comandi{ display:flex; align-items:center; gap:12px; padding:11px 14px; margin-top:12px;
+  /* LA BARRA HA BISOGNO DI SPAZIO. Su due righe: comandi sopra, righello sotto a tutta
+     larghezza. In una riga sola, a 1280 px di finestra, restavano 110 px per settanta giri
+     — 1,57 px per giro — e «io decido il giro in cui fermarmi» diventava una lotteria.
+     Adesso sono ~8 px per giro sulla stessa finestra. */
+  .comandi{ display:grid; grid-template-columns:auto auto 1fr; gap:10px 12px; align-items:center;
+    padding:11px 14px; margin-top:12px;
     border-radius:var(--r); background:var(--carbonio); border:1px solid var(--bordo); }
+  .comandi .barra-t{ grid-column:1/-1; grid-row:2; }
   .via{ width:46px; height:46px; border-radius:12px; background:var(--rosso); color:#fff;
     display:grid; place-items:center; flex:0 0 auto; box-shadow:0 5px 16px -6px rgba(255,30,60,.7);
     transition:background-color .16s var(--ease); }
@@ -116,9 +122,9 @@
     box-shadow:0 0 6px rgba(47,213,118,.6); transform:translateX(-1.5px); }
   .barra-t .cur{ position:absolute; top:6px; width:3px; height:22px; border-radius:2px;
     background:#fff; box-shadow:0 0 10px rgba(255,255,255,.55); transform:translateX(-1.5px); }
-  .conta-giri{ font:500 13px/1 var(--mono); color:var(--calmo); white-space:nowrap; flex:0 0 auto; }
+  .conta-giri{ font:500 13px/1 var(--mono); color:var(--calmo); white-space:nowrap;
+    justify-self:end; }
   .conta-giri b{ color:var(--testo); font-size:17px; }
-  @media (max-width:720px){ .comandi{ flex-wrap:wrap; } .barra-t{ order:5; flex-basis:100%; } }
 
   /* ---------- rail strategia ---------- */
   .rail{ position:sticky; top:calc(var(--barra) + 12px); border-radius:var(--r);
@@ -658,6 +664,23 @@ function pittaTorre(p) {
   E('torreGiro').textContent = `giro ${L}`;
 }
 
+/** IL REGIME DI GARA — banner, e tinta del nastro.
+ *
+ *  Stava dentro `frame()`, che durante la scena non gira: il cursore attraversava le bande
+ *  arancioni della barra col banner spento e la pista del colore che aveva al momento del
+ *  click. E la neutralizzazione e' precisamente l'informazione che decide le soste — sotto
+ *  Safety Car fermarsi costa la meta', e il pannello lo dice: dirlo li' e tacerlo sulla
+ *  pista era la stessa cosa detta in due modi. Ora e' una funzione sola, e la chiamano
+ *  entrambi gli orologi. */
+function pittaRegime(L) {
+  const fs = fase(finestre, L);
+  const b = E('bandiera');
+  b.className = 'bandiera' + (fs ? ' on ' + fs : '');
+  b.textContent = fs === 'SC' ? 'Safety car' : fs === 'VSC' ? 'Virtual safety car'
+    : fs === 'RF' ? 'Bandiera rossa' : '';
+  mappa?.setRegime(fs);
+}
+
 /* ================================================================ frame */
 function frame(p) {
   curP = p;
@@ -669,12 +692,8 @@ function frame(p) {
   E('cur').style.left = pct + '%';
   E('scorri').setAttribute('aria-valuenow', L);
 
-  const fs = fase(finestre, L);
-  const b = E('bandiera');
-  b.className = 'bandiera' + (fs ? ' on ' + fs : '');
-  b.textContent = fs === 'SC' ? 'Safety car' : fs === 'VSC' ? 'Virtual safety car'
-    : fs === 'RF' ? 'Bandiera rossa' : '';
-  if (mappa) { mappa.setRegime(fs); if (!scenaGp) mappa.aggiorna(posizioni(p)); }
+  pittaRegime(L);
+  if (mappa && !scenaGp) mappa.aggiorna(posizioni(p));
 
   pittaTorre(p);
   aggiornaTorreScelta();
@@ -1099,6 +1118,7 @@ function torreScena(rs, meta) {
   E('giroOra').textContent = meta.lap; E('lapNow').textContent = meta.lap;
   E('torreGiro').textContent = `giro ${meta.lap}`;
   E('scorri').setAttribute('aria-valuenow', meta.lap);
+  pittaRegime(meta.lap);
   const pct = Math.max(0, Math.min(100, ((meta.p ?? meta.lap) - 1) / race.n_laps * 100));
   E('fatto').style.width = pct + '%'; E('cur').style.left = pct + '%';
   // LA BANDIERA E' UN POSTO, non solo un evento. `onFine` scatta solo se la scena ci
@@ -1121,9 +1141,19 @@ function pianoInParole(soste) {
 function verdetto() {
   if (!STRAT?.esiti) return;
   const { mio, vero } = STRAT.esiti;
-  const posDi = (run) => { const i = run?.risultato?.ordine?.indexOf(selDrv); return (i == null || i < 0) ? null : i + 1; };
+  // UN RUN RESPINTO NON HA UNA POSIZIONE. `ordine` esiste anche quando il Direttore ha
+  // bocciato il run, e il referto ne stampava il numero come se niente fosse: su ottanta
+  // prove il braccio «strategia vera» viene respinto sette volte, e in quei casi la casella
+  // di mezzo mostrava un arrivo che il motore stesso non firma. Un rifiuto e' una risposta
+  // (regola 6) e si dice.
+  const posDi = (run) => {
+    if (!run || run.direttore?.approved === false) return null;
+    const i = run.risultato?.ordine?.indexOf(selDrv);
+    return (i == null || i < 0) ? null : i + 1;
+  };
   const reale = ESE.prep.arrivoReale.find(r => r.drv === selDrv)?.posizione ?? null;
   const P = (n) => n == null ? '—' : 'P' + n;
+  const veroRespinto = !!vero && vero.direttore?.approved === false;
   // LE SOSTE, non solo le posizioni. Il referto diceva tre numeri e nessun giro: mancava
   // esattamente la frase per cui si gioca — «lui si e' fermato al 16, 36 e 56 ed e' arrivato
   // quinto; tu al 15 e al 40 e sei arrivato terzo».
@@ -1138,7 +1168,9 @@ function verdetto() {
       el('div', { class: 'esito-b' }, el('small', {}, 'nella gara vera'), el('b', { class: 'n' }, P(reale)),
         el('i', { class: 'esito-p' }, pianoInParole(sueVere))),
       el('div', { class: 'esito-b' }, el('small', {}, 'strategia vera nel motore'), el('b', { class: 'n' }, P(pVero)),
-        el('i', { class: 'esito-p' }, 'le stesse soste, rigiocate')),
+        el('i', { class: 'esito-p' }, veroRespinto
+          ? 'il Direttore non firma questo run: niente confronto'
+          : 'le stesse soste, rigiocate')),
       el('div', { class: 'esito-b tua' }, el('small', {}, 'la tua strategia'), el('b', { class: 'n' }, P(pMio)),
         el('i', { class: 'esito-p' }, pianoInParole(STRAT.soste)))),
     el('p', { class: 'st-nota', stile: { marginTop: '12px' } },
@@ -1148,7 +1180,14 @@ function verdetto() {
       : 'Stesso arrivo della strategia vera, motore contro motore.'),
     el('p', { class: 'st-nota' },
       'La prima casella è la gara com\'è andata; la seconda è la stessa strategia dentro il motore. ',
-      'Confrontare la seconda con la terza è l\'unico paragone onesto: cambia solo la tua mossa.')));
+      'Confrontare la seconda con la terza è l\'unico paragone onesto: cambia solo la tua mossa. ',
+      // I DUE RANGHI NON SONO SULLA STESSA POPOLAZIONE, e va detto invece di lasciarlo
+      // dedurre. `ordine` esclude chi si è ritirato (all'Ungheria 19 nomi contro 22), quindi
+      // le posizioni del motore contano solo chi è arrivato. Per i classificati i due numeri
+      // coincidono — un ritirato sta sempre dietro — ma la casella di sinistra e le altre
+      // due restano due conteggi diversi, e chi legge ha diritto di saperlo.
+      `Le due caselle del motore contano ${(mio.risultato?.ordine ?? []).length} piloti arrivati; `
+      + `la gara vera ne classifica ${ESE.prep.arrivoReale.length}, ritirati compresi.`)));
 }
 
 /** Torna al replay reale: un posto solo, perche' lo chiamano il tastino ↺ e il cambio
