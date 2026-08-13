@@ -145,6 +145,7 @@ for (const nomeSito of gare()) {
       errore: e.errore, errore_nullo: e.errore_nullo,
       cambi_reali: e.cambi_reali, cambi_motore: e.cambi_motore,
       neutra_giri: e.neutra_giri, pavimento, director_fatal: e.director_fatal,
+      clamp_pavimento: e.clamp_pavimento,
       impronta: impronta(e.traccia),
       ...c,
     });
@@ -165,6 +166,7 @@ const compressi = casi.reduce((s, c) => s + c.giriCompressi, 0);
 const conNeutra = casi.filter((c) => c.neutra_giri > 0).length;
 const senzaTraccia = casi.reduce((s, c) => s + c.senzaTraccia, 0);
 const conFatal = casi.filter((c) => c.director_fatal > 0).length;
+const clampTot = casi.reduce((s, c) => s + (c.clamp_pavimento ?? 0), 0);
 const movMotore = media(casi.map((c) => c.cambi_motore));
 const movReale = media(casi.map((c) => c.cambi_reali));
 
@@ -191,6 +193,7 @@ const fuori = {
   giri_sotto_in_finestra: sottoIn,
   giri_negativi: negativi,
   casi_respinti_dal_director: conFatal,
+  clamp_pavimento_totale: clampTot,
   piloti_senza_traccia: senzaTraccia,
   movimento_motore: Number(movMotore.toFixed(2)),
   movimento_reale: Number(movReale.toFixed(2)),

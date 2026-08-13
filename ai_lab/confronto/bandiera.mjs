@@ -231,6 +231,10 @@ export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = nul
     // il pavimento sulla STESSA corsa che produce l'errore di posizione.
     neutra_giri: sc.neutralizzazione ? Object.keys(sc.neutralizzazione.perGiro).length : 0,
     neutra_perGiro: sc.neutralizzazione ? sc.neutralizzazione.perGiro : null,
+    // il contatore del pavimento, cosi' com'e' uscito dal kernel (14/08, D3 della
+    // PREREG_compressione_pavimento_2). Passa e basta: non entra in nessun conto, e
+    // senza pavimento la chiave non esiste nemmeno nel risultato.
+    clamp_pavimento: esito.risultato.clampPavimento ?? null,
     traccia: conTraccia ? esito.risultato.traccia : undefined,
   };
 }

@@ -68,10 +68,23 @@ const interoNonNegativo = (v) => Number.isInteger(v) && v >= 0;
 //
 // `null` o mappa vuota -> termine spento, e i numeri sono identici al bit a prima
 // che esistesse. Protocollo e cancello: ai_lab/confronto/PREREG_neutralizzazione.md.
+//
+// IL PAVIMENTO (14/08/2026, PREREG_compressione_pavimento_2.md). Il pacchetto porta
+// anche `pavimento`: il giro verde piu' veloce misurato sul circuito, meno il margine
+// del Director. E' LO STESSO NUMERO con cui il Director gia' rifiuta, non un parametro
+// nuovo — ma e' un'interfaccia nuova, e viaggia qui dentro invece che come argomento
+// di `simulate()` perche' e' parte del contratto della neutralizzazione: senza
+// compressione non serve, e il costruttore resta l'unico che lo risolve (regola 1).
+// `pavimento` assente o null ⇒ il vincolo non esiste e i numeri sono identici al bit.
 function normalizzaNeutralizzazione(neutralizzazione, freezeLap, steps) {
   if (neutralizzazione === null || neutralizzazione === undefined) return null;
   if (typeof neutralizzazione !== 'object') throw new Error(`neutralizzazione non utilizzabile: ${JSON.stringify(neutralizzazione)}`);
-  const { perGiro } = neutralizzazione;
+  const { perGiro, pavimento = null } = neutralizzazione;
+  if (pavimento !== null) {
+    if (typeof pavimento !== 'number' || !Number.isFinite(pavimento) || pavimento <= 0) {
+      throw new Error(`neutralizzazione.pavimento non utilizzabile (serve un tempo sul giro > 0, oppure null): ${JSON.stringify(pavimento)}`);
+    }
+  }
   if (perGiro === null || typeof perGiro !== 'object') {
     throw new Error(`neutralizzazione.perGiro deve essere una mappa giro -> kappa: ${JSON.stringify(perGiro)}`);
   }
@@ -87,7 +100,7 @@ function normalizzaNeutralizzazione(neutralizzazione, freezeLap, steps) {
     }
     if (k !== 1) mappa.set(lap, k);   // kappa = 1 non e' compressione: non crea un percorso
   }
-  return mappa.size === 0 ? null : mappa;
+  return mappa.size === 0 ? null : { perGiro: mappa, pavimento };
 }
 
 // Perdita applicata INTERA sul giro della sosta. È la stessa convenzione con
@@ -185,6 +198,7 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
 
   const soste = normalizzaSoste(pits, piloti);
   const neutra = normalizzaNeutralizzazione(neutralizzazione, freezeLap, steps);
+  let clampPavimento = 0;   // quante volte il pavimento ha legato (vedi il blocco della compressione)
   const orizzonte = [];
   for (let i = 1; i <= steps; i += 1) orizzonte.push(freezeLap + i);
   for (const [drv, perGiro] of soste) {
@@ -270,7 +284,7 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
     // Il leader e i distacchi PRIMA di avanzare: la compressione è definita
     // come gap(k+1) = gap(k)·κ, cioè sul distacco di fine giro precedente. È
     // la stessa costruzione con cui κ è stato misurato sul fondo.
-    const kappaDelGiro = neutra === null ? undefined : neutra.get(giro);
+    const kappaDelGiro = neutra === null ? undefined : neutra.perGiro.get(giro);
     const comprime = kappaDelGiro !== undefined;
     let capofila = null;
     const gapPrima = new Map();
@@ -339,7 +353,34 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
         // persistenza al congelamento il delta stava sotto la tolleranza del
         // Director e nessuno se n'e' accorto; con le finestre VERE di una gara
         // intera usciva GEO02 a grappoli (129 in un run di Silverstone).
-        const delta = (capofila.c + g * kappaDelGiro) - m.c;
+        let delta = (capofila.c + g * kappaDelGiro) - m.c;
+        // ── IL PAVIMENTO: la compressione non puo' regalare un giro impossibile ──
+        //
+        // Senza questo vincolo un pilota a 60 s dal leader ne recupera 18,6 in un giro
+        // (kappa 0,691) e il suo tempo sul giro diventa `t − 18,6`: sotto il giro piu'
+        // veloce che qualcuno abbia fatto in quella gara, e a Monaco sotto zero.
+        // Misurato il 14/08 su 193 casi a gara intera con le finestre vere: 5.815 giri
+        // sotto il pavimento e 24 di durata NEGATIVA, tutti dentro una neutralizzazione.
+        //
+        // La fisica e' rovesciata, non solo il numero: sotto neutralizzazione il campo si
+        // compatta perche' IL LEADER RALLENTA, non perche' gli inseguitori accelerino.
+        // kappa resta una misura buona (SC 0,691 su 71 gare): e' il modo in cui viene
+        // CONSEGNATO a essere sbagliato, ed e' questo che il pavimento limita.
+        //
+        // DUE GUARDIE, e sono il punto:
+        //  · solo su un delta NEGATIVO — un delta positivo e' compressione che sta
+        //    facendo perdere tempo, e li' il pavimento non ha voce;
+        //  · `Math.min(0, minimo)` — se il giro fosse gia' sotto il pavimento PRIMA
+        //    della compressione, il vincolo annulla il regalo ma non aggiunge tempo che
+        //    nessuno ha perso. «Non si inventa» vale in tutte e due le direzioni.
+        //
+        // Il recupero non consumato RESTA NEL DISTACCO: non si sposta, non si spalma su
+        // altri giri. Al giro dopo c'e' quindi piu' distacco da comprimere, e il vincolo
+        // lega di piu': e' un effetto che aumenta, ed e' dichiarato nella prereg.
+        if (neutra.pavimento !== null && delta < 0 && m.ultimoGiro) {
+          const minimo = neutra.pavimento - m.ultimoGiro.lap_time;
+          if (delta < minimo) { delta = Math.min(0, minimo); clampPavimento += 1; }
+        }
         m.c += delta;
         if (m.ultimoGiro) m.ultimoGiro.lap_time += delta;
       }
@@ -444,6 +485,12 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
     // la chiave compare solo se qualcuno si e' ritirato davvero: cosi' `ritiri`
     // assente, null e {} producono lo stesso identico oggetto (s41, spento e' spento)
     ...(ritirati.length ? { ritirati: ritirati.sort((a, d) => (a.lap - d.lap) || (a.drv < d.drv ? -1 : 1)) } : {}),
+    // QUANTE VOLTE IL PAVIMENTO HA LEGATO. Non si deduce dall'uscita: col vincolo
+    // acceso i giri sotto il pavimento sono zero per definizione, e leggere li' il
+    // tasso di morso darebbe 0% a qualunque implementazione, anche a una degenere.
+    // Chi misura ha bisogno che sia il kernel a dirlo. La chiave compare solo quando
+    // il pavimento c'e', cosi' senza di esso l'oggetto e' identico a prima.
+    ...(neutra?.pavimento != null ? { clampPavimento } : {}),
   };
 }
 
