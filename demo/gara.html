@@ -679,6 +679,7 @@ function pittaTorre(p) {
  *  Safety Car fermarsi costa la meta', e il pannello lo dice: dirlo li' e tacerlo sulla
  *  pista era la stessa cosa detta in due modi. Ora e' una funzione sola, e la chiamano
  *  entrambi gli orologi. */
+let ultimePos = null;
 function pittaRegime(L) {
   const fs = fase(finestre, L);
   const b = E('bandiera');
@@ -686,6 +687,7 @@ function pittaRegime(L) {
   b.textContent = fs === 'SC' ? 'Safety car' : fs === 'VSC' ? 'Virtual safety car'
     : fs === 'RF' ? 'Bandiera rossa' : '';
   mappa?.setRegime(fs);
+  return fs;
 }
 
 /* ================================================================ frame */
@@ -699,8 +701,17 @@ function frame(p) {
   E('cur').style.left = pct + '%';
   E('scorri').setAttribute('aria-valuenow', L);
 
-  pittaRegime(L);
-  if (mappa && !scenaGp) mappa.aggiorna(posizioni(p));
+  const fs = pittaRegime(L);
+  // GARA SOSPESA: i pallini stanno FERMI anche nel replay. Il giro rosso ha una durata
+  // fissa di cinque secondi (scelta dichiarata: la sospensione vera a Monaco dura 38
+  // minuti), quindi in quei giri l'orologio corre quindici volte piu' del normale e i
+  // pallini sfrecciavano — sotto un banner che diceva «Bandiera rossa».
+  if (mappa && !scenaGp && !(fs === 'RF' && ultimePos)) {
+    ultimePos = posizioni(p);
+    mappa.aggiorna(ultimePos);
+  } else if (mappa && !scenaGp) {
+    mappa.aggiorna(ultimePos);
+  }
 
   pittaTorre(p);
   aggiornaTorreScelta();
@@ -1060,6 +1071,7 @@ async function avviaScena(giroSosta) {
     durateVere: (L) => durate[L],
     velocita: velCorrente,
     profilo: profiloGiro ? (t) => profiloGiro.frazione(t) : null,
+    sospesa: (L) => fase(finestre, L) === 'RF',
     // ALLA BANDIERA LA SCENA RESTA, ma finita. Prima restava viva e basta, e siccome ogni
     // guardia della pagina testava `scenaGp` per verita', barra e frecce erano morte per
     // sempre e un secondo BOX ORA leggeva `posizione = nLap+1` piazzando una sosta al

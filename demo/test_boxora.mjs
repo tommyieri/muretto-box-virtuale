@@ -300,6 +300,43 @@ console.log('(j) la gara intera, giocata dal congelamento alla bandiera');
     // e il resto del campo NON si ferma con lui
     const tuttiFermi = storia.filter(d => d.length && d.every(x => x.lane != null)).length;
     controlla(tuttiFermi === 0, `la sosta non ferma il campo: ${tuttiFermi} fotogrammi con tutti in corsia`);
+
+    // MONACO: la gara sospesa. Il giro rosso ha una durata fissa di 5 s (scelta dichiarata),
+    // quindi l'orologio ci corre attraverso quindici volte piu' del normale. Senza il fermo
+    // i pallini sfrecciavano — 461 m per fotogramma, gli unici sopra i 200 m di tutte le
+    // undici gare — sotto un banner che diceva «Bandiera rossa».
+    {
+      const pm = prep.Monaco, rm = pm.race;
+      const rf = new Set([67, 68]);                       // neutralizzazione.json: rf [[67,68]]
+      const dm = computeDurations(rm.byLap, rm.n_laps, rf);
+      const em = eseguiRigioca({ prep: pm, pilota: 'LEC', freeze: 14,
+        soste: [{ giro: 15, mescola: 'HARD' }, { giro: 40, mescola: 'MEDIUM' }] });
+      const sm = simDaRigioca({ risultato: em.mio.risultato, race: rm, pilota: 'LEC', freeze: 14 });
+      const misura = (conFermo) => {
+        const st = []; ORA = 0; CODA.length = 0;
+        const g = creaGhostPlay({
+          sim: sm, coloreDi: () => '#fff',
+          pista: { pitFrazioni: { ingresso: 0.95, uscita: 0.05 },
+                   aggiorna: (d) => st.push(d.map(x => ({ f: x.f, lane: x.lane, ghost: x.ghost }))) },
+          onTower: () => {}, p0: 15, durataTot: 22, durateVere: (L) => dm[L], velocita: 40,
+          sospesa: conFermo ? (L) => rf.has(L) : null, onFine: () => {},
+        });
+        g.play();
+        for (let i = 0; i < 300 * 60; i += 1) { ORA += 1000 / 60; CODA.splice(0, CODA.length).forEach(fn => fn(ORA)); }
+        let prev = null, oltre = 0;
+        for (const dots of st) {
+          const me = dots.find(d => d.ghost);
+          if (!me || me.lane != null) { prev = null; continue; }
+          if (prev !== null) { let d = me.f - prev; if (d > 0.5) d -= 1; else if (d < -0.5) d += 1;
+            if (Math.abs(d) * 3337 > 200) oltre += 1; }
+          prev = me.f;
+        }
+        return oltre;
+      };
+      const senza = misura(false), con = misura(true);
+      controlla(con === 0 && senza > 0,
+        `sotto bandiera rossa i pallini stanno fermi: ${senza} fotogrammi sfrecciavano, ora ${con}`);
+    }
   } finally {
     globalThis.requestAnimationFrame = raf0; globalThis.cancelAnimationFrame = caf0;
     globalThis.fetch = fetch0;

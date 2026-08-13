@@ -203,7 +203,7 @@ export function classificaSim(C, p, opts = {}) {
 //           i rivali non reagiscono — e va detto. Senza giroRisposta: una fase sola, fino in fondo.
 export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro,
                                 giroRisposta = null, durataTot = 16, p0 = null,
-                                durateVere = null, velocita = 1, profilo = null }) {
+                                durateVere = null, velocita = 1, profilo = null, sospesa = null }) {
   const C = costruisciCum(sim);
   const FE = pista?.pitFrazioni?.ingresso ?? 0.95;
   // `sim.soste` = {sigla: [giri]} per TUTTO il campo; `sim.pitLap` resta il fantasma solo.
@@ -229,6 +229,7 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro
   // dall'ISTANTE corrente (non dal giro intero prima: era il salto all'indietro).
   let fase = 1;
   let rientrato = false;
+  let ultimiDots = null;      // l'ultimo fotogramma disegnato: serve alla gara sospesa
 
   // L'OROLOGIO E' QUELLO DELLA PAGINA-GARA (timeline.mjs::makeClock), non un secondo loop
   // rAF scritto qui. Prima ce n'erano due che facevano la stessa cosa — avanzare p nel
@@ -291,6 +292,23 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro
   }
 
   function frame(T, p) {
+    // GARA SOSPESA: i pallini stanno FERMI.
+    //
+    // Il giro sotto bandiera rossa contiene la sospensione vera (a Monaco ~38 minuti, cotti
+    // dentro il cum_time), e per non farla guardare `computeDurations` gli assegna una durata
+    // fissa di cinque secondi — scelta dichiarata. La conseguenza pero' era che in quei giri
+    // `p` corre quindici volte piu' del normale e i pallini sfrecciano intorno al circuito:
+    // misurato a Monaco, 461 metri di nastro per fotogramma sui giri 67 e 68, gli unici due
+    // di tutte le undici gare in cui il salto supera i 200 m.
+    //
+    // E mentre sfrecciavano, il banner diceva «Bandiera rossa». Una pagina che scrive «gara
+    // sospesa» sopra ventidue auto che corrono si contraddice da sola. Sotto rossa le auto
+    // sono ferme: qui restano dove sono, e l'orologio passa oltre senza portarsele dietro.
+    if (sospesa && ultimiDots && sospesa(Math.min(C.nLap, Math.floor(p)))) {
+      if (pista) pista.aggiorna(ultimiDots);
+      if (onTower) onTower(classificaSim(C, p, opts), { lap: Math.min(C.nLap, Math.floor(p)), p });
+      return;
+    }
     const stato = statoAl(C, T, opts);
     const dots = stato.map(s => ({
       // LA FRAZIONE DI TEMPO NON E' LA FRAZIONE DI NASTRO. Il profilo del circuito
@@ -307,6 +325,7 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro
       // e' ricostruita. Era l'unica pagina del sito che perdeva la distinzione.
       stimato: true,
     }));
+    ultimiDots = dots;
     if (pista) pista.aggiorna(dots);
     // IL CONTAGIRI USA floor COME IL REPLAY. Con Math.round, a p = 15,6 la scena scriveva
     // 16 mentre la barra diceva 15, e alla bandiera (p = nLap+1) usciva «GIRO 71 / 70»:
