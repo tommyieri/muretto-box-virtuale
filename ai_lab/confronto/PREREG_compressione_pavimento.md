@@ -87,6 +87,24 @@ pavimento deve mordere su **meno del 30%** dei giri compressi: se morde di più,
 consegnabile con questa forma e il problema è il modello, non il codice — si dichiara e si
 ferma, **non si tara il pavimento**.
 
+> **EMENDAMENTO C3, 13/08/2026 — scritto dopo aver misurato il FONDO, prima della
+> riparazione.** Misurando la colonna «prima» è venuto fuori che il kernel di oggi consegna κ
+> con uno scarto mediano di **0,0299**, cioè la soglia ±0,02 che avevo scritto **non la passa
+> nemmeno il codice attuale**: era mal specificata, e un cancello che boccia il fondo non
+> misura la riparazione. Lo dichiaro invece di spostarlo in silenzio.
+>
+> C3 diventa, ed è **più stretto** di quello che sostituisce:
+> **(a)** sui giri in cui il pavimento non morde, i cumulati devono essere **identici al bit**
+> a quelli di oggi — non entro una tolleranza: identici, perché la forma proposta lascia
+> `delta` intatto quando il vincolo non lega, e se qualcosa si muove lì la forma non è quella
+> che ho scritto;
+> **(b)** il pavimento morde su **meno del 30%** dei giri compressi. Misurato sul fondo come
+> limite superiore: **308 su 1396 = 22,1%** — la riparazione può solo ridurlo, perché alza i
+> tempi e riduce i distacchi da comprimere.
+>
+> Il cambio riguarda il **fondo**, non l'esito, e va nella direzione severa. Se avessi
+> allargato la tolleranza sarebbe stato l'opposto e non si sarebbe potuto fare.
+
 **C4 — il contro-fattuale diventa interrogabile.** I rifiuti di `rispostaLive` sullo stato
 contro-fattuale scendono **sotto il 5%** (oggi 26%, misurato su Ungheria/LEC, Spagna/VER,
 Miami/NOR, Austria/HAM). È il cancello di PRODOTTO: senza, il pannello non si può spostare
