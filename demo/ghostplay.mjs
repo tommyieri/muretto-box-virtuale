@@ -130,15 +130,19 @@ export function statoAl(C, T, { driver, pitLap, soste = null, FE = 0.95 }) {
     const g = giroDi(C.cum[d], leadL0, T);
     if (!g) continue;
     let box = null, lane = null, fermo = false;
+    // `tau` e' la frazione di tempo del giro spesa GUIDANDO. Su un giro normale coincide con
+    // fd; sul giro di sosta no, perche' li' una fetta del tempo se ne va in corsia box: senza
+    // rinormalizzare, il pallino resterebbe indietro per tutto il giro d'ingresso.
+    let tau = g.fd;
     if (dove[d]?.has(g.lap)) {
       const q = quotaBox(C, d, g.lap) ?? (1 - FE);
       const inizio = 1 - q;
       if (g.fd >= inizio) {
         box = 'in';
         ({ lane, fermo } = inCorsia(Math.min(1, (g.fd - inizio) / q)));
-      }
+      } else tau = g.fd / inizio;
     }
-    arr.push({ d, lap: g.lap, fd: g.fd, prog: g.lap + g.fd, box, lane, fermo, inPit: box === 'in' });
+    arr.push({ d, lap: g.lap, fd: g.fd, tau, prog: g.lap + g.fd, box, lane, fermo, inPit: box === 'in' });
   }
   arr.sort((a, b) => b.prog - a.prog);
   return arr;
@@ -199,7 +203,7 @@ export function classificaSim(C, p, opts = {}) {
 //           i rivali non reagiscono — e va detto. Senza giroRisposta: una fase sola, fino in fondo.
 export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro,
                                 giroRisposta = null, durataTot = 16, p0 = null,
-                                durateVere = null, velocita = 1 }) {
+                                durateVere = null, velocita = 1, profilo = null }) {
   const C = costruisciCum(sim);
   const FE = pista?.pitFrazioni?.ingresso ?? 0.95;
   // `sim.soste` = {sigla: [giri]} per TUTTO il campo; `sim.pitLap` resta il fantasma solo.
@@ -277,7 +281,14 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro
   function frame(T, p) {
     const stato = statoAl(C, T, opts);
     const dots = stato.map(s => ({
-      f: s.fd, box: s.box, lane: s.lane, colore: coloreDi(s.d) || 'var(--dim)', sigla: s.d,
+      // LA FRAZIONE DI TEMPO NON E' LA FRAZIONE DI NASTRO. Il profilo del circuito
+      // (profilo_giro.mjs, misurato dal GPS di questa gara) fa la traduzione: senza, la scena
+      // assume velocita' uniforme e i pallini stanno 250 m fuori posto — che e' esattamente
+      // il salto che si vedeva premendo BOX ORA, quando si passava dal GPS a questa stima.
+      // `prog` resta in TEMPO: e' quello che ordina il campo, e ordinare per distanza
+      // percorsa a giri diversi non vorrebbe dire niente.
+      f: profilo ? profilo(s.tau) : s.fd,
+      box: s.box, lane: s.lane, colore: coloreDi(s.d) || 'var(--dim)', sigla: s.d,
       ghost: s.d === opts.driver, dim: s.d !== opts.driver, pit: s.fermo,
       // I PALLINI DELLA SCENA SONO STIMATI, e da oggi lo dicono. Il replay li disegna
       // pieni perche' la posizione viene dal GPS; qui viene dai cumulati per giro, cioe'
