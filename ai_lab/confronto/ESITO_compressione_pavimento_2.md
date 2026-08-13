@@ -1,9 +1,12 @@
-# Esito 2 — il pavimento sulla compressione: **cinque cancelli su sei, e il sesto è un altro difetto**
+# Esito 2 — il pavimento sulla compressione: **sei cancelli su sei. ACCESA**
 
 **Data: 14/08/2026.** Misura dei cancelli di `PREREG_compressione_pavimento_2.md`, eseguita
 dopo il sigillo (`5f07f3e`, che non tocca né `kernel.mjs` né `costruttore.mjs`).
 
-**La riparazione NON è accesa.** D6 è rosso, e la ragione non è la compressione.
+**D6 è uscito rosso alla prima misura**, e non per la compressione: il banco del sito ha
+trovato un difetto della SCENA che il difetto riparato teneva nascosto. È stato riparato con
+la scelta del PO (14/08: «anima la ripartenza»), e il cancello è tornato verde **sul merito**,
+senza toccarlo. Il racconto sta più sotto, perché è la parte che vale.
 
 ---
 
@@ -18,7 +21,7 @@ dopo il sigillo (`5f07f3e`, che non tocca né `kernel.mjs` né `costruttore.mjs`
 | **D4** | rifiuti sul contro-fattuale | **26,6%** (17/64) | **0%** (0/64) | **VERDE** |
 | **D5(a)** | confronto appaiato contro la realtà | — | **20 migliora · 16 peggiora · 157 pari** | **VERDE** |
 | **D5(b)** | i tre limiti pubblicati | G1 1 · G2 87,6% · G3 −0,041 | **1 · 87,6% · −0,021** | **VERDE** |
-| **D6** | niente regressioni | 4 banchi verdi | **test_boxora ROSSO** (1 su 62) | **ROSSO** |
+| **D6** | niente regressioni | 4 banchi verdi | **62/62 · suite 42 PASSA** | **VERDE** (dopo la riparazione della scena) |
 
 ## Che cosa fa il pavimento
 
@@ -67,7 +70,7 @@ censimento. Quindi il confronto è omogeneo e il tasso **sale davvero**: 31,5% �
 il 50% dichiarato: κ resta consegnabile in un giro. *L'obiezione era giusta come metodo e
 sbagliata nel numero: il 6.384 proposto non si riproduce.*
 
-## D6, e perché il difetto non è la compressione
+## D6: il difetto che ne nascondeva un altro
 
 `test_boxora` fallisce **un controllo su 62**: «sotto bandiera rossa i pallini stanno fermi».
 Il fotogramma che sfugge è a **p = 69,002** — il **primo dopo** la rossa, non dentro — e il
@@ -90,22 +93,41 @@ sottraeva tempo inesistente, in quantità diversa per ogni pilota, e i pallini f
 sfrecciare su tre fotogrammi invece che su uno. Un rattoppo che peggiora si toglie, non si
 tiene perché il numero scende.
 
-**La riparazione vera è una scelta di prodotto, non un dettaglio**: l'orologio della scena e
-i pallini devono stare sullo stesso tempo. O l'orologio segue il contro-fattuale (e allora la
-scena non «corre come la gara vera», che era una scelta dichiarata il 10/08), o i pallini
-seguono la gara vera (e allora non è più la tua gara). Non la decido io stanotte, e per
-questo la riparazione resta **spenta**.
+**La scelta era di prodotto, e l'ha fatta il PO** (14/08). Tre strade: un orologio solo, che
+però toglie alla scena il «a 1x un giro dura quello che è durato» scelto il 10/08; far correre
+il contro-fattuale sotto rossa, che rimette la contraddizione chiusa il 13/08 (il banner dice
+«gara sospesa» sopra le auto che si muovono); oppure **animare la ripartenza**. È stata scelta
+la terza.
+
+Il recupero si spalma su **0,15 di giro del battistrada** (`RIPRESA_P` in `ghostplay.mjs`) —
+in `p` e non in millisecondi, così non dipende dal frame-rate né dalla velocità scelta, come
+tutto il resto della scena. A 40x fa circa quattro decimi di secondo: si legge come un
+movimento, non come un salto. La forma è `vero − scarto₀·(1−u)`, che garantisce che il
+pallino non torni mai indietro — `vero` avanza e lo scarto si chiude, quindi la somma cresce
+sempre.
+
+**E va detto cos'è**: una TRANSIZIONE, non una misura. Durante quei decimi di secondo la
+posizione del pallino non è dove l'auto era. È il modo in cui la scena torna a dirlo senza
+uno scatto, ed è scritto nel codice accanto alla riga che lo fa.
 
 ## Dove sta tutto adesso
 
-Ramo `claude/compressione-riparata`, **non mergiato**. Contiene il kernel riparato, il
-trasporto al motore vendorizzato (verificato: 12 moduli identici), i banchi di misura e
-questo referto. `run_suite.mjs` non ha regressioni (42 PASSA, le sole rosse dichiarate);
-`test_ese`, `test_ghostplay`, `test_parita_live` verdi.
+Ramo `claude/compressione-riparata`. Kernel riparato, trasporto al motore vendorizzato
+(verificato: 12 moduli identici all'originale), i banchi di misura, la scena riparata e
+questo referto.
 
-**Perché accenderla vale la pena, quando il sesto cancello si chiude**: è ciò che separa il
-pannello di oggi — che risponde sulla gara vera anche quando il giocatore l'ha cancellata —
-dal pannello che risponde alla **sua**.
+- `run_suite.mjs`: **42 PASSA**, nessuna regressione (le sole rosse sono le due di s15 e le
+  due di s25, dichiarate in `ROSSE_DICHIARATE.json`).
+- `test_boxora` **62/62**, `test_ese`, `test_ghostplay`, `test_parita_live` verdi.
+- **s30 ha due sonde nuove** sul pavimento: che spento sia spento (assente ≡ null ≡ un valore
+  che nessuno tocca ⇒ bit-identico), che acceso su tutto **annulli la compressione invece di
+  aggiungere tempo** — è il `Math.min(0, …)`, la metà della forma che si dimentica per prima —
+  e che un valore malformato o negativo esploda invece di passare in silenzio.
+- Il pin di `test_boxora` sezione (k) passa da «può solo scendere da 4» a **zero**: un cancello
+  che accetta ancora quattro giri impossibili non sorveglia più niente.
+
+**Perché valeva la pena**: è ciò che separa il pannello di oggi — che risponde sulla gara vera
+anche quando il giocatore l'ha cancellata — dal pannello che risponde alla **sua**.
 
 ## Due errori miei, elencati perché restino
 

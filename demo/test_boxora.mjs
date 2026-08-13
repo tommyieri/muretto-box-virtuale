@@ -375,14 +375,18 @@ console.log('(k) lo stato contro-fattuale: il motore sa rispondere sulla TUA gar
   controlla(prima?.posizione === primaTuo?.posizione && prima?.davanti?.drv === primaTuo?.davanti?.drv,
     'prima del congelamento le due risposte coincidono: non hai ancora toccato niente');
 
-  // IL DIFETTO CHE QUESTO HA FATTO EMERGERE, e che qui si tiene fermo perche' non
-  // peggiori. Rimettendo la traccia del kernel DENTRO il kernel — cosa che nessuno aveva
-  // mai fatto — il Direttore rifiuta: sotto neutralizzazione la compressione produce giri
-  // piu' veloci del giro piu' veloce della gara. Misurato il 13/08 su tutte e 11 le gare:
-  // 305 giri sotto il pavimento, il 100% dentro una finestra SC/VSC/rossa.
-  // Finche' non e' riparato (e' fisica del kernel: vuole la sua preregistrazione) questo
-  // numero puo' solo SCENDERE.
-  const NOTI = 4;             // misurato il 13/08 su QUESTO caso (Ungheria/LEC, freeze 14, sosta al 15)
+  // IL DIFETTO CHE QUESTO HA FATTO EMERGERE, ADESSO RIPARATO — e qui si tiene a ZERO.
+  //
+  // Rimettendo la traccia del kernel DENTRO il kernel — cosa che nessuno aveva mai fatto —
+  // il Direttore rifiutava: sotto neutralizzazione la compressione produceva giri piu'
+  // veloci del giro piu' veloce della gara. Misurato il 13/08 sul percorso della pagina
+  // (305 giri) e il 14/08 a gara intera con le finestre vere (5.815 giri su 193 casi, piu'
+  // 24 di durata NEGATIVA a Monaco), il 100% dentro una finestra SC/VSC/rossa.
+  //
+  // Il pavimento sulla compressione (PREREG_compressione_pavimento_2.md) li porta a zero, e
+  // da oggi la soglia e' ZERO: non «puo' solo scendere», ma «non ce ne devono essere».
+  // Un cancello che accetta ancora quattro giri impossibili non sorveglia piu' niente.
+  const NOTI = 0;             // riparato il 14/08: il kernel non emette piu' un giro impossibile
   let pav = Infinity;
   for (const l of race.laps) for (const c of Object.values(l.cars)) {
     if (typeof c.lap_time === 'number' && c.lap_time < pav) pav = c.lap_time;
@@ -393,7 +397,7 @@ console.log('(k) lo stato contro-fattuale: il motore sa rispondere sulla TUA gar
     for (const c of Object.values(bl[L])) if (typeof c.lap_time === 'number' && c.lap_time < pav - 1.5) sotto += 1;
   }
   controlla(sotto <= NOTI,
-    `giri sotto il pavimento del circuito nel contro-fattuale: ${sotto} (noti ${NOTI}, tutti in neutralizzazione — può solo scendere)`);
+    `nessun giro sotto il pavimento del circuito nel contro-fattuale: ${sotto} (erano 4 su questo caso prima del pavimento)`);
 }
 
 /* ─────────────── (i) il profilo del giro: la scena non va a velocità uniforme */

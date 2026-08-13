@@ -110,6 +110,11 @@ function quotaBox(C, d, lap) {
 // La quota ferma e' il 16% del transito: su una perdita da ~21 s fa ~3,4 s sulla piazzola,
 // che e' l'ordine di grandezza di una sosta vera. Il resto e' corsia a velocita' limitata.
 const U_BOX = 0.42, U_VIA = 0.58;
+// Quanto dura la ripartenza dopo una bandiera rossa, in frazione di giro del battistrada.
+// In `p` e non in millisecondi: cosi' non dipende dal frame-rate ne' dalla velocita' scelta,
+// come tutto il resto della scena. A 40x e con un giro da 103 s fa circa quattro decimi di
+// secondo di orologio da polso — abbastanza da leggersi come un movimento, non come un salto.
+const RIPRESA_P = 0.15;
 function inCorsia(u) {
   if (u < U_BOX) return { lane: 0.5 * (u / U_BOX), fermo: false };
   if (u < U_VIA) return { lane: 0.5, fermo: true };
@@ -230,6 +235,8 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro
   let fase = 1;
   let rientrato = false;
   let ultimiDots = null;      // l'ultimo fotogramma disegnato: serve alla gara sospesa
+  let eraSospesa = false;     // il fotogramma prima era sotto rossa?
+  let ripresa = null;         // la transizione dopo la rossa (vedi RIPRESA_P)
 
   // L'OROLOGIO E' QUELLO DELLA PAGINA-GARA (timeline.mjs::makeClock), non un secondo loop
   // rAF scritto qui. Prima ce n'erano due che facevano la stessa cosa — avanzare p nel
@@ -305,10 +312,30 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro
     // sospesa» sopra ventidue auto che corrono si contraddice da sola. Sotto rossa le auto
     // sono ferme: qui restano dove sono, e l'orologio passa oltre senza portarsele dietro.
     if (sospesa && ultimiDots && sospesa(Math.min(C.nLap, Math.floor(p)))) {
+      eraSospesa = true;
       if (pista) pista.aggiorna(ultimiDots);
       if (onTower) onTower(classificaSim(C, p, opts), { lap: Math.min(C.nLap, Math.floor(p)), p });
       return;
     }
+    // LA RIPARTENZA SI ANIMA, non si teletrasporta (14/08/2026).
+    //
+    // Tenere fermi i pallini sotto rossa e' giusto — sotto rossa le auto sono ferme — ma il
+    // tempo sotto continua a scorrere: l'orologio della scena da' al giro rosso cinque
+    // secondi (letti dalla gara VERA), mentre i cumulati su cui vivono i pallini sono quelli
+    // SIMULATI, dove la sospensione non esiste affatto e quei giri durano i loro 70-80 s.
+    // Quindi al primo fotogramma dopo la rossa tutto lo scarto si presentava insieme:
+    // misurato a Monaco/LEC, 679 metri in un fotogramma, esattamente a p = 69,002.
+    //
+    // Il difetto era COPERTO DA UN ALTRO: prima del pavimento sulla compressione il kernel
+    // produceva li' giri di durata negativa, che spostavano il salto sotto la soglia del
+    // banco. Riparata la fisica, questo e' venuto a galla.
+    //
+    // Qui il recupero si spalma su una frazione di giro dichiarata invece che su un
+    // fotogramma. E' una TRANSIZIONE, non una misura: durante quei giri la posizione del
+    // pallino non e' dove l'auto era — e' il modo in cui la scena torna a dirlo senza uno
+    // scatto. La forma `vero − scarto0·(1−u)` garantisce che il pallino non torni mai
+    // indietro: `vero` avanza e lo scarto si chiude, quindi la somma cresce sempre.
+    if (eraSospesa) { eraSospesa = false; ripresa = { p0: p, scarti: null }; }
     const stato = statoAl(C, T, opts);
     const dots = stato.map(s => ({
       // LA FRAZIONE DI TEMPO NON E' LA FRAZIONE DI NASTRO. Il profilo del circuito
@@ -325,6 +352,25 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro
       // e' ricostruita. Era l'unica pagina del sito che perdeva la distinzione.
       stimato: true,
     }));
+    if (ripresa) {
+      // gli scarti si fotografano al primo fotogramma dopo la rossa, e poi si chiudono
+      if (ripresa.scarti === null) {
+        ripresa.scarti = new Map();
+        const tenuti = new Map((ultimiDots ?? []).map((d) => [d.sigla, d]));
+        for (const d of dots) {
+          const prima = tenuti.get(d.sigla);
+          if (!prima || prima.lane != null || d.lane != null) continue;
+          ripresa.scarti.set(d.sigla, ((d.f - prima.f) % 1 + 1) % 1);   // sempre in avanti
+        }
+      }
+      const u = Math.min(1, (p - ripresa.p0) / RIPRESA_P);
+      for (const d of dots) {
+        const s = ripresa.scarti.get(d.sigla);
+        if (s == null || d.lane != null) continue;
+        d.f = ((d.f - s * (1 - u)) % 1 + 1) % 1;
+      }
+      if (u >= 1) ripresa = null;
+    }
     ultimiDots = dots;
     if (pista) pista.aggiorna(dots);
     // IL CONTAGIRI USA floor COME IL REPLAY. Con Math.round, a p = 15,6 la scena scriveva

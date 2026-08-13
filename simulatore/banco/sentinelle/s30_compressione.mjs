@@ -43,6 +43,34 @@ b.uguale('kappa = 1 su ogni giro ≡ spento',
   corri({ neutralizzazione: { perGiro: { [LF + 1]: 1, [LF + 2]: 1 } } }).cum, senza.cum);
 b.uguale('mappa vuota ≡ spento', corri({ neutralizzazione: { perGiro: {} } }).cum, senza.cum);
 
+// ────────────────── (a-bis) IL PAVIMENTO: spento e' spento, e acceso morde davvero
+// Stessa famiglia della sonda qui sopra, per l'ingresso aggiunto il 14/08
+// (PREREG_compressione_pavimento_2.md, cancello D6). Il pavimento e' il giro verde piu'
+// veloce del circuito: la compressione non puo' consegnare kappa producendo un giro piu'
+// rapido di quello. Senza pavimento il ramo non deve esistere; con un pavimento assurdo
+// deve legare su tutto; con un valore malformato deve ESPLODERE, non passare in silenzio.
+{
+  const FINO = LF + 3;
+  const finestra = {}; for (let l = LF + 1; l <= FINO; l += 1) finestra[l] = 0.7;
+  const conKappa = corri({ neutralizzazione: { perGiro: finestra } });
+  b.uguale('pavimento assente ≡ pavimento null',
+    corri({ neutralizzazione: { perGiro: finestra, pavimento: null } }).cum, conKappa.cum);
+  // 1 s: nessun giro di questo banco ci arriva sotto, quindi il vincolo non lega mai
+  b.uguale('un pavimento che nessuno tocca non cambia un bit',
+    corri({ neutralizzazione: { perGiro: finestra, pavimento: 1 } }).cum, conKappa.cum);
+  // Un pavimento sopra OGNI giro (200 s contro i ~90 di questo banco) annulla il regalo
+  // per intero, e i numeri tornano quelli senza compressione. NON alza i giri a 200: il
+  // vincolo cancella il tempo REGALATO, non ne aggiunge di nuovo — e' il `Math.min(0, …)`
+  // del kernel, ed e' la meta' della forma che si dimentica per prima.
+  const alto = corri({ neutralizzazione: { perGiro: finestra, pavimento: 200 }, traccia: true });
+  b.verifica('un pavimento sopra ogni giro lega su tutti i compressi', alto.clampPavimento > 0);
+  b.uguale('e annulla la compressione invece di aggiungere tempo', alto.cum, senza.cum);
+  b.esplode('un pavimento malformato non passa in silenzio',
+    () => corri({ neutralizzazione: { perGiro: finestra, pavimento: 'presto' } }));
+  b.esplode('un pavimento negativo non passa in silenzio',
+    () => corri({ neutralizzazione: { perGiro: finestra, pavimento: -3 } }));
+}
+
 // ──────────────────────────── (b)(c)(d) la forma, dentro e fuori dalla finestra
 {
   const KAPPA = 0.7;
