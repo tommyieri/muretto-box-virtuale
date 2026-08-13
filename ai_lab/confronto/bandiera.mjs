@@ -133,7 +133,7 @@ export function pianiVeriDi(nomeSito) {
  * ATTENZIONE al perimetro: s25_difesa fa fallire la suite se `pianiRivali` compare in un
  * percorso di web/, demo/ o scenario/. E' un ingresso di LABORATORIO e deve restare qui.
  */
-export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = null, tetto = null, ritiriRivali = undefined, neutralizzazioneVera = undefined, ripartenzaGiri = undefined } = {}) {
+export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = null, tetto = null, ritiriRivali = undefined, neutralizzazioneVera = undefined, ripartenzaGiri = undefined, conTraccia = false } = {}) {
   const r = riga(nomeSito, pilota);
   if (!r) return { saltato: 'nessuna riga in arrivi_2026.csv' };
   if (!r.classificato) return { saltato: `non classificato (${r.tipo_arrivo})`, tipo_arrivo: r.tipo_arrivo };
@@ -222,6 +222,16 @@ export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = nul
     oltre_orizzonte: (sc.assunzioni ?? []).some((a) => (a.codice ?? a) === 'OLTRE_ORIZZONTE_VALIDATO'),
     director_fatal: fatal.length,
     traccia_fino_a: prev.giro_max,
+    // STRUMENTAZIONE, non fisica (13/08). Due campi in piu' nel referto, additivi:
+    // nessun numero pubblicato cambia, perche' nessuno di questi due entra in un
+    // conto. Servono a `pavimento_gara_intera.mjs` per due cose che senza di loro
+    // non si possono verificare: quanti giri di questo caso sono davvero compressi
+    // (un cancello che gira dove la compressione non c'e' e' vuoto, ed e' l'errore
+    // che ha reso C2 impassabile), e i tempi sul giro con cui contare i giri sotto
+    // il pavimento sulla STESSA corsa che produce l'errore di posizione.
+    neutra_giri: sc.neutralizzazione ? Object.keys(sc.neutralizzazione.perGiro).length : 0,
+    neutra_perGiro: sc.neutralizzazione ? sc.neutralizzazione.perGiro : null,
+    traccia: conTraccia ? esito.risultato.traccia : undefined,
   };
 }
 
