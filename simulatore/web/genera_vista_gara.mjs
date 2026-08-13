@@ -338,6 +338,24 @@ function main() {
   scriviManifest(dove);
   console.log(`\n${totScen} risposte pre-calcolate su ${tutte.length} gare `
     + `(il manifest ne elenca ${manifestDaDisco(dove).gare.length}, cioe' tutte quelle su disco)`);
+
+  // CHIEDERE UNA GARA E NON PRODURLA E' UN GUASTO, NON UN SUCCESSO (regola 7).
+  //
+  // Fino al 13/08/2026 questo generatore usciva ZERO qualunque cosa fosse successo. Chiamato
+  // su una gara che nei dati del motore non c'e' ancora — cioe' esattamente la gara appena
+  // corsa, se il ponte non ha ancora girato — stampava «0 risposte su 0 gare» e tornava
+  // successo. In auto_gara.py stava PRIMA del ponte, quindi la domenica sera la gara nuova
+  // nasceva col pannello muto e nessuno lo sapeva: il log diceva che era andato tutto bene.
+  //
+  // Adesso: se qualcuno ha nominato delle gare e una non ha prodotto risposte, si esce 1.
+  // Il ramo senza argomenti (`--sincronizza`, tutte le gare) resta com'era.
+  const mancate = soloQueste.filter((g) => !tutte.includes(g));
+  if (mancate.length) {
+    console.error(`\nNESSUNA RISPOSTA per: ${mancate.join(', ')}. `
+      + `Queste gare non sono nei dati del motore: il ponte `
+      + `(provenienza/aggiorna_gara_2026.mjs) deve girare PRIMA di questo generatore.`);
+    process.exitCode = 1;
+  }
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) main();

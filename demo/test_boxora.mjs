@@ -343,6 +343,59 @@ console.log('(j) la gara intera, giocata dal congelamento alla bandiera');
   }
 }
 
+/* ───── (k) LA TUA GARA nella forma del motore, e il difetto che ha fatto emergere */
+console.log('(k) lo stato contro-fattuale: il motore sa rispondere sulla TUA gara');
+{
+  const { byLapControFattuale } = await import('./stato_contro.mjs');
+  const { rispostaLive } = await import('./ponte_live.mjs');
+  const CTX = JSON.parse(leggi('vendor/simulatore/motore/contesto_live.json'));
+  const race = prep.Ungheria.race;
+  const freeze = 14, mie = [{ giro: 15, mescola: 'HARD' }];
+  const e = eseguiRigioca({ prep: prep.Ungheria, pilota: 'LEC', freeze, soste: mie });
+  const bl = byLapControFattuale({ traccia: e.mio.risultato.traccia, byLapVero: race.byLap,
+    freeze, soggetto: 'LEC', mieSoste: mie, sosteVere: prep.Ungheria.sosteVere });
+
+  // il passato e' il passato
+  controlla(JSON.stringify(bl[10]) === JSON.stringify(race.byLap[10]),
+    'fino al congelamento lo stato è quello VERO, non ricostruito');
+  // il contorno si deriva: mescola, stint, out-lap
+  const l16 = bl[16]?.LEC, l30 = bl[30]?.LEC;
+  controlla(l16?.out_lap === true && l16?.compound === 'HARD' && l16?.stint === 2,
+    `il giro dopo la sosta è un out-lap con la gomma nuova (${l16?.compound}, stint ${l16?.stint})`);
+  controlla(l30?.compound === 'HARD' && typeof l30?.tyre_age === 'number' && l30.tyre_age > 10,
+    `più avanti la gomma è ancora quella e invecchia (${l30?.compound}, ${l30?.tyre_age} giri)`);
+  // e il motore risponde DIVERSAMENTE sulla tua gara
+  const q = (byLap, L) => rispostaLive({ byLap, nGiriGara: race.n_laps, nomeGara: 'Ungheria',
+    pilota: 'LEC', freezeLap: L, contestoLive: CTX })?.pannello;
+  const vero = q(race.byLap, 39), tuo = q(bl, 39);
+  controlla(!!vero && !!tuo && (vero.posizione !== tuo.posizione || vero.davanti?.drv !== tuo.davanti?.drv),
+    `al giro 40 la risposta cambia: gara vera P${vero?.posizione} davanti ${vero?.davanti?.drv}, `
+    + `tua P${tuo?.posizione} davanti ${tuo?.davanti?.drv}`);
+  const prima = q(race.byLap, 9), primaTuo = q(bl, 9);
+  controlla(prima?.posizione === primaTuo?.posizione && prima?.davanti?.drv === primaTuo?.davanti?.drv,
+    'prima del congelamento le due risposte coincidono: non hai ancora toccato niente');
+
+  // IL DIFETTO CHE QUESTO HA FATTO EMERGERE, e che qui si tiene fermo perche' non
+  // peggiori. Rimettendo la traccia del kernel DENTRO il kernel — cosa che nessuno aveva
+  // mai fatto — il Direttore rifiuta: sotto neutralizzazione la compressione produce giri
+  // piu' veloci del giro piu' veloce della gara. Misurato il 13/08 su tutte e 11 le gare:
+  // 305 giri sotto il pavimento, il 100% dentro una finestra SC/VSC/rossa.
+  // Finche' non e' riparato (e' fisica del kernel: vuole la sua preregistrazione) questo
+  // numero puo' solo SCENDERE.
+  const NOTI = 4;             // misurato il 13/08 su QUESTO caso (Ungheria/LEC, freeze 14, sosta al 15)
+  let pav = Infinity;
+  for (const l of race.laps) for (const c of Object.values(l.cars)) {
+    if (typeof c.lap_time === 'number' && c.lap_time < pav) pav = c.lap_time;
+  }
+  let sotto = 0;
+  for (const L of Object.keys(bl)) {
+    if (+L <= freeze) continue;
+    for (const c of Object.values(bl[L])) if (typeof c.lap_time === 'number' && c.lap_time < pav - 1.5) sotto += 1;
+  }
+  controlla(sotto <= NOTI,
+    `giri sotto il pavimento del circuito nel contro-fattuale: ${sotto} (noti ${NOTI}, tutti in neutralizzazione — può solo scendere)`);
+}
+
 /* ─────────────── (i) il profilo del giro: la scena non va a velocità uniforme */
 console.log('(i) il profilo tempo→distanza del circuito');
 {
