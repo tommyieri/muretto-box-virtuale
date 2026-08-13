@@ -45,9 +45,13 @@ fastf1.Cache.enable_cache(os.path.expanduser('~/muretto_shared/ff1_cache'))
 
 ANNO = 2026
 N_PUNTI = 500
-MAX_GAP_S = 1.5
+MAX_GAP_S = 1.5           # fra due rilevazioni DISTINTE, non fra due campioni
 MAX_CHIUSURA_M = 60.0
-MIN_CAMPIONI = 100
+MIN_CAMPIONI = 100        # posizioni DISTINTE: una ripetizione non e' una misura
+# nessuna vettura fa piu' di ~94 m/s: sopra i 150 m fra due rilevazioni distinte la
+# polilinea non segue piu' il tracciato, lo taglia. Misurato: i giri sani stanno sotto
+# i 105 m (Spa 2026, il piu' veloce), l'Ungheria 2026 arriva a 347 m.
+MAX_CORDA_M = 150.0
 LUNGHEZZA_M = (3000.0, 8000.0)
 
 
@@ -57,27 +61,67 @@ def carica_registro():
 
 
 def valida_giro(pos):
-    """Controlli di qualita' sul pos-data di un giro. Ritorna (ok, motivo, xy)."""
+    """Controlli di qualita' sul pos-data di un giro. Ritorna (ok, motivo, xy, diagnostica).
+
+    UNA RIPETIZIONE NON E' UNA MISURA, e per questo i controlli girano sulle posizioni
+    DISTINTE. Quando FastF1 non ha una posizione nuova RIPETE l'ultima: il feed parla ma
+    non sa niente di nuovo. All'Ungheria 2026 il 92% dei campioni di un giro sono
+    ripetizioni — restano 26 posizioni vere in 82 secondi — e la polilinea che ne esce
+    non e' un circuito: e' un poligono di 26 lati che taglia le curve con corde fino a
+    347 m, lungo 3.650 m invece di 4.326.
+
+    Quel giro passava tutti e cinque i vecchi controlli. `max(diff(t)) > 1,5 s` guarda i
+    BUCHI (campioni che mancano) e una tenuta non e' un buco: i campioni ci sono tutti,
+    puntuali, e ripetono. La lunghezza 3.650 m stava dentro la finestra 3-8 km, pensata
+    per distinguere un circuito da un errore, non per accorgersi che ne manca il 16%.
+    Il buco che conta e' quello fra due cose che il feed sapeva davvero.
+
+    Il nastro che ne usciva non e' solo brutto da vedere: e' il RIGHELLO su cui
+    gen_replay.py misura la frazione di giro di ogni vettura. Dove il righello taglia la
+    curva, la frazione non avanza e il pallino si ferma in pista (misurato: fattore 0,000
+    fra la frazione 0,825 e la 0,875 dell'Hungaroring, cioe' l'ingresso dell'ultimo
+    settore). Vedi la testa di gen_replay.py.
+    """
     if pos is None or len(pos) < MIN_CAMPIONI:
-        return False, f'campioni insufficienti ({0 if pos is None else len(pos)})', None
+        return False, f'campioni insufficienti ({0 if pos is None else len(pos)})', None, {}
     t = pos['Time'].dt.total_seconds().to_numpy()
-    if np.max(np.diff(t)) > MAX_GAP_S:
-        return False, f'buco temporale {np.max(np.diff(t)):.1f}s', None
     xy = np.column_stack([pos['X'].to_numpy(float), pos['Y'].to_numpy(float)])
     if np.any(~np.isfinite(xy)):
-        return False, 'coordinate non finite', None
+        return False, 'coordinate non finite', None, {}
+    diverso = np.ones(len(xy), dtype=bool)
+    diverso[1:] = (np.diff(xy[:, 0]) != 0) | (np.diff(xy[:, 1]) != 0)
+    n_grezzi = len(xy)
+    t, xy = t[diverso], xy[diverso]
+    tenute = 1.0 - len(xy) / n_grezzi
+    diag = {'campioni_gps': n_grezzi, 'campioni_distinti': int(len(xy)),
+            'tenute_pct': round(100 * tenute, 1)}
+    # da qui in poi xy si restituisce SEMPRE (serve a chi il nastro ce l'ha gia' e vuole
+    # solo sapere se passerebbe i controlli di oggi); e' `ok` a dire se e' utilizzabile.
+    if len(xy) < MIN_CAMPIONI:
+        return False, (f'solo {len(xy)} posizioni distinte su {n_grezzi} '
+                       f'({100 * tenute:.0f}% tenute del feed)'), xy, diag
+    buco = float(np.max(np.diff(t))) if len(t) > 1 else 0.0
+    diag['buco_max_distinti_s'] = round(buco, 2)
+    if buco > MAX_GAP_S:
+        return False, f'buco fra due rilevazioni distinte ({buco:.1f}s)', xy, diag
     chiusura_m = float(np.hypot(*(xy[0] - xy[-1]))) / 10.0
     if chiusura_m > MAX_CHIUSURA_M:
-        return False, f'anello non chiuso ({chiusura_m:.0f} m)', None
+        return False, f'anello non chiuso ({chiusura_m:.0f} m)', xy, diag
     seg = np.hypot(*np.diff(xy, axis=0).T)
     lung_m = float(seg.sum()) / 10.0
+    diag['corda_max_m'] = round(float(seg.max()) / 10.0, 1)
+    diag['lunghezza_grezza_m'] = round(lung_m, 1)
     if not (LUNGHEZZA_M[0] <= lung_m <= LUNGHEZZA_M[1]):
-        return False, f'lunghezza implausibile ({lung_m:.0f} m)', None
-    return True, '', xy
+        return False, f'lunghezza implausibile ({lung_m:.0f} m)', xy, diag
+    if diag['corda_max_m'] > MAX_CORDA_M:
+        return False, (f'corda troppo lunga fra due rilevazioni '
+                       f'({diag["corda_max_m"]:.0f} m): taglierebbe una curva'), xy, diag
+    return True, '', xy, diag
 
 
-def scegli_giro(session):
-    """Il giro valido piu' veloce con telemetria pulita (criterio in testa al file)."""
+def scegli_giro(session, verboso=False):
+    """Il giro valido piu' veloce con telemetria pulita (criterio in testa al file).
+    Ritorna (lap, xy, diagnostica) — la diagnostica finisce nella targhetta del file."""
     laps = session.laps
     laps = laps[laps['LapTime'].notna()]
     if 'IsAccurate' in laps.columns and laps['IsAccurate'].any():
@@ -85,6 +129,7 @@ def scegli_giro(session):
     laps = laps.copy()
     laps['_ord_drv'] = laps['DriverNumber'].astype(str)
     laps = laps.sort_values(['LapTime', '_ord_drv', 'LapNumber'])
+    motivi = {}
     for _, lap in laps.iterrows():
         try:
             pos = lap.get_pos_data()
@@ -92,10 +137,67 @@ def scegli_giro(session):
                 pos = pos[pos['Status'] == 'OnTrack']
         except Exception:
             continue
-        ok, motivo, xy = valida_giro(pos)
+        ok, motivo, xy, diag = valida_giro(pos)
         if ok:
-            return lap, xy
-    return None, None
+            return lap, xy, diag
+        motivi[motivo.split('(')[0].strip()] = motivi.get(motivo.split('(')[0].strip(), 0) + 1
+    if verboso and motivi:
+        for m, q in sorted(motivi.items(), key=lambda kv: -kv[1]):
+            print(f'      scartati {q} giri: {m}')
+    return None, None, {}
+
+
+def giro_del_disegno(nome, session=None, anno=ANNO):
+    """IL RIGHELLO E' UNO SOLO: il nastro che la pagina DISEGNA.
+
+    pista_<gara>.json porta in targhetta il giro esatto da cui la geometria e' stata
+    ricavata (evento, sessione, pilota, giro). Chi deve MISURARE qualcosa su quel nastro
+    — la frazione di giro del replay, i canali dell'overlay telemetrico — deve ripartire
+    da QUEL giro, non ri-sceglierne uno per conto suo.
+
+    NON E' PIGNOLERIA. All'Ungheria pista_Ungheria.json viene dal 2025 (il feed 2026 non
+    ha un giro con GPS utilizzabile) mentre gen_replay.py ri-sceglieva dal 2026: per una
+    stagione intera il replay ha misurato le frazioni su un righello diverso da quello
+    disegnato, e la sua targhetta dichiarava «stesso giro di riferimento» — che era falso.
+
+    Ritorna (lap, xy_distinti, targhetta_pista) oppure (None, None, {}) se la pista non
+    c'e' o il giro dichiarato non e' piu' recuperabile.
+    """
+    perc = os.path.join('demo', 'data', f'pista_{nome}.json')
+    if not os.path.exists(perc):
+        return None, None, {}
+    with open(perc) as f:
+        pista = json.load(f)
+    rif = pista.get('sorgente') or {}
+    if not rif.get('pilota') or rif.get('giro') is None:
+        return None, None, {}
+    ev = str(rif.get('evento', ''))                      # "2025 Hungarian Grand Prix"
+    pezzi = ev.split(' ', 1)
+    anno_rif = int(pezzi[0]) if pezzi and pezzi[0].isdigit() else anno
+    ti_rif = pezzi[1] if len(pezzi) > 1 else None
+    sess_rif = rif.get('sessione', 'R')
+    if session is not None and anno_rif == anno and sess_rif == 'R':
+        s = session                                       # gia' caricata dal chiamante
+    else:
+        s = fastf1.get_session(anno_rif, ti_rif, sess_rif)
+        s.load(laps=True, telemetry=True, weather=False, messages=False)
+    sel = s.laps[(s.laps['Driver'] == rif['pilota'])
+                 & (s.laps['LapNumber'] == int(rif['giro']))]
+    if not len(sel):
+        return None, None, {}
+    lap = sel.iloc[0]
+    pos = lap.get_pos_data()
+    if 'Status' in pos.columns:
+        pos = pos[pos['Status'] == 'OnTrack']
+    ok, motivo, xy, _ = valida_giro(pos)
+    if xy is None:
+        return None, None, {}
+    # il giro dichiarato puo' non passare piu' i controlli (li abbiamo irrigiditi): non e'
+    # un motivo per cambiarlo — e' il nastro che la pagina disegna, e va usato com'e'.
+    targhetta = dict(rif)
+    targhetta['lunghezza_m'] = pista.get('lunghezza_m')
+    targhetta['controlli'] = 'passa' if ok else f'non passa oggi ({motivo})'
+    return lap, xy, targhetta
 
 
 def pitlane_stilizzata(punti, fe=0.95, fx=0.05, W=22.0, n=60):
@@ -148,7 +250,7 @@ def genera(nome, reg, forza=False, sessione='R', anno=ANNO):
     print(f'== {nome} ({ti}) ==')
     session = fastf1.get_session(anno, ti, sessione)
     session.load(laps=True, telemetry=True, weather=False, messages=False)
-    lap, xy = scegli_giro(session)
+    lap, xy, diag = scegli_giro(session, verboso=True)
     if lap is None:
         print(f'   NIENTE: nessun giro con telemetria GPS utilizzabile -> resta il placeholder')
         return False
@@ -199,7 +301,10 @@ def genera(nome, reg, forza=False, sessione='R', anno=ANNO):
             'lap_time_s': round(lap['LapTime'].total_seconds(), 3),
             'criterio': 'giro valido piu veloce con telemetria GPS pulita (vedi testa del generatore)',
             'rotazione_gradi': round(rot_gradi, 1),
-            'campioni_gps': int(len(xy)),
+            # la qualita' del feed su QUESTO giro, non solo quanti campioni erano: una
+            # ripetizione non e' una misura, e il nastro e' il righello del replay
+            # (campioni_gps = grezzi, campioni_distinti = quelli che il feed sapeva davvero)
+            **diag,
             'fastf1': fastf1.__version__,
         },
     }

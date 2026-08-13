@@ -92,10 +92,13 @@ def genera(nome, reg, anno=ANNO):
     s.load(laps=True, telemetry=True, weather=False, messages=False)
 
     # STESSO nastro di pista_<gara>.json e di replay_<gara>.json: l'overlay deve cadere
-    # sulla polilinea che la pagina disegna davvero, non su una geometria parallela
-    lap_rif, xy = G.scegli_giro(s)
+    # sulla polilinea che la pagina disegna davvero, non su una geometria parallela.
+    # Lo dichiarava gia', ma ri-sceglieva il giro per conto suo e all'Ungheria finiva su
+    # un nastro diverso: ora il giro lo legge dalla targhetta della pista (regola 1).
+    lap_rif, xy, _targ = G.giro_del_disegno(nome, session=s, anno=anno)
     if lap_rif is None:
-        print('   NIENTE: nessun giro con telemetria GPS utilizzabile')
+        print(f'   NIENTE: demo/data/pista_{nome}.json non dichiara un giro di riferimento '
+              f'recuperabile — senza il nastro disegnato non c\'e\' overlay')
         return None
     punti, passi, L = R.nastro_fine(xy)
     proj = R.Proiettore(punti, passi, L)
