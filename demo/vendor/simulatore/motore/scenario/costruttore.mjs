@@ -546,7 +546,22 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   const perGiroCompressione = vera
     ? perGiroDaVera(vera, prior)
     : pacchetto.compressionePerGiro(regimeOsservato, freezeLap, giroFinale, quotaCampoNeutralizzato);
-  const neutralizzazione = perGiroCompressione === null ? null : { perGiro: perGiroCompressione };
+  // IL PAVIMENTO DEL CIRCUITO viaggia col pacchetto della compressione
+  // (PREREG_compressione_pavimento_2.md, 14/08). E' LO STESSO NUMERO con cui il Director
+  // rifiuta — `pavimenti_2026.json` meno `margine_pavimento_s` — quindi non e' un
+  // parametro nuovo del modello: e' un vincolo che il progetto ha gia' dichiarato, letto
+  // qui dall'unico posto che lo possiede. Un circuito senza pavimento misurato resta
+  // `null` e il kernel non applica nessun vincolo: non si inventa un limite di ripiego
+  // (regola 6), esattamente come fa il Director quando salta FIS01.
+  const pavimentoCircuito = (() => {
+    const p = contesto.costantiDirector?.pavimenti?.gare?.[gara];
+    const margine = contesto.costantiDirector?.limiti?.margine_pavimento_s?.valore;
+    if (!p || p.pavimento_s === null || p.pavimento_s === undefined) return null;
+    if (typeof margine !== 'number') return null;
+    return p.pavimento_s - margine;
+  })();
+  const neutralizzazione = perGiroCompressione === null
+    ? null : { perGiro: perGiroCompressione, pavimento: pavimentoCircuito };
   if (vera) {
     const conta = { SC: 0, VSC: 0, RED: 0 };
     for (const r of Object.values(vera)) conta[r] += 1;
