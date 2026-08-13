@@ -54,10 +54,17 @@ export function simDaRigioca({ risultato, race, pilota, freeze }) {
   }
   const ord = [...laps].sort((a, b) => a - b);
   if (ord.length < 2) return null;
-  // il transito in pit-lane e' del PRIMO stop del piano: gli stop successivi
-  // (e quelli dei rivali) vivono nel cum — la perdita c'e', la scenografia no
-  const primoStop = (traccia[pilota].find((p) => p.in_lap === true)?.lap) ?? null;
+  // TUTTE LE SOSTE DI TUTTI (13/08/2026). Prima qui usciva solo `pitLap`, il PRIMO stop del
+  // soggetto, e il commento diceva che gli altri «vivono nel cum — la perdita c'e', la
+  // scenografia no»: in pagina significava che in un piano a due soste la seconda non si
+  // vedeva, e che le quaranta soste vere dei rivali erano giri lenti in mezzo alla pista.
+  // La traccia del kernel marca ogni in-lap: basta leggerla per tutti.
+  const soste = {};
+  for (const [drv, passi] of Object.entries(traccia)) {
+    const g = (passi ?? []).filter((p) => p?.in_lap === true).map((p) => p.lap);
+    if (g.length) soste[drv] = g;
+  }
   return { laps: ord, cumByLap, present: [...present], freezeLap: freeze,
-           pitLap: primoStop ?? freeze + 1, driver: pilota };
+           soste, pitLap: soste[pilota]?.[0] ?? null, driver: pilota };
 }
 

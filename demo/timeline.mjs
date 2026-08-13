@@ -8,12 +8,20 @@
 // sta a p = L+1, quindi la gara di n giri finisce a p = n+1 (max = nLaps+1).
 // A 1× il giro L dura durFn(L) SECONDI REALI (durata vera della gara). onTick(p) a
 // ogni frame; onEnd() a fine gara. Senza durFn ricade su 1 giro/secondo (fallback).
+// IL SALTO DI dt (13/08/2026). `dt` era la differenza grezza fra due fotogrammi. Ma il
+// browser SOSPENDE requestAnimationFrame quando la scheda passa in secondo piano: al
+// ritorno il primo fotogramma porta con se' tutto l'intervallo, e `p` avanza in un colpo
+// solo di dt*velocita'/durata giri. Misurato: a 60x con giri da 85 s, trenta secondi di
+// scheda nascosta valgono VENTUN GIRI saltati in un fotogramma — la gara «teletrasporta».
+// Il tetto e' il piu' lungo intervallo che vogliamo ancora integrare; oltre, il tempo
+// passato altrove semplicemente non e' tempo di gara.
+const DT_MAX = 0.1;
 export function makeClock({ onTick, onEnd, min = 1 }) {
   let p = min, speed = 1, playing = false, raf = null, last = null, max = min, durFn = () => 1;
   function step(t) {
     if (!playing) return;
     if (last == null) last = t;
-    const dt = (t - last) / 1000; last = t;
+    const dt = Math.min((t - last) / 1000, DT_MAX); last = t;
     const L = Math.max(1, Math.floor(p));
     const ld = durFn(L) || 1;                 // secondi reali di quel giro a 1×
     p = Math.min(max, p + dt * speed / ld);

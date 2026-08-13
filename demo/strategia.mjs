@@ -126,6 +126,25 @@ export function pannello(s, opz = {}) {
       ? el('p', { class: 'st-sub' }, `Rientri in pista al giro ${pan.giro_di_rientro}.`)
       : null));
 
+  /* ---- il secondo numero del muretto: quanto vai piu' forte, e per quanto ----
+     Fino al 13/08/2026 il pannello diceva solo DOVE rientri. «E quanto guadagno al giro?»
+     e' la domanda che viene subito dopo, e non aveva risposta da nessuna parte.
+     Il guadagno immediato non dipende dalla mescola (a gomma nuova nessuna e' oltre la sua
+     vita): cio' che la mescola decide e' per QUANTI GIRI quel guadagno regge. Le due cose
+     stanno insieme, altrimenti la prima sembra dire che scegliere non conta. */
+  if (Number.isFinite(opz.guadagno) && opz.guadagno > 0) {
+    const m = opz.mescolaNuova;
+    f.append(el('div', { class: 'st-guadagno' },
+      el('div', { class: 'st-g-riga' },
+        el('b', { class: 'n' }, `−${nnum(opz.guadagno, 2)} s`),
+        el('span', {}, 'al giro, appena rientri')),
+      Number.isFinite(opz.vitaGiri)
+        ? el('p', { class: 'st-nota', stile: { margin: '8px 0 0' } },
+            'La ', el('b', {}, MESCOLA_IT[m] || (m || '').toLowerCase()),
+            ` tiene ${Math.round(opz.vitaGiri)} giri prima di calare.`)
+        : null));
+  }
+
   /* ---- chi ti trovi intorno */
   const vicino = (titolo, v) => el('div', { class: 'st-vic' },
     el('span', {}, titolo),
@@ -155,12 +174,17 @@ export function pannello(s, opz = {}) {
   const q = quanteSoste(s);
   if (q) f.append(q);
 
-  /* ---- i due numeri che governano tutto */
+  /* ---- i due numeri che governano tutto ----
+     «Monta X» NON si scrive piu' da `s.mescola_scelta`. Nel motore
+     `mescola = mescolaScelta ?? attuale` (risposta.mjs), quindi senza una scelta esplicita
+     quel campo E' la gomma gia' montata: il pannello invitava a rimontare la stessa mescola,
+     cioe' proprio il piano che il Direttore squalifica per REG01. La gomma che si montera'
+     la dice il chiamante, che e' l'unico a saperlo (`opz.mescolaNuova`). */
   const perdita = s.perdita?.valore;
   const neutra = s.regime === 'SC' || s.regime === 'VSC';
   f.append(el('div', { class: 'st-piedi' },
     perdita != null ? el('span', {}, 'Perdita ai box ', el('b', { class: 'n' }, `${nnum(perdita, 1)} s`)) : null,
-    s.mescola_scelta ? el('span', {}, 'Monta ', el('b', {}, MESCOLA_IT[s.mescola_scelta] || s.mescola_scelta.toLowerCase())) : null,
+    opz.mescolaNuova ? el('span', {}, 'Monti ', el('b', {}, MESCOLA_IT[opz.mescolaNuova] || opz.mescolaNuova.toLowerCase())) : null,
     neutra ? el('span', { class: 'st-neutra' },
       s.regime === 'SC' ? 'Con la safety car fermarsi costa molto meno.'
                         : 'Con la virtual safety car fermarsi costa un po\' meno.') : null));
@@ -168,17 +192,29 @@ export function pannello(s, opz = {}) {
   return f;
 }
 
-/** Le tre gomme come comando. `attuale` e' quella che ha su adesso. */
+/** Le tre gomme come comando.
+ *  `attuale` = quella che ha su adesso · `scelta` = quella che monterai.
+ *
+ *  LE DUE COSE ERANO DISEGNATE UGUALI, ed era la trappola peggiore della pagina:
+ *  `class: 'st-m' + ((scelta || attuale) === m ? ' on' : '')`. All'apertura la gomma
+ *  montata appariva premuta pur non essendo stata scelta da nessuno, e siccome
+ *  `onScegli(scelta === m ? null : m)` confronta con `scelta` (che era null), cliccare
+ *  quella che sembrava gia' premuta la SELEZIONAVA davvero — cioe' chiedeva di rimontare la
+ *  stessa mescola, e il Direttore rispondeva con «pena la squalifica» a un gesto che
+ *  sembrava non fare niente. Adesso sono due stati distinti: «ce l'hai su» e' un'etichetta,
+ *  «premuto» e' una scelta. */
 export function selettoreMescole({ scelta, attuale, onScegli }) {
   return el('div', { class: 'st-mescbox' },
     el('span', { class: 'st-occ' }, 'Che gomma monti'),
     el('div', { class: 'st-mesc', role: 'group', 'aria-label': 'Che gomma montare' },
     ORD.map(m => el('button', {
-      class: 'st-m' + ((scelta || attuale) === m ? ' on' : ''),
+      class: 'st-m' + (scelta === m ? ' on' : '') + (attuale === m ? ' su' : ''),
       type: 'button',
-      'aria-pressed': String((scelta || attuale) === m),
+      'aria-pressed': String(scelta === m),
+      title: attuale === m ? 'È la gomma che ha su adesso: rimontarla significa finire la gara su una mescola sola' : null,
       onclick: () => onScegli(scelta === m ? null : m),
     },
       el('span', { class: 'gomma ' + m }),
-      m === 'SOFT' ? 'morbida' : m === 'MEDIUM' ? 'media' : 'dura'))));
+      m === 'SOFT' ? 'morbida' : m === 'MEDIUM' ? 'media' : 'dura',
+      attuale === m ? el('i', { class: 'st-su' }, 'ce l\'hai su') : null))));
 }

@@ -47,9 +47,16 @@ export async function creaMappa({ canvas, url, pitlane, etichette = 'scelto' }) 
     const t = (E[lo + 1] === E[lo]) ? 0 : (g - E[lo]) / (E[lo + 1] - E[lo]);
     return [Q[lo][0] + (Q[lo + 1][0] - Q[lo][0]) * t, Q[lo][1] + (Q[lo + 1][1] - Q[lo][1]) * t];
   }
-  /** dove sta questo pallino: nastro, oppure corsia box se ci sta passando. */
+  /** dove sta questo pallino: nastro, oppure corsia box se ci sta passando.
+   *  `lane` (13/08/2026) e' il progresso 0..1 LUNGO la corsia, calcolato da chi conosce la
+   *  sosta (ghostplay::inCorsia): ingresso, piazzola, uscita. Quando c'e' comanda lui, e il
+   *  pallino puo' restare FERMO al box mentre il resto del campo scorre — cosa che la
+   *  mappatura f->corsia qui sotto, essendo una funzione della sola frazione di giro, non
+   *  poteva esprimere. Senza `lane` resta il comportamento del replay, che marca i tratti
+   *  in corsia col GPS (`box: 'lane'`). */
   function posizione(d) {
     const f = ((d.f % 1) + 1) % 1;
+    if (PL && d.lane != null) return puntoPit(d.lane);
     const inBox = d.box === 'in' || (d.box === 'lane' && f >= FE);
     const usBox = d.box === 'out' || (d.box === 'lane' && f <= FX);
     if (PL && inBox && f >= FE) return puntoPit((f - FE) / (1 - FE) * 0.5);

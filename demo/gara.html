@@ -108,8 +108,12 @@
   .barra-t .bd.sc{ background:rgba(255,176,0,.55); }
   .barra-t .bd.vsc{ background:repeating-linear-gradient(90deg,rgba(224,180,0,.6) 0 4px,transparent 4px 8px); }
   .barra-t .bd.rf{ background:rgba(255,30,60,.8); }
-  .barra-t .pit{ position:absolute; top:5px; width:2px; height:8px; border-radius:1px;
-    background:var(--verde); transform:translateX(-1px); }
+  /* le soste VERE del pilota: grigie e sottili — sono il metro, non il tuo piano */
+  .barra-t .pit{ position:absolute; top:6px; width:2px; height:7px; border-radius:1px;
+    background:rgba(255,255,255,.3); transform:translateX(-1px); }
+  /* le TUE: verdi, piene, piu' alte */
+  .barra-t .pit.mia{ top:3px; width:3px; height:13px; background:var(--verde);
+    box-shadow:0 0 6px rgba(47,213,118,.6); transform:translateX(-1.5px); }
   .barra-t .cur{ position:absolute; top:6px; width:3px; height:22px; border-radius:2px;
     background:#fff; box-shadow:0 0 10px rgba(255,255,255,.55); transform:translateX(-1.5px); }
   .conta-giri{ font:500 13px/1 var(--mono); color:var(--calmo); white-space:nowrap; flex:0 0 auto; }
@@ -125,6 +129,9 @@
   .rail-t{ display:flex; align-items:center; gap:10px; padding:13px 16px; border-bottom:1px solid var(--bordo); }
   .rail-t h2{ font-size:17px; letter-spacing:.16em; text-transform:uppercase; }
   .rail-t .chi{ margin-left:auto; display:flex; align-items:center; gap:8px; }
+  .chi-b{ display:flex; align-items:center; gap:8px; padding:4px 8px; border-radius:8px;
+    transition:background-color .15s var(--ease); }
+  .chi-b:hover{ background:rgba(255,255,255,.07); }
   .rail-t .chi .bar{ width:4px; height:22px; border-radius:2px; background:var(--c,#8A93A3); }
   .rail-t .chi b{ font:700 18px/1 var(--disp); letter-spacing:.1em; }
   .rail-c{ padding:16px; max-height:min(74vh,860px); overflow-y:auto; scrollbar-width:thin; }
@@ -173,12 +180,27 @@
   .st-mescbox{ margin-bottom:16px; }
   .st-mescbox .st-occ{ margin-bottom:8px; }
   .st-mesc{ display:grid; grid-template-columns:repeat(3,1fr); gap:6px; }
-  .st-m{ display:flex; align-items:center; justify-content:center; gap:7px; min-height:40px;
+  .st-m{ position:relative; display:flex; align-items:center; justify-content:center; gap:7px;
+    min-height:46px; padding-bottom:9px;
     border-radius:9px; background:rgba(255,255,255,.04); border:1px solid transparent;
     color:var(--calmo); font:500 11px/1 var(--mono); letter-spacing:.06em;
     transition:background-color .15s, color .15s, border-color .15s; }
   .st-m:hover{ background:rgba(255,255,255,.08); color:var(--testo); }
+  /* SCELTA e GIA' MONTATA sono due cose diverse e si vedono diverse: il pieno e' una tua
+     decisione, il tratteggio e' lo stato dell'auto. */
   .st-m.on{ background:rgba(36,227,210,.12); border-color:rgba(36,227,210,.4); color:var(--ciano); }
+  .st-m.su{ border-style:dashed; border-color:rgba(255,255,255,.22); }
+  .st-m.su.on{ border-style:solid; }
+  .st-su{ position:absolute; left:0; right:0; bottom:5px; text-align:center;
+    font:500 8px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase;
+    color:var(--fioco); font-style:normal; }
+
+  /* quanto vai piu' forte al giro: il secondo numero del muretto */
+  .st-guadagno{ margin:0 0 16px; padding:12px 13px; border-radius:10px;
+    background:rgba(47,213,118,.09); box-shadow:inset 0 0 0 1px rgba(47,213,118,.24); }
+  .st-g-riga{ display:flex; align-items:baseline; gap:9px; }
+  .st-g-riga b{ font:500 26px/1 var(--mono); letter-spacing:-.03em; color:var(--verde); }
+  .st-g-riga span{ color:var(--calmo); font-size:13px; }
 
   .rail-f{ padding:13px 16px; border-top:1px solid var(--bordo); display:flex; gap:9px; }
   .rail-f .btn{ flex:1 1 auto; min-height:44px; }
@@ -191,6 +213,29 @@
   .esito-b b{ display:block; margin-top:9px; font:500 30px/1 var(--mono); letter-spacing:-.04em; }
   .esito-b.tua{ background:rgba(255,30,60,.12); box-shadow:inset 0 0 0 1px rgba(255,30,60,.3); }
   .esito-b.tua b{ color:var(--rosso); }
+  .esito-p{ display:block; margin-top:8px; font-style:normal; color:var(--fioco);
+    font:400 11.5px/1.45 var(--mono); }
+
+  /* ---------- la finestra: per chi fai la strategia ---------- */
+  dialog.scelta{ padding:0; border:1px solid var(--bordo-2); border-radius:var(--r);
+    background:linear-gradient(180deg,#171B24,#0E1116); color:var(--testo);
+    width:min(640px,calc(100vw - 32px)); max-height:min(86vh,760px); overflow:hidden; }
+  dialog.scelta::backdrop{ background:rgba(4,6,10,.78); backdrop-filter:blur(3px); }
+  .scelta-t{ padding:20px 22px 16px; border-bottom:1px solid var(--bordo); }
+  .scelta-t h2{ font-size:22px; letter-spacing:.1em; text-transform:uppercase; margin-bottom:8px; }
+  .scelta-t p{ margin:0; color:var(--fioco); font-size:13.5px; line-height:1.5; }
+  .scelta-c{ padding:14px; overflow-y:auto; max-height:min(62vh,520px); scrollbar-width:thin; }
+  .scelta-g{ display:grid; grid-template-columns:repeat(auto-fill,minmax(132px,1fr)); gap:7px; }
+  .pil-b{ display:grid; grid-template-columns:4px 1fr auto; align-items:center; gap:9px;
+    padding:11px 12px; border-radius:10px; background:rgba(255,255,255,.04);
+    text-align:left; transition:background-color .15s var(--ease); }
+  .pil-b:hover, .pil-b:focus-visible{ background:rgba(255,255,255,.1); }
+  .pil-b .bar{ width:4px; height:26px; border-radius:2px; background:var(--c,#8A93A3); }
+  .pil-b .sig{ display:block; font:700 16px/1 var(--disp); letter-spacing:.09em; }
+  .pil-b .sq{ display:block; margin-top:4px; color:var(--fioco); font-size:11px; }
+  .pil-b .gr{ font:500 12px/1 var(--mono); color:var(--fioco); }
+  .pil-b.fuori{ opacity:.5; }
+  .pil-b.fuori .gr{ color:var(--rosso); }
 
   /* ---------- mobile: schede ---------- */
   .schede{ display:none; gap:6px; margin:12px 0; }
@@ -223,7 +268,7 @@
 
   <div class="tavolo">
     <!-- classifica -->
-    <section class="torre" aria-label="Classifica">
+    <section class="torre" id="torreSez" aria-label="Classifica">
       <div class="torre-t"><span>Classifica</span><span style="margin-left:auto" id="torreGiro"></span></div>
       <div class="torre-c" id="torre"></div>
     </section>
@@ -271,6 +316,15 @@
   </div>
 </main>
 
+<dialog class="scelta" id="scelta" aria-labelledby="sceltaT">
+  <div class="scelta-t">
+    <h2 id="sceltaT">Per chi fai la strategia?</h2>
+    <p>Scegli il pilota: da qui in avanti le sue soste le decidi tu. Quelle che ha fatto
+      davvero restano solo come confronto, alla bandiera.</p>
+  </div>
+  <div class="scelta-c"><div class="scelta-g" id="sceltaG"></div></div>
+</dialog>
+
 <footer class="piede"><div class="piede-in"></div></footer>
 
 <script type="module">
@@ -282,6 +336,8 @@ import { makeClock, computeDurations, bands, fase } from './timeline.mjs?v=22072
 import { creaAncora, giroDi as giroDiCum } from './orologio.mjs?v=250808a';
 import { classifica, battistradaAiGiri, ordineArrivo } from './classifica.mjs?v=090826b';
 import { creaReplayVero } from './replay_vero.mjs?v=250808a';
+import { guadagnoAlGiro, vitaMescolaGiri } from './gomma.mjs?v=130826a';
+import { sostaFra } from './sosta.mjs?v=130826a';
 
 guscio('gara.html');
 
@@ -291,25 +347,40 @@ let leadCum = {}, cumPil = {}, teamDi = {}, ancora = null, durate = {}, finestre
 let mappa = null, replay = null, indiceVista = null, vistaCart = null;
 const vistaPil = {};
 let selDrv = null, curP = 1, ctxLive = null, mescolaScelta = null;
-let esitiGara = {}, nonPart = new Set(), pitLaps = {}, ultimoGiro = {}, griglia = [];
+let esitiGara = {}, nonPart = new Set(), sosteVereDi = {}, ultimoGiro = {}, griglia = [];
 let arrivo = {};      // sigla -> {posizione, giri} — l'ordine d'arrivo, calcolato una volta
-let scenaGp = null, STRAT = null, ESE = null;
+let scenaGp = null, scenaFinita = false, STRAT = null, ESE = null;
 let ultimaRisposta = null;
 const SLICK = ['SOFT', 'MEDIUM', 'HARD'];
-/** La gomma che BOX ORA monta.
- *  Mai null — il motore rifiuta un piano senza mescola (E05), e un rifiuto per un
- *  campo che l'utente non ha mai visto e' un vicolo cieco.
- *  E mai UGUALE a quella gia' montata, se l'utente non l'ha scelta lui: una gara
- *  asciutta finita su una sola mescola slick e' squalifica (REG01), quindi il
- *  Director respingeva ogni sosta proposta a inizio gara. Il muretto vero, alla
- *  prima sosta, cambia mescola: qui si fa lo stesso. */
-function gommaPerBox() {
+
+/** LA GOMMA CHE C'E' SULL'AUTO ADESSO — nel replay dai dati, nella scena dal tuo piano. */
+function mescolaSuAuto() {
+  if (!selDrv) return null;
+  const L = Math.max(1, Math.min(race?.n_laps ?? 1, Math.floor(curP)));
+  const m = STRAT ? mescolaInScena(selDrv, L) : race?.byLap[L]?.[selDrv]?.compound;
+  return SLICK.includes(m) ? m : null;
+}
+/** L'ETA' DI QUELLA GOMMA, in giri. */
+function etaSuAuto() {
+  if (!selDrv) return null;
+  const L = Math.max(1, Math.min(race?.n_laps ?? 1, Math.floor(curP)));
+  const e = STRAT ? etaInScena(selDrv, L) : race?.byLap[L]?.[selDrv]?.tyre_age;
+  return typeof e === 'number' ? e : null;
+}
+
+/** LA GOMMA CHE BOX ORA MONTA — e la STESSA che il pannello nomina e che il selettore
+ *  mostra premuta. Prima erano tre numeri diversi: il pannello leggeva
+ *  `s.mescola_scelta` (che senza una scelta E' la gomma gia' montata), il selettore
+ *  disegnava quella come «premuta», e qui si montava di nascosto l'ALTRA per non
+ *  incappare in REG01. Chi guardava leggeva «Monta morbida» e vedeva partire una dura.
+ *  Adesso decide questa funzione, e tutti e tre leggono lei.
+ *
+ *  Mai null — il motore rifiuta un piano senza mescola (E05) — e mai uguale a quella
+ *  gia' montata se non l'hai scelta tu: una gara asciutta finita su una sola mescola
+ *  slick e' squalifica (REG01), e il muretto vero alla prima sosta cambia gomma. */
+function mescolaDaMontare() {
   if (SLICK.includes(mescolaScelta)) return mescolaScelta;      // scelta esplicita: si rispetta
-  const su = [ultimaRisposta?.mescola_scelta,
-              race?.byLap[Math.max(1, Math.floor(curP) - 1)]?.[selDrv]?.compound]
-    .find(m => SLICK.includes(m));
-  if (!su) return 'MEDIUM';
-  return su === 'HARD' ? 'MEDIUM' : 'HARD';
+  return mescolaSuAuto() === 'HARD' ? 'MEDIUM' : 'HARD';
 }
 
 const clock = makeClock({ onTick: (p) => frame(p), onEnd: () => icona(false) });
@@ -318,7 +389,12 @@ const clock = makeClock({ onTick: (p) => frame(p), onEnd: () => icona(false) });
 async function boot() {
   const man = await datiObbligatori(`data/manifest.json?v=${V}`);
   const nomi = man.map(r => r.gara);
-  gara = nomi.includes(param('g')) ? param('g') : nomi[nomi.length - 1];
+  // UNA GARA CHE NON C'E' SI DICE. Il calendario 2026 ha 24 gare, il manifest 11: chi
+  // apriva ?g=Olanda si ritrovava l'Ungheria con l'indirizzo riscritto, convinto di
+  // guardare l'Olanda. Adesso si ricade sull'ultima pubblicata, ma la pagina lo dichiara.
+  const voluta = param('g');
+  gara = nomi.includes(voluta) ? voluta : nomi[nomi.length - 1];
+  const ripiego = voluta && voluta !== gara ? voluta : null;
   scriviParam({ g: gara });
 
   const id = await identita(); colori = id.colori; schede = id.schede;
@@ -339,10 +415,14 @@ async function boot() {
   griglia = grids?.[gara] || [];
 
   // tabelle di tempo
-  leadCum = {}; cumPil = {}; teamDi = {}; ultimoGiro = {}; pitLaps = {};
+  leadCum = {}; cumPil = {}; teamDi = {}; ultimoGiro = {}; sosteVereDi = {};
   for (const lp of race.laps) for (const [d, c] of Object.entries(lp.cars)) {
     teamDi[d] = c.team; ultimoGiro[d] = lp.lap;
-    if (c.in_lap) (pitLaps[d] ||= []).push(lp.lap);
+    // LA SOSTA E' UN CAMBIO DI SET, non un transito in corsia: la definizione sta in
+    // demo/sosta.mjs e da oggi la legge anche questa pagina. Con `in_lap` le tacche
+    // contavano le sfilate sotto Safety Car e i rientri per bandiera rossa — a Monaco
+    // cinque segni per Albon, che di gomme ne aveva cambiate due.
+    if (sostaFra(c, race.byLap[lp.lap + 1]?.[d]) === true) (sosteVereDi[d] ||= []).push(lp.lap);
     if (typeof c.cum_time === 'number' && !nonPart.has(d)) {
       (cumPil[d] ||= []).push({ lap: lp.lap, cum: c.cum_time });
       if (leadCum[lp.lap] === undefined || c.cum_time < leadCum[lp.lap]) leadCum[lp.lap] = c.cum_time;
@@ -367,8 +447,43 @@ async function boot() {
   await Promise.all([apriMappa(), apriVista()]);
   clock.setDur(L => durate[L]);
   clock.reset(race.n_laps + 1);
-  scegli(ordineAl(1)[0]?.drv || Object.keys(cumPil)[0]);
+  // IL PILOTA LO SCEGLI TU. Prima la pagina apriva con `scegli(ordineAl(1)[0]?.drv)`, cioe'
+  // il poleman, e chi voleva un altro doveva scoprire da solo che le righe della torre sono
+  // cliccabili. La domanda «per chi fai la strategia?» e' la prima del prodotto: si fa
+  // esplicitamente. Un indirizzo con ?d=SIG la salta, cosi' un link resta condivisibile.
+  const voluto = (param('d') || '').toUpperCase();
   frame(1);
+  if (ripiego) nota(`Di ${ripiego} non ci sono ancora i dati: qui c'è ${calendario?.gare?.find(g => g.gara_demo === gara)?.titolo || gara}.`);
+  if (cumPil[voluto] || nonPart.has(voluto)) scegli(voluto);
+  else chiediPilota();
+}
+
+/** La finestra di scelta: tutti i piloti, in ordine di griglia, con lo stato d'arrivo. */
+function chiediPilota() {
+  const dlg = E('scelta'), box = E('sceltaG');
+  const tutti = [...new Set([...griglia, ...Object.keys(cumPil), ...Object.keys(teamDi)])]
+    .filter(d => teamDi[d]);
+  const pos = Object.fromEntries(griglia.map((d, i) => [d, i + 1]));
+  tutti.sort((a, b) => (pos[a] ?? 99) - (pos[b] ?? 99));
+  box.replaceChildren(...tutti.map(d => {
+    const t = esitiGara[d];
+    const fuori = t === 'RIT' || t === 'NP';
+    return el('button', {
+      class: 'pil-b' + (fuori ? ' fuori' : ''), type: 'button',
+      stile: { '--c': coloreDi(teamDi[d], colori) },
+      onclick: () => { dlg.close(); scriviParam({ g: gara, d }); scegli(d); },
+    },
+      el('span', { class: 'bar' }),
+      el('span', {},
+        el('b', { class: 'sig' }, d),
+        el('span', { class: 'sq' }, schede?.[d]?.nome || teamDi[d] || '')),
+      el('span', { class: 'gr' }, fuori ? (t === 'NP' ? 'non parte' : 'ritirato')
+                                        : (pos[d] ? `P${pos[d]}` : '')));
+  }));
+  // niente `cancel`: la pagina senza un pilota non ha un pannello. Chi chiude comunque
+  // (Esc) prende il primo della griglia, che e' il comportamento di prima.
+  dlg.addEventListener('close', () => { if (!selDrv) scegli(tutti[0]); }, { once: true });
+  dlg.showModal();
 }
 
 function testata() {
@@ -405,6 +520,19 @@ async function apriMappa() {
   });
 }
 
+/** IL FLAG «CORSIA BOX» DEL REPLAY VA INCROCIATO CON UNA SOSTA VERA.
+ *
+ *  `replay_<gara>.json` marca i tratti in corsia dal GPS, e il criterio e' largo: in
+ *  Ungheria ci sono 3.720 tratti marcati contro 47 soste, 181 per il solo Leclerc a
+ *  partire dal primo giro. Quelli che cadono vicino al traguardo (dove la corsia comincia)
+ *  facevano tuffare il pallino ai box su giri in cui nessuno si era fermato: misurati 26
+ *  ingressi spuri su 66. La corsia si disegna solo dove una sosta c'e' davvero — al giro
+ *  della sosta o a quello dopo, che e' l'out-lap. */
+function inCorsiaVera(d, giro) {
+  const s = sosteVereDi[d];
+  return !!s && (s.includes(giro) || s.includes(giro - 1));
+}
+
 /* ---- dove sta ogni pilota all'istante p (giro frazionario del battistrada) ---- */
 function posizioni(p) {
   const T = ancora?.tempoDa(p);
@@ -414,7 +542,8 @@ function posizioni(p) {
     for (const d of Object.keys(cumPil)) {
       const q = replay.posizioneDi(d, T);
       if (!q) continue;
-      out.push({ sigla: d, f: q.f, box: q.box, colore: coloreDi(teamDi[d], colori),
+      out.push({ sigla: d, f: q.f, box: inCorsiaVera(d, q.giro) ? q.box : null,
+                 colore: coloreDi(teamDi[d], colori),
                  dim: !!selDrv && d !== selDrv && !!scenaGp });
     }
     if (out.length) return out;
@@ -564,21 +693,41 @@ E('via').addEventListener('click', () => {
   if (scenaGp) { scenaGp.playing ? scenaGp.stop() : scenaGp.play(); icona(!!scenaGp.playing); return; }
   clock.toggle(); icona(clock.playing);
 });
+// UNA SOLA VELOCITA' IN PAGINA. Prima il gestore scriveva su `(scenaGp || clock)`, cioe' su
+// UNO dei due orologi: BOX ORA costruiva un ghostplay nuovo — che nasce a 1x — e la velocita'
+// scelta restava sui tasti senza essere applicata; dopo un azzeramento succedeva il
+// contrario. Adesso la velocita' e' uno stato della pagina, si applica a chiunque sia
+// l'orologio attivo, e i tasti la rispecchiano sempre.
+let velCorrente = 1;
+function pittaVel() {
+  [...E('vel').children].forEach(x => x.classList.toggle('on', +x.dataset.s === velCorrente));
+}
+function scegliVel(v) {
+  velCorrente = v;
+  clock.setSpeed(v); scenaGp?.setSpeed(v);
+  pittaVel();
+}
 E('vel').addEventListener('click', (e) => {
   const b = e.target.closest('button'); if (!b) return;
-  (scenaGp || clock).setSpeed(+b.dataset.s);
-  [...E('vel').children].forEach(x => x.classList.toggle('on', x === b));
+  scegliVel(+b.dataset.s);
 });
+// L'OROLOGIO ATTIVO: la scena quando c'e', il replay altrimenti. La barra e le frecce
+// muovono quello — prima erano semplicemente spente per tutta la scena, e alla bandiera
+// restavano spente per sempre perche' `scenaGp` non tornava mai null.
+function orologio() { return scenaGp || clock; }
 (function scorrevole() {
   const barra = E('scorri');
   let giu = false;
   const vai = (ev) => {
-    if (scenaGp || !race) return;
+    if (!race) return;
     const r = barra.getBoundingClientRect();
     const x = (ev.clientX ?? ev.touches?.[0]?.clientX ?? NaN) - r.left;
     if (!isFinite(x) || !r.width) return;          // mai un orologio a NaN
+    const o = orologio();
     const p = 1 + Math.max(0, Math.min(1, x / r.width)) * race.n_laps;
-    clock.pause(); icona(false); clock.seek(p);
+    o.pause ? o.pause() : o.stop();
+    icona(false);
+    o.seek(p);
   };
   barra.addEventListener('pointerdown', (e) => {
     giu = true;
@@ -589,11 +738,12 @@ E('vel').addEventListener('click', (e) => {
   barra.addEventListener('pointerup', () => { giu = false; });
   barra.addEventListener('keydown', (e) => {
     const d = { ArrowLeft: -1, ArrowRight: 1, PageDown: -5, PageUp: 5 }[e.key];
-    // durante la scena l'orologio non e' questo: muoverlo scriveva sulla stessa
-    // torre del fantasma e invertiva l'icona del play.
-    if (!d || scenaGp || !race) return;
+    if (!d || !race) return;
     e.preventDefault();
-    clock.pause(); icona(false); clock.seek(Math.floor(curP) + d);
+    const o = orologio();
+    o.pause ? o.pause() : o.stop();
+    icona(false);
+    o.seek(Math.floor(curP) + d);
   });
 })();
 
@@ -605,22 +755,46 @@ function disegnaBande() {
       stile: { left: b.left + '%', width: b.width + '%' } }));
   }
 }
+/** Le tacche delle soste sotto la barra.
+ *
+ *  DUE STRATEGIE, DUE SEGNI. Prima ce n'era uno solo, verde, e portava le soste VERE del
+ *  pilota — cioe' esattamente la strategia che scegliendolo hai deciso di rifare da capo.
+ *  Chi guardava la barra leggeva come «piano» qualcosa che non sarebbe successo, e la tua
+ *  sosta non compariva da nessuna parte. Adesso: grigie e sottili quelle che HA FATTO
+ *  DAVVERO (restano perche' sono il metro del confronto finale), piene e verdi le TUE.
+ *
+ *  E il segno cade a META' del giro di sosta, non alla sua fine: il cursore mappa p con
+ *  (p−1)/n, quindi il giro L occupa [(L−1)/n, L/n] e la sosta ci sta dentro. */
 function disegnaPit(d) {
   const barra = E('scorri');
   [...barra.querySelectorAll('.pit')].forEach(x => x.remove());
-  for (const L of (pitLaps[d] || [])) {
-    barra.append(el('div', { class: 'pit', stile: { left: (L / race.n_laps * 100) + '%' } }));
-  }
+  const mie = new Set((STRAT?.soste ?? []).map(x => x.giro));
+  const segna = (L, cls, titolo) => barra.append(el('div', {
+    class: 'pit ' + cls, title: titolo,
+    stile: { left: ((L - 0.5) / race.n_laps * 100) + '%' } }));
+  for (const L of (sosteVereDi[d] || [])) if (!mie.has(L)) segna(L, 'vera', `sosta vera: giro ${L}`);
+  for (const L of [...mie].sort((a, b) => a - b)) segna(L, 'mia', `la tua sosta: giro ${L}`);
 }
 
 /* ============================================================ selezione */
 function scegli(d) {
   if (!d || d === selDrv) return;
+  // CAMBIARE PILOTA AZZERA LA SIMULAZIONE. Prima `scegli` toccava solo `selDrv`: se una
+  // scena era in corso, `STRAT` restava quello del pilota di prima, e alla bandiera il
+  // referto scriveva il nome NUOVO sopra i numeri del VECCHIO. Un secondo BOX ORA
+  // rieseguiva per giunta il piano altrui sul nuovo pilota. Una strategia appartiene a un
+  // pilota: cambiare pilota vuol dire ricominciare, e lo si fa qui, in un punto solo.
+  if (STRAT || scenaGp) azzera();
   selDrv = d; mescolaScelta = null;
+  scriviParam({ g: gara, d });
   mappa?.setScelto(d);
+  // il nome nel titolo del pannello RIAPRE la finestra: cambiare pilota e' un gesto del
+  // prodotto, non una scoperta («le righe della torre sono cliccabili»)
   E('railChi').replaceChildren(
-    el('span', { class: 'bar', stile: { background: coloreDi(teamDi[d], colori) } }),
-    el('b', {}, d));
+    el('button', { class: 'chi-b', type: 'button', title: 'Cambia pilota',
+      onclick: () => chiediPilota() },
+      el('span', { class: 'bar', stile: { background: coloreDi(teamDi[d], colori) } }),
+      el('b', {}, d)));
   disegnaPit(d);
   aggiornaTorreScelta();
   aggiornaStrategia();
@@ -661,7 +835,8 @@ async function aggiornaStrategia() {
   // domanda che nessuno ha fatto e' peggio di nessuna risposta — e rendeva anche
   // irraggiungibile il ramo «Vai al giro N» scritto dodici righe piu' sotto.
   const L = Math.max(1, Math.floor(curP) - 1);
-  const chiave = `${selDrv}|${L}|${mescolaScelta || ''}`;
+  const nuova = mescolaDaMontare();
+  const chiave = `${selDrv}|${L}|${nuova}|${STRAT ? 's' : 'r'}`;
   if (chiave === ultimaChiave) return;
   ultimaChiave = chiave;
 
@@ -669,28 +844,25 @@ async function aggiornaStrategia() {
   if (chiave !== ultimaChiave) return;
   let s = v?.giri?.find(g => g.freeze_lap === L) || null;
 
-  if (mescolaScelta && s) {
-    const ctx = await contesto();
-    if (chiave !== ultimaChiave) return;
-    if (ctx) {
-      // IL MOTORE ARRIVA SOLO SE SERVE. Importato in cima, ponte_live.mjs tirava dentro
-      // tutta la catena vendor/simulatore — dodici richieste e 72 KB — all'apertura di
-      // ogni gara, anche di chi guarda il replay e non tocca mai la mescola. Qui e' un
-      // import dinamico dentro un ramo gia' async; `chiave` si ri-verifica dopo l'await
-      // come gia' si fa dopo contesto(), perche' nel frattempo la barra puo' essere andata
-      // avanti e la risposta sarebbe di un altro giro.
-      const { rispostaLive } = await import('./ponte_live.mjs?v=040826a');
-      if (chiave !== ultimaChiave) return;
-      const calc = rispostaLive({ byLap: race.byLap, nGiriGara: race.n_laps, nomeGara: gara,
-        pilota: selDrv, freezeLap: L, contestoLive: ctx, mescolaScelta });
-      if (calc && !calc.senza_risposta) s = calc;
-    }
-  }
+  // IL MOTORE NON GIRA PIU' A OGNI GIRO. Qui c'era un ramo che, con una mescola scelta,
+  // richiamava `rispostaLive` — cioe' costruiva uno scenario intero e cercava il piano
+  // ottimo — a ogni cambio di giro: 236 ms mediani di thread bloccato, misurati, che a 20x
+  // cadono ogni 4,25 s e a 60x ogni 1,4 s. Era una delle cause vere degli «scatti».
+  // E non serviva a niente: MISURATO che con null, SOFT, MEDIUM o HARD la risposta e'
+  // identica in tutto cio' che il pannello mostra (posizione al rientro, giro di rientro,
+  // banda, curva, minimo, finestra, «come finisce»). L'unica cosa che la mescola cambia
+  // davvero e' il guadagno al giro e la sua durata, e quelli si calcolano qui sotto senza
+  // far girare il motore (gomma.mjs).
+  const ctx = await contesto();
+  if (chiave !== ultimaChiave) return;
+  const attuale = mescolaSuAuto();
+  const guadagno = ctx ? guadagnoAlGiro({ contestoLive: ctx, nomeGara: gara,
+    etaOra: etaSuAuto(), mescolaOra: attuale, mescolaNuova: nuova }) : null;
+  const vitaGiri = ctx ? vitaMescolaGiri({ contestoLive: ctx, nomeGara: gara, mescola: nuova }) : null;
 
   const frag = document.createDocumentFragment();
-  const attuale = race.byLap[L]?.[selDrv]?.compound || null;
   frag.append(selettoreMescole({
-    scelta: mescolaScelta, attuale,
+    scelta: nuova, attuale,
     onScegli: (m) => { mescolaScelta = m; ultimaChiave = ''; aggiornaStrategia(); },
   }));
   if (!s || s.senza_risposta) {
@@ -714,24 +886,34 @@ async function aggiornaStrategia() {
         : `A questo giro il motore non risponde per ${selDrv}.`),
       primo ? el('button', {
         class: 'btn btn-s', type: 'button',
-        onclick: () => { clock.pause(); icona(false); clock.seek(primo.freeze_lap + 1); },
+        onclick: () => vaiAlGiro(primo.freeze_lap + 1),
       }, `Vai al giro ${primo.freeze_lap + 1}`) : null));
     // il tasto non invita a premere quando non c'e' niente da chiedere: la strada
     // e' il bottone «Vai al giro N» qui sopra, non un errore dopo il click.
-    if (!STRAT) {
-      E('boxOra').disabled = true;
-      E('boxOra').title = presto ? 'Il motore risponde da qualche giro più avanti'
-                                 : 'Troppo tardi perché una sosta abbia una risposta';
-    }
+    E('boxOra').disabled = true;
+    E('boxOra').title = presto ? 'Il motore risponde da qualche giro più avanti'
+                               : 'Troppo tardi perché una sosta abbia una risposta';
   } else {
     ultimaRisposta = s;
-    if (!STRAT) { E('boxOra').disabled = false; E('boxOra').removeAttribute('title'); }
+    E('boxOra').disabled = false; E('boxOra').removeAttribute('title');
     frag.append(pannelloStrategia(s, {
       pilota: selDrv, giro: Math.floor(curP), nGiri: race.n_laps,
-      onGiro: (g) => { clock.pause(); icona(false); clock.seek(g); },
+      mescolaNuova: nuova, guadagno, vitaGiri,
+      onGiro: vaiAlGiro,
     }));
   }
   c.replaceChildren(frag);
+}
+
+/** Portare l'orologio ATTIVO a un giro: durante la scena e' quello della scena, non il
+ *  replay nascosto sotto. Prima questi comandi chiamavano sempre `clock`, quindi cliccare
+ *  la curva «quando fermarsi» a scena in corso muoveva un orologio invisibile e la torre
+ *  tornava a mostrare il replay reale. */
+function vaiAlGiro(g) {
+  const o = orologio();
+  o.pause ? o.pause() : o.stop();
+  icona(false);
+  o.seek(g);
 }
 
 /* ============================================================== box ora */
@@ -746,6 +928,13 @@ async function caricaEse() {
 
 E('boxOra').addEventListener('click', async () => {
   if (!selDrv) return;
+  // A BANDIERA CALATA non si aggiunge una sosta. Prima la pagina leggeva
+  // `scenaGp.posizione` (che a fine gara vale nGiri+1), la clampava a nGiri-1 e infilava
+  // una sosta al penultimo giro senza che nessuno l'avesse chiesta, cancellando il referto.
+  if (scenaFinita) {
+    nota('La gara è finita. Premi ↺ per tornare al replay e rifare la strategia da capo.');
+    return;
+  }
   const b = E('boxOra'); b.disabled = true;
   try {
     await caricaEse();
@@ -771,7 +960,7 @@ E('boxOra').addEventListener('click', async () => {
       Math.min(race.n_laps - 1, Math.round(scenaGp?.posizione ?? Math.floor(curP))));
 
     const soste = [...(STRAT?.soste ?? []).filter(x => x.giro !== giro),
-                   { giro, mescola: gommaPerBox() }].sort((a, b) => a.giro - b.giro);
+                   { giro, mescola: mescolaDaMontare() }].sort((a, b) => a.giro - b.giro);
     let esiti;
     try {
       esiti = ESE.vista.eseguiRigioca({ prep: ESE.prep, pilota: selDrv, freeze, soste });
@@ -791,6 +980,7 @@ E('boxOra').addEventListener('click', async () => {
     // di azzeramento ancora nascosto.
     STRAT = { freeze, soste, esiti };
     E('reset').hidden = false;
+    disegnaPit(selDrv);           // le tue soste compaiono sulla barra, accanto alle vere
     avviaScena(giro);
   } finally { b.disabled = false; }
 });
@@ -807,8 +997,12 @@ async function avviaScena(giroSosta) {
   const sim = simDaRigioca({ risultato: STRAT.esiti.mio.risultato, race,
     pilota: selDrv, freeze: STRAT.freeze });
   if (!sim) { nota('La scena non è disponibile per questa strategia.'); return; }
-  sim.pitLap = giroSosta;
+  // `sim.pitLap = giroSosta` non c'e' piu': la traccia porta ORA le soste di tutti
+  // (fantasma_sim::simDaRigioca -> sim.soste), quindi si vedono in corsia la prima, la
+  // seconda e quelle dei rivali. Sovrascrivere il campo cancellava tutte tranne l'ultima.
+  const daDove = scenaGp?.posizione ?? curP;
   if (scenaGp) scenaGp.stop();
+  scenaFinita = false;
   clock.pause();
   E('reset').hidden = false;
   E('esito').hidden = true;
@@ -825,32 +1019,103 @@ async function avviaScena(giroSosta) {
   scenaGp = creaGhostPlay({
     sim, pista: mappa, coloreDi: sg => coloreDi(teamDi[sg], colori),
     onTower: torreScena, giroRisposta: null,
-    p0: Math.max(STRAT.freeze, giroSosta - 1), durataTot: 22,
+    // LA SCENA RIPARTE DA DOVE STAI GUARDANDO, non da un giro intero prima. Qui c'era
+    // `Math.max(STRAT.freeze, giroSosta - 1)`: con la barra a 15,62 e il congelamento a 14
+    // la scena ripartiva da 14,000, cioe' la gara tornava indietro di 1,6 giri sotto gli
+    // occhi di chi aveva appena premuto — ed era anche l'istante in cui TUTTI i pallini
+    // hanno frazione zero, quindi le ventidue auto si accatastavano sul traguardo e la
+    // torre mostrava +0,0 s per tutti. Ripartendo dall'istante corrente non succede
+    // nessuna delle due cose: al congelamento non ci si passa nemmeno.
+    p0: Math.min(Math.max(daDove, STRAT.freeze), race.n_laps + 1),
+    durataTot: 22,
     // LE DURATE VERE, le stesse del replay: la scena non sprinta piu' alla bandiera in
     // ventidue secondi (erano 229x il tempo reale, 209 metri di pista per fotogramma) e
     // resta il tempo di premere BOX ORA una seconda e una terza volta.
     durateVere: (L) => durate[L],
-    onFine: () => { icona(false); verdetto(); },
+    velocita: velCorrente,
+    // ALLA BANDIERA LA SCENA RESTA, ma finita. Prima restava viva e basta, e siccome ogni
+    // guardia della pagina testava `scenaGp` per verita', barra e frecce erano morte per
+    // sempre e un secondo BOX ORA leggeva `posizione = nLap+1` piazzando una sosta al
+    // penultimo giro. La risposta non e' buttarla — se la buttassimo, riavvolgere dopo la
+    // bandiera rimostrerebbe la gara VERA, non la tua — ma dichiararla conclusa: barra e
+    // frecce ora passano da `orologio()` e funzionano comunque, e BOX ORA sa che non c'e'
+    // piu' gara in cui fermarsi.
+    onFine: () => { scenaFinita = true; icona(false); verdetto(); },
   });
   scenaGp.play(); icona(true);
 }
-function soste0(g) { return STRAT?.soste.find(x => x.giro === g)?.mescola || null; }
+/** Il piano di soste con cui un pilota corre la SCENA: il tuo se sei il soggetto,
+ *  quello vero altrimenti (i rivali fanno cio' che fecero). */
+function pianoDi(d) {
+  return d === selDrv ? (STRAT?.soste ?? []) : (ESE?.prep?.sosteVere?.[d] ?? []);
+}
+/** Che gomma ha su al giro L nella scena: quella del congelamento, poi ogni sosta la cambia. */
+function mescolaInScena(d, L) {
+  const soste = pianoDi(d).filter(s => s.giro < L && s.mescola).sort((a, b) => a.giro - b.giro);
+  return soste.length ? soste[soste.length - 1].mescola
+                      : (race.byLap[STRAT?.freeze ?? 1]?.[d]?.compound ?? null);
+}
+/** L'eta' della gomma al giro L: la porta la traccia del kernel, non la inventiamo. */
+function etaInScena(d, L) {
+  return STRAT?.esiti?.mio?.risultato?.traccia?.[d]?.find(p => p.lap === L)?.tyre_age ?? null;
+}
 
 function torreScena(rs, meta) {
+  // LA SCENA E' L'OROLOGIO. `curP` va tenuto aggiornato anche qui: era l'unica ragione per
+  // cui, arrivati al giro 40 per la seconda sosta, il pannello mostrava ancora la risposta
+  // del giro 15 e `gommaPerBox` decideva su uno stato di venticinque giri prima.
+  curP = meta.p ?? meta.lap;
   const presenti = new Set(rs.map(r => r.drv));
   rs.forEach((r, i) => {
     const R = righe[r.drv]; if (!R) return;
+    const m = mescolaInScena(r.drv, meta.lap), eta = etaInScena(r.drv, meta.lap);
     R.pz.textContent = r.pos;
     R.gap.textContent = r.gapTxt; R.gap.className = 'gap n ' + (r.gapCls || '');
-    R.sotto.replaceChildren(...veri(r.inPit ? el('span', { class: 'st box' }, 'BOX') : null));
+    // GOMMA ED ETA' RESTANO. Prima qui si scriveva solo l'eventuale BOX, quindi per tutta
+    // la scena spariva la mescola di tutti — proprio mentre la pagina promette di farti
+    // vedere che «va avanti con la sua gomma».
+    R.sotto.replaceChildren(...veri(
+      m ? el('span', { class: 'gomma ' + m, title: MESCOLA_IT[m] || m }) : null,
+      eta != null ? el('span', { class: 'eta' }, `${eta}g`) : null,
+      r.inPit ? el('span', { class: 'st box' }, 'BOX') : null));
     R.root.style.order = i;
-    R.root.classList.toggle('fuori', false);
+    R.root.classList.remove('fuori');
+    R.root.style.display = '';
   });
-  for (const d in righe) righe[d].root.style.display = presenti.has(d) ? '' : 'none';
+  // I RITIRATI NON SPARISCONO: prima uscivano dalla torre con display:none e la lista si
+  // accorciava da 22 a 20 righe senza spiegazione. Un ritiro e' un fatto, e si legge.
+  let k = 0;
+  for (const d in righe) {
+    if (presenti.has(d)) continue;
+    const R = righe[d];
+    R.root.style.display = '';
+    R.root.classList.add('fuori');
+    R.sotto.replaceChildren();
+    R.pz.textContent = '';
+    R.gap.textContent = esitiGara[d] === 'NP' ? 'non parte' : 'ritirato';
+    R.gap.className = 'gap n lapped';
+    R.root.style.order = 90 + (k++);
+  }
   E('giroOra').textContent = meta.lap; E('lapNow').textContent = meta.lap;
   E('torreGiro').textContent = `giro ${meta.lap}`;
-  const pct = ((meta.p ?? meta.lap) - 1) / race.n_laps * 100;
+  E('scorri').setAttribute('aria-valuenow', meta.lap);
+  const pct = Math.max(0, Math.min(100, ((meta.p ?? meta.lap) - 1) / race.n_laps * 100));
   E('fatto').style.width = pct + '%'; E('cur').style.left = pct + '%';
+  // LA BANDIERA E' UN POSTO, non solo un evento. `onFine` scatta solo se la scena ci
+  // ARRIVA suonando; ora che la barra e' trascinabile anche durante la scena, ci si puo'
+  // andare col dito — e il referto non usciva. Vale la posizione, comunque ci si arrivi.
+  if (!scenaFinita && STRAT && (meta.p ?? meta.lap) >= race.n_laps + 1 - 1e-6) {
+    scenaFinita = true; icona(false); verdetto();
+  }
+  aggiornaStrategia();
+}
+
+/** Un piano di soste in parole: «giro 15 dura · giro 40 media». */
+function pianoInParole(soste) {
+  if (!soste?.length) return 'nessuna sosta';
+  return soste.slice().sort((a, b) => a.giro - b.giro)
+    .map(s => `giro ${s.giro}${s.mescola ? ' ' + (MESCOLA_IT[s.mescola] || s.mescola.toLowerCase()) : ''}`)
+    .join(' · ');
 }
 
 function verdetto() {
@@ -859,34 +1124,56 @@ function verdetto() {
   const posDi = (run) => { const i = run?.risultato?.ordine?.indexOf(selDrv); return (i == null || i < 0) ? null : i + 1; };
   const reale = ESE.prep.arrivoReale.find(r => r.drv === selDrv)?.posizione ?? null;
   const P = (n) => n == null ? '—' : 'P' + n;
+  // LE SOSTE, non solo le posizioni. Il referto diceva tre numeri e nessun giro: mancava
+  // esattamente la frase per cui si gioca — «lui si e' fermato al 16, 36 e 56 ed e' arrivato
+  // quinto; tu al 15 e al 40 e sei arrivato terzo».
+  const sueVere = (ESE.prep.sosteVere?.[selDrv] ?? []);
+  const pMio = posDi(mio), pVero = posDi(vero);
+  const scarto = (pMio != null && pVero != null) ? pVero - pMio : null;
   E('esito').hidden = false;
   E('esito').replaceChildren(el('div', { class: 'piastra piastra-p' },
     el('h3', { stile: { fontSize: '20px', textTransform: 'uppercase', marginBottom: '14px' } },
       `${selDrv} — com'è finita`),
     el('div', { class: 'esito-g' },
-      el('div', { class: 'esito-b' }, el('small', {}, 'nella gara vera'), el('b', { class: 'n' }, P(reale))),
-      el('div', { class: 'esito-b' }, el('small', {}, 'strategia vera nel motore'), el('b', { class: 'n' }, P(posDi(vero)))),
-      el('div', { class: 'esito-b tua' }, el('small', {}, 'la tua strategia'), el('b', { class: 'n' }, P(posDi(mio))))),
+      el('div', { class: 'esito-b' }, el('small', {}, 'nella gara vera'), el('b', { class: 'n' }, P(reale)),
+        el('i', { class: 'esito-p' }, pianoInParole(sueVere))),
+      el('div', { class: 'esito-b' }, el('small', {}, 'strategia vera nel motore'), el('b', { class: 'n' }, P(pVero)),
+        el('i', { class: 'esito-p' }, 'le stesse soste, rigiocate')),
+      el('div', { class: 'esito-b tua' }, el('small', {}, 'la tua strategia'), el('b', { class: 'n' }, P(pMio)),
+        el('i', { class: 'esito-p' }, pianoInParole(STRAT.soste)))),
     el('p', { class: 'st-nota', stile: { marginTop: '12px' } },
-      'Le prime due caselle dicono quanto il motore ci prende da solo. La differenza fra la seconda e la terza è la tua mossa.')));
+      scarto === null ? 'Le prime due caselle dicono quanto il motore ci prende da solo.'
+      : scarto > 0 ? `La tua mossa vale ${scarto} posizion${scarto > 1 ? 'i' : 'e'} sulla strategia vera, motore contro motore.`
+      : scarto < 0 ? `La strategia vera valeva ${-scarto} posizion${-scarto > 1 ? 'i' : 'e'} in più della tua, motore contro motore.`
+      : 'Stesso arrivo della strategia vera, motore contro motore.'),
+    el('p', { class: 'st-nota' },
+      'La prima casella è la gara com\'è andata; la seconda è la stessa strategia dentro il motore. ',
+      'Confrontare la seconda con la terza è l\'unico paragone onesto: cambia solo la tua mossa.')));
 }
 
-E('reset').addEventListener('click', () => {
+/** Torna al replay reale: un posto solo, perche' lo chiamano il tastino ↺ e il cambio
+ *  pilota. Prima esisteva solo dentro il gestore del tastino, e il cambio pilota — che
+ *  deve fare la stessa identica cosa — non lo faceva affatto. */
+function azzera() {
   if (scenaGp) { scenaGp.stop(); scenaGp = null; }
-  STRAT = null; ultimaChiave = '';
+  scenaFinita = false;
+  STRAT = null; ultimaChiave = ''; mescolaScelta = null;
   E('reset').hidden = true; E('esito').hidden = true;
-  for (const d in righe) righe[d].root.style.display = '';
+  for (const d in righe) { righe[d].root.style.display = ''; righe[d].root.classList.remove('fuori'); }
   mappa?.setSpento(false);
   icona(false);
+  if (selDrv) disegnaPit(selDrv);
   frame(clock.position);
-  aggiornaStrategia();
-});
+}
+E('reset').addEventListener('click', () => { azzera(); aggiornaStrategia(); });
 
 /* ---------------------------------------------------------- schede mobile */
 for (const [b, mostra] of [['sbStrat', 'rail'], ['sbTorre', 'torre']]) {
   E(b).addEventListener('click', () => {
     E('rail').hidden = mostra !== 'rail';
-    E('torre').hidden = mostra !== 'torre';
+    // la SEZIONE, non l'elenco che sta dentro: `id="torre"` e' sul div interno, quindi
+    // nascondendo quello restava in pagina una barra vuota con scritto «CLASSIFICA — GIRO N»
+    E('torreSez').hidden = mostra !== 'torre';
     E('sbStrat').classList.toggle('on', mostra === 'rail');
     E('sbTorre').classList.toggle('on', mostra === 'torre');
     // due bottoni a due stati: role=tab prometterebbe un tabpanel e le frecce
@@ -896,8 +1183,8 @@ for (const [b, mostra] of [['sbStrat', 'rail'], ['sbTorre', 'torre']]) {
 }
 function adattaSchede() {
   const stretto = window.matchMedia('(max-width:860px)').matches;
-  if (!stretto) { E('rail').hidden = false; E('torre').hidden = false; }
-  else if (!E('rail').hidden && !E('torre').hidden) E('torre').hidden = true;
+  if (!stretto) { E('rail').hidden = false; E('torreSez').hidden = false; }
+  else if (!E('rail').hidden && !E('torreSez').hidden) E('torreSez').hidden = true;
 }
 window.addEventListener('resize', adattaSchede);
 adattaSchede();
