@@ -165,11 +165,39 @@ def _riprova_gare_declinate():
         return
     mancanti = [g for g in gare
                 if not os.path.exists(os.path.join(reg, f'replay_{g}.json'))]
-    if not mancanti:
-        return
-    log(f'riprova replay a posizioni vere sulle gare declinate: {mancanti}')
-    for g in mancanti:
-        sh([PY, 'gen_replay.py', '--gara', g], check=False)
+    if mancanti:
+        log(f'riprova replay a posizioni vere sulle gare declinate: {mancanti}')
+        for g in mancanti:
+            sh([PY, 'gen_replay.py', '--gara', g], check=False)
+
+    # LE ALTRE DUE COSE CHE AL GIOCO SERVONO, e che nessuno ritentava (13/08/2026).
+    #
+    # La riprova copriva il solo replay. Ma una gara senza VISTA ha il pannello muto — e'
+    # peggio di una gara senza posizioni vere, che almeno ricade sulla ricostruzione dai
+    # tempi-giro — e una gara senza PISTA non ha nemmeno il nastro su cui disegnare. Sono
+    # esattamente i due artefatti che il 13/08 sono risultati mancanti su 13 coppie
+    # pilota-gara, e nessun giro di cron li avrebbe mai ripescati.
+    try:
+        with open(os.path.join(reg, 'vista', 'manifest.json')) as f:
+            cartella_di = json.load(f).get('cartella_di', {})
+    except Exception:
+        cartella_di = {}
+    senza_vista = [g for g in gare
+                   if not os.path.exists(os.path.join(reg, 'vista',
+                                                      cartella_di.get(g, g.replace(' ', '')),
+                                                      'indice.json'))]
+    if senza_vista:
+        log(f'riprova VISTA del motore sulle gare che ne sono senza: {senza_vista}')
+        sim = os.path.join(ROOT, 'simulatore')
+        for g in senza_vista:
+            sh(['node', 'web/genera_vista_gara.mjs', g], cwd=sim, check=False)
+
+    senza_pista = [g for g in gare
+                   if not os.path.exists(os.path.join(reg, f'pista_{g}.json'))]
+    if senza_pista:
+        log(f'riprova NASTRO di pista sulle gare che ne sono senza: {senza_pista}')
+        for g in senza_pista:
+            sh([PY, 'gen_pista_svg.py', '--gara', g], check=False)
 
 
 def _controlla_pista_nuova(nome):
@@ -297,14 +325,6 @@ def wave_nuove():
         sh([PY, 'gen_race_control.py'], check=False)              # lista gare dal registro
         sh([PY, 'gen_rc_feed.py'], check=False)
         sh([PY, 'gen_classifiche_ufficiali.py'], check=False)
-        # LA VISTA DEL SIMULATORE per la gara nuova. Senza questo passo il pannello
-        # resterebbe muto proprio sulla gara appena pubblicata: la pagina non calcola
-        # (regola 8 del simulatore), quindi se il pre-calcolo non gira non c'e' risposta.
-        # check=False come i fratelli: una vista mancante e' un guaio minore di una gara
-        # che non esce, e il log lo grida. ~2 minuti per gara.
-        sh(['node', 'web/genera_vista_gara.mjs', nome], cwd=os.path.join(ROOT, 'simulatore'),
-           check=False)
-
         # I TRE GENERATORI NUOVI (08-09/08/2026) NON LI CHIAMAVA NESSUNO. Erano scritti,
         # provati e committati, e sarebbero rimasti fermi: la prossima gara sarebbe uscita
         # senza posizioni vere, senza overlay telemetrico e senza l'arbitro delle soste
@@ -419,6 +439,20 @@ def wave_nuove():
         sim = os.path.join(ROOT, 'simulatore')
         sh(['node', 'provenienza/aggiorna_gara_2026.mjs', nome], cwd=sim)
         sh(['node', 'provenienza/esporta_vista_verde.mjs'], cwd=sim, check=False)
+
+        # LA VISTA DEL SIMULATORE, e sta QUI e non piu' su nell'ondata di pubblicazione.
+        #
+        # Il pannello della pagina-gara non calcola (regola 8): senza questo passo la gara
+        # appena pubblicata nasce MUTA. Ma il generatore legge la gara dai dati del MOTORE,
+        # e in quei dati la gara nuova la mette il ponte due righe qui sopra. Chiamandolo
+        # prima — dov'era — su una gara nuova produceva «0 risposte su 0 gare» e usciva
+        # ZERO: un successo silenzioso che lasciava il pannello muto e non lo diceva a
+        # nessuno. Provato a mano il 13/08 su `Olanda`: 0 risposte, esito 0.
+        #
+        # E sta FUORI dal blocco della ri-stima, che il sigillo holdout salta: la vista non
+        # e' una ri-stima — e' la risposta della gara appena corsa, e va prodotta anche
+        # quando il cuore del simulatore, giustamente, non si tocca.
+        sh(['node', 'web/genera_vista_gara.mjs', nome], cwd=sim, check=False)
 
         # Il resto dell'ondata prosegue normale: si salta solo il cuore.
         if _holdout_aperto(nome):
@@ -635,7 +669,14 @@ def wave_riparazione():
     # ricontrollo: si committa solo cio' che e' davvero rientrato, e si dice cosa no
     riparati, ancora = [], []
     for artefatto, _, manca in da_fare:
-        resta = _gare_mancanti(artefatto, manca)
+        # IL TERZO CAMPO ANCHE QUI. Il rilevamento (riga sopra) passa `dentro`, il
+        # ricontrollo no: per un artefatto che tiene le gare sotto una chiave — oggi
+        # `giri_manifest.json` sotto "gare" — questa lettura guardava la CIMA del file, non
+        # trovava niente e dichiarava tutto ancora mancante. Risultato: la riparazione
+        # girava davvero, scriveva sul disco, e poi `riparati` restava vuoto e NON SI
+        # COMMITTAVA NIENTE. Il lavoro veniva fatto e buttato a ogni giro, in silenzio.
+        dentro = next((r[2] if len(r) > 2 else None for r in RIPARAZIONI if r[0] == artefatto), None)
+        resta = _gare_mancanti(artefatto, manca, dentro)
         riparati += [(artefatto, g) for g in manca if g not in resta]
         ancora += [(artefatto, g) for g in resta]
     for artefatto, g in ancora:
