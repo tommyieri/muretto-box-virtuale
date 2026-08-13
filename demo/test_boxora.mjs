@@ -273,6 +273,12 @@ console.log('(h) la pagina non disfa le riparazioni di orchestrazione');
     'le tue soste e quelle vere si distinguono sulla barra');
   controlla(/function inCorsiaVera/.test(gara),
     'il flag pit del replay è incrociato con una sosta vera');
+  controlla(/run\.direttore\?\.approved === false\) return null/.test(gara),
+    'un run respinto dal Direttore non ha una posizione da stampare');
+  controlla(/function pittaRegime/.test(gara) && /pittaRegime\(meta\.lap\)/.test(gara),
+    'il banner SC/VSC e la tinta della pista seguono il regime anche durante la scena');
+  controlla(/\.comandi \.barra-t\{ grid-column:1\/-1/.test(gara),
+    'la barra dei giri ha una riga sua: il giro si può scegliere');
 }
 
 console.log(`\ntest_boxora: ${fatti} controlli passati, ${errori} falliti`);
