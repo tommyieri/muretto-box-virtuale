@@ -19,6 +19,20 @@ Cosa lo fa fallire (regola 4: un test che stampa FALLITO ed esce 0 e' un ornamen
       ultimo giro completato: il ritirato sparisce, non resta congelato in pista.
       FALLISCE se un ritirato ha posizioni oltre 60 s dal suo ultimo giro.
 
+  S7  IL RIGHELLO E' QUELLO DISEGNATO. La frazione di giro e' misurata proiettando il GPS
+      su un nastro; la pagina disegna il nastro di pista_<gara>.json. Se non sono lo
+      stesso giro di riferimento, ogni pallino sta nel posto sbagliato e nessuno se ne
+      accorge — e' successo all'Ungheria per una stagione, con la targhetta che
+      dichiarava «stesso giro di riferimento» mentre erano due. FALLISCE se evento,
+      pilota o giro non coincidono con la targhetta della pista.
+
+  S8  NESSUN TRATTO A PASSO D'UOMO. S6 guarda i campioni FERMI (avanzamento esattamente
+      zero) e non vede il difetto peggiore: il pallino che in un punto preciso della
+      pista rallenta fino a strisciare e poi riparte. Si misura il posto, non il
+      campione: in ciascun quarantesimo di giro l'avanzamento mediano non puo' scendere
+      sotto il 30% dell'avanzamento medio di gara. Le nove gare col feed sano stanno fra
+      0,36 e 0,58; l'Ungheria col nastro sbagliato stava a 0,22.
+
   S5  PIT LANE MISURATA. Le frazioni di ingresso/uscita devono essere MISURATE e diverse
       dalle costanti 0,95/0,05 del generatore stilizzato — se coincidono esattamente su
       ogni pista, qualcuno ha ricablato una costante. FALLISCE anche se i tratti `pit`
@@ -163,6 +177,55 @@ def prova(gara):
     esiti.append(('S6', quota <= 0.10,
                   f'campioni consecutivi identici {quota:.1%} (soglia 10%) · '
                   f'{len(pianori_lunghi)} pianori oltre 6 s'))
+
+    # ── S7 il righello e' quello disegnato
+    perc_pista = os.path.join('demo', 'data', f'pista_{gara}.json')
+    if not os.path.exists(perc_pista):
+        esiti.append(('S7', False, f'manca demo/data/pista_{gara}.json: il replay misura '
+                                   f'su un nastro che la pagina non disegna'))
+    else:
+        pt = json.load(open(perc_pista)).get('sorgente', {})
+        ng = R.get('sorgente', {}).get('nastro_giro')
+        if not ng:
+            esiti.append(('S7', False, 'il replay non dichiara il giro del nastro '
+                                       '(sorgente.nastro_giro): rigenerare con gen_replay.py'))
+        else:
+            uguale = (str(ng.get('evento')) == str(pt.get('evento'))
+                      and str(ng.get('pilota')) == str(pt.get('pilota'))
+                      and int(ng.get('giro', -1)) == int(pt.get('giro', -2)))
+            esiti.append(('S7', uguale,
+                          f'replay su {ng.get("evento")} {ng.get("pilota")} giro {ng.get("giro")} · '
+                          f'pista disegnata da {pt.get("evento")} {pt.get("pilota")} giro {pt.get("giro")}'
+                          + ('' if uguale else '  <-- DUE RIGHELLI DIVERSI')))
+
+    # ── S8 nessun tratto a passo d'uomo
+    # Si misura il POSTO: per ogni quarantesimo di giro, quanto avanza il pallino li'
+    # rispetto a quanto avanza in media. Un vero rallentamento (la curva piu' lenta del
+    # circuito) vale 0,36-0,58; sotto il 30% non e' piu' una curva, e' un difetto.
+    NB = 40
+    per_bin = [[] for _ in range(NB)]
+    tutti = []
+    for sig, s in S.items():
+        p = R['piloti'][sig]
+        inpit = np.zeros(n, dtype=bool)
+        for a, b in p.get('pit', []):
+            inpit[a:b + 1] = True
+        fin = np.isfinite(s)
+        for i in range(1, n):
+            if inpit[i] or not (fin[i] and fin[i - 1]):
+                continue
+            d = s[i] - s[i - 1]
+            per_bin[int((s[i - 1] % 1.0) * NB)].append(d)
+            tutti.append(d)
+    if len(tutti) < 1000:
+        esiti.append(('S8', False, f'troppo pochi avanzamenti da misurare ({len(tutti)})'))
+    else:
+        medio = float(np.mean(tutti))
+        rap = [(float(np.median(v)) / medio, b) for b, v in enumerate(per_bin) if len(v) >= 50]
+        peggio, dove = min(rap)
+        esiti.append(('S8', peggio >= 0.30,
+                      f'tratto piu lento: frazione {dove / NB:.3f}-{(dove + 1) / NB:.3f}, '
+                      f'avanza {peggio:.2f} volte la media di gara (soglia 0,30)'))
 
     # ── S5 pit lane misurata
     pl = R.get('pitlane')

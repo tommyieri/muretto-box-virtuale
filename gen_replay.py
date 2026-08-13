@@ -25,11 +25,24 @@ demo/data/<Gara>.json e FastF1. Sulle prime tre gare provate l'offset e' 0,000 s
 scarto massimo 0,000 s: sono lo stesso orologio. Se un giorno divergessero, il
 generatore esce 1 invece di produrre un file disallineato.
 
-GEOMETRIA. Il nastro e' lo STESSO di gen_pista_svg.py — se ne importano le funzioni
-invece di riscriverle (regola 1: una definizione, un posto). La proiezione avviene
-sulle coordinate grezze: rotazione, ribaltamento e normalizzazione del viewBox sono
-isometrie a meno di scala uniforme, quindi la frazione d'arco non cambia, ed e' la
-stessa che demo/pista.mjs usa via il suo array `dist`.
+GEOMETRIA: IL RIGHELLO E' QUELLO DISEGNATO. La frazione di giro e' una misura d'arco su
+un nastro, e demo/pista.mjs traduce quella frazione in un punto usando il nastro di
+pista_<gara>.json. Se i due nastri non sono lo STESSO giro di riferimento, la misura e il
+disegno parlano di due circuiti diversi. Fino al 13/08/2026 questo file ri-sceglieva il
+giro per conto suo (G.scegli_giro) e si limitava a DICHIARARE «stesso giro di
+riferimento»: all'Ungheria era falso da una stagione, perche' pista_Ungheria.json veniva
+dal 2025 mentre qui si sceglieva un giro 2026. Ora il giro lo detta la targhetta della
+pista (G.giro_del_disegno) e la sentinella S7 di test_replay.py lo verifica.
+La proiezione avviene sulle coordinate grezze: rotazione, ribaltamento e normalizzazione
+del viewBox sono isometrie a meno di scala uniforme, quindi la frazione d'arco non cambia.
+
+FLUIDITA': SI INTERPOLA LUNGO IL NASTRO, NON ATTRAVERSO LA PISTA. Fra due rilevazioni
+GPS distinte si avanza in FRAZIONE DI GIRO, non in coordinate x,y. Interpolare le
+coordinate tira una corda che taglia la curva, e il piede della perpendicolare su quella
+corda rallenta fino a fermarsi: e' il pallino che si bloccava prima dell'ultima curva
+dell'Hungaroring, dove fra due posizioni diverse il feed 2026 lascia passare fino a 3,1 s
+(153 m). Fra due rilevazioni un'auto da corsa resta sulla pista: quello, e non il piano,
+e' il posto giusto in cui interpolare.
 
 PIT LANE. Qui e' MISURATA, non stilizzata. gen_pista_svg.py la costruisce parallela
 al nastro con W=22 e frazioni 0,95/0,05 identiche su tutte le piste (costanti del
@@ -47,7 +60,7 @@ import numpy as np
 import fastf1
 from scipy.spatial import cKDTree
 
-import gen_pista_svg as G          # riuso: scegli_giro, ricampiona_anello, carica_registro
+import gen_pista_svg as G   # riuso: giro_del_disegno, ricampiona_anello, carica_registro
 
 logging.getLogger('fastf1').setLevel(logging.ERROR)
 fastf1.Cache.enable_cache(os.path.expanduser('~/muretto_shared/ff1_cache'))
@@ -67,6 +80,27 @@ SEPARAZIONE_RAMI = 1000.0  # decimi di metro = 100 m
 # se fra i due capi di una tenuta l'auto si e' spostata meno di questo, era ferma davvero
 # (sosta ai box, bandiera rossa, ritiro) e la tenuta E' il dato: non si scavalca.
 FERMO_U = 200.0           # decimi di metro = 20 m
+# il nastro ricostruito e quello dichiarato da pista_<gara>.json devono essere lo stesso
+# oggetto: il ricampionamento leviga e accorcia di qualche per mille, non di piu'
+MAX_SCARTO_NASTRO = 0.02
+# fra due rilevazioni distinte si interpola LUNGO IL NASTRO; oltre questo intervallo la
+# retta in coordinate-pista e' una supposizione troppo lunga per pubblicarla.
+# IL LIMITE VIENE DAL FEED, non dal gusto: all'Ungheria (il piu' rado del 2026) fra due
+# rilevazioni distinte passano 0,3 s alla mediana e 9,5 s al p99,9; oltre i 12 s non c'e'
+# quasi piu' niente da recuperare (i secondi non coperti passano dal 14,9% a 8 s al 7,04%
+# a 12 s, e restano 6,88% a 30 s: quel fondo sono i ritirati, che devono sparire).
+# Sopra il limite il pallino non scompare: la pagina ricade sulla ricostruzione dai
+# tempi-giro e lo disegna VUOTO — una stima dichiarata, non una posizione misurata.
+MAX_PONTE_FIX_S = 12.0
+# un'auto in pista sta a pochi metri dalla traiettoria di riferimento: se la MEDIANA di
+# tutta la gara e' piu' lontana di cosi', il nastro non e' questo circuito
+MAX_SCARTO_LATERALE_M = 40.0
+# quanto puo' tornare indietro una posizione senza smettere di essere una posizione. In
+# unita' di SCALA_S (1/10000 di giro): 12 unita' sono ~5 m all'Hungaroring, ~8 m a Spa.
+# MISURATO: con questa soglia una gara col feed sano (Belgio) paga lo 0,04% dei campioni,
+# l'Ungheria l'1,88% — e quell'1,88% e' tutto dentro i giri 7-14, dove il feed di
+# posizione sbanda e il cronometraggio lo smentisce fino a mezzo giro.
+TOLL_INDIETRO = 12
 ASSENTE = -1              # sentinella nel campo `pit`: mai una posizione inventata
 
 
@@ -87,6 +121,61 @@ def fine_giro_sito(gara):
     for sig in per_pilota:
         per_pilota[sig].sort()
     return per_pilota
+
+
+def bordi_giro(sig, tempi, fine_sito):
+    """Quanti giri interi ha gia' completato il pilota a ciascun istante, secondo il
+    CRONOMETRAGGIO. Ritorna (base, bordi, k); bordi None se il pilota non ha fine-giro."""
+    giri = fine_sito.get(sig, [])
+    if not giri:
+        return np.zeros(len(tempi)), None, None
+    bordi = np.array([c for _, c in giri])
+    numeri = np.array([ng for ng, _ in giri])
+    # giro in corso all'istante t = primo fine-giro non ancora passato
+    k = np.clip(np.searchsorted(bordi, tempi, side='right'), 0, len(numeri) - 1)
+    return numeri[k] - 1.0, bordi, k
+
+
+def guardia_cronometraggio(sig, tempi, srot, fine_sito, t_in):
+    """IL CRONOMETRAGGIO FA DA GUARDIA AL GPS. Dentro il giro la stima "a velocita'
+    uniforme" (quella che il sito usava prima) e' grossolana ma non puo' sbagliare di
+    molto: se il GPS la contraddice di piu' di MAX_SCARTO_GIRO non e' un'auto che ha
+    rallentato, e' il feed che ha sbandato. All'Ungheria succede fra il giro 6 e il 14,
+    con le vetture riportate fino a 44 m fuori dal tracciato. Quei valori diventano
+    ASSENTI: non si pubblica una posizione che non e' vera."""
+    base, bordi, k = bordi_giro(sig, tempi, fine_sito)
+    if bordi is None:
+        return srot
+    t_fine = bordi[k]
+    t_inizio = np.where(k > 0, bordi[np.clip(k - 1, 0, len(bordi) - 1)], t_in)
+    durata = np.maximum(t_fine - t_inizio, 1e-6)
+    atteso = base + np.clip((tempi - t_inizio) / durata, 0.0, 1.0)
+    return np.where(np.abs(srot - atteso) > MAX_SCARTO_GIRO, np.nan, srot)
+
+
+def srotola(sig, tempi, fr, fine_sito, t_in):
+    """SROTOLAMENTO ANCORATO AL CRONOMETRAGGIO: da frazione di giro a (giro-1 + frazione).
+
+    Il numero di giro NON si deduce dai salti della frazione: con GPS rado (Monaco)
+    un'auto puo' percorrere piu' di mezzo giro fra due rilevazioni e il conteggio si
+    perde. Il giro lo dice il cum_time del sito — gia' verificato essere lo stesso
+    orologio — e il GPS dice solo DOVE si e' dentro quel giro. Ogni fonte per cio' su cui
+    e' autorevole."""
+    base, bordi, k = bordi_giro(sig, tempi, fine_sito)
+    srot = base + fr
+    if bordi is None:
+        return srot
+    # JITTER AL TRAGUARDO, e solo quello. Il giro viene dal cronometraggio e non si
+    # discute; l'unico disaccordo possibile e' di un giro esatto nei pochi secondi a
+    # cavallo della linea, quando le due fonti non girano pagina nello stesso istante.
+    # Si corregge LOCALMENTE: nessuna correzione cumulativa, che con GPS rado (Monaco:
+    # 36% di copertura) propagherebbe un errore su tutta la gara.
+    da_bordo = tempi - bordi[np.clip(k - 1, 0, len(bordi) - 1)]
+    al_bordo = bordi[k] - tempi
+    vicino = 3.0
+    srot = np.where((da_bordo >= 0) & (da_bordo < vicino) & (fr > 0.5), srot - 1.0, srot)
+    srot = np.where((al_bordo >= 0) & (al_bordo < vicino) & (fr < 0.5), srot + 1.0, srot)
+    return guardia_cronometraggio(sig, tempi, srot, fine_sito, t_in)
 
 
 def verifica_orologio(gara, session):
@@ -235,6 +324,9 @@ class Proiettore:
         proiezione bocciava anche cio' che la guardia avrebbe promosso."""
         K = min(48, self.N)
         _, idx = self.tree.query(xy, k=K, workers=-1)
+        # salto_max puo' essere UNO per tutti (griglia a passo fisso) o UNO PER PUNTO
+        # (rilevazioni distinte, che arrivano a distanza di tempo variabile)
+        sm = np.broadcast_to(np.asarray(salto_max, dtype=float), (len(xy),))
         s_cand = self.s[idx]                       # distanza d'arco di ogni candidato
         fr0, lat0 = self._raffina(xy, idx[:, 0])   # il piu' vicino in assoluto
         scelta_f = fr0.copy()
@@ -258,7 +350,7 @@ class Proiettore:
                                          idx[n_i, rami])
                 d = np.abs(f_r - prec)
                 d = np.minimum(d, 1.0 - d)
-                amm = np.flatnonzero(d <= salto_max)
+                amm = np.flatnonzero(d <= sm[n_i])
                 # nessun ramo coerente: si tiene il piu' vicino e si lascia decidere alla
                 # guardia. Un campione scartato qui sarebbe un buco che nessuno spiega.
                 k_sel = int(amm[np.argmin(l_r[amm])]) if len(amm) else int(np.argmin(l_r))
@@ -375,11 +467,23 @@ def genera(nome, reg, hz=HZ, anno=ANNO):
               f'scarto max {scarto:.3f} s')
 
     fine_sito = fine_giro_sito(nome)
-    lap, xy = G.scegli_giro(session)
+    # IL NASTRO E' QUELLO CHE LA PAGINA DISEGNA, non uno ri-scelto qui. Vedi
+    # gen_pista_svg.giro_del_disegno: misurare su un righello e disegnare su un altro
+    # sposta ogni pallino, e all'Ungheria lo fermava del tutto.
+    lap, xy, targhetta = G.giro_del_disegno(nome, session=session, anno=anno)
     if lap is None:
-        print('   NIENTE: nessun giro con telemetria GPS utilizzabile')
+        print(f'   ERRORE: demo/data/pista_{nome}.json non dichiara un giro di riferimento '
+              f'recuperabile. Il replay misura su quel nastro: senza, non si pubblica.')
         return False
     punti_n, passi, L = nastro_fine(xy)
+    atteso_m = targhetta.get('lunghezza_m')
+    if atteso_m and abs(L / 10.0 - atteso_m) / atteso_m > MAX_SCARTO_NASTRO:
+        print(f'   ERRORE: il nastro ricostruito misura {L / 10.0:.0f} m, pista_{nome}.json '
+              f'ne dichiara {atteso_m:.0f}. Non sono la stessa geometria: non misuro '
+              f'frazioni su un righello che non e\' quello disegnato.')
+        return False
+    print(f'   nastro del disegno: {targhetta.get("evento")} {targhetta.get("pilota")} '
+          f'giro {targhetta.get("giro")}, {L / 10.0:.0f} m ({targhetta.get("controlli")})')
     proj = Proiettore(punti_n, passi, L)
     pos = session.pos_data
 
@@ -400,6 +504,7 @@ def genera(nome, reg, hz=HZ, anno=ANNO):
         num2sig[str(r['DriverNumber'])] = str(r['Driver'])
 
     piloti, saltati = {}, []
+    clampati = clamp_tot = scartati_indietro = 0   # contabilita' della monotonia
     for dn, df in pos.items():
         sig = num2sig.get(str(dn))
         if sig is None:                     # nel GPS ma non nei giri: nessuna gara da mostrare
@@ -425,80 +530,101 @@ def genera(nome, reg, hz=HZ, anno=ANNO):
         idx = np.flatnonzero(m)
         da, a = int(idx[0]), int(idx[-1])
         g = griglia[da:a + 1]
-        # campionamento: nessuna extrapolazione oltre i bordi dei dati
-        X = np.interp(g, ts, XY[:, 0], left=np.nan, right=np.nan)
-        Y = np.interp(g, ts, XY[:, 1], left=np.nan, right=np.nan)
-        # NON SI INTERPOLA ATTRAVERSO UN BUCO. Il passo tipico del feed e' 240 ms (p99
-        # ~620 ms); oltre MAX_BUCO_S non c'e' piu' un dato fra cui interpolare, e tirare
-        # una retta fra i due bordi disegnerebbe una traiettoria che nessuno ha percorso
-        # — a Monaco ci sono 22 buchi oltre 30 s, uno da 3.011 s (la bandiera rossa).
-        # Li' il pilota e' ASSENTE, e il pallino sparisce. Regola 6.
-        if len(ts_grezzo) > 1:
-            j = np.searchsorted(ts_grezzo, g, side='right')
-            prima = np.clip(j - 1, 0, len(ts_grezzo) - 1)
-            dopo = np.clip(j, 0, len(ts_grezzo) - 1)
-            buco = ts_grezzo[dopo] - ts_grezzo[prima]
-            X = np.where(buco > MAX_BUCO_S, np.nan, X)
-            Y = np.where(buco > MAX_BUCO_S, np.nan, Y)
-        buoni = np.isfinite(X) & np.isfinite(Y)
-        if buoni.sum() < 10:
+
+        # SI INTERPOLA LUNGO IL NASTRO, NON ATTRAVERSO LA PISTA.
+        #
+        # Prima si interpolavano le COORDINATE fra due rilevazioni e si proiettava il
+        # risultato. Con un feed fitto e' innocuo; con un feed rado e' un disastro, e
+        # all'Ungheria 2026 il feed e' rado: fra due posizioni DIVERSE passano 1,15 s in
+        # media e 3,14 s al p90, cioe' fino a 153 m. La retta fra due punti a 153 m di
+        # distanza in una curva NON passa per la curva: taglia la corda, cade dentro il
+        # tracciato, e il piede della perpendicolare sul nastro prima rallenta, poi si
+        # ferma, poi risale di scatto. E' esattamente il pallino che si blocca prima
+        # dell'ultima curva e riparte — segnalato dal PO, e per due volte curato dalla
+        # parte sbagliata.
+        #
+        # Fra due rilevazioni un'auto da corsa non taglia i prati: resta sulla pista. Il
+        # posto giusto in cui interpolare non e' il piano, e' la PISTA — la frazione di
+        # giro. Si proietta ogni rilevazione DISTINTA, e fra due rilevazioni si avanza
+        # lungo il nastro. Quel che resta e' un'approssimazione dichiarata (velocita'
+        # uniforme per un secondo, non piu' per un giro intero: era la vecchia
+        # ricostruzione dai tempi-giro, applicata su 1,15 s invece che su 82) e non
+        # inventa una traiettoria che nessuno ha percorso.
+        mf = (ts >= g[0] - MAX_PONTE_FIX_S) & (ts <= g[-1] + MAX_PONTE_FIX_S)
+        tf, XF = ts[mf], XY[mf]
+        if len(tf) < 10:
             saltati.append(sig)
             continue
-        fr = np.full(len(g), np.nan)
-        lat = np.full(len(g), np.nan)
-        f_ok, l_ok = proj.continuo(np.column_stack([X[buoni], Y[buoni]]), salto_max)
-        fr[buoni], lat[buoni] = f_ok, l_ok
-
-        # SROTOLAMENTO ANCORATO AL CRONOMETRAGGIO. Il numero di giro NON si deduce dai
-        # salti della frazione: con GPS rado (Monaco) un'auto puo' percorrere piu' di
-        # mezzo giro fra due campioni e il conteggio si perde. Il giro lo dice il
-        # cum_time del sito — gia' verificato essere lo stesso orologio — e il GPS dice
-        # solo DOVE si e' dentro quel giro. Ogni fonte per cio' su cui e' autorevole.
-        giri = fine_sito.get(sig, [])
-        if giri:
-            bordi = np.array([c for _, c in giri])
-            numeri = np.array([L for L, _ in giri])
-            # giro in corso all'istante t = primo fine-giro non ancora passato
-            k = np.searchsorted(bordi, g, side='right')
-            k = np.clip(k, 0, len(numeri) - 1)
-            base = numeri[k] - 1                     # giri interi gia' completati
-        else:
-            base = np.zeros(len(g))
-        srot = base + fr
-        # JITTER AL TRAGUARDO, e solo quello. Il giro viene dal cronometraggio e non si
-        # discute; l'unico disaccordo possibile e' di un giro esatto nei pochi secondi a
-        # cavallo della linea, quando le due fonti non girano pagina nello stesso istante.
-        # Si corregge LOCALMENTE: nessuna correzione cumulativa, che con GPS rado
-        # (Monaco: 36% di copertura) propagherebbe un errore su tutta la gara.
-        if giri:
-            da_bordo = g - bordi[np.clip(k - 1, 0, len(bordi) - 1)]
-            al_bordo = bordi[k] - g
-            vicino = 3.0
-            srot = np.where((da_bordo >= 0) & (da_bordo < vicino) & (fr > 0.5), srot - 1.0, srot)
-            srot = np.where((al_bordo >= 0) & (al_bordo < vicino) & (fr < 0.5), srot + 1.0, srot)
-        # IL CRONOMETRAGGIO FA DA GUARDIA AL GPS. Dentro il giro la stima "a velocita'
-        # uniforme" (quella che il sito usava prima) e' grossolana ma non puo' sbagliare
-        # di molto: se il GPS la contraddice di piu' di MAX_SCARTO_GIRO, non e' un'auto
-        # che ha rallentato — e' il feed che ha sbandato. All'Ungheria succede fra il
-        # giro 6 e il 14, con le vetture riportate fino a 44 m fuori dal tracciato.
-        # Quei campioni diventano ASSENTI: non si pubblica una posizione che non e' vera.
-        if giri:
-            t_fine = bordi[k]
-            t_inizio = np.where(k > 0, bordi[np.clip(k - 1, 0, len(bordi) - 1)], t_in)
-            durata = np.maximum(t_fine - t_inizio, 1e-6)
-            atteso = base + np.clip((g - t_inizio) / durata, 0.0, 1.0)
-            fuori = np.abs(srot - atteso) > MAX_SCARTO_GIRO
-            srot = np.where(fuori, np.nan, srot)
+        # quanto puo' avanzare l'auto fra due rilevazioni dipende da quanto distano NEL
+        # TEMPO: con un passo variabile il limite non puo' essere una costante
+        dt_fix = np.diff(tf, prepend=tf[0] - 1.0 / hz)
+        salto = np.clip(2.5 * dt_fix / lap_s, salto_max, 0.35)
+        fr_fix, lat_fix = proj.continuo(XF, salto)
+        srot_fix = srotola(sig, tf, fr_fix, fine_sito, t_in)
+        ok_fix = np.isfinite(srot_fix)
+        if ok_fix.sum() < 10:
+            saltati.append(sig)
+            continue
+        tfb, sfb, latb = tf[ok_fix], srot_fix[ok_fix], lat_fix[ok_fix]
+        srot = np.interp(g, tfb, sfb, left=np.nan, right=np.nan)
+        lat = np.interp(g, tfb, latb, left=np.nan, right=np.nan)
+        # NON SI SCAVALCA UN BUCO. Il passo tipico del feed e' 240 ms; oltre MAX_BUCO_S
+        # non c'e' piu' un dato fra cui interpolare — a Monaco ci sono 22 buchi oltre
+        # 30 s, uno da 3.011 s (la bandiera rossa). Li' il pilota e' ASSENTE e il pallino
+        # sparisce (regola 6). Il buco si misura sul GREZZO: una tenuta non e' un buco,
+        # il feed sta parlando, semplicemente non sa niente di nuovo.
+        if len(ts_grezzo) > 1:
+            j = np.searchsorted(ts_grezzo, g, side='right')
+            buco = (ts_grezzo[np.clip(j, 0, len(ts_grezzo) - 1)]
+                    - ts_grezzo[np.clip(j - 1, 0, len(ts_grezzo) - 1)])
+            srot = np.where(buco > MAX_BUCO_S, np.nan, srot)
+        # e non si tira un ponte troppo lungo nemmeno fra due rilevazioni DISTINTE: la
+        # retta lungo il nastro e' piu' onesta di quella nel piano, ma resta una retta.
+        jf = np.searchsorted(tfb, g, side='right')
+        campata = (tfb[np.clip(jf, 0, len(tfb) - 1)] - tfb[np.clip(jf - 1, 0, len(tfb) - 1)])
+        srot = np.where(campata > MAX_PONTE_FIX_S, np.nan, srot)
+        # la guardia del cronometraggio vale anche su cio' che il ponte ha prodotto
+        srot = guardia_cronometraggio(sig, g, srot, fine_sito, t_in)
         s_q = np.where(np.isfinite(srot), np.round(srot * SCALA_S), ASSENTE).astype(np.int64)
         vis = s_q != ASSENTE
         if vis.any():
             v = s_q[vis]
-            s_q[vis] = np.maximum.accumulate(v)      # un'auto non torna indietro
+            w = np.maximum.accumulate(v)             # un'auto non torna indietro
+            # LA MONOTONIA NON RIPARA: ACCUSA. Tenere il massimo raggiunto trasforma un
+            # dato che torna indietro in un pallino FERMO, e un pallino fermo mentre
+            # l'auto corre e' una bugia con l'aria di un dato. All'Ungheria, nei giri in
+            # cui il feed di posizione sbanda, questo produceva pianori fino a 27 s.
+            # Qualche metro all'indietro e' rumore di proiezione e si appiattisce; di
+            # piu' non e' un'auto che indietreggia, e' una posizione che non e' vera:
+            # diventa ASSENTE, e la pagina ricade sul pallino VUOTO ricostruito dai
+            # tempi-giro, che almeno continua a scorrere ed e' dichiarato per quel che e'.
+            arretra = (w - v) > TOLL_INDIETRO
+            clampati += int(((w != v) & ~arretra).sum())
+            scartati_indietro += int(arretra.sum())
+            clamp_tot += len(v)
+            s_q[vis] = np.where(arretra, ASSENTE, w)
         piloti[sig] = {'da': da, 's': s_q, 'lat': lat, 'fine': min(t_ultimo, t_fin)}
 
     if not piloti:
         print('   NIENTE: nessun pilota con GPS utilizzabile')
         return False
+
+    # IL NASTRO E' DAVVERO QUESTO CIRCUITO? Se il giro di riferimento viene da un'altra
+    # stagione (all'Ungheria viene dal 2025) le coordinate FastF1 potrebbero non essere
+    # piu' le stesse. Non si assume: si misura quanto stanno lontane dal nastro le
+    # posizioni vere di questa gara. Un'auto in pista sta a pochi metri dalla traiettoria.
+    lat_tutti = np.concatenate([v['lat'][np.isfinite(v['lat'])] for v in piloti.values()])
+    lat_med = float(np.median(lat_tutti)) / 10.0
+    if lat_med > MAX_SCARTO_LATERALE_M:
+        print(f'   ERRORE: le vetture di questa gara stanno mediamente a {lat_med:.0f} m dal '
+              f'nastro disegnato. Non e\' lo stesso sistema di coordinate: non pubblico '
+              f'frazioni misurate su una geometria che non e\' questa pista.')
+        return False
+    quota_clamp = clampati / max(clamp_tot, 1)
+    quota_indietro = scartati_indietro / max(clamp_tot, 1)
+    print(f'   scarto laterale mediano dal nastro: {lat_med:.1f} m · monotonia: '
+          f'{quota_clamp:.2%} appiattiti (rumore), {quota_indietro:.2%} scartati '
+          f'(tornavano indietro di piu\' di {TOLL_INDIETRO / SCALA_S * L / 10.0:.0f} m)')
 
     # ── pit lane misurata
     pl, fe, fx, diagpl = misura_pitlane(session, pos, 0.0, proj, punti_n, L)
@@ -586,8 +712,27 @@ def genera(nome, reg, hz=HZ, anno=ANNO):
         **({'pitlane': pitlane} if pitlane else {}),
         'sorgente': {
             'evento': f'{anno} {ti}', 'sessione': 'R',
-            'nastro': f'pista_{nome}.json (stesso giro di riferimento: '
-                      f'{lap["Driver"]} giro {int(lap["LapNumber"])})',
+            # LA TARGHETTA DEL RIGHELLO. Prima diceva «stesso giro di riferimento» e lo
+            # dava per scontato; all'Ungheria era falso da una stagione. Ora e' letta da
+            # pista_<gara>.json, quindi non puo' piu' divergere da cio' che si disegna.
+            'nastro': (f'pista_{nome}.json — {targhetta.get("evento")} '
+                       f'{targhetta.get("pilota")} giro {targhetta.get("giro")}, '
+                       f'{L / 10.0:.0f} m'
+                       + ('' if str(targhetta.get('evento', '')).startswith(str(anno))
+                          else ' (ALTRA STAGIONE: il feed di questa gara non ha un giro '
+                               'con GPS utilizzabile per la geometria)')),
+            # in chiaro, per la sentinella S7: non si controlla una frase, si controlla
+            # che il righello sia lo stesso oggetto della targhetta di pista_<gara>.json
+            'nastro_giro': {'evento': targhetta.get('evento'),
+                            'pilota': targhetta.get('pilota'),
+                            'giro': targhetta.get('giro')},
+            'scarto_laterale_mediano_m': round(lat_med, 1),
+            'monotonia_appiattiti_pct': round(100 * quota_clamp, 2),
+            'monotonia_scartati_pct': round(100 * quota_indietro, 2),
+            'interpolazione': ('lungo il NASTRO fra due rilevazioni GPS distinte '
+                               '(velocita\' uniforme fra un rilevamento e il successivo, '
+                               'non dentro il giro); mai attraverso un buco > '
+                               f'{MAX_BUCO_S:.0f} s ne\' una campata > {MAX_PONTE_FIX_S:.0f} s'),
             'orologio': (f'cum_time del sito verificato contro SessionTime FastF1 su '
                          f'{n_coppie} fine-giro: offset {off:+.3f} s, scarto max {scarto:.3f} s'),
             'finestra_gara_s': [round(t_in, 1), round(t_fin, 1)],

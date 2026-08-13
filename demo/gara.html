@@ -410,23 +410,27 @@ function posizioni(p) {
   const T = ancora?.tempoDa(p);
   if (T === undefined) return [];
   const out = [];
-  if (replay) {
-    for (const d of Object.keys(cumPil)) {
-      const q = replay.posizioneDi(d, T);
-      if (!q) continue;
-      out.push({ sigla: d, f: q.f, box: q.box, colore: coloreDi(teamDi[d], colori),
-                 dim: !!selDrv && d !== selDrv && !!scenaGp });
-    }
-    if (out.length) return out;
-  }
-  // ricostruzione dai tempi-giro dove il GPS non c'e' (pallino vuoto: e' una stima)
+  // IL RIPIEGO E' PER PILOTA, non per la pagina intera. Prima il ramo "ricostruzione dai
+  // tempi-giro" scattava solo se NESSUNO aveva il GPS (`if (out.length) return out`):
+  // bastava un pilota misurato perche' tutti gli altri sparissero invece di ricadere sul
+  // pallino vuoto. All'Ungheria succede per otto giri di fila — il feed di posizione
+  // sbanda fra il giro 7 e il 14, la guardia del cronometraggio lo scarta (bene) e i
+  // pallini si spegnevano uno a uno mentre gli altri correvano.
+  // Le due verita' restano distinte dove conta, cioe' nel disegno: PIENO = misurato sul
+  // GPS, VUOTO = ricostruito dai tempi-giro (pista.mjs, campo `stimato`).
   for (const d of Object.keys(cumPil)) {
+    const dim = !!selDrv && d !== selDrv && !!scenaGp;
+    const q = replay ? replay.posizioneDi(d, T) : null;
+    if (q) {
+      out.push({ sigla: d, f: q.f, box: q.box, colore: coloreDi(teamDi[d], colori), dim });
+      continue;
+    }
     const g = giroDiCum(cumPil[d], T, { tempoZero: leadCum[0], lapZero: 0 });
-    if (!g) continue;
+    if (!g) continue;                       // oltre l'ultimo giro noto: il ritirato sparisce
     const c = race.byLap[g.lap]?.[d];
     out.push({ sigla: d, f: g.fd, stimato: true,
                box: c?.in_lap ? 'in' : (c?.out_lap ? 'out' : null),
-               colore: coloreDi(teamDi[d], colori) });
+               colore: coloreDi(teamDi[d], colori), dim });
   }
   return out;
 }
