@@ -261,10 +261,22 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro
   // il resto del campo continua a scorrere.
   clock.setDur(lapSecDi);
   clock.setSpeed(velocita);
+  // IL FOTOGRAMMA CHE NON VA DISEGNATO. `reset` riporta l'orologio a `pMin` e SUONA un
+  // onTick: se poi si salta a `p0`, quel primo fotogramma ha gia' disegnato il campo al
+  // giro di congelamento — dove ogni pilota ha frazione zero e le ventidue auto stanno
+  // tutte sulla linea. Dura 1/60 di secondo, ma e' un lampo visibile, ed e' un pallino che
+  // torna INDIETRO di 355 m fra due fotogrammi: l'unico della gara intera, trovato
+  // giocandola. Si tace fino al primo istante vero.
+  let pronto = p0 == null;
   clock.reset(pMaxPieno);
-  if (p0 != null) clock.seek(Math.min(Math.max(p0, pMin), pMaxPieno));
+  if (p0 != null) {
+    clock.seek(Math.min(Math.max(p0, pMin), pMaxPieno));
+    pronto = true;
+    aggiorna(clock.position);
+  }
 
   function aggiorna(p) {
+    if (!pronto) return;
     const T = tempoReale(C, p);
     if (T !== undefined) frame(T, p);
     // la fase 1 non supera il rientro: ci si ferma sull'ISTANTE esatto, non sul frame.

@@ -231,6 +231,81 @@ console.log('(g) il guadagno della gomma nuova');
     `la vita sì: ${vite.join(' < ')} giri — è quello che la scelta della gomma decide`);
 }
 
+/* ──────────── (j) LA GARA INTERA, giocata: 60 fotogrammi al secondo fino alla bandiera */
+console.log('(j) la gara intera, giocata dal congelamento alla bandiera');
+{
+  const { creaGhostPlay } = await import('./ghostplay.mjs');
+  const { creaProfiloGiro } = await import('./profilo_giro.mjs');
+  const { creaReplayVero } = await import('./replay_vero.mjs');
+  // rAF finto: il tempo lo decide il banco, non il sistema. E' l'unico modo di far
+  // scorrere una gara da cento minuti in una frazione di secondo, e di guardare OGNI
+  // fotogramma invece di sperare che quello sbagliato cada sotto uno screenshot.
+  let ORA = 0; const CODA = [];
+  const raf0 = globalThis.requestAnimationFrame, caf0 = globalThis.cancelAnimationFrame;
+  const fetch0 = globalThis.fetch;
+  globalThis.requestAnimationFrame = (fn) => CODA.push(fn);
+  globalThis.cancelAnimationFrame = () => {};
+  globalThis.fetch = async (u) => {
+    const p = decodeURIComponent(String(u).split('?')[0]);
+    try { return { ok: true, json: async () => JSON.parse(leggi(p)) }; }
+    catch { return { ok: false, status: 404 }; }
+  };
+  try {
+    const race = prep.Ungheria.race;
+    const durate = computeDurations(race.byLap, race.n_laps, new Set());
+    const replay = await creaReplayVero({ url: 'data/replay_Ungheria.json' });
+    const P = creaProfiloGiro({ replay, byLap: race.byLap, nLaps: race.n_laps });
+    const freeze = 14, piano = [{ giro: 15, mescola: 'HARD' }, { giro: 40, mescola: 'MEDIUM' }];
+    const e = eseguiRigioca({ prep: prep.Ungheria, pilota: 'LEC', freeze, soste: piano });
+    const sim = simDaRigioca({ risultato: e.mio.risultato, race, pilota: 'LEC', freeze });
+
+    const storia = [];
+    let finito = false, ultimoLap = 0;
+    const gp = creaGhostPlay({
+      sim, coloreDi: () => '#fff',
+      pista: { pitFrazioni: { ingresso: 0.901, uscita: 0.106 },
+               aggiorna: (dots) => storia.push(dots.map(d => ({ s: d.sigla, f: d.f, lane: d.lane, pit: d.pit, ghost: d.ghost }))) },
+      onTower: (_, m) => { ultimoLap = m.lap; },
+      p0: 15.0, durataTot: 22, durateVere: (L) => durate[L], velocita: 20,
+      profilo: P ? (t) => P.frazione(t) : null,
+      onFine: () => { finito = true; },
+    });
+    gp.play();
+    for (let i = 0; i < 400 * 60; i += 1) { ORA += 1000 / 60; CODA.splice(0, CODA.length).forEach(fn => fn(ORA)); }
+
+    controlla(finito && ultimoLap === race.n_laps,
+      `la scena arriva alla bandiera: ${storia.length} fotogrammi, ultimo giro ${ultimoLap}/${race.n_laps}`);
+
+    // il pallino del soggetto: mai indietro, mai un balzo, una corsia per sosta
+    let indietro = 0, salto = 0, prevF = null, transiti = 0, dentro = false, fermi = 0;
+    for (const dots of storia) {
+      const me = dots.find(d => d.ghost); if (!me) continue;
+      if (me.lane != null) { if (!dentro) { transiti += 1; dentro = true; } if (me.pit) fermi += 1; }
+      else dentro = false;
+      if (prevF !== null && me.lane == null) {
+        let d = me.f - prevF;
+        if (d > 0.5) d -= 1; else if (d < -0.5) d += 1;   // il traguardo non è un balzo
+        if (d < -1e-9) indietro += 1;
+        salto = Math.max(salto, Math.abs(d));
+      }
+      prevF = me.lane == null ? me.f : null;
+    }
+    controlla(indietro === 0, `il pallino non torna MAI indietro sul nastro (${indietro} fotogrammi su ${storia.length})`);
+    // a 20x un fotogramma vale 0,33 s di gara ≈ 17 m: il tetto lascia spazio ai rettilinei
+    controlla(salto * 4381 < 120,
+      `nessun teletrasporto: salto massimo fra due fotogrammi ${(salto * 4381).toFixed(0)} m (un fotogramma ne vale ~17)`);
+    controlla(transiti === piano.length,
+      `una corsia box per sosta: ${transiti} transiti per ${piano.length} soste`);
+    controlla(fermi > 0, `il pallino sta fermo sulla piazzola (${fermi} fotogrammi)`);
+    // e il resto del campo NON si ferma con lui
+    const tuttiFermi = storia.filter(d => d.length && d.every(x => x.lane != null)).length;
+    controlla(tuttiFermi === 0, `la sosta non ferma il campo: ${tuttiFermi} fotogrammi con tutti in corsia`);
+  } finally {
+    globalThis.requestAnimationFrame = raf0; globalThis.cancelAnimationFrame = caf0;
+    globalThis.fetch = fetch0;
+  }
+}
+
 /* ─────────────── (i) il profilo del giro: la scena non va a velocità uniforme */
 console.log('(i) il profilo tempo→distanza del circuito');
 {
