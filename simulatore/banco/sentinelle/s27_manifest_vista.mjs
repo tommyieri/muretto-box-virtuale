@@ -59,9 +59,22 @@ const SENZA_INDICE = 'CartellaVuota';
     mkdirSync(path.join(tmp, SENZA_INDICE), { recursive: true });
 
     // il generatore, chiamato su una gara che non esiste: non rigenera niente e arriva
-    // comunque alla scrittura del manifest — che e' il punto sotto esame
-    execFileSync('node', ['web/genera_vista_gara.mjs', '__gara_inesistente__', '--dove', tmp],
-      { cwd: radice, stdio: 'pipe' });
+    // comunque alla scrittura del manifest — che e' il punto sotto esame.
+    //
+    // E DAL 13/08/2026 ESCE 1, di proposito: chiedere una gara e non produrla e' un guasto,
+    // non un successo (era il modo in cui la gara appena corsa nasceva col pannello muto
+    // senza che nessuno lo sapesse — auto_gara.py la chiedeva PRIMA del ponte). Qui l'uscita
+    // diversa da zero e' quindi ATTESA, e la sentinella la verifica invece di morirci sopra:
+    // il manifest deve essere scritto lo stesso, perche' descrive il DISCO e non l'esito.
+    let uscita = 0;
+    try {
+      execFileSync('node', ['web/genera_vista_gara.mjs', '__gara_inesistente__', '--dove', tmp],
+        { cwd: radice, stdio: 'pipe' });
+    } catch (e) {
+      uscita = e.status ?? -1;
+    }
+    b.verifica('chiedere una gara che non esiste fa uscire il generatore diverso da zero',
+      uscita === 1, `uscita ${uscita}`);
 
     const percorso = path.join(tmp, 'manifest.json');
     b.verifica('il generatore scrive il manifest anche quando non rigenera nulla', existsSync(percorso));
