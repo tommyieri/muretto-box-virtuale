@@ -296,12 +296,47 @@ def misura_pitlane(session, pos, t0s, proj, punti_nastro, L):
         return None, None, None, {'campioni': 0, 'soste': 0}
     P = np.vstack(campioni)
     fr, lat = proj(P)
+
+    # UNA CORSIA BOX STA ACCANTO ALLA PISTA (13/08/2026).
+    #
+    # La finestra dei campioni va da PitInTime-2s a PitOutTime+2s, e in quella finestra puo'
+    # finirci un'auto che ai box non e' passata: e' RIENTRATA. Un ritiro, una bandiera rossa,
+    # una sosta lunghissima — e da quel momento il feed ripete la coordinata del garage.
+    # All'Ungheria erano 4.198 campioni su 4.491, tutti sullo stesso punto a 512 m dal
+    # nastro: trascinavano OGNI percentile allo stesso valore, `lat > percentile(lat, 60)`
+    # restava vuoto, la mediana di un insieme vuoto usciva NaN e la soglia con lei. Il
+    # confronto `lat > nan` e' falso ovunque, quindi zero campioni in corsia — e la misura
+    # veniva declinata con «campioni in corsia insufficienti», che era una diagnosi FALSA:
+    # i campioni c'erano, erano 293. Ungheria e Cina restavano senza corsia misurata per
+    # questo, e nessuno poteva saperlo dal referto.
+    #
+    # Il rimedio non e' un numero piu' furbo: e' un vincolo FISICO. Nessuna corsia box dista
+    # ottanta metri dal nastro — la piu' larga misurata in questo fondo sta sotto i trenta.
+    # Quello che sta oltre non e' un'auto in corsia, e non deve entrare nella statistica che
+    # decide dov'e' la corsia.
+    LIMITE_FISICO = 800.0                       # 80 m, in decimetri (l'unita' del GPS)
+    vicini = lat <= LIMITE_FISICO
+    lontani = int((~vicini).sum())
+    if int(vicini.sum()) < 100:
+        return None, None, None, {'campioni': int(vicini.sum()), 'soste': soste,
+                                  'scartati_lontani': lontani,
+                                  'motivo': f'solo {int(vicini.sum())} campioni entro 80 m dal nastro'}
+    P, fr, lat = P[vicini], fr[vicini], lat[vicini]
+
     # la corsia e' cio' che sta LONTANO dal nastro; la soglia si sceglie dove la
     # distribuzione si separa, non a occhio: meta' fra la mediana on-track e quella in corsia
-    soglia = float(np.clip(np.median(lat[lat > np.percentile(lat, 60)]) * 0.45, 60.0, 220.0))
+    coda = lat[lat > np.percentile(lat, 60)]
+    if coda.size == 0:
+        # tutti alla stessa distanza: non c'e' una separazione da trovare, e inventarne una
+        # sarebbe pubblicare una geometria che il dato non dice (regola 6)
+        return None, None, None, {'campioni': int(len(lat)), 'soste': soste,
+                                  'scartati_lontani': lontani,
+                                  'motivo': 'nessuna separazione fra nastro e corsia'}
+    soglia = float(np.clip(np.median(coda) * 0.45, 60.0, 220.0))
     fuori = P[lat > soglia]
     if len(fuori) < 100:
         return None, None, None, {'campioni': int(len(fuori)), 'soste': soste,
+                                  'scartati_lontani': lontani,
                                   'motivo': 'campioni in corsia insufficienti'}
     fr_f, _ = proj(fuori)
     # la corsia scavalca il traguardo: si srotola attorno al buco piu' grande
@@ -311,6 +346,32 @@ def misura_pitlane(session, pos, t0s, proj, punti_nastro, L):
     fr_srot = np.where(fr_f > taglio, fr_f - 1.0, fr_f)
     ordine = np.argsort(fr_srot)
     fuori, fr_srot = fuori[ordine], fr_srot[ordine]
+
+    # UNA CORSIA BOX E' UN ARCO SOLO (13/08/2026), e questo la ripulisce dai grumi sparsi.
+    #
+    # Anche dopo il vincolo fisico restano campioni che stanno lontani dal nastro senza
+    # essere in corsia: un'auto che taglia largo, il GPS che sbanda, una via di fuga. Sono
+    # pochi, ma stanno a META' GIRO, e allo srotolamento allungano l'arco fino a farlo
+    # sembrare implausibile — cosi' la misura veniva buttata via INTERA. All'Ungheria la
+    # corsia vera stava fra 0,90 e 0,15 (un arco di 0,25, del tutto normale) e diciotto
+    # campioni fra 0,25 e 0,35 la facevano dichiarare «arco che copre 0,41 di giro».
+    #
+    # La corsia e' CONTINUA: si tiene il tratto piu' popoloso fra quelli separati da un
+    # buco piu' largo di un ventesimo di giro, e si buttano i grumi staccati. Non e' una
+    # soglia sul risultato — e' la forma di una corsia box, detta prima di guardare i dati.
+    VUOTO = 0.05
+    tagli = np.nonzero(np.diff(fr_srot) > VUOTO)[0]
+    if len(tagli):
+        inizi = np.concatenate([[0], tagli + 1])
+        fini = np.concatenate([tagli + 1, [len(fr_srot)]])
+        k = int(np.argmax(fini - inizi))
+        scartati_sparsi = len(fr_srot) - (fini[k] - inizi[k])
+        fuori, fr_srot = fuori[inizi[k]:fini[k]], fr_srot[inizi[k]:fini[k]]
+        if len(fuori) < 100:
+            return None, None, None, {'campioni': int(len(fuori)), 'soste': soste,
+                                      'motivo': f'il tratto continuo piu\' lungo ha solo {len(fuori)} campioni'}
+    else:
+        scartati_sparsi = 0
     # mediana mobile per una polilinea pulita (il GPS in corsia e' rumoroso e a strati)
     nbin = 60
     bordi = np.linspace(fr_srot.min(), fr_srot.max(), nbin + 1)
@@ -494,7 +555,21 @@ def genera(nome, reg, hz=HZ, anno=ANNO):
         if vis.any():
             v = s_q[vis]
             s_q[vis] = np.maximum.accumulate(v)      # un'auto non torna indietro
-        piloti[sig] = {'da': da, 's': s_q, 'lat': lat, 'fine': min(t_ultimo, t_fin)}
+        # LE FINESTRE DI CORSIA VERE, dal CRONOMETRAGGIO. Lo scarto laterale dice DOVE si
+        # passa; da solo non sa dire QUANDO, e usato da solo sbaglia molto: all'Ungheria
+        # marcava 3.720 tratti per 47 soste, e l'80% degli ingressi che la pagina disegnava
+        # cadeva su giri in cui nessuno si era fermato. PitInTime/PitOutTime lo sanno per
+        # certo — sono lo stesso dato che decide le soste — e qui fanno da cancello.
+        fin_pit = []
+        if len(gl):
+            pin = gl['PitInTime'].dropna().dt.total_seconds().to_numpy()
+            pout = gl['PitOutTime'].dropna().dt.total_seconds().to_numpy()
+            for a in pin:
+                dopo = pout[pout > a]
+                if len(dopo):
+                    fin_pit.append((float(a), float(dopo[0])))
+        piloti[sig] = {'da': da, 's': s_q, 'lat': lat, 'fine': min(t_ultimo, t_fin),
+                       'finestre_pit': fin_pit, 'tempi': g}
 
     if not piloti:
         print('   NIENTE: nessun pilota con GPS utilizzabile')
@@ -540,9 +615,19 @@ def genera(nome, reg, hz=HZ, anno=ANNO):
             else:
                 delta.append(int(x - prec))
                 prec = int(x)
-        # in corsia box: scarto laterale oltre la soglia della corsia misurata
+        # IN CORSIA BOX = dentro una finestra VERA (cronometraggio) E lontano dal nastro
+        # (geometria). Prima bastava la seconda condizione, e la soglia era quella tarata
+        # per SEPARARE la corsia dentro le finestre di sosta: usata su tutta la gara marca
+        # anche chi taglia largo in curva. Le due fonti insieme dicono quando e dove.
         soglia = diagpl.get('soglia_laterale_m', 12.0) * 10.0 if pitlane else 120.0
         inpit = np.isfinite(lat) & (lat > soglia)
+        finestre = v.get('finestre_pit')
+        if finestre is not None:
+            tempi = v['tempi']
+            dentro = np.zeros(len(lat), dtype=bool)
+            for a, b in finestre:
+                dentro |= (tempi >= a - 3.0) & (tempi <= b + 3.0)
+            inpit &= dentro
         tratti, k = [], 0
         while k < len(inpit):
             if inpit[k]:
