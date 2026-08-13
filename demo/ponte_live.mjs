@@ -255,6 +255,12 @@ export function contestoDa(contestoLive, nomeGara, gara) {
   };
 }
 
+// LE DUE RISPOSTE SULLA GOMMA vivono in ./gomma.mjs, che dipende dalla sola passo_v2 ed e'
+// quindi caricabile senza tirarsi dietro tutta la catena del simulatore. Si ri-esportano
+// da qui perche' chi ha gia' il ponte non debba sapere che sono altrove (regola 1: una
+// definizione, un posto — questo e' solo il passacarte).
+export { guadagnoAlGiro, vitaMescolaGiri } from './gomma.mjs?v=130826a';
+
 /**
  * La risposta del muretto sulla gara in corso.
  *

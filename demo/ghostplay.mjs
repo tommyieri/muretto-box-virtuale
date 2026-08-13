@@ -86,20 +86,59 @@ function giroDi(cumD, leadL0, T) {
   return giroDiCum(cumD, T, { tempoZero: leadL0, lapZero: cumD[0].lap - 1, clamp: true });
 }
 
+// QUANTA PARTE DEL GIRO SI PASSA IN CORSIA, e perche' non e' una costante.
+//
+// Prima il transito era l'ultimo 5% del giro (FE = 0,95), un numero del generatore delle
+// piste. Ma il giro di sosta DURA di piu' proprio perche' contiene la sosta: all'Ungheria
+// l'in-lap del kernel e' 107,2 s contro 85,6 di media, cioe' 21,2 s di perdita — il 19,8%
+// del giro, non il 5%. Con la finestra costante il pallino restava sul nastro per sedici
+// secondi mentre l'auto era ai box, e poi saltava in corsia per cinque: si vedeva un giro
+// lento, non una sosta. Qui la quota si MISURA sul giro stesso.
+function quotaBox(C, d, lap) {
+  const arr = C.cum[d];
+  if (!arr) return null;
+  const i = arr.findIndex((x) => x.lap === lap);
+  if (i < 0) return null;
+  const prima = i > 0 ? arr[i - 1].cum : C.lead[lap - 1];
+  if (prima == null) return null;
+  const dur = arr[i].cum - prima;
+  if (!(dur > 0) || !(C.durata > 0)) return null;
+  return Math.min(0.45, Math.max(0.10, (dur - C.durata) / dur));
+}
+
+// Dentro la finestra: entra, STA FERMO al box, esce. `u` e' il progresso nella finestra.
+// La quota ferma e' il 16% del transito: su una perdita da ~21 s fa ~3,4 s sulla piazzola,
+// che e' l'ordine di grandezza di una sosta vera. Il resto e' corsia a velocita' limitata.
+const U_BOX = 0.42, U_VIA = 0.58;
+function inCorsia(u) {
+  if (u < U_BOX) return { lane: 0.5 * (u / U_BOX), fermo: false };
+  if (u < U_VIA) return { lane: 0.5, fermo: true };
+  return { lane: 0.5 + 0.5 * ((u - U_VIA) / (1 - U_VIA)), fermo: false };
+}
+
 // stato completo al tempo T: array ordinato per progresso (leader primo), col fantasma marcato.
-export function statoAl(C, T, { driver, pitLap, FE = 0.95, FX = 0.05 }) {
+//
+// `soste` (13/08/2026) e' {sigla: Set(giri di sosta)} e vale per TUTTI, non solo per il
+// soggetto: prima la marcatura era dentro un `if (d === driver)`, quindi le quaranta soste
+// vere dei rivali durante la scena si vedevano come giri lenti in mezzo alla pista.
+// `pitLap` resta accettato da solo per i banchi e per chi passa un fantasma unico.
+export function statoAl(C, T, { driver, pitLap, soste = null, FE = 0.95 }) {
   const leadL0 = C.lead[C.laps[0] - 1] ?? C.lead[C.laps[0]];
+  const dove = soste || (pitLap != null && driver ? { [driver]: new Set([pitLap]) } : {});
   const arr = [];
   for (const d of C.present) {
     const g = giroDi(C.cum[d], leadL0, T);
     if (!g) continue;
-    let box = null;
-    if (d === driver) {                          // il fantasma transita in pit-lane al SUO giro di sosta
-      if (g.lap === pitLap) box = g.fd >= FE ? 'in' : null;
-      else if (g.lap === pitLap + 1) box = g.fd <= FX ? 'out' : null;
+    let box = null, lane = null, fermo = false;
+    if (dove[d]?.has(g.lap)) {
+      const q = quotaBox(C, d, g.lap) ?? (1 - FE);
+      const inizio = 1 - q;
+      if (g.fd >= inizio) {
+        box = 'in';
+        ({ lane, fermo } = inCorsia(Math.min(1, (g.fd - inizio) / q)));
+      }
     }
-    const inPit = (box === 'in' && g.fd >= FE) || (box === 'out' && g.fd <= FX);
-    arr.push({ d, lap: g.lap, fd: g.fd, prog: g.lap + g.fd, box, inPit });
+    arr.push({ d, lap: g.lap, fd: g.fd, prog: g.lap + g.fd, box, lane, fermo, inPit: box === 'in' });
   }
   arr.sort((a, b) => b.prog - a.prog);
   return arr;
@@ -160,10 +199,14 @@ export function classificaSim(C, p, opts = {}) {
 //           i rivali non reagiscono — e va detto. Senza giroRisposta: una fase sola, fino in fondo.
 export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro,
                                 giroRisposta = null, durataTot = 16, p0 = null,
-                                durateVere = null }) {
+                                durateVere = null, velocita = 1 }) {
   const C = costruisciCum(sim);
-  const FE = pista?.pitFrazioni?.ingresso ?? 0.95, FX = pista?.pitFrazioni?.uscita ?? 0.05;
-  const opts = { driver: sim.driver, pitLap: sim.pitLap, FE, FX };
+  const FE = pista?.pitFrazioni?.ingresso ?? 0.95;
+  // `sim.soste` = {sigla: [giri]} per TUTTO il campo; `sim.pitLap` resta il fantasma solo.
+  const soste = {};
+  for (const [d, giri] of Object.entries(sim.soste || {})) soste[d] = new Set(giri);
+  if (sim.pitLap != null && sim.driver) (soste[sim.driver] ||= new Set()).add(sim.pitLap);
+  const opts = { driver: sim.driver, pitLap: sim.pitLap, soste, FE };
   const pMin = C.freezeLap, pMaxPieno = C.nLap + 1;
   const giroRisp = (giroRisposta && giroRisposta <= C.nLap && giroRisposta >= C.freezeLap) ? giroRisposta : null;
   // pStop = posizione (giro-frazionario del battistrada) all'ISTANTE in cui il fantasma
@@ -177,12 +220,11 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro
   // scena come la gara: a 1x un giro dura quello che e' durato, e i tasti 1/2/4x... dicono
   // la verita'. Senza, resta la compressione di sempre.
   const lapSecDi = durateVere ? (L) => (durateVere(L) || lapSecFisso) : () => lapSecFisso;
-  const DWELL_S = 1.3;                     // sosta ferma ai box, per rendere visibile il pit stop
   // p0 (08/08): la scena puo' PARTIRE da un giro arbitrario — serve al BOX ORA di
   // gara.html, dove la sosta si aggiunge mentre la gara scorre e la scena riparte
-  // dal giro corrente, non dal congelamento. Assente = comportamento di sempre.
+  // dall'ISTANTE corrente (non dal giro intero prima: era il salto all'indietro).
   let fase = 1;
-  let ghostInPit = false, dwelled = false, dwelling = false, dwellFino = 0, rientrato = false;
+  let rientrato = false;
 
   // L'OROLOGIO E' QUELLO DELLA PAGINA-GARA (timeline.mjs::makeClock), non un secondo loop
   // rAF scritto qui. Prima ce n'erano due che facevano la stessa cosa — avanzare p nel
@@ -206,23 +248,21 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro
     onTick: (p, ts) => aggiorna(p, ts),
     onEnd: () => { onFine && onFine(); },
   });
-  clock.setDur((L) => dwelling ? Infinity : lapSecDi(L));   // Infinity = p non avanza (sosta ferma)
+  // LA SOSTA NON FERMA PIU' LA GARA (13/08/2026). Qui c'era
+  // `setDur(L => dwelling ? Infinity : ...)`: con durata infinita `p` non avanzava affatto,
+  // quindi per 1,3 s si congelavano TUTTE E VENTIDUE le auto invece della sola che era ai
+  // box — ed era un booleano unico per tutta la scena, quindi alla seconda e alla terza
+  // sosta la pausa non scattava piu'. Adesso il fermo e' un fatto del singolo pilota: sta
+  // nella posizione in corsia (`inCorsia`), che tiene il suo pallino sulla piazzola mentre
+  // il resto del campo continua a scorrere.
+  clock.setDur(lapSecDi);
+  clock.setSpeed(velocita);
   clock.reset(pMaxPieno);
   if (p0 != null) clock.seek(Math.min(Math.max(p0, pMin), pMaxPieno));
 
-  function aggiorna(p, ts) {
-    // la sosta ferma si conta sul TIMESTAMP DEL FRAME, non sull'ora di sistema: e' la
-    // stessa base dei tempi con cui l'orologio fa avanzare p, ed e' l'unica che i banchi
-    // possono pilotare (pompano rAF a mano). Con l'ora di sistema la sosta non sarebbe
-    // scaduta mai a orologio simulato, e la scena sarebbe rimasta ferma per sempre.
-    if (dwelling && ts != null && ts >= dwellFino) dwelling = false;
+  function aggiorna(p) {
     const T = tempoReale(C, p);
     if (T !== undefined) frame(T, p);
-    // primo istante in pit-lane -> sosta ferma (una volta): il pit stop si vede
-    if (!dwelled && ghostInPit && ts != null) {
-      dwelled = true; dwelling = true;
-      dwellFino = ts + DWELL_S * 1000;
-    }
     // la fase 1 non supera il rientro: ci si ferma sull'ISTANTE esatto, non sul frame.
     // `rientrato` non e' un ornamento: seek() richiama onTick, che rientrerebbe qui e
     // chiamerebbe seek di nuovo — ricorsione infinita al primo frame oltre pStop.
@@ -237,20 +277,25 @@ export function creaGhostPlay({ sim, pista, coloreDi, onTower, onFine, onRientro
   function frame(T, p) {
     const stato = statoAl(C, T, opts);
     const dots = stato.map(s => ({
-      f: s.fd, box: s.box, colore: coloreDi(s.d) || 'var(--dim)', sigla: s.d,
-      ghost: s.d === opts.driver, dim: s.d !== opts.driver, pit: s.d === opts.driver && s.inPit,
+      f: s.fd, box: s.box, lane: s.lane, colore: coloreDi(s.d) || 'var(--dim)', sigla: s.d,
+      ghost: s.d === opts.driver, dim: s.d !== opts.driver, pit: s.fermo,
+      // I PALLINI DELLA SCENA SONO STIMATI, e da oggi lo dicono. Il replay li disegna
+      // pieni perche' la posizione viene dal GPS; qui viene dai cumulati per giro, cioe'
+      // e' ricostruita. Era l'unica pagina del sito che perdeva la distinzione.
+      stimato: true,
     }));
     if (pista) pista.aggiorna(dots);
-    if (onTower) onTower(classificaSim(C, p, opts), { lap: Math.round(p), p });
-    const g = stato.find(s => s.d === opts.driver);
-    ghostInPit = !!(g && g.inPit);
+    // IL CONTAGIRI USA floor COME IL REPLAY. Con Math.round, a p = 15,6 la scena scriveva
+    // 16 mentre la barra diceva 15, e alla bandiera (p = nLap+1) usciva «GIRO 71 / 70»:
+    // un giro che in quella gara non esiste.
+    if (onTower) onTower(classificaSim(C, p, opts), { lap: Math.min(C.nLap, Math.floor(p)), p });
   }
 
   return {
     play() { if (clock.position >= pMaxPieno) { fase = 1; clock.seek(pMin); } clock.play(); },
     stop() { clock.pause(); },
     continua() { fase = 2; clock.play(); },   // fino alla bandiera (proiezione)
-    riparti() { clock.pause(); fase = 1; rientrato = false; dwelled = dwelling = false; clock.seek(pMin); clock.play(); },
+    riparti() { clock.pause(); fase = 1; rientrato = false; clock.seek(pMin); clock.play(); },
     // TRASPORTO, che la scena prima non aveva: si puo' mettere in pausa, scorrere e
     // cambiare velocita' come nel replay reale. Arriva gratis dall'orologio condiviso.
     seek(p) { clock.seek(Math.min(Math.max(p, pMin), pMaxPieno)); },

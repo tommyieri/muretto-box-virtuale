@@ -371,7 +371,7 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
 
   // ── soste: le mie, più quelle ASSUNTE dei rivali sotto neutralizzazione ──
   const pits = soste.length
-    ? { [pilota]: soste.map((s, i) => ({ lap: s.giro, perdita: perditaBox(prior, gara, regimeAllaSosta(s, i)).perdita, mescola: s.mescola ?? null })) }
+    ? { [pilota]: soste.map((s, i) => ({ lap: s.giro, perdita: perditaBox(prior, gara, regimeAllaSosta(s, i)).perdita, mescola: s.mescola ?? null, regime: regimeAllaSosta(s, i) })) }
     : {};
   // ── LE SOSTE VERE DEI RIVALI: ingresso DI LABORATORIO, spento in produzione ──
   //
@@ -392,6 +392,7 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
   // (regola 1): un secondo modo di riempire `pits` sarebbe la porta di E17.
   let rivaliVeri = 0;
   let rivaliScartati = 0;
+  const troncati = new Set();
   // DUE FONTI, E NON SI CONFONDONO MAI. `pianiRivali` sono le soste VERE: informazione dal
   // futuro, ammessa solo al banco. `sosteAtteseRivali` sono DEDOTTE dallo stato al
   // congelamento (scenario/rivali.mjs) e non contengono niente oltre Lf — sono l'unica
@@ -403,6 +404,21 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
     for (const [drv, sosteDrv] of Object.entries(daiRivali)) {
       if (drv === pilota) continue;
       const nel = (sosteDrv ?? []).filter((s) => Number.isInteger(s?.giro) && s.giro > freezeLap && s.giro < giroFinale);
+      // LA SOSTA CADUTA SUL CONFINE. Una sosta al giro ESATTO del congelamento non entra
+      // (non e' > freezeLap) e non e' nemmeno gia' avvenuta nello stato: il grezzo aggiorna
+      // la mescola all'out-lap, quindi la cella del congelamento porta ancora la gomma
+      // VECCHIA. Il risultato era un rivale che nella simulazione finisce la gara su una
+      // mescola sola e viene squalificato da REG01 — per un cambio gomma che nella gara
+      // vera aveva fatto. Misurato: il 5,5% dei run, e il messaggio in pagina parlava di un
+      // pilota che l'utente non aveva toccato.
+      //
+      // Non si puo' semplicemente includerla: il tempo di quel giro sta gia' dentro il
+      // cumulato congelato, e rimetterla farebbe pagare due volte la perdita ai box. La
+      // risposta giusta e' la stessa che il progetto da' gia' ai non classificati: costui
+      // NON HA una strategia di gara COMPLETA dichiarabile, perche' il congelamento gliene
+      // ha tagliato un pezzo. Il Director lo mette a referto in `non_verificabili` invece
+      // di squalificarlo su una strategia che non ha mai visto per intero.
+      if ((sosteDrv ?? []).some((s) => s?.giro === freezeLap)) troncati.add(drv);
       // Il letterale "None" si LAVA alla frontiera, non fa esplodere il caso (E05). Una
       // prima scrittura tirava un'eccezione: bastava un rivale con la mescola non nota
       // per perdere l'intero caso — 19 casi e tutta l'Ungheria — e la perdita non
@@ -411,7 +427,7 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
       const future = nel.filter((s) => MESCOLE_SLICK.has(s.mescola));
       rivaliScartati += nel.length - future.length;
       if (!future.length) continue;
-      pits[drv] = future.map((s, i) => ({ lap: s.giro, perdita: perditaBox(prior, gara, regimeAllaSosta(s, i)).perdita, mescola: s.mescola ?? null }));
+      pits[drv] = future.map((s, i) => ({ lap: s.giro, perdita: perditaBox(prior, gara, regimeAllaSosta(s, i)).perdita, mescola: s.mescola ?? null, regime: regimeAllaSosta(s, i) }));
       rivaliVeri += 1;
     }
     if (rivaliVeri > 0) {
@@ -467,7 +483,14 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
     for (const [drv, lap] of Object.entries(ritiriRivali)) {
       if (drv === pilota) continue;
       if (!Number.isInteger(lap) || lap < 1) throw new Error(`ritiriRivali.${drv} non utilizzabile (serve il suo ultimo giro, intero ≥ 1): ${JSON.stringify(lap)}`);
-      if (lap > freezeLap) puliti[drv] = lap;   // chi si e' gia' ritirato non ha una cella a Lf: e' gia' assente
+      // `>=` E NON `>`. Il commento di prima diceva «chi si e' gia' ritirato non ha una
+      // cella a Lf: e' gia' assente», ma chi si ritira ESATTAMENTE al giro Lf una cella a
+      // Lf ce l'ha — e' la sua ultima. Con `>` non finiva fra i ritiri, il kernel gli
+      // generava una traccia fino alla bandiera e in classifica ricompariva un'auto che
+      // era ferma da un giro. All'Ungheria e' BOT, ritirato al 14: il primo BOX ORA
+      // naturale (sosta al 15) da' congelamento 14, quindi era il caso ordinario, non un
+      // bordo raro — e chiudeva la gara ventesimo.
+      if (lap >= freezeLap) puliti[drv] = lap;
     }
     return Object.keys(puliti).length ? puliti : null;
   })();
@@ -491,7 +514,7 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
       for (const [drv, c] of celleAlCongelamento) {
         if (drv === pilota) continue;
         if (c.stint !== 1) continue; // solo chi è ancora al primo stint: non si è ancora fermato
-        pits[drv] = [{ lap: giroPrimaSosta, perdita: perditaBox(prior, gara, regime).perdita }];
+        pits[drv] = [{ lap: giroPrimaSosta, perdita: perditaBox(prior, gara, regime).perdita, regime }];
         rivaliAssunti += 1;
       }
       dichiara('SOSTE_RIVALI_SC',
@@ -651,7 +674,7 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
       pit_loss: perdita.targhetta,
     },
     // materiale per il Director e per le risposte
-    _interno: { g, gara, pilota, soste, regime, celleAlCongelamento, nGiriGara, nonClassificati, vera },
+    _interno: { g, gara, pilota, soste, regime, celleAlCongelamento, nGiriGara, nonClassificati, troncati, vera },
   };
 }
 
@@ -752,16 +775,31 @@ function materializzaPerDirector(scenario, risultato) {
       // e il Director mette a referto «REG01 non eseguito» invece di squalificare
       // un arrivo mai successo.
       strategia_dichiarata: drv === pilota
-        || ((scenario.pits[drv] ?? []).length > 0 && !(scenario._interno.nonClassificati?.has(drv))),
+        || ((scenario.pits[drv] ?? []).length > 0
+            && !(scenario._interno.nonClassificati?.has(drv))
+            && !(scenario._interno.troncati?.has(drv))),
       celle: [...osservate, ...proiettate],
       soste: (scenario.pits[drv] ?? []).map((p) => ({
         lap: p.lap,
         perdita: p.perdita,
         stazionario: null, // il grezzo non lo porta e non si inventa (regola 6)
-        // con la neutralizzazione VERA ogni sosta porta il regime del SUO giro:
-        // senza, il Director vedrebbe una sosta «verde» pagata al fattore SC e
-        // la boccerebbe con FIS04 — a ragione, sul regime sbagliato
-        regime: scenario._interno.vera ? (scenario._interno.vera[p.lap] ?? null) : regime,
+        // IL REGIME LO PORTA LA SOSTA STESSA, ed e' quello con cui e' stata PREZZATA
+        // (`regimeAllaSosta`, salvato in `pits` al momento della costruzione).
+        //
+        // Qui c'era `scenario._interno.vera ? vera[p.lap] : regime`, dove `regime` e' il
+        // regime osservato dal SOGGETTO al congelamento. Quando `vera` e' null — e lo
+        // diventa se il congelamento cade sull'ULTIMO giro neutralizzato della gara,
+        // perche' `vera` tiene solo i giri con L > freezeLap — quell'etichetta finiva su
+        // OGNI sosta di OGNI pilota, mentre il prezzo restava quello verde di
+        // `regimeDi` (che per un rivale con indice 0 e sosta lontana torna null). Il
+        // Director trovava rapporto perdita/verde = 1,000 su una sosta dichiarata sotto
+        // SC e sparava REG03 FATAL. Misurato: 6 gare su 11 (Miami/LEC al giro 12: 18
+        // violazioni fatali su soste ALTRUI), il 6,7% dei run — e nessun giro o gomma
+        // che l'utente potesse scegliere lo faceva passare.
+        //
+        // Con una fonte sola per prezzo ed etichetta la contraddizione non e'
+        // esprimibile. `?? null` copre le soste costruite prima di questo campo.
+        regime: p.regime ?? null,
       })),
     };
   }

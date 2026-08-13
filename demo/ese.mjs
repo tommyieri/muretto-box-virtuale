@@ -33,6 +33,7 @@
 
 import { garaDaLive, contestoDa, nomeSimulatore } from './ponte_live.mjs?v=070826a';
 import { ordineArrivo } from './classifica.mjs?v=090826b';
+import { sostaFra } from './sosta.mjs?v=130826a';
 import { costruisciScenario, eseguiEValida } from './vendor/simulatore/motore/scenario/costruttore.mjs';
 import { regimePerGiroDiCampo } from './vendor/simulatore/motore/provenienza/definizioni.mjs';
 
@@ -46,20 +47,31 @@ export function byLapDa(race) {
 }
 
 /**
- * LE SOSTE VERE, dal lap chart: sosta = giro con `in_lap`, mescola nuova =
- * compound del giro successivo (il grezzo la aggiorna all'out-lap — verificato
- * su Australia/LEC: in-lap 25 MEDIUM, out-lap 26 HARD stint 2 eta' 1).
- * Un pilota che si ritira all'in-lap non ha un giro dopo: la mescola resta
- * null e il costruttore scartera' quella sosta DICHIARANDOLO (E05/regola 6),
- * non la inventiamo qui.
+ * LE SOSTE VERE, dal lap chart. La definizione NON sta qui: sta in demo/sosta.mjs
+ * (`sostaFra`), che e' l'unico posto in cui il repo decide che cosa sia una sosta —
+ * cambio di SET, non transito in corsia. La mescola nuova e' il compound del giro
+ * successivo (il grezzo la aggiorna all'out-lap — verificato su Australia/LEC:
+ * in-lap 25 MEDIUM, out-lap 26 HARD stint 2 eta' 1).
+ *
+ * PERCHE' E' CAMBIATA (13/08/2026). Qui c'era `if (c?.in_lap !== true) continue`, cioe'
+ * un SECONDO criterio, e sbagliava nella direzione peggiore: contava come sosta ogni
+ * sfilata in corsia sotto Safety Car e ogni rientro per bandiera rossa. Misurato sul
+ * campo dei rivali: Monaco 89 soste contro 45, Ungheria 47 contro 43, Australia 33
+ * contro 29, Canada 36 contro 33, Belgio 30 contro 28. Ogni voce di troppo fa pagare a
+ * un rivale ~20 s di perdita ai box che non ha mai perso, e a Monaco spostava l'ordine
+ * d'arrivo simulato fino a tre posizioni. Non era un difetto di resa: era il
+ * controfattuale a essere sbagliato.
+ *
+ * Un pilota che si ritira all'in-lap non ha un giro dopo: `sostaFra` torna null, la
+ * sosta non c'e' e non la inventiamo (E05/regola 6).
  */
 export function sosteVereDa(race) {
   const byLap = race.byLap ?? byLapDa(race);
   const soste = {};
   for (let L = 1; L <= race.n_laps; L += 1) {
     for (const [drv, c] of Object.entries(byLap[L] ?? {})) {
-      if (c?.in_lap !== true) continue;
       const dopo = byLap[L + 1]?.[drv];
+      if (sostaFra(c, dopo) !== true) continue;
       (soste[drv] ??= []).push({ giro: L, mescola: dopo?.compound ?? null });
     }
   }
