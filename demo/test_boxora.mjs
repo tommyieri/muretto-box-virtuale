@@ -546,6 +546,13 @@ console.log('(l) il pannello risponde sulla TUA gara, a ogni giro');
     'il motore gira in un Worker: i 244 ms non stanno sul thread che disegna');
   controlla(/class: 'st-fonte'/.test(gara) && /Sulla tua gara/.test(gara) && /Sulla gara vera/.test(gara),
     'il pannello dice su quale gara sta rispondendo');
+  // «prova qualche giro piu' avanti» all'ULTIMO giro e' un consiglio impossibile, ed era
+  // l'unica cosa che il pannello sapeva dire a fine gara: trovato giocando l'Ungheria
+  // intera, al giro 70 di 70. Il ramo `tardi` deve esistere in TUTTI E DUE i bracci.
+  const daTua = corpo.indexOf('if (tua) {', corpo.indexOf('if (!s || s.senza_risposta)'));
+  const tuo = corpo.slice(daTua, corpo.indexOf('} else {', daTua));
+  controlla(/const tardi = L > ultimo/.test(tuo) && /manca troppo poco alla bandiera/.test(tuo),
+    'vicino alla bandiera il pannello non manda «più avanti» chi è già arrivato');
 }
 
 console.log(`\ntest_boxora: ${fatti} controlli passati, ${errori} falliti`);
