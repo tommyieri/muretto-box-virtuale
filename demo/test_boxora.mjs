@@ -495,6 +495,59 @@ console.log('(h) la pagina non disfa le riparazioni di orchestrazione');
     'il profilo tocca la POSIZIONE sul nastro, non il progresso che ordina il campo');
 }
 
+/* ───── (l) IL PANNELLO VA DAVVERO PER LA TUA GARA, e non resta muto */
+console.log('(l) il pannello risponde sulla TUA gara, a ogni giro');
+{
+  const { byLapControFattuale } = await import('./stato_contro.mjs');
+  const { rispostaLive } = await import('./ponte_live.mjs');
+  const CTX = JSON.parse(leggi('vendor/simulatore/motore/contesto_live.json'));
+
+  // LA COPERTURA E' IL PUNTO DEL PRODOTTO, non un dettaglio. Il pannello sulla gara vera
+  // legge risposte gia' calcolate: o ci sono o non ci sono, e si sa prima. Sulla TUA gara
+  // il motore risponde sul momento, quindi la domanda «e se non risponde?» diventa viva a
+  // ogni giro. Il 13/08 rifiutava un giro su quattro (17 su 64, tutti FIS01: giri piu'
+  // veloci del giro piu' veloce della gara) ed e' il motivo per cui questo pannello non si
+  // poteva spostare. Il pavimento sulla compressione li ha portati a zero
+  // (PREREG_compressione_pavimento_2.md). Se un giorno risalgono, si scopre QUI.
+  for (const [g, pil, freeze, giroSosta] of [['Ungheria', 'LEC', 14, 15], ['Monaco', 'LEC', 14, 15]]) {
+    const race = prep[g].race;
+    const mie = [{ giro: giroSosta, mescola: mescolaDaMontare(race.byLap[freeze]?.[pil]?.compound) }];
+    const e = eseguiRigioca({ prep: prep[g], pilota: pil, freeze, soste: mie });
+    const bl = byLapControFattuale({ traccia: e.mio.risultato.traccia, byLapVero: race.byLap,
+      freeze, soggetto: pil, mieSoste: mie, sosteVere: prep[g].sosteVere });
+    let provati = 0; let muti = 0; const perche = [];
+    for (let L = freeze + 2; L <= race.n_laps - 4; L += 3) {
+      provati += 1;
+      const r = rispostaLive({ byLap: bl, nGiriGara: race.n_laps, nomeGara: g,
+        pilota: pil, freezeLap: L, contestoLive: CTX });
+      if (!r?.pannello) { muti += 1; if (perche.length < 3) perche.push(`${L}: ${r?.senza_risposta || (r?.motivi_rifiuto || []).join(' · ') || 'muto'}`); }
+    }
+    controlla(muti === 0,
+      `${g}/${pil}: il motore risponde su tutti i ${provati} giri provati della tua gara`
+      + (muti ? ` — ${muti} muti (${perche.join(' | ')})` : ''));
+  }
+
+  // ── e la PAGINA ci va davvero: gli spilli sul sorgente ──────────────────────
+  const gara = soloCodice(leggi('gara.html'));
+  controlla(/const chiave = `\$\{selDrv\}\|\$\{L\}\|\$\{nuova\}\|\$\{firmaPiano\(\)\}`/.test(gara),
+    'la chiave del pannello contiene il PIANO: aggiungere una sosta senza muovere la barra ricalcola');
+  controlla(/byLapDellaTuaGara\(\)/.test(gara) && /chiediAlMotore\(\{/.test(gara),
+    'col tuo piano il pannello passa dallo stato contro-fattuale e dal motore, non dalla vista');
+  // il ramo della vista deve restare SOLO nell'altro braccio: se `vistaDi` comparisse anche
+  // nel braccio `tua`, il pannello tornerebbe a rispondere sulla gara che hai cancellato —
+  // il difetto esatto che questo blocco esiste per chiudere.
+  const corpo = gara.slice(gara.indexOf('async function aggiornaStrategia'), gara.indexOf('function vaiAlGiro'));
+  const bracci = corpo.split('} else {');
+  controlla(bracci.length > 1 && !/vistaDi\(/.test(bracci[0]),
+    'il braccio della TUA gara non legge mai la vista pre-calcolata');
+  controlla(/senza_risposta: r\.errore/.test(gara),
+    'un rifiuto del motore resta un rifiuto: non si ripiega sulla gara vera (regola 6)');
+  controlla(/new Worker\(`\.\/muretto_worker\.mjs/.test(gara),
+    'il motore gira in un Worker: i 244 ms non stanno sul thread che disegna');
+  controlla(/class: 'st-fonte'/.test(gara) && /Sulla tua gara/.test(gara) && /Sulla gara vera/.test(gara),
+    'il pannello dice su quale gara sta rispondendo');
+}
+
 console.log(`\ntest_boxora: ${fatti} controlli passati, ${errori} falliti`);
 if (errori) process.exit(1);
 console.log('ESITO: verde — il flusso BOX ORA montato regge');
