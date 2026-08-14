@@ -199,6 +199,16 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
   const soste = normalizzaSoste(pits, piloti);
   const neutra = normalizzaNeutralizzazione(neutralizzazione, freezeLap, steps);
   let clampPavimento = 0;   // quante volte il pavimento ha legato (vedi il blocco della compressione)
+  // STRUMENTAZIONE DEL TETTO (14/08). Additiva: non entra in nessun conto, e senza `tetto`
+  // le chiavi non compaiono nemmeno nel risultato. Serve a rispondere a «il tetto e'
+  // sotto-tarato?» guardando PRIMA quante volte entra davvero in funzione: un vincolo che
+  // quasi non si esegue non puo' essere la causa del movimento che manca, e in quel caso
+  // tararlo sarebbe rispondere alla domanda sbagliata.
+  let tettoCoppie = 0;      // coppie adiacenti esaminate
+  let tettoInContatto = 0;  // di quelle, quante erano entro minGap
+  let tettoPassa = 0;       // il sorpasso e' concesso
+  let tettoBlocca = 0;      // chi insegue resta dietro
+  const tettoMancanza = []; // quanto manca al vantaggio per superare la soglia
   const orizzonte = [];
   for (let i = 1; i <= steps; i += 1) orizzonte.push(freezeLap + i);
   for (const [drv, perGiro] of soste) {
@@ -421,7 +431,9 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
       for (let i = 1; i < inGara.length; i += 1) {
         const avanti = inGara[i - 1];
         const dietro = inGara[i];
+        tettoCoppie += 1;
         if (dietro.c - avanti.c >= tetto.minGap) continue;      // non sono in contatto
+        tettoInContatto += 1;
         // il vantaggio di PASSO su questo giro, non il distacco accumulato
         const vantaggio = avanti.ultimoGiro.lap_time - dietro.ultimoGiro.lap_time;
         // al giro di RIPARTENZA la soglia si abbassa del delta misurato (vedi sopra)
@@ -436,10 +448,16 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
         // deve comparire nel giro, non solo nel totale.
         const applica = (m, delta) => { m.c += delta; m.ultimoGiro.lap_time += delta; };
         if (vantaggio > sogliaDelGiro) {
+          tettoPassa += 1;
           applica(avanti, tetto.costoSubito);              // il sorpasso avviene: chi lo subisce paga
         } else {
+          tettoBlocca += 1;
           applica(dietro, (avanti.c + tetto.minGap) - dietro.c);  // niente passo per passare: resta dietro
         }
+        // il margine di chi resta dietro: quanto gli MANCA per passare. Se fosse quasi
+        // sempre grande, abbassare la soglia non sbloccherebbe niente — e la domanda
+        // «il tetto e' sotto-tarato» avrebbe gia' risposta senza tarare nulla.
+        if (vantaggio <= sogliaDelGiro) tettoMancanza.push(sogliaDelGiro - vantaggio);
         applica(avanti, tetto.costoDuello);                // il contatto costa a entrambi
         applica(dietro, tetto.costoDuello);
       }
@@ -491,6 +509,13 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
     // Chi misura ha bisogno che sia il kernel a dirlo. La chiave compare solo quando
     // il pavimento c'e', cosi' senza di esso l'oggetto e' identico a prima.
     ...(neutra?.pavimento != null ? { clampPavimento } : {}),
+    ...(tetto !== null ? {
+      tettoCoppie, tettoInContatto, tettoPassa, tettoBlocca,
+      // la mediana di quanto manca, non l'elenco: il risultato non deve gonfiarsi
+      tettoMancanzaMediana: tettoMancanza.length
+        ? tettoMancanza.slice().sort((a, b) => a - b)[tettoMancanza.length >> 1] : null,
+      tettoMancanzaSotto: (() => { let n = 0; for (const x of tettoMancanza) if (x <= 0.3) n += 1; return n; })(),
+    } : {}),
   };
 }
 

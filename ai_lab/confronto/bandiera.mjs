@@ -235,6 +235,13 @@ export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = nul
     // PREREG_compressione_pavimento_2). Passa e basta: non entra in nessun conto, e
     // senza pavimento la chiave non esiste nemmeno nel risultato.
     clamp_pavimento: esito.risultato.clampPavimento ?? null,
+    // i contatori del TETTO, cosi' come escono dal kernel (14/08). Passano e basta.
+    tetto_coppie: esito.risultato.tettoCoppie ?? null,
+    tetto_contatto: esito.risultato.tettoInContatto ?? null,
+    tetto_passa: esito.risultato.tettoPassa ?? null,
+    tetto_blocca: esito.risultato.tettoBlocca ?? null,
+    tetto_mancanza_mediana: esito.risultato.tettoMancanzaMediana ?? null,
+    tetto_mancanza_sotto: esito.risultato.tettoMancanzaSotto ?? null,
     traccia: conTraccia ? esito.risultato.traccia : undefined,
   };
 }
