@@ -43,6 +43,9 @@ const JSON_OUT = process.argv.includes('--json');
 // PAVIMENTO da quello della REAZIONE del tetto: senza, un D5(a) rosso non saprebbe di chi
 // e' la colpa — che e' il buco esatto del 13/08. Non e' una configurazione di produzione.
 const TETTO_SPENTO = process.argv.includes('--tetto-spento');
+// S2 di PREREG_sosta_neutralizzazione.md: il fattore di neutralizzazione MISURATO in casa
+// al posto del prior esterno. Ingresso di laboratorio, mai in produzione.
+const FATTORI_INTERNI = process.argv.includes('--fattori-interni');
 
 // ── i tre ingressi di laboratorio, montati come in migliora_strategia.mjs ────
 function ingressiVeri(nomeSito) {
@@ -136,7 +139,7 @@ for (const nomeSito of gare()) {
   for (const x of perGara(nomeSito)) {
     const e = corri(nomeSito, x.pilota, {
       pianiRivali: piani, ritiriRivali: ritiriVeri, neutralizzazioneVera: neutraVera,
-      conTraccia: true, tetto: TETTO_SPENTO ? false : null,
+      conTraccia: true, tetto: TETTO_SPENTO ? false : null, fattoriInterni: FATTORI_INTERNI,
     });
     if (e.saltato) { saltati.push(`${nomeSito}/${x.pilota}: ${e.saltato}`); continue; }
     const c = censisci(e.traccia, pavimento, e.neutra_perGiro);

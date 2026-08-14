@@ -42,6 +42,10 @@ import { cambiDiPosizione } from '../../simulatore/engine/kernel.mjs';
 import { corri, pianiVeriDi, perGara, media } from './bandiera.mjs';
 
 const JSON_OUT = process.argv.includes('--json');
+// S1 di PREREG_sosta_neutralizzazione.md: il fattore MISURATO in casa al posto del prior
+// esterno. Ingresso di laboratorio, mai in produzione (`promosso` resta false nel sigillo).
+const FATTORI_INTERNI = process.argv.includes('--fattori-interni');
+const FORZATO = (() => { const a = process.argv.find((x) => x.startsWith('--fattore=')); return a ? Number(a.split('=')[1]) : null; })();
 
 // ordine per cum a un dato giro, sul campo passato
 const ordineDa = (cumAlGiro, campo) => campo.filter((d) => cumAlGiro[d] != null)
@@ -64,6 +68,7 @@ for (const nomeSito of gare()) {
   for (const x of perGara(nomeSito)) {
     const t = corri(nomeSito, x.pilota, {
       pianiRivali: piani, ritiriRivali: ritiriVeri, neutralizzazioneVera: neutraVera, conTraccia: true,
+      fattoriInterni: FATTORI_INTERNI, fattoreForzato: FORZATO,
     });
     if (!t.saltato) { e = t; break; }
   }
