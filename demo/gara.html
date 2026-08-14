@@ -1033,6 +1033,9 @@ async function aggiornaStrategia() {
   const vitaGiri = ctx ? vitaMescolaGiri({ contestoLive: ctx, nomeGara: gara, mescola: nuova }) : null;
 
   const frag = document.createDocumentFragment();
+  // vero solo quando il pannello tace PERCHE' il pilota non è in questa gara: in quel caso
+  // non c'è nessuna fonte da dichiarare in fondo al riquadro (vedi più sotto).
+  let mutoPerFuoriGara = false;
   frag.append(selettoreMescole({
     scelta: nuova, attuale,
     onScegli: (m) => { mescolaScelta = m; ultimaChiave = ''; aggiornaStrategia(); },
@@ -1070,9 +1073,18 @@ async function aggiornaStrategia() {
         : (utili.find(x => x.freeze_lap >= L) || utili[0]);
       const presto = L < indiceVista.primo_giro;
       const tardi = L > indiceVista.ultimo_giro;
+      // FUORI GARA: il pilota non è partito, o si è ritirato. Non ha una gara da rigiocare,
+      // e questa è la ragione VERA del silenzio — non «troppo presto», non «troppo tardi».
+      // Trovato il 14/08 giocando Monaco con VER (non partito): il pannello taceva a OGNI
+      // giro e il tasto diceva «troppo tardi» al giro 20 di 78. La pagina lo sapeva già
+      // (`esitiGara`), e lo scrive perfino nel selettore accanto al nome: non lo diceva qui.
+      const fuori = esitiGara[selDrv] === 'NP' ? 'non è partito'
+                  : esitiGara[selDrv] === 'RIT' ? 'si è ritirato' : null;
+      mutoPerFuoriGara = fuori !== null;
       frag.append(el('div', { class: 'st-muto' },
         el('p', { stile: { margin: '0 0 12px' } },
-          presto ? `Al giro ${g} la gara non è ancora leggibile: serve qualche giro di passo prima di poter rispondere.`
+          fuori ? `${selDrv} ${fuori} in questa gara: non c'è una sua gara da rigiocare.`
+          : presto ? `Al giro ${g} la gara non è ancora leggibile: serve qualche giro di passo prima di poter rispondere.`
           : tardi ? `Al giro ${g} manca troppo poco alla bandiera perché fermarsi abbia una risposta.`
           : `A questo giro il motore non risponde per ${selDrv}.`),
         primo ? el('button', {
@@ -1081,9 +1093,17 @@ async function aggiornaStrategia() {
         }, `Vai al giro ${primo.freeze_lap + 1}`) : null));
       // il tasto non invita a premere quando non c'e' niente da chiedere: la strada
       // e' il bottone «Vai al giro N» qui sopra, non un errore dopo il click.
+      //
+      // IL MOTIVO SCRITTO SUL TASTO E' QUELLO VERO. Prima i tre casi erano due: tutto
+      // ciò che non era «troppo presto» diventava «troppo tardi», compreso il caso in cui
+      // il motore semplicemente non ha una risposta per quel pilota a quel giro. Un
+      // messaggio che dice la cosa sbagliata è peggio di nessun messaggio: manda a
+      // cercare il difetto dove non è.
       E('boxOra').disabled = true;
-      E('boxOra').title = presto ? 'Il motore risponde da qualche giro più avanti'
-                                 : 'Troppo tardi perché una sosta abbia una risposta';
+      E('boxOra').title = fuori ? `${selDrv} ${fuori}: non c'è una sua gara da rigiocare`
+        : presto ? 'Il motore risponde da qualche giro più avanti'
+        : tardi ? 'Troppo tardi perché una sosta abbia una risposta'
+        : `A questo giro il motore non ha una risposta per ${selDrv}`;
     }
   } else {
     ultimaRisposta = s;
@@ -1097,9 +1117,21 @@ async function aggiornaStrategia() {
   // SU QUALE GARA STA RISPONDENDO. Senza questa riga le due risposte sono
   // indistinguibili in pagina, e la piu' importante delle due — la tua — sembrerebbe la
   // stessa tabella di prima.
-  frag.append(el('p', { class: 'st-fonte' }, tua
-    ? `Sulla tua gara: ${selDrv} con ${(STRAT.soste ?? []).length === 1 ? 'la tua sosta' : 'le tue soste'} al giro ${(STRAT.soste ?? []).map(x => x.giro).join(' e ')}.`
-    : 'Sulla gara vera. Premi BOX ORA e il motore comincia a rispondere sulla tua.'));
+  //
+  // …e non invita a premere un tasto spento. Per chi non è partito la riga diceva «Premi
+  // BOX ORA» accanto a un BOX ORA disabilitato: due frasi che si contraddicono nello
+  // stesso riquadro.
+  //
+  // LA CONDIZIONE E' IL SILENZIO, NON L'ESITO D'ARRIVO. La prima scrittura di questa
+  // riga toglieva la fonte a chiunque fosse RIT o NP: sbagliata, e il banco l'ha mostrato
+  // subito. Leclerc a Monaco si è RITIRATO al giro 65 e ha comunque la sua vista, il
+  // pannello risponde e la sua gara si gioca fino alla bandiera — un contro-fattuale ha
+  // senso proprio lì. Chi non ha una risposta è un'altra cosa da chi non è arrivato.
+  if (!mutoPerFuoriGara) {
+    frag.append(el('p', { class: 'st-fonte' }, tua
+      ? `Sulla tua gara: ${selDrv} con ${(STRAT.soste ?? []).length === 1 ? 'la tua sosta' : 'le tue soste'} al giro ${(STRAT.soste ?? []).map(x => x.giro).join(' e ')}.`
+      : 'Sulla gara vera. Premi BOX ORA e il motore comincia a rispondere sulla tua.'));
+  }
   c.replaceChildren(frag);
 }
 
@@ -1347,7 +1379,15 @@ function verdetto() {
       `${selDrv} — com'è finita`),
     el('div', { class: 'esito-g' },
       el('div', { class: 'esito-b' }, el('small', {}, 'nella gara vera'), el('b', { class: 'n' }, P(reale)),
-        el('i', { class: 'esito-p' }, pianoInParole(sueVere))),
+        // CHI NON E' ARRIVATO LO DICE. Leclerc a Monaco si è rotto al giro 65 ed è
+        // classificato P17: la casella scriveva «P17» e basta, accanto a un motore che con
+        // le stesse soste lo porta P1. Sedici posizioni di scarto che sembrano un errore
+        // del motore e sono un guasto — la differenza più vistosa che il gioco mostri, e
+        // l'unica di cui non diceva la provenienza. Misurato il 14/08: i ritiri sono la
+        // prima fonte di scarto apparente fra il motore e la gara vera.
+        esitiGara[selDrv] === 'RIT'
+          ? el('i', { class: 'esito-p' }, `ritirato al giro ${ultimoGiro[selDrv] ?? '—'} · `, pianoInParole(sueVere))
+          : el('i', { class: 'esito-p' }, pianoInParole(sueVere))),
       el('div', { class: 'esito-b' }, el('small', {}, 'strategia vera nel motore'), el('b', { class: 'n' }, P(pVero)),
         el('i', { class: 'esito-p' }, veroRespinto
           ? 'il Direttore non firma questo run: niente confronto'

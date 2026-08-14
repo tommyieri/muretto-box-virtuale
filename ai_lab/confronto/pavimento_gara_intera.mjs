@@ -146,6 +146,15 @@ for (const nomeSito of gare()) {
       cambi_reali: e.cambi_reali, cambi_motore: e.cambi_motore,
       neutra_giri: e.neutra_giri, pavimento, director_fatal: e.director_fatal,
       clamp_pavimento: e.clamp_pavimento,
+      // LE COVARIATE PER LA PROVENIENZA (14/08). Non servono ai cancelli: servono a
+      // chiedersi DA DOVE viene l'errore invece di limitarsi a misurarlo. Vengono tutte
+      // da `corri`, cioe' dallo stesso run che produce l'errore: nessuna e' ricalcolata
+      // altrove, e nessuna e' una stima.
+      proiettati: e.proiettati, n_giri: e.n_giri, partenza: Number(e.partenza),
+      strategia: e.strategia, soste_mie: (e.strategia || '').split(' ').filter(Boolean).length,
+      soste_ereditate: e.soste_ereditate, oltre_orizzonte: e.oltre_orizzonte,
+      pit_loss_s: e.pit_loss_s, campo: e.campo,
+      previsto: e.previsto, vero: e.vero, su: e.su, nullo: e.nullo,
       impronta: impronta(e.traccia),
       ...c,
     });
