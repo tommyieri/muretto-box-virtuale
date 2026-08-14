@@ -153,6 +153,16 @@
   .st-sub{ margin:9px 0 0; color:var(--fioco); font-size:13px; }
   .st-muto{ padding:22px 4px; color:var(--fioco); font-size:14px; }
 
+  /* SU QUALE GARA sta rispondendo il pannello. Due risposte che si somigliano ma non
+     parlano della stessa gara devono distinguersi, altrimenti la tua sembra la tabella
+     di prima. E mentre il motore ricalcola l'ultima risposta buona resta in pagina,
+     smorzata: un pannello che sfarfalla a ogni giro e' peggio di uno che arriva dopo. */
+  .st-fonte{ margin:14px 0 0; padding-top:12px; border-top:1px solid rgba(255,255,255,.07);
+             color:var(--fioco); font-size:12.5px; line-height:1.5; }
+  .rail-c.pensa{ opacity:.55; transition:opacity .12s ease; }
+  .rail-c.pensa .st-fonte::after{ content:' — sto ricalcolando'; color:var(--calmo); }
+  @media (prefers-reduced-motion: reduce){ .rail-c.pensa{ transition:none; } }
+
   .st-vicini{ display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px; }
   .st-vic{ padding:10px 12px; border-radius:10px; background:rgba(255,255,255,.04); }
   .st-vic span{ display:block; color:var(--fioco); font:500 9px/1 var(--mono); letter-spacing:.16em; text-transform:uppercase; }
@@ -357,7 +367,7 @@ let selDrv = null, curP = 1, ctxLive = null, mescolaScelta = null;
 let esitiGara = {}, nonPart = new Set(), sosteVereDi = {}, ultimoGiro = {}, griglia = [];
 let arrivo = {};      // sigla -> {posizione, giri} — l'ordine d'arrivo, calcolato una volta
 let scenaGp = null, scenaFinita = false, STRAT = null, ESE = null;
-let ultimaRisposta = null;
+let ultimaRisposta = null;   // l'ultima risposta BUONA: resta in pagina mentre il motore pensa
 const SLICK = ['SOFT', 'MEDIUM', 'HARD'];
 
 /** LA GOMMA CHE C'E' SULL'AUTO ADESSO — nel replay dai dati, nella scena dal tuo piano. */
@@ -857,11 +867,113 @@ async function contesto() {
   return ctxLive;
 }
 
+/* ================================ il motore che risponde sulla TUA gara ====
+ *
+ * FINO AL 14/08/2026 IL PANNELLO RISPONDEVA SULLA GARA CHE AVEVI APPENA CANCELLATO.
+ * Le risposte arrivano da `data/vista/<gara>/<PILOTA>.json`: pre-calcolate, e pre-calcolate
+ * sulla gara VERA. Finche' non hai toccato niente vanno bene — la gara che guardi e' quella.
+ * Ma dal primo BOX ORA in poi tu ne stai giocando un'altra, e il pannello continuava a
+ * leggere l'altra: al giro 40, dopo una sosta al 15, diceva «P8, davanti RUS 11,2 s» quando
+ * nella tua gara eri P6 con HAM a 5,7. Due posizioni e un rivale diverso.
+ *
+ * PERCHE' NON SI POTEVA FARE PRIMA, e adesso si', in due pezzi:
+ *  1. lo STATO: `stato_contro.mjs` rimette la traccia del kernel nella forma che il motore
+ *     sa leggere. Esiste dal 13/08 (PR #153) ma non lo usava nessuno;
+ *  2. la FISICA: chiedere una risposta su quello stato faceva rifiutare il motore UN GIRO SU
+ *     QUATTRO — la compressione sotto Safety Car produceva giri piu' veloci del giro piu'
+ *     veloce della gara, e il suo stesso Director li respingeva. Riparata il 14/08 col
+ *     pavimento sulla compressione (PREREG_compressione_pavimento_2.md): i rifiuti sono
+ *     passati dal 26,6% a ZERO. Senza quella, questo pannello sarebbe muto un giro su quattro.
+ *
+ * IL MOTORE GIRA IN UN WORKER. `rispostaLive` costa 244 ms mediani (misurati): sul thread
+ * che disegna sono 244 ms di mappa ferma, e a 20x un giro passa ogni 4,25 s — il 6% del
+ * tempo, il 17% a 60x. Era una delle cause vere degli «scatti», ed e' il motivo per cui il
+ * ramo che lo chiamava a ogni giro era stato TOLTO il 13/08. Il motore non era troppo lento:
+ * era nel posto sbagliato.
+ */
+let WORKER = null, WID = 0, motoreDiretto = null;
+const inAttesa = new Map();
+
+async function motore() {
+  if (WORKER !== null) return WORKER;
+  const ctx = await contesto();
+  if (!ctx) return (WORKER = false);
+  try {
+    const w = new Worker(`./muretto_worker.mjs?v=${V}`, { type: 'module' });
+    w.onmessage = (ev) => {
+      const m = ev.data || {};
+      const risolvi = inAttesa.get(m.id);
+      // una risposta senza domanda e' una domanda che nel frattempo e' scaduta: si butta
+      if (!risolvi) return;
+      inAttesa.delete(m.id);
+      risolvi(m);
+    };
+    // se il Worker muore, le domande appese non si risolvono mai e il pannello resta
+    // sull'ultima risposta buona per sempre, in silenzio. Meglio saperlo (regola 7).
+    w.onerror = (e) => {
+      console.warn('il motore nel worker e\' caduto:', e.message || e);
+      for (const [, risolvi] of inAttesa) risolvi({ ok: false, errore: 'il motore si e\' fermato' });
+      inAttesa.clear();
+      WORKER = false;
+    };
+    w.postMessage({ id: ++WID, tipo: 'contesto', contesto: ctx });
+    return (WORKER = w);
+  } catch (e) {
+    // Worker non disponibile: si risponde lo stesso, sullo stesso modulo, sul thread
+    // principale. Si perde la fluidita', non la risposta — e non e' un valore di ripiego:
+    // e' LO STESSO calcolo in un posto peggiore.
+    console.warn('Worker non disponibile, il motore gira sul thread principale:', e.message);
+    return (WORKER = false);
+  }
+}
+
+async function chiediAlMotore(dom) {
+  const w = await motore();
+  if (w) {
+    return new Promise((ok) => {
+      const id = ++WID;
+      inAttesa.set(id, ok);
+      w.postMessage({ ...dom, id, tipo: 'risposta' });
+    });
+  }
+  if (!motoreDiretto) motoreDiretto = (await import(`./ponte_live.mjs?v=${V}`)).rispostaLive;
+  try {
+    return { ok: true, risposta: motoreDiretto({
+      byLap: dom.byLap, nGiriGara: dom.nGiri, nomeGara: dom.gara, pilota: dom.pilota,
+      freezeLap: dom.freezeLap, contestoLive: await contesto(), mescolaScelta: dom.mescola ?? null }) };
+  } catch (e) { return { ok: false, errore: String(e && e.message ? e.message : e) }; }
+}
+
+/** LA TUA GARA nella forma che il motore legge. Si ricostruisce solo quando il piano
+ *  cambia: e' una passata su tutta la traccia, e rifarla a ogni giro sarebbe lavoro
+ *  buttato — il piano non cambia mentre la barra scorre. */
+let contro = null;
+async function byLapDellaTuaGara() {
+  if (!STRAT || !ESE) return null;
+  const chiave = firmaPiano();
+  if (contro && contro.chiave === chiave) return contro.byLap;
+  const { byLapControFattuale } = await import(`./stato_contro.mjs?v=${V}`);
+  const byLap = byLapControFattuale({
+    traccia: STRAT.esiti.mio.risultato.traccia, byLapVero: race.byLap,
+    freeze: STRAT.freeze, soggetto: selDrv, mieSoste: STRAT.soste,
+    sosteVere: ESE.prep.sosteVere,
+  });
+  contro = { chiave, byLap };
+  return byLap;
+}
+
+/** La firma del piano: entra nella chiave del pannello, altrimenti aggiungere una sosta
+ *  senza muovere la barra non farebbe ricalcolare niente. */
+function firmaPiano() {
+  if (!STRAT) return 'reale';
+  return `${selDrv}|${STRAT.freeze}|${(STRAT.soste ?? []).map(x => `${x.giro}:${x.mescola ?? ''}`).join(',')}`;
+}
+
 let ultimaChiave = '';
 async function aggiornaStrategia() {
   const c = E('railC');
   if (!selDrv) return;
-  if (!indiceVista) {
+  if (!indiceVista && !STRAT) {
     c.replaceChildren(el('div', { class: 'st-muto' },
       'Per questa gara il motore non ha una risposta pronta.'));
     return;
@@ -873,13 +985,36 @@ async function aggiornaStrategia() {
   // irraggiungibile il ramo «Vai al giro N» scritto dodici righe piu' sotto.
   const L = Math.max(1, Math.floor(curP) - 1);
   const nuova = mescolaDaMontare();
-  const chiave = `${selDrv}|${L}|${nuova}|${STRAT ? 's' : 'r'}`;
+  const chiave = `${selDrv}|${L}|${nuova}|${firmaPiano()}`;
   if (chiave === ultimaChiave) return;
   ultimaChiave = chiave;
 
-  const v = await vistaDi(selDrv);
-  if (chiave !== ultimaChiave) return;
-  let s = v?.giri?.find(g => g.freeze_lap === L) || null;
+  // ── DUE SORGENTI, e la differenza e' QUALE GARA STAI GUARDANDO ──────────────
+  // Senza un tuo piano la gara e' quella vera, e la risposta e' quella pre-calcolata:
+  // stessa cosa di sempre, gratis. Col tuo piano la gara e' un'altra, e la risposta la
+  // calcola il motore adesso, sullo stato contro-fattuale.
+  let s = null; let v = null; const tua = !!STRAT;
+  if (tua) {
+    // il pannello non si svuota mentre il motore pensa: resta l'ultima risposta buona,
+    // marcata come in aggiornamento. Un pannello che sfarfalla a ogni giro e' peggio di
+    // uno che arriva un attimo dopo.
+    c.classList.add('pensa');
+    const bl = await byLapDellaTuaGara();
+    if (chiave !== ultimaChiave) return;
+    const r = bl ? await chiediAlMotore({
+      byLap: bl, nGiri: race.n_laps, gara, pilota: selDrv, freezeLap: L, mescola: nuova,
+    }) : { ok: false, errore: 'la tua gara non e\' ancora leggibile' };
+    if (chiave !== ultimaChiave) return;
+    c.classList.remove('pensa');
+    // UN RIFIUTO E' UNA RISPOSTA (regola 6): non si ripiega sulla vista della gara vera,
+    // che direbbe una cosa giusta sulla gara sbagliata — ed e' il difetto che questo
+    // intero blocco esiste per chiudere.
+    s = r.ok ? r.risposta : { freeze_lap: L, senza_risposta: r.errore };
+  } else {
+    v = await vistaDi(selDrv);
+    if (chiave !== ultimaChiave) return;
+    s = v?.giri?.find(g => g.freeze_lap === L) || null;
+  }
 
   // IL MOTORE NON GIRA PIU' A OGNI GIRO. Qui c'era un ramo che, con una mescola scelta,
   // richiamava `rispostaLive` — cioe' costruiva uno scenario intero e cercava il piano
@@ -904,32 +1039,44 @@ async function aggiornaStrategia() {
   }));
   if (!s || s.senza_risposta) {
     ultimaRisposta = null;
-    // il giro da proporre dipende da DOVE sei: a inizio gara il primo utile in avanti,
-    // a fine gara l'ultimo utile all'indietro. Proporre «vai al giro 10» quando manca
-    // un giro alla bandiera e' un consiglio che nessuno seguirebbe.
-    const utili = (v?.giri || []).filter(x => !x.senza_risposta && x.pannello);
-    const primo = (L > indiceVista.ultimo_giro)
-      ? utili[utili.length - 1]
-      : (utili.find(x => x.freeze_lap >= L) || utili[0]);
-    const presto = L < indiceVista.primo_giro;
-    const tardi = L > indiceVista.ultimo_giro;
     // lo stesso giro che legge il contagiri: l'orologio arriva a n+1 (il traguardo),
     // e scrivere «giro 45 di 44» sarebbe un numero che in pagina non esiste.
     const g = Math.min(race.n_laps, Math.max(1, Math.floor(curP)));
-    frag.append(el('div', { class: 'st-muto' },
-      el('p', { stile: { margin: '0 0 12px' } },
-        presto ? `Al giro ${g} la gara non è ancora leggibile: serve qualche giro di passo prima di poter rispondere.`
-        : tardi ? `Al giro ${g} manca troppo poco alla bandiera perché fermarsi abbia una risposta.`
-        : `A questo giro il motore non risponde per ${selDrv}.`),
-      primo ? el('button', {
-        class: 'btn btn-s', type: 'button',
-        onclick: () => vaiAlGiro(primo.freeze_lap + 1),
-      }, `Vai al giro ${primo.freeze_lap + 1}`) : null));
-    // il tasto non invita a premere quando non c'e' niente da chiedere: la strada
-    // e' il bottone «Vai al giro N» qui sopra, non un errore dopo il click.
-    E('boxOra').disabled = true;
-    E('boxOra').title = presto ? 'Il motore risponde da qualche giro più avanti'
-                               : 'Troppo tardi perché una sosta abbia una risposta';
+    if (tua) {
+      // SULLA TUA GARA NON C'E' UNA MAPPA DEI GIRI BUONI da cui pescare il prossimo: la
+      // risposta si calcola sul momento, quindi «vai al giro N» sarebbe una promessa che
+      // nessuno ha verificato. E BOX ORA RESTA PREMIBILE: che il motore non sappia
+      // rispondere a questo giro non vuol dire che una sosta qui sia invalida — sono due
+      // domande diverse, e disabilitarlo bloccherebbe il gioco per il motivo sbagliato.
+      frag.append(el('div', { class: 'st-muto' },
+        el('p', { stile: { margin: 0 } },
+          `Al giro ${g} il motore non sa rispondere sulla tua gara: prova qualche giro più avanti.`)));
+      E('boxOra').disabled = false; E('boxOra').removeAttribute('title');
+    } else {
+      // il giro da proporre dipende da DOVE sei: a inizio gara il primo utile in avanti,
+      // a fine gara l'ultimo utile all'indietro. Proporre «vai al giro 10» quando manca
+      // un giro alla bandiera e' un consiglio che nessuno seguirebbe.
+      const utili = (v?.giri || []).filter(x => !x.senza_risposta && x.pannello);
+      const primo = (L > indiceVista.ultimo_giro)
+        ? utili[utili.length - 1]
+        : (utili.find(x => x.freeze_lap >= L) || utili[0]);
+      const presto = L < indiceVista.primo_giro;
+      const tardi = L > indiceVista.ultimo_giro;
+      frag.append(el('div', { class: 'st-muto' },
+        el('p', { stile: { margin: '0 0 12px' } },
+          presto ? `Al giro ${g} la gara non è ancora leggibile: serve qualche giro di passo prima di poter rispondere.`
+          : tardi ? `Al giro ${g} manca troppo poco alla bandiera perché fermarsi abbia una risposta.`
+          : `A questo giro il motore non risponde per ${selDrv}.`),
+        primo ? el('button', {
+          class: 'btn btn-s', type: 'button',
+          onclick: () => vaiAlGiro(primo.freeze_lap + 1),
+        }, `Vai al giro ${primo.freeze_lap + 1}`) : null));
+      // il tasto non invita a premere quando non c'e' niente da chiedere: la strada
+      // e' il bottone «Vai al giro N» qui sopra, non un errore dopo il click.
+      E('boxOra').disabled = true;
+      E('boxOra').title = presto ? 'Il motore risponde da qualche giro più avanti'
+                                 : 'Troppo tardi perché una sosta abbia una risposta';
+    }
   } else {
     ultimaRisposta = s;
     E('boxOra').disabled = false; E('boxOra').removeAttribute('title');
@@ -939,6 +1086,12 @@ async function aggiornaStrategia() {
       onGiro: vaiAlGiro,
     }));
   }
+  // SU QUALE GARA STA RISPONDENDO. Senza questa riga le due risposte sono
+  // indistinguibili in pagina, e la piu' importante delle due — la tua — sembrerebbe la
+  // stessa tabella di prima.
+  frag.append(el('p', { class: 'st-fonte' }, tua
+    ? `Sulla tua gara: ${selDrv} con ${(STRAT.soste ?? []).length === 1 ? 'la tua sosta' : 'le tue soste'} al giro ${(STRAT.soste ?? []).map(x => x.giro).join(' e ')}.`
+    : 'Sulla gara vera. Premi BOX ORA e il motore comincia a rispondere sulla tua.'));
   c.replaceChildren(frag);
 }
 
@@ -1216,7 +1369,8 @@ function verdetto() {
 function azzera() {
   if (scenaGp) { scenaGp.stop(); scenaGp = null; }
   scenaFinita = false;
-  STRAT = null; ultimaChiave = ''; mescolaScelta = null;
+  STRAT = null; ultimaChiave = ''; mescolaScelta = null; contro = null;
+  E('railC').classList.remove('pensa');
   E('reset').hidden = true; E('esito').hidden = true;
   for (const d in righe) { righe[d].root.style.display = ''; righe[d].root.classList.remove('fuori'); }
   mappa?.setSpento(false);
