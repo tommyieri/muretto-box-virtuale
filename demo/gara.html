@@ -1048,9 +1048,17 @@ async function aggiornaStrategia() {
       // nessuno ha verificato. E BOX ORA RESTA PREMIBILE: che il motore non sappia
       // rispondere a questo giro non vuol dire che una sosta qui sia invalida — sono due
       // domande diverse, e disabilitarlo bloccherebbe il gioco per il motivo sbagliato.
+      //
+      // MA VICINO ALLA BANDIERA «prova qualche giro piu' avanti» E' UN CONSIGLIO
+      // IMPOSSIBILE, e a fine gara era l'unica cosa che il pannello sapeva dire: trovato
+      // giocando l'Ungheria intera il 14/08, al giro 70 di 70. Un ramo che manda avanti
+      // chi e' gia' arrivato non e' un messaggio incompleto: e' sbagliato.
+      const ultimo = indiceVista?.ultimo_giro ?? (race.n_laps - 4);
+      const tardi = L > ultimo;
       frag.append(el('div', { class: 'st-muto' },
-        el('p', { stile: { margin: 0 } },
-          `Al giro ${g} il motore non sa rispondere sulla tua gara: prova qualche giro più avanti.`)));
+        el('p', { stile: { margin: 0 } }, tardi
+          ? `Al giro ${g} manca troppo poco alla bandiera perché fermarsi abbia una risposta.`
+          : `Al giro ${g} il motore non sa rispondere sulla tua gara: prova qualche giro più avanti.`)));
       E('boxOra').disabled = false; E('boxOra').removeAttribute('title');
     } else {
       // il giro da proporre dipende da DOVE sei: a inizio gara il primo utile in avanti,
