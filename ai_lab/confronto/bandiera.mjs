@@ -133,7 +133,7 @@ export function pianiVeriDi(nomeSito) {
  * ATTENZIONE al perimetro: s25_difesa fa fallire la suite se `pianiRivali` compare in un
  * percorso di web/, demo/ o scenario/. E' un ingresso di LABORATORIO e deve restare qui.
  */
-export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = null, tetto = null, ritiriRivali = undefined, neutralizzazioneVera = undefined, ripartenzaGiri = undefined, conTraccia = false, fattoriInterni = false } = {}) {
+export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = null, tetto = null, ritiriRivali = undefined, neutralizzazioneVera = undefined, ripartenzaGiri = undefined, conTraccia = false, fattoriInterni = false, fattoreForzato = null } = {}) {
   const r = riga(nomeSito, pilota);
   if (!r) return { saltato: 'nessuna riga in arrivi_2026.csv' };
   if (!r.classificato) return { saltato: `non classificato (${r.tipo_arrivo})`, tipo_arrivo: r.tipo_arrivo };
@@ -148,6 +148,14 @@ export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = nul
   // `pitloss.mjs::fattoreDi` legge da `promosso`, e la promozione vera e' il cancello N3 di
   // PREREG_neutralizzazione.md: qui si accende SOLO per misurare, mai in produzione.
   // Spento (default) l'oggetto non viene nemmeno toccato: i numeri restano bit-identici.
+  // `fattoreForzato` — DIAGNOSTICO, non un cancello: serve solo a capire PERCHE' un
+  // cancello e' uscito rosso, cioe' se il movimento in finestra e' monotono nel prezzo
+  // della sosta. Non compare in nessuna misura pubblicata.
+  if (fattoreForzato !== null) {
+    const p = contesto.prior;
+    contesto = { ...contesto, prior: { ...p,
+      fattori_neutralizzazione: { ...p.fattori_neutralizzazione, SC: fattoreForzato, VSC: fattoreForzato } } };
+  }
   if (fattoriInterni) {
     const p = contesto.prior;
     contesto = { ...contesto, prior: { ...p,
