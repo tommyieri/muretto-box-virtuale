@@ -146,6 +146,9 @@ for (const nomeSito of gare()) {
       cambi_reali: e.cambi_reali, cambi_motore: e.cambi_motore,
       neutra_giri: e.neutra_giri, pavimento, director_fatal: e.director_fatal,
       clamp_pavimento: e.clamp_pavimento,
+      tetto_coppie: e.tetto_coppie, tetto_contatto: e.tetto_contatto,
+      tetto_passa: e.tetto_passa, tetto_blocca: e.tetto_blocca,
+      tetto_mancanza_mediana: e.tetto_mancanza_mediana, tetto_mancanza_sotto: e.tetto_mancanza_sotto,
       // LE COVARIATE PER LA PROVENIENZA (14/08). Non servono ai cancelli: servono a
       // chiedersi DA DOVE viene l'errore invece di limitarsi a misurarlo. Vengono tutte
       // da `corri`, cioe' dallo stesso run che produce l'errore: nessuna e' ricalcolata
