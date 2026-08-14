@@ -133,15 +133,26 @@ export function pianiVeriDi(nomeSito) {
  * ATTENZIONE al perimetro: s25_difesa fa fallire la suite se `pianiRivali` compare in un
  * percorso di web/, demo/ o scenario/. E' un ingresso di LABORATORIO e deve restare qui.
  */
-export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = null, tetto = null, ritiriRivali = undefined, neutralizzazioneVera = undefined, ripartenzaGiri = undefined, conTraccia = false } = {}) {
+export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = null, tetto = null, ritiriRivali = undefined, neutralizzazioneVera = undefined, ripartenzaGiri = undefined, conTraccia = false, fattoriInterni = false } = {}) {
   const r = riga(nomeSito, pilota);
   if (!r) return { saltato: 'nessuna riga in arrivi_2026.csv' };
   if (!r.classificato) return { saltato: `non classificato (${r.tipo_arrivo})`, tipo_arrivo: r.tipo_arrivo };
   if (!r.soste_piano.length) return { saltato: 'nessuna sosta registrata: non c\'e\' pit-loss ne\' mescola da simulare' };
 
   const gSim = garaNuova(nomeSito);
-  const contesto = tetto === null ? contestoNuovo(nomeSito, modello)
+  let contesto = tetto === null ? contestoNuovo(nomeSito, modello)
     : { ...contestoNuovo(nomeSito, modello), tetto };
+  // `fattoriInterni` — INGRESSO DI LABORATORIO (14/08). Promuove il fattore di
+  // neutralizzazione MISURATO IN CASA (SC 0,6227 · VSC 0,7188, 147 gare asciutte, controllo
+  // in verde 1,011) al posto del prior esterno (0,50 · 0,65). E' la stessa leva che
+  // `pitloss.mjs::fattoreDi` legge da `promosso`, e la promozione vera e' il cancello N3 di
+  // PREREG_neutralizzazione.md: qui si accende SOLO per misurare, mai in produzione.
+  // Spento (default) l'oggetto non viene nemmeno toccato: i numeri restano bit-identici.
+  if (fattoriInterni) {
+    const p = contesto.prior;
+    contesto = { ...contesto, prior: { ...p,
+      fattori_neutralizzazione_interni: { ...p.fattori_neutralizzazione_interni, promosso: true } } };
+  }
 
   // Si scende il congelamento finche' il motore non ha un passo base per lui. Le soste
   // gia' avvenute NON si rimettono nel piano: il costruttore legge lo stato vero fino al
