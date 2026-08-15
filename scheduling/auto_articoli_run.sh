@@ -28,18 +28,19 @@ cd "$REPO" || exit 1
 # scrittore + verificatore-LLM si spegnerebbero (prosa a template, niente editor
 # avversariale) IN SILENZIO — che e' il modo peggiore di perderli.
 #
-# Dal 15/08/2026 la strada buona e' UNA SOLA, su entrambe le macchine: (1) ~/.muretto_env,
-# un file di sole variabili, fuori dal repo e fuori da git:
+# (1) ~/.muretto_env, un file di sole variabili, fuori dal repo e fuori da git:
 #   echo 'export ANTHROPIC_API_KEY="..."' > ~/.muretto_env && chmod 600 ~/.muretto_env
-# Sul VPS e' sempre stata l'unica via. Sul Mac lo e' diventata quando la chiave e' uscita da
-# ~/.zshrc: li' ora c'e' solo la funzione `chiave-on`, che la carica a richiesta nella shell
-# e NON la esporta di default. Il motivo non e' il file ma la variabile: una variabile
-# esportata entra nell'ambiente di ogni processo figlio — npx/uvx di terze parti compresi —
-# e nei dump d'ambiente degli agenti (Codex ne aveva catturate 4 copie in chiaro).
+# E' la via del VPS — dove questo script gira per davvero dal 10/08/2026 — e scheduling/
+# vps.cron la da' gia' per obbligatoria. E' l'unica su cui vale la pena costruire.
 #
-# (2) sotto resta il ripiego che pesca la riga da ~/.zshrc. ATTENZIONE: oggi non trova piu'
-# nulla su nessuna delle due macchine — e' una rete, non una fonte, e sta li' solo perche' il
-# giorno che ~/.muretto_env sparisse il modello si spegnerebbe in silenzio. Non contarci.
+# (2) sotto resta il ripiego che pesca la riga da ~/.zshrc. Dal 15/08/2026 SUL MAC non trova
+# piu' nulla: li' la chiave e' uscita dal profilo e sta in ~/.muretto_env (600), caricata a
+# richiesta dalla funzione `chiave-on` e NON esportata di default. Il motivo non e' il file
+# ma la variabile: una variabile esportata entra nell'ambiente di ogni processo figlio —
+# npx/uvx di terze parti compresi — e nei dump d'ambiente degli agenti (Codex ne aveva
+# catturate 4 copie in chiaro). SUL VPS non e' stato verificato: se li' la chiave fosse
+# ancora in un profilo, la (2) la pescherebbe ancora. In ogni caso e' una rete, non una
+# fonte: il giorno che ~/.muretto_env sparisse eviterebbe il silenzio, ma non contarci.
 # Mai stampata nel log: sotto si scrive solo «attivo» o «ASSENTE».
 if [ -z "${ANTHROPIC_API_KEY:-}" ] && [ -f "$HOME/.muretto_env" ]; then
   # shellcheck disable=SC1091
