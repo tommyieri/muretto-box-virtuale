@@ -38,6 +38,7 @@
       "genera_inventario.mjs",
       "genera_manifest.mjs",
       "genera_pavimenti.mjs",
+      "genera_soffitti.mjs",
       "hash_lib.mjs",
       "importa_archivio.mjs",
       "manifest_lib.mjs",

@@ -133,7 +133,7 @@ export function pianiVeriDi(nomeSito) {
  * ATTENZIONE al perimetro: s25_difesa fa fallire la suite se `pianiRivali` compare in un
  * percorso di web/, demo/ o scenario/. E' un ingresso di LABORATORIO e deve restare qui.
  */
-export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = null, tetto = null, ritiriRivali = undefined, neutralizzazioneVera = undefined, ripartenzaGiri = undefined, conTraccia = false, fattoriInterni = false, fattoreForzato = null } = {}) {
+export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = null, tetto = null, ritiriRivali = undefined, neutralizzazioneVera = undefined, ripartenzaGiri = undefined, conTraccia = false, fattoriInterni = false, fattoreForzato = null, formaCompressione = undefined } = {}) {
   const r = riga(nomeSito, pilota);
   if (!r) return { saltato: 'nessuna riga in arrivi_2026.csv' };
   if (!r.classificato) return { saltato: `non classificato (${r.tipo_arrivo})`, tipo_arrivo: r.tipo_arrivo };
@@ -185,6 +185,10 @@ export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = nul
         // i ritiri e le neutralizzazioni VERE (ingressi di laboratorio, 07/08):
         // undefined in ogni misura pubblicata — i numeri a referto restano bit-identici
         ritiriRivali, neutralizzazioneVera, ripartenzaGiri,
+        // `formaCompressione` — INGRESSO DI LABORATORIO (15/08, PREREG_terza_forma.md):
+        // chi paga la contrazione dei distacchi. undefined in ogni misura pubblicata,
+        // e senza di lui il costruttore non mette nemmeno la chiave nel pacchetto.
+        formaCompressione,
       }, contesto);
       e2 = eseguiEValida(s2, contesto.costantiDirector);
     } catch (e) { ultimoMotivo = `eccezione: ${e.message}`; continue; }
@@ -254,6 +258,13 @@ export function corri(nomeSito, pilota, { pianiRivali = undefined, modello = nul
     // PREREG_compressione_pavimento_2). Passa e basta: non entra in nessun conto, e
     // senza pavimento la chiave non esiste nemmeno nel risultato.
     clamp_pavimento: esito.risultato.clampPavimento ?? null,
+    // il gemello, dalla terza forma. Stessa regola: passa e basta, e senza soffitto
+    // la chiave non esiste nemmeno nel risultato del kernel.
+    clamp_soffitto: esito.risultato.clampSoffitto ?? null,
+    coppie_compresse: esito.risultato.coppieCompresse ?? null,
+    forma_compressione: sc.neutralizzazione?.forma ?? null,
+    soffitto_s: sc.neutralizzazione?.soffitto ?? null,
+    pavimento_s: sc.neutralizzazione?.pavimento ?? null,
     // i contatori del TETTO, cosi' come escono dal kernel (14/08). Passano e basta.
     tetto_coppie: esito.risultato.tettoCoppie ?? null,
     tetto_contatto: esito.risultato.tettoInContatto ?? null,

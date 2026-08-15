@@ -21,7 +21,17 @@
 //      che la misura di kappa escludeva;
 //  (f) parametri malformati passano in silenzio invece di fallire (E07);
 //  (g) l'ordine delle chiavi della traccia cambia: i golden confrontano JSON, e
-//      una chiave spostata li romperebbe senza che nessun numero sia sbagliato.
+//      una chiave spostata li romperebbe senza che nessun numero sia sbagliato;
+//  (h) LA TERZA FORMA (15/08, PREREG_terza_forma.md) smette di essere la STESSA
+//      legge: `forma: 'leader'` deve produrre gli identici gap(k+1) = gap(k)*kappa
+//      della seconda forma — cambia CHI paga, non quanto si comprime. Se i gap
+//      divergono non e' una consegna diversa, e' un modello diverso (cancello T6);
+//  (i) nella terza forma qualcuno ACCORCIA il proprio giro: la traslazione deve
+//      rendere ogni delta >= 0, e il pavimento non deve legare mai (cancello T2).
+//      Se lega, l'aritmetica dello scarto e' sbagliata;
+//  (j) `forma` assente non e' identica a `forma: 'inseguitori'`, o una forma
+//      sconosciuta passa in silenzio invece di esplodere; o il SOFFITTO (il
+//      gemello del pavimento) non lega, oppure lega ACCORCIANDO un giro.
 
 import { banco } from '../asserzioni.mjs';
 import { simulate } from '../../engine/kernel.mjs';
@@ -173,6 +183,87 @@ for (const cattivo of [{ perGiro: { [LF + 1]: 0 } }, { perGiro: { [LF + 1]: -0.5
   const r = corri({ traccia: true });
   b.uguale('le chiavi della traccia sono quelle di sempre, in ordine',
     Object.keys(r.traccia.UNO[0]), ['lap', 'lap_time', 'cum_time', 'tyre_age', 'in_lap']);
+}
+
+
+// ───────────── (h)(i)(j) LA TERZA FORMA: stessa legge, altra ancora ──────────
+// La prereg dice «cambia chi paga, non quanto si comprime». Queste prove sono
+// esattamente quella frase, verificata invece che dichiarata.
+{
+  const KAPPA = 0.7;
+  const FINO = LF + 3;
+  const finestra = {}; for (let l = LF + 1; l <= FINO; l += 1) finestra[l] = KAPPA;
+  const leader = 'UNO';
+  const seconda = corri({ neutralizzazione: { perGiro: finestra, pavimento: null }, traccia: true });
+  const terza = corri({ neutralizzazione: { perGiro: finestra, pavimento: null, soffitto: null, forma: 'leader' }, traccia: true });
+  const cumA = (r, drv, lap) => r.traccia[drv].find((x) => x.lap === lap).cum_time;
+  const giroDi = (r, drv, lap) => r.traccia[drv].find((x) => x.lap === lap).lap_time;
+
+  // (j) `forma` assente ≡ 'inseguitori': il default non e' una terza strada
+  b.uguale('forma assente ≡ forma inseguitori',
+    corri({ neutralizzazione: { perGiro: finestra, forma: 'inseguitori' } }).cum, seconda.cum);
+  b.esplode('una forma sconosciuta non passa in silenzio',
+    () => corri({ neutralizzazione: { perGiro: finestra, forma: 'capofila' } }));
+  b.esplode('un soffitto malformato non passa in silenzio',
+    () => corri({ neutralizzazione: { perGiro: finestra, soffitto: 'alto', forma: 'leader' } }));
+  b.esplode('un soffitto sotto il pavimento non passa in silenzio',
+    () => corri({ neutralizzazione: { perGiro: finestra, pavimento: 100, soffitto: 50, forma: 'leader' } }));
+
+  // (h) T6 — gli STESSI gap, alla settima cifra. E' il cancello che distingue una
+  // consegna diversa da un modello diverso.
+  for (const drv of ['DUE', 'TRE', 'QUATTRO']) {
+    for (let lap = LF + 1; lap <= FINO; lap += 1) {
+      const g2 = cumA(seconda, drv, lap) - cumA(seconda, leader, lap);
+      const g3 = cumA(terza, drv, lap) - cumA(terza, leader, lap);
+      b.verifica(`${drv} giro ${lap}: la terza forma da' lo stesso gap della seconda (${g3.toFixed(6)} = ${g2.toFixed(6)})`,
+        Math.abs(g3 - g2) < 1e-9);
+    }
+  }
+
+  // (i) T2 — nessun giro si accorcia, e il capofila paga davvero
+  for (const drv of Object.keys(passi)) {
+    for (let lap = LF + 1; lap <= FINO; lap += 1) {
+      const senzaNulla = corri({ traccia: true });
+      b.verifica(`${drv} giro ${lap}: la terza forma non accorcia il giro`,
+        giroDi(terza, drv, lap) >= giroDi(senzaNulla, drv, lap) - 1e-9);
+    }
+  }
+  b.verifica('il capofila paga (il suo cum peggiora), che e\' tutta la differenza fra le due forme',
+    cumA(terza, leader, FINO) > cumA(seconda, leader, FINO) + 1);
+  // L'ANCORA ESISTE, ed e' la proprieta' vera: su ogni giro compresso QUALCUNO paga
+  // esattamente zero. NON e' sempre lo stesso pilota — l'ancora e' chi la seconda
+  // forma avrebbe premiato di piu' quel giro, e dipende anche dal passo, non solo
+  // dal distacco. La prima scrittura di questa prova pretendeva che fosse sempre
+  // l'ultimo della fila ed e' fallita: la pretesa era mia, non del modello.
+  {
+    const senzaNulla = corri({ traccia: true });
+    for (let lap = LF + 1; lap <= FINO; lap += 1) {
+      const pagati = Object.keys(passi).map((d) => giroDi(terza, d, lap) - giroDi(senzaNulla, d, lap));
+      b.verifica(`giro ${lap}: qualcuno paga zero (l'ancora esiste)`, Math.min(...pagati) < 1e-9);
+      b.verifica(`giro ${lap}: nessuno paga meno di zero`, Math.min(...pagati) > -1e-9);
+    }
+  }
+
+  // (i) il PAVIMENTO non lega mai nella terza forma: non c'e' niente da difendere
+  const conPav = corri({ neutralizzazione: { perGiro: finestra, pavimento: 200, soffitto: null, forma: 'leader' }, traccia: true });
+  b.uguale('nella terza forma un pavimento assurdo non lega e non cambia un bit', conPav.cum, terza.cum);
+  b.uguale('e il suo contatore resta a zero', conPav.clampPavimento, 0);
+
+  // (j) IL SOFFITTO: un soffitto sopra ogni giro non tocca niente; uno bassissimo
+  // annulla l'aggiunta senza ACCORCIARE (il Math.max(0, …), la meta' della forma
+  // che si dimentica per prima — e' la stessa lezione del pavimento allo specchio).
+  b.uguale('un soffitto che nessuno tocca non cambia un bit',
+    corri({ neutralizzazione: { perGiro: finestra, soffitto: 10000, forma: 'leader' } }).cum, terza.cum);
+  const basso = corri({ neutralizzazione: { perGiro: finestra, soffitto: 80, forma: 'leader' }, traccia: true });
+  b.verifica('un soffitto sotto quasi ogni giro lega', basso.clampSoffitto > 0);
+  for (const drv of Object.keys(passi)) {
+    for (let lap = LF + 1; lap <= FINO; lap += 1) {
+      b.verifica(`${drv} giro ${lap}: il soffitto annulla l'aggiunta ma non accorcia`,
+        giroDi(basso, drv, lap) >= giroDi(corri({ traccia: true }), drv, lap) - 1e-9);
+    }
+  }
+  b.uguale('senza soffitto la chiave del contatore non esiste nemmeno',
+    Object.prototype.hasOwnProperty.call(terza, 'clampSoffitto'), false);
 }
 
 b.chiudi();
