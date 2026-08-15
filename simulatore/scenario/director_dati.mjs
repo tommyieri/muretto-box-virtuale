@@ -17,5 +17,9 @@ export function caricaCostanti(radice) {
     // del motore, e la sentinella s22 esiste per non farlo passare
     prior: caricaPrior(radice),
     pavimenti: leggi('data/modelli/pavimenti_2026.json'),
+    // il gemello del pavimento (PREREG_terza_forma.md): lo legge il costruttore per
+    // il pacchetto della compressione. Sta qui e non altrove perche' pavimento e
+    // soffitto sono la stessa regola con il segno opposto (regola 1).
+    soffitti: leggi('data/modelli/soffitti_2026.json'),
   };
 }

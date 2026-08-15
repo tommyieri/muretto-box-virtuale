@@ -113,6 +113,11 @@ function contestoLive(dataOggi) {
     prior: caricaPrior(RADICE),
     limiti: costanti.limiti,
     pavimenti: costanti.pavimenti,
+    // IL SOFFITTO viaggia da subito, benche' la terza forma sia spenta: se restasse
+    // solo in Node, il giorno che qualcuno la accende la diretta risponderebbe senza
+    // vincolo e il replay con — E17 nella forma esatta gia' pagata dal «contesto
+    // monco» della pagella, invisibile perche' la parita' confronta ponte-contro-ponte.
+    soffitti: costanti.soffitti,
     bandaRientro: leggi('data/modelli/banda_rientro.json'),
     // il TETTO AL MOVIMENTO viaggia col motore: se stesse solo in Node, la diretta
     // risponderebbe senza vincolo e il replay con — che e' E17 nella sua forma esatta.

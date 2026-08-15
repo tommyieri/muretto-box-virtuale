@@ -175,7 +175,7 @@ const regimeAlCongelamento = regimeDiCella;
  *          orizzonte, perdita }` — `pits` è ciò che le due risposte devono
  *          condividere, ed è la cosa che il cancello P06 confronta.
  */
-export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, piano, pianiRivali, sosteAtteseRivali, rivaliNonClassificati, ritiriRivali, neutralizzazioneVera, ripartenzaGiri }, contesto) {
+export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, piano, pianiRivali, sosteAtteseRivali, rivaliNonClassificati, ritiriRivali, neutralizzazioneVera, ripartenzaGiri, formaCompressione }, contesto) {
   const { gare, modello, prior } = contesto;
   const g = gare[gara];
   if (!g) throw new Error(`gara sconosciuta: ${gara}`);
@@ -560,8 +560,27 @@ export function costruisciScenario({ gara, freezeLap, pilota, giroPit, mescola, 
     if (typeof margine !== 'number') return null;
     return p.pavimento_s - margine;
   })();
+  // IL SOFFITTO viaggia con lo stesso pacchetto e si risolve allo stesso modo: e' il
+  // pavimento allo specchio (PREREG_terza_forma.md). Senza margine — il massimo
+  // osservato e' gia' un estremo, e un margine sarebbe un parametro inventato.
+  const soffittoCircuito = (() => {
+    const s = contesto.costantiDirector?.soffitti?.gare?.[gara];
+    if (!s || s.soffitto_s === null || s.soffitto_s === undefined) return null;
+    return s.soffitto_s;
+  })();
+  // `formaCompressione` — INGRESSO DI LABORATORIO (15/08). Chi paga la contrazione dei
+  // distacchi: 'inseguitori' (la seconda forma, in produzione) o 'leader' (la terza).
+  // Assente ⇒ il kernel non riceve nemmeno la chiave e i numeri restano bit-identici.
+  // L'accensione in produzione e' un atto separato, con il cancello T4 della prereg.
+  if (formaCompressione !== undefined && formaCompressione !== 'inseguitori' && formaCompressione !== 'leader') {
+    throw new Error(`formaCompressione non utilizzabile: ${JSON.stringify(formaCompressione)}`);
+  }
   const neutralizzazione = perGiroCompressione === null
-    ? null : { perGiro: perGiroCompressione, pavimento: pavimentoCircuito };
+    ? null : {
+      perGiro: perGiroCompressione,
+      pavimento: pavimentoCircuito,
+      ...(formaCompressione === undefined ? {} : { forma: formaCompressione, soffitto: soffittoCircuito }),
+    };
   if (vera) {
     const conta = { SC: 0, VSC: 0, RED: 0 };
     for (const r of Object.values(vera)) conta[r] += 1;
