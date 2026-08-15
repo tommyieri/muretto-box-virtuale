@@ -45,3 +45,9 @@ data/.auto_articoli.lockdir/
 # a capire perche' un articolo e' uscito cosi', non a raccontare che cosa sappiamo.
 # La chiave non ci finisce mai — si scrivono solo i conteggi.
 ai_lab/redazione/diario/
+
+# GRAPHIFY: il grafo di conoscenza del codice (nodi, archi, community), il report e
+# la cache di estrazione. E' un DERIVATO del sorgente, non una fonte: si rifa' da zero
+# con `graphify extract . --code-only` in una ventina di secondi, e pesa ~12 MB fra
+# graph.json e graph.html. Un derivato committato invecchia in silenzio — meglio nessuno.
+graphify-out/
