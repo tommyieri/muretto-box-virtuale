@@ -76,14 +76,31 @@ const interoNonNegativo = (v) => Number.isInteger(v) && v >= 0;
 // di `simulate()` perche' e' parte del contratto della neutralizzazione: senza
 // compressione non serve, e il costruttore resta l'unico che lo risolve (regola 1).
 // `pavimento` assente o null ⇒ il vincolo non esiste e i numeri sono identici al bit.
+//
+// LA FORMA e IL SOFFITTO (15/08/2026, PREREG_terza_forma.md). Il pacchetto porta anche
+// `forma`, che dice CHI PAGA la contrazione, e `soffitto`, che e' il pavimento allo
+// specchio. `forma` assente ⇒ 'inseguitori', cioe' esattamente il comportamento di
+// prima: nessun percorso nuovo esiste finche' qualcuno non lo chiede per nome.
+const FORME = new Set(['inseguitori', 'leader']);
 function normalizzaNeutralizzazione(neutralizzazione, freezeLap, steps) {
   if (neutralizzazione === null || neutralizzazione === undefined) return null;
   if (typeof neutralizzazione !== 'object') throw new Error(`neutralizzazione non utilizzabile: ${JSON.stringify(neutralizzazione)}`);
-  const { perGiro, pavimento = null } = neutralizzazione;
+  const { perGiro, pavimento = null, soffitto = null, forma = 'inseguitori' } = neutralizzazione;
   if (pavimento !== null) {
     if (typeof pavimento !== 'number' || !Number.isFinite(pavimento) || pavimento <= 0) {
       throw new Error(`neutralizzazione.pavimento non utilizzabile (serve un tempo sul giro > 0, oppure null): ${JSON.stringify(pavimento)}`);
     }
+  }
+  if (soffitto !== null) {
+    if (typeof soffitto !== 'number' || !Number.isFinite(soffitto) || soffitto <= 0) {
+      throw new Error(`neutralizzazione.soffitto non utilizzabile (serve un tempo sul giro > 0, oppure null): ${JSON.stringify(soffitto)}`);
+    }
+    if (pavimento !== null && soffitto <= pavimento) {
+      throw new Error(`neutralizzazione: soffitto ${soffitto} non sopra il pavimento ${pavimento}: nessun giro sarebbe possibile`);
+    }
+  }
+  if (!FORME.has(forma)) {
+    throw new Error(`neutralizzazione.forma non utilizzabile (${[...FORME].join(' | ')}): ${JSON.stringify(forma)}`);
   }
   if (perGiro === null || typeof perGiro !== 'object') {
     throw new Error(`neutralizzazione.perGiro deve essere una mappa giro -> kappa: ${JSON.stringify(perGiro)}`);
@@ -100,7 +117,7 @@ function normalizzaNeutralizzazione(neutralizzazione, freezeLap, steps) {
     }
     if (k !== 1) mappa.set(lap, k);   // kappa = 1 non e' compressione: non crea un percorso
   }
-  return mappa.size === 0 ? null : { perGiro: mappa, pavimento };
+  return mappa.size === 0 ? null : { perGiro: mappa, pavimento, soffitto, forma };
 }
 
 // Perdita applicata INTERA sul giro della sosta. È la stessa convenzione con
@@ -199,6 +216,8 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
   const soste = normalizzaSoste(pits, piloti);
   const neutra = normalizzaNeutralizzazione(neutralizzazione, freezeLap, steps);
   let clampPavimento = 0;   // quante volte il pavimento ha legato (vedi il blocco della compressione)
+  let clampSoffitto = 0;    // e quante il soffitto, nella terza forma (PREREG_terza_forma.md)
+  let coppieCompresse = 0;  // quante coppie (auto, giro) la compressione ha davvero toccato
   // STRUMENTAZIONE DEL TETTO (14/08). Additiva: non entra in nessun conto, e senza `tetto`
   // le chiavi non compaiono nemmeno nel risultato. Serve a rispondere a «il tetto e'
   // sotto-tarato?» guardando PRIMA quante volte entra davvero in funzione: un vincolo che
@@ -351,6 +370,24 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
     // decide la sosta, non la vettura di sicurezza — ed è esattamente il caso
     // che la misura di κ escludeva (né pilota né leader in in-lap o out-lap).
     if (comprime && capofila !== null && capofila.attivo && !fermiQuestoGiro.has(capofila.drv)) {
+      // ── LA TERZA FORMA: chi paga ────────────────────────────────────────
+      //
+      // La legge non cambia — stesso kappa, stesso perimetro, stesso bersaglio
+      // gap(k+1) = gap(k)·kappa. Cambia l'ANCORA. Con `forma: 'leader'` i crediti si
+      // calcolano identici a prima e poi si TRASLANO in blocco, di quanto guadagnava
+      // il maggior beneficiario: cosi' nessuno accorcia il proprio giro (il credito
+      // piu' negativo diventa zero) e il capofila paga il massimo. E' l'unica
+      // consegna compatibile con la fisica — sotto Safety Car il campo si compatta
+      // perche' il PRIMO rallenta — ed e' l'alternativa che il progetto aveva
+      // dichiarato due volte senza mai costruirla (PREREG_terza_forma.md, 15/08).
+      //
+      // Perche' serviva: l'autopsia di Monaco/RUS ha misurato che il pavimento,
+      // giusto, rende la seconda forma INERTE. Chiudere 200 s tirando avanti chi
+      // insegue RICHIEDE un giro impossibile; il pavimento lo vieta; il campo del
+      // motore resta largo 240 s dove la realta' scende a 3,6.
+      //
+      // Due passaggi, e il primo e' identico al codice di prima.
+      const crediti = new Map();
       for (const m of marcia) {
         if (!m.attivo || m.drv === capofila.drv) continue;
         if (fermiQuestoGiro.has(m.drv)) continue;
@@ -387,12 +424,55 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
         // Il recupero non consumato RESTA NEL DISTACCO: non si sposta, non si spalma su
         // altri giri. Al giro dopo c'e' quindi piu' distacco da comprimere, e il vincolo
         // lega di piu': e' un effetto che aumenta, ed e' dichiarato nella prereg.
-        if (neutra.pavimento !== null && delta < 0 && m.ultimoGiro) {
+        //
+        // NELLA TERZA FORMA IL PAVIMENTO NON PUO' LEGARE QUI, e non e' un caso: dopo
+        // la traslazione ogni delta e' >= 0, quindi nessun giro si accorcia e non
+        // c'e' niente da difendere. Il vincolo resta scritto dov'e' — spegnerlo
+        // rimetterebbe 5.815 giri impossibili nella seconda forma — e il cancello T2
+        // pretende che il contatore resti a ZERO: se lega, l'aritmetica della
+        // traslazione e' sbagliata e va detto, non aggirato.
+        if (neutra.forma === 'inseguitori' && neutra.pavimento !== null && delta < 0 && m.ultimoGiro) {
           const minimo = neutra.pavimento - m.ultimoGiro.lap_time;
           if (delta < minimo) { delta = Math.min(0, minimo); clampPavimento += 1; }
         }
+        coppieCompresse += 1;
+        if (neutra.forma === 'leader') { crediti.set(m.drv, delta); continue; }
         m.c += delta;
         if (m.ultimoGiro) m.ultimoGiro.lap_time += delta;
+      }
+
+      if (neutra.forma === 'leader') {
+        // LO SCARTO e' il credito del maggior beneficiario, e lo zero del capofila
+        // entra nel minimo: se nessuno guadagnasse, nessuno pagherebbe.
+        let scarto = 0;
+        for (const d of crediti.values()) if (d < scarto) scarto = d;
+        const paga = (m, delta) => {
+          let d = delta;
+          // ── IL SOFFITTO: il gemello del pavimento, stesse due guardie ─────
+          //  · solo su un delta POSITIVO — togliere tempo non e' compito suo;
+          //  · Math.max(0, massimo) — un giro gia' oltre il soffitto PRIMA della
+          //    compressione non viene accorciato: «non si inventa» vale in tutte
+          //    e due le direzioni, e qui la direzione e' l'altra.
+          // Il residuo non consumato RESTA NEL DISTACCO, come per il pavimento:
+          // al giro dopo c'e' piu' distacco e il vincolo lega di piu'.
+          if (neutra.soffitto !== null && d > 0 && m.ultimoGiro) {
+            const massimo = neutra.soffitto - m.ultimoGiro.lap_time;
+            if (d > massimo) { d = Math.max(0, massimo); clampSoffitto += 1; }
+          }
+          m.c += d;
+          if (m.ultimoGiro) m.ultimoGiro.lap_time += d;
+        };
+        for (const m of marcia) {
+          if (!m.attivo) continue;
+          const mio = crediti.get(m.drv);
+          // CHI E' AI BOX PAGA COME IL CAPOFILA, ed e' una scelta dichiarata. Il
+          // fattore con cui il motore sconta una sosta sotto regime e' misurato
+          // RISPETTO AL CAMPO (esporta_compressione_fondo.mjs), cioe' e' relativo:
+          // rallentare tutti della stessa quantita' lo lascia esatto. Escludere chi
+          // e' ai box gli regalerebbe decine di secondi sopra allo sconto che ha
+          // gia' — doppio conteggio, famiglia E20.
+          paga(m, mio === undefined ? -scarto : mio - scarto);
+        }
       }
     }
 
@@ -509,6 +589,12 @@ export function simulate({ state, pace, freezeLap, steps, pits = {}, neutralizza
     // Chi misura ha bisogno che sia il kernel a dirlo. La chiave compare solo quando
     // il pavimento c'e', cosi' senza di esso l'oggetto e' identico a prima.
     ...(neutra?.pavimento != null ? { clampPavimento } : {}),
+    // stessa regola del pavimento: la chiave esiste solo se il vincolo esiste, cosi'
+    // senza soffitto l'oggetto e' identico al bit a prima che la terza forma esistesse.
+    ...(neutra?.soffitto != null ? { clampSoffitto } : {}),
+    // il denominatore di quei due contatori: senza, «quante volte ha legato» non si
+    // puo' leggere. Esiste solo quando la compressione esiste.
+    ...(neutra !== null ? { coppieCompresse } : {}),
     ...(tetto !== null ? {
       tettoCoppie, tettoInContatto, tettoPassa, tettoBlocca,
       // la mediana di quanto manca, non l'elenco: il risultato non deve gonfiarsi

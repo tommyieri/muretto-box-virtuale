@@ -232,6 +232,7 @@ export function contestoDa(contestoLive, nomeGara, gara) {
         limiti: contestoLive.limiti,
         prior: contestoLive.prior,
         pavimenti: contestoLive.pavimenti,
+        soffitti: contestoLive.soffitti,
       },
       bandaRientro: contestoLive.bandaRientro,
       // GLI STESSI OGGETTI CHE PASSA genera_vista_gara.mjs, fino in fondo. Il trasporto
