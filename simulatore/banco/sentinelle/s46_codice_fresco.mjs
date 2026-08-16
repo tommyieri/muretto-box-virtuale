@@ -20,11 +20,14 @@
 // QUESTA SENTINELLA HA DUE META', e la seconda non e' sempre eseguibile.
 //
 //  (A) GUARDA LA GUARDIA — vale ovunque, CI compresa. Ogni wrapper che si aggiorna da solo
-//      (`git merge --ff-only`) DEVE urlare quando il fast-forward fallisce: si pretende il
-//      marcatore `CODICE VECCHIO` nel ramo di fallimento. E' una proprieta' del CODICE,
-//      quindi si verifica su qualunque checkout, e sorveglia esattamente cio' che e' andato
-//      storto: non il fallimento, ma il suo TONO. Se qualcuno un giorno riscrive quel ramo
-//      in forma discreta, questa meta' diventa rossa prima che una macchina ne soffra.
+//      (`git merge --ff-only`) deve fare DUE cose: urlare quando il fast-forward fallisce
+//      (marcatore `CODICE VECCHIO` nel ramo di fallimento) e CHIAMARE questa sentinella
+//      subito dopo l'aggiornamento. Il marcatore serve a chi il log lo apre; l'aggancio
+//      serve a chi non lo apre. Sono entrambe proprieta' del CODICE, quindi si verificano su
+//      qualunque checkout, e insieme sorvegliano esattamente cio' che e' andato storto: non
+//      il fallimento — quello e' voluto, si prosegue lo stesso — ma il suo TONO, e il fatto
+//      che qualcuno lo stia ascoltando. Se un giorno quel ramo torna discreto, o l'aggancio
+//      sparisce in un riordino, questa meta' diventa rossa prima che una macchina ne soffra.
 //
 //  (B) GUARDA QUESTO CHECKOUT — solo se `origin/main` e' risolvibile. Nella CI di GitHub il
 //      clone e' superficiale e il riferimento spesso NON esiste: li' questa meta' non viene
@@ -51,6 +54,14 @@ const radice = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..
 const REPO = path.join(radice, '..');
 const SCHEDULING = path.join(REPO, 'scheduling');
 const MARCATORE = 'CODICE VECCHIO';
+// COME SI RICONOSCE UN AGGANCIO VERO. La prima stesura cercava il nome del file,
+// 's46_codice_fresco.mjs', ed era un ORNAMENTO: quel nome compare gia' dentro il commento del
+// ramo CODICE VECCHIO («marcatore cercato da banco/sentinelle/s46_codice_fresco.mjs»), quindi
+// l'asserzione passava anche su un wrapper da cui l'aggancio era stato tolto per intero.
+// L'ho scoperto solo perche' la prova di fallimento non falliva — che e' il motivo per cui
+// quella prova si fa. Adesso si cerca la riga di LOG che solo il blocco d'aggancio stampa:
+// una stringa che un commento non puo' produrre, perche' descrive un comportamento.
+const MARCATORE_AGGANCIO = 'freschezza del codice (s46)';
 const ORE_MAX = 24;
 
 const b = banco('s46');
@@ -82,6 +93,16 @@ for (const w of wrapper) {
     `scheduling/${w.nome}: il fast-forward fallito urla («${MARCATORE}») invece di passare per`
     + ' una nota — e\' il tono di quella riga che ha nascosto 33 commit di ritardo per giorni',
     w.testo.includes(MARCATORE),
+  );
+  // E DEVE ANCHE CHIAMARMI. Un marcatore nel log serve a chi il log lo apre; l'aggancio serve
+  // a chi non lo apre. Senza questa seconda asserzione l'aggancio potrebbe sparire in un
+  // riordino e la meta' (B) tornerebbe a girare solo dove qualcuno la lancia a mano — cioe'
+  // quasi mai, che e' lo stato in cui il guasto del 15/08 e' vissuto per giorni.
+  b.verifica(
+    `scheduling/${w.nome}: chiama s46 dopo l'aggiornamento (riga «${MARCATORE_AGGANCIO}») — il`
+    + ' wrapper deve misurare la freschezza del codice che sta per eseguire, non lasciarla a un'
+    + ' lancio manuale che non fa nessuno',
+    w.testo.includes(MARCATORE_AGGANCIO),
   );
 }
 
