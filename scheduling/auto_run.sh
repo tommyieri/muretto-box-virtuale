@@ -67,7 +67,17 @@ trap 'rmdir "$LOCK" 2>/dev/null' EXIT
   elif git fetch origin --quiet && git merge --ff-only origin/main --quiet; then
     echo "     aggiornato a $(git rev-parse --short HEAD)"
   else
-    echo "     fast-forward non possibile: giro col codice attuale $(git rev-parse --short HEAD)"
+    # CODICE VECCHIO — marcatore cercato da banco/sentinelle/s46_codice_fresco.mjs.
+    # UN FAST-FORWARD FALLITO NON E' UNA NOTA. E' il modo in cui questa macchina continua a
+    # pubblicare con codice di ieri senza che nessuno lo sappia: lo script prosegue lo stesso,
+    # di proposito (meglio vecchio che fermo), quindi l'unica traccia e' questa riga. Fino al
+    # 15/08/2026 diceva «giro col codice attuale» e sembrava informativa: il Mac ha girato
+    # cosi' per giorni, 33 commit indietro, perche' 28 file non tracciati sotto .agents/
+    # collidevano con gli stessi percorsi diventati tracciati a monte. Adesso urla e conta.
+    echo "     !! CODICE VECCHIO: fast-forward NON possibile, giro con $(git rev-parse --short HEAD)"
+    echo "        indietro di $(git rev-list --count HEAD..origin/main 2>/dev/null || echo '?') commit su origin/main"
+    echo "        cause tipiche: file non tracciati che collidono con file diventati tracciati a monte,"
+    echo "        oppure un commit locale mai pushato. Non si risolve da solo."
   fi
 } >> "$REPO/data/auto_gara.log" 2>&1
 
