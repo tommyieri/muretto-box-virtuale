@@ -25,8 +25,20 @@ Ripristinato da `1236ff7` (byte identici alle copie sopravvissute nei worktree, 
 `1ad4ece4…`), con una sola differenza: **la gara non è più cablata in tre costanti**. Serviva
 per la seconda prova, ed è il minimo cambiamento che la rende possibile.
 
-Insieme a lui restano **cinque artefatti orfani** in `data/live_derived/`, censiti in coda a
-questo report.
+**E non era il solo.** Cercando i suoi compagni ho trovato che quella ripulitura ha portato via
+**altri tre script di `live/`** che i report di luglio citano come prova:
+
+| file assente da `main` | cosa dimostrava | il suo prodotto |
+|---|---|---|
+| `live/verifica_kpi3_f1db.py` | il KPI 3 di Spa **chiuso GO** con f1db v2026.10.0 (22/22 piloti, giro ±1 28/28) | `kpi3_f1db.json` ✅ tracciato |
+| `live/inpit_geometrico.py` | `in_pit` geometrico, K=3 · D=5 m, 30/30 col timing | — |
+| `live/costruisci_corridoio.py` | i corridoi pit per-circuito | `pitlane_ungheria.json` ✅ tracciato |
+
+Va detto per correttezza, perché cambia una frase di questo report: **il KPI 3 di Spa non è
+rimasto rinviato.** Fu chiuso GO la sera stessa, quando f1db rilasciò la tabella pit — solo
+che lo script che lo dimostra non è più in `main`, e il suo esito sopravvive come JSON orfano.
+Nella tabella del §1 resta «rinviato» perché è ciò che dice il percorso di Fase 1B *oggi
+eseguibile*; la chiusura è quell'altra misura, e non la si può più rifare da qui.
 
 ## 1 · Prova replay — GO, e riproduce luglio riga per riga
 
@@ -151,9 +163,13 @@ live — il GP d'Olanda è il **23/08**, prove dal **21/08**. Quella prova è la
    non sono riproducibili altrove.
 4. **Cinque artefatti orfani** in `data/live_derived/`, tracciati e senza generatore in `main`:
    `ungheria_ref_track.json`, `pitlane_ungheria.json`, `ungheria_pit_samples.json`,
-   `ungheria_precostruzione_xy.svg` (generatori `costruisci_corridoio.py` /
-   `verifica_precostruzione.py`, mai mergiati) e `kpi3_f1db.json`. Il quinto —
-   `kpi_fase1b.json` — **non è più orfano**: il suo generatore è tornato.
+   `ungheria_precostruzione_xy.svg`, `kpi3_f1db.json`. `kpi_fase1b.json` **non è più orfano**:
+   il suo generatore è tornato. Gli altri quattro aspettano i loro — tre esistono in worktree
+   non mergiati (`costruisci_corridoio.py`, `verifica_precostruzione.py`,
+   `verifica_kpi3_f1db.py`), e insieme a `inpit_geometrico.py` sono il conto completo di ciò che
+   la ripulitura del 20/07 ha portato via (§0). **Ripescarli è un lavoro di mezz'ora e va
+   fatto prima del prossimo weekend**, non perché servano a girare, ma perché senza di loro
+   quattro numeri del sito e dei report non sono più verificabili da nessuno.
 5. **`demo/data/schede_2026.json` pubblica il numero sbagliato per NOR**: `gen_schede.py:144`
    usa `permanentNumber` (4), ma nel 2026 Norris corre col **1** — così dicono il grezzo TI e
    la `DriverList` del feed, d'accordo su 22 auto su 22. Trovato di rimbalzo: con la mappa
