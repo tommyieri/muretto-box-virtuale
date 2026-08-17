@@ -12,17 +12,30 @@ Regola: i dati vengono da f1db/TI, MAI trascritti a mano. Ogni griglia/pole va v
 
 ## Aperti al 17/08/2026 (verifica operativa Mac + VPS, riattivazione `live/`)
 
-**A. 🔴 La chiave LLM va ruotata, e la rotazione del 15/08 è già scaduta.** Il fallback in
-`.zshrc` **è stato tolto** (verificato: zero chiavi in chiaro, resta la sola funzione
-`chiave-on` che legge `~/.muretto_env`) — ma la difesa «non la esporto» **non ha tenuto**:
-la chiave oggi in `~/.muretto_env` sul Mac è finita in chiaro in una trascrizione d'agente il
-**17/08 alle 03:04**, perché un agente ha letto i dotfile e ne ha stampato il contenuto. Non
-serve che sia esportata: basta che sia leggibile nella home. Inoltre **Mac e VPS hanno due
-chiavi diverse** (VPS ferma al 10/08), e che la chiave del VPS sia ancora viva **non è
-provato** — i giri della redazione di oggi non hanno chiamato l'LLM. Serve: ruotare in console,
-allineare le due macchine, e decidere dove tenere il segreto (keychain? solo sul VPS?), perché
-un file a 600 nella home non è al riparo dagli agenti che ci girano dentro.
-→ **Richiede le mani di Tommi**: vedi `COSA_DEVO_FARE_IO.md`.
+**A. 🟢 Chiave LLM: RUOTATA e allineata il 17/08.** Chiave nuova su entrambe le macchine
+(stessa impronta, 108 char, permessi 600), valida (HTTP 200), diversa da tutte e tre le
+precedenti. La redazione ha girato **un solo ciclo** senza scrittore-LLM (le 13:45, su 347
+storici) e da 14:15 riporta `LLM: attivo`.
+
+> **La trappola, che vale più della voce chiusa.** La rotazione era corretta *e non funzionava*:
+> `~/.muretto_env` conteneva il **valore nudo**, senza `export ANTHROPIC_API_KEY=`. La chiave era
+> giusta, ma nessun processo la caricava — `chiave-on` e `auto_articoli_run.sh` fanno
+> `. ~/.muretto_env`, e sorgere un file che non definisce niente non definisce niente. Sintomo
+> visibile: **una parola in una riga di log** (`LLM: ASSENTE`), e la redazione che scrive a
+> template invece di fermarsi. Un `curl` con la variabile vuota dà **401**, cioè lo stesso
+> codice di una chiave revocata: le due cause si distinguono solo controllando che la variabile
+> arrivi. Riparato il formato senza toccare il valore (copia in `~/.muretto_env.bak-formato`).
+
+**A-bis. 🟡 Resta da decidere DOVE tenere il segreto, ed è la lezione vera.** La difesa «non la
+esporto» **non ha tenuto**: la chiave precedente è finita in chiaro in una trascrizione d'agente
+il 17/08 alle 03:04 perché un agente ha letto i dotfile. Non serve che sia esportata, basta che
+sia leggibile nella home — e `600` protegge dagli altri utenti, non dagli agenti che girano coi
+permessi di Tommi. Le due strade sensate: **keychain** (l'agente deve chiedere, e si vede) o
+**chiave solo sul VPS**, dove non girano agenti. La revoca della vecchia si verifica **solo in
+console** (stato + ultimo utilizzo): non l'ho provata da qui, e non ho ripescato il valore
+vecchio dalle trascrizioni per rigiocarlo — maneggiarlo di nuovo lo riesporrebbe.
+I valori vecchi **restano su disco** in due trascrizioni (Codex 14/08 e 17/08): una volta
+revocati sono inerti, ma sono lì.
 
 **B. 🟡 `live/` non è riattivabile: il modulo prende per buona una coordinata di parcheggio.**
 Il 90,5 % dei campioni GPS nei periodi pit dell'Ungheria sta sulla costante `(-7447, -1830)`,

@@ -16,7 +16,7 @@ sprint quali, sprint, qualifiche, gara.
 
 | quando (ora italiana) | cosa | quanto | se salta |
 |---|---|---|---|
-| **appena puoi** | **ruotare la chiave API Anthropic** | 5 min | la chiave in uso è compromessa da stanotte |
+| ~~appena puoi~~ | ~~ruotare la chiave API Anthropic~~ | **✅ fatto il 17/08** | — |
 | **mer 19/08 dopo le 17:00 → ven 21/08 entro le 12:30** | rinnovare il token F1TV | 2 min | venerdì non si registra |
 | **ven 21/08, 12:20** | lanciare la registrazione (FP1 12:30) | 1 min | il weekend non ha replay |
 | **sab 22/08, 11:50 e 15:50** | registrazione sprint e qualifiche | 1 min | |
@@ -24,40 +24,38 @@ sprint quali, sprint, qualifiche, gara.
 
 ---
 
-## 1. 🔴 Ruotare la chiave API — e stavolta il problema non è `.zshrc`
+## 1. ✅ Chiave API — ruotata il 17/08, e cosa resta da decidere
 
-**Il fallback in `.zshrc` non c'è più**: ho verificato, zero chiavi in chiaro, resta solo la
-funzione `chiave-on` che legge `~/.muretto_env`. Quella parte è chiusa.
+**Fatta.** Chiave nuova su Mac e VPS (stessa impronta, 108 char, `600`), valida, e la redazione
+riporta `LLM: attivo` dal giro delle 14:15 UTC. Ha girato **un solo ciclo** senza scrittore
+(le 13:45, su 347 storici), e quel ciclo non ha prodotto niente comunque — non c'è sessione
+disponibile fino al 23/08, quindi nessun articolo è stato scritto a template.
 
-**Ma la rotazione del 15/08 è già scaduta.** La chiave che sta adesso in `~/.muretto_env` sul
-Mac è finita **in chiaro dentro la trascrizione di un agente il 17/08 alle 03:04**: un agente
-ha letto i tuoi dotfile e ne ha stampato il contenuto nel proprio log. Non è servito a niente
-non esportarla — **è bastato che fosse leggibile nella home.**
+> **Una cosa da ricordare per la prossima volta.** La rotazione era corretta *e non
+> funzionava*: nel file c'era il **valore nudo**, senza `export ANTHROPIC_API_KEY=`. La chiave
+> era giusta ma nessuno la caricava, e un `curl` con la variabile vuota risponde **401** —
+> identico a una chiave revocata. Il formato è quello, e va scritto così:
+>
+> ```bash
+> echo 'export ANTHROPIC_API_KEY="sk-ant-..."' > ~/.muretto_env && chmod 600 ~/.muretto_env
+> ```
 
-E le due macchine non sono allineate: il VPS ha una **chiave diversa**, del 10/08. Che sia
-ancora valida non lo so, e non l'ho provato: i giri della redazione di oggi non hanno chiamato
-l'LLM (nessuna bozza da scrivere), quindi il log non dimostra nulla.
+**Due cose restano tue, e non sono urgenti:**
 
-**Cosa devi fare tu** — in console Anthropic, perché io non posso e non devo:
+1. **Verifica in console che la vecchia sia davvero revocata** (stato + ultimo utilizzo). Da qui
+   non lo posso provare, e non sono andato a ripescare il valore vecchio dalle trascrizioni per
+   rigiocarlo: maneggiarlo di nuovo lo riesporrebbe.
+2. **Decidi dove tenere il segreto.** È la lezione vera di stanotte: non è servito non
+   esportarla, è bastato che il file fosse leggibile nella home perché un agente lo leggesse e
+   ne stampasse il contenuto nel proprio log. `600` protegge dagli altri utenti, non dagli
+   agenti che giri tu — hanno i tuoi permessi. Le due strade sensate: **keychain** (l'agente
+   deve chiedere, e tu vedi la richiesta) o **chiave solo sul VPS**, dove non girano agenti.
+   La seconda è gratis: sul Mac la redazione non gira più da luglio.
 
-1. crea una chiave nuova e **revoca** quella attuale;
-2. scrivila in `~/.muretto_env` sul Mac (`chmod 600`);
-3. scrivi **la stessa** sul VPS:
-
-```bash
-ssh muretto@167.233.236.186 'chmod 600 ~/.muretto_env && nano ~/.muretto_env'
-```
-
-> **Non incollare la chiave in una chat con un agente, mia inclusa, e non lanciare comandi che
-> la contengono in chiaro.** È così che è uscita la volta scorsa: il 14/08 il comando `ssh ...
-> echo "export ANTHROPIC_API_KEY=..."` è finito in una trascrizione, e la chiave con lui.
-
-**La cosa che resta da decidere, e non è mia**: dove tenere il segreto. Un file a 600 nella tua
-home è al riparo dagli altri utenti, non dagli agenti che giri tu — hanno i tuoi permessi. Le
-due strade sensate sono il **keychain di macOS** (l'agente deve chiedere, e tu vedi la
-richiesta) oppure **tenere la chiave solo sul VPS**, che è la macchina che pubblica e su cui
-non girano agenti. La seconda è gratis e chiude il problema alla radice: sul Mac la redazione
-non gira più da luglio.
+> **Una regola che resta, e viene da come la chiave è uscita la volta scorsa:** non incollare
+> mai la chiave in una chat con un agente, mia inclusa, e non lanciare comandi che la
+> contengono in chiaro. Il 14/08 un `ssh ... echo "export ANTHROPIC_API_KEY=..."` è finito in
+> una trascrizione, e la chiave con lui.
 
 ## 2. 🟡 Il token F1TV — mercoledì sera o giovedì, non prima
 
@@ -143,8 +141,10 @@ comando). Ora è allineato ai due wrapper gemelli e **s46 sorveglia anche questo
 
 ## Il minimo indispensabile, se hai poco tempo
 
-1. **Adesso**: ruota la chiave API e allinea il VPS (§1). È l'unica voce rossa.
-2. **Mercoledì sera o giovedì**: rinnova il token F1TV (§2).
-3. **Domenica 14:45**: lancia `record_session.py` (§3). Se puoi, anche venerdì e sabato.
+1. **Mercoledì sera o giovedì**: rinnova il token F1TV (§2). È l'unica cosa con una scadenza.
+2. **Domenica 14:45**: lancia `record_session.py` (§3). Se puoi, anche venerdì e sabato.
+
+La chiave API è fatta (§1); resta solo, quando ti va, controllare in console che la vecchia sia
+revocata e decidere dove tenere il segreto.
 
 Il resto gira da solo, e stavolta l'ho verificato sulle macchine invece di fidarmi dei log.
