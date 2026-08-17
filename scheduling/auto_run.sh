@@ -83,13 +83,31 @@ trap 'rmdir "$LOCK" 2>/dev/null' EXIT
   # tracciati (CLAUDE.md, TASKS.md, log). Qui deve fermarci solo il lavoro vero non
   # committato sui file TRACCIATI — che e' esattamente il caso che ff-only protegge
   # (una gara pubblicata e non ancora committata).
+  # IL FETCH VIENE PRIMA DELLA GUARDIA, e non e' un riordino estetico.
+  #
+  # Finche' stava dentro l'`elif`, un albero sporco lo SALTAVA — e con lui saltava l'unico
+  # momento in cui `origin/main` diventa aggiornato. Da quell'istante s46 (B) confronta HEAD
+  # con un riferimento locale vecchio, li trova uguali, e stampa «codice fresco» su un
+  # checkout indietro. Visto sul VPS il 17/08/2026 alle 14:30:01, nove minuti dopo il merge di
+  # #176: «albero sporco: NON aggiorno» e subito sotto «codice fresco». Entrambe le righe
+  # vere alla lettera, e insieme una bugia — la guardia non aveva guardato, aveva ricordato.
+  #
+  # Il fetch e' in SOLA LETTURA: aggiorna i riferimenti remoti, non tocca l'albero di lavoro
+  # ne' HEAD. Non c'e' nessun motivo per cui debba stare dietro una condizione sull'albero, e
+  # spostandolo la meta' (B) misura sempre contro un `origin/main` vero.
+  if ! git fetch origin --quiet; then
+    echo "     !! FETCH FALLITO: non ho potuto aggiornare i riferimenti remoti."
+    echo "        Non e' una collisione e non e' codice vecchio: e' rete o credenziali. Ma da"
+    echo "        qui s46 (B) misura la freschezza contro un origin/main VECCHIO, quindi un"
+    echo "        suo «codice fresco» qui sotto non vale niente."
+  fi
   if [[ -n "$(git status --porcelain --untracked-files=no)" ]]; then
     echo "     !! ALBERO SPORCO: modifiche non committate su file tracciati, NON aggiorno."
     echo "        Si prosegue col codice attuale (probabile lavoro da riprendere), ma da qui"
     echo "        in poi questa macchina NON si aggiorna piu' da sola: e' una condizione da"
     echo "        sciogliere a mano, non uno stato di riposo."
     git status --porcelain --untracked-files=no | sed 's/^/        /'
-  elif git fetch origin --quiet && git merge --ff-only origin/main --quiet; then
+  elif git merge --ff-only origin/main --quiet; then
     echo "     aggiornato a $(git rev-parse --short HEAD)"
   else
     # CODICE VECCHIO — marcatore cercato da banco/sentinelle/s46_codice_fresco.mjs.

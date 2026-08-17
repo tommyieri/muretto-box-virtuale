@@ -1,18 +1,17 @@
 # REPORT NOTTE
 
-Corsa del **2026-08-17T16:20:36.296Z** · confronto con la notte del **2026-08-08T15:02:46.871Z**.
+Corsa del **2026-08-17T16:34:30.830Z** · confronto con la notte del **2026-08-17T16:20:36.296Z**.
 
 ## Esito: 🔴 REGRESSIONE
 
 Motivi:
 
-- sentinelle rotte: s15_banco_2026.mjs, s25_difesa.mjs, s36_report_notte_fresco.mjs
 - cancello non passato — D1 la banda di rientro copre ed è minimale (leave-one-race-out) · 398 soste su 11 gare; falliti: PULITA, NEUTRA, PRODOTTO/NEUTRA
 - cancello non passato — bias piatto entro 0.1 · 0.103028
 
 ## Suite
 
-42/45 sentinelle verdi.
+43/45 sentinelle verdi.
 
 ## Cancelli pre-registrati
 

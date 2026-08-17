@@ -53,9 +53,17 @@ trap 'rmdir "$LOCK" 2>/dev/null' EXIT
   # di lavoro NON tracciati (CLAUDE.md, TASKS.md, cache...). Contandoli, l'albero
   # risultava "sporco" a ogni giro e l'aggiornamento non sarebbe MAI partito. Qui deve
   # fermarci solo il lavoro vero non committato sui file tracciati.
+  # IL FETCH VIENE PRIMA DELLA GUARDIA (v. auto_run.sh per il guasto che lo insegna): dentro
+  # l'`elif` un albero sporco lo saltava, e con lui l'unico momento in cui `origin/main` si
+  # aggiorna — cosi' s46 (B) confrontava HEAD con un riferimento vecchio e diceva «codice
+  # fresco» a un checkout indietro. Il fetch e' in sola lettura e non tocca l'albero.
+  if ! git fetch origin --quiet; then
+    echo "     !! FETCH FALLITO: rete o credenziali, non una collisione. Da qui s46 (B)"
+    echo "        misura contro un origin/main VECCHIO: un suo «codice fresco» non vale."
+  fi
   if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
     echo "     modifiche non committate: NON aggiorno"
-  elif git fetch origin --quiet && git merge --ff-only origin/main --quiet; then
+  elif git merge --ff-only origin/main --quiet; then
     echo "     aggiornato a $(git rev-parse --short HEAD)"
   else
     # CODICE VECCHIO — marcatore cercato da banco/sentinelle/s46_codice_fresco.mjs.
