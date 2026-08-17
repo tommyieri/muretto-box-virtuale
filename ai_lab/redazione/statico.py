@@ -75,6 +75,7 @@ PAGINE_FISSE = [
     # perche' si raggiungono dagli Articoli, che e' la sezione a cui appartengono.
     ("forza.html", "0.7"),
     ("dati.html", "0.7"),
+    ("whatif.html", "0.7"),
     ("live.html", "0.6"),
 ]
 # REGOLA DI STOP, decisa il 04/08/2026: una pagina entra qui — e una voce entra nella
@@ -296,6 +297,51 @@ def _provenienza(art) -> str:
     return ""
 
 
+def _correlati_html(art) -> str:
+    """Genera la sezione 'Approfondimenti correlati' in calce all'articolo."""
+    id_corr = art.get("id")
+    gp_corr = art.get("gp")
+    tags_corr = set(art.get("tag") or [])
+    
+    tutti = [a for a in pubblicati(avvisa=False) if a.get("id") != id_corr]
+    if not tutti:
+        return ""
+        
+    def punteggio(a):
+        score = 0
+        if gp_corr and a.get("gp") == gp_corr:
+            score += 4
+        if a.get("circuito") and a.get("circuito") == art.get("circuito"):
+            score += 2
+        inter = tags_corr.intersection(set(a.get("tag") or []))
+        score += len(inter)
+        return score
+
+    ordinati = sorted(tutti, key=punteggio, reverse=True)
+    scelti = [a for a in ordinati if punteggio(a) > 0][:2]
+    if not scelti:
+        scelti = tutti[:2]  # fallback sui piu recenti
+        
+    cards = []
+    for a in scelti:
+        ac = a.get("accent") or "var(--brand)"
+        meta = " · ".join([x for x in (a.get("circuito"), a.get("sessione")) if x])
+        cards.append(
+            f'<a class="art-correlato-card" href="{esc(a["id"])}.html" style="--ac:{esc(ac)}">'
+            f'<div class="eyebrow">{esc(a.get("occhiello"))}</div>'
+            f'<h4>{esc(testo_piano(a.get("titolo")))}</h4>'
+            f'<div class="foot"><span class="meta">{esc(meta)}</span><span class="go">Leggi →</span></div>'
+            f'</a>'
+        )
+        
+    return (
+        f'<section class="art-correlati">\n'
+        f'    <div class="sez-tit"><span class="art-tag">Approfondimenti</span> Altri fatti del weekend</div>\n'
+        f'    <div class="art-correlati-grid">\n      ' + "\n      ".join(cards) + '\n    </div>\n'
+        f'  </section>'
+    )
+
+
 def _corpo(art) -> str:
     """L'<article> completo: e' cio' che il JS costruiva a runtime."""
     ac = art.get("accent") or "var(--brand)"
@@ -306,6 +352,7 @@ def _corpo(art) -> str:
     tags = "".join(f'<span class="art-chip">{esc(t)}</span>' for t in (art.get("tag") or []))
     riga_meta = (f'<span class="art-dot">·</span><span>{esc(meta)}</span>' if meta else "")
     sezioni = "\n  ".join(_sezione(s) for s in (art.get("sezioni") or []))
+    correlati = _correlati_html(art)
     return (
         f'<header class="art-testa" style="--ac:{esc(ac)}">\n'
         f'    <div class="art-occhiello">{esc(art.get("occhiello"))}{stato}</div>\n'
@@ -320,7 +367,9 @@ def _corpo(art) -> str:
         f'    <div class="art-tags">{tags}</div>\n'
         f'  </header>\n'
         f'  {sezioni}\n'
+        f'  {correlati}\n'
         f'  {_provenienza(art)}')
+
 
 
 # ------------------------------------------------------------------ testa
@@ -641,21 +690,21 @@ def scrivi_feed() -> bool:
 
 def _card_html(a) -> str:
     """Stessa card che il JS di analisi.html costruisce, ma servita subito."""
-    # STESSA ESPRESSIONE DI _corpo. Passava da _ac, che traduce il nome dell'accento
-    # con una tavolozza scritta a mano qui dentro e rimasta a quella vecchia: lo stesso
-    # articolo usciva di un colore nella card e di un altro nella sua pagina. La var CSS
-    # la risolve il browser, con muro.css, una volta sola.
     ac = a.get("accent") or "var(--brand)"
     meta = " · ".join([x for x in (a.get("circuito"), a.get("sessione"),
                                    data_it(a.get("data"))) if x])
     tags = "".join(f'<span class="chip">{esc(t)}</span>' for t in (a.get("tag") or [])[:3])
-    return (f'<a class="card" href="articolo/{esc(a["id"])}.html" style="--ac:{ac}">'
+    gp = esc(a.get("gp") or "")
+    tag_list = esc(",".join(a.get("tag") or []))
+    return (f'<a class="card" href="articolo/{esc(a["id"])}.html" style="--ac:{ac}" '
+            f'data-gp="{gp}" data-tags="{tag_list}">'
             f'<div class="eyebrow">{esc(a.get("occhiello"))}</div>'
             f'<h3>{esc(testo_piano(a.get("titolo")))}</h3>'
             f'<p>{esc(testo_piano(a.get("sommario")))}</p>'
             f'<div class="foot"><span class="meta">{esc(meta)}</span>'
             f'<span class="go">Leggi →</span></div>'
             f'<div class="chips">{tags}</div></a>')
+
 
 
 def blocco_elenco() -> str:

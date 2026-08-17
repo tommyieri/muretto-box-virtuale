@@ -25,6 +25,7 @@ GENERATORI = [
     "genera_recap_weekend",
     "genera_upgrade",
     "genera_upgrade_preview",
+    "genera_hun_frenata_trail",
     # --- WEEKEND SPRINT ---------------------------------------------------------
     # Si accendono da soli SOLO nei weekend con la sprint: dichiarano sessioni "S"
     # (la Sprint) o "Q", e la prima cosa che fanno e' controllare l'EventFormat di

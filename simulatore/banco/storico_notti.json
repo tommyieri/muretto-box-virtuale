@@ -112,5 +112,62 @@
         "bias": -0.208863
       }
     }
+  },
+  {
+    "data": "2026-08-17T16:20:36.296Z",
+    "suite_verde": false,
+    "cancelli_passati": false,
+    "rientro": {
+      "secchi": {
+        "PULITA": {
+          "n": 36,
+          "sufficiente": true,
+          "mediana_errore_assoluto": 0,
+          "errore_medio_con_segno": -0.5556,
+          "quota_entro_1": 0.8889,
+          "quota_entro_2": 0.9444
+        },
+        "SOSTE_RIVALI": {
+          "n": 278,
+          "sufficiente": true,
+          "mediana_errore_assoluto": 0,
+          "errore_medio_con_segno": 0.7086,
+          "quota_entro_1": 0.7518,
+          "quota_entro_2": 0.8741
+        },
+        "NEUTRA": {
+          "n": 84,
+          "sufficiente": true,
+          "mediana_errore_assoluto": 1,
+          "errore_medio_con_segno": 1.1429,
+          "quota_entro_1": 0.5952,
+          "quota_entro_2": 0.7738
+        }
+      }
+    },
+    "g0": {
+      "quota_passaggio": 1,
+      "n_casi": 799
+    },
+    "bias": {
+      "5": {
+        "n_finestre": 16,
+        "n_gare": 11,
+        "giudicabile": true,
+        "bias": 0.123701
+      },
+      "10": {
+        "n_finestre": 10,
+        "n_gare": 8,
+        "giudicabile": true,
+        "bias": 0.020673
+      },
+      "20": {
+        "n_finestre": 4,
+        "n_gare": 3,
+        "giudicabile": false,
+        "bias": -0.208863
+      }
+    }
   }
 ]

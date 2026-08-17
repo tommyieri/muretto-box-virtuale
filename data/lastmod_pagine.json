@@ -1,7 +1,7 @@
 {
   "analisi.html": {
-    "data": "2026-08-10",
-    "sha": "58a81f65c233a54ea9f4c17eaddf3f77cce40b149969de736b1b4a01b7f54eaf"
+    "data": "2026-08-17",
+    "sha": "53e690392ae481fd941c3dd97e5a8b486a71cbd2d617659a2fe578f364ef7319"
   },
   "campionato.html": {
     "data": "2026-08-10",
@@ -12,8 +12,8 @@
     "sha": "cd6a10c95cd3cc36651c7d39754181f898991ea1322901fcc979fc948e134263"
   },
   "dati.html": {
-    "data": "2026-08-10",
-    "sha": "388b25c7e13e0b47625e167a3da579fdc1241bd05bd91497ddf31fbb3892797d"
+    "data": "2026-08-17",
+    "sha": "8a7a514ff8e3e74215e6de1bcbe632a76292ac67f77e4be38e1217b0f14d5597"
   },
   "ese.html": {
     "data": "2026-08-07",
@@ -74,5 +74,9 @@
   "telemetria.html": {
     "data": "2026-08-10",
     "sha": "78cbf1d58a26c0ef2d1fb4c5f21243d3388f2951d465ca22cf1dbea3b7ee95d9"
+  },
+  "whatif.html": {
+    "data": "2026-08-17",
+    "sha": "079b7396ecbb307b8d4621e149f0b72d117e2f5d8b7831fbc98a966d71094be1"
   }
 }

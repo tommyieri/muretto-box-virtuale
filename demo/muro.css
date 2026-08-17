@@ -472,10 +472,25 @@ hr{ border:0; border-top:1px solid var(--bordo); margin:26px 0; }
 .card p{ margin:0; color:var(--calmo); font-size:14.5px; line-height:1.55;
   display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
 .card .foot{ display:flex; align-items:center; gap:12px; margin-top:16px; }
-.card .meta{ color:var(--fioco); font:500 10px/1.4 var(--mono); letter-spacing:.06em; }
-.card .go{ margin-left:auto; color:var(--testo); font:700 12px/1 var(--disp);
-  letter-spacing:.13em; text-transform:uppercase; white-space:nowrap; }
 .card .chips{ display:flex; flex-wrap:wrap; gap:5px; margin-top:13px; }
+
+/* Approfondimenti correlati in calce all'articolo */
+.art-correlati{ margin:48px 0 20px; padding-top:28px; border-top:1px solid var(--bordo); }
+.art-correlati-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:16px; margin-top:18px; }
+.art-correlato-card{ display:flex; flex-direction:column; padding:16px 18px; border-radius:var(--r);
+  background:var(--carbonio); border:1px solid var(--bordo); text-decoration:none; color:inherit;
+  position:relative; overflow:hidden; transition:all .2s var(--ease); }
+.art-correlato-card:hover{ border-color:var(--ac,var(--rosso)); transform:translateY(-2px); }
+.art-correlato-card .eyebrow{ color:var(--ac,var(--rosso)); font:500 9.5px/1.3 var(--mono); letter-spacing:.12em; text-transform:uppercase; }
+.art-correlato-card h4{ margin:8px 0 12px; font-family:var(--disp); font-size:18px; font-weight:700; line-height:1.2; color:var(--testo); }
+.art-correlato-card .foot{ display:flex; align-items:center; justify-content:space-between; margin-top:auto; font:500 9.5px/1 var(--mono); color:var(--fioco); }
+.art-correlato-card .go{ color:var(--ac,var(--rosso)); font-weight:700; }
+
+/* Filtri multi-livello sezione Analisi */
+.filtri-wrap{ display:flex; flex-direction:column; gap:12px; margin:24px 0 20px; }
+.filtri-riga{ display:flex; flex-wrap:wrap; align-items:center; gap:8px; }
+.filtri-label{ font:600 11px/1 var(--mono); letter-spacing:.1em; text-transform:uppercase; color:var(--fioco); min-width:80px; }
+
 
 /* ============================================================================
    TORRE LIVE — le classi che scrive demo/live_timing.mjs::creaTorreTiming.
