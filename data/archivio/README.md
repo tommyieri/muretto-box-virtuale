@@ -39,3 +39,10 @@ ripristinarli: `git mv data/archivio/<file> data/<file>` (o rollback al tag `pre
   prototipo (ANT, giro 37, 91.777 s). Vedi `NOTA_PISTE.md`.
 - Spostamento **inerte** per la demo pubblica (il prototipo non ne faceva parte). Storia
   preservata via `git mv`; per riesumare: `git mv data/archivio/telemetria_proto* demo/`.
+
+## `pit_loss_circuito.csv` (Archiviato 2026-08-17)
+- **Cos'è**: vecchia tabella pre-censimento con valori grezzi per circuito (`circuito, pit_loss_s`).
+- **Da dove veniva**: prima stima empirica manuale, priva di generatore tracciato.
+- **Perché archiviato**: superato dal censimento rigoroso e dalla fonte certificata `data/pit_loss_circuito_f1db.csv` (che documenta la semantica esatta di pit-lane time e le correzioni pit-loss con note di metodo). Zero consumatori nel codice attivo.
+- Spostamento **inerte**: confermato da test invarianti e golden di simulazione.
+

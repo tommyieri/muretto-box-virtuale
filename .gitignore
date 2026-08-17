@@ -36,6 +36,7 @@ data/fastf1_cache/
 *.ff1pkl
 # log e stato LOCALI del cron articoli (per-macchina, non vanno su origin)
 data/auto_tele.log
+data/auto_articoli.log
 data/.auto_articoli.log
 data/.auto_articoli_stato.json
 data/.auto_articoli.lockdir/

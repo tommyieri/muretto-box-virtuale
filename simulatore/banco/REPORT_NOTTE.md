@@ -1,6 +1,6 @@
 # REPORT NOTTE
 
-Corsa del **2026-08-17T15:14:27.582Z** · confronto con la notte del **2026-08-08T15:02:46.871Z**.
+Corsa del **2026-08-17T16:20:36.296Z** · confronto con la notte del **2026-08-08T15:02:46.871Z**.
 
 ## Esito: 🔴 REGRESSIONE
 
