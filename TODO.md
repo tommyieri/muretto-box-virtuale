@@ -1,8 +1,82 @@
-# Muretto — debiti aperti (dati demo storica)
+# Muretto — debiti aperti
+
+**Ultima revisione: 17/08/2026.** *Questo file va datato a ogni passaggio.* Fino a oggi non lo
+era, e le sue voci più recenti erano del **22/07**: ventisei giorni in cui il repo è passato dal
+commit ~50 al 175 e il documento non se n'è accorto. La pagella del 13/08 lo ha detto — *«i
+documenti di governo sono l'unica memoria esplicitamente stantia»* — e aveva ragione. Un TODO
+senza data non si sa se è vuoto o abbandonato, e i due stati si somigliano troppo.
 
 Regola: i dati vengono da f1db/TI, MAI trascritti a mano. Ogni griglia/pole va verificata con Tommi.
 
-## Da chiudere
+---
+
+## Aperti al 17/08/2026 (verifica operativa Mac + VPS, riattivazione `live/`)
+
+**A. 🟢 Chiave LLM: RUOTATA e allineata il 17/08.** Chiave nuova su entrambe le macchine
+(stessa impronta, 108 char, permessi 600), valida (HTTP 200), diversa da tutte e tre le
+precedenti. La redazione ha girato **un solo ciclo** senza scrittore-LLM (le 13:45, su 347
+storici) e da 14:15 riporta `LLM: attivo`.
+
+> **La trappola, che vale più della voce chiusa.** La rotazione era corretta *e non funzionava*:
+> `~/.muretto_env` conteneva il **valore nudo**, senza `export ANTHROPIC_API_KEY=`. La chiave era
+> giusta, ma nessun processo la caricava — `chiave-on` e `auto_articoli_run.sh` fanno
+> `. ~/.muretto_env`, e sorgere un file che non definisce niente non definisce niente. Sintomo
+> visibile: **una parola in una riga di log** (`LLM: ASSENTE`), e la redazione che scrive a
+> template invece di fermarsi. Un `curl` con la variabile vuota dà **401**, cioè lo stesso
+> codice di una chiave revocata: le due cause si distinguono solo controllando che la variabile
+> arrivi. Riparato il formato senza toccare il valore (copia in `~/.muretto_env.bak-formato`).
+
+**A-bis. 🟡 Resta da decidere DOVE tenere il segreto, ed è la lezione vera.** La difesa «non la
+esporto» **non ha tenuto**: la chiave precedente è finita in chiaro in una trascrizione d'agente
+il 17/08 alle 03:04 perché un agente ha letto i dotfile. Non serve che sia esportata, basta che
+sia leggibile nella home — e `600` protegge dagli altri utenti, non dagli agenti che girano coi
+permessi di Tommi. Le due strade sensate: **keychain** (l'agente deve chiedere, e si vede) o
+**chiave solo sul VPS**, dove non girano agenti. La revoca della vecchia si verifica **solo in
+console** (stato + ultimo utilizzo): non l'ho provata da qui, e non ho ripescato il valore
+vecchio dalle trascrizioni per rigiocarlo — maneggiarlo di nuovo lo riesporrebbe.
+I valori vecchi **restano su disco** in due trascrizioni (Codex 14/08 e 17/08): una volta
+revocati sono inerti, ma sono lì.
+
+**B. 🟡 `live/` non è riattivabile: il modulo prende per buona una coordinata di parcheggio.**
+Il 90,5 % dei campioni GPS nei periodi pit dell'Ungheria sta sulla costante `(-7447, -1830)`,
+che non è `(0,0,0)` e quindi passa il filtro. Serve una **prereg** sul secondo sentinella di
+posizione, col vincolo di non peggiorare il KPI 4 di Spa (oggi 98,97 %). Referto completo e
+altri quattro punti aperti in [`live/REPORT_RIATTIVAZIONE.md`](live/REPORT_RIATTIVAZIONE.md).
+
+**C. 🟡 `demo/data/schede_2026.json` pubblica il numero di gara sbagliato per NOR.**
+`gen_schede.py:144` usa `permanentNumber` (4); nel 2026 Norris corre col **1** — grezzo TI e
+`DriverList` del feed d'accordo su 22 auto su 22. È un numero **pubblicato sul sito**. Il fix è
+alla fonte (numero di gara dal grezzo, non permanentNumber) e ri-deriva `schede_2026.json`:
+è una ri-derivazione deliberata, si versiona e si dichiara.
+
+**D. 🟡 `inspect_recording.py` dice «nessun gap» su una registrazione che perde nove giri.**
+Guarda un file alla volta, e il buco sta **fra** le due parti. Va misurato il gap fra parti
+consecutive.
+
+**E. 🟡 `data/live_raw/` è gitignorata: le registrazioni vivono su UNA macchina.** Stessa
+esposizione del pickle del warm-in (voce 10). Le prove di `REPORT_RIATTIVAZIONE.md` non sono
+riproducibili altrove.
+
+**F. 🟢 Cinque artefatti orfani in `data/live_derived/`** — tracciati, senza generatore in
+`main`: `ungheria_ref_track.json`, `pitlane_ungheria.json`, `ungheria_pit_samples.json`,
+`ungheria_precostruzione_xy.svg`, `kpi3_f1db.json`. I generatori dei primi quattro
+(`costruisci_corridoio.py`, `verifica_precostruzione.py`) esistono in worktree **mai mergiati**.
+È la voce 9, ancora aperta su un'altra cartella.
+
+### Chiusi il 17/08/2026
+
+- **`auto_run.sh` non si aggiornava più da sé dal 10/08.** Usava `git status --porcelain` nudo,
+  che conta i file non tracciati: sul VPS bastava `data/auto_articoli.log` (comparso col
+  trasloco della redazione) per mandarlo nel ramo «albero sporco» a ogni giro. **343 giri, 7
+  giorni, zero aggiornamenti** — e nessun sintomo, perché il checkout restava fresco per merito
+  di `auto_articoli_run.sh`, che usa la forma giusta. Un wrapper faceva il lavoro dell'altro.
+  Allineato ai due gemelli, e **s46 adesso sorveglia anche questo ramo** (asserzione con prova
+  di fallimento).
+- **`live/verifica_gara.py` era un artefatto orfano al contrario**: cancellato da `8c4eaec`
+  mentre il suo prodotto (`kpi_fase1b.json`) restava tracciato, e il prereg di Fase 1B lo
+  dichiara tracciato. Ripristinato da `1236ff7` e parametrizzato per gara.
+
+## Da chiudere (voci storiche, fino al 22/07/2026)
 1. [in corso] Griglia + qualifica da f1db per tutte le 8 gare (rigenerate dalla fonte).
    - Monaco verificato: pole ANT, poi VER/HAM/LEC. OK.
    - Le altre 7: da riverificare pole con Tommi.

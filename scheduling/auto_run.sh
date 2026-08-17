@@ -62,8 +62,33 @@ trap 'rmdir "$LOCK" 2>/dev/null' EXIT
 # si gira col codice attuale: meglio vecchio che perso.
 {
   echo "---- $(date '+%F %T') aggiornamento codice"
-  if [[ -n "$(git status --porcelain)" ]]; then
-    echo "     albero sporco: NON aggiorno (probabile lavoro non committato da riprendere)"
+  # --untracked-files=no, COME I DUE WRAPPER GEMELLI, e per un guasto misurato.
+  #
+  # Fino al 17/08/2026 qui c'era `git status --porcelain` NUDO, che conta anche i file non
+  # tracciati. Sul VPS bastava UN file non tracciato per spegnere l'auto-aggiornamento per
+  # sempre, e dal 10/08 quel file c'era: `data/auto_articoli.log`, creato dalla redazione
+  # appena traslocata qui. Da quel momento, a ogni giro dei 30 minuti, questo blocco ha
+  # stampato «albero sporco: NON aggiorno» e ha proseguito col codice che trovava: 343
+  # giri, sette giorni, l'ultimo aggiornamento riuscito il 10/08 alle 08:00.
+  #
+  # LA MACCHINA NON ERA VECCHIA, ED E' LA PARTE CHE INGANNA. HEAD era allineato a
+  # origin/main, e s46 diceva «codice fresco» — perche' ad aggiornare il checkout ci
+  # pensava auto_articoli_run.sh, che gira a :15 e :45 e usa la forma giusta dello status.
+  # Un wrapper faceva il lavoro dell'altro: nessun sintomo visibile, e la pubblicazione
+  # delle gare appesa a un cron che non c'entra nulla. Il giorno che la redazione si
+  # ferma o cambia orario, auto_gara resta al codice di quel giorno, in silenzio.
+  #
+  # I DUE GEMELLI ERANO GIA' GIUSTI (auto_tele_run.sh:56, auto_articoli_run.sh:95) e
+  # portano la stessa spiegazione: nel checkout di lavoro ci sono SEMPRE appunti non
+  # tracciati (CLAUDE.md, TASKS.md, log). Qui deve fermarci solo il lavoro vero non
+  # committato sui file TRACCIATI — che e' esattamente il caso che ff-only protegge
+  # (una gara pubblicata e non ancora committata).
+  if [[ -n "$(git status --porcelain --untracked-files=no)" ]]; then
+    echo "     !! ALBERO SPORCO: modifiche non committate su file tracciati, NON aggiorno."
+    echo "        Si prosegue col codice attuale (probabile lavoro da riprendere), ma da qui"
+    echo "        in poi questa macchina NON si aggiorna piu' da sola: e' una condizione da"
+    echo "        sciogliere a mano, non uno stato di riposo."
+    git status --porcelain --untracked-files=no | sed 's/^/        /'
   elif git fetch origin --quiet && git merge --ff-only origin/main --quiet; then
     echo "     aggiornato a $(git rev-parse --short HEAD)"
   else

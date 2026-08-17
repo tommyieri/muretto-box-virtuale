@@ -1,0 +1,405 @@
+{
+ "_nota": "GENERATO da live/arbitro_da_registro.py da artefatti del repo (arrivi_2026.csv, race_control_2026.csv, schede_2026.json). Nessuna trascrizione a mano. Nessuna fonte passa dalla registrazione live: il replay non puo' avere ragione per costruzione.",
+ "gara": "Ungheria",
+ "fonti": {
+  "classifica_e_soste": "data/arrivi_2026.csv (gen_arrivi.py)",
+  "neutralizzazioni": "data/race_control_2026.csv (gen_race_control.py)",
+  "numeri_auto": "data/ti_archive/2026/<GP>/Race.json, colonne drv/dNum (numero DI GARA, non permanentNumber)"
+ },
+ "giri_totali": 70,
+ "classifica": [
+  {
+   "pos": 1,
+   "auto": "1",
+   "sigla": "NOR",
+   "stato": "classificato",
+   "giri": 70,
+   "tipo_arrivo": "pieno_giro"
+  },
+  {
+   "pos": 2,
+   "auto": "3",
+   "sigla": "VER",
+   "stato": "classificato",
+   "giri": 70,
+   "tipo_arrivo": "pieno_giro"
+  },
+  {
+   "pos": 3,
+   "auto": "12",
+   "sigla": "ANT",
+   "stato": "classificato",
+   "giri": 70,
+   "tipo_arrivo": "pieno_giro"
+  },
+  {
+   "pos": 4,
+   "auto": "44",
+   "sigla": "HAM",
+   "stato": "classificato",
+   "giri": 70,
+   "tipo_arrivo": "pieno_giro"
+  },
+  {
+   "pos": 5,
+   "auto": "16",
+   "sigla": "LEC",
+   "stato": "classificato",
+   "giri": 70,
+   "tipo_arrivo": "pieno_giro"
+  },
+  {
+   "pos": 6,
+   "auto": "6",
+   "sigla": "HAD",
+   "stato": "classificato",
+   "giri": 70,
+   "tipo_arrivo": "pieno_giro"
+  },
+  {
+   "pos": 7,
+   "auto": "63",
+   "sigla": "RUS",
+   "stato": "classificato",
+   "giri": 70,
+   "tipo_arrivo": "pieno_giro"
+  },
+  {
+   "pos": 8,
+   "auto": "30",
+   "sigla": "LAW",
+   "stato": "classificato",
+   "giri": 69,
+   "tipo_arrivo": "doppiato"
+  },
+  {
+   "pos": 9,
+   "auto": "27",
+   "sigla": "HUL",
+   "stato": "classificato",
+   "giri": 69,
+   "tipo_arrivo": "doppiato"
+  },
+  {
+   "pos": 10,
+   "auto": "41",
+   "sigla": "LIN",
+   "stato": "classificato",
+   "giri": 69,
+   "tipo_arrivo": "doppiato"
+  },
+  {
+   "pos": 11,
+   "auto": "5",
+   "sigla": "BOR",
+   "stato": "classificato",
+   "giri": 69,
+   "tipo_arrivo": "doppiato"
+  },
+  {
+   "pos": 12,
+   "auto": "10",
+   "sigla": "GAS",
+   "stato": "classificato",
+   "giri": 69,
+   "tipo_arrivo": "doppiato"
+  },
+  {
+   "pos": 13,
+   "auto": "18",
+   "sigla": "STR",
+   "stato": "classificato",
+   "giri": 69,
+   "tipo_arrivo": "doppiato"
+  },
+  {
+   "pos": 14,
+   "auto": "14",
+   "sigla": "ALO",
+   "stato": "classificato",
+   "giri": 69,
+   "tipo_arrivo": "doppiato"
+  },
+  {
+   "pos": 15,
+   "auto": "43",
+   "sigla": "COL",
+   "stato": "classificato",
+   "giri": 68,
+   "tipo_arrivo": "doppiato"
+  },
+  {
+   "pos": 16,
+   "auto": "31",
+   "sigla": "OCO",
+   "stato": "classificato",
+   "giri": 68,
+   "tipo_arrivo": "doppiato"
+  },
+  {
+   "pos": 17,
+   "auto": "87",
+   "sigla": "BEA",
+   "stato": "classificato",
+   "giri": 68,
+   "tipo_arrivo": "doppiato"
+  },
+  {
+   "pos": 18,
+   "auto": "23",
+   "sigla": "ALB",
+   "stato": "classificato",
+   "giri": 68,
+   "tipo_arrivo": "doppiato"
+  },
+  {
+   "pos": 19,
+   "auto": "55",
+   "sigla": "SAI",
+   "stato": "classificato",
+   "giri": 68,
+   "tipo_arrivo": "doppiato"
+  },
+  {
+   "pos": 20,
+   "auto": "81",
+   "sigla": "PIA",
+   "stato": "ritirato",
+   "giri": 56,
+   "tipo_arrivo": "RIT"
+  },
+  {
+   "pos": 21,
+   "auto": "11",
+   "sigla": "PER",
+   "stato": "ritirato",
+   "giri": 48,
+   "tipo_arrivo": "RIT"
+  },
+  {
+   "pos": 22,
+   "auto": "77",
+   "sigla": "BOT",
+   "stato": "ritirato",
+   "giri": 14,
+   "tipo_arrivo": "RIT"
+  }
+ ],
+ "soste_per_auto": {
+  "1": {
+   "sigla": "NOR",
+   "giri": [
+    17,
+    39,
+    56
+   ],
+   "n_soste_dichiarato": 3
+  },
+  "3": {
+   "sigla": "VER",
+   "giri": [
+    14,
+    41
+   ],
+   "n_soste_dichiarato": 2
+  },
+  "12": {
+   "sigla": "ANT",
+   "giri": [
+    22,
+    53
+   ],
+   "n_soste_dichiarato": 2
+  },
+  "44": {
+   "sigla": "HAM",
+   "giri": [
+    13,
+    30,
+    56
+   ],
+   "n_soste_dichiarato": 3
+  },
+  "16": {
+   "sigla": "LEC",
+   "giri": [
+    16,
+    36,
+    56
+   ],
+   "n_soste_dichiarato": 3
+  },
+  "6": {
+   "sigla": "HAD",
+   "giri": [
+    19,
+    42
+   ],
+   "n_soste_dichiarato": 2
+  },
+  "63": {
+   "sigla": "RUS",
+   "giri": [
+    27,
+    54
+   ],
+   "n_soste_dichiarato": 2
+  },
+  "30": {
+   "sigla": "LAW",
+   "giri": [
+    21,
+    42
+   ],
+   "n_soste_dichiarato": 2
+  },
+  "27": {
+   "sigla": "HUL",
+   "giri": [
+    19,
+    39
+   ],
+   "n_soste_dichiarato": 2
+  },
+  "41": {
+   "sigla": "LIN",
+   "giri": [
+    20
+   ],
+   "n_soste_dichiarato": 1
+  },
+  "5": {
+   "sigla": "BOR",
+   "giri": [
+    29
+   ],
+   "n_soste_dichiarato": 1
+  },
+  "10": {
+   "sigla": "GAS",
+   "giri": [
+    16,
+    39,
+    55
+   ],
+   "n_soste_dichiarato": 3
+  },
+  "18": {
+   "sigla": "STR",
+   "giri": [
+    8,
+    37
+   ],
+   "n_soste_dichiarato": 2
+  },
+  "14": {
+   "sigla": "ALO",
+   "giri": [
+    34,
+    55
+   ],
+   "n_soste_dichiarato": 2
+  },
+  "43": {
+   "sigla": "COL",
+   "giri": [
+    15,
+    37
+   ],
+   "n_soste_dichiarato": 2
+  },
+  "31": {
+   "sigla": "OCO",
+   "giri": [
+    17,
+    35
+   ],
+   "n_soste_dichiarato": 2
+  },
+  "87": {
+   "sigla": "BEA",
+   "giri": [
+    22,
+    42
+   ],
+   "n_soste_dichiarato": 2
+  },
+  "23": {
+   "sigla": "ALB",
+   "giri": [
+    26,
+    54
+   ],
+   "n_soste_dichiarato": 2
+  },
+  "55": {
+   "sigla": "SAI",
+   "giri": [
+    18,
+    43,
+    54
+   ],
+   "n_soste_dichiarato": 3
+  },
+  "81": {
+   "sigla": "PIA",
+   "giri": [
+    16,
+    33
+   ],
+   "n_soste_dichiarato": 2
+  },
+  "11": {
+   "sigla": "PER",
+   "giri": [
+    21,
+    46
+   ],
+   "n_soste_dichiarato": 3
+  },
+  "77": {
+   "sigla": "BOT",
+   "giri": [],
+   "n_soste_dichiarato": 1
+  }
+ },
+ "disaccordi_n_soste": [
+  {
+   "auto": "11",
+   "sigla": "PER",
+   "giri_elencati": [
+    21,
+    46
+   ],
+   "n_soste_dichiarato": 3,
+   "voci_senza_giro": 0,
+   "stato": "ritirato"
+  },
+  {
+   "auto": "77",
+   "sigla": "BOT",
+   "giri_elencati": [],
+   "n_soste_dichiarato": 1,
+   "voci_senza_giro": 0,
+   "stato": "ritirato"
+  }
+ ],
+ "disaccordi_numero_vs_schede": [
+  {
+   "sigla": "NOR",
+   "numero_di_gara_grezzo": "1",
+   "numero_in_schede_2026": "4",
+   "nota": "gen_schede.py usa permanentNumber; il numero di gara puo' differire (es. il #1 del campione)"
+  }
+ ],
+ "neutralizzazioni_cronaca": [
+  {
+   "tipo": "VSC",
+   "giro_inizio": 56,
+   "giro_fine": 57,
+   "causa": "VSC DEPLOYED",
+   "fonte": "race control"
+  }
+ ],
+ "granularita": "la cronaca del race control porta il GIRO, non l'orario: la clausola ±30 s del KPI 5 si applica come copertura del giro indicato dalla timeline replay (stessa lettura dichiarata per Spa)."
+}

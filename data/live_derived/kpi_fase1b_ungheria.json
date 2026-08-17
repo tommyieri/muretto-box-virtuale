@@ -1,0 +1,1196 @@
+{
+ "gara": "ungheria",
+ "registrazioni": [
+  "GARA_2026-07-26_12-41-16.txt",
+  "GARA_2026-07-26_13-34-59.txt"
+ ],
+ "arbitro": {
+  "file": "gara_ungheria_arbitro.json",
+  "nota": "generato da live/arbitro_da_registro.py sugli artefatti del repo; soste per-pilota PRESENTI -> KPI 3 misurabile per la prima volta"
+ },
+ "kpi1": {
+  "eccezione": null,
+  "eventi": {
+   "driver_list": 1,
+   "session_status": 2,
+   "track_status": 9,
+   "position_frame": 24811,
+   "timing_update": 58428,
+   "lap_count": 62
+  },
+  "auto_nei_position_frame": 22,
+  "righe_totali": 79483,
+  "righe_ok": 79483,
+  "frazione_ok": 1.0,
+  "gate": true
+ },
+ "campioni_duplicati_scartati": 0,
+ "kpi2": {
+  "ordine_replay": [
+   "1",
+   "3",
+   "12",
+   "44",
+   "16",
+   "6",
+   "63",
+   "30",
+   "41",
+   "27",
+   "5",
+   "10",
+   "18",
+   "14",
+   "43",
+   "31",
+   "87",
+   "23",
+   "55",
+   "81",
+   "11",
+   "77"
+  ],
+  "ordine_arbitro": [
+   "1",
+   "3",
+   "12",
+   "44",
+   "16",
+   "6",
+   "63",
+   "30",
+   "27",
+   "41",
+   "5",
+   "10",
+   "18",
+   "14",
+   "43",
+   "31",
+   "87",
+   "23",
+   "55",
+   "81",
+   "11",
+   "77"
+  ],
+  "posizioni_finali_replay": {
+   "1": 1,
+   "3": 2,
+   "12": 3,
+   "44": 4,
+   "16": 5,
+   "6": 6,
+   "63": 7,
+   "30": 8,
+   "27": 10,
+   "41": 9,
+   "5": 11,
+   "10": 12,
+   "18": 13,
+   "14": 14,
+   "43": 15,
+   "31": 16,
+   "87": 17,
+   "23": 18,
+   "55": 19,
+   "81": 20,
+   "11": 21,
+   "77": 22
+  },
+  "ordine_coincide": false,
+  "giri_vincitore": 63,
+  "lapcount_finale": 64,
+  "griglia": {
+   "t": "2026-07-26 13:03:18.159218",
+   "auto_nel_frame": 22,
+   "entro_500m_da_sf": 22,
+   "ok": true
+  },
+  "gate": false
+ },
+ "kpi3": {
+  "convenzione": "giro stop = NumberOfLaps a ingresso pit + 1; ingresso senza uscita = non conteggiato",
+  "stop_per_auto": {
+   "1": [
+    {
+     "giro": 17,
+     "da": "2026-07-26 13:27:38.299000",
+     "a": "2026-07-26 13:28:00.415000"
+    },
+    {
+     "giro": 39,
+     "da": "2026-07-26 13:59:11.352000",
+     "a": "2026-07-26 13:59:33.395000"
+    },
+    {
+     "giro": 56,
+     "da": "2026-07-26 14:23:22.533000",
+     "a": "2026-07-26 14:23:44.439000"
+    }
+   ],
+   "3": [
+    {
+     "giro": 14,
+     "da": "2026-07-26 13:23:24.868000",
+     "a": "2026-07-26 13:23:46.515000"
+    },
+    {
+     "giro": 41,
+     "da": "2026-07-26 14:02:11.918000",
+     "a": "2026-07-26 14:02:33.934000"
+    }
+   ],
+   "5": [
+    {
+     "giro": 29,
+     "da": "2026-07-26 13:45:49.711000",
+     "a": "2026-07-26 13:46:11.470000"
+    }
+   ],
+   "6": [
+    {
+     "giro": 19,
+     "da": "2026-07-26 13:30:54.496000",
+     "a": "2026-07-26 13:31:16.414000"
+    },
+    {
+     "giro": 42,
+     "da": "2026-07-26 14:04:09.713000",
+     "a": "2026-07-26 14:04:31.983000"
+    }
+   ],
+   "10": [
+    {
+     "giro": 16,
+     "da": "2026-07-26 13:26:53.277000",
+     "a": "2026-07-26 13:27:14.714000"
+    },
+    {
+     "giro": 39,
+     "da": "2026-07-26 14:00:34.858000",
+     "a": "2026-07-26 14:00:56.501000"
+    },
+    {
+     "giro": 55,
+     "da": "2026-07-26 14:24:06.439000",
+     "a": "2026-07-26 14:24:28.241000"
+    }
+   ],
+   "11": [
+    {
+     "giro": 22,
+     "da": "2026-07-26 13:31:28.418000",
+     "a": "2026-07-26 13:35:15.069000"
+    },
+    {
+     "giro": 46,
+     "da": "2026-07-26 14:12:06.451000",
+     "a": "2026-07-26 14:12:30.713000"
+    }
+   ],
+   "12": [
+    {
+     "giro": 23,
+     "da": "2026-07-26 13:31:28.418000",
+     "a": "2026-07-26 13:35:16.571000"
+    },
+    {
+     "giro": 53,
+     "da": "2026-07-26 14:19:12.734000",
+     "a": "2026-07-26 14:19:33.965000"
+    }
+   ],
+   "14": [
+    {
+     "giro": 34,
+     "da": "2026-07-26 13:53:27.089000",
+     "a": "2026-07-26 13:53:49.270000"
+    },
+    {
+     "giro": 55,
+     "da": "2026-07-26 14:24:15.882000",
+     "a": "2026-07-26 14:24:38.480000"
+    }
+   ],
+   "16": [
+    {
+     "giro": 16,
+     "da": "2026-07-26 13:26:19.741000",
+     "a": "2026-07-26 13:26:41.656000"
+    },
+    {
+     "giro": 36,
+     "da": "2026-07-26 13:55:09.636000",
+     "a": "2026-07-26 13:55:31.368000"
+    },
+    {
+     "giro": 56,
+     "da": "2026-07-26 14:23:55.821000",
+     "a": "2026-07-26 14:24:17.632000"
+    }
+   ],
+   "18": [
+    {
+     "giro": 8,
+     "da": "2026-07-26 13:15:19.406000",
+     "a": "2026-07-26 13:15:41.255000"
+    },
+    {
+     "giro": 37,
+     "da": "2026-07-26 13:57:53.414000",
+     "a": "2026-07-26 13:58:17.740000"
+    }
+   ],
+   "23": [
+    {
+     "giro": 26,
+     "da": "2026-07-26 13:41:57.983000",
+     "a": "2026-07-26 13:42:20.123000"
+    },
+    {
+     "giro": 54,
+     "da": "2026-07-26 14:23:16.486000",
+     "a": "2026-07-26 14:23:39.243000"
+    }
+   ],
+   "27": [
+    {
+     "giro": 19,
+     "da": "2026-07-26 13:31:08.777000",
+     "a": "2026-07-26 13:31:28.418000"
+    },
+    {
+     "giro": 39,
+     "da": "2026-07-26 14:00:19.150000",
+     "a": "2026-07-26 14:00:41.369000"
+    }
+   ],
+   "30": [
+    {
+     "giro": 42,
+     "da": "2026-07-26 14:04:32.749000",
+     "a": "2026-07-26 14:04:54.433000"
+    }
+   ],
+   "31": [
+    {
+     "giro": 17,
+     "da": "2026-07-26 13:28:27.340000",
+     "a": "2026-07-26 13:28:49.815000"
+    },
+    {
+     "giro": 35,
+     "da": "2026-07-26 13:55:06.527000",
+     "a": "2026-07-26 13:55:28.974000"
+    }
+   ],
+   "43": [
+    {
+     "giro": 15,
+     "da": "2026-07-26 13:25:32.009000",
+     "a": "2026-07-26 13:25:54.977000"
+    },
+    {
+     "giro": 37,
+     "da": "2026-07-26 13:57:58.355000",
+     "a": "2026-07-26 13:58:20.640000"
+    }
+   ],
+   "44": [
+    {
+     "giro": 13,
+     "da": "2026-07-26 13:21:59.858000",
+     "a": "2026-07-26 13:22:21.542000"
+    },
+    {
+     "giro": 30,
+     "da": "2026-07-26 13:46:33.614000",
+     "a": "2026-07-26 13:46:55.298000"
+    },
+    {
+     "giro": 56,
+     "da": "2026-07-26 14:23:41.220000",
+     "a": "2026-07-26 14:24:03.654000"
+    }
+   ],
+   "55": [
+    {
+     "giro": 18,
+     "da": "2026-07-26 13:30:00.663000",
+     "a": "2026-07-26 13:30:22.305000"
+    },
+    {
+     "giro": 43,
+     "da": "2026-07-26 14:07:01.547000",
+     "a": "2026-07-26 14:07:30.132000"
+    },
+    {
+     "giro": 54,
+     "da": "2026-07-26 14:23:25.306000",
+     "a": "2026-07-26 14:23:47.387000"
+    }
+   ],
+   "63": [
+    {
+     "giro": 27,
+     "da": "2026-07-26 13:42:34.433000",
+     "a": "2026-07-26 13:42:56.696000"
+    },
+    {
+     "giro": 54,
+     "da": "2026-07-26 14:21:13.979000",
+     "a": "2026-07-26 14:21:35.968000"
+    }
+   ],
+   "77": [],
+   "81": [
+    {
+     "giro": 16,
+     "da": "2026-07-26 13:26:12.080000",
+     "a": "2026-07-26 13:26:33.774000"
+    },
+    {
+     "giro": 33,
+     "da": "2026-07-26 13:50:42.858000",
+     "a": "2026-07-26 13:51:04.514000"
+    }
+   ],
+   "87": [
+    {
+     "giro": 22,
+     "da": "2026-07-26 13:35:53.792000",
+     "a": "2026-07-26 13:36:16.382000"
+    },
+    {
+     "giro": 42,
+     "da": "2026-07-26 14:05:42.742000",
+     "a": "2026-07-26 14:06:04.938000"
+    }
+   ]
+  },
+  "confronto_per_auto": [
+   {
+    "auto": "1",
+    "sigla": "NOR",
+    "giri_arbitro": [
+     17,
+     39,
+     56
+    ],
+    "giri_replay": [
+     17,
+     39,
+     56
+    ],
+    "conteggio_esatto": true,
+    "stato": "classificato",
+    "scarti_giro": [
+     0,
+     0,
+     0
+    ],
+    "giri_entro_tolleranza": true
+   },
+   {
+    "auto": "3",
+    "sigla": "VER",
+    "giri_arbitro": [
+     14,
+     41
+    ],
+    "giri_replay": [
+     14,
+     41
+    ],
+    "conteggio_esatto": true,
+    "stato": "classificato",
+    "scarti_giro": [
+     0,
+     0
+    ],
+    "giri_entro_tolleranza": true
+   },
+   {
+    "auto": "5",
+    "sigla": "BOR",
+    "giri_arbitro": [
+     29
+    ],
+    "giri_replay": [
+     29
+    ],
+    "conteggio_esatto": true,
+    "stato": "classificato",
+    "scarti_giro": [
+     0
+    ],
+    "giri_entro_tolleranza": true
+   },
+   {
+    "auto": "6",
+    "sigla": "HAD",
+    "giri_arbitro": [
+     19,
+     42
+    ],
+    "giri_replay": [
+     19,
+     42
+    ],
+    "conteggio_esatto": true,
+    "stato": "classificato",
+    "scarti_giro": [
+     0,
+     0
+    ],
+    "giri_entro_tolleranza": true
+   },
+   {
+    "auto": "10",
+    "sigla": "GAS",
+    "giri_arbitro": [
+     16,
+     39,
+     55
+    ],
+    "giri_replay": [
+     16,
+     39,
+     55
+    ],
+    "conteggio_esatto": true,
+    "stato": "classificato",
+    "scarti_giro": [
+     0,
+     0,
+     0
+    ],
+    "giri_entro_tolleranza": true
+   },
+   {
+    "auto": "12",
+    "sigla": "ANT",
+    "giri_arbitro": [
+     22,
+     53
+    ],
+    "giri_replay": [
+     23,
+     53
+    ],
+    "conteggio_esatto": true,
+    "stato": "classificato",
+    "scarti_giro": [
+     1,
+     0
+    ],
+    "giri_entro_tolleranza": true
+   },
+   {
+    "auto": "14",
+    "sigla": "ALO",
+    "giri_arbitro": [
+     34,
+     55
+    ],
+    "giri_replay": [
+     34,
+     55
+    ],
+    "conteggio_esatto": true,
+    "stato": "classificato",
+    "scarti_giro": [
+     0,
+     0
+    ],
+    "giri_entro_tolleranza": true
+   },
+   {
+    "auto": "16",
+    "sigla": "LEC",
+    "giri_arbitro": [
+     16,
+     36,
+     56
+    ],
+    "giri_replay": [
+     16,
+     36,
+     56
+    ],
+    "conteggio_esatto": true,
+    "stato": "classificato",
+    "scarti_giro": [
+     0,
+     0,
+     0
+    ],
+    "giri_entro_tolleranza": true
+   },
+   {
+    "auto": "18",
+    "sigla": "STR",
+    "giri_arbitro": [
+     8,
+     37
+    ],
+    "giri_replay": [
+     8,
+     37
+    ],
+    "conteggio_esatto": true,
+    "stato": "classificato",
+    "scarti_giro": [
+     0,
+     0
+    ],
+    "giri_entro_tolleranza": true
+   },
+   {
+    "auto": "23",
+    "sigla": "ALB",
+    "giri_arbitro": [
+     26,
+     54
+    ],
+    "giri_replay": [
+     26,
+     54
+    ],
+    "conteggio_esatto": true,
+    "stato": "classificato",
+    "scarti_giro": [
+     0,
+     0
+    ],
+    "giri_entro_tolleranza": true
+   },
+   {
+    "auto": "27",
+    "sigla": "HUL",
+    "giri_arbitro": [
+     19,
+     39
+    ],
+    "giri_replay": [
+     19,
+     39
+    ],
+    "conteggio_esatto": true,
+    "stato": "classificato",
+    "scarti_giro": [
+     0,
+     0
+    ],
+    "giri_entro_tolleranza": true
+   },
+   {
+    "auto": "30",
+    "sigla": "LAW",
+    "giri_arbitro": [
+     21,
+     42
+    ],
+    "giri_replay": [
+     42
+    ],
+    "conteggio_esatto": false,
+    "stato": "classificato",
+    "scarti_giro": null,
+    "giri_entro_tolleranza": false
+   },
+   {
+    "auto": "31",
+    "sigla": "OCO",
+    "giri_arbitro": [
+     17,
+     35
+    ],
+    "giri_replay": [
+     17,
+     35
+    ],
+    "conteggio_esatto": true,
+    "stato": "classificato",
+    "scarti_giro": [
+     0,
+     0
+    ],
+    "giri_entro_tolleranza": true
+   },
+   {
+    "auto": "41",
+    "sigla": "LIN",
+    "giri_arbitro": [
+     20
+    ],
+    "giri_replay": [],
+    "conteggio_esatto": false,
+    "stato": "classificato",
+    "scarti_giro": null,
+    "giri_entro_tolleranza": false
+   },
+   {
+    "auto": "43",
+    "sigla": "COL",
+    "giri_arbitro": [
+     15,
+     37
+    ],
+    "giri_replay": [
+     15,
+     37
+    ],
+    "conteggio_esatto": true,
+    "stato": "classificato",
+    "scarti_giro": [
+     0,
+     0
+    ],
+    "giri_entro_tolleranza": true
+   },
+   {
+    "auto": "44",
+    "sigla": "HAM",
+    "giri_arbitro": [
+     13,
+     30,
+     56
+    ],
+    "giri_replay": [
+     13,
+     30,
+     56
+    ],
+    "conteggio_esatto": true,
+    "stato": "classificato",
+    "scarti_giro": [
+     0,
+     0,
+     0
+    ],
+    "giri_entro_tolleranza": true
+   },
+   {
+    "auto": "55",
+    "sigla": "SAI",
+    "giri_arbitro": [
+     18,
+     43,
+     54
+    ],
+    "giri_replay": [
+     18,
+     43,
+     54
+    ],
+    "conteggio_esatto": true,
+    "stato": "classificato",
+    "scarti_giro": [
+     0,
+     0,
+     0
+    ],
+    "giri_entro_tolleranza": true
+   },
+   {
+    "auto": "63",
+    "sigla": "RUS",
+    "giri_arbitro": [
+     27,
+     54
+    ],
+    "giri_replay": [
+     27,
+     54
+    ],
+    "conteggio_esatto": true,
+    "stato": "classificato",
+    "scarti_giro": [
+     0,
+     0
+    ],
+    "giri_entro_tolleranza": true
+   },
+   {
+    "auto": "87",
+    "sigla": "BEA",
+    "giri_arbitro": [
+     22,
+     42
+    ],
+    "giri_replay": [
+     22,
+     42
+    ],
+    "conteggio_esatto": true,
+    "stato": "classificato",
+    "scarti_giro": [
+     0,
+     0
+    ],
+    "giri_entro_tolleranza": true
+   }
+  ],
+  "ritirati_esclusi_dal_gate": [
+   {
+    "auto": "11",
+    "sigla": "PER",
+    "giri_arbitro": [
+     21,
+     46
+    ],
+    "giri_replay": [
+     22,
+     46
+    ],
+    "conteggio_esatto": true,
+    "stato": "ritirato",
+    "scarti_giro": [
+     1,
+     0
+    ],
+    "giri_entro_tolleranza": true
+   },
+   {
+    "auto": "77",
+    "sigla": "BOT",
+    "giri_arbitro": [],
+    "giri_replay": [],
+    "conteggio_esatto": true,
+    "stato": "ritirato",
+    "scarti_giro": [],
+    "giri_entro_tolleranza": true
+   },
+   {
+    "auto": "81",
+    "sigla": "PIA",
+    "giri_arbitro": [
+     16,
+     33
+    ],
+    "giri_replay": [
+     16,
+     33
+    ],
+    "conteggio_esatto": true,
+    "stato": "ritirato",
+    "scarti_giro": [
+     0,
+     0
+    ],
+    "giri_entro_tolleranza": true
+   }
+  ],
+  "piloti_nel_gate": 19,
+  "conteggio_esatto": 17,
+  "quota_conteggio_esatto": 0.8947,
+  "giri_entro_tolleranza": 17,
+  "disaccordi_dell_arbitro": [
+   {
+    "auto": "11",
+    "sigla": "PER",
+    "giri_elencati": [
+     21,
+     46
+    ],
+    "n_soste_dichiarato": 3,
+    "voci_senza_giro": 0,
+    "stato": "ritirato"
+   },
+   {
+    "auto": "77",
+    "sigla": "BOT",
+    "giri_elencati": [],
+    "n_soste_dichiarato": 1,
+    "voci_senza_giro": 0,
+    "stato": "ritirato"
+   }
+  ],
+  "gate": false
+ },
+ "kpi4": {
+  "totali": 45,
+  "senza_dati_gps": 0,
+  "coerenti": 2,
+  "divergenti": [
+   {
+    "auto": "11",
+    "da": "2026-07-26 13:31:28.418000",
+    "a": "2026-07-26 13:35:15.069000",
+    "campioni": 57,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "11",
+    "da": "2026-07-26 14:12:06.451000",
+    "a": "2026-07-26 14:12:30.713000",
+    "campioni": 95,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "11",
+    "da": "2026-07-26 14:16:17.369000",
+    "a": "None",
+    "campioni": 170,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "18",
+    "da": "2026-07-26 13:15:19.406000",
+    "a": "2026-07-26 13:15:41.255000",
+    "campioni": 84,
+    "quota_in_corridoio": 0.595
+   },
+   {
+    "auto": "18",
+    "da": "2026-07-26 13:57:53.414000",
+    "a": "2026-07-26 13:58:17.740000",
+    "campioni": 87,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "44",
+    "da": "2026-07-26 13:46:33.614000",
+    "a": "2026-07-26 13:46:55.298000",
+    "campioni": 82,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "44",
+    "da": "2026-07-26 14:23:41.220000",
+    "a": "2026-07-26 14:24:03.654000",
+    "campioni": 85,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "3",
+    "da": "2026-07-26 14:02:11.918000",
+    "a": "2026-07-26 14:02:33.934000",
+    "campioni": 88,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "43",
+    "da": "2026-07-26 13:25:32.009000",
+    "a": "2026-07-26 13:25:54.977000",
+    "campioni": 84,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "43",
+    "da": "2026-07-26 13:57:58.355000",
+    "a": "2026-07-26 13:58:20.640000",
+    "campioni": 81,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "81",
+    "da": "2026-07-26 13:26:12.080000",
+    "a": "2026-07-26 13:26:33.774000",
+    "campioni": 82,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "81",
+    "da": "2026-07-26 13:50:42.858000",
+    "a": "2026-07-26 13:51:04.514000",
+    "campioni": 80,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "16",
+    "da": "2026-07-26 13:26:19.741000",
+    "a": "2026-07-26 13:26:41.656000",
+    "campioni": 84,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "16",
+    "da": "2026-07-26 13:55:09.636000",
+    "a": "2026-07-26 13:55:31.368000",
+    "campioni": 83,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "16",
+    "da": "2026-07-26 14:23:55.821000",
+    "a": "2026-07-26 14:24:17.632000",
+    "campioni": 80,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "10",
+    "da": "2026-07-26 13:26:53.277000",
+    "a": "2026-07-26 13:27:14.714000",
+    "campioni": 87,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "10",
+    "da": "2026-07-26 14:00:34.858000",
+    "a": "2026-07-26 14:00:56.501000",
+    "campioni": 83,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "10",
+    "da": "2026-07-26 14:24:06.439000",
+    "a": "2026-07-26 14:24:28.241000",
+    "campioni": 84,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "1",
+    "da": "2026-07-26 13:27:38.299000",
+    "a": "2026-07-26 13:28:00.415000",
+    "campioni": 82,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "1",
+    "da": "2026-07-26 13:59:11.352000",
+    "a": "2026-07-26 13:59:33.395000",
+    "campioni": 81,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "1",
+    "da": "2026-07-26 14:23:22.533000",
+    "a": "2026-07-26 14:23:44.439000",
+    "campioni": 88,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "31",
+    "da": "2026-07-26 13:28:27.340000",
+    "a": "2026-07-26 13:28:49.815000",
+    "campioni": 84,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "31",
+    "da": "2026-07-26 13:55:06.527000",
+    "a": "2026-07-26 13:55:28.974000",
+    "campioni": 87,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "55",
+    "da": "2026-07-26 13:30:00.663000",
+    "a": "2026-07-26 13:30:22.305000",
+    "campioni": 79,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "55",
+    "da": "2026-07-26 14:07:01.547000",
+    "a": "2026-07-26 14:07:30.132000",
+    "campioni": 108,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "55",
+    "da": "2026-07-26 14:23:25.306000",
+    "a": "2026-07-26 14:23:47.387000",
+    "campioni": 87,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "6",
+    "da": "2026-07-26 13:30:54.496000",
+    "a": "2026-07-26 13:31:16.414000",
+    "campioni": 89,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "6",
+    "da": "2026-07-26 14:04:09.713000",
+    "a": "2026-07-26 14:04:31.983000",
+    "campioni": 82,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "27",
+    "da": "2026-07-26 13:31:08.777000",
+    "a": "2026-07-26 13:31:28.418000",
+    "campioni": 72,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "27",
+    "da": "2026-07-26 14:00:19.150000",
+    "a": "2026-07-26 14:00:41.369000",
+    "campioni": 81,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "12",
+    "da": "2026-07-26 13:31:28.418000",
+    "a": "2026-07-26 13:35:16.571000",
+    "campioni": 62,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "12",
+    "da": "2026-07-26 14:19:12.734000",
+    "a": "2026-07-26 14:19:33.965000",
+    "campioni": 82,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "87",
+    "da": "2026-07-26 13:35:53.792000",
+    "a": "2026-07-26 13:36:16.382000",
+    "campioni": 84,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "87",
+    "da": "2026-07-26 14:05:42.742000",
+    "a": "2026-07-26 14:06:04.938000",
+    "campioni": 88,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "23",
+    "da": "2026-07-26 13:41:57.983000",
+    "a": "2026-07-26 13:42:20.123000",
+    "campioni": 81,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "23",
+    "da": "2026-07-26 14:23:16.486000",
+    "a": "2026-07-26 14:23:39.243000",
+    "campioni": 90,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "63",
+    "da": "2026-07-26 13:42:34.433000",
+    "a": "2026-07-26 13:42:56.696000",
+    "campioni": 83,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "63",
+    "da": "2026-07-26 14:21:13.979000",
+    "a": "2026-07-26 14:21:35.968000",
+    "campioni": 77,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "5",
+    "da": "2026-07-26 13:45:49.711000",
+    "a": "2026-07-26 13:46:11.470000",
+    "campioni": 83,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "14",
+    "da": "2026-07-26 13:53:27.089000",
+    "a": "2026-07-26 13:53:49.270000",
+    "campioni": 91,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "14",
+    "da": "2026-07-26 14:24:15.882000",
+    "a": "2026-07-26 14:24:38.480000",
+    "campioni": 87,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "30",
+    "da": "2026-07-26 14:04:32.749000",
+    "a": "2026-07-26 14:04:54.433000",
+    "campioni": 83,
+    "quota_in_corridoio": 0.0
+   },
+   {
+    "auto": "77",
+    "da": "2026-07-26 13:25:02.886000",
+    "a": "None",
+    "campioni": 299,
+    "quota_in_corridoio": 0.0
+   }
+  ],
+  "periodi_verificabili": 45,
+  "coerenza": 0.0444,
+  "gate": false
+ },
+ "kpi5": {
+  "granularita": "la cronaca del race control porta il GIRO, non l'orario: la clausola ±30 s del KPI 5 si applica come copertura del giro indicato dalla timeline replay (stessa lettura dichiarata per Spa).",
+  "timeline_replay": [
+   {
+    "t": "None",
+    "status": "AllClear",
+    "giro": null
+   },
+   {
+    "t": "2026-07-26 13:58:36.986000",
+    "status": "Yellow",
+    "giro": 39
+   },
+   {
+    "t": "2026-07-26 13:58:40.040000",
+    "status": "AllClear",
+    "giro": 39
+   },
+   {
+    "t": "2026-07-26 14:14:38.718000",
+    "status": "Yellow",
+    "giro": 50
+   },
+   {
+    "t": "2026-07-26 14:14:41.234000",
+    "status": "AllClear",
+    "giro": 50
+   },
+   {
+    "t": "2026-07-26 14:22:41.093000",
+    "status": "Yellow",
+    "giro": 56
+   },
+   {
+    "t": "2026-07-26 14:22:55.505000",
+    "status": "VSCDeployed",
+    "giro": 56
+   },
+   {
+    "t": "2026-07-26 14:24:13.413000",
+    "status": "VSCEnding",
+    "giro": 57
+   },
+   {
+    "t": "2026-07-26 14:24:24.538000",
+    "status": "AllClear",
+    "giro": 57
+   }
+  ],
+  "periodi_neutralizzazione": [
+   {
+    "tipo": "VSC",
+    "da": "2026-07-26 14:22:55.505000",
+    "giro_da": 56,
+    "a": "2026-07-26 14:24:24.538000",
+    "giro_a": 57
+   }
+  ],
+  "cronaca_coperta": [
+   {
+    "tipo": "VSC",
+    "giro_inizio": 56,
+    "giro_fine": 57,
+    "causa": "VSC DEPLOYED",
+    "fonte": "race control",
+    "coperto_dal_replay": true
+   }
+  ],
+  "periodi_pre_gara": [],
+  "periodi_replay_non_in_cronaca": [],
+  "gate": true
+ }
+}

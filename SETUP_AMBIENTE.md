@@ -2,6 +2,12 @@
 
 Fattuale, aggiornato al 15/07/2026 (consolidamento pre-Spa, Blocco A).
 
+> **Rivisto il 17/08/2026: il contenuto qui sotto è ancora vero, tranne dove la crontab del VPS
+> è descritta in prosa.** La fonte della crontab è `scheduling/vps.cron` (versionata dal 07/08)
+> e si verifica **sulla macchina** con `scheduling/verifica_crontab.sh`; se questo documento la
+> contraddice, ha ragione il file. Stato delle due macchine al 17/08 in
+> [`COSA_DEVO_FARE_IO.md`](COSA_DEVO_FARE_IO.md) §5.
+
 ## Checkout e regola dei branch
 - Checkout principale: `~/muretto`. **Sta su `main`, sempre.**
 - Il lavoro si fa su branch; il merge è il checkpoint. Nessun lavoro diretto su `main`.

@@ -1,0 +1,2435 @@
+{
+ "_targhetta": {
+  "cosa_e": "Registro degli eventi di movimento: le coppie MANCATE raggruppate per (gara, pilota), con metriche di traiettoria attorno alla sosta o alla neutralizzazione.",
+  "generato_da": "ai_lab/confronto/registro_eventi.mjs",
+  "referto_di_origine": "ai_lab/confronto/REFERTO_62_righe.md (15/08/2026)",
+  "natura": "DESCRITTIVO — nessun cancello, nessun meccanismo, nessun parametro",
+  "definizioni": {
+   "evento": "grappolo di almeno 2 coppie mancate dello stesso (gara, pilota) con giri contigui a meno di GAP=5 giri",
+   "gap": "5 giri — parametro dichiarato, scelto per riprodurre il raggruppamento a mano del referto del 15/08. Vedi `senza_contiguita`.",
+   "doppio_conteggio": "una coppia ha due estremi e puo' stare in due eventi: la somma di `coppie` supera le mancate totali. Il numero da citare per la copertura e' `coppie_distinte_coperte`.",
+   "ancora": "(1) sosta propria piu vicina al giro mediano delle coppie; (2) altrimenti neutralizzazione piu vicina; (3) altrimenti il giro mediano",
+   "finestra_metriche": "±3 giri attorno all'ancora",
+   "segno_deficit": "positivo = il motore muove MENO della realta'"
+  }
+ },
+ "mancate_totali": 62,
+ "eventi_multipli": 19,
+ "senza_contiguita": {
+  "_nota": "la stessa misura con «evento = tutte le coppie di quel pilota in quella gara». Le due cifre non sono in conflitto: sono due definizioni di episodio, ed e' il motivo per cui GAP e' esplicito.",
+  "eventi_multipli": 31
+ },
+ "coppie_distinte_coperte": 47,
+ "quota_coperta": 75.8,
+ "primi": {
+  "n": 4,
+  "coppie_distinte_coperte": 25,
+  "quota": 40.3
+ },
+ "eventi": [
+  {
+   "gara": "Belgio",
+   "pilota": "HAD",
+   "coppie": 8,
+   "giri": {
+    "da": 10,
+    "a": 17,
+    "elenco": [
+     10,
+     12,
+     13,
+     14,
+     15,
+     15,
+     15,
+     17
+    ]
+   },
+   "secchi": {
+    "altrui": 3,
+    "pista": 1,
+    "suo": 4
+   },
+   "soste_vere": [
+    1,
+    2,
+    20
+   ],
+   "neutralizzato_nella_finestra": true,
+   "ancora": {
+    "giro": 20,
+    "tipo": "sosta propria",
+    "prima": 17,
+    "dopo": 23
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 9,
+     "a": 20,
+     "salto_vero": -8,
+     "salto_motore": null,
+     "deficit": null
+    },
+    "finestra_ancora": {
+     "salto_vero": 0,
+     "salto_motore": 4,
+     "deficit": -4
+    },
+    "prima_ancora": {
+     "salto_vero": 0,
+     "salto_motore": 4,
+     "deficit": -4
+    },
+    "dopo_ancora": {
+     "salto_vero": 0,
+     "salto_motore": 0,
+     "deficit": 0
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 9,
+     "vero": 15,
+     "motore": null,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 10,
+     "vero": 14,
+     "motore": 15,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 11,
+     "vero": 14,
+     "motore": 15,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 12,
+     "vero": 13,
+     "motore": 15,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 13,
+     "vero": 12,
+     "motore": 15,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 14,
+     "vero": 11,
+     "motore": 14,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 15,
+     "vero": 8,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 16,
+     "vero": 8,
+     "motore": 11,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 17,
+     "vero": 7,
+     "motore": 11,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 18,
+     "vero": 7,
+     "motore": 10,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 19,
+     "vero": 7,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 20,
+     "vero": 7,
+     "motore": 15,
+     "neutralizzato": true,
+     "sosta_propria": true,
+     "soste_altrui": 6
+    },
+    {
+     "giro": 21,
+     "vero": 7,
+     "motore": 15,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 22,
+     "vero": 7,
+     "motore": 15,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 23,
+     "vero": 7,
+     "motore": 15,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    }
+   ]
+  },
+  {
+   "gara": "Monaco",
+   "pilota": "RUS",
+   "coppie": 7,
+   "giri": {
+    "da": 72,
+    "a": 72,
+    "elenco": [
+     72,
+     72,
+     72,
+     72,
+     72,
+     72,
+     72
+    ]
+   },
+   "secchi": {
+    "suo": 7
+   },
+   "soste_vere": [
+    31,
+    60,
+    66,
+    68,
+    72
+   ],
+   "neutralizzato_nella_finestra": true,
+   "ancora": {
+    "giro": 72,
+    "tipo": "sosta propria",
+    "prima": 69,
+    "dopo": 75
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 69,
+     "a": 75,
+     "salto_vero": 7,
+     "salto_motore": 0,
+     "deficit": 7
+    },
+    "finestra_ancora": {
+     "salto_vero": 7,
+     "salto_motore": 0,
+     "deficit": 7
+    },
+    "prima_ancora": {
+     "salto_vero": 7,
+     "salto_motore": 0,
+     "deficit": 7
+    },
+    "dopo_ancora": {
+     "salto_vero": 0,
+     "salto_motore": 0,
+     "deficit": 0
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 69,
+     "vero": 4,
+     "motore": 4,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 70,
+     "vero": 4,
+     "motore": 4,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 71,
+     "vero": 3,
+     "motore": 4,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 72,
+     "vero": 11,
+     "motore": 4,
+     "neutralizzato": false,
+     "sosta_propria": true,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 73,
+     "vero": 11,
+     "motore": 4,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 74,
+     "vero": 11,
+     "motore": 4,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 75,
+     "vero": 11,
+     "motore": 4,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    }
+   ]
+  },
+  {
+   "gara": "Belgio",
+   "pilota": "BOR",
+   "coppie": 5,
+   "giri": {
+    "da": 14,
+    "a": 17,
+    "elenco": [
+     14,
+     15,
+     15,
+     16,
+     17
+    ]
+   },
+   "secchi": {
+    "suo": 4,
+    "altrui": 1
+   },
+   "soste_vere": [
+    20
+   ],
+   "neutralizzato_nella_finestra": true,
+   "ancora": {
+    "giro": 20,
+    "tipo": "sosta propria",
+    "prima": 17,
+    "dopo": 23
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 11,
+     "a": 20,
+     "salto_vero": -3,
+     "salto_motore": 0,
+     "deficit": -3
+    },
+    "finestra_ancora": {
+     "salto_vero": 0,
+     "salto_motore": 4,
+     "deficit": -4
+    },
+    "prima_ancora": {
+     "salto_vero": 0,
+     "salto_motore": 4,
+     "deficit": -4
+    },
+    "dopo_ancora": {
+     "salto_vero": 0,
+     "salto_motore": 0,
+     "deficit": 0
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 11,
+     "vero": 11,
+     "motore": 11,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 12,
+     "vero": 11,
+     "motore": 11,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 13,
+     "vero": 11,
+     "motore": 11,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 14,
+     "vero": 10,
+     "motore": 10,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 15,
+     "vero": 10,
+     "motore": 8,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 16,
+     "vero": 9,
+     "motore": 7,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 17,
+     "vero": 8,
+     "motore": 7,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 18,
+     "vero": 8,
+     "motore": 7,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 19,
+     "vero": 8,
+     "motore": 7,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 20,
+     "vero": 8,
+     "motore": 11,
+     "neutralizzato": true,
+     "sosta_propria": true,
+     "soste_altrui": 6
+    },
+    {
+     "giro": 21,
+     "vero": 8,
+     "motore": 11,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 22,
+     "vero": 8,
+     "motore": 11,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 23,
+     "vero": 8,
+     "motore": 11,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    }
+   ]
+  },
+  {
+   "gara": "Gran Bretagna",
+   "pilota": "ANT",
+   "coppie": 5,
+   "giri": {
+    "da": 42,
+    "a": 44,
+    "elenco": [
+     42,
+     43,
+     44,
+     44,
+     44
+    ]
+   },
+   "secchi": {
+    "suo": 5
+   },
+   "soste_vere": [
+    35,
+    41,
+    43
+   ],
+   "neutralizzato_nella_finestra": true,
+   "ancora": {
+    "giro": 43,
+    "tipo": "sosta propria",
+    "prima": 40,
+    "dopo": 46
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 39,
+     "a": 47,
+     "salto_vero": 7,
+     "salto_motore": 2,
+     "deficit": 5
+    },
+    "finestra_ancora": {
+     "salto_vero": 7,
+     "salto_motore": 3,
+     "deficit": 4
+    },
+    "prima_ancora": {
+     "salto_vero": 4,
+     "salto_motore": 3,
+     "deficit": 1
+    },
+    "dopo_ancora": {
+     "salto_vero": 3,
+     "salto_motore": 0,
+     "deficit": 3
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 39,
+     "vero": 2,
+     "motore": 3,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 40,
+     "vero": 2,
+     "motore": 3,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 41,
+     "vero": 2,
+     "motore": 3,
+     "neutralizzato": false,
+     "sosta_propria": true,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 42,
+     "vero": 5,
+     "motore": 3,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 43,
+     "vero": 6,
+     "motore": 6,
+     "neutralizzato": false,
+     "sosta_propria": true,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 44,
+     "vero": 9,
+     "motore": 6,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 45,
+     "vero": 9,
+     "motore": 6,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 46,
+     "vero": 9,
+     "motore": 6,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 4
+    },
+    {
+     "giro": 47,
+     "vero": 9,
+     "motore": 5,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 8
+    }
+   ]
+  },
+  {
+   "gara": "Giappone",
+   "pilota": "ANT",
+   "coppie": 3,
+   "giri": {
+    "da": 17,
+    "a": 21,
+    "elenco": [
+     17,
+     19,
+     21
+    ]
+   },
+   "secchi": {
+    "suo": 3
+   },
+   "soste_vere": [
+    22
+   ],
+   "neutralizzato_nella_finestra": true,
+   "ancora": {
+    "giro": 22,
+    "tipo": "sosta propria",
+    "prima": 19,
+    "dopo": 25
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 14,
+     "a": 24,
+     "salto_vero": -3,
+     "salto_motore": -3,
+     "deficit": 0
+    },
+    "finestra_ancora": {
+     "salto_vero": -1,
+     "salto_motore": 0,
+     "deficit": -1
+    },
+    "prima_ancora": {
+     "salto_vero": -1,
+     "salto_motore": 0,
+     "deficit": -1
+    },
+    "dopo_ancora": {
+     "salto_vero": 0,
+     "salto_motore": 0,
+     "deficit": 0
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 14,
+     "vero": 4,
+     "motore": 5,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 15,
+     "vero": 3,
+     "motore": 5,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 16,
+     "vero": 4,
+     "motore": 4,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 17,
+     "vero": 3,
+     "motore": 3,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 18,
+     "vero": 3,
+     "motore": 2,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 19,
+     "vero": 2,
+     "motore": 2,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 3
+    },
+    {
+     "giro": 20,
+     "vero": 2,
+     "motore": 2,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 21,
+     "vero": 1,
+     "motore": 1,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 4
+    },
+    {
+     "giro": 22,
+     "vero": 1,
+     "motore": 2,
+     "neutralizzato": true,
+     "sosta_propria": true,
+     "soste_altrui": 7
+    },
+    {
+     "giro": 23,
+     "vero": 1,
+     "motore": 2,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 24,
+     "vero": 1,
+     "motore": 2,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 25,
+     "vero": 1,
+     "motore": 2,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    }
+   ]
+  },
+  {
+   "gara": "Giappone",
+   "pilota": "LIN",
+   "coppie": 3,
+   "giri": {
+    "da": 18,
+    "a": 19,
+    "elenco": [
+     18,
+     18,
+     19
+    ]
+   },
+   "secchi": {
+    "suo": 3
+   },
+   "soste_vere": [
+    18
+   ],
+   "neutralizzato_nella_finestra": true,
+   "ancora": {
+    "giro": 18,
+    "tipo": "sosta propria",
+    "prima": 15,
+    "dopo": 21
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 15,
+     "a": 22,
+     "salto_vero": 5,
+     "salto_motore": 1,
+     "deficit": 4
+    },
+    "finestra_ancora": {
+     "salto_vero": 5,
+     "salto_motore": 3,
+     "deficit": 2
+    },
+    "prima_ancora": {
+     "salto_vero": 2,
+     "salto_motore": 5,
+     "deficit": -3
+    },
+    "dopo_ancora": {
+     "salto_vero": 3,
+     "salto_motore": -2,
+     "deficit": 5
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 15,
+     "vero": 10,
+     "motore": 9,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 16,
+     "vero": 10,
+     "motore": 9,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 17,
+     "vero": 10,
+     "motore": 9,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 18,
+     "vero": 12,
+     "motore": 14,
+     "neutralizzato": false,
+     "sosta_propria": true,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 19,
+     "vero": 15,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 3
+    },
+    {
+     "giro": 20,
+     "vero": 15,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 21,
+     "vero": 15,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 4
+    },
+    {
+     "giro": 22,
+     "vero": 15,
+     "motore": 10,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 8
+    }
+   ]
+  },
+  {
+   "gara": "Australia",
+   "pilota": "ANT",
+   "coppie": 2,
+   "giri": {
+    "da": 25,
+    "a": 28,
+    "elenco": [
+     25,
+     28
+    ]
+   },
+   "secchi": {
+    "suo": 2
+   },
+   "soste_vere": [
+    12
+   ],
+   "neutralizzato_nella_finestra": false,
+   "ancora": {
+    "giro": 28,
+    "tipo": "giro mediano delle coppie",
+    "prima": 25,
+    "dopo": 31
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 22,
+     "a": 31,
+     "salto_vero": -2,
+     "salto_motore": -2,
+     "deficit": 0
+    },
+    "finestra_ancora": {
+     "salto_vero": -1,
+     "salto_motore": -1,
+     "deficit": 0
+    },
+    "prima_ancora": {
+     "salto_vero": -1,
+     "salto_motore": -1,
+     "deficit": 0
+    },
+    "dopo_ancora": {
+     "salto_vero": 0,
+     "salto_motore": 0,
+     "deficit": 0
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 22,
+     "vero": 4,
+     "motore": 4,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 23,
+     "vero": 4,
+     "motore": 4,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 24,
+     "vero": 4,
+     "motore": 4,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 25,
+     "vero": 3,
+     "motore": 3,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 26,
+     "vero": 3,
+     "motore": 3,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 27,
+     "vero": 3,
+     "motore": 3,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 28,
+     "vero": 2,
+     "motore": 2,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 29,
+     "vero": 2,
+     "motore": 2,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 30,
+     "vero": 2,
+     "motore": 2,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 31,
+     "vero": 2,
+     "motore": 2,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    }
+   ]
+  },
+  {
+   "gara": "Belgio",
+   "pilota": "ALB",
+   "coppie": 2,
+   "giri": {
+    "da": 12,
+    "a": 12,
+    "elenco": [
+     12,
+     12
+    ]
+   },
+   "secchi": {
+    "altrui": 2
+   },
+   "soste_vere": [
+    18
+   ],
+   "neutralizzato_nella_finestra": false,
+   "ancora": {
+    "giro": 12,
+    "tipo": "giro mediano delle coppie",
+    "prima": 9,
+    "dopo": 15
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 9,
+     "a": 15,
+     "salto_vero": 1,
+     "salto_motore": null,
+     "deficit": null
+    },
+    "finestra_ancora": {
+     "salto_vero": 1,
+     "salto_motore": null,
+     "deficit": null
+    },
+    "prima_ancora": {
+     "salto_vero": 2,
+     "salto_motore": null,
+     "deficit": null
+    },
+    "dopo_ancora": {
+     "salto_vero": -1,
+     "salto_motore": -3,
+     "deficit": 2
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 9,
+     "vero": 12,
+     "motore": null,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 10,
+     "vero": 12,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 11,
+     "vero": 12,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 12,
+     "vero": 14,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 13,
+     "vero": 14,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 14,
+     "vero": 14,
+     "motore": 11,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 15,
+     "vero": 13,
+     "motore": 9,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    }
+   ]
+  },
+  {
+   "gara": "Belgio",
+   "pilota": "HUL",
+   "coppie": 2,
+   "giri": {
+    "da": 12,
+    "a": 13,
+    "elenco": [
+     12,
+     13
+    ]
+   },
+   "secchi": {
+    "altrui": 2
+   },
+   "soste_vere": [
+    20
+   ],
+   "neutralizzato_nella_finestra": false,
+   "ancora": {
+    "giro": 13,
+    "tipo": "giro mediano delle coppie",
+    "prima": 10,
+    "dopo": 16
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 9,
+     "a": 16,
+     "salto_vero": -3,
+     "salto_motore": null,
+     "deficit": null
+    },
+    "finestra_ancora": {
+     "salto_vero": -3,
+     "salto_motore": -4,
+     "deficit": 1
+    },
+    "prima_ancora": {
+     "salto_vero": 0,
+     "salto_motore": 0,
+     "deficit": 0
+    },
+    "dopo_ancora": {
+     "salto_vero": -3,
+     "salto_motore": -4,
+     "deficit": 1
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 9,
+     "vero": 13,
+     "motore": null,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 10,
+     "vero": 13,
+     "motore": 13,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 11,
+     "vero": 13,
+     "motore": 13,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 12,
+     "vero": 12,
+     "motore": 13,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 13,
+     "vero": 13,
+     "motore": 13,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 14,
+     "vero": 13,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 15,
+     "vero": 11,
+     "motore": 10,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 16,
+     "vero": 10,
+     "motore": 9,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    }
+   ]
+  },
+  {
+   "gara": "Belgio",
+   "pilota": "COL",
+   "coppie": 2,
+   "giri": {
+    "da": 15,
+    "a": 15,
+    "elenco": [
+     15,
+     15
+    ]
+   },
+   "secchi": {
+    "suo": 2
+   },
+   "soste_vere": [
+    15
+   ],
+   "neutralizzato_nella_finestra": true,
+   "ancora": {
+    "giro": 15,
+    "tipo": "sosta propria",
+    "prima": 12,
+    "dopo": 18
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 12,
+     "a": 18,
+     "salto_vero": 5,
+     "salto_motore": 5,
+     "deficit": 0
+    },
+    "finestra_ancora": {
+     "salto_vero": 5,
+     "salto_motore": 5,
+     "deficit": 0
+    },
+    "prima_ancora": {
+     "salto_vero": 2,
+     "salto_motore": 6,
+     "deficit": -4
+    },
+    "dopo_ancora": {
+     "salto_vero": 3,
+     "salto_motore": -1,
+     "deficit": 4
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 12,
+     "vero": 10,
+     "motore": 9,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 13,
+     "vero": 10,
+     "motore": 9,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 14,
+     "vero": 9,
+     "motore": 9,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 15,
+     "vero": 12,
+     "motore": 15,
+     "neutralizzato": false,
+     "sosta_propria": true,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 16,
+     "vero": 15,
+     "motore": 15,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 17,
+     "vero": 15,
+     "motore": 15,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 18,
+     "vero": 15,
+     "motore": 14,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    }
+   ]
+  },
+  {
+   "gara": "Belgio",
+   "pilota": "GAS",
+   "coppie": 2,
+   "giri": {
+    "da": 14,
+    "a": 14,
+    "elenco": [
+     14,
+     14
+    ]
+   },
+   "secchi": {
+    "suo": 2
+   },
+   "soste_vere": [
+    14
+   ],
+   "neutralizzato_nella_finestra": false,
+   "ancora": {
+    "giro": 14,
+    "tipo": "sosta propria",
+    "prima": 11,
+    "dopo": 17
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 11,
+     "a": 17,
+     "salto_vero": 4,
+     "salto_motore": 4,
+     "deficit": 0
+    },
+    "finestra_ancora": {
+     "salto_vero": 4,
+     "salto_motore": 4,
+     "deficit": 0
+    },
+    "prima_ancora": {
+     "salto_vero": 2,
+     "salto_motore": 5,
+     "deficit": -3
+    },
+    "dopo_ancora": {
+     "salto_vero": 2,
+     "salto_motore": -1,
+     "deficit": 3
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 11,
+     "vero": 10,
+     "motore": 10,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 12,
+     "vero": 9,
+     "motore": 10,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 13,
+     "vero": 9,
+     "motore": 10,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 14,
+     "vero": 12,
+     "motore": 15,
+     "neutralizzato": false,
+     "sosta_propria": true,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 15,
+     "vero": 15,
+     "motore": 14,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 16,
+     "vero": 14,
+     "motore": 14,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 17,
+     "vero": 14,
+     "motore": 14,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    }
+   ]
+  },
+  {
+   "gara": "Belgio",
+   "pilota": "LAW",
+   "coppie": 2,
+   "giri": {
+    "da": 15,
+    "a": 16,
+    "elenco": [
+     15,
+     16
+    ]
+   },
+   "secchi": {
+    "suo": 2
+   },
+   "soste_vere": [
+    15
+   ],
+   "neutralizzato_nella_finestra": true,
+   "ancora": {
+    "giro": 15,
+    "tipo": "sosta propria",
+    "prima": 12,
+    "dopo": 18
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 12,
+     "a": 19,
+     "salto_vero": 4,
+     "salto_motore": 1,
+     "deficit": 3
+    },
+    "finestra_ancora": {
+     "salto_vero": 5,
+     "salto_motore": 3,
+     "deficit": 2
+    },
+    "prima_ancora": {
+     "salto_vero": 1,
+     "salto_motore": 5,
+     "deficit": -4
+    },
+    "dopo_ancora": {
+     "salto_vero": 4,
+     "salto_motore": -2,
+     "deficit": 6
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 12,
+     "vero": 8,
+     "motore": 8,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 13,
+     "vero": 8,
+     "motore": 8,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 14,
+     "vero": 8,
+     "motore": 8,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 15,
+     "vero": 9,
+     "motore": 13,
+     "neutralizzato": false,
+     "sosta_propria": true,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 16,
+     "vero": 13,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 17,
+     "vero": 13,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 18,
+     "vero": 13,
+     "motore": 11,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 19,
+     "vero": 12,
+     "motore": 9,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    }
+   ]
+  },
+  {
+   "gara": "Belgio",
+   "pilota": "LAW",
+   "coppie": 2,
+   "giri": {
+    "da": 30,
+    "a": 33,
+    "elenco": [
+     30,
+     33
+    ]
+   },
+   "secchi": {
+    "altrui": 2
+   },
+   "soste_vere": [
+    15
+   ],
+   "neutralizzato_nella_finestra": false,
+   "ancora": {
+    "giro": 33,
+    "tipo": "giro mediano delle coppie",
+    "prima": 30,
+    "dopo": 36
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 27,
+     "a": 36,
+     "salto_vero": 2,
+     "salto_motore": 0,
+     "deficit": 2
+    },
+    "finestra_ancora": {
+     "salto_vero": 1,
+     "salto_motore": 1,
+     "deficit": 0
+    },
+    "prima_ancora": {
+     "salto_vero": 1,
+     "salto_motore": 0,
+     "deficit": 1
+    },
+    "dopo_ancora": {
+     "salto_vero": 0,
+     "salto_motore": 1,
+     "deficit": -1
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 27,
+     "vero": 10,
+     "motore": 7,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 28,
+     "vero": 10,
+     "motore": 7,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 29,
+     "vero": 10,
+     "motore": 7,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 30,
+     "vero": 11,
+     "motore": 6,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 31,
+     "vero": 11,
+     "motore": 6,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 32,
+     "vero": 11,
+     "motore": 6,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 33,
+     "vero": 12,
+     "motore": 6,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 34,
+     "vero": 12,
+     "motore": 7,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 35,
+     "vero": 12,
+     "motore": 7,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 36,
+     "vero": 12,
+     "motore": 7,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    }
+   ]
+  },
+  {
+   "gara": "Belgio",
+   "pilota": "LIN",
+   "coppie": 2,
+   "giri": {
+    "da": 17,
+    "a": 17,
+    "elenco": [
+     17,
+     17
+    ]
+   },
+   "secchi": {
+    "suo": 2
+   },
+   "soste_vere": [
+    16
+   ],
+   "neutralizzato_nella_finestra": true,
+   "ancora": {
+    "giro": 16,
+    "tipo": "sosta propria",
+    "prima": 13,
+    "dopo": 19
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 14,
+     "a": 20,
+     "salto_vero": 3,
+     "salto_motore": 2,
+     "deficit": 1
+    },
+    "finestra_ancora": {
+     "salto_vero": 4,
+     "salto_motore": 4,
+     "deficit": 0
+    },
+    "prima_ancora": {
+     "salto_vero": 0,
+     "salto_motore": 7,
+     "deficit": -7
+    },
+    "dopo_ancora": {
+     "salto_vero": 4,
+     "salto_motore": -3,
+     "deficit": 7
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 13,
+     "vero": 7,
+     "motore": 6,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 14,
+     "vero": 7,
+     "motore": 6,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 15,
+     "vero": 7,
+     "motore": 6,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 16,
+     "vero": 7,
+     "motore": 13,
+     "neutralizzato": false,
+     "sosta_propria": true,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 17,
+     "vero": 12,
+     "motore": 13,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 18,
+     "vero": 11,
+     "motore": 12,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 19,
+     "vero": 11,
+     "motore": 10,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 20,
+     "vero": 10,
+     "motore": 8,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 7
+    }
+   ]
+  },
+  {
+   "gara": "Giappone",
+   "pilota": "LAW",
+   "coppie": 2,
+   "giri": {
+    "da": 18,
+    "a": 20,
+    "elenco": [
+     18,
+     20
+    ]
+   },
+   "secchi": {
+    "suo": 2
+   },
+   "soste_vere": [
+    22
+   ],
+   "neutralizzato_nella_finestra": true,
+   "ancora": {
+    "giro": 22,
+    "tipo": "sosta propria",
+    "prima": 19,
+    "dopo": 25
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 15,
+     "a": 23,
+     "salto_vero": -2,
+     "salto_motore": -1,
+     "deficit": -1
+    },
+    "finestra_ancora": {
+     "salto_vero": -2,
+     "salto_motore": 2,
+     "deficit": -4
+    },
+    "prima_ancora": {
+     "salto_vero": -1,
+     "salto_motore": 3,
+     "deficit": -4
+    },
+    "dopo_ancora": {
+     "salto_vero": -1,
+     "salto_motore": -1,
+     "deficit": 0
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 15,
+     "vero": 12,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 16,
+     "vero": 12,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 17,
+     "vero": 12,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 18,
+     "vero": 11,
+     "motore": 11,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 19,
+     "vero": 11,
+     "motore": 9,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 3
+    },
+    {
+     "giro": 20,
+     "vero": 9,
+     "motore": 9,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 21,
+     "vero": 9,
+     "motore": 9,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 4
+    },
+    {
+     "giro": 22,
+     "vero": 10,
+     "motore": 12,
+     "neutralizzato": true,
+     "sosta_propria": true,
+     "soste_altrui": 7
+    },
+    {
+     "giro": 23,
+     "vero": 10,
+     "motore": 11,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 24,
+     "vero": 9,
+     "motore": 11,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 25,
+     "vero": 9,
+     "motore": 11,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    }
+   ]
+  },
+  {
+   "gara": "Miami",
+   "pilota": "LEC",
+   "coppie": 2,
+   "giri": {
+    "da": 56,
+    "a": 57,
+    "elenco": [
+     56,
+     57
+    ]
+   },
+   "secchi": {
+    "pista": 2
+   },
+   "soste_vere": [
+    21
+   ],
+   "neutralizzato_nella_finestra": false,
+   "ancora": {
+    "giro": 57,
+    "tipo": "giro mediano delle coppie",
+    "prima": 54,
+    "dopo": 57
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 53,
+     "a": 57,
+     "salto_vero": 3,
+     "salto_motore": 0,
+     "deficit": 3
+    },
+    "finestra_ancora": {
+     "salto_vero": 3,
+     "salto_motore": 0,
+     "deficit": 3
+    },
+    "prima_ancora": {
+     "salto_vero": 3,
+     "salto_motore": 0,
+     "deficit": 3
+    },
+    "dopo_ancora": {
+     "salto_vero": 0,
+     "salto_motore": 0,
+     "deficit": 0
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 53,
+     "vero": 3,
+     "motore": 4,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 54,
+     "vero": 3,
+     "motore": 4,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 55,
+     "vero": 3,
+     "motore": 4,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 56,
+     "vero": 4,
+     "motore": 4,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 57,
+     "vero": 6,
+     "motore": 4,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    }
+   ]
+  },
+  {
+   "gara": "Monaco",
+   "pilota": "COL",
+   "coppie": 2,
+   "giri": {
+    "da": 35,
+    "a": 35,
+    "elenco": [
+     35,
+     35
+    ]
+   },
+   "secchi": {
+    "suo": 2
+   },
+   "soste_vere": [
+    35,
+    59,
+    65,
+    67,
+    68
+   ],
+   "neutralizzato_nella_finestra": false,
+   "ancora": {
+    "giro": 35,
+    "tipo": "sosta propria",
+    "prima": 32,
+    "dopo": 38
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 32,
+     "a": 38,
+     "salto_vero": 3,
+     "salto_motore": 3,
+     "deficit": 0
+    },
+    "finestra_ancora": {
+     "salto_vero": 3,
+     "salto_motore": 3,
+     "deficit": 0
+    },
+    "prima_ancora": {
+     "salto_vero": 3,
+     "salto_motore": 3,
+     "deficit": 0
+    },
+    "dopo_ancora": {
+     "salto_vero": 0,
+     "salto_motore": 0,
+     "deficit": 0
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 32,
+     "vero": 9,
+     "motore": 9,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 33,
+     "vero": 9,
+     "motore": 9,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 34,
+     "vero": 9,
+     "motore": 9,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 35,
+     "vero": 12,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": true,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 36,
+     "vero": 12,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 37,
+     "vero": 12,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 38,
+     "vero": 12,
+     "motore": 12,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    }
+   ]
+  },
+  {
+   "gara": "Monaco",
+   "pilota": "GAS",
+   "coppie": 2,
+   "giri": {
+    "da": 71,
+    "a": 72,
+    "elenco": [
+     71,
+     72
+    ]
+   },
+   "secchi": {
+    "altrui": 1,
+    "suo": 1
+   },
+   "soste_vere": [
+    45,
+    60,
+    66,
+    68
+   ],
+   "neutralizzato_nella_finestra": true,
+   "ancora": {
+    "giro": 68,
+    "tipo": "sosta propria",
+    "prima": 65,
+    "dopo": 71
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 68,
+     "a": 75,
+     "salto_vero": -2,
+     "salto_motore": 0,
+     "deficit": -2
+    },
+    "finestra_ancora": {
+     "salto_vero": -1,
+     "salto_motore": 0,
+     "deficit": -1
+    },
+    "prima_ancora": {
+     "salto_vero": 0,
+     "salto_motore": 0,
+     "deficit": 0
+    },
+    "dopo_ancora": {
+     "salto_vero": -1,
+     "salto_motore": 0,
+     "deficit": -1
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 65,
+     "vero": 5,
+     "motore": 5,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 9
+    },
+    {
+     "giro": 66,
+     "vero": 5,
+     "motore": 5,
+     "neutralizzato": true,
+     "sosta_propria": true,
+     "soste_altrui": 6
+    },
+    {
+     "giro": 67,
+     "vero": 5,
+     "motore": 5,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 9
+    },
+    {
+     "giro": 68,
+     "vero": 5,
+     "motore": 5,
+     "neutralizzato": true,
+     "sosta_propria": true,
+     "soste_altrui": 15
+    },
+    {
+     "giro": 69,
+     "vero": 5,
+     "motore": 5,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 70,
+     "vero": 5,
+     "motore": 5,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 71,
+     "vero": 4,
+     "motore": 5,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 72,
+     "vero": 3,
+     "motore": 5,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 1
+    },
+    {
+     "giro": 73,
+     "vero": 3,
+     "motore": 5,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 74,
+     "vero": 3,
+     "motore": 5,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 75,
+     "vero": 3,
+     "motore": 5,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    }
+   ]
+  },
+  {
+   "gara": "Ungheria",
+   "pilota": "ANT",
+   "coppie": 2,
+   "giri": {
+    "da": 57,
+    "a": 58,
+    "elenco": [
+     57,
+     58
+    ]
+   },
+   "secchi": {
+    "pista": 1,
+    "suo": 1
+   },
+   "soste_vere": [
+    22,
+    53
+   ],
+   "neutralizzato_nella_finestra": true,
+   "ancora": {
+    "giro": 56,
+    "tipo": "neutralizzazione",
+    "prima": 53,
+    "dopo": 59
+   },
+   "traiettoria_metriche": {
+    "finestra_evento": {
+     "da": 54,
+     "a": 61,
+     "salto_vero": -2,
+     "salto_motore": 0,
+     "deficit": -2
+    },
+    "finestra_ancora": {
+     "salto_vero": 1,
+     "salto_motore": 0,
+     "deficit": 1
+    },
+    "prima_ancora": {
+     "salto_vero": 3,
+     "salto_motore": 0,
+     "deficit": 3
+    },
+    "dopo_ancora": {
+     "salto_vero": -2,
+     "salto_motore": 0,
+     "deficit": -2
+    }
+   },
+   "traiettoria": [
+    {
+     "giro": 53,
+     "vero": 2,
+     "motore": 6,
+     "neutralizzato": false,
+     "sosta_propria": true,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 54,
+     "vero": 5,
+     "motore": 6,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 3
+    },
+    {
+     "giro": 55,
+     "vero": 5,
+     "motore": 6,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 2
+    },
+    {
+     "giro": 56,
+     "vero": 5,
+     "motore": 6,
+     "neutralizzato": true,
+     "sosta_propria": false,
+     "soste_altrui": 3
+    },
+    {
+     "giro": 57,
+     "vero": 4,
+     "motore": 6,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 58,
+     "vero": 3,
+     "motore": 6,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 59,
+     "vero": 3,
+     "motore": 6,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 60,
+     "vero": 3,
+     "motore": 6,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    },
+    {
+     "giro": 61,
+     "vero": 3,
+     "motore": 6,
+     "neutralizzato": false,
+     "sosta_propria": false,
+     "soste_altrui": 0
+    }
+   ]
+  }
+ ]
+}
