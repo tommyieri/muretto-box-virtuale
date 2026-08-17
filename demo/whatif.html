@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>What-If Simulator — Muretto Box Virtuale</title>
+<meta name="description" content="Simulatore di strategie controfattuali: anticipa o ritarda il pit stop e calcola lo scenario di rientro.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
+<link rel="stylesheet" href="muro.css?v=090826b">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
+<style>
+  .whatif-layout { display:grid; grid-template-columns:340px 1fr; gap:24px; margin-top:24px; }
+  @media(max-width:960px){ .whatif-layout { grid-template-columns:1fr; } }
+  .pannello-ctrl { background:var(--piastra); border:1px solid var(--bordo); border-radius:var(--r); padding:20px; display:flex; flex-direction:column; gap:18px; }
+  .pannello-vista { background:var(--carbonio); border:1px solid var(--bordo); border-radius:var(--r); padding:24px; display:flex; flex-direction:column; gap:20px; }
+  .campo { display:flex; flex-direction:column; gap:8px; }
+  .campo label { font:600 11px/1 var(--mono); text-transform:uppercase; letter-spacing:.12em; color:var(--fioco); }
+  .campo select, .campo input[type="range"] { width:100%; }
+  .ctrl-val { font:700 16px/1 var(--mono); color:var(--testo); display:flex; justify-content:space-between; align-items:center; }
+  .ctrl-val span { color:var(--ciano); }
+  .kpi-row { display:grid; grid-template-columns:repeat(auto-fit, minmax(140px,1fr)); gap:12px; }
+  .kpi-box { background:rgba(255,255,255,.03); border:1px solid var(--bordo); border-radius:6px; padding:12px; text-align:center; }
+  .kpi-box .tit { font:500 10px/1 var(--mono); color:var(--fioco); text-transform:uppercase; letter-spacing:.1em; margin-bottom:6px; }
+  .kpi-box .val { font:700 20px/1 var(--mono); color:var(--testo); }
+  .kpi-box .val.pos { color:#00E676; }
+  .kpi-box .val.neg { color:#FF5252; }
+  .targhetta { background:rgba(0,0,0,.3); border-left:3px solid var(--ciano); padding:10px 14px; font:400 12px/1.5 var(--mono); color:var(--calmo); border-radius:0 4px 4px 0; }
+  .traccia-svg { width:100%; height:auto; display:block; border-radius:6px; background:rgba(0,0,0,.25); border:1px solid var(--bordo); }
+</style>
+</head>
+<body>
+<header class="barra"></header>
+
+<main class="scafo">
+  <p class="occhiello">Strategia · Scenari Controfattuali</p>
+  <h1 class="titolone">Simulatore <em>What-If</em></h1>
+  <p class="sottotitolo">Cosa sarebbe successo anticipando o ritardando la sosta? Modifica il giro di pit stop e osserva l'effetto sul rientro e sul delta gara.</p>
+
+  <div class="whatif-layout">
+    <!-- CONTROLLI -->
+    <div class="pannello-ctrl">
+      <div class="campo">
+        <label for="sel-gara">Gran Premio</label>
+        <select id="sel-gara" class="sel"></select>
+      </div>
+
+      <div class="campo">
+        <label for="sel-pilota">Pilota</label>
+        <select id="sel-pilota" class="sel"></select>
+      </div>
+
+      <div class="campo">
+        <div class="ctrl-val">
+          <label>Giro Sosta Alternativo</label>
+          <span id="txt-giro-alt">—</span>
+        </div>
+        <input type="range" id="rng-giro" min="1" max="70" value="30" step="1">
+      </div>
+
+      <div class="campo">
+        <label>Mescola Montata</label>
+        <div class="pillole" id="btn-mescole">
+          <button class="pil on" data-m="HARD">Hard</button>
+          <button class="pil" data-m="MEDIUM">Medium</button>
+          <button class="pil" data-m="SOFT">Soft</button>
+        </div>
+      </div>
+
+      <div class="targhetta" id="box-targhetta">
+        Caricamento parametri circuito...
+      </div>
+    </div>
+
+    <!-- VISTA GRAFICA & KPI -->
+    <div class="pannello-vista">
+      <div class="kpi-row">
+        <div class="kpi-box">
+          <div class="tit">Pit Stop Reale</div>
+          <div class="val" id="kpi-pit-reale">—</div>
+        </div>
+        <div class="kpi-box">
+          <div class="tit">Pit Stop What-If</div>
+          <div class="val" id="kpi-pit-sim">—</div>
+        </div>
+        <div class="kpi-box">
+          <div class="tit">Posizione Rientro</div>
+          <div class="val" id="kpi-pos-rientro">—</div>
+        </div>
+        <div class="kpi-box">
+          <div class="tit">Delta Tempo Finale</div>
+          <div class="val" id="kpi-delta-tempo">—</div>
+        </div>
+      </div>
+
+      <!-- GRAFICO TRACCIA TEMPI / GAP -->
+      <div id="grafico-wrap">
+        <svg id="svg-whatif" class="traccia-svg" viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg">
+          <text x="400" y="190" fill="var(--fioco)" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="14">Caricamento simulazione...</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="piede"><div class="piede-in"></div></footer>
+
+<script type="module">
+  import { guscio } from './muro.mjs?v=090826b';
+  guscio('whatif.html');
+</script>
+<script type="module" src="whatif.mjs?v=090826b"></script>
+</body>
+</html>
