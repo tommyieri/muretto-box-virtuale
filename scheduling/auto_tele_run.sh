@@ -72,6 +72,38 @@ trap 'rmdir "$LOCK" 2>/dev/null' EXIT
   fi
 } >> "$LOG" 2>&1
 
+# LA SORVEGLIANZA GIRA DOVE STA IL RISCHIO — s46, subito dopo l'aggiornamento.
+#
+# Il `git fetch` e' appena avvenuto qui sopra: e' l'unico momento in cui la meta' (B) di s46
+# puo' confrontare questo checkout con un origin/main fresco senza andare in rete per conto
+# suo. Piu' tardi sarebbe una misura vecchia, prima non ci sarebbe nulla da misurare.
+#
+# NON FERMA NIENTE, di proposito. Questo wrapper prosegue anche quando il fast-forward
+# fallisce («meglio vecchio che fermo», v. il ramo CODICE VECCHIO qui sopra): sarebbe
+# incoerente che la sentinella — che di quel guasto e' solo il testimone — fosse piu' severa
+# del guasto stesso. Qui s46 SCRIVE, non decide. Chi decide e' chi legge il log, o la CI.
+#
+# I DUE MODI IN CUI LA SORVEGLIANZA PUO' TACERE sono trattati come rossi, non come assenze,
+# perche' una guardia muta e' peggio di nessuna guardia: si crede di essere sorvegliati.
+#  - node fuori dal PATH del cron (il PATH qui e' esplicito, v. in cima);
+#  - il file di s46 che manca, che vuol dire checkout piu' vecchio della sentinella stessa,
+#    cioe' esattamente la condizione che si voleva sorvegliare.
+{
+  echo "---- $(date '+%F %T') freschezza del codice (s46)"
+  S46="$REPO/simulatore/banco/sentinelle/s46_codice_fresco.mjs"
+  if [ ! -f "$S46" ]; then
+    echo "     !! s46 ASSENTE da questo checkout: o e' stata tolta, o il codice qui e' piu'"
+    echo "        vecchio della sentinella stessa. In entrambi i casi nessuno sta guardando."
+  elif ! command -v node >/dev/null 2>&1; then
+    echo "     !! s46 NON ESEGUIBILE: node non e' nel PATH di questo cron. La sorveglianza tace."
+  elif node "$S46"; then
+    echo "     codice fresco"
+  else
+    echo "     !! s46 ROSSA (dettaglio qui sopra). Si prosegue lo stesso, ma adesso e' scritto."
+  fi
+} >> "$LOG" 2>&1
+
+
 echo "==== $(date '+%F %T') avvio auto_tele --push (python: $PY) ====" >> "$LOG"
 "$PY" auto_tele.py --push >> "$LOG" 2>&1
 echo "==== $(date '+%F %T') fine (exit $?) ====" >> "$LOG"
