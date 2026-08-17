@@ -63,6 +63,21 @@ const MARCATORE = 'CODICE VECCHIO';
 // una stringa che un commento non puo' produrre, perche' descrive un comportamento.
 const MARCATORE_AGGANCIO = 'freschezza del codice (s46)';
 const ORE_MAX = 24;
+// IL SECONDO MODO DI NON AGGIORNARSI, trovato il 17/08/2026 — e questa sentinella non lo
+// vedeva. Sorvegliavo il ramo del fast-forward FALLITO e non quello che non ci arriva
+// nemmeno: `git status --porcelain` NUDO conta i file non tracciati, quindi UN solo file
+// non tracciato (sul VPS: `data/auto_articoli.log`, comparso il 10/08 col trasloco della
+// redazione) manda il wrapper nel ramo «albero sporco» a ogni giro, per sempre. Sette
+// giorni, 343 giri, zero aggiornamenti — e nessun rosso, perche' il checkout restava
+// fresco per merito di un ALTRO wrapper che usa la forma giusta. La meta' (B) misura la
+// freschezza, e quella era verde: e' la CAPACITA' di aggiornarsi che era morta, e si vede
+// solo nel codice. Da qui la regola: chi si aggiorna da solo deve escludere i non
+// tracciati, perche' in un checkout di lavoro ce ne sono sempre.
+// La forma NUDA e' `git status --porcelain` non seguito da `--untracked-files=no`: nel
+// wrapper compare come `$(git status --porcelain)`, quindi il lookahead deve guardare
+// l'opzione che manca, non un carattere qualunque (la parentesi di chiusura ingannerebbe).
+const STATUS_NUDO = /git\s+status\s+--porcelain(?!\s+--untracked-files=no)/;
+const STATUS_SICURO = 'git status --porcelain --untracked-files=no';
 
 const b = banco('s46');
 
@@ -75,11 +90,28 @@ const git = (...args) => {
 };
 
 // ---- (A) i wrapper che si aggiornano da soli devono urlare ----------------------------
+// SOLO IL CODICE, NON LA PROSA — e me lo sono ricordato sbagliando di nuovo. L'asserzione
+// sullo status nudo e' nata rossa sul wrapper GIA' RIPARATO, perche' la stringa
+// `git status --porcelain` compare nel commento che spiega il guasto («fino al 17/08 qui
+// c'era ... NUDO»). E' lo stesso inciampo che questo file racconta poche righe sopra: la
+// prima versione dell'aggancio cercava un nome che viveva in un commento. Le asserzioni su
+// una PROPRIETA' DEL CODICE devono leggere il codice; i commenti sono liberi di citare il
+// difetto che descrivono, ed e' giusto che lo facciano.
+// Si tolgono le righe interamente di commento (primo carattere non bianco = `#`), che e'
+// tutto cio' che serve qui: nessun wrapper mette codice e commento sulla stessa riga.
+const soloCodice = (testo) => testo
+  .split('\n')
+  .filter((riga) => !/^\s*#/.test(riga))
+  .join('\n');
+
 const wrapper = existsSync(SCHEDULING)
   ? readdirSync(SCHEDULING)
       .filter((f) => f.endsWith('.sh'))
-      .map((f) => ({ nome: f, testo: readFileSync(path.join(SCHEDULING, f), 'utf8') }))
-      .filter((w) => w.testo.includes('merge --ff-only'))
+      .map((f) => {
+        const testo = readFileSync(path.join(SCHEDULING, f), 'utf8');
+        return { nome: f, testo, codice: soloCodice(testo) };
+      })
+      .filter((w) => w.codice.includes('merge --ff-only'))
   : [];
 
 b.verifica(
@@ -103,6 +135,17 @@ for (const w of wrapper) {
     + ' wrapper deve misurare la freschezza del codice che sta per eseguire, non lasciarla a un'
     + ' lancio manuale che non fa nessuno',
     w.testo.includes(MARCATORE_AGGANCIO),
+  );
+  // E DEVE POTER ARRIVARE al fast-forward. Un `git status --porcelain` nudo conta i file
+  // non tracciati: in un checkout di lavoro ce ne sono sempre, quindi il wrapper si
+  // ferma prima di provare, a ogni giro, e la meta' (B) resta verde mentendo (v. il
+  // commento su STATUS_NUDO). Si pretende la forma esplicita.
+  b.verifica(
+    `scheduling/${w.nome}: la guardia dell'albero sporco esclude i file non tracciati`
+    + ` («${STATUS_SICURO}») — con lo status nudo UN file non tracciato spegne`
+    + " l'auto-aggiornamento per sempre, e il checkout puo' restare fresco per merito di un"
+    + ' altro wrapper: nessun sintomo, e la meta\' (B) resta verde mentendo',
+    w.codice.includes(STATUS_SICURO) && !STATUS_NUDO.test(w.codice),
   );
 }
 

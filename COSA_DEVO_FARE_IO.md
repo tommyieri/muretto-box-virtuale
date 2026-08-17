@@ -1,28 +1,71 @@
-# Cosa devi fare TU per vedere i grossi in live
+# Cosa devi fare TU — GP d'Olanda, 21-23/08/2026
 
-*Scritto 22/07/2026. Tutto il resto è fatto. Qui c'è solo quello che richiede le tue mani,
-il tuo account o la tua firma — in ordine di scadenza.*
+**Riscritto il 17/08/2026.** *La versione precedente era del 22/07 e organizzava il weekend
+d'Ungheria: un documento che dava istruzioni per un giovedì passato da tre settimane, con
+scadenze in grassetto e ⏰ accanto. La pagella del 13/08 aveva ragione a chiamarli «memoria
+stantia»: un documento operativo scaduto non è neutro, dice cose false con l'aria di essere
+urgente. Le procedure che valgono sempre sono qui sotto; quelle chiuse (il merge, il VPS 58
+commit indietro, le chiavi di sessione dell'Ungheria) le tiene la storia di git.*
+
+**Attenzione: Zandvoort è un weekend SPRINT.** Non ci sono FP2 e FP3 — solo la FP1, poi
+sprint quali, sprint, qualifiche, gara.
 
 ---
 
-## ⏰ La sequenza, in una tabella
+## ⏰ La sequenza
 
-| quando | cosa | quanto | se salta |
+| quando (ora italiana) | cosa | quanto | se salta |
 |---|---|---|---|
-| **giovedì 23/07** | rinnovare il token F1TV | 2 min | venerdì non si registra |
-| **giovedì 23/07** | dire sì o no al merge del branch | 5 min | domenica gira il codice vecchio |
-| **venerdì 24/07, 11:30 UTC** | lanciare la registrazione sul Mac | 1 min | la gara di domenica non ha replay |
-| **venerdì 24/07, a sessione aperta** | un `curl` (te lo lancio io se sei al PC) | 30 s | non sappiamo se il live è possibile |
-| **domenica 26/07, 12:45 UTC** | lanciare la registrazione della gara | 1 min | perdiamo la gara |
+| **appena puoi** | **ruotare la chiave API Anthropic** | 5 min | la chiave in uso è compromessa da stanotte |
+| **mer 19/08 dopo le 17:00 → ven 21/08 entro le 12:30** | rinnovare il token F1TV | 2 min | venerdì non si registra |
+| **ven 21/08, 12:20** | lanciare la registrazione (FP1 12:30) | 1 min | il weekend non ha replay |
+| **sab 22/08, 11:50 e 15:50** | registrazione sprint e qualifiche | 1 min | |
+| **dom 23/08, 14:45** | lanciare la registrazione della gara | 1 min | perdiamo la gara |
 
 ---
 
-## 1. 🔴 Rinnovare il token F1TV — GIOVEDÌ, non oggi
+## 1. 🔴 Ruotare la chiave API — e stavolta il problema non è `.zshrc`
 
-L'abbonamento **è attivo**. È il *token in cache* a essere scaduto il 20/07, e dura
-**esattamente 96 ore**. Uno preso oggi muore domenica a metà gara.
+**Il fallback in `.zshrc` non c'è più**: ho verificato, zero chiavi in chiaro, resta solo la
+funzione `chiave-on` che legge `~/.muretto_env`. Quella parte è chiusa.
 
-> **Fallo giovedì.** La finestra buona va da mercoledì 17:00 a venerdì 13:30 (ora italiana).
+**Ma la rotazione del 15/08 è già scaduta.** La chiave che sta adesso in `~/.muretto_env` sul
+Mac è finita **in chiaro dentro la trascrizione di un agente il 17/08 alle 03:04**: un agente
+ha letto i tuoi dotfile e ne ha stampato il contenuto nel proprio log. Non è servito a niente
+non esportarla — **è bastato che fosse leggibile nella home.**
+
+E le due macchine non sono allineate: il VPS ha una **chiave diversa**, del 10/08. Che sia
+ancora valida non lo so, e non l'ho provato: i giri della redazione di oggi non hanno chiamato
+l'LLM (nessuna bozza da scrivere), quindi il log non dimostra nulla.
+
+**Cosa devi fare tu** — in console Anthropic, perché io non posso e non devo:
+
+1. crea una chiave nuova e **revoca** quella attuale;
+2. scrivila in `~/.muretto_env` sul Mac (`chmod 600`);
+3. scrivi **la stessa** sul VPS:
+
+```bash
+ssh muretto@167.233.236.186 'chmod 600 ~/.muretto_env && nano ~/.muretto_env'
+```
+
+> **Non incollare la chiave in una chat con un agente, mia inclusa, e non lanciare comandi che
+> la contengono in chiaro.** È così che è uscita la volta scorsa: il 14/08 il comando `ssh ...
+> echo "export ANTHROPIC_API_KEY=..."` è finito in una trascrizione, e la chiave con lui.
+
+**La cosa che resta da decidere, e non è mia**: dove tenere il segreto. Un file a 600 nella tua
+home è al riparo dagli altri utenti, non dagli agenti che giri tu — hanno i tuoi permessi. Le
+due strade sensate sono il **keychain di macOS** (l'agente deve chiedere, e tu vedi la
+richiesta) oppure **tenere la chiave solo sul VPS**, che è la macchina che pubblica e su cui
+non girano agenti. La seconda è gratis e chiude il problema alla radice: sul Mac la redazione
+non gira più da luglio.
+
+## 2. 🟡 Il token F1TV — mercoledì sera o giovedì, non prima
+
+L'abbonamento è attivo; è il **token in cache** che dura **96 ore esatte**. Uno preso lunedì
+muore prima della gara.
+
+> **Finestra buona: da mercoledì 19/08 alle 17:00 a venerdì 21/08 alle 12:30** (ora italiana).
+> Prima di mercoledì sera muore durante la gara; dopo venerdì mezzogiorno arrivi tardi per la FP1.
 
 **Passo 1** — apri il Terminale (Cmd+Spazio → `Terminale`).
 
@@ -38,169 +81,70 @@ python3 -c "from fastf1.internals.f1auth import get_auth_token; get_auth_token()
 
 **Passo 4** — copia quell'indirizzo nel browser e accedi con l'account **F1 TV Access**.
 
-> ⚠️ **Non chiudere il Terminale** mentre fai il login: sta aspettando lì.
+## 3. 🟡 Registrare le sessioni — sul Mac, non sul VPS
 
-**Passo 5** — nel Terminale deve comparire `Sign-in successful.`
-
-**Passo 6** — controlla (facoltativo ma consigliato):
+Qualche minuto prima di ogni sessione:
 
 ```bash
-python3 -c "from fastf1.internals.f1auth import print_auth_status; print_auth_status()"
+cd ~/muretto && .venv/bin/python live/record_session.py
 ```
 
-La scadenza deve essere **lunedì 27 luglio**. Se cade **prima di domenica alle 15:00 UTC**,
-hai rinnovato troppo presto: rifallo il giorno dopo.
+Lascia la finestra aperta. Si ferma da sola a fine sessione. Se il feed cade, riparte da sola
+su un file nuovo (`_part2`, `_part3`).
 
-| se vedi | fai |
-|---|---|
-| `No module named fastf1` | usa `/opt/homebrew/bin/python3` al posto di `python3` |
-| resta fermo senza stampare niente | `Ctrl+C` e ricomincia dal passo 2 |
-| `requires an active F1TV subscription` | l'abbonamento non risulta attivo: da guardare su F1 TV |
-
-**Solo sul Mac.** Sul VPS quel comando aspetta un browser che non c'è e resta appeso per
-sempre — è il motivo per cui il collettore non lo usa.
-
----
-
-## 2. 🔴 Il merge — la decisione che sblocca tutto
-
-**Il VPS l'ho aggiornato io** (vedi §5): era 58 commit indietro, ora è allineato a `main`.
-
-Ma **tutto il lavoro di oggi è sul branch `claude/f1-live-strategy-analysis-cb6770`**, non su
-`main`. Finché non lo mergi:
-
-- il VPS **non ha** i cinque grossi
-- il VPS **non ha** la riparazione della gara orfana
-- il sito su Vercel mostra il pannello vecchio
-
-**Cosa cambia per chi guarda il sito** — è per questo che serve una tua firma, non un merge
-tecnico:
-
-| | prima | dopo |
+| sessione | ora italiana | lancia alle |
 |---|---|---|
-| pit-loss | tabella di circuito | misurato oggi, con n soste |
-| gomma nuova | non c'era | misurata oggi |
-| undercut | «in sviluppo» | quanti giri servono + tasso storico |
-| degrado | solo scenari | anche il numero, letto dalle soste |
-| box della squadra | non c'era | scostamento della squadra |
-| duelli | il motore incollava le auto | **il motore non simula più il duello, e lo dice** |
+| FP1 | ven 21/08 **12:30** | 12:20 |
+| Sprint quali | ven 21/08 **16:30** | 16:20 |
+| Sprint | sab 22/08 **12:00** | 11:50 |
+| Qualifiche | sab 22/08 **16:00** | 15:50 |
+| **Gara** | dom 23/08 **15:00** | **14:45** |
 
-L'ultima riga è un **cambio di promessa**: senza il cap due auto possono attraversarsi. In
-pagina c'è scritto *«il motore riproduce quanti cambi di posizione avvengono, non quali»*.
-Se questa frase non ti va bene, si torna indietro cambiando **una variabile**
-(`CAP_TRAFFICO = true` in `demo/gara.html`).
+**Perché il Mac e non il VPS**: `livetiming.formula1.com` risponde 403 agli IP dei datacenter.
+Dal Mac (IP di casa) funziona.
 
-> **Il merge fa deploy su Vercel al push su `main`.** Non c'è staging.
+> **Due cose da guardare stavolta, e sono nuove.** (a) Se una registrazione si spezza in
+> `_part2`, **dimmelo**: il buco *fra* due parti oggi non viene misurato da nessuno, e in
+> Ungheria ci abbiamo perso nove giri senza saperlo (`live/REPORT_RIATTIVAZIONE.md`, §2.1).
+> (b) Lascia il Mac **acceso e non in stop** fino a fine sessione: il cron della telemetria
+> salta le ore in cui dorme — nel log di stanotte c'è un buco fra 06:30 e 13:30.
 
----
+## 4. Cosa NON aspettarti questa domenica
 
-## 3. 🟡 Venerdì — la registrazione (FP1 alle 11:30 UTC = 13:30 italiane)
+**Il pannello live resta sul replay.** `live/` non è riattivato, e il motivo è preciso: il
+modulo prende per buona una coordinata di parcheggio del feed — in Ungheria il **90,5 %** dei
+campioni GPS nei box sta su una costante che non è `(0,0,0)` e quindi passa il filtro. Finché
+non è pre-registrato il rimedio, la mappa non si accende. Referto completo in
+[`live/REPORT_RIATTIVAZIONE.md`](live/REPORT_RIATTIVAZIONE.md).
 
-Sul **Mac**, qualche minuto prima:
+Quello che **funziona ed è provato fuori campione**: decodifica, replay end-to-end e
+ricostruzione di SC/VSC, su un circuito nuovo e su una registrazione in due parti.
 
-```bash
-cd ~/muretto && .venv/bin/python live/record_session.py
-```
+**Se piove, il sistema si zittisce.** I coefficienti si misurano sulle sole gomme da asciutto:
+sotto la pioggia smettono di aggiornarsi e restano all'ultimo valore asciutto. È un limite
+dichiarato, non un guasto da segnalare.
 
-Lascia la finestra aperta. Si ferma da sola a fine sessione. Se il feed cade, riparte da
-sola su un file nuovo (`_part2`, `_part3`).
+## 5. ✅ Le macchine — controllate oggi, non serve nulla da te
 
-**Perché serve il Mac e non il VPS**: `livetiming.formula1.com` risponde 403 agli IP dei
-datacenter. Dal Mac (IP di casa) funziona.
+| | Mac | VPS |
+|---|---|---|
+| checkout | `96bd392`, allineato | `96bd392`, allineato |
+| cron | telemetria ogni 30 min, **gira** (ultimo giro 13:30) | `auto_gara` ogni 30 min + redazione a :15/:45, **girano** |
+| crontab = file versionato | — | ✅ `verifica_crontab.sh` VERDE |
+| s46 (freschezza codice) | verde a ogni giro | verde a ogni giro |
+| deploy esterno | ✅ i byte online sono quelli di `main` | ✅ idem |
 
----
-
-## 4. 🟡 Venerdì a sessione aperta — la verifica che decide il live
-
-Una riga sola, e vale il resto del progetto:
-
-```bash
-curl -s 'https://api.openf1.org/v1/stints?session_key=11335' | head -c 400
-```
-
-- **risponde con dati** → il piano OpenF1 copre il realtime, il pannello live è possibile
-- **risponde vuoto o errore** → il live resta torre + mappa, e il pannello resta sul replay
-
-Le chiavi di sessione dell'Ungheria le ho già prese:
-**FP1 11335 · FP2 11336 · FP3 11337 · Quali 11338 · Gara 11342**
-
-Se sei al PC scrivimi e lo lancio io.
-
----
-
-## 5. ✅ Il VPS — fatto io, oggi
-
-| | |
-|---|---|
-| prima | `02d2393`, **58 commit indietro** |
-| adesso | `ac3c7d8`, **0 commit indietro** |
-| servizio | `active`, riavviato e verificato |
-| `/status` | connesso, token OpenF1 valido, 0 fallimenti |
-| disco | 32,9 GB liberi su 37,2 |
-
-Ho controllato **prima** di aggiornare che il runtime del collettore non cambiasse: dei 183
-file toccati, in `live/` cambiava **solo un file di test**. Requirements invariati.
-Poi ho provato sul VPS i dodici generatori di laboratorio mai girati lassù (`numpy 2.5.1`,
-`pandas 2.3.3` presenti) e la catena completa a vuoto: **exit 0**.
-
-**Punto di ritorno**, se qualcosa andasse storto:
-
-```bash
-ssh muretto@167.233.236.186 'cd ~/muretto && git reset --hard 02d23934cfc30f0ef4d03e75680e19bb8e580587 && sudo systemctl restart muretto-live'
-```
-
-### ⚠️ Una cosa che resta rotta lassù, e serve il merge
-
-La crontab del VPS lancia `auto_gara.py` **direttamente**, saltando `scheduling/auto_run.sh`
-— cioè saltando il `git pull` che ho aggiunto. Risultato: **il VPS non si aggiorna mai da
-solo**, va aggiornato a mano come ho fatto oggi.
-
-La riparazione è sul branch e ha bisogno del merge, perché `auto_run.sh` deve prima imparare
-a usare il venv giusto (`.venv-auto`, non `python3`). Dopo il merge la crontab va cambiata
-così — **una riga, e la faccio io quando dici**:
-
-```
-*/30 * * * * flock -n /home/muretto/muretto/data/.auto_gara.lock /home/muretto/muretto/scheduling/auto_run.sh
-```
-
----
-
-## 6. Domenica — la gara (13:00 UTC = 15:00 italiane)
-
-Stesso comando del venerdì, lanciato verso le **12:45 UTC**:
-
-```bash
-cd ~/muretto && .venv/bin/python live/record_session.py
-```
-
-**Cosa succede domenica**, secondo il piano concordato:
-
-- il sito mostra **torre + mappa + bandiere** in diretta
-- il **pannello pit resta sul replay** delle gare passate
-- si **registra tutto**, e lunedì si fa lo shadow-run sulla registrazione
-
-Il pannello live debutta al GP successivo, con un cancello deciso il venerdì sera e non la
-domenica alle 13.
-
----
-
-## 7. Due cose da sapere per domenica, senza fare niente
-
-**L'Ungheria non ha una banda SOFT.** Se un pilota monta gomma morbida, gli scenari di
-degrado **non compaiono** (non mostrano zero: spariscono). È il comportamento giusto, ma se
-lo vedi non è un guasto.
-
-**Se piove, il sistema si zittisce.** I coefficienti si misurano sulle sole gomme da
-asciutto: sotto la pioggia smettono di aggiornarsi e restano all'ultimo valore asciutto. Il
-2026 ha **14 giri su 11.302** in intermedia: non abbiamo materiale per validare il bagnato,
-e questo è un limite dichiarato, non un bug da segnalare.
+**Una cosa era rotta e l'ho riparata**: sul VPS `auto_run.sh` non si aggiornava più da solo dal
+**10/08** — 343 giri in sette giorni fermi al codice di quel giorno. Non si era visto perché il
+checkout restava fresco *per merito di un altro cron* (la redazione, che usa la forma giusta del
+comando). Ora è allineato ai due wrapper gemelli e **s46 sorveglia anche questo caso**.
 
 ---
 
 ## Il minimo indispensabile, se hai poco tempo
 
-1. **Giovedì**: rinnova il token (§1). Senza, venerdì non si registra.
-2. **Giovedì**: dimmi sì o no al merge (§2).
-3. **Domenica 12:45 UTC**: lancia `record_session.py` (§6).
+1. **Adesso**: ruota la chiave API e allinea il VPS (§1). È l'unica voce rossa.
+2. **Mercoledì sera o giovedì**: rinnova il token F1TV (§2).
+3. **Domenica 14:45**: lancia `record_session.py` (§3). Se puoi, anche venerdì e sabato.
 
-Il resto lo faccio io.
+Il resto gira da solo, e stavolta l'ho verificato sulle macchine invece di fidarmi dei log.
