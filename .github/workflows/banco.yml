@@ -35,6 +35,32 @@ on:
   schedule:
     - cron: '15 6 * * *'
 
+# LE ACTION STANNO SU NODE 24, e non e' stato un aggiornamento di cortesia.
+#
+# Fino al 18/08/2026 questo workflow usava checkout@v4, setup-node@v4 e setup-python@v5:
+# tutte e tre dichiarano `using: node20`, e il runner le forzava su Node 24 stampando un
+# avviso di deprecazione a ogni giro. Finche' e' un avviso non rompe niente — il giorno in
+# cui GitHub smette di forzare, rompe TUTTO in una volta, e lo scopri con la CI rossa su un
+# lavoro che non c'entra. Il costo di ripararlo adesso e' cinque righe; quello di ripararlo
+# quel giorno e' cinque righe piu' una gara da pubblicare.
+#
+# PERCHE' IL SALTO FINO A v7 E NON AL MINIMO CHE BASTAVA (checkout@v5, setup-node@v5,
+# setup-python@v6, cioe' i primi major su node24). Le rotture dichiarate nei major
+# intermedi sono state lette una per una, e nessuna tocca questo repo:
+#   · setup-node v5 accende il caching automatico SE package.json porta il campo
+#     `packageManager`. simulatore/package.json non ce l'ha, e il workflow non chiede
+#     `cache:` da nessuna parte: il comportamento non cambia.
+#   · checkout v7 vieta il checkout delle PR da fork per `pull_request_target` e
+#     `workflow_run`. Qui i trigger sono push, pull_request e schedule: nessuno dei due.
+#   · setup-python v7 toglie l'ingresso `pip-install`. Non lo usiamo: numpy si installa
+#     con un `run:` a parte, due passi sotto.
+# Restare al minimo avrebbe voluto dire rifare questo giro fra qualche mese per lo stesso
+# motivo.
+#
+# REQUISITO DEL RUNNER: v2.327.1 o piu' recente. `runs-on: ubuntu-latest` e' ospitato da
+# GitHub, quindi e' garantito. Se un giorno questi job passassero su un runner self-hosted,
+# questa riga e' la prima da rileggere.
+
 jobs:
   suite:
     runs-on: ubuntu-latest
@@ -42,10 +68,10 @@ jobs:
       run:
         working-directory: simulatore
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Node pinnato (.nvmrc)
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version-file: simulatore/.nvmrc
 
@@ -57,7 +83,7 @@ jobs:
       # due rosse decise. Il 02/08, appena il runner ha imparato a distinguere le rosse
       # dichiarate dalle nuove, sono saltate fuori al primo push. Erano li' da giorni.
       - name: Python per gli stimatori (le sentinelle di riproducibilita' li rilanciano)
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v7
         with:
           python-version: '3.12'
       - name: numpy
@@ -110,10 +136,10 @@ jobs:
   parita:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Node pinnato (.nvmrc)
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v7
         with:
           node-version-file: simulatore/.nvmrc
 
