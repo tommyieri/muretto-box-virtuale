@@ -1,0 +1,145 @@
+{
+ "gara": "Miami",
+ "esaminati": 131,
+ "con_differenza": 88,
+ "casi": [
+  {
+   "gara": "Miami",
+   "circuito": null,
+   "pilota": "PIA",
+   "team": "McLaren",
+   "colore": "#FF8000",
+   "n_giri": 57,
+   "giro": 13,
+   "pos_al_congelamento": 4,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 14,
+    "posizione": 18,
+    "giro_rientro": 15
+   },
+   "box_dopo": {
+    "giro_pit": 17,
+    "posizione": 12,
+    "giro_rientro": 18
+   },
+   "differenza": -6
+  },
+  {
+   "gara": "Miami",
+   "circuito": null,
+   "pilota": "RUS",
+   "team": "Mercedes",
+   "colore": "#27F4D2",
+   "n_giri": 57,
+   "giro": 13,
+   "pos_al_congelamento": 5,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 14,
+    "posizione": 18,
+    "giro_rientro": 15
+   },
+   "box_dopo": {
+    "giro_pit": 17,
+    "posizione": 12,
+    "giro_rientro": 18
+   },
+   "differenza": -6
+  },
+  {
+   "gara": "Miami",
+   "circuito": null,
+   "pilota": "HAM",
+   "team": "Ferrari",
+   "colore": "#E8002D",
+   "n_giri": 57,
+   "giro": 13,
+   "pos_al_congelamento": 6,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 14,
+    "posizione": 18,
+    "giro_rientro": 15
+   },
+   "box_dopo": {
+    "giro_pit": 17,
+    "posizione": 12,
+    "giro_rientro": 18
+   },
+   "differenza": -6
+  },
+  {
+   "gara": "Miami",
+   "circuito": null,
+   "pilota": "NOR",
+   "team": "McLaren",
+   "colore": "#FF8000",
+   "n_giri": 57,
+   "giro": 15,
+   "pos_al_congelamento": 1,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 16,
+    "posizione": 12,
+    "giro_rientro": 17
+   },
+   "box_dopo": {
+    "giro_pit": 19,
+    "posizione": 8,
+    "giro_rientro": 20
+   },
+   "differenza": -4
+  },
+  {
+   "gara": "Miami",
+   "circuito": null,
+   "pilota": "LEC",
+   "team": "Ferrari",
+   "colore": "#E8002D",
+   "n_giri": 57,
+   "giro": 21,
+   "pos_al_congelamento": 5,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 22,
+    "posizione": 12,
+    "giro_rientro": 23
+   },
+   "box_dopo": {
+    "giro_pit": 25,
+    "posizione": 8,
+    "giro_rientro": 26
+   },
+   "differenza": -4
+  },
+  {
+   "gara": "Miami",
+   "circuito": null,
+   "pilota": "ANT",
+   "team": "Mercedes",
+   "colore": "#27F4D2",
+   "n_giri": 57,
+   "giro": 16,
+   "pos_al_congelamento": 2,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 17,
+    "posizione": 12,
+    "giro_rientro": 18
+   },
+   "box_dopo": {
+    "giro_pit": 20,
+    "posizione": 9,
+    "giro_rientro": 21
+   },
+   "differenza": -3
+  }
+ ]
+}

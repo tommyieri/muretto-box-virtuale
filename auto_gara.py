@@ -941,6 +941,45 @@ def _bandiere_testo():
         '\n'.join(f'  - {g}: {"; ".join(v)}' for g, v in ba.items())
 
 
+def wave_social():
+    """ONDATA SOCIAL: dai dati appena pubblicati tira fuori le bozze Instagram.
+
+    Sta in fondo di proposito, e non tocca `demo/`: scrive solo in
+    `ai_lab/social/bozze/`, che e' area Lab. Nessun post esce da qui — la
+    pubblicazione e' un comando a parte con un attore umano
+    (`ai_lab/social/coda.py`, poi `pubblica.py`).
+
+    PERCHE' QUI DENTRO e non in un cron suo: i contenuti devono nascere dagli
+    STESSI numeri che sono appena finiti sul sito. Un generatore separato, con
+    una sua copia dei dati, comincerebbe a divergere dal sito il giorno stesso —
+    e la prima volta che il post dicesse una cifra diversa dalla pagina saremmo
+    noi a smentirci da soli.
+    """
+    try:
+        from ai_lab.social import genera as social_genera
+        from ai_lab.social import fatti as social_fatti
+    except Exception as e:
+        log(f'ondata social: modulo non caricabile ({e!r}) — salto.')
+        return False
+    gare = social_fatti.gare_disponibili()
+    if not gare:
+        log('ondata social: nessuna gara con dati.')
+        return False
+    nuovi = social_genera.genera(gare[-1])
+    if not nuovi:
+        log(f'ondata social: nessuna bozza nuova per {gare[-1]}.')
+        return False
+    log(f'ondata social: {len(nuovi)} bozze da {gare[-1]} -> '
+        f'{[p["id"] for p in nuovi]}  (in attesa di revisione umana)')
+    # E ADESSO SI COMMITTA, subito. Questa ondata gira per ULTIMA, dopo che le
+    # altre hanno gia' fatto il loro commit: se non committasse da se', le bozze
+    # scritte sul VPS resterebbero li' finche' un'altra ondata non ha qualcosa da
+    # fare — cioe' potenzialmente mai, in una settimana senza gare. E una bozza
+    # che non arriva sul Mac di Tommi e' una bozza che nessuno approvera'.
+    commit_push(f'social: {len(nuovi)} bozze da {gare[-1]} (da rivedere)')
+    return True
+
+
 if __name__ == '__main__':
     log(f'avvio {"[DRY-RUN] " if DRY else ""}{"[PUSH] " if PUSH else ""}')
     # Gare PRIME (automazione provata, prioritaria). Le qualifiche DOPO e
@@ -974,5 +1013,15 @@ if __name__ == '__main__':
     except Exception as e:
         log(f"ondata sessioni: errore ({e!r}) — il resto e' gia stato gestito, proseguo.")
         fattos = False
-    if not (fatto1 or fatto2 or fattor or fattoq or fattos):
+    # ULTIMA, e isolata come le altre: i contenuti social non devono poter
+    # rompere la pubblicazione della gara. Se qui si inceppa qualcosa, il sito e'
+    # gia' online da cinque ondate.
+    try:
+        fattoc = wave_social()
+    except SystemExit:
+        raise
+    except Exception as e:
+        log(f"ondata social: errore ({e!r}) — il sito e' gia stato pubblicato, proseguo.")
+        fattoc = False
+    if not (fatto1 or fatto2 or fattor or fattoq or fattos or fattoc):
         log('niente da fare: demo allineata.')

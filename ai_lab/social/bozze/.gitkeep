@@ -1,0 +1,3 @@
+Le bozze vivono qui. Ci arrivano da `wave_social` (anche dal VPS, che le committa
+da se'), e da qui passano per `coda.py`. Sono rigenerabili in un comando:
+    python3 -m ai_lab.social.genera --tutte

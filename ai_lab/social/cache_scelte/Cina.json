@@ -1,0 +1,145 @@
+{
+ "gara": "Cina",
+ "esaminati": 130,
+ "con_differenza": 85,
+ "casi": [
+  {
+   "gara": "Cina",
+   "circuito": null,
+   "pilota": "ANT",
+   "team": "Mercedes",
+   "colore": "#27F4D2",
+   "n_giri": 56,
+   "giro": 19,
+   "pos_al_congelamento": 1,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 20,
+    "posizione": 14,
+    "giro_rientro": 21
+   },
+   "box_dopo": {
+    "giro_pit": 23,
+    "posizione": 7,
+    "giro_rientro": 24
+   },
+   "differenza": -7
+  },
+  {
+   "gara": "Cina",
+   "circuito": null,
+   "pilota": "RUS",
+   "team": "Mercedes",
+   "colore": "#27F4D2",
+   "n_giri": 56,
+   "giro": 21,
+   "pos_al_congelamento": 4,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 22,
+    "posizione": 12,
+    "giro_rientro": 23
+   },
+   "box_dopo": {
+    "giro_pit": 25,
+    "posizione": 5,
+    "giro_rientro": 26
+   },
+   "differenza": -7
+  },
+  {
+   "gara": "Cina",
+   "circuito": null,
+   "pilota": "HAM",
+   "team": "Ferrari",
+   "colore": "#E8002D",
+   "n_giri": 56,
+   "giro": 22,
+   "pos_al_congelamento": 2,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 23,
+    "posizione": 10,
+    "giro_rientro": 24
+   },
+   "box_dopo": {
+    "giro_pit": 26,
+    "posizione": 4,
+    "giro_rientro": 27
+   },
+   "differenza": -6
+  },
+  {
+   "gara": "Cina",
+   "circuito": null,
+   "pilota": "LEC",
+   "team": "Ferrari",
+   "colore": "#E8002D",
+   "n_giri": 56,
+   "giro": 20,
+   "pos_al_congelamento": 3,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 21,
+    "posizione": 14,
+    "giro_rientro": 22
+   },
+   "box_dopo": {
+    "giro_pit": 24,
+    "posizione": 9,
+    "giro_rientro": 25
+   },
+   "differenza": -5
+  },
+  {
+   "gara": "Cina",
+   "circuito": null,
+   "pilota": "COL",
+   "team": "Alpine",
+   "colore": "#FF87BC",
+   "n_giri": 56,
+   "giro": 12,
+   "pos_al_congelamento": 2,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 13,
+    "posizione": 10,
+    "giro_rientro": 14
+   },
+   "box_dopo": {
+    "giro_pit": 16,
+    "posizione": 14,
+    "giro_rientro": 17
+   },
+   "differenza": 4
+  },
+  {
+   "gara": "Cina",
+   "circuito": null,
+   "pilota": "OCO",
+   "team": "Haas F1 Team",
+   "colore": "#B6BABD",
+   "n_giri": 56,
+   "giro": 12,
+   "pos_al_congelamento": 3,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 13,
+    "posizione": 10,
+    "giro_rientro": 14
+   },
+   "box_dopo": {
+    "giro_pit": 16,
+    "posizione": 14,
+    "giro_rientro": 17
+   },
+   "differenza": 4
+  }
+ ]
+}

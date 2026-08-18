@@ -18,7 +18,20 @@ QUI = os.path.dirname(os.path.abspath(__file__))
 OG = os.path.join(QUI, "demo", "og")
 
 W, H = 1200, 630
-FONDO, TESTO, FIOCO, ROSSO, LINEA = "#0A0B0E", "#EEF1F6", "#868E9F", "#E4002B", "#282C35"
+FONDO, TESTO, FIOCO, LINEA = "#0A0B0E", "#EEF1F6", "#868E9F", "#282C35"
+
+
+def _rosso() -> str:
+    """Il rosso del marchio, LETTO da demo/muro.css invece che ribattuto qui:
+    era una tonalita' diversa da quella del sito, per lo stesso marchio."""
+    try:
+        from ai_lab.social.marca import c
+        return c("rosso")
+    except Exception:
+        return "#FF1E3C"
+
+
+ROSSO = _rosso()
 
 # occhiello, titolo, riga sotto.  Il titolo NON e' il <title> della pagina:
 # li' serve il nome del sito per i risultati di ricerca, qui il marchio c'e' gia'
@@ -68,14 +81,34 @@ def a_capo(d, testo, f, largo):
     return righe
 
 
+
+def _marchio(d, img, x=64, y=56, lato=56, colore="#FF1E3C"):
+    """Incolla il segno del Muretto (la M sopra il muretto).
+
+    NON ridisegna la lettera: chiede l'immagine a ai_lab/social/marchio.py, che
+    e' l'unico posto dove quella geometria e' definita — la stessa da cui escono
+    la favicon del sito e la foto profilo di Instagram. Se marchio.py non e'
+    importabile ripiega sul quadrato rosso con la M, cosi' l'anteprima esce
+    comunque invece di far fallire tutta la generazione."""
+    try:
+        import sys, os
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from ai_lab.social import marchio as _m
+        seg = _m.png(lato, fondo=colore, margine=.10)
+        img.paste(seg, (int(x), int(y)), seg)
+        return True
+    except Exception:
+        d.rounded_rectangle([x, y, x + lato, y + lato], radius=13, fill=colore)
+        return False
+
 def disegna(nome, occhiello, titolo, sotto):
     from PIL import Image, ImageDraw
     img = Image.new("RGB", (W, H), FONDO)
     d = ImageDraw.Draw(img)
     d.rectangle([0, 0, W, 8], fill=ROSSO)
 
-    d.rounded_rectangle([64, 56, 120, 112], radius=13, fill=ROSSO)
-    d.text((92, 84), "M", font=font(34, True), fill="#FFFFFF", anchor="mm")
+    if not _marchio(d, img, 64, 56, 56, ROSSO):
+        d.text((92, 84), "M", font=font(34, True), fill="#FFFFFF", anchor="mm")
     d.text((136, 72), "MURETTO", font=font(26, True), fill=TESTO)
     d.text((137, 104), "BOX VIRTUALE", font=font(15), fill=FIOCO)
 

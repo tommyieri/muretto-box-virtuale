@@ -1,0 +1,76 @@
+{
+ "gara": "Canada",
+ "esaminati": 149,
+ "con_differenza": 21,
+ "casi": [
+  {
+   "gara": "Canada",
+   "circuito": null,
+   "pilota": "VER",
+   "team": "Red Bull Racing",
+   "colore": "#2B478F",
+   "n_giri": 68,
+   "giro": 31,
+   "pos_al_congelamento": 2,
+   "mescola": "SOFT",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 32,
+    "posizione": 3,
+    "giro_rientro": 33
+   },
+   "box_dopo": {
+    "giro_pit": 35,
+    "posizione": 5,
+    "giro_rientro": 36
+   },
+   "differenza": 2
+  },
+  {
+   "gara": "Canada",
+   "circuito": null,
+   "pilota": "ANT",
+   "team": "Mercedes",
+   "colore": "#27F4D2",
+   "n_giri": 68,
+   "giro": 35,
+   "pos_al_congelamento": 1,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 36,
+    "posizione": 5,
+    "giro_rientro": 37
+   },
+   "box_dopo": {
+    "giro_pit": 39,
+    "posizione": 3,
+    "giro_rientro": 40
+   },
+   "differenza": -2
+  },
+  {
+   "gara": "Canada",
+   "circuito": null,
+   "pilota": "RUS",
+   "team": "Mercedes",
+   "colore": "#27F4D2",
+   "n_giri": 68,
+   "giro": 20,
+   "pos_al_congelamento": 1,
+   "mescola": "SOFT",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 21,
+    "posizione": 6,
+    "giro_rientro": 22
+   },
+   "box_dopo": {
+    "giro_pit": 24,
+    "posizione": 5,
+    "giro_rientro": 25
+   },
+   "differenza": -1
+  }
+ ]
+}

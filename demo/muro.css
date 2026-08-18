@@ -142,10 +142,24 @@ hr{ border:0; border-top:1px solid var(--bordo); margin:26px 0; }
   background:linear-gradient(90deg,var(--rosso) 0 22%,transparent 60%);
 }
 .marchio{ display:flex; align-items:center; gap:11px; flex:0 0 auto; }
+/* IL SEGNO: la M sopra il muretto (ai_lab/social/marchio.py, 18/08/2026).
+   Prima qui c'era la sola lettera «M» in Barlow Condensed, cioe' un'iniziale
+   dentro un quadrato: leggibile e di nessuno. Il muretto sotto la lettera e'
+   quello che rende il segno NOSTRO — «muretto box» e' il muro dove siede la
+   squadra e si decide la strategia.
+
+   La lettera resta nel DOM (muro.mjs la scrive ancora) e resta trasparente: e'
+   il nome accessibile del collegamento alla home, e toglierla la ruberebbe a
+   chi naviga con un lettore di schermo.
+
+   Il disegno NON e' ribattuto qui: e' generato da quella stessa geometria da cui
+   escono l'icona del sito e le immagini per Instagram. Se cambia, si rilancia
+   `python3 -m ai_lab.social.marchio` e si riporta qui l'URI. */
 .marchio-b{
   width:32px; height:32px; border-radius:8px; flex:0 0 auto;
-  background:linear-gradient(150deg,var(--rosso),var(--rosso-cupo));
-  display:grid; place-items:center; color:#fff;
+  background:url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%22100%22%20height%3D%22100%22%20role%3D%22img%22%20aria-label%3D%22Muretto%20Box%20Virtuale%22%3E%3Cpath%20d%3D%22M20%2064L20%2018L31.5%2018L50%2042L68.5%2018L80%2018L80%2064L69.5%2064L69.5%2034L54%2055L46%2055L30.5%2034L30.5%2064Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Cpath%20d%3D%22M12%2073L88%2073L88%2084L12%2084Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E") center/64% no-repeat,
+             linear-gradient(150deg,var(--rosso),var(--rosso-cupo));
+  display:grid; place-items:center; color:transparent;
   font:700 19px/1 var(--disp);
   box-shadow:0 3px 14px rgba(255,30,60,.32);
 }

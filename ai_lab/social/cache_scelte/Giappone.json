@@ -1,0 +1,145 @@
+{
+ "gara": "Giappone",
+ "esaminati": 101,
+ "con_differenza": 73,
+ "casi": [
+  {
+   "gara": "Giappone",
+   "circuito": null,
+   "pilota": "ANT",
+   "team": "Mercedes",
+   "colore": "#27F4D2",
+   "n_giri": 53,
+   "giro": 30,
+   "pos_al_congelamento": 1,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 31,
+    "posizione": 16,
+    "giro_rientro": 32
+   },
+   "box_dopo": {
+    "giro_pit": 34,
+    "posizione": 10,
+    "giro_rientro": 35
+   },
+   "differenza": -6
+  },
+  {
+   "gara": "Giappone",
+   "circuito": null,
+   "pilota": "PIA",
+   "team": "McLaren",
+   "colore": "#FF8000",
+   "n_giri": 53,
+   "giro": 31,
+   "pos_al_congelamento": 2,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 32,
+    "posizione": 17,
+    "giro_rientro": 33
+   },
+   "box_dopo": {
+    "giro_pit": 35,
+    "posizione": 11,
+    "giro_rientro": 36
+   },
+   "differenza": -6
+  },
+  {
+   "gara": "Giappone",
+   "circuito": null,
+   "pilota": "LEC",
+   "team": "Ferrari",
+   "colore": "#E8002D",
+   "n_giri": 53,
+   "giro": 24,
+   "pos_al_congelamento": 5,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 25,
+    "posizione": 10,
+    "giro_rientro": 26
+   },
+   "box_dopo": {
+    "giro_pit": 28,
+    "posizione": 15,
+    "giro_rientro": 29
+   },
+   "differenza": 5
+  },
+  {
+   "gara": "Giappone",
+   "circuito": null,
+   "pilota": "NOR",
+   "team": "McLaren",
+   "colore": "#FF8000",
+   "n_giri": 53,
+   "giro": 25,
+   "pos_al_congelamento": 6,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 26,
+    "posizione": 12,
+    "giro_rientro": 27
+   },
+   "box_dopo": {
+    "giro_pit": 29,
+    "posizione": 17,
+    "giro_rientro": 30
+   },
+   "differenza": 5
+  },
+  {
+   "gara": "Giappone",
+   "circuito": null,
+   "pilota": "HAM",
+   "team": "Ferrari",
+   "colore": "#E8002D",
+   "n_giri": 53,
+   "giro": 32,
+   "pos_al_congelamento": 3,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 33,
+    "posizione": 16,
+    "giro_rientro": 34
+   },
+   "box_dopo": {
+    "giro_pit": 36,
+    "posizione": 11,
+    "giro_rientro": 37
+   },
+   "differenza": -5
+  },
+  {
+   "gara": "Giappone",
+   "circuito": null,
+   "pilota": "RUS",
+   "team": "Mercedes",
+   "colore": "#27F4D2",
+   "n_giri": 53,
+   "giro": 32,
+   "pos_al_congelamento": 4,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 33,
+    "posizione": 16,
+    "giro_rientro": 34
+   },
+   "box_dopo": {
+    "giro_pit": 36,
+    "posizione": 11,
+    "giro_rientro": 37
+   },
+   "differenza": -5
+  }
+ ]
+}

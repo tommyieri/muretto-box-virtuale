@@ -1,0 +1,145 @@
+{
+ "gara": "Australia",
+ "esaminati": 127,
+ "con_differenza": 50,
+ "casi": [
+  {
+   "gara": "Australia",
+   "circuito": null,
+   "pilota": "LIN",
+   "team": "Racing Bulls",
+   "colore": "#6692FF",
+   "n_giri": 58,
+   "giro": 13,
+   "pos_al_congelamento": 4,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 14,
+    "posizione": 8,
+    "giro_rientro": 15
+   },
+   "box_dopo": {
+    "giro_pit": 17,
+    "posizione": 11,
+    "giro_rientro": 18
+   },
+   "differenza": 3
+  },
+  {
+   "gara": "Australia",
+   "circuito": null,
+   "pilota": "HAM",
+   "team": "Ferrari",
+   "colore": "#E8002D",
+   "n_giri": 58,
+   "giro": 14,
+   "pos_al_congelamento": 2,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 15,
+    "posizione": 3,
+    "giro_rientro": 16
+   },
+   "box_dopo": {
+    "giro_pit": 18,
+    "posizione": 6,
+    "giro_rientro": 19
+   },
+   "differenza": 3
+  },
+  {
+   "gara": "Australia",
+   "circuito": null,
+   "pilota": "NOR",
+   "team": "McLaren",
+   "colore": "#FF8000",
+   "n_giri": 58,
+   "giro": 19,
+   "pos_al_congelamento": 5,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 20,
+    "posizione": 9,
+    "giro_rientro": 21
+   },
+   "box_dopo": {
+    "giro_pit": 23,
+    "posizione": 12,
+    "giro_rientro": 24
+   },
+   "differenza": 3
+  },
+  {
+   "gara": "Australia",
+   "circuito": null,
+   "pilota": "LEC",
+   "team": "Ferrari",
+   "colore": "#E8002D",
+   "n_giri": 58,
+   "giro": 13,
+   "pos_al_congelamento": 1,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 14,
+    "posizione": 2,
+    "giro_rientro": 15
+   },
+   "box_dopo": {
+    "giro_pit": 17,
+    "posizione": 4,
+    "giro_rientro": 18
+   },
+   "differenza": 2
+  },
+  {
+   "gara": "Australia",
+   "circuito": null,
+   "pilota": "VER",
+   "team": "Red Bull Racing",
+   "colore": "#2B478F",
+   "n_giri": 58,
+   "giro": 13,
+   "pos_al_congelamento": 6,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 14,
+    "posizione": 9,
+    "giro_rientro": 15
+   },
+   "box_dopo": {
+    "giro_pit": 17,
+    "posizione": 11,
+    "giro_rientro": 18
+   },
+   "differenza": 2
+  },
+  {
+   "gara": "Australia",
+   "circuito": null,
+   "pilota": "RUS",
+   "team": "Mercedes",
+   "colore": "#27F4D2",
+   "n_giri": 58,
+   "giro": 17,
+   "pos_al_congelamento": 3,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 18,
+    "posizione": 9,
+    "giro_rientro": 19
+   },
+   "box_dopo": {
+    "giro_pit": 21,
+    "posizione": 7,
+    "giro_rientro": 22
+   },
+   "differenza": -2
+  }
+ ]
+}

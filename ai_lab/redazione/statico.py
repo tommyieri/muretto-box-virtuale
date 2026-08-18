@@ -139,9 +139,30 @@ def esc(s) -> str:
             .replace(">", "&gt;").replace('"', "&quot;"))
 
 
+def _rosso() -> str:
+    """Il rosso del marchio, LETTO da demo/muro.css.
+
+    Qui era scritto a mano un rosso diverso da quello del sito: due tonalita' per
+    lo stesso marchio, una nelle anteprime social e una ovunque altrove. Un
+    valore ribattuto a mano diverge sempre — la sola domanda e' quando ce ne
+    accorgiamo. Ora viene dalla stessa fonte del resto, col ripiego se il modulo
+    non e' raggiungibile."""
+    try:
+        import sys, os
+        sys.path.insert(0, os.path.abspath(os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "..", "..")))
+        from ai_lab.social.marca import c
+        return c("rosso")
+    except Exception:
+        return "#FF1E3C"
+
+
+ROSSO_MARCHIO = _rosso()
+
+
 def _ac(accent) -> str:
     if not accent:
-        return "#E4002B"
+        return ROSSO_MARCHIO
     return AC_MAP.get(accent, accent) if accent.startswith("var(") else accent
 
 
@@ -528,9 +549,17 @@ def genera_og(art) -> bool:
         # fascia accento in alto e barra rossa del marchio
         d.rectangle([0, 0, W, 8], fill=ac)
         # marchio
-        d.rounded_rectangle([64, 56, 120, 112], radius=13, fill="#E4002B")
-        f_m = font(GRASSETTO, 34)
-        d.text((92, 84), "M", font=f_m, fill="#FFFFFF", anchor="mm")
+        # IL SEGNO viene da ai_lab/social/marchio.py: unica geometria, la stessa
+        # della favicon del sito e della foto profilo. Se non e' importabile si
+        # ripiega sulla vecchia M, perche' un'anteprima brutta batte un articolo
+        # che non si genera.
+        try:
+            from ai_lab.social import marchio as _mk
+            _seg = _mk.png(56, fondo=ROSSO_MARCHIO, margine=.10)
+            img.paste(_seg, (64, 56), _seg)
+        except Exception:
+            d.rounded_rectangle([64, 56, 120, 112], radius=13, fill=ROSSO_MARCHIO)
+            d.text((92, 84), "M", font=font(GRASSETTO, 34), fill="#FFFFFF", anchor="mm")
         f_marca = font(GRASSETTO, 26)
         d.text((136, 72), "MURETTO", font=f_marca, fill="#FFFFFF")
         f_sub = font(NORMALE, 15)
