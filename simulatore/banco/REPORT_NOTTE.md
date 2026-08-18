@@ -1,22 +1,17 @@
 # REPORT NOTTE
 
-Corsa del **2026-08-08T15:02:46.871Z** · confronto con la notte del **2026-07-29T17:55:07.491Z**.
+Corsa del **2026-08-17T16:34:30.830Z** · confronto con la notte del **2026-08-17T16:20:36.296Z**.
 
 ## Esito: 🔴 REGRESSIONE
 
 Motivi:
 
-- sentinelle rotte: s15_banco_2026.mjs, s25_difesa.mjs, s36_report_notte_fresco.mjs
 - cancello non passato — D1 la banda di rientro copre ed è minimale (leave-one-race-out) · 398 soste su 11 gare; falliti: PULITA, NEUTRA, PRODOTTO/NEUTRA
 - cancello non passato — bias piatto entro 0.1 · 0.103028
-- rientro PULITA: quota entro ±1 -5.4 punti, oltre la tolleranza 5
-- rientro SOSTE_RIVALI: quota entro ±1 -12.2 punti, oltre la tolleranza 5
-- rientro NEUTRA: quota entro ±1 -7.7 punti, oltre la tolleranza 5
-- bias H=5: |bias| +0.0509 oltre la tolleranza 0.02
 
 ## Suite
 
-41/44 sentinelle verdi.
+43/45 sentinelle verdi.
 
 ## Cancelli pre-registrati
 
@@ -79,15 +74,15 @@ G0′ è **ritirata** e resta a referto: 731/799 = 91.49% — bocciava la rispos
 | voce | notte prima | stanotte | delta |
 |---|---|---|---|
 | rientro PULITA · mediana&#124;err&#124; | 0 | 0 | +0.0000 |
-| rientro PULITA · entro ±1 | 94.3% | 88.9% | -5.4000 |
+| rientro PULITA · entro ±1 | 88.9% | 88.9% | +0.0000 |
 | rientro SOSTE_RIVALI · mediana&#124;err&#124; | 0 | 0 | +0.0000 |
-| rientro SOSTE_RIVALI · entro ±1 | 87.4% | 75.2% | -12.1800 |
+| rientro SOSTE_RIVALI · entro ±1 | 75.2% | 75.2% | +0.0000 |
 | rientro NEUTRA · mediana&#124;err&#124; | 1 | 1 | +0.0000 |
-| rientro NEUTRA · entro ±1 | 67.2% | 59.5% | -7.6800 |
+| rientro NEUTRA · entro ±1 | 59.5% | 59.5% | +0.0000 |
 | G0″ quota di passaggio | 1 | 1 | +0.0000 |
-| bias H=5 | 0.072831 | 0.123701 | +0.0509 |
-| bias H=10 | -0.07696 | 0.020673 | -0.0563 |
-| bias H=20 | -0.292759 | -0.208863 | -0.0839 |
+| bias H=5 | 0.123701 | 0.123701 | +0.0000 |
+| bias H=10 | 0.020673 | 0.020673 | +0.0000 |
+| bias H=20 | -0.208863 | -0.208863 | +0.0000 |
 
 ---
 

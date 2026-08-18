@@ -78,6 +78,17 @@ const ORE_MAX = 24;
 // l'opzione che manca, non un carattere qualunque (la parentesi di chiusura ingannerebbe).
 const STATUS_NUDO = /git\s+status\s+--porcelain(?!\s+--untracked-files=no)/;
 const STATUS_SICURO = 'git status --porcelain --untracked-files=no';
+// IL TERZO MODO DI NON AGGIORNARSI — e questo l'ha mostrato il log, non un ragionamento.
+// Il 17/08/2026 alle 14:30:01, nove minuti dopo il merge di #176, il VPS ha stampato
+// «albero sporco: NON aggiorno» e subito sotto «codice fresco». Entrambe vere alla lettera:
+// il `git fetch` stava dentro l'`elif`, quindi l'albero sporco lo saltava, e la meta' (B)
+// confrontava HEAD con un `origin/main` LOCALE VECCHIO — trovandoli uguali. La guardia non
+// aveva guardato: aveva ricordato. Il fetch e' in sola lettura (non tocca albero ne' HEAD),
+// quindi non ha ragione di stare dietro una condizione sull'albero, e ora sta prima.
+// Qui si sorveglia l'ORDINE, perche' e' l'ordine il fatto che conta: se un domani il fetch
+// tornasse dentro il ramo condizionale, la meta' (B) ricomincerebbe a mentire in silenzio.
+const FETCH = /git\s+fetch\s+origin/;
+const GUARDIA = /git\s+status\s+--porcelain/;
 
 const b = banco('s46');
 
@@ -146,6 +157,17 @@ for (const w of wrapper) {
     + " l'auto-aggiornamento per sempre, e il checkout puo' restare fresco per merito di un"
     + ' altro wrapper: nessun sintomo, e la meta\' (B) resta verde mentendo',
     w.codice.includes(STATUS_SICURO) && !STATUS_NUDO.test(w.codice),
+  );
+  // L'ORDINE: il fetch PRIMA della guardia sull'albero.
+  const iFetch = w.codice.search(FETCH);
+  const iGuardia = w.codice.search(GUARDIA);
+  b.verifica(
+    `scheduling/${w.nome}: \`git fetch origin\` viene PRIMA della guardia sull'albero sporco`
+    + " — dentro il ramo condizionale un albero sporco lo salta, e la meta' (B) confronta HEAD"
+    + " con un origin/main vecchio: e' cosi' che il 17/08 s46 ha detto «codice fresco» nove"
+    + ' minuti dopo un merge. Il fetch e\' in sola lettura: non ha ragione di stare dietro'
+    + " una condizione sull'albero",
+    iFetch >= 0 && iGuardia >= 0 && iFetch < iGuardia,
   );
 }
 

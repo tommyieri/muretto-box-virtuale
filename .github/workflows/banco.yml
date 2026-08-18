@@ -252,3 +252,10 @@ jobs:
       # una copia CONGELATA di entrambe e pretende parita' esatta su 684 classifiche.
       - name: La classifica unificata non ha cambiato la torre
         run: node demo/test_classifica.mjs
+
+      # SENTINELLA UNIFICATA DI VALIDAZIONE: orchestra in un solo colpo tutte le invarianti
+      # di calcolo, modulo pit, f1db checksum, guard travaso pit-loss e coerenza delle fonti.
+      - name: Sentinella unificata Muretto (Golden, Pit, Degrado, F1DB, UI, Pitloss)
+        run: python3 sentinella.py
+        working-directory: .
+
