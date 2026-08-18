@@ -18,7 +18,20 @@ QUI = os.path.dirname(os.path.abspath(__file__))
 OG = os.path.join(QUI, "demo", "og")
 
 W, H = 1200, 630
-FONDO, TESTO, FIOCO, ROSSO, LINEA = "#0A0B0E", "#EEF1F6", "#868E9F", "#E4002B", "#282C35"
+FONDO, TESTO, FIOCO, LINEA = "#0A0B0E", "#EEF1F6", "#868E9F", "#282C35"
+
+
+def _rosso() -> str:
+    """Il rosso del marchio, LETTO da demo/muro.css invece che ribattuto qui:
+    era una tonalita' diversa da quella del sito, per lo stesso marchio."""
+    try:
+        from ai_lab.social.marca import c
+        return c("rosso")
+    except Exception:
+        return "#FF1E3C"
+
+
+ROSSO = _rosso()
 
 # occhiello, titolo, riga sotto.  Il titolo NON e' il <title> della pagina:
 # li' serve il nome del sito per i risultati di ricerca, qui il marchio c'e' gia'

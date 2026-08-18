@@ -132,9 +132,30 @@ def esc(s) -> str:
             .replace(">", "&gt;").replace('"', "&quot;"))
 
 
+def _rosso() -> str:
+    """Il rosso del marchio, LETTO da demo/muro.css.
+
+    Qui era scritto a mano un rosso diverso da quello del sito: due tonalita' per
+    lo stesso marchio, una nelle anteprime social e una ovunque altrove. Un
+    valore ribattuto a mano diverge sempre — la sola domanda e' quando ce ne
+    accorgiamo. Ora viene dalla stessa fonte del resto, col ripiego se il modulo
+    non e' raggiungibile."""
+    try:
+        import sys, os
+        sys.path.insert(0, os.path.abspath(os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "..", "..")))
+        from ai_lab.social.marca import c
+        return c("rosso")
+    except Exception:
+        return "#FF1E3C"
+
+
+ROSSO_MARCHIO = _rosso()
+
+
 def _ac(accent) -> str:
     if not accent:
-        return "#E4002B"
+        return ROSSO_MARCHIO
     return AC_MAP.get(accent, accent) if accent.startswith("var(") else accent
 
 
@@ -479,10 +500,10 @@ def genera_og(art) -> bool:
         # che non si genera.
         try:
             from ai_lab.social import marchio as _mk
-            _seg = _mk.png(56, fondo="#E4002B", margine=.10)
+            _seg = _mk.png(56, fondo=ROSSO_MARCHIO, margine=.10)
             img.paste(_seg, (64, 56), _seg)
         except Exception:
-            d.rounded_rectangle([64, 56, 120, 112], radius=13, fill="#E4002B")
+            d.rounded_rectangle([64, 56, 120, 112], radius=13, fill=ROSSO_MARCHIO)
             d.text((92, 84), "M", font=font(GRASSETTO, 34), fill="#FFFFFF", anchor="mm")
         f_marca = font(GRASSETTO, 26)
         d.text((136, 72), "MURETTO", font=f_marca, fill="#FFFFFF")
