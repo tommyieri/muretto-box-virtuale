@@ -75,6 +75,12 @@ PAGINE_FISSE = [
     # perche' si raggiungono dagli Articoli, che e' la sezione a cui appartengono.
     ("forza.html", "0.7"),
     ("dati.html", "0.7"),
+    # `whatif.html` e' rientrata il 18/08/2026 per decisione di Tommi. Ci era gia' stata per
+    # un giorno, il 17/08, pubblicando numeri fabbricati (passo base 85,0 s di ripiego,
+    # posizione di rientro sempre P1) sotto una targhetta che diceva «misurato»: spenta e
+    # riscritta sul kernel vero lo stesso giorno, e riaccesa solo dopo. Adesso ha una
+    # sentinella sua (demo/test_whatif.mjs, verifica 10 di sentinella.py) che controlla i
+    # NUMERI e non solo l'esistenza — che era il buco per cui la prima versione era passata.
     ("whatif.html", "0.7"),
     ("live.html", "0.6"),
 ]

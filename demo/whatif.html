@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>What-If Simulator — Muretto Box Virtuale</title>
-<meta name="description" content="Simulatore di strategie controfattuali: anticipa o ritarda il pit stop e calcola lo scenario di rientro.">
+<meta name="description" content="Simulatore di strategie controfattuali: sposta il giro della sosta e confronta due run dello stesso motore, la tua strategia contro quella vera.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
@@ -26,8 +26,16 @@
   .kpi-box .val { font:700 20px/1 var(--mono); color:var(--testo); }
   .kpi-box .val.pos { color:#00E676; }
   .kpi-box .val.neg { color:#FF5252; }
+  .kpi-box .sub { display:block; font:400 10px/1.35 var(--mono); color:var(--fioco); margin-top:6px; }
   .targhetta { background:rgba(0,0,0,.3); border-left:3px solid var(--ciano); padding:10px 14px; font:400 12px/1.5 var(--mono); color:var(--calmo); border-radius:0 4px 4px 0; }
   .traccia-svg { width:100%; height:auto; display:block; border-radius:6px; background:rgba(0,0,0,.25); border:1px solid var(--bordo); }
+  .riga-director { font:500 12px/1.5 var(--mono); padding:10px 14px; border-radius:6px; background:rgba(0,0,0,.3); }
+  .riga-director .ok { color:#00E676; }
+  .riga-director .no { color:#FF5252; }
+  .assunzioni { font:400 12px/1.6 var(--mono); color:var(--calmo); margin:0; padding-left:18px; }
+  .assunzioni li { margin-bottom:6px; }
+  .assunzioni small { color:var(--fioco); }
+  .nota-metodo { font:400 12px/1.6 var(--mono); color:var(--fioco); border-top:1px solid var(--bordo); padding-top:14px; }
 </style>
 </head>
 <body>
@@ -36,7 +44,9 @@
 <main class="scafo">
   <p class="occhiello">Strategia · Scenari Controfattuali</p>
   <h1 class="titolone">Simulatore <em>What-If</em></h1>
-  <p class="sottotitolo">Cosa sarebbe successo anticipando o ritardando la sosta? Modifica il giro di pit stop e osserva l'effetto sul rientro e sul delta gara.</p>
+  <p class="sottotitolo">Sposta il giro della sosta e guarda che cosa cambia. Le due risposte
+    escono dallo <b>stesso motore</b>: la tua strategia e quella vera, girate entrambe come
+    simulazione. È l'unico confronto che isola la scelta invece di misurare l'errore del modello.</p>
 
   <div class="whatif-layout">
     <!-- CONTROLLI -->
@@ -68,38 +78,45 @@
         </div>
       </div>
 
-      <div class="targhetta" id="box-targhetta">
-        Caricamento parametri circuito...
-      </div>
+      <div class="targhetta" id="box-targhetta">Caricamento parametri…</div>
     </div>
 
     <!-- VISTA GRAFICA & KPI -->
     <div class="pannello-vista">
+      <div class="riga-director" id="riga-director">Caricamento…</div>
+
+      <div class="kpi-row" id="verdetto"></div>
+
       <div class="kpi-row">
         <div class="kpi-box">
-          <div class="tit">Pit Stop Reale</div>
+          <div class="tit">Sosta reale</div>
           <div class="val" id="kpi-pit-reale">—</div>
         </div>
         <div class="kpi-box">
-          <div class="tit">Pit Stop What-If</div>
+          <div class="tit">Sosta What-If</div>
           <div class="val" id="kpi-pit-sim">—</div>
         </div>
         <div class="kpi-box">
-          <div class="tit">Posizione Rientro</div>
+          <div class="tit">Posizione al rientro</div>
           <div class="val" id="kpi-pos-rientro">—</div>
+          <span class="sub">nel run What-If, contro i rivali dello stesso run</span>
         </div>
         <div class="kpi-box">
-          <div class="tit">Delta Tempo Finale</div>
+          <div class="tit">Delta alla bandiera</div>
           <div class="val" id="kpi-delta-tempo">—</div>
+          <span class="sub">What-If meno strategia vera, stesso motore</span>
         </div>
       </div>
 
-      <!-- GRAFICO TRACCIA TEMPI / GAP -->
       <div id="grafico-wrap">
-        <svg id="svg-whatif" class="traccia-svg" viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg">
-          <text x="400" y="190" fill="var(--fioco)" text-anchor="middle" font-family="'JetBrains Mono',monospace" font-size="14">Caricamento simulazione...</text>
-        </svg>
+        <svg id="svg-whatif" class="traccia-svg" viewBox="0 0 800 380" xmlns="http://www.w3.org/2000/svg"></svg>
       </div>
+
+      <ul class="assunzioni" id="assunzioni"></ul>
+
+      <p class="nota-metodo">Questa pagina è un gioco, non una previsione. Sulla gara intera il
+        motore e «non cambia niente» sono indistinguibili: il valore sta nel confronto fra due
+        run, non nel numero assoluto.</p>
     </div>
   </div>
 </main>
