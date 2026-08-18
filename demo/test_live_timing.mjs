@@ -162,6 +162,16 @@ caso('R3: compound e tyre_age sopravvivono al riduttore', () => {
   assert.strictEqual(v.righe()[0].tyre_age, null, 'eta ignota => null');
 });
 
+// R4) IL RITIRO ARRIVA IN CLASSIFICA. retired viaggia sul cavo e deve
+// essere esposto nella riga per consentire alla UI di renderizzare lo stato OUT.
+caso('R4: retired sopravvive al riduttore', () => {
+  const s = creaStatoTiming();
+  s.applica({ type: 'driver_list', cars: { '11': { sigla: 'PER', colore: '#909090' } } });
+  s.applica({ type: 'timing_update', cars: { '11': { pos: 18, retired: true } } });
+  const r = s.righe()[0];
+  assert.strictEqual(r.retired, true, 'il pilota deve risultare ritirato');
+});
+
 caso('nessun campo del feed entra in innerHTML senza escape', () => {
   const sorgente = fs.readFileSync(new URL('./live_timing.mjs', import.meta.url), 'utf8');
   // le interpolazioni ${...} dentro i template letterali del modulo
@@ -173,6 +183,7 @@ caso('nessun campo del feed entra in innerHTML senza escape', () => {
     /^COL_SEG\[/,                   // idem
     /^g\.(txt|cls)$/,               // gap(): txt passa gia' da esc(), cls e' interno
     /^r\.in_pit \? /,               // due letterali fissi
+    /^r\.retired \? /,              // due letterali fissi
     /^html$/, /^sec$/, /^mic$/,     // pezzi di html gia' costruiti qui dentro
     /^barraMicro\(/,
     /^s\.t \? esc\(s\.t\) : /,

@@ -531,6 +531,8 @@ hr{ border:0; border-top:1px solid var(--bordo); margin:26px 0; }
 .tw-bar{ display:flex; gap:1px; height:4px; border-radius:2px; overflow:hidden; }
 .tw-seg{ flex:1 1 0; min-width:1px; display:block; }
 .tw-row.tw-pit{ opacity:.6; }
+.tw-row.tw-retired{ opacity:.45; }
+.tw-tag.tw-tag-rit{ color:#ff5566; font-weight:700; }
 .tw-row.tw-sel{ background:rgba(36,227,210,.09); box-shadow:inset 2px 0 0 var(--rosso); }
 .tw-list.tw-cliccabile .tw-row[data-sigla]{ cursor:pointer; }
 .tw-list.tw-cliccabile .tw-row[data-sigla]:hover{ background:rgba(255,255,255,.05); }

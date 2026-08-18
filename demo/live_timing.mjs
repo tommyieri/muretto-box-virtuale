@@ -43,7 +43,7 @@ export function creaStatoTiming() {
   // qui, nel riduttore, perche' il contratto non li elencava. In diretta la classifica non
   // diceva su che gomma sei — l'unica cosa che la torre del replay mostra sempre.
   const CAMPI = ['pos', 'gap', 'in_pit', 'last_lap', 'best_lap',
-                 'interval', 'sectors', 'micro', 'compound', 'tyre_age'];
+                 'interval', 'sectors', 'micro', 'compound', 'tyre_age', 'retired'];
 
   function voce(num) {
     let v = timing.get(num);
@@ -107,6 +107,7 @@ export function creaStatoTiming() {
         // ?? e non ||: tyre_age 0 e' un'eta valida (giro d'uscita), non un'assenza
         compound: t.compound ?? null,
         tyre_age: t.tyre_age ?? null,
+        retired: !!t.retired,
       });
     }
     out.sort((a, b) => {
@@ -138,6 +139,12 @@ export function creaTorreTiming({ lista, nota }) {
 
   function colSet(best) {
     return best === 'o' ? '#a05cff' : (best === 'p' ? '#3fbf6f' : '#cfd6e2');
+  }
+
+  function tag(r) {
+    if (r.retired) return '<span class="tw-tag tw-tag-rit">OUT</span>';
+    if (r.in_pit) return '<span class="tw-tag">PIT</span>';
+    return '<span class="tw-tag"></span>';
   }
 
   // LA GOMMA, come nella torre del replay: pallino del colore della mescola + eta' in giri.
@@ -188,7 +195,7 @@ export function creaTorreTiming({ lista, nota }) {
       // data-sigla: la torre e' anche il modo per SCEGLIERE il pilota, come la
       // classifica in gara.html. Chi la disegna non sa cosa ci farai: espone il dato
       // e basta, il gestore del click vive nella pagina.
-      return `<div class="tw-row${r.in_pit ? ' tw-pit' : ''}" data-sigla="${esc(r.sigla)}">`
+      return `<div class="tw-row${r.in_pit ? ' tw-pit' : ''}${r.retired ? ' tw-retired' : ''}" data-sigla="${esc(r.sigla)}"${r.retired ? ' data-ritirato="1"' : ''}>`
         + `<div class="tw-main">`
         // esc() ANCHE QUI. Era l'unico campo della riga che finiva in innerHTML
         // grezzo mentre tutti i fratelli (sigla, colore, tempo, gap, settori) erano
@@ -201,7 +208,7 @@ export function creaTorreTiming({ lista, nota }) {
         +   `<span class="tw-time">${tempo ? esc(tempo) : '—'}</span>`
         +   `<span class="tw-gap ${g.cls}">${g.txt}</span>`
         +   gomma(r)
-        +   `<span class="tw-tag">${r.in_pit ? 'PIT' : ''}</span>`
+        +   tag(r)
         + `</div>`
         + blocchiSettori(r)
         + `</div>`;

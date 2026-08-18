@@ -408,13 +408,32 @@ export function creaByLapLive() {
     },
     // Perche' il pannello non parla ancora. Un motivo scritto vale piu' di un pannello
     // vuoto: chi guarda deve sapere se manca un dato o se e' rotto qualcosa.
-    diagnosi(L) {
-      if (L == null) return { pronto: false, motivo: 'nessun giro ancora completato' };
+    diagnosi(L, drv = null) {
+      if (L == null) return { pronto: false, motivo: 'nessun giro ancora completato', n: 0, giriVerdi: 0, giriNecessari: 3 };
       const p = pace(L), n = Object.keys(p).length;
-      if (n < 6) return { pronto: false, n,
-        motivo: `passo-base disponibile per ${n} piloti su ${Object.keys(byLap[L] || {}).length}:`
-              + ' servono 3 giri verdi a testa' };
-      return { pronto: true, n, motivo: null };
+      let mioGiri = 0;
+      if (drv) {
+        let stintCorr = null;
+        for (let k = L; k >= 1; k--) { const c = byLap[k]?.[drv]; if (c) { stintCorr = c.stint; break; } }
+        if (stintCorr != null) {
+          for (let k = 1; k <= L; k++) {
+            const c = byLap[k]?.[drv];
+            if (c && c.stint === stintCorr && c.lap_time != null && !c.neutralized && !c.in_lap && !c.out_lap) mioGiri++;
+          }
+        }
+      }
+      if (n < 6) {
+        const infoDrv = drv ? ` (per ${drv}: ${mioGiri}/3 giri completati)` : '';
+        return {
+          pronto: false,
+          n,
+          giriVerdi: mioGiri,
+          giriNecessari: 3,
+          motivo: `passo-base disponibile per ${n} piloti su ${Object.keys(byLap[L] || {}).length}:`
+                + ` servono 3 giri verdi a testa${infoDrv}`
+        };
+      }
+      return { pronto: true, n, giriVerdi: mioGiri, giriNecessari: 3, motivo: null };
     },
   };
 }
