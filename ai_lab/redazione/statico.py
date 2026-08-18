@@ -473,9 +473,17 @@ def genera_og(art) -> bool:
         # fascia accento in alto e barra rossa del marchio
         d.rectangle([0, 0, W, 8], fill=ac)
         # marchio
-        d.rounded_rectangle([64, 56, 120, 112], radius=13, fill="#E4002B")
-        f_m = font(GRASSETTO, 34)
-        d.text((92, 84), "M", font=f_m, fill="#FFFFFF", anchor="mm")
+        # IL SEGNO viene da ai_lab/social/marchio.py: unica geometria, la stessa
+        # della favicon del sito e della foto profilo. Se non e' importabile si
+        # ripiega sulla vecchia M, perche' un'anteprima brutta batte un articolo
+        # che non si genera.
+        try:
+            from ai_lab.social import marchio as _mk
+            _seg = _mk.png(56, fondo="#E4002B", margine=.10)
+            img.paste(_seg, (64, 56), _seg)
+        except Exception:
+            d.rounded_rectangle([64, 56, 120, 112], radius=13, fill="#E4002B")
+            d.text((92, 84), "M", font=font(GRASSETTO, 34), fill="#FFFFFF", anchor="mm")
         f_marca = font(GRASSETTO, 26)
         d.text((136, 72), "MURETTO", font=f_marca, fill="#FFFFFF")
         f_sub = font(NORMALE, 15)
