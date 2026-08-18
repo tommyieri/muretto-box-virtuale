@@ -370,6 +370,9 @@ hr{ border:0; border-top:1px solid var(--bordo); margin:26px 0; }
 .piede nav a{ padding:7px 11px; border-radius:8px; color:var(--fioco);
   font:700 13px/1 var(--disp); letter-spacing:.1em; text-transform:uppercase; transition:color .16s; }
 .piede nav a:hover{ color:var(--testo); background:rgba(255,255,255,.05); }
+/* la porta di servizio: si vede, ma non compete con le sezioni vere */
+.piede nav a.segnala{ color:var(--rosso); border:1px solid rgba(255,30,60,.28); }
+.piede nav a.segnala:hover{ color:#fff; background:rgba(255,30,60,.16); border-color:rgba(255,30,60,.5); }
 .piede small{ color:var(--fioco); font:400 11px/1.5 var(--mono); letter-spacing:.04em; }
 
 /* ============================================================ movimento */

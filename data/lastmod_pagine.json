@@ -1,39 +1,43 @@
 {
   "analisi.html": {
     "data": "2026-08-18",
-    "sha": "6dc4e922509114bd0dc41804182bcfaacaa1ccf27253104efcb38962e37e048f"
+    "sha": "77ac4dfe50b72c82dd588179982e49d299ce51365da8ce9ab0c7e1d028c6f069"
   },
   "campionato.html": {
-    "data": "2026-08-10",
-    "sha": "9f28c2fa1d5f121a0970a055b47f0bc3e323a8ec3cb4c17eff5bc4aabf3015a7"
+    "data": "2026-08-18",
+    "sha": "5039a14d741095027a1dbe46297a17cafbd0618cf534074dcf4b5d345d88527d"
   },
   "classifiche.html": {
     "data": "2026-08-08",
     "sha": "cd6a10c95cd3cc36651c7d39754181f898991ea1322901fcc979fc948e134263"
   },
   "dati.html": {
-    "data": "2026-08-17",
-    "sha": "8a7a514ff8e3e74215e6de1bcbe632a76292ac67f77e4be38e1217b0f14d5597"
+    "data": "2026-08-18",
+    "sha": "e4797035b4f2dd12330e6bb984f9bf1cece9e7290aab0e1e86f2e42e29d52f7e"
   },
   "ese.html": {
     "data": "2026-08-07",
     "sha": "b9ccfc8602b90c63e3f853814325735dcb44d571b9770c58546d9179233c08cb"
   },
+  "feedback.html": {
+    "data": "2026-08-18",
+    "sha": "52c21bb28a40ba504b6bf228f5c5b87471ead5b315b300eaa0b673428cda3ee0"
+  },
   "forza.html": {
-    "data": "2026-08-10",
-    "sha": "c5e7455091dcc2dbf7c8e6ad0d630989d9c49445eca784014f69ff6348838ff8"
+    "data": "2026-08-18",
+    "sha": "bce4b8dcc68d85a241c8164c06e377a910457ebf33228491e527dd6dc0825277"
   },
   "index.html": {
-    "data": "2026-08-09",
-    "sha": "b4077430794bb0945bf14a5a97223689defe0e278afab85b798dd526d960dcb4"
+    "data": "2026-08-18",
+    "sha": "debaa217e8cd66f38531c5b671736efe8322cbb13a86036d124b051a4d3b72d3"
   },
   "libere.html": {
     "data": "2026-08-08",
     "sha": "9811cea30a775ba57f22e39bd587aedfb824c790f4113b611f51f5b945fc7bc0"
   },
   "live.html": {
-    "data": "2026-08-10",
-    "sha": "1fdf8ba2aee78611d58a4aac205d78cc161d31facaf6f158134c8b9bae1979fa"
+    "data": "2026-08-18",
+    "sha": "d00de9528187670ad8ece5d072c3ff9437630541f3de3d6c1eb73d1cb3771c12"
   },
   "quali.html": {
     "data": "2026-08-08",
@@ -44,8 +48,8 @@
     "sha": "5576901c7b1e291c0ab2d9a0e8dae8676d7536952530d5edc2122a384ec17b90"
   },
   "stagione.html": {
-    "data": "2026-08-09",
-    "sha": "625983059d186a0acb20d99a417b7d15ac9aaef2a3db846e7177d22594c7a2f1"
+    "data": "2026-08-18",
+    "sha": "fd0bb8c37c8cbecf7e4c9f70401902faa1ade938ffad11efb8cff332fc2ca461"
   },
   "statistiche-confronti.html": {
     "data": "2026-08-08",
@@ -72,8 +76,8 @@
     "sha": "9479b52318c70613d55240af005ebdc2e7e6536bbfb1ff46fbfb85ffb6fc5a2f"
   },
   "telemetria.html": {
-    "data": "2026-08-10",
-    "sha": "78cbf1d58a26c0ef2d1fb4c5f21243d3388f2951d465ca22cf1dbea3b7ee95d9"
+    "data": "2026-08-18",
+    "sha": "86e33aed96b0d439326b71b080d08625948fa76bb10e90363f856c6f270ef4ec"
   },
   "whatif.html": {
     "data": "2026-08-18",
