@@ -28,11 +28,13 @@ MARCHIO = "murettobox.com"
 BASE = ["#formula1", "#f1", "#strategia"]
 CODA = ["#muretto", "#f1italia", "#pitstop", "#telemetria", "#gpf1"]
 PER_TIPO = {
+    "scelta": ["#strategia", "#pitstop", "#simulatore"],
     "sosta": ["#pitstop", "#strategia", "#undercut"],
     "compagni": ["#teammates", "#passogara"],
     "mescole": ["#pirelli", "#gomme", "#degrado"],
     "classifica": ["#mondiale", "#classifica"],
     "numero": ["#dati", "#analisi"],
+    "presentazione": ["#simulatore", "#f1strategy"],
 }
 
 CHIUSA = ("Su {marchio} rivedi la gara giro per giro e sposti tu la sosta: "
@@ -52,6 +54,25 @@ def _hashtag(fatto) -> str:
 # I modelli. Uno per tipo, e la prima riga e' sempre il gancio: su Instagram si
 # vedono due righe prima del «altro», e il resto lo legge solo chi ha gia' deciso.
 MODELLI = {
+    # IL PRODOTTO. La didascalia non deve allargare la promessa: il motore dice
+    # DOVE RIENTRI, non se conviene. «Conveniva fermarsi» sarebbe una scommessa,
+    # e noi non vendiamo scommesse.
+    "scelta": (
+        "{titolo}\n\n"
+        "Fermandolo subito rientra {pos_ora}°. Aspettando {attesa} giri, {pos_dopo}°.\n\n"
+        "Stessa gomma, stesso pit-loss, stessi rivali al loro passo vero: l'unica cosa "
+        "che cambia è il momento. La risposta è del motore che gira sul sito — dice "
+        "dove rientri, non se conviene: quella parte resta a te.\n\n"
+        "Su {marchio} lo sposti tu e guardi cosa succede."
+    ),
+    "presentazione": (
+        "{titolo}.\n\n"
+        "{sottotitolo}\n\n"
+        "Su murettobox.com trovi ogni gara del 2026 da rivedere giro per giro. "
+        "Sposti la sosta di chi vuoi, e il motore ti dice dove rientri — coi rivali "
+        "al loro passo vero, quello che hanno tenuto davvero in pista.\n\n"
+        "È gratis, si apre dal telefono, e il link è nel profilo."
+    ),
     "sosta": (
         "{titolo}\n\n"
         "Prima della sosta era {pos_prima}°, otto giri dopo — a ciclo di soste chiuso — "
@@ -84,6 +105,11 @@ MODELLI = {
 }
 
 
+# Alcuni modelli si chiudono da soli col loro invito. Aggiungerci anche CHIUSA
+# stampava due volte «Su murettobox.com...» a distanza di due righe.
+CHIUSA_PROPRIA = {"scelta", "presentazione"}
+
+
 def _campi(fatto) -> dict:
     c = dict(fatto.dati)
     c.setdefault("titolo", fatto.titolo)
@@ -106,7 +132,7 @@ def scrivi(fatto, con_chiusa: bool = True) -> str:
             corpo = fatto.titolo
             print(f"[social] didascalia {fatto.tipo}: manca il campo {e}, uso il titolo")
     pezzi = [corpo]
-    if con_chiusa:
+    if con_chiusa and fatto.tipo not in CHIUSA_PROPRIA:
         pezzi.append(CHIUSA.format(marchio=MARCHIO))
     pezzi.append(_hashtag(fatto))
     return "\n\n".join(pezzi)

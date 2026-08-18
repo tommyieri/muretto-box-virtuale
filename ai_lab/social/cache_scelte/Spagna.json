@@ -1,0 +1,145 @@
+{
+ "gara": "Spagna",
+ "esaminati": 135,
+ "con_differenza": 16,
+ "casi": [
+  {
+   "gara": "Spagna",
+   "circuito": null,
+   "pilota": "LEC",
+   "team": "Ferrari",
+   "colore": "#E8002D",
+   "n_giri": 66,
+   "giro": 16,
+   "pos_al_congelamento": 2,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 17,
+    "posizione": 7,
+    "giro_rientro": 18
+   },
+   "box_dopo": {
+    "giro_pit": 20,
+    "posizione": 6,
+    "giro_rientro": 21
+   },
+   "differenza": -1
+  },
+  {
+   "gara": "Spagna",
+   "circuito": null,
+   "pilota": "VER",
+   "team": "Red Bull Racing",
+   "colore": "#2B478F",
+   "n_giri": 66,
+   "giro": 16,
+   "pos_al_congelamento": 6,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 17,
+    "posizione": 8,
+    "giro_rientro": 18
+   },
+   "box_dopo": {
+    "giro_pit": 20,
+    "posizione": 7,
+    "giro_rientro": 21
+   },
+   "differenza": -1
+  },
+  {
+   "gara": "Spagna",
+   "circuito": null,
+   "pilota": "HAM",
+   "team": "Ferrari",
+   "colore": "#E8002D",
+   "n_giri": 66,
+   "giro": 17,
+   "pos_al_congelamento": 2,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 18,
+    "posizione": 6,
+    "giro_rientro": 19
+   },
+   "box_dopo": {
+    "giro_pit": 21,
+    "posizione": 5,
+    "giro_rientro": 22
+   },
+   "differenza": -1
+  },
+  {
+   "gara": "Spagna",
+   "circuito": null,
+   "pilota": "RUS",
+   "team": "Mercedes",
+   "colore": "#27F4D2",
+   "n_giri": 66,
+   "giro": 20,
+   "pos_al_congelamento": 1,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 21,
+    "posizione": 6,
+    "giro_rientro": 22
+   },
+   "box_dopo": {
+    "giro_pit": 24,
+    "posizione": 5,
+    "giro_rientro": 25
+   },
+   "differenza": -1
+  },
+  {
+   "gara": "Spagna",
+   "circuito": null,
+   "pilota": "ANT",
+   "team": "Mercedes",
+   "colore": "#27F4D2",
+   "n_giri": 66,
+   "giro": 28,
+   "pos_al_congelamento": 2,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 29,
+    "posizione": 7,
+    "giro_rientro": 30
+   },
+   "box_dopo": {
+    "giro_pit": 32,
+    "posizione": 6,
+    "giro_rientro": 33
+   },
+   "differenza": -1
+  },
+  {
+   "gara": "Spagna",
+   "circuito": null,
+   "pilota": "NOR",
+   "team": "McLaren",
+   "colore": "#FF8000",
+   "n_giri": 66,
+   "giro": 35,
+   "pos_al_congelamento": 4,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 36,
+    "posizione": 7,
+    "giro_rientro": 37
+   },
+   "box_dopo": {
+    "giro_pit": 39,
+    "posizione": 6,
+    "giro_rientro": 40
+   },
+   "differenza": -1
+  }
+ ]
+}

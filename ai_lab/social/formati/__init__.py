@@ -1,7 +1,9 @@
 """formati — un modulo per ogni tipo di post. Il registro dice chi sa disegnare cosa."""
-from . import sosta, numero, compagni, mescole, classifica
+from . import presentazione, scelta, sosta, numero, compagni, mescole, classifica
 
 REGISTRO = {
+    "presentazione": presentazione.disegna,   # chi siamo
+    "scelta": scelta.disegna,   # il prodotto al lavoro: viene per primo
     "sosta": sosta.disegna,
     "numero": numero.disegna,
     "compagni": compagni.disegna,

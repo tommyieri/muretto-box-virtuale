@@ -92,3 +92,31 @@ sia anche tracciato in git.
 Servono un account Instagram **Professionale** collegato a una Pagina Facebook,
 un'app Meta e un token a lunga scadenza. Il token non va mai incollato in una chat
 né in un comando in chiaro: vale la lezione del 14/08/2026 sulla chiave Anthropic.
+
+## La correzione editoriale del 18/08/2026
+
+Direttiva del PO, e ribalta la gerarchia dei formati: **i post devono presentare
+il prodotto, non insegnare la Formula 1.** «Fermarsi ai box a Spa costa 18,40
+secondi» è vero, misurato, e non interessa a nessuno.
+
+Quindi:
+
+- `numero_del_progetto` è **fuori rotazione** (`FUORI_ROTAZIONE` in `fatti.py`).
+  La funzione resta: quei numeri sono buoni *dentro* un altro post, non come post.
+- Il formato di punta è **`scelta`**: «lo fermi adesso o fra tre giri?», con la
+  risposta del **motore di produzione** — `motore.mjs` chiama `doveRientri`, lo
+  stesso che risponde nella pagina-gara e nella hero. Stessa gomma, stesso
+  pit-loss, stessi rivali: cambia solo il momento.
+- Il formato **`presentazione`** dice cos'è il Muretto a chi arriva da un reel.
+- **`demo_video.py`** registra il **sito vero** in un browser vero mentre
+  risponde. Non è una ricostruzione: se cambia il sito, cambia il video.
+
+La promessa non si allarga mai: il motore dice **dove rientri, non se conviene**.
+Quella parte resta a chi guarda — è il prodotto, non una scommessa.
+
+```bash
+node ai_lab/social/motore.mjs Ungheria      # cerca i casi dove il momento conta
+python3 -m ai_lab.social.lancio             # bio + i primi tre post
+python3 -m ai_lab.social.demo_video         # il video del sito vero
+python3 -m ai_lab.social.marchio            # logo: SVG per il sito, PNG per IG
+```

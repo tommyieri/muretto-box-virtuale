@@ -1,0 +1,145 @@
+{
+ "gara": "Austria",
+ "esaminati": 160,
+ "con_differenza": 31,
+ "casi": [
+  {
+   "gara": "Austria",
+   "circuito": null,
+   "pilota": "RUS",
+   "team": "Mercedes",
+   "colore": "#27F4D2",
+   "n_giri": 71,
+   "giro": 19,
+   "pos_al_congelamento": 1,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 20,
+    "posizione": 6,
+    "giro_rientro": 21
+   },
+   "box_dopo": {
+    "giro_pit": 23,
+    "posizione": 3,
+    "giro_rientro": 24
+   },
+   "differenza": -3
+  },
+  {
+   "gara": "Austria",
+   "circuito": null,
+   "pilota": "PIA",
+   "team": "McLaren",
+   "colore": "#FF8000",
+   "n_giri": 71,
+   "giro": 23,
+   "pos_al_congelamento": 6,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 24,
+    "posizione": 10,
+    "giro_rientro": 25
+   },
+   "box_dopo": {
+    "giro_pit": 27,
+    "posizione": 8,
+    "giro_rientro": 28
+   },
+   "differenza": -2
+  },
+  {
+   "gara": "Austria",
+   "circuito": null,
+   "pilota": "ANT",
+   "team": "Mercedes",
+   "colore": "#27F4D2",
+   "n_giri": 71,
+   "giro": 24,
+   "pos_al_congelamento": 1,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 25,
+    "posizione": 7,
+    "giro_rientro": 26
+   },
+   "box_dopo": {
+    "giro_pit": 28,
+    "posizione": 5,
+    "giro_rientro": 29
+   },
+   "differenza": -2
+  },
+  {
+   "gara": "Austria",
+   "circuito": null,
+   "pilota": "VER",
+   "team": "Red Bull Racing",
+   "colore": "#2B478F",
+   "n_giri": 71,
+   "giro": 25,
+   "pos_al_congelamento": 2,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 26,
+    "posizione": 5,
+    "giro_rientro": 27
+   },
+   "box_dopo": {
+    "giro_pit": 29,
+    "posizione": 7,
+    "giro_rientro": 30
+   },
+   "differenza": 2
+  },
+  {
+   "gara": "Austria",
+   "circuito": null,
+   "pilota": "HAD",
+   "team": "Red Bull Racing",
+   "colore": "#2B478F",
+   "n_giri": 71,
+   "giro": 27,
+   "pos_al_congelamento": 6,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 28,
+    "posizione": 10,
+    "giro_rientro": 29
+   },
+   "box_dopo": {
+    "giro_pit": 31,
+    "posizione": 8,
+    "giro_rientro": 32
+   },
+   "differenza": -2
+  },
+  {
+   "gara": "Austria",
+   "circuito": null,
+   "pilota": "LEC",
+   "team": "Ferrari",
+   "colore": "#E8002D",
+   "n_giri": 71,
+   "giro": 20,
+   "pos_al_congelamento": 6,
+   "mescola": "HARD",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 21,
+    "posizione": 9,
+    "giro_rientro": 22
+   },
+   "box_dopo": {
+    "giro_pit": 24,
+    "posizione": 8,
+    "giro_rientro": 25
+   },
+   "differenza": -1
+  }
+ ]
+}

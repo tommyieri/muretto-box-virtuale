@@ -1,0 +1,145 @@
+{
+ "gara": "Monaco",
+ "esaminati": 183,
+ "con_differenza": 43,
+ "casi": [
+  {
+   "gara": "Monaco",
+   "circuito": null,
+   "pilota": "ANT",
+   "team": "Mercedes",
+   "colore": "#27F4D2",
+   "n_giri": 78,
+   "giro": 17,
+   "pos_al_congelamento": 1,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 18,
+    "posizione": 5,
+    "giro_rientro": 19
+   },
+   "box_dopo": {
+    "giro_pit": 21,
+    "posizione": 3,
+    "giro_rientro": 22
+   },
+   "differenza": -2
+  },
+  {
+   "gara": "Monaco",
+   "circuito": null,
+   "pilota": "HAM",
+   "team": "Ferrari",
+   "colore": "#E8002D",
+   "n_giri": 78,
+   "giro": 18,
+   "pos_al_congelamento": 2,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 19,
+    "posizione": 5,
+    "giro_rientro": 20
+   },
+   "box_dopo": {
+    "giro_pit": 22,
+    "posizione": 3,
+    "giro_rientro": 23
+   },
+   "differenza": -2
+  },
+  {
+   "gara": "Monaco",
+   "circuito": null,
+   "pilota": "LEC",
+   "team": "Ferrari",
+   "colore": "#E8002D",
+   "n_giri": 78,
+   "giro": 21,
+   "pos_al_congelamento": 3,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 22,
+    "posizione": 5,
+    "giro_rientro": 23
+   },
+   "box_dopo": {
+    "giro_pit": 25,
+    "posizione": 3,
+    "giro_rientro": 26
+   },
+   "differenza": -2
+  },
+  {
+   "gara": "Monaco",
+   "circuito": null,
+   "pilota": "PIA",
+   "team": "McLaren",
+   "colore": "#FF8000",
+   "n_giri": 78,
+   "giro": 17,
+   "pos_al_congelamento": 6,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 18,
+    "posizione": 11,
+    "giro_rientro": 19
+   },
+   "box_dopo": {
+    "giro_pit": 21,
+    "posizione": 10,
+    "giro_rientro": 22
+   },
+   "differenza": -1
+  },
+  {
+   "gara": "Monaco",
+   "circuito": null,
+   "pilota": "GAS",
+   "team": "Alpine",
+   "colore": "#FF87BC",
+   "n_giri": 78,
+   "giro": 31,
+   "pos_al_congelamento": 6,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 32,
+    "posizione": 10,
+    "giro_rientro": 33
+   },
+   "box_dopo": {
+    "giro_pit": 35,
+    "posizione": 9,
+    "giro_rientro": 36
+   },
+   "differenza": -1
+  },
+  {
+   "gara": "Monaco",
+   "circuito": null,
+   "pilota": "NOR",
+   "team": "McLaren",
+   "colore": "#FF8000",
+   "n_giri": 78,
+   "giro": 33,
+   "pos_al_congelamento": 6,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 34,
+    "posizione": 10,
+    "giro_rientro": 35
+   },
+   "box_dopo": {
+    "giro_pit": 37,
+    "posizione": 9,
+    "giro_rientro": 38
+   },
+   "differenza": -1
+  }
+ ]
+}

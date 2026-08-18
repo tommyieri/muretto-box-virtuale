@@ -418,10 +418,6 @@ def classifica_campionato(_: str | None = None) -> list:
     )]
 
 
-RILEVATORI_GARA = [sosta_decisiva, compagni_di_squadra, durata_mescole]
-RILEVATORI_LIBERI = [numero_del_progetto, classifica_campionato]
-
-
 def raccogli(gara: str | None = None) -> list:
     """Tutti i fatti pubblicabili, dal piu' forte al piu' debole."""
     fuori = []
@@ -450,3 +446,96 @@ if __name__ == "__main__":
         for f in raccogli(g):
             print("  ", f)
             print("     prov:", f.provenienza[:110])
+
+
+# ===========================================================================
+# LA SCELTA — il formato che presenta IL PRODOTTO, non la Formula 1.
+#
+# Correzione editoriale del 18/08/2026, e viene dal PO: i rilevatori qui sopra
+# raccontano fatti di F1 (quanto costa una sosta, quanto dura una gomma). Sono
+# veri e non interessano: non sono il nostro prodotto. Il prodotto e' UNO — ti
+# fermi adesso o fra tre giri, e il motore dice DOVE RIENTRI.
+#
+# Quindi questo rilevatore non guarda i dati: interroga il MOTORE DI PRODUZIONE
+# (via ai_lab/social/motore.mjs, che chiama doveRientri, lo stesso della pagina
+# gara e della hero) e cerca i casi in cui il momento cambia la risposta.
+#
+# Il caricamento del motore costa decine di secondi, quindi l'esito si tiene in
+# cache per gara: e' un file DERIVATO da un generatore, non una fonte orfana.
+# ===========================================================================
+
+CACHE = os.path.join(QUI, "cache_scelte")
+
+
+def _scelte_dal_motore(gara: str, rifai: bool = False) -> dict:
+    import subprocess
+    os.makedirs(CACHE, exist_ok=True)
+    p = os.path.join(CACHE, f"{gara.replace(' ', '_')}.json")
+    if os.path.exists(p) and not rifai:
+        try:
+            return json.load(open(p, encoding="utf-8"))
+        except Exception:
+            pass
+    mjs = os.path.join(QUI, "motore.mjs")
+    try:
+        r = subprocess.run(["node", mjs, gara, "--json"], cwd=REPO,
+                           capture_output=True, text=True, timeout=900)
+    except Exception as e:
+        print(f"[social] motore non interrogabile per {gara}: {e}")
+        return {}
+    if r.returncode != 0:
+        print(f"[social] motore fallito su {gara}: {r.stderr.strip()[:200]}")
+        return {}
+    try:
+        dati = json.loads(r.stdout)
+    except Exception:
+        print(f"[social] il motore non ha risposto JSON per {gara}")
+        return {}
+    json.dump(dati, open(p, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+    return dati
+
+
+def scelta_del_muretto(gara: str) -> list:
+    """«Lo fermi adesso o fra tre giri?» — con la risposta del motore."""
+    dati = _scelte_dal_motore(gara)
+    fuori = []
+    for c in (dati.get("casi") or [])[:3]:
+        ora, dopo = c["box_ora"]["posizione"], c["box_dopo"]["posizione"]
+        meglio_aspettare = dopo < ora
+        n = abs(c["differenza"])
+        fuori.append(Fatto(
+            tipo="scelta",
+            gara=gara,
+            titolo=f"{c['pilota']} è {c['pos_al_congelamento']}° al giro {c['giro']}. "
+                   f"Lo fermi adesso o fra {c['attesa']} giri?",
+            # PROVENIENZA PER CHI GUARDA, non per chi sviluppa. La prima versione
+            # stampava «simulatore/scenario/costruttore.mjs::doveRientri»: giusto e
+            # illeggibile: su Instagram un percorso di file non prova niente a
+            # nessuno. Quello che prova qualcosa e' che il motore sia LO STESSO
+            # che risponde sul sito, e che le due scelte differiscano per una
+            # variabile sola.
+            provenienza=(f"risposta del motore di simulazione del sito, lo stesso che "
+                         f"risponde nella pagina-gara · le due scelte hanno stessa mescola "
+                         f"({c['mescola']}), stesso pit-loss e stessi rivali: cambia solo "
+                         f"il giro della sosta · {titolo_gp(gara)}"),
+            dati={**c, "meglio_aspettare": meglio_aspettare,
+                  # appiattite per la didascalia, che non sa scendere in box_ora.posizione
+                  "pos_ora": ora, "pos_dopo": dopo,
+                  "circuito": c.get("circuito") or circuito(gara)},
+            # e' il formato del prodotto: parte sopra a tutti gli altri
+            forza=min(1.0, 0.80 + 0.04 * n),
+        ))
+    return fuori
+
+
+# L'ORDINE E' LA LINEA EDITORIALE, non un dettaglio di implementazione.
+#
+# `numero_del_progetto` E' FUORI DALLA ROTAZIONE dal 18/08/2026, per decisione del
+# PO: produceva post tipo «fermarsi ai box a Spa costa 18,40 secondi». Il numero e'
+# giusto e misurato, e non interessa a nessuno — e' un fatto di Formula 1, mentre
+# noi dobbiamo far vedere il PRODOTTO. La funzione resta, perche' quei numeri sono
+# buoni DENTRO un altro post (sono le costanti con cui il motore risponde), ma non
+# fanno piu' un post per conto loro.
+RILEVATORI_GARA = [scelta_del_muretto, sosta_decisiva, compagni_di_squadra, durata_mescole]
+RILEVATORI_LIBERI = [classifica_campionato]
+FUORI_ROTAZIONE = [numero_del_progetto]

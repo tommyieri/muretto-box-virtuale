@@ -1,0 +1,145 @@
+{
+ "gara": "Gran Bretagna",
+ "esaminati": 120,
+ "con_differenza": 41,
+ "casi": [
+  {
+   "gara": "Gran Bretagna",
+   "circuito": null,
+   "pilota": "RUS",
+   "team": "Mercedes",
+   "colore": "#27F4D2",
+   "n_giri": 52,
+   "giro": 11,
+   "pos_al_congelamento": 4,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 12,
+    "posizione": 9,
+    "giro_rientro": 13
+   },
+   "box_dopo": {
+    "giro_pit": 15,
+    "posizione": 7,
+    "giro_rientro": 16
+   },
+   "differenza": -2
+  },
+  {
+   "gara": "Gran Bretagna",
+   "circuito": null,
+   "pilota": "VER",
+   "team": "Red Bull Racing",
+   "colore": "#2B478F",
+   "n_giri": 52,
+   "giro": 11,
+   "pos_al_congelamento": 5,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 12,
+    "posizione": 9,
+    "giro_rientro": 13
+   },
+   "box_dopo": {
+    "giro_pit": 15,
+    "posizione": 7,
+    "giro_rientro": 16
+   },
+   "differenza": -2
+  },
+  {
+   "gara": "Gran Bretagna",
+   "circuito": null,
+   "pilota": "LEC",
+   "team": "Ferrari",
+   "colore": "#E8002D",
+   "n_giri": 52,
+   "giro": 14,
+   "pos_al_congelamento": 1,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 15,
+    "posizione": 7,
+    "giro_rientro": 16
+   },
+   "box_dopo": {
+    "giro_pit": 18,
+    "posizione": 5,
+    "giro_rientro": 19
+   },
+   "differenza": -2
+  },
+  {
+   "gara": "Gran Bretagna",
+   "circuito": null,
+   "pilota": "HAM",
+   "team": "Ferrari",
+   "colore": "#E8002D",
+   "n_giri": 52,
+   "giro": 22,
+   "pos_al_congelamento": 3,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 23,
+    "posizione": 4,
+    "giro_rientro": 24
+   },
+   "box_dopo": {
+    "giro_pit": 26,
+    "posizione": 6,
+    "giro_rientro": 27
+   },
+   "differenza": 2
+  },
+  {
+   "gara": "Gran Bretagna",
+   "circuito": null,
+   "pilota": "HAD",
+   "team": "Red Bull Racing",
+   "colore": "#2B478F",
+   "n_giri": 52,
+   "giro": 11,
+   "pos_al_congelamento": 6,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 12,
+    "posizione": 10,
+    "giro_rientro": 13
+   },
+   "box_dopo": {
+    "giro_pit": 15,
+    "posizione": 9,
+    "giro_rientro": 16
+   },
+   "differenza": -1
+  },
+  {
+   "gara": "Gran Bretagna",
+   "circuito": null,
+   "pilota": "ANT",
+   "team": "Mercedes",
+   "colore": "#27F4D2",
+   "n_giri": 52,
+   "giro": 19,
+   "pos_al_congelamento": 2,
+   "mescola": "MEDIUM",
+   "attesa": 3,
+   "box_ora": {
+    "giro_pit": 20,
+    "posizione": 6,
+    "giro_rientro": 21
+   },
+   "box_dopo": {
+    "giro_pit": 23,
+    "posizione": 5,
+    "giro_rientro": 24
+   },
+   "differenza": -1
+  }
+ ]
+}
