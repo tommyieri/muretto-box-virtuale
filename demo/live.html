@@ -296,27 +296,70 @@ function boxOra() {
       'Il motore non è disponibile in questa pagina.'));
     return;
   }
+  const curCar = B.byLap()?.[L]?.[scelto];
+  if (!curCar || curCar.retired) {
+    box.replaceChildren(el('div', { class: 'esitoLive' },
+      `${scelto} non è più attivo in pista (ritirato o non classificato al giro ${L}).`));
+    return;
+  }
   // CHI ARRIVA A GARA IN CORSO NON HA LA STORIA. La torre si riallinea con uno snapshot,
   // ma lo snapshot NON e' un giro chiuso: il passo-base si ricostruisce dai giri visti
   // dopo il collegamento, e prima di averne abbastanza il motore risponderebbe su una
   // manciata di giri come se fossero la gara. live_bylap sa dirlo — diagnosi() esiste da
   // sempre, con il motivo gia' scritto — e questa pagina non gliel'aveva mai chiesto.
-  const d = B.diagnosi(L);
+  const d = B.diagnosi(L, scelto);
   if (!d.pronto) {
     box.replaceChildren(el('div', { class: 'esitoLive' },
-      `Il muretto sta ancora imparando la gara: ${d.motivo} `
-      + 'Se ti sei collegato a corsa iniziata, servono qualche giro.'));
+      `Il muretto sta ancora imparando la gara: ${d.motivo}. `
+      + 'Se ti sei collegato a corsa iniziata, servono pochi giri puliti.'));
     return;
   }
+
   const giro = Math.min(nLaps - 1, L + 1);
+  const rimasti = nLaps - giro;
+  const nomiGomme = { SOFT: 'morbida', MEDIUM: 'media', HARD: 'dura' };
+
+  // Analisi mescole usate per conformità REG01 (almeno 2 slick diverse sull'asciutto)
+  const usate = new Set();
+  for (let k = 1; k <= L; k++) {
+    const c = B.byLap()[k]?.[scelto];
+    if (c && c.compound) usate.add(c.compound);
+  }
+  if (usate.size === 0 && curCar?.compound) usate.add(curCar.compound);
+
+  const giaDueMescole = usate.size >= 2;
+  const introduceNuova = !usate.has(mescolaScelta);
+  const richiedeDueSoste = !giaDueMescole && !introduceNuova;
+  const secondaMescola = mescolaScelta === 'HARD' ? 'MEDIUM' : 'HARD';
+
+  let soste;
+  let giro2 = null;
+
+  if (richiedeDueSoste) {
+    if (rimasti < 6) {
+      box.replaceChildren(el('div', { class: 'esitoLive' },
+        el('b', { stile: { color: 'var(--rosso)', display: 'block', marginBottom: '6px' } }, '⚠️ Seconda sosta obbligatoria non realizzabile'),
+        `Rimontando ${nomiGomme[mescolaScelta] || mescolaScelta}, dovresti fare per forza un'altra sosta prima della bandiera per regolamento (obbligo 2 mescole diverse). Mancano solo ${rimasti} giri: scegli un'altra gomma (${nomiGomme[secondaMescola] || secondaMescola}) per completare la gara a 1 sosta.`));
+      return;
+    }
+    const vita = (contestoLive?.vitaMescola?.giri?.[mescolaScelta] || 19);
+    const deltaStint2 = Math.max(3, Math.min(vita, Math.floor(rimasti / 2)));
+    giro2 = Math.min(nLaps - 2, giro + deltaStint2);
+    soste = [{ giro, mescola: mescolaScelta }, { giro: giro2, mescola: secondaMescola }];
+  } else {
+    soste = [{ giro, mescola: mescolaScelta }];
+  }
+
   let esito;
   try {
     esito = rigiocaLive({ byLap: B.byLap(), nGiriGara: nLaps,
       nomeGara: garaCorrente, pilota: scelto, freezeLap: L, contestoLive,
-      soste: [{ giro, mescola: mescolaScelta }] });
+      soste });
   } catch (err) {
-    box.replaceChildren(el('div', { class: 'esitoLive' },
-      `Il motore rifiuta questa sosta: ${err.message}`));
+    const msg = err.message?.includes('non ha una cella')
+      ? `${scelto} non ha un tempo registrato al giro ${L} (ritirato o doppiato).`
+      : `Il motore rifiuta questa sosta: ${err.message}`;
+    box.replaceChildren(el('div', { class: 'esitoLive' }, msg));
     return;
   }
   if (!esito.direttore?.approved) {
@@ -326,13 +369,29 @@ function boxOra() {
     return;
   }
   const i = esito.risultato?.ordine?.indexOf(scelto) ?? -1;
-  box.replaceChildren(el('div', { class: 'esitoLive' },
-    el('span', { class: 'st-occ', stile: { color: 'var(--fioco)', font: '500 10px/1 var(--mono)',
-      letterSpacing: '.16em', textTransform: 'uppercase' } },
-      `se ${scelto} si ferma al giro ${giro}`),
-    el('b', { class: 'pos n' }, i < 0 ? '—' : 'P' + (i + 1)),
-    el('span', { stile: { color: 'var(--calmo)', fontSize: '13.5px' } },
-      'alla bandiera, con questa gomma.')));
+  const posTxt = i < 0 ? '—' : 'P' + (i + 1);
+
+  if (richiedeDueSoste && giro2) {
+    box.replaceChildren(el('div', { class: 'esitoLive' },
+      el('span', { class: 'st-occ', stile: { color: 'var(--fioco)', font: '500 10px/1 var(--mono)',
+        letterSpacing: '.16em', textTransform: 'uppercase' } },
+        `se ${scelto} monta ${nomiGomme[mescolaScelta] || mescolaScelta} al giro ${giro}`),
+      el('b', { class: 'pos n' }, posTxt),
+      el('span', { stile: { color: 'var(--calmo)', fontSize: '13.5px', display: 'block' } },
+        `alla bandiera con strategia a 2 soste (${nomiGomme[mescolaScelta] || mescolaScelta} ➔ ${nomiGomme[secondaMescola] || secondaMescola}).`),
+      el('div', { stile: { marginTop: '10px', padding: '10px', borderRadius: '8px', background: 'rgba(245,160,60,.1)', border: '1px solid rgba(245,160,60,.3)', fontSize: '12px', lineHeight: '1.45' } },
+        el('b', { stile: { color: '#ffb300' } }, '⚠️ Nota Regolamento (2ª sosta obbligatoria): '),
+        el('span', { stile: { color: 'var(--testo)' } },
+          `Rimontando gomma ${nomiGomme[mescolaScelta] || mescolaScelta}, dovrai fare per forza un'altra sosta prima della bandiera per rispettare l'obbligo di due mescole diverse: il motore ha proiettato la 2ª sosta al giro ${giro2} per gomma ${nomiGomme[secondaMescola] || secondaMescola}.`))));
+  } else {
+    box.replaceChildren(el('div', { class: 'esitoLive' },
+      el('span', { class: 'st-occ', stile: { color: 'var(--fioco)', font: '500 10px/1 var(--mono)',
+        letterSpacing: '.16em', textTransform: 'uppercase' } },
+        `se ${scelto} si ferma al giro ${giro}`),
+      el('b', { class: 'pos n' }, posTxt),
+      el('span', { stile: { color: 'var(--calmo)', fontSize: '13.5px' } },
+        `alla bandiera con gomma ${nomiGomme[mescolaScelta] || mescolaScelta} (1 sosta fino alla fine).`)));
+  }
 }
 
 function fianco(inDiretta) {
@@ -357,6 +416,16 @@ function fianco(inDiretta) {
 function scegliPilotaLive(r) {
   if (!r) return;
   scelto = r.dataset.sigla;
+  // Pre-selezione intelligente della gomma alternativa per evitare REG01
+  const L = B.giroPieno() || B.ultimoGiroChiuso();
+  const gommaAttuale = (L && B.byLap()?.[L]?.[scelto]?.compound) || r.querySelector('.tw-gomma')?.getAttribute('title');
+  if (gommaAttuale === 'MEDIUM') {
+    mescolaScelta = 'HARD';
+  } else if (gommaAttuale === 'HARD') {
+    mescolaScelta = 'MEDIUM';
+  } else if (gommaAttuale === 'SOFT') {
+    mescolaScelta = 'HARD';
+  }
   for (const x of E('torre').querySelectorAll('.tw-row')) {
     const suo = x === r;
     x.classList.toggle('tw-sel', suo);
