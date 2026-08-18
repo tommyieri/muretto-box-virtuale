@@ -135,7 +135,9 @@ function ancoraAllaSostaVera() {
   if (vera?.mescola) impostaMescola(vera.mescola);
   rng.value = stato.giroAlt;
   $('#txt-giro-alt').textContent = `Giro ${stato.giroAlt}`;
-  $('#kpi-pit-reale').textContent = soste.length ? `Giro ${soste.map((s) => s.giro).join(' · ')}` : '— nessuna';
+  $('#kpi-pit-reale').textContent = soste.length 
+    ? `${soste.length} sosta/e (g.${soste.map((s) => `${s.giro} ${s.mescola}`).join(', g.')})`
+    : '— nessuna';
   ricalcola();
 }
 
@@ -229,13 +231,33 @@ function rendi({ mio, vero }, freezeLap) {
   const rientro = posGiro[stato.giroAlt + 1]?.[drv] ?? posGiro[stato.giroAlt]?.[drv] ?? null;
   $('#kpi-pos-rientro').textContent = rientro == null ? '—' : `P${rientro}`;
 
-  // DELTA ALLA BANDIERA: i due bracci, stesso motore. Senza il braccio vero non c'è delta.
+  // DELTA ALLA BANDIERA & DIAGNOSI INGEGNERISTICA:
   const elD = $('#kpi-delta-tempo');
   const cumMio = risultato.cum?.[drv], cumVero = vero?.risultato?.cum?.[drv];
   if (typeof cumMio === 'number' && typeof cumVero === 'number') {
     const d = cumMio - cumVero;
     elD.textContent = `${d > 0 ? '+' : ''}${d.toFixed(2)} s`;
     elD.className = `val ${d < -0.05 ? 'pos' : (d > 0.05 ? 'neg' : '')}`;
+    
+    // Spiegazione telemetrica ingegneristica per il pilota
+    const sosteMie = sosteEditabili(p.sosteVere[drv]);
+    const primaSosta = sosteMie[0]?.giro;
+    let diagTxt = '';
+    if (primaSosta && Math.abs(stato.giroAlt - primaSosta) >= 1) {
+      const diffGiri = stato.giroAlt - primaSosta;
+      if (diffGiri < 0) {
+        diagTxt = `Sosta anticipata di ${Math.abs(diffGiri)} giri rispetto alla strategia reale (g.${primaSosta}). Stint finale più lungo di ${Math.abs(diffGiri)} giri.`;
+      } else {
+        diagTxt = `Sosta posticipata di ${diffGiri} giri rispetto alla strategia reale (g.${primaSosta}). Stint 1 esteso su gomma più usurata.`;
+      }
+    }
+    const neutraGiro = (p.neutraVera?.[stato.giroAlt] || p.neutraVera?.[stato.giroAlt - 1]);
+    if (neutraGiro) {
+      diagTxt += (diagTxt ? ' · ' : '') + '⚠️ Sosta simulata in regime di Safety Car / VSC reale';
+    }
+    const subDelta = document.querySelector('#kpi-delta-tempo + .sub') || document.createElement('span');
+    subDelta.className = 'sub';
+    subDelta.innerHTML = `What-If meno strategia vera, stesso motore${diagTxt ? `<br><small style="color:var(--ciano)">${diagTxt}</small>` : ''}`;
   } else {
     elD.textContent = '—';
     elD.className = 'val';

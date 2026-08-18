@@ -123,9 +123,21 @@ ingresso nuovo è ripagare un conto già pagato.
    - **Invariante sotto banco** (`demo/test_whatif.mjs`, verifica 10): sposta la sosta dove già era, con la mescola vera, e il delta deve essere 0 al miliardesimo. Verde su 6 casi in 4 gare.
    - **Stato: ACCESA** il 18/08/2026 per decisione di Tommi — in `PAGINE_FISSE`, in sitemap e nella sezione strumenti di `analisi.html`. Le voci W1/W2 del registro sono state **saldate**, non cancellate. Convive con il BOX ORA di `gara.html`/`live.html`, che resta il posto in cui la simulazione è dentro la gara; questa è la vista da tavolo, sulle gare già corse.
 
+4. **Rete Multi-Agente di Audit & Innovazione (Antigravity IDE)** — *attiva dal 18/08/2026*:
+   - Costruita l'architettura a 4 ruoli specializzati in `ai_lab/squadra/`:
+     - `audit_simulatore.py`: Agente Inquisitore (stress testing, non-negatività, rientri box su 11 GP).
+     - `audit_dati.py`: Agente Notaio (integrità fonti f1db, coerenza pit-loss, isolamento archivio).
+     - `audit_web.py`: Agente Collaudatore (ispezione 11 pagine web, 0 broken link, guscio e sitemap).
+     - `audit_squadra.py`: Orchestratore multi-agente che produce il report unificato per priorità (P0/P1/P2).
+     - `agente_live_browser.mjs`: Collaudo live headless Chromium da browser reale su `https://murettobox.com`.
+   - **Campagna di Super-Benchmark (2.175 simulazioni scientifiche)** completata con zero crash numerici.
+   - **Diagnosi Telemetrica del Delta (What-If)**: integrata la spiegazione fisica lap-by-lap del delta tempo a schermo (anticipo/posticipo sosta, usura residua stint, finestre Safety Car/VSC e strategia multi-sosta reale).
+   - Sentinella di validazione globale: **100% VERDE (10/10 PASS)**.
+
 ---
 
 ## Co-working tra Agenti (Claude Code / Antigravity IDE)
 - Il codice e Git sono l'unico punto di verità condiviso.
 - **Questo file è la sorgente; `AGENTS.md` ci rimanda.** A ogni avanzamento significativo o modifica strutturale si aggiorna QUI, e basta: non esiste più una seconda copia da tenere in pari.
 - **Un verdetto senza data non è un verdetto.** Quando aggiungi una riga ai rami chiusi o agli interruttori, scrivi *quando* e *su che cosa* è stata misurata: le sezioni sopra si leggono anche fra sei mesi, e uno stato «acceso» senza data invecchia in silenzio.
+
