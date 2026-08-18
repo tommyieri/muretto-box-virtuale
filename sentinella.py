@@ -299,6 +299,23 @@ def main():
     # 9. Sentinella Consumo Orfani e File Archiviati
     runner.check_orphan_consumption()
 
+    # 10. Sentinella What-If: i NUMERI della pagina, non la sua esistenza.
+    #
+    # Nasce il 17/08/2026 da un buco misurato. La pagina whatif.html era andata online lo
+    # stesso giorno leggendo l'archivio nella forma sbagliata: menù dei piloti coi campi del
+    # file, passo base sul ripiego di 85,0 s, «posizione di rientro» sempre P1 — e la
+    # sentinella restava 9/9 verde, perché il controllo 7 (test_stat.mjs) sorveglia che una
+    # pagina esista, sia linkata e legga solo demo/data/, e dice di sé per iscritto che «non
+    # apre un browser». Nessuno dei nove guardava un numero prodotto da una pagina.
+    # L'invariante forte è lo zero: sposto la sosta dove già era, e i due bracci dello stesso
+    # motore devono coincidere al miliardesimo.
+    runner.run_check(
+        name="Sentinella What-If (demo/test_whatif.mjs)",
+        cmd=["node", "test_whatif.mjs"],
+        cwd=ROOT_DIR / "demo",
+        expect_in_output="sentinella what-if: tutto verde"
+    )
+
     exit_code = runner.summary()
     sys.exit(exit_code)
 
