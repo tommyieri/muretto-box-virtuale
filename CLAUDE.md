@@ -18,7 +18,7 @@ Prima di chiudere ogni sessione o proporre merge, eseguire SEMPRE il comando uni
 ```bash
 python3 sentinella.py
 ```
-La sentinella esegue 10 verifiche:
+La sentinella esegue 11 verifiche:
 1. Golden Motore JS (`test_b.mjs`, 443/443 casi, diff < 1e-9)
 2. Golden Modulo Pit (`demo/test_pit.mjs`, 33/33 casi)
 3. Hook Degrado & Banda-Zero (`test_degrado_hook.mjs`)
@@ -29,6 +29,7 @@ La sentinella esegue 10 verifiche:
 8. Sigilli Numerici del Simulatore (`simulatore/gen_numeri_ereditati.py --verifica`)
 9. Sentinella Consumo Orfani e File Archiviati
 10. Sentinella What-If (`demo/test_whatif.mjs`) — i **numeri** di una pagina, non la sua esistenza
+11. Sentinella Feedback (`demo/test_feedback.mjs`) — il **contratto**, la **condotta** e le **promesse** della buca delle segnalazioni
 
 > **Il buco che la verifica 10 chiude.** Fino al 17/08/2026 nessuna delle nove guardava un
 > numero prodotto da una pagina: la verifica 7 (`demo/test_stat.mjs`) controlla che una pagina
@@ -122,6 +123,50 @@ ingresso nuovo è ripagare un conto già pagato.
    - **Il confronto è sim contro sim.** Due bracci dello stesso motore (la tua sosta contro la strategia vera), non simulato contro reale: altrimenti il numero somma l'errore del modello all'effetto della scelta e i due pezzi non si separano.
    - **Invariante sotto banco** (`demo/test_whatif.mjs`, verifica 10): sposta la sosta dove già era, con la mescola vera, e il delta deve essere 0 al miliardesimo. Verde su 6 casi in 4 gare.
    - **Stato: ACCESA** il 18/08/2026 per decisione di Tommi — in `PAGINE_FISSE`, in sitemap e nella sezione strumenti di `analisi.html`. Le voci W1/W2 del registro sono state **saldate**, non cancellate. Convive con il BOX ORA di `gara.html`/`live.html`, che resta il posto in cui la simulazione è dentro la gara; questa è la vista da tavolo, sulle gare già corse.
+
+4. **Cantiere 4 (Sezione Feedback)** — *nata il 18/08/2026, in vista del passaggio live.*
+   - **A che serve.** Il sito sta per andare online e nessuno di noi lo usera' come lo usera'
+     un estraneo: un difetto che il lettore vede e non puo' dire e' un difetto che per noi non
+     esiste. `demo/feedback.html` + `demo/feedback.mjs` sono la porta di servizio, linkata dal
+     **piede di ogni pagina** (`muro.mjs::guscio`) con `?da=<pagina>`, che e' l'unico pezzo di
+     contesto raccoglibile senza chiederlo, piu' un **richiamo in fondo alla home**. La voce NON
+     entra nella barra in alto: quella e' il sommario di cosa il sito racconta, e questa non e'
+     una sezione da leggere.
+   - **Il richiamo in home non porta un `h2.sezione-t`**, e non e' una scelta di stile: lo
+     script di `index.html` cancella `.sezione-t:last-of-type` quando non ci sono articoli, per
+     non lasciare un titolo senza elenco. Un titolo di sezione messo li' sotto diventerebbe lui
+     l'ultimo e sparirebbe al posto di «Articoli». Il titolo sta dentro la piastra.
+   - **Dove atterrano.** `demo/api/feedback.js`, seconda funzione serverless del progetto, sullo
+     **stesso Upstash Redis** di `contatore.js` (verificato attivo in produzione il 18/08). Si
+     leggono con `python3 leggi_feedback.py` (`--tutte`, `--fatto <id>`).
+   - **DA FARE PRIMA CHE SERVA: impostare `FEEDBACK_CHIAVE`** fra le variabili d'ambiente del
+     progetto su Vercel, e la stessa in `~/.muretto_env`. Senza, la scrittura funziona e **la
+     lettura risponde 503**: la buca raccoglie e nessuno la apre.
+   - **La privacy non e' una promessa, e' un controllo.** Qui entra testo scritto da una persona
+     e puo' entrare un'email: la pagina mostra in chiaro l'elenco esatto dei campi che partono,
+     costruito dallo stesso oggetto che finisce nella fetch (non puo' divergere); l'IP non e' mai
+     a riposo (impronta `sha256(chiave+ip)` con scadenza a un'ora, solo per il tetto anti-robot);
+     la lettura e' chiusa a chiave. `demo/test_feedback.mjs` fa girare l'endpoint contro un finto
+     Upstash e **cerca gli IP di prova in tutto cio' che resta scritto**.
+   - **L'unico punto muto del sistema, e il suo strumento.** L'esca anti-robot (`campo_x`,
+     fuori schermo) e' l'unica cosa che puo' scartare una persona vera senza che lei lo sappia:
+     chi ci finisce vede una ricevuta normale — e deve vederla, perche' un id diverso
+     insegnerebbe al robot a riconoscersi. Percio' ogni scatto si **conta** (`muretto:fb:esca`)
+     e `leggi_feedback.py` lo mostra in testa: se quel numero cresce come i totali, l'esca va
+     tolta. Un filtro silenzioso senza un contatore e' un difetto che non si scopre mai.
+   - **Il fallimento si dice.** Se l'invio non riesce, la pagina dichiara «Non e' arrivata» e
+     restituisce il testo: un modulo che ringrazia comunque manda via la persona convinta di
+     aver segnalato, e il difetto resta. E' la regola 6 applicata a un modulo.
+   - **Riallineato per strada un difetto preesistente**: i due modelli di
+     `ai_lab/redazione/statico.py` (404 e articoli) portavano ancora il marchio vecchio — uno
+     col rosso `#e80d2e` di prima del 17/08. Il commit sul marchio aveva aggiornato le pagine
+     scritte a mano e non i generatori: al primo `--indici` il 404 tornava indietro in silenzio.
+     Corretta la sorgente e rigenerati i 12 articoli (`--tutto --senza-og`): una riga a file.
+   - **Due difetti veri trovati guardando la pagina, non leggendola**: `.vuoto` e' gia' una
+     classe di `muro.css` (riquadro di stato vuoto, padding 34px) e la riga senza valore
+     ereditava 68 px — le regole di pagina ora portano il prefisso `fb-`; e il blocco della
+     trasparenza si ridisegna anche al `resize`, altrimenti bastava girare il telefono perche'
+     dichiarasse una misura e ne partisse un'altra.
 
 ---
 

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Segnala un problema — Muretto Box Virtuale</title>
+<meta name="description" content="Hai trovato qualcosa che non funziona, un numero che non torna o una pagina che non si capisce? Scrivicelo qui: le segnalazioni le leggiamo a mano, una per una.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
+<link rel="stylesheet" href="muro.css?v=090826b">
+<link rel="apple-touch-icon" href="/assets/marchio/icona-180.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%2232%22%20height%3D%2232%22%20role%3D%22img%22%20aria-label%3D%22Muretto%20Box%20Virtuale%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%23FF1E3C%22%2F%3E%3Cpath%20d%3D%22M20%2064L20%2018L31.5%2018L50%2042L68.5%2018L80%2018L80%2064L69.5%2064L69.5%2034L54%2055L46%2055L30.5%2034L30.5%2064Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Cpath%20d%3D%22M12%2073L88%2073L88%2084L12%2084Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E">
+<style>
+  /* LE REGOLE DEL MODULO STANNO QUI, non in muro.css, e non e' pigrizia: questa e'
+     l'unica pagina del sito con un campo da compilare. Una famiglia di stili per i
+     moduli nel foglio condiviso sarebbe un impianto costruito per un inquilino solo.
+     Il giorno che nasce il secondo modulo, salgono di piano insieme. */
+  .fb-layout{ display:grid; grid-template-columns:minmax(0,1.55fr) minmax(0,1fr); gap:26px; margin-top:30px; align-items:start; }
+  @media (max-width:900px){ .fb-layout{ grid-template-columns:1fr; } }
+
+  .fb-modulo{ display:flex; flex-direction:column; gap:22px; }
+  .fb-campo{ display:flex; flex-direction:column; gap:9px; }
+  .fb-campo > label, .fb-eti{
+    font:600 11px/1 var(--mono); text-transform:uppercase; letter-spacing:.13em; color:var(--fioco);
+  }
+  .fb-aiuto{ font:400 13px/1.5 var(--sans); color:var(--fioco); margin:0; }
+
+  .fb-modulo input[type="text"], .fb-modulo input[type="email"], .fb-modulo textarea{
+    width:100%; background:rgba(0,0,0,.32); color:var(--testo);
+    border:1px solid var(--bordo); border-radius:var(--r-s);
+    padding:12px 14px; font:400 15px/1.55 var(--sans);
+    transition:border-color .16s var(--ease), background-color .16s var(--ease);
+  }
+  .fb-modulo textarea{ min-height:170px; resize:vertical; }
+  .fb-modulo input::placeholder, .fb-modulo textarea::placeholder{ color:#5E6878; }
+  .fb-modulo input:focus, .fb-modulo textarea:focus{
+    outline:none; border-color:var(--ciano); background:rgba(0,0,0,.5);
+    box-shadow:0 0 0 3px rgba(36,227,210,.14);
+  }
+  .fb-modulo input[aria-invalid="true"], .fb-modulo textarea[aria-invalid="true"]{ border-color:var(--rosso); }
+
+  /* L'ESCA: fuori dallo schermo e fuori dal percorso di tabulazione, non `display:none`.
+     Certi robot compilano solo i campi che il browser considera raggiungibili, e certi
+     altri saltano proprio quelli nascosti col display: questa forma li prende entrambi
+     senza mai comparire a un lettore, nemmeno a uno schermo vocale (aria-hidden). */
+  .fb-esca{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+
+  .fb-conta{ font:400 11px/1 var(--mono); color:var(--fioco); text-align:right; letter-spacing:.06em; }
+  .fb-conta.troppo{ color:var(--rosso); }
+
+  .fb-azioni{ display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
+
+  /* la colonna di destra */
+  .fb-lato{ display:flex; flex-direction:column; gap:18px; position:sticky; top:calc(var(--barra) + 18px); }
+  @media (max-width:900px){ .fb-lato{ position:static; } }
+  .fb-nota{ padding:18px 20px; }
+  .fb-nota h2{ font-size:16px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:12px; }
+  .fb-nota p, .fb-nota li{ color:var(--calmo); font-size:14px; line-height:1.6; }
+  .fb-nota ol, .fb-nota ul{ margin:0; padding-left:20px; }
+  .fb-nota li{ margin-bottom:8px; }
+  .fb-nota li:last-child{ margin-bottom:0; }
+  .fb-nota p:last-child{ margin-bottom:0; }
+
+  /* IL BLOCCO DELLA TRASPARENZA. Non e' un'informativa: e' l'elenco esatto dei campi
+     che partono, riempito con i valori veri, prima che il lettore prema. Una promessa
+     sulla privacy che il lettore non puo' verificare vale quanto nessuna promessa. */
+  .fb-parte{ background:rgba(0,0,0,.3); border-left:3px solid var(--ciano); border-radius:0 6px 6px 0; padding:14px 16px; }
+  .fb-parte dl{ margin:0; display:grid; grid-template-columns:auto minmax(0,1fr); gap:7px 14px; }
+  .fb-parte dt{ font:500 10.5px/1.5 var(--mono); color:var(--fioco); text-transform:uppercase; letter-spacing:.1em; }
+  .fb-parte dd{ margin:0; font:400 12.5px/1.5 var(--mono); color:var(--calmo); overflow-wrap:anywhere; }
+  /* `fb-senza` e NON `vuoto`: muro.css ha gia' un `.vuoto` suo, che e' il riquadro
+     dello stato vuoto — padding 34px e testo centrato. Ereditandolo, la riga
+     dell'email senza valore diventava alta 87px invece di 19 e il «— niente —»
+     scivolava al centro della colonna. Un nome generico in un foglio condiviso e'
+     una collisione che aspetta: le regole di questa pagina portano il suo prefisso. */
+  .fb-parte dd.fb-senza{ color:#5E6878; font-style:italic; }
+
+  /* gli esiti */
+  .fb-esito{ padding:18px 20px; border-radius:var(--r); border:1px solid var(--bordo); }
+  .fb-esito h2{ font-size:19px; margin-bottom:10px; }
+  .fb-esito p{ color:var(--calmo); font-size:14.5px; line-height:1.6; }
+  .fb-esito p:last-child{ margin-bottom:0; }
+  .fb-esito.ok{ border-color:rgba(47,213,118,.4); background:rgba(47,213,118,.07); }
+  .fb-esito.ok h2{ color:var(--verde); }
+  .fb-esito.ko{ border-color:rgba(255,30,60,.42); background:rgba(255,30,60,.07); }
+  .fb-esito.ko h2{ color:#ff8a9c; }
+  .fb-protocollo{ font:700 16px/1 var(--mono); color:var(--testo); letter-spacing:.08em; }
+  .fb-copia{ margin-top:14px; }
+</style>
+</head>
+<body>
+<header class="barra"></header>
+
+<main class="scafo">
+  <p class="occhiello">Segnalazioni · Il sito visto da fuori</p>
+  <h1 class="titolone">Dicci cosa <em>non va</em></h1>
+  <p class="sottotitolo">Un numero che non torna, un grafico che non si disegna, una pagina
+    che non si capisce, una cosa che ti aspettavi di trovare e non c'è. Scrivicelo qui:
+    le segnalazioni le leggiamo a mano, una per una, e quelle che descrivono un difetto
+    vero diventano una correzione.</p>
+
+  <div id="esito" aria-live="polite"></div>
+
+  <div class="fb-layout">
+    <!-- ------------------------------------------------------------ il modulo -->
+    <form class="piastra piastra-p fb-modulo" id="modulo" novalidate>
+      <div class="fb-campo">
+        <span class="fb-eti" id="eti-tipo">Di che cosa si tratta</span>
+        <div class="pillole" id="tipi" role="group" aria-labelledby="eti-tipo"></div>
+      </div>
+
+      <div class="fb-campo">
+        <label for="dove">Dove l'hai visto</label>
+        <input type="text" id="dove" name="dove" maxlength="120"
+               placeholder="es. la pagina di una gara, la telemetria, il campionato…"
+               autocomplete="off">
+        <p class="fb-aiuto">Se ci sei arrivato dal piede di una pagina, l'abbiamo già scritto noi.</p>
+      </div>
+
+      <div class="fb-campo">
+        <label for="testo">Che cosa è successo</label>
+        <textarea id="testo" name="testo" maxlength="2000" required
+                  placeholder="Che cosa stavi facendo, che cosa ti aspettavi, che cosa hai visto invece."></textarea>
+        <div class="fb-conta" id="conta">0 / 2000</div>
+      </div>
+
+      <div class="fb-campo">
+        <label for="contatto">La tua email <span style="text-transform:none;letter-spacing:0">(facoltativa)</span></label>
+        <input type="email" id="contatto" name="contatto" maxlength="120"
+               placeholder="serve solo se vuoi una risposta" autocomplete="email">
+        <p class="fb-aiuto">La usiamo per una cosa sola: risponderti su questa segnalazione.
+          Niente lista, niente newsletter. Se la lasci vuota va bene lo stesso.</p>
+      </div>
+
+      <!-- l'esca per i robot: nessun essere umano la vede, nessuno la compila -->
+      <div class="fb-esca" aria-hidden="true">
+        <label for="campo_x">Non compilare questo campo</label>
+        <input type="text" id="campo_x" name="campo_x" tabindex="-1" autocomplete="off">
+      </div>
+
+      <div class="fb-campo">
+        <span class="fb-eti">Che cosa parte da qui</span>
+        <div class="fb-parte">
+          <dl id="parte"></dl>
+        </div>
+        <p class="fb-aiuto">Non c'è altro: nessun cookie, nessun identificativo, nessuna
+          traccia di navigazione. Il tuo indirizzo IP non viene conservato — se ne tiene
+          un'impronta cifrata per un'ora, solo per impedire a un robot di riempire la coda.</p>
+      </div>
+
+      <div class="fb-azioni">
+        <button type="submit" class="btn btn-p" id="manda">Manda la segnalazione</button>
+        <span class="fb-aiuto" id="stato-invio" aria-live="polite"></span>
+      </div>
+    </form>
+
+    <!-- ------------------------------------------------------------- la spalla -->
+    <aside class="fb-lato">
+      <div class="piastra piastra-p fb-nota">
+        <h2>Come si scrive una segnalazione utile</h2>
+        <ol>
+          <li><b>Dove</b> — la pagina, e se serve quale gara o quale pilota.</li>
+          <li><b>Che cosa ti aspettavi</b> — anche se ti sembra ovvio: quasi mai lo è.</li>
+          <li><b>Che cosa hai visto invece</b> — il numero sbagliato, il riquadro vuoto,
+            il testo che non torna.</li>
+        </ol>
+      </div>
+
+      <div class="piastra piastra-p fb-nota">
+        <h2>Che fine fa</h2>
+        <p>Finisce in una coda che leggiamo a mano. Non c'è nessuna risposta automatica e
+          nessun ticket: se la segnalazione descrive un difetto riproducibile, diventa una
+          correzione nel codice; se descrive una cosa che abbiamo deciso apposta, e hai
+          lasciato l'email, ti spieghiamo perché.</p>
+      </div>
+
+      <div class="piastra piastra-p fb-nota">
+        <h2>Una cosa da sapere prima</h2>
+        <p>Il simulatore di questo sito è <b>un gioco, non una previsione</b>: sulla gara
+          intera il motore e «non cambiare niente» sono indistinguibili, e lo diciamo nelle
+          pagine. Se un numero della simulazione non coincide con la gara vera, non è
+          necessariamente un difetto. Se invece un <b>dato</b> non coincide con la gara
+          vera, quello sì: scrivicelo.</p>
+      </div>
+    </aside>
+  </div>
+</main>
+
+<footer class="piede"><div class="piede-in"></div></footer>
+
+<script type="module">
+  import { guscio } from './muro.mjs?v=090826b';
+  guscio('feedback.html');
+</script>
+<script type="module" src="feedback.mjs?v=090826b"></script>
+</body>
+</html>

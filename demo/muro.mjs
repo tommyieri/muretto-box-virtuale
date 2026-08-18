@@ -182,7 +182,21 @@ export function guscio(qui) {
       el('span', { class: 'marchio' },
         el('span', { class: 'marchio-b' }, 'M'),
         el('span', { class: 'marchio-t' }, el('b', {}, 'MURETTO'), el('small', {}, 'STAGIONE 2026'))),
-      el('nav', {}, piatte.map(([n, f]) => el('a', { href: f }, n))),
+      el('nav', {},
+        piatte.map(([n, f]) => el('a', { href: f }, n)),
+        // LA SEGNALAZIONE STA NEL PIEDE DI OGNI PAGINA, e NON in VOCI: la barra in alto e'
+        // il sommario di cosa il sito racconta, e questa non e' una sezione da leggere —
+        // e' la porta di servizio. Nel piede pero' ci deve stare ovunque, perche' il
+        // difetto lo si trova mentre si guarda un'altra cosa.
+        //
+        // `?da=` PORTA LA PAGINA DI PARTENZA, ed e' l'unico pezzo di contesto che si puo'
+        // raccogliere senza chiederlo: chi segnala descrive quasi sempre il difetto e
+        // quasi mai dove stava. Passa il nome del file e nient'altro — nessun parametro
+        // della pagina, che potrebbe portarsi dietro scelte fatte da chi legge.
+        el('a', {
+          class: 'segnala',
+          href: '/feedback.html' + (qui ? `?da=${encodeURIComponent(qui)}` : ''),
+        }, 'Segnala un problema')),
       el('small', {}, 'Formula 1 2026 · replay, strategia e telemetria'));
   }
   graficiLeggibili();

@@ -27,6 +27,18 @@
 <link rel="apple-touch-icon" href="/assets/marchio/icona-180.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%2232%22%20height%3D%2232%22%20role%3D%22img%22%20aria-label%3D%22Muretto%20Box%20Virtuale%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%23FF1E3C%22%2F%3E%3Cpath%20d%3D%22M20%2064L20%2018L31.5%2018L50%2042L68.5%2018L80%2018L80%2064L69.5%2064L69.5%2034L54%2055L46%2055L30.5%2034L30.5%2064Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Cpath%20d%3D%22M12%2073L88%2073L88%2084L12%2084Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E">
 <style>
+  /* ------------------------------------------------- il richiamo alle segnalazioni */
+  /* Prefisso `ric-` sulle parti interne: la lezione di feedback.html — `.vuoto` era
+     gia' un nome di muro.css e la riga che lo usava ereditava 68 px di padding.
+     In un foglio condiviso un nome generico e' una collisione che aspetta. */
+  .richiamo{
+    margin-top:44px; display:flex; flex-wrap:wrap; align-items:center; gap:18px 26px;
+    border-left:3px solid var(--rosso);
+  }
+  .richiamo .ric-testo{ flex:1 1 320px; min-width:0; }
+  .richiamo h2{ font-size:22px; text-transform:uppercase; letter-spacing:.02em; margin-bottom:8px; }
+  .richiamo p{ margin:0; color:var(--calmo); font-size:14.5px; line-height:1.6; max-width:62ch; }
+
   /* ------------------------------------------------------------ tre porte */
   .porte{ display:grid; grid-template-columns:repeat(3,1fr); gap:var(--gap); }
   .porta{ display:block; padding:24px 22px 22px; border-radius:var(--r);
@@ -177,6 +189,17 @@
 
   <h2 class="sezione-t">Articoli <a class="coda" href="analisi.html">tutti →</a></h2>
   <div class="letture" id="letture"></div>
+
+  <section class="piastra piastra-p richiamo" aria-labelledby="ric-tit">
+    <div class="ric-testo">
+      <h2 id="ric-tit">Se qualcosa non va, <em style="font-style:normal;color:var(--rosso)">dillo</em></h2>
+      <p>Questo sito finora l'abbiamo guardato solo noi, e chi costruisce una cosa smette
+         di vederla. Se trovi un numero che non torna, un grafico che resta vuoto o una
+         pagina che non si capisce, scrivicelo: le segnalazioni le leggiamo a mano, e
+         quelle che descrivono un difetto vero diventano una correzione.</p>
+    </div>
+    <a class="btn btn-p" href="feedback.html?da=index.html">Segnala un problema</a>
+  </section>
 
 </main>
 

@@ -316,6 +316,23 @@ def main():
         expect_in_output="sentinella what-if: tutto verde"
     )
 
+    # 11. Sentinella Feedback: il contratto, la condotta e le promesse della buca.
+    #
+    # La pagina delle segnalazioni non pubblica numeri, quindi la lezione del What-If non
+    # si applica alla lettera — si applica tradotta. Qui possono marcire in silenzio due
+    # cose: (a) il contratto fra demo/feedback.mjs (browser) e demo/api/feedback.js
+    # (server), che se diverge mostra cinque pillole e ne accetta quattro; (b) la
+    # dichiarazione «che cosa parte da qui», che è l'unica promessa sulla privacy che il
+    # lettore NON può verificare da solo. La parte B del test non legge il sorgente: fa
+    # girare l'endpoint contro un finto Upstash e guarda le risposte vere, compresa quella
+    # che conta di più — l'indirizzo IP non deve finire in ciò che resta scritto.
+    runner.run_check(
+        name="Sentinella Feedback (demo/test_feedback.mjs)",
+        cmd=["node", "test_feedback.mjs"],
+        cwd=ROOT_DIR / "demo",
+        expect_in_output="sentinella feedback: tutto verde"
+    )
+
     exit_code = runner.summary()
     sys.exit(exit_code)
 
