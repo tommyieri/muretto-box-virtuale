@@ -333,6 +333,27 @@ def main():
         expect_in_output="sentinella feedback: tutto verde"
     )
 
+    # 12. Sentinella Formazione: chi guida che cosa, ROUND PER ROUND.
+    #
+    # Nasce il 19/08/2026 col primo cambio di sedile a stagione in corso (Lawson in Red Bull
+    # per il solo GP d'Olanda, Tsunoda in Racing Bulls). Fino a quel giorno demo/data/teams.json
+    # era una mappa PIATTA e senza generatore — gen_stat_identita.py la elencava per iscritto
+    # fra le fonti orfane — e gen_giri.py la rileggeva tale e quale per ogni sessione di ogni
+    # gara. Correggerla per la gara in arrivo sarebbe stato giusto al round 12 e falso agli
+    # undici gia' corsi: il danno non si vede il giorno in cui lo fai, si vede al primo
+    # `gen_giri.py --forza` mesi dopo, con Lawson pilota Red Bull a Budapest.
+    #
+    # L'invariante forte e' il passato: la formazione risolta al round di una gara pubblicata
+    # deve coincidere con le squadre scritte DENTRO i file di quella gara (1.172 attribuzioni
+    # su 55 sessioni). E' anche l'unica rete contro un guasto che nessuno ha ancora visto —
+    # il giorno in cui f1db attribuisse a Lawson la squadra dell'ultima gara corsa, la base
+    # deriverebbe da sola e questa verifica andrebbe rossa senza che nessuno tocchi niente.
+    runner.run_check(
+        name="Sentinella Formazione round-per-round (test_formazioni.py)",
+        cmd=["python3", "test_formazioni.py"],
+        expect_in_output="sentinella formazioni: tutto verde"
+    )
+
     exit_code = runner.summary()
     sys.exit(exit_code)
 

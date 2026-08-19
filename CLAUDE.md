@@ -18,7 +18,7 @@ Prima di chiudere ogni sessione o proporre merge, eseguire SEMPRE il comando uni
 ```bash
 python3 sentinella.py
 ```
-La sentinella esegue 11 verifiche:
+La sentinella esegue 12 verifiche:
 1. Golden Motore JS (`test_b.mjs`, 443/443 casi, diff < 1e-9)
 2. Golden Modulo Pit (`demo/test_pit.mjs`, 33/33 casi)
 3. Hook Degrado & Banda-Zero (`test_degrado_hook.mjs`)
@@ -30,6 +30,7 @@ La sentinella esegue 11 verifiche:
 9. Sentinella Consumo Orfani e File Archiviati
 10. Sentinella What-If (`demo/test_whatif.mjs`) — i **numeri** di una pagina, non la sua esistenza
 11. Sentinella Feedback (`demo/test_feedback.mjs`) — il **contratto**, la **condotta** e le **promesse** della buca delle segnalazioni
+12. Sentinella Formazione (`test_formazioni.py`) — **chi guida che cosa, round per round**: l'invariante forte è che la formazione risolta al round di una gara già pubblicata coincida con le squadre scritte dentro i suoi file (1.172 attribuzioni su 55 sessioni)
 
 > **Il buco che la verifica 10 chiude.** Fino al 17/08/2026 nessuna delle nove guardava un
 > numero prodotto da una pagina: la verifica 7 (`demo/test_stat.mjs`) controlla che una pagina
@@ -86,6 +87,7 @@ ingresso nuovo è ripagare un conto già pagato.
 - **`f1-race-replay` è SENZA licenza** (all rights reserved): si legge come specifica, **non si copia**.
 - **f1db NON è arbitro sulle soste** — perde 8 soste sul 2026. La definizione di sosta sta in **`demo/sosta.mjs`** ed è UNA: *cambio di set*, non transito in corsia (`in_lap` è un'altra cosa e resta un'altra cosa).
 - **`data/difficolta_sorpasso.csv` è ORFANO e non fidato**: nessun generatore committato lo produce.
+- **`demo/data/teams.json` NON si modifica a mano**: dal 19/08/2026 è un derivato di `gen_formazioni.py` (base = `team_demo` degli standings f1db, deroghe dichiarate in `data/formazione_deroghe_2026.json`). Un cambio di sedile si scrive **nelle deroghe, con il round**, mai nella mappa piatta: la mappa non ha l'asse del tempo e correggerla riscrive anche le gare già corse al primo `gen_giri.py --forza`.
 - **`live/` non si riattiva**: provato in campione e fuori — il feed parcheggia le auto su (−7447, −1830), che non è (0,0,0) e passa il filtro.
 - **Non ricreare script scratch nella root** (`diag_*`, `patch_*`, `apply_patch.py`, `.bak2`): usa test formali o moduli dedicati.
 
@@ -95,6 +97,7 @@ ingresso nuovo è ripagare un conto già pagato.
 - **VETO McLAREN sul traffico live: APERTO.** L'aggancio è pronto e **spento** in `demo/engine.mjs`. Decide Tommi.
 - **Scenari-degrado**: costruiti e calibrati, **OFF**. Accensione = PO.
 - **Bozza «lift Mercedes»** nella redazione tecnica: in attesa di Tommi.
+- **Monza (round 13): la formazione è APERTA.** La deroga d'Olanda ricade sul **solo round 12**. Se Hadjar non recupera, serve una **nuova voce dichiarata** in `data/formazione_deroghe_2026.json` con i round giusti: nessun automatismo la scrive, ed è giusto così.
 - **Social / Instagram**: il cancello umano è **SEMPRE chiuso**, a differenza della redazione. Niente pubblicazione automatica.
 
 ---
@@ -178,6 +181,16 @@ ingresso nuovo è ripagare un conto già pagato.
      ereditava 68 px — le regole di pagina ora portano il prefisso `fb-`; e il blocco della
      trasparenza si ridisegna anche al `resize`, altrimenti bastava girare il telefono perche'
      dichiarasse una misura e ne partisse un'altra.
+
+6. **Cantiere 6 (Formazione round-per-round)** — *nato il 19/08/2026 col primo cambio di sedile a stagione in corso.*
+   - **L'ingresso.** Red Bull schiera **Lawson** al posto di **Hadjar** (infortunio al polso) per il **solo GP d'Olanda** (round 12, 23/08); **Tsunoda** rientra in **Racing Bulls** accanto a **Lindblad**. Annuncio stampa riportato dal PO: **non è una misura**, nessun artefatto del progetto lo contiene al 19/08.
+   - **Che cosa era rotto, e non era il dato.** `demo/data/teams.json` era una mappa **piatta** sigla→squadra, scritta a mano una volta (commit `2921a69`) e **senza generatore** — `gen_stat_identita.py` la elencava per iscritto fra le fonti orfane. `gen_giri.py` la rileggeva **tale e quale per ogni sessione di ogni gara**: correggerla per la gara in arrivo sarebbe stato giusto al round 12 e **falso agli undici già corsi**. Il danno non si vede il giorno in cui lo fai — si vede al primo `gen_giri.py --forza`, mesi dopo, con Lawson pilota Red Bull a Budapest.
+   - **La riparazione è l'asse del tempo.** `gen_formazioni.py` scrive `demo/data/formazioni_2026.json` (formazione **round per round** + provenienza con sha256 delle fonti) e ne deriva `demo/data/teams.json` come `per_round[round_corrente]`, **nella forma che i suoi due consumatori avevano già** (nessuna pagina è stata toccata). La **base** viene da `team_demo` degli standings f1db, non trascritta; le **deroghe** stanno in `data/formazione_deroghe_2026.json`, scritto a mano **e dichiarato tale** come `demo/team_colori.json`, ogni voce con data, fonte, motivo e **perimetro di round**.
+   - **Mappa e schieramento non sono la stessa cosa.** `per_round` dice a che squadra **appartiene** una sigla; `schieramento_per_round` dice chi **scende in pista**. Hadjar al round 12 sta nella prima e non nella seconda: è **infortunato, non ceduto** — ed è anche ciò che rende la deroga innocua se recupera all'ultimo, perché la sua livrea resta giusta comunque.
+   - **`gen_giri.py` chiede la formazione al round della sessione** e **dice** (stderr) quando una sigla in pista non è nella formazione: un rookie in FP1 o un sostituto non dichiarato non prende più il grigio di riserva in silenzio. `gen_formazioni.py` è agganciato in `auto_gara.py` **prima** di ogni `gen_giri.py` (4 punti) e dopo `gen_classifiche.py`.
+   - **Un difetto vero trovato per strada, e riparato.** La vecchia `teams.json` diceva «Haas», `team_colori.json` è indicizzato «Haas F1 Team» e `gen_giri.py` fa `colori.get(team)` **senza alias**: **BEA e OCO hanno il grigio `#8A93A3` congelato dentro ogni file di `demo/data/giri/`** — la livrea sbagliata su una tabella che sembra a posto, esattamente il guasto che `gen_stat_identita.py` descrive nel suo frontespizio. Prendendo il canonico dagli standings il nome torna «Haas F1 Team» e il colore argento. **I file già scritti restano come sono** (sono output storico, non si ritoccano a mano): si correggono da soli al primo `gen_giri.py --forza`. In pagina l'effetto era nullo — `telemetria.html` usa `coloreDi()`, che l'alias ce l'ha.
+   - **La sentinella è nata con lui** (verifica 12, `test_formazioni.py`): riproducibilità, livrea per ogni squadra di ogni round, **il passato non si muove**, perimetro delle deroghe dentro e fuori, `teams.json` derivato, ogni deroga tracciabile. Provata **al contrario**: estesa la deroga al round 11 va rossa nominando `ungheria__*:LAW`; un nome di squadra senza livrea fa uscire 1 il generatore **senza scrivere**.
+   - **La deroga non si cancella dopo Zandvoort**: diventa il verbale di come sono stati attribuiti i dati di quel weekend. Toglierla rifarebbe risolvere Lawson in Racing Bulls all'Olanda, in disaccordo coi file pubblicati — e l'invariante storico se ne accorge.
 
 ---
 
