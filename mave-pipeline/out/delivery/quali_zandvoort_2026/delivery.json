@@ -1,0 +1,10 @@
+{
+  "status": "READY_FOR_PUBLISH",
+  "created_at": "2026-08-19T16:24:43.474415",
+  "session": "QUALI",
+  "circuit": "Zandvoort",
+  "year": 2026,
+  "video": "/Users/tommi/muretto/mave-pipeline/out/delivery/quali_zandvoort_2026/reel_final_60fps.mp4",
+  "caption": "/Users/tommi/muretto/mave-pipeline/out/delivery/quali_zandvoort_2026/caption_instagram.txt",
+  "source_data": "FastF1 & Official Timing Live Feed"
+}

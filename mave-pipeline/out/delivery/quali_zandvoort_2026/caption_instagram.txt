@@ -1,0 +1,9 @@
++0.043s decided pole position in Zandvoort Q3.
+
+The micro-telemetry breakdown reveals the truth:
+📍 Turn 1: VER brakes 12 meters deeper into the apex
+📍 Turn 3 Banking: Full 100% throttle 0.18s earlier
+
+Compare every braking point, throttle trace and delta curve across the grid on murettobox.com (link in bio) 🔴
+
+#f1 #formula1 #telemetry #qualifying #poleposition #zandvoortgp #f1strategy #racing

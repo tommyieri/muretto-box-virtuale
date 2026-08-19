@@ -1,0 +1,9 @@
+Did Ferrari wait too long to pit at Ungheria?
+
+Instead of guessing, let's run the exact simulation on Muretto:
+Actual Call: Lap 18 -> Rejoined P4 in traffic.
+Simulated Call: Lap 20 -> Rejoined P1 in clean air.
+
+Replay every lap and shift every strategy call yourself. Available now on murettobox.com (link in bio) 🔴🏁
+
+#f1 #formula1 #f1strategy #strategyautopsy #ungheriagp #pitstop #ferrari #f1data
