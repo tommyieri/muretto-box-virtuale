@@ -1,0 +1,451 @@
+{
+  "text": "Did pit stop timing cost LEC and Ferrari the race victory? Let's run the exact counterfactual simulation on Muretto. In reality, LEC pitted on Lap 18 under green flag conditions, rejoining in heavy midfield traffic. Just two laps later, the Safety Car was deployed. If Ferrari had extended the stint to pit under the yellow flag, the eight-point-seven second pit loss discount would have propelled LEC out in P1 with a three-point-eight second lead to win the Grand Prix. Explore counterfactual strategies and safety car windows yourself on murettobox.com/whatif.",
+  "words": [
+    {
+      "word": "Did",
+      "start": 0.4,
+      "end": 0.679
+    },
+    {
+      "word": "pit",
+      "start": 0.71,
+      "end": 0.989
+    },
+    {
+      "word": "stop",
+      "start": 1.02,
+      "end": 1.299
+    },
+    {
+      "word": "timing",
+      "start": 1.33,
+      "end": 1.609
+    },
+    {
+      "word": "cost",
+      "start": 1.64,
+      "end": 1.92
+    },
+    {
+      "word": "LEC",
+      "start": 1.951,
+      "end": 2.23
+    },
+    {
+      "word": "and",
+      "start": 2.261,
+      "end": 2.54
+    },
+    {
+      "word": "Ferrari",
+      "start": 2.571,
+      "end": 2.85
+    },
+    {
+      "word": "the",
+      "start": 2.881,
+      "end": 3.16
+    },
+    {
+      "word": "race",
+      "start": 3.191,
+      "end": 3.47
+    },
+    {
+      "word": "victory?",
+      "start": 3.501,
+      "end": 3.78
+    },
+    {
+      "word": "Let's",
+      "start": 3.811,
+      "end": 4.09
+    },
+    {
+      "word": "run",
+      "start": 4.121,
+      "end": 4.4
+    },
+    {
+      "word": "the",
+      "start": 4.431,
+      "end": 4.711
+    },
+    {
+      "word": "exact",
+      "start": 4.742,
+      "end": 5.021
+    },
+    {
+      "word": "counterfactual",
+      "start": 5.052,
+      "end": 5.331
+    },
+    {
+      "word": "simulation",
+      "start": 5.362,
+      "end": 5.641
+    },
+    {
+      "word": "on",
+      "start": 5.672,
+      "end": 5.951
+    },
+    {
+      "word": "Muretto.",
+      "start": 5.982,
+      "end": 6.261
+    },
+    {
+      "word": "In",
+      "start": 6.292,
+      "end": 6.571
+    },
+    {
+      "word": "reality,",
+      "start": 6.602,
+      "end": 6.881
+    },
+    {
+      "word": "LEC",
+      "start": 6.912,
+      "end": 7.191
+    },
+    {
+      "word": "pitted",
+      "start": 7.222,
+      "end": 7.502
+    },
+    {
+      "word": "on",
+      "start": 7.533,
+      "end": 7.812
+    },
+    {
+      "word": "Lap",
+      "start": 7.843,
+      "end": 8.122
+    },
+    {
+      "word": "18",
+      "start": 8.153,
+      "end": 8.432
+    },
+    {
+      "word": "under",
+      "start": 8.463,
+      "end": 8.742
+    },
+    {
+      "word": "green",
+      "start": 8.773,
+      "end": 9.052
+    },
+    {
+      "word": "flag",
+      "start": 9.083,
+      "end": 9.362
+    },
+    {
+      "word": "conditions,",
+      "start": 9.393,
+      "end": 9.672
+    },
+    {
+      "word": "rejoining",
+      "start": 9.703,
+      "end": 9.982
+    },
+    {
+      "word": "in",
+      "start": 10.013,
+      "end": 10.293
+    },
+    {
+      "word": "heavy",
+      "start": 10.324,
+      "end": 10.603
+    },
+    {
+      "word": "midfield",
+      "start": 10.634,
+      "end": 10.913
+    },
+    {
+      "word": "traffic.",
+      "start": 10.944,
+      "end": 11.223
+    },
+    {
+      "word": "Just",
+      "start": 11.254,
+      "end": 11.533
+    },
+    {
+      "word": "two",
+      "start": 11.564,
+      "end": 11.843
+    },
+    {
+      "word": "laps",
+      "start": 11.874,
+      "end": 12.153
+    },
+    {
+      "word": "later,",
+      "start": 12.184,
+      "end": 12.463
+    },
+    {
+      "word": "the",
+      "start": 12.494,
+      "end": 12.773
+    },
+    {
+      "word": "Safety",
+      "start": 12.804,
+      "end": 13.084
+    },
+    {
+      "word": "Car",
+      "start": 13.115,
+      "end": 13.394
+    },
+    {
+      "word": "was",
+      "start": 13.425,
+      "end": 13.704
+    },
+    {
+      "word": "deployed.",
+      "start": 13.735,
+      "end": 14.014
+    },
+    {
+      "word": "If",
+      "start": 14.045,
+      "end": 14.324
+    },
+    {
+      "word": "Ferrari",
+      "start": 14.355,
+      "end": 14.634
+    },
+    {
+      "word": "had",
+      "start": 14.665,
+      "end": 14.944
+    },
+    {
+      "word": "extended",
+      "start": 14.975,
+      "end": 15.254
+    },
+    {
+      "word": "the",
+      "start": 15.285,
+      "end": 15.564
+    },
+    {
+      "word": "stint",
+      "start": 15.596,
+      "end": 15.875
+    },
+    {
+      "word": "to",
+      "start": 15.906,
+      "end": 16.185
+    },
+    {
+      "word": "pit",
+      "start": 16.216,
+      "end": 16.495
+    },
+    {
+      "word": "under",
+      "start": 16.526,
+      "end": 16.805
+    },
+    {
+      "word": "the",
+      "start": 16.836,
+      "end": 17.115
+    },
+    {
+      "word": "yellow",
+      "start": 17.146,
+      "end": 17.425
+    },
+    {
+      "word": "flag,",
+      "start": 17.456,
+      "end": 17.735
+    },
+    {
+      "word": "the",
+      "start": 17.766,
+      "end": 18.045
+    },
+    {
+      "word": "eight-point-seven",
+      "start": 18.076,
+      "end": 18.356
+    },
+    {
+      "word": "second",
+      "start": 18.387,
+      "end": 18.666
+    },
+    {
+      "word": "pit",
+      "start": 18.697,
+      "end": 18.976
+    },
+    {
+      "word": "loss",
+      "start": 19.007,
+      "end": 19.286
+    },
+    {
+      "word": "discount",
+      "start": 19.317,
+      "end": 19.596
+    },
+    {
+      "word": "would",
+      "start": 19.627,
+      "end": 19.906
+    },
+    {
+      "word": "have",
+      "start": 19.937,
+      "end": 20.216
+    },
+    {
+      "word": "propelled",
+      "start": 20.247,
+      "end": 20.526
+    },
+    {
+      "word": "LEC",
+      "start": 20.557,
+      "end": 20.836
+    },
+    {
+      "word": "out",
+      "start": 20.867,
+      "end": 21.147
+    },
+    {
+      "word": "in",
+      "start": 21.178,
+      "end": 21.457
+    },
+    {
+      "word": "P1",
+      "start": 21.488,
+      "end": 21.767
+    },
+    {
+      "word": "with",
+      "start": 21.798,
+      "end": 22.077
+    },
+    {
+      "word": "a",
+      "start": 22.108,
+      "end": 22.387
+    },
+    {
+      "word": "three-point-eight",
+      "start": 22.418,
+      "end": 22.697
+    },
+    {
+      "word": "second",
+      "start": 22.728,
+      "end": 23.007
+    },
+    {
+      "word": "lead",
+      "start": 23.038,
+      "end": 23.317
+    },
+    {
+      "word": "to",
+      "start": 23.348,
+      "end": 23.627
+    },
+    {
+      "word": "win",
+      "start": 23.658,
+      "end": 23.938
+    },
+    {
+      "word": "the",
+      "start": 23.969,
+      "end": 24.248
+    },
+    {
+      "word": "Grand",
+      "start": 24.279,
+      "end": 24.558
+    },
+    {
+      "word": "Prix.",
+      "start": 24.589,
+      "end": 24.868
+    },
+    {
+      "word": "Explore",
+      "start": 24.899,
+      "end": 25.178
+    },
+    {
+      "word": "counterfactual",
+      "start": 25.209,
+      "end": 25.488
+    },
+    {
+      "word": "strategies",
+      "start": 25.519,
+      "end": 25.798
+    },
+    {
+      "word": "and",
+      "start": 25.829,
+      "end": 26.108
+    },
+    {
+      "word": "safety",
+      "start": 26.139,
+      "end": 26.418
+    },
+    {
+      "word": "car",
+      "start": 26.449,
+      "end": 26.729
+    },
+    {
+      "word": "windows",
+      "start": 26.76,
+      "end": 27.039
+    },
+    {
+      "word": "yourself",
+      "start": 27.07,
+      "end": 27.349
+    },
+    {
+      "word": "on",
+      "start": 27.38,
+      "end": 27.659
+    },
+    {
+      "word": "murettobox.com/whatif.",
+      "start": 27.69,
+      "end": 27.969
+    }
+  ],
+  "duration": 30.0
+}

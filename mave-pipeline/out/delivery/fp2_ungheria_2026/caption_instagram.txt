@@ -1,0 +1,11 @@
+Forget the single-lap headline times from Ungheria FP2.
+
+We analyzed the full race simulations on identical MEDIUM tyres:
+🏎️ Red Bull Racing: 84.447s average pace (0.10s/lap tyre degradation)
+🏎️ McLaren: 84.703s average pace
+
+Over a 15-lap opening stint, this pace delta opens a +3.83s gap clear of the undercut window.
+
+Explore every team's race pace simulation and tyre wear curves for free on murettobox.com (link in bio) 🏁
+
+#f1 #formula1 #f1telemetry #f1strategy #fp2 #ungheriagp #motorsport #f12026

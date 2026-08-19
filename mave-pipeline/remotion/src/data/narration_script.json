@@ -1,0 +1,27 @@
+{
+  "session_type": "POST_RACE_STRATEGY_AUTOPSY",
+  "script": "Did pit stop timing cost LEC and Ferrari the race victory? Let's run the exact counterfactual simulation on Muretto. In reality, LEC pitted on Lap 18 under green flag conditions, rejoining in heavy midfield traffic. Just two laps later, the Safety Car was deployed. If Ferrari had extended the stint to pit under the yellow flag, the eight-point-seven second pit loss discount would have propelled LEC out in P1 with a three-point-eight second lead to win the Grand Prix. Explore counterfactual strategies and safety car windows yourself on murettobox.com/whatif.",
+  "cues": [
+    {
+      "time_s": 0.0,
+      "section": "HOOK",
+      "text": "MURETTO WHAT-IF \u00b7 FERRARI"
+    },
+    {
+      "time_s": 6.0,
+      "section": "REALITY",
+      "text": "REALITY: LAP 18 PIT -> P4 TRAFFIC"
+    },
+    {
+      "time_s": 13.0,
+      "section": "SAFETY_CAR_WHATIF",
+      "text": "WHAT-IF: LAP 20 SC PIT -> REJOIN P1 (+3.8s)"
+    },
+    {
+      "time_s": 22.0,
+      "section": "CTA",
+      "text": "murettobox.com/whatif"
+    }
+  ],
+  "duration_s": 30.0
+}

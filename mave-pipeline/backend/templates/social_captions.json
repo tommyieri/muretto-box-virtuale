@@ -1,0 +1,22 @@
+{
+  "FP2_LONG_RUN": {
+    "title": "FP2 Race Pace Verdict · {circuit} GP",
+    "caption": "Forget the single-lap headline times from {circuit} FP2.\n\nWe analyzed the full race simulations on identical {compound} tyres:\n🏎️ {driver_p1_team}: {driver_p1_avg:.3f}s average pace ({driver_p1_deg:.2f}s/lap tyre degradation)\n🏎️ {driver_p2_team}: {driver_p2_avg:.3f}s average pace\n\nOver a 15-lap opening stint, this pace delta opens a +{delta_15:.2f}s gap clear of the undercut window.\n\nExplore every team's race pace simulation and tyre wear curves for free on murettobox.com (link in bio) 🏁\n\n#f1 #formula1 #f1telemetry #f1strategy #fp2 #{circuit_lower}gp #motorsport #f12026",
+    "platforms": ["Instagram Reels", "TikTok", "YouTube Shorts"]
+  },
+  "QUALIFYING_FORENSICS": {
+    "title": "Where Pole Was Won: {delta_final}s · {circuit} Q3",
+    "caption": "{delta_final}s decided pole position in {circuit} Q3.\n\nThe micro-telemetry breakdown reveals the truth:\n📍 Turn 1: {driver_p1_code} brakes 12 meters deeper into the apex\n📍 Turn 3 Banking: Full 100% throttle 0.18s earlier\n\nCompare every braking point, throttle trace and delta curve across the grid on murettobox.com (link in bio) 🔴\n\n#f1 #formula1 #telemetry #qualifying #poleposition #{circuit_lower}gp #f1strategy #racing",
+    "platforms": ["Instagram Reels", "TikTok", "YouTube Shorts"]
+  },
+  "PRE_RACE_STRATEGY_ALERT": {
+    "title": "Sunday Strategy Alert: The Critical Pit Window · {circuit} GP",
+    "caption": "This is the pit wall map that will decide today's {circuit} Grand Prix.\n\n🔴 Pit on Lap {bad_lap}: Rejoins P{bad_rejoin} locked into a DRS train.\n🟢 Extend to Lap {good_lap}: Overcut clears midfield into P{good_rejoin} with {good_gap:.1f}s of clean air.\n\nKeep Muretto open during the GP. It tells you where you rejoin, not whether it was worth it. You call the strategy on murettobox.com (link in bio) 🏁\n\n#f1 #formula1 #f1strategy #pitstop #undercut #{circuit_lower}gp #muretto #f12026",
+    "platforms": ["Instagram Reels", "TikTok", "YouTube Shorts"]
+  },
+  "POST_RACE_STRATEGY_AUTOPSY": {
+    "title": "Strategy Autopsy: What If {team} Pitted on Lap {sim_lap}?",
+    "caption": "Did {team} wait too long to pit at {circuit}?\n\nInstead of guessing, let's run the exact simulation on Muretto:\nActual Call: Lap {act_lap} -> Rejoined P{act_pos} in traffic.\nSimulated Call: Lap {sim_lap} -> Rejoined P{sim_pos} in clean air.\n\nReplay every lap and shift every strategy call yourself. Available now on murettobox.com (link in bio) 🔴🏁\n\n#f1 #formula1 #f1strategy #strategyautopsy #{circuit_lower}gp #pitstop #ferrari #f1data",
+    "platforms": ["Instagram Reels", "TikTok", "YouTube Shorts"]
+  }
+}
