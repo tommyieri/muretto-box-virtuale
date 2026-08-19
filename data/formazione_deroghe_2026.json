@@ -1,0 +1,35 @@
+{
+  "_nota": "SCRITTO A MANO, E DICHIARATO TALE — come demo/team_colori.json. Qui stanno le sole cose sulla formazione che nessuna fonte numerica del progetto (f1db / FastF1 / OpenF1 / TI) sa ancora, perche' sono annunci di entry list e non misure: un pilota sostituito, un infortunio, un rookie in FP1. Ogni voce porta la sua data, la sua fonte e il suo PERIMETRO di round: fuori da quei round non esiste. Letto SOLO da gen_formazioni.py.",
+  "_perche_esiste": "demo/data/teams.json era una mappa piatta sigla->squadra, senza asse del tempo e senza generatore. Una sostituzione a meta' stagione e' esattamente l'ingresso che una mappa piatta non sa rappresentare: cambiarla per il GP in arrivo riscrive anche le undici gare gia' corse, e chi rilancia gen_giri.py --forza si ritrova Lawson in Red Bull a Budapest. Il round e' l'asse mancante.",
+  "schema": 1,
+  "stagione": 2026,
+  "deroghe": [
+    {
+      "id": "olanda-2026-hadjar-infortunio",
+      "round": [
+        12
+      ],
+      "gara": "Olanda",
+      "dichiarata_il": "2026-08-19",
+      "fonte": {
+        "tipo": "annuncio stampa",
+        "riportata_da": "il PO (Tommi), 19/08/2026",
+        "testo": "Red Bull Racing schiera Liam Lawson al posto di Isack Hadjar, fermo per un infortunio al polso rimediato in palestra. Racing Bulls schiera Yuki Tsunoda accanto ad Arvid Lindblad.",
+        "non_e_una_misura": "nessun artefatto del progetto contiene questo dato al 19/08/2026: f1db si ferma al round 11 (Ungheria) e la entry list del GP d'Olanda non e' ancora pubblicata."
+      },
+      "motivo": "infortunio al polso di Hadjar; rientro previsto a Monza (round 13), non garantito.",
+      "cambi": {
+        "LAW": "Red Bull Racing",
+        "TSU": "Racing Bulls"
+      },
+      "assenti": [
+        "HAD"
+      ],
+      "_nota_su_HAD": "HAD resta nella MAPPA sigla->squadra a Red Bull Racing, perche' la sua squadra non e' cambiata: e' infortunato, non ceduto. La mappa dice a CHE SQUADRA APPARTIENE una sigla; `assenti` dice chi NON scende in pista. Tenere le due cose separate e' anche cio' che rende la deroga innocua se Hadjar recupera all'ultimo: la sua livrea resta giusta comunque.",
+      "_nota_su_TSU": "TSU non ha una scheda in demo/data/schede_2026.json e non l'avra' finche' f1db non lo rimette fra i piloti 2026: fino ad allora muro.mjs::nomeDi('TSU') rende 'TSU', cioe' la sigla nuda. E' il ripiego onesto (regola 6) e non va tappato a mano con un nome trascritto.",
+      "scade": "il suo EFFETTO ricade sul solo round 12 e li' finisce. La VOCE invece non si toglie mai: dopo la gara e' il verbale di come sono stati attribuiti i dati di quel weekend, e cancellarla farebbe risolvere di nuovo Lawson in Racing Bulls a Zandvoort, in disaccordo con i file gia' pubblicati in demo/data/giri/. L'invariante storico di test_formazioni.py se ne accorge: e' li' che sta la rete.",
+      "verificare_con": "python3 test_formazioni.py",
+      "quando_f1db_aggiorna": "attenzione al senso opposto: f1db potrebbe attribuire a LAW la squadra dell'ultima gara corsa, e allora la BASE direbbe «Red Bull Racing» anche per i round 1-11. Non serve un'altra deroga per accorgersene — l'invariante storico confronta la risoluzione con le squadre gia' scritte in demo/data/giri/ e va rosso il giorno in cui la base deriva."
+    }
+  ]
+}

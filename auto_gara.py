@@ -342,6 +342,12 @@ def wave_nuove():
         # cioe' proprio quella che uno va a cercare la domenica sera. check=False come
         # i fratelli: una gara resta pubblicata anche se FastF1 non ha ancora i dati,
         # e la sessione mancante si ripesca alla pubblicazione dopo.
+        # LA FORMAZIONE PRIMA DEI GIRI, sempre. gen_giri.py attribuisce la squadra a ogni
+        # pilota leggendo demo/data/formazioni_2026.json AL ROUND della sessione: se quel
+        # file e' fermo, un sostituto annunciato (Lawson in Red Bull all'Olanda) finisce
+        # nell'artefatto con la squadra vecchia — e da li' in poi e' un dato pubblicato.
+        # Costa una lettura di JSON, non tocca la rete, ed e' idempotente.
+        sh([PY, 'gen_formazioni.py'], check=False)
         sh([PY, 'gen_giri.py', '--gara', nome], check=False)          # ogni giro, ogni pilota
 
         # RIPROVA SULLE GARE CHE AVEVANO DECLINATO. Monaco e Ungheria non hanno un replay a
@@ -567,7 +573,7 @@ RIPARAZIONI = [
     # pagina Telemetria resterebbe senza l'ultima gara — cioe' senza quella che uno va a
     # cercare — e nessuno se ne accorgerebbe fino al weekend dopo. La chiave sta dentro
     # "gare", non in cima al file: da qui il terzo campo.
-    ('giri_manifest.json',     [['gen_giri.py', '--tutto']], 'gare'),
+    ('giri_manifest.json',     [['gen_formazioni.py'], ['gen_giri.py', '--tutto']], 'gare'),
 ]
 
 
@@ -690,6 +696,9 @@ def wave_riparazione():
             f'{indietro[1]} -> rigenero classifiche e schede')
         sh([PY, 'gen_classifiche.py'], check=False)
         sh([PY, 'gen_schede.py'], check=False)
+        # la BASE della formazione e' `team_demo` delle classifiche: quando quelle si
+        # muovono, la formazione va rifatta o resta indietro di una gara.
+        sh([PY, 'gen_formazioni.py'], check=False)
         dopo = _classifiche_indietro()
         if dopo:
             log(f'ondata riparazione: classifica ANCORA al round {dopo[0]} — '
@@ -826,6 +835,11 @@ def wave_sessioni():
     if not correnti:
         log('ondata sessioni: nessun weekend in corso.'); return False
     prima = _sessioni_scritte()
+    # IL ROUND CORRENTE SCATTA QUI. demo/data/teams.json e' la formazione del round in
+    # corso, e la pagina Live la usa per la livrea del pilota scelto: senza questa riga
+    # il giovedi' del GP d'Olanda il sito direbbe ancora Lawson in Racing Bulls e non
+    # saprebbe chi e' Tsunoda. Fuori dal weekend il file non cambia da solo.
+    sh([PY, 'gen_formazioni.py'], check=False)
     for nome in correnti:
         log(f'ondata sessioni: {nome} — cerco sessioni nuove')
         sh([PY, 'gen_giri.py', '--gara', nome], check=False)

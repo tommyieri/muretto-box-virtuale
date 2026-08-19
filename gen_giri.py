@@ -186,6 +186,13 @@ def estrai(sess, gara, nome_sess, colori, teams):
         except Exception:
             num, nome = "", sig
         team = teams.get(sig, "")
+        if not team:
+            # UNA SIGLA SENZA SQUADRA NON E' UN DETTAGLIO: diventa il grigio di riserva,
+            # che in pagina sembra una livrea e non lo e'. Succede solo se un pilota gira
+            # senza essere nella formazione del round — un rookie nelle libere, o un
+            # sostituto annunciato e non dichiarato in data/formazione_deroghe_2026.json.
+            print(f"  ! {gara} {nome_sess}: {sig} non ha squadra nella formazione del "
+                  f"round — grigio di riserva", file=sys.stderr)
         indice_piloti[sig] = {
             "num": num, "nome": nome, "team": team,
             "colore": colori.get(team, "#8A93A3"),
@@ -300,7 +307,13 @@ def main():
     logging.getLogger("fastf1").setLevel(logging.ERROR)
 
     colori = json.load(open(os.path.join(DEMO, "team_colori.json"), encoding="utf-8"))
-    teams = json.load(open(os.path.join(DATI, "teams.json"), encoding="utf-8"))
+    # LA FORMAZIONE HA UN ASSE DEL TEMPO, e demo/data/teams.json non ce l'aveva.
+    # Quel file e' una mappa piatta sigla->squadra: leggerlo qui voleva dire attribuire a
+    # OGNI sessione di OGNI gara la formazione di oggi. Finche' nessuno cambia sedile la
+    # differenza non si vede; al primo cambio a meta' stagione (Lawson in Red Bull per il
+    # solo GP d'Olanda, round 12) un `--forza` avrebbe riscritto anche le undici gare gia'
+    # corse, mettendo Lawson in Red Bull a Budapest. La formazione si chiede PER ROUND.
+    form = json.load(open(os.path.join(DATI, "formazioni_2026.json"), encoding="utf-8"))
     cal = json.load(open(os.path.join(DATI, "calendario_2026.json"), encoding="utf-8"))
     corse = [g for g in cal["gare"] if g.get("gara_demo")]
 
@@ -328,6 +341,14 @@ def main():
 
     for g in corse:
         print(f"{g['round']:>2}. {g['nome']}")
+        teams = form.get("per_round", {}).get(str(g["round"]))
+        if teams is None:
+            # calendario e formazioni fuori sincrono: e' uno stato del repo, non un buco
+            # dei dati. Si ripiega sulla base DICENDOLO, perche' un ripiego muto qui
+            # scriverebbe squadre plausibili e sbagliate dentro un artefatto pubblicato.
+            print(f"  ! round {g['round']} assente da formazioni_2026.json: uso la base "
+                  f"(rilanciare python3 gen_formazioni.py)", file=sys.stderr)
+            teams = form.get("base", {})
         for sess_ff, nome in sessioni:
             una(a.anno, g["round"], g["nome"], sess_ff, nome, colori, teams, a.forza)
     manifest()
