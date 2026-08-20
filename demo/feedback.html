@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Segnala un problema — Muretto Box Virtuale</title>
-<meta name="description" content="Hai trovato qualcosa che non funziona, un numero che non torna o una pagina che non si capisce? Scrivicelo qui: le segnalazioni le leggiamo a mano, una per una.">
+<title data-i18n="meta.feedback.titolo">Report a problem — Muretto Box Virtuale</title>
+<meta name="description" data-i18n-attr="content:meta.feedback.desc" content="Found something broken, a number that does not add up, or a page that makes no sense? Write to us here: we read every report by hand, one by one.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
-<link rel="stylesheet" href="muro.css?v=090826b">
+<link rel="stylesheet" href="muro.css?v=190826f">
 <link rel="apple-touch-icon" href="/assets/marchio/icona-180.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%2232%22%20height%3D%2232%22%20role%3D%22img%22%20aria-label%3D%22Muretto%20Box%20Virtuale%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%23FF1E3C%22%2F%3E%3Cpath%20d%3D%22M20%2064L20%2018L31.5%2018L50%2042L68.5%2018L80%2018L80%2064L69.5%2064L69.5%2034L54%2055L46%2055L30.5%2034L30.5%2064Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Cpath%20d%3D%22M12%2073L88%2073L88%2084L12%2084Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E">
 <style>
@@ -93,12 +93,11 @@
 <header class="barra"></header>
 
 <main class="scafo">
-  <p class="occhiello">Segnalazioni · Il sito visto da fuori</p>
-  <h1 class="titolone">Dicci cosa <em>non va</em></h1>
-  <p class="sottotitolo">Un numero che non torna, un grafico che non si disegna, una pagina
-    che non si capisce, una cosa che ti aspettavi di trovare e non c'è. Scrivicelo qui:
-    le segnalazioni le leggiamo a mano, una per una, e quelle che descrivono un difetto
-    vero diventano una correzione.</p>
+  <p class="occhiello" data-i18n="fb.occhiello">Reports · The site seen from outside</p>
+  <h1 class="titolone" data-i18n-html="fb.titolo">Tell us what is <em>wrong</em></h1>
+  <p class="sottotitolo" data-i18n="fb.sottotitolo">A number that does not add up, a chart that does not
+    draw, a page that makes no sense, something you expected to find and is not there. Write it here:
+    we read the reports by hand, one by one, and the ones that describe a real defect become a fix.</p>
 
   <div id="esito" aria-live="polite"></div>
 
@@ -106,51 +105,56 @@
     <!-- ------------------------------------------------------------ il modulo -->
     <form class="piastra piastra-p fb-modulo" id="modulo" novalidate>
       <div class="fb-campo">
-        <span class="fb-eti" id="eti-tipo">Di che cosa si tratta</span>
+        <span class="fb-eti" id="eti-tipo" data-i18n="fb.di_che_cosa">What is this about</span>
         <div class="pillole" id="tipi" role="group" aria-labelledby="eti-tipo"></div>
       </div>
 
       <div class="fb-campo">
-        <label for="dove">Dove l'hai visto</label>
+        <label for="dove" data-i18n="fb.dove">Where you saw it</label>
         <input type="text" id="dove" name="dove" maxlength="120"
-               placeholder="es. la pagina di una gara, la telemetria, il campionato…"
+               data-i18n-attr="placeholder:fb.dove_ph"
+               placeholder="e.g. a race page, the telemetry, the championship…"
                autocomplete="off">
-        <p class="fb-aiuto">Se ci sei arrivato dal piede di una pagina, l'abbiamo già scritto noi.</p>
+        <p class="fb-aiuto" data-i18n="fb.dove_aiuto">If you got here from the footer of a page, we have
+          already filled it in for you.</p>
       </div>
 
       <div class="fb-campo">
-        <label for="testo">Che cosa è successo</label>
+        <label for="testo" data-i18n="fb.cosa">What happened</label>
         <textarea id="testo" name="testo" maxlength="2000" required
-                  placeholder="Che cosa stavi facendo, che cosa ti aspettavi, che cosa hai visto invece."></textarea>
+                  data-i18n-attr="placeholder:fb.cosa_ph"
+                  placeholder="What you were doing, what you expected, what you saw instead."></textarea>
         <div class="fb-conta" id="conta">0 / 2000</div>
       </div>
 
       <div class="fb-campo">
-        <label for="contatto">La tua email <span style="text-transform:none;letter-spacing:0">(facoltativa)</span></label>
+        <label for="contatto"><span data-i18n="fb.email">Your email</span>
+          <span style="text-transform:none;letter-spacing:0" data-i18n="fb.facoltativa">(optional)</span></label>
         <input type="email" id="contatto" name="contatto" maxlength="120"
-               placeholder="serve solo se vuoi una risposta" autocomplete="email">
-        <p class="fb-aiuto">La usiamo per una cosa sola: risponderti su questa segnalazione.
-          Niente lista, niente newsletter. Se la lasci vuota va bene lo stesso.</p>
+               data-i18n-attr="placeholder:fb.email_ph"
+               placeholder="only needed if you want a reply" autocomplete="email">
+        <p class="fb-aiuto" data-i18n="fb.email_aiuto">We use it for one thing only: to reply to you about
+          this report. No list, no newsletter. If you leave it empty that is fine too.</p>
       </div>
 
       <!-- l'esca per i robot: nessun essere umano la vede, nessuno la compila -->
       <div class="fb-esca" aria-hidden="true">
-        <label for="campo_x">Non compilare questo campo</label>
+        <label for="campo_x" data-i18n="fb.esca">Do not fill in this field</label>
         <input type="text" id="campo_x" name="campo_x" tabindex="-1" autocomplete="off">
       </div>
 
       <div class="fb-campo">
-        <span class="fb-eti">Che cosa parte da qui</span>
+        <span class="fb-eti" data-i18n="fb.che_parte">What leaves this page</span>
         <div class="fb-parte">
           <dl id="parte"></dl>
         </div>
-        <p class="fb-aiuto">Non c'è altro: nessun cookie, nessun identificativo, nessuna
-          traccia di navigazione. Il tuo indirizzo IP non viene conservato — se ne tiene
-          un'impronta cifrata per un'ora, solo per impedire a un robot di riempire la coda.</p>
+        <p class="fb-aiuto" data-i18n="fb.privacy">There is nothing else: no cookie, no identifier, no
+          browsing trail. Your IP address is not kept — a hashed fingerprint of it is held for one hour,
+          only to stop a robot from filling the queue.</p>
       </div>
 
       <div class="fb-azioni">
-        <button type="submit" class="btn btn-p" id="manda">Manda la segnalazione</button>
+        <button type="submit" class="btn btn-p" id="manda" data-i18n="fb.manda">Send the report</button>
         <span class="fb-aiuto" id="stato-invio" aria-live="polite"></span>
       </div>
     </form>
@@ -158,30 +162,28 @@
     <!-- ------------------------------------------------------------- la spalla -->
     <aside class="fb-lato">
       <div class="piastra piastra-p fb-nota">
-        <h2>Come si scrive una segnalazione utile</h2>
-        <ol>
-          <li><b>Dove</b> — la pagina, e se serve quale gara o quale pilota.</li>
-          <li><b>Che cosa ti aspettavi</b> — anche se ti sembra ovvio: quasi mai lo è.</li>
-          <li><b>Che cosa hai visto invece</b> — il numero sbagliato, il riquadro vuoto,
-            il testo che non torna.</li>
+        <h2 data-i18n="fb.come_t">How to write a useful report</h2>
+        <ol data-i18n-html="fb.come_l">
+          <li><b>Where</b> — the page, and if it matters which race or which driver.</li>
+          <li><b>What you expected</b> — even if it seems obvious: it almost never is.</li>
+          <li><b>What you saw instead</b> — the wrong number, the empty box, the text that
+            does not add up.</li>
         </ol>
       </div>
 
       <div class="piastra piastra-p fb-nota">
-        <h2>Che fine fa</h2>
-        <p>Finisce in una coda che leggiamo a mano. Non c'è nessuna risposta automatica e
-          nessun ticket: se la segnalazione descrive un difetto riproducibile, diventa una
-          correzione nel codice; se descrive una cosa che abbiamo deciso apposta, e hai
-          lasciato l'email, ti spieghiamo perché.</p>
+        <h2 data-i18n="fb.fine_t">Where it ends up</h2>
+        <p data-i18n="fb.fine_p">It ends up in a queue we read by hand. There is no automatic reply and no
+          ticket: if the report describes a reproducible defect, it becomes a fix in the code; if it
+          describes something we decided on purpose, and you left your email, we explain why.</p>
       </div>
 
       <div class="piastra piastra-p fb-nota">
-        <h2>Una cosa da sapere prima</h2>
-        <p>Il simulatore di questo sito è <b>un gioco, non una previsione</b>: sulla gara
-          intera il motore e «non cambiare niente» sono indistinguibili, e lo diciamo nelle
-          pagine. Se un numero della simulazione non coincide con la gara vera, non è
-          necessariamente un difetto. Se invece un <b>dato</b> non coincide con la gara
-          vera, quello sì: scrivicelo.</p>
+        <h2 data-i18n="fb.sapere_t">One thing to know first</h2>
+        <p data-i18n-html="fb.sapere_p">The simulator on this site is <b>a game, not a prediction</b>: over
+          the whole race the engine and «change nothing» are indistinguishable, and we say so on the pages.
+          If a number from the simulation does not match the real race, that is not necessarily a defect.
+          If instead a <b>data point</b> does not match the real race, that one is: write to us.</p>
       </div>
     </aside>
   </div>
@@ -190,9 +192,9 @@
 <footer class="piede"><div class="piede-in"></div></footer>
 
 <script type="module">
-  import { guscio } from './muro.mjs?v=090826b';
+  import { guscio } from './muro.mjs?v=190826f';
   guscio('feedback.html');
 </script>
-<script type="module" src="feedback.mjs?v=090826b"></script>
+<script type="module" src="feedback.mjs?v=190826f"></script>
 </body>
 </html>

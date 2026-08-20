@@ -42,6 +42,7 @@ import { misuraRientro } from '../misure/rientro.mjs';
 import { caricaGare2026 } from '../../provenienza/gare_2026.mjs';
 import { caricaPrior } from '../../provenienza/pitloss_dati.mjs';
 import { costruisci } from '../scrivi_banda_rientro.mjs';
+import { D as DIZIONARIO } from '../../../demo/dizionario.mjs';
 
 const b = banco('s25');
 
@@ -488,8 +489,20 @@ const d = riassunto.difesa;
   // rigioca) e la condizione resta la stessa: l'avvertenza deve stare dove il run
   // si lancia.
   const garaHtml = readFileSync(path.join(radice, '..', 'demo', 'gara.html'), 'utf8');
+  // L'AVVERTENZA SI E' SPOSTATA, NON E' SPARITA. Dal 19/08/2026 il sito ha due lingue:
+  // il testo delle pagine sta nell'HTML in inglese e nel dizionario in italiano, e
+  // cercare la frase italiana dentro gara.html non la trova piu'. La condizione della
+  // deroga non cambia — l'avvertenza deve raggiungere il lettore, sempre visibile —
+  // ma adesso la si verifica dove il testo vive, e in TUTTE E DUE le lingue: una
+  // pagina inglese che la perdesse sarebbe rossa come una italiana, e prima no.
+  const voceOnesta = DIZIONARIO['gara.onesta'];
+  const dichiara = /informazione dal futuro/i.test(garaHtml)
+    || (/data-i18n-html="gara\.onesta"/.test(garaHtml)
+        && Array.isArray(voceOnesta)
+        && /information from the future/i.test(voceOnesta[0])
+        && /informazione dal futuro/i.test(voceOnesta[1]));
   b.verifica('gara.html (BOX ORA) rende l\'avvertenza «informazione dal futuro» sempre visibile',
-    /informazione dal futuro/i.test(garaHtml) && /class="ese-onesta"/.test(garaHtml));
+    dichiara && /class="ese-onesta"/.test(garaHtml));
 }
 
 b.chiudi();

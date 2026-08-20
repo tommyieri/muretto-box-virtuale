@@ -3,7 +3,7 @@
  "_perche": "Fino al 04/08/2026 la CI (.github/workflows/banco.yml) non toccava NE' HTML NE' CSS: una pagina poteva nascere rotta, con una voce di nav dimenticata o un href che non risolve, e il verde restava verde. La sezione Statistiche aggiunge cinque pagine a un sito che ripete la nav a mano in quindici file. Questa sentinella nasce PRIMA di quelle pagine, e nasce verde sullo stato di oggi: se nascesse dopo, certificherebbe il risultato invece di sorvegliare il cambiamento.",
  "nav_attesa": [
   [
-   "Stagione",
+   "Season",
    "stagione.html"
   ],
   [
@@ -11,20 +11,20 @@
    "live.html"
   ],
   [
-   "Analisi>Articoli",
+   "Analysis>Articles",
    "analisi.html"
   ],
   [
-   "Analisi>Telemetria",
+   "Analysis>Telemetry",
    "telemetria.html"
   ],
   [
-   "Campionato",
+   "Championship",
    "campionato.html"
   ]
  ],
  "_nav_attesa_sorgente": "Copia di controllo della costante VOCI in demo/muro.mjs (che monta la nav di ogni pagina) e di NAV in ai_lab/redazione/statico.py (che scrive 404 e articoli). Restano tre file apposta: se lo stampatore e il sorvegliante fossero lo stesso, un errore si certificherebbe da solo.",
- "_nav_attesa_nota": "La nav si monta in JS da un posto solo (demo/muro.mjs::VOCI). Una voce puo' avere SOTTOVOCI: «Analisi» non e' una pagina ma un cassetto che contiene Articoli e Telemetria, e qui compare appiattito come «Analisi>Articoli». La sentinella controlla la sequenza, che i percorsi partano dalla radice, e che ogni pagina importi muro.mjs e chiami guscio().",
+ "_nav_attesa_nota": "La nav si monta in JS da un posto solo (demo/muro.mjs::VOCI). Una voce puo' avere SOTTOVOCI: «Analisi» non e' una pagina ma un cassetto che contiene Articoli e Telemetria, e qui compare appiattito come «Analisi>Articoli». La sentinella controlla la sequenza, che i percorsi partano dalla radice, e che ogni pagina importi muro.mjs e chiami guscio(). [19/08/2026] Le etichette sono in INGLESE perche' dal 19/08 l'inglese e' la lingua principale del sito e la sorgente di ogni testo: in demo/muro.mjs::VOCI l'etichetta fa anche da nome della chiave del dizionario (`t('nav.season')`), quindi qui si sorveglia la stessa stringa che il codice usa per cercare la traduzione. Se un giorno la nav tornasse italiana, questa copia di controllo tornerebbe rossa — che e' esattamente quello che deve fare.",
  "pagine_non_indicizzabili": {
   "404.html": "pagina di errore: generata da ai_lab/redazione/statico.py, non va in sitemap per definizione",
   "gara.html": "richiede ?g=<gara>: senza parametro non e' una pagina, e' un contenitore"

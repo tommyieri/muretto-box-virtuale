@@ -354,6 +354,33 @@ def main():
         expect_in_output="sentinella formazioni: tutto verde"
     )
 
+    # 13. Sentinella Lingua: le DUE COLONNE del sito, e nessun italiano di contrabbando.
+    #
+    # Nasce il 19/08/2026 con l'inglese, che dal quel giorno e' la lingua PRINCIPALE: il
+    # testo inglese sta scritto nell'HTML e nella prima colonna di demo/dizionario.mjs,
+    # l'italiano solo nella seconda. E' una sezione nuova che sbaglia nel modo che questo
+    # progetto teme di piu' — in silenzio. Una chiave scritta in un modulo e mai messa nel
+    # dizionario non fa cadere niente: `t()` restituisce la chiave, e la pagina mostra
+    # «strat.quando_fermarsi» a un lettore vero. Un testo inglese cambiato nell'HTML e non
+    # nel dizionario non fa cadere niente: da quel giorno il sito dice due cose diverse a
+    # due lettori diversi. Nessuno dei due e' un errore di programma, e nessun test che
+    # gia' esisteva li puo' vedere.
+    #
+    # Controlla la forma del dizionario, che ogni chiave usata esista e ogni chiave
+    # dichiarata sia usata, che l'inglese delle pagine sia quello del dizionario, che il
+    # guscio monti il selettore, e che nessun sorgente VIVO porti testo italiano fuori dai
+    # file dichiarati. I moduli orfani non ci entrano — non li raggiunge nessuna pagina, e
+    # il calcolo di raggiungibilita' e' fatto dalla sentinella, non scritto a mano: se uno
+    # di loro tornasse vivo entrerebbe da solo nel controllo, e da rosso.
+    #
+    # NON APRE UN BROWSER e non legge una traduzione: se l'italiano di una riga fosse
+    # sbagliato resterebbe verde. Quella e' una lettura, non una verifica.
+    runner.run_check(
+        name="Sentinella Lingua (demo/test_lingua.mjs)",
+        cmd=["node", "demo/test_lingua.mjs"],
+        expect_in_output="sentinella lingua: tutto verde"
+    )
+
     exit_code = runner.summary()
     sys.exit(exit_code)
 

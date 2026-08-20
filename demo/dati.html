@@ -1,25 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Assetto e DNA dei circuiti — Muretto Box Virtuale</title>
-<meta name="description" content="Come è messa ogni squadra fra punta e curva, e che carattere ha ogni circuito fra motore e carico. Stagione 2026, gara per gara.">
+<title data-i18n="meta.dati.titolo">Set-up and circuit DNA — Muretto Box Virtuale</title>
+<meta name="description" data-i18n-attr="content:meta.dati.desc" content="Where each team stands between top speed and cornering speed, and what character each circuit has between engine and downforce. 2026 season, race by race.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Muretto Box Virtuale">
-<meta property="og:locale" content="it_IT">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="it_IT">
 <meta property="og:url" content="https://murettobox.com/dati.html">
-<meta property="og:title" content="Assetto e DNA dei circuiti — Muretto Box Virtuale">
-<meta property="og:description" content="Come è messa ogni squadra fra punta e curva, e che carattere ha ogni circuito fra motore e carico.">
+<meta property="og:title" data-i18n-attr="content:meta.dati.titolo" content="Set-up and circuit DNA — Muretto Box Virtuale">
+<meta property="og:description" data-i18n-attr="content:meta.dati.desc" content="Where each team stands between top speed and cornering speed, and what character each circuit has between engine and downforce. 2026 season, race by race.">
 <meta property="og:image" content="https://murettobox.com/og/pagina-analisi.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Assetto e DNA dei circuiti — Muretto Box Virtuale">
-<meta name="twitter:description" content="Come è messa ogni squadra fra punta e curva, e che carattere ha ogni circuito fra motore e carico.">
+<meta name="twitter:title" data-i18n-attr="content:meta.dati.titolo" content="Set-up and circuit DNA — Muretto Box Virtuale">
+<meta name="twitter:description" data-i18n-attr="content:meta.dati.desc" content="Where each team stands between top speed and cornering speed, and what character each circuit has between engine and downforce. 2026 season, race by race.">
 <meta name="twitter:image" content="https://murettobox.com/og/pagina-analisi.png">
 <link rel="canonical" href="https://murettobox.com/dati.html">
+<link rel="alternate" hreflang="en" href="https://murettobox.com/dati.html">
+<link rel="alternate" hreflang="it" href="https://murettobox.com/dati.html?lang=it">
+<link rel="alternate" hreflang="x-default" href="https://murettobox.com/dati.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
-<link rel="stylesheet" href="muro.css?v=090826b">
+<link rel="stylesheet" href="muro.css?v=190826f">
 <link rel="apple-touch-icon" href="/assets/marchio/icona-180.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%2232%22%20height%3D%2232%22%20role%3D%22img%22%20aria-label%3D%22Muretto%20Box%20Virtuale%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%23FF1E3C%22%2F%3E%3Cpath%20d%3D%22M20%2064L20%2018L31.5%2018L50%2042L68.5%2018L80%2018L80%2064L69.5%2064L69.5%2034L54%2055L46%2055L30.5%2034L30.5%2064Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Cpath%20d%3D%22M12%2073L88%2073L88%2084L12%2084Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E">
 <style>
@@ -60,42 +67,46 @@
   .avviso{ margin:12px 0 0; color:var(--fioco); font-size:12.5px; line-height:1.55; }
 </style>
 
+</head>
+<body>
 <header class="barra"></header>
 
 <main class="scafo">
-  <a class="crumb" href="analisi.html">← Articoli</a>
+  <a class="crumb" href="analisi.html">← <span data-i18n="nav.articles">Articles</span></a>
 
-  <p class="occhiello">Analisi · strumento di stagione</p>
-  <h1 class="titolone">Assetto e <em>DNA</em> dei circuiti</h1>
-  <p class="sottotitolo">Due domande che si rispondono con lo stesso dato. Come è messa una squadra fra
-    velocità di punta e velocità in curva — cioè dove ha scelto di essere lenta. E che carattere ha un
-    tracciato fra motore e carico: quanta parte del giro si passa a tutto gas.</p>
+  <p class="occhiello" data-i18n="strum.occhiello">Analysis · season tool</p>
+  <h1 class="titolone" data-i18n-html="dati.titolo">Set-up and circuit <em>DNA</em></h1>
+  <p class="sottotitolo" data-i18n="dati.sottotitolo">Two questions answered by the same data. Where a team
+    stands between top speed and cornering speed — that is, where it has chosen to be slow. And what character
+    a track has between engine and downforce: how much of the lap is spent at full throttle.</p>
 
   <div id="avvio"></div>
 
   <div id="quadro" hidden>
     <div class="comandi">
-      <span class="et">Vista</span>
+      <span class="et" data-i18n="dati.vista">View</span>
       <div class="seg" id="seg">
-        <button data-v="stagione" class="on" type="button">Stagione</button>
-        <button data-v="ultime5" type="button">Ultime 5</button>
+        <button data-v="stagione" class="on" type="button" data-i18n="dati.stagione">Season</button>
+        <button data-v="ultime5" type="button" data-i18n="dati.ultime5">Last 5</button>
       </div>
-      <select id="selGara" aria-label="Scegli una gara"><option value="">Per gara…</option></select>
+      <select id="selGara" data-i18n-attr="aria-label:dati.aria_gara"aria-label="Choose a race"><option value="" data-i18n="dati.per_gara">By race…</option></select>
       <span class="nota" id="notaVista"></span>
     </div>
 
     <div class="quadro-g">
-      <div class="cap-c"><b>Assetto · punta contro curva</b><span id="capAss"></span></div>
-      <p class="sub">Ogni pallino è una squadra: a destra chi va forte sul dritto, in alto chi va forte
-        in curva. La diagonale non è un giudizio — è il compromesso, e ognuno lo scioglie a modo suo.</p>
+      <div class="cap-c"><b data-i18n="dati.cap_ass">Set-up · top speed against cornering</b><span id="capAss"></span></div>
+      <p class="sub" data-i18n="dati.sub_ass">Each dot is a team: to the right the ones quick on the
+        straight, at the top the ones quick in the corners. The diagonal is not a verdict — it is the
+        compromise, and everyone resolves it their own way.</p>
       <div id="grafAss"></div>
       <div style="overflow-x:auto"><table class="tab" id="tabAss"></table></div>
     </div>
 
     <div class="quadro-g">
-      <div class="cap-c"><b>DNA dei circuiti · motore contro carico</b><span id="capDna"></span></div>
-      <p class="sub">La percentuale di giro a tutto gas è la firma più pulita di un tracciato: più è alta,
-        più conta il motore; più è bassa, più conta il carico aerodinamico.</p>
+      <div class="cap-c"><b data-i18n="dati.cap_dna">Circuit DNA · engine against downforce</b><span id="capDna"></span></div>
+      <p class="sub" data-i18n="dati.sub_dna">The share of the lap at full throttle is the cleanest
+        signature of a track: the higher it is, the more the engine counts; the lower it is, the more
+        aerodynamic downforce counts.</p>
       <div id="grafDna"></div>
       <div style="overflow-x:auto"><table class="tab" id="tabDna"></table></div>
     </div>
@@ -107,13 +118,13 @@
 <footer class="piede"><div class="piede-in"></div></footer>
 
 <script type="module">
-import { guscio, datiObbligatori, el, V, identita, coloreDi, guasto, scheletro, nnum }
-  from './muro.mjs?v=090826b';
+import { guscio, datiObbligatori, el, V, identita, coloreDi, guasto, scheletro, nnum, t, tn }
+  from './muro.mjs?v=190826f';
 guscio('analisi.html');
 
 const E = (id) => document.getElementById(id);
 const NS = 'http://www.w3.org/2000/svg';
-const nodo = (t, a) => { const n = document.createElementNS(NS, t);
+const nodo = (tag, a) => { const n = document.createElementNS(NS, tag);
   for (const [k, x] of Object.entries(a)) if (x != null) n.setAttribute(k, x); return n; };
 
 let D = null, colori = {}, vista = 'stagione', garaScelta = '';
@@ -130,15 +141,15 @@ function gare() {
 function perSquadra() {
   const acc = {};
   for (const g of gare()) {
-    for (const [t, v] of Object.entries(g.team || {})) {
+    for (const [sq, v] of Object.entries(g.team || {})) {
       if (typeof v?.vmax !== 'number' || typeof v?.cornering !== 'number') continue;
-      (acc[t] ??= { vmax: [], cor: [] });
-      acc[t].vmax.push(v.vmax); acc[t].cor.push(v.cornering);
+      (acc[sq] ??= { vmax: [], cor: [] });
+      acc[sq].vmax.push(v.vmax); acc[sq].cor.push(v.cornering);
     }
   }
   const med = (a) => a.reduce((x, y) => x + y, 0) / a.length;
   return Object.entries(acc)
-    .map(([t, v]) => ({ team: t, vmax: med(v.vmax), cor: med(v.cor), n: v.vmax.length }))
+    .map(([sq, v]) => ({ team: sq, vmax: med(v.vmax), cor: med(v.cor), n: v.vmax.length }))
     .sort((a, b) => b.vmax - a.vmax);
 }
 
@@ -150,7 +161,7 @@ function disegnaAssetto() {
   // mt lascia posto alla didascalia dell'asse Y: a 14 finiva sopra la prima tacca
   const ml = 46, mr = 14, mt = 30, mb = 38;
   const svg = nodo('svg', { viewBox: `0 0 ${W} ${H}`, class: 'gr', role: 'img',
-    'aria-label': 'Velocità di punta contro velocità in curva, per squadra' });
+    'aria-label': t('dati.aria_ass') });
   if (!righe.length) { cont.replaceChildren(svg); return; }
 
   const xs = righe.map(r => r.vmax), ys = righe.map(r => r.cor);
@@ -175,11 +186,11 @@ function disegnaAssetto() {
       'font-family': 'JetBrains Mono, monospace', 'font-size': 10 });
     e.textContent = Math.round(v); svg.append(e);
   }
-  const et = (t, x, y, anc) => { const n = nodo('text', { x, y, 'text-anchor': anc, fill: '#A7B0BF',
+  const et = (testo, x, y, anc) => { const n = nodo('text', { x, y, 'text-anchor': anc, fill: '#A7B0BF',
     'font-family': 'JetBrains Mono, monospace', 'font-size': 9.5, 'letter-spacing': '.1em' });
-    n.textContent = t; return n; };
-  svg.append(et('VELOCITÀ DI PUNTA (km/h) →', W - mr, H - 5, 'end'));
-  svg.append(et('↑ IN CURVA (km/h)', 2, 11, 'start'));
+    n.textContent = testo; return n; };
+  svg.append(et(t('dati.asse_x'), W - mr, H - 5, 'end'));
+  svg.append(et(t('dati.asse_y'), 2, 11, 'start'));
 
   // DUE SQUADRE VICINE HANNO DUE ETICHETTE, non una macchia. Con vmax entro pochi km/h
   // i pallini quasi coincidono e i nomi si sovrappongono fra loro E sui pallini altrui:
@@ -216,7 +227,8 @@ function tabellaAssetto() {
     const c = ordAss.campo === 'team' ? (a.team < b.team ? -1 : 1) : (a[ordAss.campo] - b[ordAss.campo]);
     return ordAss.giu ? -c : c;
   });
-  const testa = [['team', 'Squadra', ''], ['vmax', 'Punta km/h', 'n'], ['cor', 'In curva km/h', 'n'], ['n', 'Gare', 'n']];
+  const testa = [['team', t('com.squadra'), ''], ['vmax', t('dati.th_punta'), 'n'],
+                 ['cor', t('dati.th_curva'), 'n'], ['n', t('com.gare'), 'n']];
   E('tabAss').replaceChildren(
     el('thead', {}, el('tr', {}, testa.map(([k, t, cl]) => el('th', {
       class: cl, onclick: () => { ordAss = { campo: k, giu: ordAss.campo === k ? !ordAss.giu : true };
@@ -238,7 +250,7 @@ function disegnaDna() {
   const ml = 128, mr = 44, mt = 6, alt = 26;
   const H = mt + Math.max(1, gg.length) * alt + 8;
   const svg = nodo('svg', { viewBox: `0 0 ${W} ${H}`, class: 'gr', role: 'img',
-    'aria-label': 'Percentuale di giro a tutto gas, per circuito' });
+    'aria-label': t('dati.aria_dna') });
   const X = (v) => ml + (v / 100) * (W - ml - mr);
 
   gg.forEach((g, i) => {
@@ -270,9 +282,10 @@ function tabellaDna() {
     const c = ordDna.campo === 'nome' ? (a.nome < b.nome ? -1 : 1) : (a[ordDna.campo] - b[ordDna.campo]);
     return ordDna.giu ? -c : c;
   });
-  const testa = [['nome', 'Circuito', ''], ['ft', 'Tutto gas %', 'n'], ['top', 'Punta km/h', 'n'],
-                 ['curve', 'Curve', 'n'], ['lente', 'Lente', 'n'], ['veloci', 'Veloci', 'n'],
-                 ['med', 'Media curva', 'n']];
+  const testa = [['nome', t('dati.th_circuito'), ''], ['ft', t('dati.th_gas'), 'n'],
+                 ['top', t('dati.th_punta'), 'n'], ['curve', t('dati.th_curve'), 'n'],
+                 ['lente', t('dati.th_lente'), 'n'], ['veloci', t('dati.th_veloci'), 'n'],
+                 ['med', t('dati.th_media_curva'), 'n']];
   E('tabDna').replaceChildren(
     el('thead', {}, el('tr', {}, testa.map(([k, t, cl]) => el('th', {
       class: cl, onclick: () => { ordDna = { campo: k, giu: ordDna.campo === k ? !ordDna.giu : true };
@@ -293,10 +306,10 @@ function ridisegna() {
   const n = gare().length;
   const dove = garaScelta
     ? (gare()[0]?.circuito || gare()[0]?.gp || '')
-    : (vista === 'ultime5' ? 'ultime 5 gare' : `stagione, ${n} gare`);
+    : (vista === 'ultime5' ? t('dati.ultime5_lungo') : t('dati.stagione_n', { n }));
   E('capAss').textContent = dove;
   E('capDna').textContent = dove;
-  E('notaVista').textContent = `${n} gar${n === 1 ? 'a' : 'e'} nel conto`;
+  E('notaVista').textContent = tn('dati.nel_conto_1', 'dati.nel_conto_n', n);
   disegnaAssetto(); tabellaAssetto(); disegnaDna(); tabellaDna();
 }
 
@@ -331,7 +344,7 @@ async function boot() {
       ridisegna();
     });
   }
-  E('nota').textContent = `${D.n_gare} gare nel cruscotto, ultima ${D.ultima}.`;
+  E('nota').textContent = t('dati.nota_fondo', { n: D.n_gare, ultima: D.ultima });
 
   ridisegna();
 
@@ -345,3 +358,5 @@ async function boot() {
 
 boot().catch((e) => { console.error('[dati] boot', e); guasto(E('avvio'), () => location.reload()); });
 </script>
+</body>
+</html>

@@ -27,6 +27,26 @@ scritta in modo che un appassionato serio la capisca.
    nostri dati. **Canale B** (caccia all'anomalia nei nostri dati) misura prima e
    scrive dopo.
 
+## Le due lingue
+
+Dal 21/08/2026 ogni articolo esce anche in inglese, e la traduzione la fa la catena, non
+una mano. `traduci.py` prende la prosa italiana e ne rende una inglese; **entra in pagina
+solo se porta esattamente gli stessi numeri dell'originale, nello stesso ordine** — il
+confronto è aritmetico, zero modelli. Se boccia, l'articolo resta italiano e la pagina lo
+dichiara: la regola 1 vale anche sulle parole tradotte, e una traduzione «quasi buona»
+pubblicata in silenzio sarebbe il modo più elegante di cancellare una misura.
+
+La forma dei numeri si conserva com'è: una cifra resta cifra, una parola resta parola. In
+questa redazione le **cifre sono le misure** e le **parole sono tutto il resto**, ed è così
+che un lettore distingue a colpo d'occhio un dato da un contorno.
+
+    python3 ai_lab/redazione/traduci.py --tutti
+    python3 ai_lab/redazione/traduci.py --articolo <id> [--forza]
+
+`coda.py` la chiama da solo alla pubblicazione. La sorveglia `demo/test_lingua.mjs`
+(verifica 13 di `sentinella.py`), che la guardia sui numeri la rifà su ciò che è
+committato.
+
 ## La catena
 
 ```

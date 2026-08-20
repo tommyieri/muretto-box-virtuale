@@ -1,28 +1,32 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Campionato 2026 — Muretto Box Virtuale</title>
-<meta name="description" content="Classifica piloti e costruttori della Formula 1 2026, con la scheda di ogni pilota e di ogni squadra.">
+<title data-i18n="meta.campionato.titolo">2026 Championship — Muretto Box Virtuale</title>
+<meta name="description" data-i18n-attr="content:meta.campionato.desc" content="Drivers' and constructors' standings of the 2026 Formula 1 season, with a card for every driver and every team.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Muretto Box Virtuale">
-<meta property="og:locale" content="it_IT">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="it_IT">
 <meta property="og:url" content="https://murettobox.com/campionato.html">
-<meta property="og:title" content="Campionato 2026 — Muretto Box Virtuale">
-<meta property="og:description" content="Classifica piloti e costruttori della Formula 1 2026, con la scheda di ogni pilota e di ogni squadra.">
+<meta property="og:title" data-i18n-attr="content:meta.campionato.titolo" content="2026 Championship — Muretto Box Virtuale">
+<meta property="og:description" data-i18n-attr="content:meta.campionato.desc" content="Drivers' and constructors' standings of the 2026 Formula 1 season, with a card for every driver and every team.">
 <meta property="og:image" content="https://murettobox.com/og/pagina-campionato.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Campionato 2026 — Muretto Box Virtuale">
-<meta name="twitter:description" content="Classifica piloti e costruttori della Formula 1 2026, con la scheda di ogni pilota e di ogni squadra.">
+<meta name="twitter:title" data-i18n-attr="content:meta.campionato.titolo" content="2026 Championship — Muretto Box Virtuale">
+<meta name="twitter:description" data-i18n-attr="content:meta.campionato.desc" content="Drivers' and constructors' standings of the 2026 Formula 1 season, with a card for every driver and every team.">
 <meta name="twitter:image" content="https://murettobox.com/og/pagina-campionato.png">
 <link rel="canonical" href="https://murettobox.com/campionato.html">
+<link rel="alternate" hreflang="en" href="https://murettobox.com/campionato.html">
+<link rel="alternate" hreflang="it" href="https://murettobox.com/campionato.html?lang=it">
+<link rel="alternate" hreflang="x-default" href="https://murettobox.com/campionato.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
-<link rel="stylesheet" href="muro.css?v=090826b">
+<link rel="stylesheet" href="muro.css?v=190826f">
 <link rel="apple-touch-icon" href="/assets/marchio/icona-180.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%2232%22%20height%3D%2232%22%20role%3D%22img%22%20aria-label%3D%22Muretto%20Box%20Virtuale%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%23FF1E3C%22%2F%3E%3Cpath%20d%3D%22M20%2064L20%2018L31.5%2018L50%2042L68.5%2018L80%2018L80%2064L69.5%2064L69.5%2034L54%2055L46%2055L30.5%2034L30.5%2064Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Cpath%20d%3D%22M12%2073L88%2073L88%2084L12%2084Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E">
 <style>
@@ -93,12 +97,12 @@
 <header class="barra"></header>
 
 <main class="scafo">
-  <p class="occhiello" id="occ">Campionato · Stagione 2026</p>
-  <h1 class="titolone">La <em>classifica</em></h1>
+  <p class="occhiello" id="occ">Championship · 2026 Season</p>
+  <h1 class="titolone" data-i18n-html="camp.titolo">The <em>standings</em></h1>
 
   <div class="tolgi">
-    <button class="pil on" id="tbPil" aria-pressed="true">Piloti</button>
-    <button class="pil" id="tbCos" aria-pressed="false">Costruttori</button>
+    <button class="pil on" id="tbPil" aria-pressed="true" data-i18n="camp.piloti">Drivers</button>
+    <button class="pil" id="tbCos" aria-pressed="false" data-i18n="camp.costruttori">Constructors</button>
   </div>
 
   <section class="clas" id="clas"></section>
@@ -106,15 +110,15 @@
 
 <div class="velo" id="velo"></div>
 <aside class="scheda" id="scheda" aria-hidden="true" role="dialog" aria-modal="true"
-       aria-label="Scheda del pilota">
+       data-i18n-attr="aria-label:camp.scheda_pilota" aria-label="Driver card">
   <div class="scheda-in" id="schedaIn"></div>
 </aside>
 
 <footer class="piede"><div class="piede-in"></div></footer>
 
 <script type="module">
-import { guscio, dati, el, veri, V, identita, coloreDi, guasto, scheletro, dataIt, nnum }
-  from './muro.mjs?v=090826b';
+import { guscio, dati, el, veri, V, identita, coloreDi, guasto, scheletro, dataLoc, nnum, t, gpTitolo }
+  from './muro.mjs?v=190826f';
 guscio('campionato.html');
 const E = (id) => document.getElementById(id);
 
@@ -127,7 +131,7 @@ async function boot() {
   if (!c) { guasto(E('clas'), boot); return; }
   cls = c; schede = id.schede; colori = id.colori; motori = mot || {};
   const a = c.aggiornato_al;
-  E('occ').textContent = `Campionato 2026 · dopo il ${a?.titolo || 'via'}`;
+  E('occ').textContent = t('camp.occhiello', { gara: a?.titolo ? gpTitolo(a.titolo, a.nome) : t('camp.via') });
   disegna();
 }
 
@@ -136,8 +140,9 @@ function disegna() {
   const righe = piloti ? (cls.piloti || []) : (cls.costruttori || cls.squadre || []);
   E('clas').replaceChildren(
     el('div', { class: 'cap-clas' },
-      el('span', {}, 'Pos'), el('span', {}), el('span', {}, piloti ? 'Pilota' : 'Costruttore'),
-      el('span', {}, 'Vittorie'), el('span', {}, 'Punti')),
+      el('span', {}, t('camp.pos')), el('span', {}),
+      el('span', {}, piloti ? t('com.pilota') : t('camp.costruttore')),
+      el('span', {}, t('camp.vittorie')), el('span', {}, t('camp.punti'))),
     ...righe.map(r => riga(r, piloti)));
 }
 
@@ -148,7 +153,7 @@ function riga(r, piloti) {
   // cercando la chiave sbagliata il motore non compariva MAI in questa vista.
   const cid = r.constructorId || r.id;
   const sotto = piloti ? team
-    : (motori[cid]?.motore ? `motore ${motori[cid].motore}` : '');
+    : (motori[cid]?.motore ? t('camp.motore', { m: motori[cid].motore }) : '');
   return el('button', {
     class: 'cr' + (r.pos <= 3 ? ' podio' : ''), type: 'button', stile: { '--c': col },
     onclick: (ev) => apri(r, piloti, ev.currentTarget),
@@ -160,18 +165,18 @@ function riga(r, piloti) {
     el('span', { class: 'v n' }, String(r.vittorie ?? 0)),
     el('span', { class: 'pt n' }, nnum(r.punti, Number.isInteger(r.punti) ? 0 : 1),
       el('small', {}, r.distacco
-        ? `−${nnum(r.distacco, Number.isInteger(r.distacco) ? 0 : 1)}` : 'LEADER')));
+        ? `−${nnum(r.distacco, Number.isInteger(r.distacco) ? 0 : 1)}` : t('camp.leader'))));
 }
 
 /* ------------------------------------------------------------- scheda */
-function cella(t, v) { return el('div', { class: 'cel' }, el('small', {}, t), el('b', { class: 'n' }, v)); }
+function cella(et, v) { return el('div', { class: 'cel' }, el('small', {}, et), el('b', { class: 'n' }, v)); }
 
 let apertoDa = null;                 // chi ha aperto la scheda: li' torna il fuoco
 
 function apri(r, piloti, bottone) {
   apertoDa = bottone || null;
   // il pannello si annunciava «Scheda del pilota» anche quando dentro c'era una squadra
-  E('scheda').setAttribute('aria-label', piloti ? 'Scheda del pilota' : 'Scheda della squadra');
+  E('scheda').setAttribute('aria-label', t(piloti ? 'camp.scheda_pilota' : 'camp.scheda_squadra'));
   const s = piloti
     ? Object.values(schede?.piloti || {}).find(p => p.sigla === r.sigla)
     : Object.values(schede?.team || {}).find(t => (t.team_demo || t.nome) === (r.team_demo || r.nome));
@@ -184,30 +189,30 @@ function apri(r, piloti, bottone) {
       el('div', {}, el('h2', {}, piloti ? r.nome : (s?.nome_completo || r.nome || team)),
         el('p', { class: 'sq' }, piloti ? team
           : (motori[r.constructorId || r.id]?.motore
-             ? `motore ${motori[r.constructorId || r.id].motore}` : ''))),
+             ? t('camp.motore', { m: motori[r.constructorId || r.id].motore }) : ''))),
       piloti && s?.numero ? el('span', { class: 'num' }, s.numero) : null,
-      el('button', { class: 'x', type: 'button', 'aria-label': 'Chiudi', onclick: chiudi }, '✕')),
+      el('button', { class: 'x', type: 'button', 'aria-label': t('camp.chiudi'), onclick: chiudi }, '✕')),
     el('div', { class: 'duetti' },
-      el('div', {}, el('h4', {}, 'Stagione 2026'),
+      el('div', {}, el('h4', {}, t('camp.stagione_2026')),
         el('div', { class: 'celle' }, veri(
-          cella('posizione', 'P' + (sta?.pos ?? r.pos)),
-          cella('punti', nnum(r.punti, Number.isInteger(r.punti) ? 0 : 1)),
-          cella('vittorie', String(r.vittorie ?? 0)),
-          sta?.podi != null ? cella('podi', String(sta.podi)) : null,
-          sta?.media_griglia != null ? cella('media griglia', nnum(sta.media_griglia, 1)) : null,
-          sta?.media_arrivo != null ? cella('media arrivo', nnum(sta.media_arrivo, 1)) : null))),
-      car ? el('div', {}, el('h4', {}, 'In carriera'),
+          cella(t('camp.c_posizione'), 'P' + (sta?.pos ?? r.pos)),
+          cella(t('camp.c_punti'), nnum(r.punti, Number.isInteger(r.punti) ? 0 : 1)),
+          cella(t('camp.c_vittorie'), String(r.vittorie ?? 0)),
+          sta?.podi != null ? cella(t('camp.c_podi'), String(sta.podi)) : null,
+          sta?.media_griglia != null ? cella(t('camp.c_media_griglia'), nnum(sta.media_griglia, 1)) : null,
+          sta?.media_arrivo != null ? cella(t('camp.c_media_arrivo'), nnum(sta.media_arrivo, 1)) : null))),
+      car ? el('div', {}, el('h4', {}, t('camp.in_carriera')),
         el('div', { class: 'celle' }, veri(
-          cella('gran premi', String(car.gp_disputati)),
-          cella('vittorie', String(car.vittorie)),
-          cella('podi', String(car.podi)),
-          cella('pole', String(car.pole)),
-          car.titoli ? cella('titoli', String(car.titoli)) : null,
-          cella('punti', nnum(car.punti, Number.isInteger(car.punti) ? 0 : 1)))),
+          cella(t('camp.c_gran_premi'), String(car.gp_disputati)),
+          cella(t('camp.c_vittorie'), String(car.vittorie)),
+          cella(t('camp.c_podi'), String(car.podi)),
+          cella(t('camp.c_pole'), String(car.pole)),
+          car.titoli ? cella(t('camp.c_titoli'), String(car.titoli)) : null,
+          cella(t('camp.c_punti'), nnum(car.punti, Number.isInteger(car.punti) ? 0 : 1)))),
         // il nome del GP arriva in inglese dalla fonte: si mostra la data, non la traduzione
         car.ultima_vittoria?.data
           ? el('p', { stile: { marginTop: '12px', color: 'var(--fioco)', fontSize: '13px' } },
-              `Ultima vittoria: ${dataIt(car.ultima_vittoria.data)}.`)
+              t('camp.ultima_vittoria', { data: dataLoc(car.ultima_vittoria.data) }))
           : null) : null));
   E('scheda').classList.add('su'); E('scheda').setAttribute('aria-hidden', 'false');
   E('velo').classList.add('su');

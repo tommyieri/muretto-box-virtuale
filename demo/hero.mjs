@@ -32,14 +32,17 @@
 
 // la targhetta di cache vive in un posto solo (muro.mjs::V) e serve alla fetch
 // congelata di hero.json qui sotto
-import { V } from './muro.mjs?v=090826b';
+import { V, t, tn, nnum } from './muro.mjs?v=190826f';
 
 const FONTE = 'data/hero.json';
 const VENDOR = 'vendor/';         // relativo al documento: i file sono UMD, non moduli
 
 // --------------------------------------------------------------- utilita'
 const q = (r, s) => r.querySelector(s);
-const num = (v, d = 2) => v == null ? '—' : v.toFixed(d).replace('.', ',');
+// IL SEPARATORE DECIMALE VIENE DALLA LINGUA, non da qui: «18,40» letto da un inglese
+// e' milleottocentoquaranta. `nnum` di muro.mjs lo sa gia', e questa e' la stessa
+// funzione con lo stesso ripiego a trattino.
+const num = (v, d = 2) => v == null ? '—' : nnum(v, d);
 const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 // GSAP arriva SOLO quando serve davvero: hero visibile e movimento consentito.
@@ -107,13 +110,13 @@ function costruisci(root, H) {
 
   // ---- M4 l'HUD
   q(root, '.hero-hud').innerHTML = `
-    <span>GIRO <b data-giro>0</b>/${H.n_laps}</span>
+    <span>${t('hero.giro')} <b data-giro>0</b>/${H.n_laps}</span>
     <span class="hero-hud-sig"><i></i>${esc(P.sig)} &middot; P${P.pos}</span>
-    <span class="hero-hud-gomma"><i></i>${esc(P.compound)}<span> &middot; ${P.tyre_age} GIRI</span></span>`;
+    <span class="hero-hud-gomma"><i></i>${esc(P.compound)}<span> &middot; ${P.tyre_age} ${t('hero.giri_sigla')}</span></span>`;
 
   // ---- M5 la torre
   q(root, '.hero-tower').innerHTML =
-    `<li class="hero-tower-h" role="presentation">Classifica &middot; giro ${H.giro}</li>` +
+    `<li class="hero-tower-h" role="presentation">${t('com.classifica')} &middot; ${t('com.giro', { n: H.giro })}</li>` +
     H.torre_partenza.map(r => rigaHTML(r)).join('');
 
   // ---- M6 la domanda
@@ -124,19 +127,20 @@ function costruisci(root, H) {
   // ---- M9 il pannello sosta
   q(root, '.hero-pit').innerHTML = `
     <span class="hero-pit-t" data-pit>0,00</span>
-    <span class="hero-pit-l">Sosta<br>in corso</span>
+    <span class="hero-pit-l">${t('hero.sosta_corso')}</span>
     <span class="hero-pit-g"><i></i><i></i><i></i><i></i></span>`;
 
   // ---- M7 le due scelte: etichette e risposte vengono dal motore
   q(root, '.hero-choices').innerHTML = H.scelte.map((s, i) => {
-    const bandiera = s.giro_neutralizzato ? 'neutralizzato' : 'bandiera verde';
+    const bandiera = s.giro_neutralizzato ? t('hero.neutralizzato') : t('hero.bandiera_verde');
+    const et = etichetta(s, H);
     return `
     <button type="button" class="hero-choice" data-scelta="${s.id}"
             aria-pressed="false" ${i === 0 ? 'data-attesa="1"' : ''}
-            aria-label="${esc(s.etichetta)}: sosta al giro ${s.giro}, ${bandiera}. Rientri in posizione ${s.pos}.">
-      <span class="hero-choice-k">${i === 0 ? ICO_BOX : ICO_ATTESA}${esc(s.etichetta)}</span>
-      <span class="hero-choice-q">giro ${s.giro} &middot; ${bandiera}</span>
-      <span class="hero-choice-r">rientri <b>P${s.pos}</b></span>
+            aria-label="${esc(et)}: ${t('hero.aria_scelta', { giro: s.giro, bandiera, pos: s.pos })}">
+      <span class="hero-choice-k">${i === 0 ? ICO_BOX : ICO_ATTESA}${esc(et)}</span>
+      <span class="hero-choice-q">${t('com.giro', { n: s.giro })} &middot; ${bandiera}</span>
+      <span class="hero-choice-r">${t('hero.rientri')} <b>P${s.pos}</b></span>
     </button>`; }).join('');
   q(root, '.hero-choices').setAttribute('aria-busy', 'false');
 
@@ -149,7 +153,7 @@ function costruisci(root, H) {
   // screen reader, e l'unica cosa che facevano era illuminarsi a vicenda.
   q(root, '.hero-mesc-r').innerHTML = ['SOFT', 'MEDIUM', 'HARD'].map(m => `
     <span class="hero-mesc-b${m === M.monta ? ' hero-mesc-on' : ''}" data-m="${m}"
-          title="${m === M.monta ? 'gomma montata adesso. ' : ''}Durata massima di questa mescola oggi: ${M.durata_max_oggi[m] ?? '—'} giri — la mescola non cambia la risposta (nel 2026 non separa il degrado)">
+          title="${m === M.monta ? t('hero.gomma_su') + ' ' : ''}${t('hero.durata_max', { n: M.durata_max_oggi[m] ?? '—' })}">
       <i></i>${m}
     </span>`).join('');
 
@@ -163,14 +167,45 @@ function costruisci(root, H) {
   const fonte = q(root, '.hero-fonte');
   if (fonte) {
     fonte.innerHTML =
-      `Pit-loss <b>${num(H.pitloss.s)} s</b>. `
-      + (H.degrado ? `Degrado <b>${num(H.degrado.rho_s_giro, 3)} s/giro</b> per ogni giro di gomma.` : '');
+      t('hero.fonte_pitloss', { s: num(H.pitloss.s) })
+      + (H.degrado ? ' ' + t('hero.fonte_degrado', { rho: num(H.degrado.rho_s_giro, 3) }) : '');
   }
 }
 
 const ICO_BOX = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 3l14 9-14 9V3z" fill="currentColor"/></svg>`;
 const ICO_ATTESA = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.2 2"/></svg>`;
 const ICO_RIVEDI = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/></svg>`;
+
+/** L'ETICHETTA DELLA SCELTA NON SI LEGGE PIU' DAL DATO, e non e' un capriccio.
+ *  hero.json la porta scritta in italiano («BOX ORA», «ASPETTA 8 GIRI») perche' la
+ *  scrive gen_hero.mjs, che gira una volta a gara e non sa in che lingua verra' letta.
+ *  Quello che il dato porta davvero e' l'`id` ('ora'/'dopo') e il giro: da li' l'etichetta
+ *  si ricostruisce in tutt'e due le lingue. Un testo dentro un artefatto e' un testo che
+ *  ha gia' scelto una lingua per sempre. */
+function etichetta(s, H) {
+  if (s.id === 'ora') return t('hero.et_ora');
+  const ora = H.scelte.find(x => x.id === 'ora');
+  const n = ora ? s.giro - ora.giro : 0;
+  return tn('hero.et_dopo_1', 'hero.et_dopo_n', n);
+}
+
+/** «Mantieni la posizione» / «Guadagni 2 posizioni»: una copia sola, non due.
+ *  Le due copie c'erano davvero, in OUTCOME e nel ramo senza animazione, ed erano gia'
+ *  divergenti prima di questo lavoro (una mostrava lo scarto fra le due strade, l'altra
+ *  no). Tradurne una e non l'altra sarebbe stato il modo piu' facile di lasciare una
+ *  frase italiana in mezzo al sito inglese, senza che nessuno la vedesse mai. */
+function titoloVerdetto(d, pos) {
+  if (d === 0) return pos === 1 ? t('hero.resti_comando') : t('hero.mantieni');
+  return d < 0 ? tn('hero.guadagni_1', 'hero.guadagni_n', -d)
+               : tn('hero.perdi_1', 'hero.perdi_n', d);
+}
+
+function doveVerdetto(s) {
+  if (s.sotto_sc) return t('hero.gap_non_quant', { n: s.soste_rivali_assunte });
+  return s.davanti
+    ? t('hero.dietro_di', { chi: esc(s.davanti), s: num(s.gap_davanti) })
+    : t('hero.in_testa');
+}
 
 function rigaHTML(r) {
   return `<li class="hero-row" data-sig="${esc(r.sig)}" ${r.io ? 'data-io="1"' : ''}
@@ -199,15 +234,15 @@ function TRACK(gsap, root) {
     gsap.set(sf, { opacity: 1, scale: 1 });
   };
   const tl = () => {
-    const t = gsap.timeline();
+    const seq = gsap.timeline();
     gsap.set(tutti, { drawSVG: '0%' });
     gsap.set(sf, { opacity: 0, scale: 0, transformOrigin: 'center' });
-    t.to(alone,  { drawSVG: '100%', duration: .9, ease: 'power2.inOut' }, 0)
+    seq.to(alone,  { drawSVG: '100%', duration: .9, ease: 'power2.inOut' }, 0)
      .to(nastro, { drawSVG: '100%', duration: .9, ease: 'power2.inOut' }, .08)
      .to(mezzo,  { drawSVG: '100%', duration: .9, ease: 'power2.inOut' }, .16);
-    if (corsia) t.to(corsia, { drawSVG: '100%', duration: .5, ease: 'power2.out' }, .55);
-    t.to(sf, { opacity: 1, scale: 1, duration: .3, ease: 'back.out(2)' }, .7);
-    return t;
+    if (corsia) seq.to(corsia, { drawSVG: '100%', duration: .5, ease: 'power2.out' }, .55);
+    seq.to(sf, { opacity: 1, scale: 1, duration: .3, ease: 'back.out(2)' }, .7);
+    return seq;
   };
   return { tl, finale };
 }
@@ -246,12 +281,12 @@ function CAR(gsap, root, H) {
   const finale = () => { gsap.set([auto, scia], { opacity: 1 }); posa(H.pista.frazione_uscita + .12); };
 
   const tl = () => {
-    const t = gsap.timeline();
+    const seq = gsap.timeline();
     posa(0);
-    t.to(auto, { opacity: 1, duration: .25 }, 0)
+    seq.to(auto, { opacity: 1, duration: .25 }, 0)
      .to(scia, { opacity: .55, duration: .35 }, .05)
      .add(() => gira(0), 0);
-    return t;
+    return seq;
   };
 
   // ferma il giro e porta il pallino all'ingresso corsia box (via piu' breve in avanti)
@@ -281,12 +316,12 @@ function HUD(gsap, root, H) {
   const box = q(root, '.hero-hud'), g = q(root, '[data-giro]');
   const finale = () => { gsap.set(box, { opacity: 1, y: 0 }); g.textContent = H.giro; };
   const tl = () => {
-    const t = gsap.timeline();
+    const seq = gsap.timeline();
     const n = { v: 0 };
-    t.fromTo(box, { opacity: 0, y: -6 }, { opacity: 1, y: 0, duration: .3 }, 0)
+    seq.fromTo(box, { opacity: 0, y: -6 }, { opacity: 1, y: 0, duration: .3 }, 0)
      .to(n, { v: H.giro, duration: .8, ease: 'power2.out', snap: { v: 1 },
               onUpdate: () => { g.textContent = Math.round(n.v); } }, .05);
-    return t;
+    return seq;
   };
   return { tl, finale };
 }
@@ -309,15 +344,15 @@ function TOWER(gsap, root, H) {
     lista.querySelectorAll('.hero-row').forEach(li => li.remove());
     lista.insertAdjacentHTML('beforeend', nuove.map(rigaHTML).join(''));
 
-    const t = gsap.timeline();
+    const seq = gsap.timeline();
     righe().forEach(li => {
       const y0 = prima.get(li.dataset.sig);
-      if (y0 == null) { t.fromTo(li, { opacity: 0, x: 12 }, { opacity: 1, x: 0, duration: .45 }, .1); return; }
+      if (y0 == null) { seq.fromTo(li, { opacity: 0, x: 12 }, { opacity: 1, x: 0, duration: .45 }, .1); return; }
       const dy = y0 - li.offsetTop;
-      if (dy) t.fromTo(li, { y: dy }, { y: 0, duration: .7, ease: 'power3.inOut' }, 0);
-      if (li.dataset.io) t.fromTo(li, { scale: 1 }, { scale: 1.04, duration: .22, yoyo: true, repeat: 1, ease: 'power2.out' }, .55);
+      if (dy) seq.fromTo(li, { y: dy }, { y: 0, duration: .7, ease: 'power3.inOut' }, 0);
+      if (li.dataset.io) seq.fromTo(li, { scale: 1 }, { scale: 1.04, duration: .22, yoyo: true, repeat: 1, ease: 'power2.out' }, .55);
     });
-    return t;
+    return seq;
   }
   function scrivi(nuove) {                    // senza animazione (reduced motion)
     lista.querySelectorAll('.hero-row').forEach(li => li.remove());
@@ -454,14 +489,9 @@ function OUTCOME(gsap, root, H) {
     const altra = H.scelte.find(x => x.id !== s.id);
     const d = s.pos - partenza;
     const esito = d <= 0 ? 'su' : 'giu';
-    const titolo = d === 0 ? (s.pos === 1 ? 'Resti al comando' : 'Mantieni la posizione')
-                 : d < 0 ? `Guadagni ${-d} ${-d === 1 ? 'posizione' : 'posizioni'}`
-                         : `Perdi ${d} ${d === 1 ? 'posizione' : 'posizioni'}`;
+    const titolo = titoloVerdetto(d, s.pos);
     // sotto neutralizzazione i gap sono soppressi dal motore: si dice, non si riempie
-    const dove = s.sotto_sc
-      ? `gap non quantificabile &middot; ${s.soste_rivali_assunte} rivali in sosta con te`
-      : (s.davanti ? `dietro <b>${esc(s.davanti)}</b> di ${num(s.gap_davanti)} s`
-                   : 'in testa alla corsa');
+    const dove = doveVerdetto(s);
     const dd = altra.pos - s.pos;
     return { esito, html: `
       <div class="hero-verdetto-top">
@@ -469,7 +499,7 @@ function OUTCOME(gsap, root, H) {
         <span class="hero-verdetto-t">${titolo}</span>
       </div>
       <div class="hero-verdetto-alt">${dove}<br>
-        altra strada &middot; <b>${esc(altra.etichetta.toLowerCase())}</b> &rarr; P${altra.pos}${
+        ${t('hero.altra_strada')} &middot; <b>${esc(etichetta(altra, H).toLowerCase())}</b> &rarr; P${altra.pos}${
           dd ? ` (${dd > 0 ? '&minus;' : '+'}${Math.abs(dd)})` : ''}</div>` };
   }
 
@@ -594,7 +624,7 @@ async function dirigi(root, H) {
     choice.reset();
     tower.scrivi(H.torre_partenza);
     q(root, '.hero-verdetto-corpo').innerHTML =
-      `<p class="hero-verdetto-attesa">Scegli quando fermarti: il motore dice dove rientri, coi rivali al loro passo reale.</p>`;
+      `<p class="hero-verdetto-attesa">${t('index.hero_attesa')}</p>`;
     root.querySelector('.hero-verdetto').removeAttribute('data-esito');
     gsap.set(q(root, '.hero-firma'), { opacity: 0 });
     q(root, '.hero-luci')?.classList.remove('e-verde');
@@ -676,14 +706,10 @@ function statico(root, H) {
     corpo.innerHTML = `
       <div class="hero-verdetto-top">
         <span class="hero-verdetto-pos">P${s.pos}</span>
-        <span class="hero-verdetto-t">${d === 0 ? (s.pos === 1 ? 'Resti al comando' : 'Mantieni la posizione')
-          : d < 0 ? `Guadagni ${-d} ${-d === 1 ? 'posizione' : 'posizioni'}`
-                  : `Perdi ${d} ${d === 1 ? 'posizione' : 'posizioni'}`}</span>
+        <span class="hero-verdetto-t">${titoloVerdetto(d, s.pos)}</span>
       </div>
-      <div class="hero-verdetto-alt">${s.sotto_sc
-        ? `gap non quantificabile &middot; ${s.soste_rivali_assunte} rivali in sosta con te`
-        : (s.davanti ? `dietro <b>${esc(s.davanti)}</b> di ${num(s.gap_davanti)} s` : 'in testa alla corsa')}<br>
-        altra strada &middot; <b>${esc(altra.etichetta.toLowerCase())}</b> &rarr; P${altra.pos}</div>`;
+      <div class="hero-verdetto-alt">${doveVerdetto(s)}<br>
+        ${t('hero.altra_strada')} &middot; <b>${esc(etichetta(altra, H).toLowerCase())}</b> &rarr; P${altra.pos}</div>`;
     root.querySelectorAll('.hero-choice').forEach(c =>
       c.setAttribute('aria-pressed', String(c.dataset.scelta === id)));
   }

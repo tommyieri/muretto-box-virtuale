@@ -7,6 +7,7 @@
 // unico); se qui comparisse un numero calcolato, sarebbe la seconda fisica.
 
 import { rigioca, posizioniPerGiro, MESCOLE_EDITOR } from './ese.mjs?v=080826b';
+import { t, tn, nnum, mescola, ITA } from './muro.mjs?v=190826f';
 
 export { MESCOLE_EDITOR };
 
@@ -21,9 +22,9 @@ export function rigaSosta({ giro, mescola, min, max }) {
     const o = document.createElement('option'); o.value = m; o.textContent = m; if (m === mescola) o.selected = true;
     sel.appendChild(o);
   }
-  const del = document.createElement('button'); del.textContent = '×'; del.title = 'togli questa sosta';
+  const del = document.createElement('button'); del.textContent = '×'; del.title = t('ese.togli_sosta');
   del.onclick = () => div.remove();
-  div.append('giro ', inp, sel, del);
+  div.append(t('ese.giro_sp'), inp, sel, del);
   return div;
 }
 
@@ -44,8 +45,7 @@ export function riempiEditor({ box, notaEl, sosteVere, freeze, nLaps }) {
     box.appendChild(rigaSosta({ giro: s.giro, mescola: slick ? s.mescola : 'MEDIUM', min: (freeze ?? 1) + 1, max: nLaps - 1 }));
   }
   if (notaEl) {
-    notaEl.textContent = sostituite
-      ? `(${sostituite} sosta/e vera/e montava gomma non-slick o ignota: qui parte MEDIUM, cambiala tu)` : '';
+    notaEl.textContent = sostituite ? t('ese.sostituite', { n: sostituite }) : '';
   }
 }
 
@@ -80,27 +80,32 @@ export function rendiRisultati({ refs, prep, pilota, freeze, mio, vero, teamCol 
   // Director: un rifiuto è una risposta (regola 6), e si mostra al posto dei numeri.
   if (!direttore.approved) {
     const fatal = (direttore.violazioni ?? []).filter((v) => v.severita === 'FATAL');
-    refs.director.innerHTML = `<span class="no">■ il Simulation Director RESPINGE questo run:</span> `
+    refs.director.innerHTML = `<span class="no">■ ${t('sim.respinge')}</span> `
       + fatal.map((v) => v.messaggio ?? v.codice).join(' · ');
     refs.verdetto.replaceChildren(); refs.torre.replaceChildren();
     refs.grafico.replaceChildren(); refs.assunzioniLista.replaceChildren();
     return;
   }
   const sosp = (direttore.violazioni ?? []).filter((v) => v.severita === 'SOSPETTO').length;
-  refs.director.innerHTML = `<span class="ok">■ Simulation Director: approvato</span>${sosp ? ` · ${sosp} sospetti (non bloccanti)` : ''}`;
+  refs.director.innerHTML = `<span class="ok">■ ${t('sim.approvato')}</span>${sosp ? ` · ${t('sim.sospetti', { n: sosp })}` : ''}`;
 
   // verdetto a tre caselle
   const posDi = (run) => { const i = run.risultato.ordine.indexOf(pilota); return i < 0 ? null : i + 1; };
   const reale = prep.arrivoReale.find((r) => r.drv === pilota)?.posizione ?? null;
   const pMia = posDi(mio);
   const pVera = vero ? posDi(vero) : null;
+  const scarto = (pVera !== null && pMia !== null)
+    ? (pMia < pVera ? '▲ ' + tn('ese.pos_su_1', 'ese.pos_su_n', pVera - pMia)
+     : pMia > pVera ? '▼ ' + tn('ese.pos_giu_1', 'ese.pos_giu_n', pMia - pVera)
+     : t('ese.pos_pari'))
+    : '';
   refs.verdetto.innerHTML = `
-    <div class="ese-box"><small>gara reale</small><b>${reale === null ? '—' : 'P' + reale}</b>
-      <span class="sub">dal lap chart (senza penalità post-gara)</span></div>
-    <div class="ese-box"><small>strategia vera · nel motore</small><b>${pVera === null ? '—' : 'P' + pVera}</b>
-      <span class="sub">${vero ? 'stesso motore, stesse assunzioni: è il metro giusto' : 'non simulabile (gomme non-slick o soste illeggibili) — dichiarato'}</span></div>
-    <div class="ese-box tua"><small>la TUA strategia · nel motore</small><b>${pMia === null ? '—' : 'P' + pMia}</b>
-      <span class="sub">${pVera !== null && pMia !== null ? (pMia < pVera ? `▲ ${pVera - pMia} posizioni sul piano vero (motore contro motore)` : pMia > pVera ? `▼ ${pMia - pVera} posizioni sul piano vero (motore contro motore)` : 'stesso arrivo del piano vero (motore contro motore)') : ''}</span></div>`;
+    <div class="ese-box"><small>${t('sim.gara_reale')}</small><b>${reale === null ? '—' : 'P' + reale}</b>
+      <span class="sub">${t('ese.dal_lapchart')}</span></div>
+    <div class="ese-box"><small>${t('sim.strategia_vera')}</small><b>${pVera === null ? '—' : 'P' + pVera}</b>
+      <span class="sub">${t(vero ? 'sim.metro_giusto' : 'sim.non_simulabile')}</span></div>
+    <div class="ese-box tua"><small>${t('ese.la_tua')}</small><b>${pMia === null ? '—' : 'P' + pMia}</b>
+      <span class="sub">${scarto}</span></div>`;
 
   // torre
   const torre = refs.torre; torre.replaceChildren();
@@ -127,26 +132,29 @@ export function rendiRisultati({ refs, prep, pilota, freeze, mio, vero, teamCol 
     const col = teamCol[team] ?? '#6b7280';
     tr.innerHTML = `<td class="pos">RIT</td>`
       + `<td style="opacity:.55"><span class="bar" style="background:${col}"></span>${rit.drv}</td>`
-      + `<td class="gap" style="opacity:.55">giro ${rit.lap}</td>`
-      + `<td><span class="pari" title="ritirato nella gara vera: esce dalla simulazione al suo giro">vero</span></td>`;
+      + `<td class="gap" style="opacity:.55">${t('com.giro', { n: rit.lap })}</td>`
+      + `<td><span class="pari" title="${t('ese.rit_title')}">${t('ese.rit_vero')}</span></td>`;
     torre.appendChild(tr);
   }
   const fuori = (risultato.esclusi ?? []).map((x) => x.drv).join(', ');
-  refs.torreNota.textContent = 'Ordine per tempo simulato alla bandiera; i doppiaggi non sono modellati. '
-    + 'La freccia confronta con l\'arrivo reale. Chi si ritirò nella gara vera esce dalla simulazione '
-    + 'al suo giro (righe RIT): il ritiro è un dato, non si proietta un arrivo mai successo.'
-    + (fuori ? ` Fuori simulazione (senza passo, regola 6): ${fuori}.` : '');
+  refs.torreNota.textContent = t('ese.torre_nota')
+    + (fuori ? ' ' + t('ese.fuori_sim', { chi: fuori }) : '');
 
   // grafico posizioni per giro: reale, tua, vera
   disegnaGrafico({ svg: refs.grafico, prep, pilota, freeze, mio, vero });
 
   // assunzioni del motore, rese SEMPRE (la condizione della deroga s25)
   const ul = refs.assunzioniLista; ul.replaceChildren();
-  const orizz = scenario.orizzonte ? `proiezione fino al giro ${scenario.orizzonte.giroFinale}` : '';
   const liOr = document.createElement('li');
-  liOr.innerHTML = `<b>ORIZZONTE</b> — ${orizz}: decine di giri contro i ~6 validati della risposta. `
-    + `<small>misurato: sulla gara intera il motore e «non cambia niente» sono indistinguibili — questa è la ragione per cui questa pagina è un gioco, non una previsione</small>`;
+  liOr.innerHTML = t('sim.orizzonte', { giro: scenario.orizzonte?.giroFinale ?? '—' });
   ul.appendChild(liOr);
+  // le assunzioni le scrive il kernel, in italiano: si dichiara invece di riscriverle
+  // (lo stesso ragionamento, per esteso, sta in whatif.mjs::rendiAssunzioni)
+  if (!ITA && (scenario.assunzioni?.length || direttore.riepilogo?.non_verificabili?.length)) {
+    const li = document.createElement('li');
+    li.innerHTML = `<small>${t('sim.avviso_kernel')}</small>`;
+    ul.appendChild(li);
+  }
   for (const a of scenario.assunzioni ?? []) {
     const li = document.createElement('li');
     li.innerHTML = `<b>${a.codice}</b> — ${a.descrizione} <small>· ${a.targhetta ?? ''}</small>`;
@@ -154,7 +162,7 @@ export function rendiRisultati({ refs, prep, pilota, freeze, mio, vero, teamCol 
   }
   for (const n of direttore.riepilogo?.non_verificabili ?? []) {
     const li = document.createElement('li');
-    li.innerHTML = `<b>NON VERIFICATO</b> — <small>${n}</small>`;
+    li.innerHTML = `<b>${t('sim.non_verificato')}</b> — <small>${n}</small>`;
     ul.appendChild(li);
   }
 }

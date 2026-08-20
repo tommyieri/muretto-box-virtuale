@@ -180,30 +180,35 @@ hr{ border:0; border-top:1px solid var(--bordo); margin:26px 0; }
   content:""; position:absolute; left:14px; right:14px; bottom:5px; height:2px;
   border-radius:2px; background:var(--rosso);
 }
-/* ------- la voce col cassetto (Analisi) ------- */
-.menu .voce{ position:relative; display:flex; align-items:center; }
-.menu .apri{
+/* ------- la voce col cassetto (Analisi, e il selettore di lingua) ------- */
+/* `.voce` e `.tendina` erano scritte come `.menu .voce` / `.menu .tendina`, cioe'
+   valevano solo dentro la nav. Il selettore di lingua sta NELLA BARRA MA FUORI DALLA
+   NAV — apposta: non e' una destinazione — e senza queste regole la sua tendina
+   restava un blocco statico, sempre aperto, largo 200 px dentro una barra da 375
+   (misurato). Il cassetto e' un componente: le sue regole non chiedono piu' dove sta. */
+.voce{ position:relative; display:flex; align-items:center; }
+.menu .apri, .barra .apri-lingua{
   position:relative; display:flex; align-items:center; gap:7px;
   height:38px; padding:0 14px; border-radius:9px;
   color:var(--calmo); font:700 15px/1 var(--disp); letter-spacing:.09em;
   text-transform:uppercase; cursor:pointer;
   transition:color .18s var(--ease), background-color .18s var(--ease);
 }
-.menu .apri:hover{ color:var(--testo); background:rgba(255,255,255,.05); }
+.menu .apri:hover, .barra .apri-lingua:hover{ color:var(--testo); background:rgba(255,255,255,.05); }
 .menu .apri[aria-current]{ color:var(--testo); background:rgba(255,255,255,.07); }
 .menu .apri[aria-current]::after{
   content:""; position:absolute; left:14px; right:14px; bottom:5px; height:2px;
   border-radius:2px; background:var(--rosso);
 }
-.menu .freccia{
+.freccia{
   width:0; height:0; border-left:4px solid transparent; border-right:4px solid transparent;
   border-top:5px solid currentColor; opacity:.75;
   transition:transform .2s var(--ease);
 }
-.menu .voce.aperta .apri{ color:var(--testo); background:rgba(255,255,255,.07); }
-.menu .voce.aperta .freccia{ transform:rotate(180deg); }
+.voce.aperta .apri{ color:var(--testo); background:rgba(255,255,255,.07); }
+.voce.aperta .freccia{ transform:rotate(180deg); }
 
-.menu .tendina{
+.tendina{
   position:absolute; top:calc(100% + 6px); right:0; min-width:190px; z-index:1;
   display:flex; flex-direction:column; padding:6px; border-radius:12px;
   background:rgba(14,17,22,.97); backdrop-filter:blur(14px);
@@ -211,16 +216,143 @@ hr{ border:0; border-top:1px solid var(--bordo); margin:26px 0; }
   opacity:0; visibility:hidden; transform:translateY(-6px);
   transition:opacity .18s var(--ease), transform .18s var(--ease), visibility 0s linear .18s;
 }
-.menu .voce.aperta .tendina{
+.voce.aperta .tendina{
   opacity:1; visibility:visible; transform:none;
   transition:opacity .18s var(--ease), transform .18s var(--ease), visibility 0s;
 }
-.menu .tendina a{
+.tendina a, .tendina .lingua-voce{
   height:auto; min-height:42px; padding:0 13px; border-radius:8px;
   justify-content:flex-start; letter-spacing:.06em;
 }
-.menu .tendina a[aria-current="page"]::after{ display:none; }
-.menu .tendina a[aria-current="page"]{ color:var(--ciano); background:rgba(36,227,210,.1); }
+.tendina a[aria-current="page"]::after{ display:none; }
+.tendina a[aria-current="page"]{ color:var(--ciano); background:rgba(36,227,210,.1); }
+
+/* ------------------------------------------------------ il selettore di lingua
+   Il ragionamento sul PERCHE' di questa forma sta in muro.mjs::selettoreLingua — qui
+   ci sono solo le misure. Da spento e' un mappamondo e due lettere nel grigio piu'
+   fioco del sito: pesa meno di una voce di menu, non porta bandiere, non porta colore.
+   Il filo verticale a sinistra dice a occhio che non e' una quinta sezione. */
+.voce-lingua{ position:relative; display:flex; align-items:center; flex:0 0 auto;
+  margin-left:10px; padding-left:12px; }
+.voce-lingua::before{
+  content:""; position:absolute; left:0; top:50%; transform:translateY(-50%);
+  width:1px; height:20px; background:var(--bordo-2);
+}
+.barra .apri-lingua{ gap:6px; padding:0 10px; letter-spacing:.06em; }
+.apri-lingua .globo{ width:15px; height:15px; flex:0 0 auto; opacity:.85;
+  fill:none; stroke:currentColor; stroke-width:1.6; stroke-linecap:round; }
+.apri-lingua .lingua-ora{ font:500 12px/1 var(--mono); letter-spacing:.1em; }
+.apri-lingua .freccia{ opacity:.6; }
+
+/* La tendina si apre a destra come quella di Analisi; le righe sono alte 44 px —
+   il bersaglio pieno che due sigle affiancate in barra non potevano avere. */
+.tendina-lingue{ min-width:180px; }
+.tendina .lingua-voce{
+  display:flex; align-items:center; gap:10px;
+  min-height:44px; padding:0 13px; border:0; border-radius:8px;
+  background:transparent; color:var(--calmo); cursor:pointer; text-align:left;
+  font:700 15px/1 var(--disp); letter-spacing:.06em;
+  transition:color .18s var(--ease), background-color .18s var(--ease);
+}
+.lingua-voce:hover{ color:var(--testo); background:rgba(255,255,255,.05); }
+/* La lingua in uso NON si distingue col solo colore: porta la sua sigla in evidenza
+   su una piastra accesa. Il colore da solo non e' mai un'informazione. */
+.lingua-voce.on{ color:var(--testo); }
+.lingua-cod{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:30px; height:22px; border-radius:6px; flex:0 0 auto;
+  background:rgba(255,255,255,.06); color:var(--fioco);
+  font:500 11px/1 var(--mono); letter-spacing:.08em;
+}
+.lingua-voce.on .lingua-cod{ background:var(--rosso); color:#fff; }
+
+/* nel piede: la stessa cosa, senza filo (li' e' gia' una riga di voci sciolte) e con
+   la tendina che si apre verso l'ALTO — sotto non c'e' pagina in cui aprirsi. */
+.piede .voce-lingua{ margin-left:6px; padding-left:0; }
+.piede .voce-lingua::before{ display:none; }
+.piede .apri-lingua{
+  display:flex; align-items:center; gap:6px; height:38px; padding:0 11px;
+  border:0; border-radius:8px; background:transparent; color:var(--fioco);
+  font:700 13px/1 var(--disp); letter-spacing:.08em; text-transform:uppercase; cursor:pointer;
+  transition:color .18s var(--ease), background-color .18s var(--ease);
+}
+.piede .apri-lingua:hover{ color:var(--testo); background:rgba(255,255,255,.05); }
+.piede .tendina{ top:auto; bottom:calc(100% + 6px); transform:translateY(6px); }
+.piede .voce-lingua.aperta .tendina{ transform:none; }
+
+@media (max-width:700px){
+  .voce-lingua{ margin-left:4px; padding-left:8px; }
+  .barra .apri-lingua{ padding:0 7px; gap:5px; }
+  .apri-lingua .globo{ width:14px; height:14px; }
+  .apri-lingua .lingua-ora{ font-size:11px; letter-spacing:.06em; }
+}
+/* SOTTO I 420 PX RESTA IL SOLO MAPPAMONDO, e il bersaglio si tiene a 38 px.
+   La freccia e la sigla se ne vanno perche' li' la barra e' al centesimo: da 420 in
+   giu' sparisce anche il nome del marchio, e le voci inglesi sono piu' lunghe delle
+   italiane. Il mappamondo da solo dice gia' «lingua»; quale delle due sia accesa lo
+   dice la tendina appena si apre — l'informazione non si perde, costa un tocco.
+   38 e non 44: sotto i 44 canonici, e detto. E' il compromesso che regge senza
+   togliere spazio alle voci di nav, che sono la ragione per cui la barra esiste. */
+/* SOTTO I 600 PX RESTA IL SOLO MAPPAMONDO, e il bersaglio si tiene a 38 px.
+   La sigla e la freccia se ne vanno perche' da li' in giu' la barra e' piena: il
+   conto misurato a 430 px (un iPhone Pro Max, non un telefono raro) diceva
+   24+110+20+305+69 = 528 px dentro 430. Il mappamondo da solo dice gia' «lingua»;
+   quale delle due sia accesa lo dice la tendina appena si apre — l'informazione non
+   si perde, costa un tocco. 38 px e non i 44 canonici: sotto la misura, e detto —
+   e' il compromesso che regge senza rubare spazio alle voci di nav, che sono la
+   ragione per cui la barra esiste. */
+@media (max-width:600px){
+  .voce-lingua{ margin-left:2px; padding-left:7px; }
+  .barra .apri-lingua{ padding:0; min-width:38px; justify-content:center; }
+  .apri-lingua .globo{ width:16px; height:16px; }
+  .apri-lingua .lingua-ora, .apri-lingua .freccia{ display:none; }
+}
+
+/* ------------------------------------------------- l'avviso «questi sono in italiano»
+   NON SI NASCONDE IN JAVASCRIPT, si nasconde in CSS sull'attributo `lang` del
+   documento — che lingua.mjs::applica() scrive comunque, in tutt'e due le lingue.
+   Cosi' la regola e' una sola riga e non c'e' un secondo posto dove sbagliare: se un
+   giorno il sito partisse senza JavaScript, l'avviso resterebbe visibile su una pagina
+   inglese piena di articoli italiani — che e' l'errore giusto da fare, dei due. */
+.avviso-lingua{
+  margin:-6px 0 22px; padding:9px 13px; border-radius:10px;
+  display:inline-flex; align-items:center; gap:9px;
+  background:rgba(255,255,255,.04); border:1px solid var(--bordo);
+  color:var(--calmo); font-size:13.5px; line-height:1.4;
+}
+.avviso-lingua::before{
+  content:"IT"; flex:0 0 auto; padding:2px 6px; border-radius:5px;
+  background:rgba(255,255,255,.07); color:var(--fioco);
+  font:500 10px/1.4 var(--mono); letter-spacing:.1em;
+}
+html[lang="it"] .avviso-lingua{ display:none; }
+
+/* ------------------------------------------ l'articolo nelle due lingue
+   IL CORPO DELL'ARTICOLO C'E' DUE VOLTE, e non e' spreco: il testo di un articolo
+   pesa 2 kB, i suoi grafici da 5 a 48. Duplicare le PAROLE costa quasi niente;
+   duplicare i disegni sarebbe costato il doppio della pagina, e non serve — di un
+   grafico si traducono le didascalie, non le curve.
+   Le due prose stanno tutt'e due nel DOM, ognuna col suo `lang`: l'originale
+   italiano e la traduzione. Un motore di ricerca le trova entrambe e sa quale e'
+   quale; un lettore di schermo cambia voce sulla lingua giusta. Nascondere quella
+   che non serve e' l'ultimo passo, e lo fa il CSS sull'attributo `lang` del
+   documento — che lingua.mjs::applica() scrive comunque, in tutt'e due le lingue. */
+html[lang="en"] .art-lingua[lang="it"],
+html[lang="it"] .art-lingua[lang="en"]{ display:none; }
+
+/* la nota di provenienza della traduzione: sta sotto l'occhiello, in inglese
+   soltanto, perche' in italiano non c'e' niente da dichiarare — quello e' l'originale */
+.art-tradotto{
+  margin:0 0 14px; display:inline-flex; align-items:center; gap:9px;
+  padding:8px 12px; border-radius:10px;
+  background:rgba(255,255,255,.04); border:1px solid var(--bordo);
+  color:var(--fioco); font:400 12.5px/1.45 var(--mono);
+}
+.art-tradotto::before{
+  content:"IT→EN"; flex:0 0 auto; padding:2px 6px; border-radius:5px;
+  background:rgba(255,255,255,.07); color:var(--calmo);
+  font:500 10px/1.4 var(--mono); letter-spacing:.08em;
+}
 
 .pallino{ width:7px; height:7px; border-radius:50%; background:var(--fioco); flex:0 0 auto; }
 .pallino.on{ background:var(--rosso); box-shadow:0 0 0 0 rgba(255,30,60,.6); animation:battito 1.8s infinite; }
@@ -232,13 +364,34 @@ hr{ border:0; border-top:1px solid var(--bordo); margin:26px 0; }
   .marchio-t small{ display:none; }
   .menu{ gap:0; }
   .menu a,.menu .apri{ padding:0 9px; font-size:14px; letter-spacing:.05em; }
-  .menu .tendina{ min-width:170px; }
+  .tendina{ min-width:170px; }
 }
-@media (max-width:420px){ .marchio-t{ display:none; } }
-/* SOTTO I 348 px la barra sforava e CAMPIONATO usciva dallo schermo: nessuna
-   scorciatoia per raggiungerlo, perche' la barra non scorre. Con 4 px di respiro
-   per voce il menu chiude dentro i 308 px disponibili di un iPhone SE. */
-@media (max-width:380px){ .menu a,.menu .apri{ padding:0 4px; } }
+/* LA SCALA DELLA BARRA STRETTA, e perche' ha tre gradini invece di uno.
+   LA BARRA NON SCORRE — e' una decisione vecchia di questo sito, e quella che rende
+   il problema un problema: una voce che esce dallo schermo qui non e' nascosta, e'
+   irraggiungibile. Fino al 19/08/2026 quattro voci italiane ci stavano appena («sotto
+   i 348 px CAMPIONATO usciva dallo schermo»). Dal 19/08 in barra c'e' anche il
+   selettore di lingua, che vale 47 px, e le voci sono inglesi, quindi piu' lunghe
+   delle italiane: 265 px di menu contro 254 (misurati nel browser, non stimati —
+   CHAMPIONSHIP contro CAMPIONATO). A 320 px il conto non tornava di 58 px, e nessun
+   ritocco da solo li recuperava. I gradini quindi sono tre e tolgono poco alla volta:
+   prima il respiro fra le voci, poi il corpo, poi i margini della barra. Nessuno tocca
+   la struttura della nav: le quattro sezioni restano quattro sezioni a ogni larghezza,
+   che e' l'unica cosa che non si poteva barattare per fare posto a un'impostazione.
+   LA MISURA DA RISPETTARE E' UNA SOLA, e vale a ogni gradino:
+   `.barra` scrollWidth == clientWidth, cioe' nessuna voce fuori dallo schermo. */
+@media (max-width:600px){ .marchio-t{ display:none; } }
+@media (max-width:430px){
+  .barra{ gap:8px; padding:0 10px; }
+  .menu a,.menu .apri{ padding:0 6px; font-size:13px; letter-spacing:.04em; }
+}
+@media (max-width:380px){
+  .menu a,.menu .apri{ padding:0 4px; font-size:12px; letter-spacing:.02em; }
+}
+@media (max-width:340px){
+  .barra{ gap:6px; padding:0 8px; }
+  .menu a,.menu .apri{ padding:0 3px; font-size:11.5px; }
+}
 
 /* ================================================================= scafo */
 .scafo{ max-width:var(--max); margin:0 auto; padding:clamp(22px,4vw,40px) clamp(14px,3vw,26px) 90px; }

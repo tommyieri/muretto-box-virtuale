@@ -1,28 +1,32 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Telemetria — Muretto Box Virtuale</title>
-<meta name="description" content="La telemetria di qualunque giro di qualunque pilota: velocità, gas, freno e marce, e due giri a confronto.">
+<title data-i18n="meta.telemetria.titolo">Telemetry — Muretto Box Virtuale</title>
+<meta name="description" data-i18n-attr="content:meta.telemetria.desc" content="The telemetry of any lap of any driver: speed, throttle, brake and gears, and two laps side by side.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Muretto Box Virtuale">
-<meta property="og:locale" content="it_IT">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="it_IT">
 <meta property="og:url" content="https://murettobox.com/telemetria.html">
-<meta property="og:title" content="Telemetria — Muretto Box Virtuale">
-<meta property="og:description" content="La telemetria di qualunque giro di qualunque pilota: velocità, gas, freno e marce, e due giri a confronto.">
+<meta property="og:title" data-i18n-attr="content:meta.telemetria.titolo" content="Telemetry — Muretto Box Virtuale">
+<meta property="og:description" data-i18n-attr="content:meta.telemetria.desc" content="The telemetry of any lap of any driver: speed, throttle, brake and gears, and two laps side by side.">
 <meta property="og:image" content="https://murettobox.com/og/pagina-telemetria.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Telemetria — Muretto Box Virtuale">
-<meta name="twitter:description" content="La telemetria di qualunque giro di qualunque pilota: velocità, gas, freno e marce, e due giri a confronto.">
+<meta name="twitter:title" data-i18n-attr="content:meta.telemetria.titolo" content="Telemetry — Muretto Box Virtuale">
+<meta name="twitter:description" data-i18n-attr="content:meta.telemetria.desc" content="The telemetry of any lap of any driver: speed, throttle, brake and gears, and two laps side by side.">
 <meta name="twitter:image" content="https://murettobox.com/og/pagina-telemetria.png">
 <link rel="canonical" href="https://murettobox.com/telemetria.html">
+<link rel="alternate" hreflang="en" href="https://murettobox.com/telemetria.html">
+<link rel="alternate" hreflang="it" href="https://murettobox.com/telemetria.html?lang=it">
+<link rel="alternate" hreflang="x-default" href="https://murettobox.com/telemetria.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
-<link rel="stylesheet" href="muro.css?v=090826b">
+<link rel="stylesheet" href="muro.css?v=190826f">
 <link rel="apple-touch-icon" href="/assets/marchio/icona-180.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%2232%22%20height%3D%2232%22%20role%3D%22img%22%20aria-label%3D%22Muretto%20Box%20Virtuale%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%23FF1E3C%22%2F%3E%3Cpath%20d%3D%22M20%2064L20%2018L31.5%2018L50%2042L68.5%2018L80%2018L80%2064L69.5%2064L69.5%2034L54%2055L46%2055L30.5%2034L30.5%2064Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Cpath%20d%3D%22M12%2073L88%2073L88%2084L12%2084Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E">
 <style>
@@ -114,22 +118,22 @@
 <header class="barra"></header>
 
 <main class="scafo scafo-largo">
-  <p class="occhiello">Telemetria · stagione 2026</p>
-  <h1 class="titolone">Scegli il <em>giro</em></h1>
-  <p class="sottotitolo">Ogni giro cronometrato di ogni pilota, in ogni sessione del weekend.
-     Prendine due e vedi dove si guadagna.</p>
+  <p class="occhiello" data-i18n="tele.occhiello">Telemetry · 2026 season</p>
+  <h1 class="titolone" data-i18n-html="tele.titolo">Pick the <em>lap</em></h1>
+  <p class="sottotitolo" data-i18n="tele.sottotitolo">Every timed lap of every driver, in every session of
+     the weekend. Take two and see where the time is gained.</p>
 
   <div class="scelte">
-    <div class="pillole riga" id="pilGare" role="group" aria-label="Gran Premio"></div>
-    <div class="pillole riga" id="pilSess" role="group" aria-label="Sessione"></div>
+    <div class="pillole riga" id="pilGare" role="group" data-i18n-attr="aria-label:tele.aria_gp" aria-label="Grand Prix"></div>
+    <div class="pillole riga" id="pilSess" role="group" data-i18n-attr="aria-label:tele.aria_sess" aria-label="Session"></div>
   </div>
 
   <div class="banco">
     <section class="piloti">
-      <div class="cap" id="capPiloti">Piloti</div>
+      <div class="cap" id="capPiloti" data-i18n="camp.piloti">Drivers</div>
       <div class="modo" id="modo" hidden>
-        <button class="btn btn-s" type="button" id="btnConfronta" aria-pressed="false">Confronta con…</button>
-        <p id="modoNota" hidden>Tocca il secondo pilota.</p>
+        <button class="btn btn-s" type="button" id="btnConfronta" aria-pressed="false" data-i18n="tele.confronta">Compare with…</button>
+        <p id="modoNota" hidden data-i18n="tele.tocca_secondo">Tap the second driver.</p>
       </div>
       <div class="lista" id="lista"></div>
     </section>
@@ -148,21 +152,21 @@
         <div class="pannelli" id="pannelli"></div>
         <aside class="fianco">
           <div class="cartello">
-            <h4>Sul tracciato</h4>
+            <h4 data-i18n="tele.sul_tracciato">On the track</h4>
             <div id="mappaVel"></div>
           </div>
           <div class="cartello">
-            <h4>Giri a confronto</h4>
+            <h4 data-i18n="tele.giri_confronto">Laps compared</h4>
             <div class="legenda" id="legenda"></div>
           </div>
           <div class="cartello" id="boxCifre" hidden>
-            <h4>Il giro</h4>
+            <h4 data-i18n="tele.il_giro">The lap</h4>
             <div class="cifre" id="cifre"></div>
           </div>
         </aside>
       </div>
 
-      <div class="avviso" id="avviso">Scegli un pilota per vedere i suoi giri.</div>
+      <div class="avviso" id="avviso" data-i18n="tele.scegli_pilota">Pick a driver to see their laps.</div>
     </div>
   </div>
 </main>
@@ -171,14 +175,15 @@
 
 <script type="module">
 import { guscio, dati, el, veri, V, param, scriviParam, tempo, delta, nnum,
-         coloreDi, identita, guasto, scheletro, MESCOLA_IT } from './muro.mjs?v=090826b';
-import { decodifica, differenza, traccia, mirino, frazioneDa, nastroVelocita } from './tele.mjs?v=090826b';
+         coloreDi, identita, guasto, scheletro, mescola, t, tn, gpNome } from './muro.mjs?v=190826f';
+import { decodifica, differenza, traccia, mirino, frazioneDa, nastroVelocita } from './tele.mjs?v=190826f';
 
 guscio('telemetria.html');
 const E = (id) => document.getElementById(id);
 
-const NOMI_SESS = { fp1: 'Libere 1', fp2: 'Libere 2', fp3: 'Libere 3',
-  sprint_quali: 'Quali sprint', sprint: 'Sprint', qualifiche: 'Qualifiche', gara: 'Gara' };
+// I nomi delle sessioni si prendono dal dizionario: la sigla (fp1, sprint_quali) e' la
+// chiave, ed e' la stessa in tutte le lingue perche' e' quella della FIA.
+const nomeSess = (k) => t('sess.' + k);
 const ORDINE = ['fp1', 'fp2', 'fp3', 'sprint_quali', 'sprint', 'qualifiche', 'gara'];
 const slug = (s) => s.toLowerCase().replace(/ /g, '-').replace(/'/g, '')
   .replace(/à/g, 'a').replace(/è|é/g, 'e');
@@ -203,39 +208,44 @@ async function boot() {
   for (const g of (cal?.gare || [])) if (g.nome) round[g.nome] = g.round;
   const gare = Object.keys(manifest).sort((a, b) => (round[a] ?? 99) - (round[b] ?? 99));
   gara = gare.includes(param('g')) ? param('g') : gare[gare.length - 1];
+  // LA PILLOLA PORTA IL SUO VALORE IN `data-v`, non nel testo che si legge.
+  // Prima lo stato acceso si decideva confrontando `b.textContent` col nome della gara:
+  // funziona finche' quello che si legge e quello che si intende sono la stessa stringa.
+  // Con due lingue non lo sono piu' — «Hungary» non e' «Ungheria» — e nessuna pillola
+  // sarebbe piu' risultata accesa, in silenzio.
   E('pilGare').replaceChildren(...gare.slice().reverse().map(g => el('button', {
-    class: 'pil', type: 'button', 'aria-pressed': String(g === gara),
+    class: 'pil', type: 'button', 'aria-pressed': String(g === gara), 'data-v': g,
     onclick: () => { gara = g; scriviParam({ g, s: null }); scegliSessioni(); },
-  }, g)));
+  }, gpNome(g))));
   scegliSessioni(param('s'));
 }
 
 function scegliSessioni(voluta) {
-  [...E('pilGare').children].forEach(b => b.setAttribute('aria-pressed', String(b.textContent === gara)));
+  [...E('pilGare').children].forEach(b => b.setAttribute('aria-pressed', String(b.dataset.v === gara)));
   const disp = (manifest[gara] || []).map(x => x.sessione)
     .sort((a, b) => ORDINE.indexOf(a) - ORDINE.indexOf(b));
   sess = disp.includes(voluta) ? voluta : (disp.includes('gara') ? 'gara' : disp[disp.length - 1]);
   E('pilSess').replaceChildren(...disp.map(s => el('button', {
-    class: 'pil', type: 'button', 'aria-pressed': String(s === sess),
+    class: 'pil', type: 'button', 'aria-pressed': String(s === sess), 'data-v': s,
     onclick: () => { sess = s; scriviParam({ g: gara, s }); caricaSessione(); },
-  }, NOMI_SESS[s] || s)));
+  }, nomeSess(s))));
   scriviParam({ g: gara, s: sess });
   caricaSessione();
 }
 
 async function caricaSessione() {
   [...E('pilSess').children].forEach(b =>
-    b.setAttribute('aria-pressed', String((NOMI_SESS[sess] || sess) === b.textContent)));
+    b.setAttribute('aria-pressed', String(b.dataset.v === sess)));
   A = null; B = null; pista = null;
   E('boxGiri').hidden = true; E('quadro').hidden = true;
   E('avviso').hidden = false;
-  E('avviso').textContent = 'Carico la sessione…';
+  E('avviso').textContent = t('tele.carico');
   scheletro(E('lista'), 8, 46);
   indice = await dati(`data/giri/${slug(gara)}__${sess}.json?v=${V}`);
-  if (!indice) { E('avviso').textContent = 'Questa sessione non è disponibile.'; E('lista').replaceChildren(); return; }
+  if (!indice) { E('avviso').textContent = t('tele.sessione_assente'); E('lista').replaceChildren(); return; }
   dati(`data/pista_${encodeURIComponent(gara)}.json?v=${V}`).then(p => { pista = p; if (A) disegna(); });
   elencaPiloti();
-  E('avviso').textContent = 'Scegli un pilota per vedere i suoi giri.';
+  E('avviso').textContent = t('tele.scegli_pilota');
 }
 
 /* ------------------------------------------------------------ piloti */
@@ -258,17 +268,18 @@ function elencaPiloti() {
                           apribile: p.giri.some(g => g.tel) }))
     .sort((a, b) => (a.best?.t ?? 1e9) - (b.best?.t ?? 1e9));
   const rif = righe.find(r => r.best)?.best?.t ?? null;
-  E('capPiloti').textContent = `${righe.length} piloti · miglior giro`;
+  E('capPiloti').textContent = t('tele.cap_piloti', { n: righe.length });
   E('lista').replaceChildren(...righe.map(({ sig, p, best, apribile }) => el('button', {
     class: 'pl' + (apribile ? '' : ' senza'), type: 'button', 'data-sig': sig,
     disabled: !apribile,
-    title: apribile ? null : 'nessun giro con telemetria registrata',
+    title: apribile ? null : t('tele.senza_tele_title'),
     stile: { '--c': coloreDi(p.team, colori) },
     onclick: (ev) => scegliPilota(sig, ev.shiftKey || ev.altKey),
   },
     el('span', { class: 'bar' }),
     el('span', {}, el('b', {}, sig),
-      el('small', {}, apribile ? `${p.giri.filter(g => g.tel).length} giri` : 'senza telemetria')),
+      el('small', {}, apribile ? tn('com.giro_1', 'com.giri_n', p.giri.filter(g => g.tel).length)
+                               : t('tele.senza_tele'))),
     el('i', {}, best ? (rif && best.t !== rif ? delta(best.t - rif) : tempo(best.t)) : '—'))));
 }
 
@@ -278,7 +289,7 @@ function scegliPilota(sig, comeConfronto) {
   const best = migliore(p) || p.giri.find(g => g.tel);   // il migliore con traccia, o la prima traccia che c'e'
   if (!best) {
     E('avviso').hidden = false;
-    E('avviso').textContent = `${sig} non ha nessun giro con la telemetria registrata in questa sessione.`;
+    E('avviso').textContent = t('tele.nessun_giro_tele', { sig });
     return;
   }
   if ((comeConfronto || modoConfronto) && A && A.sig !== sig) { confronto(false); impostaB(sig, best.n); }
@@ -291,7 +302,7 @@ let modoConfronto = false;
 function confronto(v) {
   modoConfronto = !!v && !!A;
   E('btnConfronta').setAttribute('aria-pressed', String(modoConfronto));
-  E('btnConfronta').textContent = modoConfronto ? 'Annulla' : 'Confronta con…';
+  E('btnConfronta').textContent = t(modoConfronto ? 'tele.annulla' : 'tele.confronta');
   E('modoNota').hidden = !modoConfronto;
   E('lista').classList.toggle('confronta', modoConfronto);
 }
@@ -312,7 +323,7 @@ async function impostaA(sig, giro) {
   const c = file?.giri?.[String(giro)];
   if (!c) {
     E('avviso').hidden = false;
-    E('avviso').textContent = `Il giro ${giro} di ${sig} non ha la telemetria registrata.`;
+    E('avviso').textContent = t('tele.giro_senza_tele', { giro, sig });
     return;
   }
   A = { sig, giro, tr: decodifica(c), meta: indice.piloti[sig].giri.find(g => g.n === giro) };
@@ -339,12 +350,12 @@ function striscia(sig, scelto, classeScelto, onScegli) {
       + (best && g.n === best.n ? ' veloce' : '') + (g.box ? ' box' : ''),
     type: 'button',
     'aria-pressed': String(g.n === scelto),
-    title: g.box === 'in' ? 'giro di rientro ai box' : g.box === 'out' ? 'giro di uscita dai box' : '',
+    title: g.box === 'in' ? t('tele.in_lap') : g.box === 'out' ? t('tele.out_lap') : '',
     onclick: () => onScegli(g.n),
   },
     el('span', { class: 'ng' }, veri(
       String(g.n),
-      g.mescola ? el('span', { class: 'gomma ' + g.mescola, title: MESCOLA_IT[g.mescola] || g.mescola }) : null,
+      g.mescola ? el('span', { class: 'gomma ' + g.mescola, title: mescola(g.mescola) }) : null,
       g.box ? el('span', { stile: { color: 'var(--verde)' } }, g.box === 'in' ? 'IN' : 'OUT') : null)),
     el('span', { class: 'tp' }, g.t != null ? tempo(g.t) : '—')));
 }
@@ -358,14 +369,14 @@ function elencaGiri() {
   }
   E('boxGiri').hidden = false;
   E('avviso').hidden = true;
-  E('capGiri').replaceChildren(el('b', {}, A.sig), ' · i suoi giri — tocca per cambiare');
+  E('capGiri').replaceChildren(el('b', {}, A.sig), ' · ' + t('tele.suoi_giri'));
   E('strisce').replaceChildren(...striscia(A.sig, A.giro, 'on', (n) => impostaA(A.sig, n)));
 
   // LA SECONDA STRISCIA, che prima non c'era: la legenda prometteva «tocca un suo
   // giro qui sopra» per il pilota di confronto, e i suoi giri non erano in pagina.
   E('boxGiriB').hidden = !B;
   if (B) {
-    E('capGiriB').replaceChildren(el('b', {}, B.sig), ' · a confronto — tocca per cambiare');
+    E('capGiriB').replaceChildren(el('b', {}, B.sig), ' · ' + t('tele.a_confronto'));
     E('strisceB').replaceChildren(...striscia(B.sig, B.giro, 'rif', (n) => impostaB(B.sig, n)));
   }
 }
@@ -401,17 +412,17 @@ function disegna() {
     el('div', { class: 'lab' }, el('h4', {}, titolo),
       el('span', { class: 'val', id })), svg);
 
-  const svgV = traccia(serieV, { larg, h: 190, min: 0, titolo: 'Velocità',
+  const svgV = traccia(serieV, { larg, h: 190, min: 0, titolo: t('tele.velocita'),
     tacche: [0, 100, 200, 300], formato: v => v });
-  const svgG = traccia(serieG, { larg, h: 92, min: 0, max: 100, titolo: 'Acceleratore', tacche: [0, 100] });
-  const svgF = traccia(serieF, { larg, h: 62, min: 0, max: 100, titolo: 'Freno', tacche: [0, 100], passi: true });
-  const svgM = traccia(serieM, { larg, h: 84, min: 0, max: 8, titolo: 'Marcia', tacche: [2, 4, 6, 8], passi: true });
+  const svgG = traccia(serieG, { larg, h: 92, min: 0, max: 100, titolo: t('tele.acceleratore'), tacche: [0, 100] });
+  const svgF = traccia(serieF, { larg, h: 62, min: 0, max: 100, titolo: t('tele.freno'), tacche: [0, 100], passi: true });
+  const svgM = traccia(serieM, { larg, h: 84, min: 0, max: 8, titolo: t('tele.marcia'), tacche: [2, 4, 6, 8], passi: true });
 
   const figli = [
-    pan('Velocità · km/h', 'km/h', svgV, 'vV'),
-    pan('Acceleratore · %', '%', svgG, 'vG'),
-    pan('Freno', '', svgF, 'vF'),
-    pan('Marcia', '', svgM, 'vM'),
+    pan(t('tele.velocita') + ' · km/h', 'km/h', svgV, 'vV'),
+    pan(t('tele.acceleratore') + ' · %', '%', svgG, 'vG'),
+    pan(t('tele.freno'), '', svgF, 'vF'),
+    pan(t('tele.marcia'), '', svgM, 'vM'),
   ];
   // UN GIRO DI BOX NON E' UN GIRO DI PISTA. La griglia e' normalizzata sulla distanza
   // percorsa da QUEL giro: per un in-lap finisce all'ingresso box, per un out-lap
@@ -425,8 +436,8 @@ function disegna() {
     const d = differenza(cA.tr ? cA : cA, cB);   // A rispetto a B
     const dd = differenza(cA, cB);
     svgD = traccia([{ dati: dd, colore: '#fff', area: 'rgba(255,255,255,.06)' }],
-      { larg, h: 96, zero: true, titolo: 'Distacco', formato: v => (v > 0 ? '+' : '') + v.toFixed(1) });
-    figli.push(pan(`Distacco · ${A.sig} rispetto a ${B.sig}`, 's', svgD, 'vD'));
+      { larg, h: 96, zero: true, titolo: t('tele.distacco'), formato: v => (v > 0 ? '+' : '') + v.toFixed(1) });
+    figli.push(pan(t('tele.distacco_pan', { a: A.sig, b: B.sig }), 's', svgD, 'vD'));
   }
   E('pannelli').replaceChildren(...figli);
 
@@ -434,8 +445,8 @@ function disegna() {
   const mappa = (pista && !boxA) ? nastroVelocita(pista, cA.v) : null;
   E('mappaVel').replaceChildren(...veri(mappa,
     boxA ? el('p', { class: 'nota-box' },
-      `Il giro ${A.giro} passa dai box: non copre il giro di pista, quindi non si colora sul tracciato.`)
-    : !pista ? el('p', { class: 'nota-box' }, 'Tracciato non disponibile per questo GP.') : null));
+      t('tele.giro_box', { giro: A.giro }))
+    : !pista ? el('p', { class: 'nota-box' }, t('tele.pista_assente')) : null));
 
   const muovi = (ev) => {
     const f = frazioneDa(tutti[0], ev.clientX ?? ev.touches?.[0]?.clientX);
@@ -445,7 +456,8 @@ function disegna() {
     const set = (id, t) => { const n = E(id); if (n) n.replaceChildren(...t); };
     set('vV', [el('b', {}, Math.round(cA.v[i]) + ''), cB ? ` / ${Math.round(cB.v[i])}` : '']);
     set('vG', [el('b', {}, Math.round(cA.gas[i]) + '%'), cB ? ` / ${Math.round(cB.gas[i])}%` : '']);
-    set('vF', [el('b', {}, cA.freno[i] ? 'FRENO' : '—'), cB ? ` / ${cB.freno[i] ? 'FRENO' : '—'}` : '']);
+    const FR = t('tele.freno_sigla');
+    set('vF', [el('b', {}, cA.freno[i] ? FR : '—'), cB ? ` / ${cB.freno[i] ? FR : '—'}` : '']);
     set('vM', [el('b', {}, String(cA.marcia[i])), cB ? ` / ${cB.marcia[i]}` : '']);
     if (cB) set('vD', [el('b', {}, delta(cA.t[i] - cB.t[i], 2) + ' s')]);
   };
@@ -464,18 +476,16 @@ function legenda() {
     return el('div', { class: 'lg' },
       el('span', { class: 'sw', stile: { background: colore } }),
       el('b', {}, x.sig),
-      el('span', {}, `giro ${x.giro} · ${m.t != null ? tempo(m.t) : '—'}`));
+      el('span', {}, `${t('com.giro', { n: x.giro })} · ${m.t != null ? tempo(m.t) : '—'}`));
   };
   const nodi = [riga(A, coloreDi(indice.piloti[A.sig].team, colori))];
   if (B) nodi.push(riga(B, coloreDi(indice.piloti[B.sig].team, colori)));
   const sporco = !!A.meta?.box || !!B?.meta?.box;
   nodi.push(el('p', { stile: { margin: '4px 0 0', color: 'var(--fioco)', fontSize: '12.5px', lineHeight: 1.5 } },
-    sporco ? 'Uno dei due giri passa dai box: non è un giro di pista intero, quindi il distacco non si calcola.'
-    : B ? 'Per cambiare il secondo pilota: «Confronta con…» a sinistra, o ⇧+clic sul suo nome.'
-      : 'Premi «Confronta con…» a sinistra per mettere due giri a confronto.'));
+    t(sporco ? 'tele.nota_box' : B ? 'tele.nota_cambia_b' : 'tele.nota_confronta')));
   if (B) nodi.push(el('button', { class: 'btn btn-s', type: 'button',
     stile: { marginTop: '6px', width: '100%' },
-    onclick: () => { B = null; elencaGiri(); disegna(); } }, 'Togli il confronto'));
+    onclick: () => { B = null; elencaGiri(); disegna(); } }, t('tele.togli_confronto')));
   E('legenda').replaceChildren(...nodi);
 }
 
@@ -495,14 +505,14 @@ function cifre() {
   const gasPieno = tot > 0 ? pieno / tot * 100 : 0;
   E('boxCifre').hidden = false;
   E('cifre').replaceChildren(
-    el('div', { class: 'cf' }, el('small', {}, 'giro'), el('b', { class: 'n' }, m.t != null ? tempo(m.t) : '—')),
-    el('div', { class: 'cf' }, el('small', {}, 'punta'), el('b', { class: 'n' }, `${Math.round(Math.max(...c.v))}`)),
+    el('div', { class: 'cf' }, el('small', {}, t('tele.cf_giro')), el('b', { class: 'n' }, m.t != null ? tempo(m.t) : '—')),
+    el('div', { class: 'cf' }, el('small', {}, t('tele.cf_punta')), el('b', { class: 'n' }, `${Math.round(Math.max(...c.v))}`)),
     // «gas pieno (tempo)» e non «gas pieno»: qui e' pesato sul TEMPO, negli articoli
     // la stessa quantita' e' pesata sulla distanza. Due numeri diversi con lo stesso
     // nome, sullo stesso sito, sono una contraddizione anche quando sono entrambi giusti.
-    el('div', { class: 'cf' }, el('small', {}, 'gas pieno (tempo)'), el('b', { class: 'n' }, `${Math.round(gasPieno)}%`)),
-    el('div', { class: 'cf' }, el('small', {}, 'gomma'),
-      el('b', {}, m.mescola ? (MESCOLA_IT[m.mescola] || m.mescola.toLowerCase()) : '—')));
+    el('div', { class: 'cf' }, el('small', {}, t('tele.cf_gas_pieno')), el('b', { class: 'n' }, `${Math.round(gasPieno)}%`)),
+    el('div', { class: 'cf' }, el('small', {}, t('tele.cf_gomma')),
+      el('b', {}, m.mescola ? (mescola(m.mescola)) : '—')));
 }
 
 // SE CAMBIA LA LARGHEZZA, SI RI-DISEGNA. Le tracce ora sono in pixel veri: girare

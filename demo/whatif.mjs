@@ -33,23 +33,23 @@
 // se il Director respinge il run, se la gara non è simulabile: la pagina lo SCRIVE e non
 // mostra numeri. Non esiste un ripiego che inventi un valore plausibile.
 
-import { V, datiObbligatori } from './muro.mjs?v=090826b';
+import { V, datiObbligatori, t, tn, ITA, nnum, gpNome } from './muro.mjs?v=190826f';
 // `?v=080826b` è la stessa targhetta con cui ese_vista.mjs importa ese.mjs, e va tenuta
 // uguale: due specificatori diversi sono due istanze di modulo, e questo ne scaricherebbe
 // e ne parserebbe due volte l'intero kernel vendor.
 import { preparaGara, congelamentoPer, posizioniPerGiro } from './ese.mjs?v=080826b';
-import { eseguiRigioca } from './ese_vista.mjs?v=090826b';
+import { eseguiRigioca } from './ese_vista.mjs?v=190826f';
 // La costruzione del piano sta fuori di qui perché questo file non è importabile da Node
 // (muro.mjs tocca `window` al caricamento) e quella logica DEVE stare sotto banco:
 // demo/test_whatif.mjs. È il pezzo che ha sbagliato per primo.
-import { sosteEditabili, pianoWhatIf } from './whatif_piano.mjs?v=090826b';
+import { sosteEditabili, pianoWhatIf } from './whatif_piano.mjs?v=190826f';
 
 const $ = (s) => document.querySelector(s);
 
 const rifJson = async (u) => {
   const sep = u.includes('?') ? '&' : '?';
   const r = await fetch(`${u}${sep}v=${V}`);
-  if (!r.ok) throw new Error(`dato non raggiungibile: ${u}`);
+  if (!r.ok) throw new Error(t('muro.non_raggiungibile', { url: u }));
   return r.json();
 };
 
@@ -72,14 +72,14 @@ let seq = 0;                       // l'ultima richiesta vince: i cambi sono pi�
       .filter(([, ss]) => (ss ?? []).some((s) => s.sessione === 'gara'))
       .map(([nome]) => nome));
     const gare = (cal.gare ?? []).map((g) => g.nome).filter((n) => conGara.has(n));
-    if (!gare.length) throw new Error('nessuna gara con lap chart nel manifest');
+    if (!gare.length) throw new Error(t('wif.no_lapchart'));
 
-    $('#sel-gara').innerHTML = gare.map((g) => `<option value="${g}">${g} (${cal.stagione})</option>`).join('');
+    $('#sel-gara').innerHTML = gare.map((g) => `<option value="${g}">${gpNome(g)} (${cal.stagione})</option>`).join('');
     $('#sel-gara').addEventListener('change', (e) => cambiaGara(e.target.value));
     $('#sel-pilota').addEventListener('change', (e) => { stato.pilota = e.target.value; ancoraAllaSostaVera(); });
     $('#rng-giro').addEventListener('input', (e) => {
       stato.giroAlt = parseInt(e.target.value, 10);
-      $('#txt-giro-alt').textContent = `Giro ${stato.giroAlt}`;
+      $('#txt-giro-alt').textContent = t('com.giro', { n: stato.giroAlt });
       ricalcola();
     });
     document.querySelectorAll('#btn-mescole .pil').forEach((b) => {
@@ -93,7 +93,7 @@ let seq = 0;                       // l'ultima richiesta vince: i cambi sono pi�
 
     await cambiaGara(gare[gare.length - 1]);
   } catch (e) {
-    fermati(`la pagina non parte: ${e.message}`);
+    fermati(t('wif.non_parte', { motivo: e.message }));
   }
 })();
 
@@ -101,12 +101,12 @@ let seq = 0;                       // l'ultima richiesta vince: i cambi sono pi�
 async function cambiaGara(nome) {
   stato.gara = nome;
   $('#sel-gara').value = nome;
-  dillo('preparo la gara nel motore…');
+  dillo(t('wif.preparo'));
   try {
     if (!cache.has(nome)) cache.set(nome, await preparaGara(nome, { fetchJson: rifJson }));
     stato.prep = cache.get(nome);
   } catch (e) {
-    return fermati(`${nome} non è simulabile: ${e.message}`);
+    return fermati(t('wif.non_simulabile', { gp: gpNome(nome), motivo: e.message }));
   }
   const p = stato.prep;
   scriviTarghetta(p.contesto);      // per gara: è il contesto che il kernel riceve
@@ -134,10 +134,14 @@ function ancoraAllaSostaVera() {
   // la pagina mostrerebbe un delta diverso da zero senza che l'utente abbia scelto niente.
   if (vera?.mescola) impostaMescola(vera.mescola);
   rng.value = stato.giroAlt;
-  $('#txt-giro-alt').textContent = `Giro ${stato.giroAlt}`;
-  $('#kpi-pit-reale').textContent = soste.length 
-    ? `${soste.length} sosta/e (g.${soste.map((s) => `${s.giro} ${s.mescola}`).join(', g.')})`
-    : '— nessuna';
+  $('#txt-giro-alt').textContent = t('com.giro', { n: stato.giroAlt });
+  // «g.17, g.39» in italiano, «l.17, l.39» in inglese: la sigla del giro sta nel
+  // dizionario, e la lista si costruisce con quella — non con un prefisso incollato.
+  const gs = t('wif.g_sigla');
+  $('#kpi-pit-reale').textContent = soste.length
+    ? tn('wif.soste_1', 'wif.soste_n', soste.length,
+         { lista: soste.map((s) => `${gs}${s.giro} ${s.mescola}`).join(', ') })
+    : t('wif.nessuna_sosta');
   ricalcola();
 }
 
@@ -160,13 +164,13 @@ async function ricalcola() {
   // non ce n'era» per «sposto la sosta», che è un'altra domanda con un'altra risposta.
   const soste = sosteEditabili(p.sosteVere[stato.pilota]);
   if (!soste.length) {
-    const t = p.tipoArrivo?.[stato.pilota];
-    const perche = t === 'RIT' ? ' — si è ritirato' : t === 'NP' ? ' — non è partito' : '';
+    const tipo = p.tipoArrivo?.[stato.pilota];
+    const perche = tipo === 'RIT' ? t('wif.ritirato') : tipo === 'NP' ? t('wif.non_partito') : '';
     $('#kpi-pit-sim').textContent = '—';
-    return fermati(`${stato.pilota} non si è mai fermato in questa gara${perche}: non c'è una sosta da spostare`);
+    return fermati(t('wif.mai_fermato', { chi: stato.pilota, perche }));
   }
-  $('#kpi-pit-sim').textContent = `Giro ${stato.giroAlt}`;
-  dillo('il motore sta rigiocando la gara…');
+  $('#kpi-pit-sim').textContent = t('com.giro', { n: stato.giroAlt });
+  dillo(t('wif.rigioca'));
 
   // IL CONGELAMENTO. Non lo sceglie questa pagina: lo sceglie ese.mjs, col criterio già
   // usato dal BOX ORA — il più tardi possibile prima della sosta, purché il pilota abbia
@@ -175,7 +179,7 @@ async function ricalcola() {
     nome: p.nome, contesto: p.contesto, pilota: stato.pilota, giroSosta: stato.giroAlt,
   });
   if (mio_seq !== seq) return;
-  if (freezeLap == null) return fermati(`niente da simulare: ${motivo}`);
+  if (freezeLap == null) return fermati(t('wif.niente_da_simulare', { motivo }));
 
   let esito;
   try {
@@ -184,7 +188,7 @@ async function ricalcola() {
       soste: pianoWhatIf(p.sosteVere[stato.pilota], freezeLap, stato.giroAlt, stato.mescola),
     });
   } catch (e) {
-    return fermati(`il motore rifiuta questo scenario: ${e.message}`);
+    return fermati(t('wif.motore_rifiuta', { motivo: e.message }));
   }
   if (mio_seq !== seq) return;
   rendi(esito, freezeLap);
@@ -198,31 +202,30 @@ function rendi({ mio, vero }, freezeLap) {
   // UN RIFIUTO È UNA RISPOSTA: si mostra al posto dei numeri, non accanto.
   if (!direttore.approved) {
     const fatal = (direttore.violazioni ?? []).filter((v) => v.severita === 'FATAL');
-    $('#riga-director').innerHTML = '<span class="no">■ il Simulation Director RESPINGE questo run:</span> '
+    $('#riga-director').innerHTML = `<span class="no">■ ${t('sim.respinge')}</span> `
       + fatal.map((v) => v.messaggio ?? v.codice).join(' · ');
     svuota();
     return;
   }
   const sosp = (direttore.violazioni ?? []).filter((v) => v.severita === 'SOSPETTO').length;
-  $('#riga-director').innerHTML = '<span class="ok">■ Simulation Director: approvato</span>'
-    + (sosp ? ` · ${sosp} sospetti (non bloccanti)` : '')
-    + ` · congelamento al giro ${freezeLap}`;
+  $('#riga-director').innerHTML = `<span class="ok">■ ${t('sim.approvato')}</span>`
+    + (sosp ? ` · ${t('sim.sospetti', { n: sosp })}` : '')
+    + ` · ${t('sim.congelamento', { giro: freezeLap })}`;
 
   const posDi = (run) => { const i = run?.risultato?.ordine?.indexOf(drv) ?? -1; return i < 0 ? null : i + 1; };
   const pReale = p.arrivoReale.find((r) => r.drv === drv)?.posizione ?? null;
   const pVera = posDi(vero);
   const pMia = posDi(mio);
   $('#verdetto').innerHTML = `
-    <div class="kpi-box"><div class="tit">gara reale</div>
+    <div class="kpi-box"><div class="tit">${t('sim.gara_reale')}</div>
       <div class="val">${pReale == null ? '—' : 'P' + pReale}</div>
-      <span class="sub">dal lap chart, senza penalità post-gara</span></div>
-    <div class="kpi-box"><div class="tit">strategia vera · nel motore</div>
+      <span class="sub">${t('sim.dal_lapchart')}</span></div>
+    <div class="kpi-box"><div class="tit">${t('sim.strategia_vera')}</div>
       <div class="val">${pVera == null ? '—' : 'P' + pVera}</div>
-      <span class="sub">${vero ? 'stesso motore, stesse assunzioni: è il metro giusto'
-                               : 'non simulabile (gomme non-slick o soste illeggibili) — dichiarato'}</span></div>
-    <div class="kpi-box"><div class="tit">con la tua sosta</div>
+      <span class="sub">${t(vero ? 'sim.metro_giusto' : 'sim.non_simulabile')}</span></div>
+    <div class="kpi-box"><div class="tit">${t('wif.con_la_tua')}</div>
       <div class="val">${pMia == null ? '—' : 'P' + pMia}</div>
-      <span class="sub">sosta spostata al giro ${stato.giroAlt}, mescola ${stato.mescola}</span></div>`;
+      <span class="sub">${t('wif.sosta_spostata', { giro: stato.giroAlt, m: stato.mescola })}</span></div>`;
 
   // POSIZIONE AL RIENTRO: dal run What-If, contro i rivali DELLO STESSO RUN. Confrontare
   // un cumulato simulato coi cumulati reali degli altri — come faceva la prima versione —
@@ -236,7 +239,7 @@ function rendi({ mio, vero }, freezeLap) {
   const cumMio = risultato.cum?.[drv], cumVero = vero?.risultato?.cum?.[drv];
   if (typeof cumMio === 'number' && typeof cumVero === 'number') {
     const d = cumMio - cumVero;
-    elD.textContent = `${d > 0 ? '+' : ''}${d.toFixed(2)} s`;
+    elD.textContent = `${d > 0 ? '+' : ''}${nnum(d, 2)} s`;
     elD.className = `val ${d < -0.05 ? 'pos' : (d > 0.05 ? 'neg' : '')}`;
     
     // Spiegazione telemetrica ingegneristica per il pilota
@@ -246,18 +249,19 @@ function rendi({ mio, vero }, freezeLap) {
     if (primaSosta && Math.abs(stato.giroAlt - primaSosta) >= 1) {
       const diffGiri = stato.giroAlt - primaSosta;
       if (diffGiri < 0) {
-        diagTxt = `Sosta anticipata di ${Math.abs(diffGiri)} giri rispetto alla strategia reale (g.${primaSosta}). Stint finale più lungo di ${Math.abs(diffGiri)} giri.`;
+        diagTxt = t('wif.anticipata', { n: Math.abs(diffGiri), sosta: primaSosta });
       } else {
-        diagTxt = `Sosta posticipata di ${diffGiri} giri rispetto alla strategia reale (g.${primaSosta}). Stint 1 esteso su gomma più usurata.`;
+        diagTxt = t('wif.posticipata', { n: diffGiri, sosta: primaSosta });
       }
     }
     const neutraGiro = (p.neutraVera?.[stato.giroAlt] || p.neutraVera?.[stato.giroAlt - 1]);
     if (neutraGiro) {
-      diagTxt += (diagTxt ? ' · ' : '') + '⚠️ Sosta simulata in regime di Safety Car / VSC reale';
+      diagTxt += (diagTxt ? ' · ' : '') + t('wif.sotto_sc');
     }
     const subDelta = document.querySelector('#kpi-delta-tempo + .sub') || document.createElement('span');
     subDelta.className = 'sub';
-    subDelta.innerHTML = `What-If meno strategia vera, stesso motore${diagTxt ? `<br><small style="color:var(--ciano)">${diagTxt}</small>` : ''}`;
+    subDelta.innerHTML = t('wif.sub_delta')
+      + (diagTxt ? `<br><small style="color:var(--ciano)">${diagTxt}</small>` : '');
   } else {
     elD.textContent = '—';
     elD.className = 'val';
@@ -272,15 +276,22 @@ function rendiAssunzioni(scenario, direttore) {
   ul.replaceChildren();
   const agg = (html) => { const li = document.createElement('li'); li.innerHTML = html; ul.appendChild(li); };
   if (scenario.orizzonte) {
-    agg(`<b>ORIZZONTE</b> — proiezione fino al giro ${scenario.orizzonte.giroFinale}: decine di giri `
-      + 'contro i ~6 validati della risposta. <small>misurato: sulla gara intera il motore e '
-      + '«non cambia niente» sono indistinguibili</small>');
+    agg(t('sim.orizzonte', { giro: scenario.orizzonte.giroFinale }));
+  }
+  // LE ASSUNZIONI ARRIVANO DAL KERNEL, E RESTANO IN ITALIANO: le scrive
+  // simulatore/scenario/costruttore.mjs, che e' congelato, e le scrive come DATO —
+  // frasi con dentro i numeri di QUESTA gara. Riscriverle qui in inglese vorrebbe dire
+  // ricostruirle senza avere quei numeri, cioe' inventare una dichiarazione al posto di
+  // quella vera, su una pagina che era gia' stata spenta una volta per numeri fabbricati.
+  // Si dichiara invece che sono in italiano: una riga, e solo fuori dall'italiano.
+  if (!ITA && (scenario.assunzioni?.length || direttore.riepilogo?.non_verificabili?.length)) {
+    agg(`<small>${t('sim.avviso_kernel')}</small>`);
   }
   for (const a of scenario.assunzioni ?? []) {
     agg(`<b>${a.codice}</b> — ${a.descrizione} <small>· ${a.targhetta ?? ''}</small>`);
   }
   for (const n of direttore.riepilogo?.non_verificabili ?? []) {
-    agg(`<b>NON VERIFICATO</b> — <small>${n}</small>`);
+    agg(`<b>${t('sim.non_verificato')}</b> — <small>${n}</small>`);
   }
 }
 
@@ -300,16 +311,15 @@ function scriviTarghetta(c) {
   const rho = c.modello?.rho ?? {}, vita = c.vitaMescola ?? {}, sog = c.sogliaSorpasso ?? {};
   const ic = (a) => Array.isArray(a) ? `[${a[0].toFixed(4)}; ${a[1].toFixed(4)}]` : '—';
   const giri = vita.giri ? Object.entries(vita.giri).map(([m, g]) => `${m} ${g}`).join(' · ') : '—';
-  $('#box-targhetta').innerHTML = '<b>Da dove vengono i numeri</b><br>'
-    + `• Degrado: <b>${rho.valore ?? '—'}</b> s/giro · IC95 ${ic(rho.ic95)}<br>`
+  const spenta = t('wif.spenta');
+  $('#box-targhetta').innerHTML = `<b>${t('wif.da_dove')}</b><br>`
+    + `• ${t('wif.tg_degrado')}: <b>${rho.valore ?? '—'}</b> ${t('com.s_giro')} · IC95 ${ic(rho.ic95)}<br>`
     + `<small>&nbsp;&nbsp;${rho.targhetta ?? ''}</small><br>`
-    + `• Carburante δ₇₀: <b>${c.modello?.delta_70?.scelto ?? '—'}</b> s su 70 kg<br>`
-    + `• Vita mescola: <b>${vita.attivo ? giri : 'spenta'}</b> giri<br>`
-    + `• Soglia di sorpasso: <b>${sog.attivo ? `${sog.soglia_comune} s/giro` : 'spenta'}</b><br>`
-    + `• Orizzonte validato: <b>${c.orizzonteRisposta?.giri ?? '—'}</b> giri<br>`
-    + '<small>sigillo: vendor/simulatore/motore/contesto_live.json — è il contesto che il '
-    + 'kernel ha ricevuto per QUESTA gara. Pit-loss, neutralizzazioni e ritiri li applica il '
-    + 'motore e li dichiara qui sotto, nelle assunzioni.</small>';
+    + `• ${t('wif.tg_carburante')}: <b>${c.modello?.delta_70?.scelto ?? '—'}</b> ${t('wif.tg_su_70')}<br>`
+    + `• ${t('wif.tg_vita')}: <b>${vita.attivo ? giri : spenta}</b> ${t('wif.tg_giri')}<br>`
+    + `• ${t('wif.tg_soglia')}: <b>${sog.attivo ? `${sog.soglia_comune} ${t('com.s_giro')}` : spenta}</b><br>`
+    + `• ${t('wif.tg_orizzonte')}: <b>${c.orizzonteRisposta?.giri ?? '—'}</b> ${t('wif.tg_giri')}<br>`
+    + `<small>${t('wif.tg_sigillo')}</small>`;
 }
 
 /* ─────────────────────────────────────────────────────── il grafico */
@@ -322,7 +332,7 @@ function disegna(mio, vero, drv) {
   if (!tm.length || !tv.length) {
     svg.innerHTML = '<text x="400" y="190" fill="var(--fioco)" text-anchor="middle" '
       + 'font-family="\'JetBrains Mono\',monospace" font-size="13">'
-      + 'senza il braccio «strategia vera» non c\'è un distacco da disegnare</text>';
+      + t('wif.no_braccio') + '</text>';
     return;
   }
   const perGiro = new Map(tv.filter((x) => typeof x.cum_time === 'number').map((x) => [x.lap, x.cum_time]));
@@ -339,7 +349,7 @@ function disegna(mio, vero, drv) {
   const X = (l) => padL + (l1 === l0 ? 0 : (l - l0) / (l1 - l0)) * iW;
   const Y = (d) => padT + iH - ((d - d0) / (d1 - d0)) * iH;
   const ns = 'http://www.w3.org/2000/svg';
-  const nodo = (t, a) => { const n = document.createElementNS(ns, t); for (const k in a) n.setAttribute(k, a[k]); return n; };
+  const nodo = (tag, a) => { const n = document.createElementNS(ns, tag); for (const k in a) n.setAttribute(k, a[k]); return n; };
   const testo = (x, y, s, col, anc = 'middle', sz = 10) => {
     const n = nodo('text', { x, y, fill: col, 'text-anchor': anc, 'font-family': "'JetBrains Mono',monospace", 'font-size': sz });
     n.textContent = s; return n;
@@ -348,22 +358,22 @@ function disegna(mio, vero, drv) {
   const passo = Math.max(0.5, Math.round((d1 - d0) / 5 * 2) / 2);
   for (let d = Math.ceil(d0 / passo) * passo; d <= d1; d += passo) {
     svg.appendChild(nodo('line', { x1: padL, y1: Y(d), x2: W - padR, y2: Y(d), stroke: 'var(--bordo)', 'stroke-width': 1, 'stroke-dasharray': '3 3' }));
-    svg.appendChild(testo(padL - 8, Y(d) + 4, `${d > 0 ? '+' : ''}${d.toFixed(1)}s`, 'var(--fioco)', 'end'));
+    svg.appendChild(testo(padL - 8, Y(d) + 4, `${d > 0 ? '+' : ''}${nnum(d, 1)}s`, 'var(--fioco)', 'end'));
   }
   svg.appendChild(nodo('line', { x1: padL, y1: Y(0), x2: W - padR, y2: Y(0), stroke: 'var(--calmo)', 'stroke-width': 1.5 }));
-  svg.appendChild(testo(W - padR, Y(0) - 6, 'strategia vera, stesso motore (0,0 s)', 'var(--calmo)', 'end'));
+  svg.appendChild(testo(W - padR, Y(0) - 6, t('wif.linea_zero', { z: nnum(0, 1) }), 'var(--calmo)', 'end'));
 
   if (stato.giroAlt >= l0 && stato.giroAlt <= l1) {
     svg.appendChild(nodo('line', { x1: X(stato.giroAlt), y1: padT, x2: X(stato.giroAlt), y2: H - padB, stroke: '#00E5FF', 'stroke-width': 2 }));
-    svg.appendChild(testo(X(stato.giroAlt), H - padB + 20, `sosta What-If (g.${stato.giroAlt})`, '#00E5FF'));
+    svg.appendChild(testo(X(stato.giroAlt), H - padB + 20, t('wif.sosta_wif_g', { giro: stato.giroAlt }), '#00E5FF'));
   }
   svg.appendChild(nodo('polyline', {
     points: punti.map((p) => `${X(p.lap)},${Y(p.d)}`).join(' '),
     fill: 'none', stroke: '#00E5FF', 'stroke-width': 2.5,
   }));
-  svg.appendChild(testo(padL, H - 10, `giro ${l0}`, 'var(--fioco)', 'start'));
-  svg.appendChild(testo(W - padR, H - 10, `giro ${l1}`, 'var(--fioco)', 'end'));
-  svg.appendChild(testo(padL, padT - 10, 'sopra la linea = la tua sosta perde tempo', 'var(--fioco)', 'start'));
+  svg.appendChild(testo(padL, H - 10, t('com.giro', { n: l0 }), 'var(--fioco)', 'start'));
+  svg.appendChild(testo(W - padR, H - 10, t('com.giro', { n: l1 }), 'var(--fioco)', 'end'));
+  svg.appendChild(testo(padL, padT - 10, t('wif.sopra_linea'), 'var(--fioco)', 'start'));
 }
 
 /* ─────────────────────────────────────────────────────── i silenzi */
