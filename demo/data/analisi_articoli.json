@@ -19,7 +19,12 @@
     "accent": "#FF8000",
     "gp": "Ungheria",
     "round": 11,
-    "pagina": true
+    "pagina": true,
+    "en": {
+      "titolo": "Twelve thousandths, and almost all of them come from a hundred and eighty metres",
+      "occhiello": "Hungaroring · the weekend · round 11",
+      "sommario": "The tightest pole of the season is not settled on any single stretch, the minisectors say. Look instead at where the clock runs faster, and it is settled: in one corner, with the rest of the lap handing back nearly all of it."
+    }
   },
   {
     "id": "passo-reale-ungheria-2026",
@@ -40,7 +45,12 @@
     "accent": "#FF8000",
     "gp": "Ungheria",
     "round": 11,
-    "pagina": true
+    "pagina": true,
+    "en": {
+      "titolo": "Norris's real pace is not the one the clock shows: it is seven tenths lower",
+      "occhiello": "Hungaroring · race · seventy laps, and which ones count",
+      "sommario": "Out of seventy laps, the ones that really describe a car's speed are far fewer. Once the laps spoiled by traffic and by the neutralisations are taken out, the Hungarian race tells of a tighter order than the one the classification shows."
+    }
   },
   {
     "id": "hun-quali-h2h-2026",
@@ -62,7 +72,12 @@
     "accent": "#27F4D2",
     "gp": "Ungheria",
     "round": 11,
-    "pagina": true
+    "pagina": true,
+    "en": {
+      "titolo": "Antonelli beats Russell by 281 thousandths. On the grid he starts behind him",
+      "occhiello": "Hungaroring · qualifying · the intra-team duel",
+      "sommario": "The team-mate comparison is the only one that cancels out the car: same machine, different hands. At the Hungaroring the stopwatch rewards two drivers who then, on the grid, find themselves behind the ones they had beaten."
+    }
   },
   {
     "id": "dna-circuiti-2026",
@@ -82,7 +97,12 @@
     "accent": "var(--sc)",
     "gp": null,
     "round": null,
-    "pagina": true
+    "pagina": true,
+    "en": {
+      "titolo": "At Budapest you're at full throttle for half the lap. And you go faster than at Silverstone",
+      "occhiello": "Ten 2026 circuits · how much of the lap is spent at full throttle",
+      "sommario": "A single figure tells you how much a track asks of the engine and how much it asks of the wing. Across ten circuits it runs from seventy-two per cent to a little under half the lap, and somewhere in the middle there is a pair of numbers that looks wrong."
+    }
   },
   {
     "id": "assetto-punta-curva-2026",
@@ -102,7 +122,12 @@
     "accent": "#E8002D",
     "gp": null,
     "round": null,
-    "pagina": true
+    "pagina": true,
+    "en": {
+      "titolo": "McLaren is the strongest car in the corners and fourth from last on the straights",
+      "occhiello": "Ten 2026 races · top speed against cornering speed",
+      "sommario": "Look at the standings and you see who is quick. Cross-referencing top speed with cornering speed across ten races shows something different: where each team has decided to be slow."
+    }
   },
   {
     "id": "hun-web-canale-a-2026",
@@ -126,7 +151,12 @@
     "accent": "#E8002D",
     "gp": "Ungheria",
     "round": 11,
-    "pagina": true
+    "pagina": true,
+    "en": {
+      "titolo": "«Ferrari dominate» is true. On race pace, two others are ahead",
+      "occhiello": "Hungaroring · Friday practice · what the headlines don't say",
+      "sommario": "Friday has one headline, and the numbers back it to the thousandth. But there are two orders of merit, not one, and nobody has written the second."
+    }
   },
   {
     "id": "hun-rapporti-punta-2026",
@@ -148,7 +178,12 @@
     "accent": "#FF8000",
     "gp": "Ungheria",
     "round": 11,
-    "pagina": true
+    "pagina": true,
+    "en": {
+      "titolo": "McLaren has the shortest gearing on the grid. That is not why it is slow on the straight",
+      "occhiello": "Hungaroring · free practice · the seventh-gear ratio",
+      "sommario": "The convenient explanation exists, it is elegant and any enthusiast can make it: short gearing, low top speed. Across twenty-one cars it does not hold, and the interesting part is how much it does not hold."
+    }
   },
   {
     "id": "trazione-loop-gb-2026",
@@ -168,7 +203,12 @@
     "accent": "#2B478F",
     "gp": "Gran Bretagna",
     "round": 9,
-    "pagina": true
+    "pagina": true,
+    "en": {
+      "titolo": "At Silverstone's slowest corner Verstappen gets back on the throttle eight metres before Hadjar",
+      "occhiello": "Silverstone · qualifying · Turn 4",
+      "sommario": "In slow corners, opening the throttle earlier makes you accelerate less, because the tyres spin. Whoever manages to do it genuinely earlier has found the limit, and at Red Bull that limit is eight metres apart."
+    }
   },
   {
     "id": "rapporti-mclaren-mercedes-gb-2026",
@@ -189,7 +229,12 @@
     "accent": "#FF8000",
     "gp": "Gran Bretagna",
     "round": 9,
-    "pagina": true
+    "pagina": true,
+    "en": {
+      "titolo": "McLaren and Mercedes have the same engine. On the straight there are six km/h between them",
+      "occhiello": "Silverstone · qualifying · the same engine, two opposite gearboxes",
+      "sommario": "Of all the quantities you can pull out of a qualifying session, there is one nobody can argue with, because it depends neither on traffic nor on how the lap came together. It says that two teams with the same power unit have solved the same problem in opposite ways."
+    }
   },
   {
     "id": "lift-mercedes-gb-2026",
@@ -209,7 +254,12 @@
     "accent": "#27F4D2",
     "gp": "Gran Bretagna",
     "round": 9,
-    "pagina": true
+    "pagina": true,
+    "en": {
+      "titolo": "Both Mercedes lift before the line. The other twenty don't",
+      "occhiello": "Silverstone · qualifying · the final stretch of the straight",
+      "sommario": "At Silverstone's finish line there are two ways to cross it, and only two drivers use one of them. What it costs can be calculated, and the answer explains why neither of them stops doing it."
+    }
   },
   {
     "id": "frenata-village-gb-2026",
@@ -229,7 +279,12 @@
     "accent": "#E8002D",
     "gp": "Gran Bretagna",
     "round": 9,
-    "pagina": true
+    "pagina": true,
+    "en": {
+      "titolo": "One hundred metres: nobody brakes later than Hamilton at Village",
+      "occhiello": "Silverstone · qualifying · turn 3",
+      "sommario": "Village is the hardest braking point of the lap, and there is one driver who goes deeper into it than all the other twenty-one. It is not a tenth you see on the stopwatch: it is margin taken away."
+    }
   },
   {
     "id": "compagni-marce-stowe-gb-2026",
@@ -249,6 +304,11 @@
     "accent": "#E8002D",
     "gp": "Gran Bretagna",
     "round": 9,
-    "pagina": true
+    "pagina": true,
+    "en": {
+      "titolo": "At Stowe one Ferrari changes down, the other doesn't. And the one that does goes through slower",
+      "occhiello": "Silverstone · qualifying · turn 15",
+      "sommario": "In the fastest corner of the lap the two Ferraris do something different, and they do it again every time. Across the grid, disagreements like this between team-mates number thirteen in all."
+    }
   }
 ]

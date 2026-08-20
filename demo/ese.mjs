@@ -32,8 +32,8 @@
 // Revocare la deroga = togliere ese.mjs dall'elenco escluso in s25_difesa.mjs.
 
 import { garaDaLive, contestoDa, nomeSimulatore } from './ponte_live.mjs?v=070826a';
-import { t } from './muro.mjs?v=190826b';
-import { ordineArrivo } from './classifica.mjs?v=190826b';
+import { t } from './muro.mjs?v=190826f';
+import { ordineArrivo } from './classifica.mjs?v=190826f';
 import { sostaFra } from './sosta.mjs?v=130826a';
 import { costruisciScenario, eseguiEValida } from './vendor/simulatore/motore/scenario/costruttore.mjs';
 import { regimePerGiroDiCampo } from './vendor/simulatore/motore/provenienza/definizioni.mjs';

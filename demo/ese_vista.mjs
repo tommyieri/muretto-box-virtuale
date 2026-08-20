@@ -7,7 +7,7 @@
 // unico); se qui comparisse un numero calcolato, sarebbe la seconda fisica.
 
 import { rigioca, posizioniPerGiro, MESCOLE_EDITOR } from './ese.mjs?v=080826b';
-import { t, tn, nnum, mescola, ITA } from './muro.mjs?v=190826b';
+import { t, tn, nnum, mescola, ITA } from './muro.mjs?v=190826f';
 
 export { MESCOLE_EDITOR };
 

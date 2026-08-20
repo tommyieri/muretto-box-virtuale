@@ -66,6 +66,12 @@ def _card(art, pagina=True):
         # card punta ad articolo.html?id=, che rende dal JSON e non da' 404. Assente =
         # true (le card scritte prima di questo campo hanno tutte la loro pagina).
         "pagina": bool(pagina),
+        # LA TRADUZIONE VIAGGIA COL MANIFEST, non solo dentro la pagina-articolo.
+        # index.html costruisce le sue tre «letture» da qui, e senza queste tre righe
+        # la home inglese mostrerebbe titoli italiani che portano a un articolo
+        # inglese: la traduzione ci sarebbe e non la vedrebbe nessuno.
+        **({"en": {k: art["en"][k] for k in ("titolo", "occhiello", "sommario")
+                   if art["en"].get(k)}} if art.get("en", {}).get("titolo") else {}),
     }
 
 
@@ -149,6 +155,38 @@ def _ritira_statico(id_):
         return False
 
 
+def _traduci(art):
+    """L'inglese dell'articolo, prima che la pagina si renda.
+
+    QUI, E NON ALTROVE. L'ordine di _scrivi_demo e' pagina -> manifest -> indici, e
+    tutt'e tre leggono `art`: se la traduzione arrivasse dopo, la pagina nascerebbe
+    italiana e il manifest la registrerebbe cosi'. Rifarla al giro successivo non e'
+    una consolazione — nessuno lancia un secondo giro.
+
+    NON PUO' FAR CADERE UNA PUBBLICAZIONE. Un articolo tradotto e' meglio di un
+    articolo non tradotto; un articolo non pubblicato e' peggio di tutti e due. Se il
+    modello non c'e', se la rete cade, se la guardia sui numeri boccia la traduzione,
+    si scrive perche' e si va avanti: la pagina esce in italiano e lo dichiara, che e'
+    esattamente lo stato in cui il sito viveva ieri. Il silenzio no: quello e' il
+    difetto per cui da luglio a oggi nessuno dei 18 articoli portava il campo
+    `scrittura` e non c'era una riga di log che lo dicesse."""
+    if _QUI not in sys.path:
+        sys.path.insert(0, _QUI)
+    try:
+        import traduci
+        percorso = os.path.join(ANALISI_DIR, art["id"] + ".json")
+        esito = traduci.traduci_file(percorso)
+        if esito == "fatto":
+            art["en"] = json.load(open(percorso, encoding="utf-8")).get("en")
+        elif esito == "gia-tradotto":
+            art["en"] = json.load(open(percorso, encoding="utf-8")).get("en")
+        else:
+            print(f"[coda] traduzione non applicata a {art['id']}: {esito}", file=sys.stderr)
+    except Exception as e:
+        print(f"[coda] traduzione non applicata a {art['id']}: {type(e).__name__}: {e}",
+              file=sys.stderr)
+
+
 def _scrivi_demo(art):
     """Copia l'articolo (col suo stato) in demo/data/analisi/, rende la pagina,
     aggiorna l'indice con l'esito della resa, e solo allora rigenera gli indici.
@@ -158,6 +196,7 @@ def _scrivi_demo(art):
     os.makedirs(ANALISI_DIR, exist_ok=True)
     json.dump(art, open(os.path.join(ANALISI_DIR, art["id"] + ".json"), "w"),
               ensure_ascii=False, indent=2)
+    _traduci(art)
     pagina = _pre_render(art)
     _upsert_manifest(_card(art, pagina=pagina))
     _rigenera_indici(art.get("id"), pagina=pagina)

@@ -8,7 +8,7 @@
 // Non si mostrano targhette, perimetri, orizzonti di validazione, coperture, elenchi di
 // assunzioni: sono referti interni. Il DATO li conserva tutti — sparisce la resa.
 
-import { el, nnum, mescola, t, tn } from './muro.mjs?v=190826b';
+import { el, nnum, mescola, t, tn } from './muro.mjs?v=190826f';
 
 const ORD = ['SOFT', 'MEDIUM', 'HARD'];
 

@@ -33,16 +33,16 @@
 // se il Director respinge il run, se la gara non è simulabile: la pagina lo SCRIVE e non
 // mostra numeri. Non esiste un ripiego che inventi un valore plausibile.
 
-import { V, datiObbligatori, t, tn, ITA, nnum, gpNome } from './muro.mjs?v=190826b';
+import { V, datiObbligatori, t, tn, ITA, nnum, gpNome } from './muro.mjs?v=190826f';
 // `?v=080826b` è la stessa targhetta con cui ese_vista.mjs importa ese.mjs, e va tenuta
 // uguale: due specificatori diversi sono due istanze di modulo, e questo ne scaricherebbe
 // e ne parserebbe due volte l'intero kernel vendor.
 import { preparaGara, congelamentoPer, posizioniPerGiro } from './ese.mjs?v=080826b';
-import { eseguiRigioca } from './ese_vista.mjs?v=190826b';
+import { eseguiRigioca } from './ese_vista.mjs?v=190826f';
 // La costruzione del piano sta fuori di qui perché questo file non è importabile da Node
 // (muro.mjs tocca `window` al caricamento) e quella logica DEVE stare sotto banco:
 // demo/test_whatif.mjs. È il pezzo che ha sbagliato per primo.
-import { sosteEditabili, pianoWhatIf } from './whatif_piano.mjs?v=190826b';
+import { sosteEditabili, pianoWhatIf } from './whatif_piano.mjs?v=190826f';
 
 const $ = (s) => document.querySelector(s);
 

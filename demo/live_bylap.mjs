@@ -71,7 +71,7 @@ function mediana(v) {
 }
 
 // "1:50.651" / "50.651" -> secondi. Il feed usa entrambe le forme.
-import { t } from './muro.mjs?v=190826b';
+import { t } from './muro.mjs?v=190826f';
 
 export function tempoInSecondi(v) {
   if (typeof v === 'number') return v;

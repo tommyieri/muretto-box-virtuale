@@ -289,6 +289,7 @@ export const D = {
   'analisi.tutte_gare':   ['All races', 'Tutte le gare'],
   'analisi.tutti_temi':   ['All topics', 'Tutti i temi'],
   'analisi.n_visti':      ['{n} articles shown', '{n} articoli visualizzati'],
+  'analisi.leggi':        ['Read →', 'Leggi →'],
 
   /* ============================================== i nomi dei Gran Premi
      La chiave e' il nome ITALIANO perche' e' quello che l'artefatto porta scritto —
@@ -899,5 +900,43 @@ export const D = {
 
   // «22g» = ventidue giri di gomma. Una lettera sola, ma e' l'iniziale di una parola.
   'com.g_sigla':        ['l', 'g'],
+
+  /* ======================================= le parole degli ARTICOLI (tassonomia)
+     Sessioni e temi degli articoli: sono un insieme CHIUSO e piccolo, e li legge
+     anche Python (ai_lab/redazione/statico.py::voci_dizionario) per pre-renderizzare
+     le card e le pillole. Due lettori dello stesso file, uno per lingua: la
+     sentinella controlla che vedano lo stesso numero di voci, altrimenti un cambio
+     di forma qui dentro spaccherebbe uno dei due in silenzio.
+     Un valore senza riga qui resta com'e' scritto nel dato — leggibile, e visibile
+     a chi guarda. I nomi propri (Ferrari, McLaren, Hungaroring, Ungheria) non hanno
+     riga apposta: sono gia' gli stessi in tutte le lingue. */
+  'art.sess.FP2':            ['FP2', 'FP2'],
+  'art.sess.Qualifiche':     ['Qualifying', 'Qualifiche'],
+  'art.sess.Gara':           ['Race', 'Gara'],
+  'art.sess.Weekend':        ['Weekend', 'Weekend'],
+
+  'art.tag.telemetria':      ['telemetry', 'telemetria'],
+  'art.tag.passo gara':      ['race pace', 'passo gara'],
+  'art.tag.passo-gara':      ['race-pace', 'passo-gara'],
+  'art.tag.giro secco':      ['one-lap pace', 'giro secco'],
+  'art.tag.velocità di punta': ['top speed', 'velocità di punta'],
+  'art.tag.prove libere':    ['practice', 'prove libere'],
+  'art.tag.qualifiche':      ['qualifying', 'qualifiche'],
+  'art.tag.gara':            ['race', 'gara'],
+  'art.tag.compagni':        ['team-mates', 'compagni'],
+  'art.tag.circuiti':        ['circuits', 'circuiti'],
+  'art.tag.assetto':         ['set-up', 'assetto'],
+  'art.tag.multi-gara':      ['multi-race', 'multi-gara'],
+  'art.tag.weekend':         ['weekend', 'weekend'],
+  'art.tag.cambio':          ['gearbox', 'cambio'],
+  'art.tag.trazione':        ['traction', 'trazione'],
+  'art.tag.frenata':         ['braking', 'frenata'],
+  'art.tag.ibrido':          ['hybrid', 'ibrido'],
+  'art.tag.aerodinamica':    ['aerodynamics', 'aerodinamica'],
+  'art.tag.guida':           ['driving', 'guida'],
+  'art.tag.long-run':        ['long-run', 'long-run'],
+  'art.tag.tutto-il-gruppo': ['whole-field', 'tutto-il-gruppo'],
+  'art.tag.recap':           ['recap', 'recap'],
+  'art.tag.H2H':             ['H2H', 'H2H'],
 
 };

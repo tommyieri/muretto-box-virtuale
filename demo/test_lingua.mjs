@@ -25,10 +25,12 @@
 // le due colonne ci sono e che nessuno le contraddice; se l'italiano di una riga fosse
 // sbagliato, questo test resterebbe verde. Quella e' una lettura, non una verifica.
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 const QUI = path.dirname(fileURLToPath(import.meta.url));
+const RADICE = path.join(QUI, '..');
 let rosse = 0;
 const esito = (ok, testo) => { if (!ok) rosse += 1; console.log(`${ok ? 'PASSA ' : 'FALLITO'}  ${testo}`); };
 
@@ -102,6 +104,8 @@ const PREFISSI_A_RUNTIME = [
   ['sess.',    "telemetria.html e live.html la compongono dalla sigla di sessione"],
   ['nav.',     "muro.mjs::voce() la compone dall'etichetta di VOCI"],
   ['forza.n_', 'forza.html::nomeMetrica() la compone dal nome della metrica'],
+  ['art.sess.', "statico.py::_in_inglese() la compone dalla sessione dell'articolo"],
+  ['art.tag.', 'statico.py e analisi.html la compongono dal tema dell\'articolo'],
 ];
 const CHIAMANTI = {
   'mescola.': ["'mescola.' + String(sigla)", 'muro.mjs'],
@@ -110,6 +114,8 @@ const CHIAMANTI = {
   'sess.':    ["t('sess.' + k)", null],
   'nav.':     ["t('nav.' + etichetta", 'muro.mjs'],
   'forza.n_': ["t('forza.n_' + k)", 'forza.html'],
+  'art.sess.': ['_in_inglese("art.sess."', '../ai_lab/redazione/statico.py'],
+  'art.tag.': ["'art.tag.' + x", 'analisi.html'],
 };
 
 // I COMMENTI NON CONTANO, e imparare a saltarli e' costato una rossa finta: in testa al
@@ -150,7 +156,15 @@ const usate = new Set(marcate);
 for (const m of testoTutto.matchAll(/(?<![\w$])tn?\(\s*'([^'\n]{2,80})'/g)) usate.add(m[1]);
 for (const m of testoTutto.matchAll(/(?<![\w$])tn\(\s*'[^'\n]{2,80}'\s*,\s*'([^'\n]{2,80})'/g)) usate.add(m[1]);
 
+// LE VOCI DI PAGINA non stanno nel dizionario del sito, e non e' una svista: sono le
+// parole di UN articolo — il suo titolo, la sua descrizione — che non appartengono a
+// nessun'altra pagina e che nascono e muoiono con lui. Le porta la pagina stessa, in un
+// blocco JSON, e le consegna con lingua.mjs::aggiungi(). Qui non si condonano: si
+// controlla che chi le usa le porti davvero, articolo per articolo (piu' sotto).
+const VOCI_DI_PAGINA = ['art.titolo', 'art.desc'];
+
 const mancanti = [...usate].filter(k => !(k in D)
+  && !VOCI_DI_PAGINA.includes(k)
   && !PREFISSI_A_RUNTIME.some(([p]) => k === p || k === p.slice(0, -1)));
 esito(mancanti.length === 0,
   `ogni chiave usata sta nel dizionario (${usate.size} usate)`
@@ -190,6 +204,30 @@ esito(divergenti.length === 0,
   "l'inglese scritto nelle pagine e' lo stesso del dizionario"
   + (divergenti.length ? `\n           divergono: ${divergenti.slice(0, 10).join('\n           ')}` : ''));
 
+/* ============================== D-bis. i due lettori dello stesso dizionario */
+//
+// demo/dizionario.mjs lo legge il browser, e lo legge anche Python: le card degli
+// articoli e le pillole dei filtri le pre-renderizza ai_lab/redazione/statico.py, che
+// gira fuori dal browser. Un file, due lettori — l'alternativa era due tabelle della
+// stessa cosa, che si disallineano sempre. Qui si controlla che vedano lo stesso
+// numero di voci: se un giorno la forma del file cambiasse (una voce su tre righe, una
+// chiave con l'apice dentro), il lettore Python ne perderebbe qualcuna in silenzio e le
+// card resterebbero italiane senza che nessuno lo dica.
+{
+  let visteDaPython = null;
+  try {
+    const fuori = execFileSync('python3', ['-c',
+      "import sys; sys.path.insert(0, 'ai_lab/redazione'); import statico;"
+      + " print(len(statico.voci_dizionario()))"],
+      { cwd: RADICE, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+    visteDaPython = parseInt(fuori.trim(), 10);
+  } catch { /* niente python qui: si dice, non si finge */ }
+  esito(visteDaPython === chiavi.length,
+    `Python e il browser leggono lo stesso dizionario (${chiavi.length} voci)`
+    + (visteDaPython === null ? ' — python3 non eseguibile da qui'
+       : visteDaPython === chiavi.length ? '' : ` — Python ne vede ${visteDaPython}`));
+}
+
 /* ==================================================== E. il guscio e la principale */
 const muro = leggi('muro.mjs');
 esito(/selettoreLingua\('barra'\)/.test(muro), 'il guscio monta il selettore nella barra');
@@ -205,13 +243,121 @@ esito(!/navigator\.language/.test(senzaCommenti(lingua)),
 for (const f of pagine) {
   esito(/<html lang="en">/.test(leggi(f)), `${f} nasce in inglese (<html lang="en">)`);
 }
-// gli articoli sono pagine inglesi con dentro un corpo italiano, e lo dichiarano
+/* ============================================== E-bis. gli articoli, e i loro numeri */
+//
+// L'ARTICOLO E' L'UNICO POSTO DEL SITO DOVE L'ITALIANO E' L'ORIGINALE, e dove
+// l'inglese e' una TRADUZIONE fatta da un modello (ai_lab/redazione/traduci.py). Il
+// modello non e' il problema: il problema sarebbe fidarsene. Quindi qui non si giudica
+// la qualita' della traduzione — quella e' una lettura, e la fa una persona — si
+// verifica l'unica cosa che si puo' verificare a freddo e che, se salta, cancella una
+// misura: i NUMERI devono essere gli stessi, uno per uno, nello stesso ordine.
+//
+// La guardia gira gia' al momento della traduzione e boccia prima di scrivere. Questa
+// e' la seconda: guarda cio' che e' COMMITTATO, quindi copre anche la mano che apre il
+// JSON e corregge una cifra a occhio. Una traduzione entra in pagina solo se passa
+// tutt'e due.
+
+/** Numero all'italiana -> valore. '10.191' = diecimila…, '0,247' = zero virgola… */
+function valIt(s) {
+  const t = s.match(/^(\d{1,2}):(\d{2})[.,](\d{1,3})$/);
+  if (t) return +t[1] * 60 + +t[2] + +t[3] / 10 ** t[3].length;
+  let x = s;
+  if (/^\d+(?:\.\d{3})+(?:,\d+)?$/.test(x)) x = x.replace(/\./g, '');
+  const v = parseFloat(x.replace(',', '.'));
+  return Number.isFinite(v) ? v : null;
+}
+/** Numero all'inglese -> valore. Speculare: '10,191' = diecimila…, '0.247' = zero… */
+function valEn(s) {
+  const t = s.match(/^(\d{1,2}):(\d{2})[.,](\d{1,3})$/);
+  if (t) return +t[1] * 60 + +t[2] + +t[3] / 10 ** t[3].length;
+  let x = s;
+  if (/^\d+(?:,\d{3})+(?:\.\d+)?$/.test(x)) x = x.replace(/,/g, '');
+  const v = parseFloat(x);
+  return Number.isFinite(v) ? v : null;
+}
+const RE_IT = /\d{1,2}:\d{2}[.,]\d{1,3}|\d+(?:\.\d{3})*(?:,\d+)?|\d+(?:\.\d+)?/g;
+const RE_EN = /\d{1,2}:\d{2}[.,]\d{1,3}|\d+(?:,\d{3})*(?:\.\d+)?|\d+(?:\.\d+)?/g;
+const numeri = (testo, lingua) => [...String(testo || '').replace(/<[^>]*>/g, ' ')
+  .matchAll(lingua === 'it' ? RE_IT : RE_EN)]
+  .map(m => (lingua === 'it' ? valIt : valEn)(m[0]))
+  .filter(v => v != null).map(v => Math.round(v * 1e6) / 1e6);
+
+const DIR_ART = path.join(QUI, 'data', 'analisi');
+const jsonArt = existsSync(DIR_ART)
+  ? readdirSync(DIR_ART).filter(f => f.endsWith('.json'))
+      .map(f => ({ f, d: JSON.parse(readFileSync(path.join(DIR_ART, f), 'utf8')) }))
+      .filter(x => (x.d.sezioni || []).length)
+  : [];
+esito(jsonArt.length > 0, `gli articoli sull'indice sono ${jsonArt.length}`);
+
+let tradotti = 0;
+for (const { f, d } of jsonArt) {
+  const en = d.en;
+  if (!en) continue;
+  tradotti += 1;
+  esito((en.sezioni || []).length === (d.sezioni || []).length,
+    `[${d.id}] la traduzione ha le stesse sezioni dell'originale`);
+  const coppie = [['titolo', d.titolo, en.titolo],
+                  ['occhiello', d.occhiello, en.occhiello],
+                  ['sommario', d.sommario, en.sommario]];
+  (d.sezioni || []).forEach((sz, i) => {
+    const e = (en.sezioni || [])[i] || {};
+    coppie.push([`sezione ${i + 1} · titolo`, sz.titolo, e.titolo]);
+    coppie.push([`sezione ${i + 1} · testo`, sz.html, e.html]);
+  });
+  const rotte = coppie.filter(([, it, e]) =>
+    String(numeri(it, 'it')) !== String(numeri(e, 'en')));
+  esito(rotte.length === 0,
+    `[${d.id}] i numeri della traduzione sono quelli dell'originale`
+    + (rotte.length ? `\n           ${rotte.map(([dove, it, e]) =>
+        `${dove}: it ${numeri(it, 'it')} / en ${numeri(e, 'en')}`).join('\n           ')}` : ''));
+}
+esito(tradotti > 0, `${tradotti} articoli su ${jsonArt.length} hanno la traduzione inglese`);
+
+// LA PAGINA DEVE DIRE QUAL E' DELLE DUE. Un articolo tradotto porta la nota di
+// provenienza; uno non tradotto porta l'avviso che e' in italiano. Una pagina che non
+// dice ne' l'una ne' l'altra e' quella che lascia un lettore inglese davanti a un testo
+// italiano senza spiegazione — o davanti a una traduzione automatica senza saperlo.
 for (const f of articoli) {
   const s = leggi(f);
-  esito(/<html lang="en">/.test(s) && /<article[^>]*\blang="it"/.test(s)
-        && /class="avviso-lingua"/.test(s),
-    `${f} e' una pagina inglese con corpo italiano dichiarato`);
+  const id = path.basename(f, '.html');
+  const ha = (jsonArt.find(x => x.d.id === id)?.d || {}).en;
+  esito(/<html lang="en">/.test(s), `${f} nasce in inglese (<html lang="en">)`);
+  if (ha) {
+    esito(/class="art-tradotto/.test(s) && /class="[^"]*art-lingua/.test(s)
+          && !/class="avviso-lingua"/.test(s),
+      `${f} porta le due lingue e dichiara la traduzione`);
+    // ogni chiave di pagina che la testa usa deve stare nel blocco che la pagina porta:
+    // una `data-i18n` senza la sua voce mostrerebbe «art.titolo» nella scheda del browser
+    const blocco = s.match(/id="voci-articolo">([\s\S]*?)<\/script>/)?.[1] ?? '';
+    let voci = {};
+    try { voci = JSON.parse(blocco.replace(/<\\\//g, '</')); } catch { /* rotto: sotto va rossa */ }
+    const usateQui = [...s.matchAll(/data-i18n(?:-attr)?="([^"]+)"/g)]
+      .flatMap(m => m[1].split(';').map(x => (x.includes(':') ? x.split(':')[1] : x).trim()))
+      .filter(k => VOCI_DI_PAGINA.includes(k));
+    const senza = [...new Set(usateQui)].filter(k => !Array.isArray(voci[k]) || voci[k].length !== 2);
+    esito(usateQui.length > 0 && senza.length === 0,
+      `${f} porta le voci che usa (titolo e descrizione seguono la lingua)`
+      + (senza.length ? ` — assenti dal blocco: ${senza.join(', ')}` : ''));
+  } else {
+    esito(/<article[^>]*\blang="it"/.test(s) && /class="avviso-lingua"/.test(s),
+      `${f} e' una pagina inglese con corpo italiano dichiarato`);
+  }
 }
+
+// L'INDICE SEGUE L'ARTICOLO. index.html disegna le sue tre «letture» dal manifest, non
+// dalla pagina: se il manifest resta indietro, la home inglese annuncia in italiano un
+// articolo che dentro e' inglese.
+const manifest = JSON.parse(readFileSync(path.join(QUI, 'data', 'analisi_articoli.json'), 'utf8'));
+const sfasati = manifest.filter((m) => {
+  const d = (jsonArt.find(x => x.d.id === m.id) || {}).d;
+  if (!d) return false;
+  const atteso = d.en ? d.en.titolo : undefined;
+  return (m.en ? m.en.titolo : undefined) !== atteso;
+});
+esito(sfasati.length === 0,
+  "il manifest porta la traduzione degli articoli che ce l'hanno"
+  + (sfasati.length ? ` — sfasati: ${sfasati.map(m => m.id).join(', ')}` : ''));
 
 /* ============================================== F. l'italiano rimasto, dichiarato */
 //

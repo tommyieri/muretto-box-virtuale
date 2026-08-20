@@ -15,7 +15,7 @@
 // dentro c'e' l'interfaccia — quello che il sito dice di se' — non quello che racconta.
 // Tradurre a macchina un'analisi tecnica scritta a mano vorrebbe dire pubblicare come
 // nostro un testo che nessuno ha verificato, ed e' la cosa che questo progetto non fa.
-import { D } from './dizionario.mjs?v=190826b';
+import { D } from './dizionario.mjs?v=190826f';
 
 /* ------------------------------------------------------------------ le lingue */
 export const LINGUE = {
@@ -76,6 +76,27 @@ export function t(chiave, sost = null) {
   let s = (ITA ? voce[1] : voce[0]) ?? voce[0];
   if (sost) for (const [k, v] of Object.entries(sost)) s = s.split('{' + k + '}').join(String(v));
   return s;
+}
+
+/** VOCI IN PIU', portate da chi le possiede.
+ *
+ *  Il dizionario e' del SITO: ci stanno le parole dell'interfaccia, che sono le stesse
+ *  su ogni pagina. Un articolo invece ha parole sue — il titolo, l'occhiello, il
+ *  sommario — che non appartengono a nessun'altra pagina e che nascono e muoiono con
+ *  lui. Metterle nel dizionario comune vorrebbe dire far crescere di dodici voci a
+ *  settimana un file che serve a tutti, e mai piu' toglierle.
+ *
+ *  Cosi' invece la pagina-articolo porta le sue due colonne addosso, in un blocco JSON
+ *  scritto da ai_lab/redazione/statico.py, e le consegna prima che il guscio applichi la
+ *  lingua. Il meccanismo che le usa resta uno solo: `data-i18n`.
+ *
+ *  NON SI SOVRASCRIVE UNA VOCE ESISTENTE. Se una chiave d'articolo collidesse con una
+ *  del sito, il sito vincerebbe e la pagina se ne accorgerebbe subito: e' meglio di una
+ *  parola dell'interfaccia che cambia significato su una pagina sola. */
+export function aggiungi(voci) {
+  for (const [k, v] of Object.entries(voci || {})) {
+    if (Array.isArray(v) && v.length === 2 && !(k in D)) D[k] = v;
+  }
 }
 
 /** C'e' una voce per questa chiave? Serve a chi ha chiavi costruite da un dato

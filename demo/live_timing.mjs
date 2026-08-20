@@ -33,7 +33,7 @@ import { tyreColor } from './timeline.mjs?v=220726a';
 
 // ---------------------------------------------------------------- stato
 // Riduttore puro, SENZA DOM: testabile in Node (test_live_timing.mjs).
-import { mescola } from './muro.mjs?v=190826b';
+import { mescola } from './muro.mjs?v=190826f';
 
 export function creaStatoTiming() {
   const piloti = new Map();   // num -> {sigla, colore}

@@ -19,7 +19,7 @@ function bytes(b64) {
 }
 
 /** canali base64 -> array numerici pronti da disegnare. */
-import { t } from './muro.mjs?v=190826b';
+import { t } from './muro.mjs?v=190826f';
 
 export function decodifica(c) {
   if (!c) return null;

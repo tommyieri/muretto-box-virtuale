@@ -1,111 +1,161 @@
 {
-  "id": "dna-circuiti-2026",
-  "stato": "pubblicato",
-  "data": "2026-07-26",
-  "firma": "Muretto · Redazione tecnica",
-  "accent": "var(--sc)",
-  "canale": "B (anomalia nei nostri dati)",
-  "gara": "Stagione 2026",
-  "circuito": "10 circuiti",
-  "sessione": "Gara",
-  "tag": [
-    "telemetria",
-    "circuiti",
-    "assetto",
-    "multi-gara"
-  ],
-  "occhiello": "Dieci circuiti 2026 · quanta parte del giro si passa a tutto gas",
-  "titolo": "A Budapest si sta a gas pieno per metà giro. E si va più forte che a Silverstone",
-  "sommario": "Una sola cifra dice quanto un tracciato chieda motore e quanto chieda ala. Su dieci circuiti va dal settantadue per cento a poco meno di metà giro, e nel mezzo c’è una coppia di numeri che sembra sbagliata.",
-  "sezioni": [
-    {
-      "tag": "Il numero",
-      "titolo": "Perché il circuito più lento ha una punta più alta del più veloce",
-      "html": "<p>All’Hungaroring si passa a tutto gas il <b>50,4%</b> del giro: è il tracciato che meno lascia respirare l’acceleratore fra quelli che abbiamo in archivio. A Silverstone si sta a gas pieno per il <b>65,1</b>.</p><p>Eppure la velocità massima, a Budapest, è più alta: <b>329 km/h</b> contro <b>311</b>. Il circuito dove si accelera meno è quello dove si arriva più forte.</p><p>Non è un errore di misura. È il segno che quella percentuale non dice quanto una pista sia veloce: dice quanto sia spezzata.</p>",
-      "figura": {
-        "svg": "<svg viewBox=\"0 0 760 258\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"'JetBrains Mono',ui-monospace,Menlo,monospace\" class=\"art-svg\"><style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}</style><text x=\"112\" y=\"18\" class=\"lbl\" font-size=\"14\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\" letter-spacing=\"0.5\">Quanto giro a tutto gas, per circuito</text><line x1=\"112\" y1=\"36\" x2=\"112\" y2=\"240\" stroke=\"var(--line2)\" stroke-width=\"1\"/><text x=\"104\" y=\"53.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Spa-Francorchamps</text><rect x=\"112\" y=\"43.0\" width=\"498.2\" height=\"12\" rx=\"2\" fill=\"var(--sc)\" opacity=\"1\"/><text x=\"616.2\" y=\"53.0\" font-size=\"10\" class=\"lbl\">72.3</text><text x=\"104\" y=\"73.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Montréal</text><rect x=\"112\" y=\"63.0\" width=\"481.2\" height=\"12\" rx=\"2\" fill=\"var(--sc)\" opacity=\"1\"/><text x=\"599.2\" y=\"73.0\" font-size=\"10\" class=\"lbl\">71.2</text><text x=\"104\" y=\"93.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Suzuka</text><rect x=\"112\" y=\"83.0\" width=\"410.3\" height=\"12\" rx=\"2\" fill=\"var(--sc)\" opacity=\"1\"/><text x=\"528.3\" y=\"93.0\" font-size=\"10\" class=\"lbl\">66.6</text><text x=\"104\" y=\"113.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Melbourne</text><rect x=\"112\" y=\"103.0\" width=\"393.3\" height=\"12\" rx=\"2\" fill=\"var(--sc)\" opacity=\"1\"/><text x=\"511.3\" y=\"113.0\" font-size=\"10\" class=\"lbl\">65.5</text><text x=\"104\" y=\"133.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Miami Gardens</text><rect x=\"112\" y=\"123.0\" width=\"388.7\" height=\"12\" rx=\"2\" fill=\"var(--sc)\" opacity=\"1\"/><text x=\"506.7\" y=\"133.0\" font-size=\"10\" class=\"lbl\">65.2</text><text x=\"104\" y=\"153.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Silverstone</text><rect x=\"112\" y=\"143.0\" width=\"387.2\" height=\"12\" rx=\"2\" fill=\"var(--accent)\" opacity=\"1\"/><text x=\"505.2\" y=\"153.0\" font-size=\"10\" class=\"lbl\">65.1</text><text x=\"104\" y=\"173.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Shanghai</text><rect x=\"112\" y=\"163.0\" width=\"368.6\" height=\"12\" rx=\"2\" fill=\"var(--accent)\" opacity=\"1\"/><text x=\"486.6\" y=\"173.0\" font-size=\"10\" class=\"lbl\">63.9</text><text x=\"104\" y=\"193.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Spielberg</text><rect x=\"112\" y=\"183.0\" width=\"347.1\" height=\"12\" rx=\"2\" fill=\"var(--accent)\" opacity=\"1\"/><text x=\"465.1\" y=\"193.0\" font-size=\"10\" class=\"lbl\">62.5</text><text x=\"104\" y=\"213.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Budapest</text><rect x=\"112\" y=\"203.0\" width=\"160.4\" height=\"12\" rx=\"2\" fill=\"var(--accent)\" opacity=\"1\"/><text x=\"278.4\" y=\"213.0\" font-size=\"10\" class=\"lbl\">50.4</text><text x=\"104\" y=\"233.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Barcelona</text><rect x=\"112\" y=\"223.0\" width=\"149.6\" height=\"12\" rx=\"2\" fill=\"var(--accent)\" opacity=\"1\"/><text x=\"267.6\" y=\"233.0\" font-size=\"10\" class=\"lbl\">49.7</text><text x=\"670\" y=\"254\" font-size=\"9.5\" text-anchor=\"end\">% del giro con acceleratore ≥95% · più alto = più “motore” (asse da 40)</text></svg>",
-        "didascalia": "Percentuale di giro a tutto gas per circuito. In arancio le piste da motore, in ciano quelle da carico.",
-        "fonte": "FastF1 · car telemetry, elaborazione redazione"
-      }
-    },
-    {
-      "tag": "Da dove viene",
-      "titolo": "Una cifra sola, presa dove non può mentire",
-      "html": "<p>La misura è semplice per costruzione: si prende la frazione di tracciato coperta con l’acceleratore sopra il novantacinque per cento, e si legge come mediana sui giri lanciati invece che su un giro solo. Non ci entrano né la potenza del motore né la gomma: è pedale contro distanza.</p><p>Lo spettro che ne esce copre ventitré punti percentuali. In cima Spa-Francorchamps, <b>72,3%</b>, e Montréal poco sotto: piste in cui il giro è quasi tutto allungo. In fondo Barcellona, <b>49,7</b>, e l’Hungaroring. In mezzo, otto tracciati che si somigliano più di quanto la loro fama suggerisca.</p><p>Il paradosso di Budapest si scioglie guardando il secondo numero, la velocità media in curva. Silverstone ha le curve più veloci del gruppo, <b>202 km/h</b> di media; Miami Gardens le più lente, <b>121</b>. Budapest ha un solo lungo allungo, dove si arriva a tutto, e sedici curve che lo interrompono.</p>",
-      "figura": {
-        "svg": "<svg viewBox=\"0 0 720 470\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"'JetBrains Mono',ui-monospace,Menlo,monospace\" class=\"art-svg\"><style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}.art-svg .grid{stroke:var(--line);stroke-width:1}</style><text x=\"56\" y=\"17\" class=\"lbl\" font-size=\"14\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\" letter-spacing=\"0.5\">Il piano dei circuiti 2026</text><text x=\"56\" y=\"33\" font-size=\"10.5\">motore vs carico · veloce vs stop-and-go</text><rect x=\"56\" y=\"56\" width=\"546\" height=\"370\" fill=\"none\" stroke=\"var(--line)\"/><line x1=\"56.0\" y1=\"426\" x2=\"56.0\" y2=\"430\" stroke=\"var(--line2)\"/><text x=\"56.0\" y=\"442\" font-size=\"9\" text-anchor=\"middle\">40</text><line x1=\"192.5\" y1=\"426\" x2=\"192.5\" y2=\"430\" stroke=\"var(--line2)\"/><text x=\"192.5\" y=\"442\" font-size=\"9\" text-anchor=\"middle\">50</text><line x1=\"329.0\" y1=\"426\" x2=\"329.0\" y2=\"430\" stroke=\"var(--line2)\"/><text x=\"329.0\" y=\"442\" font-size=\"9\" text-anchor=\"middle\">60</text><line x1=\"465.5\" y1=\"426\" x2=\"465.5\" y2=\"430\" stroke=\"var(--line2)\"/><text x=\"465.5\" y=\"442\" font-size=\"9\" text-anchor=\"middle\">70</text><line x1=\"602.0\" y1=\"426\" x2=\"602.0\" y2=\"430\" stroke=\"var(--line2)\"/><text x=\"602.0\" y=\"442\" font-size=\"9\" text-anchor=\"middle\">80</text><line x1=\"52\" y1=\"426.0\" x2=\"56\" y2=\"426.0\" stroke=\"var(--line2)\"/><text x=\"49\" y=\"429.0\" font-size=\"9\" text-anchor=\"end\">100</text><line x1=\"52\" y1=\"340.6\" x2=\"56\" y2=\"340.6\" stroke=\"var(--line2)\"/><text x=\"49\" y=\"343.6\" font-size=\"9\" text-anchor=\"end\">130</text><line x1=\"52\" y1=\"255.2\" x2=\"56\" y2=\"255.2\" stroke=\"var(--line2)\"/><text x=\"49\" y=\"258.2\" font-size=\"9\" text-anchor=\"end\">160</text><line x1=\"52\" y1=\"169.8\" x2=\"56\" y2=\"169.8\" stroke=\"var(--line2)\"/><text x=\"49\" y=\"172.8\" font-size=\"9\" text-anchor=\"end\">190</text><line x1=\"52\" y1=\"84.5\" x2=\"56\" y2=\"84.5\" stroke=\"var(--line2)\"/><text x=\"49\" y=\"87.5\" font-size=\"9\" text-anchor=\"end\">220</text><line x1=\"397.2\" y1=\"56\" x2=\"397.2\" y2=\"426\" class=\"grid\" stroke-dasharray=\"3 3\"/><line x1=\"56\" y1=\"229.6\" x2=\"602\" y2=\"229.6\" class=\"grid\" stroke-dasharray=\"3 3\"/><text x=\"596.0\" y=\"418.0\" font-size=\"9\" text-anchor=\"end\" opacity=\"0.75\" font-style=\"italic\">motore, curve lente (stop-and-go)</text><text x=\"596.0\" y=\"70.0\" font-size=\"9\" text-anchor=\"end\" opacity=\"0.75\" font-style=\"italic\">veloce e potente</text><text x=\"62.0\" y=\"70.0\" font-size=\"9\" text-anchor=\"start\" opacity=\"0.75\" font-style=\"italic\">tecnico, curve veloci</text><text x=\"62.0\" y=\"418.0\" font-size=\"9\" text-anchor=\"start\" opacity=\"0.75\" font-style=\"italic\">tecnico e lento</text><text x=\"329\" y=\"464\" font-size=\"10\" text-anchor=\"middle\">% del giro a tutto gas (→ più motore)</text><text x=\"14\" y=\"241\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90 14 241)\">velocità media in curva (km/h)</text><circle cx=\"188.4\" cy=\"306.5\" r=\"6\" fill=\"var(--accent)\" stroke=\"var(--txt)\" stroke-width=\"1.5\"/><text x=\"198.4\" y=\"309.5\" font-size=\"9.5\" text-anchor=\"start\" class=\"lbl\">Barcelona</text><circle cx=\"198.0\" cy=\"186.9\" r=\"4.5\" fill=\"var(--accent)\" /><text x=\"206.5\" y=\"189.9\" font-size=\"9.5\" text-anchor=\"start\" class=\"\">Budapest</text><circle cx=\"363.1\" cy=\"238.2\" r=\"4.5\" fill=\"var(--accent)\" /><text x=\"371.6\" y=\"241.2\" font-size=\"9.5\" text-anchor=\"start\" class=\"\">Spielberg</text><circle cx=\"382.2\" cy=\"292.2\" r=\"4.5\" fill=\"var(--accent)\" /><text x=\"390.7\" y=\"295.2\" font-size=\"9.5\" text-anchor=\"start\" class=\"\">Shanghai</text><circle cx=\"398.6\" cy=\"135.7\" r=\"6\" fill=\"var(--accent)\" stroke=\"var(--txt)\" stroke-width=\"1.5\"/><text x=\"408.6\" y=\"138.7\" font-size=\"9.5\" text-anchor=\"start\" class=\"lbl\">Silverstone</text><circle cx=\"400.0\" cy=\"366.2\" r=\"6\" fill=\"var(--sc)\" stroke=\"var(--txt)\" stroke-width=\"1.5\"/><text x=\"410.0\" y=\"369.2\" font-size=\"9.5\" text-anchor=\"start\" class=\"lbl\">Miami Gardens</text><circle cx=\"404.1\" cy=\"215.4\" r=\"4.5\" fill=\"var(--sc)\" /><text x=\"412.6\" y=\"218.4\" font-size=\"9.5\" text-anchor=\"start\" class=\"\">Melbourne</text><circle cx=\"419.1\" cy=\"175.5\" r=\"4.5\" fill=\"var(--sc)\" /><text x=\"427.6\" y=\"178.5\" font-size=\"9.5\" text-anchor=\"start\" class=\"\">Suzuka</text><circle cx=\"481.9\" cy=\"340.6\" r=\"4.5\" fill=\"var(--sc)\" /><text x=\"490.4\" y=\"343.6\" font-size=\"9.5\" text-anchor=\"start\" class=\"\">Montréal</text><circle cx=\"496.9\" cy=\"221.1\" r=\"6\" fill=\"var(--sc)\" stroke=\"var(--txt)\" stroke-width=\"1.5\"/><text x=\"506.9\" y=\"224.1\" font-size=\"9.5\" text-anchor=\"start\" class=\"lbl\">Spa-Francorchamps</text></svg>",
-        "didascalia": "Il piano dei circuiti: a destra si gira di più a tutto gas (motore), in alto le curve sono più veloci. Evidenziati gli estremi.",
-        "fonte": "FastF1 · car telemetry, elaborazione redazione"
-      }
-    },
-    {
-      "tag": "Che cosa vale",
-      "titolo": "Due assi, perché uno solo confonde piste diverse",
-      "html": "<p>Un giro passato molto a gas pieno premia potenza e bassa resistenza: si scarica l’ala, si allungano i rapporti, si insegue la punta. Un giro spezzato premia l’opposto, e il compromesso da risolvere è lo stesso che ogni squadra affronta con l’assetto — solo visto dal lato della pista.</p><p>La velocità in curva aggiunge quello che la percentuale non sa dire. Le curve veloci chiedono stabilità aerodinamica ad alta velocità; quelle lente chiedono trazione e agilità in uscita. Due circuiti con la stessa cifra sul primo asse possono quindi domandare due vetture diverse.</p><p>Una nota di perimetro, perché cambia la forma della mappa: in archivio mancano i tracciati più estremi dal lato del carico, e la coda in basso è più lunga di così. Il che riporta alla domanda di partenza. A Budapest si tocca una punta da circuito veloce perché il rettilineo c’è, ed è lungo; tutto il resto del giro è un’altra cosa, e la vettura che ci vince la si costruisce guardando l’altra colonna.</p>"
-    }
-  ],
-  "provenienza": [
-    {
-      "grandezza": "percentuale a tutto gas (per circuito)",
-      "valore": "Spa-Francorchamps 72% (max) · Barcelona 50% (min) · mediana 65%",
-      "stato": "MISURATO",
-      "da": "frazione di distanza con throttle ≥95% sul giro veloce assoluto (FastF1)"
-    },
-    {
-      "grandezza": "velocità media in curva",
-      "valore": "Silverstone 202 (max) · Miami Gardens 121 (min) km/h",
-      "stato": "MISURATO",
-      "da": "mediana della velocità all’apice delle curve (circuit_info)"
-    },
-    {
-      "grandezza": "circuiti nel campione",
-      "valore": "10 (Monaco/Ungheria/Singapore assenti dalla cache)",
-      "stato": "MISURATO",
-      "da": "archivio FastF1 in cache"
-    },
-    {
-      "grandezza": "velocità di punta per circuito",
-      "valore": "riportata ma non centrale",
-      "stato": "STIMATO",
-      "da": "picco del giro veloce: può risentire della scia; la percentuale-gas non ne risente"
-    }
-  ],
-  "fonti": [
-    {
-      "tipo": "dati",
-      "testo": "FastF1 3.8.3 — telemetria vettura (Throttle/Speed) di 10 gare 2026, giro veloce assoluto (cache locale)"
-    },
-    {
-      "tipo": "metodo",
-      "testo": "ai_lab/redazione/multigara.py (estrai_dna) + genera_dna.py — percentuale a tutto gas = distanza con throttle≥95% / lunghezza giro; velocità in curva = mediana all’apice delle curve di circuit_info"
-    }
-  ],
-  "tesi": "La percentuale di giro a tutto gas descrive quanto un circuito chieda potenza, non quanto sia veloce: due tracciati agli estremi opposti di quella scala possono avere la stessa velocità di punta, e per distinguerli serve un secondo asse.",
-  "confutabile_da": "Un circuito che stia in alto su entrambi gli assi e in cui le squadre non cambino assetto: vorrebbe dire che i due numeri misurano la stessa cosa e che uno dei due è superfluo.",
-  "conseguenza": "È la griglia di lettura per tutto il resto della stagione: quando una squadra va forte qui e male là, la prima cosa da guardare è dove cadono i due circuiti su questa mappa.",
-  "forma": "ritratto-di-un-numero",
-  "peso": "standard",
-  "attacco": "domanda-del-lettore",
-  "chiusa": "ritorno",
-  "scrittura": "mano (redazione, 2026-08-03)",
-  "qualita": {
-    "parole": 397,
-    "sezioni": 3,
-    "gulpease": 60.6,
-    "ritmo": {
-      "frasi": 23,
-      "media": 17.3,
-      "sd": 8.3,
-      "cv": 0.482,
-      "max": 36,
-      "min": 6,
-      "pct_corte": 17.4,
-      "pct_lunghe": 4.3
-    },
-    "mtld": 114.0,
-    "numeri_100": 2.0,
-    "emdash": 1,
-    "bloccanti": 0,
-    "avvisi": 1
+ "id": "dna-circuiti-2026",
+ "stato": "pubblicato",
+ "data": "2026-07-26",
+ "firma": "Muretto · Redazione tecnica",
+ "accent": "var(--sc)",
+ "canale": "B (anomalia nei nostri dati)",
+ "gara": "Stagione 2026",
+ "circuito": "10 circuiti",
+ "sessione": "Gara",
+ "tag": [
+  "telemetria",
+  "circuiti",
+  "assetto",
+  "multi-gara"
+ ],
+ "occhiello": "Dieci circuiti 2026 · quanta parte del giro si passa a tutto gas",
+ "titolo": "A Budapest si sta a gas pieno per metà giro. E si va più forte che a Silverstone",
+ "sommario": "Una sola cifra dice quanto un tracciato chieda motore e quanto chieda ala. Su dieci circuiti va dal settantadue per cento a poco meno di metà giro, e nel mezzo c’è una coppia di numeri che sembra sbagliata.",
+ "sezioni": [
+  {
+   "tag": "Il numero",
+   "titolo": "Perché il circuito più lento ha una punta più alta del più veloce",
+   "html": "<p>All’Hungaroring si passa a tutto gas il <b>50,4%</b> del giro: è il tracciato che meno lascia respirare l’acceleratore fra quelli che abbiamo in archivio. A Silverstone si sta a gas pieno per il <b>65,1</b>.</p><p>Eppure la velocità massima, a Budapest, è più alta: <b>329 km/h</b> contro <b>311</b>. Il circuito dove si accelera meno è quello dove si arriva più forte.</p><p>Non è un errore di misura. È il segno che quella percentuale non dice quanto una pista sia veloce: dice quanto sia spezzata.</p>",
+   "figura": {
+    "svg": "<svg viewBox=\"0 0 760 258\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"'JetBrains Mono',ui-monospace,Menlo,monospace\" class=\"art-svg\"><style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}</style><text x=\"112\" y=\"18\" class=\"lbl\" font-size=\"14\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\" letter-spacing=\"0.5\">Quanto giro a tutto gas, per circuito</text><line x1=\"112\" y1=\"36\" x2=\"112\" y2=\"240\" stroke=\"var(--line2)\" stroke-width=\"1\"/><text x=\"104\" y=\"53.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Spa-Francorchamps</text><rect x=\"112\" y=\"43.0\" width=\"498.2\" height=\"12\" rx=\"2\" fill=\"var(--sc)\" opacity=\"1\"/><text x=\"616.2\" y=\"53.0\" font-size=\"10\" class=\"lbl\">72.3</text><text x=\"104\" y=\"73.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Montréal</text><rect x=\"112\" y=\"63.0\" width=\"481.2\" height=\"12\" rx=\"2\" fill=\"var(--sc)\" opacity=\"1\"/><text x=\"599.2\" y=\"73.0\" font-size=\"10\" class=\"lbl\">71.2</text><text x=\"104\" y=\"93.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Suzuka</text><rect x=\"112\" y=\"83.0\" width=\"410.3\" height=\"12\" rx=\"2\" fill=\"var(--sc)\" opacity=\"1\"/><text x=\"528.3\" y=\"93.0\" font-size=\"10\" class=\"lbl\">66.6</text><text x=\"104\" y=\"113.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Melbourne</text><rect x=\"112\" y=\"103.0\" width=\"393.3\" height=\"12\" rx=\"2\" fill=\"var(--sc)\" opacity=\"1\"/><text x=\"511.3\" y=\"113.0\" font-size=\"10\" class=\"lbl\">65.5</text><text x=\"104\" y=\"133.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Miami Gardens</text><rect x=\"112\" y=\"123.0\" width=\"388.7\" height=\"12\" rx=\"2\" fill=\"var(--sc)\" opacity=\"1\"/><text x=\"506.7\" y=\"133.0\" font-size=\"10\" class=\"lbl\">65.2</text><text x=\"104\" y=\"153.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Silverstone</text><rect x=\"112\" y=\"143.0\" width=\"387.2\" height=\"12\" rx=\"2\" fill=\"var(--accent)\" opacity=\"1\"/><text x=\"505.2\" y=\"153.0\" font-size=\"10\" class=\"lbl\">65.1</text><text x=\"104\" y=\"173.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Shanghai</text><rect x=\"112\" y=\"163.0\" width=\"368.6\" height=\"12\" rx=\"2\" fill=\"var(--accent)\" opacity=\"1\"/><text x=\"486.6\" y=\"173.0\" font-size=\"10\" class=\"lbl\">63.9</text><text x=\"104\" y=\"193.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Spielberg</text><rect x=\"112\" y=\"183.0\" width=\"347.1\" height=\"12\" rx=\"2\" fill=\"var(--accent)\" opacity=\"1\"/><text x=\"465.1\" y=\"193.0\" font-size=\"10\" class=\"lbl\">62.5</text><text x=\"104\" y=\"213.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Budapest</text><rect x=\"112\" y=\"203.0\" width=\"160.4\" height=\"12\" rx=\"2\" fill=\"var(--accent)\" opacity=\"1\"/><text x=\"278.4\" y=\"213.0\" font-size=\"10\" class=\"lbl\">50.4</text><text x=\"104\" y=\"233.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Barcelona</text><rect x=\"112\" y=\"223.0\" width=\"149.6\" height=\"12\" rx=\"2\" fill=\"var(--accent)\" opacity=\"1\"/><text x=\"267.6\" y=\"233.0\" font-size=\"10\" class=\"lbl\">49.7</text><text x=\"670\" y=\"254\" font-size=\"9.5\" text-anchor=\"end\">% del giro con acceleratore ≥95% · più alto = più “motore” (asse da 40)</text></svg>",
+    "didascalia": "Percentuale di giro a tutto gas per circuito. In arancio le piste da motore, in ciano quelle da carico.",
+    "fonte": "FastF1 · car telemetry, elaborazione redazione"
+   }
+  },
+  {
+   "tag": "Da dove viene",
+   "titolo": "Una cifra sola, presa dove non può mentire",
+   "html": "<p>La misura è semplice per costruzione: si prende la frazione di tracciato coperta con l’acceleratore sopra il novantacinque per cento, e si legge come mediana sui giri lanciati invece che su un giro solo. Non ci entrano né la potenza del motore né la gomma: è pedale contro distanza.</p><p>Lo spettro che ne esce copre ventitré punti percentuali. In cima Spa-Francorchamps, <b>72,3%</b>, e Montréal poco sotto: piste in cui il giro è quasi tutto allungo. In fondo Barcellona, <b>49,7</b>, e l’Hungaroring. In mezzo, otto tracciati che si somigliano più di quanto la loro fama suggerisca.</p><p>Il paradosso di Budapest si scioglie guardando il secondo numero, la velocità media in curva. Silverstone ha le curve più veloci del gruppo, <b>202 km/h</b> di media; Miami Gardens le più lente, <b>121</b>. Budapest ha un solo lungo allungo, dove si arriva a tutto, e sedici curve che lo interrompono.</p>",
+   "figura": {
+    "svg": "<svg viewBox=\"0 0 720 470\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"'JetBrains Mono',ui-monospace,Menlo,monospace\" class=\"art-svg\"><style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}.art-svg .grid{stroke:var(--line);stroke-width:1}</style><text x=\"56\" y=\"17\" class=\"lbl\" font-size=\"14\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\" letter-spacing=\"0.5\">Il piano dei circuiti 2026</text><text x=\"56\" y=\"33\" font-size=\"10.5\">motore vs carico · veloce vs stop-and-go</text><rect x=\"56\" y=\"56\" width=\"546\" height=\"370\" fill=\"none\" stroke=\"var(--line)\"/><line x1=\"56.0\" y1=\"426\" x2=\"56.0\" y2=\"430\" stroke=\"var(--line2)\"/><text x=\"56.0\" y=\"442\" font-size=\"9\" text-anchor=\"middle\">40</text><line x1=\"192.5\" y1=\"426\" x2=\"192.5\" y2=\"430\" stroke=\"var(--line2)\"/><text x=\"192.5\" y=\"442\" font-size=\"9\" text-anchor=\"middle\">50</text><line x1=\"329.0\" y1=\"426\" x2=\"329.0\" y2=\"430\" stroke=\"var(--line2)\"/><text x=\"329.0\" y=\"442\" font-size=\"9\" text-anchor=\"middle\">60</text><line x1=\"465.5\" y1=\"426\" x2=\"465.5\" y2=\"430\" stroke=\"var(--line2)\"/><text x=\"465.5\" y=\"442\" font-size=\"9\" text-anchor=\"middle\">70</text><line x1=\"602.0\" y1=\"426\" x2=\"602.0\" y2=\"430\" stroke=\"var(--line2)\"/><text x=\"602.0\" y=\"442\" font-size=\"9\" text-anchor=\"middle\">80</text><line x1=\"52\" y1=\"426.0\" x2=\"56\" y2=\"426.0\" stroke=\"var(--line2)\"/><text x=\"49\" y=\"429.0\" font-size=\"9\" text-anchor=\"end\">100</text><line x1=\"52\" y1=\"340.6\" x2=\"56\" y2=\"340.6\" stroke=\"var(--line2)\"/><text x=\"49\" y=\"343.6\" font-size=\"9\" text-anchor=\"end\">130</text><line x1=\"52\" y1=\"255.2\" x2=\"56\" y2=\"255.2\" stroke=\"var(--line2)\"/><text x=\"49\" y=\"258.2\" font-size=\"9\" text-anchor=\"end\">160</text><line x1=\"52\" y1=\"169.8\" x2=\"56\" y2=\"169.8\" stroke=\"var(--line2)\"/><text x=\"49\" y=\"172.8\" font-size=\"9\" text-anchor=\"end\">190</text><line x1=\"52\" y1=\"84.5\" x2=\"56\" y2=\"84.5\" stroke=\"var(--line2)\"/><text x=\"49\" y=\"87.5\" font-size=\"9\" text-anchor=\"end\">220</text><line x1=\"397.2\" y1=\"56\" x2=\"397.2\" y2=\"426\" class=\"grid\" stroke-dasharray=\"3 3\"/><line x1=\"56\" y1=\"229.6\" x2=\"602\" y2=\"229.6\" class=\"grid\" stroke-dasharray=\"3 3\"/><text x=\"596.0\" y=\"418.0\" font-size=\"9\" text-anchor=\"end\" opacity=\"0.75\" font-style=\"italic\">motore, curve lente (stop-and-go)</text><text x=\"596.0\" y=\"70.0\" font-size=\"9\" text-anchor=\"end\" opacity=\"0.75\" font-style=\"italic\">veloce e potente</text><text x=\"62.0\" y=\"70.0\" font-size=\"9\" text-anchor=\"start\" opacity=\"0.75\" font-style=\"italic\">tecnico, curve veloci</text><text x=\"62.0\" y=\"418.0\" font-size=\"9\" text-anchor=\"start\" opacity=\"0.75\" font-style=\"italic\">tecnico e lento</text><text x=\"329\" y=\"464\" font-size=\"10\" text-anchor=\"middle\">% del giro a tutto gas (→ più motore)</text><text x=\"14\" y=\"241\" font-size=\"10\" text-anchor=\"middle\" transform=\"rotate(-90 14 241)\">velocità media in curva (km/h)</text><circle cx=\"188.4\" cy=\"306.5\" r=\"6\" fill=\"var(--accent)\" stroke=\"var(--txt)\" stroke-width=\"1.5\"/><text x=\"198.4\" y=\"309.5\" font-size=\"9.5\" text-anchor=\"start\" class=\"lbl\">Barcelona</text><circle cx=\"198.0\" cy=\"186.9\" r=\"4.5\" fill=\"var(--accent)\" /><text x=\"206.5\" y=\"189.9\" font-size=\"9.5\" text-anchor=\"start\" class=\"\">Budapest</text><circle cx=\"363.1\" cy=\"238.2\" r=\"4.5\" fill=\"var(--accent)\" /><text x=\"371.6\" y=\"241.2\" font-size=\"9.5\" text-anchor=\"start\" class=\"\">Spielberg</text><circle cx=\"382.2\" cy=\"292.2\" r=\"4.5\" fill=\"var(--accent)\" /><text x=\"390.7\" y=\"295.2\" font-size=\"9.5\" text-anchor=\"start\" class=\"\">Shanghai</text><circle cx=\"398.6\" cy=\"135.7\" r=\"6\" fill=\"var(--accent)\" stroke=\"var(--txt)\" stroke-width=\"1.5\"/><text x=\"408.6\" y=\"138.7\" font-size=\"9.5\" text-anchor=\"start\" class=\"lbl\">Silverstone</text><circle cx=\"400.0\" cy=\"366.2\" r=\"6\" fill=\"var(--sc)\" stroke=\"var(--txt)\" stroke-width=\"1.5\"/><text x=\"410.0\" y=\"369.2\" font-size=\"9.5\" text-anchor=\"start\" class=\"lbl\">Miami Gardens</text><circle cx=\"404.1\" cy=\"215.4\" r=\"4.5\" fill=\"var(--sc)\" /><text x=\"412.6\" y=\"218.4\" font-size=\"9.5\" text-anchor=\"start\" class=\"\">Melbourne</text><circle cx=\"419.1\" cy=\"175.5\" r=\"4.5\" fill=\"var(--sc)\" /><text x=\"427.6\" y=\"178.5\" font-size=\"9.5\" text-anchor=\"start\" class=\"\">Suzuka</text><circle cx=\"481.9\" cy=\"340.6\" r=\"4.5\" fill=\"var(--sc)\" /><text x=\"490.4\" y=\"343.6\" font-size=\"9.5\" text-anchor=\"start\" class=\"\">Montréal</text><circle cx=\"496.9\" cy=\"221.1\" r=\"6\" fill=\"var(--sc)\" stroke=\"var(--txt)\" stroke-width=\"1.5\"/><text x=\"506.9\" y=\"224.1\" font-size=\"9.5\" text-anchor=\"start\" class=\"lbl\">Spa-Francorchamps</text></svg>",
+    "didascalia": "Il piano dei circuiti: a destra si gira di più a tutto gas (motore), in alto le curve sono più veloci. Evidenziati gli estremi.",
+    "fonte": "FastF1 · car telemetry, elaborazione redazione"
+   }
+  },
+  {
+   "tag": "Che cosa vale",
+   "titolo": "Due assi, perché uno solo confonde piste diverse",
+   "html": "<p>Un giro passato molto a gas pieno premia potenza e bassa resistenza: si scarica l’ala, si allungano i rapporti, si insegue la punta. Un giro spezzato premia l’opposto, e il compromesso da risolvere è lo stesso che ogni squadra affronta con l’assetto — solo visto dal lato della pista.</p><p>La velocità in curva aggiunge quello che la percentuale non sa dire. Le curve veloci chiedono stabilità aerodinamica ad alta velocità; quelle lente chiedono trazione e agilità in uscita. Due circuiti con la stessa cifra sul primo asse possono quindi domandare due vetture diverse.</p><p>Una nota di perimetro, perché cambia la forma della mappa: in archivio mancano i tracciati più estremi dal lato del carico, e la coda in basso è più lunga di così. Il che riporta alla domanda di partenza. A Budapest si tocca una punta da circuito veloce perché il rettilineo c’è, ed è lungo; tutto il resto del giro è un’altra cosa, e la vettura che ci vince la si costruisce guardando l’altra colonna.</p>"
   }
+ ],
+ "provenienza": [
+  {
+   "grandezza": "percentuale a tutto gas (per circuito)",
+   "valore": "Spa-Francorchamps 72% (max) · Barcelona 50% (min) · mediana 65%",
+   "stato": "MISURATO",
+   "da": "frazione di distanza con throttle ≥95% sul giro veloce assoluto (FastF1)"
+  },
+  {
+   "grandezza": "velocità media in curva",
+   "valore": "Silverstone 202 (max) · Miami Gardens 121 (min) km/h",
+   "stato": "MISURATO",
+   "da": "mediana della velocità all’apice delle curve (circuit_info)"
+  },
+  {
+   "grandezza": "circuiti nel campione",
+   "valore": "10 (Monaco/Ungheria/Singapore assenti dalla cache)",
+   "stato": "MISURATO",
+   "da": "archivio FastF1 in cache"
+  },
+  {
+   "grandezza": "velocità di punta per circuito",
+   "valore": "riportata ma non centrale",
+   "stato": "STIMATO",
+   "da": "picco del giro veloce: può risentire della scia; la percentuale-gas non ne risente"
+  }
+ ],
+ "fonti": [
+  {
+   "tipo": "dati",
+   "testo": "FastF1 3.8.3 — telemetria vettura (Throttle/Speed) di 10 gare 2026, giro veloce assoluto (cache locale)"
+  },
+  {
+   "tipo": "metodo",
+   "testo": "ai_lab/redazione/multigara.py (estrai_dna) + genera_dna.py — percentuale a tutto gas = distanza con throttle≥95% / lunghezza giro; velocità in curva = mediana all’apice delle curve di circuit_info"
+  }
+ ],
+ "tesi": "La percentuale di giro a tutto gas descrive quanto un circuito chieda potenza, non quanto sia veloce: due tracciati agli estremi opposti di quella scala possono avere la stessa velocità di punta, e per distinguerli serve un secondo asse.",
+ "confutabile_da": "Un circuito che stia in alto su entrambi gli assi e in cui le squadre non cambino assetto: vorrebbe dire che i due numeri misurano la stessa cosa e che uno dei due è superfluo.",
+ "conseguenza": "È la griglia di lettura per tutto il resto della stagione: quando una squadra va forte qui e male là, la prima cosa da guardare è dove cadono i due circuiti su questa mappa.",
+ "forma": "ritratto-di-un-numero",
+ "peso": "standard",
+ "attacco": "domanda-del-lettore",
+ "chiusa": "ritorno",
+ "scrittura": "mano (redazione, 2026-08-03)",
+ "qualita": {
+  "parole": 397,
+  "sezioni": 3,
+  "gulpease": 60.6,
+  "ritmo": {
+   "frasi": 23,
+   "media": 17.3,
+   "sd": 8.3,
+   "cv": 0.482,
+   "max": 36,
+   "min": 6,
+   "pct_corte": 17.4,
+   "pct_lunghe": 4.3
+  },
+  "mtld": 114.0,
+  "numeri_100": 2.0,
+  "emdash": 1,
+  "bloccanti": 0,
+  "avvisi": 1
+ },
+ "en": {
+  "titolo": "At Budapest you're at full throttle for half the lap. And you go faster than at Silverstone",
+  "occhiello": "Ten 2026 circuits · how much of the lap is spent at full throttle",
+  "sommario": "A single figure tells you how much a track asks of the engine and how much it asks of the wing. Across ten circuits it runs from seventy-two per cent to a little under half the lap, and somewhere in the middle there is a pair of numbers that looks wrong.",
+  "sezioni": [
+   {
+    "tag": "The number",
+    "titolo": "Why the slowest circuit has a higher top speed than the fastest",
+    "html": "<p>At the Hungaroring <b>50.4%</b> of the lap is spent at full throttle: it is the track that gives the accelerator the least rest of those we have on file. At Silverstone you are at full throttle for <b>65.1</b>.</p><p>And yet the top speed at Budapest is higher: <b>329 km/h</b> against <b>311</b>. The circuit where you accelerate least is the one where you arrive fastest.</p><p>It is not a measurement error. It is the sign that this percentage does not tell you how fast a track is: it tells you how broken up it is.</p>"
+   },
+   {
+    "tag": "Where it comes from",
+    "titolo": "A single figure, taken where it cannot lie",
+    "html": "<p>The measurement is simple by construction: you take the fraction of the track covered with the throttle above ninety-five per cent, and you read it as a median across flying laps rather than on a single lap. Neither engine power nor tyre comes into it: it is pedal against distance.</p><p>The spread that comes out covers twenty-three percentage points. At the top Spa-Francorchamps, <b>72.3%</b>, and Montréal just below: tracks where the lap is almost all straight-line running. At the bottom Barcelona, <b>49.7</b>, and the Hungaroring. In between, eight tracks that resemble one another more than their reputations suggest.</p><p>The Budapest paradox dissolves when you look at the second number, the average cornering speed. Silverstone has the fastest corners of the group, <b>202 km/h</b> on average; Miami Gardens the slowest, <b>121</b>. Budapest has one long straight, where you reach everything, and sixteen corners that interrupt it.</p>"
+   },
+   {
+    "tag": "What it's worth",
+    "titolo": "Two axes, because one alone confuses different tracks",
+    "html": "<p>A lap spent largely at full throttle rewards power and low drag: you trim the wing, you lengthen the gear ratios, you chase top speed. A broken-up lap rewards the opposite, and the compromise to be resolved is the same one every team faces with set-up — only seen from the track's side.</p><p>Cornering speed adds what the percentage cannot say. Fast corners ask for aerodynamic stability at high speed; slow ones ask for traction and agility on exit. Two circuits with the same figure on the first axis can therefore call for two different cars.</p><p>A note on scope, because it changes the shape of the map: the most extreme tracks on the downforce side are missing from our archive, and the lower tail is longer than this. Which brings us back to the opening question. At Budapest you touch a fast-circuit top speed because the straight is there, and it is long; all the rest of the lap is another matter, and the car that wins there is built by looking at the other column.</p>"
+   }
+  ],
+  "etichette": {
+   "Quanto giro a tutto gas, per circuito": "How much of the lap at full throttle, by circuit",
+   "Spa-Francorchamps": "Spa-Francorchamps",
+   "Montréal": "Montréal",
+   "Suzuka": "Suzuka",
+   "Melbourne": "Melbourne",
+   "Miami Gardens": "Miami Gardens",
+   "Silverstone": "Silverstone",
+   "Shanghai": "Shanghai",
+   "Spielberg": "Spielberg",
+   "Budapest": "Budapest",
+   "Barcelona": "Barcelona",
+   "% del giro con acceleratore ≥95% · più alto = più “motore” (asse da 40)": "% of lap with throttle ≥95% · higher = more “engine” (axis from 40)",
+   "Il piano dei circuiti 2026": "The 2026 circuit map",
+   "motore vs carico · veloce vs stop-and-go": "engine vs downforce · fast vs stop-and-go",
+   "motore, curve lente (stop-and-go)": "engine, slow corners (stop-and-go)",
+   "veloce e potente": "fast and powerful",
+   "tecnico, curve veloci": "technical, fast corners",
+   "tecnico e lento": "technical and slow",
+   "% del giro a tutto gas (→ più motore)": "% of lap at full throttle (→ more engine)",
+   "velocità media in curva (km/h)": "average cornering speed (km/h)"
+  },
+  "motore": {
+   "modello": "claude-opus-5",
+   "quando": "2026-08-21T00:41:43",
+   "guardia": "numeri identici all'originale, uno per uno"
+  },
+  "impronta": "5d5f171c6f5db351"
+ }
 }

@@ -26,8 +26,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
-<link rel="stylesheet" href="muro.css?v=190826b">
-<link rel="stylesheet" href="hero.css?v=190826b">
+<link rel="stylesheet" href="muro.css?v=190826f">
+<link rel="stylesheet" href="hero.css?v=190826f">
 <link rel="apple-touch-icon" href="/assets/marchio/icona-180.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%2232%22%20height%3D%2232%22%20role%3D%22img%22%20aria-label%3D%22Muretto%20Box%20Virtuale%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%23FF1E3C%22%2F%3E%3Cpath%20d%3D%22M20%2064L20%2018L31.5%2018L50%2042L68.5%2018L80%2018L80%2064L69.5%2064L69.5%2034L54%2055L46%2055L30.5%2034L30.5%2064Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Cpath%20d%3D%22M12%2073L88%2073L88%2084L12%2084Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E">
 <style>
@@ -210,7 +210,7 @@
 <footer class="piede"><div class="piede-in"></div></footer>
 
 <script type="module">
-import { guscio, dati, el, V, identita, coloreDi, dataLoc, guasto, t, tn, gpTitolo } from './muro.mjs?v=190826b';
+import { guscio, dati, el, V, identita, coloreDi, dataLoc, guasto, t, tn, gpTitolo, ITA } from './muro.mjs?v=190826f';
 guscio('index.html');
 
 /* ----------------------------------------------------------- ultima gara */
@@ -254,12 +254,17 @@ async function letture() {
   if (a == null) return;                    // guasto: la sezione resta com'e', non sparisce
   const lista = a.filter(x => x.stato === 'pubblicato' && x.pagina).slice(0, 3);
   if (!lista.length) { box.closest('main').querySelector('.sezione-t:last-of-type')?.remove(); box.remove(); return; }
+  // LA CARD SEGUE LA LINGUA. Il manifest porta la traduzione dell'articolo quando
+  // c'e' (coda.py::_card): senza questa riga la home inglese mostrerebbe tre titoli
+  // italiani che portano a tre articoli inglesi — la traduzione ci sarebbe, e non la
+  // vedrebbe nessuno. Se manca, resta l'italiano: e' l'originale, non un ripiego.
+  const suo = (x, campo) => (ITA ? null : x.en?.[campo]) || x[campo] || '';
   box.replaceChildren(...lista.map(x => el('a', {
     class: 'lettura', href: `articolo/${x.id}.html`, stile: { '--ac': x.accent || '#FF1E3C' },
   },
-    el('span', { class: 'occ' }, x.occhiello || ''),
-    el('h3', {}, x.titolo),
-    el('p', {}, x.sommario || ''))));
+    el('span', { class: 'occ' }, suo(x, 'occhiello')),
+    el('h3', {}, suo(x, 'titolo')),
+    el('p', {}, suo(x, 'sommario')))));
 }
 
 ultima(); letture();
@@ -268,7 +273,7 @@ ultima(); letture();
    in viewport e il movimento e' consentito. Chi ha prefers-reduced-motion, o chi non
    arriva fin qui, non paga un byte di libreria: il markup statico resta leggibile.
    Se qualcosa va storto la pagina NON si rompe — la hero resta com'e' scritta. */
-import('./hero.mjs?v=190826b')
+import('./hero.mjs?v=190826f')
   .then(({ creaHero }) => creaHero(document.getElementById('hero')))
   .catch((e) => console.warn('hero non avviata:', e.message));
 </script>

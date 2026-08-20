@@ -327,6 +327,33 @@ hr{ border:0; border-top:1px solid var(--bordo); margin:26px 0; }
 }
 html[lang="it"] .avviso-lingua{ display:none; }
 
+/* ------------------------------------------ l'articolo nelle due lingue
+   IL CORPO DELL'ARTICOLO C'E' DUE VOLTE, e non e' spreco: il testo di un articolo
+   pesa 2 kB, i suoi grafici da 5 a 48. Duplicare le PAROLE costa quasi niente;
+   duplicare i disegni sarebbe costato il doppio della pagina, e non serve — di un
+   grafico si traducono le didascalie, non le curve.
+   Le due prose stanno tutt'e due nel DOM, ognuna col suo `lang`: l'originale
+   italiano e la traduzione. Un motore di ricerca le trova entrambe e sa quale e'
+   quale; un lettore di schermo cambia voce sulla lingua giusta. Nascondere quella
+   che non serve e' l'ultimo passo, e lo fa il CSS sull'attributo `lang` del
+   documento — che lingua.mjs::applica() scrive comunque, in tutt'e due le lingue. */
+html[lang="en"] .art-lingua[lang="it"],
+html[lang="it"] .art-lingua[lang="en"]{ display:none; }
+
+/* la nota di provenienza della traduzione: sta sotto l'occhiello, in inglese
+   soltanto, perche' in italiano non c'e' niente da dichiarare — quello e' l'originale */
+.art-tradotto{
+  margin:0 0 14px; display:inline-flex; align-items:center; gap:9px;
+  padding:8px 12px; border-radius:10px;
+  background:rgba(255,255,255,.04); border:1px solid var(--bordo);
+  color:var(--fioco); font:400 12.5px/1.45 var(--mono);
+}
+.art-tradotto::before{
+  content:"IT→EN"; flex:0 0 auto; padding:2px 6px; border-radius:5px;
+  background:rgba(255,255,255,.07); color:var(--calmo);
+  font:500 10px/1.4 var(--mono); letter-spacing:.08em;
+}
+
 .pallino{ width:7px; height:7px; border-radius:50%; background:var(--fioco); flex:0 0 auto; }
 .pallino.on{ background:var(--rosso); box-shadow:0 0 0 0 rgba(255,30,60,.6); animation:battito 1.8s infinite; }
 @keyframes battito{ 70%{ box-shadow:0 0 0 7px rgba(255,30,60,0); } 100%{ box-shadow:0 0 0 0 rgba(255,30,60,0); } }

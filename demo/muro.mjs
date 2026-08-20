@@ -3,10 +3,10 @@
 // Regola: qui dentro non entra NIENTE che sappia di una pagina sola. Se una
 // funzione serve a un posto solo, sta in quel posto.
 
-import { t, tn, esiste, applica, cambia, LINGUE, L, LOCALE, VIRGOLA } from './lingua.mjs?v=190826b';
-export { t, tn, applica, L, ITA, LOCALE } from './lingua.mjs?v=190826b';
+import { t, tn, esiste, applica, cambia, LINGUE, L, LOCALE, VIRGOLA } from './lingua.mjs?v=190826f';
+export { t, tn, applica, aggiungi, L, ITA, LOCALE } from './lingua.mjs?v=190826f';
 
-export const V = '190826b';                      // targhetta di cache
+export const V = '190826f';                      // targhetta di cache
 
 /* ------------------------------------------------------------------ DOM */
 export const $  = (s, r = document) => r.querySelector(s);

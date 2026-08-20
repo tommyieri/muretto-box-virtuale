@@ -16,7 +16,7 @@
 //    «che cosa parte da qui» non e' scritto a mano nell'HTML: e' costruito dallo stesso
 //    oggetto che finisce nella fetch (`corpo()`), cosi' non puo' divergere. Una promessa
 //    sulla privacy mantenuta a mano diverge alla prima modifica, e nessuno se ne accorge.
-import { $, el, param, t } from './muro.mjs?v=190826b';
+import { $, el, param, t } from './muro.mjs?v=190826f';
 
 const BUCA = '/api/feedback';
 

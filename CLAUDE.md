@@ -116,6 +116,7 @@ ingresso nuovo è ripagare un conto già pagato.
 - **File Scratch**: Tutti i vecchi script `diag_*`, `patch_*`, `apply_patch.py`, `.bak2` sono stati rimossi.
 - **Riproducibilità**: `data/_warmin_raw_multiyear.pkl` è tracciato per consentire a `finalize_warmin.py` di riprodurre `data/warmin_prior.csv` in modo deterministico e offline.
 - **CI/CD**: `sentinella.py` è integrato nel workflow GitHub Actions [`.github/workflows/banco.yml`](.github/workflows/banco.yml).
+- **Un articolo non si traduce a mano.** Lo fa `ai_lab/redazione/traduci.py`, chiamato da `coda.py` alla pubblicazione, e la sua traduzione entra in pagina **solo** se porta gli stessi numeri dell'originale, uno per uno. Se la guardia boccia, l'articolo resta italiano e lo dichiara: è un esito, non un guasto. Ritradurre a mano un campo `en` nel JSON aggira il cancello — e la verifica 13 se ne accorge, perché la guardia la rifà su ciò che è committato.
 - **La lingua sta in due file, e non si reimplementa**: `demo/lingua.mjs` (qual è la lingua attiva, come si cambia, `t()`/`tn()`, `applica()`) e `demo/dizionario.mjs` (le due colonne). Il **selettore** lo disegna `demo/muro.mjs::selettoreLingua`, perché è un pezzo del guscio e riusa la tendina che la barra ha già. Un testo nuovo in pagina nasce **in inglese con la sua chiave accanto**; l'italiano si aggiunge nella seconda colonna, mai nell'HTML.
 - **Moduli a sorgente unica** — non reimplementarli a mano: `demo/sosta.mjs` (che cos'è una sosta), `demo/passo.mjs` (il modello simmetrico del tempo sul giro), `demo/ese.mjs` (ponte al kernel: `preparaGara`, `congelamentoPer`, `rigioca`), `demo/ese_vista.mjs` (`eseguiRigioca`, i due bracci), `demo/classifica.mjs`, `demo/orologio.mjs`, `demo/muro.mjs` (guscio, `dati()`, identità).
 - **Quando cerchi perché qualcosa non si aggiorna, cerca il CHIAMANTE, non il generatore**: i generatori orfani esistono e sono già costati un ciclo.
@@ -251,22 +252,15 @@ ingresso nuovo è ripagare un conto già pagato.
      Nessuno tocca la struttura della nav: le quattro sezioni restano quattro a ogni
      larghezza. La misura da rispettare è una sola e vale a ogni gradino: `.barra`
      `scrollWidth == clientWidth`, verificata da 320 a 1280 px.
-   - **COSA NON È TRADOTTO, e non è una dimenticanza.**
-     1. **I dodici articoli della redazione tecnica**: sono analisi scritte a mano, una per
-        una. Tradurle a macchina vorrebbe dire pubblicare come nostro un testo che nessuno
-        ha verificato — su un sito la cui prima regola è che un numero senza generatore non
-        si pubblica. La pagina `analisi.html` lo dichiara **prima** che si clicchi, e ogni
-        articolo lo ripete in testa (`.avviso-lingua`, nascosto in italiano da una riga di
-        CSS su `html[lang]`). L'articolo è una pagina `lang="en"` con `<article lang="it">`:
-        `og:locale` resta `it_IT` **solo lì**, perché una targhetta descrive il file su cui
-        sta, non il sito che lo contiene.
-     2. **Le assunzioni e il verdetto del Simulation Director**: li scrive il **kernel**,
+   - **COSA NON È TRADOTTO, e non è una dimenticanza.** *(Gli articoli sono usciti da
+     questo elenco il 21/08: vedi il Cantiere 8.)*
+     1. **Le assunzioni e il verdetto del Simulation Director**: li scrive il **kernel**,
         che è congelato, e li scrive come DATO — frasi con dentro i numeri di quella gara.
         Riscriverle in inglese vorrebbe dire ricostruirle senza avere quei numeri, cioè
         inventare una dichiarazione al posto di quella vera, sulla pagina che era già stata
         spenta una volta per numeri fabbricati. Fuori dall'italiano si dichiara, una riga
         (`sim.avviso_kernel`).
-     3. **I moduli orfani** (15: `muretto.mjs`, `grossi.mjs`, `glossario.mjs`,
+     2. **I moduli orfani** (15: `muretto.mjs`, `grossi.mjs`, `glossario.mjs`,
         `pitscenario.mjs`, `pista.mjs`…): non li raggiunge nessuna pagina. Tradurre codice
         morto darebbe l'impressione di una copertura che non c'è. **La sentinella calcola
         la raggiungibilità invece di elencarla**: se uno tornasse vivo, entrerebbe da solo
@@ -286,6 +280,76 @@ ingresso nuovo è ripagare un conto già pagato.
      di una pagina senza cambiare il dizionario → rossa, col nome della chiave; scrivi una
      frase italiana a mano in una pagina → rossa, con la frase. Ha già trovato da sola
      `giro ${L}` nell'intestazione della torre, che avevo visto solo a schermo.
+
+8. **Cantiere 8 (Gli articoli si traducono da soli)** — *21/08/2026, su richiesta del PO.*
+   - **La direttiva, e la mia obiezione superata.** Avevo lasciato i dodici articoli in
+     italiano dichiarando perché: sono analisi scritte a mano, e tradurle a macchina
+     vorrebbe dire pubblicare come nostro un testo che nessuno ha verificato. Tommi ha
+     ripetuto la richiesta — «gli articoli devono aggiornarsi automaticamente per la
+     lingua» — e ha ragione lui su un punto che pesa più della mia obiezione: un sito
+     inglese con dodici articoli italiani dentro è un sito a metà, e il problema non si
+     risolve aspettando. **L'obiezione però non si butta: diventa il cancello.**
+   - **La regola della casa non cambia perché cambia la lingua.** «La prosa non introduce
+     un numero che non sia nei fatti» vale identica sulla traduzione, e anzi qui si può
+     chiedere di più: la traduzione deve portare **esattamente gli stessi numeri
+     dell'originale, nello stesso ordine**. Un traduttore che scrive «two tenths» dove
+     l'italiano diceva 0,247 non ha fatto un errore di stile: ha cancellato una misura.
+     `ai_lab/redazione/traduci.py` conta i numeri delle due prose e li confronta uno per
+     uno — zero modelli, solo aritmetica: chi giudica una traduzione con un altro modello
+     scopre di avere due opinioni, non una verifica.
+   - **Il fallimento non pubblica niente, e si vede.** Se la guardia boccia, l'articolo
+     resta italiano e la pagina lo dichiara (`.avviso-lingua`). Non esiste una traduzione
+     «quasi buona» pubblicata in silenzio. **È già successo, al primo giro**: su
+     `compagni-marce-stowe-gb-2026` il modello ha scritto «corner 15» dove l'italiano
+     diceva «la curva quindici» — un numero comparso dal nulla, bocciato, e la regola
+     mancante («la forma di ogni numero si conserva com'è: una cifra resta cifra, una
+     parola resta parola») è finita nel prompt. In questa redazione le **cifre sono le
+     misure** e le **parole sono tutto il resto**: cambiare la forma o fa comparire una
+     misura che nessuno ha misurato, o ne fa sparire una che qualcuno ha misurato.
+   - **Il corpo dell'articolo è l'unico posto del sito dove l'italiano è l'originale.**
+     Ovunque altrove l'inglese è la sorgente; qui è una traduzione, e si dichiara sopra il
+     titolo. Le due prose stanno **tutt'e due nel DOM**, ognuna col suo `lang`: l'originale
+     resta leggibile e indicizzabile, la traduzione si presenta per quello che è. Costa
+     ~2 kB — il testo di un articolo pesa 2 kB, i suoi grafici da 5 a 48.
+   - **Del grafico si traducono le didascalie, non le curve.** I `<text>` con una
+     traduzione vengono sdoppiati (`art-lingua`), il disegno resta uno solo: duplicare
+     l'SVG avrebbe raddoppiato la pagina più pesante (63 kB) per cinque righe di testo.
+     I 777 `<text>` di questi SVG non contengono altri tag — verificato — e per questo
+     una regex basta dove servirebbe un parser.
+   - **La testa segue l'inglese, il corpo mette avanti l'originale**, e sono due decisioni
+     diverse perché rispondono a due domande diverse: «in che lingua è scritto questo
+     file» (lo leggono i crawler e le anteprime social, che il nostro JS non lo eseguono) e
+     «che cosa faccio vedere per primo a chi legge». Titolo e descrizione seguono la lingua
+     con `data-i18n` e un blocco di voci che **la pagina si porta addosso**
+     (`lingua.mjs::aggiungi`): le parole di un articolo non appartengono al dizionario del
+     sito, e farle crescere lì dentro di dodici voci a settimana sarebbe un file comune che
+     nessuno può più leggere.
+   - **Un file, due lettori.** `demo/dizionario.mjs` lo legge il browser e lo legge Python
+     (`statico.py::voci_dizionario`), perché le card e le pillole dei temi sono
+     pre-renderizzate. L'alternativa era una seconda tabella, e due tabelle della stessa
+     cosa si disallineano sempre. La sentinella controlla che i due lettori vedano **lo
+     stesso numero di voci**.
+   - **È agganciato alla catena**: `coda.py::_scrivi_demo` traduce **prima** di rendere la
+     pagina (l'ordine è pagina → manifest → indici, e tutt'e tre leggono lo stesso oggetto:
+     una traduzione che arrivasse dopo nascerebbe già in ritardo). Non può far cadere una
+     pubblicazione: se il modello manca o la guardia boccia, si scrive perché e si va
+     avanti in italiano. `statico.py::allinea_manifest_lingua` riallinea l'indice a ogni
+     rigenerazione, così vale anche per i dodici articoli tradotti **dopo** essere stati
+     pubblicati — nessuno di loro ripassa da `coda.py`.
+   - **L'avviso compare solo quando è vero.** Su `analisi.html` non è più una riga fissa:
+     lo accende lo script se in elenco c'è almeno un articolo senza traduzione. Un avviso
+     falso è peggio di nessun avviso — insegna a non leggerli.
+   - **Un difetto vecchio trovato per strada**: `data_it()` usava una costante `MESI` che
+     **non è mai esistita**, e il suo `except Exception` (messo per le date malformate) si
+     prendeva anche il `NameError`. Da sempre, in fondo a ogni articolo e su ogni card, il
+     sito ha scritto «2026-07-26» dove voleva dire «26 luglio 2026», senza una riga di log.
+     È il fallimento muto che questo repo descrive da solo in tre punti diversi, e si vede
+     solo guardando la pagina. Trovato mentre nasceva la sua gemella `data_en()`.
+   - **La sentinella (verifica 13) è cresciuta con lui**: rifà la guardia sui numeri su
+     ciò che è **committato** — quindi copre anche la mano che apre il JSON e corregge una
+     cifra a occhio — controlla che ogni pagina dichiari quale delle due è, e che il
+     manifest non resti indietro rispetto all'articolo. Provata al contrario su un numero
+     cambiato e su un manifest fermo: rossa in tutt'e due i casi.
 
 ---
 

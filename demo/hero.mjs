@@ -32,7 +32,7 @@
 
 // la targhetta di cache vive in un posto solo (muro.mjs::V) e serve alla fetch
 // congelata di hero.json qui sotto
-import { V, t, tn, nnum } from './muro.mjs?v=190826b';
+import { V, t, tn, nnum } from './muro.mjs?v=190826f';
 
 const FONTE = 'data/hero.json';
 const VENDOR = 'vendor/';         // relativo al documento: i file sono UMD, non moduli
