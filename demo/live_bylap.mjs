@@ -71,6 +71,8 @@ function mediana(v) {
 }
 
 // "1:50.651" / "50.651" -> secondi. Il feed usa entrambe le forme.
+import { t } from './muro.mjs?v=190826b';
+
 export function tempoInSecondi(v) {
   if (typeof v === 'number') return v;
   if (typeof v !== 'string' || !v.trim()) return null;
@@ -409,7 +411,7 @@ export function creaByLapLive() {
     // Perche' il pannello non parla ancora. Un motivo scritto vale piu' di un pannello
     // vuoto: chi guarda deve sapere se manca un dato o se e' rotto qualcosa.
     diagnosi(L, drv = null) {
-      if (L == null) return { pronto: false, motivo: 'nessun giro ancora completato', n: 0, giriVerdi: 0, giriNecessari: 3 };
+      if (L == null) return { pronto: false, motivo: t('lbl.nessun_giro'), n: 0, giriVerdi: 0, giriNecessari: 3 };
       const p = pace(L), n = Object.keys(p).length;
       let mioGiri = 0;
       if (drv) {
@@ -423,14 +425,13 @@ export function creaByLapLive() {
         }
       }
       if (n < 6) {
-        const infoDrv = drv ? ` (per ${drv}: ${mioGiri}/3 giri completati)` : '';
+        const infoDrv = drv ? ' ' + t('lbl.per_drv', { chi: drv, n: mioGiri }) : '';
         return {
           pronto: false,
           n,
           giriVerdi: mioGiri,
           giriNecessari: 3,
-          motivo: `passo-base disponibile per ${n} piloti su ${Object.keys(byLap[L] || {}).length}:`
-                + ` servono 3 giri verdi a testa${infoDrv}`
+          motivo: t('lbl.passo_base', { n, tot: Object.keys(byLap[L] || {}).length }) + infoDrv
         };
       }
       return { pronto: true, n, giriVerdi: mioGiri, giriNecessari: 3, motivo: null };

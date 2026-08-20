@@ -18,7 +18,7 @@ Prima di chiudere ogni sessione o proporre merge, eseguire SEMPRE il comando uni
 ```bash
 python3 sentinella.py
 ```
-La sentinella esegue 12 verifiche:
+La sentinella esegue 13 verifiche:
 1. Golden Motore JS (`test_b.mjs`, 443/443 casi, diff < 1e-9)
 2. Golden Modulo Pit (`demo/test_pit.mjs`, 33/33 casi)
 3. Hook Degrado & Banda-Zero (`test_degrado_hook.mjs`)
@@ -31,6 +31,14 @@ La sentinella esegue 12 verifiche:
 10. Sentinella What-If (`demo/test_whatif.mjs`) — i **numeri** di una pagina, non la sua esistenza
 11. Sentinella Feedback (`demo/test_feedback.mjs`) — il **contratto**, la **condotta** e le **promesse** della buca delle segnalazioni
 12. Sentinella Formazione (`test_formazioni.py`) — **chi guida che cosa, round per round**: l'invariante forte è che la formazione risolta al round di una gara già pubblicata coincida con le squadre scritte dentro i suoi file (1.172 attribuzioni su 55 sessioni)
+13. Sentinella Lingua (`demo/test_lingua.mjs`) — le **due colonne** del dizionario, ogni chiave usata che esiste e ogni chiave dichiarata che è usata, l'inglese delle pagine uguale a quello del dizionario, il selettore montato dal guscio, e **nessun italiano di contrabbando** nei sorgenti vivi
+
+> **Il buco che la verifica 13 chiude.** Un testo non è un numero e sbaglia in un modo
+> tutto suo: in silenzio. Una chiave mai messa nel dizionario non fa cadere niente —
+> `t()` restituisce la chiave e la pagina mostra `strat.quando_fermarsi` a un lettore
+> vero. Un inglese cambiato nell'HTML e non nel dizionario non fa cadere niente: da quel
+> giorno il sito dice due cose diverse a due lettori diversi. **Nessuno dei due è un
+> errore di programma**, e nessuna delle dodici verifiche precedenti li poteva vedere.
 
 > **Il buco che la verifica 10 chiude.** Fino al 17/08/2026 nessuna delle nove guardava un
 > numero prodotto da una pagina: la verifica 7 (`demo/test_stat.mjs`) controlla che una pagina
@@ -89,6 +97,7 @@ ingresso nuovo è ripagare un conto già pagato.
 - **`data/difficolta_sorpasso.csv` è ORFANO e non fidato**: nessun generatore committato lo produce.
 - **`demo/data/teams.json` NON si modifica a mano**: dal 19/08/2026 è un derivato di `gen_formazioni.py` (base = `team_demo` degli standings f1db, deroghe dichiarate in `data/formazione_deroghe_2026.json`). Un cambio di sedile si scrive **nelle deroghe, con il round**, mai nella mappa piatta: la mappa non ha l'asse del tempo e correggerla riscrive anche le gare già corse al primo `gen_giri.py --forza`.
 - **`live/` non si riattiva**: provato in campione e fuori — il feed parcheggia le auto su (−7447, −1830), che non è (0,0,0) e passa il filtro.
+- **Nell'HTML non si scrive italiano**: dal 19/08/2026 la sorgente del sito è l'inglese. Un testo italiano scritto a mano in una pagina non lo tradurrà mai nessuno, perché nessuno sa che c'è — e la verifica 13 lo trova, con la frase in chiaro. Vale anche per i nomi delle variabili: **`t` è la funzione che traduce**, e una locale con quel nome la spegne in silenzio.
 - **Non ricreare script scratch nella root** (`diag_*`, `patch_*`, `apply_patch.py`, `.bak2`): usa test formali o moduli dedicati.
 
 ---
@@ -107,6 +116,7 @@ ingresso nuovo è ripagare un conto già pagato.
 - **File Scratch**: Tutti i vecchi script `diag_*`, `patch_*`, `apply_patch.py`, `.bak2` sono stati rimossi.
 - **Riproducibilità**: `data/_warmin_raw_multiyear.pkl` è tracciato per consentire a `finalize_warmin.py` di riprodurre `data/warmin_prior.csv` in modo deterministico e offline.
 - **CI/CD**: `sentinella.py` è integrato nel workflow GitHub Actions [`.github/workflows/banco.yml`](.github/workflows/banco.yml).
+- **La lingua sta in due file, e non si reimplementa**: `demo/lingua.mjs` (qual è la lingua attiva, come si cambia, `t()`/`tn()`, `applica()`) e `demo/dizionario.mjs` (le due colonne). Il **selettore** lo disegna `demo/muro.mjs::selettoreLingua`, perché è un pezzo del guscio e riusa la tendina che la barra ha già. Un testo nuovo in pagina nasce **in inglese con la sua chiave accanto**; l'italiano si aggiunge nella seconda colonna, mai nell'HTML.
 - **Moduli a sorgente unica** — non reimplementarli a mano: `demo/sosta.mjs` (che cos'è una sosta), `demo/passo.mjs` (il modello simmetrico del tempo sul giro), `demo/ese.mjs` (ponte al kernel: `preparaGara`, `congelamentoPer`, `rigioca`), `demo/ese_vista.mjs` (`eseguiRigioca`, i due bracci), `demo/classifica.mjs`, `demo/orologio.mjs`, `demo/muro.mjs` (guscio, `dati()`, identità).
 - **Quando cerchi perché qualcosa non si aggiorna, cerca il CHIAMANTE, non il generatore**: i generatori orfani esistono e sono già costati un ciclo.
 
@@ -191,6 +201,91 @@ ingresso nuovo è ripagare un conto già pagato.
    - **Un difetto vero trovato per strada, e riparato.** La vecchia `teams.json` diceva «Haas», `team_colori.json` è indicizzato «Haas F1 Team» e `gen_giri.py` fa `colori.get(team)` **senza alias**: **BEA e OCO hanno il grigio `#8A93A3` congelato dentro ogni file di `demo/data/giri/`** — la livrea sbagliata su una tabella che sembra a posto, esattamente il guasto che `gen_stat_identita.py` descrive nel suo frontespizio. Prendendo il canonico dagli standings il nome torna «Haas F1 Team» e il colore argento. **I file già scritti restano come sono** (sono output storico, non si ritoccano a mano): si correggono da soli al primo `gen_giri.py --forza`. In pagina l'effetto era nullo — `telemetria.html` usa `coloreDi()`, che l'alias ce l'ha.
    - **La sentinella è nata con lui** (verifica 12, `test_formazioni.py`): riproducibilità, livrea per ogni squadra di ogni round, **il passato non si muove**, perimetro delle deroghe dentro e fuori, `teams.json` derivato, ogni deroga tracciabile. Provata **al contrario**: estesa la deroga al round 11 va rossa nominando `ungheria__*:LAW`; un nome di squadra senza livrea fa uscire 1 il generatore **senza scrivere**.
    - **La deroga non si cancella dopo Zandvoort**: diventa il verbale di come sono stati attribuiti i dati di quel weekend. Toglierla rifarebbe risolvere Lawson in Racing Bulls all'Olanda, in disaccordo coi file pubblicati — e l'invariante storico se ne accorge.
+
+7. **Cantiere 7 (Il sito in due lingue, con l'inglese principale)** — *19/08/2026, su richiesta del PO.*
+   - **La direzione, e cosa vuol dire davvero.** «La principale dev'essere l'inglese» non è
+     una preferenza di resa: decide **dove vive il testo**. L'inglese sta scritto
+     NELL'HTML e nella prima colonna di `demo/dizionario.mjs`; l'italiano sta **solo**
+     nella seconda. È l'unico ordine in cui «principale» resta vero anche quando il
+     JavaScript non gira — un motore di ricerca, un lettore senza script, la prima
+     vernice della pagina prima che i moduli partano vedono l'inglese perché è quello che
+     c'è scritto nel file. Se il dizionario sparisse resterebbe un sito inglese intero;
+     se la sorgente fosse italiana, sparirebbe il sito.
+   - **Le due colonne stanno sulla stessa riga**, e la forma è il controllo:
+     `'chiave': ['English', 'Italiano']`. Un dizionario per lingua si disallinea alla
+     terza modifica e nessuno se ne accorge finché qualcuno non legge quella lingua; qui
+     il disallineamento **non è rappresentabile**. 568 voci.
+   - **La lingua NON si indovina dal browser**, ed è una scelta contro-intuitiva presa
+     apposta: con `navigator.language` un visitatore italiano non vedrebbe mai la lingua
+     principale del sito, e «principale» diventerebbe una parola senza effetto. L'ordine è
+     `?lang=` (un link condiviso porta la sua lingua) → la scelta ricordata → inglese.
+     Tre gradini, nessuno dei quali indovina. `?lang=` vince **e resta**, altrimenti la
+     seconda pagina tornerebbe inglese e la scelta sembrerebbe non aver funzionato.
+   - **Cambiare lingua ricarica la pagina**, e non è pigrizia: metà di quello che si legge
+     non sta nell'HTML — lo scrivono i moduli mentre girano, ed è la metà che porta i
+     numeri. Riscrivere solo i nodi marcati lascerebbe una pagina mezza inglese con la
+     parte vecchia proprio sui numeri. Lo stato che conta vive nell'indirizzo (`?g=`,
+     `?d=`), quindi la ricarica torna dov'eri.
+   - **Il separatore decimale è il numero, non la tipografia.** `nnum`/`delta` scrivevano
+     sempre la virgola. In inglese «1,250» non è uno e due e mezzo: è milleduecento­
+     cinquanta. Un pit-loss di «20,80 s» diventerebbe ventimila e ottocento letto da un
+     inglese — lo stesso carattere, due ordini di grandezza. Con lui: date (`dataLoc`,
+     che si chiamava `dataIt` finché il nome non è diventato falso), nomi di mescola, nomi
+     dei Gran Premi, nomi delle sessioni.
+   - **Dove sta il selettore, e perché lì.** In fondo alla barra, dopo le sezioni,
+     separato da un filo: la nav elenca quello che il sito racconta, questa è
+     un'impostazione di chi legge — e le impostazioni stanno all'estremità, che è anche
+     l'angolo dove per abitudine si va a cercarle. Sta **anche nel piede**, perché chi
+     scorre fino in fondo senza aver capito la pagina non deve risalire. Non entra dentro
+     `<nav>`: non è una destinazione.
+   - **Perché un bottone solo e non due sigle affiancate.** Il primo disegno era `EN | IT`:
+     migliore su schermo largo, perché si vede tutto senza toccare niente. Su 375 px non
+     ci sta, **misurato nel browser**: marchio 32 + menu 265 + coppia 60 + spazi = 401 px
+     dentro una barra da 375, con IT tagliato a metà. La barra era già al limite (le voci
+     scendono a 4 px di respiro) e le etichette inglesi sono più lunghe delle italiane —
+     CHAMPIONSHIP contro CAMPIONATO, 265 px contro 254. Un bottone con mappamondo costa
+     44 px e la tendina che apre dà alle due lingue righe da 44 px vere. Sotto i 600 px
+     resta il solo mappamondo (38 px): **sotto i 44 canonici, e detto**.
+   - **La scala della barra stretta ha tre gradini** (≤420, ≤380, ≤340) e toglie poco alla
+     volta — prima il respiro fra le voci, poi il corpo, poi i margini della barra.
+     Nessuno tocca la struttura della nav: le quattro sezioni restano quattro a ogni
+     larghezza. La misura da rispettare è una sola e vale a ogni gradino: `.barra`
+     `scrollWidth == clientWidth`, verificata da 320 a 1280 px.
+   - **COSA NON È TRADOTTO, e non è una dimenticanza.**
+     1. **I dodici articoli della redazione tecnica**: sono analisi scritte a mano, una per
+        una. Tradurle a macchina vorrebbe dire pubblicare come nostro un testo che nessuno
+        ha verificato — su un sito la cui prima regola è che un numero senza generatore non
+        si pubblica. La pagina `analisi.html` lo dichiara **prima** che si clicchi, e ogni
+        articolo lo ripete in testa (`.avviso-lingua`, nascosto in italiano da una riga di
+        CSS su `html[lang]`). L'articolo è una pagina `lang="en"` con `<article lang="it">`:
+        `og:locale` resta `it_IT` **solo lì**, perché una targhetta descrive il file su cui
+        sta, non il sito che lo contiene.
+     2. **Le assunzioni e il verdetto del Simulation Director**: li scrive il **kernel**,
+        che è congelato, e li scrive come DATO — frasi con dentro i numeri di quella gara.
+        Riscriverle in inglese vorrebbe dire ricostruirle senza avere quei numeri, cioè
+        inventare una dichiarazione al posto di quella vera, sulla pagina che era già stata
+        spenta una volta per numeri fabbricati. Fuori dall'italiano si dichiara, una riga
+        (`sim.avviso_kernel`).
+     3. **I moduli orfani** (15: `muretto.mjs`, `grossi.mjs`, `glossario.mjs`,
+        `pitscenario.mjs`, `pista.mjs`…): non li raggiunge nessuna pagina. Tradurre codice
+        morto darebbe l'impressione di una copertura che non c'è. **La sentinella calcola
+        la raggiungibilità invece di elencarla**: se uno tornasse vivo, entrerebbe da solo
+        nel controllo, e da rosso.
+   - **Difetti veri trovati per strada** (nessuno dei quali era la traduzione):
+     `dati.html` e `forza.html` **non avevano `<html>`** — il browser lo inventa, ma allora
+     la lingua del documento non sta scritta da nessuna parte; `t` era il nome di comodo
+     per «team», «trend» e «tag» in sette punti, e una variabile locale con quel nome
+     **spegne in silenzio** la funzione che traduce (`forza.html` cadeva a `t is not a
+     function`); `.voce`/`.tendina` erano scritte come `.menu .voce`, quindi la tendina del
+     selettore — che sta nella barra ma **fuori** dalla nav, apposta — restava un blocco
+     statico largo 200 px; `muro.mjs` leggeva `window` al momento dell'import e ha fatto
+     cadere la verifica 10 appena `ese.mjs` ha cominciato a importarlo (le sentinelle del
+     banco girano headless).
+   - **La sentinella è nata con lui** (verifica 13, `demo/test_lingua.mjs`), ed è stata
+     **provata al contrario**: togli una chiave dal dizionario → rossa; cambia l'inglese
+     di una pagina senza cambiare il dizionario → rossa, col nome della chiave; scrivi una
+     frase italiana a mano in una pagina → rossa, con la frase. Ha già trovato da sola
+     `giro ${L}` nell'intestazione della torre, che avevo visto solo a schermo.
 
 ---
 

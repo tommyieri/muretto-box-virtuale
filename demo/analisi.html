@@ -1,29 +1,33 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Articoli — Muretto Box Virtuale</title>
-<meta name="description" content="Un fatto per volta, dai dati del weekend: telemetria, passo gara, qualifiche e strategia.">
+<title data-i18n="meta.analisi.titolo">Articles — Muretto Box Virtuale</title>
+<meta name="description" data-i18n-attr="content:meta.analisi.desc" content="One fact at a time, from the weekend data: telemetry, race pace, qualifying and strategy.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Muretto Box Virtuale">
-<meta property="og:locale" content="it_IT">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="it_IT">
 <meta property="og:url" content="https://murettobox.com/analisi.html">
-<meta property="og:title" content="Articoli — Muretto Box Virtuale">
-<meta property="og:description" content="Un fatto per volta, dai dati del weekend: telemetria, passo gara, qualifiche e strategia.">
+<meta property="og:title" data-i18n-attr="content:meta.analisi.titolo" content="Articles — Muretto Box Virtuale">
+<meta property="og:description" data-i18n-attr="content:meta.analisi.desc" content="One fact at a time, from the weekend data: telemetry, race pace, qualifying and strategy.">
 <meta property="og:image" content="https://murettobox.com/og/pagina-analisi.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Articoli — Muretto Box Virtuale">
-<meta name="twitter:description" content="Un fatto per volta, dai dati del weekend: telemetria, passo gara, qualifiche e strategia.">
+<meta name="twitter:title" data-i18n-attr="content:meta.analisi.titolo" content="Articles — Muretto Box Virtuale">
+<meta name="twitter:description" data-i18n-attr="content:meta.analisi.desc" content="One fact at a time, from the weekend data: telemetry, race pace, qualifying and strategy.">
 <meta name="twitter:image" content="https://murettobox.com/og/pagina-analisi.png">
 <link rel="canonical" href="https://murettobox.com/analisi.html">
+<link rel="alternate" hreflang="en" href="https://murettobox.com/analisi.html">
+<link rel="alternate" hreflang="it" href="https://murettobox.com/analisi.html?lang=it">
+<link rel="alternate" hreflang="x-default" href="https://murettobox.com/analisi.html">
 <link rel="alternate" type="application/rss+xml" title="Muretto Box Virtuale — Analisi" href="https://murettobox.com/feed.xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
-<link rel="stylesheet" href="muro.css?v=090826b">
+<link rel="stylesheet" href="muro.css?v=190826b">
 <link rel="apple-touch-icon" href="/assets/marchio/icona-180.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%2232%22%20height%3D%2232%22%20role%3D%22img%22%20aria-label%3D%22Muretto%20Box%20Virtuale%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%23FF1E3C%22%2F%3E%3Cpath%20d%3D%22M20%2064L20%2018L31.5%2018L50%2042L68.5%2018L80%2018L80%2064L69.5%2064L69.5%2034L54%2055L46%2055L30.5%2034L30.5%2064Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Cpath%20d%3D%22M12%2073L88%2073L88%2084L12%2084Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E">
 <style>
@@ -35,10 +39,18 @@
 <header class="barra"></header>
 
 <main class="scafo">
-  <p class="occhiello">Analisi · articoli</p>
-  <h1 class="titolone">Un fatto <em>per volta</em></h1>
-  <p class="sottotitolo">Pezzi brevi che partono da un numero del weekend e arrivano a una
-     conclusione sola. Niente pagelle, niente voci di mercato.</p>
+  <p class="occhiello" data-i18n="analisi.occhiello">Analysis · articles</p>
+  <h1 class="titolone" data-i18n-html="analisi.titolo">One fact <em>at a time</em></h1>
+  <p class="sottotitolo" data-i18n="analisi.sottotitolo">Short pieces that start from one number of the
+     weekend and arrive at a single conclusion. No driver ratings, no transfer rumours.</p>
+
+  <!-- GLI ARTICOLI SONO IN ITALIANO, E LO DICE LA PAGINA CHE LI ELENCA.
+       Non sono interfaccia: sono analisi tecniche scritte a mano, una per una, e
+       tradurle a macchina vorrebbe dire pubblicare come nostro un testo che nessuno ha
+       verificato — su un sito la cui prima regola e' che un numero senza generatore non
+       si pubblica. Un avviso che si vede prima di cliccare costa un rimbalzo; scoprirlo
+       dopo aver aperto l'articolo costa la fiducia. Sparisce in italiano. -->
+  <p class="avviso-lingua" lang="en">The articles below are written in Italian.</p>
 
   <!-- STRUMENTI DI STAGIONE. Non sono articoli: sono due pezzi che valgono TUTTA la
        stagione e si ricalcolano a ogni gara, quindi non hanno una data e nessun filtro
@@ -47,35 +59,35 @@
        e' esattamente quello che era successo. -->
   <div class="strumenti">
     <a class="strum" href="forza.html">
-      <span class="strum-tag">Interattivo · si aggiorna a ogni gara</span>
-      <b>Forza-macchina, gara per gara</b>
-      <span class="strum-d">Quanto è forte ogni vettura in ogni gara — dal potenziale, non dal
-        piazzamento. Il cursore sceglie l'intervallo e mostra come cambia la gerarchia.</span>
-      <span class="strum-go">Apri →</span>
+      <span class="strum-tag" data-i18n="analisi.tag_ogni_gara">Interactive · updates after every race</span>
+      <b data-i18n="analisi.strum_forza_t">Car strength, race by race</b>
+      <span class="strum-d" data-i18n="analisi.strum_forza_d">How strong each car is in each race — from
+        potential, not from finishing position. The slider picks the range and shows how the order changes.</span>
+      <span class="strum-go"><span data-i18n="analisi.apri">Open</span> →</span>
     </a>
     <a class="strum" href="dati.html">
-      <span class="strum-tag">Interattivo · si aggiorna a ogni gara</span>
-      <b>Assetto e DNA dei circuiti</b>
-      <span class="strum-d">Dove ogni squadra ha scelto di essere lenta, fra punta e curva; e
-        che carattere ha ogni tracciato, fra motore e carico.</span>
-      <span class="strum-go">Apri →</span>
+      <span class="strum-tag" data-i18n="analisi.tag_ogni_gara">Interactive · updates after every race</span>
+      <b data-i18n="analisi.strum_dati_t">Set-up and circuit DNA</b>
+      <span class="strum-d" data-i18n="analisi.strum_dati_d">Where each team has chosen to be slow, between
+        top speed and cornering; and what character each track has, between engine and downforce.</span>
+      <span class="strum-go"><span data-i18n="analisi.apri">Open</span> →</span>
     </a>
     <a class="strum" href="whatif.html">
-      <span class="strum-tag">Interattivo · simulazione controfattuale</span>
-      <b>Simulatore What-If &amp; Strategie</b>
-      <span class="strum-d">Sposta il giro della sosta e guarda che cosa cambia: la tua
-        strategia e quella vera, girate nello stesso motore. È un gioco, non una previsione.</span>
-      <span class="strum-go">Simula →</span>
+      <span class="strum-tag" data-i18n="analisi.tag_controfattuale">Interactive · counterfactual simulation</span>
+      <b data-i18n="analisi.strum_whatif_t">What-If &amp; Strategy Simulator</b>
+      <span class="strum-d" data-i18n="analisi.strum_whatif_d">Move the pit stop lap and watch what changes:
+        your strategy and the real one, run through the same engine. It is a game, not a prediction.</span>
+      <span class="strum-go"><span data-i18n="analisi.simula">Simulate</span> →</span>
     </a>
   </div>
 
   <div class="filtri-wrap" id="filtri-wrap">
     <div class="filtri-riga">
-      <span class="filtri-label">Gara</span>
+      <span class="filtri-label" data-i18n="com.gara">Race</span>
       <div class="pillole" id="filtri-gp"></div>
     </div>
     <div class="filtri-riga">
-      <span class="filtri-label">Team &amp; Tema</span>
+      <span class="filtri-label" data-i18n="analisi.team_tema">Team &amp; Topic</span>
       <div class="pillole" id="filtri-tag"></div>
     </div>
   </div>
@@ -102,7 +114,7 @@
 <footer class="piede"><div class="piede-in"></div></footer>
 
 <script type="module">
-import { guscio, dati, el, V, $$ } from './muro.mjs?v=090826b';
+import { guscio, dati, el, V, $$, t, gpNome } from './muro.mjs?v=190826b';
 guscio('analisi.html');
 
 const carte = $$('.card');
@@ -120,12 +132,12 @@ const idDi = (c) => (c.getAttribute('href') || '').split('/').pop().replace('.ht
   const TAG_PRIORITA = ['Ferrari', 'McLaren', 'Mercedes', 'Red Bull Racing', 'passo-gara', 'qualifiche', 'telemetria'];
   const tagsPresenti = new Set();
   for (const c of carte) {
-    const t = (metaDi[idDi(c)] || {}).tag || [];
-    t.forEach(x => {
+    const tg = (metaDi[idDi(c)] || {}).tag || [];
+    tg.forEach(x => {
       if (TAG_PRIORITA.includes(x)) tagsPresenti.add(x);
     });
   }
-  const tagList = TAG_PRIORITA.filter(t => tagsPresenti.has(t));
+  const tagList = TAG_PRIORITA.filter(x => tagsPresenti.has(x));
 
   let gpScelto = null;
   let tagScelto = null;
@@ -133,13 +145,13 @@ const idDi = (c) => (c.getAttribute('href') || '').split('/').pop().replace('.ht
   const boxGp = document.getElementById('filtri-gp');
   const boxTag = document.getElementById('filtri-tag');
 
-  const vociGp = [['Tutte le gare', null], ...gpList.map(g => [g, g])];
+  const vociGp = [[t('analisi.tutte_gare'), null], ...gpList.map(g => [gpNome(g), g])];
   const bottoniGp = vociGp.map(([et, v]) => el('button', {
     class: 'pil', type: 'button', onclick: () => { gpScelto = v; applica(); },
   }, et));
   if (boxGp) boxGp.replaceChildren(...bottoniGp);
 
-  const vociTag = [['Tutti i temi', null], ...tagList.map(t => [t, t])];
+  const vociTag = [[t('analisi.tutti_temi'), null], ...tagList.map(x => [x, x])];
   const bottoniTag = vociTag.map(([et, v]) => el('button', {
     class: 'pil', type: 'button', onclick: () => { tagScelto = v; applica(); },
   }, et));
@@ -173,7 +185,7 @@ const idDi = (c) => (c.getAttribute('href') || '').split('/').pop().replace('.ht
     const n = document.getElementById('quanti');
     if (n) {
       if (gpScelto || tagScelto) {
-        n.textContent = `${visti} articoli visualizzati`;
+        n.textContent = t('analisi.n_visti', { n: visti });
       } else {
         n.textContent = '';
       }

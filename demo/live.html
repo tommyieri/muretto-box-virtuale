@@ -1,28 +1,32 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Live — Muretto Box Virtuale</title>
-<meta name="description" content="Il weekend di gara in diretta: classifica in tempo reale e la prossima sessione.">
+<title data-i18n="meta.live.titolo">Live — Muretto Box Virtuale</title>
+<meta name="description" data-i18n-attr="content:meta.live.desc" content="The race weekend as it happens: live timing and the next session.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Muretto Box Virtuale">
-<meta property="og:locale" content="it_IT">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="it_IT">
 <meta property="og:url" content="https://murettobox.com/live.html">
-<meta property="og:title" content="Live — Muretto Box Virtuale">
-<meta property="og:description" content="Il weekend di gara in diretta: classifica in tempo reale e la prossima sessione.">
+<meta property="og:title" data-i18n-attr="content:meta.live.titolo" content="Live — Muretto Box Virtuale">
+<meta property="og:description" data-i18n-attr="content:meta.live.desc" content="The race weekend as it happens: live timing and the next session.">
 <meta property="og:image" content="https://murettobox.com/og/pagina-live.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Live — Muretto Box Virtuale">
-<meta name="twitter:description" content="Il weekend di gara in diretta: classifica in tempo reale e la prossima sessione.">
+<meta name="twitter:title" data-i18n-attr="content:meta.live.titolo" content="Live — Muretto Box Virtuale">
+<meta name="twitter:description" data-i18n-attr="content:meta.live.desc" content="The race weekend as it happens: live timing and the next session.">
 <meta name="twitter:image" content="https://murettobox.com/og/pagina-live.png">
 <link rel="canonical" href="https://murettobox.com/live.html">
+<link rel="alternate" hreflang="en" href="https://murettobox.com/live.html">
+<link rel="alternate" hreflang="it" href="https://murettobox.com/live.html?lang=it">
+<link rel="alternate" hreflang="x-default" href="https://murettobox.com/live.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
-<link rel="stylesheet" href="muro.css?v=090826b">
+<link rel="stylesheet" href="muro.css?v=190826b">
 <link rel="apple-touch-icon" href="/assets/marchio/icona-180.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%2232%22%20height%3D%2232%22%20role%3D%22img%22%20aria-label%3D%22Muretto%20Box%20Virtuale%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%23FF1E3C%22%2F%3E%3Cpath%20d%3D%22M20%2064L20%2018L31.5%2018L50%2042L68.5%2018L80%2018L80%2064L69.5%2064L69.5%2034L54%2055L46%2055L30.5%2034L30.5%2064Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Cpath%20d%3D%22M12%2073L88%2073L88%2084L12%2084Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E">
 <style>
@@ -77,11 +81,11 @@
 <header class="barra"></header>
 
 <main class="scafo">
-  <p class="occhiello">Diretta</p>
-  <h1 class="titolone">Il muretto <em>in diretta</em></h1>
+  <p class="occhiello" data-i18n="live.occhiello">Live</p>
+  <h1 class="titolone" data-i18n-html="live.titolo">The pit wall <em>live</em></h1>
 
   <div class="stato">
-    <span class="spia" id="spia"><span class="pallino"></span><span id="spiaTxt">collego…</span></span>
+    <span class="spia" id="spia"><span class="pallino"></span><span id="spiaTxt" data-i18n="live.collego">connecting…</span></span>
     <span class="etic" id="etichSess" hidden></span>
   </div>
 
@@ -91,7 +95,7 @@
       <section class="piastra prossima" id="prossima" hidden></section>
       <!-- in sessione -->
       <section class="torreLive" id="boxTorre" hidden>
-        <div class="cap"><span>Classifica in tempo reale</span>
+        <div class="cap"><span data-i18n="live.classifica_rt">Live timing</span>
           <span style="margin-left:auto" id="notaTorre"></span></div>
         <div class="lista" id="torre"></div>
       </section>
@@ -103,9 +107,9 @@
 <footer class="piede"><div class="piede-in"></div></footer>
 
 <script type="module">
-import { guscio, dati, el, veri, V, coloreDi } from './muro.mjs?v=090826b';
-import { WS_URL, HEARTBEAT_LIVE_S } from './live_config.mjs?v=090826b';
-import { creaLiveClient } from './live_client.mjs?v=090826b';
+import { guscio, dati, el, veri, V, coloreDi, t, tn, mescola, gpNome, gpTitolo, LOCALE } from './muro.mjs?v=190826b';
+import { WS_URL, HEARTBEAT_LIVE_S } from './live_config.mjs?v=190826b';
+import { creaLiveClient } from './live_client.mjs?v=190826b';
 import { creaTorreTiming } from './live_timing.mjs?v=250809a';
 import { creaByLapLive } from './live_bylap.mjs?v=250809a';
 import { rigiocaLive } from './ponte_live.mjs?v=040826a';
@@ -113,9 +117,8 @@ import { rigiocaLive } from './ponte_live.mjs?v=040826a';
 guscio('live.html');
 const E = (id) => document.getElementById(id);
 
-const NOMI = { fp1: 'Prove libere 1', fp2: 'Prove libere 2', fp3: 'Prove libere 3',
-  sprint_quali: 'Qualifiche sprint', sprint: 'Sprint',
-  qualifiche: 'Qualifiche', gara: 'Gara' };
+// i nomi delle sessioni stanno nel dizionario, con la sigla FIA come chiave
+const nomeSess = (k) => t('sess.' + k);
 
 let viva = false, montatoAttesa = false, ultimaGara = null, gareCal = [];
 
@@ -156,7 +159,7 @@ function sessioneOra(gare, ora = new Date()) {
       if (q && q <= ora && (ora - q) < 4 * 3600e3 && (!m || q > m.q)) m = { g, s, q };
     }
   }
-  return m ? `${m.g.titolo} — ${NOMI[m.s] || m.s}` : null;
+  return m ? `${gpTitolo(m.g.titolo, m.g.nome)} — ${nomeSess(m.s)}` : null;
 }
 
 /** La prima sessione ancora da correre, ADESSO. Ricalcolata a ogni chiamata: la
@@ -190,25 +193,25 @@ async function mostraAttesa() {
 
   const box = E('prossima');
   if (!pross) {
-    box.replaceChildren(el('p', { class: 'occhiello' }, 'Calendario'),
-      el('h2', { class: 'gp' }, 'Stagione finita'),
-      el('p', { class: 'circ' }, 'Il calendario 2026 è completo: si riparte il prossimo anno.'));
+    box.replaceChildren(el('p', { class: 'occhiello' }, t('live.calendario')),
+      el('h2', { class: 'gp' }, t('live.stagione_finita')),
+      el('p', { class: 'circ' }, t('live.calendario_completo')));
   } else {
     const g = pross.g;
     box.replaceChildren(
-      el('p', { class: 'occhiello' }, `Round ${g.round} · prossimo appuntamento`),
-      el('h2', { class: 'gp' }, g.titolo),
-      el('p', { class: 'circ' }, `${g.circuito || ''} · ${g.giri} giri`),
+      el('p', { class: 'occhiello' }, `${t('com.round', { n: g.round })} · ${t('live.prossimo')}`),
+      el('h2', { class: 'gp' }, gpTitolo(g.titolo, g.nome)),
+      el('p', { class: 'circ' }, `${g.circuito || ''} · ${tn('com.giro_1', 'com.giri_n', g.giri)}`),
       el('div', { class: 'conto', id: 'conto' }),
       el('div', { class: 'sessioni' },
         ORD.filter(s => g.sessioni?.[s]).map(s => {
           const q = quandoIso(g, s);
           return el('div', { class: 'ses' + (q < ora ? ' passata' : '') },
-            el('b', {}, NOMI[s] || s),
-            el('span', {}, q.toLocaleString('it-IT', { weekday: 'short', day: 'numeric',
+            el('b', {}, nomeSess(s)),
+            el('span', {}, q.toLocaleString(LOCALE, { weekday: 'short', day: 'numeric',
               month: 'short', hour: '2-digit', minute: '2-digit' })),
             q.getTime() === pross.quando.getTime()
-              ? el('span', { class: 'etic etic-r' }, 'prima') : null);
+              ? el('span', { class: 'etic etic-r' }, t('live.prima')) : null);
         })));
     conta(pross.quando);
   }
@@ -241,9 +244,9 @@ function conta(quando) {
     const gg = Math.floor(d / 86400); d -= gg * 86400;
     const hh = Math.floor(d / 3600); d -= hh * 3600;
     const mm = Math.floor(d / 60); const ss = Math.floor(d - mm * 60);
-    box.replaceChildren(...[[gg, 'giorni'], [hh, 'ore'], [mm, 'minuti'], [ss, 'secondi']]
-      .map(([v, t]) => el('div', {}, el('b', { class: 'n' }, String(v).padStart(2, '0')),
-        el('span', {}, t))));
+    box.replaceChildren(...[[gg, 'live.giorni'], [hh, 'live.ore'], [mm, 'live.minuti'], [ss, 'live.secondi']]
+      .map(([v, k]) => el('div', {}, el('b', { class: 'n' }, String(v).padStart(2, '0')),
+        el('span', {}, t(k)))));
   };
   passo();
   battito = setInterval(passo, 1000);
@@ -253,24 +256,21 @@ function conta(quando) {
 function murettoLive() {
   const nome = scelto || '—';
   E('fianco').replaceChildren(...veri(
-    el('h3', {}, 'Il muretto'),
+    el('h3', {}, t('live.il_muretto')),
     scelto
       ? el('div', { class: 'sceltoLive', stile: { '--c': coloreDi(teams[scelto], colori) } },
           el('span', { class: 'bar' }), el('b', {}, nome))
-      : el('p', {}, 'Tocca un pilota nella classifica, scegli la gomma e premi BOX ORA.'),
+      : el('p', {}, t('live.tocca_pilota')),
     el('div', { class: 'mesc' }, SLICK.map(m => el('button', {
       class: mescolaScelta === m ? 'on' : '', type: 'button',
       onclick: () => { mescolaScelta = m; murettoLive(); } },
-      el('span', { class: 'gomma ' + m }),
-      m === 'SOFT' ? 'morbida' : m === 'MEDIUM' ? 'media' : 'dura'))),
+      el('span', { class: 'gomma ' + m }), mescola(m)))),
     el('button', { class: 'btn btn-p', id: 'boxOra', type: 'button',
       stile: { width: '100%' }, disabled: !scelto,
-      title: scelto ? null : 'Scegli prima un pilota nella classifica',
-      onclick: boxOra }, 'BOX ORA'),
+      title: scelto ? null : t('live.scegli_prima'),
+      onclick: boxOra }, t('hero.et_ora')),
     el('div', { id: 'esitoLive' }),
-    el('p', { class: 'onesta' },
-      'È una ', el('b', {}, 'proiezione'), ': il futuro non è ancora successo, quindi ',
-      el('b', {}, 'i rivali non reagiscono'), ' e oltre ~6 giri non è validata.')));
+    el('p', { class: 'onesta', html: t('live.onesta') })));
 }
 
 function boxOra() {
@@ -282,24 +282,23 @@ function boxOra() {
   // n'erano trenta e riprovare non avrebbe cambiato nulla per tutta la sessione.
   if (!nLaps) {
     box.replaceChildren(el('div', { class: 'esitoLive' },
-      'Qui non si corre una gara: senza una distanza da coprire non c\'è una sosta da '
-      + 'giudicare. Il muretto torna in gara.'));
+      t('live.non_e_gara')));
     return;
   }
   if (!scelto || !L) {
     box.replaceChildren(el('div', { class: 'esitoLive' },
-      'Il giro in corso non è ancora completo: riprova fra poco.'));
+      t('live.giro_incompleto')));
     return;
   }
   if (!contestoLive) {
     box.replaceChildren(el('div', { class: 'esitoLive' },
-      'Il motore non è disponibile in questa pagina.'));
+      t('live.motore_assente')));
     return;
   }
   const curCar = B.byLap()?.[L]?.[scelto];
   if (!curCar || curCar.retired) {
     box.replaceChildren(el('div', { class: 'esitoLive' },
-      `${scelto} non è più attivo in pista (ritirato o non classificato al giro ${L}).`));
+      t('live.non_attivo', { chi: scelto, giro: L })));
     return;
   }
   // CHI ARRIVA A GARA IN CORSO NON HA LA STORIA. La torre si riallinea con uno snapshot,
@@ -310,14 +309,12 @@ function boxOra() {
   const d = B.diagnosi(L, scelto);
   if (!d.pronto) {
     box.replaceChildren(el('div', { class: 'esitoLive' },
-      `Il muretto sta ancora imparando la gara: ${d.motivo}. `
-      + 'Se ti sei collegato a corsa iniziata, servono pochi giri puliti.'));
+      t('live.sta_imparando', { motivo: d.motivo })));
     return;
   }
 
   const giro = Math.min(nLaps - 1, L + 1);
   const rimasti = nLaps - giro;
-  const nomiGomme = { SOFT: 'morbida', MEDIUM: 'media', HARD: 'dura' };
 
   // Analisi mescole usate per conformità REG01 (almeno 2 slick diverse sull'asciutto)
   const usate = new Set();
@@ -338,8 +335,9 @@ function boxOra() {
   if (richiedeDueSoste) {
     if (rimasti < 6) {
       box.replaceChildren(el('div', { class: 'esitoLive' },
-        el('b', { stile: { color: 'var(--rosso)', display: 'block', marginBottom: '6px' } }, '⚠️ Seconda sosta obbligatoria non realizzabile'),
-        `Rimontando ${nomiGomme[mescolaScelta] || mescolaScelta}, dovresti fare per forza un'altra sosta prima della bandiera per regolamento (obbligo 2 mescole diverse). Mancano solo ${rimasti} giri: scegli un'altra gomma (${nomiGomme[secondaMescola] || secondaMescola}) per completare la gara a 1 sosta.`));
+        el('b', { stile: { color: 'var(--rosso)', display: 'block', marginBottom: '6px' } },
+          t('live.due_soste_no')),
+        t('live.due_soste_no_p', { m1: mescola(mescolaScelta), m2: mescola(secondaMescola), n: rimasti })));
       return;
     }
     const vita = (contestoLive?.vitaMescola?.giri?.[mescolaScelta] || 19);
@@ -357,15 +355,15 @@ function boxOra() {
       soste });
   } catch (err) {
     const msg = err.message?.includes('non ha una cella')
-      ? `${scelto} non ha un tempo registrato al giro ${L} (ritirato o doppiato).`
-      : `Il motore rifiuta questa sosta: ${err.message}`;
+      ? t('live.senza_tempo', { chi: scelto, giro: L })
+      : t('live.motore_rifiuta', { motivo: err.message });
     box.replaceChildren(el('div', { class: 'esitoLive' }, msg));
     return;
   }
   if (!esito.direttore?.approved) {
     const f = (esito.direttore?.violazioni ?? []).filter(v => v.severita === 'FATAL');
     box.replaceChildren(el('div', { class: 'esitoLive' },
-      f[0]?.messaggio || 'Piano non valido: prova un\'altra gomma.'));
+      f[0]?.messaggio || t('live.piano_non_valido')));
     return;
   }
   const i = esito.risultato?.ordine?.indexOf(scelto) ?? -1;
@@ -375,37 +373,35 @@ function boxOra() {
     box.replaceChildren(el('div', { class: 'esitoLive' },
       el('span', { class: 'st-occ', stile: { color: 'var(--fioco)', font: '500 10px/1 var(--mono)',
         letterSpacing: '.16em', textTransform: 'uppercase' } },
-        `se ${scelto} monta ${nomiGomme[mescolaScelta] || mescolaScelta} al giro ${giro}`),
+        t('live.se_monta', { chi: scelto, m: mescola(mescolaScelta), giro })),
       el('b', { class: 'pos n' }, posTxt),
       el('span', { stile: { color: 'var(--calmo)', fontSize: '13.5px', display: 'block' } },
-        `alla bandiera con strategia a 2 soste (${nomiGomme[mescolaScelta] || mescolaScelta} ➔ ${nomiGomme[secondaMescola] || secondaMescola}).`),
+        t('live.bandiera_2', { m1: mescola(mescolaScelta), m2: mescola(secondaMescola) })),
       el('div', { stile: { marginTop: '10px', padding: '10px', borderRadius: '8px', background: 'rgba(245,160,60,.1)', border: '1px solid rgba(245,160,60,.3)', fontSize: '12px', lineHeight: '1.45' } },
-        el('b', { stile: { color: '#ffb300' } }, '⚠️ Nota Regolamento (2ª sosta obbligatoria): '),
+        el('b', { stile: { color: '#ffb300' } }, t('live.nota_reg')),
         el('span', { stile: { color: 'var(--testo)' } },
-          `Rimontando gomma ${nomiGomme[mescolaScelta] || mescolaScelta}, dovrai fare per forza un'altra sosta prima della bandiera per rispettare l'obbligo di due mescole diverse: il motore ha proiettato la 2ª sosta al giro ${giro2} per gomma ${nomiGomme[secondaMescola] || secondaMescola}.`))));
+          t('live.nota_reg_p', { m1: mescola(mescolaScelta), m2: mescola(secondaMescola), giro: giro2 })))));
   } else {
     box.replaceChildren(el('div', { class: 'esitoLive' },
       el('span', { class: 'st-occ', stile: { color: 'var(--fioco)', font: '500 10px/1 var(--mono)',
         letterSpacing: '.16em', textTransform: 'uppercase' } },
-        `se ${scelto} si ferma al giro ${giro}`),
+        t('live.se_si_ferma', { chi: scelto, giro })),
       el('b', { class: 'pos n' }, posTxt),
       el('span', { stile: { color: 'var(--calmo)', fontSize: '13.5px' } },
-        `alla bandiera con gomma ${nomiGomme[mescolaScelta] || mescolaScelta} (1 sosta fino alla fine).`)));
+        t('live.bandiera_1', { m: mescola(mescolaScelta) }))));
   }
 }
 
 function fianco(inDiretta) {
   if (inDiretta) { murettoLive(); return; }
   E('fianco').replaceChildren(...veri(
-    el('h3', {}, inDiretta ? 'Il pannello strategia' : 'Nel frattempo'),
-    el('p', {}, inDiretta
-      ? 'Durante la gara la stessa domanda del muretto — «se mi fermo ora, dove rientro?» — si fa sulla pagina della gara, sui dati appena registrati.'
-      : 'Non c\'è una sessione in corso. Puoi rigiocare l\'ultima gara e provare la strategia: è lo stesso pannello che vedrai qui in diretta.'),
+    el('h3', {}, t(inDiretta ? 'live.pannello_strategia' : 'live.nel_frattempo')),
+    el('p', {}, t(inDiretta ? 'live.pannello_p' : 'live.frattempo_p')),
     ultimaGara ? el('a', { class: 'btn btn-p', stile: { width: '100%', marginTop: '6px' },
       href: `gara.html?g=${encodeURIComponent(ultimaGara.gara_demo)}` },
-      `Rivedi ${ultimaGara.nome}`) : null,
+      t('live.rivedi_gara', { gp: gpNome(ultimaGara.nome) })) : null,
     el('a', { class: 'btn btn-s', stile: { width: '100%', marginTop: '8px' }, href: 'telemetria.html' },
-      'Apri la telemetria')));
+      t('index.porta2_go'))));
 }
 
 /* ------------------------------------------------------------ in diretta */
@@ -444,7 +440,7 @@ function rendiTorreRaggiungibile() {
     r.tabIndex = 0;
     r.setAttribute('role', 'button');
     r.setAttribute('aria-pressed', String(r.dataset.sigla === scelto));
-    r.setAttribute('aria-label', `Scegli ${r.dataset.sigla} per il muretto`);
+    r.setAttribute('aria-label', t('live.aria_scegli', { chi: r.dataset.sigla }));
   }
 }
 new MutationObserver(rendiTorreRaggiungibile)
@@ -478,7 +474,7 @@ function spia(testo, accesa) {
 let nomeSessione = null;
 const client = creaLiveClient({
   url: WS_URL,
-  onStato: (s) => { if (s !== 'connesso') spia(s === 'connessione' ? 'collego…' : 'riconnetto…', false); },
+  onStato: (s) => { if (s !== 'connesso') spia(t(s === 'connessione' ? 'live.collego' : 'live.riconnetto'), false); },
   onEvento: (e) => {
     try { torre.applica(e); } catch (_) { /* evento che la torre non consuma */ }
     try { B.applica(e); } catch (_) { /* evento che il lap-chart non consuma */ }
@@ -489,11 +485,11 @@ const client = creaLiveClient({
 
 /** L'unico criterio: ci sono righe in torre? Allora e' una sessione. */
 function valuta() {
-  if (conRighe()) { spia('in diretta', true); mostraDiretta(nomeSessione || sessioneOra(gareCal.length ? gareCal : (calendario?.gare || []))); }
+  if (conRighe()) { spia(t('live.in_diretta'), true); mostraDiretta(nomeSessione || sessioneOra(gareCal.length ? gareCal : (calendario?.gare || []))); }
   else {
     const era = viva;
     viva = false;
-    spia('nessuna sessione', false);
+    spia(t('live.nessuna_sessione'), false);
     if (era) { montatoAttesa = false; fianco(false); }
     mostraAttesa();
   }
@@ -502,13 +498,13 @@ function valuta() {
 /* Il motore e l'identita' servono solo in diretta: si caricano una volta sola,
    e non fanno aspettare chi apre la pagina fuori sessione. */
 (async () => {
-  const [ctx, cal, t, c] = await Promise.all([
+  const [ctx, cal, tm, c] = await Promise.all([
     dati(`vendor/simulatore/motore/contesto_live.json?v=${V}`),
     dati(`data/calendario_2026.json?v=${V}`),
     dati(`data/teams.json?v=${V}`),
     dati(`team_colori.json?v=${V}`),
   ]);
-  contestoLive = ctx || null; calendario = cal; teams = t || {}; colori = c || {};
+  contestoLive = ctx || null; calendario = cal; teams = tm || {}; colori = c || {};
   // che GP si sta correndo: quello con una sessione oggi, altrimenti il piu' vicino
   const oggi = new Date().toISOString().slice(0, 10);
   const g = (cal?.gare || []).find(x => Object.values(x.sessioni || {})

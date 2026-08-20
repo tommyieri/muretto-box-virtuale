@@ -32,7 +32,8 @@
 // Revocare la deroga = togliere ese.mjs dall'elenco escluso in s25_difesa.mjs.
 
 import { garaDaLive, contestoDa, nomeSimulatore } from './ponte_live.mjs?v=070826a';
-import { ordineArrivo } from './classifica.mjs?v=090826b';
+import { t } from './muro.mjs?v=190826b';
+import { ordineArrivo } from './classifica.mjs?v=190826b';
 import { sostaFra } from './sosta.mjs?v=130826a';
 import { costruisciScenario, eseguiEValida } from './vendor/simulatore/motore/scenario/costruttore.mjs';
 import { regimePerGiroDiCampo } from './vendor/simulatore/motore/provenienza/definizioni.mjs';
@@ -111,7 +112,7 @@ export function congelamentoPer({ nome, contesto, pilota, giroSosta, min = 5 }) 
       const scenario = costruisciScenario({ gara: nome, freezeLap: Lf, pilota }, { ...contesto, giroFinale: Lf + 1 });
       const { risultato } = eseguiEValida(scenario, contesto.costantiDirector);
       if (typeof risultato.cum[pilota] === 'number') return { freezeLap: Lf, motivo: null };
-      ultimo = `al giro ${Lf} il pilota non ha un passo base`;
+      ultimo = t('ese.senza_passo', { n: Lf });
     } catch (e) { ultimo = e.message; }
   }
   return { freezeLap: null, motivo: ultimo };
@@ -129,7 +130,7 @@ export function scegliCongelamento({ nome, contesto, pilota, min = 5, max = 15 }
       const scenario = costruisciScenario({ gara: nome, freezeLap: Lf, pilota }, { ...contesto, giroFinale: Lf + 1 });
       const { risultato } = eseguiEValida(scenario, contesto.costantiDirector);
       if (typeof risultato.cum[pilota] === 'number') return { freezeLap: Lf, motivo: null };
-      ultimo = `al giro ${Lf} il pilota non ha ancora un passo base (giri verdi insufficienti)`;
+      ultimo = t('ese.senza_passo_verdi', { n: Lf });
     } catch (e) { ultimo = e.message; }
   }
   return { freezeLap: null, motivo: ultimo };

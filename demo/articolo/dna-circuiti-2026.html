@@ -4,7 +4,7 @@
   la sorgente e' demo/data/analisi/dna-circuiti-2026.json e questo file si rigenera da
   solo quando l'articolo viene pubblicato (coda.py::_scrivi_demo).
 -->
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -38,7 +38,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
-<link rel="stylesheet" href="../muro.css?v=090826b">
+<link rel="stylesheet" href="../muro.css?v=190826b">
 <link rel="apple-touch-icon" href="/assets/marchio/icona-180.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%2232%22%20height%3D%2232%22%20role%3D%22img%22%20aria-label%3D%22Muretto%20Box%20Virtuale%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%23FF1E3C%22%2F%3E%3Cpath%20d%3D%22M20%2064L20%2018L31.5%2018L50%2042L68.5%2018L80%2018L80%2064L69.5%2064L69.5%2034L54%2055L46%2055L30.5%2034L30.5%2064Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Cpath%20d%3D%22M12%2073L88%2073L88%2084L12%2084Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E">
 <script type="application/ld+json">
@@ -74,10 +74,17 @@
 <header class="barra"></header>
 
 <div class="wrap-scheda" style="padding-bottom:0">
-  <a class="crumb" href="../analisi.html">&larr; Articoli</a>
+  <a class="crumb" href="../analisi.html">&larr; <span data-i18n="nav.articles">Articles</span></a>
+  <!-- L'AVVISO DI LINGUA. L'interfaccia del sito e' in inglese dal 19/08/2026; questo
+       testo no, ed e' una scelta: e' un'analisi tecnica scritta a mano, una per una, e
+       tradurla a macchina vorrebbe dire pubblicare come nostro un testo che nessuno ha
+       verificato. Chi arriva qui dal sito inglese lo ha gia' letto su analisi.html; chi
+       ci arriva da un link diretto lo legge qui, prima del titolo. La regola CSS
+       `html[lang="it"] .avviso-lingua{display:none}` lo toglie in italiano. -->
+  <p class="avviso-lingua" lang="en">This article is written in Italian.</p>
 </div>
 
-<article class="wrap-scheda art" id="art">
+<article class="wrap-scheda art" id="art" lang="it">
   <header class="art-testa" style="--ac:var(--sc)">
     <div class="art-occhiello">Dieci circuiti 2026 · quanta parte del giro si passa a tutto gas</div>
     <h1 class="art-titolo">A Budapest si sta a gas pieno per metà giro. E si va più forte che a Silverstone</h1>
@@ -122,7 +129,7 @@
 
 <footer class="piede"><div class="piede-in"></div></footer>
 <script type="module">
-  import { guscio } from '../muro.mjs?v=090826b';
+  import { guscio } from '../muro.mjs?v=190826b';
   guscio('analisi.html');
 </script>
 </body>

@@ -1,26 +1,27 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Gara — Muretto Box Virtuale</title>
-<meta name="description" content="Rivedi la gara giro per giro e decidi quando fermarsi ai box: il motore dice dove rientri.">
+<title data-i18n="meta.gara.titolo">Race — Muretto Box Virtuale</title>
+<meta name="description" data-i18n-attr="content:meta.gara.desc" content="Replay the race lap by lap and decide when to pit: the engine tells you where you come back out.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Muretto Box Virtuale">
-<meta property="og:locale" content="it_IT">
-<meta property="og:title" content="Gara — Muretto Box Virtuale">
-<meta property="og:description" content="Rivedi la gara giro per giro e decidi quando fermarsi ai box: il motore dice dove rientri.">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="it_IT">
+<meta property="og:title" data-i18n-attr="content:meta.gara.titolo" content="Race — Muretto Box Virtuale">
+<meta property="og:description" data-i18n-attr="content:meta.gara.desc" content="Replay the race lap by lap and decide when to pit: the engine tells you where you come back out.">
 <meta property="og:image" content="https://murettobox.com/og/pagina-gara.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Gara — Muretto Box Virtuale">
-<meta name="twitter:description" content="Rivedi la gara giro per giro e decidi quando fermarsi ai box: il motore dice dove rientri.">
+<meta name="twitter:title" data-i18n-attr="content:meta.gara.titolo" content="Race — Muretto Box Virtuale">
+<meta name="twitter:description" data-i18n-attr="content:meta.gara.desc" content="Replay the race lap by lap and decide when to pit: the engine tells you where you come back out.">
 <meta name="twitter:image" content="https://murettobox.com/og/pagina-gara.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
-<link rel="stylesheet" href="muro.css?v=090826b">
+<link rel="stylesheet" href="muro.css?v=190826b">
 <link rel="apple-touch-icon" href="/assets/marchio/icona-180.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%2232%22%20height%3D%2232%22%20role%3D%22img%22%20aria-label%3D%22Muretto%20Box%20Virtuale%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%23FF1E3C%22%2F%3E%3Cpath%20d%3D%22M20%2064L20%2018L31.5%2018L50%2042L68.5%2018L80%2018L80%2064L69.5%2064L69.5%2034L54%2055L46%2055L30.5%2034L30.5%2064Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Cpath%20d%3D%22M12%2073L88%2073L88%2084L12%2084Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E">
 <style>
@@ -272,44 +273,46 @@
 <main class="scafo">
   <div class="testa">
     <div>
-      <a class="indietro" href="stagione.html">← Stagione 2026</a>
+      <a class="indietro" href="stagione.html">← <span data-i18n="gara.stagione_2026">2026 Season</span></a>
       <h1 id="tGp">—</h1>
     </div>
     <div class="meta" id="tMeta"></div>
   </div>
 
   <div class="schede">
-    <button class="pil on" id="sbStrat" aria-pressed="true">Strategia</button>
-    <button class="pil" id="sbTorre" aria-pressed="false">Classifica</button>
+    <button class="pil on" id="sbStrat" aria-pressed="true" data-i18n="com.strategia">Strategy</button>
+    <button class="pil" id="sbTorre" aria-pressed="false" data-i18n="com.classifica">Standings</button>
   </div>
 
   <div class="tavolo">
     <!-- classifica -->
-    <section class="torre" id="torreSez" aria-label="Classifica">
-      <div class="torre-t"><span>Classifica</span><span style="margin-left:auto" id="torreGiro"></span></div>
+    <section class="torre" id="torreSez" data-i18n-attr="aria-label:com.classifica" aria-label="Standings">
+      <div class="torre-t"><span data-i18n="com.classifica">Standings</span><span style="margin-left:auto" id="torreGiro"></span></div>
       <div class="torre-c" id="torre"></div>
     </section>
 
     <!-- pista + comandi -->
     <div style="min-width:0">
       <div class="arena" id="arena">
-        <canvas id="tela" aria-label="Mappa del circuito con la posizione delle vetture"></canvas>
+        <canvas id="tela" data-i18n-attr="aria-label:gara.aria_mappa"
+                aria-label="Map of the circuit with the position of the cars"></canvas>
         <div class="bandiera" id="bandiera"></div>
         <div class="giro"><b class="n" id="giroOra">1</b><span id="giroTot">/ —</span></div>
       </div>
       <div class="comandi">
-        <button class="via" id="via" aria-label="Play"></button>
+        <button class="via" id="via" data-i18n-attr="aria-label:gara.play" aria-label="Play"></button>
         <div class="vel" id="vel">
           <button data-s="1" class="on">1×</button><button data-s="2">2×</button>
           <button data-s="4">4×</button><button data-s="8">8×</button>
           <button data-s="20">20×</button><button data-s="60">60×</button>
         </div>
-        <div class="barra-t" id="scorri" role="slider" aria-label="Giro" tabindex="0"
+        <div class="barra-t" id="scorri" role="slider" data-i18n-attr="aria-label:gara.aria_giro"
+             aria-label="Lap" tabindex="0"
              aria-valuemin="1" aria-valuenow="1">
           <div class="letto" id="letto"><div class="fatto" id="fatto"></div></div>
           <div class="cur" id="cur"></div>
         </div>
-        <div class="conta-giri">GIRO <b class="n" id="lapNow">1</b>/<span class="n" id="lapMax">—</span></div>
+        <div class="conta-giri"><span data-i18n="hero.giro">LAP</span> <b class="n" id="lapNow">1</b>/<span class="n" id="lapMax">—</span></div>
       </div>
       <div class="esito" id="esito" role="status" aria-live="polite" hidden></div>
     </div>
@@ -317,27 +320,28 @@
     <!-- strategia: sempre aperta -->
     <aside class="rail" id="rail">
       <div class="rail-t">
-        <h2>Strategia</h2>
+        <h2 data-i18n="com.strategia">Strategy</h2>
         <div class="chi" id="railChi"></div>
       </div>
       <div class="rail-c" id="railC"></div>
       <div class="rail-f">
-        <button class="btn btn-p" id="boxOra">BOX ORA</button>
-        <button class="btn btn-s" id="reset" hidden aria-label="Torna al replay reale">↺</button>
+        <button class="btn btn-p" id="boxOra" data-i18n="hero.et_ora">PIT NOW</button>
+        <button class="btn btn-s" id="reset" hidden data-i18n-attr="aria-label:gara.torna_replay"
+                aria-label="Back to the real replay">↺</button>
       </div>
-      <p class="ese-onesta">Con <b>BOX ORA</b> la gara riparte da qui con la tua sosta, fino alla
-        bandiera. I rivali fanno le soste che hanno fatto davvero: è
-        <b>informazione dal futuro</b>, quindi un ricalcolo su una gara già corsa e
-        <b>non una previsione</b>.</p>
+      <p class="ese-onesta" data-i18n-html="gara.onesta">With <b>PIT NOW</b> the race restarts from here
+        with your stop, all the way to the flag. The rivals make the stops they actually made: that is
+        <b>information from the future</b>, so it is a recalculation on a race already run and
+        <b>not a prediction</b>.</p>
     </aside>
   </div>
 </main>
 
 <dialog class="scelta" id="scelta" aria-labelledby="sceltaT">
   <div class="scelta-t">
-    <h2 id="sceltaT">Per chi fai la strategia?</h2>
-    <p>Scegli il pilota: da qui in avanti le sue soste le decidi tu. Quelle che ha fatto
-      davvero restano solo come confronto, alla bandiera.</p>
+    <h2 id="sceltaT" data-i18n="gara.per_chi">Whose strategy are you calling?</h2>
+    <p data-i18n="gara.per_chi_p">Pick the driver: from here on their stops are yours to decide. The ones
+      they actually made stay only as a comparison, at the flag.</p>
   </div>
   <div class="scelta-c"><div class="scelta-g" id="sceltaG"></div></div>
 </dialog>
@@ -346,12 +350,12 @@
 
 <script type="module">
 import { guscio, dati, datiObbligatori, el, veri, V, param, scriviParam, identita, coloreDi,
-         nnum, guasto, scheletro, MESCOLA_IT } from './muro.mjs?v=090826b';
-import { creaMappa } from './mappa.mjs?v=090826b';
-import { pannello as pannelloStrategia, selettoreMescole } from './strategia.mjs?v=090826b';
+         nnum, guasto, scheletro, mescola, t, tn, gpNome, gpTitolo, LOCALE, ITA } from './muro.mjs?v=190826b';
+import { creaMappa } from './mappa.mjs?v=190826b';
+import { pannello as pannelloStrategia, selettoreMescole } from './strategia.mjs?v=190826b';
 import { makeClock, computeDurations, bands, fase } from './timeline.mjs?v=220726a';
 import { creaAncora, giroDi as giroDiCum } from './orologio.mjs?v=250808a';
-import { classifica, battistradaAiGiri, ordineArrivo } from './classifica.mjs?v=090826b';
+import { classifica, battistradaAiGiri, ordineArrivo } from './classifica.mjs?v=190826b';
 import { creaReplayVero } from './replay_vero.mjs?v=250808a';
 import { creaProfiloGiro } from './profilo_giro.mjs?v=130826a';
 import { guadagnoAlGiro, vitaMescolaGiri } from './gomma.mjs?v=130826a';
@@ -428,7 +432,7 @@ async function boot() {
   for (const lp of race.laps) race.byLap[lp.lap] = lp.cars;
   calendario = cal; finestre = neutral?.[gara] || null;
   esitiGara = esiti?.[gara] || {};
-  nonPart = new Set(Object.entries(esitiGara).filter(([, t]) => t === 'NP').map(([d]) => d));
+  nonPart = new Set(Object.entries(esitiGara).filter(([, e]) => e === 'NP').map(([d]) => d));
   vistaCart = vm?.cartella_di?.[gara] || null;
   griglia = grids?.[gara] || [];
 
@@ -471,7 +475,10 @@ async function boot() {
   // esplicitamente. Un indirizzo con ?d=SIG la salta, cosi' un link resta condivisibile.
   const voluto = (param('d') || '').toUpperCase();
   frame(1);
-  if (ripiego) nota(`Di ${ripiego} non ci sono ancora i dati: qui c'è ${calendario?.gare?.find(g => g.gara_demo === gara)?.titolo || gara}.`);
+  if (ripiego) {
+    const c = calendario?.gare?.find(g => g.gara_demo === gara);
+    nota(t('gara.ripiego', { chiesta: gpNome(ripiego), qui: c ? gpTitolo(c.titolo, c.nome) : gara }));
+  }
   if (cumPil[voluto] || nonPart.has(voluto)) scegli(voluto);
   else chiediPilota();
 }
@@ -484,8 +491,8 @@ function chiediPilota() {
   const pos = Object.fromEntries(griglia.map((d, i) => [d, i + 1]));
   tutti.sort((a, b) => (pos[a] ?? 99) - (pos[b] ?? 99));
   box.replaceChildren(...tutti.map(d => {
-    const t = esitiGara[d];
-    const fuori = t === 'RIT' || t === 'NP';
+    const esito = esitiGara[d];
+    const fuori = esito === 'RIT' || esito === 'NP';
     return el('button', {
       class: 'pil-b' + (fuori ? ' fuori' : ''), type: 'button',
       stile: { '--c': coloreDi(teamDi[d], colori) },
@@ -495,7 +502,7 @@ function chiediPilota() {
       el('span', {},
         el('b', { class: 'sig' }, d),
         el('span', { class: 'sq' }, schede?.[d]?.nome || teamDi[d] || '')),
-      el('span', { class: 'gr' }, fuori ? (t === 'NP' ? 'non parte' : 'ritirato')
+      el('span', { class: 'gr' }, fuori ? t(esito === 'NP' ? 'gara.non_parte' : 'gara.ritirato')
                                         : (pos[d] ? `P${pos[d]}` : '')));
   }));
   // niente `cancel`: la pagina senza un pilota non ha un pannello. Chi chiude comunque
@@ -506,16 +513,17 @@ function chiediPilota() {
 
 function testata() {
   const c = calendario?.gare?.find(g => g.gara_demo === gara);
-  E('tGp').textContent = c?.titolo || gara;
-  document.title = `${c?.titolo || gara} — Muretto Box Virtuale`;
+  const titolo = c ? gpTitolo(c.titolo, c.nome) : gara;
+  E('tGp').textContent = titolo;
+  document.title = `${titolo} — Muretto Box Virtuale`;
   const bagnata = race.laps.some(lp => Object.values(lp.cars)
     .some(x => x.compound === 'INTERMEDIATE' || x.compound === 'WET'));
   E('tMeta').replaceChildren(
     c ? el('span', { class: 'etic' }, new Date(c.data + 'T12:00:00')
-      .toLocaleDateString('it-IT', { day: 'numeric', month: 'long' })) : null,
-    el('span', { class: 'etic' }, `${race.n_laps} giri`),
-    el('span', { class: 'etic' }, bagnata ? 'pista bagnata' : 'pista asciutta'),
-    el('span', { class: 'etic etic-c' }, `${Object.keys(cumPil).length} in gara`));
+      .toLocaleDateString(LOCALE, { day: 'numeric', month: 'long' })) : null,
+    el('span', { class: 'etic' }, tn('com.giro_1', 'com.giri_n', race.n_laps)),
+    el('span', { class: 'etic' }, t(bagnata ? 'gara.pista_bagnata' : 'gara.pista_asciutta')),
+    el('span', { class: 'etic etic-c' }, t('gara.in_gara', { n: Object.keys(cumPil).length })));
 }
 
 /* ================================================================= mappa */
@@ -633,8 +641,8 @@ function pittaTorre(p) {
     R.gap.textContent = r.et;
     R.gap.className = 'gap n ' + (r.cls || '');
     R.sotto.replaceChildren(...veri(
-      c?.compound ? el('span', { class: 'gomma ' + c.compound, title: c.compound }) : null,
-      c?.tyre_age != null ? el('span', { class: 'eta' }, `${c.tyre_age}g`) : null,
+      c?.compound ? el('span', { class: 'gomma ' + c.compound, title: mescola(c.compound) }) : null,
+      c?.tyre_age != null ? el('span', { class: 'eta' }, `${c.tyre_age}${t('com.g_sigla')}`) : null,
       c?.in_lap ? el('span', { class: 'st box' }, 'BOX') : null,
       c?.out_lap ? el('span', { class: 'st box' }, 'OUT') : null));
     R.root.classList.remove('fuori');
@@ -654,16 +662,16 @@ function pittaTorre(p) {
   fuori.sort((a, b) => (arrivo[a]?.posizione ?? 99) - (arrivo[b]?.posizione ?? 99));
   fuori.forEach((d, i) => {
     const R = righe[d];
-    const t = esitiGara[d];
+    const esito = esitiGara[d];
     const suo = ultimoGiro[d] ?? 0;
     const indietro = Math.max(0, L - suo);
     R.root.classList.add('fuori');
     R.sotto.replaceChildren();
     R.root.style.order = 90 + i;
-    if (t === 'NP') {
-      R.pz.textContent = ''; R.gap.textContent = 'non parte';
-    } else if (t === 'RIT') {
-      R.pz.textContent = ''; R.gap.textContent = 'ritirato';
+    if (esito === 'NP') {
+      R.pz.textContent = ''; R.gap.textContent = t('gara.non_parte');
+    } else if (esito === 'RIT') {
+      R.pz.textContent = ''; R.gap.textContent = t('gara.ritirato');
     } else {
       // ancora in gara, solo piu' indietro nel conteggio giri: non e' «fuori».
       // LA PAROLA LA DECIDE esiti.json, non il conteggio delle righe. Alla bandiera
@@ -672,14 +680,14 @@ function pittaTorre(p) {
       // nostro stesso dato. Il numero di giri si mostra solo a chi e' doppiato davvero.
       R.root.classList.remove('fuori');
       R.pz.textContent = arrivo[d]?.posizione ?? '';
-      R.gap.textContent = (t === 'doppiato' && indietro > 0)
+      R.gap.textContent = (esito === 'doppiato' && indietro > 0)
         ? `+${indietro} gir${indietro > 1 ? 'i' : 'o'}`
         : (L >= race.n_laps ? 'arrivato' : '—');
     }
     R.gap.className = 'gap n lapped';
     box.append(R.root);
   });
-  E('torreGiro').textContent = `giro ${L}`;
+  E('torreGiro').textContent = t('com.giro', { n: L });
 }
 
 /** IL REGIME DI GARA — banner, e tinta del nastro.
@@ -820,8 +828,8 @@ function disegnaPit(d) {
   const segna = (L, cls, titolo) => barra.append(el('div', {
     class: 'pit ' + cls, title: titolo,
     stile: { left: ((L - 0.5) / race.n_laps * 100) + '%' } }));
-  for (const L of (sosteVereDi[d] || [])) if (!mie.has(L)) segna(L, 'vera', `sosta vera: giro ${L}`);
-  for (const L of [...mie].sort((a, b) => a - b)) segna(L, 'mia', `la tua sosta: giro ${L}`);
+  for (const L of (sosteVereDi[d] || [])) if (!mie.has(L)) segna(L, 'vera', t('gara.sosta_vera_g', { n: L }));
+  for (const L of [...mie].sort((a, b) => a - b)) segna(L, 'mia', t('gara.sosta_tua_g', { n: L }));
 }
 
 /* ============================================================ selezione */
@@ -839,7 +847,7 @@ function scegli(d) {
   // il nome nel titolo del pannello RIAPRE la finestra: cambiare pilota e' un gesto del
   // prodotto, non una scoperta («le righe della torre sono cliccabili»)
   E('railChi').replaceChildren(
-    el('button', { class: 'chi-b', type: 'button', title: 'Cambia pilota',
+    el('button', { class: 'chi-b', type: 'button', title: t('gara.cambia_pilota'),
       onclick: () => chiediPilota() },
       el('span', { class: 'bar', stile: { background: coloreDi(teamDi[d], colori) } }),
       el('b', {}, d)));
@@ -913,7 +921,7 @@ async function motore() {
     // sull'ultima risposta buona per sempre, in silenzio. Meglio saperlo (regola 7).
     w.onerror = (e) => {
       console.warn('il motore nel worker e\' caduto:', e.message || e);
-      for (const [, risolvi] of inAttesa) risolvi({ ok: false, errore: 'il motore si e\' fermato' });
+      for (const [, risolvi] of inAttesa) risolvi({ ok: false, errore: t('gara.motore_fermo') });
       inAttesa.clear();
       WORKER = false;
     };
@@ -976,7 +984,7 @@ async function aggiornaStrategia() {
   if (!selDrv) return;
   if (!indiceVista && !STRAT) {
     c.replaceChildren(el('div', { class: 'st-muto' },
-      'Per questa gara il motore non ha una risposta pronta.'));
+      t('gara.nessuna_risposta')));
     return;
   }
   // IL GIRO E' QUELLO DELLA BARRA, sempre. Prima veniva schiacciato dentro la
@@ -1004,7 +1012,7 @@ async function aggiornaStrategia() {
     if (chiave !== ultimaChiave) return;
     const r = bl ? await chiediAlMotore({
       byLap: bl, nGiri: race.n_laps, gara, pilota: selDrv, freezeLap: L, mescola: nuova,
-    }) : { ok: false, errore: 'la tua gara non e\' ancora leggibile' };
+    }) : { ok: false, errore: t('gara.non_leggibile') };
     if (chiave !== ultimaChiave) return;
     c.classList.remove('pensa');
     // UN RIFIUTO E' UNA RISPOSTA (regola 6): non si ripiega sulla vista della gara vera,
@@ -1060,9 +1068,8 @@ async function aggiornaStrategia() {
       const ultimo = indiceVista?.ultimo_giro ?? (race.n_laps - 4);
       const tardi = L > ultimo;
       frag.append(el('div', { class: 'st-muto' },
-        el('p', { stile: { margin: 0 } }, tardi
-          ? `Al giro ${g} manca troppo poco alla bandiera perché fermarsi abbia una risposta.`
-          : `Al giro ${g} il motore non sa rispondere sulla tua gara: prova qualche giro più avanti.`)));
+        el('p', { stile: { margin: 0 } },
+          t(tardi ? 'gara.muto_tardi' : 'gara.muto_tua_gara', { giro: g }))));
       E('boxOra').disabled = false; E('boxOra').removeAttribute('title');
     } else {
       // il giro da proporre dipende da DOVE sei: a inizio gara il primo utile in avanti,
@@ -1079,19 +1086,19 @@ async function aggiornaStrategia() {
       // Trovato il 14/08 giocando Monaco con VER (non partito): il pannello taceva a OGNI
       // giro e il tasto diceva «troppo tardi» al giro 20 di 78. La pagina lo sapeva già
       // (`esitiGara`), e lo scrive perfino nel selettore accanto al nome: non lo diceva qui.
-      const fuori = esitiGara[selDrv] === 'NP' ? 'non è partito'
-                  : esitiGara[selDrv] === 'RIT' ? 'si è ritirato' : null;
+      const fuori = esitiGara[selDrv] === 'NP' ? t('gara.f_non_partito')
+                  : esitiGara[selDrv] === 'RIT' ? t('gara.f_ritirato') : null;
       mutoPerFuoriGara = fuori !== null;
       frag.append(el('div', { class: 'st-muto' },
         el('p', { stile: { margin: '0 0 12px' } },
-          fuori ? `${selDrv} ${fuori} in questa gara: non c'è una sua gara da rigiocare.`
-          : presto ? `Al giro ${g} la gara non è ancora leggibile: serve qualche giro di passo prima di poter rispondere.`
-          : tardi ? `Al giro ${g} manca troppo poco alla bandiera perché fermarsi abbia una risposta.`
-          : `A questo giro il motore non risponde per ${selDrv}.`),
+          fuori ? t('gara.muto_fuori', { chi: selDrv, come: fuori })
+          : presto ? t('gara.muto_presto', { giro: g })
+          : tardi ? t('gara.muto_tardi', { giro: g })
+          : t('gara.muto_qui', { chi: selDrv })),
         primo ? el('button', {
           class: 'btn btn-s', type: 'button',
           onclick: () => vaiAlGiro(primo.freeze_lap + 1),
-        }, `Vai al giro ${primo.freeze_lap + 1}`) : null));
+        }, t('gara.vai_al_giro', { n: primo.freeze_lap + 1 })) : null));
       // il tasto non invita a premere quando non c'e' niente da chiedere: la strada
       // e' il bottone «Vai al giro N» qui sopra, non un errore dopo il click.
       //
@@ -1101,10 +1108,10 @@ async function aggiornaStrategia() {
       // messaggio che dice la cosa sbagliata è peggio di nessun messaggio: manda a
       // cercare il difetto dove non è.
       E('boxOra').disabled = true;
-      E('boxOra').title = fuori ? `${selDrv} ${fuori}: non c'è una sua gara da rigiocare`
-        : presto ? 'Il motore risponde da qualche giro più avanti'
-        : tardi ? 'Troppo tardi perché una sosta abbia una risposta'
-        : `A questo giro il motore non ha una risposta per ${selDrv}`;
+      E('boxOra').title = fuori ? t('gara.tit_fuori', { chi: selDrv, come: fuori })
+        : presto ? t('gara.tit_presto')
+        : tardi ? t('gara.tit_tardi')
+        : t('gara.tit_qui', { chi: selDrv });
     }
   } else {
     ultimaRisposta = s;
@@ -1130,8 +1137,9 @@ async function aggiornaStrategia() {
   // senso proprio lì. Chi non ha una risposta è un'altra cosa da chi non è arrivato.
   if (!mutoPerFuoriGara) {
     frag.append(el('p', { class: 'st-fonte' }, tua
-      ? `Sulla tua gara: ${selDrv} con ${(STRAT.soste ?? []).length === 1 ? 'la tua sosta' : 'le tue soste'} al giro ${(STRAT.soste ?? []).map(x => x.giro).join(' e ')}.`
-      : 'Sulla gara vera. Premi BOX ORA e il motore comincia a rispondere sulla tua.'));
+      ? tn('gara.tua_gara_1', 'gara.tua_gara_n', (STRAT.soste ?? []).length,
+           { chi: selDrv, giri: (STRAT.soste ?? []).map(x => x.giro).join(t('gara.e_cong')) })
+      : t('gara.gara_vera')));
   }
   c.replaceChildren(frag);
 }
@@ -1163,7 +1171,7 @@ E('boxOra').addEventListener('click', async () => {
   // `scenaGp.posizione` (che a fine gara vale nGiri+1), la clampava a nGiri-1 e infilava
   // una sosta al penultimo giro senza che nessuno l'avesse chiesta, cancellando il referto.
   if (scenaFinita) {
-    nota('La gara è finita. Premi ↺ per tornare al replay e rifare la strategia da capo.');
+    nota(t('gara.gara_finita'));
     return;
   }
   const b = E('boxOra'); b.disabled = true;
@@ -1181,7 +1189,7 @@ E('boxOra').addEventListener('click', async () => {
       const f = ESE.mod.congelamentoPer({ nome: ESE.prep.nome, contesto: ESE.prep.contesto,
         pilota: selDrv, giroSosta: voluto });
       if (f.freezeLap === null) {
-        nota(`Il motore non ha ancora un passo per ${selDrv}: prova qualche giro piu' avanti.`);
+        nota(t('gara.senza_passo', { chi: selDrv }));
         return;
       }
       freeze = f.freezeLap;
@@ -1198,12 +1206,12 @@ E('boxOra').addEventListener('click', async () => {
     } catch (err) {
       // il messaggio del motore e' un referto interno (contiene JSON): resta in console.
       console.warn('BOX ORA rifiutato:', err.message);
-      nota('Il motore non riesce a mettere in scena questa sosta: prova un altro giro o un\'altra gomma.');
+      nota(t('gara.scena_ko'));
       return;
     }
     if (!esiti.mio.direttore.approved) {
       const f = (esiti.mio.direttore.violazioni ?? []).filter(v => v.severita === 'FATAL');
-      nota(f[0]?.messaggio || 'Piano non valido: prova un altro giro o un\'altra gomma.');
+      nota(f[0]?.messaggio || t('gara.piano_ko'));
       return;
     }
     // STRAT si scrive SOLO quando il piano e' davvero valido: prima veniva assegnato
@@ -1227,7 +1235,7 @@ async function avviaScena(giroSosta) {
   const { simDaRigioca } = await import('./fantasma_sim.mjs?v=080826b');
   const sim = simDaRigioca({ risultato: STRAT.esiti.mio.risultato, race,
     pilota: selDrv, freeze: STRAT.freeze });
-  if (!sim) { nota('La scena non è disponibile per questa strategia.'); return; }
+  if (!sim) { nota(t('gara.scena_assente')); return; }
   // `sim.pitLap = giroSosta` non c'e' piu': la traccia porta ORA le soste di tutti
   // (fantasma_sim::simDaRigioca -> sim.soste), quindi si vedono in corsia la prima, la
   // seconda e quelle dei rivali. Sovrascrivere il campo cancellava tutte tranne l'ultima.
@@ -1241,11 +1249,8 @@ async function avviaScena(giroSosta) {
   // scena arrivava alla bandiera in ventidue secondi) il messaggio nominava solo la sosta
   // appena aggiunta: chi guardava non aveva modo di sapere che ne aveva gia' due.
   const piano = (STRAT?.soste ?? []).map(x =>
-    `giro ${x.giro}${x.mescola ? ' ' + (MESCOLA_IT[x.mescola] || x.mescola.toLowerCase()) : ''}`);
-  const quante = piano.length;
-  nota(`${selDrv}: ${quante === 1 ? 'una sosta' : quante === 2 ? 'due soste' : quante + ' soste'} — `
-    + `${piano.join(' · ')}. La gara continua fino alla bandiera: cambia velocità per seguirla, `
-    + `e premi di nuovo BOX ORA per aggiungerne un'altra.`);
+    t('com.giro', { n: x.giro }) + (x.mescola ? ' ' + mescola(x.mescola) : ''));
+  nota(tn('gara.piano_1', 'gara.piano_n', piano.length, { chi: selDrv, piano: piano.join(' · ') }));
 
   scenaGp = creaGhostPlay({
     sim, pista: mappa, coloreDi: sg => coloreDi(teamDi[sg], colori),
@@ -1264,7 +1269,7 @@ async function avviaScena(giroSosta) {
     // resta il tempo di premere BOX ORA una seconda e una terza volta.
     durateVere: (L) => durate[L],
     velocita: velCorrente,
-    profilo: profiloGiro ? (t) => profiloGiro.frazione(t) : null,
+    profilo: profiloGiro ? (sec) => profiloGiro.frazione(sec) : null,
     sospesa: (L) => fase(finestre, L) === 'RF',
     // ALLA BANDIERA LA SCENA RESTA, ma finita. Prima restava viva e basta, e siccome ogni
     // guardia della pagina testava `scenaGp` per verita', barra e frecce erano morte per
@@ -1308,8 +1313,8 @@ function torreScena(rs, meta) {
     // la scena spariva la mescola di tutti — proprio mentre la pagina promette di farti
     // vedere che «va avanti con la sua gomma».
     R.sotto.replaceChildren(...veri(
-      m ? el('span', { class: 'gomma ' + m, title: MESCOLA_IT[m] || m }) : null,
-      eta != null ? el('span', { class: 'eta' }, `${eta}g`) : null,
+      m ? el('span', { class: 'gomma ' + m, title: mescola(m) }) : null,
+      eta != null ? el('span', { class: 'eta' }, `${eta}${t('com.g_sigla')}`) : null,
       r.inPit ? el('span', { class: 'st box' }, 'BOX') : null));
     R.root.style.order = i;
     R.root.classList.remove('fuori');
@@ -1325,12 +1330,12 @@ function torreScena(rs, meta) {
     R.root.classList.add('fuori');
     R.sotto.replaceChildren();
     R.pz.textContent = '';
-    R.gap.textContent = esitiGara[d] === 'NP' ? 'non parte' : 'ritirato';
+    R.gap.textContent = t(esitiGara[d] === 'NP' ? 'gara.non_parte' : 'gara.ritirato');
     R.gap.className = 'gap n lapped';
     R.root.style.order = 90 + (k++);
   }
   E('giroOra').textContent = meta.lap; E('lapNow').textContent = meta.lap;
-  E('torreGiro').textContent = `giro ${meta.lap}`;
+  E('torreGiro').textContent = t('com.giro', { n: meta.lap });
   E('scorri').setAttribute('aria-valuenow', meta.lap);
   pittaRegime(meta.lap);
   const pct = Math.max(0, Math.min(100, ((meta.p ?? meta.lap) - 1) / race.n_laps * 100));
@@ -1346,9 +1351,9 @@ function torreScena(rs, meta) {
 
 /** Un piano di soste in parole: «giro 15 dura · giro 40 media». */
 function pianoInParole(soste) {
-  if (!soste?.length) return 'nessuna sosta';
+  if (!soste?.length) return t('gara.nessuna_sosta');
   return soste.slice().sort((a, b) => a.giro - b.giro)
-    .map(s => `giro ${s.giro}${s.mescola ? ' ' + (MESCOLA_IT[s.mescola] || s.mescola.toLowerCase()) : ''}`)
+    .map(s => t('com.giro', { n: s.giro }) + (s.mescola ? ' ' + mescola(s.mescola) : ''))
     .join(' · ');
 }
 
@@ -1377,9 +1382,9 @@ function verdetto() {
   E('esito').hidden = false;
   E('esito').replaceChildren(el('div', { class: 'piastra piastra-p' },
     el('h3', { stile: { fontSize: '20px', textTransform: 'uppercase', marginBottom: '14px' } },
-      `${selDrv} — com'è finita`),
+      `${selDrv} — ${t('gara.com_e_finita')}`),
     el('div', { class: 'esito-g' },
-      el('div', { class: 'esito-b' }, el('small', {}, 'nella gara vera'), el('b', { class: 'n' }, P(reale)),
+      el('div', { class: 'esito-b' }, el('small', {}, t('gara.nella_gara_vera')), el('b', { class: 'n' }, P(reale)),
         // CHI NON E' ARRIVATO LO DICE. Leclerc a Monaco si è rotto al giro 65 ed è
         // classificato P17: la casella scriveva «P17» e basta, accanto a un motore che con
         // le stesse soste lo porta P1. Sedici posizioni di scarto che sembrano un errore
@@ -1387,29 +1392,28 @@ function verdetto() {
         // l'unica di cui non diceva la provenienza. Misurato il 14/08: i ritiri sono la
         // prima fonte di scarto apparente fra il motore e la gara vera.
         esitiGara[selDrv] === 'RIT'
-          ? el('i', { class: 'esito-p' }, `ritirato al giro ${ultimoGiro[selDrv] ?? '—'} · `, pianoInParole(sueVere))
+          ? el('i', { class: 'esito-p' }, t('gara.ritirato_al_giro', { n: ultimoGiro[selDrv] ?? '—' }) + ' · ', pianoInParole(sueVere))
           : el('i', { class: 'esito-p' }, pianoInParole(sueVere))),
-      el('div', { class: 'esito-b' }, el('small', {}, 'strategia vera nel motore'), el('b', { class: 'n' }, P(pVero)),
+      el('div', { class: 'esito-b' }, el('small', {}, t('gara.strategia_vera_motore')), el('b', { class: 'n' }, P(pVero)),
         el('i', { class: 'esito-p' }, veroRespinto
-          ? 'il Direttore non firma questo run: niente confronto'
-          : 'le stesse soste, rigiocate')),
-      el('div', { class: 'esito-b tua' }, el('small', {}, 'la tua strategia'), el('b', { class: 'n' }, P(pMio)),
+          ? t('gara.direttore_no')
+          : t('gara.stesse_soste'))),
+      el('div', { class: 'esito-b tua' }, el('small', {}, t('gara.la_tua_strategia')), el('b', { class: 'n' }, P(pMio)),
         el('i', { class: 'esito-p' }, pianoInParole(STRAT.soste)))),
     el('p', { class: 'st-nota', stile: { marginTop: '12px' } },
-      scarto === null ? 'Le prime due caselle dicono quanto il motore ci prende da solo.'
-      : scarto > 0 ? `La tua mossa vale ${scarto} posizion${scarto > 1 ? 'i' : 'e'} sulla strategia vera, motore contro motore.`
-      : scarto < 0 ? `La strategia vera valeva ${-scarto} posizion${-scarto > 1 ? 'i' : 'e'} in più della tua, motore contro motore.`
-      : 'Stesso arrivo della strategia vera, motore contro motore.'),
+      scarto === null ? t('gara.scarto_nullo')
+      : scarto > 0 ? tn('gara.scarto_su_1', 'gara.scarto_su_n', scarto)
+      : scarto < 0 ? tn('gara.scarto_giu_1', 'gara.scarto_giu_n', -scarto)
+      : t('gara.scarto_pari')),
     el('p', { class: 'st-nota' },
-      'La prima casella è la gara com\'è andata; la seconda è la stessa strategia dentro il motore. ',
-      'Confrontare la seconda con la terza è l\'unico paragone onesto: cambia solo la tua mossa. ',
+      t('gara.nota_1') + ' ', t('gara.nota_2') + ' ',
       // I DUE RANGHI NON SONO SULLA STESSA POPOLAZIONE, e va detto invece di lasciarlo
       // dedurre. `ordine` esclude chi si è ritirato (all'Ungheria 19 nomi contro 22), quindi
       // le posizioni del motore contano solo chi è arrivato. Per i classificati i due numeri
       // coincidono — un ritirato sta sempre dietro — ma la casella di sinistra e le altre
       // due restano due conteggi diversi, e chi legge ha diritto di saperlo.
-      `Le due caselle del motore contano ${(mio.risultato?.ordine ?? []).length} piloti arrivati; `
-      + `la gara vera ne classifica ${ESE.prep.arrivoReale.length}, ritirati compresi.`)));
+      t('gara.nota_conteggio', { sim: (mio.risultato?.ordine ?? []).length,
+                                 vera: ESE.prep.arrivoReale.length }))));
 }
 
 /** Torna al replay reale: un posto solo, perche' lo chiamano il tastino ↺ e il cambio

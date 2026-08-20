@@ -19,6 +19,8 @@ function bytes(b64) {
 }
 
 /** canali base64 -> array numerici pronti da disegnare. */
+import { t } from './muro.mjs?v=190826b';
+
 export function decodifica(c) {
   if (!c) return null;
   const v8 = bytes(c.v);
@@ -141,7 +143,7 @@ export function frazioneDa(svg, clientX) {
 export function nastroVelocita(pista, vel, { larghezza = 9 } = {}) {
   const [x0, y0, w, h] = pista.viewBox;
   const svg = nodo('svg', { viewBox: `${x0 - 16} ${y0 - 16} ${w + 32} ${h + 32}`,
-    class: 'nastro', role: 'img', 'aria-label': 'Tracciato colorato dalla velocità' });
+    class: 'nastro', role: 'img', 'aria-label': t('tele.nastro_aria') });
   const P = pista.punti, D = pista.dist, N = P.length;
   const vmin = Math.min(...vel), vmax = Math.max(...vel);
   const colore = (u) => {                       // lento = rosso, veloce = ciano

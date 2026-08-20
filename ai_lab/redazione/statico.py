@@ -121,11 +121,13 @@ NAV = [
     # «Analisi» non e' una pagina: e' un cassetto con due sottovoci, e qui sta appiattito
     # come le vede l'utente. Sono due file apposta: se lo stampatore e il sorvegliante
     # fossero lo stesso, un errore si certificherebbe da solo.
-    ("Stagione", "stagione.html"),
+    # IN INGLESE dal 19/08/2026: e' la lingua principale del sito, ed e' anche il nome
+    # della chiave con cui muro.mjs cerca la traduzione della voce (`t('nav.season')`).
+    ("Season", "stagione.html"),
     ("Live", "live.html"),
-    ("Analisi>Articoli", "analisi.html"),
-    ("Analisi>Telemetria", "telemetria.html"),
-    ("Campionato", "campionato.html"),
+    ("Analysis>Articles", "analisi.html"),
+    ("Analysis>Telemetry", "telemetria.html"),
+    ("Championship", "campionato.html"),
 ]
 
 # QUI SOTTO C'ERA UN TIMBRATORE DI NAV, e non timbrava piu' niente.
@@ -463,6 +465,10 @@ def _testa(art) -> str:
         f'<meta property="og:description" content="{esc(desc)}">',
         f'<meta property="og:url" content="{esc(url)}">',
         f'<meta property="og:site_name" content="{NOME_SITO}">',
+        # IL CORPO DELL'ARTICOLO E' IN ITALIANO, e la targhetta lo dice.
+        # Qui `og:locale` NON diventa en_GB come nelle altre pagine: quelle hanno il
+        # testo inglese scritto nel file, questa ha il testo italiano. Una targhetta
+        # deve descrivere il file che sta addosso, non il sito che lo contiene.
         '<meta property="og:locale" content="it_IT">',
         f'<meta property="article:published_time" content="{esc(art.get("data"))}">',
     ]
@@ -493,13 +499,13 @@ def rendi_html(art) -> str:
   la sorgente e' demo/data/analisi/{art['id']}.json e questo file si rigenera da
   solo quando l'articolo viene pubblicato (coda.py::_scrivi_demo).
 -->
-<html lang="it">
+<html lang="en">
 <head>
 {_testa(art)}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
-<link rel="stylesheet" href="../muro.css?v=090826b">
+<link rel="stylesheet" href="../muro.css?v=190826b">
 <link rel="apple-touch-icon" href="/assets/marchio/icona-180.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%2232%22%20height%3D%2232%22%20role%3D%22img%22%20aria-label%3D%22Muretto%20Box%20Virtuale%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%23FF1E3C%22%2F%3E%3Cpath%20d%3D%22M20%2064L20%2018L31.5%2018L50%2042L68.5%2018L80%2018L80%2064L69.5%2064L69.5%2034L54%2055L46%2055L30.5%2034L30.5%2064Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Cpath%20d%3D%22M12%2073L88%2073L88%2084L12%2084Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E">
 <script type="application/ld+json">
@@ -510,16 +516,23 @@ def rendi_html(art) -> str:
 <header class="barra"></header>
 
 <div class="wrap-scheda" style="padding-bottom:0">
-  <a class="crumb" href="../analisi.html">&larr; Articoli</a>
+  <a class="crumb" href="../analisi.html">&larr; <span data-i18n="nav.articles">Articles</span></a>
+  <!-- L'AVVISO DI LINGUA. L'interfaccia del sito e' in inglese dal 19/08/2026; questo
+       testo no, ed e' una scelta: e' un'analisi tecnica scritta a mano, una per una, e
+       tradurla a macchina vorrebbe dire pubblicare come nostro un testo che nessuno ha
+       verificato. Chi arriva qui dal sito inglese lo ha gia' letto su analisi.html; chi
+       ci arriva da un link diretto lo legge qui, prima del titolo. La regola CSS
+       `html[lang="it"] .avviso-lingua{{display:none}}` lo toglie in italiano. -->
+  <p class="avviso-lingua" lang="en">This article is written in Italian.</p>
 </div>
 
-<article class="wrap-scheda art" id="art">
+<article class="wrap-scheda art" id="art" lang="it">
   {_corpo(art)}
 </article>
 
 <footer class="piede"><div class="piede-in"></div></footer>
 <script type="module">
-  import {{ guscio }} from '../muro.mjs?v=090826b';
+  import {{ guscio }} from '../muro.mjs?v=190826b';
   guscio('analisi.html');
 </script>
 </body>
@@ -679,11 +692,23 @@ def scrivi_sitemap() -> bool:
     # letta per analisi.html sarebbe quella di prima del nuovo articolo e il lastmod
     # resterebbe sempre una generazione indietro.
     lastmod = _lastmod_pagine([f for f, _p in PAGINE_FISSE])
+    # LE DUE LINGUE SI DICHIARANO NELLA SITEMAP, e non e' decorazione: senza
+    # `xhtml:link` un motore di ricerca vede due indirizzi (`/stagione.html` e
+    # `/stagione.html?lang=it`) e non sa che sono la stessa pagina in due lingue —
+    # li tratta come contenuto duplicato, e sceglie lui quale mostrare a chi.
+    # Vale per le PAGINE FISSE, che hanno le due lingue davvero; gli ARTICOLI no:
+    # il loro testo esiste in italiano soltanto, e annunciare un inglese che non c'e'
+    # sarebbe una promessa falsa detta a una macchina.
     righe = ['<?xml version="1.0" encoding="UTF-8"?>',
-             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"',
+             '        xmlns:xhtml="http://www.w3.org/1999/xhtml">']
     for file, prio in PAGINE_FISSE:
         loc = f"{SITO}/" if file == "index.html" else f"{SITO}/{file}"
+        loc_it = f"{loc}{'&' if '?' in loc else '?'}lang=it"
         righe += ["  <url>", f"    <loc>{esc(loc)}</loc>",
+                  f'    <xhtml:link rel="alternate" hreflang="en" href="{esc(loc)}"/>',
+                  f'    <xhtml:link rel="alternate" hreflang="it" href="{esc(loc_it)}"/>',
+                  f'    <xhtml:link rel="alternate" hreflang="x-default" href="{esc(loc)}"/>',
                   f"    <lastmod>{lastmod[file]}</lastmod>",
                   f"    <priority>{prio}</priority>", "  </url>"]
     for a in arts:
@@ -777,16 +802,16 @@ def aggiorna_elenco() -> bool:
 
 def scrivi_404() -> bool:
     testo = """<!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pagina non trovata — Muretto Box Virtuale</title>
+<title data-i18n="meta.e404.titolo">Page not found — Muretto Box Virtuale</title>
 <meta name="robots" content="noindex, follow">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
-<link rel="stylesheet" href="/muro.css?v=090826b">
+<link rel="stylesheet" href="/muro.css?v=190826b">
 <link rel="apple-touch-icon" href="/assets/marchio/icona-180.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%2232%22%20height%3D%2232%22%20role%3D%22img%22%20aria-label%3D%22Muretto%20Box%20Virtuale%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%23FF1E3C%22%2F%3E%3Cpath%20d%3D%22M20%2064L20%2018L31.5%2018L50%2042L68.5%2018L80%2018L80%2064L69.5%2064L69.5%2034L54%2055L46%2055L30.5%2034L30.5%2064Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Cpath%20d%3D%22M12%2073L88%2073L88%2084L12%2084Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E">
 </head>
@@ -794,21 +819,21 @@ def scrivi_404() -> bool:
 <header class="barra"></header>
 
 <main class="scafo">
-  <p class="occhiello">Errore 404</p>
-  <h1 class="titolone">Questa pagina <em>non esiste</em></h1>
-  <p class="sottotitolo">L'indirizzo che hai seguito non porta a nulla: forse un vecchio
-     link, forse un refuso. Da qui si riparte.</p>
+  <p class="occhiello" data-i18n="e404.occhiello">Error 404</p>
+  <h1 class="titolone" data-i18n-html="e404.titolo">This page <em>does not exist</em></h1>
+  <p class="sottotitolo" data-i18n="e404.sottotitolo">The address you followed leads nowhere: maybe an old
+     link, maybe a typo. You can start again from here.</p>
   <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:28px">
-    <a class="btn btn-p" href="/stagione.html">Le gare</a>
-    <a class="btn btn-s" href="/telemetria.html">Telemetria</a>
-    <a class="btn btn-s" href="/campionato.html">Campionato</a>
-    <a class="btn btn-f" href="/index.html">Home</a>
+    <a class="btn btn-p" href="/stagione.html" data-i18n="e404.le_gare">The races</a>
+    <a class="btn btn-s" href="/telemetria.html" data-i18n="nav.telemetry">Telemetry</a>
+    <a class="btn btn-s" href="/campionato.html" data-i18n="nav.championship">Championship</a>
+    <a class="btn btn-f" href="/index.html" data-i18n="e404.home">Home</a>
   </div>
 </main>
 
 <footer class="piede"><div class="piede-in"></div></footer>
 <script type="module">
-  import { guscio } from '/muro.mjs?v=090826b';
+  import { guscio } from '/muro.mjs?v=190826b';
   guscio(null);
 </script>
 </body>

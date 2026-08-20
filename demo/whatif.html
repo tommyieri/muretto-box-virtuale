@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>What-If Simulator — Muretto Box Virtuale</title>
-<meta name="description" content="Simulatore di strategie controfattuali: sposta il giro della sosta e confronta due run dello stesso motore, la tua strategia contro quella vera.">
+<title data-i18n="meta.whatif.titolo">What-If Simulator — Muretto Box Virtuale</title>
+<meta name="description" data-i18n-attr="content:meta.whatif.desc" content="Counterfactual strategy simulator: move the pit stop lap and compare two runs of the same engine, your strategy against the real one.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
-<link rel="stylesheet" href="muro.css?v=090826b">
+<link rel="stylesheet" href="muro.css?v=190826b">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%23FF1E3C%27/%3E%3Cpath d=%27M7 23V9h3.4L16 17l5.6-8H25v14h-3.5v-8.2L16.9 21h-1.8l-4.6-6.2V23z%27 fill=%27%23ffffff%27/%3E%3C/svg%3E">
 <style>
   .whatif-layout { display:grid; grid-template-columns:340px 1fr; gap:24px; margin-top:24px; }
@@ -42,35 +42,35 @@
 <header class="barra"></header>
 
 <main class="scafo">
-  <p class="occhiello">Strategia · Scenari Controfattuali</p>
-  <h1 class="titolone">Simulatore <em>What-If</em></h1>
-  <p class="sottotitolo">Sposta il giro della sosta e guarda che cosa cambia. Le due risposte
-    escono dallo <b>stesso motore</b>: la tua strategia e quella vera, girate entrambe come
-    simulazione. È l'unico confronto che isola la scelta invece di misurare l'errore del modello.</p>
+  <p class="occhiello" data-i18n="wif.occhiello">Strategy · Counterfactual scenarios</p>
+  <h1 class="titolone" data-i18n-html="wif.titolo"><em>What-If</em> simulator</h1>
+  <p class="sottotitolo" data-i18n-html="wif.sottotitolo">Move the pit stop lap and watch what changes. The
+    two answers come out of the <b>same engine</b>: your strategy and the real one, both run as a
+    simulation. It is the only comparison that isolates the choice instead of measuring the model's error.</p>
 
   <div class="whatif-layout">
     <!-- CONTROLLI -->
     <div class="pannello-ctrl">
       <div class="campo">
-        <label for="sel-gara">Gran Premio</label>
+        <label for="sel-gara" data-i18n="tele.aria_gp">Grand Prix</label>
         <select id="sel-gara" class="sel"></select>
       </div>
 
       <div class="campo">
-        <label for="sel-pilota">Pilota</label>
+        <label for="sel-pilota" data-i18n="com.pilota">Driver</label>
         <select id="sel-pilota" class="sel"></select>
       </div>
 
       <div class="campo">
         <div class="ctrl-val">
-          <label>Giro Sosta Alternativo</label>
+          <label data-i18n="wif.giro_alt">Alternative pit lap</label>
           <span id="txt-giro-alt">—</span>
         </div>
         <input type="range" id="rng-giro" min="1" max="70" value="30" step="1">
       </div>
 
       <div class="campo">
-        <label>Mescola Montata</label>
+        <label data-i18n="wif.mescola_montata">Compound fitted</label>
         <div class="pillole" id="btn-mescole">
           <button class="pil on" data-m="HARD">Hard</button>
           <button class="pil" data-m="MEDIUM">Medium</button>
@@ -78,33 +78,33 @@
         </div>
       </div>
 
-      <div class="targhetta" id="box-targhetta">Caricamento parametri…</div>
+      <div class="targhetta" id="box-targhetta" data-i18n="wif.caricamento_par">Loading parameters…</div>
     </div>
 
     <!-- VISTA GRAFICA & KPI -->
     <div class="pannello-vista">
-      <div class="riga-director" id="riga-director">Caricamento…</div>
+      <div class="riga-director" id="riga-director" data-i18n="wif.caricamento">Loading…</div>
 
       <div class="kpi-row" id="verdetto"></div>
 
       <div class="kpi-row">
         <div class="kpi-box">
-          <div class="tit">Sosta reale</div>
+          <div class="tit" data-i18n="wif.sosta_reale">Real stop</div>
           <div class="val" id="kpi-pit-reale">—</div>
         </div>
         <div class="kpi-box">
-          <div class="tit">Sosta What-If</div>
+          <div class="tit" data-i18n="wif.sosta_wif">What-If stop</div>
           <div class="val" id="kpi-pit-sim">—</div>
         </div>
         <div class="kpi-box">
-          <div class="tit">Posizione al rientro</div>
+          <div class="tit" data-i18n="wif.pos_rientro">Position on rejoining</div>
           <div class="val" id="kpi-pos-rientro">—</div>
-          <span class="sub">nel run What-If, contro i rivali dello stesso run</span>
+          <span class="sub" data-i18n="wif.sub_rientro">in the What-If run, against the rivals of that same run</span>
         </div>
         <div class="kpi-box">
-          <div class="tit">Delta alla bandiera</div>
+          <div class="tit" data-i18n="wif.delta_bandiera">Delta at the flag</div>
           <div class="val" id="kpi-delta-tempo">—</div>
-          <span class="sub">What-If meno strategia vera, stesso motore</span>
+          <span class="sub" data-i18n="wif.sub_delta">What-If minus the real strategy, same engine</span>
         </div>
       </div>
 
@@ -114,9 +114,9 @@
 
       <ul class="assunzioni" id="assunzioni"></ul>
 
-      <p class="nota-metodo">Questa pagina è un gioco, non una previsione. Sulla gara intera il
-        motore e «non cambia niente» sono indistinguibili: il valore sta nel confronto fra due
-        run, non nel numero assoluto.</p>
+      <p class="nota-metodo" data-i18n="wif.nota_metodo">This page is a game, not a prediction. Over the whole
+        race the engine and «change nothing» are indistinguishable: the value is in the comparison between two
+        runs, not in the absolute number.</p>
     </div>
   </div>
 </main>
@@ -124,9 +124,9 @@
 <footer class="piede"><div class="piede-in"></div></footer>
 
 <script type="module">
-  import { guscio } from './muro.mjs?v=090826b';
+  import { guscio } from './muro.mjs?v=190826b';
   guscio('whatif.html');
 </script>
-<script type="module" src="whatif.mjs?v=090826b"></script>
+<script type="module" src="whatif.mjs?v=190826b"></script>
 </body>
 </html>

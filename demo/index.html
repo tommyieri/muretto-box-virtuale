@@ -1,29 +1,33 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Muretto Box Virtuale — la Formula 1 vista dal muretto</title>
-<meta name="description" content="Rivedi ogni gara della stagione 2026 giro per giro, decidi tu quando fermarsi ai box e guarda la telemetria di qualunque giro di qualunque pilota.">
+<title data-i18n="meta.index.titolo">Muretto Box Virtuale — Formula 1 from the pit wall</title>
+<meta name="description" data-i18n-attr="content:meta.index.desc" content="Replay every race of the 2026 season lap by lap, decide for yourself when to pit, and look at the telemetry of any lap of any driver.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Muretto Box Virtuale">
-<meta property="og:locale" content="it_IT">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="it_IT">
 <meta property="og:url" content="https://murettobox.com/">
-<meta property="og:title" content="Muretto Box Virtuale — la Formula 1 vista dal muretto">
-<meta property="og:description" content="Rivedi ogni gara della stagione 2026 giro per giro, decidi tu quando fermarsi ai box e guarda la telemetria di qualunque giro di qualunque pilota.">
+<meta property="og:title" data-i18n-attr="content:meta.index.titolo" content="Muretto Box Virtuale — Formula 1 from the pit wall">
+<meta property="og:description" data-i18n-attr="content:meta.index.desc" content="Replay every race of the 2026 season lap by lap, decide for yourself when to pit, and look at the telemetry of any lap of any driver.">
 <meta property="og:image" content="https://murettobox.com/og/pagina-index.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Muretto Box Virtuale — la Formula 1 vista dal muretto">
-<meta name="twitter:description" content="Rivedi ogni gara della stagione 2026 giro per giro, decidi tu quando fermarsi ai box e guarda la telemetria di qualunque giro di qualunque pilota.">
+<meta name="twitter:title" data-i18n-attr="content:meta.index.titolo" content="Muretto Box Virtuale — Formula 1 from the pit wall">
+<meta name="twitter:description" data-i18n-attr="content:meta.index.desc" content="Replay every race of the 2026 season lap by lap, decide for yourself when to pit, and look at the telemetry of any lap of any driver.">
 <meta name="twitter:image" content="https://murettobox.com/og/pagina-index.png">
 <link rel="canonical" href="https://murettobox.com/">
+<link rel="alternate" hreflang="en" href="https://murettobox.com/">
+<link rel="alternate" hreflang="it" href="https://murettobox.com/?lang=it">
+<link rel="alternate" hreflang="x-default" href="https://murettobox.com/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
-<link rel="stylesheet" href="muro.css?v=090826b">
-<link rel="stylesheet" href="hero.css?v=090826b">
+<link rel="stylesheet" href="muro.css?v=190826b">
+<link rel="stylesheet" href="hero.css?v=190826b">
 <link rel="apple-touch-icon" href="/assets/marchio/icona-180.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%2232%22%20height%3D%2232%22%20role%3D%22img%22%20aria-label%3D%22Muretto%20Box%20Virtuale%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%23FF1E3C%22%2F%3E%3Cpath%20d%3D%22M20%2064L20%2018L31.5%2018L50%2042L68.5%2018L80%2018L80%2064L69.5%2064L69.5%2034L54%2055L46%2055L30.5%2034L30.5%2064Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Cpath%20d%3D%22M12%2073L88%2073L88%2084L12%2084Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E">
 <style>
@@ -104,39 +108,39 @@
     <div class="hero-grid">
 
       <div class="hero-say">
-        <p class="occhiello">Spa-Francorchamps · giro 20 di 44</p>
+        <p class="occhiello" data-i18n="index.hero_occhiello">Spa-Francorchamps · lap 20 of 44</p>
 
-        <h1 class="hero-tit" id="hero-tit">Decidi tu<br><em>quando fermarsi.</em></h1>
+        <h1 class="hero-tit" id="hero-tit" data-i18n-html="index.hero_tit">You decide<br><em>when to pit.</em></h1>
 
-        <p class="hero-sub">
-          Il <b>muretto box</b> decide la strategia. Qui la decidi tu: fermi il leader
-          ai box e il motore dice <b>dove rientri</b>, coi rivali al loro passo reale.
+        <p class="hero-sub" data-i18n-html="index.hero_sub">
+          The <b>pit wall</b> decides the strategy. Here you decide it: you pit the leader
+          and the engine says <b>where you come back out</b>, with the rivals at their real pace.
         </p>
 
         <!-- le due strade, riempite dal motore -->
-        <div class="hero-choices" role="group" aria-label="Quando fermarsi ai box" aria-busy="true"></div>
+        <div class="hero-choices" role="group" data-i18n-attr="aria-label:index.hero_scelte" aria-label="When to pit" aria-busy="true"></div>
 
         <div class="hero-mesc">
-          <div class="hero-mesc-h">Che gomma monti</div>
+          <div class="hero-mesc-h" data-i18n="index.hero_gomma">Which tyre you fit</div>
           <div class="hero-mesc-r"></div>
-          <p class="hero-mesc-n">La mescola <b>non cambia</b> la risposta: quello che la
-            cambia è <b>il momento</b>.</p>
+          <p class="hero-mesc-n" data-i18n-html="index.hero_mesc_n">The compound <b>does not change</b> the
+            answer: what changes it is <b>the moment</b>.</p>
         </div>
 
         <!-- lo spazio del verdetto e' riservato dal CSS: la risposta non sposta nulla -->
         <div class="hero-verdetto" aria-live="polite">
           <span class="hero-verdetto-flash" aria-hidden="true"></span>
           <div class="hero-verdetto-corpo">
-            <p class="hero-verdetto-attesa">Scegli quando fermarti: il motore dice dove
-              rientri, coi rivali al loro passo reale.</p>
+            <p class="hero-verdetto-attesa" data-i18n="index.hero_attesa">Choose when to pit: the engine
+              says where you come back out, with the rivals at their real pace.</p>
           </div>
         </div>
 
         <div class="hero-cta">
           <a class="btn btn-p" id="ctaGara" href="stagione.html">
             <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-            Prova sulla gara vera</a>
-          <a class="btn btn-s" href="telemetria.html">Telemetria</a>
+            <span data-i18n="index.cta_gara">Try it on the real race</span></a>
+          <a class="btn btn-s" href="telemetria.html" data-i18n="nav.telemetry">Telemetry</a>
         </div>
       </div>
 
@@ -144,11 +148,11 @@
         <div class="hero-stage">
           <div class="hero-hud"></div>
           <div class="hero-pista"></div>
-          <ol class="hero-tower" aria-label="Classifica simulata"></ol>
+          <ol class="hero-tower" data-i18n-attr="aria-label:index.hero_torre" aria-label="Simulated standings"></ol>
           <div class="hero-prompt" aria-hidden="true"></div>
           <div class="hero-pit" aria-hidden="true"></div>
-          <button type="button" class="hero-rivedi">Rivedi</button>
-          <p class="hero-firma"><span>Sei tu,</span> <span><em>al muretto.</em></span></p>
+          <button type="button" class="hero-rivedi" data-i18n="index.rivedi">Replay</button>
+          <p class="hero-firma" data-i18n-html="index.firma"><span>It's you,</span> <span><em>on the pit wall.</em></span></p>
         </div>
         <!-- i due numeri che il motore usa; li scrive hero.mjs -->
         <p class="hero-fonte"></p>
@@ -157,48 +161,48 @@
     </div>
   </section>
 
-  <h2 class="sezione-t">Cosa trovi</h2>
+  <h2 class="sezione-t" data-i18n="index.cosa_trovi">What you will find</h2>
   <div class="porte">
     <a class="porta" href="stagione.html" style="--ac:#FF1E3C">
       <span class="k">01</span>
-      <h3>Le gare</h3>
-      <p>Ogni Gran Premio si rivede dall'inizio alla fine: le auto in pista, la classifica
-         che cambia, le safety car. E il pannello strategia sempre aperto.</p>
-      <span class="vai">Vai alla stagione <i>→</i></span>
+      <h3 data-i18n="index.porta1_t">The races</h3>
+      <p data-i18n="index.porta1_p">Every Grand Prix can be replayed from start to finish: the cars
+         on track, the order changing, the safety cars. And the strategy panel always open.</p>
+      <span class="vai"><span data-i18n="index.porta1_go">Go to the season</span> <i>→</i></span>
     </a>
     <a class="porta" href="telemetria.html" style="--ac:#24E3D2">
       <span class="k">02</span>
-      <h3>La telemetria</h3>
-      <p>Scegli il pilota e <b>scegli il giro</b>: velocità, gas, freno e marce di quel
-         giro preciso. Due giri a confronto, dove si guadagna e dove si perde.</p>
-      <span class="vai">Apri la telemetria <i>→</i></span>
+      <h3 data-i18n="index.porta2_t">The telemetry</h3>
+      <p data-i18n-html="index.porta2_p">Pick the driver and <b>pick the lap</b>: speed, throttle, brake
+         and gears of that exact lap. Two laps side by side, where time is gained and where it is lost.</p>
+      <span class="vai"><span data-i18n="index.porta2_go">Open the telemetry</span> <i>→</i></span>
     </a>
     <a class="porta" href="campionato.html" style="--ac:#FFB000">
       <span class="k">03</span>
-      <h3>Il campionato</h3>
-      <p>Piloti e costruttori, gara dopo gara. Con la scheda di ogni pilota: la stagione
-         in corso e la carriera.</p>
-      <span class="vai">Vedi le classifiche <i>→</i></span>
+      <h3 data-i18n="index.porta3_t">The championship</h3>
+      <p data-i18n="index.porta3_p">Drivers and constructors, race after race. With a card for every
+         driver: the season under way and the career.</p>
+      <span class="vai"><span data-i18n="index.porta3_go">See the standings</span> <i>→</i></span>
     </a>
   </div>
 
-  <h2 class="sezione-t">L'ultima gara</h2>
+  <h2 class="sezione-t" data-i18n="index.ultima_gara">The last race</h2>
   <div class="piastra ultima" id="ultima">
     <div><div class="scheletro" style="height:96px"></div></div>
   </div>
 
-  <h2 class="sezione-t">Articoli <a class="coda" href="analisi.html">tutti →</a></h2>
+  <h2 class="sezione-t"><span data-i18n="nav.articles">Articles</span> <a class="coda" href="analisi.html"><span data-i18n="index.tutti">all of them</span> →</a></h2>
   <div class="letture" id="letture"></div>
 
   <section class="piastra piastra-p richiamo" aria-labelledby="ric-tit">
     <div class="ric-testo">
-      <h2 id="ric-tit">Se qualcosa non va, <em style="font-style:normal;color:var(--rosso)">dillo</em></h2>
-      <p>Questo sito finora l'abbiamo guardato solo noi, e chi costruisce una cosa smette
-         di vederla. Se trovi un numero che non torna, un grafico che resta vuoto o una
-         pagina che non si capisce, scrivicelo: le segnalazioni le leggiamo a mano, e
-         quelle che descrivono un difetto vero diventano una correzione.</p>
+      <h2 id="ric-tit" data-i18n-html="index.ric_tit">If something is wrong, <em style="font-style:normal;color:var(--rosso)">say so</em></h2>
+      <p data-i18n="index.ric_p">So far only we have looked at this site, and whoever builds a thing
+         stops seeing it. If you find a number that does not add up, a chart that stays empty or
+         a page that makes no sense, write to us: we read the reports by hand, and the ones that
+         describe a real defect become a fix.</p>
     </div>
-    <a class="btn btn-p" href="feedback.html?da=index.html">Segnala un problema</a>
+    <a class="btn btn-p" href="feedback.html?da=index.html" data-i18n="guscio.segnala">Report a problem</a>
   </section>
 
 </main>
@@ -206,7 +210,7 @@
 <footer class="piede"><div class="piede-in"></div></footer>
 
 <script type="module">
-import { guscio, dati, el, V, identita, coloreDi, dataIt, guasto } from './muro.mjs?v=090826b';
+import { guscio, dati, el, V, identita, coloreDi, dataLoc, guasto, t, tn, gpTitolo } from './muro.mjs?v=190826b';
 guscio('index.html');
 
 /* ----------------------------------------------------------- ultima gara */
@@ -223,7 +227,7 @@ async function ultima() {
   const inDemo = new Set(man.map(r => r.gara));
   const corse = (cal.gare || []).filter(g => g.gara_demo && inDemo.has(g.gara_demo));
   const g = corse[corse.length - 1];
-  if (!g) { box.replaceChildren(el('div', { class: 'vuoto' }, 'Nessuna gara ancora pubblicata.')); return; }
+  if (!g) { box.replaceChildren(el('div', { class: 'vuoto' }, t('index.nessuna_gara'))); return; }
 
   document.getElementById('ctaGara').href = `gara.html?g=${encodeURIComponent(g.gara_demo)}`;
 
@@ -232,15 +236,15 @@ async function ultima() {
   const nome = v && Object.values(schede?.piloti || {}).find(p => p.sigla === v.sigla)?.nome;
   box.replaceChildren(
     el('div', {},
-      el('p', { class: 'occhiello' }, `Round ${g.round} · ${g.circuito || ''}`),
-      el('h3', { class: 'gp' }, g.titolo),
-      el('p', { class: 'sotto' }, `${dataIt(g.data)} · ${g.giri} giri`),
+      el('p', { class: 'occhiello' }, `${t('com.round', { n: g.round })} · ${g.circuito || ''}`),
+      el('h3', { class: 'gp' }, gpTitolo(g.titolo, g.nome)),
+      el('p', { class: 'sotto' }, `${dataLoc(g.data)} · ${tn('com.giro_1', 'com.giri_n', g.giri)}`),
       v && el('div', { class: 'vinc' },
         el('span', { class: 'livrea', stile: { background: coloreDi(v.team, colori) } }),
         el('b', {}, nome || v.sigla),
-        el('span', { class: 'etic etic-a' }, 'vince'))),
+        el('span', { class: 'etic etic-a' }, t('index.vince')))),
     el('a', { class: 'btn btn-p', href: `gara.html?g=${encodeURIComponent(g.gara_demo)}` },
-      'Rivedi la gara'));
+      t('index.rivedi_gara')));
 }
 
 /* --------------------------------------------------------------- letture */
@@ -264,7 +268,7 @@ ultima(); letture();
    in viewport e il movimento e' consentito. Chi ha prefers-reduced-motion, o chi non
    arriva fin qui, non paga un byte di libreria: il markup statico resta leggibile.
    Se qualcosa va storto la pagina NON si rompe — la hero resta com'e' scritta. */
-import('./hero.mjs?v=090826b')
+import('./hero.mjs?v=190826b')
   .then(({ creaHero }) => creaHero(document.getElementById('hero')))
   .catch((e) => console.warn('hero non avviata:', e.message));
 </script>

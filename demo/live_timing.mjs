@@ -33,6 +33,8 @@ import { tyreColor } from './timeline.mjs?v=220726a';
 
 // ---------------------------------------------------------------- stato
 // Riduttore puro, SENZA DOM: testabile in Node (test_live_timing.mjs).
+import { mescola } from './muro.mjs?v=190826b';
+
 export function creaStatoTiming() {
   const piloti = new Map();   // num -> {sigla, colore}
   const timing = new Map();   // num -> {pos,gap,in_pit,last_lap,best_lap,interval,sectors,micro,
@@ -159,7 +161,7 @@ export function creaTorreTiming({ lista, nota }) {
     // il banco pretende di vederlo qui, e ha ragione a pretenderlo. Il compound arriva da un
     // WebSocket, e la regola «tutto cio' che entra in innerHTML passa da esc()» vale piu' del
     // ragionamento caso per caso su quale campo sia gia' sicuro (e' il difetto del 31/07).
-    return `<span class="tw-gomma" title="${esc(r.compound)}">`
+    return `<span class="tw-gomma" title="${esc(mescola(r.compound))}">`
       + `<i class="tw-mescola" style="background:${esc(tyreColor(r.compound) || 'var(--dim)')}"></i>`
       + `<span class="tw-eta">${esc(typeof r.tyre_age === 'number' ? r.tyre_age : '')}</span></span>`;
   }

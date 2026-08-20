@@ -8,7 +8,7 @@
 // Non si mostrano targhette, perimetri, orizzonti di validazione, coperture, elenchi di
 // assunzioni: sono referti interni. Il DATO li conserva tutti — sparisce la resa.
 
-import { el, nnum, MESCOLA_IT } from './muro.mjs?v=090826b';
+import { el, nnum, mescola, t, tn } from './muro.mjs?v=190826b';
 
 const ORD = ['SOFT', 'MEDIUM', 'HARD'];
 
@@ -40,7 +40,7 @@ function curva(s, giroCorrente, onGiro) {
   svg.setAttribute('class', 'curva');
   svg.setAttribute('role', 'img');
   svg.setAttribute('aria-label',
-    `Costo della sosta per giro, dal giro ${g0} al ${g1}. Migliore: giro ${min?.giroPit ?? '—'}.`);
+    t('strat.aria_curva', { da: g0, a: g1, best: min?.giroPit ?? '—' }));
 
   let dentro = '';
   if (fin && fin.da != null && fin.a != null) {
@@ -85,14 +85,15 @@ function quanteSoste(s) {
   if (!Array.isArray(alt) || alt.length < 2) return null;
   const migliore = alt.reduce((a, b) => (b.posizione < a.posizione ? b : a), alt[0]);
   return el('div', { class: 'st-blocco' },
-    el('h4', {}, 'Come finisce'),
+    el('h4', {}, t('strat.come_finisce')),
     el('div', { class: 'st-soste' },
       alt.slice().sort((a, b) => a.k - b.k).map(a => el('div', {
         class: 'st-sosta' + (a === migliore ? ' meglio' : ''),
       },
         el('b', { class: 'n' }, P(a.posizione)),
-        el('span', {}, a.k === 0 ? 'nessuna sosta' : a.k === 1 ? '1 sosta' : `${a.k} soste`)))),
-    el('p', { class: 'st-nota' }, 'La posizione al traguardo, se da qui in avanti fai quel numero di soste.'));
+        el('span', {}, a.k === 0 ? t('gara.nessuna_sosta')
+                                 : tn('strat.n_sosta_1', 'strat.n_sosta_n', a.k))))),
+    el('p', { class: 'st-nota' }, t('strat.nota_soste')));
 }
 
 /* --------------------------------------------------------- il pannello */
@@ -114,16 +115,16 @@ export function pannello(s, opz = {}) {
 
   /* ---- il verdetto: la cosa per cui si e' aperta la pagina */
   f.append(el('div', { class: 'st-verdetto' },
-    el('span', { class: 'st-occ' }, `Se ti fermi al giro ${s.freeze_lap + 1}`),
+    el('span', { class: 'st-occ' }, t('strat.se_ti_fermi', { n: s.freeze_lap + 1 })),
     el('div', { class: 'st-riga' },
       el('b', { class: 'st-pos n' }, P(pan.posizione)),
       el('div', { class: 'st-di' },
-        el('span', {}, pan.su_quanti ? `su ${pan.su_quanti} in pista` : ''),
+        el('span', {}, pan.su_quanti ? t('strat.su_n_in_pista', { n: pan.su_quanti }) : ''),
         banda && banda.da != null
-          ? el('span', { class: 'st-banda' }, `verosimile tra ${P(banda.da)} e ${P(banda.a)}`)
+          ? el('span', { class: 'st-banda' }, t('strat.banda', { da: P(banda.da), a: P(banda.a) }))
           : null)),
     pan.giro_di_rientro
-      ? el('p', { class: 'st-sub' }, `Rientri in pista al giro ${pan.giro_di_rientro}.`)
+      ? el('p', { class: 'st-sub' }, t('strat.rientri_al_giro', { n: pan.giro_di_rientro }))
       : null));
 
   /* ---- il secondo numero del muretto: quanto vai piu' forte, e per quanto ----
@@ -137,23 +138,23 @@ export function pannello(s, opz = {}) {
     f.append(el('div', { class: 'st-guadagno' },
       el('div', { class: 'st-g-riga' },
         el('b', { class: 'n' }, `−${nnum(opz.guadagno, 2)} s`),
-        el('span', {}, 'al giro, appena rientri')),
+        el('span', {}, t('strat.al_giro_rientro'))),
       Number.isFinite(opz.vitaGiri)
-        ? el('p', { class: 'st-nota', stile: { margin: '8px 0 0' } },
-            'La ', el('b', {}, MESCOLA_IT[m] || (m || '').toLowerCase()),
-            ` tiene ${Math.round(opz.vitaGiri)} giri prima di calare.`)
+        ? el('p', { class: 'st-nota', stile: { margin: '8px 0 0' }, html:
+            t('strat.tiene_giri', { m: mescola(m), n: Math.round(opz.vitaGiri) }) })
         : null));
   }
 
   /* ---- chi ti trovi intorno */
   const vicino = (titolo, v) => el('div', { class: 'st-vic' },
     el('span', {}, titolo),
-    v?.drv ? el('b', {}, v.drv) : el('b', { class: 'nulla' }, 'nessuno'),
+    v?.drv ? el('b', {}, v.drv) : el('b', { class: 'nulla' }, t('strat.nessuno')),
     // il distacco si scrive solo se c'e': un «— s» sotto un nome sembra un guasto
     (v?.drv && Number.isFinite(v.gap_s)) ? el('i', { class: 'n' }, `${nnum(v.gap_s, 1)} s`) : null);
   const d = pan.davanti, r = pan.dietro;
   if (d?.drv || r?.drv) {
-    f.append(el('div', { class: 'st-vicini' }, vicino('davanti', d), vicino('dietro', r)));
+    f.append(el('div', { class: 'st-vicini' },
+      vicino(t('strat.davanti'), d), vicino(t('strat.dietro'), r)));
   }
 
   /* ---- quando conviene */
@@ -161,12 +162,12 @@ export function pannello(s, opz = {}) {
   if (c) {
     const fin = s.finestra, min = s.minimo;
     f.append(el('div', { class: 'st-blocco' },
-      el('h4', {}, 'Quando fermarsi'),
+      el('h4', {}, t('strat.quando_fermarsi')),
       c,
       el('p', { class: 'st-nota' },
-        min ? el('span', {}, 'Il momento migliore è il ', el('b', {}, `giro ${min.giroPit}`), '. ') : null,
+        min ? el('span', { html: t('strat.momento_migliore', { n: min.giroPit }) + ' ' }) : null,
         fin && fin.n_giri > 1
-          ? el('span', {}, `Fra il giro ${fin.da} e il ${fin.a} cambia poco: è la finestra.`)
+          ? el('span', {}, t('strat.finestra', { da: fin.da, a: fin.a }))
           : null)));
   }
 
@@ -183,11 +184,12 @@ export function pannello(s, opz = {}) {
   const perdita = s.perdita?.valore;
   const neutra = s.regime === 'SC' || s.regime === 'VSC';
   f.append(el('div', { class: 'st-piedi' },
-    perdita != null ? el('span', {}, 'Perdita ai box ', el('b', { class: 'n' }, `${nnum(perdita, 1)} s`)) : null,
-    opz.mescolaNuova ? el('span', {}, 'Monti ', el('b', {}, MESCOLA_IT[opz.mescolaNuova] || opz.mescolaNuova.toLowerCase())) : null,
+    perdita != null
+      ? el('span', {}, t('strat.perdita_box') + ' ', el('b', { class: 'n' }, `${nnum(perdita, 1)} s`))
+      : null,
+    opz.mescolaNuova ? el('span', {}, t('strat.monti') + ' ', el('b', {}, mescola(opz.mescolaNuova))) : null,
     neutra ? el('span', { class: 'st-neutra' },
-      s.regime === 'SC' ? 'Con la safety car fermarsi costa molto meno.'
-                        : 'Con la virtual safety car fermarsi costa un po\' meno.') : null));
+      t(s.regime === 'SC' ? 'strat.sotto_sc' : 'strat.sotto_vsc')) : null));
 
   return f;
 }
@@ -205,16 +207,16 @@ export function pannello(s, opz = {}) {
  *  «premuto» e' una scelta. */
 export function selettoreMescole({ scelta, attuale, onScegli }) {
   return el('div', { class: 'st-mescbox' },
-    el('span', { class: 'st-occ' }, 'Che gomma monti'),
-    el('div', { class: 'st-mesc', role: 'group', 'aria-label': 'Che gomma montare' },
+    el('span', { class: 'st-occ' }, t('index.hero_gomma')),
+    el('div', { class: 'st-mesc', role: 'group', 'aria-label': t('strat.aria_mescole') },
     ORD.map(m => el('button', {
       class: 'st-m' + (scelta === m ? ' on' : '') + (attuale === m ? ' su' : ''),
       type: 'button',
       'aria-pressed': String(scelta === m),
-      title: attuale === m ? 'È la gomma che ha su adesso: rimontarla significa finire la gara su una mescola sola' : null,
+      title: attuale === m ? t('strat.gia_su_title') : null,
       onclick: () => onScegli(scelta === m ? null : m),
     },
       el('span', { class: 'gomma ' + m }),
-      m === 'SOFT' ? 'morbida' : m === 'MEDIUM' ? 'media' : 'dura',
-      attuale === m ? el('i', { class: 'st-su' }, 'ce l\'hai su') : null))));
+      mescola(m),
+      attuale === m ? el('i', { class: 'st-su' }, t('strat.ce_lhai_su')) : null))));
 }

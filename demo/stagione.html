@@ -1,28 +1,32 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Stagione 2026 — Muretto Box Virtuale</title>
-<meta name="description" content="Il calendario della Formula 1 2026: ogni gara corsa si rivede giro per giro, con il pannello strategia.">
+<title data-i18n="meta.stagione.titolo">2026 Season — Muretto Box Virtuale</title>
+<meta name="description" data-i18n-attr="content:meta.stagione.desc" content="The 2026 Formula 1 calendar: every race already run can be replayed lap by lap, with the strategy panel.">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Muretto Box Virtuale">
-<meta property="og:locale" content="it_IT">
+<meta property="og:locale" content="en_GB">
+<meta property="og:locale:alternate" content="it_IT">
 <meta property="og:url" content="https://murettobox.com/stagione.html">
-<meta property="og:title" content="Stagione 2026 — Muretto Box Virtuale">
-<meta property="og:description" content="Il calendario della Formula 1 2026: ogni gara corsa si rivede giro per giro, con il pannello strategia.">
+<meta property="og:title" data-i18n-attr="content:meta.stagione.titolo" content="2026 Season — Muretto Box Virtuale">
+<meta property="og:description" data-i18n-attr="content:meta.stagione.desc" content="The 2026 Formula 1 calendar: every race already run can be replayed lap by lap, with the strategy panel.">
 <meta property="og:image" content="https://murettobox.com/og/pagina-stagione.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Stagione 2026 — Muretto Box Virtuale">
-<meta name="twitter:description" content="Il calendario della Formula 1 2026: ogni gara corsa si rivede giro per giro, con il pannello strategia.">
+<meta name="twitter:title" data-i18n-attr="content:meta.stagione.titolo" content="2026 Season — Muretto Box Virtuale">
+<meta name="twitter:description" data-i18n-attr="content:meta.stagione.desc" content="The 2026 Formula 1 calendar: every race already run can be replayed lap by lap, with the strategy panel.">
 <meta name="twitter:image" content="https://murettobox.com/og/pagina-stagione.png">
 <link rel="canonical" href="https://murettobox.com/stagione.html">
+<link rel="alternate" hreflang="en" href="https://murettobox.com/stagione.html">
+<link rel="alternate" hreflang="it" href="https://murettobox.com/stagione.html?lang=it">
+<link rel="alternate" hreflang="x-default" href="https://murettobox.com/stagione.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Barlow:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap">
-<link rel="stylesheet" href="muro.css?v=090826b">
+<link rel="stylesheet" href="muro.css?v=190826b">
 <link rel="apple-touch-icon" href="/assets/marchio/icona-180.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%20width%3D%2232%22%20height%3D%2232%22%20role%3D%22img%22%20aria-label%3D%22Muretto%20Box%20Virtuale%22%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2222%22%20fill%3D%22%23FF1E3C%22%2F%3E%3Cpath%20d%3D%22M20%2064L20%2018L31.5%2018L50%2042L68.5%2018L80%2018L80%2064L69.5%2064L69.5%2034L54%2055L46%2055L30.5%2034L30.5%2064Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3Cpath%20d%3D%22M12%2073L88%2073L88%2084L12%2084Z%22%20fill%3D%22%23FFFFFF%22%2F%3E%3C%2Fsvg%3E">
 <style>
@@ -65,25 +69,26 @@
 <header class="barra"></header>
 
 <main class="scafo">
-  <p class="occhiello">Formula 1 · Calendario</p>
-  <h1 class="titolone">Stagione <em>2026</em></h1>
-  <p class="sottotitolo">Ogni Gran Premio già corso si rivede dall'inizio alla fine, con la
-     strategia in mano. Tocca una gara per aprirla.</p>
+  <p class="occhiello" data-i18n="stagione.occhiello">Formula 1 · Calendar</p>
+  <h1 class="titolone" data-i18n-html="stagione.titolo">2026 <em>Season</em></h1>
+  <p class="sottotitolo" data-i18n="stagione.sottotitolo">Every Grand Prix already run can be replayed
+     from start to finish, with the strategy in your hands. Tap a race to open it.</p>
 
   <div class="conta" id="conta" style="margin-top:26px"></div>
 
-  <h2 class="sezione-t">Gare corse <span class="coda" id="codaCorse"></span></h2>
+  <h2 class="sezione-t"><span data-i18n="stagione.gare_corse">Races run</span> <span class="coda" id="codaCorse"></span></h2>
   <div class="griglia" id="corse"></div>
 
-  <h2 class="sezione-t" id="titFuture" hidden>Il resto del calendario</h2>
+  <h2 class="sezione-t" id="titFuture" hidden data-i18n="stagione.resto">The rest of the calendar</h2>
   <div class="griglia" id="future"></div>
 </main>
 
 <footer class="piede"><div class="piede-in"></div></footer>
 
 <script type="module">
-import { guscio, dati, datiObbligatori, el, V, identita, coloreDi, dataIt, guasto, scheletro }
-  from './muro.mjs?v=090826b';
+import { guscio, dati, datiObbligatori, el, V, identita, coloreDi, dataLoc, guasto, scheletro, t, tn }
+  from './muro.mjs?v=190826b';
+import { gpNome } from './muro.mjs?v=190826b';
 guscio('stagione.html');
 
 const box = document.getElementById('corse');
@@ -113,17 +118,17 @@ function scheda(g, corsa, colori, schede, prossima) {
   };
   const figli = [
     el('div', { class: 'capo' },
-      el('span', { class: 'rnd' }, `ROUND ${String(g.round).padStart(2, '0')}`),
-      prossima ? el('span', { class: 'etic etic-r' }, 'prossima') : null,
-      corsa ? null : el('span', { class: 'etic' }, 'da correre')),
-    el('h3', {}, g.nome),
+      el('span', { class: 'rnd' }, t('com.round', { n: String(g.round).padStart(2, '0') })),
+      prossima ? el('span', { class: 'etic etic-r' }, t('stagione.prossima')) : null,
+      corsa ? null : el('span', { class: 'etic' }, t('stagione.da_correre'))),
+    el('h3', {}, gpNome(g.nome)),
     el('p', { class: 'circ' }, g.circuito || ''),
     el('div', { class: 'fondo' },
       corsa && vin
         ? [el('span', { class: 'livrea', stile: { background: coloreDi(vin.team, colori) } }),
            el('span', { class: 'chi' }, nome || vin.sigla)]
-        : el('span', { class: 'chi', stile: { color: 'var(--fioco)' } }, `${g.giri} giri`),
-      el('span', { class: 'quando' }, dataIt(g.data, { day: '2-digit', month: 'short' }).toUpperCase())),
+        : el('span', { class: 'chi', stile: { color: 'var(--fioco)' } }, tn('com.giro_1', 'com.giri_n', g.giri)),
+      el('span', { class: 'quando' }, dataLoc(g.data, { day: '2-digit', month: 'short' }).toUpperCase())),
   ];
   const n = corsa
     ? el('a', { ...attr, href: `gara.html?g=${encodeURIComponent(g.gara_demo)}` }, figli)
@@ -153,12 +158,12 @@ async function boot() {
     const future = gare.filter(g => !(g.gara_demo && inDemo.has(g.gara_demo)));
 
     document.getElementById('conta').replaceChildren(
-      el('div', {}, el('b', { class: 'n' }, String(corse.length)), el('span', {}, 'gare da rivedere')),
-      el('div', {}, el('b', { class: 'n' }, String(gare.length)), el('span', {}, 'nel calendario')),
+      el('div', {}, el('b', { class: 'n' }, String(corse.length)), el('span', {}, t('stagione.da_rivedere'))),
+      el('div', {}, el('b', { class: 'n' }, String(gare.length)), el('span', {}, t('stagione.nel_calendario'))),
       el('div', {}, el('b', { class: 'n' }, String(corse.reduce((s, g) => s + (g.giri || 0), 0))),
-        el('span', {}, 'giri disponibili')));
+        el('span', {}, t('stagione.giri_disp'))));
 
-    document.getElementById('codaCorse').textContent = `${corse.length} di ${gare.length}`;
+    document.getElementById('codaCorse').textContent = t('stagione.n_di_n', { a: corse.length, b: gare.length });
     box.replaceChildren(...corse.slice().reverse()
       .map(g => scheda(g, true, colori, schede, false)));
 

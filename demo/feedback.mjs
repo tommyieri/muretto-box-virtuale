@@ -16,7 +16,7 @@
 //    «che cosa parte da qui» non e' scritto a mano nell'HTML: e' costruito dallo stesso
 //    oggetto che finisce nella fetch (`corpo()`), cosi' non puo' divergere. Una promessa
 //    sulla privacy mantenuta a mano diverge alla prima modifica, e nessuno se ne accorge.
-import { $, el, param } from './muro.mjs?v=090826b';
+import { $, el, param, t } from './muro.mjs?v=190826b';
 
 const BUCA = '/api/feedback';
 
@@ -24,12 +24,17 @@ const BUCA = '/api/feedback';
 // Le due liste vivono in due file perche' una gira nel browser e l'altra sul server;
 // che restino d'accordo lo sorveglia demo/test_feedback.mjs — un tipo aggiunto qui e
 // dimenticato la' darebbe 400 a ogni invio, e solo su una pillola su cinque.
+// Il secondo posto porta la CHIAVE del dizionario, non l'etichetta: la sigla ('rotto')
+// e' quella che viaggia verso la buca e non si traduce mai, l'etichetta la sceglie la
+// lingua al momento di disegnarla. La forma della lista resta questa perche'
+// demo/test_feedback.mjs ne legge la prima stringa di ogni coppia per confrontarla con
+// demo/api/feedback.js: cambiarla romperebbe il controllo che tiene d'accordo i due file.
 const TIPI = [
-  ['rotto',     'Qualcosa non funziona'],
-  ['sbagliato', 'Un numero è sbagliato'],
-  ['oscuro',    'Non si capisce'],
-  ['manca',     'Manca qualcosa'],
-  ['idea',      'Un\'idea'],
+  ['rotto',     'fb.tipo_rotto'],
+  ['sbagliato', 'fb.tipo_sbagliato'],
+  ['oscuro',    'fb.tipo_oscuro'],
+  ['manca',     'fb.tipo_manca'],
+  ['idea',      'fb.tipo_idea'],
 ];
 
 const TESTO_MIN = 10;
@@ -87,50 +92,49 @@ function corpo() {
 }
 
 const ETICHETTE = {
-  tipo: 'tipo',
-  dove: 'dove',
-  testo: 'il tuo messaggio',
-  contatto: 'email',
-  schermo: 'finestra',
-  navigatore: 'navigatore',
+  tipo: 'fb.et_tipo',
+  dove: 'fb.et_dove',
+  testo: 'fb.et_testo',
+  contatto: 'fb.et_email',
+  schermo: 'fb.et_finestra',
+  navigatore: 'fb.et_navigatore',
 };
 
 function disegnaTrasparenza() {
   const c = corpo();
   const nome = Object.fromEntries(TIPI);
   const reso = {
-    tipo: nome[c.tipo],
+    tipo: t(nome[c.tipo]),
     dove: c.dove || null,
-    testo: c.testo ? `${c.testo.length} caratteri, come li hai scritti` : null,
+    testo: c.testo ? t('fb.n_caratteri', { n: c.testo.length }) : null,
     contatto: c.contatto || null,
     schermo: c.schermo,
     navigatore: c.navigatore,
   };
-  $('#parte').replaceChildren(...Object.entries(ETICHETTE).flatMap(([k, eti]) => [
-    el('dt', { testo: eti }),
-    el('dd', { class: reso[k] ? null : 'fb-senza', testo: reso[k] ?? '— niente —' }),
+  $('#parte').replaceChildren(...Object.entries(ETICHETTE).flatMap(([k, chiave]) => [
+    el('dt', { testo: t(chiave) }),
+    el('dd', { class: reso[k] ? null : 'fb-senza', testo: reso[k] ?? t('fb.niente') }),
   ]));
 }
 
 /* --------------------------------------------------------------------- pillole */
 
 function disegnaTipi() {
-  $('#tipi').replaceChildren(...TIPI.map(([id, eti]) => el('button', {
+  $('#tipi').replaceChildren(...TIPI.map(([id, chiave]) => el('button', {
     type: 'button', class: 'pil', 'data-t': id,
     'aria-pressed': String(id === tipoScelto),
     onclick: () => { tipoScelto = id; disegnaTipi(); disegnaTrasparenza(); },
-  }, eti)));
+  }, t(chiave))));
 }
 
 /* ---------------------------------------------------------------------- esiti */
 
 function esitoOk(id) {
   $('#esito').replaceChildren(el('div', { class: 'fb-esito ok' },
-    el('h2', {}, 'Ricevuta.'),
-    el('p', {}, 'La tua segnalazione è arrivata. Il suo numero di protocollo è ',
+    el('h2', {}, t('fb.ricevuta')),
+    el('p', {}, t('fb.protocollo_a'),
       el('span', { class: 'fb-protocollo', testo: id }), '.'),
-    el('p', { testo: 'Se hai lasciato l\'email ti rispondiamo noi; altrimenti non riceverai '
-      + 'nulla — non c\'è nessuna risposta automatica, e non volevamo fingere che ci fosse.' })));
+    el('p', { testo: t('fb.protocollo_b') })));
   $('#modulo').hidden = true;
   $('#esito').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
@@ -143,15 +147,14 @@ function esitoKo(motivo, testo) {
     onclick: async () => {
       try {
         await navigator.clipboard.writeText(testo);
-        copia.textContent = 'Copiato';
-      } catch { copia.textContent = 'Copia non riuscita: selezionalo a mano'; }
-    } }, 'Copia il testo');
+        copia.textContent = t('fb.copiato');
+      } catch { copia.textContent = t('fb.copia_ko'); }
+    } }, t('fb.copia'));
 
   $('#esito').replaceChildren(el('div', { class: 'fb-esito ko' },
-    el('h2', {}, 'Non è arrivata.'),
+    el('h2', {}, t('fb.non_arrivata')),
     el('p', { testo: motivo }),
-    el('p', { testo: 'Il testo è ancora nel modulo qui sotto: puoi riprovare fra un minuto. '
-      + 'Se preferisci metterlo al sicuro adesso, copialo.' }),
+    el('p', { testo: t('fb.testo_ancora') }),
     testo ? copia : null));
   $('#esito').scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
@@ -159,13 +162,11 @@ function esitoKo(motivo, testo) {
 /** I motivi, tradotti. Un «HTTP 429» in faccia a un lettore non e' trasparenza: e'
  *  scaricare su di lui il lavoro di capire. */
 function motivoDi(stato, detto) {
-  if (stato === 429) return 'Da questa connessione sono già partite parecchie segnalazioni '
-    + 'nell\'ultima ora: è il freno anti-robot. Riprova più tardi.';
-  if (stato === 503) return 'La buca delle segnalazioni non è raggiungibile in questo momento '
-    + '(è un problema nostro, non tuo).';
-  if (stato === 400) return detto || 'Il messaggio non è stato accettato così com\'è.';
-  if (stato === 0) return 'La richiesta non è nemmeno partita: può essere la rete.';
-  return detto || `Il server ha risposto con un errore (${stato}).`;
+  if (stato === 429) return t('fb.err429');
+  if (stato === 503) return t('fb.err503');
+  if (stato === 400) return detto || t('fb.err400');
+  if (stato === 0) return t('fb.err0');
+  return detto || t('fb.errN', { stato });
 }
 
 /* ----------------------------------------------------------------------- invio */
@@ -180,20 +181,20 @@ async function manda(ev) {
 
   if (testo.value.trim().length < TESTO_MIN) {
     testo.setAttribute('aria-invalid', 'true');
-    $('#stato-invio').textContent = `Scrivi almeno ${TESTO_MIN} caratteri.`;
+    $('#stato-invio').textContent = t('fb.min_caratteri', { n: TESTO_MIN });
     testo.focus();
     return;
   }
   if (contatto.value.trim() && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(contatto.value.trim())) {
     contatto.setAttribute('aria-invalid', 'true');
-    $('#stato-invio').textContent = 'L\'indirizzo email non sembra valido.';
+    $('#stato-invio').textContent = t('fb.email_non_valida');
     contatto.focus();
     return;
   }
 
   const bottone = $('#manda');
   bottone.disabled = true;
-  $('#stato-invio').textContent = 'Invio in corso…';
+  $('#stato-invio').textContent = t('fb.invio_corso');
 
   const c = corpo();
   let r = null, dati = {};
@@ -262,10 +263,8 @@ function avvio() {
     .then(s => { if (!s.attivo) throw new Error('spenta'); })
     .catch(() => {
       $('#esito').replaceChildren(el('div', { class: 'fb-esito ko' },
-        el('h2', {}, 'La buca è chiusa in questo momento.'),
-        el('p', { testo: 'Il modulo qui sotto funziona, ma la ricezione delle segnalazioni '
-          + 'non è raggiungibile: se scrivi adesso, il messaggio non arriverebbe. '
-          + 'È un guasto nostro e lo stiamo già vedendo.' })));
+        el('h2', {}, t('fb.buca_chiusa')),
+        el('p', { testo: t('fb.buca_chiusa_p') })));
     });
 }
 
