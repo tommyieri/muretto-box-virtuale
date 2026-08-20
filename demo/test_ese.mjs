@@ -19,6 +19,33 @@ import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { byLapDa, sosteVereDa, arrivoRealeDa, preparaGara, scegliCongelamento, rigioca } from './ese.mjs';
+import { D as DIZIONARIO } from './dizionario.mjs';
+
+/** LA PROMESSA C'E' ANCORA? — e adesso si guarda anche DOVE VIVE.
+ *
+ *  Dal 19/08/2026 il sito ha due lingue: il testo delle pagine sta nell'HTML in
+ *  inglese e nel dizionario in italiano, e cercare la frase italiana dentro
+ *  gara.html non la trova piu'. Questa non e' una deroga: e' la stessa verifica
+ *  fatta dove il testo vive adesso, e pretende DI PIU' di prima — la promessa deve
+ *  esserci in TUTTE E DUE le lingue. Una pagina inglese che perde l'avvertenza
+ *  sarebbe rossa esattamente come una italiana, e prima non lo sarebbe stata.
+ *
+ *  Il primo ramo resta perche' una frase scritta a mano nella pagina va bene lo
+ *  stesso: quello che si controlla e' che la promessa raggiunga il lettore, non
+ *  che passi da un meccanismo preciso. */
+function promette(html, chiave, it, en) {
+  if (new RegExp(it, 'i').test(html)) return true;              // scritta in pagina
+  // LA PAGINA PUO' MONTARE LA VOCE IN DUE MODI, e valgono uguale: col marcatore
+  // `data-i18n` sul testo gia' scritto (gara.html), o chiamando `t()` mentre disegna
+  // (live.html, dove il riquadro nasce in JS). Guardarne uno solo avrebbe dichiarato
+  // sparita una promessa che sta li' — ed e' successo, in questa stessa riparazione.
+  const montata = new RegExp(`data-i18n(?:-html)?="${chiave}"`).test(html)
+    || html.includes(`t('${chiave}')`) || html.includes(`'${chiave}'`);
+  if (!montata) return false;
+  const voce = DIZIONARIO[chiave];
+  return Array.isArray(voce)
+    && new RegExp(en, 'i').test(voce[0]) && new RegExp(it, 'i').test(voce[1]);
+}
 
 const qui = path.dirname(fileURLToPath(import.meta.url));
 let errori = 0;
@@ -106,8 +133,10 @@ australia.byLap = byLapDa(australia);
 // esiste più — decisione PO 08/08, il rigioca È il modo in cui si guarda una gara)
 {
   const gara = readFileSync(path.join(qui, 'gara.html'), 'utf8');
-  if (!/informazione dal futuro/i.test(gara)) fallisci('gara.html non dichiara più «informazione dal futuro»');
-  if (!/non una previsione/i.test(gara)) fallisci('gara.html non dice più «non una previsione»');
+  if (!promette(gara, 'gara.onesta', 'informazione dal futuro', 'information from the future'))
+    fallisci('gara.html non dichiara più «informazione dal futuro» (né in pagina né nel dizionario)');
+  if (!promette(gara, 'gara.onesta', 'non una previsione', 'not a prediction'))
+    fallisci('gara.html non dice più «non una previsione» (né in pagina né nel dizionario)');
   if (!/class="ese-onesta"/.test(gara)) fallisci('gara.html: il blocco di onestà sempre-visibile non c\'è più');
   if (!/BOX ORA/.test(gara)) fallisci('gara.html non offre più il comando BOX ORA');
   if (!/ese_vista\.mjs/.test(gara)) fallisci('gara.html non usa la vista condivisa ese_vista.mjs');
@@ -129,8 +158,10 @@ australia.byLap = byLapDa(australia);
   const live = readFileSync(path.join(qui, 'live.html'), 'utf8');
   if (!/BOX ORA/.test(live)) fallisci('live.html non offre più il comando BOX ORA');
   if (!/rigiocaLive/.test(live)) fallisci('live.html non usa rigiocaLive dal ponte');
-  if (!/i rivali non reagiscono/.test(live)) fallisci('live.html: la proiezione non dichiara più «i rivali non reagiscono»');
-  if (!/~6 giri/.test(live)) fallisci('live.html: l\'orizzonte validato (~6 giri) non è più dichiarato');
+  if (!promette(live, 'live.onesta', 'i rivali non reagiscono', 'the rivals do not react'))
+    fallisci('live.html: la proiezione non dichiara più «i rivali non reagiscono»');
+  if (!promette(live, 'live.onesta', '~6 giri', '~6 laps'))
+    fallisci('live.html: l\'orizzonte validato (~6 giri) non è più dichiarato');
   if (/Guarda la sosta|id="mu-sim"/.test(live)) fallisci('live.html ha ancora pezzi del doppio flusso vecchio');
   for (const m of live.matchAll(/onTower:\s*([A-Za-z_$][\w$]*)/g)) {
     if (!new RegExp(`function ${m[1]}\\(`).test(live)) {
