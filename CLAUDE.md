@@ -351,6 +351,45 @@ ingresso nuovo è ripagare un conto già pagato.
      manifest non resti indietro rispetto all'articolo. Provata al contrario su un numero
      cambiato e su un manifest fermo: rossa in tutt'e due i casi.
 
+9. **Cantiere 9 (I trasversali escono dalla gara di qualcun altro)** — *21/08/2026, su segnalazione del PO.*
+   - **Il difetto, e perché il codice non poteva vederlo.** `dna-circuiti-2026` e
+     `assetto-punta-curva-2026` misurano dieci gare e nel manifest hanno già `gp: null`.
+     Ma l'elenco di `analisi.html` era **uno solo, ordinato per data**: datati 26/07 stavano
+     fra i cinque pezzi d'Ungheria e si leggevano come pezzi d'Ungheria. Nessuna pillola
+     poteva smentirlo — `fuoriGp` richiede `!!suoGp`, quindi una carta senza Gran Premio
+     **non la nasconde nessun filtro**: era sempre in pagina, sempre sotto l'intestazione
+     di qualcun altro. Il dato era giusto; a sbagliare era il posto in cui la pagina lo metteva.
+   - **È lo stesso guasto degli STRUMENTI DI STAGIONE**, che in cima a questa pagina lo
+     avevano già pagato e già dichiarato («sepolti in fondo a un elenco ordinato per data
+     sarebbero spariti»). La cura è la stessa: una sezione che dice cosa sono, «Vale tutto
+     l'anno» / *Valid all year*, scritta da `statico.py::blocco_elenco`.
+   - **Il posto lo decide il DATO, non un elenco di id.** Il criterio è `gp` assente: il
+     prossimo articolo trasversale ci finisce da solo il giorno che nasce, e nessuno deve
+     ricordarsi di aggiungerlo. Una lista scritta a mano sarebbe stata la tredicesima
+     seconda-verità di questo repo.
+   - **Un'intestazione senza elenco sotto sembra un guasto**: il filtro per Gran Premio non
+     tocca la sezione, ma quello per TEMA sì, e «qualifiche» la svuota. Titolo e occhiello
+     seguono le loro carte. Verificato sul `display` calcolato, non sull'attributo `hidden`.
+
+10. **Verifica delle automazioni per il weekend d'Olanda (round 12)** — *21/08/2026, FP1 in corso.*
+   - **Attive e provate sulla macchina, non sul documento**: `auto_run.sh` (gare, ogni 30 min)
+     e `auto_articoli_run.sh` (redazione, :15/:45) girano sul VPS, `verifica_crontab.sh` è
+     VERDE, il checkout è a 0 commit da `origin/main`, la chiave LLM è attiva e il collettore
+     live (`muretto-live.service`) sta registrando. `gen_formazioni.py` risolve il round 12
+     con la deroga Hadjar→Lawson dichiarata.
+   - **Zandvoort è un weekend SPRINT** (FP1 · SQ · S · Q · R): niente FP2/FP3, e **FP1 è
+     escluso di proposito** dalla redazione. Il venerdì l'unico innesco prima della Sprint
+     Quali è la pseudo-sessione FIA — cioè il documento «Car Presentation Submissions».
+   - **Il trasloco del 10/08 non aveva portato le dipendenze**: `pdfplumber` mancava in
+     `.venv-auto` e il cancello identità FIA si chiudeva, dichiarandolo, a ogni giro. Il PDF
+     era in cache dalle 08:15: a mancare era solo chi lo aprisse. Installato il 21/08 (0.11.10,
+     la stessa versione del Mac). **Non esiste un file di requirements**: il prossimo `import`
+     nuovo si scoprirà allo stesso modo, a weekend cominciato. Il verbale sta in
+     [`scheduling/README.md`](scheduling/README.md).
+   - **Il Mac è indietro di 90 commit** su un branch di lavoro con l'albero sporco: `auto_tele`
+     gira, ma `s46` è ROSSA da 42 ore e il fast-forward non passerà da solo. Riguarda la
+     telemetria per sessione, non gare né articoli — quelli stanno sul VPS.
+
 ---
 
 ## Co-working tra Agenti (Claude Code / Antigravity IDE)
