@@ -315,6 +315,31 @@ def t_corpus():
         assert r in regole, f"la regola {r} non morde piu' sul campione congelato"
 
 
+@prova("i fatti con chiavi NON stringa non fanno cadere il dossier",
+       "qualcuno rimette `chiave.lower()` al posto di `str(chiave).lower()`")
+def _chiavi_non_stringa():
+    """Il guasto del 21/08/2026, e perche' merita una sentinella tutta sua.
+
+    Un articolo sui rapporti del cambio porta le MARCE come chiavi: interi. Dentro
+    `dossier._delta_tempo` la chiave veniva passata a `.lower()` e partiva
+    AttributeError — ma il guasto non si vedeva come un guasto: `redazione.py` prende
+    ogni eccezione, torna al TEMPLATE e va avanti («nessun guasto puo' fermare la
+    gara»). L'articolo usciva lo stesso, scritto peggio, e il correttore lo bocciava
+    per ripetizioni. Dal log sembrava un problema di prosa: era una riga di codice.
+
+    E' il fallimento muto che questo repo descrive di se' in tre punti diversi, e si
+    trova solo leggendo il log riga per riga. Percio' la prova sta qui."""
+    import dossier
+    for facts in ({"delta_s": {7: 0.4, 8: 0.9}},          # le marce
+                  {"gap": {2026: 0.3}},                    # un anno
+                  {"x": [{"delta": {1: 0.2}}]}):           # annidato in una lista
+        dossier._delta_tempo(facts)                        # non deve alzare
+        dossier.scala_umana(facts)
+    # e cio' che funzionava deve continuare a funzionare
+    assert dossier._delta_tempo({"x": {"delta_gap": 0.247}}) == [0.247], \
+        "una chiave stringa che porta un delta piccolo deve restare fra i salienti"
+
+
 def main():
     for fn in list(globals().values()):
         pass

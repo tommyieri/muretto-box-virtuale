@@ -176,8 +176,21 @@ def _delta_tempo(facts):
         elif isinstance(x, list):
             for v in x[:12]:
                 scava(v, chiave)
+        # UNA CHIAVE NON E' SEMPRE UNA STRINGA, e qui capita per davvero: un articolo
+        # sui rapporti del cambio porta le marce come chiavi, cioe' INTERI. Con
+        # `chiave.lower()` partiva AttributeError, e il guasto non si vedeva come un
+        # guasto: redazione.py lo prende, torna al TEMPLATE e va avanti («nessun guasto
+        # puo' fermare la gara»). L'articolo usciva lo stesso, scritto peggio, e il
+        # correttore lo bocciava per ripetizioni — dal log sembrava un problema di
+        # prosa. Successo il 21/08/2026 su fp-rapporti-zandvoort-2026.
+        #
+        # COSA NON CAMBIA: con una chiave intera il marcatore non fa presa comunque (7
+        # non contiene «delta»), quindi quel numero non entrava e non entra fra i
+        # salienti. Rendere il marcatore cumulativo sul percorso delle chiavi
+        # cambierebbe QUALI numeri la prosa traduce in ogni articolo: e' una decisione,
+        # non una riparazione, e non si prende a weekend cominciato.
         elif isinstance(x, (int, float)) and not isinstance(x, bool):
-            k = chiave.lower()
+            k = str(chiave).lower()
             if any(t in k for t in ("margin", "delta", "gap", "distacco", "_s")) \
                     and 0 < abs(x) < 5:
                 fuori.append(abs(float(x)))
