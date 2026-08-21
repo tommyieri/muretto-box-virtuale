@@ -408,6 +408,24 @@ def main():
         expect_in_output="sentinella dipendenze: tutto verde"
     )
 
+    # [15] LA GUARDIA DELLA GUARDIA — che qualcuno stia ancora chiedendo alle macchine
+    # se sanno fare il loro mestiere.
+    #
+    # Il 21/08/2026 tutte le verifiche di CONFIGURAZIONE erano verdi — crontab
+    # installata, codice fresco, dipendenze a posto, deploy allineato — e il VPS non
+    # poteva scaricare un solo giro: il CDN di F1 gli rispondeva 403 per indirizzo. La
+    # domanda che nessuno faceva non era «questa macchina e' configurata bene» ma
+    # «questa macchina saprebbe fare il lavoro». La fa `sonda_prontezza.py`, che gira
+    # SULLE macchine perche' la risposta e' diversa su ognuna; qui si controlla che
+    # l'aggancio esista ancora in ogni wrapper, che la domanda si faccia anche PRIMA
+    # del weekend (riga settimanale, con la prova a cache fredda), e che la tabella
+    # delle fonti e il codice vivo non raccontino due cose diverse.
+    runner.run_check(
+        name="Sentinella Prontezza (test_prontezza.py)",
+        cmd=["python3", "test_prontezza.py"],
+        expect_in_output="sentinella prontezza: tutto verde"
+    )
+
     exit_code = runner.summary()
     sys.exit(exit_code)
 

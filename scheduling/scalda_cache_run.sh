@@ -114,6 +114,29 @@ if [ -z "$PY" ]; then
 fi
 unset _cand
 
+SONDA_PRONTEZZA="$PONTE/sonda_prontezza.py"
+PY_SONDA="$PY"
+
+# LA PRONTEZZA DELLE FONTI — sonda_prontezza, subito prima di mettersi al lavoro.
+#
+# Le altre guardie di questo wrapper chiedono se la MACCHINA e' a posto (codice fresco,
+# librerie dichiarate). Questa chiede se il LAVORO si puo' fare: interroga davvero le
+# fonti da cui dipende. Il 21/08/2026 tutte le prime erano verdi e il VPS non poteva
+# scaricare un solo giro — 403 per indirizzo dal CDN di F1 — e non se n'e' accorto
+# nessuno finche' non erano in pista.
+#
+# `--silenzioso`: quando non cambia niente scrive una riga. Un guardiano che urla a ogni
+# giro viene spento, e allora tace anche il giorno in cui aveva ragione.
+# NON FERMA NIENTE, come s46: qui la sonda SCRIVE, chi decide e' chi legge.
+{
+  echo "---- $(date '+%F %T') prontezza delle fonti (sonda_prontezza)"
+  if [ ! -f "$SONDA_PRONTEZZA" ]; then
+    echo "     !! sonda_prontezza ASSENTE da questo checkout: nessuno sta guardando le fonti."
+  else
+    "$PY_SONDA" "$SONDA_PRONTEZZA" --silenzioso 2>&1 | sed 's/^/     /'
+  fi
+} >> "$LOG" 2>&1
+
 echo "==== $(date '+%F %T') avvio scalda_cache (python: $PY) ====" >> "$LOG"
 "$PY" scalda_cache.py >> "$LOG" 2>&1
 echo "==== $(date '+%F %T') fine (exit $?) ====" >> "$LOG"

@@ -114,8 +114,29 @@ Costi e vincoli, per iscritto:
   in rete, cioe' nel 403. I tre generatori del pit-loss chiedono `weather=True`: senza,
   sarebbero caduti proprio loro.
 
-**Resta aperto, ed e' la domanda vera:** questo e' un ponte. La riparazione e' far
-uscire il VPS dal blocco, o spostare stabilmente chi scarica. Decide il PO.
+**Quanto serve il Mac, misurato invece che temuto.** Fuori dal weekend, `scalda_cache.py`
+esce alla prima riga. Dentro, servono le ore dopo ogni sessione: `python3
+scalda_cache.py --finestre` le calcola dal calendario e stampa i comandi `pmset` che
+fanno **svegliare il Mac da solo**. Puo' restare chiuso e addormentato, attaccato alla
+corrente; da spento no, e non c'e' modo di aggirarlo.
+
+**Le altre strade, tutte misurate il 21/08/2026 — nessuna e' una scorciatoia:**
+
+| strada | esito |
+|---|---|
+| VPS (Hetzner) | **403** |
+| runner GitHub Actions | **403** — provato, non dedotto: stesso blocco |
+| `api.openf1.org` dal VPS | **200**, e ha le stesse 693 tornate delle FP1 |
+| `api.jolpi.ca`, GitHub/f1db dal VPS | 200 |
+
+Cioe': **nessuna macchina sempre accesa che controlliamo puo' parlare col CDN di F1**, e
+spostare il download su un'altra macchina cloud non e' una risposta. L'unica fonte non
+bloccata che porta gli stessi dati e' OpenF1: e' la strada vera per togliere il Mac dal
+percorso, ed e' un lavoro di traduzione (giri, telemetria, race control, meteo nella
+forma che il codice si aspetta), non una riga di configurazione.
+
+**Resta aperto, ed e' la domanda vera:** questo e' un ponte. La riparazione e' un
+ingresso OpenF1, o far uscire il VPS dal blocco. Decide il PO.
 
 ### Le dipendenze NON si sono trasferite col trasloco — 21/08/2026
 

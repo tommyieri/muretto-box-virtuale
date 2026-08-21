@@ -32,3 +32,11 @@ PATH=/usr/local/bin:/usr/bin:/bin
 # SERVE LA CHIAVE: ~/.muretto_env con `export ANTHROPIC_API_KEY="..."`, chmod 600. Senza,
 # il wrapper lo scrive nel log a ogni giro e la redazione gira senza scrittore-LLM.
 15,45 * * * * /home/muretto/muretto/scheduling/auto_articoli_run.sh
+
+# PRONTEZZA — la domanda va fatta PRIMA che serva. Mercoledi' 06:30 UTC, a bocce ferme:
+# le fonti rispondono? e questa macchina saprebbe davvero scaricare una gara (prova a
+# cache fredda)? Il blocco del CDN di F1 e' arrivato nella pausa estiva e lo abbiamo
+# scoperto con le FP1 in pista: tre settimane di preavviso c'erano, e nessuno faceva la
+# domanda. I wrapper la fanno a ogni giro in silenzio; questa e' quella che si legge.
+# Log: ~/muretto/data/prontezza.log
+30 6 * * 3 /home/muretto/muretto/scheduling/prontezza_run.sh
