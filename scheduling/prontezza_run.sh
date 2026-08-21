@@ -24,12 +24,13 @@ for _cand in "$REPO/.venv-auto/bin/python" "$REPO/.venv/bin/python" python3; do
     PY="$_cand"; break
   fi
 done
-# SENZA FASTF1 SI GIRA LO STESSO, senza la prova del mestiere: meta' risposta e' meglio
-# di nessuna, e la meta' che resta (le fonti rispondono?) e' quella che ha trovato il 403.
+# SENZA FASTF1 SI GIRA LO STESSO: sonda_mestiere dichiara da se' che la prova non si puo'
+# fare e resta la meta' che conta di piu' (le fonti rispondono?), quella che ha trovato il
+# 403. Meta' risposta e' meglio di nessuna, purche' si dica quale meta' manca.
 [ -z "$PY" ] && PY="python3"
 
 {
   echo "======== $(date '+%F %T') prontezza settimanale (python: $PY)"
-  "$PY" sonda_prontezza.py --mestiere
+  "$PY" sonda_mestiere.py
   echo "         esito: $?"
 } >> "$LOG" 2>&1

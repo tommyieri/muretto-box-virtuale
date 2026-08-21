@@ -22,8 +22,17 @@ con tre settimane per rimediare; senza, lo abbiamo scoperto a FP1 in corso. **Il
 non e' accorgersene: e' accorgersene PRIMA che serva.**
 
     python3 sonda_prontezza.py              le fonti rispondono? (~2 s, nessun download)
-    python3 sonda_prontezza.py --mestiere   + prova il lavoro vero, a cache FREDDA
     python3 sonda_prontezza.py --silenzioso  una riga sola se non e' cambiato niente
+    python3 sonda_mestiere.py               + prova il lavoro vero, a cache FREDDA
+
+DUE FILE, E IL CONFINE E' VERO. Qui dentro c'e' solo libreria standard, apposta: questa
+sonda la chiama OGNI macchina, compreso il runner della CI, che fastf1 non ce l'ha e non
+deve averlo. La prova del mestiere invece carica una sessione vera, quindi fastf1 le
+serve — e vive in `sonda_mestiere.py`, che lo chiama solo la macchina che pubblica
+(`scheduling/prontezza_run.sh`, dalla crontab del VPS). Non e' una divisione estetica:
+tenerle insieme faceva dichiarare fastf1 all'ambiente del banco, cioe' pretendere su un
+runner CI pulito una libreria che li' non serve a niente — e `test_dipendenze.py` lo ha
+detto subito, com'e' giusto.
 
 ESCE 1 SE C'E' UN ROSSO. I wrapper la chiamano e scrivono nel log; non ferma niente, come
 s46 — qui la sonda SCRIVE, chi decide e' chi legge.
@@ -46,7 +55,6 @@ import json
 import time
 import socket
 import argparse
-import tempfile
 import urllib.error
 import urllib.request
 
@@ -197,54 +205,6 @@ def controlla_cache():
     return esiti
 
 
-def prova_il_mestiere():
-    """LA PROVA CHE CONTA: caricare davvero una sessione, a cache FREDDA.
-
-    Non guarda una configurazione: fa il lavoro. Se questa passa, questa macchina oggi
-    puo' pubblicare una gara; se cade, non puo' — e non importa quanto sia ordinata la
-    crontab. Cache in una cartella temporanea e buttata: una cache calda farebbe
-    passare la prova anche a rete morta, che e' l'errore da cui nasce questa sonda.
-
-    `telemetry=False` di proposito: prova il PERCORSO, non la banda. Il guasto che si
-    cerca (rete, blocco, credenziali) cade sul primo scaricamento; scaricare 80 MB in
-    piu' a ogni giro non aggiungerebbe una sola informazione."""
-    try:
-        import fastf1
-    except ImportError:
-        return (GIALLO, "fastf1 non installato in questo python: la prova del mestiere "
-                        "non si puo' fare (la dipendenza la guarda test_dipendenze.py)",
-                "mestiere")
-    import logging
-    import warnings
-    warnings.filterwarnings("ignore")
-    logging.getLogger("fastf1").setLevel(logging.CRITICAL)
-
-    freddo = tempfile.mkdtemp(prefix="prontezza_")
-    t0 = time.time()
-    try:
-        fastf1.Cache.enable_cache(freddo)
-        cal = json.load(open(os.path.join(_QUI, "demo", "data", "calendario_2026.json")))
-        gare = [g for g in cal.get("gare", []) if g.get("vincitore")]
-        if not gare:
-            return (GIALLO, "nessuna gara gia' corsa nel calendario: niente da provare",
-                    "mestiere")
-        g = gare[-1]                       # l'ultima gara CORSA: dati stabili, sempre li'
-        s = fastf1.get_session(int(g["data"][:4]), g["round"], "R")
-        s.load(telemetry=False, weather=False, messages=False)
-        n = len(s.laps)
-        if not n:
-            return (ROSSO, f"{g['nome']}: sessione caricata ma SENZA giri — la fonte "
-                           f"risponde e non porta dati", "mestiere")
-        return (VERDE, f"prova del mestiere: {g['nome']} {g['data'][:4]}, {n} giri "
-                       f"scaricati da zero in {time.time()-t0:.0f}s", "mestiere")
-    except Exception as e:
-        return (ROSSO, f"NON so fare il mio mestiere: {type(e).__name__}: {str(e)[:150]}. "
-                       f"Questa macchina oggi non pubblicherebbe una gara.", "mestiere")
-    finally:
-        import shutil
-        shutil.rmtree(freddo, ignore_errors=True)
-
-
 def _leggi_stato():
     try:
         return json.load(open(STATO))
@@ -263,15 +223,11 @@ def _scrivi_stato(d):
 def main():
     ap = argparse.ArgumentParser(
         description="Questa macchina saprebbe fare il suo mestiere? (fonti + prova vera)")
-    ap.add_argument("--mestiere", action="store_true",
-                    help="prova a caricare davvero una sessione, a cache fredda")
     ap.add_argument("--silenzioso", action="store_true",
                     help="una riga sola quando il verdetto non e' cambiato")
     a = ap.parse_args()
 
     esiti = controlla_fonti() + [controlla_chiave()] + controlla_cache()
-    if a.mestiere:
-        esiti.append(prova_il_mestiere())
 
     rossi = [e for e in esiti if e[0] == ROSSO]
     verdetto = ROSSO if rossi else VERDE
@@ -299,8 +255,8 @@ def main():
         print("        non si puo' fare. Se e' venerdi', e' gia' tardi.")
         return 1
     print()
-    print(f"{_tinta(VERDE)} pronta: {len(esiti)} controlli, nessun rosso"
-          + ("" if a.mestiere else " (senza la prova del mestiere: --mestiere)"))
+    print(f"{_tinta(VERDE)} pronta: {len(esiti)} controlli, nessun rosso "
+          f"(la prova del mestiere la fa sonda_mestiere.py)")
     return 0
 
 

@@ -99,9 +99,17 @@ ogni_giorno = len(campi) == 5 and campi[2] == "*" and campi[4] == "*"
 esito(bool(riga) and not ogni_giorno,
       "la riga di prontezza NON gira ogni giorno: un guardiano che parla troppo viene "
       f"spento, e allora tace anche il giorno in cui aveva ragione ({' '.join(campi) or 'riga assente'})")
-esito("--mestiere" in leggi("scheduling", "prontezza_run.sh"),
-      "scheduling/prontezza_run.sh accende la PROVA DEL MESTIERE — senza, verifica una "
-      "configurazione invece del lavoro, che è l'errore da cui nasce tutto questo")
+esito("sonda_mestiere.py" in leggi("scheduling", "prontezza_run.sh"),
+      "scheduling/prontezza_run.sh lancia la PROVA DEL MESTIERE (sonda_mestiere.py) — "
+      "senza, verifica una configurazione invece del lavoro, che è l'errore da cui "
+      "nasce tutto questo")
+# E LA PROVA DEVE RESTARE A CACHE FREDDA. È l'unica riga che la rende una prova: con la
+# cache calda passerebbe anche a rete morta — sul VPS passa così ogni giorno, grazie al
+# ponte del Mac. Toglierla non romperebbe niente, e la sonda direbbe «pronta» a una
+# macchina che non lo è: cioè la versione automatica dell'errore del 21/08/2026.
+esito("mkdtemp" in leggi("sonda_mestiere.py"),
+      "sonda_mestiere.py prova a CACHE FREDDA (cartella temporanea) — con la cache calda "
+      "la prova passa anche a rete morta, e allora non prova niente")
 
 
 # ======================== C/D. la tabella delle fonti e il codice vivo si somigliano
