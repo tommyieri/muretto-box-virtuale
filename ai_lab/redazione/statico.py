@@ -1078,13 +1078,48 @@ def _card_html(a) -> str:
 
 def blocco_elenco() -> str:
     """Il contenuto INIZIALE di #grid: link veri, che il JS poi sostituisce.
-    Non in <noscript>, cosi' vale anche per chi ha JS lento o rotto."""
+    Non in <noscript>, cosi' vale anche per chi ha JS lento o rotto.
+
+    DUE ELENCHI, NON UNO — e la ragione non e' estetica. Un articolo senza `gp` non
+    appartiene a un weekend: e' una misura su piu' gare, e vale finche' la stagione
+    dura (`dna-circuiti-2026`, `assetto-punta-curva-2026`). In un elenco ordinato per
+    data finiva in mezzo agli articoli della gara che gli capitava accanto: i due del
+    26/07/2026 stavano fra i pezzi d'Ungheria e si leggevano come pezzi d'Ungheria.
+    Nessun filtro poteva smentirlo, perche' il filtro per Gran Premio NON li tocca (in
+    analisi.html `fuoriGp` richiede `!!suoGp`): erano sempre visibili, sotto
+    l'intestazione di qualcun altro.
+
+    E' lo stesso guasto che gli STRUMENTI DI STAGIONE avevano gia' pagato in cima a
+    questa pagina — «sepolti in fondo a un elenco ordinato per data sarebbero
+    spariti» — e la cura e' la stessa: una sezione che dice cosa sono. Il posto lo
+    decide il DATO (`gp` assente), non una lista di id scritta a mano, cosi' il
+    prossimo articolo trasversale ci finisce da solo il giorno che nasce.
+    """
     arts = pubblicati(avvisa=False)
     if not arts:
         return MARCA_INIZIO + "\n" + MARCA_FINE
-    return (MARCA_INIZIO + '\n        <div class="grid">\n          '
-            + "\n          ".join(_card_html(a) for a in arts)
-            + "\n        </div>\n        " + MARCA_FINE)
+    per_gara = [a for a in arts if a.get("gp")]
+    tutto_anno = [a for a in arts if not a.get("gp")]
+
+    def griglia(voci, attributi=""):
+        return ('<div class="grid"%s>\n          ' % attributi
+                + "\n          ".join(_card_html(a) for a in voci)
+                + "\n        </div>")
+
+    pezzi = [MARCA_INIZIO, "        " + griglia(per_gara)] if per_gara else [MARCA_INIZIO]
+    if tutto_anno:
+        # L'INGLESE STA QUI, l'italiano nella seconda colonna di demo/dizionario.mjs:
+        # una frase italiana scritta a mano in pagina non la tradurrebbe mai nessuno.
+        pezzi += [
+            '        <h2 class="sezione-t" id="tit-anno" data-i18n="analisi.tutto_anno">'
+            'Valid all year</h2>',
+            '        <p class="sottotitolo" id="sot-anno" data-i18n="analisi.tutto_anno_d">These do '
+            'not belong to one race weekend: they measure several races at once and '
+            'stay true for the whole season.</p>',
+            "        " + griglia(tutto_anno, ' id="grid-anno"'),
+        ]
+    pezzi.append("        " + MARCA_FINE)
+    return "\n".join(pezzi)
 
 
 def aggiorna_elenco() -> bool:

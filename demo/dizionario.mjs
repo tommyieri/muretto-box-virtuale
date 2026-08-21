@@ -289,6 +289,14 @@ export const D = {
   'analisi.tutte_gare':   ['All races', 'Tutte le gare'],
   'analisi.tutti_temi':   ['All topics', 'Tutti i temi'],
   'analisi.n_visti':      ['{n} articles shown', '{n} articoli visualizzati'],
+  /* LA SEZIONE DEI TRASVERSALI. Un articolo senza `gp` non e' di nessun weekend:
+     ordinato per data finiva sotto l'intestazione della gara che gli capitava
+     accanto (i due del 26/07 si leggevano come pezzi d'Ungheria). Il titolo dice
+     cosa sono; chi li mette li' e' ai_lab/redazione/statico.py::blocco_elenco. */
+  'analisi.tutto_anno':   ['Valid all year', 'Vale tutto l’anno'],
+  'analisi.tutto_anno_d':
+    ['These do not belong to one race weekend: they measure several races at once and stay true for the whole season.',
+     'Non appartengono a un weekend solo: misurano più gare insieme e restano veri per tutta la stagione.'],
   'analisi.leggi':        ['Read →', 'Leggi →'],
 
   /* ============================================== i nomi dei Gran Premi
