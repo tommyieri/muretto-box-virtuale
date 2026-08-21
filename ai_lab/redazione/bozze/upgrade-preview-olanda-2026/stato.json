@@ -1,0 +1,26 @@
+{
+  "id": "upgrade-preview-olanda-2026",
+  "stato": "pubblicato",
+  "attore": "auto",
+  "creato": "2026-08-21",
+  "storico": [
+    {
+      "stato": "bozza",
+      "attore": "redazione",
+      "quando": "2026-08-21",
+      "nota": "bozza generata"
+    },
+    {
+      "stato": "approvato",
+      "attore": "auto",
+      "quando": "2026-08-21",
+      "nota": "pubblicazione automatica anteprima FIA (policy Tommi 25/07), verifica OK"
+    },
+    {
+      "stato": "pubblicato",
+      "attore": "auto",
+      "quando": "2026-08-21",
+      "nota": "pubblicato all'approvazione"
+    }
+  ]
+}

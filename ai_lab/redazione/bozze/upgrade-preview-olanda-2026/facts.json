@@ -1,0 +1,745 @@
+{
+  "id": "upgrade-preview",
+  "anno": 2026,
+  "gara": "Olanda",
+  "gp_fia": "Dutch Grand Prix",
+  "circuito": "Zandvoort",
+  "sessione": "FIA (venerdì, prima delle libere)",
+  "documento": {
+    "slug": "2026_dutch_grand_prix_-_car_presentation_submissions.pdf",
+    "url": null,
+    "pubblicato": "2026-08-21T10:02:00+02:00",
+    "doc": null,
+    "origine": "documento gia' passato ai cancelli dal chiamante",
+    "giorni_dalla_pubblicazione": 0,
+    "note": [
+      "freschezza verificata: pubblicato 0 giorni fa"
+    ]
+  },
+  "totali": {
+    "squadre_lette": 11,
+    "squadre_con_aggiornamenti": 6,
+    "squadre_senza_nulla": [
+      "Williams",
+      "Racing Bulls",
+      "Haas",
+      "Audi",
+      "Cadillac"
+    ],
+    "componenti": 23,
+    "aggiornamenti_distinti": 19,
+    "sviluppo": 22,
+    "circuit_specific": 0,
+    "affidabilita": 1,
+    "famiglia_non_scritta_in_cella": 0,
+    "quota_configurazione_pct": 0.0
+  },
+  "righe_vs_aggiornamenti": {
+    "regola": "righe della stessa squadra con descrizione identica = un aggiornamento dichiarato (la fonte scrive «are a package»)",
+    "righe": 23,
+    "aggiornamenti": 19,
+    "squadre_che_spacchettano": [
+      {
+        "team": "Ferrari",
+        "righe": 5,
+        "blocchi": 3,
+        "esempi": [
+          {
+            "descrizione": "This floor development targets a global increase in aerodynamic load across the entire operating range, combined with improved robustness of the underlying flow mechanisms, enhanced flow topology, and greater flow energy delivered to the rear diffuser",
+            "righe": [
+              "Floor Body",
+              "Floor Board",
+              "Floor Edge"
+            ]
+          }
+        ]
+      },
+      {
+        "team": "Aston Martin",
+        "righe": 5,
+        "blocchi": 3,
+        "esempi": [
+          {
+            "descrizione": "The local changes to the final element and to the inboard foot of the FWEP improves the performance of the new front wing introduced at the previous event.",
+            "righe": [
+              "Front Wing",
+              "Front Wing Endplate"
+            ]
+          },
+          {
+            "descrizione": "Changes at the back of the car work in combination to increase rear load after evaluating the performance of the new package.",
+            "righe": [
+              "Floor Fences",
+              "Diffuser"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "famiglia_riconciliata": [],
+  "pacchetto_piu_grande": {
+    "team": "Alpine",
+    "n": 8,
+    "aggiornamenti_distinti": 8,
+    "primato_stretto": true,
+    "pari_merito": [],
+    "sviluppo": 8,
+    "circuito": 0,
+    "zone": [
+      "Fondo",
+      "Retrotreno / freni",
+      "Diffusore",
+      "Fiancate",
+      "Ala posteriore"
+    ],
+    "intenzione_top": "carico locale"
+  },
+  "per_squadra": [
+    {
+      "team": "Alpine",
+      "stato": "aggiornamenti",
+      "n": 8,
+      "blocchi": 8,
+      "blocchi_multi": 0,
+      "dettaglio_blocchi": [
+        {
+          "descrizione": "The floor geometry has been revised to improve surface flow quality throughout the operating envelope and deliver increased local aerodynamic loading.",
+          "righe": [
+            "Floor Body"
+          ],
+          "n": 1
+        },
+        {
+          "descrizione": "The floor board has been reprofiled to improve the quality of the flow delivered to the rear of the car.",
+          "righe": [
+            "Floor Board"
+          ],
+          "n": 1
+        },
+        {
+          "descrizione": "The floor edges and profiles were redesigned to increase local aerodynamic loading, enhancing airflow management, efficiency, and overall performance gains.",
+          "righe": [
+            "Floor Edge"
+          ],
+          "n": 1
+        },
+        {
+          "descrizione": "This diffuser geometry has been developed to increase local aerodynamic loading, providing an efficient performance gain across the full operating envelope of the car.",
+          "righe": [
+            "Diffuser"
+          ],
+          "n": 1
+        },
+        {
+          "descrizione": "As part of this package update, the bodywork has been redesigned to work efficiently alongside the new floor while maintaining sufficient cooling capacity.",
+          "righe": [
+            "Sidepod/Coke"
+          ],
+          "n": 1
+        },
+        {
+          "descrizione": "Elements on the rear drum face have been reprofiled to improve flow interaction with the floor and deliver local load.",
+          "righe": [
+            "Rear Corner"
+          ],
+          "n": 1
+        },
+        {
+          "descrizione": "The new updated geometry is aimed at increasing aerodynamic load locally and efficiently throughout the operating range of the car.",
+          "righe": [
+            "Rear impact structure"
+          ],
+          "n": 1
+        },
+        {
+          "descrizione": "The flap profile has been refined to efficiently increase rear wing load while maintaining a high- quality, stable flowfield.",
+          "righe": [
+            "Rear Wing"
+          ],
+          "n": 1
+        }
+      ],
+      "sviluppo": 8,
+      "circuito": 0,
+      "affidabilita": 0,
+      "altro": 0,
+      "zona_top": "Fondo",
+      "intenzione_top": "carico locale",
+      "zone": [
+        "Fondo",
+        "Retrotreno / freni",
+        "Diffusore",
+        "Fiancate",
+        "Ala posteriore"
+      ],
+      "weekend_con_aggiornamenti": null,
+      "weekend_letti": null,
+      "componenti": [
+        {
+          "componente": "Floor Body",
+          "zona": "Fondo",
+          "famiglia": "Performance",
+          "motivo": "Local Load",
+          "intenzione": "carico locale"
+        },
+        {
+          "componente": "Floor Board",
+          "zona": "Fondo",
+          "famiglia": "Performance",
+          "motivo": "Flow Conditioning",
+          "intenzione": "condizionamento del flusso"
+        },
+        {
+          "componente": "Floor Edge",
+          "zona": "Fondo",
+          "famiglia": "Performance",
+          "motivo": "Local Load",
+          "intenzione": "carico locale"
+        },
+        {
+          "componente": "Diffuser",
+          "zona": "Diffusore",
+          "famiglia": "Performance",
+          "motivo": "Local Load",
+          "intenzione": "carico locale"
+        },
+        {
+          "componente": "Sidepod/Coke",
+          "zona": "Fiancate",
+          "famiglia": "Performance",
+          "motivo": "Flow Conditioning",
+          "intenzione": "condizionamento del flusso"
+        },
+        {
+          "componente": "Rear Corner",
+          "zona": "Retrotreno / freni",
+          "famiglia": "Performance",
+          "motivo": "Local Load",
+          "intenzione": "carico locale"
+        },
+        {
+          "componente": "Rear impact structure",
+          "zona": "Retrotreno / freni",
+          "famiglia": "Performance",
+          "motivo": "Local Load",
+          "intenzione": "carico locale"
+        },
+        {
+          "componente": "Rear Wing",
+          "zona": "Ala posteriore",
+          "famiglia": "Performance",
+          "motivo": "Local Load",
+          "intenzione": "carico locale"
+        }
+      ]
+    },
+    {
+      "team": "Aston Martin",
+      "stato": "aggiornamenti",
+      "n": 5,
+      "blocchi": 3,
+      "blocchi_multi": 2,
+      "dettaglio_blocchi": [
+        {
+          "descrizione": "The local changes to the final element and to the inboard foot of the FWEP improves the performance of the new front wing introduced at the previous event.",
+          "righe": [
+            "Front Wing",
+            "Front Wing Endplate"
+          ],
+          "n": 2
+        },
+        {
+          "descrizione": "The flap extends the range of balance that can be achieved with front wing adjustment for car setup optimisation.",
+          "righe": [
+            "Front Wing"
+          ],
+          "n": 1
+        },
+        {
+          "descrizione": "Changes at the back of the car work in combination to increase rear load after evaluating the performance of the new package.",
+          "righe": [
+            "Floor Fences",
+            "Diffuser"
+          ],
+          "n": 2
+        }
+      ],
+      "sviluppo": 5,
+      "circuito": 0,
+      "affidabilita": 0,
+      "altro": 0,
+      "zona_top": "Ala anteriore",
+      "intenzione_top": "carico locale",
+      "zone": [
+        "Ala anteriore",
+        "Fondo",
+        "Diffusore"
+      ],
+      "weekend_con_aggiornamenti": null,
+      "weekend_letti": null,
+      "componenti": [
+        {
+          "componente": "Front Wing",
+          "zona": "Ala anteriore",
+          "famiglia": "Performance",
+          "motivo": "Local Load",
+          "intenzione": "carico locale"
+        },
+        {
+          "componente": "Front Wing Endplate",
+          "zona": "Ala anteriore",
+          "famiglia": "Performance",
+          "motivo": "Local Load",
+          "intenzione": "carico locale"
+        },
+        {
+          "componente": "Front Wing",
+          "zona": "Ala anteriore",
+          "famiglia": "Performance",
+          "motivo": "Local Load",
+          "intenzione": "carico locale"
+        },
+        {
+          "componente": "Floor Fences",
+          "zona": "Fondo",
+          "famiglia": "Performance",
+          "motivo": "Local Load",
+          "intenzione": "carico locale"
+        },
+        {
+          "componente": "Diffuser",
+          "zona": "Diffusore",
+          "famiglia": "Performance",
+          "motivo": "Local Load",
+          "intenzione": "carico locale"
+        }
+      ]
+    },
+    {
+      "team": "Ferrari",
+      "stato": "aggiornamenti",
+      "n": 5,
+      "blocchi": 3,
+      "blocchi_multi": 1,
+      "dettaglio_blocchi": [
+        {
+          "descrizione": "This floor development targets a global increase in aerodynamic load across the entire operating range, combined with improved robustness of the underlying flow mechanisms, enhanced flow topology, and greater flow energy delivered to the rear diffuser",
+          "righe": [
+            "Floor Body",
+            "Floor Board",
+            "Floor Edge"
+          ],
+          "n": 3
+        },
+        {
+          "descrizione": "Benefitting from improved onset flow quality, the diffuser expansion and geometry has been further optimized and returns increased aerodynamic load, whilst still maintaining flow stability",
+          "righe": [
+            "Diffuser"
+          ],
+          "n": 1
+        },
+        {
+          "descrizione": "Minor update, working in interaction with the new rear diffuser, with particular attention put on flow quality",
+          "righe": [
+            "Beam Wing"
+          ],
+          "n": 1
+        }
+      ],
+      "sviluppo": 5,
+      "circuito": 0,
+      "affidabilita": 0,
+      "altro": 0,
+      "zona_top": "Fondo",
+      "intenzione_top": "carico locale",
+      "zone": [
+        "Fondo",
+        "Diffusore",
+        "Ala posteriore"
+      ],
+      "weekend_con_aggiornamenti": null,
+      "weekend_letti": null,
+      "componenti": [
+        {
+          "componente": "Floor Body",
+          "zona": "Fondo",
+          "famiglia": "Performance",
+          "motivo": "Local Load",
+          "intenzione": "carico locale"
+        },
+        {
+          "componente": "Floor Board",
+          "zona": "Fondo",
+          "famiglia": "Performance",
+          "motivo": "Local Load",
+          "intenzione": "carico locale"
+        },
+        {
+          "componente": "Floor Edge",
+          "zona": "Fondo",
+          "famiglia": "Performance",
+          "motivo": "Local Load",
+          "intenzione": "carico locale"
+        },
+        {
+          "componente": "Diffuser",
+          "zona": "Diffusore",
+          "famiglia": "Performance",
+          "motivo": "Local Load",
+          "intenzione": "carico locale"
+        },
+        {
+          "componente": "Beam Wing",
+          "zona": "Ala posteriore",
+          "famiglia": "Performance",
+          "motivo": "Local Load",
+          "intenzione": "carico locale"
+        }
+      ]
+    },
+    {
+      "team": "McLaren",
+      "stato": "aggiornamenti",
+      "n": 3,
+      "blocchi": 3,
+      "blocchi_multi": 0,
+      "dettaglio_blocchi": [
+        {
+          "descrizione": "A new rear wing assembly has been designed and delivered to this event, aiming to increase aerodynamic load efficiently in all conditions.",
+          "righe": [
+            "Rear Wing"
+          ],
+          "n": 1
+        },
+        {
+          "descrizione": "The furniture around the coke as well as the tailpipe have been revised to extract additional efficient aerodynamic performance in conjunction with the rear wing.",
+          "righe": [
+            "Coke/Engine Cover"
+          ],
+          "n": 1
+        },
+        {
+          "descrizione": "The rear brake duct has been revised internally as well as externally, aiming at improved flow conditioning resulting in better aerodynamic and brake cooling performance.",
+          "righe": [
+            "Rear Corner"
+          ],
+          "n": 1
+        }
+      ],
+      "sviluppo": 3,
+      "circuito": 0,
+      "affidabilita": 0,
+      "altro": 0,
+      "zona_top": "Ala posteriore",
+      "intenzione_top": "carico locale",
+      "zone": [
+        "Ala posteriore",
+        "Cofano motore",
+        "Retrotreno / freni"
+      ],
+      "weekend_con_aggiornamenti": null,
+      "weekend_letti": null,
+      "componenti": [
+        {
+          "componente": "Rear Wing",
+          "zona": "Ala posteriore",
+          "famiglia": "Performance",
+          "motivo": "Local Load",
+          "intenzione": "carico locale"
+        },
+        {
+          "componente": "Coke/Engine Cover",
+          "zona": "Cofano motore",
+          "famiglia": "Performance",
+          "motivo": "Local Load",
+          "intenzione": "carico locale"
+        },
+        {
+          "componente": "Rear Corner",
+          "zona": "Retrotreno / freni",
+          "famiglia": "Performance",
+          "motivo": "Flow Conditioning",
+          "intenzione": "condizionamento del flusso"
+        }
+      ]
+    },
+    {
+      "team": "Mercedes",
+      "stato": "aggiornamenti",
+      "n": 1,
+      "blocchi": 1,
+      "blocchi_multi": 0,
+      "dettaglio_blocchi": [
+        {
+          "descrizione": "Detaching the lip from the duct inlet improves flow quality over the inboard face of the drum throughout the steer range, improving flow to the rear of the car.",
+          "righe": [
+            "Front Corner"
+          ],
+          "n": 1
+        }
+      ],
+      "sviluppo": 1,
+      "circuito": 0,
+      "affidabilita": 0,
+      "altro": 0,
+      "zona_top": "Avantreno / freni",
+      "intenzione_top": "condizionamento del flusso",
+      "zone": [
+        "Avantreno / freni"
+      ],
+      "weekend_con_aggiornamenti": null,
+      "weekend_letti": null,
+      "componenti": [
+        {
+          "componente": "Front Corner",
+          "zona": "Avantreno / freni",
+          "famiglia": "Performance",
+          "motivo": "Flow Conditioning",
+          "intenzione": "condizionamento del flusso"
+        }
+      ]
+    },
+    {
+      "team": "Red Bull",
+      "stato": "aggiornamenti",
+      "n": 1,
+      "blocchi": 1,
+      "blocchi_multi": 0,
+      "dettaglio_blocchi": [
+        {
+          "descrizione": "To improve reliability of the wheel bodywork assembly, the lower wishbone rearward leg chord length has been locally shrunk to reduce strain on the gaitor at high steering angles.",
+          "righe": [
+            "Front Corner"
+          ],
+          "n": 1
+        }
+      ],
+      "sviluppo": 0,
+      "circuito": 0,
+      "affidabilita": 1,
+      "altro": 0,
+      "zona_top": "Avantreno / freni",
+      "intenzione_top": "affidabilità",
+      "zone": [
+        "Avantreno / freni"
+      ],
+      "weekend_con_aggiornamenti": null,
+      "weekend_letti": null,
+      "componenti": [
+        {
+          "componente": "Front Corner",
+          "zona": "Avantreno / freni",
+          "famiglia": "Reliability",
+          "motivo": "",
+          "intenzione": "affidabilità"
+        }
+      ]
+    },
+    {
+      "team": "Audi",
+      "stato": "nessuno_dichiarato",
+      "n": 0,
+      "blocchi": 0,
+      "blocchi_multi": 0,
+      "dettaglio_blocchi": [],
+      "sviluppo": 0,
+      "circuito": 0,
+      "affidabilita": 0,
+      "altro": 0,
+      "zona_top": null,
+      "intenzione_top": null,
+      "zone": [],
+      "weekend_con_aggiornamenti": null,
+      "weekend_letti": null,
+      "componenti": []
+    },
+    {
+      "team": "Cadillac",
+      "stato": "nessuno_dichiarato",
+      "n": 0,
+      "blocchi": 0,
+      "blocchi_multi": 0,
+      "dettaglio_blocchi": [],
+      "sviluppo": 0,
+      "circuito": 0,
+      "affidabilita": 0,
+      "altro": 0,
+      "zona_top": null,
+      "intenzione_top": null,
+      "zone": [],
+      "weekend_con_aggiornamenti": null,
+      "weekend_letti": null,
+      "componenti": []
+    },
+    {
+      "team": "Haas",
+      "stato": "nessuno_dichiarato",
+      "n": 0,
+      "blocchi": 0,
+      "blocchi_multi": 0,
+      "dettaglio_blocchi": [],
+      "sviluppo": 0,
+      "circuito": 0,
+      "affidabilita": 0,
+      "altro": 0,
+      "zona_top": null,
+      "intenzione_top": null,
+      "zone": [],
+      "weekend_con_aggiornamenti": null,
+      "weekend_letti": null,
+      "componenti": []
+    },
+    {
+      "team": "Racing Bulls",
+      "stato": "nessuno_dichiarato",
+      "n": 0,
+      "blocchi": 0,
+      "blocchi_multi": 0,
+      "dettaglio_blocchi": [],
+      "sviluppo": 0,
+      "circuito": 0,
+      "affidabilita": 0,
+      "altro": 0,
+      "zona_top": null,
+      "intenzione_top": null,
+      "zone": [],
+      "weekend_con_aggiornamenti": null,
+      "weekend_letti": null,
+      "componenti": []
+    },
+    {
+      "team": "Williams",
+      "stato": "nessuno_dichiarato",
+      "n": 0,
+      "blocchi": 0,
+      "blocchi_multi": 0,
+      "dettaglio_blocchi": [],
+      "sviluppo": 0,
+      "circuito": 0,
+      "affidabilita": 0,
+      "altro": 0,
+      "zona_top": null,
+      "intenzione_top": null,
+      "zone": [],
+      "weekend_con_aggiornamenti": null,
+      "weekend_letti": null,
+      "componenti": []
+    }
+  ],
+  "zone": [
+    {
+      "zona": "Fondo",
+      "n": 7,
+      "squadra_dominante": "Ferrari"
+    },
+    {
+      "zona": "Ala posteriore",
+      "n": 3,
+      "squadra_dominante": "McLaren"
+    },
+    {
+      "zona": "Retrotreno / freni",
+      "n": 3,
+      "squadra_dominante": "Alpine"
+    },
+    {
+      "zona": "Diffusore",
+      "n": 3,
+      "squadra_dominante": "Ferrari"
+    },
+    {
+      "zona": "Ala anteriore",
+      "n": 3,
+      "squadra_dominante": "Aston Martin"
+    },
+    {
+      "zona": "Avantreno / freni",
+      "n": 2,
+      "squadra_dominante": "Mercedes"
+    },
+    {
+      "zona": "Cofano motore",
+      "n": 1,
+      "squadra_dominante": "McLaren"
+    },
+    {
+      "zona": "Fiancate",
+      "n": 1,
+      "squadra_dominante": "Alpine"
+    }
+  ],
+  "intenzioni": [
+    {
+      "famiglia": "Performance",
+      "intenzione": "carico locale",
+      "n": 18
+    },
+    {
+      "famiglia": "Performance",
+      "intenzione": "condizionamento del flusso",
+      "n": 4
+    },
+    {
+      "famiglia": "Reliability",
+      "intenzione": "affidabilità",
+      "n": 1
+    }
+  ],
+  "contesto_stagione": {
+    "gare_lette": 0,
+    "perimetro": "weekend PRECEDENTI: il documento di questa gara e' escluso (niente circolarita')",
+    "gara_esclusa": "Dutch Grand Prix",
+    "denominatore_comune": 0,
+    "gare": [],
+    "squadre": {},
+    "letture_incomplete": []
+  },
+  "null_fonte": {
+    "vettura_o_pilota": {
+      "righe_che_la_nominano": 0,
+      "elenco": [],
+      "cercato": "car N, both cars, either/each car, one car only, driver N, race number",
+      "non_cercato": "chassis/telaio e «driver» da soli: nel documento compaiono come nomi di componente, quindi conterebbero il falso. Il conteggio NON copre la parola «telaio»."
+    },
+    "grandezza": "nessun numero di prestazione nel documento",
+    "montato_o_solo_disponibile": {
+      "righe_che_lo_dicono": 1,
+      "elenco": [
+        {
+          "team": "Aston Martin",
+          "componente": "Front Wing",
+          "estratto": "The flap extends the range of balance that can be achieved with front wing adjustment for car setup optimisation."
+        }
+      ]
+    }
+  },
+  "diagnostica_fonte": {
+    "file": "2026_dutch_grand_prix_-_car_presentation_submissions.pdf",
+    "pagine": 19,
+    "pagine_continuazione": 1,
+    "componenti_non_classificati": [],
+    "squadre_non_riconosciute": [],
+    "righe_vuote": [],
+    "righe_senza_numero": [],
+    "pagine_tabella_non_lette": [],
+    "pagine_ignorate": [
+      "3: nessun testo estraibile, nessuna griglia: tavola fotografica presunta (2 immagini, 76% della pagina)",
+      "5: nessun testo estraibile, nessuna griglia: tavola fotografica presunta (2 immagini, 50% della pagina)",
+      "7: nessun testo estraibile, nessuna griglia: tavola fotografica presunta (2 immagini, 76% della pagina)",
+      "9: nessun testo estraibile, nessuna griglia: tavola fotografica presunta (2 immagini, 76% della pagina)",
+      "13: nessun testo estraibile, nessuna griglia: tavola fotografica presunta (2 immagini, 76% della pagina)",
+      "18: nessun testo estraibile, nessuna griglia: tavola fotografica presunta (2 immagini, 76% della pagina)"
+    ],
+    "pagine_scartate": [
+      3,
+      5,
+      7,
+      9,
+      13,
+      18
+    ],
+    "note": []
+  },
+  "motivi_composti": 0
+}

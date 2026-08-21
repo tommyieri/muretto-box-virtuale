@@ -1,0 +1,171 @@
+{
+  "id": "upgrade-preview-olanda-2026",
+  "slug": "olanda",
+  "stato": "pubblicato",
+  "data": "2026-08-21",
+  "firma": "Muretto · Redazione tecnica",
+  "accent": "#FF87BC",
+  "canale": "A (anteprima aggiornamenti, documento FIA)",
+  "gp": "Olanda",
+  "gara": "Olanda",
+  "circuito": "Zandvoort",
+  "sessione": "Anteprima",
+  "round": null,
+  "tag": [
+    "aggiornamenti",
+    "anteprima",
+    "documento-fia",
+    "tecnica",
+    "Zandvoort"
+  ],
+  "occhiello": "Documento FIA · Car Presentation Submissions, Gran Premio d’Olanda",
+  "titolo": "A Zandvoort nessuno porta un pezzo pensato per Zandvoort",
+  "sommario": "Sei squadre su undici depositano aggiornamenti, e nessuna dichiara un solo componente di configurazione per il circuito più tortuoso del calendario. Il pacchetto più largo è di Alpine, otto pezzi, ma il conteggio delle righe non misura quello che sembra misurare. Dove finisce il documento e dove comincia l’ipotesi, detto prima di usarlo.",
+  "sezioni": [
+    {
+      "tag": "Quello che si è letto",
+      "titolo": "Il tracciato che dovrebbe chiedere pezzi suoi",
+      "html": "<p>Le due sopraelevate di Zandvoort, e una sequenza di curve quasi tutte attaccate l’una all’altra, fanno del tracciato olandese un caso a parte: carico alto, pochissimo rettilineo, un assetto che altrove non serve. Un circuito così dovrebbe chiedere pezzi suoi. Il modulo che le squadre hanno depositato alla FIA venerdì mattina, poche ore prima delle libere, racconta un’altra cosa.</p><p>Undici squadre compilano, sei portano qualcosa, cinque scrivono che per questo evento non hanno depositato nulla: Williams, Racing Bulls, Haas, Audi e Cadillac. Le righe complessive sono 23. Quelle classificate come configurazione per il circuito sono <b>0 su 23</b>. La casella resta vuota per tutte e sei le squadre che aggiornano, comprese quelle che riempiono mezza pagina.</p>",
+      "figura": {
+        "svg": "<svg viewBox=\"0 0 760 281\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"'JetBrains Mono',ui-monospace,Menlo,monospace\" class=\"art-svg\"><style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}</style><text x=\"164\" y=\"18\" class=\"lbl\" font-size=\"14\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\" letter-spacing=\"0.5\">Chi porta cosa a Zandvoort: pezzi dichiarati alla FIA, per squadra</text><text x=\"744\" y=\"18\" font-size=\"10.5\" text-anchor=\"end\">Olanda 2026 · documento FIA</text><text x=\"424\" y=\"40\" font-size=\"10\" text-anchor=\"end\" fill=\"var(--dim)\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\">◄ CONFIGURAZIONE (Circuit specific)</text><text x=\"436\" y=\"40\" font-size=\"10\" text-anchor=\"start\" fill=\"var(--accent)\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\">SVILUPPO (Performance) ►</text><line x1=\"430.0\" y1=\"44\" x2=\"430.0\" y2=\"257\" stroke=\"var(--line2)\" stroke-width=\"1.2\"/><text x=\"164\" y=\"58.5\" font-size=\"10\" text-anchor=\"end\" class=\"lbl\">Alpine</text><rect x=\"430.0\" y=\"49.0\" width=\"160.7\" height=\"11\" rx=\"2\" fill=\"var(--accent)\" opacity=\"0.9\"/><text x=\"595.7\" y=\"58.5\" font-size=\"9.5\" text-anchor=\"start\" class=\"lbl\">+8</text><text x=\"164\" y=\"77.5\" font-size=\"10\" text-anchor=\"end\" class=\"lbl\">Aston Martin</text><rect x=\"430.0\" y=\"68.0\" width=\"100.4\" height=\"11\" rx=\"2\" fill=\"var(--accent)\" opacity=\"0.9\"/><text x=\"535.4\" y=\"77.5\" font-size=\"9.5\" text-anchor=\"start\" class=\"lbl\">+5</text><text x=\"164\" y=\"96.5\" font-size=\"10\" text-anchor=\"end\" class=\"lbl\">Ferrari</text><rect x=\"430.0\" y=\"87.0\" width=\"100.4\" height=\"11\" rx=\"2\" fill=\"var(--accent)\" opacity=\"0.9\"/><text x=\"535.4\" y=\"96.5\" font-size=\"9.5\" text-anchor=\"start\" class=\"lbl\">+5</text><text x=\"164\" y=\"115.5\" font-size=\"10\" text-anchor=\"end\" class=\"lbl\">McLaren</text><rect x=\"430.0\" y=\"106.0\" width=\"60.3\" height=\"11\" rx=\"2\" fill=\"var(--accent)\" opacity=\"0.9\"/><text x=\"495.3\" y=\"115.5\" font-size=\"9.5\" text-anchor=\"start\" class=\"lbl\">+3</text><text x=\"164\" y=\"134.5\" font-size=\"10\" text-anchor=\"end\" class=\"lbl\">Mercedes</text><rect x=\"430.0\" y=\"125.0\" width=\"20.1\" height=\"11\" rx=\"2\" fill=\"var(--accent)\" opacity=\"0.9\"/><text x=\"455.1\" y=\"134.5\" font-size=\"9.5\" text-anchor=\"start\" class=\"lbl\">+1</text><text x=\"164\" y=\"153.5\" font-size=\"10\" text-anchor=\"end\" class=\"lbl\">Audi</text><text x=\"435.0\" y=\"153.5\" font-size=\"9.5\" text-anchor=\"start\">=</text><text x=\"746\" y=\"153.5\" font-size=\"9\" text-anchor=\"end\">nessun aggiornamento dichiarato</text><text x=\"164\" y=\"172.5\" font-size=\"10\" text-anchor=\"end\" class=\"lbl\">Cadillac</text><text x=\"435.0\" y=\"172.5\" font-size=\"9.5\" text-anchor=\"start\">=</text><text x=\"746\" y=\"172.5\" font-size=\"9\" text-anchor=\"end\">nessun aggiornamento dichiarato</text><text x=\"164\" y=\"191.5\" font-size=\"10\" text-anchor=\"end\" class=\"lbl\">Haas</text><text x=\"435.0\" y=\"191.5\" font-size=\"9.5\" text-anchor=\"start\">=</text><text x=\"746\" y=\"191.5\" font-size=\"9\" text-anchor=\"end\">nessun aggiornamento dichiarato</text><text x=\"164\" y=\"210.5\" font-size=\"10\" text-anchor=\"end\" class=\"lbl\">Racing Bulls</text><text x=\"435.0\" y=\"210.5\" font-size=\"9.5\" text-anchor=\"start\">=</text><text x=\"746\" y=\"210.5\" font-size=\"9\" text-anchor=\"end\">nessun aggiornamento dichiarato</text><text x=\"164\" y=\"229.5\" font-size=\"10\" text-anchor=\"end\" class=\"lbl\">Red Bull</text><text x=\"435.0\" y=\"229.5\" font-size=\"9.5\" text-anchor=\"start\">=</text><text x=\"164\" y=\"248.5\" font-size=\"10\" text-anchor=\"end\" class=\"lbl\">Williams</text><text x=\"435.0\" y=\"248.5\" font-size=\"9.5\" text-anchor=\"start\">=</text><text x=\"746\" y=\"248.5\" font-size=\"9\" text-anchor=\"end\">nessun aggiornamento dichiarato</text><text x=\"164\" y=\"273\" font-size=\"9.5\">righe del documento, non grandezza né numero di aggiornamenti · fuori figura: 1 affidabilita&#x27;</text></svg>",
+        "didascalia": "Ogni squadra ha la riga col suo nome — la barra a destra sono i pezzi dichiarati come sviluppo («Performance») — e, dove ce ne sono, una seconda riga «· circuito» a sinistra con quelli di configurazione («Circuit specific»); l'ordine è quello della barra di sviluppo. Sono righe del documento: una descrizione condivisa può coprirne più d'una. La nota a destra dice in quanti weekend 2026 <b>precedenti</b> quella squadra aveva aggiornato (questo escluso).",
+        "fonte": "FIA · Car Presentation Submissions, Dutch Grand Prix 2026 (pubblicato 2026-08-21)"
+      }
+    },
+    {
+      "tag": "Quello che dicono i dati",
+      "titolo": "Ventidue righe di sviluppo e una di affidabilità",
+      "html": "<p>Le righe depositate sono 23; gli aggiornamenti distinti sono <b>19</b>. Ferrari ne firma cinque e le copre con tre descrizioni soltanto, perché corpo del fondo, tavola e bordo lavorano insieme e la fonte lo dichiara; Aston Martin si comporta allo stesso modo. Alpine invece spacchetta: il suo pacchetto è il più largo del weekend, e resta il più largo anche dopo la scrematura.</p><p>Il numero, però, misura pure il modo di compilare il modulo. Chi scrive una riga per ogni codice pezzo sembra portare più materiale di chi ne scrive una per l’intero blocco. La differenza sta nella cancelleria.</p><p>Sulle famiglie il documento non lascia margini: 22 righe dichiarate come sviluppo, una sola per affidabilità. Dentro lo sviluppo l’intenzione dichiarata è aumentare il carico in una zona precisa 18 volte, migliorare la qualità del flusso quattro. Il caso limite lo firma Aston Martin, con un flap che allarga la finestra di bilanciamento ottenibile regolando l’ala anteriore: la definizione stessa di un intervento d’assetto. Anche quella riga sta fra gli sviluppi.</p>",
+      "figura": {
+        "svg": "<svg viewBox=\"0 0 760 118\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"'JetBrains Mono',ui-monospace,Menlo,monospace\" class=\"art-svg\"><style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}</style><text x=\"268\" y=\"18\" class=\"lbl\" font-size=\"14\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\" letter-spacing=\"0.5\">Con che intenzione: il «Primary reason» dichiarato</text><text x=\"744\" y=\"18\" font-size=\"10.5\" text-anchor=\"end\">Olanda 2026</text><line x1=\"268\" y1=\"36\" x2=\"268\" y2=\"100\" stroke=\"var(--line2)\" stroke-width=\"1\"/><text x=\"260\" y=\"53.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">carico locale · sviluppo</text><rect x=\"268\" y=\"43.0\" width=\"358.9\" height=\"12\" rx=\"2\" fill=\"var(--accent)\" opacity=\"1\"/><text x=\"632.9\" y=\"53.0\" font-size=\"10\" class=\"lbl\">18</text><text x=\"260\" y=\"73.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">condizionamento del flusso · sviluppo</text><rect x=\"268\" y=\"63.0\" width=\"79.8\" height=\"12\" rx=\"2\" fill=\"var(--accent)\" opacity=\"1\"/><text x=\"353.8\" y=\"73.0\" font-size=\"10\" class=\"lbl\">4</text><text x=\"260\" y=\"93.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">affidabilità · affidabilità</text><rect x=\"268\" y=\"83.0\" width=\"19.9\" height=\"12\" rx=\"2\" fill=\"var(--dim)\" opacity=\"0.32\"/><text x=\"293.9\" y=\"93.0\" font-size=\"10\" class=\"\">1</text><text x=\"670\" y=\"114\" font-size=\"9.5\" text-anchor=\"end\">intenzione DICHIARATA dal team, non un effetto: nel documento non c&#x27;è un solo numero di prestazione</text></svg>",
+        "didascalia": "Il «Primary reason» dichiarato dalle squadre, tradotto e contato riga per riga. In pieno le intenzioni della famiglia sviluppo, in trasparenza quelle delle altre famiglie presenti in questo documento (affidabilita'). È una dichiarazione d'intenti, non una misura di effetto.",
+        "fonte": "FIA · Car Presentation Submissions, Dutch Grand Prix 2026 — campo «Primary reason»"
+      }
+    },
+    {
+      "tag": "Quello che resta in piedi",
+      "titolo": "Dove finisce il documento",
+      "html": "<p>La famiglia la scelgono le squadre, e nessuno la verifica: se una scuderia decide di chiamare sviluppo un’ala tagliata per l’occasione, il modulo la registra come sviluppo e la cosa finisce lì. Restano fuori altre due cose. Il documento non dice se il pezzo finirà davvero sulla vettura, e una sola riga su 23 si dichiara come opzione disponibile; non dice nemmeno su quale delle due macchine andrà, perché un campo per scriverlo non esiste.</p><p>Le zone toccate parlano la stessa lingua. Il fondo raccoglie <b>7</b> pezzi, poi vengono diffusore, retrotreno e le due ali con tre ciascuno: sono i posti che pagano a Monza come a Budapest, non angoli scelti per due curve inclinate. Quanto valga tutto questo il documento non lo dice, e non lo diciamo noi: una riga può essere un fondo nuovo o un ritocco di pochi millimetri, e sul foglio occupano lo stesso spazio.</p><p>Del 2026 abbiamo riletto zero documenti FIA precedenti a questo, quindi non sappiamo ancora se la casella vuota sia una particolarità olandese. Il controllo è già fissato: se al prossimo Gran Premio qualche squadra dichiara un componente come configurazione da circuito, allora lo zero di oggi è una scelta tecnica. Se resta vuota anche lì, quella casella quest’anno non serve a leggere niente.</p>",
+      "figura": {
+        "svg": "<svg viewBox=\"0 0 760 218\" xmlns=\"http://www.w3.org/2000/svg\" font-family=\"'JetBrains Mono',ui-monospace,Menlo,monospace\" class=\"art-svg\"><style>.art-svg text{fill:var(--dim)}.art-svg .lbl{fill:var(--txt)}</style><text x=\"158\" y=\"18\" class=\"lbl\" font-size=\"14\" font-family=\"'Barlow Condensed','Arial Narrow',sans-serif\" letter-spacing=\"0.5\">Dove si concentra il lavoro: zone della vettura toccate a Zandvoort</text><text x=\"744\" y=\"18\" font-size=\"10.5\" text-anchor=\"end\">Olanda 2026 · 23 pezzi</text><line x1=\"158\" y1=\"36\" x2=\"158\" y2=\"200\" stroke=\"var(--line2)\" stroke-width=\"1\"/><text x=\"150\" y=\"53.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"lbl\">Fondo</text><rect x=\"158\" y=\"43.0\" width=\"457.1\" height=\"12\" rx=\"2\" fill=\"#E8002D\" opacity=\"1\"/><text x=\"621.1\" y=\"53.0\" font-size=\"10\" class=\"lbl\">7</text><text x=\"150\" y=\"73.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">Ala posteriore</text><rect x=\"158\" y=\"63.0\" width=\"195.9\" height=\"12\" rx=\"2\" fill=\"#FF8000\" opacity=\"0.32\"/><text x=\"359.9\" y=\"73.0\" font-size=\"10\" class=\"\">3</text><text x=\"150\" y=\"93.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">Retrotreno / freni</text><rect x=\"158\" y=\"83.0\" width=\"195.9\" height=\"12\" rx=\"2\" fill=\"#FF87BC\" opacity=\"0.32\"/><text x=\"359.9\" y=\"93.0\" font-size=\"10\" class=\"\">3</text><text x=\"150\" y=\"113.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">Diffusore</text><rect x=\"158\" y=\"103.0\" width=\"195.9\" height=\"12\" rx=\"2\" fill=\"#E8002D\" opacity=\"0.32\"/><text x=\"359.9\" y=\"113.0\" font-size=\"10\" class=\"\">3</text><text x=\"150\" y=\"133.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">Ala anteriore</text><rect x=\"158\" y=\"123.0\" width=\"195.9\" height=\"12\" rx=\"2\" fill=\"#229971\" opacity=\"0.32\"/><text x=\"359.9\" y=\"133.0\" font-size=\"10\" class=\"\">3</text><text x=\"150\" y=\"153.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">Avantreno / freni</text><rect x=\"158\" y=\"143.0\" width=\"130.6\" height=\"12\" rx=\"2\" fill=\"#27F4D2\" opacity=\"0.32\"/><text x=\"294.6\" y=\"153.0\" font-size=\"10\" class=\"\">2</text><text x=\"150\" y=\"173.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">Cofano motore</text><rect x=\"158\" y=\"163.0\" width=\"65.3\" height=\"12\" rx=\"2\" fill=\"#FF8000\" opacity=\"0.32\"/><text x=\"229.3\" y=\"173.0\" font-size=\"10\" class=\"\">1</text><text x=\"150\" y=\"193.0\" font-size=\"10.5\" text-anchor=\"end\" class=\"\">Fiancate</text><rect x=\"158\" y=\"183.0\" width=\"65.3\" height=\"12\" rx=\"2\" fill=\"#FF87BC\" opacity=\"0.32\"/><text x=\"229.3\" y=\"193.0\" font-size=\"10\" class=\"\">1</text><text x=\"670\" y=\"214\" font-size=\"9.5\" text-anchor=\"end\">colore = squadra con più pezzi in quella zona; qui sviluppo e configurazione sono sommati (separati sopra)</text></svg>",
+        "didascalia": "Pezzi per zona della vettura a Zandvoort. Il colore è quello della squadra che ha messo più pezzi in quella zona. Qui sviluppo e configurazione sono sommati: la separazione sta nella figura precedente.",
+        "fonte": "FIA · Car Presentation Submissions, Dutch Grand Prix 2026 — campo «Updated component», zone canoniche della redazione"
+      }
+    }
+  ],
+  "provenienza": [
+    {
+      "grandezza": "pezzi dichiarati alla FIA",
+      "valore": "23 righe da 6 squadre su 11",
+      "stato": "MISURATO",
+      "da": "documento FIA «Car Presentation Submissions» Dutch Grand Prix 2026 — 2026_dutch_grand_prix_-_car_presentation_submissions.pdf; lettura e cancelli di identità/qualità in ai_lab/redazione/fia_cp.py"
+    },
+    {
+      "grandezza": "sviluppo vs configurazione da circuito",
+      "valore": "22 «Performance» · 0 «Circuit specific» (0% del totale) · 1 affidabilità",
+      "stato": "MISURATO",
+      "da": "campo «Primary reason», famiglie dichiarate dalla FIA — tenute separate: la configurazione è assetto per questo tracciato, non progresso. Le famiglie della FIA sono TRE: una cella senza prefisso non è una quarta famiglia"
+    },
+    {
+      "grandezza": "pacchetto più largo",
+      "valore": "Alpine, 8 righe = 8 aggiornamenti distinti (8 sviluppo, 0 configurazione)",
+      "stato": "MISURATO",
+      "da": "righe della sua tabella, e aggiornamenti distinti = righe con la STESSA descrizione contate una volta (la fonte scrive «are a package»). Non è una misura di grandezza (vedi sotto): squadre diverse spezzano lo stesso pacchetto in un numero diverso di righe; primato stretto sugli aggiornamenti distinti"
+    },
+    {
+      "grandezza": "righe contro aggiornamenti distinti",
+      "valore": "23 righe = 19 descrizioni distinte; Ferrari 5→3, Aston Martin 5→3",
+      "stato": "MISURATO",
+      "da": "conteggio delle descrizioni identiche dentro la stessa squadra; non cattura i pacchetti che la fonte NON dichiara tali, quindi è un limite inferiore allo spacchettamento, mai una stima di valore"
+    },
+    {
+      "grandezza": "squadre senza aggiornamenti",
+      "valore": "Williams, Racing Bulls, Haas, Audi e Cadillac («No updates submitted for this event»)",
+      "stato": "MISURATO",
+      "da": "NULL dichiarato dalla fonte, distinto dal parsing fallito: è una notizia, non un dato mancante"
+    },
+    {
+      "grandezza": "frequenza di aggiornamento in stagione",
+      "valore": "non disponibile",
+      "stato": "MISURATO",
+      "da": "0 documenti FIA 2026 PRECEDENTI, riletti con lo stesso estrattore — il documento di Dutch Grand Prix è ESCLUSO dal contesto: contarlo significherebbe confermare col weekend che l'articolo commenta"
+    },
+    {
+      "grandezza": "zona più toccata",
+      "valore": "Fondo — 7 pezzi su 23",
+      "stato": "MISURATO",
+      "da": "campo «Updated component» mappato sulle 15 zone canoniche; i componenti fuori tabella restano dichiarati in diagnostica, mai indovinati"
+    },
+    {
+      "grandezza": "intenzione dichiarata più frequente",
+      "valore": "«carico locale» — 18 pezzi",
+      "stato": "MISURATO",
+      "da": "campo «Primary reason»: è quel che la squadra DICHIARA di cercare, non un effetto osservato"
+    },
+    {
+      "grandezza": "su quale vettura / pilota va il pezzo",
+      "valore": "nessuna delle 23 righe lo nomina",
+      "stato": "NON_MISURABILE",
+      "da": "cercate in questo documento le formule «car N», «both cars», «each car», «one car only», «driver N», «race number»: la fonte non ha un campo per dirlo, quindi una macchina sola o entrambe è indistinguibile. NON sono cercati «chassis»/telaio né «driver» da soli: nel documento compaiono come nomi di componente, quindi il conteggio non copre quella parola"
+    },
+    {
+      "grandezza": "grandezza dell'aggiornamento (quanto vale)",
+      "valore": "nessun numero di prestazione nel documento",
+      "stato": "NON_MISURABILE",
+      "da": "il conteggio delle righe non è la magnitudine: una riga può essere un pezzo nuovo o un ritocco, e occupano lo stesso spazio. Non è nemmeno il numero di aggiornamenti: vedi «righe contro aggiornamenti distinti»"
+    },
+    {
+      "grandezza": "se il pezzo verrà davvero montato",
+      "valore": "1 righe su 23 lo dichiarano «available»/«optional»",
+      "stato": "NON_MISURABILE",
+      "da": "un componente «portato» può restare nel camion: il documento non registra cosa finisce sulla macchina"
+    }
+  ],
+  "fonti": [
+    {
+      "tipo": "dati",
+      "testo": "FIA — «Car Presentation Submissions», Dutch Grand Prix 2026, pubblicato 2026-08-21 · 2026_dutch_grand_prix_-_car_presentation_submissions.pdf · fonte documento gia' passato ai cancelli dal chiamante"
+    },
+    {
+      "tipo": "metodo",
+      "testo": "ai_lab/redazione/genera_upgrade_preview.py + fia_cp.py — scoperta dalla sola pagina radice FIA, cancelli di freschezza (≤7 giorni), identità (anno + nome gara sulla copertina) e qualità (tutte le squadre presenti, numerazione contigua, nessuna tabella non letta). Conteggi separati per famiglia di motivo: «Performance» (sviluppo) e «Circuit specific» (configurazione) non vengono mai sommati; una cella senza prefisso di famiglia viene riconciliata solo dallo stesso documento, mai indovinata. Le righe con descrizione identica dentro la stessa squadra contano come UN aggiornamento dichiarato, perché lo stile di compilazione cambia da squadra a squadra. Contesto stagionale riletto dai 0 documenti FIA 2026 PRECEDENTI, questo weekend escluso."
+    }
+  ],
+  "tesi": "A Zandvoort nessuna squadra porta un pezzo costruito per Zandvoort: delle 23 righe depositate alla FIA, 22 sono dichiarate sviluppo e una affidabilità, e la casella della configurazione da circuito resta vuota per tutte e sei le squadre che aggiornano.",
+  "confutabile_da": "Una riga classificata «Circuit specific» in questo stesso documento, oppure un componente visto in pista venerdì e riconoscibile come dedicato alle due sopraelevate senza corrispondenza nel modulo; sul piano del metodo, il documento del Gran Premio successivo in cui la stessa casella si riempie, che mostrerebbe che a Zandvoort lo zero è una scelta tecnica e non un'abitudine di compilazione.",
+  "conseguenza": "In pista non cambia niente prima di venerdì. Cambia come si legge il modulo: quest'anno la casella «Circuit specific» non è un indicatore di come una squadra affronta un tracciato estremo, e chi la usa per prevedere gli assetti del weekend sta leggendo una casella vuota.",
+  "forma": "contro-narrazione",
+  "peso": "standard",
+  "attacco": "assenza",
+  "chiusa": "verifica",
+  "taciuti": [
+    "La riga «Beam Wing» di Ferrari: il nome contraddice il vocabolario 2026 della redazione e non abbiamo il PDF FIA in mano per capire se sia una voce residua della modulistica. Citarla aprirebbe una questione che non possiamo chiudere, e il pezzo non ne ha bisogno.",
+    "Le classifiche di piloti e costruttori aggiornate all'Ungheria: fra righe depositate alla FIA e punti non esiste nessun nesso che abbiamo misurato, e accostarli suggerirebbe una causalità inventata.",
+    "Il contesto stagionale: sono stati riletti zero documenti FIA 2026 precedenti, quindi non possiamo scrivere né «Red Bull ha smesso di sviluppare» né «Alpine aggiorna a ogni gara». Senza denominatore, il singolo pezzo di Red Bull e quello di Mercedes non sono una tendenza.",
+    "Il confronto fra il pezzo all'avantreno di Mercedes (condizionamento del flusso) e quello di Red Bull (rinforzo del braccetto inferiore): sono due righe curiose ma marginali rispetto alla tesi, e svierebbero il pezzo verso il gossip tecnico.",
+    "L'elenco componente per componente del pacchetto Alpine: otto descrizioni quasi sovrapponibili, che la figura mostra meglio di qualunque paragrafo. Metterle nel testo produrrebbe una tabella con le congiunzioni.",
+    "Le sei pagine scartate dall'estrattore perché tavole fotografiche: le tabelle sono state lette tutte e la numerazione è contigua, quindi il dettaglio non cambia un solo conteggio e appartiene alla diagnostica, non all'articolo."
+  ],
+  "scrittura": "llm",
+  "voce": "bdae7475fa5e",
+  "qualita": {
+    "parole": 498,
+    "sezioni": 3,
+    "gulpease": 55.1,
+    "ritmo": {
+      "frasi": 26,
+      "media": 19.2,
+      "sd": 10.5,
+      "cv": 0.549,
+      "max": 38,
+      "min": 5,
+      "pct_corte": 23.1,
+      "pct_lunghe": 3.8
+    },
+    "mtld": 149.8,
+    "numeri_100": 2.0,
+    "emdash": 0,
+    "bloccanti": 0,
+    "avvisi": 2
+  }
+}

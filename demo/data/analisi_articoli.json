@@ -1,5 +1,31 @@
 [
   {
+    "id": "upgrade-preview-olanda-2026",
+    "titolo": "A Zandvoort nessuno porta un pezzo pensato per Zandvoort",
+    "occhiello": "Documento FIA · Car Presentation Submissions, Gran Premio d’Olanda",
+    "sommario": "Sei squadre su undici depositano aggiornamenti, e nessuna dichiara un solo componente di configurazione per il circuito più tortuoso del calendario. Il pacchetto più largo è di Alpine, otto pezzi, ma il conteggio delle righe non misura quello che sembra misurare. Dove finisce il documento e dove comincia l’ipotesi, detto prima di usarlo.",
+    "data": "2026-08-21",
+    "stato": "pubblicato",
+    "tag": [
+      "aggiornamenti",
+      "anteprima",
+      "documento-fia",
+      "tecnica",
+      "Zandvoort"
+    ],
+    "circuito": "Zandvoort",
+    "sessione": "Anteprima",
+    "accent": "#FF87BC",
+    "gp": "Olanda",
+    "round": null,
+    "pagina": true,
+    "en": {
+      "titolo": "At Zandvoort nobody brings a part designed for Zandvoort",
+      "occhiello": "FIA document · Car Presentation Submissions, Dutch Grand Prix",
+      "sommario": "Six teams out of eleven file updates, and not one declares a single circuit-specific component for the most twisting track on the calendar. The widest package is Alpine's, eight parts, but the line count does not measure what it seems to measure. Where the document ends and where the hypothesis begins, said before using it."
+    }
+  },
+  {
     "id": "recap-weekend-hungaroring-2026",
     "titolo": "Dodici millesimi, e nascono quasi tutti in centottanta metri",
     "occhiello": "Hungaroring · il weekend · round 11",
