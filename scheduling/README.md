@@ -70,6 +70,30 @@ Nel log devono comparire le righe `aggiornato a <sha>` (le scrive `auto_run.sh`,
 `auto_gara.py`: se non ci sono, la crontab non sta passando da li') e, in coda a ogni giro,
 il blocco `sonda deploy` con i suoi due VERDE.
 
+### Le dipendenze NON si sono trasferite col trasloco — 21/08/2026
+
+Il 10/08 la redazione e' passata dal Mac al VPS. E' passato il *codice*: non le
+librerie che qualcuno, mesi prima, aveva installato a mano sul Mac. **Non esiste un
+file di requirements in questo repo**, quindi non c'era niente da confrontare e
+nessuno se n'e' accorto.
+
+Il conto e' arrivato al primo weekend che lo esercitava. `ai_lab/redazione/fia_cp.py`
+apre il PDF FIA con `pdfplumber`; sul Mac c'era (0.11.10, nel python di sistema), in
+`.venv-auto` no. L'import e' dentro `_apri_pdf()` **apposta** — «se manca, stato, non
+crash» — quindi il canale non e' esploso: si e' chiuso, dicendolo, sei volte di fila:
+
+    FIA: CANCELLO IDENTITA' CHIUSO — dipendenza assente: pdfplumber. NON pubblico
+
+Il documento d'Olanda era gia' in cache dalle 08:15; a mancare era solo chi lo
+aprisse. Installato `pdfplumber` 0.11.10 in `.venv-auto` il 21/08/2026 — la stessa
+versione del Mac, perche' due macchine che stampano lo stesso articolo devono leggere
+il PDF con lo stesso lettore.
+
+**Cosa resta aperto:** finche' le dipendenze vivono a mano su ogni macchina, il
+prossimo `import` nuovo si scoprira' allo stesso modo — a weekend cominciato. Un
+`requirements` dichiarato e' l'unica cosa che lo trasformerebbe in un errore di
+installazione invece che in un articolo mancato.
+
 ## C) GitHub Actions (cron) — sempre acceso, zero macchine tue
 Gira sui runner GitHub, push col token integrato. Nessun Mac/VPS da tenere su.
 Caveat: ambiente diverso dal Mac → il pace potrebbe differire a livello di float (i golden
