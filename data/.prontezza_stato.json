@@ -1,0 +1,14 @@
+{
+ "quando": "2026-08-21 20:25:12",
+ "verdetto": "ROSSO",
+ "voci": {
+  "api.github.com": "VERDE",
+  "api.openf1.org": "VERDE",
+  "cache condivisa": "VERDE",
+  "cache di gen_giri": "VERDE",
+  "chiave": "SOSPESO",
+  "livetiming.formula1.com": "ROSSO",
+  "mestiere": "ROSSO",
+  "www.fia.com": "VERDE"
+ }
+}
