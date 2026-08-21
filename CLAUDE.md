@@ -389,6 +389,31 @@ ingresso nuovo è ripagare un conto già pagato.
    - **Il Mac è indietro di 90 commit** su un branch di lavoro con l'albero sporco: `auto_tele`
      gira, ma `s46` è ROSSA da 42 ore e il fast-forward non passerà da solo. Riguarda la
      telemetria per sessione, non gare né articoli — quelli stanno sul VPS.
+   - **RETTIFICA, la sera stessa.** Le tre righe qui sopra dicevano «pronti», e sulla cosa
+     che conta di più erano sbagliate: avevo verificato che le macchine girassero, non che
+     riuscissero a **prendere i dati di questo weekend**. Il log diceva «Olanda FP1:
+     estrazione fallita» e l'ho letto come attesa di FastF1. Non lo era: FastF1 aveva le
+     FP1 (693 giri, 22 piloti, caricate dal Mac). Era il VPS a non poterle scaricare.
+     È lo stesso errore del 03/08 già scritto in [`scheduling/README.md`](scheduling/README.md)
+     — **lo stato di una macchina si legge sulla macchina** — commesso una riga più in là:
+     avevo letto la macchina, non la sua capacità di fare il lavoro.
+   - **Il CDN di F1 blocca il VPS per indirizzo.** Stessa URL, stesso momento: Mac
+     (residenziale) **200**, VPS (Hetzner) **403** — tre tentativi, TLS a posto, 403 anche
+     con lo user-agent di un browser, mentre l'uscita generica del VPS funziona. La cache
+     del VPS si ferma al 26/07: **l'Ungheria l'aveva scaricata da solo**, il blocco è
+     arrivato nella pausa estiva e l'Olanda è il primo weekend che lo incontra. Effetto:
+     il VPS non può pubblicare **nessuna** sessione di Zandvoort, e la redazione scrive
+     solo ciò che non passa da FastF1 — l'anteprima FIA, che legge un PDF.
+   - **Il ponte, scelto dal PO: il Mac scarica, il VPS pubblica.** `scalda_cache.py` +
+     `scheduling/scalda_cache_run.sh` (crontab del Mac, :05 e :35) scaldano la cache del GP
+     in corso e la spediscono; il VPS da lì lavora offline. Provato col 403 ancora attivo:
+     FP1 caricate dalla sola cache e `gen_giri.py` ha scritto `olanda__fp1` (22 piloti,
+     693 giri, 1,06 MB). ~46 MB a sessione, ~7,5 MB sul filo, ~10 s.
+   - **NON è la riparazione, ed è la cosa da ricordare.** Rimette il Mac nel percorso
+     critico — la dipendenza che il trasloco del 10/08 aveva tolto — quindi **Mac spento =
+     quella sessione non esce**, e serve un checkout a parte (`~/muretto-ponte`, worktree su
+     `main`) perché quello di lavoro sta su un branch feature. La riparazione vera è far
+     uscire il VPS dal blocco, o spostare stabilmente chi scarica: **decide il PO**.
 
 ---
 

@@ -1,0 +1,6 @@
+# Cache FastF1 Mac -> VPS — gira SUL MAC (e' l'unica macchina a cui il CDN di F1
+# risponde: dal 21/08/2026 livetiming.formula1.com da' 403 all'indirizzo del VPS).
+# A :05 e :35, sfasato dai :00/:30 di auto_tele e dai :15/:45 della redazione sul VPS:
+# la cache dev'essere gia' arrivata quando il VPS va a cercarla.
+# Log: ~/muretto/data/scalda_cache.log
+5,35 * * * * /Users/tommi/muretto-ponte/scheduling/scalda_cache_run.sh

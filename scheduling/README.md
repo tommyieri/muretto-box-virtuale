@@ -70,6 +70,53 @@ Nel log devono comparire le righe `aggiornato a <sha>` (le scrive `auto_run.sh`,
 `auto_gara.py`: se non ci sono, la crontab non sta passando da li') e, in coda a ogni giro,
 il blocco `sonda deploy` con i suoi due VERDE.
 
+### Il CDN di F1 blocca il VPS — 21/08/2026, e cambia chi scarica
+
+**Misurato, non dedotto.** Stessa URL, stesso momento, due macchine:
+
+| macchina | indirizzo | esito |
+|---|---|---|
+| Mac | 45.66.16.143 (residenziale) | HTTP **200** |
+| VPS | 167.233.236.186 (Hetzner) | HTTP **403** |
+
+`https://livetiming.formula1.com/static/2026/Index.json`, tre tentativi di fila, TLS a
+posto, edge CloudFront 65.9.130.101, corpo «The request could not be satisfied». Lo
+user-agent non c'entra: 403 anche con quello di un browser e con `FastF1/3.8.3`.
+L'uscita generica del VPS funziona (GitHub 200): e' un blocco **per indirizzo**, di
+quelli che le reti da datacenter si prendono in blocco.
+
+**Quando e' cominciato.** La cache FastF1 del VPS si ferma a
+`2026-07-26_Hungarian_Grand_Prix` (26/07, 15:30): l'Ungheria l'aveva scaricata da
+solo. Nel log delle gare il primo `estrazione fallita` in assoluto e' «Olanda FP1».
+Fra le due date c'e' la pausa estiva, quindi **l'Olanda e' il primo weekend che lo
+incontra**, e lo incontra su tutto: niente sessioni, niente gara, e nella redazione
+solo cio' che non passa da FastF1 (l'anteprima FIA, che legge un PDF).
+
+**Il ponte, e cos'e' che NON e'.** `scalda_cache.py` + `scheduling/scalda_cache_run.sh`
+girano SUL MAC a :05 e :35: scaldano la cache del GP in corso e la spediscono al VPS,
+che da li' lavora offline. Provato prima di scriverlo, col 403 ancora attivo: il VPS ha
+caricato le FP1 d'Olanda dalla sola cache (693 giri, 22 piloti, telemetria del giro
+veloce) e `gen_giri.py` ne ha scritto `olanda__fp1` — 22 piloti, 693 giri, 1,06 MB.
+
+Costi e vincoli, per iscritto:
+- **~46 MB a sessione** in cache, ~7,5 MB sul filo (rsync comprime 6×), ~10 s.
+- **Il Mac deve essere acceso.** E' esattamente la dipendenza che il trasloco del
+  10/08 aveva tolto: Mac spento = quella sessione non esce. Il VPS lo dichiara nel suo
+  log, non lo nasconde — ma nessuno pubblica al posto suo.
+- **Serve un checkout a parte** (`~/muretto-ponte`, worktree su `main`): il checkout di
+  lavoro del Mac sta su un branch feature e non contiene questo codice.
+- **Due cache, e il ponte le serve tutt'e due**: `gen_giri.py` legge
+  `<repo>/data/ff1_cache` (auto_gara lo invoca senza `--cache`), la redazione legge
+  `~/muretto_shared/ff1_cache`. Unificarle e' una modifica al codice di chi pubblica e
+  non si fa a weekend cominciato.
+- **Si scalda col SUPERINSIEME delle opzioni** (`telemetry`, `laps`, `weather`,
+  `messages`): FastF1 mette in cache per tipo di dato, e un tipo che manca manda il VPS
+  in rete, cioe' nel 403. I tre generatori del pit-loss chiedono `weather=True`: senza,
+  sarebbero caduti proprio loro.
+
+**Resta aperto, ed e' la domanda vera:** questo e' un ponte. La riparazione e' far
+uscire il VPS dal blocco, o spostare stabilmente chi scarica. Decide il PO.
+
 ### Le dipendenze NON si sono trasferite col trasloco — 21/08/2026
 
 Il 10/08 la redazione e' passata dal Mac al VPS. E' passato il *codice*: non le
