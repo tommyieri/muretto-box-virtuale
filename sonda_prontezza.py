@@ -43,10 +43,13 @@ il ponte del Mac. Una prova che passa grazie alla cache non dice niente sulla re
 versione automatica dell'errore che ho fatto io. Percio' `--mestiere` usa una cartella
 temporanea e la butta.
 
-PERCHE' PARLA POCO. Una sonda che urla a ogni giro viene spenta — lo dice gia'
-sonda_deploy.sh di se stessa, ed era diventato il suo caso. Qui il verdetto si ricorda in
-data/.prontezza_stato.json (per-macchina, gitignored) e il blocco lungo esce solo quando
-il verdetto CAMBIA. Verde stabile = una riga.
+PERCHE' PARLA POCO, ANCHE QUANDO E' ROSSA. Una sonda che urla a ogni giro viene spenta —
+lo dice gia' sonda_deploy.sh di se stessa, ed era diventato il suo caso. Qui il verdetto
+si ricorda in data/.prontezza_stato.json (per-macchina, gitignored) e il blocco lungo esce
+solo quando CAMBIA qualcosa. Un rosso che dura — come il 403 sul VPS, finche' nessuno lo
+risolve — resta visibile su UNA riga, con da quanto dura e che cosa e' rosso. Non e'
+indulgenza: una notizia vecchia ripetuta a voce alta ogni mezz'ora smette di essere
+letta, e allora non si legge nemmeno quella nuova.
 """
 from __future__ import annotations
 import os
@@ -234,14 +237,18 @@ def main():
     ora = {n: s for s, _, n in esiti}
     prima = _leggi_stato()
     cambiato = {n for n in ora if prima.get("voci", {}).get(n) != ora[n]}
-    _scrivi_stato({"verdetto": verdetto, "voci": ora,
-                   "quando": time.strftime("%Y-%m-%d %H:%M:%S")})
+    adesso = time.strftime("%Y-%m-%d %H:%M:%S")
+    dal = adesso if (prima.get("verdetto") != verdetto or cambiato) else prima.get("dal", adesso)
+    _scrivi_stato({"verdetto": verdetto, "voci": ora, "quando": adesso, "dal": dal})
 
     # SI PARLA SOLO SE C'E' QUALCOSA DA DIRE. Verde stabile = una riga; un cambio, o un
     # rosso, o un lancio a mano = tutto il quadro. Un guardiano che urla sempre viene
     # spento, e allora tace anche il giorno in cui aveva ragione.
-    if a.silenzioso and not cambiato and verdetto == VERDE:
-        print(f"{_tinta(VERDE)} prontezza: nessun cambiamento ({len(esiti)} controlli)")
+    if a.silenzioso and not cambiato:
+        nomi = ", ".join(n for s_, _, n in esiti if s_ == ROSSO)
+        da = prima.get("dal") or "poco"
+        print(f"{_tinta(verdetto)} prontezza: invariata da {da} ({len(esiti)} controlli"
+              + (f", rossi: {nomi}" if nomi else ", nessun rosso") + ")")
         return 0
 
     for stato, riga, nome in esiti:
