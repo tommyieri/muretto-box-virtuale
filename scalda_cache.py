@@ -29,6 +29,14 @@ VPS da quel blocco, o spostare chi scarica; questo tiene in piedi il weekend int
     python3 scalda_cache.py --solo-locale   # scalda e basta (nessuna rete verso il VPS)
     python3 scalda_cache.py --gara Olanda --anno 2026
     python3 scalda_cache.py --dry-run       # dice che cosa farebbe
+    python3 scalda_cache.py --finestre      # quando serve davvero, e come farlo svegliare
+
+QUANTO SERVE IL MAC, in ore e non in impressioni. Fuori dal weekend di gara questo
+script esce alla prima riga: `gp_attivo()` non trova niente. Dentro il weekend serve
+nelle ore dopo ogni sessione — cinque sessioni, due tentativi ciascuna. `--finestre`
+le calcola dal calendario e stampa i comandi `pmset` che fanno svegliare il Mac da
+solo: cosi' puo' restare chiuso e addormentato invece che acceso. Da SPENTO no, e
+va detto invece che sperato.
 
 Log: data/scalda_cache.log (ci scrive il wrapper, non questo file).
 """
@@ -193,6 +201,74 @@ def spedisci(sotto, dry_run=False):
     return True
 
 
+DURATA = {                      # minuti, per sapere quando una sessione e' FINITA
+    "fp1": 60, "fp2": 60, "fp3": 60, "sprint_quali": 45, "sprint": 35,
+    "qualifiche": 60, "gara": 120,
+}
+# QUANTO ASPETTARE DOPO LA FINE. Non e' misurato, ed e' giusto dirlo: la latenza con cui
+# la sorgente pubblica una sessione non l'abbiamo mai cronometrata. Due sveglie invece di
+# una coprono l'incertezza senza fingere di conoscerla — se la prima trova la sessione, la
+# seconda costa un giro a vuoto di due secondi.
+ATTESE_ORE = (1.5, 4.0)
+
+
+def finestre(gara=None, anno=None):
+    """Quando questa macchina serve davvero, e quando puo' dormire.
+
+    IL MAC NON SERVE SEMPRE: serve nelle ore dopo ogni sessione del GP in corso, e in
+    tutto il resto della settimana `scalda_cache.py` esce subito («nessun GP del weekend
+    in corso»). Trasformare «tienilo acceso» in cinque sveglie e' la differenza fra
+    sorvegliare una macchina e dimenticarsene."""
+    import datetime as _dt
+    cal = _calendario()
+    oggi = _dt.date.today()
+    if gara:
+        voce = _voce_gara(gara)
+    else:
+        # il PROSSIMO GP, non quello attivo: le sveglie si mettono prima.
+        futuri = [g for g in cal
+                  if g.get("data") and _dt.date.fromisoformat(g["data"]) >= oggi]
+        voce = futuri[0] if futuri else None
+    if not voce:
+        return None, []
+    fuori = []
+    for chiave, s in (voce.get("sessioni") or {}).items():
+        d, ora = s.get("data"), s.get("ora_utc")
+        if not d or not ora:
+            continue
+        inizio = _dt.datetime.fromisoformat(f"{d}T{ora}:00").replace(tzinfo=_dt.timezone.utc)
+        fine = inizio + _dt.timedelta(minutes=DURATA.get(chiave, 60))
+        for h in ATTESE_ORE:
+            fuori.append((chiave, fine + _dt.timedelta(hours=h)))
+    fuori.sort(key=lambda x: x[1])
+    return voce, fuori
+
+
+def stampa_finestre(voce, sveglie):
+    import datetime as _dt
+    if not voce:
+        print("nessun Gran Premio futuro nel calendario: niente sveglie da mettere.")
+        return
+    print(f"Prossimo GP: {voce['nome']} (round {voce.get('round')}), "
+          f"gara il {voce.get('data')}\n")
+    print("QUANDO IL MAC SERVE — dopo ogni sessione, due volte per sicurezza.")
+    print("Fuori da queste ore scalda_cache.py esce subito: il GP non e' attivo.\n")
+    for chiave, t in sveglie:
+        loc = t.astimezone()
+        print(f"  {chiave:<13} {t:%Y-%m-%d %H:%M} UTC   ({loc:%a %d/%m %H:%M} ora locale)")
+    print()
+    print("PER NON TENERLO ACCESO: queste righe lo fanno SVEGLIARE da solo. Vanno")
+    print("lanciate una volta, e chiedono la tua password (pmset e' di sistema).")
+    print("Il Mac puo' restare CHIUSO e addormentato — ma non spento, e attaccato alla")
+    print("corrente: da spento non lo sveglia niente, ed e' un limite vero, non un")
+    print("dettaglio. La prima sveglia di ogni coppia basta quasi sempre.\n")
+    for chiave, t in sveglie:
+        loc = t.astimezone()
+        print(f"  sudo pmset schedule wake \"{loc:%m/%d/%y %H:%M:%S}\"   # {chiave}")
+    print()
+    print("Si controllano con `pmset -g sched` e si tolgono con `sudo pmset schedule cancelall`.")
+
+
 def main():
     ap = argparse.ArgumentParser(
         description="Scalda la cache FastF1 sul Mac e la spedisce al VPS (che e' bloccato dal CDN)")
@@ -203,7 +279,13 @@ def main():
     ap.add_argument("--solo-locale", action="store_true",
                     help="scalda e basta: non spedisce niente al VPS")
     ap.add_argument("--dry-run", action="store_true", help="dice solo cosa farebbe")
+    ap.add_argument("--finestre", action="store_true",
+                    help="quando questa macchina serve davvero, e come farla svegliare da sola")
     a = ap.parse_args()
+
+    if a.finestre:
+        stampa_finestre(*finestre(a.gara, a.anno))
+        return 0
 
     gara = a.gara or gp_attivo()
     if not gara:

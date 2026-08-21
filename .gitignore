@@ -52,3 +52,9 @@ ai_lab/redazione/diario/
 # con `graphify extract . --code-only` in una ventina di secondi, e pesa ~12 MB fra
 # graph.json e graph.html. Un derivato committato invecchia in silenzio — meglio nessuno.
 graphify-out/
+
+# stato per-macchina della sonda di prontezza (verdetto precedente, per parlare solo
+# quando cambia). E per-MACCHINA: committarlo farebbe raccontare a una macchina lo
+# stato di un altra, che e la definizione di seconda verita.
+data/.prontezza_stato.json
+data/prontezza.log

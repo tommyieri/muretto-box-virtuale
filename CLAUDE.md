@@ -427,11 +427,39 @@ ingresso nuovo è ripagare un conto già pagato.
      in corso e la spediscono; il VPS da lì lavora offline. Provato col 403 ancora attivo:
      FP1 caricate dalla sola cache e `gen_giri.py` ha scritto `olanda__fp1` (22 piloti,
      693 giri, 1,06 MB). ~46 MB a sessione, ~7,5 MB sul filo, ~10 s.
+   - **La sonda che mancava, ed è la lezione vera** (verifica 15, `sonda_prontezza.py`).
+     Tutte le guardie che avevamo chiedono se una macchina è **configurata**: crontab
+     installata (`verifica_crontab.sh`), codice fresco (`s46`), librerie a posto
+     (`test_dipendenze.py`), deploy allineato (`sonda_deploy.sh`). Nessuna chiedeva se
+     sapesse **fare il lavoro**. Il 21/08 erano tutte verdi e il VPS non poteva scaricare
+     un giro. La sonda interroga le fonti davvero, e `--mestiere` carica una sessione **a
+     cache fredda** — perché con la cache calda passerebbe anche a rete morta, che è la
+     versione automatica del mio errore. Gira nei wrapper a ogni giro (silenziosa se
+     nulla cambia) e **il mercoledì**, a bocce ferme: il blocco è arrivato in pausa
+     estiva, tre settimane di preavviso c'erano e nessuno faceva la domanda.
+     `test_prontezza.py` è la guardia della guardia — che l'aggancio non sparisca in un
+     riordino, e che la tabella delle fonti e il codice vivo non diventino due verità.
+     Provata al contrario su tutt'e due.
+   - **Ogni fonte dichiara se FERMA o DEGRADA.** `commons.wikimedia.org` (le foto) è
+     dichiarata **non bloccante**: un rosso che non ferma niente è rumore, e il rumore
+     spegne gli allarmi veri. Tacerla sarebbe stato peggio — sarebbe diventata una
+     dipendenza di rete che nessuno sorveglia, cioè com'era `livetiming` fino a ieri.
    - **NON è la riparazione, ed è la cosa da ricordare.** Rimette il Mac nel percorso
      critico — la dipendenza che il trasloco del 10/08 aveva tolto — quindi **Mac spento =
      quella sessione non esce**, e serve un checkout a parte (`~/muretto-ponte`, worktree su
      `main`) perché quello di lavoro sta su un branch feature. La riparazione vera è far
      uscire il VPS dal blocco, o spostare stabilmente chi scarica: **decide il PO**.
+   - **Tutte le strade misurate, perché nessuno le rimisuri.** VPS **403**; runner
+     **GitHub Actions 403** (provato, non dedotto); `api.openf1.org` dal VPS **200** e
+     con le stesse 693 tornate delle FP1; jolpica e f1db **200**. Quindi: *nessuna
+     macchina sempre accesa che controlliamo può parlare col CDN di F1*, e spostare il
+     download su un'altra macchina cloud non è una risposta. L'unica fonte non bloccata
+     che porta gli stessi dati è **OpenF1**, e usarla è un lavoro di traduzione, non una
+     riga di configurazione.
+   - **Quanto serve il Mac, in ore.** Fuori dal weekend `scalda_cache.py` esce alla prima
+     riga. Dentro, servono le ore dopo ogni sessione: `--finestre` le calcola dal
+     calendario e stampa i comandi `pmset` che lo fanno **svegliare da solo**. Chiuso e
+     addormentato basta; **spento no**, e non c'è modo di aggirarlo.
 
 11. **Cantiere 11 (Le dipendenze si dichiarano, e qualcuno le confronta)** — *21/08/2026, dal conto del trasloco.*
    - **Il guasto non era muto: era senza confronto.** `fia_cp.py` importa `pdfplumber` dentro
