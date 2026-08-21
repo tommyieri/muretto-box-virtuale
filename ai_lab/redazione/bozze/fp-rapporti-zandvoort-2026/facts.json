@@ -1,0 +1,227 @@
+{
+  "id": "fp-rapporti-zandvoort-2026",
+  "anno": 2026,
+  "gp": "Dutch Grand Prix",
+  "circuito": "Zandvoort",
+  "evento": "Dutch Grand Prix",
+  "round": 12,
+  "ff1": "Olanda",
+  "sessione": "SQ",
+  "sessione_label": "Qualifica Sprint",
+  "n_piloti": 22,
+  "n_giri_lanciati": 74,
+  "gear_top": 7,
+  "gear_coer": 8,
+  "v_soglia": 280,
+  "banda": [
+    285,
+    295
+  ],
+  "gmax": 8,
+  "corto": "NOR",
+  "lungo": "BOR",
+  "team_corto": "McLaren",
+  "team_lungo": "Audi",
+  "corto_doppio": false,
+  "rapporto_top": {
+    "ANT": {
+      "team": "Mercedes",
+      "ratio": 38.78200692041523,
+      "n": 91
+    },
+    "NOR": {
+      "team": "McLaren",
+      "ratio": 41.822137082775384,
+      "n": 28
+    },
+    "RUS": {
+      "team": "Mercedes",
+      "ratio": 38.710917020699625,
+      "n": 150
+    },
+    "HAM": {
+      "team": "Ferrari",
+      "ratio": 39.43055555555556,
+      "n": 103
+    },
+    "LEC": {
+      "team": "Ferrari",
+      "ratio": 39.4427235534775,
+      "n": 154
+    },
+    "HUL": {
+      "team": "Audi",
+      "ratio": 36.68167202572347,
+      "n": 203
+    },
+    "GAS": {
+      "team": "Alpine",
+      "ratio": 38.75352112676056,
+      "n": 95
+    },
+    "BOR": {
+      "team": "Audi",
+      "ratio": 36.675017509532964,
+      "n": 206
+    },
+    "LIN": {
+      "team": "Racing Bulls",
+      "ratio": 40.17345187078666,
+      "n": 62
+    },
+    "VER": {
+      "team": "Red Bull Racing",
+      "ratio": 40.1280276816609,
+      "n": 77
+    },
+    "ALO": {
+      "team": "Aston Martin",
+      "ratio": 38.51646602268359,
+      "n": 40
+    },
+    "COL": {
+      "team": "Alpine",
+      "ratio": 38.75675675675676,
+      "n": 83
+    },
+    "LAW": {
+      "team": "Red Bull Racing",
+      "ratio": 40.05154639175258,
+      "n": 125
+    },
+    "BEA": {
+      "team": "Haas F1 Team",
+      "ratio": 39.590005627596774,
+      "n": 56
+    },
+    "OCO": {
+      "team": "Haas F1 Team",
+      "ratio": 39.515437312312315,
+      "n": 120
+    },
+    "TSU": {
+      "team": "Racing Bulls",
+      "ratio": 40.03869480226555,
+      "n": 34
+    },
+    "STR": {
+      "team": "Aston Martin",
+      "ratio": 38.49310344827586,
+      "n": 51
+    },
+    "ALB": {
+      "team": "Williams",
+      "ratio": 38.778169014084504,
+      "n": 55
+    },
+    "BOT": {
+      "team": "Cadillac",
+      "ratio": 39.47586206896552,
+      "n": 77
+    },
+    "PER": {
+      "team": "Cadillac",
+      "ratio": 39.569901198033506,
+      "n": 54
+    },
+    "SAI": {
+      "team": "Williams",
+      "ratio": 38.82332155477032,
+      "n": 59
+    }
+  },
+  "spread_perc": 14.034402497298126,
+  "r_max": 41.822137082775384,
+  "r_min": 36.675017509532964,
+  "rank_coer": [
+    "PIA",
+    "NOR",
+    "TSU",
+    "LIN",
+    "VER",
+    "LAW",
+    "BEA",
+    "OCO",
+    "LEC",
+    "BOT",
+    "PER",
+    "HAM",
+    "STR",
+    "ALB",
+    "SAI",
+    "ANT",
+    "RUS",
+    "GAS",
+    "COL"
+  ],
+  "corto_in_coer": 36.44039735099338,
+  "rank_corto_coer": 2,
+  "senza_coer": [
+    "ALO",
+    "BOR",
+    "HUL"
+  ],
+  "banda_stretta_corto": null,
+  "vmax": {
+    "ANT": 322.0,
+    "NOR": 318.5,
+    "RUS": 324.0,
+    "HAM": 319.0,
+    "LEC": 319.0,
+    "PIA": 320.5,
+    "HUL": 313.5,
+    "GAS": 320.5,
+    "BOR": 315.0,
+    "LIN": 316.5,
+    "VER": 316.0,
+    "ALO": 294.0,
+    "COL": 327.0,
+    "LAW": 315.0,
+    "BEA": 316.0,
+    "OCO": 315.5,
+    "TSU": 315.0,
+    "STR": 311.5,
+    "ALB": 322.0,
+    "BOT": 313.0,
+    "PER": 315.5,
+    "SAI": 322.0
+  },
+  "vmax_top": [
+    "COL",
+    327.0
+  ],
+  "vmax_bot": [
+    "ALO",
+    294.0
+  ],
+  "vmed_grid": 316.25,
+  "v_spread": 33.0,
+  "scia_top": {
+    "sig": "ANT",
+    "picco": 328.0,
+    "med": 322.0,
+    "scia": 6.0
+  },
+  "spearman": 0.028022337052276473,
+  "n_corr": 21,
+  "spearman_p": 0.9040281596991777,
+  "spearman_regge": false,
+  "gas_grid": 50.139672328684284,
+  "gas_hi": [
+    "STR",
+    54.1544477028348
+  ],
+  "gas_lo": [
+    "COL",
+    43.43065693430657
+  ],
+  "gas_spread": 10.723790768528232,
+  "drs": [
+    0
+  ],
+  "drs_degenere": true,
+  "gear_hi": {
+    "7": 1933,
+    "8": 1745
+  }
+}
