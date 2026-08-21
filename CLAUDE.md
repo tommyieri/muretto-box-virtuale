@@ -18,7 +18,7 @@ Prima di chiudere ogni sessione o proporre merge, eseguire SEMPRE il comando uni
 ```bash
 python3 sentinella.py
 ```
-La sentinella esegue 13 verifiche:
+La sentinella esegue 14 verifiche:
 1. Golden Motore JS (`test_b.mjs`, 443/443 casi, diff < 1e-9)
 2. Golden Modulo Pit (`demo/test_pit.mjs`, 33/33 casi)
 3. Hook Degrado & Banda-Zero (`test_degrado_hook.mjs`)
@@ -32,6 +32,19 @@ La sentinella esegue 13 verifiche:
 11. Sentinella Feedback (`demo/test_feedback.mjs`) — il **contratto**, la **condotta** e le **promesse** della buca delle segnalazioni
 12. Sentinella Formazione (`test_formazioni.py`) — **chi guida che cosa, round per round**: l'invariante forte è che la formazione risolta al round di una gara già pubblicata coincida con le squadre scritte dentro i suoi file (1.172 attribuzioni su 55 sessioni)
 13. Sentinella Lingua (`demo/test_lingua.mjs`) — le **due colonne** del dizionario, ogni chiave usata che esiste e ogni chiave dichiarata che è usata, l'inglese delle pagine uguale a quello del dizionario, il selettore montato dal guscio, e **nessun italiano di contrabbando** nei sorgenti vivi
+14. Sentinella Dipendenze (`test_dipendenze.py`) — le librerie che il **codice vivo** importa contro quelle che il repo **dichiara**, nei tre ambienti (`requirements-auto.txt`, `live/collector/requirements.txt`, `requirements-banco.txt`), più l'invariante che `fastf1`/`numpy`/`pandas`/`scipy` non divergano fra le macchine
+
+> **Il buco che la verifica 14 chiude.** Le dipendenze Python vivevano **a mano su ogni
+> macchina**, e nessun file le dichiarava: il 10/08/2026 la redazione ha traslocato sul VPS
+> e il codice è passato, le librerie no. `pdfplumber` mancava in `.venv-auto`, l'import è
+> pigro *apposta* («se manca, stato, non crash»), e il cancello identità FIA si è chiuso
+> **dicendolo, sei volte di fila**: l'anteprima del GP d'Olanda non è uscita col documento
+> già in cache dalle 08:15. Non era un guasto muto — era un guasto **senza niente contro
+> cui confrontarsi**. La verifica 14 calcola i moduli raggiungibili dai *lanciatori* (la
+> crontab del VPS, l'unit del collettore, la crontab del Mac, il workflow della CI) e
+> pretende che import e dichiarazione siano la stessa lista. **Non guarda una macchina, e
+> non potrebbe**: il repo è identico sul Mac e sul VPS, a essere diverso è l'ambiente —
+> quella metà la fanno i wrapper di cron con `--ambiente <nome>`, col loro python.
 
 > **Il buco che la verifica 13 chiude.** Un testo non è un numero e sbaglia in un modo
 > tutto suo: in silenzio. Una chiave mai messa nel dizionario non fa cadere niente —
@@ -98,6 +111,11 @@ ingresso nuovo è ripagare un conto già pagato.
 - **`demo/data/teams.json` NON si modifica a mano**: dal 19/08/2026 è un derivato di `gen_formazioni.py` (base = `team_demo` degli standings f1db, deroghe dichiarate in `data/formazione_deroghe_2026.json`). Un cambio di sedile si scrive **nelle deroghe, con il round**, mai nella mappa piatta: la mappa non ha l'asse del tempo e correggerla riscrive anche le gare già corse al primo `gen_giri.py --forza`.
 - **`live/` non si riattiva**: provato in campione e fuori — il feed parcheggia le auto su (−7447, −1830), che non è (0,0,0) e passa il filtro.
 - **Nell'HTML non si scrive italiano**: dal 19/08/2026 la sorgente del sito è l'inglese. Un testo italiano scritto a mano in una pagina non lo tradurrà mai nessuno, perché nessuno sa che c'è — e la verifica 13 lo trova, con la frase in chiaro. Vale anche per i nomi delle variabili: **`t` è la funzione che traduce**, e una locale con quel nome la spegne in silenzio.
+- **Una dipendenza nuova non si installa e basta.** Installarla su una macchina la fa
+  funzionare *li'*: e' esattamente il gesto che il 10/08 ha lasciato `pdfplumber` sul Mac e
+  non sul VPS. Si installa DOVE serve, poi si rilegge il `pip freeze` di quella macchina
+  dentro il suo `requirements-*.txt` — mai scrivendo la riga a mano, e mai aggiornando le
+  altre versioni per far passare un controllo. La verifica 14 esce 1 su entrambe le mancanze.
 - **Non ricreare script scratch nella root** (`diag_*`, `patch_*`, `apply_patch.py`, `.bak2`): usa test formali o moduli dedicati.
 
 ---
@@ -383,12 +401,62 @@ ingresso nuovo è ripagare un conto già pagato.
    - **Il trasloco del 10/08 non aveva portato le dipendenze**: `pdfplumber` mancava in
      `.venv-auto` e il cancello identità FIA si chiudeva, dichiarandolo, a ogni giro. Il PDF
      era in cache dalle 08:15: a mancare era solo chi lo aprisse. Installato il 21/08 (0.11.10,
-     la stessa versione del Mac). **Non esiste un file di requirements**: il prossimo `import`
-     nuovo si scoprirà allo stesso modo, a weekend cominciato. Il verbale sta in
+     la stessa versione del Mac). La causa — nessun file di requirements in tutto il repo —
+     è **chiusa lo stesso giorno**: vedi il Cantiere 11. Il verbale sta in
      [`scheduling/README.md`](scheduling/README.md).
    - **Il Mac è indietro di 90 commit** su un branch di lavoro con l'albero sporco: `auto_tele`
      gira, ma `s46` è ROSSA da 42 ore e il fast-forward non passerà da solo. Riguarda la
      telemetria per sessione, non gare né articoli — quelli stanno sul VPS.
+
+11. **Cantiere 11 (Le dipendenze si dichiarano, e qualcuno le confronta)** — *21/08/2026, dal conto del trasloco.*
+   - **Il guasto non era muto: era senza confronto.** `fia_cp.py` importa `pdfplumber` dentro
+     `_apri_pdf()` apposta, e quando è mancato ha scritto «CANCELLO IDENTITÀ CHIUSO —
+     dipendenza assente: pdfplumber. NON pubblico» sei volte di fila. Ha fatto tutto giusto.
+     A mancare era **la lista contro cui accorgersene prima**: le dipendenze vivevano
+     installate a mano su ogni macchina, e un `import` nuovo si scopriva a weekend cominciato.
+   - **Tre ambienti, perché tre venv esistono davvero**: `requirements-auto.txt` (52 righe,
+     `.venv-auto` del VPS — gare e redazione), `live/collector/requirements.txt` (10,
+     `.venv-live` — il collettore; prima portava vincoli larghi tipo `websockets>=12`, cioè
+     un `deploy.sh` rilanciato fra sei mesi avrebbe costruito un collettore diverso da quello
+     che registra adesso), `requirements-banco.txt` (17, il python3 di sistema del Mac e della
+     CI). Le versioni sono quelle **in produzione oggi**, lette con `pip freeze` sulle
+     macchine: 52/52, 10/10 e 17/17 verdi al primo giro.
+   - **L'elenco dei moduli vivi si CALCOLA, e le radici pure.** Un elenco a mano invecchia al
+     primo generatore nuovo e allora dichiara una copertura che non ha — è la ragione per cui
+     `demo/test_lingua.mjs` calcola la raggiungibilità invece di scriverla. Qui si parte dai
+     **lanciatori** (`scheduling/vps.cron`, `live/collector/muretto-live.service`,
+     `scheduling/auto_tele.cron`, `.github/workflows/banco.yml`, `sentinella.py`) e si cammina
+     sul grafo. Il grafo segue anche gli **script invocati per nome**: in questo repo
+     `auto_gara.py` non importa i generatori, li lancia — un grafo di soli `import` vedrebbe
+     due file su cento.
+   - **Due trappole del grafo, tutt'e due costate una rossa finta.** Le *docstring* sono nodi
+     veri e qui raccontano la pipeline per nome (`ast` butta i commenti, non loro); e una
+     frase non è un percorso — `print("... python3 live/estrai_riferimenti.py")` finisce in
+     `.py` come un argomento vero. Un argomento di sottoprocesso **non ha spazi dentro**: è
+     l'unico segno che separa un'invocazione da un consiglio a chi legge il log.
+   - **Il controllo sulla macchina è l'altra metà, e non è ridondante.** `--ambiente <nome>`
+     confronta il file col python che sta per girare; lo lanciano `auto_run.sh` e
+     `auto_articoli_run.sh` col **loro** `$PY`, subito dopo s46, e come s46 **scrivono senza
+     fermare**. È l'unico dei due che poteva vedere il 10 agosto: il repo era identico sulle
+     due macchine. Usa `importlib.metadata`, non un import vero: importare fastf1 a ogni giro
+     di cron costerebbe secondi e non risponderebbe a una domanda in più.
+   - **L'invariante sorvegliato è quello dichiarato**: `fastf1`, `numpy`, `pandas`, `scipy`
+     devono portare la **stessa versione in ogni file** — è su di loro che riposa la
+     riproducibilità bit-a-bit del pace fra Mac e VPS (`scheduling/README.md`). Il resto può
+     divergere e diverge: `anthropic` è 0.121.0 sul VPS e 0.120.0 sul Mac, **scritto** in
+     `requirements-banco.txt`, non nascosto.
+   - **Una trappola vera trovata per strada.** `auto_run.sh` sceglie il python **per
+     percorso** (`.venv-auto` → `.venv` → `python3`): sul Mac non c'è `.venv-auto` ma c'è
+     `.venv`, che porta **pandas 3.0.3 e numpy 2.5.0**. Con il launchd attivo, il Mac
+     pubblicherebbe una gara con un pandas diverso da quello del VPS. Oggi non è attivo
+     (`launchctl list` non porta nessun `com.muretto.*`, verificato il 21/08) e da oggi il
+     controllo lo scrive nel log invece di lasciarlo scoprire ai numeri. La selezione **non
+     è stata cambiata**: è produzione, e la decisione è del PO.
+   - **Provata al contrario, sei volte**: un `import` nuovo non dichiarato → rossa col nome
+     del file; una diretta cancellata dal file → rossa; una diretta che nessuno importa →
+     rossa; `numpy` a due versioni in due file → rossa; un lanciatore rinominato → rossa
+     (un ambiente vuoto passerebbe tutto per assenza di domande); una riga non pinnata →
+     rossa con numero di riga.
 
 ---
 

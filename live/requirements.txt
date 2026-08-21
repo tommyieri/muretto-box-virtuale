@@ -1,5 +1,15 @@
 # Dipendenze del modulo live/ — installate nella .venv del repo.
 #
+# NON E' UNO DEI TRE AMBIENTI DICHIARATI, e va detto perche' dal 21/08/2026 ce ne sono
+# tre con lo stesso suffisso e diventerebbe una quarta verita' per sbaglio. Questo file
+# e' una PROCEDURA, non un ambiente: descrive come mettere fastf1 dentro la `.venv` del
+# Mac senza retrocedere il pandas del kernel. Gli ambienti sorvegliati da
+# `test_dipendenze.py` (verifica 14) sono requirements-auto.txt (.venv-auto del VPS),
+# live/collector/requirements.txt (.venv-live del VPS) e requirements-banco.txt (il
+# python3 di sistema). Quella `.venv` non e' nessuno dei tre: nessuna catena automatica
+# la usa — e se `scheduling/auto_run.sh` girasse sul Mac la sceglierebbe per errore, che
+# e' scritto in scheduling/README.md ed e' il motivo per cui questo capoverso esiste.
+#
 # ATTENZIONE: fastf1 dichiara pandas<3, ma la .venv del kernel usa
 # pandas 3.0.3 (congelato). Per NON retrocedere pandas, fastf1 va
 # installato senza dipendenze e le dipendenze runtime a mano:

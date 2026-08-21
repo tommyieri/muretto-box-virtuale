@@ -156,6 +156,46 @@ trap 'rmdir "$LOCK" 2>/dev/null' EXIT
 } >> "$REPO/data/auto_gara.log" 2>&1
 
 
+# LE LIBRERIE DICHIARATE CI SONO DAVVERO SU QUESTA MACCHINA? — la verifica che il 10/08
+# non esisteva, e per la quale non esisteva nemmeno un file da confrontare.
+#
+# Quel giorno la redazione e' passata dal Mac a questa macchina. E' passato il CODICE, non
+# le librerie che qualcuno mesi prima aveva installato a mano di la'. `pdfplumber` mancava
+# in .venv-auto e l'import e' pigro APPOSTA («se manca, stato, non crash»): il cancello
+# identita' FIA si e' chiuso sei volte di fila dicendolo, e il weekend d'Olanda e'
+# cominciato con un articolo mancato invece che con un errore d'installazione.
+#
+# NESSUN CONTROLLO DENTRO IL REPO LO POTEVA VEDERE, ed e' il punto: il repo e' identico
+# sulle due macchine: e' l'ambiente a essere diverso. La sentinella (verifica 14) sorveglia
+# che il file dichiari cio' che il codice importa; solo QUI si puo' sapere se quel file
+# descrive anche la macchina che sta girando. Percio' gira col $PY scelto sopra, che e'
+# l'interprete vero della catena, non con un python qualsiasi.
+#
+# NON FERMA NIENTE, come s46 qui sopra. Una libreria mancante non deve trasformare un giro
+# di pubblicazione in un giro perso: quasi tutta la catena gira lo stesso, e il pezzo che
+# non gira lo dichiara gia' da se'. Qui si SCRIVE; chi decide e' chi legge il log, o la CI.
+{
+  echo "---- $(date '+%F %T') dipendenze dichiarate (requirements-auto.txt)"
+  DIP="$REPO/test_dipendenze.py"
+  if [ ! -f "$DIP" ]; then
+    echo "     !! test_dipendenze.py ASSENTE da questo checkout: o e' stato tolto, o il"
+    echo "        codice qui e' piu' vecchio della verifica stessa. Nessuno sta guardando."
+  else
+    # L'ESITO SI PRENDE PRIMA DI TUBARE. `cmd | sed` rende lo stato di SED, che riesce
+    # sempre: scritto cosi' il ramo rosso qui sotto non sarebbe scattato mai, e la guardia
+    # sarebbe stata muta esattamente nel caso per cui e' nata.
+    _dipout="$("$PY" "$DIP" --ambiente auto 2>&1)"; _dipesito=$?
+    printf '%s\n' "$_dipout" | sed 's/^/     /'
+    if [ "$_dipesito" -ne 0 ]; then
+      echo "     !! AMBIENTE DIVERSO DA CIO' CHE IL REPO DICHIARA (dettaglio qui sopra)."
+      echo "        Si prosegue lo stesso, ma da qui in poi un canale puo' chiudersi da solo"
+      echo "        senza che il guasto assomigli a un guasto. Si ripara installando, non"
+      echo "        cambiando le versioni: le quattro numeriche tengono il pace riproducibile."
+    fi
+    unset _dipout _dipesito
+  fi
+} >> "$REPO/data/auto_gara.log" 2>&1
+
 echo "==== $(date '+%F %T') avvio auto_gara --push (python: $PY) ====" >> "$REPO/data/auto_gara.log"
 "$PY" auto_gara.py --push >> "$REPO/data/auto_gara.log" 2>&1
 ESITO=$?
