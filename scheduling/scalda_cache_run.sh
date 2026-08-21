@@ -74,6 +74,32 @@ trap 'rmdir "$LOCK" 2>/dev/null' EXIT
   fi
 } >> "$LOG" 2>&1
 
+# LA SORVEGLIANZA GIRA DOVE STA IL RISCHIO — s46, subito dopo l'aggiornamento, come
+# negli altri wrapper. Il `git fetch` e' appena avvenuto: e' l'unico momento in cui la
+# meta' (B) di s46 puo' confrontare questo checkout con un origin/main fresco senza
+# andare in rete per conto suo.
+#
+# NON FERMA NIENTE, di proposito: questo wrapper prosegue anche col fast-forward
+# fallito («meglio vecchio che fermo»), e sarebbe incoerente che la sentinella fosse
+# piu' severa del guasto di cui e' solo il testimone. Qui s46 SCRIVE, non decide.
+#
+# I DUE MODI IN CUI PUO' TACERE sono rossi, non assenze — una guardia muta e' peggio di
+# nessuna guardia, perche' si crede di essere sorvegliati.
+{
+  echo "---- $(date '+%F %T') freschezza del codice (s46)"
+  S46="$PONTE/simulatore/banco/sentinelle/s46_codice_fresco.mjs"
+  if [ ! -f "$S46" ]; then
+    echo "     !! s46 ASSENTE da questo checkout: o e' stata tolta, o il codice qui e' piu'"
+    echo "        vecchio della sentinella stessa. In entrambi i casi nessuno sta guardando."
+  elif ! command -v node >/dev/null 2>&1; then
+    echo "     !! s46 NON ESEGUIBILE: node non e' nel PATH di questo cron. La sorveglianza tace."
+  elif node "$S46"; then
+    echo "     codice fresco"
+  else
+    echo "     !! s46 ROSSA (dettaglio qui sopra). Si prosegue lo stesso, ma adesso e' scritto."
+  fi
+} >> "$LOG" 2>&1
+
 # IL PYTHON SI SCEGLIE PROVANDOLO, non indovinandolo dal percorso (stessa regola di
 # auto_articoli_run.sh). Qui basta fastf1: anthropic non serve, questo non scrive prosa.
 PY=""
