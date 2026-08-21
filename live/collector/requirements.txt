@@ -1,9 +1,34 @@
-# venv DEDICATA del collettore sul server (~/muretto/.venv-live).
-# Dipendenze minime dichiarate (FASE2_PREREG); il resto e' stdlib.
-# NIENTE fastf1 a runtime (vedi README, sezione architettura): il client
-# SignalR e' ricostruito su signalrcore rispecchiando fastf1 3.8.3.
-websockets>=12
+# requirements.txt — la venv DEDICATA del collettore sul server (`~/muretto/.venv-live`).
+#
+# La installa `live/collector/deploy.sh`; la esegue l'unit `muretto-live.service`.
+# Verifica su quella macchina:
+#
+#     ~/muretto/.venv-live/bin/python ~/muretto/test_dipendenze.py --ambiente live
+#
+# NIENTE fastf1 A RUNTIME (vedi README, sezione architettura): il client SignalR e'
+# ricostruito su `signalrcore` rispecchiando fastf1 3.8.3. Il resto e' stdlib.
+#
+# PINNATO DAL 21/08/2026, e non e' pignoleria. Fino a oggi qui c'erano vincoli larghi
+# (`websockets>=12`, `requests>=2.30`, `platformdirs` nudo): un `deploy.sh` rilanciato fra
+# sei mesi avrebbe costruito un collettore diverso da quello che sta registrando adesso,
+# e la differenza si sarebbe vista solo in diretta. Le versioni sono quelle installate
+# oggi sul VPS, lette con `pip freeze`.
+#
+# Le marche `@dirette` / `@transitive` le legge `test_dipendenze.py` (verifica 14 della
+# sentinella): fra le dirette deve esserci esattamente cio' che `live/collector/` importa
+# per nome. Vedi requirements-auto.txt per il perche' di tutto questo.
+
+# @dirette — le importa il codice vivo, per nome
+paho-mqtt==2.1.0
+platformdirs==4.10.1
+requests==2.34.2
 signalrcore==1.0.2
-requests>=2.30
-platformdirs
-paho-mqtt>=2
+websockets==16.1.1
+
+# @transitive — nessun nostro import le nomina: le tira dentro qualcuna delle dirette.
+# Pinnate perche' un ambiente si riproduce intero, non a meta'.
+certifi==2026.6.17
+charset-normalizer==3.4.9
+idna==3.18
+msgpack==1.1.2
+urllib3==2.7.0

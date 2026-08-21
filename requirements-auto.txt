@@ -1,0 +1,86 @@
+# requirements-auto.txt — l'ambiente `.venv-auto` del VPS: le GARE e la REDAZIONE.
+#
+# Lo installa e lo verifica chi pubblica: `scheduling/auto_run.sh` (auto_gara, ogni 30
+# minuti) e `scheduling/auto_articoli_run.sh` (redazione, a :15 e :45).
+#
+#     ssh muretto@167.233.236.186
+#     ~/muretto/.venv-auto/bin/pip install -r ~/muretto/requirements-auto.txt
+#     ~/muretto/.venv-auto/bin/python ~/muretto/test_dipendenze.py --ambiente auto
+#
+# PERCHE' ESISTE. Il 10/08/2026 la redazione e' passata dal Mac al VPS: e' passato il
+# codice, non le librerie installate a mano sul Mac mesi prima. Non c'era un file di
+# requirements, quindi non c'era niente da confrontare — e il conto e' arrivato al primo
+# weekend che lo esercitava, con `pdfplumber` assente qui e presente li': il cancello
+# identita' FIA si e' chiuso sei volte di fila, dicendolo, e l'anteprima del GP d'Olanda
+# non e' uscita col PDF gia' in cache. Il verbale sta in scheduling/README.md.
+#
+# LE VERSIONI SONO QUELLE IN PRODUZIONE OGGI (21/08/2026), lette con `pip freeze` sulla
+# macchina, non scelte. NON si aggiornano per far passare un controllo: `scheduling/
+# README.md` dichiara che il pace e' bit-riproducibile fra Mac e VPS (`test_b.py` da
+# `max diff 4.26e-12` su tutt'e due), e quell'affermazione riposa su fastf1, numpy,
+# pandas e scipy. Un aggiornamento e' una decisione, e si prende rimisurando.
+#
+# LE DUE SEZIONI NON SONO UN ABBELLIMENTO: le marche `@dirette` e `@transitive` le legge
+# `test_dipendenze.py` (verifica 14 della sentinella). Fra le dirette deve esserci
+# ESATTAMENTE cio' che il codice vivo importa per nome — una in meno e' un import che
+# nessuno ha dichiarato, una in piu' e' una riga che nessuno usa piu'. Le transitive
+# nessuno le nomina: sono pinnate perche' un ambiente si riproduce intero o non si
+# riproduce. Una dipendenza nuova NON si aggiunge a mano qui: si aggiunge dove serve, e
+# poi si rilegge il freeze della macchina su cui e' stata installata.
+
+# @dirette — le importa il codice vivo, per nome
+anthropic==0.121.0
+fastf1==3.8.3
+numpy==2.5.1
+pandas==2.3.3
+pdfplumber==0.11.10
+pillow==12.3.0
+scipy==1.18.0
+
+# @transitive — nessun nostro import le nomina: le tira dentro qualcuna delle dirette.
+# Pinnate perche' un ambiente si riproduce intero, non a meta'.
+annotated-types==0.7.0
+anyio==4.14.2
+attrs==26.1.0
+cattrs==26.1.0
+certifi==2026.6.17
+cffi==2.1.0
+charset-normalizer==3.4.9
+contourpy==1.3.3
+cryptography==49.0.0
+cycler==0.12.1
+distro==1.9.0
+docstring_parser==0.18.0
+fonttools==4.63.0
+h11==0.16.0
+httpcore==1.0.9
+httpx==0.28.1
+idna==3.18
+jiter==0.16.0
+kiwisolver==1.5.0
+matplotlib==3.11.1
+msgpack==1.1.2
+packaging==26.2
+pdfminer.six==20260107
+platformdirs==4.10.1
+pycparser==3.0
+pydantic==2.13.4
+pydantic_core==2.46.4
+PyJWT==2.13.0
+pyparsing==3.3.2
+pypdfium2==5.13.0
+python-dateutil==2.9.0.post0
+pytz==2026.2
+RapidFuzz==3.14.5
+requests-cache==1.3.3
+requests==2.34.2
+signalrcore==1.0.2
+six==1.17.0
+sniffio==1.3.1
+timple==0.1.8
+typing-inspection==0.4.2
+typing_extensions==4.16.0
+tzdata==2026.3
+url-normalize==3.0.0
+urllib3==2.7.0
+websockets==16.1.1

@@ -120,8 +120,9 @@ uscire il VPS dal blocco, o spostare stabilmente chi scarica. Decide il PO.
 ### Le dipendenze NON si sono trasferite col trasloco — 21/08/2026
 
 Il 10/08 la redazione e' passata dal Mac al VPS. E' passato il *codice*: non le
-librerie che qualcuno, mesi prima, aveva installato a mano sul Mac. **Non esiste un
-file di requirements in questo repo**, quindi non c'era niente da confrontare e
+librerie che qualcuno, mesi prima, aveva installato a mano sul Mac. **Non esisteva un
+file di requirements in questo repo** — non ne e' esistito uno fino al 21/08, v. la
+chiusura in fondo a questa sezione — quindi non c'era niente da confrontare e
 nessuno se n'e' accorto.
 
 Il conto e' arrivato al primo weekend che lo esercitava. `ai_lab/redazione/fia_cp.py`
@@ -136,10 +137,51 @@ aprisse. Installato `pdfplumber` 0.11.10 in `.venv-auto` il 21/08/2026 — la st
 versione del Mac, perche' due macchine che stampano lo stesso articolo devono leggere
 il PDF con lo stesso lettore.
 
-**Cosa resta aperto:** finche' le dipendenze vivono a mano su ogni macchina, il
-prossimo `import` nuovo si scoprira' allo stesso modo — a weekend cominciato. Un
-`requirements` dichiarato e' l'unica cosa che lo trasformerebbe in un errore di
-installazione invece che in un articolo mancato.
+**CHIUSO IL 21/08/2026, e non con un file solo.** Un `requirements` dichiarato
+trasforma il prossimo import nuovo in un errore d'installazione invece che in un
+articolo mancato — ma solo se qualcuno lo confronta con qualcosa. I guasti sono
+due e stanno in posti diversi, quindi i controlli sono due:
+
+  - **nel repo** — `test_dipendenze.py`, verifica **14** della sentinella. Cammina
+    sul grafo dei moduli Python raggiungibili dai LANCIATORI (questa crontab,
+    l'unit del collettore, la crontab del Mac, il workflow della CI) e pretende
+    che ogni libreria importata dal codice vivo abbia una riga dichiarata, e che
+    ogni riga dichiarata sia importata da qualcuno. Prende l'`import pdfplumber`
+    il giorno che si scrive. L'elenco dei moduli vivi si **calcola** — come in
+    `demo/test_lingua.mjs` — perche' un elenco a mano invecchia al primo
+    generatore nuovo e allora dichiara una copertura che non ha.
+
+  - **sulla macchina** — `test_dipendenze.py --ambiente <nome>`, lanciato da
+    `auto_run.sh` e `auto_articoli_run.sh` col **loro** `$PY`, subito dopo s46.
+    Confronta il file col python che sta per girare. E' l'unico dei due che
+    poteva vedere il 10 agosto: il repo era identico sulle due macchine, a essere
+    diverso era l'ambiente. Non ferma niente — scrive, come s46.
+
+I tre ambienti sono dichiarati in `test_dipendenze.py::AMBIENTI` e pinnati alle
+versioni **in produzione oggi**, lette con `pip freeze` sulle macchine:
+`requirements-auto.txt` (52 righe, `.venv-auto`), `live/collector/requirements.txt`
+(10, `.venv-live`, prima con vincoli larghi tipo `websockets>=12`),
+`requirements-banco.txt` (17, il python3 di sistema del Mac e della CI). Verdi al
+primo giro su tutt'e tre: `52/52`, `10/10`, `17/17`.
+
+**Le versioni non si aggiornano per far passare un controllo.** Le quattro
+numeriche — `fastf1`, `numpy`, `pandas`, `scipy` — sono quelle su cui riposa
+l'affermazione di riproducibilita' bit-a-bit qui sopra, e la verifica 14 esce 1 se
+una di loro porta due versioni diverse in due file. Il resto puo' divergere e
+diverge: `anthropic` e' 0.121.0 sul VPS e 0.120.0 sul Mac, ed e' scritto in
+`requirements-banco.txt` invece che nascosto — chi pubblica gli articoli e' il VPS.
+
+**Quello che il conto ha fatto vedere per strada.** `auto_run.sh` sceglie il python
+**per percorso** (`.venv-auto` → `.venv` → `python3`). Sul Mac non c'e' `.venv-auto`
+ma c'e' `.venv`, che porta **pandas 3.0.3 e numpy 2.5.0** (la venv del kernel,
+congelata a suo tempo per `live/`, v. `live/requirements.txt`): se il launchd del Mac
+tornasse attivo, quella macchina pubblicherebbe una gara con un pandas diverso da
+quello del VPS. Oggi non e' attivo — `launchctl list` non porta nessun
+`com.muretto.*`, verificato il 21/08 — e da oggi il controllo di cui sopra lo
+scrive nel log invece di lasciarlo scoprire ai numeri. `auto_tele_run.sh` sceglie
+allo stesso modo, ma la sua catena (`auto_tele.py` → `gen_tele.py` → `decoder.py`)
+non importa **niente** di terze parti: li' il controllo risponderebbe a una domanda
+che nessuno fa, e infatti non c'e'.
 
 ## C) GitHub Actions (cron) — sempre acceso, zero macchine tue
 Gira sui runner GitHub, push col token integrato. Nessun Mac/VPS da tenere su.

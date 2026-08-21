@@ -381,6 +381,33 @@ def main():
         expect_in_output="sentinella lingua: tutto verde"
     )
 
+    # 14. Sentinella Dipendenze: le librerie che il codice VIVO importa, contro quelle
+    # che il repo DICHIARA.
+    #
+    # Nasce il 21/08/2026 da un guasto gia' pagato. Il 10/08 la redazione e' passata dal
+    # Mac al VPS: e' passato il codice, non le librerie che qualcuno mesi prima aveva
+    # installato a mano di la'. `ai_lab/redazione/fia_cp.py` apre il PDF FIA con
+    # `pdfplumber`; in .venv-auto non c'era, e l'import e' pigro APPOSTA — «se manca,
+    # stato, non crash». Il canale non e' esploso: si e' chiuso, dicendolo, sei volte di
+    # fila, e l'anteprima del GP d'Olanda non e' uscita col documento gia' in cache dalle
+    # 08:15. NON ESISTEVA UN FILE DI REQUIREMENTS in questo repo, quindi non c'era niente
+    # da confrontare e nessuno poteva accorgersene prima che il weekend cominciasse.
+    #
+    # Questa verifica guarda il repo: che ogni libreria importata dal codice raggiungibile
+    # dai LANCIATORI (la crontab del VPS, l'unit del collettore, la crontab del Mac, il
+    # workflow della CI) abbia una riga in un file dichiarato, e viceversa che nessuna
+    # riga sopravviva senza che nessuno la importi. L'elenco dei moduli vivi si CALCOLA,
+    # come in demo/test_lingua.mjs: un elenco a mano invecchia al primo generatore nuovo.
+    #
+    # NON GUARDA UNA MACCHINA, e non potrebbe: il repo e' identico sul Mac e sul VPS, e'
+    # l'ambiente a essere diverso. Quella meta' la fanno i wrapper di cron, che lanciano
+    # `test_dipendenze.py --ambiente <nome>` col LORO python e scrivono nel log.
+    runner.run_check(
+        name="Sentinella Dipendenze dichiarate (test_dipendenze.py)",
+        cmd=["python3", "test_dipendenze.py"],
+        expect_in_output="sentinella dipendenze: tutto verde"
+    )
+
     exit_code = runner.summary()
     sys.exit(exit_code)
 
