@@ -38,7 +38,7 @@
     <xhtml:link rel="alternate" hreflang="en" href="https://murettobox.com/analisi.html"/>
     <xhtml:link rel="alternate" hreflang="it" href="https://murettobox.com/analisi.html?lang=it"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://murettobox.com/analisi.html"/>
-    <lastmod>2026-08-21</lastmod>
+    <lastmod>2026-08-22</lastmod>
     <priority>0.8</priority>
   </url>
   <url>
@@ -80,6 +80,12 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://murettobox.com/feedback.html"/>
     <lastmod>2026-08-21</lastmod>
     <priority>0.4</priority>
+  </url>
+  <url>
+    <loc>https://murettobox.com/articolo/sprint-passo-zandvoort-2026.html</loc>
+    <lastmod>2026-08-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
   </url>
   <url>
     <loc>https://murettobox.com/articolo/upgrade-preview-olanda-2026.html</loc>

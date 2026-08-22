@@ -1,0 +1,375 @@
+{
+  "id": "sprint-passo",
+  "anno": 2026,
+  "gara": "Olanda",
+  "circuito": "Zandvoort",
+  "round": 12,
+  "sessione": "Sprint",
+  "n_giri_sprint": 24,
+  "parametri": {
+    "soglia_aria_libera_s": 1.5,
+    "sequenza_minima_giri": 5,
+    "min_piloti": 8,
+    "min_team": 5,
+    "min_giri": 45
+  },
+  "mescola": "MEDIUM",
+  "calibrazione_del_cancello": [
+    {
+      "gara": "Miami",
+      "piloti": 12,
+      "team": 8,
+      "esce": true
+    },
+    {
+      "gara": "Gran Bretagna",
+      "piloti": 11,
+      "team": 8,
+      "esce": true
+    },
+    {
+      "gara": "Canada",
+      "piloti": 9,
+      "team": 6,
+      "esce": true
+    },
+    {
+      "gara": "Cina",
+      "piloti": 4,
+      "team": 4,
+      "esce": false
+    }
+  ],
+  "copertura": {
+    "piloti_in_misura": 13,
+    "piloti_in_sessione": 22,
+    "team_in_misura": 9,
+    "giri_in_misura": 184,
+    "giri_puliti_sessione": 456,
+    "giri_sulla_mescola_di_campo": 412,
+    "sequenza_piu_lunga_per_pilota": [
+      {
+        "sig": "RUS",
+        "team": "Mercedes",
+        "giri": 22,
+        "dentro": true
+      },
+      {
+        "sig": "GAS",
+        "team": "Alpine",
+        "giri": 22,
+        "dentro": true
+      },
+      {
+        "sig": "ALB",
+        "team": "Williams",
+        "giri": 21,
+        "dentro": true
+      },
+      {
+        "sig": "PIA",
+        "team": "McLaren",
+        "giri": 20,
+        "dentro": true
+      },
+      {
+        "sig": "OCO",
+        "team": "Haas F1 Team",
+        "giri": 20,
+        "dentro": true
+      },
+      {
+        "sig": "PER",
+        "team": "Cadillac",
+        "giri": 19,
+        "dentro": true
+      },
+      {
+        "sig": "COL",
+        "team": "Alpine",
+        "giri": 15,
+        "dentro": true
+      },
+      {
+        "sig": "BOT",
+        "team": "Cadillac",
+        "giri": 14,
+        "dentro": true
+      },
+      {
+        "sig": "VER",
+        "team": "Red Bull Racing",
+        "giri": 8,
+        "dentro": true
+      },
+      {
+        "sig": "NOR",
+        "team": "McLaren",
+        "giri": 6,
+        "dentro": true
+      },
+      {
+        "sig": "HAM",
+        "team": "Ferrari",
+        "giri": 6,
+        "dentro": true
+      },
+      {
+        "sig": "BOR",
+        "team": "Audi",
+        "giri": 6,
+        "dentro": true
+      },
+      {
+        "sig": "SAI",
+        "team": "Williams",
+        "giri": 5,
+        "dentro": true
+      },
+      {
+        "sig": "ALO",
+        "team": "Aston Martin",
+        "giri": 4,
+        "dentro": false
+      },
+      {
+        "sig": "LIN",
+        "team": "Racing Bulls",
+        "giri": 2,
+        "dentro": false
+      },
+      {
+        "sig": "LAW",
+        "team": "Red Bull Racing",
+        "giri": 1,
+        "dentro": false
+      },
+      {
+        "sig": "TSU",
+        "team": "Racing Bulls",
+        "giri": 1,
+        "dentro": false
+      },
+      {
+        "sig": "LEC",
+        "team": "Ferrari",
+        "giri": 0,
+        "dentro": false
+      },
+      {
+        "sig": "ANT",
+        "team": "Mercedes",
+        "giri": 0,
+        "dentro": false
+      },
+      {
+        "sig": "BEA",
+        "team": "Haas F1 Team",
+        "giri": 0,
+        "dentro": false
+      },
+      {
+        "sig": "STR",
+        "team": "Aston Martin",
+        "giri": 0,
+        "dentro": false
+      },
+      {
+        "sig": "HUL",
+        "team": "Audi",
+        "giri": 0,
+        "dentro": false
+      }
+    ]
+  },
+  "stima": {
+    "trend_s_per_giro": 0.12724807045319153,
+    "trend_se": 0.021939863058470115,
+    "sigma_residuo_s": 1.5595832480013412,
+    "dof": 170,
+    "giro_riferimento": 15.0,
+    "risoluzione_s": 1.1227866715600598
+  },
+  "classifica": [
+    {
+      "sig": "NOR",
+      "team": "McLaren",
+      "livello_s": 75.92005420872084,
+      "distacco_s": 0.0,
+      "se_s": 0.6524727397589246,
+      "giri": 6,
+      "da_giro": 19,
+      "a_giro": 24,
+      "eta_gomma_media": 25.5
+    },
+    {
+      "sig": "RUS",
+      "team": "Mercedes",
+      "livello_s": 76.11178119658888,
+      "distacco_s": 0.1917269878680372,
+      "se_s": 0.3341289291305296,
+      "giri": 22,
+      "da_giro": 3,
+      "a_giro": 24,
+      "eta_gomma_media": 17.5
+    },
+    {
+      "sig": "PIA",
+      "team": "McLaren",
+      "livello_s": 76.37402403522655,
+      "distacco_s": 0.4539698265057126,
+      "se_s": 0.34890591105637164,
+      "giri": 20,
+      "da_giro": 5,
+      "a_giro": 24,
+      "eta_gomma_media": 18.5
+    },
+    {
+      "sig": "HAM",
+      "team": "Ferrari",
+      "livello_s": 76.53444965037268,
+      "distacco_s": 0.6143954416518369,
+      "se_s": 0.6443064559089721,
+      "giri": 6,
+      "da_giro": 8,
+      "a_giro": 13,
+      "eta_gomma_media": 17.5
+    },
+    {
+      "sig": "VER",
+      "team": "Red Bull Racing",
+      "livello_s": 76.8718585988521,
+      "distacco_s": 0.9518043901312581,
+      "se_s": 0.5820786668332004,
+      "giri": 8,
+      "da_giro": 3,
+      "a_giro": 10,
+      "eta_gomma_media": 10.5
+    },
+    {
+      "sig": "BOR",
+      "team": "Audi",
+      "livello_s": 77.50938754205421,
+      "distacco_s": 1.5893333333333715,
+      "se_s": 0.6524727397589214,
+      "giri": 6,
+      "da_giro": 19,
+      "a_giro": 24,
+      "eta_gomma_media": 27.5
+    },
+    {
+      "sig": "GAS",
+      "team": "Alpine",
+      "livello_s": 77.72296301477067,
+      "distacco_s": 1.8029088060498282,
+      "se_s": 0.33412892913052955,
+      "giri": 22,
+      "da_giro": 3,
+      "a_giro": 24,
+      "eta_gomma_media": 13.5
+    },
+    {
+      "sig": "COL",
+      "team": "Alpine",
+      "livello_s": 78.014637192427,
+      "distacco_s": 2.094582983706161,
+      "se_s": 0.4050663618806078,
+      "giri": 15,
+      "da_giro": 10,
+      "a_giro": 24,
+      "eta_gomma_media": 20.0
+    },
+    {
+      "sig": "OCO",
+      "team": "Haas F1 Team",
+      "livello_s": 78.56077403522653,
+      "distacco_s": 2.6407198265056877,
+      "se_s": 0.34890591105637164,
+      "giri": 20,
+      "da_giro": 5,
+      "a_giro": 24,
+      "eta_gomma_media": 20.5
+    },
+    {
+      "sig": "ALB",
+      "team": "Williams",
+      "livello_s": 78.88534330854841,
+      "distacco_s": 2.9652890998275723,
+      "se_s": 0.3410354273496038,
+      "giri": 21,
+      "da_giro": 4,
+      "a_giro": 24,
+      "eta_gomma_media": 19.0
+    },
+    {
+      "sig": "BOT",
+      "team": "Cadillac",
+      "livello_s": 79.19762789432018,
+      "distacco_s": 3.277573685599336,
+      "se_s": 0.41811333661406735,
+      "giri": 14,
+      "da_giro": 10,
+      "a_giro": 23,
+      "eta_gomma_media": 16.5
+    },
+    {
+      "sig": "SAI",
+      "team": "Williams",
+      "livello_s": 79.58951157728073,
+      "distacco_s": 3.6694573685598897,
+      "se_s": 0.7097808498164496,
+      "giri": 5,
+      "da_giro": 19,
+      "a_giro": 23,
+      "eta_gomma_media": 28.0
+    },
+    {
+      "sig": "PER",
+      "team": "Cadillac",
+      "livello_s": 80.31758631662262,
+      "distacco_s": 4.397532107901782,
+      "se_s": 0.36379665050913035,
+      "giri": 19,
+      "da_giro": 3,
+      "a_giro": 21,
+      "eta_gomma_media": 12.0
+    }
+  ],
+  "gruppi": [
+    [
+      "NOR",
+      "RUS",
+      "PIA",
+      "HAM",
+      "VER",
+      "BOR",
+      "GAS",
+      "COL",
+      "OCO",
+      "ALB",
+      "BOT",
+      "SAI",
+      "PER"
+    ]
+  ],
+  "confini_dei_gruppi": [],
+  "se_per_pilota": {
+    "NOR": 0.6524727397589246,
+    "RUS": 0.3341289291305296,
+    "PIA": 0.34890591105637164,
+    "HAM": 0.6443064559089721,
+    "VER": 0.5820786668332004,
+    "BOR": 0.6524727397589214,
+    "GAS": 0.33412892913052955,
+    "COL": 0.4050663618806078,
+    "OCO": 0.34890591105637164,
+    "ALB": 0.3410354273496038,
+    "BOT": 0.41811333661406735,
+    "SAI": 0.7097808498164496,
+    "PER": 0.36379665050913035
+  },
+  "eta_gomma": {
+    "min": 10.5,
+    "max": 28.0
+  }
+}
