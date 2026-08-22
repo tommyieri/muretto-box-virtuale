@@ -26,6 +26,33 @@
     }
   },
   {
+    "id": "quali-gap-pole-zandvoort-2026",
+    "titolo": "280 millesimi nel solo settore 2, e la pole cambia mano",
+    "occhiello": "Qualifica del Gran Premio d’Olanda · Norris contro Russell",
+    "sommario": "Russell è davanti nel primo settore e nell’ultimo, ha il miglior primo settore della sessione e cinque km/h in più di velocità di punta. Poi arriva il tratto centrale del giro e in un chilometro e mezzo perde quasi tre decimi. Qui c’è dove li perde, curva per curva, e che cosa questo non basta a dire.",
+    "data": "2026-08-22",
+    "stato": "pubblicato",
+    "tag": [
+      "telemetria",
+      "qualifica",
+      "pole",
+      "Olanda",
+      "McLaren",
+      "Mercedes"
+    ],
+    "circuito": "Circuit Park Zandvoort",
+    "sessione": "Qualifica",
+    "accent": "#FF8000",
+    "gp": "Olanda",
+    "round": 12,
+    "pagina": true,
+    "en": {
+      "titolo": "280 thousandths in sector 2 alone, and pole changes hands",
+      "occhiello": "Dutch Grand Prix qualifying · Norris against Russell",
+      "sommario": "Russell is ahead in the first sector and in the last, has the best first sector of the session and five km/h more top speed. Then comes the middle stretch of the lap and in a kilometre and a half he loses almost three tenths. Here is where he loses them, corner by corner, and what this is not enough to say."
+    }
+  },
+  {
     "id": "upgrade-preview-olanda-2026",
     "titolo": "A Zandvoort nessuno porta un pezzo pensato per Zandvoort",
     "occhiello": "Documento FIA · Car Presentation Submissions, Gran Premio d’Olanda",

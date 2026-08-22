@@ -1,0 +1,208 @@
+{
+  "id": "quali-gap-pole-zandvoort-2026",
+  "anno": 2026,
+  "gp": "Dutch Grand Prix",
+  "country": "Netherlands",
+  "circuito": "Zandvoort",
+  "round": 12,
+  "sessione": "Qualifying",
+  "nome_it": "Olanda",
+  "pole": "NOR",
+  "p2": "RUS",
+  "team": {
+    "NOR": "McLaren",
+    "RUS": "Mercedes"
+  },
+  "tempi": {
+    "NOR": "1:11,163",
+    "RUS": "1:11,265"
+  },
+  "pole_margin_s": 0.102,
+  "settori_s": {
+    "NOR": [
+      24.456,
+      24.898,
+      21.809
+    ],
+    "RUS": [
+      24.3,
+      25.178,
+      21.787
+    ]
+  },
+  "delta_settore_pole_meno_p2": [
+    0.156,
+    -0.28,
+    0.022
+  ],
+  "vincitore_settore": [
+    "RUS",
+    "NOR",
+    "RUS"
+  ],
+  "settori_rivale": 2,
+  "reversal": true,
+  "settore_decisivo": 2,
+  "guadagno_decisivo_s": 0.28,
+  "recupero_rivale_s": 0.178,
+  "best_settore_holder": [
+    "RUS",
+    "NOR",
+    "ANT"
+  ],
+  "rivale_best_settori": [
+    1
+  ],
+  "settori_fonte": "ufficiale",
+  "confine_settori_m": {
+    "S1_fine": 1490.0,
+    "S2_fine": 2937.0,
+    "giro": 4219.0
+  },
+  "vmax_kmh": {
+    "NOR": 316.0,
+    "RUS": 321.0
+  },
+  "v_linea_pole_kmh": 309.0,
+  "gap_luce_m": 8.75,
+  "traccia_vantaggio": {
+    "fine_s": 0.108,
+    "max_pole": {
+      "dist_m": 2567.0,
+      "val_s": 0.212
+    },
+    "max_p2": {
+      "dist_m": 352.0,
+      "val_s": -0.211
+    }
+  },
+  "minime_curva": [
+    {
+      "curva": "T1",
+      "pole": 113.0,
+      "p2": 112.0,
+      "delta_pole_meno_p2": 1.0,
+      "settore": 1,
+      "outlier": false
+    },
+    {
+      "curva": "T2",
+      "pole": 185.0,
+      "p2": 186.0,
+      "delta_pole_meno_p2": -1.0,
+      "settore": 1,
+      "outlier": false
+    },
+    {
+      "curva": "T3",
+      "pole": 134.0,
+      "p2": 136.0,
+      "delta_pole_meno_p2": -2.0,
+      "settore": 1,
+      "outlier": false
+    },
+    {
+      "curva": "T4",
+      "pole": 251.0,
+      "p2": 252.0,
+      "delta_pole_meno_p2": -1.0,
+      "settore": 1,
+      "outlier": false
+    },
+    {
+      "curva": "T5",
+      "pole": 291.0,
+      "p2": 289.0,
+      "delta_pole_meno_p2": 2.0,
+      "settore": 1,
+      "outlier": false
+    },
+    {
+      "curva": "T6",
+      "pole": 292.0,
+      "p2": 297.0,
+      "delta_pole_meno_p2": -5.0,
+      "settore": 1,
+      "outlier": false
+    },
+    {
+      "curva": "T7",
+      "pole": 256.0,
+      "p2": 247.0,
+      "delta_pole_meno_p2": 9.0,
+      "settore": 2,
+      "outlier": false
+    },
+    {
+      "curva": "T8",
+      "pole": 218.0,
+      "p2": 210.0,
+      "delta_pole_meno_p2": 8.0,
+      "settore": 2,
+      "outlier": false
+    },
+    {
+      "curva": "T9",
+      "pole": 117.0,
+      "p2": 116.0,
+      "delta_pole_meno_p2": 1.0,
+      "settore": 2,
+      "outlier": false
+    },
+    {
+      "curva": "T10",
+      "pole": 122.0,
+      "p2": 116.0,
+      "delta_pole_meno_p2": 6.0,
+      "settore": 2,
+      "outlier": false
+    },
+    {
+      "curva": "T11",
+      "pole": 100.0,
+      "p2": 102.0,
+      "delta_pole_meno_p2": -2.0,
+      "settore": 3,
+      "outlier": false
+    },
+    {
+      "curva": "T12",
+      "pole": 93.0,
+      "p2": 95.0,
+      "delta_pole_meno_p2": -2.0,
+      "settore": 3,
+      "outlier": false
+    },
+    {
+      "curva": "T13",
+      "pole": 180.0,
+      "p2": 182.0,
+      "delta_pole_meno_p2": -2.0,
+      "settore": 3,
+      "outlier": false
+    },
+    {
+      "curva": "T14",
+      "pole": 266.0,
+      "p2": 268.0,
+      "delta_pole_meno_p2": -2.0,
+      "settore": 3,
+      "outlier": false
+    }
+  ],
+  "curve_decisivo_a_pole": [
+    "T7",
+    "T8",
+    "T10",
+    "T9"
+  ],
+  "curva_zoom": {
+    "curva": "T7",
+    "delta": 9.0,
+    "pole": 256.0,
+    "p2": 247.0
+  },
+  "outlier_curve": [],
+  "n_curve": 14,
+  "griglia_nota": false
+}

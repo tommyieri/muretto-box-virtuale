@@ -1,0 +1,26 @@
+{
+  "id": "quali-gap-pole-zandvoort-2026",
+  "stato": "pubblicato",
+  "attore": "auto",
+  "creato": "2026-08-22",
+  "storico": [
+    {
+      "stato": "bozza",
+      "attore": "redazione",
+      "quando": "2026-08-22",
+      "nota": "bozza generata"
+    },
+    {
+      "stato": "approvato",
+      "attore": "auto",
+      "quando": "2026-08-22",
+      "nota": "pubblicazione automatica FP (policy Tommi 25/07), verifica OK"
+    },
+    {
+      "stato": "pubblicato",
+      "attore": "auto",
+      "quando": "2026-08-22",
+      "nota": "pubblicato all'approvazione"
+    }
+  ]
+}
