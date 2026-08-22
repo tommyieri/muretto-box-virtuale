@@ -250,6 +250,16 @@
     "giri": 693
    },
    {
+    "sessione": "qualifiche",
+    "piloti": 22,
+    "giri": 377
+   },
+   {
+    "sessione": "sprint",
+    "piloti": 22,
+    "giri": 506
+   },
+   {
     "sessione": "sprint_quali",
     "piloti": 22,
     "giri": 254
